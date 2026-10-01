@@ -108,6 +108,20 @@ export function App() {
                   Projekt indítása
                 </a>
               </div>
+              <dl className="hero__stats" aria-label="Kulcsadatok">
+                <div className="hero__stat">
+                  <dt>Éles rendszer</dt>
+                  <dd>1</dd>
+                </div>
+                <div className="hero__stat">
+                  <dt>E2E teszttel ellenőrizve</dt>
+                  <dd>100%</dd>
+                </div>
+                <div className="hero__stat">
+                  <dt>Felelős a stackért</dt>
+                  <dd>1 ember</dd>
+                </div>
+              </dl>
             </div>
 
             <Reveal>
@@ -401,7 +415,7 @@ export function App() {
       <footer className="site-footer">
         <div className="section__inner site-footer__inner">
           <span className="site-footer__wordmark">
-            <LogoLockup height={34} stem="#FFFFFF" bowl="#2B50FF" text="#FFFFFF" />
+            <LogoLockup height={36} stem="#FFFFFF" bowl="#2B50FF" text="#FFFFFF" />
           </span>
           <p className="site-footer__note">
             DAEKON saját referenciaoldala. Ez az oldal maga is bizonyíték: React +

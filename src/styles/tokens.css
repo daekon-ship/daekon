@@ -33,12 +33,13 @@
   --blue-bright: #2b50ff;
   --blue-soft: #e8ecff;
 
+  --font-display: "Clash Display", "Archivo", "Segoe UI", sans-serif;
   --font-serif: "Archivo", "Segoe UI", sans-serif; /* kept for legacy refs */
-  --font-sans: "Archivo", -apple-system, "Segoe UI", sans-serif;
+  --font-sans: "Satoshi", "Archivo", -apple-system, "Segoe UI", sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
 
   --radius: 4px;
-  --radius-lg: 16px;
+  --radius-lg: 20px;
   --statusbar-h: 68px;
   --mobilenav-h: 64px;
   --safe-bottom: env(safe-area-inset-bottom, 0px);
@@ -141,9 +142,9 @@ h1, h2, h3, p, dl, dd, figure, ol, ul, form {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 48px;
-  padding: 0 26px;
-  border-radius: var(--radius);
+  min-height: 50px;
+  padding: 0 30px;
+  border-radius: 999px;
   font-family: var(--font-sans);
   font-weight: 600;
   font-size: 15px;
@@ -191,12 +192,12 @@ h1, h2, h3, p, dl, dd, figure, ol, ul, form {
   display: inline-block;
   font-family: var(--font-mono);
   font-size: 10.5px;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--text-1);
   border: 1px solid var(--border-strong);
   border-radius: 999px;
-  padding: 6px 12px;
+  padding: 7px 14px;
   max-width: 100%;
   flex-shrink: 0;
   position: relative;

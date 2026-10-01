@@ -40,8 +40,9 @@ export function LogoMark({
 }
 
 /**
- * Horizontal lockup: Split-D mark (cap ≈ 95) + gap + full DAEKON wordmark,
- * exactly the brand's horizontal() construction.
+ * Horizontal lockup: Split-D mark (cap ≈ 100) + gap + full DAEKON wordmark,
+ * exactly the brand's horizontal() construction, with an optional subtle
+ * drop-shadow for premium display contexts.
  */
 export function LogoLockup({
   height = 28,
@@ -50,6 +51,7 @@ export function LogoLockup({
   text = "#14161B",
   className,
   label = "DAEKON",
+  shadow = false,
 }: {
   height?: number;
   stem?: string;
@@ -57,19 +59,24 @@ export function LogoLockup({
   text?: string;
   className?: string;
   label?: string;
+  shadow?: boolean;
 }) {
-  const s = 100 / 200; // mark cap ≈ 95–100
+  const s = 100 / 200; // mark cap ≈ 100
   const textX = 100 + 36;
   const W = textX + WORDMARK.width;
   return (
     <svg
       className={className}
-      viewBox={`-6 -6 ${W + 12} 112`}
+      viewBox={`-8 -8 ${W + 16} 116`}
       height={height}
-      width={undefined}
       role="img"
       aria-label={label}
-      style={{ height, width: "auto", display: "block" }}
+      style={{
+        height,
+        width: "auto",
+        display: "block",
+        filter: shadow ? "drop-shadow(0 6px 18px rgba(22, 54, 231, 0.18))" : undefined,
+      }}
     >
       <g transform={`scale(${s})`}>
         <path d={MARK_LEFT} fill={stem} />
