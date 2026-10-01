@@ -26,24 +26,15 @@
 
 .wordmark {
   display: flex;
-  align-items: center;
-  gap: 11px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
   text-decoration: none;
   color: var(--text-0);
   margin-right: auto;
 }
-.wordmark__mark { flex-shrink: 0; filter: drop-shadow(0 4px 14px rgba(22, 54, 231, 0.28)); }
-.wordmark__text {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-.wordmark__type {
-  font-family: var(--font-sans);
-  font-weight: 800;
-  font-size: 20px;
-  letter-spacing: -0.02em;
-  line-height: 1;
+.wordmark > svg {
+  filter: drop-shadow(0 4px 14px rgba(22, 54, 231, 0.22));
 }
 .wordmark__tag {
   font-family: var(--font-mono);
@@ -51,6 +42,9 @@
   letter-spacing: 0.02em;
   color: var(--text-2);
   line-height: 1;
+}
+@media (max-width: 480px) {
+  .wordmark > svg { height: 26px !important; }
 }
 
 .sysnav__list {

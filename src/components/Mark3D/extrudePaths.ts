@@ -88,11 +88,34 @@ export function ExtrusionPath(d: string): Pt[] {
       const x = num(), y = num();
       pts.push(...arcToPoints(cx, cy, rx, ry, phi, laf, sf, x, y));
       cx = x; cy = y;
-    } else if (cmd === "Q" || cmd === "C") {
-      // fallback: treat control/end as line end (brand paths use only arcs)
-      while (i < tokens.length && !isNaN(parseFloat(tokens[i]))) { num(); num(); }
-      cx = num(); cy = num();
-      pts.push([cx, cy]);
+    } else if (cmd === "Q") {
+      // quadratic curve — flatten into segments
+      while (i < tokens.length && !isNaN(parseFloat(tokens[i]))) {
+        const qx = num(), qy = num(), x = num(), y = num();
+        const steps = 16;
+        for (let s = 1; s <= steps; s++) {
+          const t = s / steps, mt = 1 - t;
+          pts.push([
+            mt * mt * cx + 2 * mt * t * qx + t * t * x,
+            mt * mt * cy + 2 * mt * t * qy + t * t * y,
+          ]);
+        }
+        cx = x; cy = y;
+      }
+    } else if (cmd === "C") {
+      // cubic curve — flatten into segments
+      while (i < tokens.length && !isNaN(parseFloat(tokens[i]))) {
+        const x1 = num(), y1 = num(), x2 = num(), y2 = num(), x = num(), y = num();
+        const steps = 20;
+        for (let s = 1; s <= steps; s++) {
+          const t = s / steps, mt = 1 - t;
+          pts.push([
+            mt * mt * mt * cx + 3 * mt * mt * t * x1 + 3 * mt * t * t * x2 + t * t * t * x,
+            mt * mt * mt * cy + 3 * mt * mt * t * y1 + 3 * mt * t * t * y2 + t * t * t * y,
+          ]);
+        }
+        cx = x; cy = y;
+      }
     } else if (cmd === "Z") {
       pts.push([sx, sy]);
     }

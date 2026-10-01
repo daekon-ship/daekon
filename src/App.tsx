@@ -17,6 +17,7 @@ import {
   Words,
   CursorGlow,
 } from "./components/fx/fx";
+import { LogoLockup } from "./brand/Logo";
 import { useScrollSpy } from "./hooks/useScrollSpy";
 import kiosz01 from "./assets/img/kiosz-01.jpg";
 import kiosz02 from "./assets/img/kiosz-02.jpg";
@@ -114,7 +115,7 @@ export function App() {
                 fallback={
                   <div
                     style={{
-                      height: "clamp(300px, 40vw, 460px)",
+                      height: "clamp(240px, 26vw, 380px)",
                       border: "1px solid var(--border)",
                       borderRadius: "var(--radius)",
                       background: "var(--bg-1)",
@@ -394,11 +395,7 @@ export function App() {
       <footer className="site-footer">
         <div className="section__inner site-footer__inner">
           <span className="site-footer__wordmark">
-            <svg viewBox="0 0 200 200" width="22" height="22" aria-hidden="true" style={{ verticalAlign: "-4px", marginRight: 8 }}>
-              <path d="M 16 10 L 71 10 L 71 44 L 50 44 L 50 156 L 71 156 L 71 190 L 16 190 Z" fill="#F4F2EE" />
-              <path d="M 77 10 L 110 10 A 66 66 0 0 1 176 76 L 176 124 A 66 66 0 0 1 110 190 L 77 190 L 77 156 L 104 156 A 38 38 0 0 0 142 118 L 142 82 A 38 38 0 0 0 104 44 L 77 44 Z" fill="#2B50FF" />
-            </svg>
-            daekon
+            <LogoLockup height={34} stem="#FFFFFF" bowl="#2B50FF" text="#FFFFFF" />
           </span>
           <p className="site-footer__note">
             DAEKON saját referenciaoldala. Ez az oldal maga is bizonyíték: React +

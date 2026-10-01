@@ -1,83 +1,87 @@
 /* =========================================================================
-   Mark3D — the DAEKON Split-D mark as a live 3D object.
-   Geometry is built from the brand's vector paths (same source as the SVG
-   set), extruded and beveled. Slow float + pointer-follow rotation + pulsing
-   seam light + particles. No external assets: everything is procedural.
+   Mark3D — the full DAEKON wordmark as live 3D type.
+   Each letter is extruded from the brand's vector wordmark paths (same
+   source as the SVG logo set), floats on its own phase and leans with the
+   pointer. Blue seam light + particles + ground shadow on a light stage.
+   No external assets: everything is procedural.
    ========================================================================= */
 import { Suspense, useMemo, useRef, Component, type ReactNode } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
-import type { Group, PointLight, Points as ThreePoints, ExtrudeGeometry } from "three";
-import { ExtrusionPath, extrudeShape } from "./extrudePaths";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { ContactShadows } from "@react-three/drei";
+import type { Group, Mesh, PointLight, Points as ThreePoints, ExtrudeGeometry } from "three";
+import { ExtrusionPath, extrudeShape } from "./extrudePaths";
+import { WORDMARK } from "../../brand/wordmark";
 import "./Mark3D.css";
 
 const BLUE_LIGHT = "#2B50FF";
 const BLUE_DEEP = "#1636E7";
-const GRAPHITE = "#14161B"; // light-mode brand combo: graphite stem + deep blue bowl
+const GRAPHITE = "#14161B";
 
-/* ---- geometry: two extruded shapes from the brand's mark paths ---- */
-function useMarkGeometries(): { left: ExtrudeGeometry; right: ExtrudeGeometry } {
+/* ---- geometry: one extruded plate per letter, from the brand vectors ---- */
+function useLetterGeometries(): ExtrudeGeometry[] {
   return useMemo(() => {
-    // brand mark paths, 200×200 box, y-down → flip y and center
-    const left =
-      "M 16 10 L 71 10 L 71 44 L 50 44 L 50 156 L 71 156 L 71 190 L 16 190 Z";
-    const right =
-      "M 77 10 L 110 10 A 66 66 0 0 1 176 76 L 176 124 A 66 66 0 0 1 110 190 " +
-      "L 77 190 L 77 156 L 104 156 A 38 38 0 0 0 142 118 L 142 82 " +
-      "A 38 38 0 0 0 104 44 L 77 44 Z";
-    const toWorld = (d: string) =>
-      ExtrusionPath(d).map(([x, y]) => [x - 100, 100 - y] as [number, number]);
-    const depth = 34;
-    const bevel = 3;
-    return {
-      left: extrudeShape(toWorld(left), { depth, bevel }),
-      right: extrudeShape(toWorld(right), { depth, bevel }),
-    };
+    const cx = WORDMARK.width / 2;
+    return WORDMARK.glyphs.map((g) => {
+      // wordmark space: cap 100, baseline y=100, y-down → center and flip
+      const pts = ExtrusionPath(g.d).map(
+        ([x, y]) => [x - cx, 50 - y] as [number, number],
+      );
+      return extrudeShape(pts, { depth: 30, bevel: 2.5 });
+    });
   }, []);
 }
 
-/* ---- seamless looping float ---- */
-function useFloat(speed = 1) {
-  const t = useRef(Math.random() * 100);
-  return () => {
-    t.current += 0.016 * speed;
-    return Math.sin(t.current) * 0.12;
-  };
-}
-
-function MarkMeshes() {
-  const geo = useMarkGeometries();
+function WordmarkMeshes() {
+  const geo = useLetterGeometries();
   const group = useRef<Group>(null);
-  const seam = useRef<PointLight>(null);
-  const float = useFloat(0.8);
+  const letters = useRef<(Mesh | null)[]>([]);
+  const glow = useRef<PointLight>(null);
+  const { viewport } = useThree();
 
   useFrame((state) => {
     const t = state.clock.elapsedTime;
     if (group.current) {
-      // near-frontal pose so the D always reads; pointer + idle sway add life
-      const px = (state.pointer.x * Math.PI) / 16;
-      const py = (state.pointer.y * Math.PI) / 16;
-      group.current.rotation.y += (px - 0.1 + Math.sin(t * 0.24) * 0.08 - group.current.rotation.y) * 0.05;
-      group.current.rotation.x += (-py + Math.sin(t * 0.31) * 0.05 - group.current.rotation.x) * 0.05;
-      group.current.position.y = float();
+      // gentle pointer-follow sway — the word stays readable
+      const px = (state.pointer.x * Math.PI) / 12;
+      const py = (state.pointer.y * Math.PI) / 14;
+      group.current.rotation.y +=
+        (px + Math.sin(t * 0.24) * 0.06 - group.current.rotation.y) * 0.05;
+      group.current.rotation.x +=
+        (-py + Math.sin(t * 0.31) * 0.04 - group.current.rotation.x) * 0.05;
     }
-    if (seam.current) {
-      // pulsing seam light between the two halves
-      const p = 1.6 + Math.sin(t * 2.1) * 0.9;
-      seam.current.intensity = p;
+    letters.current.forEach((m, i) => {
+      if (!m) return;
+      m.position.y = Math.sin(t * 0.9 + i * 0.55) * 0.09;
+      m.position.z = Math.cos(t * 0.6 + i * 0.42) * 0.06;
+    });
+    if (glow.current) {
+      glow.current.intensity = 1.5 + Math.sin(t * 2.0) * 0.8;
     }
   });
 
+  // responsive: the wordmark fills most of the stage width on any screen
+  const scale = Math.min(viewport.width * 0.82, 7.4) / WORDMARK.width;
+
   return (
-    <group ref={group} scale={0.011}>
-      {/* two plates, separated along z: the split reads as physical depth */}
-      <mesh geometry={geo.left} position={[0, 0, -10]}>
-        <meshStandardMaterial color={GRAPHITE} metalness={0.4} roughness={0.3} />
-      </mesh>
-      <mesh geometry={geo.right} position={[0, 0, 10]}>
-        <meshStandardMaterial color={BLUE_DEEP} metalness={0.3} roughness={0.22} emissive={BLUE_LIGHT} emissiveIntensity={0.22} />
-      </mesh>
-      <pointLight ref={seam} position={[0, 0, 0]} color={BLUE_LIGHT} intensity={1.6} distance={9} />
+    <group ref={group} scale={scale}>
+      {geo.map((g, i) => (
+        <mesh
+          key={i}
+          geometry={g}
+          ref={(m) => {
+            letters.current[i] = m;
+          }}
+        >
+          <meshStandardMaterial color={GRAPHITE} metalness={0.4} roughness={0.28} />
+        </mesh>
+      ))}
+      <pointLight
+        ref={glow}
+        position={[0, 0, 1.1]}
+        color={BLUE_LIGHT}
+        intensity={1.5}
+        distance={8}
+      />
     </group>
   );
 }
@@ -88,9 +92,9 @@ function Particles({ count = 90 }: { count?: number }) {
   const positions = useMemo(() => {
     const arr = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
-      arr[i * 3] = (Math.random() - 0.5) * 7;
-      arr[i * 3 + 1] = (Math.random() - 0.5) * 4.5;
-      arr[i * 3 + 2] = (Math.random() - 0.5) * 3.5;
+      arr[i * 3] = (Math.random() - 0.5) * 8;
+      arr[i * 3 + 1] = (Math.random() - 0.5) * 3.6;
+      arr[i * 3 + 2] = (Math.random() - 0.5) * 3.2;
     }
     return arr;
   }, [count]);
@@ -107,19 +111,19 @@ function Particles({ count = 90 }: { count?: number }) {
       <bufferGeometry>
         <bufferAttribute attach="attributes-position" args={[positions, 3]} />
       </bufferGeometry>
-      <pointsMaterial size={0.035} color={BLUE_DEEP} transparent opacity={0.4} sizeAttenuation depthWrite={false} />
+      <pointsMaterial size={0.032} color={BLUE_DEEP} transparent opacity={0.35} sizeAttenuation depthWrite={false} />
     </points>
   );
 }
 
-/* ---- rig: light + environment ---- */
+/* ---- rig: lights ---- */
 function Rig() {
   return (
     <>
-      <ambientLight intensity={0.5} />
+      <ambientLight intensity={0.85} />
       <directionalLight position={[4, 6, 5]} intensity={1.5} color="#ffffff" />
-      <directionalLight position={[-5, -3, 4]} intensity={0.7} color={BLUE_LIGHT} />
-      <pointLight position={[0, 0, 4]} intensity={0.6} color={BLUE_LIGHT} />
+      <directionalLight position={[-5, -3, 4]} intensity={0.6} color={BLUE_LIGHT} />
+      <pointLight position={[0, 0, 4.5]} intensity={0.5} color={BLUE_LIGHT} />
     </>
   );
 }
@@ -142,8 +146,10 @@ function StaticMark() {
 
 export function Mark3D({ className = "" }: { className?: string }) {
   const reduced = useMemo(
-    () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches,
-    []
+    () =>
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+    [],
   );
 
   return (
@@ -158,13 +164,22 @@ export function Mark3D({ className = "" }: { className?: string }) {
         >
           <Rig />
           <Suspense fallback={null}>
-            <MarkMeshes />
-            <ContactShadows position={[0, -1.7, 0]} opacity={0.32} scale={8} blur={2.6} far={4} color="#141a3c" />
+            <WordmarkMeshes />
+            <ContactShadows
+              position={[0, -1.35, 0]}
+              opacity={0.3}
+              scale={10}
+              blur={2.6}
+              far={4}
+              color="#141a3c"
+            />
             {!reduced && <Particles />}
           </Suspense>
         </Canvas>
       </GLBoundary>
-      <noscript><StaticMark /></noscript>
+      <noscript>
+        <StaticMark />
+      </noscript>
     </div>
   );
 }
