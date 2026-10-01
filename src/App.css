@@ -1,0 +1,381 @@
+/* =========================================================================
+   App-level layout — hero, work, services, about, contact, footer.
+   Builds on the shared instrument-panel chrome (Panel, tokens.css).
+   ========================================================================= */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Shared visible section heading — same weight as .work__title / .about__title
+   so every section carries real headline-weight typography, not just a label. */
+.section-heading {
+  font-family: var(--font-serif);
+  font-size: clamp(1.5rem, 2vw + 1rem, 2rem);
+  font-weight: 500;
+  color: var(--text-0);
+}
+
+/* ---------------------------------------------------------------------
+   Hero
+   --------------------------------------------------------------------- */
+
+.hero__inner {
+  gap: 48px;
+}
+
+.hero__intro {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  max-width: 780px;
+}
+
+.hero__eyebrow {
+  align-self: flex-start;
+}
+
+.hero__title {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: clamp(2.1rem, 4.6vw + 0.9rem, 3.8rem);
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  color: var(--text-0);
+}
+
+.hero__lede {
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--text-1);
+  max-width: 62ch;
+}
+
+.hero__grid {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: start;
+}
+
+@media (min-width: 900px) {
+  .hero__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: 28px;
+  }
+}
+
+@media (max-width: 720px) {
+  /* Tighter mobile hero rhythm so the order-demo's action row doesn't come
+     to rest in the fixed bottom nav's reserved band at first paint. */
+  .hero__inner { gap: 28px; }
+  .hero__intro { gap: 14px; }
+  .hero__grid { gap: 14px; }
+}
+
+/* ---------------------------------------------------------------------
+   Munkák / work
+   --------------------------------------------------------------------- */
+
+.work {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.work__title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.6rem, 2.4vw + 1rem, 2.3rem);
+  font-weight: 500;
+  color: var(--text-0);
+}
+
+.work__lede {
+  font-size: 15.5px;
+  line-height: 1.65;
+  color: var(--text-1);
+  max-width: 74ch;
+}
+
+.work__facts {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px 24px;
+  padding-top: 4px;
+  border-top: 1px solid var(--border);
+}
+
+@media (min-width: 720px) {
+  .work__facts {
+    grid-template-columns: 150px 1fr;
+  }
+}
+
+.work__fact dt {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.03em;
+  color: var(--text-2);
+  margin-bottom: 4px;
+}
+
+@media (min-width: 720px) {
+  .work__fact {
+    display: contents;
+  }
+  .work__fact dt {
+    margin-bottom: 0;
+    padding-top: 2px;
+  }
+}
+
+.work__fact dd {
+  margin: 0;
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--text-1);
+}
+.work__fact dd code {
+  font-size: 13px;
+  color: var(--text-0);
+}
+
+.work__gallery {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+@media (min-width: 640px) {
+  .work__gallery {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 960px) {
+  .work__gallery {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+.work__gallery-item {
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+}
+.work__gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.work__logo {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 0;
+}
+.work__logo img {
+  width: 84px;
+  height: 84px;
+  object-fit: cover;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+}
+.work__logo figcaption {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--text-2);
+}
+
+.work__next {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-2);
+}
+
+/* ---------------------------------------------------------------------
+   Szolgáltatások / services
+   --------------------------------------------------------------------- */
+
+.services {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+}
+
+.services__group-label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.05em;
+  color: var(--text-2);
+  margin-bottom: 14px;
+}
+
+.services__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.services__item {
+  display: flex;
+  gap: 20px;
+  padding: 18px 0;
+  border-top: 1px solid var(--border);
+}
+.services__item:first-child { border-top: none; padding-top: 0; }
+
+.services__index {
+  flex-shrink: 0;
+  width: 34px;
+  font-family: var(--font-serif);
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--text-2);
+}
+
+.services__item h3 {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-0);
+  margin-bottom: 6px;
+}
+.services__item p {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--text-1);
+  max-width: 60ch;
+}
+
+/* ---------------------------------------------------------------------
+   Rólam / about
+   --------------------------------------------------------------------- */
+
+.about {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-width: 74ch;
+}
+
+.about__title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.5rem, 2vw + 1rem, 2rem);
+  font-weight: 500;
+  color: var(--text-0);
+}
+
+.about p {
+  font-size: 15.5px;
+  line-height: 1.65;
+  color: var(--text-1);
+}
+
+.about__points {
+  list-style: none;
+  margin: 6px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.about__points li {
+  position: relative;
+  padding-left: 20px;
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--text-1);
+}
+.about__points li::before {
+  content: "—";
+  position: absolute;
+  left: 0;
+  color: var(--text-2);
+  font-family: var(--font-mono);
+}
+
+/* ---------------------------------------------------------------------
+   Kapcsolat / contact
+   --------------------------------------------------------------------- */
+
+.contact {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: flex-start;
+  max-width: 60ch;
+}
+
+.contact__lede {
+  font-size: 15.5px;
+  line-height: 1.6;
+  color: var(--text-1);
+}
+
+.contact__cta {
+  font-size: 16px;
+}
+
+.contact__note {
+  font-size: 13px;
+  color: var(--text-2);
+  line-height: 1.55;
+}
+
+@media (max-width: 480px) {
+  .contact__cta { width: 100%; }
+}
+
+/* ---------------------------------------------------------------------
+   Footer
+   --------------------------------------------------------------------- */
+
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 40px 0;
+}
+
+.site-footer__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.site-footer__wordmark {
+  font-family: var(--font-sans);
+  font-weight: 800;
+  font-size: 16px;
+  color: var(--text-1);
+}
+
+.site-footer__note {
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--text-2);
+  max-width: 62ch;
+}

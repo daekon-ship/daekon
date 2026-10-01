@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>DAEKON — build log</title>
+<meta name="description" content="DAEKON — egyszemélyes kreatív fejlesztő. Egyedi weboldalak, rendelési és foglalási rendszerek, admin felületek, backend és API munka, dokumentálva a specifikációtól a tesztig.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,ital@9..144,300..700,0,1&family=JetBrains+Mono:wght@400;500;600&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">Ugrás a tartalomra</a>
+
+<!-- ============ DESKTOP / TABLET RAIL (persistent left index) ============ -->
+<header class="rail" aria-label="Fő navigáció">
+  <div class="rail__mark">
+    <span class="rail__mark-word">DAEKON</span>
+    <span class="rail__mark-sub mono">build&nbsp;log</span>
+  </div>
+
+  <nav class="rail__nav" aria-label="Szekciók">
+    <ul>
+      <li><a href="#kezdolap" class="rail__link is-active" data-index="01"><span class="rail__num mono">01</span><span class="rail__label">Kezdőlap</span><span class="rail__tick" aria-hidden="true"></span></a></li>
+      <li><a href="#munkak" class="rail__link" data-index="02"><span class="rail__num mono">02</span><span class="rail__label">Munkák</span><span class="rail__tick" aria-hidden="true"></span></a></li>
+      <li><a href="#szolgaltatasok" class="rail__link" data-index="03"><span class="rail__num mono">03</span><span class="rail__label">Szolgáltatások</span><span class="rail__tick" aria-hidden="true"></span></a></li>
+      <li><a href="#rolam" class="rail__link" data-index="04"><span class="rail__num mono">04</span><span class="rail__label">Rólam</span><span class="rail__tick" aria-hidden="true"></span></a></li>
+      <li><a href="#kapcsolat" class="rail__link" data-index="05"><span class="rail__num mono">05</span><span class="rail__label">Kapcsolat</span><span class="rail__tick" aria-hidden="true"></span></a></li>
+    </ul>
+  </nav>
+
+  <div class="rail__status mono" aria-live="polite">
+    <span class="rail__status-label">olvasva</span>
+    <span id="railStatus">01 / kezdőlap</span>
+  </div>
+
+  <div class="rail__progress" aria-hidden="true">
+    <div class="rail__progress-fill" id="progressFill"></div>
+  </div>
+</header>
+
+<!-- ============ MOBILE TOP STRIP (numbers-only, expands on tap) ============ -->
+<header class="mrail" id="mrail" aria-label="Fő navigáció (mobil)">
+  <div class="mrail__row">
+    <span class="mrail__mark mono">DK</span>
+    <ul class="mrail__nums">
+      <li><a href="#kezdolap" class="mrail__num is-active" data-index="01"><span class="mono">01</span></a></li>
+      <li><a href="#munkak" class="mrail__num" data-index="02"><span class="mono">02</span></a></li>
+      <li><a href="#szolgaltatasok" class="mrail__num" data-index="03"><span class="mono">03</span></a></li>
+      <li><a href="#rolam" class="mrail__num" data-index="04"><span class="mono">04</span></a></li>
+      <li><a href="#kapcsolat" class="mrail__num" data-index="05"><span class="mono">05</span></a></li>
+    </ul>
+    <button type="button" class="mrail__toggle mono" id="mrailToggle" aria-expanded="false" aria-controls="mrailPanel">
+      index
+    </button>
+  </div>
+  <div class="mrail__status mono" aria-live="polite">
+    <span id="mrailStatus">olvasva: 01 / kezdőlap</span>
+  </div>
+  <div class="mrail__panel" id="mrailPanel" hidden>
+    <a href="#kezdolap" data-index="01"><span class="mono">01</span> Kezdőlap</a>
+    <a href="#munkak" data-index="02"><span class="mono">02</span> Munkák</a>
+    <a href="#szolgaltatasok" data-index="03"><span class="mono">03</span> Szolgáltatások</a>
+    <a href="#rolam" data-index="04"><span class="mono">04</span> Rólam</a>
+    <a href="#kapcsolat" data-index="05"><span class="mono">05</span> Kapcsolat</a>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ============ 01 — KEZDŐLAP ============ -->
+  <section id="kezdolap" class="section section--dark section--hero" data-index="01" data-label="Kezdőlap">
+    <div class="spec-rule">
+      <span class="spec-rule__num mono">01</span>
+      <span class="spec-rule__note">Kezdőlap / nyitóállítás — mit épít ez az oldal</span>
+    </div>
+
+    <div class="hero">
+      <p class="hero__eyebrow mono">
+        <span class="type-on" data-text="DAEKON — build log, 2026.09.20."></span><span class="type-cursor" aria-hidden="true"></span>
+      </p>
+
+      <h1 class="hero__headline">
+        <span class="reveal-line">Amit leszállítok,</span>
+        <span class="reveal-line">azt végig dokumentálom —</span>
+        <span class="reveal-line reveal-line--accent">specifikációtól a tesztig.</span>
+      </h1>
+
+      <div class="ledger-row hero__sub reveal-fade">
+        <div class="ledger-meta mono">
+          <span>DAEKON</span>
+          <span>egyszemélyes</span>
+          <span>kreatív fejlesztő</span>
+        </div>
+        <div class="ledger-content">
+          <p>Egyedi weboldalakat, rendelési és foglalási rendszereket, admin felületeket és a mögöttük futó backendet építek — a specifikációtól a production tesztekig, minden lépést dokumentálva. Nem sablonokat állítok össze; rendszereket építek, amiket utólag is ellenőrizni lehet.</p>
+          <div class="hero__actions">
+            <a class="ink-link" href="#munkak">Munkák megtekintése <span aria-hidden="true">→</span></a>
+            <a class="ink-link ink-link--ghost" href="#kapcsolat">Kapcsolatfelvétel <span aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 02 — MUNKÁK ============ -->
+  <section id="munkak" class="section" data-index="02" data-label="Munkák">
+    <div class="spec-rule">
+      <span class="spec-rule__num mono">02</span>
+      <span class="spec-rule__note">Munkák / csak ellenőrzött esettanulmányok — kitalált eredmény nélkül</span>
+    </div>
+
+    <article class="dossier">
+      <div class="ledger-row reveal-fade">
+        <div class="ledger-meta mono">
+          <span>projekt</span>
+          <span class="tag tag--live">státusz: élő</span>
+        </div>
+        <div class="ledger-content">
+          <h2 class="dossier__title">KIOSZ Pizza Napoletana</h2>
+          <p class="dossier__lede">Élő rendelési rendszer — nem sablon. Böngészhető menü, kosár, vendég-checkout, valós nyomkövetés és tablet-first admin felület, egy közös API-n.</p>
+        </div>
+      </div>
+
+      <div class="ledger-row reveal-fade">
+        <div class="ledger-meta mono"><span>stack</span></div>
+        <div class="ledger-content">
+          <ul class="spec-list">
+            <li><span class="spec-list__key mono">frontend</span><span>React + TypeScript + Vite</span></li>
+            <li><span class="spec-list__key mono">backend</span><span>PHP 8 + PDO REST API, framework nélkül — <code>/api/v1/*</code></span></li>
+            <li><span class="spec-list__key mono">adatbázis</span><span>MySQL / MariaDB, számozott migrációkkal</span></li>
+            <li><span class="spec-list__key mono">tartalom</span><span>content-as-source-of-truth JSON pipeline — egy forrás generálja a DB seedet és a frontend adat-tükröt</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="ledger-row reveal-fade">
+        <div class="ledger-meta mono"><span>folyamat</span></div>
+        <div class="ledger-content">
+          <ol class="flow-list">
+            <li>menü böngészése</li>
+            <li>extra hozzáadása</li>
+            <li>vendégként checkout</li>
+            <li>valós nyomkövető URL</li>
+            <li>tablet-first admin fogadja és kezeli a rendelést</li>
+          </ol>
+          <p class="footnote">Szerepkör-alapú jogosultság: a <code>kitchen_staff</code> szerepkör helyesen <em>nem</em> fér hozzá a kedvezménykezeléshez.</p>
+        </div>
+      </div>
+
+      <div class="ledger-row reveal-fade">
+        <div class="ledger-meta mono"><span>verifikáció</span></div>
+        <div class="ledger-content">
+          <p>Playwright E2E tesztek a valós, éles stack ellen — mock nélkül —, lefedve a teljes rendelési folyamatot (böngészés → extra → vendég-checkout → nyomkövetés → admin elfogadás). Reszponzív specifikáció ellenőrizve:</p>
+          <p class="breakpoints mono">360 · 375 · 390 · 412 · 430 · 768 · 820 · 834 · 1024 · 1440&nbsp;px</p>
+          <p>PHPUnit integrációs tesztek valós MariaDB teszt-adatbázis ellen — optimista zárolás, admin authentikáció.</p>
+        </div>
+      </div>
+
+      <div class="breakout dossier__gallery reveal-fade">
+        <div class="gallery-head">
+          <span class="mono gallery-head__tag">galéria</span>
+          <p>192 fotós szerkesztői galéria öt szűrőben, 24-esével progresszíven betöltve, billentyűzettel is használható lightboxszal. Alább kontaktkép-rács helyőrzőkkel — a végleges buildben valós KIOSZ-fotókkal.</p>
+        </div>
+        <div class="contact-sheet" id="contactSheet" aria-hidden="true"></div>
+      </div>
+    </article>
+
+    <div class="ledger-row vadlak reveal-fade">
+      <div class="ledger-meta mono"><span>projekt</span><span class="tag tag--dev">fejlesztés alatt</span></div>
+      <div class="ledger-content">
+        <p class="vadlak__line">Vad-Lak — valós ügyfél, fejlesztés alatt.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 03 — SZOLGÁLTATÁSOK ============ -->
+  <section id="szolgaltatasok" class="section" data-index="03" data-label="Szolgáltatások">
+    <div class="spec-rule">
+      <span class="spec-rule__num mono">03</span>
+      <span class="spec-rule__note">Szolgáltatások / mit szállítok, tétel szerint</span>
+    </div>
+
+    <ul class="services">
+      <li class="services__item reveal-fade">
+        <span class="services__code mono">SVC-01</span>
+        <div><h3>Egyedi webfejlesztés</h3><p>Egyedi frontend és backend — nem sablon, nem page builder.</p></div>
+      </li>
+      <li class="services__item reveal-fade">
+        <span class="services__code mono">SVC-02</span>
+        <div><h3>Prémium UI/UX</h3><p>Tervezéstől a pixelpontos megvalósításig, egy kézben.</p></div>
+      </li>
+      <li class="services__item reveal-fade">
+        <span class="services__code mono">SVC-03</span>
+        <div><h3>Rendelési és foglalási rendszerek</h3><p>Kosár, checkout, nyomkövetés, admin — ahogy a KIOSZ-nál.</p></div>
+      </li>
+      <li class="services__item reveal-fade">
+        <span class="services__code mono">SVC-04</span>
+        <div><h3>Admin felületek</h3><p>Szerepkör-alapú jogosultsággal, tablet-first felülettel.</p></div>
+      </li>
+      <li class="services__item reveal-fade">
+        <span class="services__code mono">SVC-05</span>
+        <div><h3>E-kereskedelem</h3><p>Termékkezelés, kosár, fizetés — a valós forgalomhoz méretezve.</p></div>
+      </li>
+      <li class="services__item reveal-fade">
+        <span class="services__code mono">SVC-06</span>
+        <div><h3>Backend, adatbázis, API</h3><p>PHP/PDO vagy más stack, számozott migrációkkal, tesztelve.</p></div>
+      </li>
+      <li class="services__item reveal-fade">
+        <span class="services__code mono">SVC-07</span>
+        <div><h3>Interaktív frontend</h3><p>Állapot-vezérelt felületek, scroll-koreográfia, mikro-interakciók.</p></div>
+      </li>
+      <li class="services__item reveal-fade">
+        <span class="services__code mono">SVC-08</span>
+        <div><h3>Kreatív fejlesztés</h3><p>Egyedi motion, canvas és WebGL — csak ahol tényleg indokolt.</p></div>
+      </li>
+      <li class="services__item reveal-fade">
+        <span class="services__code mono">SVC-09</span>
+        <div><h3>Mobil optimalizáció</h3><p>Nem összenyomott desktop — külön tervezett mobil élmény.</p></div>
+      </li>
+      <li class="services__item reveal-fade">
+        <span class="services__code mono">SVC-10</span>
+        <div><h3>Technikai SEO</h3><p>Szemantikus jelölés, strukturált adat, Core Web Vitals.</p></div>
+      </li>
+      <li class="services__item reveal-fade">
+        <span class="services__code mono">SVC-11</span>
+        <div><h3>Teljesítmény és karbantartás</h3><p>Mérve, nem tippelve — és hosszú távon karbantartva.</p></div>
+      </li>
+    </ul>
+  </section>
+
+  <!-- ============ 04 — RÓLAM ============ -->
+  <section id="rolam" class="section" data-index="04" data-label="Rólam">
+    <div class="spec-rule">
+      <span class="spec-rule__num mono">04</span>
+      <span class="spec-rule__note">Rólam / munkamódszer, nem életrajz</span>
+    </div>
+
+    <div class="ledger-row reveal-fade">
+      <div class="ledger-meta mono">
+        <span>daekon</span>
+        <span>egyszemélyes</span>
+      </div>
+      <div class="ledger-content about">
+        <p>Egyszemélyes kreatív fejlesztőként dolgozom — nem egy 200 fős ügynökség vagyok, amelyik annak adja ki magát. Ez azt jelenti, hogy a specifikációtól a production tesztig ugyanaz a kéz nyúl hozzá a projekthez, és minden döntés visszakövethető.</p>
+        <p>A munkamódszerem a saját projektjeim dokumentációjából jött: számozott adatbázis-migrációk, valós stack elleni E2E tesztek, felelősség szerint szétválasztott admin jogosultságok. Ez az oldal is így épül — amit itt látsz, az a saját gyakorlatom, nem egy marketing-ígéret.</p>
+        <p>Amit nem csinálok: kitalált statisztikákat, kitalált ügyfeleket, kitalált eredményeket. Ha egy tény nincs ellenőrizve, nincs is fent az oldalon.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 05 — KAPCSOLAT ============ -->
+  <section id="kapcsolat" class="section section--dark" data-index="05" data-label="Kapcsolat">
+    <div class="spec-rule">
+      <span class="spec-rule__num mono">05</span>
+      <span class="spec-rule__note">Kapcsolat / új projekt indítása</span>
+    </div>
+
+    <div class="ledger-row reveal-fade">
+      <div class="ledger-meta mono">
+        <span>válasz</span>
+        <span>1 munkanapon belül</span>
+      </div>
+      <div class="ledger-content">
+        <h2 class="kapcsolat__title">Beszéljünk a projektről.</h2>
+        <p>Írd le röviden, mit építenél — rendelési rendszert, admin felületet, egyedi weboldalt, vagy valami mást. Visszajelzek, mennyire fér bele reálisan a menetrendbe.</p>
+
+        <form class="contact-form" id="contactForm" novalidate>
+          <p class="contact-form__note mono">demonstráció — ebben a prototípusban nincs élő backend a beküldéshez</p>
+          <div class="contact-form__row">
+            <label for="cf-name">Név</label>
+            <input id="cf-name" name="name" type="text" autocomplete="name" required>
+          </div>
+          <div class="contact-form__row">
+            <label for="cf-email">E-mail</label>
+            <input id="cf-email" name="email" type="email" autocomplete="email" required>
+          </div>
+          <div class="contact-form__row">
+            <label for="cf-message">Miről van szó?</label>
+            <textarea id="cf-message" name="message" rows="4" required></textarea>
+          </div>
+          <button type="submit" class="ink-link ink-link--button">Elküldöm <span aria-hidden="true">→</span></button>
+          <p class="contact-form__status" id="contactStatus" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
+
+    <footer class="site-footer">
+      <div class="site-footer__row mono">
+        <span>DAEKON — build log</span>
+        <span id="footerTimestamp">utolsó frissítés: 2026.09.20.</span>
+      </div>
+    </footer>
+  </section>
+
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>

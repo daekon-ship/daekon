@@ -1,0 +1,230 @@
+/* =========================================================================
+   DAEKON — design tokens + base reset
+   Near-black neutral UI. State color used functionally only:
+   amber-adjacent = pending/in-progress, green-adjacent = ready/done,
+   muted red = invalid/error/cancelled. No gradients, no glow, no glass.
+   ========================================================================= */
+
+:root {
+  --bg-0: #0b0c0e;
+  --bg-1: #131417;
+  --bg-2: #191a1e;
+  --bg-3: #202126;
+  --bg-4: #26272d;
+
+  --border: rgba(255, 255, 255, 0.10);
+  --border-strong: rgba(255, 255, 255, 0.20);
+
+  --text-0: #f4f2ee;
+  --text-1: #a9aab0;
+  --text-2: #6d6e75;
+
+  --state-pending: #d99a3e;
+  --state-pending-bg: rgba(217, 154, 62, 0.12);
+  --state-ready: #4fae82;
+  --state-ready-bg: rgba(79, 174, 130, 0.12);
+  --state-error: #d16a56;
+  --state-error-bg: rgba(209, 106, 86, 0.12);
+  --state-neutral: #8b8c92;
+  --state-neutral-bg: rgba(139, 140, 146, 0.12);
+
+  --font-serif: "Fraunces", ui-serif, Georgia, serif;
+  --font-sans: "Hanken Grotesk", -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  --radius: 3px;
+  --statusbar-h: 64px;
+  --mobilenav-h: 64px;
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-fast: 140ms;
+  --dur-med: 260ms;
+
+  /* z-index scale — kept explicit and centralized so nothing can drift
+     above the fixed header/nav by accident (required fix: badge/header
+     overlap on scroll). Panel-level chrome (badges, sticky sub-elements)
+     must stay below --z-header. */
+  --z-header: 100;
+  --z-skiplink: 1000;
+  --z-panel-chrome: 1;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+@media (max-width: 720px) {
+  /* Keeps anchor/scroll-driven rest positions clear of the fixed bottom nav. */
+  html { scroll-padding-bottom: calc(var(--mobilenav-h) + var(--safe-bottom) + 16px); }
+}
+
+body {
+  margin: 0;
+  background: var(--bg-0);
+  color: var(--text-0);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  padding-top: var(--statusbar-h);
+  /* Required fix: bottom safe-area buffer so scrolled content never runs
+     under the fixed mobile tab bar, including on notched devices where
+     the bar itself grows by the safe-area inset. */
+  padding-bottom: 0;
+}
+
+@media (max-width: 720px) {
+  body {
+    padding-top: 20px;
+    padding-bottom: calc(var(--mobilenav-h) + var(--safe-bottom));
+  }
+}
+
+img { max-width: 100%; display: block; }
+code { font-family: var(--font-mono); }
+
+h1, h2, h3, p, dl, dd, figure, ol, ul, form {
+  margin: 0;
+}
+
+.skip-link {
+  position: fixed;
+  top: -100%;
+  left: 12px;
+  z-index: var(--z-skiplink);
+  background: var(--text-0);
+  color: var(--bg-0);
+  padding: 10px 16px;
+  border-radius: var(--radius);
+  font-family: var(--font-sans);
+  font-weight: 600;
+  text-decoration: none;
+}
+.skip-link:focus {
+  top: calc(var(--statusbar-h) + 10px);
+}
+
+:focus-visible {
+  outline: 2px solid var(--text-0);
+  outline-offset: 2px;
+}
+
+[data-section] { scroll-margin-top: calc(var(--statusbar-h) + 24px); }
+@media (max-width: 720px) {
+  [data-section] { scroll-margin-top: 16px; }
+}
+
+.section { padding: 64px 0; }
+.section--calm { padding: 88px 0; }
+.section--instrumented { padding: 64px 0; }
+.section__inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* Persistent seam between sections — a reduced gap needs a visible reason
+   to read as designed rhythm rather than an accidental template void. */
+.section + .section {
+  border-top: 1px solid var(--border);
+}
+
+@media (max-width: 720px) {
+  .section { padding: 44px 0; }
+  .section--calm { padding: 56px 0; }
+  .section__inner { padding: 0 18px; }
+  /* Primary touch targets get real headroom above the 44px minimum on phones. */
+  .btn { min-height: 50px; }
+}
+
+/* ---------------------------------------------------------------------
+   Buttons — shared button language used across nav, hero, demo, form
+   --------------------------------------------------------------------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 22px;
+  border-radius: var(--radius);
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 15px;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
+}
+.btn:active { transform: translateY(1px); }
+.btn--primary {
+  background: var(--text-0);
+  color: var(--bg-0);
+}
+.btn--primary:hover { background: #ffffff; }
+.btn--primary:disabled {
+  background: var(--bg-3);
+  color: var(--text-2);
+  cursor: not-allowed;
+}
+.btn--ghost {
+  background: transparent;
+  color: var(--text-0);
+  border-color: var(--border-strong);
+}
+.btn--ghost:hover { background: var(--bg-2); }
+
+@keyframes pulse-ring {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(244, 242, 238, 0.28); }
+  50% { box-shadow: 0 0 0 6px rgba(244, 242, 238, 0); }
+}
+.btn--pulse { animation: pulse-ring 2.2s ease-in-out infinite; }
+.btn--pulse.is-settled { animation: none; box-shadow: none; }
+@media (prefers-reduced-motion: reduce) {
+  .btn--pulse { animation: none; }
+}
+
+.badge {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.02em;
+  color: var(--text-1);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  padding: 5px 9px;
+  max-width: 100%;
+  flex-shrink: 0;
+  position: relative;
+  z-index: var(--z-panel-chrome);
+}
+
+.statuschip {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.03em;
+  padding: 4px 9px;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+}
+.statuschip--ready { color: var(--state-ready); background: var(--state-ready-bg); }
+.statuschip--pending { color: var(--state-pending); background: var(--state-pending-bg); }
+.statuschip--neutral { color: var(--state-neutral); background: var(--state-neutral-bg); }
+.statuschip--error { color: var(--state-error); background: var(--state-error-bg); }
+
+[data-reveal].is-entering {
+  animation: panel-settle var(--dur-med) var(--ease);
+}
+@keyframes panel-settle {
+  from { opacity: 0.55; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal].is-entering { animation: none; }
+}

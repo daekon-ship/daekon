@@ -1,0 +1,158 @@
+/* ---------------------------------------------------------------------
+   Status bar navigation (desktop)
+   --------------------------------------------------------------------- */
+
+.statusbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--statusbar-h);
+  /* Required fix: explicit, centralized z-index above all panel-level
+     chrome (badges etc.) so nothing can visually overlap it on scroll. */
+  z-index: var(--z-header);
+  background: rgba(11, 12, 14, 0.86);
+  border-bottom: 1px solid var(--border);
+}
+
+.statusbar__inner {
+  max-width: 1360px;
+  margin: 0 auto;
+  height: 100%;
+  padding: 0 28px;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.wordmark {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  text-decoration: none;
+  color: var(--text-0);
+  margin-right: auto;
+}
+.wordmark__type {
+  font-family: var(--font-sans);
+  font-weight: 800;
+  font-size: 20px;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.wordmark__tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.02em;
+  color: var(--text-2);
+  line-height: 1;
+}
+
+.sysnav__list {
+  list-style: none;
+  display: flex;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+}
+
+.sysnav__link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: var(--radius);
+  text-decoration: none;
+  color: var(--text-1);
+  font-size: 14px;
+  font-weight: 500;
+  transition: color var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease);
+}
+.sysnav__link:hover { color: var(--text-0); background: var(--bg-2); }
+.sysnav__link[aria-current="true"] { color: var(--text-0); font-weight: 600; }
+
+.sysnav__dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: transparent;
+  border: 1.5px solid var(--text-2);
+  flex-shrink: 0;
+  display: inline-block;
+  transition: background var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease);
+}
+.sysnav__dot.is-visited { border-color: var(--text-1); background: var(--text-1); }
+.sysnav__dot.is-current {
+  border-color: var(--text-0);
+  background: var(--text-0);
+  box-shadow: 0 0 0 3px rgba(244, 242, 238, 0.16);
+}
+
+.statusbar__clock {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text-2);
+  letter-spacing: 0.02em;
+  min-width: 64px;
+  text-align: right;
+}
+
+@media (max-width: 900px) {
+  .sysnav__label { display: none; }
+  .sysnav__link { padding: 8px; }
+  .statusbar__clock { display: none; }
+}
+
+@media (max-width: 720px) {
+  .statusbar { display: none; }
+}
+
+/* ---------------------------------------------------------------------
+   Mobile bottom nav — purpose-built, not a squeezed status bar.
+   Always-visible short labels (no tap-to-reveal — stays keyboard/AT safe).
+   --------------------------------------------------------------------- */
+
+.mobilenav {
+  display: none;
+}
+
+@media (max-width: 720px) {
+  .mobilenav {
+    display: flex;
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    height: var(--mobilenav-h);
+    z-index: var(--z-header);
+    background: rgba(11, 12, 14, 0.96);
+    border-top: 1px solid var(--border);
+    padding-bottom: var(--safe-bottom);
+  }
+  .mobilenav__item {
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    min-height: 44px;
+    text-decoration: none;
+    color: var(--text-1);
+  }
+  .mobilenav__item[aria-current="true"] { color: var(--text-0); }
+  .mobilenav__dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    border: 1.5px solid var(--text-2);
+    background: transparent;
+    display: inline-block;
+    transition: background var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
+  }
+  .mobilenav__dot.is-visited { border-color: var(--text-1); background: var(--text-1); }
+  .mobilenav__dot.is-current {
+    border-color: var(--text-0);
+    background: var(--text-0);
+    box-shadow: 0 0 0 3px rgba(244, 242, 238, 0.16);
+  }
+  .mobilenav__label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.01em;
+  }
+}
