@@ -99,6 +99,14 @@ export function App() {
                 kód, nem statikus makett. Ugyanaz a logika mozgatja, mint a KIOSZ Pizza
                 Napoletana éles rendelési rendszerét.
               </p>
+              <div className="hero__actions">
+                <a className="btn btn--primary" href="#munkak">
+                  Munkák megtekintése
+                </a>
+                <a className="btn btn--ghost" href="#kapcsolat">
+                  Projekt indítása
+                </a>
+              </div>
             </div>
 
             <Reveal>
@@ -351,7 +359,7 @@ export function App() {
           </div>
         </section>
 
-        <section id="kapcsolat" className="section section--calm" data-section data-num="04">
+        <section id="kapcsolat" className="section section--calm section--blue" data-section data-num="04">
           <div className="section__inner">
             <Reveal>
             <Panel eyebrow="KAPCSOLAT" statusLabel="EMAILBEN ELÉRHETŐ" statusTone="neutral">

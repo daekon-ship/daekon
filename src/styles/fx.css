@@ -33,7 +33,7 @@
   font-size: 12px;
   letter-spacing: 0.04em;
 }
-.scramble__chars { color: rgba(43, 80, 255, 0.75); }
+.scramble__chars { color: rgba(22, 54, 231, 0.7); }
 
 /* ---- magnetic button ---- */
 .magnetic {
@@ -59,15 +59,14 @@
 /* ---- marquee ---- */
 .marquee {
   overflow: hidden;
-  border-block: 1px solid var(--border);
-  background: var(--bg-1);
+  background: var(--blue);
   user-select: none;
 }
 .marquee__track {
   display: flex;
   gap: 3.5rem;
   width: max-content;
-  padding: 14px 0;
+  padding: 18px 0;
   animation: marquee-scroll 30s linear infinite;
 }
 .marquee:hover .marquee__track { animation-play-state: paused; }
@@ -78,16 +77,16 @@
   font-family: var(--font-mono);
   font-size: 12px;
   letter-spacing: 0.14em;
-  color: var(--text-2);
+  color: rgba(255, 255, 255, 0.92);
   white-space: nowrap;
 }
 .marquee__item::after {
   content: "";
   width: 7px;
   height: 7px;
-  background: var(--state-ready);
-  clip-path: polygon(0 0, 100% 50%, 0 100%);
-  opacity: 0.8;
+  background: #ffffff;
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+  opacity: 0.85;
 }
 @keyframes marquee-scroll {
   from { transform: translateX(0); }
@@ -99,10 +98,10 @@
 
 /* ---- brand accents (blue glow used sparingly on key elements) ---- */
 .glow-line {
-  height: 1px;
+  height: 3px;
   border: 0;
-  background: linear-gradient(90deg, transparent, rgba(43, 80, 255, 0.85), transparent);
-  box-shadow: 0 0 18px rgba(43, 80, 255, 0.45);
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--blue) 0%, rgba(22, 54, 231, 0.25) 60%, transparent 100%);
 }
 
 .tilt {
@@ -110,4 +109,4 @@
   transform-style: preserve-3d;
   will-change: transform;
 }
-.tilt:hover { border-color: rgba(43, 80, 255, 0.55); }
+.tilt:hover { border-color: rgba(22, 54, 231, 0.45); }

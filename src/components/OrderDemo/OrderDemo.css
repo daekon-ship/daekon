@@ -14,7 +14,7 @@
    background — a near-invisible border read as un-designed, not restrained. */
 .orderdemo {
   border-color: var(--border-strong);
-  box-shadow: 0 16px 40px -28px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 24px 60px -38px rgba(20, 22, 27, 0.45);
 }
 
 .orderdemo__body {
@@ -68,11 +68,12 @@
   cursor: pointer;
   transition: color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease);
 }
-.orderdemo__radio input { accent-color: var(--text-0); }
+.orderdemo__radio input { accent-color: var(--blue); }
 .orderdemo__radio.is-checked {
-  color: var(--text-0);
-  border-color: var(--text-0);
-  background: var(--bg-2);
+  color: var(--blue);
+  border-color: var(--blue);
+  background: var(--blue-soft);
+  font-weight: 600;
 }
 .orderdemo__fulfillment:disabled .orderdemo__radio { cursor: not-allowed; opacity: 0.7; }
 .orderdemo__fulfillment-lock {
@@ -109,7 +110,7 @@
   background: var(--border);
 }
 .orderdemo__step:first-child::before { display: none; }
-.orderdemo__step.is-reached::before { background: var(--text-1); }
+.orderdemo__step.is-reached::before { background: var(--blue); }
 .orderdemo__step-index {
   position: absolute;
   top: -2px;
@@ -131,8 +132,10 @@
   color: var(--text-0);
 }
 .orderdemo__step.is-current .orderdemo__step-index {
-  background: var(--text-0);
-  color: var(--bg-0);
+  background: var(--blue);
+  border-color: var(--blue);
+  color: #ffffff;
+  box-shadow: 0 0 0 4px rgba(22, 54, 231, 0.15);
 }
 .orderdemo__step-label {
   font-family: var(--font-sans);
@@ -160,7 +163,7 @@
     border-radius: 999px;
     background: var(--bg-3);
   }
-  .orderdemo__dot.is-reached { background: var(--text-0); }
+  .orderdemo__dot.is-reached { background: var(--blue); }
   .orderdemo__progress-text {
     display: block;
     font-family: var(--font-mono);

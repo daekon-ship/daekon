@@ -8,11 +8,12 @@ import { Suspense, useMemo, useRef, Component, type ReactNode } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import type { Group, PointLight, Points as ThreePoints, ExtrudeGeometry } from "three";
 import { ExtrusionPath, extrudeShape } from "./extrudePaths";
+import { ContactShadows } from "@react-three/drei";
 import "./Mark3D.css";
 
 const BLUE_LIGHT = "#2B50FF";
 const BLUE_DEEP = "#1636E7";
-const PAPER = "#F4F2EE"; // dark-mode brand combo: white stem + bright blue bowl
+const GRAPHITE = "#14161B"; // light-mode brand combo: graphite stem + deep blue bowl
 
 /* ---- geometry: two extruded shapes from the brand's mark paths ---- */
 function useMarkGeometries(): { left: ExtrudeGeometry; right: ExtrudeGeometry } {
@@ -71,10 +72,10 @@ function MarkMeshes() {
     <group ref={group} scale={0.011}>
       {/* two plates, separated along z: the split reads as physical depth */}
       <mesh geometry={geo.left} position={[0, 0, -10]}>
-        <meshStandardMaterial color={PAPER} metalness={0.45} roughness={0.3} />
+        <meshStandardMaterial color={GRAPHITE} metalness={0.4} roughness={0.3} />
       </mesh>
       <mesh geometry={geo.right} position={[0, 0, 10]}>
-        <meshStandardMaterial color={BLUE_LIGHT} metalness={0.35} roughness={0.22} emissive={BLUE_DEEP} emissiveIntensity={0.35} />
+        <meshStandardMaterial color={BLUE_DEEP} metalness={0.3} roughness={0.22} emissive={BLUE_LIGHT} emissiveIntensity={0.22} />
       </mesh>
       <pointLight ref={seam} position={[0, 0, 0]} color={BLUE_LIGHT} intensity={1.6} distance={9} />
     </group>
@@ -106,7 +107,7 @@ function Particles({ count = 90 }: { count?: number }) {
       <bufferGeometry>
         <bufferAttribute attach="attributes-position" args={[positions, 3]} />
       </bufferGeometry>
-      <pointsMaterial size={0.035} color={BLUE_LIGHT} transparent opacity={0.55} sizeAttenuation depthWrite={false} />
+      <pointsMaterial size={0.035} color={BLUE_DEEP} transparent opacity={0.4} sizeAttenuation depthWrite={false} />
     </points>
   );
 }
@@ -158,6 +159,7 @@ export function Mark3D({ className = "" }: { className?: string }) {
           <Rig />
           <Suspense fallback={null}>
             <MarkMeshes />
+            <ContactShadows position={[0, -1.7, 0]} opacity={0.32} scale={8} blur={2.6} far={4} color="#141a3c" />
             {!reduced && <Particles />}
           </Suspense>
         </Canvas>

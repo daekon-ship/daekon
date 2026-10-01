@@ -2,6 +2,8 @@
 
 **Egyedi szoftverfejlesztés — premium brand identity + élő rendszerfelület.**
 
+🌐 **Élő oldal:** https://daekon-ship.github.io/daekon/
+
 ![DAEKON logó](brand/svg/daekon-logo-horizontal-dark.svg)
 
 ## Mi van itt?

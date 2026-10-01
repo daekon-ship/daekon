@@ -1,6 +1,6 @@
 /* =========================================================================
-   App-level layout — hero, work, services, about, contact, footer.
-   Builds on the shared instrument-panel chrome (Panel, tokens.css).
+   App-level layout — light editorial direction.
+   Oversized Archivo display type on white, blue accents, soft-shadow cards.
    ========================================================================= */
 
 .sr-only {
@@ -15,28 +15,29 @@
   border: 0;
 }
 
-/* Shared visible section heading — same weight as .work__title / .about__title
-   so every section carries real headline-weight typography, not just a label. */
 .section-heading {
-  font-family: var(--font-serif);
-  font-size: clamp(1.5rem, 2vw + 1rem, 2rem);
-  font-weight: 500;
+  font-family: var(--font-sans);
+  font-size: clamp(1.9rem, 3vw + 1rem, 2.9rem);
+  font-weight: 750;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
   color: var(--text-0);
 }
 
 /* ---------------------------------------------------------------------
-   Hero
+   Hero — editorial display block
    --------------------------------------------------------------------- */
 
 .hero__inner {
-  gap: 48px;
+  gap: 56px;
+  padding-top: 24px;
 }
 
 .hero__intro {
   display: flex;
   flex-direction: column;
-  gap: 22px;
-  max-width: 780px;
+  gap: 26px;
+  max-width: 860px;
 }
 
 .hero__eyebrow {
@@ -44,19 +45,26 @@
 }
 
 .hero__title {
-  font-family: var(--font-serif);
-  font-weight: 500;
-  font-size: clamp(2.1rem, 4.6vw + 0.9rem, 3.8rem);
-  line-height: 1.08;
-  letter-spacing: -0.01em;
+  font-family: var(--font-sans);
+  font-weight: 800;
+  font-size: clamp(2.5rem, 6.2vw + 0.6rem, 5rem);
+  line-height: 1.02;
+  letter-spacing: -0.04em;
   color: var(--text-0);
+  text-wrap: balance;
 }
 
 .hero__lede {
-  font-size: 17px;
+  font-size: 18px;
   line-height: 1.6;
   color: var(--text-1);
   max-width: 62ch;
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
 }
 
 .hero__grid {
@@ -66,20 +74,20 @@
   align-items: start;
 }
 
-@media (min-width: 900px) {
+@media (min-width: 980px) {
   .hero__grid {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 320px;
+    grid-template-columns: minmax(0, 1fr) 340px;
     gap: 28px;
+    align-items: start;
   }
 }
 
 @media (max-width: 720px) {
-  /* Tighter mobile hero rhythm so the order-demo's action row doesn't come
-     to rest in the fixed bottom nav's reserved band at first paint. */
-  .hero__inner { gap: 28px; }
-  .hero__intro { gap: 14px; }
-  .hero__grid { gap: 14px; }
+  .hero__inner { gap: 32px; }
+  .hero__intro { gap: 18px; }
+  .hero__grid { gap: 16px; }
+  .hero__title { letter-spacing: -0.03em; }
 }
 
 /* ---------------------------------------------------------------------
@@ -93,14 +101,15 @@
 }
 
 .work__title {
-  font-family: var(--font-serif);
-  font-size: clamp(1.6rem, 2.4vw + 1rem, 2.3rem);
-  font-weight: 500;
+  font-family: var(--font-sans);
+  font-size: clamp(1.8rem, 3vw + 1rem, 2.7rem);
+  font-weight: 750;
+  letter-spacing: -0.03em;
   color: var(--text-0);
 }
 
 .work__lede {
-  font-size: 15.5px;
+  font-size: 16px;
   line-height: 1.65;
   color: var(--text-1);
   max-width: 74ch;
@@ -110,7 +119,7 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: 16px 24px;
-  padding-top: 4px;
+  padding-top: 20px;
   border-top: 1px solid var(--border);
 }
 
@@ -122,9 +131,11 @@
 
 .work__fact dt {
   font-family: var(--font-mono);
-  font-size: 11.5px;
-  letter-spacing: 0.03em;
-  color: var(--text-2);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--blue);
+  font-weight: 600;
   margin-bottom: 4px;
 }
 
@@ -141,12 +152,15 @@
 .work__fact dd {
   margin: 0;
   font-size: 14.5px;
-  line-height: 1.55;
+  line-height: 1.6;
   color: var(--text-1);
 }
 .work__fact dd code {
   font-size: 13px;
   color: var(--text-0);
+  background: var(--bg-2);
+  padding: 2px 6px;
+  border-radius: 4px;
 }
 
 .work__gallery {
@@ -155,7 +169,7 @@
   padding: 0;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
+  gap: 12px;
 }
 
 @media (min-width: 640px) {
@@ -173,7 +187,7 @@
 .work__gallery-item {
   aspect-ratio: 4 / 5;
   overflow: hidden;
-  border-radius: var(--radius);
+  border-radius: 12px;
   border: 1px solid var(--border);
 }
 .work__gallery-item img {
@@ -192,7 +206,7 @@
   width: 84px;
   height: 84px;
   object-fit: cover;
-  border-radius: var(--radius);
+  border-radius: 12px;
   border: 1px solid var(--border);
 }
 .work__logo figcaption {
@@ -209,9 +223,9 @@
   margin: 0;
   padding-top: 20px;
   border-top: 1px solid var(--border);
-  font-size: 14px;
+  font-size: 14.5px;
   line-height: 1.6;
-  color: var(--text-2);
+  color: var(--text-1);
 }
 
 /* ---------------------------------------------------------------------
@@ -221,15 +235,17 @@
 .services {
   display: flex;
   flex-direction: column;
-  gap: 36px;
+  gap: 28px;
 }
 
 .services__group-label {
   display: block;
   font-family: var(--font-mono);
-  font-size: 11.5px;
-  letter-spacing: 0.05em;
-  color: var(--text-2);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--blue);
+  font-weight: 600;
   margin-bottom: 14px;
 }
 
@@ -251,23 +267,25 @@
 
 .services__index {
   flex-shrink: 0;
-  width: 34px;
-  font-family: var(--font-serif);
-  font-size: 20px;
-  font-weight: 500;
+  width: 36px;
+  font-family: var(--font-sans);
+  font-size: 22px;
+  font-weight: 800;
   color: var(--text-2);
+  letter-spacing: -0.03em;
 }
 
 .services__item h3 {
   font-family: var(--font-sans);
-  font-size: 16px;
+  font-size: 16.5px;
   font-weight: 700;
+  letter-spacing: -0.01em;
   color: var(--text-0);
   margin-bottom: 6px;
 }
 .services__item p {
-  font-size: 14px;
-  line-height: 1.55;
+  font-size: 14.5px;
+  line-height: 1.6;
   color: var(--text-1);
   max-width: 60ch;
 }
@@ -284,15 +302,16 @@
 }
 
 .about__title {
-  font-family: var(--font-serif);
-  font-size: clamp(1.5rem, 2vw + 1rem, 2rem);
-  font-weight: 500;
+  font-family: var(--font-sans);
+  font-size: clamp(1.8rem, 2.6vw + 1rem, 2.5rem);
+  font-weight: 750;
+  letter-spacing: -0.03em;
   color: var(--text-0);
 }
 
 .about p {
-  font-size: 15.5px;
-  line-height: 1.65;
+  font-size: 16.5px;
+  line-height: 1.7;
   color: var(--text-1);
 }
 
@@ -306,34 +325,37 @@
 }
 .about__points li {
   position: relative;
-  padding-left: 20px;
-  font-size: 14.5px;
-  line-height: 1.55;
+  padding-left: 22px;
+  font-size: 15px;
+  line-height: 1.6;
   color: var(--text-1);
 }
 .about__points li::before {
-  content: "—";
+  content: "";
   position: absolute;
   left: 0;
-  color: var(--text-2);
-  font-family: var(--font-mono);
+  top: 9px;
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  background: var(--blue);
 }
 
 /* ---------------------------------------------------------------------
-   Kapcsolat / contact
+   Kapcsolat / contact (rendered on the blue band)
    --------------------------------------------------------------------- */
 
 .contact {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 22px;
   align-items: flex-start;
-  max-width: 60ch;
+  max-width: 62ch;
 }
 
 .contact__lede {
-  font-size: 15.5px;
-  line-height: 1.6;
+  font-size: 16.5px;
+  line-height: 1.65;
   color: var(--text-1);
 }
 
@@ -342,9 +364,9 @@
 }
 
 .contact__note {
-  font-size: 13px;
+  font-size: 13.5px;
   color: var(--text-2);
-  line-height: 1.55;
+  line-height: 1.6;
 }
 
 @media (max-width: 480px) {
@@ -352,30 +374,30 @@
 }
 
 /* ---------------------------------------------------------------------
-   Footer
+   Footer — graphite closing band
    --------------------------------------------------------------------- */
 
 .site-footer {
-  border-top: 1px solid var(--border);
-  padding: 40px 0;
+  padding: 56px 0 64px;
 }
 
 .site-footer__inner {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
 .site-footer__wordmark {
   font-family: var(--font-sans);
   font-weight: 800;
-  font-size: 16px;
-  color: var(--text-1);
+  font-size: 26px;
+  letter-spacing: -0.02em;
+  color: #ffffff;
 }
 
 .site-footer__note {
-  font-size: 12.5px;
-  line-height: 1.6;
-  color: var(--text-2);
-  max-width: 62ch;
+  font-size: 13px;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.55);
+  max-width: 64ch;
 }
