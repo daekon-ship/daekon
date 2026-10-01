@@ -36,7 +36,7 @@ export function Nav({ onNavigate }: NavProps) {
       <header className="statusbar" id="statusbar">
         <div className="statusbar__inner">
           <a className="wordmark" href="#hero" onClick={() => handleClick("hero")}>
-            <LogoLockup height={30} shadow />
+            <LogoLockup height={30} />
             <span className="wordmark__tag">creative &amp; rendszerfejlesztés</span>
           </a>
 

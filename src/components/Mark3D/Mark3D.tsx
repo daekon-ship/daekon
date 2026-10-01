@@ -31,7 +31,7 @@ function useLetterGeometries(): ExtrudeGeometry[] {
   }, []);
 }
 
-function WordmarkMeshes() {
+function WordmarkMeshes({ animated = true }: { animated?: boolean }) {
   const geo = useLetterGeometries();
   const group = useRef<Group>(null);
   const letters = useRef<(Mesh | null)[]>([]);
@@ -51,8 +51,21 @@ function WordmarkMeshes() {
     }
     letters.current.forEach((m, i) => {
       if (!m) return;
-      m.position.y = Math.sin(t * 0.9 + i * 0.55) * 0.09;
-      m.position.z = Math.cos(t * 0.6 + i * 0.42) * 0.06;
+      const floatY = Math.sin(t * 0.9 + i * 0.55) * 0.09;
+      const floatZ = Math.cos(t * 0.6 + i * 0.42) * 0.06;
+      if (!animated) {
+        // reduced motion: rest pose immediately
+        m.position.set(0, 0, 0);
+        m.rotation.x = 0;
+        return;
+      }
+      // intro: letters rise and settle one by one
+      const p = Math.min(1, Math.max(0, (t - i * 0.12) / 0.9));
+      const ease = 1 - Math.pow(1 - p, 3);
+      m.position.y = floatY * ease + (1 - ease) * -1.5;
+      m.position.z = floatZ * ease;
+      m.rotation.x = (1 - ease) * -0.5;
+      m.scale.setScalar(0.85 + 0.15 * ease);
     });
     if (glow.current) {
       glow.current.intensity = 1.5 + Math.sin(t * 2.0) * 0.8;
@@ -72,7 +85,9 @@ function WordmarkMeshes() {
             letters.current[i] = m;
           }}
         >
-          <meshStandardMaterial color={GRAPHITE} metalness={0.4} roughness={0.28} />
+          {/* cap faces: polished graphite; side walls: glowing blue rim */}
+          <meshStandardMaterial attach="material-0" color={GRAPHITE} metalness={0.75} roughness={0.2} />
+          <meshStandardMaterial attach="material-1" color={BLUE_DEEP} metalness={0.45} roughness={0.3} emissive={BLUE_LIGHT} emissiveIntensity={0.2} />
         </mesh>
       ))}
       <pointLight
@@ -164,7 +179,7 @@ export function Mark3D({ className = "" }: { className?: string }) {
         >
           <Rig />
           <Suspense fallback={null}>
-            <WordmarkMeshes />
+            <WordmarkMeshes animated={!reduced} />
             <ContactShadows
               position={[0, -1.35, 0]}
               opacity={0.3}

@@ -34,7 +34,7 @@
   margin-right: auto;
 }
 .wordmark > svg {
-  filter: drop-shadow(0 4px 14px rgba(22, 54, 231, 0.22));
+  filter: none;
 }
 .wordmark__tag {
   font-family: var(--font-mono);
