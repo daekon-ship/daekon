@@ -81,76 +81,84 @@ export function App() {
       <Nav />
 
       <main>
-        <section id="hero" className="section section--calm hero" data-section>
-          <div className="aurora" aria-hidden="true">
+        <section id="hero" className="hero-stage" data-section>
+          <div className="hero-stage__bg" aria-hidden="true">
             <i />
             <i />
             <i />
           </div>
-          <div className="section__inner hero__inner">
-            <div className="hero__intro">
-              <span className="badge hero__eyebrow">
-                <Scramble text="ÖNÁLLÓ CREATIVE DEVELOPER" speed={22} />
-              </span>
-              <h1 className="hero__title">
-                <Words text="Ez az oldal nem bemutatja a munkámat — bizonyítja." />
-              </h1>
-              <p className="hero__lede">
-                DAEKON vagyok: egyszemélyes creative developer. Amit itt lent látsz — a
-                pontos idő, a görgetési adatok, a rendelés-állapotgép — mind valós, futó
-                kód, nem statikus makett. Ugyanaz a logika mozgatja, mint a KIOSZ Pizza
-                Napoletana éles rendelési rendszerét.
-              </p>
-              <div className="hero__actions">
-                <a className="btn btn--primary" href="#munkak">
-                  Munkák megtekintése
-                </a>
-                <a className="btn btn--ghost" href="#kapcsolat">
-                  Projekt indítása
-                </a>
-              </div>
-              <dl className="hero__stats" aria-label="Kulcsadatok">
-                <div className="hero__stat">
-                  <dt>Éles rendszer</dt>
-                  <dd>1</dd>
-                </div>
-                <div className="hero__stat">
-                  <dt>E2E teszttel ellenőrizve</dt>
-                  <dd>100%</dd>
-                </div>
-                <div className="hero__stat">
-                  <dt>Felelős a stackért</dt>
-                  <dd>1 ember</dd>
-                </div>
-              </dl>
+          <div className="hero-stage__inner">
+            <span className="badge hero-stage__eyebrow">
+              <Scramble text="EGYSZEMÉLYES CREATIVE DEVELOPER" speed={22} />
+            </span>
+            <h1 className="hero-stage__title">
+              <Words text="Ez az oldal nem bemutatja a munkámat — bizonyítja." />
+            </h1>
+            <p className="hero-stage__lede">
+              Egy ember, teljes stack, teljes felelősség. Ami itt mozog — az élő óra, a
+              rendelés-állapotgép, a levegőben lebegő betűk — mind futó kód, nem makett.
+            </p>
+            <div className="hero-stage__actions">
+              <a className="btn btn--primary" href="#munkak">
+                Munkák megtekintése
+              </a>
+              <a className="btn btn--ghost btn--ghost-dark" href="#kapcsolat">
+                Projekt indítása
+              </a>
             </div>
-
+            <dl className="hero-stage__stats" aria-label="Kulcsadatok">
+              <div className="hero-stage__stat">
+                <dt>Éles rendszer</dt>
+                <dd>1</dd>
+              </div>
+              <div className="hero-stage__stat">
+                <dt>E2E teszttel ellenőrizve</dt>
+                <dd>100%</dd>
+              </div>
+              <div className="hero-stage__stat">
+                <dt>Felelős a stackért</dt>
+                <dd>1 ember</dd>
+              </div>
+            </dl>
             <Reveal>
               <Suspense
                 fallback={
-                  <div
-                    style={{
-                      height: "clamp(240px, 26vw, 380px)",
-                      border: "1px solid var(--border)",
-                      borderRadius: "var(--radius)",
-                      background: "var(--bg-1)",
-                    }}
-                    aria-hidden="true"
-                  />
+                  <div style={{ height: "clamp(260px, 38vh, 500px)" }} aria-hidden="true" />
                 }
               >
                 <Mark3D />
               </Suspense>
             </Reveal>
-
-            <div className="hero__grid">
-              <OrderDemo />
-              <LiveStatusPanel currentSectionId={currentId} />
-            </div>
           </div>
+          <a className="hero-stage__scroll" href="#munkak" aria-label="Görgess le a munkákhoz">
+            <span className="hero-stage__scroll-line" aria-hidden="true" />
+            GÖRGETÉS
+          </a>
         </section>
 
         <Marquee items={MARQUEE_ITEMS} />
+
+        <section className="section" aria-label="Élő rendszerek a böngésződben">
+          <div className="section__inner">
+            <Reveal>
+              <Panel eyebrow="ÉLŐ RENDSZEREK" statusLabel="FUT A BÖNGÉSZŐDBEN" statusTone="ready">
+                <div className="liveproof">
+                  <h2 className="section-heading">Minden, ami itt mozog, valós kód</h2>
+                  <div className="glow-line" role="presentation" />
+                  <p className="liveproof__lede">
+                    Ez az oldal nem statikus portfólió: a rendelés-állapotgép és az
+                    oldalállapot-mérő ugyanazokkal az elvekkel készült, mint egy éles
+                    rendszer. Próbáld ki mindkettőt — most, itt.
+                  </p>
+                  <div className="liveproof__grid">
+                    <OrderDemo />
+                    <LiveStatusPanel currentSectionId={currentId} />
+                  </div>
+                </div>
+              </Panel>
+            </Reveal>
+          </div>
+        </section>
 
         <section id="munkak" className="section" data-section data-num="01">
           <div className="section__inner">

@@ -1,118 +1,203 @@
 /* =========================================================================
-   QuoteAssistant — "írd le mit akarsz, kapj árat" asszisztens.
-   100% client-side: a leírás nem hagyja el a böngészőt; a kulcsszó-motor
-   felismeri a funkciókat, summa ár + határidő becslést ad, és előkészített
-   emailel zár (a küldés mindig a látogató döntése).
+   QuoteAssistant — chat-stílusú árajánlat-asszisztens.
+   A látogató leírja a projektet, az asszisztens "válaszol": felismeri a
+   funkciókat, árat + határidőt ad, és okos gyorsgombokkal kérdez vissza
+   (egyedi design? belépés? fizetés?). 100% böngészőben fut.
    ========================================================================= */
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
-  estimate,
+  estimateWithExtras,
   formatFt,
   formatWeeks,
+  featureById,
   mailtoHref,
   type QuoteResult,
 } from "../../lib/quoteEstimator";
 import "./QuoteAssistant.css";
 
+interface Msg {
+  id: number;
+  from: "user" | "ai";
+  text: string;
+  /** ai bubble with a live result attached (recomputed from extras) */
+  resultFor?: string;
+}
+
 const EXAMPLES = [
-  "Szeretnék egy webshopot fizetéssel és admin felülettel",
+  "Webshop bankkártyás fizetéssel és adminnal",
   "Étteremnek rendelésrendszer mobilra, SEO-val",
-  "Céges bemutatkozó oldal bloggal, prémium designnal",
-  "Foglalási rendszer belépéssel és 3D animációval",
+  "Céges oldal bloggal, prémium designnal",
 ];
 
-const STARTING_AT = 120_000; //friendly „megtől" jelzés, ha még semmi nem felismerhető
+const QUICK_IDS = ["design", "auth", "payment", "seo", "mobile", "motion3d", "blog"];
+
+const GREETING =
+  "Szia! DAEKON asszisztens vagyok. Írd le egy-két mondatban, mit szeretnél — funkciókat, célokat, bármit. Minden a böngésződben marad.";
 
 export function QuoteAssistant() {
-  const [text, setText] = useState("");
-  const result: QuoteResult = useMemo(() => estimate(text), [text]);
-  const hasResult = result.features.length > 0;
+  const [msgs, setMsgs] = useState<Msg[]>([{ id: 0, from: "ai", text: GREETING }]);
+  const [input, setInput] = useState("");
+  const [typing, setTyping] = useState(false);
+  const [extras, setExtras] = useState<string[]>([]);
+  const lastDesc = useRef("");
+  const idRef = useRef(1);
+  const scroller = useRef<HTMLDivElement>(null);
+
+  const latest = useMemo(
+    () => [...msgs].reverse().find((m) => m.from === "ai" && m.resultFor),
+    [msgs],
+  );
+  const result: QuoteResult | null = useMemo(
+    () => (latest ? estimateWithExtras(latest.resultFor ?? "", extras) : null),
+    [latest, extras],
+  );
+  const baseFeatures = useMemo(
+    () => (latest ? estimateWithExtras(latest.resultFor ?? "", []).features : []),
+    [latest],
+  );
+  const quickIds = useMemo(
+    () => QUICK_IDS.filter((id) => !baseFeatures.some((f) => f.id === id)),
+    [baseFeatures],
+  );
+
+  useEffect(() => {
+    const el = scroller.current;
+    if (el) el.scrollTop = el.scrollHeight;
+  }, [msgs, typing, extras, result]);
+
+  function send(override?: string) {
+    const text = (override ?? input).trim();
+    if (!text) return;
+    const userMsg: Msg = { id: idRef.current++, from: "user", text };
+    setMsgs((m) => [...m, userMsg]);
+    setInput("");
+    lastDesc.current = text;
+    setTyping(true);
+
+    window.setTimeout(() => {
+      const q = estimateWithExtras(text, extras);
+      setTyping(false);
+      setMsgs((m) => [
+        ...m,
+        q.features.length
+          ? { id: idRef.current++, from: "ai", text: "Felismertem a funkciókat — itt a becslés:", resultFor: text }
+          : {
+              id: idRef.current++,
+              from: "ai",
+              text: "Még konkrétumot nem látok a leírásban. Írj olyasmit, hogy: weboldal, webshop, foglalás, admin, fizetés, 3D — és azonnal számolok.",
+            },
+      ]);
+    }, 550);
+  }
+
+  function toggleExtra(id: string) {
+    setExtras((e) => (e.includes(id) ? e.filter((x) => x !== id) : [...e, id]));
+  }
 
   return (
-    <div className="qassist">
-      <div className="qassist__head">
-        <span className="qassist__dot" aria-hidden="true" />
-        <span className="qassist__name">DAEKON asszisztens</span>
-        <span className="qassist__tag">azonnali árbecslés</span>
+    <div className="qchat">
+      <div className="qchat__head">
+        <span className="qchat__dot" aria-hidden="true" />
+        <span className="qchat__name">DAEKON asszisztens</span>
+        <span className="qchat__tag">élő becslés</span>
       </div>
 
-      <label className="qassist__label" htmlFor="qassist-input">
-        Írd le, mit szeretnél — funkciókat, célokat, bármit. Nem megy el
-        sehova, a gépeden értékeljük ki.
-      </label>
-      <textarea
-        id="qassist-input"
-        className="qassist__input"
-        rows={4}
-        placeholder="Pl.: Kell egy webshop bankkártyás fizetéssel, adminnal és mobilon is jónak kell lennie…"
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-      />
+      <div className="qchat__scroll" ref={scroller}>
+        {msgs.map((m) => (
+          <div key={m.id} className={`qchat__row qchat__row--${m.from}`}>
+            <div className={`qchat__bubble qchat__bubble--${m.from}`}>
+              {m.text}
+              {m.resultFor && result && (
+                <div className="qchat__estimate">
+                  <div className="qchat__amount">
+                    {formatFt(result.min)} – {formatFt(result.max)} Ft
+                  </div>
+                  <div className="qchat__time">
+                    határidő: {formatWeeks(result.weeksMin, result.weeksMax)}
+                    {result.recurring
+                      ? ` · + ${formatFt(result.recurring.min)}–${formatFt(result.recurring.max)} Ft/hó`
+                      : ""}
+                  </div>
+                  <ul className="qchat__features">
+                    {result.features.map((f) => (
+                      <li key={f.id}>
+                        <span>{f.label}</span>
+                        <em>
+                          {f.recurring
+                            ? `${formatFt(f.min)}–${formatFt(f.max)} Ft/hó`
+                            : `${formatFt(f.min)}–${formatFt(f.max)} Ft`}
+                        </em>
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="qchat__note">
+                    Tájékoztató becslés — a végleges árat a részletek után adom.
+                  </p>
+                  <a className="btn btn--primary qchat__send" href={mailtoHref(m.resultFor ?? "", result)}>
+                    Elküldöm emailel
+                  </a>
+                </div>
+              )}
+              {m.from === "ai" && m.resultFor && quickIds.length > 0 && (
+                <>
+                  <div className="qchat__ask">Kell még ez is? Kattints, és frissítem az árat:</div>
+                  <div className="qchat__chips">
+                    {quickIds.map((id) => {
+                      const f = featureById(id);
+                      if (!f) return null;
+                      const on = extras.includes(id);
+                      return (
+                        <button
+                          key={id}
+                          type="button"
+                          className={`qchat__chip${on ? " is-on" : ""}`}
+                          onClick={() => toggleExtra(id)}
+                          aria-pressed={on}
+                        >
+                          {on ? "✓ " : "+ "}
+                          {f.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+        ))}
+        {typing && (
+          <div className="qchat__row qchat__row--ai">
+            <div className="qchat__bubble qchat__bubble--ai qchat__typing" aria-label="Az asszisztens gépel">
+              <i /><i /><i />
+            </div>
+          </div>
+        )}
+      </div>
 
-      <div className="qassist__examples" aria-label="Példák">
+      <div className="qchat__examples">
         {EXAMPLES.map((ex) => (
-          <button
-            key={ex}
-            type="button"
-            className="qassist__example"
-            onClick={() => setText(ex)}
-          >
+          <button key={ex} type="button" className="qchat__example" onClick={() => send(ex)}>
             {ex}
           </button>
         ))}
       </div>
 
-      {hasResult && (
-        <div className="qassist__result" role="status">
-          <div className="qassist__price">
-            <span className="qassist__amount">
-              {formatFt(result.min)} – {formatFt(result.max)} Ft
-            </span>
-            <span className="qassist__time">
-              határidő: {formatWeeks(result.weeksMin, result.weeksMax)}
-            </span>
-            {result.recurring && (
-              <span className="qassist__time">
-                + {formatFt(result.recurring.min)}–{formatFt(result.recurring.max)}{" "}
-                Ft/hó üzemeltetés
-              </span>
-            )}
-          </div>
-
-          <ul className="qassist__features">
-            {result.features.map((f) => (
-              <li key={f.id}>
-                <span>{f.label}</span>
-                <em>
-                  {f.recurring
-                    ? `${formatFt(f.min)}–${formatFt(f.max)} Ft/hó`
-                    : `${formatFt(f.min)}–${formatFt(f.max)} Ft`}
-                </em>
-              </li>
-            ))}
-          </ul>
-
-          <p className="qassist__note">
-            Ez csak tájékoztató becslés a leírásod alapján — a végleges árat a
-            részletek után adom.
-          </p>
-
-          <a
-            className="btn btn--primary qassist__send"
-            href={mailtoHref(text, result)}
-          >
-            Emailem elküldése ezzel a becsléssel
-          </a>
-        </div>
-      )}
-
-      {!hasResult && text.trim().length > 0 && (
-        <p className="qassist__empty" role="status">
-          Még nem ismerek fel elegendő funkciót — írd le részletesebben (pl.
-          weboldal, webshop, foglalás, admin, fizetés, 3D…). A projektek
-          {" "}{formatFt(STARTING_AT)} Ft-tól indulnak.
-        </p>
-      )}
+      <div className="qchat__inputrow">
+        <input
+          className="qchat__input"
+          type="text"
+          placeholder="Írd le, mit szeretnél…"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") send();
+          }}
+          aria-label="Projekt leírása"
+        />
+        <button type="button" className="btn btn--primary qchat__go" onClick={send}>
+          Küldés
+        </button>
+      </div>
     </div>
   );
 }

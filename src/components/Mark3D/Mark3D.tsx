@@ -7,15 +7,15 @@
    ========================================================================= */
 import { Suspense, useMemo, useRef, Component, type ReactNode } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { ContactShadows } from "@react-three/drei";
-import type { Group, Mesh, PointLight, Points as ThreePoints, ExtrudeGeometry } from "three";
+import { ContactShadows, Sparkles } from "@react-three/drei";
+import type { Group, Mesh, PointLight, ExtrudeGeometry } from "three";
 import { ExtrusionPath, extrudeShape } from "./extrudePaths";
 import { WORDMARK } from "../../brand/wordmark";
 import "./Mark3D.css";
 
 const BLUE_LIGHT = "#2B50FF";
 const BLUE_DEEP = "#1636E7";
-const GRAPHITE = "#14161B";
+const PAPER = "#F4F2EE"; // white cap faces pop on the night stage
 
 /* ---- geometry: one extruded plate per letter, from the brand vectors ---- */
 function useLetterGeometries(): ExtrudeGeometry[] {
@@ -41,11 +41,12 @@ function WordmarkMeshes({ animated = true }: { animated?: boolean }) {
   useFrame((state) => {
     const t = state.clock.elapsedTime;
     if (group.current) {
-      // gentle pointer-follow sway — the word stays readable
-      const px = (state.pointer.x * Math.PI) / 12;
-      const py = (state.pointer.y * Math.PI) / 14;
+      // pointer sway + a scroll-linked turn: the word rotates as you scroll
+      const px = (state.pointer.x * Math.PI) / 10;
+      const py = (state.pointer.y * Math.PI) / 13;
+      const sc = typeof window !== "undefined" ? Math.min(1, window.scrollY / 900) : 0;
       group.current.rotation.y +=
-        (px + Math.sin(t * 0.24) * 0.06 - group.current.rotation.y) * 0.05;
+        (px + sc * 0.5 + Math.sin(t * 0.24) * 0.06 - group.current.rotation.y) * 0.05;
       group.current.rotation.x +=
         (-py + Math.sin(t * 0.31) * 0.04 - group.current.rotation.x) * 0.05;
     }
@@ -57,15 +58,18 @@ function WordmarkMeshes({ animated = true }: { animated?: boolean }) {
         // reduced motion: rest pose immediately
         m.position.set(0, 0, 0);
         m.rotation.x = 0;
+        m.scale.setScalar(1);
         return;
       }
-      // intro: letters rise and settle one by one
-      const p = Math.min(1, Math.max(0, (t - i * 0.12) / 0.9));
-      const ease = 1 - Math.pow(1 - p, 3);
-      m.position.y = floatY * ease + (1 - ease) * -1.5;
-      m.position.z = floatZ * ease;
-      m.rotation.x = (1 - ease) * -0.5;
-      m.scale.setScalar(0.85 + 0.15 * ease);
+      // intro: letters fly in and settle one by one (with a little overshoot)
+      const p = Math.min(1, Math.max(0, (t - i * 0.12) / 0.95));
+      const c1 = 1.70158, c3 = c1 + 1;
+      const ease = 1 + c3 * Math.pow(p - 1, 3) + c1 * Math.pow(p - 1, 2);
+      m.position.y = floatY * p + (1 - p) * -1.6;
+      m.position.z = floatZ * p;
+      m.rotation.x = (1 - p) * -0.65;
+      m.rotation.y = (1 - p) * 0.35 * (i % 2 === 0 ? 1 : -1);
+      m.scale.setScalar(0.8 + 0.2 * ease);
     });
     if (glow.current) {
       glow.current.intensity = 1.5 + Math.sin(t * 2.0) * 0.8;
@@ -73,7 +77,7 @@ function WordmarkMeshes({ animated = true }: { animated?: boolean }) {
   });
 
   // responsive: the wordmark fills most of the stage width on any screen
-  const scale = Math.min(viewport.width * 0.82, 7.4) / WORDMARK.width;
+  const scale = Math.min(viewport.width * 0.87, 7.9) / WORDMARK.width;
 
   return (
     <group ref={group} scale={scale}>
@@ -85,9 +89,9 @@ function WordmarkMeshes({ animated = true }: { animated?: boolean }) {
             letters.current[i] = m;
           }}
         >
-          {/* cap faces: polished graphite; side walls: glowing blue rim */}
-          <meshStandardMaterial attach="material-0" color={GRAPHITE} metalness={0.75} roughness={0.2} />
-          <meshStandardMaterial attach="material-1" color={BLUE_DEEP} metalness={0.45} roughness={0.3} emissive={BLUE_LIGHT} emissiveIntensity={0.2} />
+          {/* cap faces: porcelain white; side walls: glowing DAEKON blue rim */}
+          <meshStandardMaterial attach="material-0" color={PAPER} metalness={0.65} roughness={0.2} />
+          <meshStandardMaterial attach="material-1" color={BLUE_DEEP} metalness={0.4} roughness={0.28} emissive={BLUE_LIGHT} emissiveIntensity={0.5} />
         </mesh>
       ))}
       <pointLight
@@ -101,44 +105,14 @@ function WordmarkMeshes({ animated = true }: { animated?: boolean }) {
   );
 }
 
-/* ---- particle field ---- */
-function Particles({ count = 90 }: { count?: number }) {
-  const ref = useRef<ThreePoints>(null);
-  const positions = useMemo(() => {
-    const arr = new Float32Array(count * 3);
-    for (let i = 0; i < count; i++) {
-      arr[i * 3] = (Math.random() - 0.5) * 8;
-      arr[i * 3 + 1] = (Math.random() - 0.5) * 3.6;
-      arr[i * 3 + 2] = (Math.random() - 0.5) * 3.2;
-    }
-    return arr;
-  }, [count]);
-
-  useFrame((state) => {
-    if (!ref.current) return;
-    const t = state.clock.elapsedTime;
-    ref.current.rotation.y = t * 0.035;
-    ref.current.position.y = Math.sin(t * 0.4) * 0.12;
-  });
-
-  return (
-    <points ref={ref}>
-      <bufferGeometry>
-        <bufferAttribute attach="attributes-position" args={[positions, 3]} />
-      </bufferGeometry>
-      <pointsMaterial size={0.032} color={BLUE_DEEP} transparent opacity={0.35} sizeAttenuation depthWrite={false} />
-    </points>
-  );
-}
-
-/* ---- rig: lights ---- */
+/* ---- rig: night-stage lighting ---- */
 function Rig() {
   return (
     <>
-      <ambientLight intensity={0.85} />
-      <directionalLight position={[4, 6, 5]} intensity={1.5} color="#ffffff" />
-      <directionalLight position={[-5, -3, 4]} intensity={0.6} color={BLUE_LIGHT} />
-      <pointLight position={[0, 0, 4.5]} intensity={0.5} color={BLUE_LIGHT} />
+      <ambientLight intensity={0.35} />
+      <directionalLight position={[4, 6, 5]} intensity={2.4} color="#ffffff" />
+      <directionalLight position={[-6, -3, 4]} intensity={1.1} color={BLUE_LIGHT} />
+      <pointLight position={[0, 1.5, 4.5]} intensity={0.9} color="#cdd6ff" />
     </>
   );
 }
@@ -182,13 +156,22 @@ export function Mark3D({ className = "" }: { className?: string }) {
             <WordmarkMeshes animated={!reduced} />
             <ContactShadows
               position={[0, -1.35, 0]}
-              opacity={0.3}
+              opacity={0.55}
               scale={10}
-              blur={2.6}
+              blur={2.8}
               far={4}
-              color="#141a3c"
+              color="#000000"
             />
-            {!reduced && <Particles />}
+            {!reduced && (
+              <Sparkles
+                count={70}
+                scale={[9, 4.5, 3.5]}
+                size={2.4}
+                speed={0.35}
+                color="#9db2ff"
+                opacity={0.75}
+              />
+            )}
           </Suspense>
         </Canvas>
       </GLBoundary>

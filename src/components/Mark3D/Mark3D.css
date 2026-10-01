@@ -1,32 +1,29 @@
 /* =========================================================================
-   Mark3D — light stage for the live 3D Split-D mark.
+   Mark3D — frameless stage: the letters float directly in the hero's night
+   scene. No border, no card, no inner shadow — the hero IS the backdrop.
    ========================================================================= */
 
 .mark3d {
   position: relative;
-  height: clamp(240px, 26vw, 380px);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  background:
-    radial-gradient(ellipse 62% 55% at 50% 40%, rgba(22, 54, 231, 0.10), transparent 68%),
-    linear-gradient(165deg, #ffffff 0%, #f3f5ff 58%, #e9edff 100%);
-  background-image:
-    linear-gradient(rgba(20, 22, 27, 0.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(20, 22, 27, 0.045) 1px, transparent 1px),
-    radial-gradient(ellipse 62% 55% at 50% 40%, rgba(22, 54, 231, 0.10), transparent 68%),
-    linear-gradient(165deg, #ffffff 0%, #f3f5ff 58%, #e9edff 100%);
-  background-size: 46px 46px, 46px 46px, 100% 100%, 100% 100%;
-  box-shadow: inset 0 -40px 80px -60px rgba(22, 54, 231, 0.35);
+  height: clamp(260px, 38vh, 500px);
+  border: none;
+  overflow: visible;
   isolation: isolate;
 }
 
+/* faint blue floor-glow under the letters so they feel grounded in the hero */
 .mark3d::after {
   content: "";
   position: absolute;
-  inset: 0;
+  left: 50%;
+  bottom: -8%;
+  width: 78%;
+  height: 34%;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(43, 80, 255, 0.32), transparent 70%);
+  filter: blur(30px);
   pointer-events: none;
-  box-shadow: inset 0 0 100px rgba(255, 255, 255, 0.85);
+  z-index: -1;
 }
 
 .mark3d__fallback {
@@ -38,14 +35,4 @@
 
 .mark3d__fallback img {
   opacity: 0.9;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .mark3d {
-    background-image:
-      linear-gradient(rgba(20, 22, 27, 0.045) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(20, 22, 27, 0.045) 1px, transparent 1px),
-      radial-gradient(ellipse 62% 55% at 50% 40%, rgba(22, 54, 231, 0.10), transparent 68%),
-      linear-gradient(165deg, #ffffff 0%, #f3f5ff 58%, #e9edff 100%);
-  }
 }

@@ -146,6 +146,37 @@ export function estimate(input: string): QuoteResult {
   return { features, min, max, weeksMin, weeksMax, recurring };
 }
 
+/** Look up one catalog feature by id (for quick-add chips). */
+export function featureById(id: string): QuoteFeature | undefined {
+  const f = CATALOG.find((c) => c.id === id);
+  if (!f) return undefined;
+  const { keywords: _kw, ...rest } = f;
+  void _kw;
+  return rest;
+}
+
+/** Estimate with user-toggled extra features merged in (dedup by id). */
+export function estimateWithExtras(input: string, extraIds: string[]): QuoteResult {
+  const base = estimate(input);
+  const have = new Set(base.features.map((f) => f.id));
+  const extras = extraIds
+    .map((id) => featureById(id))
+    .filter((f): f is QuoteFeature => !!f && !have.has(f.id));
+  if (extras.length === 0) return base;
+
+  const all = [...base.features, ...extras];
+  const oneOff = all.filter((f) => !f.recurring);
+  const recurring = all.find((f) => f.recurring);
+  const round = (n: number) => Math.round(n / 10_000) * 10_000;
+  const min = round(oneOff.reduce((s, f) => s + f.min, 0));
+  const max = round(oneOff.reduce((s, f) => s + f.max, 0));
+  const weeksMin = oneOff.length ? Math.max(...oneOff.map((f) => f.weeksMin)) : 0;
+  const weeksMax = oneOff.length
+    ? Math.min(20, Math.max(weeksMin + 1, Math.round(oneOff.reduce((s, f) => s + f.weeksMax, 0) * 0.8)))
+    : 0;
+  return { features: all, min, max, weeksMin, weeksMax, recurring };
+}
+
 const fmt = new Intl.NumberFormat("hu-HU");
 
 export function formatFt(n: number): string {
