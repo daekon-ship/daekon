@@ -112,7 +112,66 @@
   font-size: 16px;
   line-height: 1.65;
   color: var(--text-1);
-  max-width: 74ch;
+  max-width: 60ch;
+}
+
+/* tech stack chips — „milyen fejlesztésű/kódolású rendszer" egy sorban */
+.work__stack {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.work__stack li {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--blue);
+  background: var(--blue-soft);
+  border-radius: 999px;
+  padding: 6px 12px;
+}
+
+/* kis lenyitható részletblokk */
+.work__details {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg-1);
+}
+.work__details summary {
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 18px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-1);
+}
+.work__details summary::-webkit-details-marker { display: none; }
+.work__details summary::after {
+  content: "+";
+  font-family: var(--font-mono);
+  font-size: 16px;
+  color: var(--blue);
+  transition: transform var(--dur-fast) var(--ease);
+}
+.work__details[open] summary::after {
+  transform: rotate(45deg);
+}
+.work__details[open] summary {
+  border-bottom: 1px solid var(--border);
+}
+.work__details .work__facts {
+  padding: 20px 18px;
+  border-top: none;
 }
 
 .work__facts {

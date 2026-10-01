@@ -144,14 +144,19 @@ export function App() {
               <div className="work">
                 <h2 className="work__title">KIOSZ Pizza Napoletana</h2>
                 <p className="work__lede">
-                  Teljes márkázott vendéglátó-rendszer, nem sablon: nyilvános oldal,
-                  adatbázisból épülő menü, teljes online rendelés (kosár → vendégkénti
-                  checkout → valós nyomkövető link) és tablet-first admin felület, ahol a
-                  személyzet szerepkör szerint fogadja a rendeléseket, és kezeli a
-                  hűség-/kedvezmény jogosultságokat. Alapja egy jövőbeli mobilalkalmazásnak
-                  is, ugyanazon az API-n.
+                  Teljes márkázott vendéglátó-rendszer: online rendelés valós
+                  nyomkövetővel és tablet-first admin felület — élesben fut.
                 </p>
+                <ul className="work__stack" aria-label="Milyen rendszer készült">
+                  <li>React + TypeScript</li>
+                  <li>Vite</li>
+                  <li>PHP 8 REST API</li>
+                  <li>MySQL / MariaDB</li>
+                  <li>Playwright E2E</li>
+                </ul>
 
+                <details className="work__details">
+                  <summary>Technikai részletek</summary>
                 <dl className="work__facts">
                   <div className="work__fact">
                     <dt>Frontend</dt>
@@ -192,6 +197,7 @@ export function App() {
                     </dd>
                   </div>
                 </dl>
+                </details>
 
                 <ul className="work__gallery" aria-label="Fotók a KIOSZ Pizza Napoletanából">
                   {GALLERY.map((img) => (
