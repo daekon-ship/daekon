@@ -95,7 +95,7 @@ const CATALOG: CatalogEntry[] = [
   {
     id: "maintenance",
     label: "Karbantartás / üzemeltetés",
-    min: 30_000, max: 60_000, weeksMin: 0, weeksMax: 0,
+    min: 10_000, max: 20_000, weeksMin: 0, weeksMax: 0,
     recurring: true,
     keywords: ["karbantartas", "uzemeltetes", "tamogatas", "frissites", "havi", "rendben tartas"],
   },
