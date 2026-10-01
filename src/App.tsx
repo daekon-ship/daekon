@@ -14,6 +14,8 @@ import {
   Magnetic,
   Marquee,
   ScrollProgress,
+  Words,
+  CursorGlow,
 } from "./components/fx/fx";
 import { useScrollSpy } from "./hooks/useScrollSpy";
 import kiosz01 from "./assets/img/kiosz-01.jpg";
@@ -73,17 +75,23 @@ export function App() {
       </a>
 
       <ScrollProgress />
+      <CursorGlow />
       <Nav />
 
       <main>
         <section id="hero" className="section section--calm hero" data-section>
+          <div className="aurora" aria-hidden="true">
+            <i />
+            <i />
+            <i />
+          </div>
           <div className="section__inner hero__inner">
             <div className="hero__intro">
               <span className="badge hero__eyebrow">
                 <Scramble text="ÖNÁLLÓ CREATIVE DEVELOPER" speed={22} />
               </span>
               <h1 className="hero__title">
-                Ez az oldal nem bemutatja a munkámat — bizonyítja.
+                <Words text="Ez az oldal nem bemutatja a munkámat — bizonyítja." />
               </h1>
               <p className="hero__lede">
                 DAEKON vagyok: egyszemélyes creative developer. Amit itt lent látsz — a
@@ -120,7 +128,7 @@ export function App() {
 
         <Marquee items={MARQUEE_ITEMS} />
 
-        <section id="munkak" className="section" data-section>
+        <section id="munkak" className="section" data-section data-num="01">
           <div className="section__inner">
             <Reveal>
             <Panel eyebrow="PROJEKT — 01" statusLabel="ÉLES RENDSZER" statusTone="ready">
@@ -205,7 +213,7 @@ export function App() {
           </div>
         </section>
 
-        <section id="szolgaltatasok" className="section" data-section>
+        <section id="szolgaltatasok" className="section" data-section data-num="02">
           <div className="section__inner">
             <Reveal>
             <Panel eyebrow="SZOLGÁLTATÁSOK" statusLabel="ELÉRHETŐ" statusTone="ready">
@@ -312,7 +320,7 @@ export function App() {
           </div>
         </section>
 
-        <section id="rolam" className="section" data-section>
+        <section id="rolam" className="section" data-section data-num="03">
           <div className="section__inner">
             <Reveal>
             <Panel eyebrow="RÓLAM" proseContent>
@@ -343,7 +351,7 @@ export function App() {
           </div>
         </section>
 
-        <section id="kapcsolat" className="section section--calm" data-section>
+        <section id="kapcsolat" className="section section--calm" data-section data-num="04">
           <div className="section__inner">
             <Reveal>
             <Panel eyebrow="KAPCSOLAT" statusLabel="EMAILBEN ELÉRHETŐ" statusTone="neutral">
@@ -386,8 +394,10 @@ export function App() {
           </span>
           <p className="site-footer__note">
             DAEKON saját referenciaoldala. Ez az oldal maga is bizonyíték: React +
-            TypeScript + Vite, valós böngésző-API-k, nulla díszítő animáció a fenti
-            telemetrián és a rendelés-demón kívül.
+            TypeScript + Vite + WebGL — a fejléc 3D márkajele a logó saját vektoros
+            geometriájából épül, a többi animáció pedig mérésre és teljesítményre
+            optimalizált, csökkentett mozgás beállításnál automatikusan visszafogja
+            magát.
           </p>
         </div>
       </footer>

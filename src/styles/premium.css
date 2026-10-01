@@ -1,0 +1,405 @@
+/* =========================================================================
+   premium.css — the "100x" visual layer.
+   Brand-blue gradients, glass panels, aurora backgrounds, glowing accents,
+   ghost section numbers, cursor light. All decorative motion respects
+   prefers-reduced-motion. Contrast: gradients are used on large display
+   text only; body text keeps the token palette.
+   ========================================================================= */
+
+:root {
+  --blue: #2b50ff;
+  --blue-deep: #1636e7;
+  --blue-soft: #7c9bff;
+  --blue-glow: rgba(43, 80, 255, 0.45);
+}
+
+/* ---------------------------------------------------------------------
+   Hero — aurora background + gradient display type
+   --------------------------------------------------------------------- */
+
+.hero {
+  position: relative;
+  overflow: hidden;
+}
+.hero .section__inner {
+  position: relative;
+  z-index: 1;
+}
+
+.aurora {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+.aurora i {
+  position: absolute;
+  display: block;
+  border-radius: 50%;
+  filter: blur(90px);
+  will-change: transform;
+}
+.aurora i:nth-child(1) {
+  width: 560px;
+  height: 560px;
+  left: -160px;
+  top: -180px;
+  background: radial-gradient(circle, rgba(22, 54, 231, 0.5), transparent 65%);
+  animation: aurora-a 22s ease-in-out infinite alternate;
+}
+.aurora i:nth-child(2) {
+  width: 480px;
+  height: 480px;
+  right: -140px;
+  top: 8%;
+  background: radial-gradient(circle, rgba(43, 80, 255, 0.38), transparent 65%);
+  animation: aurora-b 26s ease-in-out infinite alternate;
+}
+.aurora i:nth-child(3) {
+  width: 640px;
+  height: 640px;
+  left: 32%;
+  bottom: -340px;
+  background: radial-gradient(circle, rgba(124, 155, 255, 0.22), transparent 65%);
+  animation: aurora-c 30s ease-in-out infinite alternate;
+}
+@keyframes aurora-a {
+  from { transform: translate(0, 0) scale(1); }
+  to { transform: translate(120px, 60px) scale(1.15); }
+}
+@keyframes aurora-b {
+  from { transform: translate(0, 0) scale(1.1); }
+  to { transform: translate(-100px, 90px) scale(0.95); }
+}
+@keyframes aurora-c {
+  from { transform: translate(0, 0) scale(0.9); }
+  to { transform: translate(-140px, -60px) scale(1.12); }
+}
+
+.hero__title {
+  background: linear-gradient(
+    105deg,
+    #ffffff 30%,
+    #cdd6ff 58%,
+    #8fa6ff 80%,
+    #2b50ff 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* word-by-word hero entrance (margin keeps spaces between inline-blocks) */
+.words .w {
+  display: inline-block;
+  margin-right: 0.24em;
+  animation: word-rise 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--i, 0) * 60ms + 120ms);
+}
+@keyframes word-rise {
+  from {
+    opacity: 0;
+    transform: translateY(26px) rotate(2deg);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+.hero__eyebrow {
+  color: var(--blue-soft);
+  border-color: rgba(43, 80, 255, 0.45);
+  box-shadow: 0 0 20px rgba(43, 80, 255, 0.18);
+}
+
+/* ---------------------------------------------------------------------
+   Ghost section numbers
+   --------------------------------------------------------------------- */
+
+.section[data-num] {
+  position: relative;
+}
+.section[data-num]::after {
+  content: attr(data-num) / "";
+  position: absolute;
+  top: 10px;
+  right: 2vw;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: clamp(72px, 11vw, 150px);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(43, 80, 255, 0.24);
+  pointer-events: none;
+  user-select: none;
+}
+@media (max-width: 720px) {
+  .section[data-num]::after {
+    font-size: 64px;
+    right: 10px;
+    top: 4px;
+  }
+}
+
+/* ---------------------------------------------------------------------
+   Glass panels with gradient top seam + blue hover lift
+   --------------------------------------------------------------------- */
+
+.panel {
+  position: relative;
+  background: linear-gradient(
+    180deg,
+    rgba(25, 26, 30, 0.92),
+    rgba(19, 20, 23, 0.94)
+  );
+  backdrop-filter: blur(14px);
+  transition:
+    border-color 300ms var(--ease),
+    box-shadow 400ms var(--ease),
+    transform 400ms var(--ease);
+}
+.panel::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(43, 80, 255, 0.65),
+    transparent
+  );
+  pointer-events: none;
+}
+.panel:hover {
+  border-color: rgba(43, 80, 255, 0.38);
+  box-shadow:
+    0 0 0 1px rgba(43, 80, 255, 0.12),
+    0 24px 80px -32px rgba(22, 54, 231, 0.5);
+}
+.panel__eyebrow {
+  color: var(--blue-soft);
+}
+
+/* ---------------------------------------------------------------------
+   Buttons — gradient primary with glow
+   --------------------------------------------------------------------- */
+
+.btn--primary {
+  background: linear-gradient(135deg, #ffffff 0%, #d7ddff 100%);
+  box-shadow:
+    0 0 0 1px rgba(43, 80, 255, 0.25),
+    0 10px 36px -10px rgba(43, 80, 255, 0.6);
+}
+.btn--primary:hover {
+  background: linear-gradient(135deg, #ffffff 0%, #c3cdff 100%);
+  box-shadow:
+    0 0 0 1px rgba(43, 80, 255, 0.5),
+    0 16px 48px -12px rgba(43, 80, 255, 0.8);
+  transform: translateY(-2px);
+}
+.contact__cta {
+  font-size: 17px;
+  padding: 0 28px;
+}
+
+/* ---------------------------------------------------------------------
+   Display headings — shared gradient
+   --------------------------------------------------------------------- */
+
+.section-heading,
+.work__title,
+.about__title {
+  background: linear-gradient(120deg, #ffffff 55%, #b9c6ff 85%, #7c9bff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ---------------------------------------------------------------------
+   Services — glowing indices, hover slide
+   --------------------------------------------------------------------- */
+
+.services__index {
+  font-size: 24px;
+  background: linear-gradient(180deg, #ffffff 20%, var(--blue) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.services__item {
+  transition: transform 350ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.services__item:hover {
+  transform: translateX(8px);
+}
+.services__item h3 {
+  transition: color 250ms var(--ease);
+}
+.services__item:hover h3 {
+  color: #a9bbff;
+}
+
+/* ---------------------------------------------------------------------
+   Work gallery — zoom + blue glow on hover
+   --------------------------------------------------------------------- */
+
+.work__gallery-item {
+  transition:
+    transform 450ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 450ms var(--ease),
+    box-shadow 450ms var(--ease);
+}
+.work__gallery-item img {
+  transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.work__gallery-item:hover {
+  transform: translateY(-5px);
+  border-color: rgba(43, 80, 255, 0.6);
+  box-shadow: 0 18px 52px -18px rgba(22, 54, 231, 0.65);
+}
+.work__gallery-item:hover img {
+  transform: scale(1.07);
+}
+
+.work__logo img {
+  box-shadow: 0 0 0 1px rgba(43, 80, 255, 0.25);
+}
+
+/* ---------------------------------------------------------------------
+   Marquee — blue pulse
+   --------------------------------------------------------------------- */
+
+.marquee {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(22, 54, 231, 0.1),
+      transparent 22%,
+      transparent 78%,
+      rgba(22, 54, 231, 0.1)
+    ),
+    var(--bg-1);
+}
+.marquee__item {
+  font-size: 13px;
+  color: var(--text-1);
+}
+.marquee__item::after {
+  background: var(--blue);
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+  box-shadow: 0 0 14px var(--blue);
+}
+
+/* ---------------------------------------------------------------------
+   Nav — glass + glowing current dot
+   --------------------------------------------------------------------- */
+
+.statusbar {
+  background: rgba(11, 12, 14, 0.72);
+  backdrop-filter: blur(16px) saturate(1.25);
+}
+.sysnav__dot.is-current {
+  background: var(--blue);
+  box-shadow: 0 0 12px var(--blue);
+}
+.mobilenav__dot.is-current {
+  background: var(--blue);
+  box-shadow: 0 0 12px var(--blue);
+}
+
+/* ---------------------------------------------------------------------
+   Footer — glow seam + gradient wordmark
+   --------------------------------------------------------------------- */
+
+.site-footer {
+  position: relative;
+}
+.site-footer::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(43, 80, 255, 0.7),
+    transparent
+  );
+}
+.site-footer__wordmark {
+  display: flex;
+  align-items: center;
+  font-size: 26px;
+  background: linear-gradient(100deg, #ffffff 40%, #7c9bff 90%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ---------------------------------------------------------------------
+   Scroll progress — brand gradient
+   --------------------------------------------------------------------- */
+
+.scroll-progress {
+  background:
+    linear-gradient(90deg, var(--blue-deep), var(--blue), #8fa6ff) 0 0 /
+      var(--p, 0%) 100% no-repeat,
+    var(--bg-2);
+}
+
+/* ---------------------------------------------------------------------
+   Cursor light (desktop, fine pointers only)
+   --------------------------------------------------------------------- */
+
+.cursor-glow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 540px;
+  height: 540px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1;
+  background: radial-gradient(
+    circle,
+    rgba(43, 80, 255, 0.09),
+    transparent 62%
+  );
+  transform: translate(-50%, -50%);
+  will-change: transform;
+}
+@media (pointer: coarse) {
+  .cursor-glow {
+    display: none;
+  }
+}
+
+/* ---------------------------------------------------------------------
+   Reduced motion — keep the look, drop the movement
+   --------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .aurora i {
+    animation: none;
+  }
+  .words .w {
+    animation: none;
+  }
+  .panel,
+  .panel:hover,
+  .btn--primary:hover,
+  .services__item:hover,
+  .work__gallery-item:hover {
+    transition: none;
+    transform: none;
+  }
+  .cursor-glow {
+    display: none;
+  }
+}

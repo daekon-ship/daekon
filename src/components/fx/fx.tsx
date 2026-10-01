@@ -158,6 +158,53 @@ export function Marquee({ items }: { items: string[] }) {
   );
 }
 
+/* ---- Words: word-by-word entrance for display headlines ---- */
+export function Words({ text }: { text: string }) {
+  const words = text.split(" ");
+  return (
+    <span className="words">
+      {words.map((w, i) => (
+        <span key={i} className="w" style={{ "--i": i } as CSSProperties}>
+          {w}{" "}
+        </span>
+      ))}
+    </span>
+  );
+}
+
+/* ---- CursorGlow: soft blue light following the pointer (desktop only) ---- */
+export function CursorGlow() {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (!window.matchMedia("(pointer: fine)").matches) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let tx = window.innerWidth / 2;
+    let ty = window.innerHeight / 3;
+    let x = tx;
+    let y = ty;
+    let raf = 0;
+    const move = (e: PointerEvent) => {
+      tx = e.clientX;
+      ty = e.clientY;
+    };
+    const loop = () => {
+      x += (tx - x) * 0.12;
+      y += (ty - y) * 0.12;
+      el.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%)`;
+      raf = requestAnimationFrame(loop);
+    };
+    window.addEventListener("pointermove", move, { passive: true });
+    raf = requestAnimationFrame(loop);
+    return () => {
+      window.removeEventListener("pointermove", move);
+      cancelAnimationFrame(raf);
+    };
+  }, []);
+  return <div ref={ref} className="cursor-glow" aria-hidden="true" />;
+}
+
 /* ---- ScrollProgress: top bar, gradient fill ---- */
 export function ScrollProgress() {
   const [p, setP] = useState(0);

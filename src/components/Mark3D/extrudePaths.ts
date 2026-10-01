@@ -26,7 +26,8 @@ function arcToPoints(
     const s = Math.sqrt(lambda);
     rx *= s; ry *= s;
   }
-  const sign = largeArc !== sweep ? -1 : 1;
+  // SVG F.6.5: the sign of the center offset is + when flags differ, − when equal
+  const sign = largeArc !== sweep ? 1 : -1;
   const num = rx * rx * ry * ry - rx * rx * y1p * y1p - ry * ry * x1p * x1p;
   const den = rx * rx * y1p * y1p + ry * ry * x1p * x1p;
   const co = sign * Math.sqrt(Math.max(0, num / den));
