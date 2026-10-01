@@ -21,6 +21,8 @@ const EXAMPLES = [
   "Foglalási rendszer belépéssel és 3D animációval",
 ];
 
+const STARTING_AT = 120_000; //friendly „megtől" jelzés, ha még semmi nem felismerhető
+
 export function QuoteAssistant() {
   const [text, setText] = useState("");
   const result: QuoteResult = useMemo(() => estimate(text), [text]);
@@ -107,7 +109,8 @@ export function QuoteAssistant() {
       {!hasResult && text.trim().length > 0 && (
         <p className="qassist__empty" role="status">
           Még nem ismerek fel elegendő funkciót — írd le részletesebben (pl.
-          weboldal, webshop, foglalás, admin, fizetés, 3D…).
+          weboldal, webshop, foglalás, admin, fizetés, 3D…). A projektek
+          {" "}{formatFt(STARTING_AT)} Ft-tól indulnak.
         </p>
       )}
     </div>
