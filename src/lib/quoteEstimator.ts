@@ -125,7 +125,11 @@ export function estimate(input: string): QuoteResult {
   }
   const features: QuoteFeature[] = CATALOG.filter((f) =>
     f.keywords.some((k) => norm.includes(k)),
-  ).map(({ keywords: _keywords, ...rest }) => rest);
+  ).map((entry) => {
+    const { keywords: _kw, ...rest } = entry;
+    void _kw;
+    return rest;
+  });
 
   const oneOff = features.filter((f) => !f.recurring);
   const recurring = features.find((f) => f.recurring);
