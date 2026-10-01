@@ -35,8 +35,14 @@ export function Nav({ onNavigate }: NavProps) {
       <header className="statusbar" id="statusbar">
         <div className="statusbar__inner">
           <a className="wordmark" href="#hero" onClick={() => handleClick("hero")}>
-            <span className="wordmark__type">daekon</span>
-            <span className="wordmark__tag">creative &amp; rendszerfejlesztés</span>
+            <svg className="wordmark__mark" viewBox="0 0 200 200" width="28" height="28" aria-hidden="true">
+              <path d="M 16 10 L 71 10 L 71 44 L 50 44 L 50 156 L 71 156 L 71 190 L 16 190 Z" fill="#F4F2EE" />
+              <path d="M 77 10 L 110 10 A 66 66 0 0 1 176 76 L 176 124 A 66 66 0 0 1 110 190 L 77 190 L 77 156 L 104 156 A 38 38 0 0 0 142 118 L 142 82 A 38 38 0 0 0 104 44 L 77 44 Z" fill="#2B50FF" />
+            </svg>
+            <span className="wordmark__text">
+              <span className="wordmark__type">daekon</span>
+              <span className="wordmark__tag">creative &amp; rendszerfejlesztés</span>
+            </span>
           </a>
 
           <nav className="sysnav" aria-label="Fő navigáció">

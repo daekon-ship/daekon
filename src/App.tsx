@@ -1,7 +1,20 @@
+import { lazy, Suspense } from "react";
 import { Nav, NAV_ITEMS } from "./components/Nav/Nav";
 import { Panel } from "./components/Panel/Panel";
 import { LiveStatusPanel } from "./components/LiveStatusPanel/LiveStatusPanel";
 import { OrderDemo } from "./components/OrderDemo/OrderDemo";
+
+// three.js is heavy — load the 3D mark only when the hero actually renders
+const Mark3D = lazy(() =>
+  import("./components/Mark3D/Mark3D").then((m) => ({ default: m.Mark3D })),
+);
+import {
+  Reveal,
+  Scramble,
+  Magnetic,
+  Marquee,
+  ScrollProgress,
+} from "./components/fx/fx";
 import { useScrollSpy } from "./hooks/useScrollSpy";
 import kiosz01 from "./assets/img/kiosz-01.jpg";
 import kiosz02 from "./assets/img/kiosz-02.jpg";
@@ -39,6 +52,17 @@ const GALLERY: { src: string; alt: string; position?: string }[] = [
   },
 ];
 
+const MARQUEE_ITEMS = [
+  "EGYEDI WEBFEJLESZTÉS",
+  "RENDELÉSRENDSZEREK",
+  "ADMIN FELÜLETEK",
+  "E-KERESKEDELEM",
+  "BACKEND + API",
+  "PRÉMIUM UI/UX",
+  "TELJESÍTMÉNY",
+  "KARBANTARTÁS",
+];
+
 export function App() {
   const { currentId } = useScrollSpy(SECTION_IDS, "hero");
 
@@ -48,13 +72,16 @@ export function App() {
         Ugrás a tartalomhoz
       </a>
 
+      <ScrollProgress />
       <Nav />
 
       <main>
         <section id="hero" className="section section--calm hero" data-section>
           <div className="section__inner hero__inner">
             <div className="hero__intro">
-              <span className="badge hero__eyebrow">ÖNÁLLÓ CREATIVE DEVELOPER</span>
+              <span className="badge hero__eyebrow">
+                <Scramble text="ÖNÁLLÓ CREATIVE DEVELOPER" speed={22} />
+              </span>
               <h1 className="hero__title">
                 Ez az oldal nem bemutatja a munkámat — bizonyítja.
               </h1>
@@ -66,6 +93,24 @@ export function App() {
               </p>
             </div>
 
+            <Reveal>
+              <Suspense
+                fallback={
+                  <div
+                    style={{
+                      height: "clamp(300px, 40vw, 460px)",
+                      border: "1px solid var(--border)",
+                      borderRadius: "var(--radius)",
+                      background: "var(--bg-1)",
+                    }}
+                    aria-hidden="true"
+                  />
+                }
+              >
+                <Mark3D />
+              </Suspense>
+            </Reveal>
+
             <div className="hero__grid">
               <OrderDemo />
               <LiveStatusPanel currentSectionId={currentId} />
@@ -73,8 +118,11 @@ export function App() {
           </div>
         </section>
 
+        <Marquee items={MARQUEE_ITEMS} />
+
         <section id="munkak" className="section" data-section>
           <div className="section__inner">
+            <Reveal>
             <Panel eyebrow="PROJEKT — 01" statusLabel="ÉLES RENDSZER" statusTone="ready">
               <div className="work">
                 <h2 className="work__title">KIOSZ Pizza Napoletana</h2>
@@ -153,14 +201,17 @@ export function App() {
                 </p>
               </div>
             </Panel>
+            </Reveal>
           </div>
         </section>
 
         <section id="szolgaltatasok" className="section" data-section>
           <div className="section__inner">
+            <Reveal>
             <Panel eyebrow="SZOLGÁLTATÁSOK" statusLabel="ELÉRHETŐ" statusTone="ready">
               <div className="services">
                 <h2 className="section-heading">Szolgáltatások</h2>
+                <div className="glow-line" role="presentation" />
                 <div className="services__group">
                   <span className="services__group-label">TERVEZÉS ÉS FEJLESZTÉS</span>
                   <ol className="services__list">
@@ -257,14 +308,17 @@ export function App() {
                 </div>
               </div>
             </Panel>
+            </Reveal>
           </div>
         </section>
 
         <section id="rolam" className="section" data-section>
           <div className="section__inner">
+            <Reveal>
             <Panel eyebrow="RÓLAM" proseContent>
               <div className="about">
                 <h2 className="about__title">Egy ember, teljes felelősség</h2>
+                <div className="glow-line" role="presentation" />
                 <p>
                   A DAEKON nem egy csapatot imitáló ügynökség — egyszemélyes szakértő
                   vagyok. A tervezéstől a backendig, a felület-designtól a REST API-kig én
@@ -285,25 +339,30 @@ export function App() {
                 </ul>
               </div>
             </Panel>
+            </Reveal>
           </div>
         </section>
 
         <section id="kapcsolat" className="section section--calm" data-section>
           <div className="section__inner">
+            <Reveal>
             <Panel eyebrow="KAPCSOLAT" statusLabel="EMAILBEN ELÉRHETŐ" statusTone="neutral">
               <div className="contact">
                 <h2 className="section-heading">Kapcsolat</h2>
+                <div className="glow-line" role="presentation" />
                 <p className="contact__lede">
                   Ennek az oldalnak nincs backendje — nincs beküldhető űrlap, mert egy
                   olyan gombot mutatni, ami valójában sehova sem küld el semmit,
                   becsapós lenne. A leggyorsabb és legőszintébb út egy email.
                 </p>
-                <a
-                  className="btn btn--primary contact__cta"
-                  href="mailto:hello@daekon.hu?subject=Projekt%20megkeres%C3%A9s"
-                >
-                  Írj emailt: hello@daekon.hu
-                </a>
+                <Magnetic>
+                  <a
+                    className="btn btn--primary contact__cta"
+                    href="mailto:hello@daekon.hu?subject=Projekt%20megkeres%C3%A9s"
+                  >
+                    Írj emailt: hello@daekon.hu
+                  </a>
+                </Magnetic>
                 <p className="contact__note">
                   Ird le pár mondatban, mit szeretnél építeni — rendelési/foglalási
                   rendszert, admin felületet, egyedi webfejlesztést vagy valami mást — és
@@ -311,13 +370,20 @@ export function App() {
                 </p>
               </div>
             </Panel>
+            </Reveal>
           </div>
         </section>
       </main>
 
       <footer className="site-footer">
         <div className="section__inner site-footer__inner">
-          <span className="site-footer__wordmark">daekon</span>
+          <span className="site-footer__wordmark">
+            <svg viewBox="0 0 200 200" width="22" height="22" aria-hidden="true" style={{ verticalAlign: "-4px", marginRight: 8 }}>
+              <path d="M 16 10 L 71 10 L 71 44 L 50 44 L 50 156 L 71 156 L 71 190 L 16 190 Z" fill="#F4F2EE" />
+              <path d="M 77 10 L 110 10 A 66 66 0 0 1 176 76 L 176 124 A 66 66 0 0 1 110 190 L 77 190 L 77 156 L 104 156 A 38 38 0 0 0 142 118 L 142 82 A 38 38 0 0 0 104 44 L 77 44 Z" fill="#2B50FF" />
+            </svg>
+            daekon
+          </span>
           <p className="site-footer__note">
             DAEKON saját referenciaoldala. Ez az oldal maga is bizonyíték: React +
             TypeScript + Vite, valós böngésző-API-k, nulla díszítő animáció a fenti

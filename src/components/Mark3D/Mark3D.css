@@ -1,0 +1,51 @@
+/* =========================================================================
+   Mark3D — canvas host for the live 3D Split-D mark.
+   ========================================================================= */
+
+.mark3d {
+  position: relative;
+  height: clamp(300px, 40vw, 460px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 42%, rgba(43, 80, 255, 0.16), transparent 65%),
+    radial-gradient(ellipse 40% 35% at 68% 74%, rgba(22, 54, 231, 0.10), transparent 70%),
+    var(--bg-1);
+  /* faint grid floor, instrument-panel flavor */
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    radial-gradient(ellipse 70% 60% at 50% 42%, rgba(43, 80, 255, 0.16), transparent 65%);
+  background-size: 44px 44px, 44px 44px, 100% 100%;
+  isolation: isolate;
+}
+
+.mark3d::after {
+  /* soft vignette so the canvas edges melt into the panel */
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  box-shadow: inset 0 0 120px rgba(11, 12, 14, 0.85);
+}
+
+.mark3d__fallback {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+.mark3d__fallback img {
+  opacity: 0.9;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mark3d {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+      radial-gradient(ellipse 70% 60% at 50% 42%, rgba(43, 80, 255, 0.16), transparent 65%);
+  }
+}

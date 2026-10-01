@@ -25,11 +25,17 @@
 
 .wordmark {
   display: flex;
-  flex-direction: column;
-  gap: 2px;
+  align-items: center;
+  gap: 11px;
   text-decoration: none;
   color: var(--text-0);
   margin-right: auto;
+}
+.wordmark__mark { flex-shrink: 0; filter: drop-shadow(0 0 10px rgba(43, 80, 255, 0.45)); }
+.wordmark__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 .wordmark__type {
   font-family: var(--font-sans);
