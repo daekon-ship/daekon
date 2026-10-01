@@ -194,7 +194,7 @@ export function QuoteAssistant() {
           }}
           aria-label="Projekt leírása"
         />
-        <button type="button" className="btn btn--primary qchat__go" onClick={send}>
+        <button type="button" className="btn btn--primary qchat__go" onClick={() => send()}>
           Küldés
         </button>
       </div>
