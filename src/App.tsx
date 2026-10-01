@@ -18,6 +18,7 @@ import {
   CursorGlow,
 } from "./components/fx/fx";
 import { LogoLockup } from "./brand/Logo";
+import { QuoteAssistant } from "./components/QuoteAssistant/QuoteAssistant";
 import { useScrollSpy } from "./hooks/useScrollSpy";
 import kiosz01 from "./assets/img/kiosz-01.jpg";
 import kiosz02 from "./assets/img/kiosz-02.jpg";
@@ -369,6 +370,37 @@ export function App() {
                   a frontendet, a backendet és azt is, hogy ezek hogyan szolgálják ki a
                   valódi üzleti folyamatot (rendelés, foglalás, admin), az pontosan ez.
                 </p>
+                <ol className="timeline" aria-label="Hogyan jutottam ide">
+                  <li className="timeline__item">
+                    <span className="timeline__year">2011</span>
+                    <div className="timeline__body">
+                      <h3>Első weboldalam — 14 évesen</h3>
+                      <p>
+                        Saját blogot építettem magamnak WordPressen, élettörténetként
+                        írva magamról. Azóta tudom: ez lesz a munkám.
+                      </p>
+                      <a
+                        className="timeline__link"
+                        href="https://cubedaekon.wordpress.com/"
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        cubedaekon.wordpress.com ↗
+                      </a>
+                    </div>
+                  </li>
+                  <li className="timeline__item">
+                    <span className="timeline__year">MA</span>
+                    <div className="timeline__body">
+                      <h3>Éles rendszerek, teljes felelősség</h3>
+                      <p>
+                        Rendelés- és adminrendszerek valós üzletben, teljes stack:
+                        design, frontend, backend, adatbázis, tesztek.
+                      </p>
+                    </div>
+                  </li>
+                </ol>
+
                 <ul className="about__points">
                   <li>Közvetlen kommunikáció — nincs projektmenedzsment-réteg a munka és közted.</li>
                   <li>Egy ember felel a teljes stackért — nincs „ez a másik csapat hibája”.</li>
@@ -376,6 +408,25 @@ export function App() {
                 </ul>
               </div>
             </Panel>
+            </Reveal>
+          </div>
+        </section>
+
+        <section id="ai-arajanlat" className="section" data-section aria-label="AI árajánlat asszisztens">
+          <div className="section__inner">
+            <Reveal>
+              <Panel eyebrow="AI ÁRAJÁNLAT" statusLabel="AZONNALI BECSLÉS" statusTone="ready">
+                <div className="aiquote">
+                  <h2 className="section-heading">Mennyibe kerül, amit elképzel?</h2>
+                  <p className="aiquote__lede">
+                    Írd le a projektet egy mondatban — az asszisztens felismeri a
+                    funkciókat, és azonnal ár- és határidő-becslést ad. A leírás a
+                    böngésződben marad; ha tetszik az eredmény, egy kattintással
+                    elküldheted emailel.
+                  </p>
+                  <QuoteAssistant />
+                </div>
+              </Panel>
             </Reveal>
           </div>
         </section>
