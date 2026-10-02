@@ -17,13 +17,13 @@
 }
 .brandmark__logo {
   display: block;
-  filter: drop-shadow(0 0 10px rgba(77, 107, 255, 0.55));
+  filter: drop-shadow(0 0 14px rgba(77, 107, 255, 0.55));
 }
 .brandmark__word {
   font-family: var(--font-display);
   font-weight: 700;
   font-size: 1em;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.06em;
   line-height: 1;
   color: var(--ink);
 }
@@ -40,6 +40,21 @@
   flex-direction: column;
   min-height: calc(100svh - var(--statusbar-h));
   overflow: hidden;
+}
+.hero__word {
+  position: absolute;
+  right: -1.5%;
+  top: 13%;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(110px, 15vw, 230px);
+  line-height: 1;
+  letter-spacing: 0.02em;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.055);
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
 }
 .hero::before {
   content: "";
@@ -473,6 +488,13 @@
     linear-gradient(180deg, rgba(255, 255, 255, 0.015), transparent);
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
+}
+.inkbreak__mark {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  margin-bottom: 26px;
+  filter: drop-shadow(0 0 18px rgba(77, 107, 255, 0.6));
 }
 .inkbreak::before {
   content: "";

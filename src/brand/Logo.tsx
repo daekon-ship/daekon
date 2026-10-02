@@ -1,8 +1,9 @@
 /* =========================================================================
-   Logo.tsx — the DAEKON brand, 2026 aurora cut.
-   A gradient "split-D" monogram: cobalt→cyan→violet tile, white geometric
-   D with one diagonal seam — system, cut open. Scales from favicon to
-   poster. Uses useId so multiple marks never share gradient ids.
+   Logo.tsx — the DAEKON brand, 2026 "core" cut.
+   A split-D monogram: a stem bar and an open C-bowl with a clean gap
+   between them — system and opening in one — with a glowing core square
+   floating in the counter. Two-tone cyan→cobalt→violet, no tile, so it
+   sits on any surface and prints in one color too.
    ========================================================================= */
 import { useId } from "react";
 
@@ -25,40 +26,34 @@ export function LogoMark({
     >
       <defs>
         <linearGradient
-          id={id}
-          x1="6"
-          y1="4"
-          x2="58"
-          y2="60"
+          id={`${id}-a`}
+          x1="13"
+          y1="11"
+          x2="24.5"
+          y2="53"
           gradientUnits="userSpaceOnUse"
         >
           <stop offset="0" stopColor="#62E6FF" />
-          <stop offset="0.5" stopColor="#4D6BFF" />
+          <stop offset="1" stopColor="#4D6BFF" />
+        </linearGradient>
+        <linearGradient
+          id={`${id}-b`}
+          x1="30"
+          y1="11"
+          x2="56"
+          y2="53"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop offset="0" stopColor="#4D6BFF" />
           <stop offset="1" stopColor="#8F7BFF" />
         </linearGradient>
       </defs>
-      <rect x="2" y="2" width="60" height="60" rx="15" fill={`url(#${id})`} />
-      <rect
-        x="2.75"
-        y="2.75"
-        width="58.5"
-        height="58.5"
-        rx="14.25"
-        fill="none"
-        stroke="rgba(255,255,255,0.3)"
-        strokeWidth="1.5"
-      />
+      <rect x="13" y="11" width="11.5" height="42" rx="1.5" fill={`url(#${id}-a)`} />
       <path
-        fillRule="evenodd"
-        d="M17 11 H31.5 C44.6 11 53.5 19.7 53.5 32 C53.5 44.3 44.6 53 31.5 53 H17 Z M26 20.6 H31.4 C39.2 20.6 44.2 25.2 44.2 32 C44.2 38.8 39.2 43.4 31.4 43.4 H26 Z"
-        fill="#F4F6FF"
+        d="M30 11 H34.2 C47.4 11 56 20.2 56 32 C56 43.8 47.4 53 34.2 53 H30 V41 H35 C40.8 41 44.6 37.2 44.6 32 C44.6 26.8 40.8 23 35 23 H30 Z"
+        fill={`url(#${id}-b)`}
       />
-      <path
-        d="M41.5 5 L26 59"
-        stroke="rgba(6, 7, 13, 0.45)"
-        strokeWidth="3.4"
-        strokeLinecap="round"
-      />
+      <rect x="33.4" y="28.4" width="7.2" height="7.2" rx="1" fill="#7DEBFF" />
     </svg>
   );
 }

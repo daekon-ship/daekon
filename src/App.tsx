@@ -17,7 +17,7 @@ import {
   Tilt,
 } from "./components/fx/fx";
 import { useClock } from "./hooks/useClock";
-import { BrandMark } from "./brand/Logo";
+import { BrandMark, LogoMark } from "./brand/Logo";
 import { QuoteAssistant } from "./components/QuoteAssistant/QuoteAssistant";
 import { useScrollSpy } from "./hooks/useScrollSpy";
 import "./App.css";
@@ -188,6 +188,7 @@ export function App() {
         {/* ------------------------------------------------ HERO */}
         <section id="hero" ref={heroRef} className="hero" data-section>
           <Particles />
+          <span className="hero__word" aria-hidden="true">DAEKON</span>
           <div className="hero__inner">
             <div className="hero__toprow">
               <span className="meta"><Scramble text="DAEKON® — ÖNÁLLÓ DIGITÁLIS STÚDIÓ" /></span>
@@ -278,6 +279,9 @@ export function App() {
 
         {/* -------------------------------------------- INK MANIFESTO */}
         <section className="inkbreak">
+          <span className="inkbreak__mark" aria-hidden="true">
+            <LogoMark size={30} />
+          </span>
           <h2 className="inkbreak__title">
             <Lines lines={[{ text: "A FORMA NEM" }, { text: "DÍSZÍTÉS.", className: "blue" }]} />
           </h2>

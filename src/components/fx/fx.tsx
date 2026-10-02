@@ -10,6 +10,7 @@ import {
   type CSSProperties,
   type ReactNode,
 } from "react";
+import { LogoMark } from "../../brand/Logo";
 
 function prefersReducedMotion(): boolean {
   return (
@@ -466,10 +467,7 @@ export function Preloader() {
   return (
     <div className={`preloader${fade ? " is-done" : ""}`} aria-hidden="true">
       <div className="preloader__inner">
-        <span className="preloader__brand">
-          DAEKON
-          <span className="preloader__sq" />
-        </span>
+        <LogoMark size={58} className="preloader__logo" />
         <span className="preloader__num">{n}%</span>
         <span className="preloader__bar">
           <i style={{ width: `${n}%` }} />
