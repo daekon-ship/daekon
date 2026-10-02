@@ -416,3 +416,117 @@ export function Particles({ density = 64 }: { density?: number }) {
 
   return <canvas ref={ref} className="fx-particles" aria-hidden="true" />;
 }
+
+/* Preloader — brand + counter boot screen, then fade */
+export function Preloader() {
+  const [gone, setGone] = useState(false);
+  const [fade, setFade] = useState(false);
+  const [n, setN] = useState(0);
+  const reduced = useRef(prefersReducedMotion());
+
+  useEffect(() => {
+    if (reduced.current) {
+      setGone(true);
+      return;
+    }
+    const start = performance.now();
+    const dur = 950;
+    let raf = 0;
+    const tick = (t: number) => {
+      const p = Math.min(1, (t - start) / dur);
+      const eased = 1 - Math.pow(1 - p, 3);
+      setN(Math.round(eased * 100));
+      if (p < 1) {
+        raf = requestAnimationFrame(tick);
+      } else {
+        document.documentElement.classList.add("is-booted");
+        setFade(true);
+        window.setTimeout(() => setGone(true), 520);
+      }
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, []);
+
+  if (gone) return null;
+  return (
+    <div className={`preloader${fade ? " is-done" : ""}`} aria-hidden="true">
+      <div className="preloader__inner">
+        <span className="preloader__brand">
+          DAEKON
+          <span className="preloader__sq" />
+        </span>
+        <span className="preloader__num">{n}%</span>
+        <span className="preloader__bar">
+          <i style={{ width: `${n}%` }} />
+        </span>
+      </div>
+    </div>
+  );
+}
+
+/* CountUp — number eases up when scrolled into view */
+export function CountUp({
+  to,
+  suffix = "",
+  duration = 1100,
+}: {
+  to: number;
+  suffix?: string;
+  duration?: number;
+}) {
+  const { ref, inView } = useInView<HTMLSpanElement>(0.4);
+  const [v, setV] = useState(0);
+  const reduced = useRef(prefersReducedMotion());
+
+  useEffect(() => {
+    if (!inView) return;
+    if (reduced.current) {
+      setV(to);
+      return;
+    }
+    const start = performance.now();
+    let raf = 0;
+    const tick = (t: number) => {
+      const p = Math.min(1, (t - start) / duration);
+      const eased = 1 - Math.pow(1 - p, 3);
+      setV(Math.round(eased * to));
+      if (p < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [inView, to, duration]);
+
+  return (
+    <span ref={ref}>
+      {v}
+      {suffix}
+    </span>
+  );
+}
+
+/* BackToTop — floating glass button after scrolling */
+export function BackToTop() {
+  const [show, setShow] = useState(false);
+  const reduced = useRef(prefersReducedMotion());
+
+  useEffect(() => {
+    const onScroll = () => setShow(window.scrollY > 700);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  return (
+    <button
+      type="button"
+      className={`backtotop${show ? " is-show" : ""}`}
+      aria-label="Vissza a tetejére"
+      onClick={() =>
+        window.scrollTo({ top: 0, behavior: reduced.current ? "auto" : "smooth" })
+      }
+    >
+      ↑
+    </button>
+  );
+}

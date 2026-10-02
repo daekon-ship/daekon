@@ -2,11 +2,14 @@ import { Nav } from "./components/Nav/Nav";
 import { LiveStatusPanel } from "./components/LiveStatusPanel/LiveStatusPanel";
 import { OrderDemo } from "./components/OrderDemo/OrderDemo";
 import {
+  BackToTop,
+  CountUp,
   Cursor,
   Lines,
   Magnetic,
   Marquee,
   Particles,
+  Preloader,
   Reveal,
   Scramble,
   ScrollProgress,
@@ -87,6 +90,7 @@ const PROCESS = [
 function ReferenceCard({ p }: { p: Project }) {
   const body = (
     <>
+      {!p.thumb && <span className="refs__ghost" aria-hidden="true">{p.num}</span>}
       <div className="refs__top">
         <span className="refs__num">{p.num}</span>
         <span className="refs__state">
@@ -131,9 +135,11 @@ export function App() {
     <>
       <a className="skip-link" href="#hero">Ugrás a tartalomhoz</a>
 
+      <Preloader />
       <ScrollProgress />
       <Cursor />
-      <Nav />
+      <Nav current={currentId} />
+      <BackToTop />
 
       <main>
         {/* ------------------------------------------------ HERO */}
@@ -175,9 +181,9 @@ export function App() {
             </div>
 
             <dl className="hero__stats">
-              <div><dt>2011 óta</dt><dd>webet építek</dd></div>
-              <div><dt>100%</dt><dd>automatikusan tesztelve</dd></div>
-              <div><dt>1 éles</dt><dd>rendszer, valódi rendelésekkel</dd></div>
+              <div><dt><CountUp to={2011} /> óta</dt><dd>webet építek</dd></div>
+              <div><dt><CountUp to={100} suffix="%" /></dt><dd>automatikusan tesztelve</dd></div>
+              <div><dt><CountUp to={1} /> éles</dt><dd>rendszer, valódi rendelésekkel</dd></div>
             </dl>
           </div>
 

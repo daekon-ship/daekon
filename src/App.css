@@ -242,6 +242,23 @@
 }
 .refs__card--soon:hover::after { opacity: 0; }
 
+/* ghost watermark for cards without a photo */
+.refs__ghost {
+  position: absolute;
+  right: -8px;
+  bottom: -20px;
+  z-index: -1;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(64px, 6vw, 96px);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.09);
+  pointer-events: none;
+  user-select: none;
+}
+
 .refs__top {
   width: 100%;
   display: flex;

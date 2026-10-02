@@ -9,7 +9,7 @@ const LINKS = [
   { id: "contact", label: "KAPCSOLAT" },
 ];
 
-export function Nav() {
+export function Nav({ current = "" }: { current?: string }) {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -28,7 +28,12 @@ export function Nav() {
 
         <nav className="nav__links" aria-label="Fő navigáció">
           {LINKS.map((l) => (
-            <a key={l.id} className="nav__link" href={`#${l.id}`}>
+            <a
+              key={l.id}
+              className={`nav__link${current === l.id ? " is-active" : ""}`}
+              href={`#${l.id}`}
+              aria-current={current === l.id ? "true" : undefined}
+            >
               {l.label}
             </a>
           ))}
@@ -55,7 +60,7 @@ export function Nav() {
           {LINKS.map((l, i) => (
             <a
               key={l.id}
-              className="nav-overlay__link"
+              className={`nav-overlay__link${current === l.id ? " is-active" : ""}`}
               style={{ "--i": i } as React.CSSProperties}
               href={`#${l.id}`}
               onClick={() => setOpen(false)}

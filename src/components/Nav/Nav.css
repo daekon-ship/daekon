@@ -61,6 +61,10 @@
   transform: scaleX(1);
   transform-origin: left;
 }
+.nav__link.is-active { color: var(--text-0); }
+.nav__link.is-active::after { transform: scaleX(1); }
+
+.nav-overlay__link.is-active { color: var(--blue-bright); }
 
 .nav__cta {
   font-family: var(--font-mono);
