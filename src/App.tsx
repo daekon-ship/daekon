@@ -1,18 +1,12 @@
-import { lazy, Suspense } from "react";
 import { Nav, NAV_ITEMS } from "./components/Nav/Nav";
 import { Panel } from "./components/Panel/Panel";
 import { LiveStatusPanel } from "./components/LiveStatusPanel/LiveStatusPanel";
 import { OrderDemo } from "./components/OrderDemo/OrderDemo";
 
-// three.js is heavy — load the 3D mark only when the hero actually renders
-const Mark3D = lazy(() =>
-  import("./components/Mark3D/Mark3D").then((m) => ({ default: m.Mark3D })),
-);
 import {
   Reveal,
   Scramble,
   Magnetic,
-  Marquee,
   ScrollProgress,
   Words,
   CursorGlow,
@@ -56,17 +50,6 @@ const GALLERY: { src: string; alt: string; position?: string }[] = [
   },
 ];
 
-const MARQUEE_ITEMS = [
-  "EGYEDI WEBFEJLESZTÉS",
-  "RENDELÉSRENDSZEREK",
-  "ADMIN FELÜLETEK",
-  "E-KERESKEDELEM",
-  "BACKEND + API",
-  "PRÉMIUM UI/UX",
-  "TELJESÍTMÉNY",
-  "KARBANTARTÁS",
-];
-
 export function App() {
   const { currentId } = useScrollSpy(SECTION_IDS, "hero");
 
@@ -95,15 +78,16 @@ export function App() {
               <Words text="Ez az oldal nem bemutatja a munkámat — bizonyítja." />
             </h1>
             <p className="hero-stage__lede">
-              Egy ember, teljes stack, teljes felelősség. Ami itt mozog — az élő óra, a
-              rendelés-állapotgép, a levegőben lebegő betűk — mind futó kód, nem makett.
+              Egy ember, teljes stack, teljes felelősség. Minden, ami ezen az oldalon
+              mozog — az óra, a rendelés-állapotgép, az AI árajánlat — valós,
+              böngészőben futó kód.
             </p>
             <div className="hero-stage__actions">
-              <a className="btn btn--primary" href="#munkak">
-                Munkák megtekintése
+              <a className="btn btn--primary" href="#ai-arajanlat">
+                Árajánlat 1 perc alatt
               </a>
-              <a className="btn btn--ghost btn--ghost-dark" href="#kapcsolat">
-                Projekt indítása
+              <a className="btn btn--ghost btn--ghost-dark" href="#munkak">
+                Munkák megtekintése
               </a>
             </div>
             <dl className="hero-stage__stats" aria-label="Kulcsadatok">
@@ -120,23 +104,37 @@ export function App() {
                 <dd>1 ember</dd>
               </div>
             </dl>
-            <Reveal>
-              <Suspense
-                fallback={
-                  <div style={{ height: "clamp(260px, 38vh, 500px)" }} aria-hidden="true" />
-                }
-              >
-                <Mark3D />
-              </Suspense>
-            </Reveal>
           </div>
-          <a className="hero-stage__scroll" href="#munkak" aria-label="Görgess le a munkákhoz">
+          <a className="hero-stage__scroll" href="#ai-arajanlat" aria-label="Görgess le az árajánlathoz">
             <span className="hero-stage__scroll-line" aria-hidden="true" />
             GÖRGETÉS
           </a>
         </section>
 
-        <Marquee items={MARQUEE_ITEMS} />
+        <section
+          id="ai-arajanlat"
+          className="section section--calm section--blue ai-stage"
+          data-section
+          aria-label="AI árajánlat asszisztens"
+        >
+          <div className="section__inner">
+            <Reveal>
+              <div className="ai-stage__intro">
+                <span className="badge">AI ÁRAJÁNLAT — AZONNALI BECSLÉS</span>
+                <h2 className="ai-stage__title">
+                  <Words text="Mennyibe kerül, amit elképzel?" />
+                </h2>
+                <p className="ai-stage__lede">
+                  Írd le a projektet egy-két mondatban — az asszisztens felismeri a
+                  funkciókat, és azonnal árat és határidőt ad. A leírás a
+                  böngésződben marad; ha tetszik az eredmény, egy kattintással
+                  elküldheted emailel.
+                </p>
+              </div>
+              <QuoteAssistant />
+            </Reveal>
+          </div>
+        </section>
 
         <section className="section" aria-label="Élő rendszerek a böngésződben">
           <div className="section__inner">
@@ -420,25 +418,6 @@ export function App() {
           </div>
         </section>
 
-        <section id="ai-arajanlat" className="section" data-section aria-label="AI árajánlat asszisztens">
-          <div className="section__inner">
-            <Reveal>
-              <Panel eyebrow="AI ÁRAJÁNLAT" statusLabel="AZONNALI BECSLÉS" statusTone="ready">
-                <div className="aiquote">
-                  <h2 className="section-heading">Mennyibe kerül, amit elképzel?</h2>
-                  <p className="aiquote__lede">
-                    Írd le a projektet egy mondatban — az asszisztens felismeri a
-                    funkciókat, és azonnal ár- és határidő-becslést ad. A leírás a
-                    böngésződben marad; ha tetszik az eredmény, egy kattintással
-                    elküldheted emailel.
-                  </p>
-                  <QuoteAssistant />
-                </div>
-              </Panel>
-            </Reveal>
-          </div>
-        </section>
-
         <section id="kapcsolat" className="section section--calm section--blue" data-section data-num="04">
           <div className="section__inner">
             <Reveal>
@@ -478,10 +457,9 @@ export function App() {
           </span>
           <p className="site-footer__note">
             DAEKON saját referenciaoldala. Ez az oldal maga is bizonyíték: React +
-            TypeScript + Vite + WebGL — a fejléc 3D márkajele a logó saját vektoros
-            geometriájából épül, a többi animáció pedig mérésre és teljesítményre
-            optimalizált, csökkentett mozgás beállításnál automatikusan visszafogja
-            magát.
+            TypeScript + Vite — az élő óra, a rendelés-állapotgép és az AI árajánlat
+            mind böngészőben futó kód; csökkentett mozgás beállításnál az animációk
+            automatikusan visszafogják magukat.
           </p>
         </div>
       </footer>

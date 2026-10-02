@@ -340,6 +340,22 @@ body {
 .section--blue .contact__cta {
   box-shadow: 0 24px 60px -18px rgba(0, 0, 0, 0.55);
 }
+
+/* the quote chat sits on a white card even on the blue stage —
+   its buttons stay DAEKON blue */
+.ai-stage .qchat .btn--primary {
+  background: var(--blue);
+  color: #ffffff;
+  box-shadow: 0 12px 32px -14px rgba(22, 54, 231, 0.65);
+}
+.ai-stage .qchat .btn--primary:hover {
+  background: #0f2bd0;
+  box-shadow: 0 18px 44px -16px rgba(22, 54, 231, 0.75);
+  transform: translateY(-2px);
+}
+.ai-stage .qchat .btn--primary::after {
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+}
 .section--blue .btn--primary:hover {
   background: #eef1ff;
 }

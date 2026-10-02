@@ -5,6 +5,7 @@ import "./LiveStatusPanel.css";
 
 const SECTION_LABELS: Record<string, string> = {
   hero: "Kezdőlap",
+  "ai-arajanlat": "AI árajánlat",
   munkak: "Munkák",
   szolgaltatasok: "Szolgáltatások",
   rolam: "Rólam",

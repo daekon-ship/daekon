@@ -11,6 +11,7 @@ export interface NavItem {
 
 export const NAV_ITEMS: NavItem[] = [
   { id: "hero", label: "Kezdőlap", mobileLabel: "Kezdő" },
+  { id: "ai-arajanlat", label: "Árajánlat", mobileLabel: "Árajánlat" },
   { id: "munkak", label: "Munkák", mobileLabel: "Munkák" },
   { id: "szolgaltatasok", label: "Szolgáltatások", mobileLabel: "Szolg." },
   { id: "rolam", label: "Rólam", mobileLabel: "Rólam" },
