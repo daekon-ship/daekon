@@ -1,470 +1,468 @@
-import { lazy, Suspense } from "react";
-import { Nav, NAV_ITEMS } from "./components/Nav/Nav";
+import { lazy, Suspense, useRef, useState } from "react";
+import { Nav } from "./components/Nav/Nav";
 import { LiveStatusPanel } from "./components/LiveStatusPanel/LiveStatusPanel";
 import { OrderDemo } from "./components/OrderDemo/OrderDemo";
 
-// heavy — the hero sculpture loads only when the page renders
-const Hero3D = lazy(() =>
-  import("./components/Hero3D/Hero3D").then((m) => ({ default: m.Hero3D })),
-);
 import {
-  Reveal,
+  Cursor,
+  DriftWords,
   Lines,
-  Parallax,
-  ProcessProgress,
-  Scramble,
   Magnetic,
-  Marquee,
+  MouseParallax,
+  Parallax,
+  Reveal,
   ScrollProgress,
-  Words,
-  CursorGlow,
 } from "./components/fx/fx";
-import { LogoMark } from "./brand/Logo";
+import { LogoLockup } from "./brand/Logo";
 import { QuoteAssistant } from "./components/QuoteAssistant/QuoteAssistant";
 import { useScrollSpy } from "./hooks/useScrollSpy";
 import kiosz01 from "./assets/img/kiosz-01.jpg";
-import kiosz03 from "./assets/img/kiosz-03.jpg";
 import kiosz04 from "./assets/img/kiosz-04.jpg";
 import "./App.css";
 
-const SECTION_IDS = NAV_ITEMS.map((item) => item.id);
+// kept functionally, presented inside the new composition
+const QuoteProof = lazy(() => Promise.resolve({ default: ProofBlock }));
 
-const TICKER = [
-  "EGYEDI WEBFEJLESZTÉS",
-  "RENDELÉSRENDSZEREK",
-  "ADMIN FELÜLETEK",
-  "E-KERESKEDELEM",
-  "SEO",
-  "TELJESÍTMÉNY",
-  "UI/UX",
-];
+const SPY_IDS = ["hero", "work", "services", "process", "about", "quote", "contact"];
 
-const PROJECTS: {
-  index: string;
-  title: string;
-  field: string;
+/* ------------------------------------------------------------------ */
+/*  Live proof block: order state machine + telemetry, dark editorial  */
+/* ------------------------------------------------------------------ */
+function ProofBlock({ currentId }: { currentId: string }) {
+  return (
+    <div className="proof" id="live-proof">
+      <div className="proof__head">
+        <span className="meta">PROOF / 001</span>
+        <span className="meta">EZ AZ OLDAL MAGA IS MŰBIZONYÍTÉK</span>
+      </div>
+      <div className="proof__grid">
+        <OrderDemo />
+        <LiveStatusPanel currentSectionId={currentId} />
+      </div>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Project data — each entry renders in its own composition           */
+/* ------------------------------------------------------------------ */
+type Project = {
+  id: string;
+  num: string;
+  title: [string, string?];
+  tags: string[];
+  year: string;
   desc: string;
-  meta: string[];
-  image?: { src: string; alt: string; position?: string }[];
-  ghost: string;
-  flip?: boolean;
-}[] = [
+  layout: "split" | "wide-right" | "fullbleed" | "portrait";
+  img?: { src: string; alt: string; position?: string };
+  img2?: { src: string; alt: string; position?: string };
+  ghost?: string;
+};
+
+const PROJECTS: Project[] = [
   {
-    index: "01",
-    title: "KIOSZ PIZZA NAPOLETANA",
-    field: "Vendéglátás — rendelési rendszer",
-    desc: "Teljes márkázott rendszer: online rendelés valós nyomkövetővel, tablet-first admin, 192 fotós galéria, Playwright E2E tesztekkel — élesben fut.",
-    meta: ["React + TypeScript", "PHP 8 REST API", "MySQL", "E2E tesztelt"],
-    image: [
-      { src: kiosz01, alt: "Frissen sült pizza a KIOSZ asztalán." },
-      { src: kiosz03, alt: "Esti hangulat a KIOSZ éttermében." },
-      { src: kiosz04, alt: "A pizzaszakács feldobja a tésztát." },
-    ],
-    ghost: "K",
-    flip: false,
+    id: "kiosz",
+    num: "001",
+    title: ["KIOSZ", "PIZZA NAPOLETANA"],
+    tags: ["WEB DESIGN", "DEVELOPMENT", "ORDERING SYSTEM", "2026"],
+    year: "2026",
+    desc: "Teljes márkázott vendéglátó-rendszer: online rendelés valós nyomkövetővel, tablet-first admin, 192 fotós galéria — élesben fut, E2E tesztelve.",
+    layout: "split",
+    img: { src: kiosz04, alt: "Fekete-fehér pillanatkép: a pizzaszakács feldobja a tésztát." },
+    img2: { src: kiosz01, alt: "Frissen sült margherita a KIOSZ asztalán.", position: "50% 30%" },
   },
   {
-    index: "02",
-    title: "VAD-LAK",
-    field: "Generálkivitelezés",
-    desc: "Vállalkozói weboldal egyedi designnal és tartalomkezeléssel — valós ügyfél, fejlesztés alatt.",
-    meta: ["Egyedi design", "SEO-alapok", "Mobil-first"],
-    ghost: "V",
-    flip: true,
-  },
-  {
-    index: "03",
-    title: "ÉPÜLETES MEDENCE",
-    field: "Medence — szolgáltatás",
+    id: "epuletes",
+    num: "002",
+    title: ["ÉPÜLETES", "MEDENCE"],
+    tags: ["WEB DESIGN", "DEVELOPMENT", "2026"],
+    year: "2026",
     desc: "Szolgáltatói jelenlét gyors, mobiloptimalizált felülettel és ajánlatkérő folyamattal.",
-    meta: ["Landing", "Ajánlatkérés", "Gyorsaság"],
+    layout: "wide-right",
     ghost: "M",
-    flip: false,
   },
   {
-    index: "04",
-    title: "ROVARIRTÓFIUK.HU",
-    field: "Szolgáltató vállalkozás",
+    id: "rovarirtok",
+    num: "003",
+    title: ["ROVARIRTÓ", "FIÚK"],
+    tags: ["SEO", "CONVERSION", "2026"],
+    year: "2026",
     desc: "Keresőre optimalizált szolgáltatói oldal, amely a beérkező hívásokra épít.",
-    meta: ["SEO", "Konverzió", "Mobil"],
+    layout: "fullbleed",
     ghost: "R",
-    flip: true,
+  },
+  {
+    id: "vadlak",
+    num: "004",
+    title: ["VAD-LAK"],
+    tags: ["WEB DESIGN", "IN PROGRESS", "2026"],
+    year: "2026",
+    desc: "Vállalkozói weboldal egyedi designnal — valós ügyfél, fejlesztés alatt.",
+    layout: "portrait",
+    ghost: "V",
   },
 ];
 
-const CAPABILITIES = [
-  { n: "01", t: "EGYEDI DESIGN", d: "Sablon helyett a márkádra épített vizuális rendszer." },
-  { n: "02", t: "MOBILOPTIMALIZÁLÁS", d: "Külön tervezett mobil élmény, nem összenyomott desktop." },
-  { n: "03", t: "SEO-ALAPOK", d: "Szemantikus szerkezet, amit a keresők is szeretnek." },
-  { n: "04", t: "GYORS TELJESÍTMÉNY", d: "Mérésre épülő optimalizálás, valós eszközökön." },
-  { n: "05", t: "EGYEDI FUNKCIÓK", d: "Rendelés, foglalás, admin — amit a munkádnak kell." },
+const SERVICES = [
+  { n: "01", t: "WEB DESIGN", h: "Egyedi dizájn — sablon nélkül." },
+  { n: "02", t: "WEB DEVELOPMENT", h: "Tiszta kód, valódi rendszer." },
+  { n: "03", t: "E-COMMERCE", h: "Webshop, fizetés, admin." },
+  { n: "04", t: "BOOKING SYSTEMS", h: "Rendelés és foglalás." },
+  { n: "05", t: "CUSTOM SOLUTIONS", h: "Amit a munkád kér." },
 ];
 
 const PROCESS = [
-  { n: "01", t: "STRATÉGIA", d: "Cél, közönség, funkcionalitás — mit szolgál az oldal." },
-  { n: "02", t: "DESIGN", d: "Egyedi vizuális irány, tipográfia, art direction." },
-  { n: "03", t: "FEJLESZTÉS", d: "Tiszta kód, valódi rendszer, nem sablon." },
-  { n: "04", t: "FINOMHANGOLÁS", d: "Teljesítmény, reszponzivitás, részletek csiszolása." },
-  { n: "05", t: "ÉLESÍTÉS", d: "Indítás, mérés, gondozás a launch után is." },
+  { n: "01", t: "DISCOVER", h: "Cél, közönség, funkcionalitás." },
+  { n: "02", t: "DESIGN", h: "Egyedi vizuális irány és art direction." },
+  { n: "03", t: "BUILD", h: "Fejlesztés: design, kód, tartalom egy kézből." },
+  { n: "04", t: "REFINE", h: "Teljesítmény, reszponzivitás, részletek." },
+  { n: "05", t: "LAUNCH", h: "Élesítés, mérés, gondozás utána is." },
 ];
 
+/* ------------------------------------------------------------------ */
+/*  One project, one composition                                       */
+/* ------------------------------------------------------------------ */
+function ProjectBlock({ p }: { p: Project }) {
+  const media = (img: Project["img"], className: string) => (
+    <figure className={`pm ${className}`} data-cursor="VIEW PROJECT ↗">
+      <Parallax speed={22}>
+        {img ? (
+          <img src={img.src} alt={img.alt} loading="lazy" style={img.position ? { objectPosition: img.position } : undefined} />
+        ) : (
+          <span className="pm__ghost" aria-hidden="true">{p.ghost}</span>
+        )}
+      </Parallax>
+    </figure>
+  );
+
+  if (p.layout === "split") {
+    return (
+      <article className="proj proj--split" id={p.id}>
+        <div className="proj__meta">
+          <span className="meta">PROJECT / {p.num}</span>
+          <h3 className="proj__title">
+            <Lines lines={[{ text: p.title[0] }, { text: p.title[1] ?? "" }]} />
+          </h3>
+          <p className="proj__desc">{p.desc}</p>
+          <ul className="proj__tags">{p.tags.map((t) => <li key={t}>{t}</li>)}</ul>
+        </div>
+        <div className="proj__media proj__media--main">{media(p.img, "pm--tall")}</div>
+        <div className="proj__media proj__media--offset">{media(p.img2, "pm--small")}</div>
+      </article>
+    );
+  }
+
+  if (p.layout === "wide-right") {
+    return (
+      <article className="proj proj--wide" id={p.id}>
+        <div className="proj__media proj__media--widescreen">{media(p.img, "pm--wide")}</div>
+        <div className="proj__overlay">
+          <span className="meta">PROJECT / {p.num}</span>
+          <h3 className="proj__title proj__title--overlap">
+            <Lines lines={[{ text: p.title[0] }, { text: p.title[1] ?? "" }]} />
+          </h3>
+        </div>
+        <div className="proj__under">
+          <p className="proj__desc">{p.desc}</p>
+          <ul className="proj__tags">{p.tags.map((t) => <li key={t}>{t}</li>)}</ul>
+        </div>
+      </article>
+    );
+  }
+
+  if (p.layout === "fullbleed") {
+    return (
+      <article className="proj proj--full" id={p.id}>
+        <div className="proj__media proj__media--hero">{media(p.img, "pm--hero")}</div>
+        <div className="proj__center">
+          <span className="meta meta--light">PROJECT / {p.num} — {p.year}</span>
+          <h3 className="proj__title proj__title--giant">
+            <Lines lines={[{ text: p.title[0] }, { text: p.title[1] ?? "" }]} />
+          </h3>
+        </div>
+        <p className="proj__desc proj__desc--floating">{p.desc}</p>
+        <ul className="proj__tags proj__tags--floating">{p.tags.map((t) => <li key={t}>{t}</li>)}</ul>
+      </article>
+    );
+  }
+
+  return (
+    <article className="proj proj--portrait" id={p.id}>
+      <div className="proj__meta">
+        <span className="meta">PROJECT / {p.num}</span>
+        <h3 className="proj__title">
+          <Lines lines={[{ text: p.title[0] }]} />
+        </h3>
+        <p className="proj__desc">{p.desc}</p>
+        <ul className="proj__tags">{p.tags.map((t) => <li key={t}>{t}</li>)}</ul>
+      </div>
+      <div className="proj__media proj__media--portrait">{media(p.img, "pm--portrait")}</div>
+    </article>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Services — full-width rows with a cursor-following preview         */
+/* ------------------------------------------------------------------ */
+function ServicesList() {
+  const [preview, setPreview] = useState<{ y: number; i: number } | null>(null);
+  const listRef = useRef<HTMLDivElement>(null);
+
+  return (
+    <div
+      className="svc-list"
+      ref={listRef}
+      onPointerLeave={() => setPreview(null)}
+    >
+      {SERVICES.map((s, i) => (
+        <Reveal as="div" key={s.n} delay={i * 40}>
+          <div
+            className="svc"
+            data-cursor="RÉSZLETEK ↗"
+            onPointerMove={(e) => {
+              const r = listRef.current?.getBoundingClientRect();
+              if (r) setPreview({ y: e.clientY - r.top, i });
+            }}
+          >
+            <span className="svc__num">{s.n}</span>
+            <h3 className="svc__title">{s.t}</h3>
+            <span className="svc__h">{s.h}</span>
+            <span className="svc__arr" aria-hidden="true">→</span>
+          </div>
+        </Reveal>
+      ))}
+      {preview && (
+        <div
+          className="svc-preview"
+          style={{ top: preview.y }}
+          aria-hidden="true"
+        >
+          <span className="svc-preview__num">{SERVICES[preview.i].n}</span>
+          <span className="svc-preview__label">{SERVICES[preview.i].t}</span>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  App — the new composition                                          */
+/* ------------------------------------------------------------------ */
 export function App() {
-  const { currentId } = useScrollSpy(SECTION_IDS, "hero");
+  const { currentId } = useScrollSpy(SPY_IDS, "hero");
 
   return (
     <>
-      <a className="skip-link" href="#hero">
-        Ugrás a tartalomhoz
-      </a>
+      <a className="skip-link" href="#hero">Ugrás a tartalomhoz</a>
 
+      {/* page load: logo reveal, then the curtain lifts (~0.9s) */}
+      <div className="boot" aria-hidden="true">
+        <LogoLockup height={40} stem="#F2F1EE" bowl="#2B50FF" text="#F2F1EE" className="boot__logo" />
+      </div>
+
+      <Cursor />
       <ScrollProgress />
-      <CursorGlow />
       <Nav />
 
-      <main>
-        {/* ---------------------------------------------------------- HERO */}
+      <main className="hero-gate">
+        {/* ------------------------------------------------------ HERO */}
         <section id="hero" className="hero" data-section>
-          <div className="hero__bg" aria-hidden="true">
-            <i />
-            <i />
-            <i />
+          <MouseParallax strength={16} className="hero__drift">
+            <div className="hero__noise" aria-hidden="true" />
+          </MouseParallax>
+          <MouseParallax strength={-10} className="hero__drift">
+            <div className="hero__band" aria-hidden="true" />
+          </MouseParallax>
+
+          {/* corner metadata — the composition frame */}
+          <div className="hero__corner hero__corner--tr">
+            <span className="meta">INDEPENDENT DIGITAL STUDIO</span>
+            <span className="meta">MONOR / HUNGARY — 2026</span>
           </div>
-          <Suspense fallback={null}>
-            <div className="hero__3d">
-              <Hero3D />
-            </div>
-          </Suspense>
-          <div className="hero__inner">
-            <span className="hero__eyebrow">
-              <Scramble text="DAEKON® — PRÉMIUM WEB STUDIO" speed={20} />
-            </span>
-            <h1 className="hero__title">
-              <Lines
-                lines={[
-                  { text: "WEBOLDALAK," },
-                  { text: "AMIKRE" },
-                  { text: "FELFIGYELNEK." },
-                ]}
-              />
-            </h1>
-            <p className="hero__lede">
-              Egyedi, prémium weboldalak vállalkozásoknak — látvány, teljesítmény
-              és mobiloptimalizálás egy rendszerben.
-            </p>
-            <div className="hero__actions">
-              <Magnetic>
-                <a className="btn btn--primary" href="#munkak">
-                  Munkáim <span className="arr">→</span>
-                </a>
-              </Magnetic>
-              <Magnetic>
-                <a className="btn btn--outline" href="#ai-arajanlat">
-                  Weboldalt szeretnék <span className="arr">→</span>
-                </a>
-              </Magnetic>
-            </div>
-          </div>
-          <a className="hero__scroll" href="#manifesto" aria-label="Görgess lejjebb">
-            <span className="hero__scroll-line" aria-hidden="true" />
-            GÖRGETÉS
-          </a>
-        </section>
 
-        <Marquee items={TICKER} />
+          {/* the centerpiece: typography past the container */}
+          <h1 className="hero__title">
+            <Lines
+              lines={[
+                { text: "DIGITAL" },
+                { text: "EXPERIENCES", className: "outline" },
+              ]}
+            />
+          </h1>
 
-        {/* ----------------------------------------------------- MANIFESTO */}
-        <section id="manifesto" className="section manifesto" aria-label="Kiáltvány">
-          <div className="section__inner">
-            <Reveal>
-              <span className="section-tag">
-                <Scramble text="01 — ELVEK" speed={26} />
-              </span>
-            </Reveal>
-            <h2 className="statement">
-              <Lines
-                lines={[
-                  { text: "NEM SABLONT ÉPÍTÜNK.", className: "dim" },
-                  { text: "DIGITÁLIS JELENLÉTET", className: "accent" },
-                  { text: "ÉPÍTÜNK.", className: "dim" },
-                ]}
-              />
-            </h2>
-            <Reveal delay={250}>
-              <p className="manifesto__note">
-                Minden projekt egyedi rendszer: design, kód és tartalom egy
-                kézből — úgy, ahogy egy prémium studio csinálná. Amit itt látsz,
-                azt én építettem, az első pixeltől az utolsó lekérdezésig.
-              </p>
-            </Reveal>
-          </div>
-        </section>
+          <p className="hero__sub">
+            <DriftWords text="WE BUILD WEBSITES PEOPLE REMEMBER." />
+          </p>
 
-        {/* ------------------------------------------------- SELECTED WORK */}
-        <section id="munkak" className="section work" data-section aria-label="Munkáim">
-          <div className="section__inner">
-            <Reveal>
-              <span className="section-tag">
-                <Scramble text="02 — SELECTED WORK" speed={26} />
-              </span>
-            </Reveal>
-            <h2 className="work__heading">
-              <Lines lines={[{ text: "KIVÁLASZTOTT MUNKÁK" }]} />
-            </h2>
-
-            {PROJECTS.map((p) => (
-              <article
-                key={p.index}
-                className={`work-card${p.flip ? " work-card--flip" : ""}`}
-              >
-                <Reveal className="work-card__cover-wrap">
-                  <Parallax speed={26}>
-                    <div className="work-card__cover">
-                      {p.image ? (
-                        <div className="work-card__imgs">
-                          {p.image.map((img) => (
-                            <img
-                              key={img.src}
-                              src={img.src}
-                              alt={img.alt}
-                              loading="lazy"
-                              style={img.position ? { objectPosition: img.position } : undefined}
-                            />
-                          ))}
-                        </div>
-                      ) : (
-                        <div className="work-card__gen" aria-hidden="true">
-                          <span>{p.ghost}</span>
-                        </div>
-                      )}
-                    </div>
-                  </Parallax>
-                </Reveal>
-                <div className="work-card__meta">
-                  <span className="work-card__index">{p.index}</span>
-                  <h3 className="work-card__title">{p.title}</h3>
-                  <span className="work-card__field">{p.field}</span>
-                  <p className="work-card__desc">{p.desc}</p>
-                  <ul className="work-card__tags" aria-label="Technológiák">
-                    {p.meta.map((m) => (
-                      <li key={m}>{m}</li>
-                    ))}
-                  </ul>
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        {/* -------------------------------------------------- CAPABILITIES */}
-        <section id="szolgaltatasok" className="section caps" data-section aria-label="Szolgáltatások">
-          <div className="section__inner">
-            <Reveal>
-              <span className="section-tag">
-                <Scramble text="03 — CAPABILITIES" speed={26} />
-              </span>
-            </Reveal>
-            <ol className="caps__list">
-              {CAPABILITIES.map((c, i) => (
-                <Reveal as="li" key={c.n} delay={i * 70} className="caps__item">
-                  <span className="caps__num">{c.n}</span>
-                  <div className="caps__body">
-                    <h3 className="caps__title">{c.t}</h3>
-                    <p className="caps__desc">{c.d}</p>
-                  </div>
-                  <span className="caps__arrow" aria-hidden="true">→</span>
-                </Reveal>
-              ))}
-            </ol>
-          </div>
-        </section>
-
-        {/* ------------------------------------------------------- PROCESS */}
-        <section id="folyamat" className="section process-sec" data-section aria-label="Folyamat">
-          <div className="section__inner">
-            <Reveal>
-              <span className="section-tag">
-                <Scramble text="04 — FOLYAMAT" speed={26} />
-              </span>
-            </Reveal>
-            <h2 className="work__heading">
-              <Lines lines={[{ text: "FROM IDEA TO LAUNCH" }]} />
-            </h2>
-            <ProcessProgress>
-              <div className="process-spine" aria-hidden="true">
-                <div className="process-spine__fill" />
-              </div>
-              <ol className="process__list">
-                {PROCESS.map((s, i) => (
-                  <Reveal as="li" key={s.n} delay={i * 60} className={`process__item${i % 2 ? " process__item--right" : ""}`}>
-                    <span className="process__dot" aria-hidden="true" />
-                    <div className="process__body">
-                      <span className="process__num">{s.n}</span>
-                      <h3 className="process__title">{s.t}</h3>
-                      <p className="process__desc">{s.d}</p>
-                    </div>
-                  </Reveal>
-                ))}
-              </ol>
-            </ProcessProgress>
-          </div>
-        </section>
-
-        {/* --------------------------------------------------------- RÓLAM */}
-        <section id="rolam" className="section about" data-section aria-label="Rólam">
-          <div className="section__inner">
-            <Reveal>
-              <span className="section-tag">
-                <Scramble text="05 — RÓLAM" speed={26} />
-              </span>
-            </Reveal>
-            <div className="about__grid">
-              <div className="about__text">
-                <h2 className="about__title">
-                  <Words text="Egy ember, teljes felelősség." />
-                </h2>
-                <p>
-                  A DAEKON nem egy csapatot imitáló ügynökség — egyszemélyes
-                  szakértő vagyok. A design-tól a backendig én csinálom végig:
-                  teljes stack, teljes felelősség, valós tesztekkel ellenőrizve.
-                </p>
-                <p>
-                  Ez a modell nem mindenkinek jó — de ha egyetlen felelős
-                  emberre van szükséged, aki érti a frontendet, a backendet és
-                  az üzleti folyamatot is, pontosan ez az.
-                </p>
-                <ol className="about__timeline">
-                  <li>
-                    <span className="about__year">2011</span>
-                    <div>
-                      <h3>Első weboldalam — 14 évesen</h3>
-                      <p>Saját blog, saját kód — azóta tudom: ez lesz a munkám.</p>
-                    </div>
-                  </li>
-                  <li>
-                    <span className="about__year">MA</span>
-                    <div>
-                      <h3>Éles rendszerek</h3>
-                      <p>Rendelés- és adminrendszerek valós üzletben, teljes stack.</p>
-                    </div>
-                  </li>
-                </ol>
-              </div>
-              <aside className="about__side">
-                <LogoMark size={120} stem="#232733" bowl="#2B50FF" className="about__mark" />
-                <dl className="about__facts">
-                  <div>
-                    <dt>Éles rendszer</dt>
-                    <dd>1</dd>
-                  </div>
-                  <div>
-                    <dt>E2E-vel ellenőrizve</dt>
-                    <dd>100%</dd>
-                  </div>
-                  <div>
-                    <dt>Felelős a stackért</dt>
-                    <dd>1 ember</dd>
-                  </div>
-                </dl>
-              </aside>
-            </div>
-          </div>
-        </section>
-
-        {/* --------------------------------------------------------- OFFER */}
-        <section id="offer" className="section offer" aria-label="Referencia időszak">
-          <div className="section__inner">
-            <Reveal>
-              <span className="section-tag">
-                <Scramble text="06 — OFFER" speed={26} />
-              </span>
-            </Reveal>
-            <h2 className="work__heading">
-              <Lines lines={[{ text: "REFERENCE BUILDING" }, { text: "PERIOD" }]} />
-            </h2>
-            <Reveal delay={200}>
-              <p className="offer__text">
-                Jelenleg korlátozott számú projektet vállalok kedvezményes díjon,
-                hogy további erős referencia-projekteket építsek. Ilyen áron és
-                ilyen figyelemmel később már nem dolgozom — most érdemes beszállni.
-              </p>
-              <Magnetic>
-                <a className="arrow-link" href="#ai-arajanlat">
-                  Becslés kérése <span className="arr">→</span>
-                </a>
-              </Magnetic>
-            </Reveal>
-          </div>
-        </section>
-
-        {/* ------------------------------------------- LIVE PROOF + AI QUOTE */}
-        <section
-          id="ai-arajanlat"
-          className="section quote-sec"
-          data-section
-          aria-label="AI árajánlat és élő rendszerek"
-        >
-          <div className="section__inner">
-            <Reveal>
-              <span className="section-tag">
-                <Scramble text="07 — AZONNALI BECSLÉS" speed={26} />
-              </span>
-            </Reveal>
-            <h2 className="quote-sec__title">
-              <Words text="Mennyibe kerül, amit elképzel?" />
-            </h2>
-            <p className="quote-sec__lede">
-              Írd le a projektet egy-két mondatban — az asszisztens felismeri a
-              funkciókat, és azonnal árat és határidőt ad. Minden a
-              böngésződben marad; egy kattintással elküldheted emailel.
-            </p>
-            <Reveal delay={120}>
-              <QuoteAssistant />
-            </Reveal>
-
-            <Reveal delay={200}>
-              <div className="proof">
-                <span className="proof__tag">EZ AZ OLDAL MAGA IS BIZONYÍTÉK</span>
-                <div className="proof__grid">
-                  <OrderDemo />
-                  <LiveStatusPanel currentSectionId={currentId} />
-                </div>
-              </div>
-            </Reveal>
-          </div>
-        </section>
-
-        {/* ----------------------------------------------------- FINAL CTA */}
-        <section id="kapcsolat" className="final" data-section aria-label="Kapcsolat">
-          <div className="final__inner">
-            <h2 className="final__title">
-              <Lines
-                lines={[
-                  { text: "KÉSZÍTSÜNK VALAMI" },
-                  { text: "EMLÉKEZETEST.", className: "accent" },
-                ]}
-              />
-            </h2>
+          <div className="hero__corner hero__corner--bl">
             <Magnetic>
-              <a
-                className="btn btn--primary final__cta"
-                href="mailto:hello@daekon.hu?subject=Projekt%20megkeres%C3%A9s"
-              >
-                Projekt indítása <span className="arr">→</span>
+              <a className="hero__start" href="#quote">
+                START A PROJECT <span aria-hidden="true">↗</span>
               </a>
             </Magnetic>
-            <span className="final__brand">DAEKON®</span>
+            <span className="meta">©2026 — SCROLL ↓</span>
           </div>
         </section>
-      </main>
 
-      <footer className="footer">
-        <div className="footer__inner">
-          <span className="footer__copy">© {new Date().getFullYear()} DAEKON® — prémium web studio</span>
-          <a className="footer__mail" href="mailto:hello@daekon.hu">
-            hello@daekon.hu
-          </a>
-        </div>
-      </footer>
+        {/* ------------------------------------------------------- WORK */}
+        <section id="work" className="work" data-section>
+          <header className="work__head">
+            <h2 className="work__giant">
+              <Lines lines={[{ text: "SELECTED" }, { text: "WORK", className: "outline" }]} />
+            </h2>
+            <div className="work__headmeta">
+              <span className="meta">01 — PORTFOLIO</span>
+              <span className="meta">4 PROJEKT / 2025–2026</span>
+              <span className="meta">SCROLL ↓</span>
+            </div>
+          </header>
+          {PROJECTS.map((p) => (
+            <ProjectBlock key={p.id} p={p} />
+          ))}
+        </section>
+
+        {/* -------------------------------------------- TYPOGRAPHIC BREAK */}
+        <section className="break" aria-label="Kiáltvány">
+          <h2 className="break__title">
+            <DriftWords text="DESIGN IS NOT DECORATION." />
+          </h2>
+          <p className="break__sub">
+            <DriftWords text="IT'S HOW YOUR BUSINESS IS EXPERIENCED." />
+          </p>
+        </section>
+
+        {/* --------------------------------------------------- SERVICES */}
+        <section id="services" className="services" data-section>
+          <header className="services__head">
+            <span className="meta">02 — SERVICES</span>
+            <h2 className="services__title">CAPABILITIES</h2>
+          </header>
+          <ServicesList />
+        </section>
+
+        {/* ---------------------------------------------------- PROCESS */}
+        <section id="process" className="process" data-section>
+          <header className="process__head">
+            <span className="meta">03 — PROCESS</span>
+            <h2 className="process__title">
+              <Lines lines={[{ text: "FROM IDEA" }, { text: "TO LAUNCH", className: "outline" }]} />
+            </h2>
+          </header>
+          {PROCESS.map((s, i) => (
+            <Reveal key={s.n}>
+              <div className={`step${i % 2 ? " step--alt" : ""}`}>
+                <span className="step__bg" aria-hidden="true">{s.n}</span>
+                <div className="step__body">
+                  <span className="meta">{s.n} / 05</span>
+                  <h3 className="step__t">{s.t}</h3>
+                  <p className="step__h">{s.h}</p>
+                </div>
+              </div>
+            </Reveal>
+          ))}
+        </section>
+
+        {/* ------------------------------------------------------ ABOUT */}
+        <section id="about" className="about" data-section>
+          <div className="about__cols">
+            <div>
+              <span className="meta">04 — ABOUT</span>
+              <h2 className="about__title">
+                <DriftWords text="EGY EMBER. TELJES FELELŐSSÉG." />
+              </h2>
+            </div>
+            <div className="about__text">
+              <p>
+                A DAEKON nem egy csapatot imitáló ügynökség — egyszemélyes
+                szakértő vagyok. A designtól a backendig én csinálom végig:
+                teljes stack, teljes felelősség, valós tesztekkel.
+              </p>
+              <p>
+                Ez a modell nem mindenkinek jó. De ha egyetlen felelős emberre
+                van szükséged, aki érti a frontendet, a backendet és az üzleti
+                folyamatot is — pontosan ez.
+              </p>
+              <ol className="about__tl">
+                <li>
+                  <span className="meta">2011</span>
+                  <p>Első weboldalam, 14 évesen — azóta tudom, ez lesz a munkám.</p>
+                </li>
+                <li>
+                  <span className="meta">MA</span>
+                  <p>Éles rendszerek valós üzletben: rendelés, admin, teljes stack.</p>
+                </li>
+              </ol>
+            </div>
+          </div>
+        </section>
+
+        {/* ------------------------------------------------------ OFFER */}
+        <section id="offer" className="offer">
+          <span className="meta">05 — OFFER</span>
+          <h2 className="offer__title">
+            <Lines lines={[{ text: "REFERENCE" }, { text: "BUILDING PERIOD", className: "outline" }]} />
+          </h2>
+          <p className="offer__text">
+            Jelenleg korlátozott számú projektet vállalok kedvezményes díjon,
+            hogy további erős referencia-projekteket építsek.
+          </p>
+          <Magnetic>
+            <a className="offer__link" href="#quote">BECSLÉS KÉRÉSE <span aria-hidden="true">↗</span></a>
+          </Magnetic>
+        </section>
+
+        {/* --------------------------------------------- QUOTE + PROOF */}
+        <section id="quote" className="quote" data-section>
+          <div className="quote__head">
+            <span className="meta">06 — INSTANT ESTIMATE</span>
+            <h2 className="quote__title">
+              <DriftWords text="MENNYIBE KERÜL, AMIT ELKÉPZEL?" />
+            </h2>
+            <p className="quote__lede">
+              Írd le a projektet — az asszisztens felismeri a funkciókat, és
+              azonnal árat, határidőt ad. Minden a böngésződben marad.
+            </p>
+          </div>
+          <Reveal>
+            <QuoteAssistant />
+          </Reveal>
+          <Suspense fallback={null}>
+            <QuoteProof currentId={currentId} />
+          </Suspense>
+        </section>
+
+        {/* -------------------------------------------------- FINAL CTA */}
+        <section id="contact" className="final" data-section>
+          <span className="meta">HAVE A PROJECT IN MIND?</span>
+          <h2 className="final__title">
+            <Lines lines={[{ text: "LET'S" }, { text: "BUILD" }]} />
+            <span className="final__something">
+              <MouseParallax strength={44}>
+                <span className="outline">SOMETHING.</span>
+              </MouseParallax>
+            </span>
+          </h2>
+          <Magnetic>
+            <a
+              className="final__cta"
+              href="mailto:hello@daekon.hu?subject=Projekt%20megkeres%C3%A9s"
+              data-cursor="SEND MAIL ↗"
+            >
+              PROJEKT INDÍTÁSA <span aria-hidden="true">↗</span>
+            </a>
+          </Magnetic>
+
+          <footer className="colophon">
+            <span className="colophon__brand">DAEKON®</span>
+            <span className="meta">WEB DESIGN &amp; DEVELOPMENT</span>
+            <span className="meta">MONOR / HUNGARY</span>
+            <a className="colophon__mail" href="mailto:hello@daekon.hu" data-cursor="SEND MAIL ↗">
+              EMAIL — HELLO@DAEKON.HU
+            </a>
+            <span className="meta">© 2026 DAEKON</span>
+          </footer>
+        </section>
+      </main>
     </>
   );
 }

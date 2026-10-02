@@ -1,64 +1,18 @@
 /* =========================================================================
-   premium.css — the cinematic finishing layer on the dark canvas.
-   Film grain, glass navigation, precision details. Loaded after App.css.
+   premium.css — finishing layer. Film grain, nothing else: the composition
+   lives in App.css, the motion in fx.css.
    ========================================================================= */
 
-/* ---- film grain over everything — analog print feel, barely there ---- */
 body::after {
   content: "";
   position: fixed;
   inset: 0;
   z-index: 999;
   pointer-events: none;
-  opacity: 0.032;
+  opacity: 0.03;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
 }
 
-/* ---------------------------------------------------------------------
-   Navigation — dark glass, precise
-   --------------------------------------------------------------------- */
-
-.statusbar {
-  background: rgba(5, 6, 10, 0.72);
-  backdrop-filter: blur(18px) saturate(1.4);
-  border-bottom: 1px solid var(--border);
-}
-
-.sysnav__link:hover {
-  background: rgba(242, 241, 238, 0.05);
-}
-.sysnav__dot.is-current,
-.mobilenav__dot.is-current {
-  border-color: var(--blue-bright);
-  background: var(--blue-bright);
-  box-shadow: 0 0 0 3px rgba(77, 107, 255, 0.18);
-}
-
-.mobilenav {
-  background: rgba(5, 6, 10, 0.92) !important;
-  backdrop-filter: blur(18px);
-}
-
-/* mono eyebrow inside the hero reads slightly brighter */
-.hero__eyebrow .scramble {
-  color: rgba(242, 241, 238, 0.55);
-}
-
-/* ---------------------------------------------------------------------
-   Statement lines — violet whisper on the accent line
-   --------------------------------------------------------------------- */
-
-.statement .accent {
-  text-shadow: 0 0 60px rgba(77, 107, 255, 0.35);
-}
-
-/* selection + focus tuned for the dark canvas are in tokens.css */
-
-/* ---------------------------------------------------------------------
-   Reduced motion — kill decorative layers entirely
-   --------------------------------------------------------------------- */
-
 @media (prefers-reduced-motion: reduce) {
   body::after { opacity: 0.02; }
-  .cursor-glow { display: none; }
 }

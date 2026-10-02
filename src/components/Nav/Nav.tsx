@@ -1,96 +1,88 @@
-import { useClock } from "../../hooks/useClock";
-import { useScrollSpy } from "../../hooks/useScrollSpy";
+import { useEffect, useState } from "react";
 import { LogoLockup } from "../../brand/Logo";
 import "./Nav.css";
 
-export interface NavItem {
-  id: string;
-  label: string;
-  mobileLabel: string;
-}
-
-export const NAV_ITEMS: NavItem[] = [
-  { id: "hero", label: "DAEKON®", mobileLabel: "D" },
-  { id: "munkak", label: "MUNKÁIM", mobileLabel: "Munkák" },
-  { id: "szolgaltatasok", label: "SZOLGÁLTATÁSOK", mobileLabel: "Szolg." },
-  { id: "folyamat", label: "FOLYAMAT", mobileLabel: "Folyamat" },
-  { id: "rolam", label: "RÓLAM", mobileLabel: "Rólam" },
-  { id: "kapcsolat", label: "KAPCSOLAT", mobileLabel: "Kapcs." },
+const LINKS = [
+  { id: "work", label: "WORK" },
+  { id: "services", label: "SERVICES" },
+  { id: "about", label: "ABOUT" },
+  { id: "contact", label: "CONTACT" },
 ];
 
-const SECTION_IDS = NAV_ITEMS.map((item) => item.id);
+export function Nav() {
+  const [scrolled, setScrolled] = useState(false);
+  const [open, setOpen] = useState(false);
 
-interface NavProps {
-  onNavigate?: (sectionId: string) => void;
-}
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
-export function Nav({ onNavigate }: NavProps) {
-  const { currentId, visited } = useScrollSpy(SECTION_IDS, "hero");
-  const clock = useClock();
-
-  function handleClick(id: string) {
-    onNavigate?.(id);
-  }
+  useEffect(() => {
+    document.documentElement.style.overflow = open ? "hidden" : "";
+    return () => {
+      document.documentElement.style.overflow = "";
+    };
+  }, [open]);
 
   return (
     <>
-      <header className="statusbar" id="statusbar">
-        <div className="statusbar__inner">
-          <a className="wordmark" href="#hero" onClick={() => handleClick("hero")}>
-            <LogoLockup height={30} stem="#F2F1EE" bowl="#2B50FF" text="#F2F1EE" />
-            <span className="wordmark__tag">prémium web studio</span>
-          </a>
+      <header className={`nav${scrolled ? " is-scrolled" : ""}`}>
+        <a className="nav__brand" href="#hero" onClick={() => setOpen(false)}>
+          <LogoLockup height={24} stem="#F2F1EE" bowl="#2B50FF" text="#F2F1EE" />
+        </a>
 
-          <nav className="sysnav" aria-label="Fő navigáció">
-            <ol className="sysnav__list" role="list">
-              {NAV_ITEMS.map((item) => {
-                const isCurrent = item.id === currentId;
-                const isVisited = visited.has(item.id) && !isCurrent;
-                return (
-                  <li className="sysnav__item" key={item.id}>
-                    <a
-                      className="sysnav__link"
-                      href={`#${item.id}`}
-                      aria-current={isCurrent ? "true" : "false"}
-                      onClick={() => handleClick(item.id)}
-                    >
-                      <span
-                        className={`sysnav__dot${isCurrent ? " is-current" : ""}${isVisited ? " is-visited" : ""}`}
-                      />
-                      <span className="sysnav__label">{item.label}</span>
-                    </a>
-                  </li>
-                );
-              })}
-            </ol>
-          </nav>
+        <nav className="nav__links" aria-label="Fő navigáció">
+          {LINKS.map((l) => (
+            <a key={l.id} className="nav__link" href={`#${l.id}`}>
+              {l.label}
+            </a>
+          ))}
+        </nav>
 
-          <div className="statusbar__clock" aria-hidden="true">
-            <span>{clock}</span>
-          </div>
-        </div>
+        <a className="nav__cta" href="#quote">
+          START A PROJECT <span aria-hidden="true">↗</span>
+        </a>
+
+        <button
+          type="button"
+          className={`nav__burger${open ? " is-open" : ""}`}
+          aria-expanded={open}
+          aria-label={open ? "Menü bezárása" : "Menü megnyitása"}
+          onClick={() => setOpen((o) => !o)}
+        >
+          <i />
+          <i />
+        </button>
       </header>
 
-      <nav className="mobilenav" aria-label="Fő navigáció (mobil)">
-        {NAV_ITEMS.map((item) => {
-          const isCurrent = item.id === currentId;
-          const isVisited = visited.has(item.id) && !isCurrent;
-          return (
+      <div className={`nav-overlay${open ? " is-open" : ""}`} aria-hidden={!open}>
+        <nav aria-label="Mobil navigáció">
+          {LINKS.map((l, i) => (
             <a
-              className="mobilenav__item"
-              key={item.id}
-              href={`#${item.id}`}
-              aria-current={isCurrent ? "true" : "false"}
-              onClick={() => handleClick(item.id)}
+              key={l.id}
+              className="nav-overlay__link"
+              style={{ "--i": i } as React.CSSProperties}
+              href={`#${l.id}`}
+              onClick={() => setOpen(false)}
+              tabIndex={open ? 0 : -1}
             >
-              <span
-                className={`mobilenav__dot${isCurrent ? " is-current" : ""}${isVisited ? " is-visited" : ""}`}
-              />
-              <span className="mobilenav__label">{item.mobileLabel}</span>
+              {l.label}
             </a>
-          );
-        })}
-      </nav>
+          ))}
+        </nav>
+        <a
+          className="nav-overlay__cta"
+          style={{ "--i": LINKS.length } as React.CSSProperties}
+          href="#quote"
+          onClick={() => setOpen(false)}
+          tabIndex={open ? 0 : -1}
+        >
+          START A PROJECT ↗
+        </a>
+      </div>
     </>
   );
 }

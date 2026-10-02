@@ -1,7 +1,8 @@
 /* =========================================================================
-   fx.tsx — animation toolkit (see styles/fx.css).
-   Slow, weighted, cinematic motion; everything degrades gracefully under
-   prefers-reduced-motion.
+   fx.tsx — motion toolkit for the editorial redesign.
+   Custom cursor with hover labels, drift-in words, mouse parallax layers,
+   line-mask reveals, magnetic buttons. Everything is transform/opacity
+   only (rAF-lerped) and fully disabled under prefers-reduced-motion.
    ========================================================================= */
 import {
   useEffect,
@@ -38,7 +39,7 @@ export function useInView<T extends HTMLElement>(threshold = 0.18) {
           }
         }
       },
-      { threshold, rootMargin: "0px 0px -8% 0px" },
+      { threshold, rootMargin: "0px 0px -6% 0px" },
     );
     io.observe(el);
     return () => io.disconnect();
@@ -46,7 +47,137 @@ export function useInView<T extends HTMLElement>(threshold = 0.18) {
   return { ref, inView };
 }
 
-/* ---- Reveal: fade+rise+deblur when scrolled into view ---- */
+/* ---------------------------------------------------------------------
+   Cursor — minimal studio cursor: a dot + trailing ring. Elements with
+   [data-cursor="label"] grow the ring and render the label inside it.
+   The native cursor stays (usability), this is an additive layer.
+   --------------------------------------------------------------------- */
+export function Cursor() {
+  const dot = useRef<HTMLDivElement>(null);
+  const ring = useRef<HTMLDivElement>(null);
+  const [label, setLabel] = useState("");
+  const [active, setActive] = useState(false);
+
+  useEffect(() => {
+    if (!window.matchMedia("(pointer: fine)").matches) return;
+    if (prefersReducedMotion()) return;
+    let tx = -100, ty = -100, rx = -100, ry = -100, raf = 0;
+    const move = (e: PointerEvent) => {
+      tx = e.clientX;
+      ty = e.clientY;
+      const t = (e.target as HTMLElement)?.closest?.("[data-cursor]");
+      const l = t?.getAttribute("data-cursor") ?? "";
+      setLabel(l && l !== "true" ? l : "");
+      setActive(!!t);
+    };
+    const loop = () => {
+      rx += (tx - rx) * 0.16;
+      ry += (ty - ry) * 0.16;
+      if (dot.current) dot.current.style.transform = `translate(${tx}px, ${ty}px)`;
+      if (ring.current) ring.current.style.transform = `translate(${rx}px, ${ry}px)`;
+      raf = requestAnimationFrame(loop);
+    };
+    window.addEventListener("pointermove", move, { passive: true });
+    raf = requestAnimationFrame(loop);
+    return () => {
+      window.removeEventListener("pointermove", move);
+      cancelAnimationFrame(raf);
+    };
+  }, []);
+
+  return (
+    <div className="cursor" aria-hidden="true">
+      <div ref={dot} className="cursor__dot" />
+      <div ref={ring} className={`cursor__ring${active ? " is-active" : ""}`}>
+        <span className="cursor__label">{label}</span>
+      </div>
+    </div>
+  );
+}
+
+/* ---------------------------------------------------------------------
+   DriftWords — each word drifts into place from an alternating
+   direction (left / right / below) as the block enters the viewport.
+   --------------------------------------------------------------------- */
+export function DriftWords({
+  text,
+  className = "",
+  as: Tag = "div",
+}: {
+  text: string;
+  className?: string;
+  as?: "div" | "h1" | "h2" | "p" | "span";
+}) {
+  const { ref, inView } = useInView<HTMLDivElement>(0.24);
+  const dirs = ["l", "r", "b"] as const;
+  let i = 0;
+  return (
+    <Tag
+      ref={ref as never}
+      className={`drift${inView ? " is-visible" : ""} ${className}`.trim()}
+    >
+      {text.split(" ").map((w, k) => {
+        const dir = dirs[i++ % 3];
+        return (
+          <span className="drift__mask" key={k}>
+            <span className="drift__word" data-dir={dir} style={{ "--d": `${k * 55}ms` } as CSSProperties}>
+              {w}
+            </span>
+          </span>
+        );
+      })}
+    </Tag>
+  );
+}
+
+/* ---------------------------------------------------------------------
+   MouseParallax — a layer that leans subtly toward/away from the cursor.
+   strength: max px offset.
+   --------------------------------------------------------------------- */
+export function MouseParallax({
+  children,
+  strength = 22,
+  className = "",
+}: {
+  children: ReactNode;
+  strength?: number;
+  className?: string;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || prefersReducedMotion()) return;
+    if (!window.matchMedia("(pointer: fine)").matches) return;
+    let tx = 0, ty = 0, x = 0, y = 0, raf = 0;
+    const move = (e: PointerEvent) => {
+      const nx = (e.clientX / window.innerWidth) * 2 - 1;
+      const ny = (e.clientY / window.innerHeight) * 2 - 1;
+      tx = nx * strength;
+      ty = ny * strength;
+    };
+    const loop = () => {
+      x += (tx - x) * 0.06;
+      y += (ty - y) * 0.06;
+      el.style.transform = `translate3d(${x.toFixed(2)}px, ${y.toFixed(2)}px, 0)`;
+      raf = requestAnimationFrame(loop);
+    };
+    window.addEventListener("pointermove", move, { passive: true });
+    raf = requestAnimationFrame(loop);
+    return () => {
+      window.removeEventListener("pointermove", move);
+      cancelAnimationFrame(raf);
+    };
+  }, [strength]);
+  return (
+    <div ref={ref} className={`mpar ${className}`.trim()}>
+      {children}
+    </div>
+  );
+}
+
+/* ---------------------------------------------------------------------
+   Reveal — quiet fade/rise for small elements (metadata, paragraphs)
+   --------------------------------------------------------------------- */
 export function Reveal({
   children,
   delay = 0,
@@ -70,8 +201,9 @@ export function Reveal({
   );
 }
 
-/* ---- Lines: display headlines rising out of overflow masks, line by line.
-       Each entry: { text, className? } — className e.g. "dim" / "accent". */
+/* ---------------------------------------------------------------------
+   Lines — display headlines rising out of overflow masks, line by line.
+   --------------------------------------------------------------------- */
 export function Lines({
   lines,
   className = "",
@@ -98,10 +230,12 @@ export function Lines({
   );
 }
 
-/* ---- Parallax: gentle scroll-driven drift (speed in px at full viewport) ---- */
+/* ---------------------------------------------------------------------
+   Parallax — gentle vertical scroll drift for images/media.
+   --------------------------------------------------------------------- */
 export function Parallax({
   children,
-  speed = 40,
+  speed = 30,
   className = "",
 }: {
   children: ReactNode;
@@ -118,7 +252,7 @@ export function Parallax({
       const r = el.getBoundingClientRect();
       const vh = window.innerHeight;
       if (r.bottom < -200 || r.top > vh + 200) return;
-      const p = (r.top + r.height / 2 - vh / 2) / vh; // -0.5..0.5-ish
+      const p = (r.top + r.height / 2 - vh / 2) / vh;
       el.style.transform = `translate3d(0, ${(p * speed).toFixed(2)}px, 0)`;
     };
     const onScroll = () => {
@@ -140,54 +274,19 @@ export function Parallax({
   );
 }
 
-/* ---- ProcessProgress: fills the process spine (0→1) as it crosses the view ---- */
-export function ProcessProgress({ children }: { children: ReactNode }) {
-  const ref = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    if (prefersReducedMotion()) {
-      el.style.setProperty("--fill", "1");
-      return;
-    }
-    let raf = 0;
-    const update = () => {
-      raf = 0;
-      const r = el.getBoundingClientRect();
-      const vh = window.innerHeight;
-      const p = Math.min(1, Math.max(0, (vh * 0.78 - r.top) / (r.height || 1)));
-      el.style.setProperty("--fill", p.toFixed(3));
-    };
-    const onScroll = () => {
-      if (!raf) raf = requestAnimationFrame(update);
-    };
-    update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-      if (raf) cancelAnimationFrame(raf);
-    };
-  }, []);
-  return (
-    <div ref={ref} className="process">
-      {children}
-    </div>
-  );
-}
-
-/* ---- Scramble: decode-in text effect (runs once, when visible) ---- */
+/* ---------------------------------------------------------------------
+   Scramble — decode-in for mono metadata
+   --------------------------------------------------------------------- */
 const GLYPHS = "01<>[]{}/\\|=+*#ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-export function Scramble({ text, speed = 28 }: { text: string; speed?: number }) {
+export function Scramble({ text, speed = 26 }: { text: string; speed?: number }) {
   const { ref, inView } = useInView<HTMLSpanElement>(0.4);
   const [display, setDisplay] = useState(text);
   const reduced = useRef(prefersReducedMotion());
 
   useEffect(() => {
     if (!inView) return;
-    if (reduced.current) return; // keep static
+    if (reduced.current) return;
     let frame = 0;
     let raf = 0;
     const total = text.length;
@@ -213,7 +312,9 @@ export function Scramble({ text, speed = 28 }: { text: string; speed?: number })
   );
 }
 
-/* ---- Magnetic: element leans toward the pointer ---- */
+/* ---------------------------------------------------------------------
+   Magnetic — element leans toward the pointer
+   --------------------------------------------------------------------- */
 export function Magnetic({ children }: { children: ReactNode }) {
   const ref = useRef<HTMLSpanElement>(null);
   const reduced = useRef(prefersReducedMotion());
@@ -225,7 +326,7 @@ export function Magnetic({ children }: { children: ReactNode }) {
       const r = el.getBoundingClientRect();
       const dx = e.clientX - (r.left + r.width / 2);
       const dy = e.clientY - (r.top + r.height / 2);
-      el.style.transform = `translate(${dx * 0.18}px, ${dy * 0.22}px)`;
+      el.style.transform = `translate(${dx * 0.16}px, ${dy * 0.2}px)`;
     };
     const reset = () => {
       el.style.transform = "";
@@ -245,75 +346,9 @@ export function Magnetic({ children }: { children: ReactNode }) {
   );
 }
 
-/* ---- Marquee: quiet capability ticker ---- */
-export function Marquee({ items }: { items: string[] }) {
-  const row = items.map((item, i) => (
-    <span className="marquee__item" key={i} aria-hidden={i > 0 || undefined}>
-      {item}
-    </span>
-  ));
-  return (
-    <div className="marquee" aria-label="Képességek">
-      <div className="marquee__track" role="presentation">
-        {row}
-        {items.map((item, i) => (
-          <span className="marquee__item" key={`b-${i}`} aria-hidden="true">
-            {item}
-          </span>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-/* ---- Words: word-by-word entrance for display headlines ---- */
-export function Words({ text }: { text: string }) {
-  const words = text.split(" ");
-  return (
-    <span className="words">
-      {words.map((w, i) => (
-        <span key={i} className="w" style={{ "--i": i } as CSSProperties}>
-          {w}{" "}
-        </span>
-      ))}
-    </span>
-  );
-}
-
-/* ---- CursorGlow: cool studio light following the pointer (desktop only) ---- */
-export function CursorGlow() {
-  const ref = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    if (!window.matchMedia("(pointer: fine)").matches) return;
-    if (prefersReducedMotion()) return;
-    let tx = window.innerWidth / 2;
-    let ty = window.innerHeight / 3;
-    let x = tx;
-    let y = ty;
-    let raf = 0;
-    const move = (e: PointerEvent) => {
-      tx = e.clientX;
-      ty = e.clientY;
-    };
-    const loop = () => {
-      x += (tx - x) * 0.1;
-      y += (ty - y) * 0.1;
-      el.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%)`;
-      raf = requestAnimationFrame(loop);
-    };
-    window.addEventListener("pointermove", move, { passive: true });
-    raf = requestAnimationFrame(loop);
-    return () => {
-      window.removeEventListener("pointermove", move);
-      cancelAnimationFrame(raf);
-    };
-  }, []);
-  return <div ref={ref} className="cursor-glow" aria-hidden="true" />;
-}
-
-/* ---- ScrollProgress: hairline electric progress bar ---- */
+/* ---------------------------------------------------------------------
+   ScrollProgress — hairline top bar
+   --------------------------------------------------------------------- */
 export function ScrollProgress() {
   const [p, setP] = useState(0);
   useEffect(() => {

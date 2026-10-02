@@ -5,12 +5,12 @@
    ========================================================================= */
 
 :root {
-  /* canvas */
-  --bg-0: #05060a;
-  --bg-1: #090b11;
-  --bg-2: #0e1119;
-  --bg-3: #141826;
-  --bg-4: #1b2133;
+  /* canvas — pure editorial black */
+  --bg-0: #050505;
+  --bg-1: #0a0a0c;
+  --bg-2: #101014;
+  --bg-3: #16161c;
+  --bg-4: #1d1d24;
 
   --border: rgba(242, 241, 238, 0.08);
   --border-strong: rgba(242, 241, 238, 0.18);
@@ -34,9 +34,9 @@
   --font-sans: "Satoshi", "Archivo", -apple-system, "Segoe UI", sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
 
-  --radius: 6px;
-  --radius-lg: 18px;
-  --statusbar-h: 72px;
+  --radius: 2px;
+  --radius-lg: 6px;
+  --statusbar-h: 64px;
   --mobilenav-h: 64px;
   --safe-bottom: env(safe-area-inset-bottom, 0px);
 
@@ -52,6 +52,10 @@
 * { box-sizing: border-box; }
 
 html { scroll-behavior: smooth; }
+html, body { overflow-x: clip; }
+@supports not (overflow-x: clip) {
+  html, body { overflow-x: hidden; }
+}
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
 }
