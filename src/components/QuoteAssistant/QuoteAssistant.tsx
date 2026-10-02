@@ -120,14 +120,7 @@ export function QuoteAssistant() {
                   </div>
                   <ul className="qchat__features">
                     {result.features.map((f) => (
-                      <li key={f.id}>
-                        <span>{f.label}</span>
-                        <em>
-                          {f.recurring
-                            ? `${formatFt(f.min)}–${formatFt(f.max)} Ft/hó`
-                            : `${formatFt(f.min)}–${formatFt(f.max)} Ft`}
-                        </em>
-                      </li>
+                      <li key={f.id}>{f.label}</li>
                     ))}
                   </ul>
                   <p className="qchat__note">
