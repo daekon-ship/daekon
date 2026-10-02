@@ -12,7 +12,6 @@ import {
 import { BrandMark } from "./brand/Logo";
 import { QuoteAssistant } from "./components/QuoteAssistant/QuoteAssistant";
 import { useScrollSpy } from "./hooks/useScrollSpy";
-import kiosz01 from "./assets/img/kiosz-01.jpg";
 import kiosz04 from "./assets/img/kiosz-04.jpg";
 import "./App.css";
 
@@ -25,11 +24,10 @@ type Project = {
   title: string;
   sub: string;
   year: string;
-  tags: string[];
-  desc: string;
-  variant: "photo" | "blue" | "paper" | "ink";
-  img?: { src: string; alt: string; position?: string };
-  img2?: { src: string; alt: string };
+  tech: string[];
+  live?: boolean;
+  url?: string;
+  thumb?: { src: string; alt: string };
 };
 
 const PROJECTS: Project[] = [
@@ -38,38 +36,31 @@ const PROJECTS: Project[] = [
     title: "KIOSZ",
     sub: "PIZZA NAPOLETANA",
     year: "2026",
-    tags: ["WEBOLDAL", "FEJLESZTÉS", "RENDELÉSRENDSZER"],
-    desc: "Teljes márkázott vendéglátó-rendszer: online rendelés valós nyomkövetővel, tablet-first admin, 192 fotós galéria — élesben fut, E2E tesztelve.",
-    variant: "photo",
-    img: { src: kiosz04, alt: "Fekete-fehér pillanatkép: a pizzaszakács feldobja a tésztát." },
-    img2: { src: kiosz01, alt: "Frissen sült margherita a KIOSZ asztalán." },
+    tech: ["REACT", "TYPESCRIPT", "VITE", "PHP 8", "MYSQL"],
+    live: true,
+    url: "https://kioszpizza.hu/",
+    thumb: { src: kiosz04, alt: "Fekete-fehér pillanatkép a KIOSZ konyhájából." },
   },
   {
     num: "002",
     title: "VAD-LAK",
     sub: "GENERÁLKIVITELEZÉS",
     year: "2026",
-    tags: ["WEBOLDAL", "FEJLESZTÉS ALATT"],
-    desc: "Vállalkozói weboldal egyedi designnal és tartalomkezeléssel — valós ügyfél, fejlesztés alatt.",
-    variant: "blue",
+    tech: ["REACT", "TYPESCRIPT", "VITE"],
   },
   {
     num: "003",
     title: "ÉPÜLETES MEDENCE",
-    sub: "MEDENCE — SZOLGÁLTATÁS",
+    sub: "SZOLGÁLTATÁS",
     year: "2026",
-    tags: ["WEBOLDAL", "BEMUTATKOZÓ", "SEBESSÉG"],
-    desc: "Szolgáltatói jelenlét gyors, mobiloptimalizált felülettel és ajánlatkérő folyamattal.",
-    variant: "paper",
+    tech: ["HTML", "CSS", "JAVASCRIPT"],
   },
   {
     num: "004",
     title: "ROVARIRTÓ FIÚK",
     sub: "SZOLGÁLTATÓ VÁLLALKOZÁS",
     year: "2026",
-    tags: ["SEO", "KONVERZIÓ", "MOBIL"],
-    desc: "Keresőre optimalizált szolgáltatói oldal, amely a beérkező hívásokra épít.",
-    variant: "ink",
+    tech: ["HTML", "CSS", "JAVASCRIPT", "SEO"],
   },
 ];
 
@@ -89,30 +80,42 @@ const PROCESS = [
   { n: "05", t: "ÉLESÍTÉS", h: "Indítás, mérés, gondozás utána is." },
 ];
 
-function ProjectBlock({ p }: { p: Project }) {
-  return (
-    <Reveal className={`poster poster--${p.variant}`}>
-      <span className="poster__num" aria-hidden="true">{p.num}</span>
-      <div className="poster__media">
-        {p.img ? (
-          <>
-            <img className="poster__img" src={p.img.src} alt={p.img.alt} loading="lazy" style={p.img.position ? { objectPosition: p.img.position } : undefined} />
-            {p.img2 && <img className="poster__img poster__img--b" src={p.img2.src} alt={p.img2.alt} loading="lazy" />}
-          </>
-        ) : (
-          <span className="poster__bigword" aria-hidden="true">{p.title}</span>
-        )}
+function ReferenceCard({ p }: { p: Project }) {
+  const body = (
+    <>
+      <div className="refs__top">
+        <span className="refs__num">{p.num}</span>
+        <span className="refs__state">
+          {p.live ? (
+            <>
+              <i className="refs__dot" aria-hidden="true" />ÉLŐ
+            </>
+          ) : (
+            "HAMAROSAN"
+          )}
+        </span>
       </div>
-      <div className="poster__info">
-        <span className="meta">PROJEKT / {p.num} — {p.year}</span>
-        <h3 className="poster__title">
-          <Lines lines={[{ text: p.title }]} />
-        </h3>
-        <span className="poster__sub">{p.sub}</span>
-        <p className="poster__desc">{p.desc}</p>
-        <ul className="poster__tags">{p.tags.map((t) => <li key={t}>{t}</li>)}</ul>
-      </div>
-    </Reveal>
+      {p.thumb && <img className="refs__thumb" src={p.thumb.src} alt={p.thumb.alt} loading="lazy" />}
+      <h3 className="refs__name">{p.title}</h3>
+      <span className="refs__sub">{p.sub} — {p.year}</span>
+      <ul className="refs__tech">
+        {p.tech.map((t) => <li key={t}>{t}</li>)}
+      </ul>
+      {p.url && <span className="refs__go" aria-hidden="true">↗</span>}
+    </>
+  );
+  return p.url ? (
+    <a
+      className="refs__card"
+      href={p.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={`${p.title} — élő oldal megnyitása új lapon`}
+    >
+      {body}
+    </a>
+  ) : (
+    <div className="refs__card refs__card--soon">{body}</div>
   );
 }
 
@@ -174,10 +177,19 @@ export function App() {
             <h2 className="work__title">
               <Lines lines={[{ text: "KIVÁLASZTOTT" }, { text: "MUNKÁK", className: "outline" }]} />
             </h2>
-            <span className="meta work__count">01 — PORTFÓLIÓ / 4 PROJEKT</span>
+            <span className="meta work__count">01 — PORTFÓLIÓ / {PROJECTS.length} PROJEKT</span>
           </header>
 
-          {PROJECTS.map((p) => <ProjectBlock key={p.num} p={p} />)}
+          <div className="refs">
+            {PROJECTS.map((p, i) => (
+              <Reveal key={p.num} delay={i * 40} className="refs__cell">
+                <ReferenceCard p={p} />
+              </Reveal>
+            ))}
+          </div>
+          <p className="refs__note">
+            Az index folyamatosan bővül — az élő projektek új lapon nyílnak.
+          </p>
         </section>
 
         {/* -------------------------------------------- INK MANIFESTO */}
