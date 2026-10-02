@@ -20,7 +20,6 @@ import { useClock } from "./hooks/useClock";
 import { BrandMark } from "./brand/Logo";
 import { QuoteAssistant } from "./components/QuoteAssistant/QuoteAssistant";
 import { useScrollSpy } from "./hooks/useScrollSpy";
-import kiosz04 from "./assets/img/kiosz-04.jpg";
 import "./App.css";
 
 const SPY_IDS = ["hero", "work", "services", "process", "about", "quote", "contact"];
@@ -35,7 +34,6 @@ type Project = {
   tech: string[];
   live?: boolean;
   url?: string;
-  thumb?: { src: string; alt: string };
 };
 
 const PROJECTS: Project[] = [
@@ -47,7 +45,6 @@ const PROJECTS: Project[] = [
     tech: ["REACT", "TYPESCRIPT", "VITE", "PHP 8", "MYSQL"],
     live: true,
     url: "https://kioszpizza.hu/",
-    thumb: { src: kiosz04, alt: "Fekete-fehér pillanatkép a KIOSZ konyhájából." },
   },
   {
     num: "002",
@@ -91,7 +88,7 @@ const PROCESS = [
 function ReferenceCard({ p }: { p: Project }) {
   const body = (
     <>
-      {!p.thumb && <span className="refs__ghost" aria-hidden="true">{p.num}</span>}
+      <span className="refs__ghost" aria-hidden="true">{p.num}</span>
       <div className="refs__top">
         <span className="refs__num">{p.num}</span>
         <span className="refs__state">
@@ -104,7 +101,6 @@ function ReferenceCard({ p }: { p: Project }) {
           )}
         </span>
       </div>
-      {p.thumb && <img className="refs__thumb" src={p.thumb.src} alt={p.thumb.alt} loading="lazy" />}
       <h3 className="refs__name">{p.title}</h3>
       <span className="refs__sub">{p.sub} — {p.year}</span>
       <ul className="refs__tech">

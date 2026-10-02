@@ -10,23 +10,25 @@
 
 .brandmark {
   display: inline-flex;
-  align-items: baseline;
-  gap: 0.16em;
-  font-family: var(--font-display);
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  line-height: 1;
+  align-items: center;
+  gap: 0.45em;
   color: var(--ink);
   user-select: none;
 }
-.brandmark__sq {
-  width: 0.28em;
-  height: 0.28em;
-  border-radius: 2px;
-  background: var(--grad);
-  box-shadow: 0 0 12px rgba(77, 107, 255, 0.9);
+.brandmark__logo {
+  display: block;
+  filter: drop-shadow(0 0 10px rgba(77, 107, 255, 0.55));
+}
+.brandmark__word {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1em;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  color: var(--ink);
 }
 .brandmark--inverted { color: var(--text-0); }
+.brandmark--inverted .brandmark__word { color: var(--text-0); }
 
 /* ---------------------------------------------------------------------
    HERO — constellation field, glass chips, gradient headline
@@ -196,8 +198,8 @@
 
 .refs {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
   padding: 0 clamp(20px, 4vw, 48px);
 }
 .refs__cell { display: flex; }
@@ -209,8 +211,9 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 8px;
-  padding: 22px 24px 24px;
+  gap: 7px;
+  min-height: 168px;
+  padding: 18px 18px 50px;
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.02));
@@ -268,14 +271,12 @@
   gap: 12px;
 }
 .refs__num {
-  font-family: var(--font-display);
+  font-family: var(--font-mono);
+  font-size: 11px;
   font-weight: 700;
-  font-size: 20px;
+  letter-spacing: 0.14em;
   line-height: 1;
-  background: var(--grad);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: var(--blue-bright);
 }
 .refs__state {
   display: inline-flex;
@@ -317,40 +318,39 @@
 }
 
 .refs__name {
-  margin-top: 6px;
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(21px, 1.9vw, 27px);
-  line-height: 1.05;
-  letter-spacing: -0.015em;
+  font-size: clamp(16px, 1.35vw, 20px);
+  line-height: 1.08;
+  letter-spacing: -0.01em;
   text-transform: uppercase;
 }
 .refs__sub {
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 700;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--text-2);
 }
 
 .refs__tech {
   list-style: none;
-  margin: 14px 0 0;
+  margin: 12px 0 0;
   margin-top: auto;
-  padding-top: 14px;
+  padding-top: 12px;
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 5px;
 }
 .refs__tech li {
   font-family: var(--font-mono);
-  font-size: 9.5px;
+  font-size: 8.5px;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   border: 1px solid var(--border-strong);
   border-radius: 999px;
-  padding: 5px 10px;
+  padding: 4px 8px;
   color: var(--text-1);
   background: rgba(255, 255, 255, 0.03);
   transition: border-color 180ms var(--ease), color 180ms var(--ease);
@@ -362,9 +362,9 @@
 
 .refs__go {
   position: absolute;
-  right: 20px;
-  bottom: 18px;
-  font-size: 19px;
+  right: 16px;
+  bottom: 14px;
+  font-size: 17px;
   line-height: 1;
   color: var(--cyan);
   transition: transform 240ms var(--ease-out);
@@ -735,6 +735,9 @@
   gap: 22px;
   align-items: start;
 }
+@media (max-width: 1080px) {
+  .refs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
 @media (max-width: 980px) {
   .proof__grid { grid-template-columns: 1fr; }
 }
@@ -818,9 +821,8 @@
   .hero__ctas .btn { width: 100%; }
   .hero__stats { grid-template-columns: 1fr; }
 
-  .refs { grid-template-columns: 1fr; gap: 16px; padding: 0 18px; }
-  .refs__thumb { height: 104px; }
-  .refs__card { padding: 18px 18px 20px; }
+  .refs { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; padding: 0 18px; }
+  .refs__card { min-height: 150px; padding: 15px 15px 46px; }
   .refs__note { padding: 0 18px; }
   .work__head { padding: 0 18px 4vh; }
   .sec-head { padding: 0 18px 4vh; }
