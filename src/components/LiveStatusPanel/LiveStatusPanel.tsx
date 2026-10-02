@@ -4,11 +4,14 @@ import { useScrollTelemetry } from "../../hooks/useScrollTelemetry";
 import "./LiveStatusPanel.css";
 
 const SECTION_LABELS: Record<string, string> = {
-  hero: "Kezdőlap",
-  "ai-arajanlat": "AI árajánlat",
+  hero: "Nyitó",
+  manifesto: "Elvek",
   munkak: "Munkák",
   szolgaltatasok: "Szolgáltatások",
+  folyamat: "Folyamat",
   rolam: "Rólam",
+  offer: "Ajánlat",
+  "ai-arajanlat": "Becslés",
   kapcsolat: "Kapcsolat",
 };
 

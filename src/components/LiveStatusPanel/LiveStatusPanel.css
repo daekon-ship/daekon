@@ -1,7 +1,12 @@
+/* =========================================================================
+   LiveStatusPanel — dark telemetry card.
+   ========================================================================= */
+
 .telemetry {
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background: var(--bg-1);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  background: rgba(14, 17, 25, 0.85);
+  backdrop-filter: blur(12px);
   padding: 20px;
   position: relative;
   transition: border-color var(--dur-fast) var(--ease);

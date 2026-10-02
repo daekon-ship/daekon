@@ -1,0 +1,39 @@
+/* =========================================================================
+   Hero3D — frameless cinematic stage. The sculpture floats free of any
+   card or border, grounded by a faint blue pool of light.
+   ========================================================================= */
+
+.hero3d {
+  position: relative;
+  width: 100%;
+  height: clamp(300px, 44vh, 560px);
+  overflow: visible;
+  isolation: isolate;
+}
+
+.hero3d canvas {
+  cursor: crosshair;
+}
+
+/* faint grounding glow below the sculpture */
+.hero3d::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -6%;
+  width: 72%;
+  height: 30%;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(43, 80, 255, 0.3), transparent 70%);
+  filter: blur(34px);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.hero3d__fallback {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  opacity: 0.9;
+}

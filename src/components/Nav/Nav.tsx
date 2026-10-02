@@ -10,12 +10,12 @@ export interface NavItem {
 }
 
 export const NAV_ITEMS: NavItem[] = [
-  { id: "hero", label: "Kezdőlap", mobileLabel: "Kezdő" },
-  { id: "ai-arajanlat", label: "Árajánlat", mobileLabel: "Árajánlat" },
-  { id: "munkak", label: "Munkák", mobileLabel: "Munkák" },
-  { id: "szolgaltatasok", label: "Szolgáltatások", mobileLabel: "Szolg." },
-  { id: "rolam", label: "Rólam", mobileLabel: "Rólam" },
-  { id: "kapcsolat", label: "Kapcsolat", mobileLabel: "Kapcs." },
+  { id: "hero", label: "DAEKON®", mobileLabel: "D" },
+  { id: "munkak", label: "MUNKÁIM", mobileLabel: "Munkák" },
+  { id: "szolgaltatasok", label: "SZOLGÁLTATÁSOK", mobileLabel: "Szolg." },
+  { id: "folyamat", label: "FOLYAMAT", mobileLabel: "Folyamat" },
+  { id: "rolam", label: "RÓLAM", mobileLabel: "Rólam" },
+  { id: "kapcsolat", label: "KAPCSOLAT", mobileLabel: "Kapcs." },
 ];
 
 const SECTION_IDS = NAV_ITEMS.map((item) => item.id);
@@ -37,8 +37,8 @@ export function Nav({ onNavigate }: NavProps) {
       <header className="statusbar" id="statusbar">
         <div className="statusbar__inner">
           <a className="wordmark" href="#hero" onClick={() => handleClick("hero")}>
-            <LogoLockup height={30} />
-            <span className="wordmark__tag">creative &amp; rendszerfejlesztés</span>
+            <LogoLockup height={30} stem="#F2F1EE" bowl="#2B50FF" text="#F2F1EE" />
+            <span className="wordmark__tag">prémium web studio</span>
           </a>
 
           <nav className="sysnav" aria-label="Fő navigáció">

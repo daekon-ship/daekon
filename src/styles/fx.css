@@ -1,48 +1,68 @@
 /* =========================================================================
-   fx.css — animation toolkit: scroll reveals, scramble, magnetic hover,
-   scroll progress, marquee, glow accents. Respects prefers-reduced-motion.
+   fx.css — motion language. Slow, weighted, cinematic.
+   Reveal = rise + de-blur; masks wipe lines; the process line draws itself.
+   Everything respects prefers-reduced-motion.
    ========================================================================= */
 
-/* ---- scroll reveal (staggered via --fx-delay) ---- */
+/* ---- scroll reveal: rise + de-blur, staggered via --fx-delay ---- */
 .fx-reveal {
   opacity: 0;
-  transform: translateY(28px);
+  transform: translateY(34px);
+  filter: blur(6px);
   transition:
-    opacity 700ms cubic-bezier(0.22, 1, 0.36, 1),
-    transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+    opacity 900ms var(--ease-out),
+    transform 900ms var(--ease-out),
+    filter 900ms var(--ease-out);
   transition-delay: var(--fx-delay, 0ms);
-  will-change: opacity, transform;
+  will-change: opacity, transform, filter;
 }
 .fx-reveal.is-visible {
   opacity: 1;
   transform: none;
+  filter: none;
+}
+
+/* line-mask variant: text rises out of an overflow mask */
+.fx-lines .line-mask {
+  display: block;
+  overflow: hidden;
+}
+.fx-lines .line-mask > span {
+  display: block;
+  transform: translateY(110%);
+  transition: transform 1000ms var(--ease-out);
+  transition-delay: var(--fx-delay, 0ms);
+}
+.fx-lines.is-visible .line-mask > span {
+  transform: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .fx-reveal {
+  .fx-reveal,
+  .fx-lines .line-mask > span {
     opacity: 1;
     transform: none;
+    filter: none;
     transition: none;
   }
 }
 
-/* ---- scramble / decode text ---- */
+/* ---- scramble / decode text (mono readouts) ---- */
 .scramble {
   font-family: var(--font-mono);
   color: var(--text-1);
   font-size: 12px;
   letter-spacing: 0.04em;
 }
-.scramble__chars { color: rgba(22, 54, 231, 0.7); }
 
-/* ---- magnetic button ---- */
+/* ---- magnetic wrapper ---- */
 .magnetic {
   display: inline-block;
-  transition: transform 180ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 200ms var(--ease-out);
   will-change: transform;
 }
 
-/* ---- scroll progress bar ---- */
+/* ---- scroll progress: hairline electric blue ---- */
 .scroll-progress {
   position: fixed;
   top: 0;
@@ -51,42 +71,48 @@
   height: 2px;
   z-index: calc(var(--z-header) + 10);
   pointer-events: none;
-  background: linear-gradient(90deg, var(--state-ready), transparent) 0 0 / var(--p, 0%) 100% no-repeat,
-    var(--bg-2);
-  opacity: 0.9;
+  background: linear-gradient(90deg, var(--blue), var(--blue-bright)) 0 0 /
+    var(--p, 0%) 100% no-repeat;
+  opacity: 0.85;
 }
 
-/* ---- marquee ---- */
+/* ---- whisper marquee: quiet capability ticker ---- */
 .marquee {
   overflow: hidden;
-  background: var(--blue);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
   user-select: none;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  transform: none;
+  box-shadow: none;
 }
 .marquee__track {
   display: flex;
-  gap: 3.5rem;
+  gap: 4rem;
   width: max-content;
-  padding: 18px 0;
-  animation: marquee-scroll 30s linear infinite;
+  padding: 22px 0;
+  animation: marquee-scroll 42s linear infinite;
 }
 .marquee:hover .marquee__track { animation-play-state: paused; }
 .marquee__item {
   display: inline-flex;
   align-items: center;
-  gap: 3.5rem;
+  gap: 4rem;
   font-family: var(--font-mono);
-  font-size: 12px;
-  letter-spacing: 0.14em;
-  color: rgba(255, 255, 255, 0.92);
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  color: var(--text-2);
   white-space: nowrap;
 }
 .marquee__item::after {
   content: "";
-  width: 7px;
-  height: 7px;
-  background: #ffffff;
-  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
-  opacity: 0.85;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--blue);
+  opacity: 0.7;
 }
 @keyframes marquee-scroll {
   from { transform: translateX(0); }
@@ -96,17 +122,92 @@
   .marquee__track { animation: none; }
 }
 
-/* ---- brand accents (blue glow used sparingly on key elements) ---- */
-.glow-line {
-  height: 3px;
-  border: 0;
-  border-radius: 999px;
-  background: linear-gradient(90deg, var(--blue) 0%, rgba(22, 54, 231, 0.25) 60%, transparent 100%);
+/* ---- statement lines: huge display text, dim until scrolled ---- */
+.statement {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(2.6rem, 7.4vw + 0.5rem, 7.2rem);
+  line-height: 1.02;
+  letter-spacing: -0.028em;
+  text-transform: uppercase;
+}
+.statement .dim {
+  color: var(--text-2);
+  transition: color 600ms var(--ease);
+}
+.statement.is-visible .dim { color: var(--text-0); }
+.statement .accent {
+  color: var(--blue-bright);
 }
 
-.tilt {
-  transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1), border-color var(--dur-fast) var(--ease);
-  transform-style: preserve-3d;
-  will-change: transform;
+/* ---- process spine: the electric line that builds with scroll ---- */
+.process-spine {
+  position: absolute;
+  left: 19px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: rgba(242, 241, 238, 0.09);
+  overflow: hidden;
 }
-.tilt:hover { border-color: rgba(22, 54, 231, 0.45); }
+.process-spine__fill {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, var(--blue), var(--blue-bright));
+  transform-origin: top;
+  transform: scaleY(var(--fill, 0));
+  transition: transform 120ms linear;
+  box-shadow: 0 0 18px rgba(77, 107, 255, 0.8);
+}
+@media (min-width: 900px) {
+  .process-spine { left: 50%; margin-left: -1px; }
+}
+
+/* ---- cursor glow: cool studio light on dark ---- */
+.cursor-glow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 640px;
+  height: 640px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1;
+  background: radial-gradient(circle, rgba(77, 107, 255, 0.1), transparent 62%);
+  transform: translate(-50%, -50%);
+  will-change: transform;
+  mix-blend-mode: screen;
+}
+@media (pointer: coarse) {
+  .cursor-glow { display: none; }
+}
+
+/* ---- words entrance ---- */
+.words .w {
+  display: inline-block;
+  margin-right: 0.24em;
+  animation: word-rise 800ms var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 70ms + 120ms);
+}
+@keyframes word-rise {
+  from {
+    opacity: 0;
+    transform: translateY(30px) rotate(1.5deg);
+    filter: blur(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .words .w { animation: none; }
+}
+
+/* ---- glow divider ---- */
+.glow-line {
+  height: 1px;
+  border: 0;
+  background: linear-gradient(90deg, var(--blue) 0%, rgba(77, 107, 255, 0.25) 55%, transparent 100%);
+}

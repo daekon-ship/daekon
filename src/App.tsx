@@ -1,53 +1,111 @@
+import { lazy, Suspense } from "react";
 import { Nav, NAV_ITEMS } from "./components/Nav/Nav";
-import { Panel } from "./components/Panel/Panel";
 import { LiveStatusPanel } from "./components/LiveStatusPanel/LiveStatusPanel";
 import { OrderDemo } from "./components/OrderDemo/OrderDemo";
 
+// heavy — the hero sculpture loads only when the page renders
+const Hero3D = lazy(() =>
+  import("./components/Hero3D/Hero3D").then((m) => ({ default: m.Hero3D })),
+);
 import {
   Reveal,
+  Lines,
+  Parallax,
+  ProcessProgress,
   Scramble,
   Magnetic,
+  Marquee,
   ScrollProgress,
   Words,
   CursorGlow,
 } from "./components/fx/fx";
-import { LogoLockup } from "./brand/Logo";
+import { LogoMark } from "./brand/Logo";
 import { QuoteAssistant } from "./components/QuoteAssistant/QuoteAssistant";
 import { useScrollSpy } from "./hooks/useScrollSpy";
 import kiosz01 from "./assets/img/kiosz-01.jpg";
-import kiosz02 from "./assets/img/kiosz-02.jpg";
 import kiosz03 from "./assets/img/kiosz-03.jpg";
 import kiosz04 from "./assets/img/kiosz-04.jpg";
-import kiosz05 from "./assets/img/kiosz-05-margherita.jpg";
-import kioszLogo from "./assets/img/kiosz-logo.jpg";
 import "./App.css";
 
 const SECTION_IDS = NAV_ITEMS.map((item) => item.id);
 
-const GALLERY: { src: string; alt: string; position?: string }[] = [
+const TICKER = [
+  "EGYEDI WEBFEJLESZTÉS",
+  "RENDELÉSRENDSZEREK",
+  "ADMIN FELÜLETEK",
+  "E-KERESKEDELEM",
+  "SEO",
+  "TELJESÍTMÉNY",
+  "UI/UX",
+];
+
+const PROJECTS: {
+  index: string;
+  title: string;
+  field: string;
+  desc: string;
+  meta: string[];
+  image?: { src: string; alt: string; position?: string }[];
+  ghost: string;
+  flip?: boolean;
+}[] = [
   {
-    src: kiosz01,
-    alt: "Frissen sült margherita pizza bazsalikommal egy kültéri asztalon, mellette egy narancsszeletes koktél és egy zöldsaláta.",
+    index: "01",
+    title: "KIOSZ PIZZA NAPOLETANA",
+    field: "Vendéglátás — rendelési rendszer",
+    desc: "Teljes márkázott rendszer: online rendelés valós nyomkövetővel, tablet-first admin, 192 fotós galéria, Playwright E2E tesztekkel — élesben fut.",
+    meta: ["React + TypeScript", "PHP 8 REST API", "MySQL", "E2E tesztelt"],
+    image: [
+      { src: kiosz01, alt: "Frissen sült pizza a KIOSZ asztalán." },
+      { src: kiosz03, alt: "Esti hangulat a KIOSZ éttermében." },
+      { src: kiosz04, alt: "A pizzaszakács feldobja a tésztát." },
+    ],
+    ghost: "K",
+    flip: false,
   },
   {
-    src: kiosz02,
-    alt: "A KIOSZ belső étkezőtere retro mintás lámpaernyőkkel, mozaikcsempés padlóval, tele vendégekkel.",
+    index: "02",
+    title: "VAD-LAK",
+    field: "Generálkivitelezés",
+    desc: "Vállalkozói weboldal egyedi designnal és tartalomkezeléssel — valós ügyfél, fejlesztés alatt.",
+    meta: ["Egyedi design", "SEO-alapok", "Mobil-first"],
+    ghost: "V",
+    flip: true,
   },
   {
-    src: kiosz03,
-    alt: "Esti hangulat a KIOSZ éttermében, színes fényfüzérekkel és teltházas asztalokkal.",
+    index: "03",
+    title: "ÉPÜLETES MEDENCE",
+    field: "Medence — szolgáltatás",
+    desc: "Szolgáltatói jelenlét gyors, mobiloptimalizált felülettel és ajánlatkérő folyamattal.",
+    meta: ["Landing", "Ajánlatkérés", "Gyorsaság"],
+    ghost: "M",
+    flip: false,
   },
   {
-    src: kiosz04,
-    alt: "Fekete-fehér pillanatkép: a pizzaszakács feldobja a tésztát a levegőbe, a vendégek a háttérben figyelik.",
+    index: "04",
+    title: "ROVARIRTÓFIUK.HU",
+    field: "Szolgáltató vállalkozás",
+    desc: "Keresőre optimalizált szolgáltatói oldal, amely a beérkező hívásokra épít.",
+    meta: ["SEO", "Konverzió", "Mobil"],
+    ghost: "R",
+    flip: true,
   },
-  {
-    src: kiosz05,
-    alt: "Közeli felvétel egy margherita pizzáról bazsalikomlevelekkel, háttérben két koktéllal és egy másik pizzával.",
-    // Portrait source (1400×2100) — a centered crop loses the pizza itself;
-    // bias the frame up so the subject survives the aspect-ratio crop.
-    position: "50% 30%",
-  },
+];
+
+const CAPABILITIES = [
+  { n: "01", t: "EGYEDI DESIGN", d: "Sablon helyett a márkádra épített vizuális rendszer." },
+  { n: "02", t: "MOBILOPTIMALIZÁLÁS", d: "Külön tervezett mobil élmény, nem összenyomott desktop." },
+  { n: "03", t: "SEO-ALAPOK", d: "Szemantikus szerkezet, amit a keresők is szeretnek." },
+  { n: "04", t: "GYORS TELJESÍTMÉNY", d: "Mérésre épülő optimalizálás, valós eszközökön." },
+  { n: "05", t: "EGYEDI FUNKCIÓK", d: "Rendelés, foglalás, admin — amit a munkádnak kell." },
+];
+
+const PROCESS = [
+  { n: "01", t: "STRATÉGIA", d: "Cél, közönség, funkcionalitás — mit szolgál az oldal." },
+  { n: "02", t: "DESIGN", d: "Egyedi vizuális irány, tipográfia, art direction." },
+  { n: "03", t: "FEJLESZTÉS", d: "Tiszta kód, valódi rendszer, nem sablon." },
+  { n: "04", t: "FINOMHANGOLÁS", d: "Teljesítmény, reszponzivitás, részletek csiszolása." },
+  { n: "05", t: "ÉLESÍTÉS", d: "Indítás, mérés, gondozás a launch után is." },
 ];
 
 export function App() {
@@ -64,403 +122,347 @@ export function App() {
       <Nav />
 
       <main>
-        <section id="hero" className="hero-stage" data-section>
-          <div className="hero-stage__bg" aria-hidden="true">
+        {/* ---------------------------------------------------------- HERO */}
+        <section id="hero" className="hero" data-section>
+          <div className="hero__bg" aria-hidden="true">
             <i />
             <i />
             <i />
           </div>
-          <div className="hero-stage__inner">
-            <span className="badge hero-stage__eyebrow">
-              <Scramble text="EGYSZEMÉLYES CREATIVE DEVELOPER" speed={22} />
-            </span>
-            <h1 className="hero-stage__title">
-              <Words text="Ez az oldal nem bemutatja a munkámat — bizonyítja." />
-            </h1>
-            <p className="hero-stage__lede">
-              Egy ember, teljes stack, teljes felelősség. Minden, ami ezen az oldalon
-              mozog — az óra, a rendelés-állapotgép, az AI árajánlat — valós,
-              böngészőben futó kód.
-            </p>
-            <div className="hero-stage__actions">
-              <a className="btn btn--primary" href="#ai-arajanlat">
-                Árajánlat 1 perc alatt
-              </a>
-              <a className="btn btn--ghost btn--ghost-dark" href="#munkak">
-                Munkák megtekintése
-              </a>
+          <Suspense fallback={null}>
+            <div className="hero__3d">
+              <Hero3D />
             </div>
-            <dl className="hero-stage__stats" aria-label="Kulcsadatok">
-              <div className="hero-stage__stat">
-                <dt>Éles rendszer</dt>
-                <dd>1</dd>
-              </div>
-              <div className="hero-stage__stat">
-                <dt>E2E teszttel ellenőrizve</dt>
-                <dd>100%</dd>
-              </div>
-              <div className="hero-stage__stat">
-                <dt>Felelős a stackért</dt>
-                <dd>1 ember</dd>
-              </div>
-            </dl>
+          </Suspense>
+          <div className="hero__inner">
+            <span className="hero__eyebrow">
+              <Scramble text="DAEKON® — PRÉMIUM WEB STUDIO" speed={20} />
+            </span>
+            <h1 className="hero__title">
+              <Lines
+                lines={[
+                  { text: "WEBOLDALAK," },
+                  { text: "AMIKRE" },
+                  { text: "FELFIGYELNEK." },
+                ]}
+              />
+            </h1>
+            <p className="hero__lede">
+              Egyedi, prémium weboldalak vállalkozásoknak — látvány, teljesítmény
+              és mobiloptimalizálás egy rendszerben.
+            </p>
+            <div className="hero__actions">
+              <Magnetic>
+                <a className="btn btn--primary" href="#munkak">
+                  Munkáim <span className="arr">→</span>
+                </a>
+              </Magnetic>
+              <Magnetic>
+                <a className="btn btn--outline" href="#ai-arajanlat">
+                  Weboldalt szeretnék <span className="arr">→</span>
+                </a>
+              </Magnetic>
+            </div>
           </div>
-          <a className="hero-stage__scroll" href="#ai-arajanlat" aria-label="Görgess le az árajánlathoz">
-            <span className="hero-stage__scroll-line" aria-hidden="true" />
+          <a className="hero__scroll" href="#manifesto" aria-label="Görgess lejjebb">
+            <span className="hero__scroll-line" aria-hidden="true" />
             GÖRGETÉS
           </a>
         </section>
 
-        <section
-          id="ai-arajanlat"
-          className="section section--calm section--blue ai-stage"
-          data-section
-          aria-label="AI árajánlat asszisztens"
-        >
+        <Marquee items={TICKER} />
+
+        {/* ----------------------------------------------------- MANIFESTO */}
+        <section id="manifesto" className="section manifesto" aria-label="Kiáltvány">
           <div className="section__inner">
             <Reveal>
-              <div className="ai-stage__intro">
-                <span className="badge">AI ÁRAJÁNLAT — AZONNALI BECSLÉS</span>
-                <h2 className="ai-stage__title">
-                  <Words text="Mennyibe kerül, amit elképzel?" />
+              <span className="section-tag">
+                <Scramble text="01 — ELVEK" speed={26} />
+              </span>
+            </Reveal>
+            <h2 className="statement">
+              <Lines
+                lines={[
+                  { text: "NEM SABLONT ÉPÍTÜNK.", className: "dim" },
+                  { text: "DIGITÁLIS JELENLÉTET", className: "accent" },
+                  { text: "ÉPÍTÜNK.", className: "dim" },
+                ]}
+              />
+            </h2>
+            <Reveal delay={250}>
+              <p className="manifesto__note">
+                Minden projekt egyedi rendszer: design, kód és tartalom egy
+                kézből — úgy, ahogy egy prémium studio csinálná. Amit itt látsz,
+                azt én építettem, az első pixeltől az utolsó lekérdezésig.
+              </p>
+            </Reveal>
+          </div>
+        </section>
+
+        {/* ------------------------------------------------- SELECTED WORK */}
+        <section id="munkak" className="section work" data-section aria-label="Munkáim">
+          <div className="section__inner">
+            <Reveal>
+              <span className="section-tag">
+                <Scramble text="02 — SELECTED WORK" speed={26} />
+              </span>
+            </Reveal>
+            <h2 className="work__heading">
+              <Lines lines={[{ text: "KIVÁLASZTOTT MUNKÁK" }]} />
+            </h2>
+
+            {PROJECTS.map((p) => (
+              <article
+                key={p.index}
+                className={`work-card${p.flip ? " work-card--flip" : ""}`}
+              >
+                <Reveal className="work-card__cover-wrap">
+                  <Parallax speed={26}>
+                    <div className="work-card__cover">
+                      {p.image ? (
+                        <div className="work-card__imgs">
+                          {p.image.map((img) => (
+                            <img
+                              key={img.src}
+                              src={img.src}
+                              alt={img.alt}
+                              loading="lazy"
+                              style={img.position ? { objectPosition: img.position } : undefined}
+                            />
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="work-card__gen" aria-hidden="true">
+                          <span>{p.ghost}</span>
+                        </div>
+                      )}
+                    </div>
+                  </Parallax>
+                </Reveal>
+                <div className="work-card__meta">
+                  <span className="work-card__index">{p.index}</span>
+                  <h3 className="work-card__title">{p.title}</h3>
+                  <span className="work-card__field">{p.field}</span>
+                  <p className="work-card__desc">{p.desc}</p>
+                  <ul className="work-card__tags" aria-label="Technológiák">
+                    {p.meta.map((m) => (
+                      <li key={m}>{m}</li>
+                    ))}
+                  </ul>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        {/* -------------------------------------------------- CAPABILITIES */}
+        <section id="szolgaltatasok" className="section caps" data-section aria-label="Szolgáltatások">
+          <div className="section__inner">
+            <Reveal>
+              <span className="section-tag">
+                <Scramble text="03 — CAPABILITIES" speed={26} />
+              </span>
+            </Reveal>
+            <ol className="caps__list">
+              {CAPABILITIES.map((c, i) => (
+                <Reveal as="li" key={c.n} delay={i * 70} className="caps__item">
+                  <span className="caps__num">{c.n}</span>
+                  <div className="caps__body">
+                    <h3 className="caps__title">{c.t}</h3>
+                    <p className="caps__desc">{c.d}</p>
+                  </div>
+                  <span className="caps__arrow" aria-hidden="true">→</span>
+                </Reveal>
+              ))}
+            </ol>
+          </div>
+        </section>
+
+        {/* ------------------------------------------------------- PROCESS */}
+        <section id="folyamat" className="section process-sec" data-section aria-label="Folyamat">
+          <div className="section__inner">
+            <Reveal>
+              <span className="section-tag">
+                <Scramble text="04 — FOLYAMAT" speed={26} />
+              </span>
+            </Reveal>
+            <h2 className="work__heading">
+              <Lines lines={[{ text: "FROM IDEA TO LAUNCH" }]} />
+            </h2>
+            <ProcessProgress>
+              <div className="process-spine" aria-hidden="true">
+                <div className="process-spine__fill" />
+              </div>
+              <ol className="process__list">
+                {PROCESS.map((s, i) => (
+                  <Reveal as="li" key={s.n} delay={i * 60} className={`process__item${i % 2 ? " process__item--right" : ""}`}>
+                    <span className="process__dot" aria-hidden="true" />
+                    <div className="process__body">
+                      <span className="process__num">{s.n}</span>
+                      <h3 className="process__title">{s.t}</h3>
+                      <p className="process__desc">{s.d}</p>
+                    </div>
+                  </Reveal>
+                ))}
+              </ol>
+            </ProcessProgress>
+          </div>
+        </section>
+
+        {/* --------------------------------------------------------- RÓLAM */}
+        <section id="rolam" className="section about" data-section aria-label="Rólam">
+          <div className="section__inner">
+            <Reveal>
+              <span className="section-tag">
+                <Scramble text="05 — RÓLAM" speed={26} />
+              </span>
+            </Reveal>
+            <div className="about__grid">
+              <div className="about__text">
+                <h2 className="about__title">
+                  <Words text="Egy ember, teljes felelősség." />
                 </h2>
-                <p className="ai-stage__lede">
-                  Írd le a projektet egy-két mondatban — az asszisztens felismeri a
-                  funkciókat, és azonnal árat és határidőt ad. A leírás a
-                  böngésződben marad; ha tetszik az eredmény, egy kattintással
-                  elküldheted emailel.
-                </p>
-              </div>
-              <QuoteAssistant />
-            </Reveal>
-          </div>
-        </section>
-
-        <section className="section" aria-label="Élő rendszerek a böngésződben">
-          <div className="section__inner">
-            <Reveal>
-              <Panel eyebrow="ÉLŐ RENDSZEREK" statusLabel="FUT A BÖNGÉSZŐDBEN" statusTone="ready">
-                <div className="liveproof">
-                  <h2 className="section-heading">Minden, ami itt mozog, valós kód</h2>
-                  <div className="glow-line" role="presentation" />
-                  <p className="liveproof__lede">
-                    Ez az oldal nem statikus portfólió: a rendelés-állapotgép és az
-                    oldalállapot-mérő ugyanazokkal az elvekkel készült, mint egy éles
-                    rendszer. Próbáld ki mindkettőt — most, itt.
-                  </p>
-                  <div className="liveproof__grid">
-                    <OrderDemo />
-                    <LiveStatusPanel currentSectionId={currentId} />
-                  </div>
-                </div>
-              </Panel>
-            </Reveal>
-          </div>
-        </section>
-
-        <section id="munkak" className="section" data-section data-num="01">
-          <div className="section__inner">
-            <Reveal>
-            <Panel eyebrow="PROJEKT — 01" statusLabel="ÉLES RENDSZER" statusTone="ready">
-              <div className="work">
-                <h2 className="work__title">KIOSZ Pizza Napoletana</h2>
-                <p className="work__lede">
-                  Teljes márkázott vendéglátó-rendszer: online rendelés valós
-                  nyomkövetővel és tablet-first admin felület — élesben fut.
-                </p>
-                <ul className="work__stack" aria-label="Milyen rendszer készült">
-                  <li>React + TypeScript</li>
-                  <li>Vite</li>
-                  <li>PHP 8 REST API</li>
-                  <li>MySQL / MariaDB</li>
-                  <li>Playwright E2E</li>
-                </ul>
-
-                <details className="work__details">
-                  <summary>Technikai részletek</summary>
-                <dl className="work__facts">
-                  <div className="work__fact">
-                    <dt>Frontend</dt>
-                    <dd>React + TypeScript + Vite</dd>
-                  </div>
-                  <div className="work__fact">
-                    <dt>Backend</dt>
-                    <dd>PHP 8 + PDO REST API (<code>/api/v1/*</code>, framework nélkül)</dd>
-                  </div>
-                  <div className="work__fact">
-                    <dt>Adatbázis</dt>
-                    <dd>MySQL/MariaDB, számozott migrációkkal</dd>
-                  </div>
-                  <div className="work__fact">
-                    <dt>Tartalom</dt>
-                    <dd>
-                      Content-as-source-of-truth JSON pipeline, amiből egyszerre generálódik
-                      az adatbázis-seed és a frontend adat-tükör
-                    </dd>
-                  </div>
-                  <div className="work__fact">
-                    <dt>Tesztelés</dt>
-                    <dd>
-                      Playwright E2E a valós éles stack ellen (böngészés → extra
-                      hozzáadása → vendég checkout → nyomkövetés → admin elfogadja →
-                      állapot frissül), reszponzív tesztek 360/375/390/412/430 (telefon),
-                      768/820/834/1024 (tablet) és 1440 (desktop) szélességen; PHPUnit
-                      integrációs tesztek valós MariaDB teszt-adatbázis ellen (optimista
-                      zárolás, admin hitelesítés).
-                    </dd>
-                  </div>
-                  <div className="work__fact">
-                    <dt>Galéria</dt>
-                    <dd>
-                      192 fotó, öt szűrőben, 24-esével progresszíven betöltve,
-                      billentyűzettel vezérelhető lightboxszal; minden képhez reszponzív
-                      WebP-változatok generálódnak.
-                    </dd>
-                  </div>
-                </dl>
-                </details>
-
-                <ul className="work__gallery" aria-label="Fotók a KIOSZ Pizza Napoletanából">
-                  {GALLERY.map((img) => (
-                    <li key={img.src} className="work__gallery-item">
-                      <img
-                        src={img.src}
-                        alt={img.alt}
-                        loading="lazy"
-                        style={img.position ? { objectPosition: img.position } : undefined}
-                      />
-                    </li>
-                  ))}
-                </ul>
-
-                <figure className="work__logo">
-                  <img src={kioszLogo} alt="A KIOSZ Pizza Napoletana logója" loading="lazy" />
-                  <figcaption>KIOSZ Pizza Napoletana — márkajelzés</figcaption>
-                </figure>
-
-                <p className="work__next">
-                  <span className="badge">KÖVETKEZŐ PROJEKT</span> Vad-Lak — valós ügyfél,
-                  fejlesztés alatt. Nyilvános tartalom még nincs hozzá, ezért esettanulmány
-                  helyett csak ennyit érdemes most tudni róla: folyamatban van.
-                </p>
-              </div>
-            </Panel>
-            </Reveal>
-          </div>
-        </section>
-
-        <section id="szolgaltatasok" className="section" data-section data-num="02">
-          <div className="section__inner">
-            <Reveal>
-            <Panel eyebrow="SZOLGÁLTATÁSOK" statusLabel="ELÉRHETŐ" statusTone="ready">
-              <div className="services">
-                <h2 className="section-heading">Szolgáltatások</h2>
-                <div className="glow-line" role="presentation" />
-                <div className="services__group">
-                  <span className="services__group-label">TERVEZÉS ÉS FEJLESZTÉS</span>
-                  <ol className="services__list">
-                    <li className="services__item">
-                      <span className="services__index">01</span>
-                      <div>
-                        <h3>Egyedi webfejlesztés</h3>
-                        <p>Nem sablonból induló, a projekt logikájára szabott felület és kód.</p>
-                      </div>
-                    </li>
-                    <li className="services__item">
-                      <span className="services__index">02</span>
-                      <div>
-                        <h3>Prémium UI/UX tervezés</h3>
-                        <p>Vizuális rendszer, tipográfia és interakció, ami a márkát szolgálja, nem egy komponenskönyvtárat.</p>
-                      </div>
-                    </li>
-                    <li className="services__item">
-                      <span className="services__index">03</span>
-                      <div>
-                        <h3>Interaktív frontend / creative development</h3>
-                        <p>Egyedi animáció és interakció, ott, ahol ténylegesen hozzáad valamit — nem díszítésnek.</p>
-                      </div>
-                    </li>
-                  </ol>
-                </div>
-
-                <div className="services__group">
-                  <span className="services__group-label">RENDSZEREK</span>
-                  <ol className="services__list" start={4}>
-                    <li className="services__item">
-                      <span className="services__index">04</span>
-                      <div>
-                        <h3>Rendelés- és foglalási rendszerek</h3>
-                        <p>Kosártól a visszaigazolásig — ahogy a KIOSZ élő rendelési folyamata is működik.</p>
-                      </div>
-                    </li>
-                    <li className="services__item">
-                      <span className="services__index">05</span>
-                      <div>
-                        <h3>Admin felületek</h3>
-                        <p>Napi használatra tervezett, szerepkör-alapú kezelőfelületek — tablet-first, ha a munkakörnyezet ezt kívánja.</p>
-                      </div>
-                    </li>
-                    <li className="services__item">
-                      <span className="services__index">06</span>
-                      <div>
-                        <h3>E-kereskedelem</h3>
-                        <p>Termékkatalógustól a fizetésig terjedő, valós forgalomra épített rendszerek.</p>
-                      </div>
-                    </li>
-                    <li className="services__item">
-                      <span className="services__index">07</span>
-                      <div>
-                        <h3>Backend, adatbázis és API fejlesztés</h3>
-                        <p>PHP/Node backend, relációs adatbázis-tervezés, REST API — a frontend mögötti teljes réteg.</p>
-                      </div>
-                    </li>
-                  </ol>
-                </div>
-
-                <div className="services__group">
-                  <span className="services__group-label">TELJESÍTMÉNY ÉS ÜZEMELTETÉS</span>
-                  <ol className="services__list" start={8}>
-                    <li className="services__item">
-                      <span className="services__index">08</span>
-                      <div>
-                        <h3>Mobilra optimalizálás</h3>
-                        <p>Külön tervezett, nem csak összenyomott mobil élmény — ahogy ez az oldal is.</p>
-                      </div>
-                    </li>
-                    <li className="services__item">
-                      <span className="services__index">09</span>
-                      <div>
-                        <h3>Technikai SEO</h3>
-                        <p>Szemantikus jelölés, strukturált adat, indexelhetőség — a kreatív réteg alatt is látható tartalom.</p>
-                      </div>
-                    </li>
-                    <li className="services__item">
-                      <span className="services__index">10</span>
-                      <div>
-                        <h3>Teljesítmény-optimalizálás</h3>
-                        <p>Mérésalapú munka — betöltési idő, Core Web Vitals, valós eszközökön ellenőrizve.</p>
-                      </div>
-                    </li>
-                    <li className="services__item">
-                      <span className="services__index">11</span>
-                      <div>
-                        <h3>Karbantartás</h3>
-                        <p>Éles rendszerek gondozása a launch után is — hibajavítás, frissítés, apró fejlesztés.</p>
-                      </div>
-                    </li>
-                  </ol>
-                </div>
-              </div>
-            </Panel>
-            </Reveal>
-          </div>
-        </section>
-
-        <section id="rolam" className="section" data-section data-num="03">
-          <div className="section__inner">
-            <Reveal>
-            <Panel eyebrow="RÓLAM" proseContent>
-              <div className="about">
-                <h2 className="about__title">Egy ember, teljes felelősség</h2>
-                <div className="glow-line" role="presentation" />
                 <p>
-                  A DAEKON nem egy csapatot imitáló ügynökség — egyszemélyes szakértő
-                  vagyok. A tervezéstől a backendig, a felület-designtól a REST API-kig én
-                  csinálom végig a munkát. A KIOSZ projektet is így építettem: teljes
-                  stack, teljes felelősség, valós tesztekkel ellenőrizve, nem csak
-                  „működik a gépemen” alapon.
+                  A DAEKON nem egy csapatot imitáló ügynökség — egyszemélyes
+                  szakértő vagyok. A design-tól a backendig én csinálom végig:
+                  teljes stack, teljes felelősség, valós tesztekkel ellenőrizve.
                 </p>
                 <p>
-                  Ez a modell nem mindenkinek jó — nagy, sok csapatot igénylő projektekhez
-                  más felállás kell. De ha egyetlen felelős emberre van szükség, aki érti
-                  a frontendet, a backendet és azt is, hogy ezek hogyan szolgálják ki a
-                  valódi üzleti folyamatot (rendelés, foglalás, admin), az pontosan ez.
+                  Ez a modell nem mindenkinek jó — de ha egyetlen felelős
+                  emberre van szükséged, aki érti a frontendet, a backendet és
+                  az üzleti folyamatot is, pontosan ez az.
                 </p>
-                <ol className="timeline" aria-label="Hogyan jutottam ide">
-                  <li className="timeline__item">
-                    <span className="timeline__year">2011</span>
-                    <div className="timeline__body">
+                <ol className="about__timeline">
+                  <li>
+                    <span className="about__year">2011</span>
+                    <div>
                       <h3>Első weboldalam — 14 évesen</h3>
-                      <p>
-                        Saját blogot építettem magamnak WordPressen, élettörténetként
-                        írva magamról. Azóta tudom: ez lesz a munkám.
-                      </p>
-                      <a
-                        className="timeline__link"
-                        href="https://cubedaekon.wordpress.com/"
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        cubedaekon.wordpress.com ↗
-                      </a>
+                      <p>Saját blog, saját kód — azóta tudom: ez lesz a munkám.</p>
                     </div>
                   </li>
-                  <li className="timeline__item">
-                    <span className="timeline__year">MA</span>
-                    <div className="timeline__body">
-                      <h3>Éles rendszerek, teljes felelősség</h3>
-                      <p>
-                        Rendelés- és adminrendszerek valós üzletben, teljes stack:
-                        design, frontend, backend, adatbázis, tesztek.
-                      </p>
+                  <li>
+                    <span className="about__year">MA</span>
+                    <div>
+                      <h3>Éles rendszerek</h3>
+                      <p>Rendelés- és adminrendszerek valós üzletben, teljes stack.</p>
                     </div>
                   </li>
                 </ol>
-
-                <ul className="about__points">
-                  <li>Közvetlen kommunikáció — nincs projektmenedzsment-réteg a munka és közted.</li>
-                  <li>Egy ember felel a teljes stackért — nincs „ez a másik csapat hibája”.</li>
-                  <li>Amit itt látsz, azt én építettem: ez az oldal is a saját munkám bizonyítéka.</li>
-                </ul>
               </div>
-            </Panel>
+              <aside className="about__side">
+                <LogoMark size={120} stem="#232733" bowl="#2B50FF" className="about__mark" />
+                <dl className="about__facts">
+                  <div>
+                    <dt>Éles rendszer</dt>
+                    <dd>1</dd>
+                  </div>
+                  <div>
+                    <dt>E2E-vel ellenőrizve</dt>
+                    <dd>100%</dd>
+                  </div>
+                  <div>
+                    <dt>Felelős a stackért</dt>
+                    <dd>1 ember</dd>
+                  </div>
+                </dl>
+              </aside>
+            </div>
+          </div>
+        </section>
+
+        {/* --------------------------------------------------------- OFFER */}
+        <section id="offer" className="section offer" aria-label="Referencia időszak">
+          <div className="section__inner">
+            <Reveal>
+              <span className="section-tag">
+                <Scramble text="06 — OFFER" speed={26} />
+              </span>
+            </Reveal>
+            <h2 className="work__heading">
+              <Lines lines={[{ text: "REFERENCE BUILDING" }, { text: "PERIOD" }]} />
+            </h2>
+            <Reveal delay={200}>
+              <p className="offer__text">
+                Jelenleg korlátozott számú projektet vállalok kedvezményes díjon,
+                hogy további erős referencia-projekteket építsek. Ilyen áron és
+                ilyen figyelemmel később már nem dolgozom — most érdemes beszállni.
+              </p>
+              <Magnetic>
+                <a className="arrow-link" href="#ai-arajanlat">
+                  Becslés kérése <span className="arr">→</span>
+                </a>
+              </Magnetic>
             </Reveal>
           </div>
         </section>
 
-        <section id="kapcsolat" className="section section--calm section--blue" data-section data-num="04">
+        {/* ------------------------------------------- LIVE PROOF + AI QUOTE */}
+        <section
+          id="ai-arajanlat"
+          className="section quote-sec"
+          data-section
+          aria-label="AI árajánlat és élő rendszerek"
+        >
           <div className="section__inner">
             <Reveal>
-            <Panel eyebrow="KAPCSOLAT" statusLabel="EMAILBEN ELÉRHETŐ" statusTone="neutral">
-              <div className="contact">
-                <h2 className="section-heading">Kapcsolat</h2>
-                <div className="glow-line" role="presentation" />
-                <p className="contact__lede">
-                  Ennek az oldalnak nincs backendje — nincs beküldhető űrlap, mert egy
-                  olyan gombot mutatni, ami valójában sehova sem küld el semmit,
-                  becsapós lenne. A leggyorsabb és legőszintébb út egy email.
-                </p>
-                <Magnetic>
-                  <a
-                    className="btn btn--primary contact__cta"
-                    href="mailto:hello@daekon.hu?subject=Projekt%20megkeres%C3%A9s"
-                  >
-                    Írj emailt: hello@daekon.hu
-                  </a>
-                </Magnetic>
-                <p className="contact__note">
-                  Ird le pár mondatban, mit szeretnél építeni — rendelési/foglalási
-                  rendszert, admin felületet, egyedi webfejlesztést vagy valami mást — és
-                  visszajelzek.
-                </p>
-              </div>
-            </Panel>
+              <span className="section-tag">
+                <Scramble text="07 — AZONNALI BECSLÉS" speed={26} />
+              </span>
             </Reveal>
+            <h2 className="quote-sec__title">
+              <Words text="Mennyibe kerül, amit elképzel?" />
+            </h2>
+            <p className="quote-sec__lede">
+              Írd le a projektet egy-két mondatban — az asszisztens felismeri a
+              funkciókat, és azonnal árat és határidőt ad. Minden a
+              böngésződben marad; egy kattintással elküldheted emailel.
+            </p>
+            <Reveal delay={120}>
+              <QuoteAssistant />
+            </Reveal>
+
+            <Reveal delay={200}>
+              <div className="proof">
+                <span className="proof__tag">EZ AZ OLDAL MAGA IS BIZONYÍTÉK</span>
+                <div className="proof__grid">
+                  <OrderDemo />
+                  <LiveStatusPanel currentSectionId={currentId} />
+                </div>
+              </div>
+            </Reveal>
+          </div>
+        </section>
+
+        {/* ----------------------------------------------------- FINAL CTA */}
+        <section id="kapcsolat" className="final" data-section aria-label="Kapcsolat">
+          <div className="final__inner">
+            <h2 className="final__title">
+              <Lines
+                lines={[
+                  { text: "KÉSZÍTSÜNK VALAMI" },
+                  { text: "EMLÉKEZETEST.", className: "accent" },
+                ]}
+              />
+            </h2>
+            <Magnetic>
+              <a
+                className="btn btn--primary final__cta"
+                href="mailto:hello@daekon.hu?subject=Projekt%20megkeres%C3%A9s"
+              >
+                Projekt indítása <span className="arr">→</span>
+              </a>
+            </Magnetic>
+            <span className="final__brand">DAEKON®</span>
           </div>
         </section>
       </main>
 
-      <footer className="site-footer">
-        <div className="section__inner site-footer__inner">
-          <span className="site-footer__wordmark">
-            <LogoLockup height={36} stem="#FFFFFF" bowl="#2B50FF" text="#FFFFFF" />
-          </span>
-          <p className="site-footer__note">
-            DAEKON saját referenciaoldala. Ez az oldal maga is bizonyíték: React +
-            TypeScript + Vite — az élő óra, a rendelés-állapotgép és az AI árajánlat
-            mind böngészőben futó kód; csökkentett mozgás beállításnál az animációk
-            automatikusan visszafogják magukat.
-          </p>
+      <footer className="footer">
+        <div className="footer__inner">
+          <span className="footer__copy">© {new Date().getFullYear()} DAEKON® — prémium web studio</span>
+          <a className="footer__mail" href="mailto:hello@daekon.hu">
+            hello@daekon.hu
+          </a>
         </div>
       </footer>
     </>
