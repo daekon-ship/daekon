@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { Nav } from "./components/Nav/Nav";
 import { LiveStatusPanel } from "./components/LiveStatusPanel/LiveStatusPanel";
 import { OrderDemo } from "./components/OrderDemo/OrderDemo";
@@ -119,6 +120,7 @@ function ReferenceCard({ p }: { p: Project }) {
       target="_blank"
       rel="noopener noreferrer"
       aria-label={`${p.title} — élő oldal megnyitása új lapon`}
+      data-cursor-label="MEGNÉZEM ↗"
     >
       {body}
     </a>
@@ -130,6 +132,27 @@ function ReferenceCard({ p }: { p: Project }) {
 export function App() {
   const { currentId } = useScrollSpy(SPY_IDS, "hero");
   const clock = useClock();
+  const heroRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const el = heroRef.current;
+    if (!el) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let raf = 0;
+    const onScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        el.style.setProperty("--sy", `${Math.min(120, window.scrollY * 0.12).toFixed(1)}px`);
+      });
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(raf);
+    };
+  }, []);
 
   return (
     <>
@@ -143,7 +166,7 @@ export function App() {
 
       <main>
         {/* ------------------------------------------------ HERO */}
-        <section id="hero" className="hero" data-section>
+        <section id="hero" ref={heroRef} className="hero" data-section>
           <Particles />
           <div className="hero__inner">
             <div className="hero__toprow">

@@ -40,13 +40,15 @@
   .fx-lines .line-mask > span { transform: none; transition: none; }
 }
 
-/* ticker — glass strip */
+/* ticker — glass strip with soft edges */
 .ticker {
   overflow: hidden;
   border-top: 1px solid var(--border);
   background: rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(10px);
   user-select: none;
+  mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
 }
 .ticker--dark {
   background: var(--blue-soft);
@@ -145,12 +147,36 @@
   margin: -19px 0 0 -19px;
   border-radius: 50%;
   border: 1px solid rgba(255, 255, 255, 0.35);
-  transition: box-shadow 200ms var(--ease), border-color 200ms var(--ease);
+  transition: box-shadow 200ms var(--ease), border-color 200ms var(--ease),
+    width 220ms var(--ease-out), height 220ms var(--ease-out), margin 220ms var(--ease-out),
+    background 220ms var(--ease);
+}
+.cursor-ring::after {
+  content: attr(data-label);
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: #ffffff;
+  opacity: 0;
+  transition: opacity 180ms var(--ease);
 }
 .cursor-ring.is-hot {
   border-color: var(--blue-bright);
   box-shadow: 0 0 0 6px rgba(77, 107, 255, 0.16), 0 0 24px rgba(77, 107, 255, 0.45);
 }
+.cursor-ring.is-label {
+  width: 74px;
+  height: 74px;
+  margin: -37px 0 0 -37px;
+  background: rgba(77, 107, 255, 0.22);
+  backdrop-filter: blur(4px);
+}
+.cursor-ring.is-label::after { opacity: 1; }
 html.has-cursor,
 html.has-cursor a,
 html.has-cursor button,

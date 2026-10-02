@@ -44,6 +44,7 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
+  transform: translateY(var(--sy, 0px));
   background:
     linear-gradient(rgba(255, 255, 255, 0.028) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.028) 1px, transparent 1px);
@@ -226,7 +227,7 @@
   inset: 0;
   border-radius: inherit;
   pointer-events: none;
-  background: radial-gradient(60% 50% at 50% 0%, rgba(134, 163, 255, 0.12), transparent 70%);
+  background: radial-gradient(240px circle at var(--mx, 50%) var(--my, 50%), rgba(134, 163, 255, 0.16), transparent 72%);
   opacity: 0;
   transition: opacity 260ms var(--ease);
 }
@@ -484,11 +485,22 @@
   opacity: 0;
   transition: opacity 260ms var(--ease);
 }
+.svc::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(220px circle at var(--mx, 50%) var(--my, 50%), rgba(134, 163, 255, 0.13), transparent 72%);
+  opacity: 0;
+  transition: opacity 260ms var(--ease);
+}
 .svc:hover {
   border-color: rgba(134, 163, 255, 0.5);
   box-shadow: var(--glow);
 }
-.svc:hover::before { opacity: 1; }
+.svc:hover::before,
+.svc:hover::after { opacity: 1; }
 .svc__num {
   font-family: var(--font-mono);
   font-size: 11px;

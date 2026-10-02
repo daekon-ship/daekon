@@ -232,6 +232,8 @@ export function Tilt({
       const r = el.getBoundingClientRect();
       const px = (e.clientX - r.left) / r.width - 0.5;
       const py = (e.clientY - r.top) / r.height - 0.5;
+      el.style.setProperty("--mx", `${((px + 0.5) * 100).toFixed(1)}%`);
+      el.style.setProperty("--my", `${((py + 0.5) * 100).toFixed(1)}%`);
       el.style.transform = `perspective(900px) rotateX(${(-py * max).toFixed(2)}deg) rotateY(${(px * max).toFixed(2)}deg) translateY(-2px)`;
     };
     const reset = () => {
@@ -278,8 +280,20 @@ export function Cursor() {
       dot.style.opacity = "1";
       ring.style.opacity = "1";
       const t = e.target as Element | null;
-      const hot = !!(t && typeof t.closest === "function" && t.closest("a, button, [data-cursor]"));
-      ring.classList.toggle("is-hot", hot);
+      const labelEl =
+        t && typeof t.closest === "function"
+          ? t.closest<HTMLElement>("[data-cursor-label]")
+          : null;
+      const hot = !!(
+        t && typeof t.closest === "function" && t.closest("a, button, [data-cursor]")
+      );
+      ring.classList.toggle("is-hot", hot && !labelEl);
+      ring.classList.toggle("is-label", !!labelEl);
+      if (labelEl) {
+        ring.dataset.label = labelEl.dataset.cursorLabel ?? "";
+      } else {
+        delete ring.dataset.label;
+      }
     };
     const loop = () => {
       rx += (x - rx) * 0.16;
