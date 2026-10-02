@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Nav } from "./components/Nav/Nav";
 import { LiveStatusPanel } from "./components/LiveStatusPanel/LiveStatusPanel";
 import { OrderDemo } from "./components/OrderDemo/OrderDemo";
@@ -22,7 +22,7 @@ import { QuoteAssistant } from "./components/QuoteAssistant/QuoteAssistant";
 import { useScrollSpy } from "./hooks/useScrollSpy";
 import "./App.css";
 
-const SPY_IDS = ["hero", "work", "services", "process", "about", "quote", "contact"];
+const SPY_IDS = ["hero", "work", "services", "process", "gyik", "about", "quote", "contact"];
 
 const TICKER = ["EGYEDI WEBFEJLESZTÉS", "RENDELÉSRENDSZEREK", "WEBÁRUHÁZ", "KEZELŐFELÜLETEK", "SEO ÉS TELJESÍTMÉNY", "ARCULATTERVEZÉS", "KARBANTARTÁS"];
 
@@ -103,6 +103,29 @@ const WHY = [
   },
 ];
 
+const FAQ = [
+  {
+    q: "Mennyibe kerül egy weboldal?",
+    a: "A chat-asszisztens azonnal ad becslést: leírod, mit szeretnél, és látod az árat és a határidőt. Tájékoztatóul: bemutatkozó oldal kb. 60–125 ezer Ft-tól, rendelésrendszer 150–300 ezer Ft, webáruház 175–350 ezer Ft körül indul.",
+  },
+  {
+    q: "Milyen gyorsan készül el?",
+    a: "Egyszerű bemutatkozó oldal 1–2 hét, rendelési vagy foglalási rendszer 3–6 hét alatt. A chat a te leírásodból konkrét határidőt is ad, nem csak árat.",
+  },
+  {
+    q: "Ki dolgozik a projekten?",
+    a: "Egy ember, végig: tervezés, fejlesztés, tartalom és élesítés. Nincs tolmácsolás, nincs csapat-hatékonyság-veszteség — azzal beszélsz, aki ténylegesen csinálja.",
+  },
+  {
+    q: "Mi van, ha nem tetszik a tervezett látvány?",
+    a: "A tervezési fázisban közösen alakítjuk, amíg jó nem lesz — a fejlesztés csak a jóváhagyás után indul, így nincs zsákutca és nincs égetett pénz.",
+  },
+  {
+    q: "Mi történik az élesítés után?",
+    a: "Ha szeretnéd, tovább viszem: karbantartási csomag 5–10 ezer Ft/hó — frissítések, biztonsági mentés, figyelés és kisebb módosítások.",
+  },
+];
+
 const CASE = {
   ch: "Vendéglátó-rendszer, ami élesben, minden nap elvégezi a munkát: webes rendelés, konyhai folyamat, admin — egyetlen rendszerben.",
   so: "Egyedi felület React + TypeScript alapokon, PHP 8 REST API-val és MySQL háttérrel. Valós nyomkövetés, tablet-first admin, teljes márkázás.",
@@ -153,6 +176,7 @@ export function App() {
   const { currentId } = useScrollSpy(SPY_IDS, "hero");
   const clock = useClock();
   const heroRef = useRef<HTMLElement>(null);
+  const [openFaq, setOpenFaq] = useState<number | null>(0);
 
   useEffect(() => {
     const el = heroRef.current;
@@ -348,11 +372,39 @@ export function App() {
           </div>
         </section>
 
+        {/* ------------------------------------------------------- GYIK */}
+        <section id="gyik" className="faq" data-section>
+          <header className="sec-head">
+            <span className="meta"><span className="sec-num">05</span> · GYIK</span>
+            <h2 className="sec-title">GYAKORI KÉRDÉSEK</h2>
+          </header>
+          <div className="faq__list">
+            {FAQ.map((f, i) => (
+              <Reveal key={f.q} delay={i * 40}>
+                <div className={`faq__item${openFaq === i ? " is-open" : ""}`}>
+                  <button
+                    type="button"
+                    className="faq__q"
+                    aria-expanded={openFaq === i}
+                    onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                  >
+                    <span>{f.q}</span>
+                    <i aria-hidden="true">+</i>
+                  </button>
+                  <div className="faq__a">
+                    <p>{f.a}</p>
+                  </div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </section>
+
         {/* ------------------------------------------------------ ABOUT */}
         <section id="about" className="about" data-section>
           <div className="about__grid">
             <div>
-              <span className="meta"><span className="sec-num">05</span> · RÓLAM</span>
+              <span className="meta"><span className="sec-num">06</span> · RÓLAM</span>
               <h2 className="about__title">
                 <Lines lines={[{ text: "EGY EMBER." }, { text: "TELJES", className: "outline" }, { text: "FELELŐSSÉG." }]} />
               </h2>
@@ -381,7 +433,7 @@ export function App() {
         {/* ------------------------------------------------------ OFFER */}
         <section id="offer" className="offer">
           <div className="offer__inner">
-            <span className="meta offer__meta">06 · AJÁNLAT</span>
+            <span className="meta offer__meta">07 · AJÁNLAT</span>
             <h2 className="offer__title">
               <Lines lines={[{ text: "REFERENCIA" }, { text: "ÉPÍTÉSI IDŐSZAK" }]} />
             </h2>
@@ -399,7 +451,7 @@ export function App() {
         {/* ------------------------------------------------------ QUOTE */}
         <section id="quote" className="quote" data-section>
           <div className="quote__head">
-            <span className="meta">07 · AZONNALI ÁRAJÁNLAT</span>
+            <span className="meta">08 · AZONNALI ÁRAJÁNLAT</span>
             <h2 className="quote__title">
               <Lines lines={[{ text: "MENNYIBE", }, { text: "KERÜL?", className: "outline" }]} />
             </h2>

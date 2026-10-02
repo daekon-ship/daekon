@@ -99,6 +99,19 @@ export function QuoteAssistant() {
       <div className="qchat__head">
         <span className="qchat__dot" aria-hidden="true" />
         <span className="qchat__name">DAEKON asszisztens</span>
+        <button
+          type="button"
+          className="qchat__reset"
+          title="Új beszélgetés indítása"
+          aria-label="Új beszélgetés indítása"
+          onClick={() => {
+            setExtras([]);
+            lastDesc.current = "";
+            setMsgs([{ id: idRef.current++, from: "ai", text: GREETING }]);
+          }}
+        >
+          ↺
+        </button>
         <span className="qchat__tag">élő becslés</span>
       </div>
 

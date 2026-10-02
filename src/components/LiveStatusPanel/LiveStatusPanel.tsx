@@ -8,6 +8,7 @@ const SECTION_LABELS: Record<string, string> = {
   work: "Munkák",
   services: "Szolgáltatások",
   process: "Folyamat",
+  gyik: "GYIK",
   about: "Rólam",
   offer: "Ajánlat",
   quote: "Árajánlat",

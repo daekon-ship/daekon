@@ -763,6 +763,86 @@
 }
 
 /* ---------------------------------------------------------------------
+   FAQ — glass accordion
+   --------------------------------------------------------------------- */
+
+.faq { padding: clamp(40px, 7vh, 80px) 0; }
+.faq__list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0 clamp(20px, 4vw, 48px);
+}
+.faq__item {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(8px);
+  transition: border-color 220ms var(--ease), background 220ms var(--ease);
+}
+.faq__item.is-open {
+  border-color: rgba(134, 163, 255, 0.45);
+  background: rgba(255, 255, 255, 0.05);
+}
+.faq__q {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 22px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 15.5px;
+  color: var(--text-0);
+}
+.faq__q i {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid var(--border-strong);
+  font-style: normal;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--blue-bright);
+  transition: transform 280ms var(--ease-out), background 220ms var(--ease), color 220ms var(--ease);
+  flex-shrink: 0;
+}
+.faq__item.is-open .faq__q i {
+  transform: rotate(45deg);
+  background: var(--blue);
+  border-color: var(--blue);
+  color: #ffffff;
+}
+.faq__a {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 320ms var(--ease-out);
+}
+.faq__a p {
+  overflow: hidden;
+  margin: 0;
+  padding: 0 22px;
+  max-width: 72ch;
+  font-size: 14.5px;
+  line-height: 1.7;
+  color: var(--text-1);
+  opacity: 0;
+  transition: opacity 260ms var(--ease), padding 320ms var(--ease-out);
+}
+.faq__item.is-open .faq__a { grid-template-rows: 1fr; }
+.faq__item.is-open .faq__a p {
+  opacity: 1;
+  padding-bottom: 20px;
+}
+
+/* ---------------------------------------------------------------------
    ABOUT
    --------------------------------------------------------------------- */
 

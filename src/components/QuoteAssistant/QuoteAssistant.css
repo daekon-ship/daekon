@@ -54,6 +54,24 @@
   text-transform: uppercase;
   color: var(--text-0);
 }
+.qchat__reset {
+  margin-left: auto;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid var(--border-strong);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-2);
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+  transition: color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease), transform 300ms var(--ease-out);
+}
+.qchat__reset:hover {
+  color: var(--cyan);
+  border-color: rgba(98, 230, 255, 0.5);
+  transform: rotate(-180deg);
+}
 .qchat__tag {
   margin-left: auto;
   font-family: var(--font-mono);
