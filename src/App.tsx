@@ -18,7 +18,7 @@ import "./App.css";
 
 const SPY_IDS = ["hero", "work", "services", "process", "about", "quote", "contact"];
 
-const TICKER = ["WEB DESIGN", "WEB DEVELOPMENT", "E-COMMERCE", "BOOKING SYSTEMS", "SEO", "BRANDING", "CUSTOM SYSTEMS"];
+const TICKER = ["EGYEDI WEBFEJLESZTÉS", "RENDELÉSRENDSZEREK", "WEBÁRUHÁZ", "KEZELŐFELÜLETEK", "SEO ÉS TELJESÍTMÉNY", "ARCULATTERVEZÉS", "KARBANTARTÁS"];
 
 type Project = {
   num: string;
@@ -38,7 +38,7 @@ const PROJECTS: Project[] = [
     title: "KIOSZ",
     sub: "PIZZA NAPOLETANA",
     year: "2026",
-    tags: ["WEB DESIGN", "DEVELOPMENT", "ORDERING SYSTEM"],
+    tags: ["WEBOLDAL", "FEJLESZTÉS", "RENDELÉSRENDSZER"],
     desc: "Teljes márkázott vendéglátó-rendszer: online rendelés valós nyomkövetővel, tablet-first admin, 192 fotós galéria — élesben fut, E2E tesztelve.",
     variant: "photo",
     img: { src: kiosz04, alt: "Fekete-fehér pillanatkép: a pizzaszakács feldobja a tésztát." },
@@ -49,7 +49,7 @@ const PROJECTS: Project[] = [
     title: "VAD-LAK",
     sub: "GENERÁLKIVITELEZÉS",
     year: "2026",
-    tags: ["WEB DESIGN", "IN PROGRESS"],
+    tags: ["WEBOLDAL", "FEJLESZTÉS ALATT"],
     desc: "Vállalkozói weboldal egyedi designnal és tartalomkezeléssel — valós ügyfél, fejlesztés alatt.",
     variant: "blue",
   },
@@ -58,7 +58,7 @@ const PROJECTS: Project[] = [
     title: "ÉPÜLETES MEDENCE",
     sub: "MEDENCE — SZOLGÁLTATÁS",
     year: "2026",
-    tags: ["WEB DESIGN", "LANDING", "SPEED"],
+    tags: ["WEBOLDAL", "BEMUTATKOZÓ", "SEBESSÉG"],
     desc: "Szolgáltatói jelenlét gyors, mobiloptimalizált felülettel és ajánlatkérő folyamattal.",
     variant: "paper",
   },
@@ -67,26 +67,26 @@ const PROJECTS: Project[] = [
     title: "ROVARIRTÓ FIÚK",
     sub: "SZOLGÁLTATÓ VÁLLALKOZÁS",
     year: "2026",
-    tags: ["SEO", "CONVERSION", "MOBIL"],
+    tags: ["SEO", "KONVERZIÓ", "MOBIL"],
     desc: "Keresőre optimalizált szolgáltatói oldal, amely a beérkező hívásokra épít.",
     variant: "ink",
   },
 ];
 
 const SERVICES = [
-  { n: "01", t: "WEB DESIGN", h: "Egyedi dizájn — sablon nélkül." },
-  { n: "02", t: "WEB DEVELOPMENT", h: "Tiszta kód, valódi rendszer." },
-  { n: "03", t: "E-COMMERCE", h: "Webshop, fizetés, admin." },
-  { n: "04", t: "BOOKING SYSTEMS", h: "Rendelés és foglalás." },
-  { n: "05", t: "CUSTOM SOLUTIONS", h: "Amit a munkád kér." },
+  { n: "01", t: "WEBOLDAL-TERVEZÉS", h: "Egyedi látvány — sablon nélkül." },
+  { n: "02", t: "WEBFEJLESZTÉS", h: "Tiszta kód, valódi rendszer." },
+  { n: "03", t: "WEBÁRUHÁZ", h: "Termékek, fizetés, kezelés." },
+  { n: "04", t: "RENDELÉS ÉS FOGLALÁS", h: "Online rendelés, időpontkérés." },
+  { n: "05", t: "EGYEDI MEGOLDÁSOK", h: "Amit a munkád kér." },
 ];
 
 const PROCESS = [
-  { n: "01", t: "DISCOVER", h: "Cél, közönség, funkcionalitás." },
-  { n: "02", t: "DESIGN", h: "Egyedi vizuális irány, tipográfia." },
-  { n: "03", t: "BUILD", h: "Fejlesztés — design, kód, tartalom egy kézből." },
-  { n: "04", t: "REFINE", h: "Teljesítmény, reszponzivitás, részletek." },
-  { n: "05", t: "LAUNCH", h: "Élesítés, mérés, gondozás utána is." },
+  { n: "01", t: "FELMÉRÉS", h: "Cél, közönség, funkcionalitás." },
+  { n: "02", t: "TERVEZÉS", h: "Egyedi vizuális irány, tipográfia." },
+  { n: "03", t: "FEJLESZTÉS", h: "Látvány, kód, tartalom egy kézből." },
+  { n: "04", t: "FINOMÍTÁS", h: "Teljesítmény, reszponzivitás, részletek." },
+  { n: "05", t: "ÉLESÍTÉS", h: "Indítás, mérés, gondozás utána is." },
 ];
 
 function ProjectBlock({ p }: { p: Project }) {
@@ -104,7 +104,7 @@ function ProjectBlock({ p }: { p: Project }) {
         )}
       </div>
       <div className="poster__info">
-        <span className="meta">PROJECT / {p.num} — {p.year}</span>
+        <span className="meta">PROJEKT / {p.num} — {p.year}</span>
         <h3 className="poster__title">
           <Lines lines={[{ text: p.title }]} />
         </h3>
@@ -131,16 +131,16 @@ export function App() {
         <section id="hero" className="hero" data-section>
           <div className="hero__frame">
             <div className="hero__toprow">
-              <span className="meta"><Scramble text="DAEKON® — INDEPENDENT DIGITAL STUDIO" /></span>
-              <span className="stamp">MONOR / HU — 2026</span>
+              <span className="meta"><Scramble text="DAEKON® — ÖNÁLLÓ DIGITÁLIS STÚDIÓ" /></span>
+              <span className="stamp">MONOR / MAGYARORSZÁG — 2026</span>
             </div>
 
             <h1 className="hero__title">
               <Lines
                 lines={[
-                  { text: "WE BUILD" },
-                  { text: "WEBSITES", className: "outline" },
-                  { text: "PEOPLE REMEMBER.", className: "blue" },
+                  { text: "WEBOLDALAK," },
+                  { text: "AMIKRE", className: "outline" },
+                  { text: "FELFIGYELNEK.", className: "blue" },
                 ]}
               />
             </h1>
@@ -172,9 +172,9 @@ export function App() {
         <section id="work" className="work" data-section>
           <header className="work__head">
             <h2 className="work__title">
-              <Lines lines={[{ text: "SELECTED" }, { text: "WORK", className: "outline" }]} />
+              <Lines lines={[{ text: "KIVÁLASZTOTT" }, { text: "MUNKÁK", className: "outline" }]} />
             </h2>
-            <span className="meta work__count">01 — PORTFOLIO / 4 PROJEKT</span>
+            <span className="meta work__count">01 — PORTFÓLIÓ / 4 PROJEKT</span>
           </header>
 
           {PROJECTS.map((p) => <ProjectBlock key={p.num} p={p} />)}
@@ -183,16 +183,16 @@ export function App() {
         {/* -------------------------------------------- INK MANIFESTO */}
         <section className="inkbreak">
           <h2 className="inkbreak__title">
-            <Lines lines={[{ text: "DESIGN IS NOT" }, { text: "DECORATION.", className: "blue" }]} />
+            <Lines lines={[{ text: "A FORMA NEM" }, { text: "DÍSZÍTÉS.", className: "blue" }]} />
           </h2>
-          <p className="inkbreak__sub">IT'S HOW YOUR BUSINESS IS EXPERIENCED.</p>
+          <p className="inkbreak__sub">EZEN LÁTJÁK, MILYEN A VÁLLALKOZÁSOD.</p>
         </section>
 
         {/* --------------------------------------------------- SERVICES */}
         <section id="services" className="services" data-section>
           <header className="sec-head">
-            <span className="meta">02 — SERVICES</span>
-            <h2 className="sec-title">CAPABILITIES</h2>
+            <span className="meta">02 — SZOLGÁLTATÁSOK</span>
+            <h2 className="sec-title">AMIBEN SEGÍTEK</h2>
           </header>
           <div className="svc-rows">
             {SERVICES.map((s, i) => (
@@ -211,8 +211,8 @@ export function App() {
         {/* ---------------------------------------------------- PROCESS */}
         <section id="process" className="process" data-section>
           <header className="sec-head">
-            <span className="meta">03 — PROCESS</span>
-            <h2 className="sec-title">FROM IDEA TO LAUNCH</h2>
+            <span className="meta">03 — FOLYAMAT</span>
+            <h2 className="sec-title">ÖTLETTŐL AZ ÉLESÍTÉSIG</h2>
           </header>
           <div className="cells">
             {PROCESS.map((s, i) => (
@@ -229,7 +229,7 @@ export function App() {
         <section id="about" className="about" data-section>
           <div className="about__grid">
             <div>
-              <span className="meta">04 — ABOUT</span>
+              <span className="meta">04 — RÓLAM</span>
               <h2 className="about__title">
                 <Lines lines={[{ text: "EGY EMBER." }, { text: "TELJES", className: "outline" }, { text: "FELELŐSSÉG." }]} />
               </h2>
@@ -247,9 +247,9 @@ export function App() {
               </p>
               <dl className="about__facts">
                 <div><dt>ÉLES RENDSZER</dt><dd>1</dd></div>
-                <div><dt>E2E-VEL ELLENŐRIZVE</dt><dd>100%</dd></div>
+                <div><dt>AUTOMATIKUS TESZTEK</dt><dd>100%</dd></div>
                 <div><dt>ELSŐ WEBOLDAL</dt><dd>2011 — 14 ÉVESEN</dd></div>
-                <div><dt>HELYSZÍN</dt><dd>MONOR / HUNGARY</dd></div>
+                <div><dt>HELYSZÍN</dt><dd>MONOR / MAGYARORSZÁG</dd></div>
               </dl>
             </div>
           </div>
@@ -258,9 +258,9 @@ export function App() {
         {/* ------------------------------------------------------ OFFER */}
         <section id="offer" className="offer">
           <div className="offer__inner">
-            <span className="meta offer__meta">05 — OFFER</span>
+            <span className="meta offer__meta">05 — AJÁNLAT</span>
             <h2 className="offer__title">
-              <Lines lines={[{ text: "REFERENCE" }, { text: "BUILDING PERIOD" }]} />
+              <Lines lines={[{ text: "REFERENCIA" }, { text: "ÉPÍTÉSI IDŐSZAK" }]} />
             </h2>
             <p className="offer__text">
               Jelenleg korlátozott számú projektet vállalok kedvezményes díjon,
@@ -276,7 +276,7 @@ export function App() {
         {/* ------------------------------------------------------ QUOTE */}
         <section id="quote" className="quote" data-section>
           <div className="quote__head">
-            <span className="meta">06 — AI ÁRAJÁNLAT</span>
+            <span className="meta">06 — AZONNALI ÁRAJÁNLAT</span>
             <h2 className="quote__title">
               <Lines lines={[{ text: "MENNYIBE", }, { text: "KERÜL?", className: "outline" }]} />
             </h2>
@@ -291,7 +291,7 @@ export function App() {
 
           <div className="proof">
             <div className="proof__head">
-              <span className="meta">PROOF / 001</span>
+              <span className="meta">BIZONYÍTÉK / 001</span>
               <span className="meta">EZ AZ OLDAL MAGA IS MŰBIZONYÍTÉK</span>
             </div>
             <div className="proof__grid">
@@ -304,9 +304,9 @@ export function App() {
         {/* -------------------------------------------------- FINAL CTA */}
         <section id="contact" className="final" data-section>
           <div className="final__inner">
-            <span className="meta final__meta">HAVE A PROJECT IN MIND?</span>
+            <span className="meta final__meta">VAN PROJEKTED A FEJEDBEN?</span>
             <h2 className="final__title">
-              <Lines lines={[{ text: "LET'S WORK" }, { text: "TOGETHER.", className: "blue" }]} />
+              <Lines lines={[{ text: "DOLGOZZUNK" }, { text: "EGYÜTT.", className: "blue" }]} />
             </h2>
             <Magnetic>
               <a
@@ -321,8 +321,8 @@ export function App() {
           <footer className="colophon">
             <div className="colophon__row">
               <BrandMark size={26} inverted />
-              <span className="meta">WEB DESIGN &amp; DEVELOPMENT</span>
-              <span className="meta">MONOR / HUNGARY</span>
+              <span className="meta">TERVEZÉS ÉS FEJLESZTÉS</span>
+              <span className="meta">MONOR / MAGYARORSZÁG</span>
               <a className="colophon__mail" href="mailto:hello@daekon.hu">HELLO@DAEKON.HU</a>
               <span className="meta">© 2026 DAEKON</span>
             </div>

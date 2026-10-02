@@ -24,9 +24,9 @@ interface Msg {
 }
 
 const EXAMPLES = [
-  "Webshop bankkártyás fizetéssel és adminnal",
+  "Webáruház bankkártyás fizetéssel és kezelőfelülettel",
   "Étteremnek rendelésrendszer mobilra, SEO-val",
-  "Céges oldal bloggal, prémium designnal",
+  "Céges oldal bloggal, prémium látvánnyal",
 ];
 
 const QUICK_IDS = ["design", "auth", "payment", "seo", "mobile", "motion3d", "blog"];
@@ -84,7 +84,7 @@ export function QuoteAssistant() {
           : {
               id: idRef.current++,
               from: "ai",
-              text: "Még konkrétumot nem látok a leírásban. Írj olyasmit, hogy: weboldal, webshop, foglalás, admin, fizetés, 3D — és azonnal számolok.",
+              text: "Még konkrétumot nem látok a leírásban. Írj olyasmit, hogy: weboldal, webáruház, foglalás, kezelőfelület, fizetés, 3D — és azonnal számolok.",
             },
       ]);
     }, 550);

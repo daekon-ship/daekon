@@ -5,14 +5,13 @@ import "./LiveStatusPanel.css";
 
 const SECTION_LABELS: Record<string, string> = {
   hero: "Nyitó",
-  manifesto: "Elvek",
-  munkak: "Munkák",
-  szolgaltatasok: "Szolgáltatások",
-  folyamat: "Folyamat",
-  rolam: "Rólam",
+  work: "Munkák",
+  services: "Szolgáltatások",
+  process: "Folyamat",
+  about: "Rólam",
   offer: "Ajánlat",
-  "ai-arajanlat": "Becslés",
-  kapcsolat: "Kapcsolat",
+  quote: "Árajánlat",
+  contact: "Kapcsolat",
 };
 
 interface LiveStatusPanelProps {

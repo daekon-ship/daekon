@@ -28,7 +28,7 @@ const CATALOG: CatalogEntry[] = [
   },
   {
     id: "webshop",
-    label: "Webshop / e-kereskedelem",
+    label: "Webáruház / e-kereskedelem",
     min: 350_000, max: 700_000, weeksMin: 4, weeksMax: 8,
     keywords: ["webshop", "webaruhaz", "e-kereskedelem", "ekereskedelem", "termek", "kosar", "raktar"],
   },
@@ -40,13 +40,13 @@ const CATALOG: CatalogEntry[] = [
   },
   {
     id: "admin",
-    label: "Admin felület / CRM",
+    label: "Kezelőfelület / CRM",
     min: 200_000, max: 450_000, weeksMin: 2, weeksMax: 5,
     keywords: ["admin", "kezelofelulet", "tartalomkezeles", "dashboard", "crm", "jogosultsag", "riport"],
   },
   {
     id: "backend",
-    label: "Backend / API / adatbázis",
+    label: "Szerveroldal / adatbázis",
     min: 150_000, max: 350_000, weeksMin: 2, weeksMax: 4,
     keywords: ["api", "backend", "szerver", "adatbazis", "integracio", "migracio", "rest", "graphql"],
   },
@@ -76,7 +76,7 @@ const CATALOG: CatalogEntry[] = [
   },
   {
     id: "design",
-    label: "Egyedi design / arculat",
+    label: "Egyedi látvány / arculat",
     min: 120_000, max: 300_000, weeksMin: 2, weeksMax: 3,
     keywords: ["design", "arculat", "logo", "markazas", "premium", "egyedi megjelenes", "ux", "ui"],
   },
@@ -212,7 +212,7 @@ export function mailtoHref(text: string, result: QuoteResult): string {
     "",
     "(Tudom, hogy ez csak becslés — a végleges árat a részletek egyeztetése után várom.)",
   );
-  const subject = encodeURIComponent("Projekt megkeresés — AI árajánlat");
+  const subject = encodeURIComponent("Projekt megkeresés — árajánlat");
   const body = encodeURIComponent(lines.join("\n"));
   return `mailto:hello@daekon.hu?subject=${subject}&body=${body}`;
 }

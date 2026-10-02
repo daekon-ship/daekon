@@ -3,10 +3,10 @@ import { BrandMark } from "../../brand/Logo";
 import "./Nav.css";
 
 const LINKS = [
-  { id: "work", label: "WORK" },
-  { id: "services", label: "SERVICES" },
-  { id: "about", label: "ABOUT" },
-  { id: "contact", label: "CONTACT" },
+  { id: "work", label: "MUNKÁK" },
+  { id: "services", label: "SZOLGÁLTATÁSOK" },
+  { id: "about", label: "RÓLAM" },
+  { id: "contact", label: "KAPCSOLAT" },
 ];
 
 export function Nav() {
@@ -35,7 +35,7 @@ export function Nav() {
         </nav>
 
         <a className="nav__cta" href="#quote">
-          START A PROJECT <span aria-hidden="true">↗</span>
+          PROJEKT INDÍTÁSA <span aria-hidden="true">↗</span>
         </a>
 
         <button
@@ -73,7 +73,7 @@ export function Nav() {
           onClick={() => setOpen(false)}
           tabIndex={open ? 0 : -1}
         >
-          START A PROJECT ↗
+          PROJEKT INDÍTÁSA ↗
         </a>
       </div>
     </>
