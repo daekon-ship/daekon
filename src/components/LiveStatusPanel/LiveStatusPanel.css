@@ -1,14 +1,24 @@
 /* =========================================================================
-   LiveStatusPanel — brutalist light telemetry card.
+   LiveStatusPanel — glass telemetry card on the midnight theme.
    ========================================================================= */
 
 .telemetry {
-  border: var(--border-w) solid var(--ink);
-  border-radius: 0;
-  background: #ffffff;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.02));
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   box-shadow: var(--hard);
   padding: 20px;
   position: relative;
+  overflow: hidden;
+}
+.telemetry::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(98, 230, 255, 0.55), transparent);
 }
 .telemetry__head {
   display: flex;
@@ -16,23 +26,25 @@
   align-items: center;
   margin-bottom: 16px;
   padding-bottom: 12px;
-  border-bottom: 2px solid var(--ink);
+  border-bottom: 1px solid var(--border);
 }
 .telemetry__title {
   font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.14em;
-  color: var(--ink);
+  color: var(--text-0);
 }
 .telemetry__live {
   font-family: var(--font-mono);
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.1em;
-  color: #ffffff;
-  background: var(--blue);
-  padding: 4px 8px;
+  color: var(--cyan);
+  background: rgba(98, 230, 255, 0.12);
+  border: 1px solid rgba(98, 230, 255, 0.4);
+  border-radius: 999px;
+  padding: 4px 9px;
   text-transform: uppercase;
 }
 .telemetry__rows { margin: 0; display: flex; flex-direction: column; gap: 10px; }
@@ -41,7 +53,7 @@
   justify-content: space-between;
   gap: 12px;
   font-size: 13px;
-  border-bottom: 1px dashed rgba(10, 10, 10, 0.25);
+  border-bottom: 1px dashed var(--border);
   padding-bottom: 8px;
 }
 .telemetry__row dt { color: var(--text-2); margin: 0; font-family: var(--font-mono); font-size: 11px; }
@@ -49,7 +61,7 @@
   margin: 0;
   font-family: var(--font-mono);
   font-weight: 700;
-  color: var(--ink);
+  color: var(--text-0);
   text-align: right;
 }
 .telemetry__note {

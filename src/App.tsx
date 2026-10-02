@@ -2,13 +2,17 @@ import { Nav } from "./components/Nav/Nav";
 import { LiveStatusPanel } from "./components/LiveStatusPanel/LiveStatusPanel";
 import { OrderDemo } from "./components/OrderDemo/OrderDemo";
 import {
+  Cursor,
   Lines,
   Magnetic,
   Marquee,
+  Particles,
   Reveal,
   Scramble,
   ScrollProgress,
+  Tilt,
 } from "./components/fx/fx";
+import { useClock } from "./hooks/useClock";
 import { BrandMark } from "./brand/Logo";
 import { QuoteAssistant } from "./components/QuoteAssistant/QuoteAssistant";
 import { useScrollSpy } from "./hooks/useScrollSpy";
@@ -121,21 +125,27 @@ function ReferenceCard({ p }: { p: Project }) {
 
 export function App() {
   const { currentId } = useScrollSpy(SPY_IDS, "hero");
+  const clock = useClock();
 
   return (
     <>
       <a className="skip-link" href="#hero">Ugrás a tartalomhoz</a>
 
       <ScrollProgress />
+      <Cursor />
       <Nav />
 
       <main>
-        {/* ------------------------------------------------ HERO POSTER */}
+        {/* ------------------------------------------------ HERO */}
         <section id="hero" className="hero" data-section>
-          <div className="hero__frame">
+          <Particles />
+          <div className="hero__inner">
             <div className="hero__toprow">
               <span className="meta"><Scramble text="DAEKON® — ÖNÁLLÓ DIGITÁLIS STÚDIÓ" /></span>
-              <span className="stamp">MONOR / MAGYARORSZÁG — 2026</span>
+              <span className="hero__chip">
+                <i className="hero__chipdot" aria-hidden="true" />
+                {clock} — ÉLŐ
+              </span>
             </div>
 
             <h1 className="hero__title">
@@ -143,7 +153,7 @@ export function App() {
                 lines={[
                   { text: "WEBOLDALAK," },
                   { text: "AMIKRE", className: "outline" },
-                  { text: "FELFIGYELNEK.", className: "blue" },
+                  { text: "FELFIGYELNEK.", className: "grad" },
                 ]}
               />
             </h1>
@@ -164,8 +174,11 @@ export function App() {
               </div>
             </div>
 
-            <span className="hero__cross hero__cross--a" aria-hidden="true">+</span>
-            <span className="hero__cross hero__cross--b" aria-hidden="true">+</span>
+            <dl className="hero__stats">
+              <div><dt>2011 óta</dt><dd>webet építek</dd></div>
+              <div><dt>100%</dt><dd>automatikusan tesztelve</dd></div>
+              <div><dt>1 éles</dt><dd>rendszer, valódi rendelésekkel</dd></div>
+            </dl>
           </div>
 
           <Marquee items={TICKER} />
@@ -183,7 +196,9 @@ export function App() {
           <div className="refs">
             {PROJECTS.map((p, i) => (
               <Reveal key={p.num} delay={i * 40} className="refs__cell">
-                <ReferenceCard p={p} />
+                <Tilt>
+                  <ReferenceCard p={p} />
+                </Tilt>
               </Reveal>
             ))}
           </div>
@@ -206,15 +221,17 @@ export function App() {
             <span className="meta">02 — SZOLGÁLTATÁSOK</span>
             <h2 className="sec-title">AMIBEN SEGÍTEK</h2>
           </header>
-          <div className="svc-rows">
+          <div className="svc-grid">
             {SERVICES.map((s, i) => (
-              <Reveal key={s.n} delay={i * 30}>
-                <div className="svc" data-cursor="↗">
-                  <span className="svc__num">{s.n}</span>
-                  <h3 className="svc__t">{s.t}</h3>
-                  <span className="svc__h">{s.h}</span>
-                  <span className="svc__arr" aria-hidden="true">→</span>
-                </div>
+              <Reveal key={s.n} delay={i * 50}>
+                <Tilt max={4}>
+                  <div className="svc" data-cursor="↗">
+                    <span className="svc__num">{s.n}</span>
+                    <h3 className="svc__t">{s.t}</h3>
+                    <span className="svc__h">{s.h}</span>
+                    <span className="svc__arr" aria-hidden="true">→</span>
+                  </div>
+                </Tilt>
               </Reveal>
             ))}
           </div>

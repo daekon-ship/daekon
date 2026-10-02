@@ -210,3 +210,209 @@ export function ScrollProgress() {
     />
   );
 }
+
+/* Tilt — 3D lean toward the pointer (cards, panels) */
+export function Tilt({
+  children,
+  className = "",
+  max = 5,
+}: {
+  children: ReactNode;
+  className?: string;
+  max?: number;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const reduced = useRef(prefersReducedMotion());
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || reduced.current) return;
+    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    const move = (e: PointerEvent) => {
+      const r = el.getBoundingClientRect();
+      const px = (e.clientX - r.left) / r.width - 0.5;
+      const py = (e.clientY - r.top) / r.height - 0.5;
+      el.style.transform = `perspective(900px) rotateX(${(-py * max).toFixed(2)}deg) rotateY(${(px * max).toFixed(2)}deg) translateY(-2px)`;
+    };
+    const reset = () => {
+      el.style.transform = "";
+    };
+    el.addEventListener("pointermove", move);
+    el.addEventListener("pointerleave", reset);
+    return () => {
+      el.removeEventListener("pointermove", move);
+      el.removeEventListener("pointerleave", reset);
+    };
+  }, [max]);
+
+  return (
+    <div ref={ref} className={`tilt ${className}`.trim()}>
+      {children}
+    </div>
+  );
+}
+
+/* Cursor — glow dot + trailing ring (fine pointers only) */
+export function Cursor() {
+  const dotRef = useRef<HTMLDivElement>(null);
+  const ringRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const fine = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    const reduced = prefersReducedMotion();
+    if (!fine || reduced) return;
+    const dot = dotRef.current;
+    const ring = ringRef.current;
+    if (!dot || !ring) return;
+
+    document.documentElement.classList.add("has-cursor");
+    let x = window.innerWidth / 2;
+    let y = window.innerHeight / 2;
+    let rx = x;
+    let ry = y;
+    let raf = 0;
+
+    const move = (e: PointerEvent) => {
+      x = e.clientX;
+      y = e.clientY;
+      dot.style.opacity = "1";
+      ring.style.opacity = "1";
+      const t = e.target as Element | null;
+      const hot = !!(t && typeof t.closest === "function" && t.closest("a, button, [data-cursor]"));
+      ring.classList.toggle("is-hot", hot);
+    };
+    const loop = () => {
+      rx += (x - rx) * 0.16;
+      ry += (y - ry) * 0.16;
+      dot.style.transform = `translate(${x}px, ${y}px)`;
+      ring.style.transform = `translate(${rx}px, ${ry}px)`;
+      raf = requestAnimationFrame(loop);
+    };
+    const leave = () => {
+      dot.style.opacity = "0";
+      ring.style.opacity = "0";
+    };
+    window.addEventListener("pointermove", move, { passive: true });
+    document.documentElement.addEventListener("pointerleave", leave);
+    raf = requestAnimationFrame(loop);
+    return () => {
+      window.removeEventListener("pointermove", move);
+      document.documentElement.removeEventListener("pointerleave", leave);
+      cancelAnimationFrame(raf);
+      document.documentElement.classList.remove("has-cursor");
+    };
+  }, []);
+
+  return (
+    <>
+      <div ref={ringRef} className="cursor-ring" aria-hidden="true" />
+      <div ref={dotRef} className="cursor-dot" aria-hidden="true" />
+    </>
+  );
+}
+
+/* Particles — constellation field, pauses off-screen and when idle */
+export function Particles({ density = 64 }: { density?: number }) {
+  const ref = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = ref.current;
+    const parent = canvas?.parentElement;
+    if (!canvas || !parent) return;
+    if (prefersReducedMotion()) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    let w = 0;
+    let h = 0;
+    let raf = 0;
+    let running = true;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    type P = { x: number; y: number; vx: number; vy: number; r: number; hue: number };
+    let pts: P[] = [];
+
+    const resize = () => {
+      const rect = parent.getBoundingClientRect();
+      w = rect.width;
+      h = rect.height;
+      canvas.width = Math.max(1, Math.round(w * dpr));
+      canvas.height = Math.max(1, Math.round(h * dpr));
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      const n = Math.max(24, Math.min(density, Math.round((w * h) / 17000)));
+      pts = Array.from({ length: n }, () => ({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        vx: (Math.random() - 0.5) * 0.22,
+        vy: (Math.random() - 0.5) * 0.22,
+        r: Math.random() * 1.5 + 0.6,
+        hue: Math.random() < 0.6 ? 226 : 190,
+      }));
+    };
+
+    const step = () => {
+      if (!running) {
+        raf = 0;
+        return;
+      }
+      ctx.clearRect(0, 0, w, h);
+      for (const p of pts) {
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < -12) p.x = w + 12;
+        else if (p.x > w + 12) p.x = -12;
+        if (p.y < -12) p.y = h + 12;
+        else if (p.y > h + 12) p.y = -12;
+      }
+      ctx.lineWidth = 1;
+      for (let i = 0; i < pts.length; i++) {
+        for (let j = i + 1; j < pts.length; j++) {
+          const a = pts[i];
+          const b = pts[j];
+          const dx = a.x - b.x;
+          const dy = a.y - b.y;
+          const d2 = dx * dx + dy * dy;
+          if (d2 < 12100) {
+            const alpha = (1 - Math.sqrt(d2) / 110) * 0.16;
+            ctx.strokeStyle = `hsla(${a.hue}, 100%, 72%, ${alpha.toFixed(3)})`;
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.stroke();
+          }
+        }
+      }
+      for (const p of pts) {
+        ctx.fillStyle = `hsla(${p.hue}, 100%, 74%, 0.55)`;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      raf = requestAnimationFrame(step);
+    };
+
+    resize();
+    raf = requestAnimationFrame(step);
+    const ro = new ResizeObserver(resize);
+    ro.observe(parent);
+    const io = new IntersectionObserver((entries) => {
+      running = entries[0]?.isIntersecting ?? true;
+      if (running && !raf) raf = requestAnimationFrame(step);
+    });
+    io.observe(canvas);
+    const onVis = () => {
+      running = !document.hidden;
+      if (running && !raf) raf = requestAnimationFrame(step);
+    };
+    document.addEventListener("visibilitychange", onVis);
+
+    return () => {
+      running = false;
+      cancelAnimationFrame(raf);
+      ro.disconnect();
+      io.disconnect();
+      document.removeEventListener("visibilitychange", onVis);
+    };
+  }, [density]);
+
+  return <canvas ref={ref} className="fx-particles" aria-hidden="true" />;
+}

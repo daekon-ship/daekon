@@ -1,7 +1,10 @@
 .panel {
-  border: 1px solid var(--border);
-  background: var(--bg-0);
+  border: 1px solid var(--border-strong);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   border-radius: var(--radius-lg);
+  color: var(--text-1);
 }
 .panel--wide { width: 100%; }
 .panel--dimmed { opacity: 0.62; }
@@ -14,6 +17,7 @@
   padding: 18px 28px;
   border-bottom: 1px solid var(--border);
   flex-wrap: wrap;
+  color: var(--text-0);
 }
 .panel__eyebrow {
   font-family: var(--font-mono);

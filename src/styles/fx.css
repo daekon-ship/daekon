@@ -2,18 +2,21 @@
    fx.css — fast, tactile motion for the print-brutalist design.
    ========================================================================= */
 
-/* quick pop-in */
+/* quick rise + de-blur */
 .fx-reveal {
   opacity: 0;
-  transform: translateY(18px);
+  transform: translateY(26px);
+  filter: blur(10px);
   transition:
-    opacity 480ms var(--ease-out),
-    transform 480ms var(--ease-out);
+    opacity 560ms var(--ease-out),
+    transform 560ms var(--ease-out),
+    filter 560ms var(--ease-out);
   transition-delay: var(--fx-delay, 0ms);
 }
 .fx-reveal.is-visible {
   opacity: 1;
   transform: none;
+  filter: none;
 }
 @media (prefers-reduced-motion: reduce) {
   .fx-reveal { opacity: 1; transform: none; transition: none; }
@@ -37,23 +40,22 @@
   .fx-lines .line-mask > span { transform: none; transition: none; }
 }
 
-/* ticker */
+/* ticker — glass strip */
 .ticker {
   overflow: hidden;
-  border-top: var(--border-w) solid var(--ink);
-  border-bottom: var(--border-w) solid var(--ink);
-  background: var(--paper);
+  border-top: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
   user-select: none;
 }
 .ticker--dark {
-  background: var(--blue);
-  border-color: var(--ink);
+  background: var(--blue-soft);
 }
 .ticker__track {
   display: flex;
   gap: 3rem;
   width: max-content;
-  padding: 14px 0;
+  padding: 15px 0;
   animation: ticker-scroll 32s linear infinite;
 }
 .ticker:hover .ticker__track { animation-play-state: paused; }
@@ -62,20 +64,22 @@
   align-items: center;
   gap: 3rem;
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 700;
   letter-spacing: 0.22em;
-  color: var(--ink);
+  color: var(--text-1);
   white-space: nowrap;
 }
-.ticker--dark .ticker__item { color: #ffffff; }
+.ticker--dark .ticker__item { color: var(--blue-bright); }
 .ticker__item::after {
   content: "";
-  width: 9px;
-  height: 9px;
+  width: 7px;
+  height: 7px;
+  border-radius: 2px;
   background: var(--blue);
+  box-shadow: 0 0 10px var(--blue);
 }
-.ticker--dark .ticker__item::after { background: #ffffff; }
+.ticker--dark .ticker__item::after { background: var(--cyan); box-shadow: 0 0 10px var(--cyan); }
 @keyframes ticker-scroll {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
@@ -94,14 +98,62 @@
   letter-spacing: 0.14em;
 }
 
-/* scroll progress — ink line */
+/* scroll progress — gradient line */
 .scroll-progress {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  height: 3px;
+  height: 2px;
   z-index: calc(var(--z-header) + 10);
   pointer-events: none;
-  background: var(--blue) 0 0 / var(--p, 0%) 100% no-repeat;
+  background: var(--grad) 0 0 / var(--p, 0%) 100% no-repeat;
+  box-shadow: 0 0 14px rgba(77, 107, 255, 0.8);
+}
+
+/* particles canvas */
+.fx-particles {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+}
+
+/* custom cursor — dot + trailing ring */
+.cursor-dot,
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 3000;
+  pointer-events: none;
+  opacity: 0;
+}
+.cursor-dot {
+  width: 8px;
+  height: 8px;
+  margin: -4px 0 0 -4px;
+  border-radius: 50%;
+  background: var(--cyan);
+  box-shadow: 0 0 14px rgba(98, 230, 255, 0.9);
+}
+.cursor-ring {
+  width: 38px;
+  height: 38px;
+  margin: -19px 0 0 -19px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  transition: box-shadow 200ms var(--ease), border-color 200ms var(--ease);
+}
+.cursor-ring.is-hot {
+  border-color: var(--blue-bright);
+  box-shadow: 0 0 0 6px rgba(77, 107, 255, 0.16), 0 0 24px rgba(77, 107, 255, 0.45);
+}
+html.has-cursor,
+html.has-cursor a,
+html.has-cursor button,
+html.has-cursor [role="button"] {
+  cursor: none;
 }

@@ -1,37 +1,53 @@
 /* =========================================================================
    DAEKON — design tokens + base reset.
-   Print-brutalist direction: ivory paper, solid ink rules, one loud
-   cobalt, zero border-radius, hard offset shadows. Space Grotesk +
-   Archivo Black + JetBrains Mono.
+   Midnight aurora direction: deep space navy, glass surfaces, one cobalt
+   gradient system (cobalt → cyan → violet), soft depth, generous radius.
+   Space Grotesk + JetBrains Mono.
    ========================================================================= */
 
 :root {
-  --paper: #f2efe9;
-  --paper-2: #e9e5db;
-  --ink: #0a0a0a;
-  --ink-2: #3a3a38;
-  --blue: #2b50ff;
-  --blue-deep: #1e3bd0;
+  /* legacy names kept — now mapped to the dark theme */
+  --paper: #06070d;
+  --paper-2: #0b0e1a;
+  --bg-0: #0a0d18;
+  --bg-1: #0e1224;
+  --bg-3: rgba(255, 255, 255, 0.08);
+  --surface: rgba(255, 255, 255, 0.045);
+  --surface-2: rgba(255, 255, 255, 0.09);
 
-  --border: var(--ink);
-  --border-w: 2px;
+  --ink: #eef1fa;
+  --ink-2: #c6ccdf;
 
-  --text-0: var(--ink);
-  --text-1: #3a3a38;
-  --text-2: #6b6a64;
+  --blue: #4d6bff;
+  --blue-deep: #2e46c8;
+  --blue-bright: #86a3ff;
+  --cyan: #62e6ff;
+  --violet: #8f7bff;
+  --grad: linear-gradient(92deg, #62e6ff 0%, #4d6bff 48%, #8f7bff 100%);
+  --blue-soft: rgba(77, 107, 255, 0.16);
 
-  --font-display: "Archivo Black", "Space Grotesk", sans-serif;
+  --border: rgba(255, 255, 255, 0.1);
+  --border-strong: rgba(255, 255, 255, 0.24);
+  --border-w: 1px;
+
+  --text-0: #f2f4fb;
+  --text-1: #b9c0d4;
+  --text-2: #7d859c;
+
+  --font-display: "Space Grotesk", "Segoe UI", sans-serif;
   --font-sans: "Space Grotesk", "Segoe UI", sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  --font-serif: var(--font-sans);
 
-  --radius: 0px;
-  --radius-lg: 0px;
-  --statusbar-h: 64px;
+  --radius: 14px;
+  --radius-lg: 22px;
+  --statusbar-h: 68px;
   --mobilenav-h: 60px;
   --safe-bottom: env(safe-area-inset-bottom, 0px);
 
-  --hard: 8px 8px 0 var(--ink);
-  --hard-lg: 14px 14px 0 var(--ink);
+  --hard: 0 24px 60px -28px rgba(0, 0, 0, 0.85);
+  --hard-lg: 0 34px 90px -32px rgba(0, 0, 0, 0.9);
+  --glow: 0 0 0 1px rgba(255, 255, 255, 0.06), 0 24px 80px -24px rgba(77, 107, 255, 0.5);
 
   --ease: cubic-bezier(0.4, 0, 0.2, 1);
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
@@ -61,8 +77,36 @@ body {
   padding-top: var(--statusbar-h);
 }
 
-@media (max-width: 860px) {
-  body { padding-top: var(--statusbar-h); }
+/* aurora — one global, slowly drifting field of light */
+body::before {
+  content: "";
+  position: fixed;
+  inset: -20%;
+  z-index: -2;
+  pointer-events: none;
+  background:
+    radial-gradient(38% 42% at 12% 8%, rgba(77, 107, 255, 0.2), transparent 70%),
+    radial-gradient(34% 40% at 88% 14%, rgba(98, 230, 255, 0.12), transparent 70%),
+    radial-gradient(40% 46% at 78% 86%, rgba(143, 123, 255, 0.14), transparent 70%),
+    radial-gradient(30% 34% at 20% 78%, rgba(46, 70, 200, 0.16), transparent 70%);
+  animation: aurora-drift 26s var(--ease) infinite alternate;
+}
+/* fine noise so the gradients never band */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.5;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.035 0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+@keyframes aurora-drift {
+  from { transform: translate3d(-2%, -1%, 0) scale(1); }
+  to { transform: translate3d(2%, 2%, 0) scale(1.08); }
+}
+@media (prefers-reduced-motion: reduce) {
+  body::before { animation: none; }
 }
 
 img { max-width: 100%; display: block; }
@@ -77,20 +121,25 @@ h1, h2, h3, p, dl, dd, figure, ol, ul, form { margin: 0; }
 
 html {
   scrollbar-width: thin;
-  scrollbar-color: var(--ink) var(--paper);
+  scrollbar-color: rgba(255, 255, 255, 0.28) transparent;
 }
 html::-webkit-scrollbar { width: 10px; }
 html::-webkit-scrollbar-track { background: var(--paper); }
-html::-webkit-scrollbar-thumb { background: var(--ink); border: 2px solid var(--paper); }
+html::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+  border: 2px solid var(--paper);
+}
 
 .skip-link {
   position: fixed;
   top: -100%;
   left: 12px;
   z-index: var(--z-skiplink);
-  background: var(--ink);
-  color: var(--paper);
+  background: var(--blue);
+  color: #ffffff;
   padding: 10px 16px;
+  border-radius: 10px;
   font-family: var(--font-mono);
   text-decoration: none;
 }
@@ -110,7 +159,7 @@ html::-webkit-scrollbar-thumb { background: var(--ink); border: 2px solid var(--
   font-weight: 500;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--ink);
+  color: var(--text-2);
   white-space: nowrap;
 }
 .meta--dim { color: var(--text-2); }
@@ -118,48 +167,68 @@ html::-webkit-scrollbar-thumb { background: var(--ink); border: 2px solid var(--
 /* hollow display text */
 .outline {
   color: transparent;
-  -webkit-text-stroke: 2px var(--ink);
+  -webkit-text-stroke: 1.5px rgba(238, 241, 250, 0.55);
 }
 
-/* buttons — square, hard, tactile */
+/* gradient display text */
+.grad {
+  background: var(--grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* buttons — pill, glowing, tactile */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 12px;
-  min-height: 54px;
-  padding: 0 30px;
-  border-radius: 0;
+  min-height: 52px;
+  padding: 0 28px;
+  border-radius: 999px;
   font-family: var(--font-mono);
-  font-size: 12.5px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   text-decoration: none;
   cursor: pointer;
-  border: 2px solid var(--ink);
+  border: 1px solid var(--border-strong);
   transition: transform var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease),
-    background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+    background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
 }
 .btn--primary {
-  background: var(--blue);
+  background: linear-gradient(120deg, #3552ff, #4d6bff 55%, #7c5bff);
   color: #ffffff;
-  box-shadow: var(--hard);
+  border-color: transparent;
+  box-shadow: 0 14px 40px -14px rgba(77, 107, 255, 0.7);
 }
 .btn--primary:hover {
-  transform: translate(-3px, -3px);
-  box-shadow: 12px 12px 0 var(--ink);
+  transform: translateY(-2px);
+  box-shadow: 0 20px 55px -14px rgba(77, 107, 255, 0.9);
 }
 .btn--paper {
-  background: var(--paper);
+  background: var(--surface);
   color: var(--ink);
-  box-shadow: var(--hard);
+  border-color: var(--border-strong);
+  backdrop-filter: blur(8px);
 }
 .btn--paper:hover {
-  transform: translate(-3px, -3px);
-  box-shadow: 12px 12px 0 var(--blue);
+  transform: translateY(-2px);
+  border-color: var(--blue-bright);
+  box-shadow: 0 16px 44px -18px rgba(77, 107, 255, 0.65);
 }
-.btn:active { transform: translate(0, 0); box-shadow: 4px 4px 0 var(--ink); }
+.btn--ghost {
+  background: transparent;
+  color: var(--text-1);
+  border-color: var(--border);
+}
+.btn--ghost:hover {
+  color: var(--ink);
+  border-color: var(--border-strong);
+}
+.btn:active { transform: translateY(0); }
 
 /* rotated stamp */
 .stamp {
@@ -169,10 +238,13 @@ html::-webkit-scrollbar-thumb { background: var(--ink); border: 2px solid var(--
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  padding: 7px 12px;
-  background: var(--blue);
-  color: #ffffff;
-  transform: rotate(-4deg);
+  padding: 8px 14px;
+  background: var(--blue-soft);
+  border: 1px solid rgba(134, 163, 255, 0.4);
+  color: var(--blue-bright);
+  border-radius: 999px;
+  transform: rotate(-3deg);
+  backdrop-filter: blur(6px);
 }
 
 /* section rhythm */
