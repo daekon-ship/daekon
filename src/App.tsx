@@ -85,6 +85,30 @@ const PROCESS = [
   { n: "05", t: "ÉLESÍTÉS", h: "Indítás, mérés, gondozás utána is." },
 ];
 
+const WHY = [
+  {
+    n: "◆",
+    t: "EGY KÉZBŐL",
+    h: "Látvány, kód, tartalom és élesítés ugyanannál az embernél — nincs tolmácsolás, nincs csúszás a felelősségben.",
+  },
+  {
+    n: "✓",
+    t: "TESZTEK, NEM REMÉNYRE",
+    h: "A rendszerek végponttól végponti automatikus tesztekkel futnak — minden rendelés valós körszimuláción megy át.",
+  },
+  {
+    n: "↯",
+    t: "AZNAPI VÁLASZ",
+    h: "Kérdésre munkanapokon még aznap válaszolsz kapsz — azzal, aki a projektedet ténylegesen csinálja.",
+  },
+];
+
+const CASE = {
+  ch: "Vendéglátó-rendszer, ami élesben, minden nap elvégezi a munkát: webes rendelés, konyhai folyamat, admin — egyetlen rendszerben.",
+  so: "Egyedi felület React + TypeScript alapokon, PHP 8 REST API-val és MySQL háttérrel. Valós nyomkövetés, tablet-first admin, teljes márkázás.",
+  re: "A rendszer élesben fut — és a rendelés-demó ezen az oldalon is ugyanezt az állapotgépet hajtja, valós időben.",
+};
+
 function ReferenceCard({ p }: { p: Project }) {
   const body = (
     <>
@@ -230,6 +254,26 @@ export function App() {
           <p className="refs__note">
             Az index folyamatosan bővül — az élő projektek új lapon nyílnak.
           </p>
+
+          <Reveal className="case">
+            <div className="case__main">
+              <span className="meta case__meta">KIEMELT MUNKA — KIOSZ / 001</span>
+              <dl className="case__rows">
+                <div><dt>KIHÍVÁS</dt><dd>{CASE.ch}</dd></div>
+                <div><dt>MEGOLDÁS</dt><dd>{CASE.so}</dd></div>
+                <div><dt>EREDMÉNY</dt><dd>{CASE.re}</dd></div>
+              </dl>
+              <a className="btn btn--paper case__btn" href="https://kioszpizza.hu/" target="_blank" rel="noopener noreferrer">
+                Megnézem élőben ↗
+              </a>
+            </div>
+            <div className="case__side">
+              <div className="case__stat"><strong><CountUp to={192} /></strong><span>fotós galéria</span></div>
+              <div className="case__stat"><strong><CountUp to={6} /></strong><span>rendelésállapot</span></div>
+              <div className="case__stat"><strong><CountUp to={100} suffix="%" /></strong><span>automatizáltan tesztelve</span></div>
+              <div className="case__stat"><strong><CountUp to={2026} /></strong><span>óta élesben</span></div>
+            </div>
+          </Reveal>
         </section>
 
         {/* -------------------------------------------- INK MANIFESTO */}
@@ -243,7 +287,7 @@ export function App() {
         {/* --------------------------------------------------- SERVICES */}
         <section id="services" className="services" data-section>
           <header className="sec-head">
-            <span className="meta">02 — SZOLGÁLTATÁSOK</span>
+            <span className="meta"><span className="sec-num">02</span> · SZOLGÁLTATÁSOK</span>
             <h2 className="sec-title">AMIBEN SEGÍTEK</h2>
           </header>
           <div className="svc-grid">
@@ -265,7 +309,7 @@ export function App() {
         {/* ---------------------------------------------------- PROCESS */}
         <section id="process" className="process" data-section>
           <header className="sec-head">
-            <span className="meta">03 — FOLYAMAT</span>
+            <span className="meta"><span className="sec-num">03</span> · FOLYAMAT</span>
             <h2 className="sec-title">ÖTLETTŐL AZ ÉLESÍTÉSIG</h2>
           </header>
           <div className="cells">
@@ -279,11 +323,32 @@ export function App() {
           </div>
         </section>
 
+        {/* --------------------------------------------------------- WHY */}
+        <section className="why" data-section>
+          <header className="sec-head">
+            <span className="meta"><span className="sec-num">04</span> · MIÉRT ÉN</span>
+            <h2 className="sec-title">MIÉRT DOLGOZNAK VELEM</h2>
+          </header>
+          <div className="why__grid">
+            {WHY.map((w, i) => (
+              <Reveal key={w.t} delay={i * 60}>
+                <Tilt max={4}>
+                  <div className="why__card">
+                    <span className="why__icon" aria-hidden="true">{w.n}</span>
+                    <h3 className="why__t">{w.t}</h3>
+                    <p className="why__h">{w.h}</p>
+                  </div>
+                </Tilt>
+              </Reveal>
+            ))}
+          </div>
+        </section>
+
         {/* ------------------------------------------------------ ABOUT */}
         <section id="about" className="about" data-section>
           <div className="about__grid">
             <div>
-              <span className="meta">04 — RÓLAM</span>
+              <span className="meta"><span className="sec-num">05</span> · RÓLAM</span>
               <h2 className="about__title">
                 <Lines lines={[{ text: "EGY EMBER." }, { text: "TELJES", className: "outline" }, { text: "FELELŐSSÉG." }]} />
               </h2>
@@ -312,7 +377,7 @@ export function App() {
         {/* ------------------------------------------------------ OFFER */}
         <section id="offer" className="offer">
           <div className="offer__inner">
-            <span className="meta offer__meta">05 — AJÁNLAT</span>
+            <span className="meta offer__meta">06 · AJÁNLAT</span>
             <h2 className="offer__title">
               <Lines lines={[{ text: "REFERENCIA" }, { text: "ÉPÍTÉSI IDŐSZAK" }]} />
             </h2>
@@ -330,7 +395,7 @@ export function App() {
         {/* ------------------------------------------------------ QUOTE */}
         <section id="quote" className="quote" data-section>
           <div className="quote__head">
-            <span className="meta">06 — AZONNALI ÁRAJÁNLAT</span>
+            <span className="meta">07 · AZONNALI ÁRAJÁNLAT</span>
             <h2 className="quote__title">
               <Lines lines={[{ text: "MENNYIBE", }, { text: "KERÜL?", className: "outline" }]} />
             </h2>
@@ -358,6 +423,7 @@ export function App() {
         {/* -------------------------------------------------- FINAL CTA */}
         <section id="contact" className="final" data-section>
           <div className="final__inner">
+            <span className="final__word" aria-hidden="true">DAEKON</span>
             <span className="meta final__meta">VAN PROJEKTED A FEJEDBEN?</span>
             <h2 className="final__title">
               <Lines lines={[{ text: "DOLGOZZUNK" }, { text: "EGYÜTT.", className: "blue" }]} />
