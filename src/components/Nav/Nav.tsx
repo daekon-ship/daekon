@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { LogoLockup } from "../../brand/Logo";
+import { BrandMark } from "../../brand/Logo";
 import "./Nav.css";
 
 const LINKS = [
@@ -10,15 +10,7 @@ const LINKS = [
 ];
 
 export function Nav() {
-  const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   useEffect(() => {
     document.documentElement.style.overflow = open ? "hidden" : "";
@@ -29,9 +21,9 @@ export function Nav() {
 
   return (
     <>
-      <header className={`nav${scrolled ? " is-scrolled" : ""}`}>
-        <a className="nav__brand" href="#hero" onClick={() => setOpen(false)}>
-          <LogoLockup height={24} stem="#F2F1EE" bowl="#2B50FF" text="#F2F1EE" />
+      <header className="nav">
+        <a className="nav__brand" href="#hero" onClick={() => setOpen(false)} aria-label="DAEKON — kezdőlap">
+          <BrandMark size={21} />
         </a>
 
         <nav className="nav__links" aria-label="Fő navigáció">
@@ -69,6 +61,7 @@ export function Nav() {
               onClick={() => setOpen(false)}
               tabIndex={open ? 0 : -1}
             >
+              <span className="meta">{String(i + 1).padStart(2, "0")}</span>
               {l.label}
             </a>
           ))}

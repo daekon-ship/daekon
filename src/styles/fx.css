@@ -1,101 +1,14 @@
 /* =========================================================================
-   fx.css — editorial motion language.
-   Cursor dot+ring, drift-in words, mask reveals, hairline progress.
-   Everything transform/opacity; prefers-reduced-motion disables all.
+   fx.css — fast, tactile motion for the print-brutalist design.
    ========================================================================= */
 
-/* ---- page load reveal: mask wipes up once, ~0.9s total ---- */
-.boot {
-  position: fixed;
-  inset: 0;
-  z-index: 2000;
-  background: var(--bg-0);
-  display: grid;
-  place-items: center;
-  animation: boot-lift 700ms cubic-bezier(0.76, 0, 0.24, 1) 350ms forwards;
-  pointer-events: none;
-}
-.boot__logo {
-  height: 40px;
-  width: auto;
-  animation: boot-logo 600ms cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-@keyframes boot-logo {
-  from { opacity: 0; transform: translateY(14px); }
-  to { opacity: 1; transform: none; }
-}
-@keyframes boot-lift {
-  to { transform: translateY(-100%); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .boot { display: none; }
-}
-
-/* ---- hero headline reveal: gated behind the boot ---- */
-.hero-gate .hero .fx-lines .line-mask > span,
-.hero-gate .hero .hero-meta > * {
-  transition-delay: 950ms;
-}
-
-/* ---- line-mask reveal ---- */
-.fx-lines .line-mask {
-  display: block;
-  overflow: hidden;
-}
-.fx-lines .line-mask > span {
-  display: block;
-  transform: translateY(112%);
-  transition: transform 1100ms cubic-bezier(0.22, 1, 0.36, 1);
-  transition-delay: var(--fx-delay, 0ms);
-}
-.fx-lines.is-visible .line-mask > span {
-  transform: none;
-}
-
-/* ---- drift words: alternating directions ---- */
-.drift {
-  display: block;
-}
-.drift__mask {
-  display: inline-block;
-  overflow: hidden;
-  vertical-align: bottom;
-  padding-bottom: 0.08em;
-  margin-bottom: -0.08em;
-  margin-right: 0.26em;
-}
-.drift__word {
-  display: inline-block;
-  transform: translateX(var(--from, 0));
-  opacity: 0;
-  transition:
-    transform 1000ms cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 800ms var(--ease);
-  transition-delay: var(--d, 0ms);
-  will-change: transform, opacity;
-}
-.drift__word[data-dir="l"] { --from: -0.6em; }
-.drift__word[data-dir="r"] { --from: 0.6em; }
-.drift__word[data-dir="b"] { --from: 0; transform: translateY(0.75em); }
-.drift.is-visible .drift__word {
-  transform: none;
-  opacity: 1;
-}
-@media (prefers-reduced-motion: reduce) {
-  .drift__word {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
-}
-
-/* ---- generic quiet reveal ---- */
+/* quick pop-in */
 .fx-reveal {
   opacity: 0;
-  transform: translateY(22px);
+  transform: translateY(18px);
   transition:
-    opacity 800ms var(--ease-out),
-    transform 800ms var(--ease-out);
+    opacity 480ms var(--ease-out),
+    transform 480ms var(--ease-out);
   transition-delay: var(--fx-delay, 0ms);
 }
 .fx-reveal.is-visible {
@@ -103,103 +16,92 @@
   transform: none;
 }
 @media (prefers-reduced-motion: reduce) {
-  .fx-reveal {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
+  .fx-reveal { opacity: 1; transform: none; transition: none; }
 }
 
-/* ---- custom cursor: dot + trailing ring with label ---- */
-.cursor {
-  display: none;
+/* line mask rise — fast */
+.fx-lines .line-mask {
+  display: block;
+  overflow: hidden;
 }
-@media (pointer: fine) {
-  .cursor {
-    display: block;
-    position: fixed;
-    inset: 0;
-    z-index: 3000;
-    pointer-events: none;
-  }
-  .cursor__dot,
-  .cursor__ring {
-    position: absolute;
-    top: 0;
-    left: 0;
-    will-change: transform;
-  }
-  .cursor__dot {
-    width: 5px;
-    height: 5px;
-    margin: -2.5px 0 0 -2.5px;
-    border-radius: 50%;
-    background: var(--text-0);
-  }
-  .cursor__ring {
-    width: 36px;
-    height: 36px;
-    margin: -18px 0 0 -18px;
-    border-radius: 50%;
-    border: 1px solid rgba(242, 241, 238, 0.4);
-    display: grid;
-    place-items: center;
-    transition: width 260ms var(--ease-out), height 260ms var(--ease-out),
-      margin 260ms var(--ease-out), background-color 260ms var(--ease-out),
-      border-color 260ms var(--ease-out);
-  }
-  .cursor__ring.is-active {
-    width: 84px;
-    height: 84px;
-    margin: -42px 0 0 -42px;
-    background: rgba(43, 80, 255, 0.92);
-    border-color: transparent;
-  }
-  .cursor__label {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: #fff;
-    white-space: nowrap;
-    opacity: 0;
-    transition: opacity 200ms var(--ease);
-  }
-  .cursor__ring.is-active .cursor__label {
-    opacity: 1;
-  }
+.fx-lines .line-mask > span {
+  display: block;
+  transform: translateY(108%);
+  transition: transform 640ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--fx-delay, 0ms);
 }
-@media (prefers-reduced-motion: reduce), (pointer: coarse) {
-  .cursor { display: none !important; }
+.fx-lines.is-visible .line-mask > span {
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .fx-lines .line-mask > span { transform: none; transition: none; }
 }
 
-/* ---- parallax wrappers ---- */
-.parallax, .mpar { will-change: transform; }
+/* ticker */
+.ticker {
+  overflow: hidden;
+  border-top: var(--border-w) solid var(--ink);
+  border-bottom: var(--border-w) solid var(--ink);
+  background: var(--paper);
+  user-select: none;
+}
+.ticker--dark {
+  background: var(--blue);
+  border-color: var(--ink);
+}
+.ticker__track {
+  display: flex;
+  gap: 3rem;
+  width: max-content;
+  padding: 14px 0;
+  animation: ticker-scroll 32s linear infinite;
+}
+.ticker:hover .ticker__track { animation-play-state: paused; }
+.ticker__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 3rem;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  color: var(--ink);
+  white-space: nowrap;
+}
+.ticker--dark .ticker__item { color: #ffffff; }
+.ticker__item::after {
+  content: "";
+  width: 9px;
+  height: 9px;
+  background: var(--blue);
+}
+.ticker--dark .ticker__item::after { background: #ffffff; }
+@keyframes ticker-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ticker__track { animation: none; }
+}
 
-/* ---- mono metadata ---- */
+/* magnetic + scramble */
+.magnetic { display: inline-block; transition: transform 160ms var(--ease-out); will-change: transform; }
 .scramble {
   font-family: var(--font-mono);
-  color: var(--text-2);
+  color: var(--ink);
   font-size: 11px;
-  letter-spacing: 0.12em;
+  font-weight: 500;
+  letter-spacing: 0.14em;
 }
 
-/* ---- magnetic ---- */
-.magnetic {
-  display: inline-block;
-  transition: transform 200ms var(--ease-out);
-  will-change: transform;
-}
-
-/* ---- hairline scroll progress ---- */
+/* scroll progress — ink line */
 .scroll-progress {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  height: 2px;
+  height: 3px;
   z-index: calc(var(--z-header) + 10);
   pointer-events: none;
   background: var(--blue) 0 0 / var(--p, 0%) 100% no-repeat;
-  opacity: 0.9;
 }
