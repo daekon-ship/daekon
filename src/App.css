@@ -798,8 +798,9 @@
   position: absolute;
   top: 2px;
   right: 14px;
-  font-family: "Archivo Black", "Space Grotesk", sans-serif;
-  font-size: 84px;
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 700;
+  font-size: 78px;
   line-height: 1;
   color: transparent;
   background: var(--grad);

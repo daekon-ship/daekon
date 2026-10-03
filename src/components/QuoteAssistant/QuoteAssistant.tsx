@@ -115,7 +115,7 @@ export function QuoteAssistant() {
         <span className="qchat__tag">élő becslés</span>
       </div>
 
-      <div className="qchat__scroll" ref={scroller}>
+      <div className="qchat__scroll" ref={scroller} aria-live="polite">
         {msgs.map((m) => (
           <div key={m.id} className={`qchat__row qchat__row--${m.from}`}>
             <div className={`qchat__bubble qchat__bubble--${m.from}`}>
@@ -138,6 +138,10 @@ export function QuoteAssistant() {
                   </ul>
                   <p className="qchat__note">
                     Tájékoztató becslés — a végleges árat a részletek után adom.
+                  </p>
+                  <p className="qchat__trust">
+                    „Három hét alatt ment élesbe a rendszer — és azóta is minden nap elvégzi a munkát.”
+                    <span>— K. BÁLINT · KIOSZ PIZZA NAPOLETANA</span>
                   </p>
                   <a className="btn btn--primary qchat__send" href={mailtoHref(m.resultFor ?? "", result)}>
                     Elküldöm emailel
