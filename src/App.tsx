@@ -24,7 +24,7 @@ import "./App.css";
 
 const SPY_IDS = ["hero", "work", "services", "process", "velemenyek", "gyik", "about", "quote", "contact"];
 
-const TICKER = ["IGAZI RENDSZER MÖGÖTT", "ONLINE RENDELÉS", "WEBÁRUHÁZ", "FOGLALÁS ÉS IDŐPONT", "KEZELŐFELÜLET", "FIZETÉS ÉS SZÁMLÁZÁS", "KARBANTARTÁS"];
+const TICKER = ["IGAZI RENDSZER MÖGÖTT", "EGYEDI APP ÉS MOBILAPP", "ONLINE RENDELÉS", "WEBÁRUHÁZ", "AI-MEGOLDÁSOK", "AUTOMATIZÁLÁS", "KEZELŐFELÜLET", "KARBANTARTÁS"];
 
 type Project = {
   num: string;
@@ -73,8 +73,9 @@ const SERVICES = [
   { n: "01", t: "CÉGES WEBOLDAL", h: "Ahol a vendég elsőre megbízni kezd benned." },
   { n: "02", t: "ONLINE RENDELÉS ÉS FOGLALÁS", h: "A vendég maga leadja — te csak kiszolgálod." },
   { n: "03", t: "WEBÁRUHÁZ", h: "Termék, fizetés, kezelés — egy helyen." },
-  { n: "04", t: "KEZELŐFELÜLET", h: "Összes rendelésed és adataid egy nézetben." },
-  { n: "05", t: "KARBANTARTÁS ÉS FEJLESZTÉS", h: "Utána is veled van, aki megépítette." },
+  { n: "04", t: "EGYEDI APP ÉS MOBILAPP", h: "Saját alkalmazás — pont a te munkádra szabva." },
+  { n: "05", t: "AI-MEGOLDÁSOK ÉS AUTOMATIZÁLÁS", h: "A gép vállalja az ismétlődő munkát, te a szakmádat látod." },
+  { n: "06", t: "KEZELŐFELÜLET ÉS KARBANTARTÁS", h: "Minden adatod egy nézetben — utána is gondozásban." },
 ];
 
 const PROCESS = [
@@ -101,6 +102,11 @@ const WHY = [
     t: "AZNAP KAPSZ VÁLASZT",
     h: "Munkanapokon még aznap választ kapsz — és nem ügyintézőtől, hanem attól, aki a rendszered építi.",
   },
+  {
+    n: "⌘",
+    t: "AI-ERŐSÍTETT KÉZMŰ",
+    h: "A fejlesztést mesterséges intelligencia is gyorsítja — így marad idő arra, ami géppel nem megy: hogy tényleg értsük a vállalkozásod.",
+  },
 ];
 
 const FAQ = [
@@ -119,6 +125,10 @@ const FAQ = [
   {
     q: "Mi van, ha nem tetszik a tervezett látvány?",
     a: "Semmi gond: addig alakítjuk közösen, amíg jó nem lesz — a fejlesztés csak a jóváhagyásod után indul. Így nincs zsákutca és nincs elköltött pénz.",
+  },
+  {
+    q: "Egyedi appot vagy AI-megoldást is tudsz?",
+    a: "Igen: egyedi web- és mobilappot teljes háttérrel, üzleti automatizálásokat, AI-vezérelt funkciókat (ajánlatgenerálás, dokumentumfeldolgozás, ügyfélszűrés) és összeköttetést a meglévő rendszereiddel — ugyanabból az egy kézből.",
   },
   {
     q: "Mi történik, ha egyszer elkészült?",
@@ -274,7 +284,7 @@ export function App() {
             <dl className="hero__stats">
               <div><dt><CountUp to={2011} /> óta</dt><dd>webet építek</dd></div>
               <div><dt><CountUp to={100} suffix="%" /></dt><dd>automatikusan tesztelve</dd></div>
-              <div><dt><CountUp to={1} /> éles</dt><dd>rendszer, valódi rendelésekkel</dd></div>
+              <div><dt><CountUp to={1} /> éles</dt><dd>rendszer — webshop, rendelés és CRM</dd></div>
             </dl>
           </div>
 

@@ -704,9 +704,12 @@
 .why { padding: clamp(40px, 7vh, 80px) 0; }
 .why__grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 16px;
   padding: 0 clamp(20px, 4vw, 48px);
+}
+@media (min-width: 1100px) {
+  .why__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
 .why__grid .tilt { height: 100%; }
 .why__card {

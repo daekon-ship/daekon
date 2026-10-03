@@ -39,6 +39,24 @@ const CATALOG: CatalogEntry[] = [
     keywords: ["rendeles", "foglalas", "etterem", "idopont", "asztalfoglalas", "nyomkovetes", "etel", "pincer"],
   },
   {
+    id: "app",
+    label: "Egyedi app / mobilapp",
+    min: 250_000, max: 600_000, weeksMin: 5, weeksMax: 10,
+    keywords: ["egyedi app", "mobilapp", "mobil alkalmazas", "ios", "android", "play store", "app store", "sajat app", "alkalmazast"],
+  },
+  {
+    id: "automation",
+    label: "Automatizálás / integráció",
+    min: 80_000, max: 200_000, weeksMin: 1, weeksMax: 3,
+    keywords: ["automatizalas", "automatizalni", "automatikus", "robot", "script", "kuizon kivuli", "n8n", "zapier", "osszekotes", "szamla", "szamlazo", "naptar", "email automata"],
+  },
+  {
+    id: "ai",
+    label: "AI-funkció (chatbot, feldolgozás)",
+    min: 120_000, max: 300_000, weeksMin: 2, weeksMax: 5,
+    keywords: ["ai", "mesterséges intelligencia", "mesterséges", "chatbot", "gpt", "openai", "claude", "kozponti agy", "felismeres", "kép felismeres", "osszefoglalo", "ajanlatgeneralas", "ugyfelszolgalat automata"],
+  },
+  {
     id: "admin",
     label: "Kezelőfelület / CRM",
     min: 100_000, max: 225_000, weeksMin: 2, weeksMax: 5,

@@ -25,11 +25,11 @@ interface Msg {
 
 const EXAMPLES = [
   "Webáruház bankkártyás fizetéssel és kezelőfelülettel",
-  "Étteremnek rendelésrendszer mobilra, SEO-val",
-  "Céges oldal bloggal, prémium látvánnyal",
+  "Egyedi mobilapp foglalásokkal és értesítésekkel",
+  "AI ajánlatgenerátor kezelőfelülettel",
 ];
 
-const QUICK_IDS = ["design", "auth", "payment", "seo", "mobile", "motion3d", "blog"];
+const QUICK_IDS = ["design", "app", "automation", "ai", "auth", "payment", "seo", "mobile", "motion3d", "blog"];
 
 const GREETING =
   "Szia! DAEKON asszisztens vagyok. Írd le egy-két mondatban, mit szeretnél — akár csak úgy, ahogy a kollégádnál elmesélnéd. Másodperceken belül árat és határidőt kapsz, és minden a böngésződben marad.";
