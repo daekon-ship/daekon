@@ -763,6 +763,84 @@
 }
 
 /* ---------------------------------------------------------------------
+   VOICES — client testimonials
+   --------------------------------------------------------------------- */
+
+.voices { padding: clamp(40px, 7vh, 80px) 0; }
+.voices__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  padding: 0 clamp(20px, 4vw, 48px);
+}
+.voices__grid .tilt { height: 100%; }
+.voice {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0;
+  padding: 26px 26px 24px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.015));
+  backdrop-filter: blur(12px);
+  overflow: hidden;
+  transition: border-color 220ms var(--ease), box-shadow 280ms var(--ease),
+    transform 280ms var(--ease);
+}
+.voice:hover {
+  border-color: rgba(98, 230, 255, 0.35);
+  box-shadow: 0 18px 50px -22px rgba(77, 107, 255, 0.35);
+}
+.voice__mark {
+  position: absolute;
+  top: 2px;
+  right: 14px;
+  font-family: "Archivo Black", "Space Grotesk", sans-serif;
+  font-size: 84px;
+  line-height: 1;
+  color: transparent;
+  background: var(--grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  opacity: 0.28;
+  pointer-events: none;
+  user-select: none;
+}
+.voice__q {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text-1);
+  flex: 1;
+}
+.voice__who {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+.voice__n {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: var(--text-0);
+}
+.voice__r {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  color: var(--text-2);
+}
+
+@media (max-width: 1080px) {
+  .voices__grid { grid-template-columns: 1fr; }
+}
+
+/* ---------------------------------------------------------------------
    FAQ — glass accordion
    --------------------------------------------------------------------- */
 

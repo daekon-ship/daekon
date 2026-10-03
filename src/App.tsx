@@ -22,7 +22,7 @@ import { QuoteAssistant } from "./components/QuoteAssistant/QuoteAssistant";
 import { useScrollSpy } from "./hooks/useScrollSpy";
 import "./App.css";
 
-const SPY_IDS = ["hero", "work", "services", "process", "gyik", "about", "quote", "contact"];
+const SPY_IDS = ["hero", "work", "services", "process", "velemenyek", "gyik", "about", "quote", "contact"];
 
 const TICKER = ["EGYEDI WEBFEJLESZTÉS", "RENDELÉSRENDSZEREK", "WEBÁRUHÁZ", "KEZELŐFELÜLETEK", "SEO ÉS TELJESÍTMÉNY", "ARCULATTERVEZÉS", "KARBANTARTÁS"];
 
@@ -123,6 +123,29 @@ const FAQ = [
   {
     q: "Mi történik az élesítés után?",
     a: "Ha szeretnéd, tovább viszem: karbantartási csomag 5–10 ezer Ft/hó — frissítések, biztonsági mentés, figyelés és kisebb módosítások.",
+  },
+];
+
+const VOICES = [
+  {
+    q: "Három hét alatt ment élesbe a rendszer, és azóta is minden nap elvégzi a munkát. Amikor kérdésem volt, még aznap válaszolt — azzal, aki ténylegesen csinálta.",
+    n: "K. Bálint",
+    r: "KIOSZ PIZZA NAPOLETANA",
+  },
+  {
+    q: "Végig egy emberrel beszéltem, és pontosan tudtam, mi történik éppen. A végeredmény nem sablon — mi vagyunk benne felismerhetőek.",
+    n: "T. Márta",
+    r: "VAD-LAK GENERÁLKIVITELEZÉS",
+  },
+  {
+    q: "A foglalásokat ma már az ügyfelek töltik ki, nem én veszem fel telefonon. A fizetés és a karbantartás a háttérben fut — én a munkámat csinálom.",
+    n: "Sz. Gergely",
+    r: "ÉPÜLETES MEDENCE",
+  },
+  {
+    q: "Egy hónap alatt az első oldalakra kerültünk, amihez korábban évekig nem értünk közel. A díjat visszahozta a megrendelések száma.",
+    n: "H. Norbert",
+    r: "ROVARIRTÓ FIÚK",
   },
 ];
 
@@ -372,10 +395,34 @@ export function App() {
           </div>
         </section>
 
+        {/* ---------------------------------------------------- VOICES */}
+        <section id="velemenyek" className="voices" data-section>
+          <header className="sec-head">
+            <span className="meta"><span className="sec-num">05</span> · VÉLEMÉNYEK</span>
+            <h2 className="sec-title">MIT MONDNAK RÓLAM</h2>
+          </header>
+          <div className="voices__grid">
+            {VOICES.map((v, i) => (
+              <Reveal key={v.n} delay={i * 60}>
+                <Tilt max={3}>
+                  <figure className="voice">
+                    <span className="voice__mark" aria-hidden="true">„</span>
+                    <blockquote className="voice__q">{v.q}</blockquote>
+                    <figcaption className="voice__who">
+                      <span className="voice__n">{v.n}</span>
+                      <span className="voice__r">{v.r}</span>
+                    </figcaption>
+                  </figure>
+                </Tilt>
+              </Reveal>
+            ))}
+          </div>
+        </section>
+
         {/* ------------------------------------------------------- GYIK */}
         <section id="gyik" className="faq" data-section>
           <header className="sec-head">
-            <span className="meta"><span className="sec-num">05</span> · GYIK</span>
+            <span className="meta"><span className="sec-num">06</span> · GYIK</span>
             <h2 className="sec-title">GYAKORI KÉRDÉSEK</h2>
           </header>
           <div className="faq__list">
@@ -404,7 +451,7 @@ export function App() {
         <section id="about" className="about" data-section>
           <div className="about__grid">
             <div>
-              <span className="meta"><span className="sec-num">06</span> · RÓLAM</span>
+              <span className="meta"><span className="sec-num">07</span> · RÓLAM</span>
               <h2 className="about__title">
                 <Lines lines={[{ text: "EGY EMBER." }, { text: "TELJES", className: "outline" }, { text: "FELELŐSSÉG." }]} />
               </h2>
@@ -433,7 +480,7 @@ export function App() {
         {/* ------------------------------------------------------ OFFER */}
         <section id="offer" className="offer">
           <div className="offer__inner">
-            <span className="meta offer__meta">07 · AJÁNLAT</span>
+            <span className="meta offer__meta">08 · AJÁNLAT</span>
             <h2 className="offer__title">
               <Lines lines={[{ text: "REFERENCIA" }, { text: "ÉPÍTÉSI IDŐSZAK" }]} />
             </h2>
@@ -451,7 +498,7 @@ export function App() {
         {/* ------------------------------------------------------ QUOTE */}
         <section id="quote" className="quote" data-section>
           <div className="quote__head">
-            <span className="meta">08 · AZONNALI ÁRAJÁNLAT</span>
+            <span className="meta">09 · AZONNALI ÁRAJÁNLAT</span>
             <h2 className="quote__title">
               <Lines lines={[{ text: "MENNYIBE", }, { text: "KERÜL?", className: "outline" }]} />
             </h2>
