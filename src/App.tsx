@@ -481,7 +481,7 @@ export function App() {
                 <div><dt>ÉLES RENDSZER</dt><dd>1</dd></div>
                 <div><dt>AUTOMATIKUS TESZTEK</dt><dd>100%</dd></div>
                 <div><dt>ELSŐ WEBOLDAL</dt><dd>2011 — 14 ÉVESEN</dd></div>
-                <div><dt>HELYSZÍN</dt><dd>MONOR / MAGYARORSZÁG</dd></div>
+                <div><dt>HELYSZÍN</dt><dd>CSÉVHARASZT / MAGYARORSZÁG</dd></div>
               </dl>
             </div>
           </div>
@@ -556,7 +556,7 @@ export function App() {
             <div className="colophon__row">
               <BrandMark size={26} inverted />
               <span className="meta">WEBOLDALAK, AMIK MÖGÖTT IGAZI RENDSZER ÁLL</span>
-              <span className="meta">MONOR / MAGYARORSZÁG</span>
+              <span className="meta">CSÉVHARASZT / MAGYARORSZÁG</span>
               <a className="colophon__mail" href="mailto:hello@daekon.hu">HELLO@DAEKON.HU</a>
               <span className="meta">© 2026 DAEKON</span>
             </div>
