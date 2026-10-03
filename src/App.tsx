@@ -112,7 +112,7 @@ const WHY = [
 const FAQ = [
   {
     q: "Mennyibe kerül egy weboldal?",
-    a: "Írd le a lenti chatbe, mit szeretnél — azonnal látod az árat és a határidőt, kötelezettség nélkül. Tájékoztatóul: bemutatkozó oldal kb. 60–125 ezer Ft-tól, rendelésrendszer 150–300 ezer Ft, webáruház 175–350 ezer Ft körül indul.",
+    a: "Írd le a lenti chatbe, mit szeretnél — azonnal látod az árat és a határidőt, kötelezettség nélkül. Tájékoztatóul: bemutatkozó oldal kb. 80–170 ezer Ft-tól, rendelésrendszer 200–400 ezer Ft, webáruház 240–470 ezer Ft körül indul.",
   },
   {
     q: "Milyen gyorsan készül el?",
@@ -132,7 +132,7 @@ const FAQ = [
   },
   {
     q: "Mi történik, ha egyszer elkészült?",
-    a: "Ha szeretnéd, utána is veled maradok: karbantartási csomag 5–10 ezer Ft/hó — frissítések, biztonsági mentés, figyelés és kisebb módosítások. És ha majd bővíteni szeretnéd, ugyanaz az ember építi tovább, aki ismeri a rendszeredet.",
+    a: "Ha szeretnéd, utána is veled maradok: karbantartási csomag 8–15 ezer Ft/hó — frissítések, biztonsági mentés, figyelés és kisebb módosítások. És ha majd bővíteni szeretnéd, ugyanaz az ember építi tovább, aki ismeri a rendszeredet.",
   },
 ];
 
