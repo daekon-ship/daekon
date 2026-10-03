@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Nav } from "./components/Nav/Nav";
 import { LiveStatusPanel } from "./components/LiveStatusPanel/LiveStatusPanel";
-import { OrderDemo } from "./components/OrderDemo/OrderDemo";
 import {
   AuroraFX,
   BackToTop,
@@ -163,7 +162,7 @@ const VOICES = [
 const CASE = {
   ch: "A KIOSZ eddig telefonon vette fel a rendeléseket — csúcsidőben sorban álltak a hívások, és ha egy kérés elcsúszott, a vendég ezt mindenkinek elmondta.",
   so: "Olyan weboldalt építettem, ami maga viszi a rendelést: a vendég online leadja, a konyha élő nézetben látja, az állapot minden lépésnél frissül — kasszáig bezárólag.",
-  re: "A rendszer ma is élesben, minden nap dolgozik — és ezen az oldalon ki is próbálhatod: a rendelés-demó ugyanazt az állapotgépet hajtja, valós időben.",
+  re: "A rendszer ma is élesben, minden nap dolgozik — a rendelésfelvétel, a konyhai nézet és a nyomkövetés ugyanabban a rendszerben fut, kasszáig bezárólag.",
 };
 
 function ReferenceCard({ p }: { p: Project }) {
@@ -528,12 +527,11 @@ export function App() {
           <div className="proof">
             <div className="proof__head">
               <span className="meta">BIZONYÍTÉK / 001</span>
-              <span className="meta">EZ AZ OLDAL MAGA IS BIZONYÍTÉK — PRÓBÁLD KI</span>
+              <span className="meta">EZ AZ OLDAL MAGA IS ÉLŐ RENDSZER</span>
             </div>
-            <div className="proof__grid">
-              <OrderDemo />
-              <LiveStatusPanel currentSectionId={currentId} />
-            </div>
+          <div className="proof__grid proof__grid--single">
+            <LiveStatusPanel currentSectionId={currentId} />
+          </div>
           </div>
         </section>
 
