@@ -110,7 +110,7 @@
   z-index: calc(var(--z-header) + 10);
   pointer-events: none;
   background: var(--grad) 0 0 / var(--p, 0%) 100% no-repeat;
-  box-shadow: 0 0 14px rgba(77, 107, 255, 0.8);
+  box-shadow: 0 0 14px rgba(0, 224, 90, 0.8);
 }
 
 /* particles canvas */
@@ -167,13 +167,13 @@
 }
 .cursor-ring.is-hot {
   border-color: var(--blue-bright);
-  box-shadow: 0 0 0 6px rgba(77, 107, 255, 0.16), 0 0 24px rgba(77, 107, 255, 0.45);
+  box-shadow: 0 0 0 6px rgba(0, 224, 90, 0.16), 0 0 24px rgba(0, 224, 90, 0.45);
 }
 .cursor-ring.is-label {
   width: 74px;
   height: 74px;
   margin: -37px 0 0 -37px;
-  background: rgba(77, 107, 255, 0.22);
+  background: rgba(0, 224, 90, 0.22);
   backdrop-filter: blur(4px);
 }
 .cursor-ring.is-label::after { opacity: 1; }
@@ -211,8 +211,8 @@ html.has-cursor [role="button"] {
 /* kinetic hero watermark — stroke color drifts cyan → magenta */
 @keyframes hero-stroke {
   0% { -webkit-text-stroke-color: rgba(255, 255, 255, 0.07); }
-  50% { -webkit-text-stroke-color: rgba(0, 245, 255, 0.3); }
-  100% { -webkit-text-stroke-color: rgba(255, 92, 225, 0.24); }
+  50% { -webkit-text-stroke-color: rgba(0, 255, 106, 0.32); }
+  100% { -webkit-text-stroke-color: rgba(0, 190, 75, 0.28); }
 }
 .hero__word {
   animation: hero-stroke 9s var(--ease) infinite alternate;
@@ -276,10 +276,10 @@ html.has-cursor [role="button"] {
   background: conic-gradient(
     from 0deg,
     transparent 0deg,
-    rgba(0, 245, 255, 0.55) 40deg,
+    rgba(0, 255, 106, 0.55) 40deg,
     transparent 80deg,
     transparent 180deg,
-    rgba(255, 92, 225, 0.5) 220deg,
+    rgba(0, 210, 80, 0.5) 220deg,
     transparent 260deg
   );
   animation: star-rot 4.5s linear infinite;
@@ -303,7 +303,7 @@ html.has-cursor [role="button"] {
   background: var(--btn-bg, none);
   z-index: 0;
 }
-.btn--primary { --btn-bg: linear-gradient(120deg, #3552ff, #4d6bff 55%, #7c5bff); }
+.btn--primary { --btn-bg: linear-gradient(120deg, #00b84a, #00e05a 55%, #6dffa8); }
 .btn--paper { --btn-bg: rgba(10, 13, 24, 0.92); }
 @keyframes star-rot {
   to { transform: rotate(1turn); } 
@@ -331,7 +331,7 @@ html.has-cursor [role="button"] {
   gap: 14px;
 }
 .preloader__logo {
-  filter: drop-shadow(0 0 26px rgba(77, 107, 255, 0.65));
+  filter: drop-shadow(0 0 26px rgba(0, 224, 90, 0.65));
   animation: logo-breathe 2s var(--ease) infinite;
 }
 @keyframes logo-breathe {
@@ -373,7 +373,7 @@ html.has-cursor [role="button"] {
   display: block;
   height: 100%;
   background: var(--grad);
-  box-shadow: 0 0 12px rgba(77, 107, 255, 0.8);
+  box-shadow: 0 0 12px rgba(0, 224, 90, 0.8);
   transition: width 90ms linear;
 }
 
@@ -408,5 +408,5 @@ html.has-cursor [role="button"] {
 .backtotop:hover {
   color: #ffffff;
   border-color: var(--blue-bright);
-  box-shadow: 0 12px 34px -12px rgba(77, 107, 255, 0.8);
+  box-shadow: 0 12px 34px -12px rgba(0, 224, 90, 0.8);
 }

@@ -114,11 +114,10 @@
 @media (prefers-reduced-motion: reduce) {
   .qchat__bubble { animation: none; }
 }
-.qchat__bubble--user {
-  background: linear-gradient(120deg, #3552ff, #4d6bff 55%, #7c5bff);
+.qchat__bubble--user {   background: linear-gradient(120deg, #00b84a, #00e05a 55%, #6dffa8);
   color: #ffffff;
   border-radius: 16px 16px 4px 16px;
-  box-shadow: 0 12px 30px -14px rgba(77, 107, 255, 0.8);
+  box-shadow: 0 12px 30px -14px rgba(0, 224, 90, 0.8);
 }
 .qchat__bubble--ai {
   background: rgba(255, 255, 255, 0.05);
@@ -248,7 +247,7 @@
   background: var(--blue-soft);
   border-color: var(--blue-bright);
   color: #ffffff;
-  box-shadow: 0 0 16px rgba(77, 107, 255, 0.4);
+  box-shadow: 0 0 16px rgba(0, 224, 90, 0.4);
 }
 
 /* ---- examples + input ---- */
@@ -294,7 +293,7 @@
 .qchat__input:focus {
   outline: none;
   border-color: var(--blue-bright);
-  box-shadow: 0 0 0 4px rgba(77, 107, 255, 0.22);
+  box-shadow: 0 0 0 4px rgba(0, 224, 90, 0.22);
 }
 .qchat__input::placeholder { color: var(--text-2); }
 .qchat__go { min-height: 50px; padding: 0 24px; flex-shrink: 0; }

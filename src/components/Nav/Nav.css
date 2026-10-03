@@ -71,18 +71,17 @@
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.14em;
-  color: #ffffff;
-  background: linear-gradient(120deg, #3552ff, #4d6bff 55%, #7c5bff);
+  color: #ffffff;   background: linear-gradient(120deg, #00b84a, #00e05a 55%, #6dffa8);
   text-decoration: none;
   border-radius: 999px;
   padding: 12px 20px;
-  box-shadow: 0 12px 32px -12px rgba(77, 107, 255, 0.8);
+  box-shadow: 0 12px 32px -12px rgba(0, 224, 90, 0.8);
   transition: transform 140ms var(--ease), box-shadow 140ms var(--ease);
   white-space: nowrap;
 }
 .nav__cta:hover {
   transform: translateY(-2px);
-  box-shadow: 0 18px 42px -12px rgba(77, 107, 255, 1);
+  box-shadow: 0 18px 42px -12px rgba(0, 224, 90, 1);
 }
 
 /* burger */
@@ -164,11 +163,10 @@
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.18em;
-  color: #ffffff;
-  background: linear-gradient(120deg, #3552ff, #4d6bff 55%, #7c5bff);
+  color: #ffffff;   background: linear-gradient(120deg, #00b84a, #00e05a 55%, #6dffa8);
   border-radius: 999px;
   padding: 16px 26px;
-  box-shadow: 0 16px 40px -14px rgba(77, 107, 255, 0.9);
+  box-shadow: 0 16px 40px -14px rgba(0, 224, 90, 0.9);
   text-decoration: none;
   opacity: 0;
   transform: translateX(-18px);
