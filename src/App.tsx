@@ -3,6 +3,7 @@ import { Nav } from "./components/Nav/Nav";
 import { LiveStatusPanel } from "./components/LiveStatusPanel/LiveStatusPanel";
 import { OrderDemo } from "./components/OrderDemo/OrderDemo";
 import {
+  AuroraFX,
   BackToTop,
   CountUp,
   Cursor,
@@ -240,6 +241,8 @@ export function App() {
       <Cursor />
       <Nav current={currentId} />
       <BackToTop />
+
+      <AuroraFX />
 
       <main>
         {/* ------------------------------------------------ HERO */}

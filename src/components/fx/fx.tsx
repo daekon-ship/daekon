@@ -326,6 +326,104 @@ export function Cursor() {
   );
 }
 
+/* AuroraFX — living neon light-field behind the whole page.
+   Four additive color blobs drift on sine paths; composite 'lighter'
+   gives the Lusion-style bloom. Pauses off-screen and on hidden tabs. */
+const AURORA_COLORS: [string, number][] = [
+  ["0,245,255", 0.5],
+  ["63,108,255", 0.6],
+  ["160,107,255", 0.5],
+  ["255,92,225", 0.42],
+];
+
+export function AuroraFX() {
+  const ref = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = ref.current;
+    if (!canvas) return;
+    if (prefersReducedMotion()) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    let w = 0;
+    let h = 0;
+    let raf = 0;
+    let running = true;
+    let t = 0;
+    type Blob = {
+      bx: number; by: number; r: number;
+      sx: number; sy: number; ph: number;
+      col: [string, number];
+    };
+    let blobs: Blob[] = [];
+
+    const resize = () => {
+      w = window.innerWidth;
+      h = window.innerHeight;
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      canvas.width = Math.round(w * dpr);
+      canvas.height = Math.round(h * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      const n = w < 700 ? 4 : 7;
+      blobs = Array.from({ length: n }, (_, i) => ({
+        bx: Math.random(),
+        by: Math.random(),
+        r: 0.22 + Math.random() * 0.3,
+        sx: 0.00016 + Math.random() * 0.0004,
+        sy: 0.00014 + Math.random() * 0.00038,
+        ph: Math.random() * Math.PI * 2,
+        col: AURORA_COLORS[i % AURORA_COLORS.length],
+      }));
+    };
+
+    const step = () => {
+      if (!running) {
+        raf = 0;
+        return;
+      }
+      t += 16;
+      ctx.clearRect(0, 0, w, h);
+      ctx.globalCompositeOperation = "lighter";
+      for (const b of blobs) {
+        const x = (b.bx + Math.sin(t * b.sx + b.ph) * 0.3) * w;
+        const y = (b.by + Math.cos(t * b.sy + b.ph * 1.3) * 0.26) * h;
+        const rr = b.r * Math.max(w, h);
+        const g = ctx.createRadialGradient(x, y, 0, x, y, rr);
+        g.addColorStop(0, `rgba(${b.col[0]},${b.col[1]})`);
+        g.addColorStop(1, `rgba(${b.col[0]},0)`);
+        ctx.fillStyle = g;
+        ctx.fillRect(x - rr, y - rr, rr * 2, rr * 2);
+      }
+      raf = requestAnimationFrame(step);
+    };
+
+    resize();
+    raf = requestAnimationFrame(step);
+    window.addEventListener("resize", resize);
+    const io = new IntersectionObserver((entries) => {
+      running = entries[0]?.isIntersecting ?? true;
+      if (running && !raf) raf = requestAnimationFrame(step);
+    });
+    io.observe(canvas);
+    const onVis = () => {
+      running = !document.hidden;
+      if (running && !raf) raf = requestAnimationFrame(step);
+    };
+    document.addEventListener("visibilitychange", onVis);
+
+    return () => {
+      running = false;
+      cancelAnimationFrame(raf);
+      window.removeEventListener("resize", resize);
+      io.disconnect();
+      document.removeEventListener("visibilitychange", onVis);
+    };
+  }, []);
+
+  return <canvas ref={ref} className="fx-aurora" aria-hidden="true" />;
+}
+
 /* Particles — constellation field, pauses off-screen and when idle */
 export function Particles({ density = 64 }: { density?: number }) {
   const ref = useRef<HTMLCanvasElement>(null);
@@ -360,7 +458,7 @@ export function Particles({ density = 64 }: { density?: number }) {
         vx: (Math.random() - 0.5) * 0.22,
         vy: (Math.random() - 0.5) * 0.22,
         r: Math.random() * 1.5 + 0.6,
-        hue: Math.random() < 0.6 ? 226 : 190,
+        hue: [185, 226, 275, 310][Math.floor(Math.random() * 4)],
       }));
     };
 

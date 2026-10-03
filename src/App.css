@@ -580,7 +580,7 @@
   left: 24px;
   right: 24px;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(134, 163, 255, 0.7), transparent);
+  background: linear-gradient(90deg, transparent, rgba(0, 245, 255, 0.85), transparent);
   opacity: 0;
   transition: opacity 260ms var(--ease);
 }
@@ -590,13 +590,21 @@
   inset: 0;
   border-radius: inherit;
   pointer-events: none;
-  background: radial-gradient(220px circle at var(--mx, 50%) var(--my, 50%), rgba(134, 163, 255, 0.13), transparent 72%);
+  background: radial-gradient(220px circle at var(--mx, 50%) var(--my, 50%), rgba(0, 245, 255, 0.16), transparent 72%);
   opacity: 0;
   transition: opacity 260ms var(--ease);
 }
 .svc:hover {
-  border-color: rgba(134, 163, 255, 0.5);
-  box-shadow: var(--glow);
+  border-color: rgba(0, 245, 255, 0.65);
+  box-shadow:
+    0 0 0 1px rgba(0, 245, 255, 0.28),
+    0 0 34px -6px rgba(0, 245, 255, 0.4),
+    0 22px 70px -24px rgba(255, 92, 225, 0.35);
+  animation: svc-neon 2.4s linear infinite alternate;
+}
+@keyframes svc-neon {
+  from { border-color: rgba(0, 245, 255, 0.5); }
+  to { border-color: rgba(255, 92, 225, 0.6); }
 }
 .svc:hover::before,
 .svc:hover::after { opacity: 1; }
@@ -731,13 +739,16 @@
   position: absolute;
   inset: 0 0 auto 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(98, 230, 255, 0.6), transparent);
+  background: linear-gradient(90deg, transparent, rgba(160, 107, 255, 0.85), transparent);
   opacity: 0;
   transition: opacity 280ms var(--ease);
 }
 .why__card:hover {
-  border-color: rgba(98, 230, 255, 0.45);
-  box-shadow: 0 20px 60px -24px rgba(77, 107, 255, 0.55);
+  border-color: rgba(160, 107, 255, 0.65);
+  box-shadow:
+    0 0 0 1px rgba(160, 107, 255, 0.3),
+    0 0 34px -6px rgba(160, 107, 255, 0.45),
+    0 22px 70px -24px rgba(0, 245, 255, 0.3);
 }
 .why__card:hover::before { opacity: 1; }
 .why__icon {
@@ -794,8 +805,11 @@
     transform 280ms var(--ease);
 }
 .voice:hover {
-  border-color: rgba(98, 230, 255, 0.35);
-  box-shadow: 0 18px 50px -22px rgba(77, 107, 255, 0.35);
+  border-color: rgba(255, 92, 225, 0.5);
+  box-shadow:
+    0 0 0 1px rgba(255, 92, 225, 0.22),
+    0 0 30px -8px rgba(255, 92, 225, 0.4),
+    0 18px 50px -22px rgba(63, 108, 255, 0.4);
 }
 .voice__mark {
   position: absolute;
