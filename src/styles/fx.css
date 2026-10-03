@@ -216,6 +216,19 @@ html.has-cursor [role="button"] {
 @media (prefers-reduced-motion: reduce) {
   .preloader__logo { animation: none; }
 }
+.preloader__word {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 17px;
+  line-height: 1;
+  letter-spacing: 0.5em;
+  text-indent: 0.5em;
+  margin-top: -6px;
+  background: var(--grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
 .preloader__num {
   font-family: var(--font-mono);
   font-size: 11px;

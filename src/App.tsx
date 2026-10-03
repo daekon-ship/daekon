@@ -17,7 +17,7 @@ import {
   Tilt,
 } from "./components/fx/fx";
 import { useClock } from "./hooks/useClock";
-import { BrandMark, LogoMark } from "./brand/Logo";
+import { BrandMark } from "./brand/Logo";
 import { QuoteAssistant } from "./components/QuoteAssistant/QuoteAssistant";
 import { useScrollSpy } from "./hooks/useScrollSpy";
 import "./App.css";
@@ -327,7 +327,7 @@ export function App() {
         {/* -------------------------------------------- INK MANIFESTO */}
         <section className="inkbreak">
           <span className="inkbreak__mark" aria-hidden="true">
-            <LogoMark size={30} />
+            <BrandMark size={24} />
           </span>
           <h2 className="inkbreak__title">
             <Lines lines={[{ text: "A FORMA NEM" }, { text: "DÍSZÍTÉS.", className: "blue" }]} />

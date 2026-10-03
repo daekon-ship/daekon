@@ -468,6 +468,7 @@ export function Preloader() {
     <div className={`preloader${fade ? " is-done" : ""}`} aria-hidden="true">
       <div className="preloader__inner">
         <LogoMark size={58} className="preloader__logo" />
+        <span className="preloader__word">DAEKON</span>
         <span className="preloader__num">{n}%</span>
         <span className="preloader__bar">
           <i style={{ width: `${n}%` }} />
