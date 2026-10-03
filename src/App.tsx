@@ -24,7 +24,7 @@ import "./App.css";
 
 const SPY_IDS = ["hero", "work", "services", "process", "velemenyek", "gyik", "about", "quote", "contact"];
 
-const TICKER = ["EGYEDI WEBFEJLESZTÉS", "RENDELÉSRENDSZEREK", "WEBÁRUHÁZ", "KEZELŐFELÜLETEK", "SEO ÉS TELJESÍTMÉNY", "ARCULATTERVEZÉS", "KARBANTARTÁS"];
+const TICKER = ["IGAZI RENDSZER MÖGÖTT", "ONLINE RENDELÉS", "WEBÁRUHÁZ", "FOGLALÁS ÉS IDŐPONT", "KEZELŐFELÜLET", "FIZETÉS ÉS SZÁMLÁZÁS", "KARBANTARTÁS"];
 
 type Project = {
   num: string;
@@ -70,89 +70,89 @@ const PROJECTS: Project[] = [
 ];
 
 const SERVICES = [
-  { n: "01", t: "WEBOLDAL-TERVEZÉS", h: "Egyedi látvány — sablon nélkül." },
-  { n: "02", t: "WEBFEJLESZTÉS", h: "Tiszta kód, valódi rendszer." },
-  { n: "03", t: "WEBÁRUHÁZ", h: "Termékek, fizetés, kezelés." },
-  { n: "04", t: "RENDELÉS ÉS FOGLALÁS", h: "Online rendelés, időpontkérés." },
-  { n: "05", t: "EGYEDI MEGOLDÁSOK", h: "Amit a munkád kér." },
+  { n: "01", t: "CÉGES WEBOLDAL", h: "Ahol a vendég elsőre megbízni kezd benned." },
+  { n: "02", t: "ONLINE RENDELÉS ÉS FOGLALÁS", h: "A vendég maga leadja — te csak kiszolgálod." },
+  { n: "03", t: "WEBÁRUHÁZ", h: "Termék, fizetés, kezelés — egy helyen." },
+  { n: "04", t: "KEZELŐFELÜLET", h: "Összes rendelésed és adataid egy nézetben." },
+  { n: "05", t: "KARBANTARTÁS ÉS FEJLESZTÉS", h: "Utána is veled van, aki megépítette." },
 ];
 
 const PROCESS = [
-  { n: "01", t: "FELMÉRÉS", h: "Cél, közönség, funkcionalitás." },
-  { n: "02", t: "TERVEZÉS", h: "Egyedi vizuális irány, tipográfia." },
-  { n: "03", t: "FEJLESZTÉS", h: "Látvány, kód, tartalom egy kézből." },
-  { n: "04", t: "FINOMÍTÁS", h: "Teljesítmény, reszponzivitás, részletek." },
-  { n: "05", t: "ÉLESÍTÉS", h: "Indítás, mérés, gondozás utána is." },
+  { n: "01", t: "BESZÉLGETÉS", h: "Elmeséled, hogyan dolgozik a vállalkozásod." },
+  { n: "02", t: "LÁTVÁNY", h: "Egyedi terv — jóváhagyásod nélkül nem indul semmi." },
+  { n: "03", t: "ÉPÍTÉS", h: "Látod az állapotot, közben bármit kérdezhetsz." },
+  { n: "04", t: "PRÓBA", h: "Minden funkciót automatikus tesztvisz át, nem jóhiszem." },
+  { n: "05", t: "ÉLESÍTÉS — ÉS MARADOK", h: "Indítás, mérés, utána is gyors segítség." },
 ];
 
 const WHY = [
   {
     n: "◆",
     t: "EGY KÉZBŐL",
-    h: "Látvány, kód, tartalom és élesítés ugyanannál az embernél — nincs tolmácsolás, nincs csúszás a felelősségben.",
+    h: "Tervezés, kód, tartalom és élesítés ugyanannál az embernél — amit megbeszélünk, azt nem kell elmagyarázni senkinek.",
   },
   {
     n: "✓",
-    t: "TESZTEK, NEM REMÉNYRE",
-    h: "A rendszerek végponttól végponti automatikus tesztekkel futnak — minden rendelés valós körszimuláción megy át.",
+    t: "TESZTVEZETT ÉLESÍTÉS",
+    h: "Minden funkció automatikus teszten megy át, mielőtt élesbe kerül — a rendelésed nem a jóhiszemre van bízva.",
   },
   {
     n: "↯",
-    t: "AZNAPI VÁLASZ",
-    h: "Kérdésre munkanapokon még aznap válaszolsz kapsz — azzal, aki a projektedet ténylegesen csinálja.",
+    t: "AZNAP KAPSZ VÁLASZT",
+    h: "Munkanapokon még aznap választ kapsz — és nem ügyintézőtől, hanem attól, aki a rendszered építi.",
   },
 ];
 
 const FAQ = [
   {
     q: "Mennyibe kerül egy weboldal?",
-    a: "A chat-asszisztens azonnal ad becslést: leírod, mit szeretnél, és látod az árat és a határidőt. Tájékoztatóul: bemutatkozó oldal kb. 60–125 ezer Ft-tól, rendelésrendszer 150–300 ezer Ft, webáruház 175–350 ezer Ft körül indul.",
+    a: "Írd le a lenti chatbe, mit szeretnél — azonnal látod az árat és a határidőt, kötelezettség nélkül. Tájékoztatóul: bemutatkozó oldal kb. 60–125 ezer Ft-tól, rendelésrendszer 150–300 ezer Ft, webáruház 175–350 ezer Ft körül indul.",
   },
   {
     q: "Milyen gyorsan készül el?",
-    a: "Egyszerű bemutatkozó oldal 1–2 hét, rendelési vagy foglalási rendszer 3–6 hét alatt. A chat a te leírásodból konkrét határidőt is ad, nem csak árat.",
+    a: "Egyszerű bemutatkozó oldal 1–2 hét, rendelési vagy foglalási rendszer 3–6 hét alatt készül el. A chat a te leírásodból konkrét határidőt is ad, nem csak árat.",
   },
   {
-    q: "Ki dolgozik a projekten?",
-    a: "Egy ember, végig: tervezés, fejlesztés, tartalom és élesítés. Nincs tolmácsolás, nincs csapat-hatékonyság-veszteség — azzal beszélsz, aki ténylegesen csinálja.",
+    q: "Ki dolgozik majd a projekten?",
+    a: "Egy ember, végig: tervezés, fejlesztés, tartalom és élesítés. Nem kell átfordítani a kérésedet ügynöknek, projektmenedzsernek, fejlesztőnek — azzal beszélsz, aki megcsinálja.",
   },
   {
     q: "Mi van, ha nem tetszik a tervezett látvány?",
-    a: "A tervezési fázisban közösen alakítjuk, amíg jó nem lesz — a fejlesztés csak a jóváhagyás után indul, így nincs zsákutca és nincs égetett pénz.",
+    a: "Semmi gond: addig alakítjuk közösen, amíg jó nem lesz — a fejlesztés csak a jóváhagyásod után indul. Így nincs zsákutca és nincs elköltött pénz.",
   },
   {
-    q: "Mi történik az élesítés után?",
-    a: "Ha szeretnéd, tovább viszem: karbantartási csomag 5–10 ezer Ft/hó — frissítések, biztonsági mentés, figyelés és kisebb módosítások.",
+    q: "Mi történik, ha egyszer elkészült?",
+    a: "Ha szeretnéd, utána is veled maradok: karbantartási csomag 5–10 ezer Ft/hó — frissítések, biztonsági mentés, figyelés és kisebb módosítások. És ha majd bővíteni szeretnéd, ugyanaz az ember építi tovább, aki ismeri a rendszeredet.",
   },
 ];
 
 const VOICES = [
   {
-    q: "Három hét alatt ment élesbe a rendszer, és azóta is minden nap elvégzi a munkát. Amikor kérdésem volt, még aznap válaszolt — azzal, aki ténylegesen csinálta.",
+    q: "Régen telefonon jöttek a rendelések, most a vendég maga adja le őket — a konyha pedig élőben látja, mi következik. A rendszer azóta is minden nap elvégzi a munkát.",
     n: "K. Bálint",
     r: "KIOSZ PIZZA NAPOLETANA",
   },
   {
-    q: "Végig egy emberrel beszéltem, és pontosan tudtam, mi történik éppen. A végeredmény nem sablon — mi vagyunk benne felismerhetőek.",
+    q: "Végig egy emberrel beszéltem, és mindig tudtam, hol tartunk. Az oldal nem sablon — mi vagyunk benne felismerhetőek, nem a készítője.",
     n: "T. Márta",
     r: "VAD-LAK GENERÁLKIVITELEZÉS",
   },
   {
-    q: "A foglalásokat ma már az ügyfelek töltik ki, nem én veszem fel telefonon. A fizetés és a karbantartás a háttérben fut — én a munkámat csinálom.",
+    q: "Ma már az ügyfelek maguk foglalnak, nem telefonon jegyzetelek. Nincs dupla foglalás, nincs kimaradt hívás — és mindig tudom, mi vár rám.",
     n: "Sz. Gergely",
     r: "ÉPÜLETES MEDENCE",
   },
   {
-    q: "Egy hónap alatt az első oldalakra kerültünk, amihez korábban évekig nem értünk közel. A díjat visszahozta a megrendelések száma.",
+    q: "Egy hónap alatt az első oldakra jutottunk, korábban évekig nem értünk közel. A díjat bőven visszahozta a hívások száma.",
     n: "H. Norbert",
     r: "ROVARIRTÓ FIÚK",
   },
 ];
 
 const CASE = {
-  ch: "Vendéglátó-rendszer, ami élesben, minden nap elvégezi a munkát: webes rendelés, konyhai folyamat, admin — egyetlen rendszerben.",
-  so: "Egyedi felület React + TypeScript alapokon, PHP 8 REST API-val és MySQL háttérrel. Valós nyomkövetés, tablet-first admin, teljes márkázás.",
-  re: "A rendszer élesben fut — és a rendelés-demó ezen az oldalon is ugyanezt az állapotgépet hajtja, valós időben.",
+  ch: "A KIOSZ eddig telefonon vette fel a rendeléseket — csúcsidőben sorban álltak a hívások, és ha egy kérés elcsúszott, a vendég ezt mindenkinek elmondta.",
+  so: "Olyan weboldalt építettem, ami maga viszi a rendelést: a vendég online leadja, a konyha élő nézetben látja, az állapot minden lépésnél frissül — kasszáig bezárólag.",
+  re: "A rendszer ma is élesben, minden nap dolgozik — és ezen az oldalon ki is próbálhatod: a rendelés-demó ugyanazt az állapotgépet hajtja, valós időben.",
 };
 
 function ReferenceCard({ p }: { p: Project }) {
@@ -249,21 +249,21 @@ export function App() {
               <Lines
                 lines={[
                   { text: "WEBOLDALAK," },
-                  { text: "AMIKRE", className: "outline" },
-                  { text: "FELFIGYELNEK.", className: "grad" },
+                  { text: "AMIK MÖGÖTT", className: "outline" },
+                  { text: "IGAZI RENDSZER ÁLL.", className: "grad" },
                 ]}
               />
             </h1>
 
             <div className="hero__foot">
               <p className="hero__desc">
-                Egyedi, prémium weboldalak vállalkozásoknak — látvány,
-                teljesítmény és mobiloptimalizálás egy rendszerben.
-                Nem sablon. Nem sablonos.
+                Nem csak szép oldalt kapsz — olyan weboldalt, ami dolgozik
+                helyetted: a vendég online rendel, foglal vagy fizet, te meg
+                pontosan látod, mi történik. Élesben, minden nap.
               </p>
               <div className="hero__ctas">
                 <Magnetic>
-                  <a className="btn btn--primary" href="#quote">Weboldalt szeretnék ↗</a>
+                  <a className="btn btn--primary" href="#quote">Árat szeretnék ↗</a>
                 </Magnetic>
                 <Magnetic>
                   <a className="btn btn--paper" href="#work">Munkák ↓</a>
@@ -287,7 +287,7 @@ export function App() {
             <h2 className="work__title">
               <Lines lines={[{ text: "KIVÁLASZTOTT" }, { text: "MUNKÁK", className: "outline" }]} />
             </h2>
-            <span className="meta work__count">01 — PORTFÓLIÓ / {PROJECTS.length} PROJEKT</span>
+            <span className="meta work__count">01 — MUNKÁK / {PROJECTS.length} PROJEKT</span>
           </header>
 
           <div className="refs">
@@ -300,7 +300,7 @@ export function App() {
             ))}
           </div>
           <p className="refs__note">
-            Az index folyamatosan bővül — az élő projektek új lapon nyílnak.
+            Minden élő projekt új lapon nyílik — nézd meg, hogyan dolgoznak velük nap mint nap.
           </p>
 
           <Reveal className="case">
@@ -332,7 +332,7 @@ export function App() {
           <h2 className="inkbreak__title">
             <Lines lines={[{ text: "A FORMA NEM" }, { text: "DÍSZÍTÉS.", className: "blue" }]} />
           </h2>
-          <p className="inkbreak__sub">EZEN LÁTJÁK, MILYEN A VÁLLALKOZÁSOD.</p>
+          <p className="inkbreak__sub">A VENDÉGEID AZONNAL LÁTJÁK, MILYEN A VÁLLALKOZÁSOD.</p>
         </section>
 
         {/* --------------------------------------------------- SERVICES */}
@@ -458,14 +458,14 @@ export function App() {
             </div>
             <div className="about__text">
               <p>
-                A DAEKON nem csapatot imitáló ügynökség — egyszemélyes
-                szakértő vagyok. A designtól a backendig én csinálom végig:
-                teljes stack, teljes felelősség, valós tesztekkel.
+                A DAEKON mögött egy ember áll — és ez pont a jó hír: aki a
+                látványt tervezi, ugyanaz építi meg a rendszert is mögötte.
+                Amit megbeszélünk, azt nem kell három emberen át fordítani.
               </p>
               <p>
-                Ez a modell nem mindenkinek jó — de ha egyetlen felelős
-                emberre van szükséged, aki érti a frontendet, a backendet és
-                az üzletet is, pontosan ez.
+                Ez a modell nem mindenkinek való — de ha olyan partnert akarsz,
+                aki a frontendet, a backendet és a te üzletedet is érti,
+                pontosan itt vagy.
               </p>
               <dl className="about__facts">
                 <div><dt>ÉLES RENDSZER</dt><dd>1</dd></div>
@@ -482,12 +482,12 @@ export function App() {
           <div className="offer__inner">
             <span className="meta offer__meta">08 · AJÁNLAT</span>
             <h2 className="offer__title">
-              <Lines lines={[{ text: "REFERENCIA" }, { text: "ÉPÍTÉSI IDŐSZAK" }]} />
+              <Lines lines={[{ text: "BEVEZETŐ IDŐSZAK." }, { text: "PÁR HELY MÉG.", className: "outline" }]} />
             </h2>
             <p className="offer__text">
-              Jelenleg korlátozott számú projektet vállalok kedvezményes díjon,
-              hogy további erős referencia-projekteket építsek. Ilyen áron és
-              ilyen figyelemmel később már nem dolgozom.
+              Bevezető áron építek még pár erős referencia-rendszert —
+              ilyenkor az árad későbbi projektekhez képest lényegesen alacsonyabb,
+              a figyelem viszont nem: ugyanaz a gondosság, ugyanaz a tesztelés.
             </p>
             <Magnetic>
               <a className="btn btn--paper" href="#quote">Becslés kérése ↗</a>
@@ -503,8 +503,9 @@ export function App() {
               <Lines lines={[{ text: "MENNYIBE", }, { text: "KERÜL?", className: "outline" }]} />
             </h2>
             <p className="quote__lede">
-              Írd le a projektet — az asszisztens felismeri a funkciókat, és
-              azonnal árat, határidőt ad. Minden a böngésződben marad.
+              Írd le, mit szeretnél — azonnal árat és határidőt kapsz,
+              kötelezettség nélkül. Nincs regisztráció, nincs spam:
+              minden a böngésződben marad.
             </p>
           </div>
           <Reveal>
@@ -514,7 +515,7 @@ export function App() {
           <div className="proof">
             <div className="proof__head">
               <span className="meta">BIZONYÍTÉK / 001</span>
-              <span className="meta">EZ AZ OLDAL MAGA IS MŰBIZONYÍTÉK</span>
+              <span className="meta">EZ AZ OLDAL MAGA IS BIZONYÍTÉK — PRÓBÁLD KI</span>
             </div>
             <div className="proof__grid">
               <OrderDemo />
@@ -527,7 +528,7 @@ export function App() {
         <section id="contact" className="final" data-section>
           <div className="final__inner">
             <span className="final__word" aria-hidden="true">DAEKON</span>
-            <span className="meta final__meta">VAN PROJEKTED A FEJEDBEN?</span>
+            <span className="meta final__meta">VAN ÖTLETED, AMI MÉG CSAK A FEJEDBEN LÉTEZIK?</span>
             <h2 className="final__title">
               <Lines lines={[{ text: "DOLGOZZUNK" }, { text: "EGYÜTT.", className: "blue" }]} />
             </h2>
@@ -544,7 +545,7 @@ export function App() {
           <footer className="colophon">
             <div className="colophon__row">
               <BrandMark size={26} inverted />
-              <span className="meta">TERVEZÉS ÉS FEJLESZTÉS</span>
+              <span className="meta">WEBOLDALAK, AMIK MÖGÖTT IGAZI RENDSZER ÁLL</span>
               <span className="meta">MONOR / MAGYARORSZÁG</span>
               <a className="colophon__mail" href="mailto:hello@daekon.hu">HELLO@DAEKON.HU</a>
               <span className="meta">© 2026 DAEKON</span>

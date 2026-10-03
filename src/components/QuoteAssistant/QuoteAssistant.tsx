@@ -32,7 +32,7 @@ const EXAMPLES = [
 const QUICK_IDS = ["design", "auth", "payment", "seo", "mobile", "motion3d", "blog"];
 
 const GREETING =
-  "Szia! DAEKON asszisztens vagyok. Írd le egy-két mondatban, mit szeretnél — funkciókat, célokat, bármit. Minden a böngésződben marad.";
+  "Szia! DAEKON asszisztens vagyok. Írd le egy-két mondatban, mit szeretnél — akár csak úgy, ahogy a kollégádnál elmesélnéd. Másodperceken belül árat és határidőt kapsz, és minden a böngésződben marad.";
 
 export function QuoteAssistant() {
   const [msgs, setMsgs] = useState<Msg[]>([{ id: 0, from: "ai", text: GREETING }]);
@@ -80,7 +80,7 @@ export function QuoteAssistant() {
       setMsgs((m) => [
         ...m,
         q.features.length
-          ? { id: idRef.current++, from: "ai", text: "Felismertem a funkciókat — itt a becslés:", resultFor: text }
+          ? { id: idRef.current++, from: "ai", text: "Ezt látom ki belőle — itt a becslés:", resultFor: text }
           : {
               id: idRef.current++,
               from: "ai",
@@ -140,7 +140,7 @@ export function QuoteAssistant() {
                     Tájékoztató becslés — a végleges árat a részletek után adom.
                   </p>
                   <p className="qchat__trust">
-                    „Három hét alatt ment élesbe a rendszer — és azóta is minden nap elvégzi a munkát.”
+                    „A vendég most már maga adja le a rendelést — a konyha élőben látja, mi következik.”
                     <span>— K. BÁLINT · KIOSZ PIZZA NAPOLETANA</span>
                   </p>
                   <a className="btn btn--primary qchat__send" href={mailtoHref(m.resultFor ?? "", result)}>
