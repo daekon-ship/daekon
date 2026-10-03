@@ -17,7 +17,7 @@
 }
 .brandmark__logo {
   display: block;
-  filter: drop-shadow(0 0 14px rgba(0, 224, 90, 0.55));
+  filter: drop-shadow(0 0 14px rgba(77, 107, 255, 0.55));
 }
 .brandmark__word {
   font-family: var(--font-display);
@@ -423,7 +423,7 @@
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-lg);
   overflow: hidden;
-  background: linear-gradient(120deg, rgba(0, 224, 90, 0.12), rgba(143, 123, 255, 0.07) 60%, rgba(255, 255, 255, 0.02));
+  background: linear-gradient(120deg, rgba(77, 107, 255, 0.12), rgba(143, 123, 255, 0.07) 60%, rgba(255, 255, 255, 0.02));
   backdrop-filter: blur(14px);
 }
 .case__main {
@@ -496,7 +496,7 @@
   text-align: center;
   padding: clamp(64px, 11vh, 130px) 4vw;
   background:
-    radial-gradient(52% 90% at 50% 50%, rgba(0, 224, 90, 0.16), transparent 70%),
+    radial-gradient(52% 90% at 50% 50%, rgba(77, 107, 255, 0.16), transparent 70%),
     linear-gradient(180deg, rgba(255, 255, 255, 0.015), transparent);
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
@@ -506,7 +506,7 @@
   display: inline-grid;
   place-items: center;
   margin-bottom: 26px;
-  filter: drop-shadow(0 0 18px rgba(0, 224, 90, 0.6));
+  filter: drop-shadow(0 0 18px rgba(77, 107, 255, 0.6));
 }
 .inkbreak::before {
   content: "";
@@ -592,7 +592,7 @@
   left: 24px;
   right: 24px;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(0, 255, 106, 0.85), transparent);
+  background: linear-gradient(90deg, transparent, rgba(0, 245, 255, 0.85), transparent);
   opacity: 0;
   transition: opacity 260ms var(--ease);
 }
@@ -602,21 +602,21 @@
   inset: 0;
   border-radius: inherit;
   pointer-events: none;
-  background: radial-gradient(220px circle at var(--mx, 50%) var(--my, 50%), rgba(0, 255, 106, 0.15), transparent 72%);
+  background: radial-gradient(220px circle at var(--mx, 50%) var(--my, 50%), rgba(0, 245, 255, 0.16), transparent 72%);
   opacity: 0;
   transition: opacity 260ms var(--ease);
 }
 .svc:hover {
-  border-color: rgba(0, 255, 106, 0.65);
+  border-color: rgba(0, 245, 255, 0.65);
   box-shadow:
-    0 0 0 1px rgba(0, 255, 106, 0.28),
-    0 0 34px -6px rgba(0, 255, 106, 0.4),
-    0 22px 70px -24px rgba(0, 190, 75, 0.35);
+    0 0 0 1px rgba(0, 245, 255, 0.28),
+    0 0 34px -6px rgba(0, 245, 255, 0.4),
+    0 22px 70px -24px rgba(255, 92, 225, 0.35);
   animation: svc-neon 2.4s linear infinite alternate;
 }
 @keyframes svc-neon {
-  from { border-color: rgba(0, 255, 106, 0.5); }
-  to { border-color: rgba(0, 210, 80, 0.6); }
+  from { border-color: rgba(0, 245, 255, 0.5); }
+  to { border-color: rgba(255, 92, 225, 0.6); }
 }
 .svc:hover::before,
 .svc:hover::after { opacity: 1; }
@@ -688,16 +688,16 @@
   background: var(--grad);
 }
 .cell:hover {
-  border-color: rgba(0, 255, 106, 0.6);
+  border-color: rgba(0, 245, 255, 0.6);
   background: rgba(255, 255, 255, 0.05);
   box-shadow:
-    0 0 0 1px rgba(0, 255, 106, 0.25),
-    0 0 28px -8px rgba(0, 255, 106, 0.45),
-    0 18px 50px -22px rgba(0, 190, 75, 0.3);
+    0 0 0 1px rgba(0, 245, 255, 0.25),
+    0 0 28px -8px rgba(0, 245, 255, 0.45),
+    0 18px 50px -22px rgba(255, 92, 225, 0.3);
 }
 @keyframes cell-neon {
-  from { border-color: rgba(0, 255, 106, 0.45); }
-  to { border-color: rgba(0, 210, 80, 0.55); }
+  from { border-color: rgba(0, 245, 255, 0.45); }
+  to { border-color: rgba(255, 92, 225, 0.55); }
 }
 .cell:hover { animation: cell-neon 2.6s linear infinite alternate; }
 .cell__num {
@@ -760,16 +760,16 @@
   position: absolute;
   inset: 0 0 auto 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(90, 255, 158, 0.85), transparent);
+  background: linear-gradient(90deg, transparent, rgba(160, 107, 255, 0.85), transparent);
   opacity: 0;
   transition: opacity 280ms var(--ease);
 }
 .why__card:hover {
-  border-color: rgba(90, 255, 158, 0.65);
+  border-color: rgba(160, 107, 255, 0.65);
   box-shadow:
-    0 0 0 1px rgba(90, 255, 158, 0.3),
-    0 0 34px -6px rgba(90, 255, 158, 0.45),
-    0 22px 70px -24px rgba(0, 255, 106, 0.3);
+    0 0 0 1px rgba(160, 107, 255, 0.3),
+    0 0 34px -6px rgba(160, 107, 255, 0.45),
+    0 22px 70px -24px rgba(0, 245, 255, 0.3);
 }
 .why__card:hover::before { opacity: 1; }
 .why__icon {
@@ -826,11 +826,11 @@
     transform 280ms var(--ease);
 }
 .voice:hover {
-  border-color: rgba(0, 210, 80, 0.5);
+  border-color: rgba(255, 92, 225, 0.5);
   box-shadow:
-    0 0 0 1px rgba(0, 210, 80, 0.22),
-    0 0 30px -8px rgba(0, 210, 80, 0.4),
-    0 18px 50px -22px rgba(0, 255, 106, 0.4);
+    0 0 0 1px rgba(255, 92, 225, 0.22),
+    0 0 30px -8px rgba(255, 92, 225, 0.4),
+    0 18px 50px -22px rgba(63, 108, 255, 0.4);
 }
 .voice__mark {
   position: absolute;
@@ -1029,7 +1029,7 @@
   border-radius: calc(var(--radius-lg) + 6px);
   border: 1px solid rgba(134, 163, 255, 0.35);
   background:
-    radial-gradient(90% 120% at 0% 0%, rgba(0, 224, 90, 0.28), transparent 60%),
+    radial-gradient(90% 120% at 0% 0%, rgba(77, 107, 255, 0.28), transparent 60%),
     radial-gradient(80% 120% at 100% 100%, rgba(143, 123, 255, 0.22), transparent 60%),
     rgba(255, 255, 255, 0.02);
   box-shadow: var(--glow);
@@ -1126,7 +1126,7 @@
   height: 700px;
   transform: translate(-50%, -50%);
   pointer-events: none;
-  background: radial-gradient(closest-side, rgba(0, 224, 90, 0.22), transparent 70%);
+  background: radial-gradient(closest-side, rgba(77, 107, 255, 0.22), transparent 70%);
 }
 .final__word {
   position: absolute;

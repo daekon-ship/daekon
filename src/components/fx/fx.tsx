@@ -417,10 +417,10 @@ export function ClickSpark({ color = "var(--cyan)" }: { color?: string }) {
    Four additive color blobs drift on sine paths; composite 'lighter'
    gives the Lusion-style bloom. Pauses off-screen and on hidden tabs. */
 const AURORA_COLORS: [string, number][] = [
-  ["0,255,106", 0.5],
-  ["0,224,90", 0.55],
-  ["90,255,158", 0.4],
-  ["0,190,75", 0.5],
+  ["0,245,255", 0.5],
+  ["63,108,255", 0.6],
+  ["160,107,255", 0.5],
+  ["255,92,225", 0.42],
 ];
 
 export function AuroraFX() {
@@ -545,7 +545,7 @@ export function Particles({ density = 64 }: { density?: number }) {
         vx: (Math.random() - 0.5) * 0.22,
         vy: (Math.random() - 0.5) * 0.22,
         r: Math.random() * 1.5 + 0.6,
-        hue: [140, 150, 160, 132][Math.floor(Math.random() * 4)],
+        hue: [185, 226, 275, 310][Math.floor(Math.random() * 4)],
       }));
     };
 
