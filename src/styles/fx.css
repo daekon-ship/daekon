@@ -223,6 +223,92 @@ html.has-cursor [role="button"] {
   .hero__word { animation: none; }
 }
 
+/* SplitText — per-character masked entrance (React Bits style) */
+.splittext {
+  display: inline-block;
+}
+.splittext__mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+.splittext__char {
+  display: inline-block;
+  transform: translateY(115%);
+  opacity: 0;
+  transition: transform 640ms var(--ease-out), opacity 380ms var(--ease-out);
+  transition-delay: var(--sd, 0ms);
+}
+.splittext__char.is-in {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* ClickSpark layer + particles */
+.cspark {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+}
+.cspark__p {
+  position: fixed;
+  top: -3px;
+  left: -3px;
+  width: 6px;
+  height: 6px;
+  border-radius: 1.5px;
+  will-change: transform, opacity;
+}
+@media (prefers-reduced-motion: reduce), (hover: none) {
+  .cspark { display: none; }
+}
+
+/* Star Border — React Bits-style rotating beam button border */
+.btn {
+  position: relative;
+  overflow: hidden;
+}
+.btn::before {
+  content: "";
+  position: absolute;
+  inset: -150%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    rgba(0, 245, 255, 0.55) 40deg,
+    transparent 80deg,
+    transparent 180deg,
+    rgba(255, 92, 225, 0.5) 220deg,
+    transparent 260deg
+  );
+  animation: star-rot 4.5s linear infinite;
+  opacity: 0;
+  transition: opacity 300ms var(--ease);
+  pointer-events: none;
+}
+.btn:hover::before {
+  opacity: 1;
+}
+.btn > * {
+  position: relative;
+  z-index: 1;
+}
+.btn--primary::after,
+.btn--paper::after {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: inherit;
+  background: var(--btn-bg, none);
+  z-index: 0;
+}
+.btn--primary { --btn-bg: linear-gradient(120deg, #3552ff, #4d6bff 55%, #7c5bff); }
+.btn--paper { --btn-bg: rgba(10, 13, 24, 0.92); }
+@keyframes star-rot {
+  to { transform: rotate(1turn); } 
+}
+
 /* preloader — brand + counter boot screen */
 .preloader {
   position: fixed;

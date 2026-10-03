@@ -129,6 +129,18 @@
   margin-top: clamp(10px, 4vh, 48px);
 }
 .hero__title .outline { letter-spacing: -0.01em; }
+.hero__line { display: block; }
+.grad .splittext__char {
+  background: var(--grad);
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: grad-shift 6.5s linear infinite alternate;
+}
+@media (prefers-reduced-motion: reduce) {
+  .grad .splittext__char { animation: none; }
+}
 
 .hero__foot {
   margin-top: auto;
@@ -676,9 +688,18 @@
   background: var(--grad);
 }
 .cell:hover {
-  border-color: rgba(134, 163, 255, 0.5);
+  border-color: rgba(0, 245, 255, 0.6);
   background: rgba(255, 255, 255, 0.05);
+  box-shadow:
+    0 0 0 1px rgba(0, 245, 255, 0.25),
+    0 0 28px -8px rgba(0, 245, 255, 0.45),
+    0 18px 50px -22px rgba(255, 92, 225, 0.3);
 }
+@keyframes cell-neon {
+  from { border-color: rgba(0, 245, 255, 0.45); }
+  to { border-color: rgba(255, 92, 225, 0.55); }
+}
+.cell:hover { animation: cell-neon 2.6s linear infinite alternate; }
 .cell__num {
   font-family: var(--font-display);
   font-weight: 700;

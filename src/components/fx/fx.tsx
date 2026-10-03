@@ -326,6 +326,93 @@ export function Cursor() {
   );
 }
 
+/* SplitText — React Bits-style per-character entrance.
+   Each char rises out of a mask with stagger; whole words stay selectable. */
+export function SplitText({
+  text,
+  className = "",
+  delay = 0,
+  step = 26,
+}: {
+  text: string;
+  className?: string;
+  delay?: number;
+  step?: number;
+}) {
+  const { ref, inView } = useInView<HTMLSpanElement>(0.2);
+  const reduced = useRef(prefersReducedMotion());
+  return (
+    <span ref={ref} className={`splittext ${className}`.trim()} aria-label={text}>
+      {[...text].map((ch, i) =>
+        ch === " " ? (
+          <span key={i} className="splittext__space">{"\u00A0"}</span>
+        ) : (
+          <span key={i} className="splittext__mask" aria-hidden="true">
+            <span
+              className={`splittext__char${inView ? " is-in" : ""}`}
+              style={{ "--sd": `${delay + i * step}ms` } as CSSProperties}
+            >
+              {reduced.current ? ch : ch}
+            </span>
+          </span>
+        ),
+      )}
+    </span>
+  );
+}
+
+/* ClickSpark — React Bits-style burst of sparks on every click. */
+export function ClickSpark({ color = "var(--cyan)" }: { color?: string }) {
+  const layer = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = layer.current;
+    if (!el) return;
+    if (prefersReducedMotion()) return;
+    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+
+    const sparks: { x: number; y: number; a: number; born: number; el: HTMLSpanElement }[] = [];
+    const onDown = (e: PointerEvent) => {
+      for (let i = 0; i < 8; i++) {
+        const s = document.createElement("span");
+        s.className = "cspark__p";
+        s.style.background = color;
+        el.appendChild(s);
+        sparks.push({
+          x: e.clientX,
+          y: e.clientY,
+          a: (Math.PI * 2 * i) / 8 + Math.random() * 0.4,
+          born: performance.now(),
+          el: s,
+        });
+      }
+      if (!raf) raf = requestAnimationFrame(tick);
+    };
+    let raf = 0;
+    const tick = (now: number) => {
+      for (let i = sparks.length - 1; i >= 0; i--) {
+        const s = sparks[i];
+        const t = (now - s.born) / 480;
+        if (t >= 1) {
+          s.el.remove();
+          sparks.splice(i, 1);
+          continue;
+        }
+        const d = 10 + t * 34;
+        s.el.style.opacity = String(1 - t);
+        s.el.style.transform = `translate(${s.x + Math.cos(s.a) * d}px, ${s.y + Math.sin(s.a) * d}px) rotate(${t * 160}deg) scale(${1 - t * 0.6})`;
+      }
+      raf = sparks.length ? requestAnimationFrame(tick) : 0;
+    };
+    window.addEventListener("pointerdown", onDown, { passive: true });
+    return () => {
+      window.removeEventListener("pointerdown", onDown);
+      cancelAnimationFrame(raf);
+      sparks.forEach((s) => s.el.remove());
+    };
+  }, [color]);
+  return <div ref={layer} className="cspark" aria-hidden="true" />;
+}
+
 /* AuroraFX — living neon light-field behind the whole page.
    Four additive color blobs drift on sine paths; composite 'lighter'
    gives the Lusion-style bloom. Pauses off-screen and on hidden tabs. */

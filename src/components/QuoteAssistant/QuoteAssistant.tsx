@@ -26,10 +26,10 @@ interface Msg {
 const EXAMPLES = [
   "Webáruház bankkártyás fizetéssel és kezelőfelülettel",
   "Egyedi mobilapp foglalásokkal és értesítésekkel",
-  "AI ajánlatgenerátor kezelőfelülettel",
+  "Céges oldal automatizált számlázással és riportokkal",
 ];
 
-const QUICK_IDS = ["design", "app", "automation", "ai", "auth", "payment", "seo", "mobile", "motion3d", "blog"];
+const QUICK_IDS = ["design", "app", "automation", "auth", "payment", "seo", "mobile", "motion3d", "blog"];
 
 const GREETING =
   "Szia! DAEKON asszisztens vagyok. Írd le egy-két mondatban, mit szeretnél — akár csak úgy, ahogy a kollégádnál elmesélnéd. Másodperceken belül árat és határidőt kapsz, és minden a böngésződben marad.";
@@ -140,8 +140,7 @@ export function QuoteAssistant() {
                     Tájékoztató becslés — a végleges árat a részletek után adom.
                   </p>
                   <p className="qchat__trust">
-                    „A vendég most már maga adja le a rendelést — a konyha élőben látja, mi következik.”
-                    <span>— K. BÁLINT · KIOSZ PIZZA NAPOLETANA</span>
+                    Élesítést követően is itt vagyok: frissítések, mentés, figyelés, bővítés.
                   </p>
                   <a className="btn btn--primary qchat__send" href={mailtoHref(m.resultFor ?? "", result)}>
                     Elküldöm emailel

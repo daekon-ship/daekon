@@ -4,6 +4,7 @@ import { LiveStatusPanel } from "./components/LiveStatusPanel/LiveStatusPanel";
 import {
   AuroraFX,
   BackToTop,
+  ClickSpark,
   CountUp,
   Cursor,
   Lines,
@@ -14,6 +15,7 @@ import {
   Reveal,
   Scramble,
   ScrollProgress,
+  SplitText,
   Tilt,
 } from "./components/fx/fx";
 import { useClock } from "./hooks/useClock";
@@ -22,9 +24,9 @@ import { QuoteAssistant } from "./components/QuoteAssistant/QuoteAssistant";
 import { useScrollSpy } from "./hooks/useScrollSpy";
 import "./App.css";
 
-const SPY_IDS = ["hero", "work", "services", "process", "velemenyek", "gyik", "about", "quote", "contact"];
+const SPY_IDS = ["hero", "work", "services", "process", "gyik", "about", "quote", "contact"];
 
-const TICKER = ["IGAZI RENDSZER MÖGÖTT", "EGYEDI APP ÉS MOBILAPP", "ONLINE RENDELÉS", "WEBÁRUHÁZ", "AI-MEGOLDÁSOK", "AUTOMATIZÁLÁS", "KEZELŐFELÜLET", "KARBANTARTÁS"];
+const TICKER = ["IGAZI RENDSZER MÖGÖTT", "EGYEDI APP ÉS MOBILAPP", "ONLINE RENDELÉS", "WEBÁRUHÁZ", "ÜZLETI AUTOMATIZÁLÁS", "KEZELŐFELÜLET", "KARBANTARTÁS"];
 
 type Project = {
   num: string;
@@ -74,7 +76,7 @@ const SERVICES = [
   { n: "02", t: "ONLINE RENDELÉS ÉS FOGLALÁS", h: "A vendég maga leadja — te csak kiszolgálod." },
   { n: "03", t: "WEBÁRUHÁZ", h: "Termék, fizetés, kezelés — egy helyen." },
   { n: "04", t: "EGYEDI APP ÉS MOBILAPP", h: "Saját alkalmazás — pont a te munkádra szabva." },
-  { n: "05", t: "AI-MEGOLDÁSOK ÉS AUTOMATIZÁLÁS", h: "A gép vállalja az ismétlődő munkát, te a szakmádat látod." },
+  { n: "05", t: "AUTOMATIZÁLÁS ÉS INTEGRÁCIÓ", h: "A gép vállalja az ismétlődő munkát, te a szakmádat látod." },
   { n: "06", t: "KEZELŐFELÜLET ÉS KARBANTARTÁS", h: "Minden adatod egy nézetben — utána is gondozásban." },
 ];
 
@@ -102,11 +104,6 @@ const WHY = [
     t: "AZNAP KAPSZ VÁLASZT",
     h: "Munkanapokon még aznap választ kapsz — és nem ügyintézőtől, hanem attól, aki a rendszered építi.",
   },
-  {
-    n: "⌘",
-    t: "AI-ERŐSÍTETT KÉZMŰ",
-    h: "A fejlesztést mesterséges intelligencia is gyorsítja — így marad idő arra, ami géppel nem megy: hogy tényleg értsük a vállalkozásod.",
-  },
 ];
 
 const FAQ = [
@@ -127,35 +124,12 @@ const FAQ = [
     a: "Semmi gond: addig alakítjuk közösen, amíg jó nem lesz — a fejlesztés csak a jóváhagyásod után indul. Így nincs zsákutca és nincs elköltött pénz.",
   },
   {
-    q: "Egyedi appot vagy AI-megoldást is tudsz?",
-    a: "Igen: egyedi web- és mobilappot teljes háttérrel, üzleti automatizálásokat, AI-vezérelt funkciókat (ajánlatgenerálás, dokumentumfeldolgozás, ügyfélszűrés) és összeköttetést a meglévő rendszereiddel — ugyanabból az egy kézből.",
+    q: "Egyedi appot vagy automatizálást is tudsz?",
+    a: "Igen: egyedi web- és mobilappot teljes háttérrel, üzleti automatizálásokat (számlázás, naptár, riportok, értesítések) és összeköttetést a meglévő rendszereiddel — ugyanabból az egy kézből.",
   },
   {
     q: "Mi történik, ha egyszer elkészült?",
     a: "Ha szeretnéd, utána is veled maradok: karbantartási csomag 8–15 ezer Ft/hó — frissítések, biztonsági mentés, figyelés és kisebb módosítások. És ha majd bővíteni szeretnéd, ugyanaz az ember építi tovább, aki ismeri a rendszeredet.",
-  },
-];
-
-const VOICES = [
-  {
-    q: "Régen telefonon jöttek a rendelések, most a vendég maga adja le őket — a konyha pedig élőben látja, mi következik. A rendszer azóta is minden nap elvégzi a munkát.",
-    n: "K. Bálint",
-    r: "KIOSZ PIZZA NAPOLETANA",
-  },
-  {
-    q: "Végig egy emberrel beszéltem, és mindig tudtam, hol tartunk. Az oldal nem sablon — mi vagyunk benne felismerhetőek, nem a készítője.",
-    n: "T. Márta",
-    r: "VAD-LAK GENERÁLKIVITELEZÉS",
-  },
-  {
-    q: "Ma már az ügyfelek maguk foglalnak, nem telefonon jegyzetelek. Nincs dupla foglalás, nincs kimaradt hívás — és mindig tudom, mi vár rám.",
-    n: "Sz. Gergely",
-    r: "ÉPÜLETES MEDENCE",
-  },
-  {
-    q: "Egy hónap alatt az első oldakra jutottunk, korábban évekig nem értünk közel. A díjat bőven visszahozta a hívások száma.",
-    n: "H. Norbert",
-    r: "ROVARIRTÓ FIÚK",
   },
 ];
 
@@ -238,6 +212,7 @@ export function App() {
       <Preloader />
       <ScrollProgress />
       <Cursor />
+      <ClickSpark />
       <Nav current={currentId} />
       <BackToTop />
 
@@ -258,13 +233,9 @@ export function App() {
             </div>
 
             <h1 className="hero__title">
-              <Lines
-                lines={[
-                  { text: "WEBOLDALAK," },
-                  { text: "AMIK MÖGÖTT", className: "outline" },
-                  { text: "IGAZI RENDSZER ÁLL.", className: "grad" },
-                ]}
-              />
+              <SplitText text="WEBOLDALAK," className="hero__line" />
+              <SplitText text="AMIK MÖGÖTT" className="hero__line outline" delay={140} />
+              <SplitText text="IGAZI RENDSZER ÁLL." className="hero__line grad" delay={280} />
             </h1>
 
             <div className="hero__foot">
@@ -407,34 +378,10 @@ export function App() {
           </div>
         </section>
 
-        {/* ---------------------------------------------------- VOICES */}
-        <section id="velemenyek" className="voices" data-section>
-          <header className="sec-head">
-            <span className="meta"><span className="sec-num">05</span> · VÉLEMÉNYEK</span>
-            <h2 className="sec-title">MIT MONDNAK RÓLAM</h2>
-          </header>
-          <div className="voices__grid">
-            {VOICES.map((v, i) => (
-              <Reveal key={v.n} delay={i * 60}>
-                <Tilt max={3}>
-                  <figure className="voice">
-                    <span className="voice__mark" aria-hidden="true">„</span>
-                    <blockquote className="voice__q">{v.q}</blockquote>
-                    <figcaption className="voice__who">
-                      <span className="voice__n">{v.n}</span>
-                      <span className="voice__r">{v.r}</span>
-                    </figcaption>
-                  </figure>
-                </Tilt>
-              </Reveal>
-            ))}
-          </div>
-        </section>
-
         {/* ------------------------------------------------------- GYIK */}
         <section id="gyik" className="faq" data-section>
           <header className="sec-head">
-            <span className="meta"><span className="sec-num">06</span> · GYIK</span>
+            <span className="meta"><span className="sec-num">05</span> · GYIK</span>
             <h2 className="sec-title">GYAKORI KÉRDÉSEK</h2>
           </header>
           <div className="faq__list">
@@ -463,7 +410,7 @@ export function App() {
         <section id="about" className="about" data-section>
           <div className="about__grid">
             <div>
-              <span className="meta"><span className="sec-num">07</span> · RÓLAM</span>
+              <span className="meta"><span className="sec-num">06</span> · RÓLAM</span>
               <h2 className="about__title">
                 <Lines lines={[{ text: "EGY EMBER." }, { text: "TELJES", className: "outline" }, { text: "FELELŐSSÉG." }]} />
               </h2>
@@ -492,7 +439,7 @@ export function App() {
         {/* ------------------------------------------------------ OFFER */}
         <section id="offer" className="offer">
           <div className="offer__inner">
-            <span className="meta offer__meta">08 · AJÁNLAT</span>
+            <span className="meta offer__meta">07 · AJÁNLAT</span>
             <h2 className="offer__title">
               <Lines lines={[{ text: "BEVEZETŐ IDŐSZAK." }, { text: "PÁR HELY MÉG.", className: "outline" }]} />
             </h2>
@@ -510,7 +457,7 @@ export function App() {
         {/* ------------------------------------------------------ QUOTE */}
         <section id="quote" className="quote" data-section>
           <div className="quote__head">
-            <span className="meta">09 · AZONNALI ÁRAJÁNLAT</span>
+            <span className="meta">08 · AZONNALI ÁRAJÁNLAT</span>
             <h2 className="quote__title">
               <Lines lines={[{ text: "MENNYIBE", }, { text: "KERÜL?", className: "outline" }]} />
             </h2>
