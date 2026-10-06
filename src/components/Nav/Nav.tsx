@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BrandMark } from "../../brand/Logo";
+import { getSoundPref, onSoundPref, setMenuAtmosphere, setSoundPref } from "../../lib/ambientAudio";
 import "./Nav.css";
 
 const LINKS = [
@@ -11,9 +12,17 @@ const LINKS = [
 
 export function Nav({ current = "" }: { current?: string }) {
   const [open, setOpen] = useState(false);
+  const [sound, setSound] = useState(getSoundPref);
+  const prevOpen = useRef(open);
+
+  useEffect(() => onSoundPref(setSound), []);
 
   useEffect(() => {
     document.documentElement.style.overflow = open ? "hidden" : "";
+    if (prevOpen.current !== open) {
+      prevOpen.current = open;
+      setMenuAtmosphere(open);
+    }
     return () => {
       document.documentElement.style.overflow = "";
     };
@@ -42,6 +51,21 @@ export function Nav({ current = "" }: { current?: string }) {
         <a className="nav__cta" href="#quote">
           PROJEKT INDÍTÁSA <span aria-hidden="true">↗</span>
         </a>
+
+        <button
+          type="button"
+          className={`nav__sound${sound ? " is-on" : ""}`}
+          aria-pressed={sound}
+          aria-label={sound ? "Háttérhang kikapcsolása" : "Háttérhang bekapcsolása"}
+          onClick={() => setSoundPref(!sound)}
+        >
+          <span className="nav__soundbars" aria-hidden="true">
+            <i />
+            <i />
+            <i />
+          </span>
+          SOUND <span className="nav__soundsep">/</span> {sound ? "ON" : "OFF"}
+        </button>
 
         <button
           type="button"
