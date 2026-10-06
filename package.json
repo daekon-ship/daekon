@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "build:ftp": "tsc -b && vite build --mode ftp",
     "preview": "vite preview",
     "lint": "eslint .",
     "typecheck": "tsc -b --noEmit"
