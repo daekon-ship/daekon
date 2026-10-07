@@ -11,4 +11,4 @@
 | Mappa | Ügyfél | Megjegyzés |
 |---|---|---|
 | `godzsak-tamas/` | Godzsák Tamás E.V. — teljes lakás- és házfelújítás, Budapest | Sötét, rajzlap-alapú art direction. Nincs valódi fotó: a képhelyeken generált anyagtextúra + vázlat, a `PROJECTS` / `REVIEWS` / `CRAFT` tömbökben `src`-vel cserélhető. Az értékelés-idézetek helyőrzők (5,0 / 2 értékelés valós). Űrlap még nincs bekötve. |
-| `selyem-robert/` | Selyem Róbert E.V. — burkolás, Kéthely | Kész szövegekkel; a fotóhelyek (rejtett `.ph-label` jelöléssel) valódi munkafotókra várnak. A projektkategóriákat (fürdőszoba, konyha…) a valódi fotókhoz kell igazítani. Előtte–utána slider rejtve (`data-ready`), az űrlap most `mailto:`. |
+| `selyem-robert/` | Selyem Róbert E.V. — burkolás, Kéthely | Kész szövegekkel; a fotóhelyek (rejtett `.ph-label` jelöléssel) valódi munkafotókra várnak. A projektkategóriákat (fürdőszoba, konyha…) a valódi fotókhoz kell igazítani. Előtte–utána csúszkák (vadlak.hu-mintára) „Hamarosan” jelzéssel: valódi képpárnál `<img>` a `.ba-before` / `.ba-after` rétegbe, a `.ba-soon` törlendő. Az űrlap most `mailto:`. |
