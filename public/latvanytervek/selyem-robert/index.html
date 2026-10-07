@@ -951,6 +951,40 @@ body.menu-open .hdr{transform:none}
 .t-marble .tone::after{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.75) 2px,transparent 2px),linear-gradient(90deg,rgba(255,255,255,.75) 2px,transparent 2px);background-size:33.333% 50%}
 .t-marble.ph::after{background:linear-gradient(105deg,rgba(255,255,255,.22) 0%,rgba(255,255,255,0) 40%)}
 @media (max-width:767px){.hero h1{font-size:clamp(1.875rem,8.6vw,2.25rem)}.ba-frame{aspect-ratio:4/5}}
+
+/* ===================== Személyre szabás ===================== */
+.brand-x{flex-direction:row;align-items:center;gap:12px}
+.brand-tx{display:flex;flex-direction:column;gap:3px}
+.smark{width:30px;height:30px;flex:none;color:var(--fg-2);overflow:visible}
+.smark text{font-family:var(--f-serif);font-weight:600;font-size:9px}
+.f-mk{margin-bottom:12px;width:34px;height:34px}
+.intro .i-tiles{display:grid;grid-template-columns:repeat(2,26px);gap:4px;margin-bottom:6px}
+.intro .i-tiles i{width:26px;height:26px;border:1px solid var(--sand);background:none;opacity:0;transform:scale(.6);animation:tin .5s var(--ease) forwards}
+.intro .i-tiles i::after{display:none}
+.intro .i-tiles i:first-child{background:#C9A977;border-color:#C9A977}
+.intro .i-tiles i:nth-child(2){animation-delay:.08s}.intro .i-tiles i:nth-child(3){animation-delay:.16s}.intro .i-tiles i:nth-child(4){animation-delay:.24s}
+@keyframes tin{to{opacity:1;transform:none}}
+.kio{padding-block:var(--sec);border-top:1px solid var(--line)}
+.pats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(14px,1.8vw,28px)}
+.pat{margin:0;position:relative}
+.pat svg{display:block;width:100%;aspect-ratio:1;border:1px solid var(--line-2);color:var(--sand);background:radial-gradient(90% 90% at 30% 20%,rgba(198,188,170,.07),transparent 70%),var(--bg-2);transition:border-color .4s,transform .6s var(--ease)}
+.pat path{fill:none;stroke:currentColor;stroke-width:1.3;opacity:.62;transition:opacity .4s}
+.pat path.acc{fill:#C9A977;fill-opacity:.0;stroke:none;transition:fill-opacity .8s ease 1.6s}
+.pats.in .pat path.acc{fill-opacity:.42}
+html.js .pats .pat svg > g{clip-path:inset(0 0 100% 0);transition:clip-path 1.6s cubic-bezier(.76,0,.24,1)}
+html.js .pats.in .pat svg > g{clip-path:inset(0)}
+.pat:nth-child(2) svg > g{transition-delay:.12s}.pat:nth-child(3) svg > g{transition-delay:.24s}.pat:nth-child(4) svg > g{transition-delay:.36s}
+.pat:hover svg{border-color:var(--sand);transform:translateY(-4px)}
+.pat:hover path{opacity:1}
+.pat figcaption{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;margin-top:12px;align-items:baseline}
+.pat figcaption .num{font-size:.75rem;color:var(--bronze-l)}
+.pat figcaption b{font-family:var(--f-serif);font-weight:500;font-size:1rem;letter-spacing:-.01em}
+.pat figcaption small{grid-column:2;font-size:.8125rem;color:var(--muted)}
+.ab-l{margin-top:10px}
+.ab-list{border-top:1px solid var(--line)}
+.ab-list li{display:grid;grid-template-columns:36px 1fr;gap:10px;padding:11px 0;border-bottom:1px solid var(--line);font-size:var(--t-s);color:var(--fg)}
+.ab-list .num{font-size:.75rem;color:var(--bronze-l);padding-top:2px}
+@media (max-width:767px){.pats{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 12px}.pat figcaption small{font-size:.75rem}}
 </style>
 </head>
 <body>
@@ -958,9 +992,8 @@ body.menu-open .hdr{transform:none}
 
 <header class="hdr" id="top">
   <div class="wrap hdr-in">
-    <a href="#top" class="brand" aria-label="Selyem Róbert – kezdőlap">
-      <span class="brand-n">SELYEM RÓBERT</span>
-      <span class="brand-s">BURKOLÁS / KÉTHELY</span>
+    <a href="#top" class="brand brand-x" aria-label="Selyem Róbert – kezdőlap">
+      <svg class="smark" viewBox="0 0 30 30" aria-hidden="true"><rect x="1" y="1" width="13" height="13" fill="#C9A977"/><rect x="16.5" y="1.5" width="12" height="12" fill="none" stroke="currentColor"/><rect x="1.5" y="16.5" width="12" height="12" fill="none" stroke="currentColor"/><rect x="16.5" y="16.5" width="12" height="12" fill="none" stroke="currentColor"/><text x="7.5" y="10.6" text-anchor="middle" fill="#151615">S</text><text x="22.5" y="25.6" text-anchor="middle" fill="currentColor">R</text></svg><span class="brand-tx"><span class="brand-n">SELYEM RÓBERT</span><span class="brand-s">BURKOLÓ / KÉTHELY</span></span>
     </a>
     <nav class="nav" aria-label="Fő navigáció">
       <a class="tlink" href="#munkaim">Munkáim</a>
@@ -990,9 +1023,9 @@ body.menu-open .hdr{transform:none}
     <div class="sheet">
       <div class="sheet-main">
         <div class="hero-copy">
-          <p class="label kick" style="color:var(--sand)">Kéthely / Somogy megye</p>
+          <p class="label kick" style="color:var(--sand)">Burkoló · Kéthely, Somogy megye</p>
           <h1 id="h1">Precíz burkolás. <span class="it">Az utolsó fugáig.</span></h1>
-          <p class="hero-lede">Fal- és padlóburkolás, csempézés és parketta otthonokba és egyedi terekbe. A felméréstől az átadásig, egy kézben.</p>
+          <p class="hero-lede">Selyem Róbert vagyok, burkoló Kéthelyről. Fal- és padlóburkolás, csempézés, parketta: a felméréstől az utolsó fugáig én dolgozom rajta.</p>
           <div class="hero-cta">
             <a class="btn btn--fill only-m" href="tel:+36202211366">Hívás most <span class="ar">↗</span></a>
             <a class="btn btn--fill only-d" href="tel:+36202211366">Hívás <span class="num">+36 20 221 1366</span></a>
@@ -1024,8 +1057,8 @@ body.menu-open .hdr{transform:none}
         </div>
       </div>
       <div class="tblock">
-        <div><span>Kivitelező</span><b>Selyem Róbert E.V.</b></div>
-        <div><span>Vállalás</span><b>Komplett burkolás</b></div>
+        <div><span>Burkoló</span><b>Selyem Róbert E.V.</b></div>
+        <div><span>Kiindulás</span><b>Kéthely, Somogy</b></div>
         <a href="tel:+36202211366"><span>Hívás</span><b class="num">+36 20 221 1366</b></a>
       </div>
     </div>
@@ -1044,6 +1077,23 @@ body.menu-open .hdr{transform:none}
           <path d="M0 10C45 10 55 50 100 50"/><path d="M0 30C45 30 55 50 100 50"/><path d="M0 50H100"/><path d="M0 70C45 70 55 50 100 50"/><path d="M0 90C45 90 55 50 100 50"/>
         </svg>
         <div class="conv-r"><span class="conv-dot" aria-hidden="true"></span><div><b>Egy kézben</b><small>Egy szakember, egy felelős</small></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- KIOSZTÁS -->
+  <section class="kio" id="kiosztas" aria-labelledby="ki-h">
+    <div class="wrap">
+      <div class="shead">
+        <p class="label kick">Kiosztás</p>
+        <h2 id="ki-h" class="h2">Minden burkolat egy döntéssel kezdődik.</h2>
+        <p>Hogy melyik illik a térhez, azt a felmérésen együtt döntjük el: a lap méretéhez, a helyiség arányaihoz és a fény irányához igazítva.</p>
+      </div>
+      <div class="pats rv-txt">
+          <figure class="pat"><svg viewBox="0 0 240 240" id="p1" aria-hidden="true"></svg><figcaption><span class="num">01</span><b>Egyenes</b><small>Fugák egy vonalban, két irányban.</small></figcaption></figure>
+          <figure class="pat"><svg viewBox="0 0 240 240" id="p2" aria-hidden="true"></svg><figcaption><span class="num">02</span><b>Kötésben</b><small>Soronként fél lappal eltolva.</small></figcaption></figure>
+          <figure class="pat"><svg viewBox="0 0 240 240" id="p3" aria-hidden="true"></svg><figcaption><span class="num">03</span><b>Halszálka</b><small>Derékszögben egymásba fűzve.</small></figcaption></figure>
+          <figure class="pat"><svg viewBox="0 0 240 240" id="p4" aria-hidden="true"></svg><figcaption><span class="num">04</span><b>Átlós</b><small>45 fokkal elforgatott kiosztás.</small></figcaption></figure>
       </div>
     </div>
   </section>
@@ -1168,7 +1218,14 @@ body.menu-open .hdr{transform:none}
         <div class="ab-text">
           <p>Burkoló vagyok, Kéthelyről. Ha engem hív, velem beszél: én nézem meg a helyszínt, én egyeztetek az ajánlatról, és én felelek azért, ami a falon és a padlón marad.</p>
           <p>Fal- és padlóburkolást, csempézést és parkettázást vállalok Somogy megyében, más helyszínen egyeztetéssel.</p>
-          <p class="ab-sign">Selyem Róbert <span>Egyéni vállalkozó, burkoló</span></p>
+          <p class="label ab-l">Amire figyelek</p>
+          <ul class="ab-list">
+            <li><span class="num">01</span>A kiosztást a helyiséghez igazítom, nem vakon a sarokból indítom.</li>
+            <li><span class="num">02</span>A vágott lap oda kerül, ahol a legkevésbé látszik.</li>
+            <li><span class="num">03</span>A fuga sarokról sarokra egy vonalban fut.</li>
+            <li><span class="num">04</span>Rendet hagyok magam után.</li>
+          </ul>
+          <p class="ab-sign">Selyem Róbert <span>Egyéni vállalkozó, burkoló · Kéthely</span></p>
         </div>
       </div>
     </section>
@@ -1192,7 +1249,7 @@ body.menu-open .hdr{transform:none}
       <div class="ct-grid">
         <div class="ct-call">
           <h2 id="ct-h">Burkolást <span class="it">tervez?</span></h2>
-          <p>Hívjon, és pár perc alatt átbeszéljük, mire van szükség. A részleteket a felmérésen pontosítjuk.</p>
+          <p>Hívjon közvetlenül, a telefont én veszem fel. Pár perc alatt átbeszéljük, mire van szükség, a részleteket pedig a felmérésen pontosítjuk.</p>
           <div class="call">
             <span class="label">Hívás</span>
             <a href="tel:+36202211366">+36 20 221 1366 <span class="ar">↗</span></a>
@@ -1213,7 +1270,7 @@ body.menu-open .hdr{transform:none}
 <footer class="ftr" aria-label="Lábléc">
   <div class="wrap">
     <div class="ftr-grid">
-      <div class="f-a"><span class="label">Selyem Róbert E.V.</span><span>Komplett burkolás – fal, padló, parketta</span><span>Kéthely, Somogy megye</span></div>
+      <div class="f-a"><svg class="smark f-mk" viewBox="0 0 30 30" aria-hidden="true"><rect x="1" y="1" width="13" height="13" fill="#C9A977"/><rect x="16.5" y="1.5" width="12" height="12" fill="none" stroke="currentColor"/><rect x="1.5" y="16.5" width="12" height="12" fill="none" stroke="currentColor"/><rect x="16.5" y="16.5" width="12" height="12" fill="none" stroke="currentColor"/><text x="7.5" y="10.6" text-anchor="middle" fill="#151615">S</text><text x="22.5" y="25.6" text-anchor="middle" fill="currentColor">R</text></svg><span class="label">Selyem Róbert E.V.</span><span>Komplett burkolás – fal, padló, parketta</span><span>Kéthely, Somogy megye</span></div>
       <div class="f-b"><span class="label">Kapcsolat</span><a class="tlink" href="tel:+36202211366"><strong>+36 20 221 1366</strong></a><a class="tlink" href="mailto:apafoni@gmail.com">apafoni@gmail.com</a></div>
       <div class="f-c"><span class="label">Oldal</span>
         <ul class="f-nav"><li><a class="tlink" href="#munkaim">Munkáim</a></li><li><a class="tlink" href="#szolgaltatasok">Szolgáltatások</a></li><li><a class="tlink" href="#folyamat">Folyamat</a></li><li><a class="tlink" href="#rolam">Rólam</a></li><li><a class="tlink" href="#kapcsolat">Kapcsolat</a></li></ul>
@@ -1292,6 +1349,9 @@ body.menu-open .hdr{transform:none}
       main += Q([wp(.3,.2), wp(.64,.2), wp(.64,.64), wp(.3,.64)]);
       fine += "M" + wp(.47,.2).map(f1).join(" ") + "L" + wp(.47,.64).map(f1).join(" ") + "M" + wp(.3,.42).map(f1).join(" ") + "L" + wp(.64,.42).map(f1).join(" ");
       if (o.back === "sofa") { var sx = bl + bw * .14, sw = bw * .56, sh = bh * .17; main += Q([[sx,bb-sh],[sx+sw,bb-sh],[sx+sw,bb],[sx,bb]]); fine += L(sx, bb - sh * .45, sx + sw, bb - sh * .45) + Q([[sx+sw*.2,bb-sh*2.4],[sx+sw*.8,bb-sh*2.4],[sx+sw*.8,bb-sh*1.3],[sx+sw*.2,bb-sh*1.3]]); }
+      for (var a2 = 1; a2 < 6; a2++){ var tt = Math.pow(a2 / 6, 1.6), yy2 = bb + (H - bb) * tt; fine += L(bl - bl * tt, yy2, br + (W - br) * tt, yy2); }
+      for (var c2 = 1; c2 < 6; c2++){ var xx2 = bl + bw * c2 / 6; fine += L(xx2, bt, xx2, bb); }
+      for (var r2 = 1; r2 < 5; r2++){ var yb = bt + (bb - bt) * r2 / 5; fine += L(bl, yb, br, yb); }
       if (o.back === "door") { var dx0 = bl + bw * .6, dx1 = bl + bw * .84, dt = bt + bh * .2; main += Q([[dx0,dt],[dx1,dt],[dx1,bb],[dx0,bb]]); }
       fine += L(vx, bt * .35, vx, bt + bh * .1) + "M" + f1(vx - 14) + " " + f1(bt + bh * .1) + "L" + f1(vx + 14) + " " + f1(bt + bh * .1) + "L" + f1(vx) + " " + f1(bt + bh * .1 - 12) + "Z";
     } else if (type === "door") {
@@ -1368,6 +1428,25 @@ body.menu-open .hdr{transform:none}
     return '<figure>' + ph({tone:c[2], ar:c[1], cap:c[0]}, "", "").replace("<figure", "<div").replace(/<\/figure>$/, "</div>") +
       '<figcaption><span class="num">' + n + '</span><b>' + esc(c[0]) + '</b></figcaption></figure>';
   }).join("");
+
+
+  /* --- Kiosztási minták (rajzlap-stílus) --- */
+  (function(){
+    function R(x, y, w, h){ return "M" + (x + 2) + " " + (y + 2) + "h" + (w - 4) + "v" + (h - 4) + "h" + (4 - w) + "Z"; }
+    function put(id, list, acc, rot){
+      var el = document.getElementById(id); if (!el) return;
+      var d = list.map(function(r){ return R(r[0], r[1], r[2], r[3]); }).join("");
+      var a = list[acc];
+      el.innerHTML = '<g' + (rot ? ' transform="rotate(45 120 120)"' : '') + '><path class="acc" d="' + R(a[0], a[1], a[2], a[3]) + '"/><path pathLength="1" d="' + d + '"/></g>';
+    }
+    var a = [], x, y, k, n;
+    for (x = 0; x < 4; x++) for (y = 0; y < 4; y++) a.push([x * 60, y * 60, 60, 60]); put("p1", a, 5);
+    a = []; for (y = 0; y < 4; y++) for (x = -1; x < 2; x++) a.push([x * 120 + (y % 2 ? 60 : 0), y * 60, 120, 60]); put("p2", a, 4);
+    a = []; var u = 30;
+    for (k = -6; k < 8; k++) for (n = -12; n < 14; n++) [[n, n, 2, 1], [n, n + 1, 1, 2]].forEach(function(b){ var X = (b[0] + 2 * k) * u, Y = (b[1] - 2 * k) * u, W = b[2] * u, H = b[3] * u; if (X < 240 && Y < 240 && X + W > 0 && Y + H > 0) a.push([X, Y, W, H]); });
+    put("p3", a, Math.floor(a.length / 2));
+    a = []; for (x = -3; x < 8; x++) for (y = -3; y < 8; y++) a.push([x * 48, y * 48, 48, 48]); put("p4", a, 60, true);
+  })();
 
   /* --- Valódi képek, ha van src --- */
   $$(".ph[data-src]").forEach(function(el){
@@ -1527,7 +1606,7 @@ body.menu-open .hdr{transform:none}
   if (!reduce) {
     var intro = document.createElement("div");
     intro.className = "intro"; intro.setAttribute("aria-hidden", "true");
-    intro.innerHTML = '<b><span>Selyem Róbert</span></b><i></i><small>Burkolás · az utolsó fugáig</small>';
+    intro.innerHTML = '<span class="i-tiles"><i></i><i></i><i></i><i></i></span><b><span>Selyem Róbert</span></b><i></i><small>Burkoló · az utolsó fugáig</small>';
     document.body.appendChild(intro);
     var heroCopy = $(".hero-copy"); heroCopy.style.animationPlayState = "paused";
     $$(".hero-copy > *").forEach(function(el){ el.style.animationPlayState = "paused"; });
