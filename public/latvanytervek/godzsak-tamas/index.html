@@ -860,6 +860,85 @@ p.proj-scope{text-align:left}
   .strip .ph{height:150px}
   .ly-draw{max-width:340px}
 }
+/* ===================== EFFEKTEK v11 ===================== */
+/* Intró */
+.intro{position:fixed;inset:0;z-index:200;background:#0E0F0E;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:18px;transition:clip-path 1s cubic-bezier(.76,0,.24,1);clip-path:inset(0 0 0 0)}
+.intro.out{clip-path:inset(0 0 100% 0)}
+.intro b{font-family:var(--f-serif);font-weight:500;font-size:clamp(1.25rem,2.4vw,1.75rem);letter-spacing:-.01em;color:var(--fg);overflow:hidden;display:block}
+.intro b span{display:inline-block;transform:translateY(110%);animation:wup .9s var(--ease) .15s forwards}
+.intro i{display:block;width:min(320px,60vw);height:1px;background:var(--line-2);position:relative;overflow:hidden}
+.intro i::after{content:"";position:absolute;inset:0;background:var(--sand);transform:scaleX(0);transform-origin:left;animation:line 1s var(--ease) .35s forwards}
+.intro small{font-size:.625rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);opacity:0;animation:fadein .6s ease .7s forwards}
+@keyframes wup{to{transform:none}}
+@keyframes line{to{transform:scaleX(1)}}
+
+/* Szavankénti címfelúszás */
+.wd{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.08em;margin-bottom:-.08em}
+.wd > span{display:inline-block;transform:translateY(105%);transition:transform 1s var(--ease)}
+.split.in .wd > span{transform:none}
+
+/* Lámpafény a rajzlapon (hero + kapcsolat) */
+.lamp{position:absolute;inset:0;pointer-events:none;z-index:1;--mx:70%;--my:40%;
+  background-image:linear-gradient(rgba(198,188,170,.10) 1px,transparent 1px),linear-gradient(90deg,rgba(198,188,170,.10) 1px,transparent 1px),linear-gradient(rgba(198,188,170,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(198,188,170,.045) 1px,transparent 1px),radial-gradient(circle at var(--mx) var(--my),rgba(255,232,196,.10),transparent 60%);
+  background-size:80px 80px,80px 80px,16px 16px,16px 16px,100% 100%;
+  -webkit-mask-image:radial-gradient(circle 300px at var(--mx) var(--my),#000 0%,rgba(0,0,0,.55) 45%,transparent 100%);
+  mask-image:radial-gradient(circle 300px at var(--mx) var(--my),#000 0%,rgba(0,0,0,.55) 45%,transparent 100%)}
+.plan-hi{position:absolute;inset:0;display:flex;align-items:inherit;justify-content:center;padding:inherit;color:#F3E2C6;pointer-events:none;
+  -webkit-mask-image:radial-gradient(circle 220px at var(--px,50%) var(--py,50%),#000 0%,transparent 100%);mask-image:radial-gradient(circle 220px at var(--px,50%) var(--py,50%),#000 0%,transparent 100%);filter:drop-shadow(0 0 6px rgba(255,220,170,.35))}
+.plan-hi svg{width:100%;max-height:78%}
+.tilt .hero-plan,.plan-hi svg{max-height:92%}
+.hero-art{transform-style:preserve-3d;perspective:1200px}
+.tilt{transition:transform .25s ease-out;will-change:transform}
+.contact{isolation:isolate}
+.contact .wrap{z-index:2}
+
+/* Erősebb kép-megjelenés */
+html.js .rv-img{clip-path:inset(100% 0 0 0);transform:none;transition:clip-path 1.3s cubic-bezier(.76,0,.24,1)}
+html.js .rv-img .tone,html.js .rv-img .sk{transform:scale(1.18);transition:transform 1.8s var(--ease),clip-path 2.2s var(--ease) .35s}
+html.js .rv-img.in{clip-path:inset(0)}
+html.js .rv-img.in .tone,html.js .rv-img.in .sk{transform:none}
+
+/* Szolgáltatás-sor: söprő kitöltés */
+.svc-row::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(198,188,170,.07),rgba(198,188,170,.02));transform:scaleX(0);transform-origin:left;transition:transform .6s var(--ease);pointer-events:none}
+.svc-row:hover::before{transform:scaleX(1)}
+.svc-row:hover .svc-n{color:var(--bronze-l)}
+.svc-n{transition:color .3s}
+.svc-prev{transition:clip-path .55s var(--ease),transform .35s var(--ease)}
+
+/* Folyamat-sorok becsúszása + vonal */
+html.js .step{opacity:0;transform:translateX(-18px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+html.js .step.in{opacity:1;transform:none}
+.step{position:relative}
+.step::after{content:"";position:absolute;left:0;bottom:-1px;height:1px;width:100%;background:var(--sand);transform:scaleX(0);transform-origin:left;transition:transform 1.1s var(--ease) .2s}
+.step.in::after{transform:scaleX(1)}
+.step:hover .step-n{color:var(--bronze-l)}
+
+/* Fejléc: lefelé elbújik */
+.hdr{transition:background .45s var(--ease),box-shadow .45s var(--ease),transform .5s var(--ease)}
+.hdr.hide{transform:translateY(-100%)}
+body.menu-open .hdr{transform:none}
+
+/* Mágneses gombok */
+.mag{transition:transform .35s var(--ease)}
+
+/* Telefonszám hover */
+.call a{position:relative}
+.call a::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:1px;background:var(--sand);transform:scaleX(0);transform-origin:right;transition:transform .6s var(--ease)}
+.call a:hover::after{transform:scaleX(1);transform-origin:left}
+
+/* Képszalag hover */
+.strip figure .ph{transition:transform .6s var(--ease)}
+.strip figure:hover .ph .tone{transform:scale(1.06)}
+
+@media (prefers-reduced-motion:reduce){
+  .intro{display:none}
+  .wd > span{transform:none!important}
+  html.js .step{opacity:1;transform:none}
+  .step::after{transform:scaleX(1)}
+  html.js .rv-img .tone,html.js .rv-img .sk{transform:none}
+  .lamp,.plan-hi{display:none}
+}
+
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   *,*::before,*::after{transition-duration:.01ms!important;animation:none!important}
@@ -1435,6 +1514,120 @@ p.proj-scope{text-align:left}
   window.addEventListener("scroll", req, { passive: true });
   window.addEventListener("resize", req);
   onScroll();
+  /* ===================== EFFEKTEK v11 ===================== */
+  var fine = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  /* Intró (csak JS-sel, első betöltéskor) */
+  if (!reduce) {
+    var intro = document.createElement("div");
+    intro.className = "intro"; intro.setAttribute("aria-hidden", "true");
+    intro.innerHTML = '<b><span>Godzsák Tamás</span></b><i></i><small>Teljes felújítás · egy kézben</small>';
+    document.body.appendChild(intro);
+    var heroCopy = $(".hero-copy"); heroCopy.style.animationPlayState = "paused";
+    $$(".hero-copy > *").forEach(function(el){ el.style.animationPlayState = "paused"; });
+    $$(".hero-plan .dr, .hero-plan text, .sweep").forEach(function(el){ el.style.animationPlayState = "paused"; });
+    setTimeout(function(){
+      intro.classList.add("out");
+      $$(".hero-copy > *, .hero-plan .dr, .hero-plan text, .sweep").forEach(function(el){ el.style.animationPlayState = "running"; });
+      setTimeout(function(){ intro.remove(); }, 1100);
+    }, 1350);
+  }
+
+  /* Szavankénti címfelúszás */
+  function splitWords(el){
+    function wrapText(node){
+      Array.prototype.slice.call(node.childNodes).forEach(function(n){
+        if (n.nodeType === 3) {
+          var frag = document.createDocumentFragment();
+          n.textContent.split(/(\s+)/).forEach(function(t){
+            if (!t) return;
+            if (/^\s+$/.test(t)) { frag.appendChild(document.createTextNode(" ")); return; }
+            var w = document.createElement("span"); w.className = "wd"; var i = document.createElement("span"); i.textContent = t; w.appendChild(i); frag.appendChild(w);
+          });
+          n.parentNode.replaceChild(frag, n);
+        } else if (n.nodeType === 1 && n.tagName !== "BR") wrapText(n);
+      });
+    }
+    wrapText(el); el.classList.add("split");
+    $$(".wd > span", el).forEach(function(s, i){ s.style.transitionDelay = (i * 0.06) + "s"; });
+  }
+  if (!reduce) {
+    var heads = $$(".h2, .contact h2, .cr-t");
+    heads.forEach(splitWords);
+    var hio = new IntersectionObserver(function(es){ es.forEach(function(en){ if (en.isIntersecting) { en.target.classList.add("in"); hio.unobserve(en.target); } }); }, { rootMargin: "0px 0px -10% 0px" });
+    heads.forEach(function(h){ hio.observe(h); });
+    setTimeout(function(){ heads.forEach(function(h){ h.classList.add("in"); }); }, 6000);
+    /* folyamat sorok */
+    var stepsEls = $$(".step");
+    var sio = new IntersectionObserver(function(es){ es.forEach(function(en){ if (en.isIntersecting) { en.target.classList.add("in"); sio.unobserve(en.target); } }); }, { rootMargin: "0px 0px -10% 0px" });
+    stepsEls.forEach(function(s, i){ s.style.transitionDelay = (i * 0.08) + "s"; sio.observe(s); });
+    setTimeout(function(){ stepsEls.forEach(function(s){ s.classList.add("in"); }); }, 6000);
+  }
+
+  /* Lámpafény: hero + kapcsolat */
+  var heroSheet = $(".sheet-main"), art = $(".hero-art"), planSvg = $(".hero-plan");
+  var lamps = [];
+  function addLamp(host){ var l = document.createElement("div"); l.className = "lamp"; l.setAttribute("aria-hidden", "true"); host.insertBefore(l, host.firstChild); lamps.push({ host: host, el: l, x: .7, y: .4, tx: .7, ty: .4 }); }
+  if (!reduce) {
+    addLamp(heroSheet); addLamp($("#kapcsolat"));
+    var hi = document.createElement("div"); hi.className = "plan-hi";
+    var clone = planSvg.cloneNode(true); clone.removeAttribute("class"); $$(".dr", clone).forEach(function(p){ p.removeAttribute("class"); });
+    $$("text", clone).forEach(function(t){ t.remove(); });
+    hi.appendChild(clone); art.appendChild(hi);
+    var tiltEl = document.createElement("div"); tiltEl.className = "tilt"; tiltEl.style.cssText = "position:absolute;inset:0;display:flex;align-items:inherit;justify-content:center;padding:inherit";
+    art.insertBefore(tiltEl, art.firstChild); tiltEl.appendChild(planSvg); tiltEl.appendChild(hi);
+    var px = .5, py = .5;
+    document.addEventListener("pointermove", function(e){
+      lamps.forEach(function(L){ var r = L.host.getBoundingClientRect(); L.tx = (e.clientX - r.left) / r.width; L.ty = (e.clientY - r.top) / r.height; L.user = true; });
+      var ar = art.getBoundingClientRect(); px = (e.clientX - ar.left) / ar.width; py = (e.clientY - ar.top) / ar.height;
+      if (fine && py > -0.3 && py < 1.3) tiltEl.style.transform = "rotateY(" + ((px - .5) * 7).toFixed(2) + "deg) rotateX(" + ((.5 - py) * 5).toFixed(2) + "deg)";
+      hi.style.setProperty("--px", (px * 100).toFixed(1) + "%"); hi.style.setProperty("--py", (py * 100).toFixed(1) + "%");
+    }, { passive: true });
+    var t0 = performance.now();
+    (function loop(t){
+      lamps.forEach(function(L, k){
+        if (!fine || !L.user) { var s = (t - t0) / 1000 + k * 2; L.tx = .5 + Math.sin(s * .35) * .32; L.ty = .45 + Math.cos(s * .27) * .25;
+          if (L.el.parentNode === heroSheet) { hi.style.setProperty("--px", ((L.x * heroSheet.clientWidth - art.offsetLeft) / art.clientWidth * 100).toFixed(1) + "%"); hi.style.setProperty("--py", ((L.y * heroSheet.clientHeight - art.offsetTop) / art.clientHeight * 100).toFixed(1) + "%"); } }
+        L.x += (L.tx - L.x) * .08; L.y += (L.ty - L.y) * .08;
+        L.el.style.setProperty("--mx", (L.x * 100).toFixed(2) + "%"); L.el.style.setProperty("--my", (L.y * 100).toFixed(2) + "%");
+      });
+      requestAnimationFrame(loop);
+    })(t0);
+  }
+
+  /* Mágneses gombok */
+  if (fine && !reduce) {
+    $$(".hero-cta .btn, .hdr-cta").forEach(function(b){
+      b.classList.add("mag");
+      b.addEventListener("pointermove", function(e){ var r = b.getBoundingClientRect(); b.style.transform = "translate(" + ((e.clientX - r.left - r.width / 2) * .18).toFixed(1) + "px," + ((e.clientY - r.top - r.height / 2) * .3).toFixed(1) + "px)"; });
+      b.addEventListener("pointerleave", function(){ b.style.transform = ""; });
+    });
+    /* Szolgáltatás-előnézet követi az egeret */
+    list.addEventListener("pointermove", function(e){
+      if (!canHover.matches || !prev.classList.contains("on")) return;
+      var r = list.getBoundingClientRect(), y = e.clientY - r.top - prev.offsetHeight / 2, x = Math.max(-40, Math.min(0, (e.clientX - r.right + prev.offsetWidth) * .15));
+      prev.style.transform = "translate(" + x.toFixed(1) + "px," + y.toFixed(1) + "px)";
+    });
+  }
+
+  /* Fejléc: lefelé görgetésnél elbújik */
+  var lastY = window.scrollY;
+  window.addEventListener("scroll", function(){
+    var y = window.scrollY, d = y - lastY;
+    if (Math.abs(d) > 6) { hdr.classList.toggle("hide", d > 0 && y > 400 && !document.body.classList.contains("menu-open")); lastY = y; }
+  }, { passive: true });
+
+  /* Összefutó ábra: görgetéssel rajzolódik */
+  var conv = $(".conv"), convSvg = $(".conv-svg");
+  if (!reduce && conv) {
+    conv.classList.add("in");
+    var convScrub = function(){
+      var r = conv.getBoundingClientRect(), vh = window.innerHeight, p = clamp((vh * .9 - r.top) / (vh * .55));
+      convSvg.style.clipPath = "inset(0 " + ((1 - p) * 100).toFixed(1) + "% 0 0)";
+      conv.querySelector(".conv-dot").style.transform = p > .96 ? "none" : "scale(0)";
+    };
+    window.addEventListener("scroll", convScrub, { passive: true }); convScrub();
+  }
+
   $("#yr").textContent = new Date().getFullYear();
 })();
 </script>
