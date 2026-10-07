@@ -51,7 +51,7 @@ jobs:
 
       - name: Android projekt létrehozása
         run: |
-          flutter create . --project-name mester_plus --org hu.mesterplus --platforms android
+          tool/ci_step.sh "flutter create" flutter create . --project-name mester_plus --org hu.mesterplus --platforms android
           rm -f test/widget_test.dart
 
       - name: Csomagok
@@ -120,7 +120,8 @@ jobs:
       - run: flutter pub get
       - name: Elavult csomagok (tájékoztató)
         run: flutter pub outdated || true
-      - uses: google/osv-scanner-action/osv-scanner-action@v2
-        with:
-          scan-args: |
-            --lockfile=apps/mester-plus/pubspec.lock
+      - name: OSV sérülékenység-keresés a pubspec.lock-on
+        run: |
+          curl -sSL -o /tmp/osv-scanner https://github.com/google/osv-scanner/releases/latest/download/osv-scanner_linux_amd64
+          chmod +x /tmp/osv-scanner
+          /tmp/osv-scanner --lockfile=pubspec.lock
