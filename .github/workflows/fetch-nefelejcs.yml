@@ -1,0 +1,25 @@
+name: fetch-nefelejcs-photos
+on:
+  push:
+    branches: [nefelejcs-photos]
+permissions:
+  contents: write
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download
+        run: |
+          D=raw-nefelejcs; mkdir -p $D
+          for i in $(seq 38273600 38273660); do
+            curl -sf -A "Mozilla/5.0" -o $D/h$i.webp "https://wphcdn.cloud/direv/media/hotels/1453844/original/$i.webp" || rm -f $D/h$i.webp
+          done
+          for r in 4983149 4983175; do for i in $(seq 12389690 12389740); do
+            curl -sf -A "Mozilla/5.0" -o $D/r${r}_$i.jpg "https://wphcdn.cloud/direv/media/rooms/$r/original/$i.jpg" || rm -f $D/r${r}_$i.jpg
+          done; done
+          ls -la $D
+      - name: Commit
+        run: |
+          git config user.name "github-actions"; git config user.email "actions@github.com"
+          git add raw-nefelejcs && git commit -m "raw photos" && git push
