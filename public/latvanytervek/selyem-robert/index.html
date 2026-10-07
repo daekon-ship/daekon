@@ -64,8 +64,14 @@ em,.it{font-style:italic;color:var(--terra);font-weight:inherit}
 .ph{position:relative;background-color:var(--ph);background-image:linear-gradient(var(--line-l) 1px,transparent 1px),linear-gradient(90deg,var(--line-l) 1px,transparent 1px);background-size:var(--cell,120px) var(--cell,120px);overflow:hidden}
 .ph.d{background-color:var(--moha-2);background-image:linear-gradient(var(--line-d) 1px,transparent 1px),linear-gradient(90deg,var(--line-d) 1px,transparent 1px)}
 .ph>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.ph-label{display:none;position:absolute;left:18px;top:16px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);pointer-events:none}
-.ph.d .ph-label{color:var(--zsalya)}
+.ph-label{position:absolute;left:50%;top:50%;z-index:1;transform:translate(-50%,-50%);display:inline-flex;align-items:center;gap:10px;padding:9px 14px;background:rgba(245,242,236,.92);color:var(--ink);font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;white-space:nowrap;pointer-events:none}
+.ph-label::before{content:"";width:7px;height:7px;background:var(--terra);flex:none}
+.ph-label.sm{padding:6px 9px;font-size:9px;letter-spacing:.16em}
+.ph-label.sm::before{display:none}
+.ph.d .ph-label{background:rgba(15,15,15,.78);color:var(--krem)}
+.ph.d .ph-label::before{background:var(--terra-l)}
+.macro .ph-label{left:16px;top:16px;transform:none}
+.float .ph-label,.menu .ph-label{display:none}
 
 /* ---------- Fejléc ---------- */
 .head{position:fixed;inset:0 0 auto 0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:22px var(--pad);color:var(--krem);transition:background .4s var(--ease),padding .4s var(--ease),box-shadow .4s}
@@ -105,7 +111,7 @@ em,.it{font-style:italic;color:var(--terra);font-weight:inherit}
 /* ---------- Hero ---------- */
 .hero{position:relative;min-height:100svh;max-height:none;display:flex;flex-direction:column;justify-content:flex-end;color:var(--krem);background:var(--moha);overflow:hidden}
 .hero .ph{position:absolute;inset:0;--cell:clamp(90px,12.5vw,240px)}
-.hero .ph-label{top:auto;bottom:auto;top:clamp(110px,16vh,180px);left:var(--pad)}
+.hero .ph-label{top:clamp(120px,22vh,220px);left:auto;right:var(--pad);transform:none}
 .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,15,15,.6) 0%,rgba(15,15,15,0) 24%,rgba(15,15,15,0) 40%,rgba(15,15,15,.94) 100%);pointer-events:none}
 .tiles{position:absolute;inset:0;z-index:3;display:grid;gap:6px;background:transparent;pointer-events:none}
 .tiles i{display:block;background:var(--krem);transform-origin:center;transition:transform .8s var(--ease),opacity .8s var(--ease)}
@@ -374,7 +380,7 @@ form{display:grid;gap:26px}
 
 <!-- HERO -->
 <section class="hero" id="top" aria-label="Bemutatkozás">
-  <div class="ph d" aria-hidden="true"><span class="ph-label">Hero fotó helye · Róbert legjobb valódi munkája</span></div>
+  <div class="ph d" aria-hidden="true"><span class="ph-label" data-hely="Hero fotó helye · Róbert legjobb valódi munkája">Fotók hamarosan</span></div>
   <div class="tiles" id="tiles" aria-hidden="true"></div>
   <div class="hero-in">
     <div class="hero-meta">
@@ -421,19 +427,19 @@ form{display:grid;gap:26px}
   </div>
   <div class="gal">
     <a class="work g1" href="tel:+36202211366">
-      <figure class="ph clip" data-reveal><div class="ph-in"></div><span class="ph-label">Projektfotó helye · 4:5</span><div class="work-hover"><b>Fürdőszoba</b><small>HASONLÓT SZERETNE? HÍVJON →</small></div></figure>
+      <figure class="ph clip" data-reveal><div class="ph-in"></div><span class="ph-label" data-hely="Projektfotó helye · 4:5">Fotók hamarosan</span><div class="work-hover"><b>Fürdőszoba</b><small>HASONLÓT SZERETNE? HÍVJON →</small></div></figure>
       <div class="work-cap"><span class="num">01</span><div><span>FÜRDŐSZOBA</span><b>Fal- és padlóburkolás</b></div></div>
     </a>
     <a class="work g2" href="tel:+36202211366">
-      <figure class="ph clip" data-reveal><div class="ph-in"></div><span class="ph-label">Projektfotó · 3:2</span><div class="work-hover"><b>Konyha</b><small>HASONLÓT SZERETNE? HÍVJON →</small></div></figure>
+      <figure class="ph clip" data-reveal><div class="ph-in"></div><span class="ph-label" data-hely="Projektfotó · 3:2">Fotók hamarosan</span><div class="work-hover"><b>Konyha</b><small>HASONLÓT SZERETNE? HÍVJON →</small></div></figure>
       <div class="work-cap"><span class="num">02</span><div><span>KONYHA</span><b>Falburkolás</b></div></div>
     </a>
     <a class="work g3" href="tel:+36202211366">
-      <figure class="ph clip" data-reveal><div class="ph-in"></div><span class="ph-label">Részletfotó · 3:2</span><div class="work-hover"><b>Részlet</b><small>HASONLÓT SZERETNE? HÍVJON →</small></div></figure>
+      <figure class="ph clip" data-reveal><div class="ph-in"></div><span class="ph-label" data-hely="Részletfotó · 3:2">Fotók hamarosan</span><div class="work-hover"><b>Részlet</b><small>HASONLÓT SZERETNE? HÍVJON →</small></div></figure>
       <div class="work-cap"><span class="num">03</span><div><span>RÉSZLET</span><b>Sarok és élzárás</b></div></div>
     </a>
     <a class="work g4" href="tel:+36202211366">
-      <figure class="ph d clip" data-reveal><div class="ph-in"></div><span class="ph-label">Panoráma · 21:9</span><div class="work-hover"><b>Nappali</b><small>HASONLÓT SZERETNE? HÍVJON →</small></div></figure>
+      <figure class="ph d clip" data-reveal><div class="ph-in"></div><span class="ph-label" data-hely="Panoráma · 21:9">Fotók hamarosan</span><div class="work-hover"><b>Nappali</b><small>HASONLÓT SZERETNE? HÍVJON →</small></div></figure>
       <div class="work-cap"><span class="num">04</span><div><span>NAPPALI</span><b>Padlóburkolás</b></div></div>
     </a>
   </div>
@@ -477,7 +483,7 @@ form{display:grid;gap:26px}
 <section class="sec wrap dark" id="reszlet" aria-labelledby="reszlet-h">
   <div class="detail">
     <figure class="ph d macro" style="margin:0" id="macro">
-      <span class="ph-label">Makrófotó helye · 1:1</span>
+      <span class="ph-label" data-hely="Makrófotó helye · 1:1">Fotók hamarosan</span>
       <span class="mark" style="left:26%;top:26%;--w:min(30vw,190px)"><i></i><b>FUGAVONAL</b></span>
       <span class="mark" style="left:38%;top:52%;--w:min(22vw,130px)"><i></i><b>ÉLZÁRÁS</b></span>
       <span class="mark" style="left:16%;top:78%;--w:min(34vw,230px)"><i></i><b>SAROK</b></span>
@@ -487,9 +493,9 @@ form{display:grid;gap:26px}
       <h2 id="reszlet-h" style="margin-top:18px" data-reveal>A részlet<br>nem extra.<br><em>Az a munka.</em></h2>
       <p class="muted" style="margin-top:24px;max-width:30em">Egy burkolat a fugáknál, a sarkokban és az éleknél dől el. Ott, ahová elsőre senki nem néz, de később mindenki észreveszi.</p>
       <div class="thumbs">
-        <figure style="margin:0"><div class="ph d"></div><figcaption>Vágás</figcaption></figure>
-        <figure style="margin:0"><div class="ph d"></div><figcaption>Szintezés</figcaption></figure>
-        <figure style="margin:0"><div class="ph d"></div><figcaption>Munkafolyamat</figcaption></figure>
+        <figure style="margin:0"><div class="ph d"><span class="ph-label sm">Hamarosan</span></div><figcaption>Vágás</figcaption></figure>
+        <figure style="margin:0"><div class="ph d"><span class="ph-label sm">Hamarosan</span></div><figcaption>Szintezés</figcaption></figure>
+        <figure style="margin:0"><div class="ph d"><span class="ph-label sm">Hamarosan</span></div><figcaption>Munkafolyamat</figcaption></figure>
       </div>
     </div>
   </div>
@@ -512,7 +518,7 @@ form{display:grid;gap:26px}
     <li><a href="#kapcsolat"><span class="n">05</span><span class="t">Parketta</span><span class="d">Parkettás felületek, egyeztetés alapján.</span><span class="a">→</span></a></li>
     <li><a href="#kapcsolat"><span class="n">06</span><span class="t">Egyedi megoldások</span><span class="d">Ha nem fér bele a fentiekbe, beszéljük meg.</span><span class="a">→</span></a></li>
   </ul>
-  <div class="float ph d" id="float" aria-hidden="true"><span class="ph-label">Kapcsolódó fotó</span></div>
+  <div class="float ph d" id="float" aria-hidden="true"><span class="ph-label" data-hely="Kapcsolódó fotó">Fotók hamarosan</span></div>
 </section>
 
 <!-- 06 FOLYAMAT -->
@@ -535,7 +541,7 @@ form{display:grid;gap:26px}
 
 <!-- 07 A SZAKEMBER -->
 <section class="pro" id="rolam" aria-labelledby="rolam-h">
-  <figure class="ph clip" style="margin:0" data-reveal><span class="ph-label">Portré · munka közben · 4:5</span><span class="pro-band" aria-hidden="true"></span></figure>
+  <figure class="ph clip" style="margin:0" data-reveal><span class="ph-label" data-hely="Portré · munka közben · 4:5">Fotók hamarosan</span><span class="pro-band" aria-hidden="true"></span></figure>
   <div class="pro-txt">
     <p class="eyebrow">07 / A szakember</p>
     <h2 id="rolam-h" data-reveal>Selyem<br><em>Róbert</em></h2>
