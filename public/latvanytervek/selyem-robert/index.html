@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Lapozzunk! Burkolás Kéthely, Somogy megye | Selyem Róbert E.V.</title>
 <meta name="description" content="Hidegburkolás, melegburkolás, térburkolat és kőszőnyeg Kéthelyen és Somogy megyében. Selyem Róbert burkoló – hívás: +36 20 221 1366.">
-<meta name="theme-color" content="#E8641B">
+<meta name="theme-color" content="#16120F">
 <meta property="og:title" content="Lapozzunk! | Selyem Róbert, burkoló – Kéthely">
 <meta property="og:description" content="Hidegburkolás, melegburkolás, térburkolat, kőszőnyeg – Somogy megyében.">
 <meta property="og:locale" content="hu_HU">
@@ -48,7 +48,7 @@
 </script>
 <style>
 :root{
-  --or:#E8641B; --or-d:#C04F10; --or-l:#F6A56C; --or-x:#FCE3D0;
+  --or:#DB6A2F; --or-d:#B5521F; --or-l:#F0A06F; --or-x:#FCE3D0;
   --ink:#16120F; --ink-2:#231D19; --ink-3:#2E2621;
   --cream:#F7F1E9; --sand:#E8DDD0; --muted:#8A7E73; --muted-d:#5E544B;
   --head:"Inter Tight","Inter","Helvetica Neue",Arial,sans-serif;
@@ -81,78 +81,81 @@ section[id]{scroll-margin-top:64px}
 .btn-or:hover{background:transparent;color:var(--or)}
 .btn-line{color:var(--ink);border-color:rgba(22,18,15,.35)}
 .btn-line:hover{border-color:var(--ink)}
+.btn-ghost{color:var(--cream);border-color:rgba(247,241,233,.3)}
+.btn-ghost:hover{border-color:var(--or);color:var(--or)}
 
 /* SR jel */
 .mk{width:30px;height:30px;flex:none;overflow:visible}
 .mk text{font-family:var(--head);font-weight:600;font-size:9px}
 
 /* Intró: lapozás */
-.intro{position:fixed;inset:0;z-index:200;background:var(--or);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;transform-origin:50% 0;transition:transform .9s var(--flip),opacity .9s ease;color:var(--ink)}
+.intro{position:fixed;inset:0;z-index:200;background:var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;transform-origin:50% 0;transition:transform .9s var(--flip),opacity .9s ease;color:var(--cream)}
 .intro.out{transform:perspective(1400px) rotateX(88deg);opacity:0}
 .intro-t{display:grid;grid-template-columns:repeat(2,30px);gap:5px;perspective:400px}
-.intro-t i{width:30px;height:30px;background:var(--ink);transform:rotateY(90deg);animation:iflip .55s var(--flip) forwards}
-.intro-t i:nth-child(2){animation-delay:.1s;background:transparent;border:1.5px solid var(--ink)}
-.intro-t i:nth-child(3){animation-delay:.2s;background:transparent;border:1.5px solid var(--ink)}
-.intro-t i:nth-child(4){animation-delay:.3s;background:transparent;border:1.5px solid var(--ink)}
+.intro-t i{width:30px;height:30px;background:var(--or);transform:rotateY(90deg);animation:iflip .55s var(--flip) forwards}
+.intro-t i:nth-child(2){animation-delay:.1s;background:transparent;border:1.5px solid var(--cream)}
+.intro-t i:nth-child(3){animation-delay:.2s;background:transparent;border:1.5px solid var(--cream)}
+.intro-t i:nth-child(4){animation-delay:.3s;background:transparent;border:1.5px solid var(--cream)}
 @keyframes iflip{to{transform:none}}
 .intro b{font-family:var(--head);font-weight:500;font-size:clamp(1.5rem,3vw,2rem);letter-spacing:-.02em;opacity:0;animation:ifade .6s ease .45s forwards}
 @keyframes ifade{to{opacity:1}}
 
 /* Fejléc */
-.progress{position:fixed;left:0;top:0;height:3px;width:100%;z-index:60;background:var(--ink);transform-origin:left;transform:scaleX(0)}
-.head{position:fixed;inset:0 0 auto 0;z-index:50;display:flex;align-items:center;gap:28px;padding:16px var(--pad);color:var(--ink);transition:background .4s,color .4s,padding .4s,transform .5s var(--ease)}
+.progress{position:fixed;left:0;top:0;height:3px;width:100%;z-index:60;background:var(--or);transform-origin:left;transform:scaleX(0)}
+.head{position:fixed;inset:0 0 auto 0;z-index:50;display:flex;align-items:center;gap:28px;padding:16px var(--pad);color:var(--cream);transition:background .4s,color .4s,padding .4s,transform .5s var(--ease)}
 .head.on{background:rgba(22,18,15,.94);color:var(--cream);padding-top:10px;padding-bottom:10px;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
 .head.hide{transform:translateY(-100%)}
 .brand{display:flex;align-items:center;gap:12px;margin-right:auto}
 .brand span{display:flex;flex-direction:column;line-height:1.15}
 .brand b{font-family:var(--head);font-weight:600;font-size:14px;letter-spacing:.08em}
 .brand small{font-size:10px;letter-spacing:.14em;opacity:.7}
-.head .mk .t1{fill:var(--ink)}.head.on .mk .t1{fill:var(--or)}
-.head .mk .tx1{fill:var(--or)}.head.on .mk .tx1{fill:var(--ink)}
+.head .mk .t1{fill:var(--or)}
+.head .mk .tx1{fill:var(--ink)}
 .nav{display:none;gap:28px}
 .nav a{font-size:13px;font-weight:500;position:relative;padding:4px 0}
 .nav a::after{content:"";position:absolute;left:0;right:100%;bottom:0;height:1.5px;background:currentColor;transition:right .35s var(--ease)}
 .nav a:hover::after{right:0}
 .hcall{display:none;min-height:40px;padding:0 16px;font-size:12px}
-.head .hcall{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+.head .hcall{background:var(--or);color:var(--ink);border-color:var(--or)}
 .head.on .hcall{background:var(--or);color:var(--ink);border-color:var(--or)}
 .mbtn{min-height:44px;font-weight:600;font-size:12px;letter-spacing:.16em;display:inline-flex;align-items:center;gap:10px}
 .mbtn i{width:20px;height:7px;border-top:1.5px solid currentColor;border-bottom:1.5px solid currentColor}
 @media (min-width:1024px){.nav,.hcall{display:flex}.mbtn{display:none}}
-.menu{position:fixed;inset:0;z-index:55;background:var(--or);color:var(--ink);display:flex;flex-direction:column;justify-content:center;gap:6px;padding:90px var(--pad) 40px;transform-origin:50% 0;transform:perspective(1400px) rotateX(-90deg);visibility:hidden;transition:transform .7s var(--flip),visibility 0s .7s}
+.menu{position:fixed;inset:0;z-index:55;background:var(--ink);color:var(--cream);display:flex;flex-direction:column;justify-content:center;gap:6px;padding:90px var(--pad) 40px;transform-origin:50% 0;transform:perspective(1400px) rotateX(-90deg);visibility:hidden;transition:transform .7s var(--flip),visibility 0s .7s}
 .menu.open{transform:none;visibility:visible;transition:transform .7s var(--flip)}
-.menu a{font-family:var(--head);font-weight:500;font-size:clamp(1.75rem,8vw,2.5rem);letter-spacing:-.02em;border-bottom:1px solid rgba(22,18,15,.2);padding:8px 0}
-.menu .btn{margin-top:24px;align-self:flex-start;font-size:12px;border-bottom:1px solid var(--ink)}
-body.menu-open .head{color:var(--ink);background:transparent}
+.menu a{font-family:var(--head);font-weight:500;font-size:clamp(1.75rem,8vw,2.5rem);letter-spacing:-.02em;border-bottom:1px solid rgba(247,241,233,.12);padding:8px 0}
+.menu .btn{margin-top:24px;align-self:flex-start;font-size:12px;background:var(--or);color:var(--ink);border-color:var(--or)}
+body.menu-open .head{color:var(--cream);background:transparent}
 body.menu-open .head .hcall{display:none}
 
 /* Hero */
-.hero{position:relative;background:var(--or);color:var(--ink);overflow:hidden;padding:120px var(--pad) 72px;min-height:min(100svh,860px);display:grid;align-items:center}
-.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(60% 70% at 78% 40%,rgba(255,214,170,.45),transparent 70%),radial-gradient(50% 60% at 0% 100%,rgba(160,60,10,.35),transparent 70%);pointer-events:none}
+.hero{position:relative;background:var(--ink);color:var(--cream);overflow:hidden;padding:120px var(--pad) 72px;min-height:min(100svh,860px);display:grid;align-items:center}
+.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(55% 65% at 76% 42%,rgba(219,106,47,.22),transparent 70%),radial-gradient(45% 55% at 0% 100%,rgba(219,106,47,.10),transparent 70%);pointer-events:none}
 .hero-g{position:relative;display:grid;gap:44px;align-items:center}
 @media (min-width:960px){.hero-g{grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:56px}}
 .hero .k{display:flex;align-items:center;gap:10px}
-.hero .k::before{content:"";width:22px;height:1.5px;background:var(--ink)}
+.hero .k{color:#CFC4B8}.hero .k::before{content:"";width:22px;height:1.5px;background:var(--or)}
 .hero h1{font-family:var(--head);font-weight:500;letter-spacing:-.035em;line-height:1.02;font-size:clamp(2.25rem,4vw,3.5rem);margin:18px 0 18px}
-.hero h1 em{font-style:normal;display:block;color:var(--cream)}
-.hero p.lead{font-size:16px;max-width:30em;color:#3A2416}
+.hero h1 .lp{color:var(--or)}.hero h1 em{font-style:normal;display:block;color:var(--cream)}
+.hero p.lead{font-size:16px;max-width:30em;color:#BDB2A6}
 .hero-cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
 /* lapozó csempefal */
 .wall{position:relative}
 .tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;perspective:1100px}
 .tl{aspect-ratio:1;position:relative;transform-style:preserve-3d;transition:transform .95s var(--flip)}
-.tl .f{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;background-repeat:no-repeat;box-shadow:0 18px 26px -18px rgba(60,20,0,.7),0 2px 0 rgba(255,255,255,.08) inset}
+.tl .f{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;background-repeat:no-repeat;box-shadow:0 20px 30px -18px rgba(0,0,0,.8),0 2px 0 rgba(255,255,255,.08) inset}
 .tl .f::after{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.18),transparent 45%,rgba(0,0,0,.08))}
 .tl .b{transform:rotateY(180deg)}
 .wall-cap{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-top:16px;font-size:13px}
 .wall-cap b{font-family:var(--head);font-weight:600;font-size:15px}
 .wall-cap .pg{display:flex;align-items:center;gap:8px}
-.wall-cap .pg button{width:36px;height:36px;border:1px solid rgba(22,18,15,.35);display:inline-flex;align-items:center;justify-content:center;transition:background .3s,color .3s}
-.wall-cap .pg button:hover{background:var(--ink);color:var(--or)}
+.wall-cap{color:#CFC4B8}.wall-cap b{color:var(--cream)}
+.wall-cap .pg button{width:36px;height:36px;border:1px solid rgba(247,241,233,.25);display:inline-flex;align-items:center;justify-content:center;transition:background .3s,color .3s}
+.wall-cap .pg button:hover{background:var(--or);border-color:var(--or);color:var(--ink)}
 .wall-tag{position:absolute;right:10px;top:10px;z-index:2;font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;background:rgba(247,241,233,.9);color:var(--ink);padding:4px 7px}
 
 /* Galéria */
-.gal{background:var(--ink);padding:clamp(64px,8vw,112px) var(--pad)}
+.gal{background:var(--ink-2);border-top:1px solid rgba(247,241,233,.06);padding:clamp(64px,8vw,112px) var(--pad)}
 .g-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:18px 32px;margin-bottom:28px}
 .g-head .k{color:var(--or)}
 .g-head .h2{margin-top:10px}
@@ -210,20 +213,21 @@ body.menu-open .head .hcall{display:none}
 .ba-cap{margin-top:12px;font-size:13px;color:var(--muted-d)}
 
 /* Kapcsolat */
-.contact{background:var(--or);color:var(--ink);padding:clamp(64px,8vw,112px) var(--pad);position:relative;overflow:hidden}
-.contact::before{content:"";position:absolute;right:-6%;top:-30%;width:min(56vw,640px);aspect-ratio:1;background-image:linear-gradient(rgba(22,18,15,.12) 1.5px,transparent 1.5px),linear-gradient(90deg,rgba(22,18,15,.12) 1.5px,transparent 1.5px);background-size:25% 25%;transform:rotate(12deg);pointer-events:none}
+.contact{background:var(--ink);color:var(--cream);border-top:1px solid rgba(247,241,233,.06);padding:clamp(64px,8vw,112px) var(--pad);position:relative;overflow:hidden}
+.contact::before{content:"";position:absolute;right:-6%;top:-30%;width:min(56vw,640px);aspect-ratio:1;background-image:linear-gradient(rgba(219,106,47,.14) 1.5px,transparent 1.5px),linear-gradient(90deg,rgba(219,106,47,.14) 1.5px,transparent 1.5px);background-size:25% 25%;transform:rotate(12deg);pointer-events:none}
 .ct-g{position:relative;display:grid;gap:32px;align-items:end}
 @media (min-width:900px){.ct-g{grid-template-columns:minmax(0,1.2fr) minmax(0,1fr)}}
 .contact .h2{font-size:clamp(1.9rem,3vw,2.75rem)}
-.contact p{margin-top:12px;max-width:28em;color:#3A2416}
-.ct-list{border-top:1.5px solid var(--ink)}
-.ct-list a,.ct-list div{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid rgba(22,18,15,.25);font-size:15px}
-.ct-list span{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#5A2C0E}
+.contact .k{color:var(--or)}.contact .h2 .lp{color:var(--or)}
+.contact p{margin-top:12px;max-width:28em;color:#BDB2A6}
+.ct-list{border-top:1.5px solid var(--or)}
+.ct-list a,.ct-list div{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid rgba(247,241,233,.14);font-size:15px}
+.ct-list span{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
 .ct-list a b{font-family:var(--head);font-weight:600;font-size:clamp(17px,1.5vw,20px)}
-.ct-list a:hover b{text-decoration:underline;text-underline-offset:4px}
+.ct-list a:hover b{color:var(--or)}
 
 /* Lábléc */
-.foot{background:var(--ink);color:#CFC4B8;padding:28px var(--pad) calc(24px + env(safe-area-inset-bottom));display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:14px;font-size:13px}
+.foot{background:#0F0C0A;color:#CFC4B8;padding:28px var(--pad) calc(24px + env(safe-area-inset-bottom));display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:14px;font-size:13px}
 .foot .brand{margin:0;color:var(--cream)}
 .foot .brand .t1{fill:var(--or)}.foot .brand .tx1{fill:var(--ink)}
 .foot em{font-style:normal;color:var(--or)}
@@ -289,11 +293,11 @@ html.js [data-r].in{opacity:1;transform:none}
     <div class="hero-g">
       <div data-r>
         <p class="k">Selyem Róbert · burkoló · Kéthely</p>
-        <h1 id="h1">Lapozzunk! <em>Új burkolat, új fejezet.</em></h1>
+        <h1 id="h1"><span class="lp">Lapozzunk!</span> <em>Új burkolat, új fejezet.</em></h1>
         <p class="lead">Hideg- és melegburkolás, térburkolat, kőszőnyeg – Somogy megyében, a felméréstől az utolsó lapig.</p>
         <div class="hero-cta">
-          <a class="btn btn-ink" href="tel:+36202211366">Hívás: <span class="num">+36 20 221 1366</span></a>
-          <a class="btn btn-line" href="#galeria">Lapozzunk a galériába <span class="ar">↓</span></a>
+          <a class="btn btn-or" href="tel:+36202211366">Hívás: <span class="num">+36 20 221 1366</span></a>
+          <a class="btn btn-ghost" href="#galeria">Lapozzunk a galériába <span class="ar">↓</span></a>
         </div>
       </div>
       <div class="wall" data-r>
@@ -357,7 +361,7 @@ html.js [data-r].in{opacity:1;transform:none}
     <div class="ct-g">
       <div data-r>
         <p class="k">Kapcsolat</p>
-        <h2 class="h2" id="ct-h" style="margin-top:10px">Lapozzunk! Hívjon.</h2>
+        <h2 class="h2" id="ct-h" style="margin-top:10px"><span class="lp">Lapozzunk!</span> Hívjon.</h2>
         <p>Pár perc alatt átbeszéljük, mit szeretne. A részleteket a felmérésen pontosítjuk.</p>
       </div>
       <div class="ct-list" data-r>
