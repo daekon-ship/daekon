@@ -1,0 +1,27 @@
+# Flutter / Dart
+.dart_tool/
+.packages
+.pub-cache/
+.pub/
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+*.iml
+.idea/
+.vscode/
+*.log
+# Generált Drift kód — mindenki maga generálja (build_runner)
+*.g.dart
+# Platform build artefaktok
+**/android/.gradle
+**/android/local.properties
+**/ios/Pods/
+**/ios/.symlinks/
+**/windows/flutter/ephemeral/
+**/macos/Flutter/ephemeral/
+.DS_Store
+
+# Kiadási kulcs és jelszavak — SOHA ne kerüljön a repóba
+android/key.properties
+*.jks
+*.keystore

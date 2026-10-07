@@ -1,0 +1,90 @@
+name: Mester+ app (Flutter) ellenőrzés
+
+# Valódi fordítás és tesztek minden változásnál: kódgenerálás, statikus elemzés,
+# unit + adatbázis-tesztek, majd egy Android App Bundle build (debug-aláírással,
+# csak ellenőrzéshez — a Play-be feltöltendő, aláírt AAB-t a release.bat készíti).
+on:
+  push:
+    branches: [master]
+    paths:
+      - "apps/mester-plus/**"
+      - ".github/workflows/mester-plus.yml"
+  pull_request:
+    paths:
+      - "apps/mester-plus/**"
+      - ".github/workflows/mester-plus.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mester-plus-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    defaults:
+      run:
+        working-directory: apps/mester-plus
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: "3.35.5"
+          cache: true
+
+      - name: Natív SQLite a DB-tesztekhez
+        run: sudo apt-get update -q && sudo apt-get install -y -q libsqlite3-dev
+
+      - name: Flutter verzió
+        run: flutter --version
+
+      - name: Android projekt létrehozása
+        run: |
+          flutter create . --project-name mester_plus --org hu.mesterplus --platforms android
+          rm -f test/widget_test.dart
+
+      - name: Csomagok
+        run: flutter pub get
+
+      - name: Adatbázis-kód generálása (Drift)
+        run: dart run build_runner build --delete-conflicting-outputs
+
+      - name: Ikon és indítóképernyő
+        run: |
+          dart run flutter_launcher_icons
+          dart run flutter_native_splash:create
+
+      - name: Android kiadási beállítások (név, API 36, aláírás)
+        run: dart run tool/android_release_setup.dart
+
+      - name: Statikus elemzés
+        run: flutter analyze --no-fatal-infos
+
+      - name: Tesztek
+        run: flutter test --reporter expanded
+
+      - name: Android App Bundle build
+        run: flutter build appbundle --release
+
+      - name: Ellenőrzés — célzott API szint és név
+        run: |
+          grep -q 'maxOf(flutter.targetSdkVersion, 36)' android/app/build.gradle.kts
+          grep -q 'android:label="Mester+"' android/app/src/main/AndroidManifest.xml
+          ls -la build/app/outputs/bundle/release/app-release.aab
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mester-plus-aab-ellenorzo-build
+          path: apps/mester-plus/build/app/outputs/bundle/release/app-release.aab
+          retention-days: 14

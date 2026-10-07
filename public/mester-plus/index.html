@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mester+ árajánlat szakiknak</title>
+<meta name="description" content="Felméred, beárazod, elküldöd. Árajánlat PDF-ben, még a helyszínen. Burkolóknak, kőműveseknek, internet nélkül is.">
+<link rel="icon" href="img/icon-180.png">
+<link rel="apple-touch-icon" href="img/icon-180.png">
+<meta property="og:title" content="Mester+ árajánlat szakiknak">
+<meta property="og:description" content="Felméred, beárazod, elküldöd. Árajánlat PDF-ben, még a helyszínen.">
+<meta property="og:image" content="img/icon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+  /* Az app saját tokenjei (lib/core/theme/tokens.dart). Mérsékelt betűméretek. */
+  :root {
+    --canvas: #F5F3EE; --surface: #FFFFFF; --line: #E2DED5;
+    --ink: #151A23; --ink-soft: #3A4150; --muted: #6B7180;
+    --brand: #1B2B44; --brand-soft: #2C4166; --accent: #E09A2C; --on-accent: #231703;
+    --sans: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --canvas: #12151B; --surface: #1A1F28; --line: #2A2F39; --ink: #ECEAE4; --ink-soft: #C9CCD3; --muted: #9AA0AC; color-scheme: dark; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--canvas); color: var(--ink); font: 16px/1.55 var(--sans); }
+  .wrap { max-width: 1040px; margin: 0 auto; padding-inline: 20px; }
+
+  header.hero { background: linear-gradient(135deg, var(--brand), var(--brand-soft)); color: #fff; }
+  .hero .wrap { display: grid; gap: 18px; padding-block: 48px 52px; }
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .brand img { width: 56px; height: 56px; border-radius: 14px; box-shadow: 0 0 0 1px rgba(255,255,255,.14); }
+  .brand span { font-size: 1.5rem; font-weight: 600; letter-spacing: -0.01em; }
+  h1 { margin: 0; font-size: 1.75rem; line-height: 1.25; font-weight: 600; letter-spacing: -0.01em; text-wrap: balance; max-width: 30ch; }
+  .lead { margin: 0; font-size: 1.05rem; color: rgba(255,255,255,.78); max-width: 58ch; }
+  @media (max-width: 520px) { h1 { font-size: 1.4rem; } .brand span { font-size: 1.3rem; } }
+  .soon { display: inline-flex; align-items: center; gap: 8px; width: fit-content; background: var(--accent); color: var(--on-accent);
+          font-weight: 600; font-size: .95rem; border-radius: 999px; padding: 8px 16px; }
+
+  section { padding-block: 44px; }
+  h2 { font-size: 1.2rem; margin: 0 0 16px; font-weight: 600; }
+  .shots { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+  .shots figure { margin: 0; display: grid; gap: 8px; min-width: 0; }
+  .shots img { width: 100%; height: auto; border-radius: 16px; border: 1px solid var(--line); box-shadow: 0 6px 18px rgba(21,26,35,.08); background: #F5F3EE; }
+  .shots figcaption { font-size: .9rem; color: var(--muted); }
+  @media (max-width: 760px) { .shots { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+  .points { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .point { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px; }
+  .point b { display: block; margin-bottom: 6px; }
+  .point p { margin: 0; color: var(--ink-soft); font-size: .97rem; }
+  @media (max-width: 760px) { .points { grid-template-columns: 1fr; } }
+
+  .num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+  footer { border-top: 1px solid var(--line); padding-block: 28px 40px; color: var(--muted); font-size: .92rem; }
+  footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; }
+  a { color: inherit; }
+  footer a { color: var(--ink); }
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <div class="brand"><img src="img/icon-180.png" alt="" width="56" height="56"><span>Mester+</span></div>
+    <h1>Felméred, beárazod, elküldöd. Kész az árajánlat még a helyszínen.</h1>
+    <p class="lead">Árajánlat-készítő app burkolóknak, kőműveseknek és más szakiknak. A saját áraiddal számol, PDF-ben küldi az ügyfélnek, és térerő nélkül is működik.</p>
+    <span class="soon">Hamarosan a Google Play Áruházban</span>
+  </div>
+</header>
+
+<main>
+  <section>
+    <div class="wrap">
+      <h2>Így néz ki</h2>
+      <div class="shots">
+        <figure><img src="img/01_attekintes.webp" alt="Áttekintés: nyitott ajánlatok értéke és teendők" width="540" height="1081" loading="lazy"><figcaption>Áttekintés és teendők</figcaption></figure>
+        <figure><img src="img/02_projekt.webp" alt="Projekt: lépések és az ügyfél válasza" width="540" height="1081" loading="lazy"><figcaption>Projekt lépésről lépésre</figcaption></figure>
+        <figure><img src="img/04_kalkulacio.webp" alt="Kalkuláció kedvezménnyel és ÁFA-val" width="540" height="1081" loading="lazy"><figcaption>Kalkuláció</figcaption></figure>
+        <figure><img src="img/05_arajanlat.webp" alt="Árajánlat PDF előnézet" width="540" height="1081" loading="lazy"><figcaption>Árajánlat PDF-ben</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-top:0">
+    <div class="wrap">
+      <h2>Mit tud?</h2>
+      <div class="points">
+        <div class="point"><b>Felmérés centire</b><p>Helyiségenként beírod a méreteket. A padlót, a falat és a kerületet az app számolja, az ajtókat és ablakokat levonja.</p></div>
+        <div class="point"><b>A te áraid</b><p>Munkadíj és anyag külön, a saját árlistádból. Az app nem talál ki árat. Forintra pontos számolás, ÁFA <span class="num">27%</span>, <span class="num">5%</span> vagy <span class="num">0%</span>.</p></div>
+        <div class="point"><b>Adatok csak nálad</b><p>Nincs regisztráció, nincs reklám, minden a telefonodon marad. Telefoncserénél egy mentési fájllal viszed át.</p></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Mester+ · fejlesztő: Daekon</span>
+    <span><a href="adatvedelem.html">Adatvédelmi tájékoztató</a> · daekonxaxa@gmail.com</span>
+  </div>
+</footer>
+</body>
+</html>

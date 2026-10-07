@@ -1,0 +1,363 @@
+<title>Mester+ képernyők</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+/* Elrendezés: a lap (galéria) a nézet témáját követi; a telefon-képernyők az app
+   valódi, világos design tokenjeit használják — pontosan úgy, ahogy a Flutter app. */
+:root {
+  /* galéria */
+  --page: #EFECE5; --page-ink: #151A23; --page-muted: #5E6472; --page-line: #D9D4C9;
+  /* app tokenek (lib/core/theme/tokens.dart) — szándékosan csak világos, mint az app */
+  --canvas: #F5F3EE; --surface: #FFFFFF; --sunken: #EDEAE3; --line: #E2DED5; --line-strong: #CBC5B8;
+  --ink: #151A23; --ink-soft: #3A4150; --ink-muted: #6B7180; --ink-faint: #9AA0AC;
+  --brand: #1B2B44; --brand-soft: #2C4166; --accent: #E09A2C; --accent-soft: #FBEFD9; --on-accent: #231703;
+  --success: #2F7A57; --success-soft: #E2F1E8; --warning: #B7791F; --warning-soft: #FCF1DC;
+  --info: #2F5C8F; --info-soft: #E2EBF5; --danger: #B83A26;
+  --sans: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --page: #12151B; --page-ink: #ECEAE4; --page-muted: #9AA0AC; --page-line: #2A2F39; color-scheme: dark; }
+}
+:root[data-theme="dark"] { --page: #12151B; --page-ink: #ECEAE4; --page-muted: #9AA0AC; --page-line: #2A2F39; color-scheme: dark; }
+
+* { box-sizing: border-box; }
+body { background: var(--page); color: var(--page-ink); font-family: var(--sans); font-size: 15px; line-height: 1.5; }
+.wrap { max-width: 1240px; margin: 0 auto; padding-inline: 20px; padding-block: 28px 56px; }
+header.top { display: grid; gap: 6px; max-width: 70ch; margin-bottom: 28px; }
+header.top h1 { font-size: 1.5rem; line-height: 1.25; margin: 0; font-weight: 600; letter-spacing: -0.01em; text-wrap: balance; }
+header.top p { margin: 0; color: var(--page-muted); }
+.note { font-family: var(--mono); font-size: 12px; color: var(--page-muted); border: 1px dashed var(--page-line); border-radius: 8px; padding: 8px 10px; width: fit-content; max-width: 100%; }
+
+.gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 330px), 1fr)); gap: 32px 24px; align-items: start; }
+figure { margin: 0; display: grid; gap: 10px; min-width: 0; }
+figcaption { display: grid; gap: 2px; }
+figcaption b { font-size: 14px; font-weight: 600; }
+figcaption span { font-size: 13px; color: var(--page-muted); }
+
+/* ── telefon ─────────────────────────────────────────── */
+.phone { width: 100%; max-width: 360px; border-radius: 28px; padding: 8px; background: #0F131A; box-shadow: 0 1px 2px rgba(0,0,0,.08), 0 18px 40px rgba(21,26,35,.18); }
+.screen { border-radius: 21px; overflow: hidden; background: var(--canvas); color: var(--ink); height: 680px; display: flex; flex-direction: column; font-size: 14px; }
+.sb { display: inline-flex; gap: 6px; align-items: center; }
+.sb svg { height: 11px; width: auto; fill: currentColor; }
+.status { display: flex; justify-content: space-between; padding: 10px 18px 4px; font: 500 12px var(--mono); color: var(--ink); }
+.body { flex: 1; overflow: hidden; padding: 4px 16px 16px; display: flex; flex-direction: column; gap: 12px; }
+.appbar { display: flex; align-items: center; gap: 10px; padding: 6px 16px 2px; color: var(--ink); font-weight: 600; font-size: 15px; min-height: 40px; }
+.appbar .sp { flex: 1; }
+.ic { width: 20px; height: 20px; display: inline-block; flex: none; }
+.ic svg { width: 100%; height: 100%; stroke: currentColor; fill: none; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+
+.h-display { font-size: 21px; line-height: 1.2; font-weight: 600; letter-spacing: -0.01em; margin: 0; }
+.h-head { font-size: 15px; font-weight: 600; margin: 0; }
+.small { font-size: 12.5px; color: var(--ink-muted); }
+.label { font-size: 10.5px; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; color: var(--ink-muted); }
+.money { font-family: var(--mono); font-variant-numeric: tabular-nums; font-weight: 500; white-space: nowrap; }
+.mono { font-family: var(--mono); font-size: 12px; color: var(--ink-muted); font-variant-numeric: tabular-nums; }
+
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; box-shadow: 0 1px 2px rgba(21,26,35,.06), 0 6px 16px rgba(21,26,35,.04); }
+.row { display: flex; align-items: center; gap: 10px; }
+.row .grow { flex: 1; min-width: 0; }
+.chip { display: inline-flex; align-items: center; gap: 6px; border-radius: 999px; padding: 3px 9px; font-size: 11.5px; font-weight: 600; white-space: nowrap; }
+.chip i { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.c-draft { background: var(--sunken); color: var(--ink-soft); }
+.c-quoted { background: var(--info-soft); color: var(--info); }
+.c-won { background: var(--success-soft); color: var(--success); }
+.c-warn { background: var(--warning-soft); color: var(--warning); }
+
+.hero { border-radius: 18px; padding: 16px; color: #fff; background: linear-gradient(135deg, var(--brand), var(--brand-soft)); box-shadow: 0 4px 10px rgba(21,26,35,.12); display: grid; gap: 4px; }
+.hero .muted { color: rgba(255,255,255,.62); font-size: 12px; }
+.hero .big { font: 600 22px var(--mono); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.hero .split { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; border-top: 1px solid rgba(255,255,255,.12); padding-top: 10px; margin-top: 8px; }
+.badge { background: var(--accent); color: var(--on-accent); border-radius: 999px; padding: 2px 8px; font-size: 11px; font-weight: 700; }
+
+.todo { display: flex; align-items: center; gap: 10px; padding: 10px 12px; }
+.todo + .todo { border-top: 1px solid var(--line); }
+.ti { width: 30px; height: 30px; border-radius: 8px; display: grid; place-items: center; flex: none; }
+.ti .ic { width: 17px; height: 17px; }
+.ti.warn { background: var(--warning-soft); color: var(--warning); }
+.qa { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.qa div { border-radius: 14px; padding: 12px; font-weight: 600; font-size: 13.5px; display: flex; gap: 8px; align-items: center; border: 1px solid var(--line); background: var(--surface); }
+.qa .primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+
+.nav { display: grid; grid-template-columns: repeat(5, 1fr); border-top: 1px solid var(--line); background: var(--surface); padding: 8px 4px 12px; }
+.nav div { display: grid; justify-items: center; gap: 3px; font-size: 10.5px; color: var(--ink-muted); font-weight: 500; }
+.nav .on { color: var(--ink); font-weight: 600; }
+.nav .on .ic { background: var(--accent-soft); border-radius: 999px; width: 44px; padding: 0 12px; }
+
+/* lépések */
+.steps { display: grid; }
+.step { display: grid; grid-template-columns: 30px 1fr 16px; gap: 10px; align-items: start; }
+.step .rail { display: grid; justify-items: center; }
+.dot { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; font: 600 12px var(--mono); border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink-soft); }
+.dot.ok { background: var(--success); border-color: var(--success); color: #fff; }
+.dot.warn { background: var(--warning-soft); color: var(--warning); }
+.stem { width: 2px; height: 28px; margin: 3px 0; background: var(--line); }
+.stem.ok { background: rgba(47,122,87,.35); }
+.step .txt { padding-top: 2px; }
+.step .txt .h-head { font-size: 14.5px; }
+.chev { color: var(--ink-faint); padding-top: 6px; }
+
+/* mezők */
+.fields { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.field { display: grid; gap: 4px; }
+.field label { font-size: 11.5px; color: var(--ink-soft); font-weight: 500; }
+.input { border: 1px solid var(--line); background: var(--surface); border-radius: 10px; padding: 8px 10px; display: flex; justify-content: space-between; font: 500 14px var(--mono); color: var(--ink); }
+.input.focus { border: 1.6px solid var(--brand); }
+.input span { font: 400 12px var(--sans); color: var(--ink-muted); }
+.check { display: flex; gap: 8px; align-items: center; font-size: 12px; color: var(--ink-muted); }
+.box { width: 15px; height: 15px; border-radius: 4px; border: 1.5px solid var(--line-strong); flex: none; }
+.box.on { background: var(--brand); border-color: var(--brand); }
+
+.bar .grow { flex: 1; min-width: 0; }
+.bar { border-top: 1px solid var(--line); background: var(--surface); padding: 10px 16px 14px; display: flex; align-items: center; gap: 10px; }
+.btn { border-radius: 10px; background: var(--brand); color: #fff; font-weight: 600; font-size: 13px; padding: 10px 14px; display: inline-flex; gap: 6px; align-items: center; white-space: nowrap; }
+.seg { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--line); border-radius: 999px; overflow: hidden; font-size: 12px; font-weight: 600; }
+.seg div { padding: 8px 4px; text-align: center; color: var(--ink-soft); background: var(--surface); }
+.seg .on { background: var(--brand); color: #fff; }
+.kv { display: flex; justify-content: space-between; gap: 10px; padding: 4px 0; font-size: 13.5px; color: var(--ink-soft); }
+.kv.strong { color: var(--ink); font-weight: 600; }
+.hr { height: 1px; background: var(--line); margin: 6px 0; }
+
+/* ajánlat-papír */
+.paper-bg { background: var(--sunken); }
+.paper { background: #fff; border-radius: 6px; padding: 12px; box-shadow: 0 4px 10px rgba(21,26,35,.1); display: grid; gap: 6px; font-size: 11px; color: var(--ink); }
+.paper .rule { height: 2px; background: var(--brand); }
+.paper .ln { display: grid; gap: 0; padding: 3px 3px; }
+.paper .ln:nth-child(even) { background: var(--canvas); }
+.paper .ln .row { font: 400 10.5px var(--mono); color: var(--ink-soft); }
+.paper .sum { margin-left: auto; width: 72%; display: grid; gap: 2px; }
+.paper .sum .kv { font-size: 11px; padding: 1px 0; }
+.toolbar { display: flex; gap: 14px; color: var(--ink); }
+
+.legend { margin-top: 36px; display: grid; gap: 10px; max-width: 70ch; }
+.legend h2 { font-size: 1.05rem; margin: 0; font-weight: 600; }
+.legend ul { margin: 0; padding-left: 18px; color: var(--page-muted); display: grid; gap: 4px; }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <h1>Mester+ képernyők</h1>
+    <p>A v0.2 fő képernyői az app valódi színeivel és betűtípusaival (IBM Plex Sans + Mono), telefonméretben. A számok mintaadatok, nem piaci árak — az appban minden árat a szaki ad meg.</p>
+    <div class="note">Mintaadat · Kovács Péter · Fürdőszoba felújítás · 2026</div>
+  </header>
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="i-dash" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></symbol>
+      <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11 12 4l9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></symbol>
+      <symbol id="i-people" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c.6-3.4 3-5.2 6-5.2s5.4 1.8 6 5.2"/><circle cx="17" cy="9" r="2.4"/><path d="M16 14.6c2.6.2 4.4 1.8 5 4.6"/></symbol>
+      <symbol id="i-tag" viewBox="0 0 24 24"><path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="8.5" r="1.4"/></symbol>
+      <symbol id="i-tune" viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></symbol>
+      <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+      <symbol id="i-person" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.4"/><path d="M5 20c.8-3.8 3.6-5.6 7-5.6s6.2 1.8 7 5.6"/></symbol>
+      <symbol id="i-back" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></symbol>
+      <symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></symbol>
+      <symbol id="i-chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></symbol>
+      <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol>
+      <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+      <symbol id="i-pdf" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/><path d="M9 13h6M9 16.5h4"/></symbol>
+      <symbol id="i-print" viewBox="0 0 24 24"><path d="M7 9V3h10v6"/><rect x="3" y="9" width="18" height="8" rx="2"/><path d="M7 14h10v7H7z"/></symbol>
+      <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></symbol>
+      <symbol id="i-send" viewBox="0 0 24 24"><path d="M21 3 3 10.5l7 2.5 2.5 7z"/><path d="M10 13l11-10"/></symbol>
+      <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+    </defs>
+  </svg>
+
+  <div class="gallery">
+
+    <!-- 1. Áttekintés -->
+    <figure>
+      <div class="phone"><div class="screen">
+        <div class="status"><span>9:41</span><span class="sb"><svg viewBox="0 0 18 12"><path d="M1 11h2V8H1zm4 0h2V6H5zm4 0h2V3H9zm4 0h2V1h-2z"/></svg><svg viewBox="0 0 26 12"><rect x="1" y="1.5" width="21" height="9" rx="2.2" fill="none" stroke="currentColor" stroke-width="1.2"/><rect x="3" y="3.5" width="15" height="5" rx="1"/><rect x="23" y="4.5" width="2" height="3" rx="1"/></svg></span></div>
+        <div class="body">
+          <div style="display:grid;gap:2px;padding-top:6px">
+            <h2 class="h-display">Jó napot, Péter!</h2>
+            <span class="small">2026. 10. 07.</span>
+          </div>
+          <div class="hero">
+            <div class="row"><span class="label" style="color:rgba(255,255,255,.62)">Nyitott ajánlatok</span><span class="grow"></span><span class="badge">4 db</span></div>
+            <div class="big">2 486 350 Ft</div>
+            <div class="muted">bruttó, kedvezményekkel és ÁFA-val</div>
+            <div class="split">
+              <div><div class="muted">Megnyert munkák</div><div class="money" style="color:#fff">5 112 000 Ft</div></div>
+              <div><div class="muted">Aktív projektek</div><div class="money" style="color:#fff">7</div></div>
+            </div>
+          </div>
+          <div class="qa">
+            <div class="primary"><span class="ic"><svg><use href="#i-plus"/></svg></span>Új árajánlat</div>
+            <div><span class="ic"><svg><use href="#i-person"/></svg></span>Új ügyfél</div>
+          </div>
+          <span class="label">Teendők</span>
+          <div class="card" style="padding:0">
+            <div class="todo"><span class="ti warn"><span class="ic"><svg><use href="#i-clock"/></svg></span></span><div class="grow"><div class="h-head" style="font-size:14px">Konyha csempézés</div><div class="small" style="color:var(--warning)">4 nap múlva lejár az ajánlat · Szabó Kft.</div></div><span class="ic chev"><svg><use href="#i-chev"/></svg></span></div>
+            <div class="todo"><span class="ti warn"><span class="ic"><svg><use href="#i-tag"/></svg></span></span><div class="grow"><div class="h-head" style="font-size:14px">Terasz burkolás</div><div class="small" style="color:var(--warning)">3 tételnek nincs ára · Nagy Anna</div></div><span class="ic chev"><svg><use href="#i-chev"/></svg></span></div>
+          </div>
+          <div class="row"><span class="label grow">Legutóbbi projektek</span><span style="font-size:13px;color:var(--brand);font-weight:600">Összes</span></div>
+          <div class="card" style="display:grid;gap:10px">
+            <div class="row"><div class="grow"><div class="h-head">Fürdőszoba felújítás</div><div class="small">Kovács Péter</div></div><span class="chip c-quoted"><i></i>Ajánlat kiküldve</span></div>
+            <div class="hr"></div>
+            <div class="row"><span class="mono grow">2026. 10. 06. · MP-2026-014</span><span class="money">812 757 Ft</span></div>
+          </div>
+        </div>
+        <div class="nav">
+          <div class="on"><span class="ic"><svg><use href="#i-dash"/></svg></span>Áttekintés</div>
+          <div><span class="ic"><svg><use href="#i-home"/></svg></span>Projektek</div>
+          <div><span class="ic"><svg><use href="#i-people"/></svg></span>Ügyfelek</div>
+          <div><span class="ic"><svg><use href="#i-tag"/></svg></span>Árlista</div>
+          <div><span class="ic"><svg><use href="#i-tune"/></svg></span>Beállítások</div>
+        </div>
+      </div></div>
+      <figcaption><b>Áttekintés</b><span>Nyitott és megnyert ajánlatok bruttó értéke projektenként kedvezménnyel és ÁFA-val; gyors indítás.</span></figcaption>
+    </figure>
+
+    <!-- 2. Projekt -->
+    <figure>
+      <div class="phone"><div class="screen">
+        <div class="status"><span>9:41</span><span class="sb"><svg viewBox="0 0 18 12"><path d="M1 11h2V8H1zm4 0h2V6H5zm4 0h2V3H9zm4 0h2V1h-2z"/></svg><svg viewBox="0 0 26 12"><rect x="1" y="1.5" width="21" height="9" rx="2.2" fill="none" stroke="currentColor" stroke-width="1.2"/><rect x="3" y="3.5" width="15" height="5" rx="1"/><rect x="23" y="4.5" width="2" height="3" rx="1"/></svg></span></div>
+        <div class="appbar"><span class="ic"><svg><use href="#i-back"/></svg></span><span class="sp"></span><span class="ic"><svg><use href="#i-more"/></svg></span></div>
+        <div class="body">
+          <h2 class="h-display">Fürdőszoba felújítás</h2>
+          <div class="row" style="flex-wrap:wrap;gap:6px">
+            <span class="chip c-quoted"><i></i>Ajánlat kiküldve</span>
+            <span class="chip c-draft">Kovács Péter</span>
+            <span class="chip c-draft"># MP-2026-014</span>
+          </div>
+          <div class="card" style="display:grid;gap:4px;padding:14px">
+            <span class="label">Ajánlat összesen (bruttó)</span>
+            <span class="money" style="font-size:22px;font-weight:600">812 757 Ft</span>
+            <span class="mono">Nettó 639 966 Ft</span>
+          </div>
+          <div class="card" style="display:grid;gap:10px">
+            <div class="row small"><span class="ic" style="width:16px;height:16px"><svg><use href="#i-clock"/></svg></span>Érvényes: 2026. 11. 05.</div>
+            <b style="font-size:14px">Mit mondott az ügyfél?</b>
+            <div class="qa" style="gap:8px">
+              <div class="primary" style="background:var(--brand);border-color:var(--brand);color:#fff;justify-content:center;padding:10px"><span class="ic" style="width:17px;height:17px"><svg><use href="#i-check"/></svg></span>Elfogadta</div>
+              <div style="justify-content:center;padding:10px">Nem kérte</div>
+            </div>
+          </div>
+          <span class="label">Lépések</span>
+          <div class="steps">
+            <div class="step"><div class="rail"><span class="dot ok"><span class="ic" style="width:15px;height:15px"><svg><use href="#i-check"/></svg></span></span><span class="stem ok"></span></div><div class="txt"><div class="h-head">Felmérés</div><div class="small">3 helyiség / felület</div></div><span class="ic chev"><svg><use href="#i-chev"/></svg></span></div>
+            <div class="step"><div class="rail"><span class="dot ok"><span class="ic" style="width:15px;height:15px"><svg><use href="#i-check"/></svg></span></span><span class="stem ok"></span></div><div class="txt"><div class="h-head">Munkatételek</div><div class="small">8 tétel</div></div><span class="ic chev"><svg><use href="#i-chev"/></svg></span></div>
+            <div class="step"><div class="rail"><span class="dot ok"><span class="ic" style="width:15px;height:15px"><svg><use href="#i-check"/></svg></span></span><span class="stem ok"></span></div><div class="txt"><div class="h-head">Saját árazás</div><div class="small">Minden tétel árazva</div></div><span class="ic chev"><svg><use href="#i-chev"/></svg></span></div>
+            <div class="step"><div class="rail"><span class="dot ok"><span class="ic" style="width:15px;height:15px"><svg><use href="#i-check"/></svg></span></span><span class="stem ok"></span></div><div class="txt"><div class="h-head">Kalkuláció</div><div class="small">Kedvezmény 5% · ÁFA 27%</div></div><span class="ic chev"><svg><use href="#i-chev"/></svg></span></div>
+            <div class="step"><div class="rail"><span class="dot ok"><span class="ic" style="width:15px;height:15px"><svg><use href="#i-check"/></svg></span></span></div><div class="txt"><div class="h-head">Árajánlat</div><div class="small">Kiküldve · MP-2026-014</div></div><span class="ic chev"><svg><use href="#i-chev"/></svg></span></div>
+          </div>
+        </div>
+      </div></div>
+      <figcaption><b>Projekt</b><span>Kiküldés után egy koppintással jelölöd, mit mondott az ügyfél. Alatta az öt lépés állapota; a ⋯ menüben másolat új munkához.</span></figcaption>
+    </figure>
+
+    <!-- 3. Saját árazás -->
+    <figure>
+      <div class="phone"><div class="screen">
+        <div class="status"><span>9:41</span><span class="sb"><svg viewBox="0 0 18 12"><path d="M1 11h2V8H1zm4 0h2V6H5zm4 0h2V3H9zm4 0h2V1h-2z"/></svg><svg viewBox="0 0 26 12"><rect x="1" y="1.5" width="21" height="9" rx="2.2" fill="none" stroke="currentColor" stroke-width="1.2"/><rect x="3" y="3.5" width="15" height="5" rx="1"/><rect x="23" y="4.5" width="2" height="3" rx="1"/></svg></span></div>
+        <div class="appbar"><span class="ic"><svg><use href="#i-back"/></svg></span>Saját árazás</div>
+        <div class="body">
+          <div class="card" style="background:var(--info-soft);border-color:var(--info-soft);box-shadow:none;font-size:12px;color:var(--info)">Az MP-2026-014 ajánlat már ki lett küldve. Ha itt módosítasz, jelezd a megrendelőnek is.</div>
+          <div class="card" style="display:grid;gap:10px">
+            <div class="row"><span class="h-head grow" style="font-size:14px">Falburkolás (csempézés)</span><span class="mono">18,4 m²</span></div>
+            <div class="fields">
+              <div class="field"><label>Munkadíj / m²</label><div class="input focus">9 500<span>Ft</span></div></div>
+              <div class="field"><label>Anyag / m²</label><div class="input">0<span>Ft</span></div></div>
+            </div>
+            <div class="row"><span class="small">Sor összesen</span><span class="money" style="font-weight:600">174 800 Ft</span><span class="grow"></span><span class="ic" style="color:var(--success)"><svg><use href="#i-check"/></svg></span></div>
+            <div class="check"><span class="box"></span>Az árlistámban is ez legyen az ár</div>
+          </div>
+          <div class="card" style="display:grid;gap:10px;border-color:rgba(183,121,31,.5)">
+            <div class="row"><span class="h-head grow" style="font-size:14px">Kenhető vízszigetelés</span><span class="mono">6,2 m²</span></div>
+            <div class="fields">
+              <div class="field"><label>Munkadíj / m²</label><div class="input" style="color:var(--ink-faint)">0<span>Ft</span></div></div>
+              <div class="field"><label>Anyag / m²</label><div class="input" style="color:var(--ink-faint)">0<span>Ft</span></div></div>
+            </div>
+            <div class="check"><span class="box on"></span>Az árlistámban is ez legyen az ár</div>
+          </div>
+        </div>
+        <div class="bar"><div class="grow" style="display:grid"><span class="small" style="color:var(--warning)">1 tétel ár nélkül</span><span class="money" style="font-size:16px;font-weight:600">625 288 Ft</span></div><span class="btn">Kalkuláció<span class="ic" style="width:16px;height:16px"><svg><use href="#i-arrow"/></svg></span></span></div>
+      </div></div>
+      <figcaption><b>Saját árazás</b><span>Automatikus mentés. Az árlista csak akkor frissül alapból, ha a tételnek még nem volt ára — egy alkudott ár nem írja felül.</span></figcaption>
+    </figure>
+
+    <!-- 4. Kalkuláció -->
+    <figure>
+      <div class="phone"><div class="screen">
+        <div class="status"><span>9:41</span><span class="sb"><svg viewBox="0 0 18 12"><path d="M1 11h2V8H1zm4 0h2V6H5zm4 0h2V3H9zm4 0h2V1h-2z"/></svg><svg viewBox="0 0 26 12"><rect x="1" y="1.5" width="21" height="9" rx="2.2" fill="none" stroke="currentColor" stroke-width="1.2"/><rect x="3" y="3.5" width="15" height="5" rx="1"/><rect x="23" y="4.5" width="2" height="3" rx="1"/></svg></span></div>
+        <div class="appbar"><span class="ic"><svg><use href="#i-back"/></svg></span>Kalkuláció</div>
+        <div class="body">
+          <span class="label">Kedvezmény / felár</span>
+          <div class="card" style="display:grid;gap:10px">
+            <div class="seg"><div>Nincs</div><div class="on">Kedvezmény</div><div>Felár</div></div>
+            <div class="field"><label>Kedvezmény mértéke</label><div class="input">5<span>%</span></div></div>
+            <span class="small" style="font-size:11.5px">A nettó részösszegre vonatkozik, az ÁFA előtt. Automatikusan mentődik.</span>
+          </div>
+          <span class="label">Ajánlat érvényessége</span>
+          <div class="row" style="gap:6px;flex-wrap:wrap">
+            <span class="chip c-draft">15 nap</span><span class="chip" style="background:var(--brand);color:#fff">30 nap</span><span class="chip c-draft">60 nap</span><span class="chip c-draft">90 nap</span>
+          </div>
+          <span class="label">Összesítés</span>
+          <div class="card" style="padding:14px">
+            <div class="kv"><span>Munkadíj</span><span class="money">372 180 Ft</span></div>
+            <div class="kv"><span>Anyagköltség</span><span class="money">301 468 Ft</span></div>
+            <div class="hr"></div>
+            <div class="kv strong"><span>Részösszeg</span><span class="money">673 648 Ft</span></div>
+            <div class="kv"><span>Kedvezmény (5%)</span><span class="money" style="color:var(--success)">−33 682 Ft</span></div>
+            <div class="kv strong"><span>Nettó összesen</span><span class="money">639 966 Ft</span></div>
+            <div class="kv"><span>ÁFA (27%)</span><span class="money">172 791 Ft</span></div>
+            <div class="hr"></div>
+            <div class="kv strong" style="align-items:baseline"><span>Bruttó végösszeg</span><span class="money" style="font-size:19px;font-weight:600">812 757 Ft</span></div>
+          </div>
+        </div>
+      </div></div>
+      <figcaption><b>Kalkuláció</b><span>Egész forint, fél-felfelé kerekítés; a kedvezmény az ÁFA előtt. Ugyanez a számítás megy a dashboardra, az ajánlatra és a PDF-be.</span></figcaption>
+    </figure>
+
+    <!-- 5. Árajánlat -->
+    <figure>
+      <div class="phone"><div class="screen paper-bg">
+        <div class="status"><span>9:41</span><span class="sb"><svg viewBox="0 0 18 12"><path d="M1 11h2V8H1zm4 0h2V6H5zm4 0h2V3H9zm4 0h2V1h-2z"/></svg><svg viewBox="0 0 26 12"><rect x="1" y="1.5" width="21" height="9" rx="2.2" fill="none" stroke="currentColor" stroke-width="1.2"/><rect x="3" y="3.5" width="15" height="5" rx="1"/><rect x="23" y="4.5" width="2" height="3" rx="1"/></svg></span></div>
+        <div class="appbar"><span class="ic"><svg><use href="#i-back"/></svg></span>Árajánlat<span class="sp"></span><span class="toolbar"><span class="ic"><svg><use href="#i-pdf"/></svg></span><span class="ic"><svg><use href="#i-print"/></svg></span><span class="ic"><svg><use href="#i-copy"/></svg></span></span></div>
+        <div class="body">
+          <div class="paper" style="transform:translateY(-56px)">
+            <div class="row" style="align-items:flex-start"><div class="grow"><b style="font-size:12.5px">Kovács Burkolás Kft.</b><div style="color:var(--ink-soft)">2040 Budaörs, Mintautca 1.<br>Adószám: 12345678-2-13</div></div><div style="text-align:right"><b style="color:var(--brand);letter-spacing:.08em">ÁRAJÁNLAT</b><div class="mono" style="color:var(--ink)">MP-2026-014</div></div></div>
+            <div class="rule"></div>
+            <div class="row" style="align-items:flex-start"><div class="grow"><span class="label" style="font-size:8.5px">Megrendelő</span><div><b>Kovács Péter</b></div><div style="color:var(--ink-soft)">1111 Budapest, Példa u. 5.</div></div><div style="text-align:right;color:var(--ink-soft)">Kelt: 2026. 10. 06.<br>Érvényes: 2026. 11. 05.</div></div>
+            <b style="font-size:12px">Fürdőszoba felújítás</b>
+            <div>
+              <div class="ln"><span>1. Régi burkolat bontása</span><div class="row"><span class="grow">22,6 m² × 2 500 Ft</span><b style="color:var(--ink)">56 500 Ft</b></div></div>
+              <div class="ln"><span>2. Sitt elszállítása</span><div class="row"><span class="grow">1,5 m³ × 18 000 Ft</span><b style="color:var(--ink)">27 000 Ft</b></div></div>
+              <div class="ln"><span>3. Kenhető vízszigetelés</span><div class="row"><span class="grow">6,2 m² × 7 800 Ft</span><b style="color:var(--ink)">48 360 Ft</b></div></div>
+              <div class="ln"><span>4. Hajlaterősítő szalag</span><div class="row"><span class="grow">9,4 fm × 1 900 Ft</span><b style="color:var(--ink)">17 860 Ft</b></div></div>
+              <div class="ln"><span>5. Falburkolás (csempézés)</span><div class="row"><span class="grow">18,4 m² × 9 500 Ft</span><b style="color:var(--ink)">174 800 Ft</b></div></div>
+              <div class="ln"><span>6. Padlóburkolás (ragasztott)</span><div class="row"><span class="grow">4,2 m² × 12 000 Ft</span><b style="color:var(--ink)">50 400 Ft</b></div></div>
+              <div class="ln"><span>7. Fugázás</span><div class="row"><span class="grow">22,6 m² × 1 800 Ft</span><b style="color:var(--ink)">40 680 Ft</b></div></div>
+              <div class="ln"><span>8. Burkolólap és ragasztó (anyag)</span><div class="row"><span class="grow">24 m² × 10 752 Ft</span><b style="color:var(--ink)">258 048 Ft</b></div></div>
+            </div>
+            <div class="sum">
+              <div class="kv"><span>Munkadíj</span><span class="money">372 180 Ft</span></div>
+              <div class="kv"><span>Anyagköltség</span><span class="money">301 468 Ft</span></div>
+              <div class="kv"><span>Kedvezmény 5%</span><span class="money">−33 682 Ft</span></div>
+              <div class="kv strong"><span>Nettó</span><span class="money">639 966 Ft</span></div>
+              <div class="kv"><span>ÁFA 27%</span><span class="money">172 791 Ft</span></div>
+              <div class="hr" style="background:var(--ink)"></div>
+              <div class="kv strong"><span>Fizetendő</span><span class="money">812 757 Ft</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="bar" style="color:var(--ink)"><span class="ic" style="color:var(--success)"><svg><use href="#i-check"/></svg></span><div class="grow" style="font-size:12.5px;font-weight:600;line-height:1.35">Kiküldve: MP-2026-014<br><span style="font-weight:400;color:var(--ink-muted)">2026. 10. 06.</span></div><span class="btn" style="background:var(--surface);color:var(--ink);border:1px solid var(--line-strong)"><span class="ic" style="width:16px;height:16px"><svg><use href="#i-send"/></svg></span>Újraküldés</span></div>
+      </div></div>
+      <figcaption><b>Árajánlat</b><span>„Ajánlat küldése PDF-ben”: egy lépésben kap számot és megy ki. Fent nyomtatás és másolás szövegként.</span></figcaption>
+    </figure>
+
+  </div>
+
+  <section class="legend">
+    <h2>A dizájn szabályai</h2>
+    <ul>
+      <li>Meleg, papírszerű alap és mély grafitkék márkaszín; a borostyán jelzőszín csak a fő műveleten és a darabszámon.</li>
+      <li>Minden összeg IBM Plex Mono, táblázatos számjegyekkel — oszlopban pontosan egymás alá kerülnek.</li>
+      <li>Mérsékelt betűméretek: a legnagyobb cím 24 pt, a legnagyobb összeg 22–24 pt.</li>
+      <li>Az állapot színnel és formával is látszik: piszkozat szürke, kiküldve kék, elfogadva zöld, hiányzó ár borostyán.</li>
+    </ul>
+  </section>
+</div>

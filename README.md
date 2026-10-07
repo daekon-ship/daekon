@@ -18,6 +18,8 @@
 | `brand/DAEKON-brand.html` | Önálló márkakézikönyv (minden benne: koncepció, szín, tipó, használat) |
 | `brand/4k-gallery.html` | 4K galéria egyetlen fájlban (képek beágyazva) |
 | `prototypes/` | Korai design prototípusok (a-editorial, c-living-interface) |
+| `apps/mester-plus/` | **Mester+** – árajánlat-készítő Flutter app szakiknak (Android). Telepítés: `apps/mester-plus/README.md`, Play-kiadás: `apps/mester-plus/docs/PLAY_STORE.md`. Minden változásnál a `.github/workflows/mester-plus.yml` lefordítja és teszteli. |
+| `public/mester-plus/` | A Mester+ nyilvános oldala és adatvédelmi tájékoztatója (ezt a címet kéri a Play Console): https://daekon-ship.github.io/daekon/mester-plus/adatvedelem.html |
 | `public/latvanytervek/` | Ügyfél-látványtervek, mind önálló `index.html` — élőben: https://daekon-ship.github.io/daekon/latvanytervek/ |
 
 ## Futtatás
