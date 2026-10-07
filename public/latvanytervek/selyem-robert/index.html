@@ -985,6 +985,40 @@ html.js .pats.in .pat svg > g{clip-path:inset(0)}
 .ab-list li{display:grid;grid-template-columns:36px 1fr;gap:10px;padding:11px 0;border-bottom:1px solid var(--line);font-size:var(--t-s);color:var(--fg)}
 .ab-list .num{font-size:.75rem;color:var(--bronze-l);padding-top:2px}
 @media (max-width:767px){.pats{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 12px}.pat figcaption small{font-size:.75rem}}
+
+/* ===================== Prémium anyagréteg ===================== */
+html.js .hero-plan .tf{opacity:0;animation:tfin .7s var(--ease) forwards}
+@keyframes tfin{from{opacity:0;transform:scale(.92)}to{opacity:.82;transform:none}}
+.hero-plan .tf{transform-box:fill-box;transform-origin:center}
+.hero-plan .pl-fill{filter:brightness(.5) contrast(1.15)}
+.hero-plan text{fill:#E9DFCC}
+.ph.t-nero .tone{background:url(img/marble-nero.webp) center/cover}
+.ph.t-greyd .tone{background:url(img/marble-grey.webp) center/cover;filter:brightness(.36) contrast(1.25)}
+.ph.t-beiged .tone{background:url(img/marble-beige.webp) center/cover;filter:brightness(.4) contrast(1.2) saturate(.8)}
+.ph.t-conc .tone{background:url(img/concrete.webp) center/cover;filter:brightness(.62)}
+.ph.t-nero::after,.ph.t-greyd::after,.ph.t-beiged::after{background:linear-gradient(115deg,rgba(255,240,215,.10) 0%,rgba(255,240,215,0) 42%),linear-gradient(0deg,rgba(10,10,9,.35),transparent 50%)}
+/* Kiosztás: világos bemutatótermi sáv, minták valódi anyagon */
+.kio.light{background:#EFEBE3;border-top:0}
+.kio.light .label{color:#6B675C}
+.kio.light .shead p{color:#5E5A50}
+.pat svg{background-size:cover!important;background-position:center!important;border:0;box-shadow:0 1px 0 rgba(255,255,255,.6) inset,0 34px 50px -32px rgba(21,22,21,.55),0 10px 18px -12px rgba(21,22,21,.35)}
+.pat:nth-child(1) svg{background:url(img/marble-white.webp)}
+.pat:nth-child(2) svg{background:url(img/marble-beige.webp)}
+.pat:nth-child(3) svg{background:url(img/marble-grey.webp)}
+.pat:nth-child(4) svg{background:url(img/marble-nero.webp)}
+.pat path{stroke:#F7F4EE;stroke-width:3.2;opacity:1}
+.pat:nth-child(4) path{stroke:rgba(236,230,221,.42);stroke-width:2.4}
+.pat path.acc{fill:none!important;stroke:#B08D57;stroke-width:3;opacity:0;transition:opacity .6s ease 1.4s}
+.pats.in .pat path.acc{opacity:1}
+.pat:hover svg{transform:translateY(-6px);box-shadow:0 1px 0 rgba(255,255,255,.6) inset,0 44px 60px -34px rgba(21,22,21,.6),0 14px 22px -14px rgba(21,22,21,.35)}
+.kio.light .pat figcaption b{color:#151615}
+.kio.light .pat figcaption .num{color:#8E5E3C}
+.kio.light .pat figcaption small{color:#6B675C}
+html.js .pats .pat svg > g{clip-path:none!important}
+html.js .pats .pat svg{clip-path:inset(0 0 100% 0);transition:clip-path 1.4s cubic-bezier(.76,0,.24,1),transform .6s var(--ease),box-shadow .6s var(--ease)}
+html.js .pats.in .pat svg{clip-path:inset(-40px -40px -80px -40px)}
+.pats .pat:nth-child(2) svg{transition-delay:.1s,0s,0s}.pats .pat:nth-child(3) svg{transition-delay:.2s,0s,0s}.pats .pat:nth-child(4) svg{transition-delay:.3s,0s,0s}
+@media (max-width:767px){.hero-art{opacity:.55!important}}
 </style>
 </head>
 <body>
@@ -1034,6 +1068,8 @@ html.js .pats.in .pat svg > g{clip-path:inset(0)}
         </div>
         <div class="hero-art" aria-hidden="true">
           <svg class="hero-plan" viewBox="0 0 800 600" fill="none" stroke="currentColor">
+            <defs><pattern id="mtex" patternUnits="userSpaceOnUse" width="800" height="600"><image href="img/marble-beige.webp" x="0" y="0" width="800" height="600" preserveAspectRatio="xMidYMid slice"/></pattern></defs>
+            <g class="pl-fill" id="plFill" stroke="none"></g>
             <g class="pl-walls" stroke-width="1.3">
               <path class="dr" pathLength="1" d="M80 60H720V540H80Z"/>
               <path class="dr" pathLength="1" d="M92 72H708V528H92Z"/>
@@ -1082,7 +1118,7 @@ html.js .pats.in .pat svg > g{clip-path:inset(0)}
   </section>
 
   <!-- KIOSZTÁS -->
-  <section class="kio" id="kiosztas" aria-labelledby="ki-h">
+  <section class="kio light" id="kiosztas" aria-labelledby="ki-h">
     <div class="wrap">
       <div class="shead">
         <p class="label kick">Kiosztás</p>
@@ -1169,7 +1205,7 @@ html.js .pats.in .pat svg > g{clip-path:inset(0)}
       </div>
       <div class="ba-frame" id="ba" style="--pos:50%">
         <div class="ph ph--light t-marble ba-after" data-src="" data-alt="Utána: elkészült burkolat"><span class="tone"></span><span class="ph-cap"><b>Fotók hamarosan</b>Utána</span></div>
-        <div class="ph t-concrete ba-before" data-src="" data-alt="Előtte: a felület burkolás előtt"><span class="tone"></span><span class="ph-cap"><b>Fotók hamarosan</b>Előtte</span></div>
+        <div class="ph t-conc ba-before" data-src="" data-alt="Előtte: a felület burkolás előtt"><span class="tone"></span><span class="ph-cap"><b>Fotók hamarosan</b>Előtte</span></div>
         <span class="ba-tag l">ELŐTTE</span><span class="ba-tag r">UTÁNA</span>
         <div class="ba-handle" role="slider" tabindex="0" aria-label="Előtte–utána összehasonlítás" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"><span class="ba-knob" aria-hidden="true">‹&nbsp;›</span></div>
       </div>
@@ -1306,22 +1342,34 @@ html.js .pats.in .pat svg > g{clip-path:inset(0)}
   var PROJECTS = [
     { layout:"a", type:"Fürdőszoba – fal- és padlóburkolás", location:null, url:null,
       scope:["Aljzat-előkészítés","Vízszigetelés","Falburkolás","Padlóburkolás","Fugázás"],
-      media:[{ tone:"t-lime", ar:"16/10", cap:"Elkészült fürdőszoba", src:"", sk:"room", o:{dx:-.06, win:"l"} }] },
+      media:[{ tone:"t-nero", ar:"16/10", cap:"Elkészült fürdőszoba", src:"", sk:"room", o:{dx:-.06, win:"l"} }] },
     { layout:"b", type:"Konyha és nappali – padló", location:null, url:null,
       scope:["Kiegyenlítés","Padlóburkolás","Élzárás"],
-      media:[{ tone:"t-plaster", ar:"4/3", cap:"Fő tér", src:"", sk:"room", o:{dx:.08, win:"r", back:"door"} },
-             { tone:"t-concrete", ar:"4/3", cap:"Részlet – padló, csatlakozás", src:"", sk:"floor" }] }
+      media:[{ tone:"t-greyd", ar:"4/3", cap:"Fő tér", src:"", sk:"room", o:{dx:.08, win:"r", back:"door"} },
+             { tone:"t-beiged", ar:"4/3", cap:"Részlet – padló, csatlakozás", src:"", sk:"floor" }] }
   ];
   var SERVICES = [
-    ["01","Komplett burkolás","A felület előkészítésétől az utolsó fugáig, egy kézben.","t-lime"],
-    ["02","Falburkolás","Csempe és lap falra, gondos kiosztással és tiszta vágásokkal.","t-plaster"],
-    ["03","Padlóburkolás","Hidegburkolat padlóra, alapos aljzat-előkészítéssel.","t-concrete"],
-    ["04","Csempézés","Fürdőszobák, konyhák és más vizes helyiségek.","t-lime"],
-    ["05","Parketta","Parkettás felületek, egyeztetés alapján.","t-plaster"],
-    ["06","Egyedi megoldások","Ha nem fér bele a fentiekbe, beszéljük meg telefonon.","t-shadow"]
+    ["01","Komplett burkolás","A felület előkészítésétől az utolsó fugáig, egy kézben.","t-nero"],
+    ["02","Falburkolás","Csempe és lap falra, gondos kiosztással és tiszta vágásokkal.","t-greyd"],
+    ["03","Padlóburkolás","Hidegburkolat padlóra, alapos aljzat-előkészítéssel.","t-beiged"],
+    ["04","Csempézés","Fürdőszobák, konyhák és más vizes helyiségek.","t-nero"],
+    ["05","Parketta","Parkettás felületek, egyeztetés alapján.","t-greyd"],
+    ["06","Egyedi megoldások","Ha nem fér bele a fentiekbe, beszéljük meg telefonon.","t-beiged"]
   ];
   var REVIEWS = [];
-  var CRAFT = [["Anyagok","4/5","t-plaster"],["Kiosztás","3/4","t-concrete"],["Vágás","16/11","t-lime"],["Szintezés","3/4","t-plaster"],["Fuga","1/1","t-concrete"],["Elkészült felület","16/11","t-lime"]];
+  var CRAFT = [["Anyagok","4/5","t-beiged"],["Kiosztás","3/4","t-nero"],["Vágás","16/11","t-greyd"],["Szintezés","3/4","t-conc"],["Fuga","1/1","t-nero"],["Elkészült felület","16/11","t-beiged"]];
+
+
+  /* --- Hero: a padló lapról lapra burkolódik, a kezdőponttól kifelé --- */
+  (function(){
+    var g = document.getElementById("plFill"); if (!g) return;
+    var xs = [92,169,246,323,400,477,554,631,708], ys = [72,148,224,300,376,452,528], h = "";
+    for (var i = 0; i < 8; i++) for (var j = 0; j < 6; j++){
+      var cx = (xs[i] + xs[i+1]) / 2, cy = (ys[j] + ys[j+1]) / 2, d = Math.sqrt(Math.pow((cx - 400) / 77, 2) + Math.pow((cy - 300) / 76, 2));
+      h += '<rect class="tf" x="' + (xs[i] + 1.5) + '" y="' + (ys[j] + 1.5) + '" width="' + (xs[i+1] - xs[i] - 3) + '" height="' + (ys[j+1] - ys[j] - 3) + '" fill="url(#mtex)" style="animation-delay:' + (2.1 + d * .16).toFixed(2) + 's"/>';
+    }
+    g.innerHTML = h;
+  })();
 
   /* --- Rajzlap koordináták --- */
   (function(){
@@ -1432,7 +1480,7 @@ html.js .pats.in .pat svg > g{clip-path:inset(0)}
 
   /* --- Kiosztási minták (rajzlap-stílus) --- */
   (function(){
-    function R(x, y, w, h){ return "M" + (x + 2) + " " + (y + 2) + "h" + (w - 4) + "v" + (h - 4) + "h" + (4 - w) + "Z"; }
+    function R(x, y, w, h){ return "M" + x + " " + y + "h" + w + "v" + h + "h" + (-w) + "Z"; }
     function put(id, list, acc, rot){
       var el = document.getElementById(id); if (!el) return;
       var d = list.map(function(r){ return R(r[0], r[1], r[2], r[3]); }).join("");
@@ -1610,10 +1658,10 @@ html.js .pats.in .pat svg > g{clip-path:inset(0)}
     document.body.appendChild(intro);
     var heroCopy = $(".hero-copy"); heroCopy.style.animationPlayState = "paused";
     $$(".hero-copy > *").forEach(function(el){ el.style.animationPlayState = "paused"; });
-    $$(".hero-plan .dr, .hero-plan text, .sweep").forEach(function(el){ el.style.animationPlayState = "paused"; });
+    $$(".hero-plan .dr, .hero-plan text, .hero-plan .tf, .sweep").forEach(function(el){ el.style.animationPlayState = "paused"; });
     setTimeout(function(){
       intro.classList.add("out");
-      $$(".hero-copy > *, .hero-plan .dr, .hero-plan text, .sweep").forEach(function(el){ el.style.animationPlayState = "running"; });
+      $$(".hero-copy > *, .hero-plan .dr, .hero-plan text, .hero-plan .tf, .sweep").forEach(function(el){ el.style.animationPlayState = "running"; });
       setTimeout(function(){ intro.remove(); }, 1100);
     }, 1350);
   }
@@ -1657,7 +1705,7 @@ html.js .pats.in .pat svg > g{clip-path:inset(0)}
     addLamp(heroSheet); addLamp($("#kapcsolat"));
     var hi = document.createElement("div"); hi.className = "plan-hi";
     var clone = planSvg.cloneNode(true); clone.removeAttribute("class"); $$(".dr", clone).forEach(function(p){ p.removeAttribute("class"); });
-    $$("text", clone).forEach(function(t){ t.remove(); });
+    $$("text, .pl-fill, defs", clone).forEach(function(t){ t.remove(); });
     hi.appendChild(clone); art.appendChild(hi);
     var tiltEl = document.createElement("div"); tiltEl.className = "tilt"; tiltEl.style.cssText = "position:absolute;inset:0;display:flex;align-items:inherit;justify-content:center;padding:inherit";
     art.insertBefore(tiltEl, art.firstChild); tiltEl.appendChild(planSvg); tiltEl.appendChild(hi);
