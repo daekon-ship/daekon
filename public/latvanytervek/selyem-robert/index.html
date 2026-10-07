@@ -9,6 +9,13 @@
 <meta property="og:title" content="Precíz burkolás. Az utolsó fugáig. | Selyem Róbert E.V.">
 <meta property="og:description" content="Komplett burkolás – fal, padló, parketta – Kéthelyen és Somogy megyében.">
 <meta property="og:locale" content="hu_HU">
+<meta property="og:image" content="https://daekon-ship.github.io/daekon/latvanytervek/selyem-robert/img/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<!-- Látványterv-előnézet: élesítéskor a noindex törlendő, a canonical/og:url az ügyfél domainjére írandó. -->
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23121312'/%3E%3Crect x='3' y='3' width='12' height='12' fill='%23C9A977'/%3E%3Crect x='17.5' y='3.5' width='11' height='11' fill='none' stroke='%23ECE8DF'/%3E%3Crect x='3.5' y='17.5' width='11' height='11' fill='none' stroke='%23ECE8DF'/%3E%3Crect x='17.5' y='17.5' width='11' height='11' fill='none' stroke='%23ECE8DF'/%3E%3C/svg%3E">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://daekon-ship.github.io/daekon/latvanytervek/selyem-robert/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1486,7 +1493,6 @@ html.js .hero-plan .kp{opacity:0;transform-box:fill-box;transform-origin:center;
     ["05","Parketta","Parkettás felületek, egyeztetés alapján.","t-greyd"],
     ["06","Egyedi megoldások","Ha nem fér bele a fentiekbe, beszéljük meg telefonon.","t-beiged"]
   ];
-  var REVIEWS = [];
   var CRAFT = [["Anyagok","4/5","t-beiged"],["Kiosztás","3/4","t-nero"],["Vágás","16/11","t-greyd"],["Szintezés","3/4","t-conc"],["Fuga","1/1","t-nero"],["Elkészült felület","16/11","t-beiged"]];
 
 
@@ -1737,21 +1743,7 @@ html.js .hero-plan .kp{opacity:0;transform-box:fill-box;transform-origin:center;
     if (R.pores){ ctx.fillStyle = "rgba(0,0,0,.25)"; for (var k = 0; k < 90; k++){ seed = (seed * 16807) % 2147483647; var px = seed % S; seed = (seed * 16807) % 2147483647; ctx.beginPath(); ctx.arc(px, seed % S, .6 + (seed % 3) * .4, 0, 6.3); ctx.fill(); } }
     try { return cv.toDataURL("image/webp", .9); } catch(e){ return cv.toDataURL(); }
   }
-  (function(){
-    var keys = Object.keys(RECIPES), k = 0;
-    (function next(){
-      if (k >= keys.length) return;
-      var key = keys[k++], url = buildTex(key);
-      $$(".ph." + key + ":not(.has-img) > .tone").forEach(function(t){ t.style.background = "url(" + url + ") center/cover"; });
-      (window.requestIdleCallback || function(f){ return setTimeout(f, 30); })(next);
-    })();
-  })();
 
-  /* --- Értékelések: mindkettő egymás mellett --- */
-  if ($("#trList")) $("#trList").innerHTML = REVIEWS.map(function(r, i){
-    var body = r.text ? '<blockquote>„' + esc(r.text) + '”</blockquote>' : '<blockquote class="ph-text">Ide kerül az ' + (i+1) + '. nyilvános értékelés szövege, szó szerint, az ügyfél hozzájárulásával.</blockquote>';
-    return '<figure class="tr-item">' + body + '<figcaption><b>' + (r.name ? esc(r.name) : "Ügyfél neve") + '</b> · ' + esc(r.source) + '</figcaption></figure>';
-  }).join("");
 
   /* --- Előtte / utána: csak valódi fotópárral jelenik meg --- */
 
