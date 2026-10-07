@@ -635,6 +635,37 @@ h3.proj-title{font-size:var(--t-h3)}
 .ph-cap{font-size:.6875rem}
 .strip .ph-cap{right:10px;bottom:10px;padding:5px 8px}
 
+
+/* ===================== Kompakt v9: kisebb képek, rövidebb oldal ===================== */
+:root{--sec:clamp(52px,4.6vw,84px)}
+.layers{height:210vh}
+.ly-svg{max-height:56svh}
+/* Referenciák: kép balra kicsiben, adatok jobbra */
+.proj{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px clamp(20px,2.6vw,44px);align-items:end;margin-bottom:clamp(36px,3.6vw,56px);padding-bottom:clamp(36px,3.6vw,56px);border-bottom:1px solid var(--line)}
+.proj:last-child{margin-bottom:0;padding-bottom:0;border-bottom:0}
+.proj-media{grid-column:1/span 6;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.proj-media .ph,.proj--b .m1,.proj--b .m2{grid-column:auto;margin:0;align-self:start}
+.proj--a .proj-media .ph{grid-column:1/-1}
+.proj-meta,.proj--b .proj-meta{grid-column:8/span 5;margin:0;padding:0;border:0;flex-direction:column;align-items:flex-start;gap:10px}
+p.proj-scope{text-align:left}
+/* Rólunk: szöveges, két hasáb */
+.about{padding-block:calc(var(--sec)*.3) var(--sec)}
+.ab-grid{align-items:start}
+.ab-copy{grid-column:1/span 5;padding-top:0}
+.ab-text{grid-column:7/span 6;display:flex;flex-direction:column;gap:14px}
+.ab-text p{max-width:36em;color:var(--fg-2);font-size:var(--t-b)}
+/* Kisebb képek mindenhol */
+.strip .ph{height:clamp(130px,12vw,190px)}
+.svc-prev{width:132px}
+.svc-head{grid-template-columns:40px minmax(0,1fr) minmax(0,1.15fr) 132px}
+.hero-art{padding-inline:clamp(20px,4vw,72px)}
+.hero-plan{max-height:78%}
+.ly-grid{gap:20px clamp(20px,2.6vw,44px)}
+.shead{margin-bottom:clamp(20px,2.4vw,36px)}
+.conv{height:clamp(130px,9vw,160px);margin-top:clamp(28px,3vw,48px)}
+
+.strip .ph-cap{display:none}
+.cr-t span{font-family:var(--f-ui);font-size:.6875rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--sand);margin-left:10px;white-space:nowrap}
 /* ================= Tablet ================= */
 @media (max-width:1180px){
   .nav,.rail{display:none}
@@ -805,6 +836,20 @@ h3.proj-title{font-size:var(--t-h3)}
 
 @media (max-width:1023px){ .ct-call,.ct-side{grid-column:1/-1} .ct-grid{row-gap:18px} .call{border-bottom:0} }
 @media (max-width:767px){ .mbar a{background:var(--bronze)!important;color:#F7F2EA!important} }
+
+@media (max-width:1023px){
+  .svc-head{grid-template-columns:40px minmax(0,1fr) minmax(0,1.15fr)}
+  .proj-media{grid-column:1/span 7}.proj-meta,.proj--b .proj-meta{grid-column:8/span 5}
+  .ab-copy,.ab-text{grid-column:1/-1}
+}
+@media (max-width:767px){
+  .proj{grid-template-columns:1fr;gap:12px}
+  .proj-media,.proj-meta,.proj--b .proj-meta{grid-column:1/-1}
+  .proj--a .proj-media .ph{--ar:16/10}
+  .proj--b .m2{width:auto;justify-self:auto}
+  .strip .ph{height:150px}
+  .ly-draw{max-width:340px}
+}
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   *,*::before,*::after{transition-duration:.01ms!important;animation:none!important}
@@ -1037,13 +1082,11 @@ h3.proj-title{font-size:var(--t-h3)}
 
     <section class="about" id="rolunk" aria-labelledby="ab-h">
       <div class="wrap ab-grid">
-        <figure class="ph ph--light l-plaster ab-img rv-img" data-src="" data-alt="Godzsák Tamás munka közben">
-          <span class="tone"></span>
-          <span class="ph-cap"><b>Fotók hamarosan</b>Godzsák Tamás munka közben</span>
-        </figure>
         <div class="ab-copy">
           <p class="label kick">Rólunk</p>
           <h2 id="ab-h" class="h2">A jó felújítás nem a végén kezdődik.</h2>
+        </div>
+        <div class="ab-text">
           <p>A pontos kivitelezés már az első egyeztetésnél kezdődik. Fontos, hogy a munkafolyamatok egymásra épüljenek, az ügyfél tudja, mi történik, és a részletek se vesszenek el a kivitelezés közben.</p>
           <p>Teljes lakás- és házfelújításokat, valamint a hozzájuk kapcsolódó kőműves, gipszkarton-, festési és hőszigetelési munkákat vállalunk Budapesten és környékén.</p>
           <p class="ab-sign">Godzsák Tamás <span>· egyéni vállalkozó, kivitelező</span></p>
@@ -1057,7 +1100,7 @@ h3.proj-title{font-size:var(--t-h3)}
     <div class="wrap">
       <div class="cr-head">
         <p class="label kick">Munka közben</p>
-        <h2 id="cr-h" class="cr-t">Anyag és részlet, közelről.</h2>
+        <h2 id="cr-h" class="cr-t">Anyag és részlet, közelről. <span>Fotók hamarosan</span></h2>
       </div>
     </div>
     <div class="strip-vp" id="stripVp"><div class="strip" id="strip"></div></div>
@@ -1127,11 +1170,11 @@ h3.proj-title{font-size:var(--t-h3)}
   var PROJECTS = [
     { layout:"a", type:"Teljes lakásfelújítás", location:null, url:null,
       scope:["Bontás","Kőműves munkák","Gipszkarton","Festés","Befejező munkák"],
-      media:[{ tone:"t-lime", ar:"21/9", cap:"Elkészült nappali / étkező", src:"", sk:"room", o:{dx:-.06, win:"l", back:"sofa"} }] },
+      media:[{ tone:"t-lime", ar:"16/10", cap:"Elkészült nappali / étkező", src:"", sk:"room", o:{dx:-.06, win:"l", back:"sofa"} }] },
     { layout:"b", type:"Családi ház felújítás", location:null, url:null,
       scope:["Korszerűsítés","Hőszigetelés","Kőműves munkák","Festés"],
       media:[{ tone:"t-plaster", ar:"4/3", cap:"Fő tér", src:"", sk:"room", o:{dx:.08, win:"r", back:"door"} },
-             { tone:"t-concrete", ar:"3/4", cap:"Részlet – ajtó, csomópont", src:"", sk:"door" }] }
+             { tone:"t-concrete", ar:"4/3", cap:"Részlet – ajtó, csomópont", src:"", sk:"door" }] }
   ];
   var SERVICES = [
     ["01","Teljes lakásfelújítás","Komplett belső felújítás a bontástól az átadásig.","t-lime"],
