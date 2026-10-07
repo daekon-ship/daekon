@@ -8,7 +8,7 @@
 Szlogen: **„Lapozzunk!”** (lap = burkolólap). Ez végigfut az oldalon: intró, hero cím, „Lapozzunk a galériába” gomb, a galéria „Lapozzunk →” gombja, a kapcsolat címe, a lábléc és a mobil hívássáv.
 
 - Narancs hangsúlyszín (cím, gombok, fülek, jelzések) meleg sötét és krém alapon.
-- Rövid oldal, négy blokk: Hero, Galéria, Rólam (benne az előtte–utána csúszka), Kapcsolat.
+- Hat blokk, kevés szöveggel: Hero, Szolgáltatások (4 anyagkártya → a galéria kategóriájára lapoz), Galéria, Folyamat („Négy lap, egy történet”), Rólam (előtte–utána csúszkával), Kapcsolat.
 - A hero csempefala lapozásszerűen fordul át a négy anyagon.
 - A galéria négy kategóriára lapozható: Hidegburkolás, Melegburkolás, Térburkolat, Kőszőnyeg. Működik fülekkel, gombbal és mobilon húzással.
 

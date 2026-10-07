@@ -129,7 +129,7 @@ body.menu-open .head{color:var(--cream);background:transparent}
 body.menu-open .head .hcall{display:none}
 
 /* Hero */
-.hero{position:relative;background:var(--ink);color:var(--cream);overflow:hidden;padding:120px var(--pad) 72px;min-height:min(100svh,860px);display:grid;align-items:center}
+.hero{position:relative;background:var(--ink);color:var(--cream);overflow:hidden;padding:130px var(--pad) 96px;min-height:min(100svh,920px);display:grid;align-items:center}
 .hero::before{content:"";position:absolute;inset:0;background:radial-gradient(55% 65% at 76% 42%,rgba(219,106,47,.22),transparent 70%),radial-gradient(45% 55% at 0% 100%,rgba(219,106,47,.10),transparent 70%);pointer-events:none}
 .hero-g{position:relative;display:grid;gap:44px;align-items:center}
 @media (min-width:960px){.hero-g{grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:56px}}
@@ -164,7 +164,7 @@ html.intro-on .hero h1{--dl:1.55s}.hero h1 em{font-style:normal;display:block;co
 .wall-tag{position:absolute;right:10px;top:10px;z-index:2;font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;background:rgba(247,241,233,.9);color:var(--ink);padding:4px 7px}
 
 /* Galéria */
-.gal{background:var(--ink-2);border-top:1px solid rgba(247,241,233,.06);padding:clamp(64px,8vw,112px) var(--pad)}
+.gal{background:var(--ink-2);border-top:1px solid rgba(247,241,233,.06);padding:clamp(84px,10vw,140px) var(--pad)}
 .g-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:18px 32px;margin-bottom:28px}
 .g-head .k{color:var(--or)}
 .g-head .h2{margin-top:10px}
@@ -205,7 +205,7 @@ html.intro-on .hero h1{--dl:1.55s}.hero h1 em{font-style:normal;display:block;co
 .g-foot{margin-top:18px;font-size:13px;color:var(--muted)}
 
 /* Rólam + előtte-utána */
-.about{background:var(--cream);color:var(--ink);padding:clamp(64px,8vw,112px) var(--pad)}
+.about{background:var(--cream);color:var(--ink);padding:clamp(84px,10vw,140px) var(--pad)}
 .ab-g{display:grid;gap:40px;align-items:center}
 @media (min-width:960px){.ab-g{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:64px}}
 .about .k{color:var(--or-d)}
@@ -230,7 +230,7 @@ html.intro-on .hero h1{--dl:1.55s}.hero h1 em{font-style:normal;display:block;co
 .ba-cap{margin-top:12px;font-size:13px;color:var(--muted-d)}
 
 /* Kapcsolat */
-.contact{background:var(--ink);color:var(--cream);border-top:1px solid rgba(247,241,233,.06);padding:clamp(64px,8vw,112px) var(--pad);position:relative;overflow:hidden}
+.contact{background:var(--ink);color:var(--cream);border-top:1px solid rgba(247,241,233,.06);padding:clamp(84px,10vw,140px) var(--pad);position:relative;overflow:hidden}
 .contact::before{content:"";position:absolute;right:-6%;top:-30%;width:min(56vw,640px);aspect-ratio:1;background-image:linear-gradient(rgba(219,106,47,.14) 1.5px,transparent 1.5px),linear-gradient(90deg,rgba(219,106,47,.14) 1.5px,transparent 1.5px);background-size:25% 25%;transform:rotate(12deg);pointer-events:none}
 .ct-g{position:relative;display:grid;gap:32px;align-items:end}
 @media (min-width:900px){.ct-g{grid-template-columns:minmax(0,1.2fr) minmax(0,1fr)}}
@@ -286,6 +286,46 @@ html.js [data-r].in{opacity:1;transform:none}
   html{scroll-behavior:auto}
   .tl,.gc.flip{transition:none;animation:none}
 }
+
+/* Szolgáltatások */
+.svc{background:var(--cream);color:var(--ink);padding:clamp(84px,10vw,140px) var(--pad)}
+.sv-head{max-width:640px;margin-bottom:clamp(32px,4vw,52px)}
+.sv-head .k{color:var(--or-d)}
+.sv-head .h2{margin:10px 0 12px}
+.sv-head p{color:#5E544B}
+.sv-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.sv{position:relative;display:flex;flex-direction:column;justify-content:flex-end;aspect-ratio:3/4;overflow:hidden;color:var(--cream);background:var(--ink-3);box-shadow:0 30px 50px -36px rgba(22,18,15,.7);transition:transform .6s var(--ease),box-shadow .6s var(--ease)}
+.sv .im{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform 1.2s var(--ease)}
+.sv::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(14,11,9,.88) 0%,rgba(14,11,9,.25) 55%,rgba(14,11,9,.05));transition:background .5s}
+.sv-in{position:relative;z-index:2;padding:20px}
+.sv-in .num{font-size:11px;font-weight:600;letter-spacing:.14em;color:var(--or)}
+.sv-in h3{font-family:var(--head);font-weight:500;font-size:clamp(1.15rem,1.6vw,1.4rem);letter-spacing:-.02em;margin:4px 0 6px}
+.sv-in p{font-size:13px;color:#D9CEC2;line-height:1.5}
+.sv-in .go{display:inline-flex;align-items:center;gap:8px;margin-top:14px;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--or)}
+.sv-in .go i{font-style:normal;transition:transform .35s var(--ease)}
+.sv:hover{transform:translateY(-6px);box-shadow:0 44px 60px -36px rgba(22,18,15,.8)}
+.sv:hover .im{transform:scale(1.07)}
+.sv:hover .go i{transform:translateX(5px)}
+.sv::before{content:"";position:absolute;inset:12px;z-index:3;pointer-events:none;opacity:0;transition:opacity .4s,inset .5s var(--ease);background:linear-gradient(var(--or),var(--or)) left top/18px 2px no-repeat,linear-gradient(var(--or),var(--or)) left top/2px 18px no-repeat,linear-gradient(var(--or),var(--or)) right top/18px 2px no-repeat,linear-gradient(var(--or),var(--or)) right top/2px 18px no-repeat}
+.sv:hover::before{opacity:1;inset:16px}
+/* Folyamat */
+.proc{background:var(--ink-2);padding:clamp(84px,10vw,140px) var(--pad);border-top:1px solid rgba(247,241,233,.06)}
+.pr-head{margin-bottom:clamp(36px,4.5vw,60px)}
+.pr-head .k{color:var(--or)}
+.pr-head .h2{margin-top:10px}
+.psteps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px;position:relative}
+.psteps::before,.psteps::after{content:"";position:absolute;left:0;right:0;top:27px;height:1px;background:rgba(247,241,233,.14)}
+.psteps::after{background:var(--or);transform:scaleX(0);transform-origin:left;transition:transform 1.8s var(--ease) .2s}
+.psteps.in::after{transform:scaleX(1)}
+.ps{position:relative}
+.pi{position:relative;z-index:1;display:flex;align-items:center;justify-content:center;width:56px;height:56px;background:var(--ink-2);border:1px solid rgba(247,241,233,.18);transition:background .4s,border-color .4s}
+.pi svg{width:22px;height:22px;fill:none;stroke:var(--or);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.ps:hover .pi{background:var(--or);border-color:var(--or)}.ps:hover .pi svg{stroke:var(--ink)}
+.pn{display:block;margin-top:20px;font-size:11px;font-weight:600;letter-spacing:.14em;color:var(--muted)}
+.ps h3{font-family:var(--head);font-weight:500;font-size:1.2rem;letter-spacing:-.015em;margin:4px 0 6px}
+.ps p{font-size:14px;color:#BDB2A6;max-width:20em}
+@media (max-width:959px){.sv-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.psteps{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:40px}.psteps::before,.psteps::after{display:none}}
+@media (max-width:767px){.sv{aspect-ratio:4/5}.sv-grid{gap:10px}.sv-in{padding:14px}.sv-in p{display:none}.psteps{grid-template-columns:1fr;gap:26px}.ps{display:grid;grid-template-columns:56px 1fr;column-gap:16px}.ps .pi{grid-row:span 3}.pn{margin-top:2px}}
 </style>
 </head>
 <body>
@@ -296,13 +336,13 @@ html.js [data-r].in{opacity:1;transform:none}
     <svg class="mk" viewBox="0 0 30 30" aria-hidden="true"><rect class="t1" x="1" y="1" width="13" height="13"/><rect x="16.5" y="1.5" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.3"/><rect x="1.5" y="16.5" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.3"/><rect x="16.5" y="16.5" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.3"/><text class="tx1" x="7.5" y="10.6" text-anchor="middle">S</text><text x="22.5" y="25.6" text-anchor="middle" fill="currentColor">R</text></svg>
     <span><b>SELYEM RÓBERT</b><small>BURKOLÓ · KÉTHELY</small></span>
   </a>
-  <nav class="nav" aria-label="Fő navigáció"><a href="#galeria">Galéria</a><a href="#rolam">Rólam</a><a href="#kapcsolat">Kapcsolat</a></nav>
+  <nav class="nav" aria-label="Fő navigáció"><a href="#szolgaltatasok">Szolgáltatások</a><a href="#galeria">Galéria</a><a href="#folyamat">Folyamat</a><a href="#rolam">Rólam</a><a href="#kapcsolat">Kapcsolat</a></nav>
   <a class="btn hcall" href="tel:+36202211366">Hívás <span class="num">+36 20 221 1366</span></a>
   <button class="mbtn" id="mbtn" type="button" aria-expanded="false" aria-controls="menu"><span id="mbl">MENÜ</span><i aria-hidden="true"></i></button>
 </header>
 
 <nav class="menu" id="menu" aria-label="Mobil navigáció">
-  <a href="#galeria">Galéria</a><a href="#rolam">Rólam</a><a href="#kapcsolat">Kapcsolat</a>
+  <a href="#szolgaltatasok">Szolgáltatások</a><a href="#galeria">Galéria</a><a href="#folyamat">Folyamat</a><a href="#rolam">Rólam</a><a href="#kapcsolat">Kapcsolat</a>
   <a class="btn" href="tel:+36202211366">Lapozzunk – hívjon <span class="ar">→</span></a>
 </nav>
 
@@ -330,6 +370,16 @@ html.js [data-r].in{opacity:1;transform:none}
     </div>
   </section>
 
+  <!-- SZOLGÁLTATÁSOK -->
+  <section class="svc" id="szolgaltatasok" aria-labelledby="sv-h">
+    <div class="sv-head" data-r>
+      <p class="k">Szolgáltatások</p>
+      <h2 class="h2" id="sv-h">Négy burkolat, egy kézben.</h2>
+      <p>Válasszon egyet – és lapozzunk bele a galériában.</p>
+    </div>
+    <div class="sv-grid" id="svGrid"></div>
+  </section>
+
   <!-- GALÉRIA -->
   <section class="gal" id="galeria" aria-labelledby="g-h">
     <div class="g-head">
@@ -347,6 +397,20 @@ html.js [data-r].in{opacity:1;transform:none}
     <p class="g-desc" id="gDesc"></p>
     <div class="grid" id="grid" role="tabpanel" aria-live="polite"></div>
     <p class="g-foot">A fotók hamarosan felkerülnek – addig anyagmintákkal mutatjuk a kategóriákat.</p>
+  </section>
+
+  <!-- FOLYAMAT -->
+  <section class="proc" id="folyamat" aria-labelledby="pr-h">
+    <div class="pr-head" data-r>
+      <p class="k">Így lapozunk</p>
+      <h2 class="h2" id="pr-h">Négy lap, egy történet.</h2>
+    </div>
+    <ol class="psteps" id="psteps" data-r>
+        <li class="ps"><span class="pi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h4l2 5-2.5 1.5a11 11 0 0 0 5 5L16 12l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 4 5a2 2 0 0 1 2-2z"/></svg></span><span class="pn num">01</span><h3>Hívás</h3><p>Röviden átbeszéljük, mit szeretne.</p></li>
+        <li class="ps"><span class="pi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8h18v8H3zM7 8v3M11 8v4M15 8v3M19 8v4"/></svg></span><span class="pn num">02</span><h3>Felmérés</h3><p>Megnézem a helyszínt és a felületet.</p></li>
+        <li class="ps"><span class="pi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h13v6H4zM4 15l1.6 2.2 1.6-2.2 1.6 2.2 1.6-2.2 1.6 2.2 1.6-2.2 1.6 2.2 1.6-2.2M17 12h2.5l1.5-3"/></svg></span><span class="pn num">03</span><h3>Kivitelezés</h3><p>Precízen, lapról lapra.</p></li>
+        <li class="ps"><span class="pi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v16H4zM8 12l3 3 5-6"/></svg></span><span class="pn num">04</span><h3>Átadás</h3><p>Közösen végignézzük a kész munkát.</p></li>
+    </ol>
   </section>
 
   <!-- RÓLAM -->
@@ -496,6 +560,11 @@ html.js [data-r].in{opacity:1;transform:none}
     setTimeout(function(){ fill(gi); }, 400 + 150);
   }
   fill(0);
+  /* Szolgáltatás-kártyák → galéria kategória */
+  var COVER = ["marble-white","wood","pavers","pebble"];
+  $("#svGrid").innerHTML = CATS.map(function(c, i){ return '<a class="sv" href="#galeria" data-i="' + i + '" data-r><div class="im" style="background-image:' + img(COVER[i]) + '"></div><div class="sv-in"><span class="num">' + pad(i + 1) + ' / ' + pad(CATS.length) + '</span><h3>' + c.t + '</h3><p>' + c.d + '</p><span class="go">Lapozzunk bele <i>→</i></span></div></a>'; }).join("");
+  $$(".sv").forEach(function(a){ a.addEventListener("click", function(){ var i = +a.dataset.i; if (i !== gi) galTo(i); }); });
+
   $$(".tab", tabs).forEach(function(b){ b.addEventListener("click", function(){ var i = +b.dataset.i; if (i !== gi) galTo(i); }); });
   $("#gNext").addEventListener("click", function(){ galTo(gi + 1); });
   $("#gPrev").addEventListener("click", function(){ galTo(gi - 1); });
