@@ -340,7 +340,55 @@ form{display:grid;gap:26px}
 @media (min-width:1024px){.callbar{display:none}}
 @media (max-width:1023px){.foot{padding-bottom:calc(88px + env(safe-area-inset-bottom))}}
 
+
+/* ================= PRÉMIUM EFFEKTEK ================= */
+:root{--gold:linear-gradient(100deg,#F7D894 0%,#EBA937 38%,#C4842B 62%,#F7D894 100%)}
+/* arany, csillogó kiemelés sötét felületen */
+.dark em,.hero em,.foot em,.contact-r em,.dark .it{background:var(--gold);background-size:220% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;padding-right:.06em}
+[data-reveal].in em,.hero.ready em{animation:shine 2.6s var(--ease) .4s 1 both}
+@keyframes shine{from{background-position:100% 0}to{background-position:0 0}}
+/* finom szemcse (film grain) a sötét felületeken */
+.hero::before,.dark::before,.contact-r::before,.foot::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:1;opacity:.09;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.dark,.contact-r,.foot{position:relative}
+.dark>*,.contact-r>*,.foot>*{position:relative;z-index:2}
+/* mély, fényes kék háttér + arany fény a kurzor nyomán */
+.hero{background:radial-gradient(900px 600px at var(--mx,70%) var(--my,30%),rgba(235,169,55,.16),transparent 60%),radial-gradient(1200px 800px at 0% 100%,#1D3586 0%,transparent 60%),linear-gradient(160deg,#0D1940 0%,#13245C 55%,#0B1535 100%)}
+.hero .ph.d{background-color:transparent}
+.dark{background:radial-gradient(900px 500px at 85% 0%,rgba(235,169,55,.08),transparent 60%),linear-gradient(180deg,#13245C,#0F1E4E)}
+.contact-r{background:radial-gradient(700px 500px at 100% 0%,rgba(235,169,55,.12),transparent 60%),linear-gradient(160deg,#13245C,#0D1940)}
+.foot{background:radial-gradient(900px 600px at 0% 0%,rgba(235,169,55,.10),transparent 60%),linear-gradient(180deg,#0D1940,#091230)}
+/* futószalag a szolgáltatásokkal */
+.marquee{background:var(--terra-l);color:var(--fuga);overflow:hidden;white-space:nowrap;border-top:1px solid rgba(13,25,64,.15);border-bottom:1px solid rgba(13,25,64,.15)}
+.marquee-track{display:inline-flex;align-items:center;gap:0;padding:18px 0;animation:marq 38s linear infinite;will-change:transform}
+.marquee span{font-family:var(--serif);font-weight:700;font-size:clamp(22px,2.6vw,40px);letter-spacing:-.02em;padding:0 .55em;text-transform:uppercase}
+.marquee span.o{color:transparent;-webkit-text-stroke:1.5px var(--fuga)}
+.marquee i{width:10px;height:10px;background:var(--fuga);transform:rotate(45deg);flex:none}
+@keyframes marq{to{transform:translateX(-50%)}}
+.marquee:hover .marquee-track{animation-play-state:paused}
+/* címek szavankénti felúszása */
+.sw{display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:.08em;margin-bottom:-.08em}
+.sw>span{display:inline-block;transform:translateY(105%);transition:transform .9s var(--ease)}
+.in .sw>span,.sw.in>span{transform:none}
+[data-split]{opacity:1!important;transform:none!important}
+/* képhelyek: arany fény és fugák hoverre */
+.work .ph,.ba{transition:box-shadow .5s var(--ease)}
+@media (hover:hover) and (pointer:fine){
+  .work:hover .ph{box-shadow:0 30px 60px -20px rgba(13,25,64,.45)}
+  .work .ph::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(260px 200px at var(--gx,50%) var(--gy,50%),rgba(235,169,55,.35),transparent 70%);opacity:0;transition:opacity .4s}
+  .work:hover .ph::before{opacity:1}
+}
+/* gombok: arany fényvillanás */
+.btn{position:relative;overflow:hidden;isolation:isolate}
+.btn::after{content:"";position:absolute;top:0;bottom:0;left:-60%;width:40%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.45),transparent);transform:skewX(-20deg);transition:left .7s var(--ease);z-index:-1}
+.btn:hover::after{left:130%}
+.btn{transition:background .3s,transform .25s var(--ease),box-shadow .3s}
+.btn:hover{box-shadow:0 14px 30px -12px rgba(235,169,55,.55)}
+/* kiosztás-minták: kiemelés hoverre */
+.pat svg{transition:transform .6s var(--ease),box-shadow .6s var(--ease)}
+.pat:hover svg{transform:translateY(-6px);box-shadow:0 24px 40px -20px rgba(13,25,64,.45)}
 @media (prefers-reduced-motion:reduce){
+  .marquee-track{animation:none}
+  .sw>span{transform:none}
   *,*::before,*::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}
   [data-reveal],.clip{opacity:1;transform:none;clip-path:none}
   .tiles{display:none}
@@ -404,6 +452,8 @@ form{display:grid;gap:26px}
   </div>
 </section>
 
+<div class="marquee" aria-hidden="true"><div class="marquee-track"><span>Komplett burkolás</span><i></i><span class="o">Falburkolás</span><i></i><span>Padlóburkolás</span><i></i><span class="o">Csempézés</span><i></i><span>Parketta</span><i></i><span class="o">Egyedi megoldások</span><i></i><span>Komplett burkolás</span><i></i><span class="o">Falburkolás</span><i></i><span>Padlóburkolás</span><i></i><span class="o">Csempézés</span><i></i><span>Parketta</span><i></i><span class="o">Egyedi megoldások</span><i></i></div></div>
+
 <!-- 01 SZEMLÉLET -->
 <section class="sec wrap" id="szemlelet" aria-labelledby="szemlelet-h">
   <div class="philo">
@@ -428,7 +478,7 @@ form{display:grid;gap:26px}
   <div class="sec-head split">
     <div>
       <p class="eyebrow">02 / Munkáim</p>
-      <h2 class="h2" id="munkak-h" data-reveal>Válogatott <em>munkák.</em></h2>
+      <h2 class="h2" id="munkak-h" data-reveal data-split>Válogatott <em>munkák.</em></h2>
     </div>
     <p class="muted">Fürdőszobák, konyhák, padlók. Közelről is megnézhetők.</p>
   </div>
@@ -455,7 +505,7 @@ form{display:grid;gap:26px}
 <!-- STATEMENT -->
 <section class="statement" aria-label="Vezérmondat">
   <p class="eyebrow">Selyem Róbert · Burkolás</p>
-  <h2 data-reveal>Burkolás,<br><em>mértékre szabva.</em></h2>
+  <h2 data-reveal data-split>Burkolás,<br><em>mértékre szabva.</em></h2>
   <div class="statement-foot"><p>A felméréstől az utolsó fugáig.</p><a class="link" href="tel:+36202211366">HÍVJON MOST <span class="arr">→</span></a></div>
 </section>
 
@@ -463,7 +513,7 @@ form{display:grid;gap:26px}
 <section class="sec wrap" id="kiosztas" aria-labelledby="kiosztas-h" style="background:var(--krem-2)">
   <div class="sec-head">
     <p class="eyebrow">03 / Kiosztás</p>
-    <h2 class="h2" id="kiosztas-h" data-reveal>Minden burkolat egy <em>döntéssel</em> kezdődik.</h2>
+    <h2 class="h2" id="kiosztas-h" data-reveal data-split>Minden burkolat egy <em>döntéssel</em> kezdődik.</h2>
   </div>
   <div class="patterns" id="patterns">
     <div class="pat lay">
@@ -497,7 +547,7 @@ form{display:grid;gap:26px}
     </figure>
     <div>
       <p class="eyebrow">04 / Részlet</p>
-      <h2 id="reszlet-h" style="margin-top:18px" data-reveal>A részlet<br>nem extra.<br><em>Az a munka.</em></h2>
+      <h2 id="reszlet-h" style="margin-top:18px" data-reveal data-split>A részlet<br>nem extra.<br><em>Az a munka.</em></h2>
       <p class="muted" style="margin-top:24px;max-width:30em">Egy burkolat a fugáknál, a sarkokban és az éleknél dől el. Ott, ahová elsőre senki nem néz, de később mindenki észreveszi.</p>
       <div class="thumbs">
         <figure style="margin:0"><div class="ph d"><span class="ph-label sm">Hamarosan</span></div><figcaption>Vágás</figcaption></figure>
@@ -513,7 +563,7 @@ form{display:grid;gap:26px}
   <div class="sec-head split">
     <div>
       <p class="eyebrow">05 / Szolgáltatások</p>
-      <h2 class="h2" id="szolg-h" data-reveal>Amit <em>vállalok.</em></h2>
+      <h2 class="h2" id="szolg-h" data-reveal data-split>Amit <em>vállalok.</em></h2>
     </div>
     <p class="muted">Fal, padló, parketta. Egy kézből.</p>
   </div>
@@ -533,7 +583,7 @@ form{display:grid;gap:26px}
   <div class="sec-head split">
     <div>
       <p class="eyebrow">06 / Folyamat</p>
-      <h2 class="h2" id="folyamat-h" data-reveal>Hogyan <em>dolgozom.</em></h2>
+      <h2 class="h2" id="folyamat-h" data-reveal data-split>Hogyan <em>dolgozom.</em></h2>
     </div>
     <p class="muted">Az első hívástól az átadásig ugyanazzal beszél.</p>
   </div>
@@ -551,7 +601,7 @@ form{display:grid;gap:26px}
   <figure class="ph clip" style="margin:0" data-reveal><span class="ph-label" data-hely="Portré · munka közben · 4:5">Fotók hamarosan</span><span class="pro-band" aria-hidden="true"></span></figure>
   <div class="pro-txt">
     <p class="eyebrow">07 / A szakember</p>
-    <h2 id="rolam-h" data-reveal>Selyem<br><em>Róbert</em></h2>
+    <h2 id="rolam-h" data-reveal data-split>Selyem<br><em>Róbert</em></h2>
     <p class="pro-role">HIDEGBURKOLÁS · KÉTHELY</p>
     <p class="lead">Burkoló vagyok, Kéthelyről. Ha engem hív, velem beszél: én nézem meg a helyszínt, én egyeztetek az ajánlatról, és én felelek azért, ami a falon és a padlón marad.</p>
     <p class="pro-quote">Akkor jó egy munka, ha utána nincs mit magyarázni.</p>
@@ -564,7 +614,7 @@ form{display:grid;gap:26px}
   <div class="sec-head split">
     <div>
       <p class="eyebrow">08 / Előtte – utána</p>
-      <h2 class="h2" id="ba-h" data-reveal>Előtte. Utána. <em>Hamarosan.</em></h2>
+      <h2 class="h2" id="ba-h" data-reveal data-split>Előtte. Utána. <em>Hamarosan.</em></h2>
     </div>
     <p class="muted">Húzza a csúszkát. Az első befejezett munkák képpárjai hamarosan itt lesznek.</p>
   </div>
@@ -598,7 +648,7 @@ form{display:grid;gap:26px}
 <section class="contact" id="kapcsolat" aria-labelledby="kapcsolat-h">
   <div class="contact-l">
     <p class="eyebrow">09 / Kapcsolat</p>
-    <h2 id="kapcsolat-h" data-reveal>Egy hívás, <em>és kiderül.</em></h2>
+    <h2 id="kapcsolat-h" data-reveal data-split>Egy hívás, <em>és kiderül.</em></h2>
     <p class="muted" style="max-width:26em">Mondja el röviden, mit szeretne. A részleteket a felmérésen beszéljük meg.</p>
     <ul class="trust">
       <li>Kéthely · Somogy megye</li>
@@ -708,6 +758,52 @@ form{display:grid;gap:26px}
     if (Math.sqrt(cx * cx + cy * cy) < 310) a.push([x * 72, y * 72, 72, 72]);
   }
   rects($("#p4"), a);
+
+
+  /* ---------- Prémium effektek ---------- */
+  if (!reduce) {
+    document.querySelectorAll("[data-split]").forEach(function (h) {
+      var idx = 0;
+      function wrap(node) {
+        Array.prototype.slice.call(node.childNodes).forEach(function (n) {
+          if (n.nodeType === 3) {
+            var frag = document.createDocumentFragment();
+            n.textContent.split(/(\s+)/).forEach(function (part) {
+              if (!part) return;
+              if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
+              var o = document.createElement("span"); o.className = "sw";
+              var i = document.createElement("span"); i.textContent = part; i.style.transitionDelay = (idx++ * 70) + "ms";
+              o.appendChild(i); frag.appendChild(o);
+            });
+            n.parentNode.replaceChild(frag, n);
+          } else if (n.nodeType === 1 && n.tagName !== "BR") { wrap(n); }
+        });
+      }
+      wrap(h);
+    });
+    if (fine) {
+      var heroEl = document.querySelector(".hero");
+      heroEl.addEventListener("pointermove", function (e) {
+        var r = heroEl.getBoundingClientRect();
+        heroEl.style.setProperty("--mx", ((e.clientX - r.left) / r.width * 100) + "%");
+        heroEl.style.setProperty("--my", ((e.clientY - r.top) / r.height * 100) + "%");
+      });
+      document.querySelectorAll(".work .ph").forEach(function (ph) {
+        ph.addEventListener("pointermove", function (e) {
+          var r = ph.getBoundingClientRect();
+          ph.style.setProperty("--gx", (e.clientX - r.left) + "px");
+          ph.style.setProperty("--gy", (e.clientY - r.top) + "px");
+        });
+      });
+      document.querySelectorAll(".btn").forEach(function (b) {
+        b.addEventListener("pointermove", function (e) {
+          var r = b.getBoundingClientRect();
+          b.style.transform = "translate(" + ((e.clientX - r.left - r.width / 2) * .15) + "px," + ((e.clientY - r.top - r.height / 2) * .25) + "px)";
+        });
+        b.addEventListener("pointerleave", function () { b.style.transform = ""; });
+      });
+    }
+  }
 
   /* ---------- Reveal + egyéb megfigyelők ---------- */
   if ("IntersectionObserver" in window && !reduce) {
