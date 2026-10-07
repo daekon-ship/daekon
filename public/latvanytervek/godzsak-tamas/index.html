@@ -666,6 +666,13 @@ p.proj-scope{text-align:left}
 
 .strip .ph-cap{display:none}
 .cr-t span{font-family:var(--f-ui);font-size:.6875rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--sand);margin-left:10px;white-space:nowrap}
+
+/* Kompakt v10: még kisebb referencia-képek */
+.proj-media{grid-column:1/span 4}
+.proj--a .proj-media{grid-column:1/span 4}
+.proj-meta,.proj--b .proj-meta{grid-column:6/span 7;align-self:center}
+.proj-media .ph{max-height:260px}
+
 /* ================= Tablet ================= */
 @media (max-width:1180px){
   .nav,.rail{display:none}
@@ -839,12 +846,13 @@ p.proj-scope{text-align:left}
 
 @media (max-width:1023px){
   .svc-head{grid-template-columns:40px minmax(0,1fr) minmax(0,1.15fr)}
-  .proj-media{grid-column:1/span 7}.proj-meta,.proj--b .proj-meta{grid-column:8/span 5}
+  .proj-media,.proj--a .proj-media{grid-column:1/span 6}.proj-meta,.proj--b .proj-meta{grid-column:7/span 6}
   .ab-copy,.ab-text{grid-column:1/-1}
 }
 @media (max-width:767px){
   .proj{grid-template-columns:1fr;gap:12px}
   .proj-media,.proj-meta,.proj--b .proj-meta{grid-column:1/-1}
+  .proj-media,.proj--a .proj-media{grid-column:1/-1;max-width:360px}
   .proj--a .proj-media .ph{--ar:16/10}
   .proj--b .m2{width:auto;justify-self:auto}
   .strip .ph{height:150px}
