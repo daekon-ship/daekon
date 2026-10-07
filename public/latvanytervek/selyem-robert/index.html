@@ -298,7 +298,10 @@ form{display:grid;gap:26px}
 .file span:last-child{color:var(--terra-l);white-space:nowrap}
 .file input{position:absolute;opacity:0;width:1px;height:1px}
 .form-ctas{display:flex;flex-wrap:wrap;gap:16px 28px;align-items:center}
-.form-note{font-size:13px;color:var(--on-dark)}
+.form-note{font-size:14px;color:var(--on-dark);margin-top:18px}
+.call-big{display:block;font-family:var(--serif);font-weight:600;font-size:clamp(34px,4.4vw,64px);line-height:1.05;letter-spacing:-.02em;color:var(--krem);text-decoration:none;margin:14px 0 28px;white-space:nowrap}
+.call-big:hover{color:var(--terra-l)}
+.call-btn{align-self:flex-start}
 @media (min-width:1024px){.contact{grid-template-columns:42% 1fr}.contact-l{padding-right:clamp(32px,4vw,72px)}.contact-r{padding-left:clamp(40px,5vw,96px)}.pro-txt{padding-left:clamp(40px,5vw,96px)}}
 
 /* ---------- Footer ---------- */
@@ -317,7 +320,7 @@ form{display:grid;gap:26px}
 @media (min-width:900px){.foot-grid{grid-template-columns:2fr 1fr 1fr}}
 
 /* ---------- Mobil hívósáv ---------- */
-.callbar{position:fixed;left:0;right:0;bottom:0;z-index:45;display:grid;grid-template-columns:1fr 1fr;background:var(--terra);padding-bottom:env(safe-area-inset-bottom);transition:transform .4s var(--ease)}
+.callbar{position:fixed;left:0;right:0;bottom:0;z-index:45;display:grid;grid-template-columns:1fr;background:var(--terra);padding-bottom:env(safe-area-inset-bottom);transition:transform .4s var(--ease)}
 .callbar a{display:flex;align-items:center;justify-content:center;min-height:56px;color:var(--krem);text-decoration:none;font-size:15px;font-weight:500}
 .callbar a+a{border-left:1px solid rgba(243,240,234,.3)}
 .callbar.hidden{transform:translateY(110%)}
@@ -346,7 +349,7 @@ form{display:grid;gap:26px}
     <a href="#folyamat">Folyamat</a>
     <a href="#kapcsolat">Kapcsolat</a>
   </nav>
-  <a class="head-cta" href="#kapcsolat">AJÁNLATKÉRÉS <span class="arr">→</span></a>
+  <a class="head-cta" href="tel:+36202211366">HÍVÁS · +36 20 221 1366</a>
   <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="menu">MENÜ</button>
 </header>
 
@@ -376,14 +379,13 @@ form{display:grid;gap:26px}
   <div class="hero-in">
     <div class="hero-meta">
       <p class="eyebrow">Kéthely · Somogy megye · Komplett burkolás</p>
-      <a href="tel:+36202211366">+36 20 221 1366</a>
     </div>
     <h1 aria-label="Precízió. Anyag. Részlet."><span><b>Precízió.</b></span><span><b>Anyag.</b></span><span><b><em>Részlet.</em></b></span></h1>
     <div class="hero-bottom">
       <p>Precíz burkolási munkák otthonok és egyedi terek számára. A felméréstől az utolsó fugáig.</p>
       <div class="hero-ctas">
         <a class="btn" href="#munkak">MUNKÁIM MEGNÉZÉSE <span class="arr">↓</span></a>
-        <a class="link" href="#kapcsolat">AJÁNLATOT KÉREK <span class="arr">→</span></a>
+        <a class="link" href="tel:+36202211366">HÍVÁS: +36 20 221 1366 <span class="arr">→</span></a>
       </div>
     </div>
   </div>
@@ -418,20 +420,20 @@ form{display:grid;gap:26px}
     <p class="muted">Fürdőszobák, konyhák, padlók. Közelről is megnézhetők.</p>
   </div>
   <div class="gal">
-    <a class="work g1" href="#kapcsolat">
-      <figure class="ph clip" data-reveal><div class="ph-in"></div><span class="ph-label">Projektfotó helye · 4:5</span><div class="work-hover"><b>Fürdőszoba</b><small>HASONLÓT KÉREK →</small></div></figure>
+    <a class="work g1" href="tel:+36202211366">
+      <figure class="ph clip" data-reveal><div class="ph-in"></div><span class="ph-label">Projektfotó helye · 4:5</span><div class="work-hover"><b>Fürdőszoba</b><small>HASONLÓT SZERETNE? HÍVJON →</small></div></figure>
       <div class="work-cap"><span class="num">01</span><div><span>FÜRDŐSZOBA</span><b>Fal- és padlóburkolás</b></div></div>
     </a>
-    <a class="work g2" href="#kapcsolat">
-      <figure class="ph clip" data-reveal><div class="ph-in"></div><span class="ph-label">Projektfotó · 3:2</span><div class="work-hover"><b>Konyha</b><small>HASONLÓT KÉREK →</small></div></figure>
+    <a class="work g2" href="tel:+36202211366">
+      <figure class="ph clip" data-reveal><div class="ph-in"></div><span class="ph-label">Projektfotó · 3:2</span><div class="work-hover"><b>Konyha</b><small>HASONLÓT SZERETNE? HÍVJON →</small></div></figure>
       <div class="work-cap"><span class="num">02</span><div><span>KONYHA</span><b>Falburkolás</b></div></div>
     </a>
-    <a class="work g3" href="#kapcsolat">
-      <figure class="ph clip" data-reveal><div class="ph-in"></div><span class="ph-label">Részletfotó · 3:2</span><div class="work-hover"><b>Részlet</b><small>HASONLÓT KÉREK →</small></div></figure>
+    <a class="work g3" href="tel:+36202211366">
+      <figure class="ph clip" data-reveal><div class="ph-in"></div><span class="ph-label">Részletfotó · 3:2</span><div class="work-hover"><b>Részlet</b><small>HASONLÓT SZERETNE? HÍVJON →</small></div></figure>
       <div class="work-cap"><span class="num">03</span><div><span>RÉSZLET</span><b>Sarok és élzárás</b></div></div>
     </a>
-    <a class="work g4" href="#kapcsolat">
-      <figure class="ph d clip" data-reveal><div class="ph-in"></div><span class="ph-label">Panoráma · 21:9</span><div class="work-hover"><b>Nappali</b><small>HASONLÓT KÉREK →</small></div></figure>
+    <a class="work g4" href="tel:+36202211366">
+      <figure class="ph d clip" data-reveal><div class="ph-in"></div><span class="ph-label">Panoráma · 21:9</span><div class="work-hover"><b>Nappali</b><small>HASONLÓT SZERETNE? HÍVJON →</small></div></figure>
       <div class="work-cap"><span class="num">04</span><div><span>NAPPALI</span><b>Padlóburkolás</b></div></div>
     </a>
   </div>
@@ -441,7 +443,7 @@ form{display:grid;gap:26px}
 <section class="statement" aria-label="Vezérmondat">
   <p class="eyebrow">Selyem Róbert · Burkolás</p>
   <h2 data-reveal>Burkolás,<br><em>mértékre szabva.</em></h2>
-  <div class="statement-foot"><p>A felméréstől az utolsó fugáig.</p><a class="link" href="#kapcsolat">AJÁNLATOT KÉREK <span class="arr">→</span></a></div>
+  <div class="statement-foot"><p>A felméréstől az utolsó fugáig.</p><a class="link" href="tel:+36202211366">HÍVJON MOST <span class="arr">→</span></a></div>
 </section>
 
 <!-- 03 KIOSZTÁS -->
@@ -582,31 +584,19 @@ form{display:grid;gap:26px}
 <!-- 09 KAPCSOLAT -->
 <section class="contact" id="kapcsolat" aria-labelledby="kapcsolat-h">
   <div class="contact-l">
-    <p class="eyebrow">09 / Ajánlatkérés</p>
-    <h2 id="kapcsolat-h" data-reveal>Mesélje el, <em>mit szeretne.</em></h2>
-    <p class="muted" style="max-width:26em">Néhány adat elég. Róbert visszahív, és egyeztetnek a részletekről.</p>
+    <p class="eyebrow">09 / Kapcsolat</p>
+    <h2 id="kapcsolat-h" data-reveal>Egy hívás, <em>és kiderül.</em></h2>
+    <p class="muted" style="max-width:26em">Mondja el röviden, mit szeretne. A részleteket a felmérésen beszéljük meg.</p>
     <ul class="trust">
       <li>Kéthely · Somogy megye</li>
-      <li>Egyedi igények</li>
-      <li>Közvetlen kapcsolat</li>
-      <li>Telefonos egyeztetés · <a href="tel:+36202211366"><b>+36 20 221 1366</b></a></li>
+      <li>Más helyszín egyeztetéssel</li>
+      <li>Közvetlenül Róberttel beszél</li>
     </ul>
   </div>
   <div class="contact-r">
-    <form id="form" novalidate>
-      <div class="f"><label for="nev">Név</label><input id="nev" name="nev" autocomplete="name" required></div>
-      <div class="two">
-        <div class="f"><label for="tel">Telefonszám</label><input id="tel" name="tel" type="tel" autocomplete="tel" inputmode="tel" required></div>
-        <div class="f"><label for="email">E-mail (opcionális)</label><input id="email" name="email" type="email" autocomplete="email"></div>
-      </div>
-      <div class="f"><label for="uzenet">Miben segíthetek?</label><textarea id="uzenet" name="uzenet"></textarea></div>
-      <label class="file" for="foto"><span id="fileName">Fotó a helyiségről (nem kötelező)</span><span>Tallózás</span><input id="foto" name="foto" type="file" accept="image/*"></label>
-      <div class="form-ctas">
-        <button class="btn" type="submit">KÉREK EGY VISSZAHÍVÁST <span class="arr">→</span></button>
-        <a class="link" href="tel:+36202211366" style="color:var(--krem)">HÍVOM RÓBERTET <span class="arr">→</span></a>
-      </div>
-      <p class="form-note" id="formNote" aria-live="polite">Inkább beszélne? Hívjon: +36 20 221 1366.</p>
-    </form>
+    <p class="eyebrow" style="color:var(--zsalya)">Hívja Róbertet</p>
+    <a class="call-big" href="tel:+36202211366">+36 20 221 1366</a>
+    <a class="btn call-btn" href="tel:+36202211366">HÍVÁS MOST <span class="arr">→</span></a>
   </div>
 </section>
 
@@ -622,7 +612,7 @@ form{display:grid;gap:26px}
   <div class="foot-bottom"><p>© <span id="yr">2026</span> Selyem Róbert E.V.</p><p class="foot-credit">Készítette: <a href="https://daekon.hu" target="_blank" rel="noopener noreferrer" aria-label="DAEKON weboldal — új fülön nyílik meg">DAEKON</a></p></div>
 </footer>
 
-<div class="callbar" id="callbar"><a href="tel:+36202211366">Hívás</a><a href="#kapcsolat">Ajánlatkérés</a></div>
+<div class="callbar" id="callbar"><a href="tel:+36202211366">Hívás · +36 20 221 1366</a></div>
 
 <script>
 (function () {
@@ -782,18 +772,6 @@ form{display:grid;gap:26px}
     r.addEventListener("input", upd); upd();
   });
 
-  /* ---------- Űrlap: mailto (backend nélkül) ---------- */
-  var form = $("#form"), note = $("#formNote");
-  $("#foto").addEventListener("change", function () { var f = this.files && this.files[0]; $("#fileName").textContent = f ? f.name : "Fotó a helyiségről (nem kötelező)"; });
-  form.addEventListener("submit", function (e) {
-    e.preventDefault();
-    var nev = $("#nev").value.trim(), tel = $("#tel").value.trim();
-    if (!nev || !tel) { note.textContent = "Kérem, adja meg a nevét és a telefonszámát."; (nev ? $("#tel") : $("#nev")).focus(); return; }
-    var body = "Név: " + nev + "\nTelefonszám: " + tel + "\nE-mail: " + $("#email").value.trim() + "\n\n" + $("#uzenet").value.trim();
-    if ($("#foto").files.length) body += "\n\n(A fotót kérem, csatolja ehhez a levélhez.)";
-    window.location.href = "mailto:apafoni@gmail.com?subject=" + encodeURIComponent("Visszahívást kérek — " + nev) + "&body=" + encodeURIComponent(body);
-    note.textContent = "Megnyílt a levelezője. Küldje el az üzenetet, és Róbert visszahívja.";
-  });
 })();
 </script>
 </body>
