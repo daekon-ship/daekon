@@ -78,3 +78,25 @@ abstract final class VatRates {
         _ => Fmt.percentBp(bp),
       };
 }
+
+/// Befolyt pénz módja.
+enum PaymentMethod {
+  cash('Készpénz'),
+  transfer('Átutalás'),
+  card('Kártya');
+
+  const PaymentMethod(this.label);
+  final String label;
+}
+
+/// Kiadás típusa (a projekt költségeinek bontásához).
+enum ExpenseCategory {
+  material('Anyag'),
+  subcontractor('Alvállalkozó'),
+  transport('Szállítás, sitt'),
+  tool('Gép, szerszám'),
+  other('Egyéb');
+
+  const ExpenseCategory(this.label);
+  final String label;
+}

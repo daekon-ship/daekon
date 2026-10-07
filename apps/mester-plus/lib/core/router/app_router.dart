@@ -8,6 +8,8 @@ import '../../features/dashboard/dashboard_screen.dart';
 import '../../features/prices/price_item_form_screen.dart';
 import '../../features/prices/price_list_screen.dart';
 import '../../features/projects/calculation_screen.dart';
+import '../../features/projects/finance_screen.dart';
+import '../../features/projects/materials_screen.dart';
 import '../../features/projects/new_project_screen.dart';
 import '../../features/projects/pricing_screen.dart';
 import '../../features/projects/project_hub_screen.dart';
@@ -15,6 +17,7 @@ import '../../features/projects/projects_screen.dart';
 import '../../features/projects/quote_preview_screen.dart';
 import '../../features/projects/survey_screen.dart';
 import '../../features/projects/work_items_screen.dart';
+import '../../features/projects/work_screen.dart';
 import '../../features/settings/settings_screen.dart';
 import 'app_shell.dart';
 
@@ -39,6 +42,9 @@ abstract final class Routes {
   static String pricing(int id) => '/project/$id/pricing';
   static String calculation(int id) => '/project/$id/calculation';
   static String quote(int id) => '/project/$id/quote';
+  static String finance(int id) => '/project/$id/finance';
+  static String work(int id) => '/project/$id/work';
+  static String materials(int id) => '/project/$id/materials';
 
   static const newCustomer = '/customer/new';
   static String customer(int id) => '/customer/$id';
@@ -91,6 +97,9 @@ GoRouter buildRouter() => GoRouter(
             GoRoute(path: 'pricing', builder: (_, s) => PricingScreen(projectId: _id(s))),
             GoRoute(path: 'calculation', builder: (_, s) => CalculationScreen(projectId: _id(s))),
             GoRoute(path: 'quote', builder: (_, s) => QuotePreviewScreen(projectId: _id(s))),
+            GoRoute(path: 'finance', builder: (_, s) => FinanceScreen(projectId: _id(s))),
+            GoRoute(path: 'work', builder: (_, s) => WorkScreen(projectId: _id(s))),
+            GoRoute(path: 'materials', builder: (_, s) => MaterialsScreen(projectId: _id(s))),
           ],
         ),
         GoRoute(

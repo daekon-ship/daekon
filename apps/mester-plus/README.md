@@ -5,7 +5,7 @@ Offline-first: minden adat a készüléken, SQLite-ban tárolódik.
 
 ## Előfeltételek
 
-- Flutter SDK **3.35 vagy újabb** (a Play API 36 és 16 KB-os követelménye miatt): https://docs.flutter.dev/get-started/install/windows
+- Flutter SDK **3.38 vagy újabb** (Dart 3.10: a titkosított adatbázis build-hookjai, Play API 36, 16 KB): https://docs.flutter.dev/get-started/install/windows
 - Git
 - Futtatáshoz az alábbiak egyike:
   - Android telefon USB-hibakereséssel,

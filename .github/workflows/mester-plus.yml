@@ -40,7 +40,7 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           channel: stable
-          flutter-version: "3.35.5"
+          flutter-version: "3.38.x"
           cache: true
 
       - name: Natív SQLite a DB-tesztekhez
@@ -77,10 +77,24 @@ jobs:
       - name: Android App Bundle build
         run: tool/ci_step.sh "AAB build" flutter build appbundle --release
 
-      - name: Ellenőrzés — célzott API szint és név
+      - name: Biztonsági ellenőrzések a kész csomagon
         run: |
+          set -e
           grep -q 'maxOf(flutter.targetSdkVersion, 36)' android/app/build.gradle.kts
           grep -q 'android:label="Mester+"' android/app/src/main/AndroidManifest.xml
+          grep -q 'android:allowBackup="false"' android/app/src/main/AndroidManifest.xml
+          ! grep -q 'android.permission.INTERNET' android/app/src/main/AndroidManifest.xml
+          # A kész AAB-ban: nincs INTERNET engedély a release manifestben, és SQLCipher van a natív libek közt.
+          unzip -o -q build/app/outputs/bundle/release/app-release.aab -d /tmp/aab
+          ls /tmp/aab/base/lib/arm64-v8a/ | tee /tmp/libs.txt
+          grep -q 'libsqlite3.so\|libsqlcipher' /tmp/libs.txt
+          ! (strings /tmp/aab/base/manifest/AndroidManifest.xml | grep -q 'android.permission.INTERNET') || (echo 'INTERNET engedély a release manifestben!' && exit 1)
+          # 16 KB oldalméret: minden natív .so 16 KB-ra igazított LOAD szegmenssel
+          for so in /tmp/aab/base/lib/arm64-v8a/*.so; do
+            align=$(readelf -lW "$so" | awk '/LOAD/{print $NF}' | sort -u | head -1)
+            echo "$so align=$align"
+            case "$align" in 0x4000|0x10000) ;; *) echo "Nem 16 KB-igazított: $so ($align)"; exit 1;; esac
+          done
           ls -la build/app/outputs/bundle/release/app-release.aab
 
       - uses: actions/upload-artifact@v4
@@ -88,3 +102,25 @@ jobs:
           name: mester-plus-aab-ellenorzo-build
           path: apps/mester-plus/build/app/outputs/bundle/release/app-release.aab
           retention-days: 14
+
+  # Ismert sérülékenységek a felhasznált csomagokban (OSV adatbázis).
+  deps-security:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: apps/mester-plus
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: "3.38.x"
+          cache: true
+      - run: flutter pub get
+      - name: Elavult csomagok (tájékoztató)
+        run: flutter pub outdated || true
+      - uses: google/osv-scanner-action/osv-scanner-action@v2
+        with:
+          scan-args: |
+            --lockfile=apps/mester-plus/pubspec.lock

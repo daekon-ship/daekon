@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:drift/drift.dart' show Value;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/app_info.dart';
@@ -14,6 +15,8 @@ import '../../core/widgets/widgets.dart';
 import '../../data/backup.dart';
 import '../../data/db/app_database.dart';
 import '../../data/providers.dart';
+import '../../security/lock_gate.dart';
+import '../../security/pin_lock.dart';
 import '../../domain/enums.dart';
 import '../../domain/format.dart';
 
@@ -177,6 +180,8 @@ class _CompanyFormState extends ConsumerState<_CompanyForm> {
                         style: MpText.small.copyWith(color: MpColors.warning, fontWeight: FontWeight.w600)),
                   ),
                 MpButton(label: 'Mentés', onPressed: _dirty ? _save : null, loading: _saving, expand: true),
+                const SectionLabel('Biztonság'),
+                const _SecuritySection(),
                 const SectionLabel('Adatmentés'),
                 const _BackupSection(),
                 const SizedBox(height: MpSpace.x8),
@@ -309,4 +314,131 @@ class _BackupSectionState extends ConsumerState<_BackupSection> {
       ),
     );
   }
+}
+
+/// PIN-zár be- és kikapcsolása.
+class _SecuritySection extends ConsumerStatefulWidget {
+  const _SecuritySection();
+
+  @override
+  ConsumerState<_SecuritySection> createState() => _SecuritySectionState();
+}
+
+class _SecuritySectionState extends ConsumerState<_SecuritySection> {
+  bool? _enabled;
+
+  @override
+  void initState() {
+    super.initState();
+    ref.read(pinLockProvider).isEnabled().then((v) {
+      if (mounted) setState(() => _enabled = v);
+    });
+  }
+
+  Future<void> _enable() async {
+    final pin = await _askPin(context, title: 'Új PIN-kód', confirm: true);
+    if (pin == null || !mounted) return;
+    final ok = await runGuarded(context, () => ref.read(pinLockProvider).setPin(pin));
+    if (!ok || !mounted) return;
+    await ref.read(lockStateProvider.notifier).refresh();
+    ref.read(lockStateProvider.notifier).unlock();
+    setState(() => _enabled = true);
+    showInfo(context, 'PIN-zár bekapcsolva');
+  }
+
+  Future<void> _disable() async {
+    final pin = await _askPin(context, title: 'Add meg a jelenlegi PIN-t');
+    if (pin == null || !mounted) return;
+    final valid = await ref.read(pinLockProvider).verify(pin);
+    if (!mounted) return;
+    if (!valid) {
+      showInfo(context, 'Hibás PIN.');
+      return;
+    }
+    final ok = await runGuarded(context, () => ref.read(pinLockProvider).clear());
+    if (!ok || !mounted) return;
+    await ref.read(lockStateProvider.notifier).refresh();
+    setState(() => _enabled = false);
+    showInfo(context, 'PIN-zár kikapcsolva');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final enabled = _enabled;
+    return MpCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            children: [
+              const Icon(Icons.lock_outline, color: MpColors.inkMuted),
+              const SizedBox(width: MpSpace.x3),
+              const Expanded(child: Text('PIN-zár', style: MpText.bodyStrong)),
+              if (enabled == null)
+                const SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2))
+              else
+                Switch(value: enabled, onChanged: (v) => v ? _enable() : _disable()),
+            ],
+          ),
+          const SizedBox(height: MpSpace.x2),
+          const Text(
+            'Indításkor és két perc háttérben töltött idő után PIN-t kér. Az adatbázis mindig titkosítva van a telefonon, a PIN ezen felül véd, ha más kezébe kerül a készülék.',
+            style: MpText.small,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+Future<String?> _askPin(BuildContext context, {required String title, bool confirm = false}) async {
+  final first = TextEditingController();
+  final second = TextEditingController();
+  final form = GlobalKey<FormState>();
+  String? result;
+  await showMpSheet<void>(
+    context,
+    title: title,
+    child: Form(
+      key: form,
+      child: Builder(
+        builder: (ctx) => Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            MpField(
+              label: confirm ? 'PIN (4–8 számjegy)' : 'PIN',
+              controller: first,
+              keyboardType: TextInputType.number,
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly, LengthLimitingTextInputFormatter(PinLock.maxLength)],
+              monospace: true,
+              autofocus: true,
+              obscure: true,
+              validator: (v) => PinLock.isValidPin(v ?? '') ? null : '4–8 számjegy',
+            ),
+            if (confirm)
+              MpField(
+                label: 'PIN még egyszer',
+                controller: second,
+                keyboardType: TextInputType.number,
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly, LengthLimitingTextInputFormatter(PinLock.maxLength)],
+                monospace: true,
+                obscure: true,
+                textInputAction: TextInputAction.done,
+                validator: (v) => v == first.text ? null : 'A két PIN nem egyezik',
+              ),
+            MpButton(
+              label: 'Rendben',
+              expand: true,
+              onPressed: () {
+                if (!form.currentState!.validate()) return;
+                result = first.text;
+                Navigator.of(ctx).pop();
+              },
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
+  return result;
 }

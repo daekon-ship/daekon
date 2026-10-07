@@ -14,6 +14,7 @@ import '../../domain/enums.dart';
 import '../../domain/format.dart';
 import '../../domain/quote_validity.dart';
 import '../customers/customer_picker.dart';
+import 'work_screen.dart';
 
 /// Közös "nem található" állapot a projekt-alképernyőkhöz (pl. törlés után).
 class ProjectNotFound extends StatelessWidget {
@@ -203,6 +204,10 @@ class ProjectHubScreen extends ConsumerWidget {
                 isLast: true,
                 onTap: () => context.push(Routes.quote(projectId)),
               ),
+              if (p.status.isWon) ...[
+                const SectionLabel('A munka'),
+                _WorkTiles(projectId: projectId, project: p),
+              ],
               if (p.notes != null) ...[
                 const SectionLabel('Megjegyzés'),
                 MpCard(child: Text(p.notes!, style: MpText.body)),
@@ -578,6 +583,99 @@ class _ValidityLine extends StatelessWidget {
         const SizedBox(width: 6),
         Expanded(child: Text(text, style: MpText.small.copyWith(color: fg))),
       ],
+    );
+  }
+}
+
+/// Elfogadott munkánál: pénzügy, ütemezés/napló, anyaglista egy sorban.
+class _WorkTiles extends ConsumerWidget {
+  const _WorkTiles({required this.projectId, required this.project});
+  final int projectId;
+  final Project project;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final f = ref.watch(projectFinanceProvider(projectId)).valueOrNull;
+    final mats = ref.watch(materialItemsProvider(projectId)).valueOrNull ?? const <MaterialItem>[];
+    final toBuy = mats.where((m) => !m.purchased).length;
+    final due = f?.outstandingHuf;
+    final startText = project.startDate == null
+        ? 'Kezdés nincs beírva'
+        : 'Kezdés: ${Fmt.date(project.startDate!)}';
+    return Row(
+      children: [
+        Expanded(
+          child: _Tile(
+            icon: Icons.payments_outlined,
+            title: 'Pénzügy',
+            value: due == null ? '…' : (due == 0 && f!.quoteGrossHuf > 0 ? 'Kifizetve' : Fmt.huf(due)),
+            sub: due == null || due == 0 ? '' : 'még fizetendő',
+            accent: due != null && due > 0,
+            onTap: () => context.push(Routes.finance(projectId)),
+          ),
+        ),
+        const SizedBox(width: MpSpace.x2),
+        Expanded(
+          child: _Tile(
+            icon: Icons.construction_outlined,
+            title: 'Munka',
+            value: f == null ? '…' : WorkScreen.hours(f.workMinutes),
+            sub: startText,
+            onTap: () => context.push(Routes.work(projectId)),
+          ),
+        ),
+        const SizedBox(width: MpSpace.x2),
+        Expanded(
+          child: _Tile(
+            icon: Icons.shopping_bag_outlined,
+            title: 'Anyag',
+            value: mats.isEmpty ? 'Üres' : (toBuy == 0 ? 'Megvan' : '$toBuy tétel'),
+            sub: mats.isEmpty ? '' : (toBuy == 0 ? 'minden' : 'venni kell'),
+            accent: toBuy > 0,
+            onTap: () => context.push(Routes.materials(projectId)),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _Tile extends StatelessWidget {
+  const _Tile({
+    required this.icon,
+    required this.title,
+    required this.value,
+    required this.sub,
+    required this.onTap,
+    this.accent = false,
+  });
+  final IconData icon;
+  final String title;
+  final String value;
+  final String sub;
+  final VoidCallback onTap;
+  final bool accent;
+
+  @override
+  Widget build(BuildContext context) {
+    return MpCard(
+      onTap: onTap,
+      padding: const EdgeInsets.all(MpSpace.x3),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(icon, size: 20, color: accent ? MpColors.warning : MpColors.inkMuted),
+          const SizedBox(height: MpSpace.x2),
+          Text(title, style: MpText.small.copyWith(fontWeight: FontWeight.w600, color: MpColors.ink)),
+          const SizedBox(height: 2),
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            alignment: Alignment.centerLeft,
+            child: Text(value, style: MpText.money.copyWith(fontSize: 14, fontWeight: FontWeight.w600)),
+          ),
+          Text(sub, style: MpText.small.copyWith(fontSize: 11.5), maxLines: 1, overflow: TextOverflow.ellipsis),
+        ],
+      ),
     );
   }
 }

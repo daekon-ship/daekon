@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:drift/drift.dart';
 
 import 'db/app_database.dart';
+import 'repositories.dart';
 
 /// Biztonsági mentés JSON-formátumban. Offline-first appnál ez az egyetlen
 /// védelem telefoncsere / elvesztés ellen, ezért szigorú:
@@ -15,9 +16,11 @@ class BackupService {
   final AppDatabase _db;
 
   static const String appId = 'mester_plus';
-  static const int formatVersion = 1;
+  static const int formatVersion = 2;
 
   static const _tables = ['customers', 'projects', 'surveyAreas', 'priceItems', 'quoteLines', 'companyProfiles'];
+  // v2 formátumtól (opcionális régi mentésben):
+  static const _tablesV2 = ['payments', 'expenses', 'workLogs', 'materialItems'];
 
   Future<String> exportJson({DateTime? now}) async {
     final data = <String, List<Map<String, dynamic>>>{
@@ -27,6 +30,10 @@ class BackupService {
       'priceItems': [for (final r in await _db.select(_db.priceItems).get()) r.toJson()],
       'quoteLines': [for (final r in await _db.select(_db.quoteLines).get()) r.toJson()],
       'companyProfiles': [for (final r in await _db.select(_db.companyProfiles).get()) r.toJson()],
+      'payments': [for (final r in await _db.select(_db.payments).get()) r.toJson()],
+      'expenses': [for (final r in await _db.select(_db.expenses).get()) r.toJson()],
+      'workLogs': [for (final r in await _db.select(_db.workLogs).get()) r.toJson()],
+      'materialItems': [for (final r in await _db.select(_db.materialItems).get()) r.toJson()],
     };
     return const JsonEncoder.withIndent(' ').convert({
       'app': appId,
@@ -65,8 +72,9 @@ class BackupService {
     if (tables is! Map<String, dynamic>) {
       throw const BackupFormatException('Hiányzó adatok a mentésben.');
     }
-    List<Map<String, dynamic>> rows(String name) {
+    List<Map<String, dynamic>> rows(String name, {bool optional = false}) {
       final v = tables[name];
+      if (v == null && optional) return const [];
       if (v is! List) throw BackupFormatException('Hiányzó tábla a mentésben: $name');
       return [
         for (final e in v)
@@ -83,12 +91,16 @@ class BackupService {
     }
 
     for (final t in _tables) {
-      rows(t); // minden tábla létezik és lista
+      rows(t); // minden kötelező tábla létezik és lista
+    }
+    for (final t in _tablesV2) {
+      rows(t, optional: true);
     }
     final parsed = ParsedBackup(
       exportedAt: DateTime.tryParse('${root['exportedAt']}'),
       customers: [for (final j in rows('customers')) each('customers', j, Customer.fromJson)],
-      projects: [for (final j in rows('projects')) each('projects', j, Project.fromJson)],
+      // v2 (schema 2) mentésben még nincs ütemezés: null.
+      projects: [for (final j in rows('projects')) each('projects', {'startDate': null, 'endDate': null, ...j}, Project.fromJson)],
       surveyAreas: [for (final j in rows('surveyAreas')) each('surveyAreas', j, SurveyArea.fromJson)],
       priceItems: [for (final j in rows('priceItems')) each('priceItems', j, PriceItem.fromJson)],
       quoteLines: [for (final j in rows('quoteLines')) each('quoteLines', j, QuoteLine.fromJson)],
@@ -97,6 +109,10 @@ class BackupService {
           // v1 (schema 1) mentésben még nincs ajánlatszám-számláló: alapérték 0.
           each('companyProfiles', {'quoteSeqYear': 0, 'quoteSeq': 0, ...j}, CompanyProfile.fromJson),
       ],
+      payments: [for (final j in rows('payments', optional: true)) each('payments', j, Payment.fromJson)],
+      expenses: [for (final j in rows('expenses', optional: true)) each('expenses', j, Expense.fromJson)],
+      workLogs: [for (final j in rows('workLogs', optional: true)) each('workLogs', j, WorkLog.fromJson)],
+      materialItems: [for (final j in rows('materialItems', optional: true)) each('materialItems', j, MaterialItem.fromJson)],
     );
     _checkIntegrity(parsed);
     return parsed;
@@ -142,6 +158,37 @@ class BackupService {
         throw const BackupFormatException('Érvénytelen mennyiség vagy ár a mentésben.');
       }
     }
+    unique('payments', b.payments.map((e) => e.id));
+    unique('expenses', b.expenses.map((e) => e.id));
+    unique('workLogs', b.workLogs.map((e) => e.id));
+    unique('materialItems', b.materialItems.map((e) => e.id));
+    for (final x in b.payments) {
+      if (!projectIds.contains(x.projectId)) throw const BackupFormatException('Árva befizetés a mentésben.');
+      if (x.amountHuf <= 0 || x.amountHuf > FinanceRepository.maxAmountHuf) {
+        throw const BackupFormatException('Érvénytelen befizetett összeg a mentésben.');
+      }
+    }
+    for (final x in b.expenses) {
+      if (!projectIds.contains(x.projectId)) throw const BackupFormatException('Árva kiadás a mentésben.');
+      if (x.amountHuf <= 0 || x.amountHuf > FinanceRepository.maxAmountHuf) {
+        throw const BackupFormatException('Érvénytelen kiadási összeg a mentésben.');
+      }
+    }
+    for (final x in b.workLogs) {
+      if (!projectIds.contains(x.projectId)) throw const BackupFormatException('Árva munkanapló-bejegyzés a mentésben.');
+      if (x.minutes <= 0 || x.minutes > WorkLogRepository.maxMinutesPerEntry) {
+        throw const BackupFormatException('Érvénytelen munkaidő a mentésben.');
+      }
+    }
+    for (final x in b.materialItems) {
+      if (!projectIds.contains(x.projectId)) throw const BackupFormatException('Árva anyaglista-tétel a mentésben.');
+      if (x.quantityMilli <= 0) throw const BackupFormatException('Érvénytelen anyagmennyiség a mentésben.');
+    }
+    for (final p in b.projects) {
+      if (p.startDate != null && p.endDate != null && p.endDate!.isBefore(p.startDate!)) {
+        throw BackupFormatException('A(z) „${p.title}” projekt befejezése korábbi a kezdésnél.');
+      }
+    }
     final quoteNumbers = <String>{};
     for (final p in b.projects) {
       if (p.quoteNumber != null && !quoteNumbers.add(p.quoteNumber!)) {
@@ -154,6 +201,10 @@ class BackupService {
   Future<void> restore(ParsedBackup b) {
     return _db.transaction(() async {
       // Törlés a gyermekektől a szülők felé.
+      await _db.delete(_db.payments).go();
+      await _db.delete(_db.expenses).go();
+      await _db.delete(_db.workLogs).go();
+      await _db.delete(_db.materialItems).go();
       await _db.delete(_db.quoteLines).go();
       await _db.delete(_db.surveyAreas).go();
       await _db.delete(_db.projects).go();
@@ -168,6 +219,10 @@ class BackupService {
         batch.insertAll(_db.surveyAreas, b.surveyAreas);
         batch.insertAll(_db.quoteLines, b.quoteLines);
         batch.insertAll(_db.companyProfiles, b.companyProfiles);
+        batch.insertAll(_db.payments, b.payments);
+        batch.insertAll(_db.expenses, b.expenses);
+        batch.insertAll(_db.workLogs, b.workLogs);
+        batch.insertAll(_db.materialItems, b.materialItems);
       });
       // A cégprofil sora mindig létezzen (régi/hiányos mentésnél is).
       await _db.into(_db.companyProfiles).insert(
@@ -187,6 +242,10 @@ class ParsedBackup {
     required this.priceItems,
     required this.quoteLines,
     required this.companyProfiles,
+    this.payments = const [],
+    this.expenses = const [],
+    this.workLogs = const [],
+    this.materialItems = const [],
   });
 
   final DateTime? exportedAt;
@@ -196,6 +255,10 @@ class ParsedBackup {
   final List<PriceItem> priceItems;
   final List<QuoteLine> quoteLines;
   final List<CompanyProfile> companyProfiles;
+  final List<Payment> payments;
+  final List<Expense> expenses;
+  final List<WorkLog> workLogs;
+  final List<MaterialItem> materialItems;
 }
 
 class BackupFormatException implements Exception {

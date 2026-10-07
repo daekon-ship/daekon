@@ -173,6 +173,16 @@ class ProjectRepository {
     ));
   }
 
+  /// Tervezett kezdés / befejezés. Csak dátum (óra nélkül). Üres = nincs ütemezve.
+  Future<void> setSchedule(int id, {DateTime? start, DateTime? end}) {
+    DateTime? d(DateTime? x) => x == null ? null : DateTime(x.year, x.month, x.day);
+    final s = d(start), e = d(end);
+    if (s != null && e != null && e.isBefore(s)) {
+      throw UserInputError('A befejezés nem lehet korábban a kezdésnél.');
+    }
+    return _write(id, ProjectsCompanion(startDate: Value(s), endDate: Value(e)));
+  }
+
   Future<void> setValidityDays(int id, int days) {
     if (days < 1 || days > 365) throw ArgumentError.value(days, 'days', '1..365');
     return _write(id, ProjectsCompanion(validityDays: Value(days)));
@@ -264,6 +274,18 @@ class ProjectRepository {
               sortOrder: Value(l.sortOrder),
             ));
       }
+      final mats = await (_db.select(_db.materialItems)..where((t) => t.projectId.equals(sourceId))).get();
+      for (final m in mats) {
+        await _db.into(_db.materialItems).insert(MaterialItemsCompanion.insert(
+              projectId: newId,
+              name: m.name,
+              quantityMilli: m.quantityMilli,
+              unit: m.unit,
+              note: Value(m.note),
+              sortOrder: Value(m.sortOrder),
+            ));
+      }
+      // Fizetések, kiadások, munkanapló NEM másolódik: azok a konkrét munkáé.
       return newId;
     });
   }
@@ -273,6 +295,10 @@ class ProjectRepository {
   /// ha valamiért a PRAGMA nem élne.
   Future<void> delete(int id) {
     return _db.transaction(() async {
+      await (_db.delete(_db.payments)..where((t) => t.projectId.equals(id))).go();
+      await (_db.delete(_db.expenses)..where((t) => t.projectId.equals(id))).go();
+      await (_db.delete(_db.workLogs)..where((t) => t.projectId.equals(id))).go();
+      await (_db.delete(_db.materialItems)..where((t) => t.projectId.equals(id))).go();
       await (_db.delete(_db.quoteLines)..where((t) => t.projectId.equals(id))).go();
       await (_db.delete(_db.surveyAreas)..where((t) => t.projectId.equals(id))).go();
       await (_db.delete(_db.projects)..where((t) => t.id.equals(id))).go();
@@ -611,4 +637,181 @@ class CompanyRepository {
   Future<void> save(CompanyProfilesCompanion c) async {
     await _db.into(_db.companyProfiles).insertOnConflictUpdate(c.copyWith(id: const Value(1)));
   }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+
+/// Pénzügy: befolyt összegek és kiadások. Bruttó, egész forint, 0 < összeg ≤ 999 999 999.
+class FinanceRepository {
+  FinanceRepository(this._db, this._projects);
+  final AppDatabase _db;
+  final ProjectRepository _projects;
+
+  static const int maxAmountHuf = 999999999;
+
+  static void _checkAmount(int huf) {
+    if (huf <= 0) throw UserInputError('Az összeg legyen nagyobb nullánál.');
+    if (huf > maxAmountHuf) throw UserInputError('Az összeg túl nagy (legfeljebb 999 999 999 Ft).');
+  }
+
+  static DateTime _day(DateTime d) => DateTime(d.year, d.month, d.day);
+
+  Stream<List<Payment>> watchPayments(int projectId) => (_db.select(_db.payments)
+        ..where((t) => t.projectId.equals(projectId))
+        ..orderBy([(t) => OrderingTerm.desc(t.paidAt), (t) => OrderingTerm.desc(t.id)]))
+      .watch();
+
+  Stream<List<Payment>> watchAllPayments() => _db.select(_db.payments).watch();
+
+  Future<int> addPayment({
+    required int projectId,
+    required int amountHuf,
+    required DateTime paidAt,
+    required PaymentMethod method,
+    String? note,
+  }) {
+    _checkAmount(amountHuf);
+    return _db.transaction(() async {
+      final id = await _db.into(_db.payments).insert(PaymentsCompanion.insert(
+            projectId: projectId,
+            amountHuf: amountHuf,
+            paidAt: _day(paidAt),
+            method: method,
+            note: Value(_clean(note)),
+          ));
+      await _projects.touch(projectId);
+      return id;
+    });
+  }
+
+  Future<void> deletePayment(Payment p) => _db.transaction(() async {
+        await (_db.delete(_db.payments)..where((t) => t.id.equals(p.id))).go();
+        await _projects.touch(p.projectId);
+      });
+
+  Stream<List<Expense>> watchExpenses(int projectId) => (_db.select(_db.expenses)
+        ..where((t) => t.projectId.equals(projectId))
+        ..orderBy([(t) => OrderingTerm.desc(t.spentAt), (t) => OrderingTerm.desc(t.id)]))
+      .watch();
+
+  Stream<List<Expense>> watchAllExpenses() => _db.select(_db.expenses).watch();
+
+  Future<int> addExpense({
+    required int projectId,
+    required String title,
+    required ExpenseCategory category,
+    required int amountHuf,
+    required DateTime spentAt,
+    String? note,
+  }) {
+    _checkAmount(amountHuf);
+    if (title.trim().isEmpty) throw UserInputError('Add meg, mire ment a pénz.');
+    return _db.transaction(() async {
+      final id = await _db.into(_db.expenses).insert(ExpensesCompanion.insert(
+            projectId: projectId,
+            title: title.trim(),
+            category: category,
+            amountHuf: amountHuf,
+            spentAt: _day(spentAt),
+            note: Value(_clean(note)),
+          ));
+      await _projects.touch(projectId);
+      return id;
+    });
+  }
+
+  Future<void> deleteExpense(Expense e) => _db.transaction(() async {
+        await (_db.delete(_db.expenses)..where((t) => t.id.equals(e.id))).go();
+        await _projects.touch(e.projectId);
+      });
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+
+/// Munkanapló: napi bejegyzések, percben. Egy napra több bejegyzés is lehet.
+class WorkLogRepository {
+  WorkLogRepository(this._db, this._projects);
+  final AppDatabase _db;
+  final ProjectRepository _projects;
+
+  static const int maxMinutesPerEntry = 24 * 60;
+
+  Stream<List<WorkLog>> watchForProject(int projectId) => (_db.select(_db.workLogs)
+        ..where((t) => t.projectId.equals(projectId))
+        ..orderBy([(t) => OrderingTerm.desc(t.day), (t) => OrderingTerm.desc(t.id)]))
+      .watch();
+
+  Stream<List<WorkLog>> watchAll() => _db.select(_db.workLogs).watch();
+
+  Future<int> add({required int projectId, required DateTime day, required int minutes, String? note}) {
+    if (minutes <= 0 || minutes > maxMinutesPerEntry) {
+      throw UserInputError('Az idő 0 és 24 óra között legyen.');
+    }
+    return _db.transaction(() async {
+      final id = await _db.into(_db.workLogs).insert(WorkLogsCompanion.insert(
+            projectId: projectId,
+            day: DateTime(day.year, day.month, day.day),
+            minutes: minutes,
+            note: Value(_clean(note)),
+          ));
+      await _projects.touch(projectId);
+      return id;
+    });
+  }
+
+  Future<void> delete(WorkLog w) => _db.transaction(() async {
+        await (_db.delete(_db.workLogs)..where((t) => t.id.equals(w.id))).go();
+        await _projects.touch(w.projectId);
+      });
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+
+/// Anyaglista (bevásárlólista).
+class MaterialRepository {
+  MaterialRepository(this._db, this._projects);
+  final AppDatabase _db;
+  final ProjectRepository _projects;
+
+  Stream<List<MaterialItem>> watchForProject(int projectId) => (_db.select(_db.materialItems)
+        ..where((t) => t.projectId.equals(projectId))
+        ..orderBy([(t) => OrderingTerm.asc(t.purchased), (t) => OrderingTerm.asc(t.sortOrder), (t) => OrderingTerm.asc(t.id)]))
+      .watch();
+
+  Future<int> add({
+    required int projectId,
+    required String name,
+    required int quantityMilli,
+    required String unit,
+    String? note,
+  }) {
+    if (name.trim().isEmpty) throw UserInputError('Add meg az anyag nevét.');
+    if (quantityMilli <= 0) throw UserInputError('A mennyiség legyen nagyobb nullánál.');
+    final u = unit.trim();
+    if (u.isEmpty || u.length > 20) throw UserInputError('Add meg a mértékegységet (max. 20 karakter).');
+    return _db.transaction(() async {
+      final existing = await (_db.select(_db.materialItems)..where((t) => t.projectId.equals(projectId))).get();
+      final next = existing.fold<int>(0, (m, e) => e.sortOrder > m ? e.sortOrder : m) + 1;
+      final id = await _db.into(_db.materialItems).insert(MaterialItemsCompanion.insert(
+            projectId: projectId,
+            name: name.trim(),
+            quantityMilli: quantityMilli,
+            unit: u,
+            note: Value(_clean(note)),
+            sortOrder: Value(next),
+          ));
+      await _projects.touch(projectId);
+      return id;
+    });
+  }
+
+  Future<void> setPurchased(MaterialItem m, bool purchased) async {
+    await (_db.update(_db.materialItems)..where((t) => t.id.equals(m.id)))
+        .write(MaterialItemsCompanion(purchased: Value(purchased)));
+  }
+
+  Future<void> delete(MaterialItem m) => _db.transaction(() async {
+        await (_db.delete(_db.materialItems)..where((t) => t.id.equals(m.id))).go();
+        await _projects.touch(m.projectId);
+      });
 }

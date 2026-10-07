@@ -8,6 +8,7 @@ import 'package:mester_plus/data/db/app_database.dart';
 import 'package:mester_plus/data/providers.dart';
 import 'package:mester_plus/data/repositories.dart';
 import 'package:mester_plus/domain/enums.dart';
+import 'package:mester_plus/domain/project_finance.dart';
 import 'package:sqlite3/sqlite3.dart';
 
 /// A DB-tesztekhez natív SQLite kell a gépen. macOS/Linux alatt alapból van;
@@ -379,6 +380,75 @@ void main() {
       expect(() => backup.parse(jsonEncode(newer)), throwsA(isA<BackupFormatException>()));
 
       expect(await db.select(db.projects).get(), hasLength(1), reason: 'a parse nem nyúl az adatbázishoz');
+    });
+    test('pénzügy: befizetés, kiadás, hátralék, napló → óradíj', () async {
+      final p = await newProject();
+      await lines.add(projectId: p, name: 'Munka', unit: WorkUnit.db, quantityMilli: 1000, laborUnitPriceHuf: 100000, materialUnitPriceHuf: 0);
+      final fin = FinanceRepository(db, projects);
+      final logs = WorkLogRepository(db, projects);
+      await fin.addPayment(projectId: p, amountHuf: 50000, paidAt: DateTime(2026, 10, 1), method: PaymentMethod.cash);
+      await fin.addExpense(projectId: p, title: 'Ragasztó', category: ExpenseCategory.material, amountHuf: 20000, spentAt: DateTime(2026, 10, 2));
+      await logs.add(projectId: p, day: DateTime(2026, 10, 2), minutes: 480);
+      final row = await (db.select(db.projects)..where((t) => t.id.equals(p))).getSingle();
+      final gross = totalsFor(row, await db.select(db.quoteLines).get()).grossTotalHuf; // 127 000
+      final f = ProjectFinance(quoteGrossHuf: gross, paidHuf: 50000, expensesHuf: 20000, workMinutes: 480);
+      expect(gross, 127000);
+      expect(f.outstandingHuf, 77000);
+      expect(f.marginHuf, 107000);
+      expect(f.marginPerHourHuf, 13375);
+      expect(f.isFullyPaid, isFalse);
+      expect(() => fin.addPayment(projectId: p, amountHuf: 0, paidAt: DateTime.now(), method: PaymentMethod.cash), throwsArgumentError);
+      expect(() => logs.add(projectId: p, day: DateTime.now(), minutes: 25 * 60), throwsArgumentError);
+      // Törléskor a projekt gyermekei is mennek
+      await projects.delete(p);
+      expect(await db.select(db.payments).get(), isEmpty);
+      expect(await db.select(db.expenses).get(), isEmpty);
+      expect(await db.select(db.workLogs).get(), isEmpty);
+    });
+
+    test('ütemezés: a befejezés nem lehet a kezdés előtt', () async {
+      final p = await newProject();
+      await projects.setSchedule(p, start: DateTime(2026, 10, 10, 15), end: DateTime(2026, 10, 12));
+      final row = await (db.select(db.projects)..where((t) => t.id.equals(p))).getSingle();
+      expect(row.startDate, DateTime(2026, 10, 10));
+      expect(() => projects.setSchedule(p, start: DateTime(2026, 10, 10), end: DateTime(2026, 10, 9)), throwsArgumentError);
+    });
+
+    test('anyaglista: másolásnál átmegy, befizetés nem', () async {
+      final p = await newProject();
+      final mats = MaterialRepository(db, projects);
+      final fin = FinanceRepository(db, projects);
+      await mats.add(projectId: p, name: 'Fuga', quantityMilli: 2000, unit: 'kg');
+      await fin.addPayment(projectId: p, amountHuf: 1000, paidAt: DateTime.now(), method: PaymentMethod.cash);
+      final c2 = await customers.create(name: 'Más');
+      final copy = await projects.duplicate(p, customerId: c2);
+      expect(await (db.select(db.materialItems)..where((t) => t.projectId.equals(copy))).get(), hasLength(1));
+      expect(await (db.select(db.payments)..where((t) => t.projectId.equals(copy))).get(), isEmpty);
+    });
+
+    test('biztonsági mentés v2: az új táblák is oda-vissza mennek', () async {
+      final p = await newProject();
+      final fin = FinanceRepository(db, projects);
+      await fin.addPayment(projectId: p, amountHuf: 12345, paidAt: DateTime(2026, 10, 3), method: PaymentMethod.transfer, note: 'előleg');
+      await MaterialRepository(db, projects).add(projectId: p, name: 'Csempe', quantityMilli: 12000, unit: 'doboz');
+      final json = await BackupService(db).exportJson();
+      final db2 = AppDatabase(NativeDatabase.memory());
+      addTearDown(db2.close);
+      final b2 = BackupService(db2);
+      await b2.restore(b2.parse(json));
+      final pay = await db2.select(db2.payments).getSingle();
+      expect(pay.amountHuf, 12345);
+      expect(pay.note, 'előleg');
+      expect((await db2.select(db2.materialItems).getSingle()).unit, 'doboz');
+    });
+
+    test('csempekalkulátor: ráhagyás és felfelé kerekített dobozszám', () {
+      // 10 m², 10% → 11 m²; 1,44 m²/doboz → 7,64 → 8 doboz
+      const c = TileCalc(areaMilliM2: 10000, boxMilliM2: 1440, wasteBp: 1000);
+      expect(c.neededMilliM2, 11000);
+      expect(c.boxes, 8);
+      expect(c.purchasedMilliM2, 11520);
+      expect(const TileCalc(areaMilliM2: 0, boxMilliM2: 1440, wasteBp: 0).boxes, 0);
     });
   });
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../domain/format.dart';
 import '../theme/tokens.dart';
 import '../theme/typography.dart';
 
@@ -24,6 +25,7 @@ class MpField extends StatelessWidget {
     this.helper,
     this.monospace = false,
     this.maxLength,
+    this.obscure = false,
   });
 
   final String label;
@@ -44,6 +46,9 @@ class MpField extends StatelessWidget {
   /// Karakterkorlát (az adatbázis-oszlop hosszával összhangban). Számláló nélkül.
   final int? maxLength;
 
+  /// Rejtett bevitel (PIN).
+  final bool obscure;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -58,8 +63,11 @@ class MpField extends StatelessWidget {
             validator: validator,
             keyboardType: keyboardType,
             textInputAction: maxLines > 1 ? TextInputAction.newline : textInputAction,
-            maxLines: maxLines,
+            maxLines: obscure ? 1 : maxLines,
             minLines: 1,
+            obscureText: obscure,
+            enableSuggestions: !obscure,
+            autocorrect: !obscure,
             autofocus: autofocus,
             inputFormatters: [
               ...?inputFormatters,
@@ -224,6 +232,70 @@ class UnsavedGuard extends StatelessWidget {
         if ((leave ?? false) && context.mounted) Navigator.of(context).pop();
       },
       child: child,
+    );
+  }
+}
+
+/// Dátumválasztó mező: koppintásra naptár, magyar formátumban mutatja az értéket.
+class MpDateField extends StatelessWidget {
+  const MpDateField({
+    super.key,
+    required this.label,
+    required this.value,
+    required this.onChanged,
+    this.allowClear = false,
+    this.firstDate,
+    this.lastDate,
+  });
+
+  final String label;
+  final DateTime? value;
+  final ValueChanged<DateTime?> onChanged;
+  final bool allowClear;
+  final DateTime? firstDate;
+  final DateTime? lastDate;
+
+  @override
+  Widget build(BuildContext context) {
+    final now = DateTime.now();
+    return Padding(
+      padding: const EdgeInsets.only(bottom: MpSpace.x4),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(label, style: MpText.small.copyWith(color: MpColors.inkSoft, fontWeight: FontWeight.w500)),
+          const SizedBox(height: 6),
+          InkWell(
+            borderRadius: MpRadius.mdAll,
+            onTap: () async {
+              final picked = await showDatePicker(
+                context: context,
+                initialDate: value ?? now,
+                firstDate: firstDate ?? DateTime(now.year - 5),
+                lastDate: lastDate ?? DateTime(now.year + 5),
+                locale: const Locale('hu', 'HU'),
+              );
+              if (picked != null) onChanged(DateTime(picked.year, picked.month, picked.day));
+            },
+            child: InputDecorator(
+              decoration: InputDecoration(
+                prefixIcon: const Icon(Icons.event_outlined, size: 20),
+                suffixIcon: allowClear && value != null
+                    ? IconButton(
+                        tooltip: 'Törlés',
+                        icon: const Icon(Icons.close, size: 18),
+                        onPressed: () => onChanged(null),
+                      )
+                    : null,
+              ),
+              child: Text(
+                value == null ? 'Válassz napot' : Fmt.date(value!),
+                style: value == null ? MpText.body.copyWith(color: MpColors.inkFaint) : MpText.money,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

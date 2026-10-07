@@ -1,7 +1,8 @@
 import 'package:drift/drift.dart';
-import 'package:drift_flutter/drift_flutter.dart';
 
 import '../../domain/enums.dart';
+import '../../security/db_key_store.dart';
+import 'encrypted_open.dart';
 
 part 'app_database.g.dart';
 
@@ -40,6 +41,10 @@ class Projects extends Table {
   TextColumn get quoteNumber => text().nullable().unique()();
   DateTimeColumn get quotedAt => dateTime().nullable()();
   IntColumn get validityDays => integer().withDefault(const Constant(30))();
+
+  /// Ütemezés (v3): tervezett kezdés és befejezés napja.
+  DateTimeColumn get startDate => dateTime().nullable()();
+  DateTimeColumn get endDate => dateTime().nullable()();
   TextColumn get notes => text().nullable()();
   DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
   DateTimeColumn get updatedAt => dateTime().withDefault(currentDateAndTime)();
@@ -93,6 +98,52 @@ class QuoteLines extends Table {
   DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
 }
 
+/// Befolyt pénz (előleg, részlet, végösszeg). Bruttó, egész forint.
+class Payments extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  IntColumn get projectId => integer().references(Projects, #id, onDelete: KeyAction.cascade)();
+  IntColumn get amountHuf => integer()();
+  DateTimeColumn get paidAt => dateTime()();
+  TextColumn get method => textEnum<PaymentMethod>()();
+  TextColumn get note => text().nullable()();
+  DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
+}
+
+/// Kiadás a projekten (anyagvásárlás, alvállalkozó…). Bruttó, egész forint.
+class Expenses extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  IntColumn get projectId => integer().references(Projects, #id, onDelete: KeyAction.cascade)();
+  TextColumn get title => text().withLength(min: 1, max: 200)();
+  TextColumn get category => textEnum<ExpenseCategory>()();
+  IntColumn get amountHuf => integer()();
+  DateTimeColumn get spentAt => dateTime()();
+  TextColumn get note => text().nullable()();
+  DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
+}
+
+/// Munkanapló: egy nap munkája. Az időt percben tároljuk (7,5 óra = 450).
+class WorkLogs extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  IntColumn get projectId => integer().references(Projects, #id, onDelete: KeyAction.cascade)();
+  DateTimeColumn get day => dateTime()();
+  IntColumn get minutes => integer()();
+  TextColumn get note => text().nullable()();
+  DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
+}
+
+/// Anyaglista (bevásárlólista) a projekthez.
+class MaterialItems extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  IntColumn get projectId => integer().references(Projects, #id, onDelete: KeyAction.cascade)();
+  TextColumn get name => text().withLength(min: 1, max: 200)();
+  IntColumn get quantityMilli => integer()();
+  TextColumn get unit => text().withLength(min: 1, max: 20)();
+  BoolColumn get purchased => boolean().withDefault(const Constant(false))();
+  TextColumn get note => text().nullable()();
+  IntColumn get sortOrder => integer().withDefault(const Constant(0))();
+  DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
+}
+
 /// Egysoros cégprofil (id = 1).
 @DataClassName('CompanyProfile')
 class CompanyProfiles extends Table {
@@ -127,13 +178,21 @@ class CompanyProfiles extends Table {
   PriceItems,
   QuoteLines,
   CompanyProfiles,
+  Payments,
+  Expenses,
+  WorkLogs,
+  MaterialItems,
 ])
 class AppDatabase extends _$AppDatabase {
-  AppDatabase([QueryExecutor? executor])
-      : super(executor ?? driftDatabase(name: 'mester_plus'));
+  /// Teszteléshez / egyedi végrehajtóval (pl. `NativeDatabase.memory()`).
+  AppDatabase(QueryExecutor executor) : super(executor);
+
+  /// Éles: titkosított adatbázis a készüléken, a kulcs a biztonságos tárolóból.
+  AppDatabase.encrypted(DatabaseKeyStore keys)
+      : super(DatabaseConnection.delayed(openEncryptedDatabase(keys)));
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -145,6 +204,14 @@ class AppDatabase extends _$AppDatabase {
           if (from < 2) {
             await m.addColumn(companyProfiles, companyProfiles.quoteSeqYear);
             await m.addColumn(companyProfiles, companyProfiles.quoteSeq);
+          }
+          if (from < 3) {
+            await m.addColumn(projects, projects.startDate);
+            await m.addColumn(projects, projects.endDate);
+            await m.createTable(payments);
+            await m.createTable(expenses);
+            await m.createTable(workLogs);
+            await m.createTable(materialItems);
           }
         },
         beforeOpen: (details) async {

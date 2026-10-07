@@ -1,6 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../domain/enums.dart';
+import '../domain/project_finance.dart';
+import '../security/db_key_store.dart';
 import '../domain/quote_calculator.dart';
 import '../domain/quote_validity.dart';
 import 'backup.dart';
@@ -10,7 +12,7 @@ import 'repositories.dart';
 // ── Infrastruktúra ──────────────────────────────────────────────────────────
 
 final databaseProvider = Provider<AppDatabase>((ref) {
-  final db = AppDatabase();
+  final db = AppDatabase.encrypted(DatabaseKeyStore());
   ref.onDispose(db.close);
   return db;
 });
@@ -30,6 +32,15 @@ final quoteLineRepoProvider = Provider(
 );
 final companyRepoProvider = Provider((ref) => CompanyRepository(ref.watch(databaseProvider)));
 final backupServiceProvider = Provider((ref) => BackupService(ref.watch(databaseProvider)));
+final financeRepoProvider = Provider(
+  (ref) => FinanceRepository(ref.watch(databaseProvider), ref.watch(projectRepoProvider)),
+);
+final workLogRepoProvider = Provider(
+  (ref) => WorkLogRepository(ref.watch(databaseProvider), ref.watch(projectRepoProvider)),
+);
+final materialRepoProvider = Provider(
+  (ref) => MaterialRepository(ref.watch(databaseProvider), ref.watch(projectRepoProvider)),
+);
 
 /// Visszaállítás után nő: a szerkesztés alatt álló űrlapok (pl. Beállítások)
 /// ezzel a kulccsal újraépülnek, így nem írják vissza a régi adatot.
@@ -77,6 +88,40 @@ final priceListItemProvider = StreamProvider.autoDispose.family<PriceItem?, int>
   (ref, id) => ref.watch(priceListRepoProvider).watch(id),
 );
 
+final paymentsProvider = StreamProvider.autoDispose.family<List<Payment>, int>(
+  (ref, projectId) => ref.watch(financeRepoProvider).watchPayments(projectId),
+);
+final expensesProvider = StreamProvider.autoDispose.family<List<Expense>, int>(
+  (ref, projectId) => ref.watch(financeRepoProvider).watchExpenses(projectId),
+);
+final workLogsProvider = StreamProvider.autoDispose.family<List<WorkLog>, int>(
+  (ref, projectId) => ref.watch(workLogRepoProvider).watchForProject(projectId),
+);
+final materialItemsProvider = StreamProvider.autoDispose.family<List<MaterialItem>, int>(
+  (ref, projectId) => ref.watch(materialRepoProvider).watchForProject(projectId),
+);
+final allPaymentsProvider = StreamProvider<List<Payment>>((ref) => ref.watch(financeRepoProvider).watchAllPayments());
+final allExpensesProvider = StreamProvider<List<Expense>>((ref) => ref.watch(financeRepoProvider).watchAllExpenses());
+final allWorkLogsProvider = StreamProvider<List<WorkLog>>((ref) => ref.watch(workLogRepoProvider).watchAll());
+
+/// Egy projekt pénzügyi képe: ajánlat bruttó, befolyt, kiadás, idő.
+final projectFinanceProvider = Provider.autoDispose.family<AsyncValue<ProjectFinance>, int>((ref, projectId) {
+  final totals = ref.watch(projectTotalsProvider(projectId));
+  final payments = ref.watch(paymentsProvider(projectId));
+  final expenses = ref.watch(expensesProvider(projectId));
+  final logs = ref.watch(workLogsProvider(projectId));
+  for (final v in [totals, payments, expenses, logs]) {
+    if (v case AsyncError(:final error, :final stackTrace)) return AsyncError(error, stackTrace);
+  }
+  if (!totals.hasValue || !payments.hasValue || !expenses.hasValue || !logs.hasValue) return const AsyncLoading();
+  return AsyncData(ProjectFinance(
+    quoteGrossHuf: totals.requireValue.grossTotalHuf,
+    paidHuf: payments.requireValue.fold(0, (a, p) => a + p.amountHuf),
+    expensesHuf: expenses.requireValue.fold(0, (a, e) => a + e.amountHuf),
+    workMinutes: logs.requireValue.fold(0, (a, w) => a + w.minutes),
+  ));
+});
+
 final companyProfileProvider = StreamProvider<CompanyProfile>(
   (ref) => ref.watch(companyRepoProvider).watch(),
 );
@@ -113,16 +158,16 @@ final projectTotalsProvider = Provider.autoDispose.family<AsyncValue<QuoteTotals
   return AsyncData(totalsFor(p.project, lines.requireValue));
 });
 
-/// Figyelmet igénylő projekt az áttekintésen.
-enum AttentionKind { expired, expiringSoon, unpriced }
+/// Figyelmet igénylő projekt az áttekintésen. A sorrend = sürgősség.
+enum AttentionKind { expired, awaitingPayment, startingSoon, expiringSoon, unpriced }
 
 class AttentionItem {
   const AttentionItem(this.item, this.kind, this.value);
   final ProjectWithCustomer item;
   final AttentionKind kind;
 
-  /// expired/expiringSoon: hátralévő napok (negatív = ennyi napja lejárt);
-  /// unpriced: ár nélküli tételek száma.
+  /// expired/expiringSoon/startingSoon: napok (negatív = ennyi napja);
+  /// awaitingPayment: hátralévő összeg Ft; unpriced: ár nélküli tételek száma.
   final int value;
 }
 
@@ -135,7 +180,19 @@ class DashboardStats {
     required this.wonGrossHuf,
     required this.grossByProject,
     required this.attention,
+    required this.outstandingHuf,
+    required this.paidThisMonthHuf,
+    required this.expensesThisMonthHuf,
   });
+
+  /// Ügyfelek tartozása összesen (elfogadott / folyamatban / befejezett munkákon).
+  final int outstandingHuf;
+
+  /// Ebben a hónapban befolyt összeg.
+  final int paidThisMonthHuf;
+
+  /// Ebben a hónapban rögzített kiadás.
+  final int expensesThisMonthHuf;
 
   final int activeProjects;
   final int draftCount;
@@ -157,15 +214,21 @@ class DashboardStats {
 final dashboardStatsProvider = Provider<AsyncValue<DashboardStats>>((ref) {
   final projects = ref.watch(projectsProvider);
   final lines = ref.watch(allQuoteLinesProvider);
-  if (projects case AsyncError(:final error, :final stackTrace)) {
-    return AsyncError(error, stackTrace);
-  }
-  if (lines case AsyncError(:final error, :final stackTrace)) {
-    return AsyncError(error, stackTrace);
+  final paymentsAsync = ref.watch(allPaymentsProvider);
+  final expensesAsync = ref.watch(allExpensesProvider);
+  for (final v in [projects, lines, paymentsAsync, expensesAsync]) {
+    if (v case AsyncError(:final error, :final stackTrace)) return AsyncError(error, stackTrace);
   }
   final ps = projects.valueOrNull;
   final ls = lines.valueOrNull;
-  if (ps == null || ls == null) return const AsyncLoading();
+  final pays = paymentsAsync.valueOrNull;
+  final exps = expensesAsync.valueOrNull;
+  if (ps == null || ls == null || pays == null || exps == null) return const AsyncLoading();
+
+  final paidByProject = <int, int>{};
+  for (final p in pays) {
+    paidByProject[p.projectId] = (paidByProject[p.projectId] ?? 0) + p.amountHuf;
+  }
 
   final byProject = <int, List<QuoteLine>>{};
   for (final l in ls) {
@@ -173,6 +236,16 @@ final dashboardStatsProvider = Provider<AsyncValue<DashboardStats>>((ref) {
   }
 
   final now = DateTime.now();
+  final monthStart = DateTime(now.year, now.month);
+  var paidThisMonth = 0;
+  for (final p in pays) {
+    if (!p.paidAt.isBefore(monthStart)) paidThisMonth += p.amountHuf;
+  }
+  var expensesThisMonth = 0;
+  for (final e in exps) {
+    if (!e.spentAt.isBefore(monthStart)) expensesThisMonth += e.amountHuf;
+  }
+  var outstanding = 0;
   var pipeline = 0;
   var won = 0;
   var active = 0;
@@ -207,6 +280,21 @@ final dashboardStatsProvider = Provider<AsyncValue<DashboardStats>>((ref) {
     if (p.status.isPipeline && t.unpricedLineCount > 0) {
       attention.add(AttentionItem(pc, AttentionKind.unpriced, t.unpricedLineCount));
     }
+    if (p.status.isWon) {
+      final due = t.grossTotalHuf - (paidByProject[p.id] ?? 0);
+      if (due > 0) {
+        outstanding += due;
+        if (p.status == ProjectStatus.completed) {
+          attention.add(AttentionItem(pc, AttentionKind.awaitingPayment, due));
+        }
+      }
+    }
+    if (p.status == ProjectStatus.accepted && p.startDate != null) {
+      final inDays = daysLeft(p.startDate!, 0, now);
+      if (inDays >= 0 && inDays <= expiringSoonDays) {
+        attention.add(AttentionItem(pc, AttentionKind.startingSoon, inDays));
+      }
+    }
   }
   attention.sort((a, b) {
     final k = a.kind.index.compareTo(b.kind.index);
@@ -221,5 +309,8 @@ final dashboardStatsProvider = Provider<AsyncValue<DashboardStats>>((ref) {
     wonGrossHuf: won,
     grossByProject: gross,
     attention: List.unmodifiable(attention),
+    outstandingHuf: outstanding,
+    paidThisMonthHuf: paidThisMonth,
+    expensesThisMonthHuf: expensesThisMonth,
   ));
 });

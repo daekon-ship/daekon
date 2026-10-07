@@ -48,6 +48,8 @@ class DashboardScreen extends ConsumerWidget {
                   wonHuf: s.wonGrossHuf,
                   openCount: s.draftCount + s.quotedCount,
                   activeCount: s.activeProjects,
+                  outstandingHuf: s.outstandingHuf,
+                  paidThisMonthHuf: s.paidThisMonthHuf,
                 ),
               ),
             ),
@@ -154,12 +156,16 @@ class _HeroCard extends StatelessWidget {
     required this.wonHuf,
     required this.openCount,
     required this.activeCount,
+    required this.outstandingHuf,
+    required this.paidThisMonthHuf,
   });
 
   final int pipelineHuf;
   final int wonHuf;
   final int openCount;
   final int activeCount;
+  final int outstandingHuf;
+  final int paidThisMonthHuf;
 
   @override
   Widget build(BuildContext context) {
@@ -208,6 +214,21 @@ class _HeroCard extends StatelessWidget {
           Row(
             children: [
               Expanded(child: _HeroStat(label: 'Megnyert munkák', child: MoneyText(wonHuf, style: MpText.money.copyWith(color: MpColors.onBrand)))),
+              Expanded(
+                child: _HeroStat(
+                  label: 'Ügyfelek tartozása',
+                  child: MoneyText(
+                    outstandingHuf,
+                    style: MpText.money.copyWith(color: outstandingHuf > 0 ? MpColors.accent : MpColors.onBrand),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: MpSpace.x3),
+          Row(
+            children: [
+              Expanded(child: _HeroStat(label: 'Befolyt e hónapban', child: MoneyText(paidThisMonthHuf, style: MpText.money.copyWith(color: MpColors.onBrand)))),
               Expanded(
                 child: _HeroStat(
                   label: 'Aktív projektek',
@@ -306,6 +327,18 @@ class _AttentionList extends StatelessWidget {
             MpColors.warningSoft,
             MpColors.warning,
             '${a.value} tételnek nincs ára',
+          ),
+        AttentionKind.awaitingPayment => (
+            Icons.payments_outlined,
+            MpColors.accentSoft,
+            MpColors.warning,
+            'Fizetésre vár: ${Fmt.huf(a.value)}',
+          ),
+        AttentionKind.startingSoon => (
+            Icons.construction_outlined,
+            MpColors.infoSoft,
+            MpColors.info,
+            a.value == 0 ? 'Ma kezdődik a munka' : 'Kezdés ${a.value} nap múlva',
           ),
       };
 

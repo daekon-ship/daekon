@@ -46,6 +46,17 @@ void _patchManifest(File f) {
   final label = RegExp(r'android:label="[^"]*"');
   if (!label.hasMatch(s)) _fail('Az AndroidManifest-ben nincs android:label.');
   s = s.replaceFirst(label, 'android:label="Mester+"');
+  // Biztonság: az app adatai NE kerüljenek a Google automatikus (felhős)
+  // mentésébe és eszközátvitelbe. A titkosító kulcs úgysem vihető át, a titkosított
+  // fájl pedig kulcs nélkül értelmetlen lenne — a beépített, kézi mentés a hivatalos út.
+  if (!s.contains('android:allowBackup=')) {
+    s = s.replaceFirst('<application', '<application\n        android:allowBackup="false"\n        android:fullBackupContent="false"');
+  } else {
+    s = s.replaceFirst(RegExp(r'android:allowBackup="[^"]*"'), 'android:allowBackup="false"');
+  }
+  if (s.contains('android.permission.INTERNET')) {
+    _fail('Az AndroidManifest INTERNET engedélyt tartalmaz — az app offline, ezt nem kérheti.');
+  }
   // Android 11+ csomag-láthatóság: a hívás és az e-mail indításához.
   if (!s.contains('android:scheme="tel"')) {
     if (!s.contains('</manifest>')) _fail('Hibás AndroidManifest: nincs </manifest>.');
@@ -62,7 +73,7 @@ void _patchManifest(File f) {
 </manifest>''');
   }
   f.writeAsStringSync(s);
-  stdout.writeln('  ✓ App neve: Mester+, hívás/e-mail engedélyezve');
+  stdout.writeln('  ✓ App neve: Mester+, felhős mentés kikapcsolva, hívás/e-mail engedélyezve');
 }
 
 /// Első egyezés cseréje; a cseretextben a `$1` az első csoportra hivatkozik.
