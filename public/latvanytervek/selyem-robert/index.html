@@ -1019,11 +1019,57 @@ html.js .pats .pat svg{clip-path:inset(0 0 100% 0);transition:clip-path 1.4s cub
 html.js .pats.in .pat svg{clip-path:inset(-40px -40px -80px -40px)}
 .pats .pat:nth-child(2) svg{transition-delay:.1s,0s,0s}.pats .pat:nth-child(3) svg{transition-delay:.2s,0s,0s}.pats .pat:nth-child(4) svg{transition-delay:.3s,0s,0s}
 @media (max-width:767px){.hero-art{opacity:.55!important}}
+
+/* ===================== Burkolat-tervező ===================== */
+.kio-g{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:clamp(24px,3.4vw,56px);align-items:start}
+.viz{position:relative;aspect-ratio:16/11;overflow:hidden;background:#D8D0C3;perspective:900px;perspective-origin:50% 22%;box-shadow:0 40px 60px -40px rgba(21,22,21,.55),0 12px 22px -14px rgba(21,22,21,.3);isolation:isolate}
+.viz-wall{position:absolute;left:0;right:0;top:0;height:42%;background:linear-gradient(180deg,#ECE7DE,#DDD5C8);z-index:2}
+.viz-wall::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:4px;background:#CBC1B1;box-shadow:0 6px 14px rgba(40,30,20,.25)}
+.viz-win{position:absolute;left:10%;top:16%;width:20%;height:66%;background:linear-gradient(165deg,#FFFFFF,#F6EEDF);box-shadow:0 0 70px 22px rgba(255,246,226,.55);outline:6px solid #E3DCCF}
+.viz-floor{position:absolute;left:-70%;right:-70%;top:42%;height:100%;transform-origin:50% 0;transform:rotateX(64deg);z-index:1;transition:opacity .22s ease}
+.vf-tex{position:absolute;inset:0;background-size:620px auto;background-repeat:repeat;background-position:center top}
+.vf-j{position:absolute;inset:0;width:100%;height:100%}
+.vf-shade{position:absolute;inset:0;background:radial-gradient(30% 70% at 38% 0%,rgba(255,248,232,.38),transparent 70%),linear-gradient(180deg,rgba(35,28,20,.38) 0%,rgba(35,28,20,0) 45%)}
+.viz.sw .viz-floor{opacity:.15}
+.viz-cap{position:absolute;left:16px;bottom:16px;z-index:3;display:flex;flex-direction:column;gap:2px;padding:10px 14px;background:rgba(18,19,18,.82);color:#ECE8DF;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);max-width:calc(100% - 32px)}
+.viz-cap b{font-family:var(--f-serif);font-weight:500;font-size:.9375rem;letter-spacing:-.01em}
+.viz-cap span{font-size:.75rem;color:#BDB6A8}
+.viz-tag{position:absolute;right:14px;top:14px;z-index:3;font-size:.5625rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#6B675C;background:rgba(242,240,234,.85);padding:5px 8px}
+.ctrl{display:flex;flex-direction:column;gap:12px}
+.ctrl .label{margin-top:4px}
+.ctrl .pats{grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+button.pat{display:block;width:100%;text-align:left;padding:0;cursor:pointer}
+.ctrl .pat svg{background:#E4DED3!important;box-shadow:none;outline:1px solid rgba(21,22,21,.12);outline-offset:0;transition:outline-color .3s,transform .4s var(--ease)}
+.ctrl .pat path{stroke:rgba(21,22,21,.42)!important;stroke-width:3!important}
+.ctrl .pat:hover svg{transform:translateY(-3px);box-shadow:none}
+.ctrl .pat[aria-checked="true"] svg{outline:2px solid #B08D57;outline-offset:3px}
+.ctrl .pat .pc{display:flex;gap:6px;align-items:baseline;margin-top:8px;font-size:.8125rem;color:#151615}
+.ctrl .pat .pc .num{font-size:.6875rem;color:#8E5E3C}
+.ctrl .pat .pc b{font-weight:500}
+.mats{display:flex;flex-wrap:wrap;gap:8px}
+.mat{display:inline-flex;align-items:center;gap:9px;min-height:40px;padding:0 14px 0 6px;border:1px solid rgba(21,22,21,.16);font-size:.8125rem;color:#151615;background:rgba(255,255,255,.35);transition:border-color .3s,background .3s}
+.mat i{width:28px;height:28px;background-size:cover;background-position:center;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+.mat:hover{border-color:rgba(21,22,21,.4)}
+.mat[aria-checked="true"]{border-color:#B08D57;background:#fff;box-shadow:inset 0 0 0 1px #B08D57}
+.sw-white{background-image:url(img/marble-white.webp)}.sw-beige{background-image:url(img/marble-beige.webp)}.sw-grey{background-image:url(img/marble-grey.webp)}.sw-nero{background-image:url(img/marble-nero.webp)}.sw-concrete{background-image:url(img/concrete.webp)}
+.ctrl-note{font-size:.8125rem;color:#6B675C;max-width:30em;margin-top:6px}
+.ctrl-cta{align-self:flex-start;margin-top:6px;background:#151615;color:#F2F0EA;border-color:#151615}
+.ctrl-cta:hover{background:transparent;color:#151615}
+html.js .pats .pat svg{clip-path:none!important}
+/* Rólam portré */
+.ab-ph{max-width:300px;margin-top:28px}
+.ab-mk{position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;pointer-events:none}
+.ab-smark{width:64px;height:64px;color:rgba(236,232,223,.5);opacity:.75}
+/* Görgetésjelző */
+.progress{background:linear-gradient(90deg,#8C6E45,#E4CC9C,#C9A977);height:2px}
+@media (max-width:1023px){.kio-g{grid-template-columns:1fr}.viz{aspect-ratio:4/3}}
+@media (max-width:767px){.ctrl .pats{gap:8px}.ctrl .pat .pc{font-size:.75rem}.ctrl .pat .pc .num{display:none}.mat{font-size:.75rem;padding-right:10px}.ab-ph{max-width:220px}.viz-cap{left:10px;bottom:10px}.ctrl-cta{align-self:stretch}}
 </style>
 </head>
 <body>
 
 
+<div class="progress" id="prog" aria-hidden="true"></div>
 <header class="hdr" id="top">
   <div class="wrap hdr-in">
     <a href="#top" class="brand brand-x" aria-label="Selyem Róbert – kezdőlap">
@@ -1122,14 +1168,35 @@ html.js .pats.in .pat svg{clip-path:inset(-40px -40px -80px -40px)}
     <div class="wrap">
       <div class="shead">
         <p class="label kick">Kiosztás</p>
-        <h2 id="ki-h" class="h2">Minden burkolat egy döntéssel kezdődik.</h2>
-        <p>Hogy melyik illik a térhez, azt a felmérésen együtt döntjük el: a lap méretéhez, a helyiség arányaihoz és a fény irányához igazítva.</p>
+        <h2 id="ki-h" class="h2">Próbálja ki, hogyan mutatna.</h2>
+        <p>Minden burkolat egy döntéssel kezdődik. Válasszon kiosztást és anyagot – a végleges változatot a lap méretéhez, a helyiség arányaihoz és a fény irányához igazítjuk.</p>
       </div>
-      <div class="pats rv-txt">
-          <figure class="pat"><svg viewBox="0 0 240 240" id="p1" aria-hidden="true"></svg><figcaption><span class="num">01</span><b>Egyenes</b><small>Fugák egy vonalban, két irányban.</small></figcaption></figure>
-          <figure class="pat"><svg viewBox="0 0 240 240" id="p2" aria-hidden="true"></svg><figcaption><span class="num">02</span><b>Kötésben</b><small>Soronként fél lappal eltolva.</small></figcaption></figure>
-          <figure class="pat"><svg viewBox="0 0 240 240" id="p3" aria-hidden="true"></svg><figcaption><span class="num">03</span><b>Halszálka</b><small>Derékszögben egymásba fűzve.</small></figcaption></figure>
-          <figure class="pat"><svg viewBox="0 0 240 240" id="p4" aria-hidden="true"></svg><figcaption><span class="num">04</span><b>Átlós</b><small>45 fokkal elforgatott kiosztás.</small></figcaption></figure>
+      <div class="kio-g">
+        <div class="viz rv-img" id="viz">
+          <div class="viz-wall" aria-hidden="true"><span class="viz-win"></span></div>
+          <div class="viz-floor" id="vizFloor" aria-hidden="true"><div class="vf-tex" id="vfTex"></div><svg class="vf-j" id="vfJ"></svg><div class="vf-shade"></div></div>
+          <div class="viz-cap" aria-live="polite"><b id="vizName">Egyenes · Fehér márvány</b><span id="vizDesc">Fugák egy vonalban, két irányban.</span></div>
+          <span class="viz-tag">Illusztráció</span>
+        </div>
+        <div class="ctrl">
+          <p class="label">Kiosztás</p>
+          <div class="pats rv-txt" role="radiogroup" aria-label="Kiosztási minta">
+            <button type="button" class="pat" role="radio" aria-checked="true" data-p="p1" data-d="Fugák egy vonalban, két irányban."><svg viewBox="0 0 240 240" id="p1" aria-hidden="true"></svg><span class="pc"><span class="num">01</span><b>Egyenes</b></span></button>
+            <button type="button" class="pat" role="radio" aria-checked="false" data-p="p2" data-d="Soronként fél lappal eltolva."><svg viewBox="0 0 240 240" id="p2" aria-hidden="true"></svg><span class="pc"><span class="num">02</span><b>Kötésben</b></span></button>
+            <button type="button" class="pat" role="radio" aria-checked="false" data-p="p3" data-d="Derékszögben egymásba fűzve."><svg viewBox="0 0 240 240" id="p3" aria-hidden="true"></svg><span class="pc"><span class="num">03</span><b>Halszálka</b></span></button>
+            <button type="button" class="pat" role="radio" aria-checked="false" data-p="p4" data-d="45 fokkal elforgatott kiosztás."><svg viewBox="0 0 240 240" id="p4" aria-hidden="true"></svg><span class="pc"><span class="num">04</span><b>Átlós</b></span></button>
+          </div>
+          <p class="label">Anyag</p>
+          <div class="mats" role="radiogroup" aria-label="Anyag">
+            <button type="button" class="mat" role="radio" aria-checked="true" data-m="white"><i class="sw-white"></i>Fehér márvány</button>
+            <button type="button" class="mat" role="radio" aria-checked="false" data-m="beige"><i class="sw-beige"></i>Bézs márvány</button>
+            <button type="button" class="mat" role="radio" aria-checked="false" data-m="grey"><i class="sw-grey"></i>Szürke márvány</button>
+            <button type="button" class="mat" role="radio" aria-checked="false" data-m="nero"><i class="sw-nero"></i>Nero márvány</button>
+            <button type="button" class="mat" role="radio" aria-checked="false" data-m="concrete"><i class="sw-concrete"></i>Terrazzo hatású</button>
+          </div>
+          <p class="ctrl-note">Szemléltetés. A végleges anyagot, lapméretet és kiosztást a felmérésen, a helyszínen választjuk ki együtt.</p>
+          <a class="btn btn--fill ctrl-cta" href="tel:+36202211366">Beszéljük meg: +36 20 221 1366</a>
+        </div>
       </div>
     </div>
   </section>
@@ -1154,6 +1221,7 @@ html.js .pats.in .pat svg{clip-path:inset(-40px -40px -80px -40px)}
             <defs>
               <pattern id="hatch" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0V14" stroke="currentColor" stroke-width=".8" opacity=".5"/></pattern>
               <pattern id="dots" width="6" height="6" patternUnits="userSpaceOnUse"><circle cx="1.5" cy="1.5" r=".8" fill="currentColor" stroke="none" opacity=".7"/></pattern>
+              <pattern id="lytex" patternUnits="userSpaceOnUse" width="640" height="600"><image href="img/marble-beige.webp" width="640" height="600" preserveAspectRatio="xMidYMid slice"/></pattern>
               <linearGradient id="room" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#E8C9A2" stop-opacity="0"/><stop offset="1" stop-color="#E8C9A2" stop-opacity=".22"/></linearGradient>
             </defs>
             <g class="L L-room"><rect x="140" y="80" width="260" height="276" fill="url(#room)" stroke="none"/></g>
@@ -1164,8 +1232,8 @@ html.js .pats.in .pat svg{clip-path:inset(-40px -40px -80px -40px)}
             <g class="L L-board" stroke="#C9A977" stroke-width="2"><path d="M118 352V386H152"/></g>
             <g class="L L-glett" stroke-width=".8"><path d="M118 386L122 378L126 386L130 378L134 386L138 378L142 386L146 378L150 386L154 378L158 386L162 378L166 386L170 378L174 386L178 378L182 386L186 378L190 386L194 378L198 386L202 378L206 386L210 378L214 386L218 378L222 386L226 378L230 386L234 378L238 386L242 378L246 386L250 378L254 386L258 378L262 386L266 378L270 386L274 378L278 386L282 378L286 386L290 378L294 386L298 378L302 386L306 378L310 386L314 378L318 386L322 378L326 386L330 378L334 386L338 378L342 386L346 378L350 386L354 378L358 386L362 378L366 386L370 378L374 386L378 378L382 386L386 378L390 386L394 378L398 386"/><path d="M117 160L123 166L117 172L123 178L117 184L123 190L117 196L123 202L117 208L123 214L117 220L123 226L117 232L123 238L117 244L123 250L117 256L123 262L117 268L123 274L117 280L123 286L117 292L123 298L117 304L123 310L117 316L123 322L117 328L123 334L117 340L123 346"/></g>
             <g class="L L-paint" stroke-width="1">
-              <rect x="128" y="360" width="64" height="18" fill="#C6BCAA" fill-opacity=".3"/><rect x="196" y="360" width="64" height="18" fill="#C6BCAA" fill-opacity=".3"/><rect x="264" y="360" width="64" height="18" fill="#C6BCAA" fill-opacity=".3"/><rect x="332" y="360" width="66" height="18" fill="#C6BCAA" fill-opacity=".3"/>
-              <rect x="124" y="160" width="14" height="60" fill="#C6BCAA" fill-opacity=".3"/><rect x="124" y="224" width="14" height="60" fill="#C6BCAA" fill-opacity=".3"/><rect x="124" y="288" width="14" height="66" fill="#C6BCAA" fill-opacity=".3"/>
+              <rect x="128" y="360" width="64" height="18" fill="url(#lytex)"/><rect x="196" y="360" width="64" height="18" fill="url(#lytex)"/><rect x="264" y="360" width="64" height="18" fill="url(#lytex)"/><rect x="332" y="360" width="66" height="18" fill="url(#lytex)"/>
+              <rect x="124" y="160" width="14" height="60" fill="url(#lytex)"/><rect x="124" y="224" width="14" height="60" fill="url(#lytex)"/><rect x="124" y="288" width="14" height="66" fill="url(#lytex)"/>
               <path d="M122 156H142M140 156V164" stroke="#C9A977" stroke-width="2"/>
             </g>
             <g stroke-width=".6" opacity=".7"><path d="M40 36H400M40 30V42M400 30V42M34 42L46 30M394 42L406 30"/></g>
@@ -1250,6 +1318,7 @@ html.js .pats.in .pat svg{clip-path:inset(-40px -40px -80px -40px)}
         <div class="ab-copy">
           <p class="label kick">Rólam</p>
           <h2 id="ab-h" class="h2">Akkor jó egy munka, ha utána nincs mit magyarázni.</h2>
+          <figure class="ph t-nero ab-ph rv-img" style="--ar:4/5" data-src="" data-alt="Selyem Róbert, burkoló"><span class="tone"></span><span class="ab-mk" aria-hidden="true"><svg class="smark ab-smark" viewBox="0 0 30 30" aria-hidden="true"><rect x="1" y="1" width="13" height="13" fill="#C9A977"/><rect x="16.5" y="1.5" width="12" height="12" fill="none" stroke="currentColor"/><rect x="1.5" y="16.5" width="12" height="12" fill="none" stroke="currentColor"/><rect x="16.5" y="16.5" width="12" height="12" fill="none" stroke="currentColor"/><text x="7.5" y="10.6" text-anchor="middle" fill="#151615">S</text><text x="22.5" y="25.6" text-anchor="middle" fill="currentColor">R</text></svg></span><span class="ph-cap"><b>Fotó hamarosan</b>Selyem Róbert</span></figure>
         </div>
         <div class="ab-text">
           <p>Burkoló vagyok, Kéthelyről. Ha engem hív, velem beszél: én nézem meg a helyszínt, én egyeztetek az ajánlatról, és én felelek azért, ami a falon és a padlón marad.</p>
@@ -1494,6 +1563,37 @@ html.js .pats.in .pat svg{clip-path:inset(-40px -40px -80px -40px)}
     for (k = -6; k < 8; k++) for (n = -12; n < 14; n++) [[n, n, 2, 1], [n, n + 1, 1, 2]].forEach(function(b){ var X = (b[0] + 2 * k) * u, Y = (b[1] - 2 * k) * u, W = b[2] * u, H = b[3] * u; if (X < 240 && Y < 240 && X + W > 0 && Y + H > 0) a.push([X, Y, W, H]); });
     put("p3", a, Math.floor(a.length / 2));
     a = []; for (x = -3; x < 8; x++) for (y = -3; y < 8; y++) a.push([x * 48, y * 48, 48, 48]); put("p4", a, 60, true);
+  })();
+
+
+  /* --- Burkolat-tervező (szemléltetés) --- */
+  (function(){
+    var viz = document.getElementById("viz"); if (!viz) return;
+    var fl = $("#vizFloor"), tex = $("#vfTex"), J = $("#vfJ");
+    var MAT = { white:["Fehér márvány","img/marble-white.webp","rgba(110,100,86,.5)"], beige:["Bézs márvány","img/marble-beige.webp","rgba(92,72,48,.5)"], grey:["Szürke márvány","img/marble-grey.webp","rgba(58,58,56,.5)"], nero:["Nero márvány","img/marble-nero.webp","rgba(232,224,210,.4)"], concrete:["Terrazzo hatású","img/concrete.webp","rgba(25,25,24,.42)"] };
+    var PAT = { p1:"Egyenes", p2:"Kötésben", p3:"Halszálka", p4:"Átlós" };
+    var st = { p:"p1", m:"white" };
+    function R(x, y, w, h){ return "M" + x.toFixed(1) + " " + y.toFixed(1) + "h" + w.toFixed(1) + "v" + h.toFixed(1) + "h" + (-w).toFixed(1) + "Z"; }
+    function joints(p, W, H, T){
+      var d = "", x, y, cx = W / 2, cy = H / 2;
+      if (p === "p1") { for (x = cx % T; x < W; x += T) d += "M" + x.toFixed(1) + " 0V" + H; for (y = cy % T; y < H; y += T) d += "M0 " + y.toFixed(1) + "H" + W; }
+      else if (p === "p2") { var r = 0; for (y = cy % T - T; y < H; y += T, r++) { d += "M0 " + y.toFixed(1) + "H" + W; for (x = (cx % (2 * T)) - 2 * T + (r % 2 ? T : 0); x < W; x += 2 * T) d += "M" + x.toFixed(1) + " " + y.toFixed(1) + "v" + T; } }
+      else if (p === "p3") { var u = T * .55, k, n; for (k = -Math.ceil((W + H) / u / 2) - 2; k < Math.ceil((W + H) / u / 2) + 2; k++) for (n = -Math.ceil(H / u) - 4; n < Math.ceil((W + H) / u) + 4; n++) [[n, n, 2, 1], [n, n + 1, 1, 2]].forEach(function(b){ var X = (b[0] + 2 * k) * u + cx % (2 * u), Y = (b[1] - 2 * k) * u, w = b[2] * u, h = b[3] * u; if (X < W && Y < H && X + w > 0 && Y + h > 0) d += R(X, Y, w, h); }); }
+      else { var s2 = T * 1.2 * Math.SQRT2; for (var c = (cx - cy) % s2 - H - s2; c < W + H; c += s2) d += "M" + c.toFixed(1) + " 0L" + (c + H).toFixed(1) + " " + H; for (c = (cx + cy) % s2 - s2; c < W + 2 * H; c += s2) d += "M" + c.toFixed(1) + " 0L" + (c - H).toFixed(1) + " " + H; }
+      return d;
+    }
+    function draw(){
+      var W = fl.offsetWidth, H = fl.offsetHeight, T = Math.max(56, Math.min(96, W / 22)), m = MAT[st.m];
+      J.setAttribute("viewBox", "0 0 " + W + " " + H);
+      J.innerHTML = '<path d="' + joints(st.p, W, H, T) + '" stroke="' + m[2] + '" stroke-width="3" fill="none"/>';
+      tex.style.backgroundImage = "url(" + m[1] + ")";
+      $("#vizName").textContent = PAT[st.p] + " · " + m[0];
+      $("#vizDesc").textContent = $('.pat[data-p="' + st.p + '"]').getAttribute("data-d");
+    }
+    function swap(fn){ viz.classList.add("sw"); setTimeout(function(){ fn(); draw(); viz.classList.remove("sw"); }, 220); }
+    $$(".pat").forEach(function(b){ b.addEventListener("click", function(){ if (st.p === b.getAttribute("data-p")) return; $$(".pat").forEach(function(x){ x.setAttribute("aria-checked", x === b ? "true" : "false"); }); swap(function(){ st.p = b.getAttribute("data-p"); }); }); });
+    $$(".mat").forEach(function(b){ b.addEventListener("click", function(){ if (st.m === b.getAttribute("data-m")) return; $$(".mat").forEach(function(x){ x.setAttribute("aria-checked", x === b ? "true" : "false"); }); swap(function(){ st.m = b.getAttribute("data-m"); }); }); });
+    draw(); var rt; window.addEventListener("resize", function(){ clearTimeout(rt); rt = setTimeout(draw, 150); });
   })();
 
   /* --- Valódi képek, ha van src --- */
@@ -1766,6 +1866,8 @@ html.js .pats.in .pat svg{clip-path:inset(-40px -40px -80px -40px)}
     window.addEventListener("scroll", convScrub, { passive: true }); convScrub();
   }
 
+  var prog = $("#prog");
+  window.addEventListener("scroll", function(){ var m = document.documentElement.scrollHeight - window.innerHeight; prog.style.transform = "scaleX(" + (m > 0 ? window.scrollY / m : 0).toFixed(4) + ")"; }, { passive: true });
   $("#yr").textContent = new Date().getFullYear();
 })();
 </script>
