@@ -32,7 +32,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: "17"
@@ -55,27 +55,27 @@ jobs:
           rm -f test/widget_test.dart
 
       - name: Csomagok
-        run: flutter pub get
+        run: tool/ci_step.sh "Csomagok" flutter pub get
 
       - name: Adatbázis-kód generálása (Drift)
-        run: dart run build_runner build --delete-conflicting-outputs
+        run: tool/ci_step.sh "Drift" dart run build_runner build --delete-conflicting-outputs
 
       - name: Ikon és indítóképernyő
         run: |
-          dart run flutter_launcher_icons
-          dart run flutter_native_splash:create
+          tool/ci_step.sh "Ikon" dart run flutter_launcher_icons
+          tool/ci_step.sh "Splash" dart run flutter_native_splash:create
 
       - name: Android kiadási beállítások (név, API 36, aláírás)
-        run: dart run tool/android_release_setup.dart
+        run: tool/ci_step.sh "Android beállítás" dart run tool/android_release_setup.dart
 
       - name: Statikus elemzés
-        run: flutter analyze --no-fatal-infos
+        run: tool/ci_step.sh "Analyze" flutter analyze --no-fatal-infos
 
       - name: Tesztek
-        run: flutter test --reporter expanded
+        run: tool/ci_step.sh "Tesztek" flutter test --reporter expanded
 
       - name: Android App Bundle build
-        run: flutter build appbundle --release
+        run: tool/ci_step.sh "AAB build" flutter build appbundle --release
 
       - name: Ellenőrzés — célzott API szint és név
         run: |
