@@ -8,9 +8,9 @@
 <meta name="theme-color" content="#F4EFE4">
 <meta property="og:title" content="Nefelejcs Vendégház – Bakonybél">
 <meta property="og:description" content="Csendes utca, hegyre néző kert, közvetlen foglalás a házigazdáknál.">
-<meta property="og:image" content="https://wphcdn.cloud/direv/media/hotels/1453844/original/38273625.webp">
+<meta property="og:image" content="https://daekon-ship.github.io/daekon/latvanytervek/nefelejcs-vendeghaz/img/haz-kivulrol.webp">
 <meta property="og:locale" content="hu_HU">
-<!-- Látványterv-előnézet: élesítéskor a noindex törlendő. A fotók a Szallas.hu-s hirdetés képei (hotlink) – élesítéskor saját tárhelyre másolandók. -->
+<!-- Látványterv-előnézet: élesítéskor a noindex törlendő. A fotók a vendégház saját képei (img/). -->
 <meta name="robots" content="noindex">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='16' fill='%23F4EFE4'/%3E%3Cg fill='%236E8DB5'%3E%3Ccircle cx='16' cy='9.6' r='4.6'/%3E%3Ccircle cx='22.1' cy='14' r='4.6'/%3E%3Ccircle cx='19.8' cy='21.2' r='4.6'/%3E%3Ccircle cx='12.2' cy='21.2' r='4.6'/%3E%3Ccircle cx='9.9' cy='14' r='4.6'/%3E%3C/g%3E%3Ccircle cx='16' cy='16' r='2.8' fill='%23E5C46B'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -138,6 +138,10 @@ section{scroll-margin-top:80px}
 .facts li+li{padding-left:24px;border-left:1px solid var(--rule)}
 .facts b{display:block;font:400 30px/1.1 var(--serif);color:var(--moss);font-variation-settings:"opsz" 40;margin-bottom:8px}
 .facts span{font-size:15px;color:var(--soft);line-height:1.45;display:block}
+.house-side{display:flex;flex-direction:column-reverse;gap:32px}
+.house-pic{margin:0;display:grid;gap:10px}
+.house-pic .pic{border-radius:22px;aspect-ratio:3/2}
+.house-pic figcaption{font:italic 400 15px/1.4 var(--serif);color:var(--soft)}
 .house-quote{margin-top:36px;font:italic 300 clamp(20px,1.8vw,24px)/1.5 var(--serif);color:var(--moss);max-width:34ch}
 
 /* ---------- apartmanok ---------- */
@@ -196,11 +200,6 @@ section{scroll-margin-top:80px}
 .dist small{font-size:15px;margin-left:3px;color:rgba(244,239,228,.7)}
 .stop h3{font-size:18px;line-height:1.3}
 .stop p{font-size:14.5px;color:rgba(244,239,228,.72);line-height:1.5}
-.trail-pics{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:16px;margin-top:clamp(56px,7vw,88px)}
-.trail-pics .pic{border-radius:18px;aspect-ratio:4/3;background:var(--moss-deep)}
-.trail-pics figure{margin:0;display:grid;gap:10px}
-.trail-pics figcaption{font-size:14.5px;color:rgba(244,239,228,.72)}
-.trail-pics figcaption b{color:var(--linen);font-weight:600}
 
 /* ---------- vendégek ---------- */
 .guests{padding:clamp(80px,10vw,130px) 0}
@@ -322,8 +321,6 @@ section{scroll-margin-top:80px}
   .hours{grid-template-columns:1fr 1fr;row-gap:40px}
   .hours::before{display:none}
   .amen{grid-template-columns:1fr;gap:16px}
-  .trail-pics{grid-template-columns:1fr 1fr}
-  .trail-pics figure:first-child{grid-column:span 2}
   .gal{columns:2}
   .mbar{display:grid;grid-template-columns:1fr 1.35fr;gap:8px;position:fixed;left:0;right:0;bottom:0;z-index:60;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:rgba(244,239,228,.96);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 -1px 0 var(--rule);transform:translateY(110%);transition:transform .35s}
   .mbar.show{transform:none}
@@ -357,9 +354,6 @@ section{scroll-margin-top:80px}
   .stop:last-child::before{display:none}
   .stop .dot{grid-row:span 3;margin-top:4px}
   .stop .dist{margin-top:0}
-  .trail-pics{grid-template-columns:1fr}
-  .trail-pics figure:first-child{grid-column:auto}
-  .trail-pics .pic{aspect-ratio:16/10}
   .bar{grid-template-columns:118px 1fr 36px;gap:12px;font-size:15px}
   .gal{column-gap:10px}.gal button{margin-bottom:10px;border-radius:12px}
   .row{grid-template-columns:1fr}
@@ -422,7 +416,7 @@ section{scroll-margin-top:80px}
     </div>
     <div class="arch-wrap">
       <div class="pic arch">
-        <img src="https://wphcdn.cloud/direv/media/hotels/1453844/original/38273625.webp" data-fb="https://images.unsplash.com/photo-1688396538097-af54bb314ab6?auto=format&fit=crop&w=1100&q=72" alt="A Nefelejcs Vendégház és kertje" fetchpriority="high">
+        <img src="img/kert-kilatas.webp" alt="A vendégház kertje játszótérrel, háttérben a bakonyi dombokkal" fetchpriority="high">
       </div>
       <div class="note"><b>200 méter</b>a Szent Mauríciusz Monostorig, gyalog</div>
       <svg class="sprig" viewBox="0 0 180 120" aria-hidden="true">
@@ -446,13 +440,13 @@ section{scroll-margin-top:80px}
       <p>A Nefelejcs Vendégház Bakonybél egyik barátságos szálláshelye, pár perc sétára a falu központjától. Az apartmanok különállók, így mindenki a maga ritmusában pihenhet – a kert, a tűzrakó és a játszótér viszont közös, ott találkoznak a családok és a társaságok.</p>
       <p>A foglalást mi, a házigazdák intézzük és erősítjük meg – kérdés esetén közvetlenül velünk beszél.</p>
     </div>
-    <div>
+    <div class="house-side">
       <ul class="facts">
         <li><b>3</b><span>különálló apartman, akár együtt is</span></li>
         <li><b>200 m</b><span>a monostorig, 100 m a buszmegállóig</span></li>
         <li><b>4</b><span>ingyenes parkolóhely az udvarban</span></li>
       </ul>
-      <p class="house-quote">Reggel madárhang és hegyi levegő, este tűz a kertben. Ennyi kell, hogy a hétköznapok tényleg elmaradjanak.</p>
+      <figure class="house-pic"><div class="pic"><img loading="lazy" src="img/haz-kivulrol.webp" alt="A Nefelejcs Vendégház a Petőfi utca felől, pergolával és fakapuval"></div><figcaption>A ház a Petőfi utca felől</figcaption></figure>
     </div>
   </div>
 </section>
@@ -469,7 +463,7 @@ section{scroll-margin-top:80px}
     </div>
 
     <article class="apt" aria-labelledby="a1">
-      <div class="pic apt-pic"><img loading="lazy" src="https://wphcdn.cloud/direv/media/rooms/4983175/original/12389716.jpg" data-fb="https://images.unsplash.com/photo-1740446565612-9f7bc65b1ba7?auto=format&fit=crop&w=1000&q=70" alt="A földszinti apartman"><span class="tag">Földszint · 50 m²</span></div>
+      <div class="pic apt-pic"><img loading="lazy" src="img/foldszint-nappali.webp" alt="A földszinti apartman nappalija sarokkanapéval és étkezővel"><span class="tag">Földszint · 50 m²</span></div>
       <div class="apt-body">
         <p class="apt-for">Pároknak és kisgyermekes családoknak</p>
         <h3 id="a1">Földszinti apartman</h3>
@@ -484,7 +478,7 @@ section{scroll-margin-top:80px}
     </article>
 
     <article class="apt" aria-labelledby="a2">
-      <div class="pic apt-pic"><img loading="lazy" src="https://wphcdn.cloud/direv/media/rooms/4983149/original/12389719.jpg" data-fb="https://images.unsplash.com/photo-1727706572437-4fcda0cbd66f?auto=format&fit=crop&w=1000&q=70" alt="Az emeleti apartman"><span class="tag">Emelet · 70 m²</span></div>
+      <div class="pic apt-pic"><img loading="lazy" src="img/emelet-nappali-kandallo.webp" alt="Az emeleti apartman nappalija kandallóval"><span class="tag">Emelet · 70 m²</span></div>
       <div class="apt-body">
         <p class="apt-for">Baráti társaságoknak és nagy családoknak</p>
         <h3 id="a2">Emeleti apartman</h3>
@@ -499,7 +493,7 @@ section{scroll-margin-top:80px}
     </article>
 
     <article class="apt" aria-labelledby="a3">
-      <div class="pic apt-pic"><img loading="lazy" src="https://wphcdn.cloud/direv/media/hotels/1453844/original/38273628.webp" data-fb="https://images.unsplash.com/photo-1781781490874-5c8c46637ceb?auto=format&fit=crop&w=1000&q=70" alt="A kétszemélyes apartmanház"><span class="tag">Külön ház · 2 fő</span></div>
+      <div class="pic apt-pic"><img loading="lazy" src="img/terasz.webp" alt="A közös terasz grillel és függőággyal"><span class="tag">Külön ház · 2 fő</span></div>
       <div class="apt-body">
         <p class="apt-for">Kettesben töltött napokra</p>
         <h3 id="a3">Kétszemélyes apartmanház</h3>
@@ -574,11 +568,6 @@ section{scroll-margin-top:80px}
       </ol>
     </div>
 
-    <div class="trail-pics">
-      <figure><div class="pic"><img loading="lazy" src="https://images.unsplash.com/photo-1604342767712-f7448911dc51?auto=format&fit=crop&w=1200&q=70" alt="Erdei ösvény őszi lombok között"></div><figcaption><b>Bakonyi túrák</b> – könnyű sétától az egész napos kirándulásig.</figcaption></figure>
-      <figure><div class="pic"><img loading="lazy" src="https://images.unsplash.com/photo-1536746803623-cef87080bfc8?auto=format&fit=crop&w=800&q=70" alt="Csillagos ég fenyők felett"></div><figcaption><b>Csillagos esték</b> – kevés fény, sok csillag.</figcaption></figure>
-      <figure><div class="pic"><img loading="lazy" src="https://images.unsplash.com/photo-1553394703-6bf3ce6c5960?auto=format&fit=crop&w=800&q=70" alt="Ködös, fás domboldal"></div><figcaption><b>Minden évszakban</b> – őszi köd, téli csend, tavaszi zöld.</figcaption></figure>
-    </div>
   </div>
 </section>
 
@@ -740,30 +729,33 @@ section{scroll-margin-top:80px}
   d.documentElement.classList.replace('no-js','js');
   d.getElementById('yr').textContent=new Date().getFullYear();
 
-  /* Képhiba: előbb tartalék fotó, végül a papírszínű háttér marad */
-  function guard(img){
-    img.addEventListener('error',function(){
-      if(img.dataset.fb && !img.dataset.used){img.dataset.used=1;img.src=img.dataset.fb}
-      else {img.style.visibility='hidden'}
-    });
-  }
-  d.querySelectorAll('img[data-fb]').forEach(guard);
-
-  /* Galéria – a vendégház saját fotói (Szallas.hu-hirdetés). Élesítéskor saját tárhelyre. */
-  var B='https://wphcdn.cloud/direv/media/hotels/1453844/original/';
-  var GALLERY=['38273626','38273627','38273629','38273630','38273631','38273633','38273634','38273635','38273625'].map(function(id){return B+id+'.webp'});
-  GALLERY.push('https://wphcdn.cloud/direv/media/rooms/4983149/original/12389719.jpg','https://wphcdn.cloud/direv/media/rooms/4983175/original/12389716.jpg');
+  /* Galéria – a vendégház saját fotói (img/, a nagyítóban a nagy változat) */
+  var GALLERY=[
+    ['haz-kivulrol','A ház a Petőfi utca felől'],
+    ['kert-kilatas','A kert és a játszótér, háttérben a dombok'],
+    ['terasz','A közös terasz grillel és függőággyal'],
+    ['kert-pergola','Pergola és virágágyások a kertben'],
+    ['emelet-nappali-kandallo','Emeleti apartman – nappali kandallóval'],
+    ['emelet-konyha','Emeleti apartman – konyha és étkező'],
+    ['emelet-haloszoba','Emeleti apartman – franciaágyas hálószoba'],
+    ['emelet-egyagyas','Emeleti apartman – hálóhely'],
+    ['emelet-galeria-lepcso','Emeleti apartman – lépcső a galériára'],
+    ['emelet-furdo','Emeleti apartman – fürdőszoba'],
+    ['foldszint-nappali','Földszinti apartman – nappali és étkező'],
+    ['foldszint-konyha','Földszinti apartman – konyha'],
+    ['foldszint-haloszoba','Földszinti apartman – hálószoba'],
+    ['foldszint-furdo','Földszinti apartman – fürdőszoba']
+  ];
   var gal=d.getElementById('gal');
-  GALLERY.forEach(function(src,i){
+  GALLERY.forEach(function(g,i){
     var b=d.createElement('button'); b.type='button';
-    b.setAttribute('aria-label','Kép megnyitása ('+(i+1)+'. / '+GALLERY.length+')');
-    var im=d.createElement('img'); im.loading='lazy'; im.src=src; im.alt='Nefelejcs Vendégház, Bakonybél – '+(i+1)+'. kép';
-    im.addEventListener('error',function(){b.remove()});
+    b.setAttribute('aria-label','Nagyítás: '+g[1]);
+    var im=d.createElement('img'); im.loading='lazy'; im.src='img/'+g[0]+'-k.webp'; im.alt=g[1];
     b.appendChild(im); b.addEventListener('click',function(){open(i)}); gal.appendChild(b);
   });
 
   var lb=d.getElementById('lb'), lbi=lb.querySelector('img'), lbn=lb.querySelector('.lb-n'), cur=0, back;
-  function show(i){cur=(i+GALLERY.length)%GALLERY.length;lbi.src=GALLERY[cur];lbi.alt='Nefelejcs Vendégház – '+(cur+1)+'. kép';lbn.textContent=(cur+1)+' / '+GALLERY.length}
+  function show(i){cur=(i+GALLERY.length)%GALLERY.length;lbi.src='img/'+GALLERY[cur][0]+'.webp';lbi.alt=GALLERY[cur][1];lbn.textContent=GALLERY[cur][1]+' · '+(cur+1)+' / '+GALLERY.length}
   function open(i){back=d.activeElement;show(i);lb.classList.add('on');d.body.style.overflow='hidden';lb.querySelector('.x').focus()}
   function close(){lb.classList.remove('on');d.body.style.overflow='';back&&back.focus()}
   lb.querySelector('.x').onclick=close;
