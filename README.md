@@ -18,6 +18,7 @@
 | `brand/DAEKON-brand.html` | Önálló márkakézikönyv (minden benne: koncepció, szín, tipó, használat) |
 | `brand/4k-gallery.html` | 4K galéria egyetlen fájlban (képek beágyazva) |
 | `prototypes/` | Korai design prototípusok (a-editorial, c-living-interface) |
+| `public/latvanytervek/` | Ügyfél-látványtervek, mind önálló `index.html` — élőben: https://daekon-ship.github.io/daekon/latvanytervek/ |
 
 ## Futtatás
 
