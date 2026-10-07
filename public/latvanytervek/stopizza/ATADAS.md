@@ -8,7 +8,7 @@
 Kortárs nápolyi pizzéria, olasz editorial hangulattal. Pergamen alap, grafitfekete, paradicsompiros hangsúly, bazsalikomzöld csak jelzésként.
 Bodoni Moda (címek, olasz klasszikus) + Schibsted Grotesk (UI). Fraunces nincs. A betűméretek mérsékeltek: a hero „STOPIZZA” legfeljebb 92 px.
 
-Szekciók: hero (kilógó, görgetésre forgó pizza + „32 cm” pecsét) · marquee · 4 állítás · A legkeresettebbek (desktopon rögzített, vízszintesen haladó bemutató, mobilon húzható) · Hozzáállás (editorial képkivágások) · Alapanyagok (görgetésre váltó kép) · Teljes étlap (ragadós kategóriasáv) · Non solo pizza · Vélemények (szerkezet) · Helyszín · Lábléc.
+Szekciók: hero (kilógó pizza + „32 cm” pecsét) · marquee · 4 állítás · A legkeresettebbek (vízszintesen húzható sor) · Hozzáállás (editorial képkivágások) · Alapanyagok (5 kép + leírás) · Teljes étlap (ragadós kategóriasáv) · Non solo pizza · Vélemények (szerkezet) · Helyszín · Lábléc.
 
 Rendelés: kosár-drawer (mobilon alsó lap), mennyiség, extrák, megjegyzés, minimumrendelés-sáv, összeg. Mobilon fix alsó sáv: Étlap | Rendelés | Hívás. A nyitvatartási állapot (Rendelést fogadunk / Zárva) budapesti idő szerint él.
 
@@ -16,6 +16,7 @@ Rendelés: kosár-drawer (mobilon alsó lap), mennyiség, extrák, megjegyzés, 
 
 - 320, 375, 390, 430, 768, 1024, 1180, 1440, 1920 px: nincs vízszintes túlcsordulás, nincs JS-hiba.
 - Kontraszt: minden szövegszín legalább AA (legkisebb 4,7 : 1).
+- Nincs görgetéshez kötött mozgatás (rögzítés, parallax), csak egyszerű megjelenési átmenetek — valós eszközön stabil.
 - Érintési felületek legalább 44 px magasak. Mozgáscsökkentés (`prefers-reduced-motion`) mellett az animációk kikapcsolnak.
 
 ## Helyőrzők — egyeztetendő
