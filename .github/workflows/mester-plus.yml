@@ -58,7 +58,7 @@ jobs:
         run: tool/ci_step.sh "Csomagok" flutter pub get
 
       - name: Adatbázis-kód generálása (Drift)
-        run: tool/ci_step.sh "Drift" dart run build_runner build --delete-conflicting-outputs
+        run: tool/ci_step.sh "Drift" dart run build_runner build --delete-conflicting-outputs --force-jit
 
       - name: Ikon és indítóképernyő
         run: |

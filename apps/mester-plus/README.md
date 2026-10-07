@@ -27,7 +27,7 @@ Ha az Asztal OneDrive-ban van, akkor ezzel lépj a mappába: `cd %USERPROFILE%\O
 A `setup.bat` lépései:
 1. `flutter create .` – létrehozza a platform-mappákat (android, ios, windows, macos). A meglévő fájlokhoz nem nyúl.
 2. `flutter pub get` – letölti a csomagokat.
-3. `dart run build_runner build --delete-conflicting-outputs` – legenerálja az adatbázis-kódot (`*.g.dart`).
+3. `dart run build_runner build --delete-conflicting-outputs --force-jit` – legenerálja az adatbázis-kódot (`*.g.dart`). A `--force-jit` azért kell, mert a titkosított adatbázis build-hookot használ, amit a build_runner AOT-fordítója még nem támogat.
 4. `flutter analyze` – statikus elemzés.
 5. `flutter test` – unit és adatbázis-tesztek.
 
