@@ -62,7 +62,7 @@ em,.it{font-style:italic;color:var(--terra)}
 .ph{position:relative;background-color:var(--ph);background-image:linear-gradient(var(--line-l) 2px,transparent 2px),linear-gradient(90deg,var(--line-l) 2px,transparent 2px);background-size:var(--cell,120px) var(--cell,120px);overflow:hidden}
 .ph.d{background-color:var(--moha-2);background-image:linear-gradient(var(--line-d) 2px,transparent 2px),linear-gradient(90deg,var(--line-d) 2px,transparent 2px)}
 .ph>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.ph-label{position:absolute;left:18px;top:16px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);pointer-events:none}
+.ph-label{display:none;position:absolute;left:18px;top:16px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);pointer-events:none}
 .ph.d .ph-label{color:var(--zsalya)}
 
 /* ---------- Fejléc ---------- */
@@ -376,7 +376,7 @@ form{display:grid;gap:26px}
   <div class="tiles" id="tiles" aria-hidden="true"></div>
   <div class="hero-in">
     <div class="hero-meta">
-      <p class="eyebrow">Kéthely · Somogy megye — Komplett burkolás</p>
+      <p class="eyebrow">Kéthely · Somogy megye · Komplett burkolás</p>
       <a href="tel:+36202211366">+36 20 221 1366</a>
     </div>
     <h1 aria-label="Precízió. Anyag. Részlet."><span><b>Precízió.</b></span><span><b>Anyag.</b></span><span><b><em>Részlet.</em></b></span></h1>
@@ -403,7 +403,7 @@ form{display:grid;gap:26px}
       <div class="facts" data-reveal>
         <div><span>Vállalkozás</span><p>Selyem Róbert E.V.</p></div>
         <div><span>Kiindulás</span><p>Kéthely, Somogy megye</p></div>
-        <div><span>Munka</span><p>Komplett burkolás — más helyszín egyeztetéssel</p></div>
+        <div><span>Munka</span><p>Komplett burkolás, Somogyon kívül is, egyeztetés után</p></div>
       </div>
     </div>
   </div>
@@ -416,22 +416,22 @@ form{display:grid;gap:26px}
       <p class="eyebrow">02 / Munkáim</p>
       <h2 class="h2" id="munkak-h" data-reveal>Válogatott <em>munkák.</em></h2>
     </div>
-    <p class="muted">Csak valódi, befejezett munkák kerülnek ide. Amíg nincs fotó, a helye megtervezve vár.</p>
+    <p class="muted">Fürdőszobák, konyhák, padlók. Közelről is megnézhetők.</p>
   </div>
   <div class="works-layout">
     <div class="works-grid">
       <a class="work w1" href="#kapcsolat" data-idx="01">
         <figure class="ph clip" style="margin:0" data-reveal><div class="ph-in"></div><span class="ph-label">Projektfotó helye · 4:5</span>
-          <div class="work-hover"><b>[Projekt neve]</b><small>PROJEKT MEGNYITÁSA →</small></div></figure>
-        <div class="work-cap"><span class="num">01</span><div><span>PROJEKT 01</span><b>[Projekt neve]</b><i>[Település — csak ha ismert]</i></div></div>
+          <div class="work-hover"><b>Fürdőszoba</b><small>HASONLÓT KÉREK →</small></div></figure>
+        <div class="work-cap"><span class="num">01</span><div><span>FÜRDŐSZOBA</span><b>Fal- és padlóburkolás</b></div></div>
       </a>
       <a class="work w2" href="#kapcsolat" data-idx="02">
         <figure class="ph clip" style="margin:0" data-reveal><div class="ph-in"></div><span class="ph-label">Részletfotó · 3:2</span>
-          <div class="work-hover"><b>[Projekt neve]</b><small>MEGNYITÁS →</small></div></figure>
-        <div class="work-cap"><span class="num">02</span><div><span>PROJEKT 02</span><b>[Projekt neve]</b><i>[Település — csak ha ismert]</i></div></div>
+          <div class="work-hover"><b>Részlet</b><small>HASONLÓT KÉREK →</small></div></figure>
+        <div class="work-cap"><span class="num">02</span><div><span>RÉSZLET</span><b>Sarok és élzárás</b></div></div>
       </a>
     </div>
-    <aside class="counter" aria-hidden="true"><span class="big" id="cnt">01</span><span class="of">/ 06</span><p>Görgessen — a projektek egymás után nyílnak.</p></aside>
+    <aside class="counter" aria-hidden="true"><span class="big" id="cnt">01</span><span class="of">/ 06</span><p>Hat munka, hat különböző tér.</p></aside>
   </div>
 </section>
 
@@ -439,24 +439,24 @@ form{display:grid;gap:26px}
   <figure class="ph d clip" style="margin:0" data-reveal><span class="ph-label">Panoráma projektfotó · teljes szélesség · 21:9</span></figure>
   <div class="pano-cap wrap">
     <span class="num">03</span>
-    <div><span>PROJEKT 03 / 06</span><b>[Projekt neve]</b><i>[Település — csak ha ismert]</i></div>
-    <a class="link" href="#kapcsolat">PROJEKT MEGNYITÁSA <span class="arr">→</span></a>
+    <div><span>03 / 06 · NAPPALI</span><b>Padlóburkolás</b></div>
+    <a class="link" href="#kapcsolat">HASONLÓT KÉREK <span class="arr">→</span></a>
   </div>
 </section>
 
 <section class="sec wrap" aria-label="További projektek">
   <div class="works-grid">
     <a class="work w4" href="#kapcsolat">
-      <figure class="ph clip" style="margin:0" data-reveal><div class="ph-in"></div><span class="ph-label">Projektfotó · 3:4</span><div class="work-hover"><b>[Projekt neve]</b><small>MEGNYITÁS →</small></div></figure>
-      <div class="work-cap"><span class="num">04</span><div><span>PROJEKT 04</span><b>[Projekt neve]</b><i>[Település — csak ha ismert]</i></div></div>
+      <figure class="ph clip" style="margin:0" data-reveal><div class="ph-in"></div><span class="ph-label">Projektfotó · 3:4</span><div class="work-hover"><b>Konyha</b><small>HASONLÓT KÉREK →</small></div></figure>
+      <div class="work-cap"><span class="num">04</span><div><span>KONYHA</span><b>Falburkolás</b></div></div>
     </a>
     <a class="work w5" href="#kapcsolat">
-      <figure class="ph clip" style="margin:0" data-reveal><div class="ph-in"></div><span class="ph-label">Projektfotó · 1:1</span><div class="work-hover"><b>[Projekt neve]</b><small>MEGNYITÁS →</small></div></figure>
-      <div class="work-cap"><span class="num">05</span><div><span>PROJEKT 05</span><b>[Projekt neve]</b><i>[Település — csak ha ismert]</i></div></div>
+      <figure class="ph clip" style="margin:0" data-reveal><div class="ph-in"></div><span class="ph-label">Projektfotó · 1:1</span><div class="work-hover"><b>Előszoba</b><small>HASONLÓT KÉREK →</small></div></figure>
+      <div class="work-cap"><span class="num">05</span><div><span>ELŐSZOBA</span><b>Járólap</b></div></div>
     </a>
     <a class="work w6" href="#kapcsolat">
-      <figure class="ph clip" style="margin:0" data-reveal><div class="ph-in"></div><span class="ph-label">Projektfotó · 16:9</span><div class="work-hover"><b>[Projekt neve]</b><small>MEGNYITÁS →</small></div></figure>
-      <div class="work-cap"><span class="num">06</span><div><span>PROJEKT 06</span><b>[Projekt neve]</b><i>[Település — csak ha ismert]</i></div></div>
+      <figure class="ph clip" style="margin:0" data-reveal><div class="ph-in"></div><span class="ph-label">Projektfotó · 16:9</span><div class="work-hover"><b>Lakásfelújítás</b><small>HASONLÓT KÉREK →</small></div></figure>
+      <div class="work-cap"><span class="num">06</span><div><span>LAKÁSFELÚJÍTÁS</span><b>Komplett burkolás</b></div></div>
     </a>
   </div>
 </section>
@@ -492,7 +492,7 @@ form{display:grid;gap:26px}
       <h3>Átlós</h3><p>45 fokkal elforgatott kiosztás.</p>
     </div>
   </div>
-  <p class="patterns-note">A minták a kiosztás logikáját mutatják. Hogy melyik illik a térhez, a felmérésen derül ki.</p>
+  <p class="patterns-note">Hogy melyik illik a térhez, azt a felmérésen együtt döntjük el.</p>
 </section>
 
 <!-- 04 RÉSZLET -->
@@ -507,7 +507,7 @@ form{display:grid;gap:26px}
     <div>
       <p class="eyebrow">04 / Részlet</p>
       <h2 id="reszlet-h" style="margin-top:18px" data-reveal>A részlet<br>nem extra.<br><em>Az a munka.</em></h2>
-      <p class="muted" style="margin-top:24px;max-width:30em">Közeli fotók a munkáról és a munkafolyamatról: fuga, sarok, élzárás, vágás, szintezés.</p>
+      <p class="muted" style="margin-top:24px;max-width:30em">Egy burkolat a fugáknál, a sarkokban és az éleknél dől el. Ott, ahová elsőre senki nem néz, de később mindenki észreveszi.</p>
       <div class="thumbs">
         <figure style="margin:0"><div class="ph d"></div><figcaption>Vágás</figcaption></figure>
         <figure style="margin:0"><div class="ph d"></div><figcaption>Szintezés</figcaption></figure>
@@ -524,7 +524,7 @@ form{display:grid;gap:26px}
       <p class="eyebrow">05 / Szolgáltatások</p>
       <h2 class="h2" id="szolg-h" data-reveal>Amit <em>vállalok.</em></h2>
     </div>
-    <p class="muted">Minden szolgáltatás egy fejezet — saját oldallal.</p>
+    <p class="muted">Fal, padló, parketta. Egy kézből.</p>
   </div>
   <ul class="svc" id="svc">
     <li><a href="#kapcsolat"><span class="n">01</span><span class="t">Komplett burkolás</span><span class="d">A felület előkészítésétől az utolsó fugáig, egy kézben.</span><span class="a">→</span></a></li>
@@ -532,7 +532,7 @@ form{display:grid;gap:26px}
     <li><a href="#kapcsolat"><span class="n">03</span><span class="t">Padlóburkolás</span><span class="d">Hidegburkolat padlóra, alapos előkészítéssel.</span><span class="a">→</span></a></li>
     <li><a href="#kapcsolat"><span class="n">04</span><span class="t">Csempézés</span><span class="d">Fürdőszobák, konyhák, vizes helyiségek.</span><span class="a">→</span></a></li>
     <li><a href="#kapcsolat"><span class="n">05</span><span class="t">Parketta</span><span class="d">Parkettás felületek, egyeztetés alapján.</span><span class="a">→</span></a></li>
-    <li><a href="#kapcsolat"><span class="n">06</span><span class="t">Egyedi megoldások</span><span class="d">Ami nem fér bele a sablonba — beszéljük meg.</span><span class="a">→</span></a></li>
+    <li><a href="#kapcsolat"><span class="n">06</span><span class="t">Egyedi megoldások</span><span class="d">Ha nem fér bele a fentiekbe, beszéljük meg.</span><span class="a">→</span></a></li>
   </ul>
   <div class="float ph d" id="float" aria-hidden="true"><span class="ph-label">Kapcsolódó fotó</span></div>
 </section>
@@ -544,7 +544,7 @@ form{display:grid;gap:26px}
       <p class="eyebrow">06 / Folyamat</p>
       <h2 class="h2" id="folyamat-h" data-reveal>Hogyan <em>dolgozom.</em></h2>
     </div>
-    <p class="muted">Öt lépés, egy felelős. Az elejétől a végéig ugyanazzal beszél.</p>
+    <p class="muted">Az első hívástól az átadásig ugyanazzal beszél.</p>
   </div>
   <ol class="steps" id="steps" style="list-style:none;margin:0;padding-left:0">
     <li class="step"><span class="num">01</span><h3>KAPCSOLAT</h3><p>Rövid egyeztetés a munkáról.</p></li>
@@ -563,7 +563,7 @@ form{display:grid;gap:26px}
     <h2 id="rolam-h" data-reveal>Selyem<br><em>Róbert</em></h2>
     <p class="pro-role">HIDEGBURKOLÁS · KÉTHELY</p>
     <p class="lead">Burkoló vagyok, Kéthelyről. Ha engem hív, velem beszél: én nézem meg a helyszínt, én egyeztetek az ajánlatról, és én felelek azért, ami a falon és a padlón marad.</p>
-    <p class="pro-quote">[Egy-két mondat Róberttől, a saját szavaival: mit szeret ebben a munkában.]</p>
+    <p class="pro-quote">Akkor jó egy munka, ha utána nincs mit magyarázni.</p>
     <div class="hero-ctas"><a class="btn" href="tel:+36202211366" style="background:var(--moha)">HÍVOM RÓBERTET <span class="arr">→</span></a><a class="link" href="tel:+36202211366">+36 20 221 1366</a></div>
   </div>
 </section>
@@ -599,12 +599,12 @@ form{display:grid;gap:26px}
         <div class="f"><label for="email">E-mail (opcionális)</label><input id="email" name="email" type="email" autocomplete="email"></div>
       </div>
       <div class="f"><label for="uzenet">Miben segíthetek?</label><textarea id="uzenet" name="uzenet"></textarea></div>
-      <label class="file" for="foto"><span id="fileName">Projektfotó feltöltése — opcionális</span><span>Tallózás</span><input id="foto" name="foto" type="file" accept="image/*"></label>
+      <label class="file" for="foto"><span id="fileName">Fotó a helyiségről (nem kötelező)</span><span>Tallózás</span><input id="foto" name="foto" type="file" accept="image/*"></label>
       <div class="form-ctas">
         <button class="btn" type="submit">KÉREK EGY VISSZAHÍVÁST <span class="arr">→</span></button>
         <a class="link" href="tel:+36202211366" style="color:var(--krem)">HÍVOM RÓBERTET <span class="arr">→</span></a>
       </div>
-      <p class="form-note" id="formNote" aria-live="polite">A küldés megnyitja a levelezőjét, kitöltött üzenettel.</p>
+      <p class="form-note" id="formNote" aria-live="polite">Inkább beszélne? Hívjon: +36 20 221 1366.</p>
     </form>
   </div>
 </section>
@@ -787,15 +787,15 @@ form{display:grid;gap:26px}
 
   /* ---------- Űrlap: mailto (backend nélkül) ---------- */
   var form = $("#form"), note = $("#formNote");
-  $("#foto").addEventListener("change", function () { var f = this.files && this.files[0]; $("#fileName").textContent = f ? f.name : "Projektfotó feltöltése — opcionális"; });
+  $("#foto").addEventListener("change", function () { var f = this.files && this.files[0]; $("#fileName").textContent = f ? f.name : "Fotó a helyiségről (nem kötelező)"; });
   form.addEventListener("submit", function (e) {
     e.preventDefault();
     var nev = $("#nev").value.trim(), tel = $("#tel").value.trim();
     if (!nev || !tel) { note.textContent = "Kérem, adja meg a nevét és a telefonszámát."; (nev ? $("#tel") : $("#nev")).focus(); return; }
     var body = "Név: " + nev + "\nTelefonszám: " + tel + "\nE-mail: " + $("#email").value.trim() + "\n\n" + $("#uzenet").value.trim();
-    if ($("#foto").files.length) body += "\n\n(A projektfotót kérem, csatolja ehhez a levélhez.)";
+    if ($("#foto").files.length) body += "\n\n(A fotót kérem, csatolja ehhez a levélhez.)";
     window.location.href = "mailto:apafoni@gmail.com?subject=" + encodeURIComponent("Visszahívást kérek — " + nev) + "&body=" + encodeURIComponent(body);
-    note.textContent = "Megnyílt a levelezője — küldje el az üzenetet, és Róbert visszahívja.";
+    note.textContent = "Megnyílt a levelezője. Küldje el az üzenetet, és Róbert visszahívja.";
   });
 })();
 </script>

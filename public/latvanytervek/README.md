@@ -10,4 +10,4 @@
 
 | Mappa | Ügyfél | Megjegyzés |
 |---|---|---|
-| `selyem-robert/` | Selyem Róbert E.V. — burkolás, Kéthely | Fotóhelyekkel: valódi munkafotókra vár. Előtte–utána slider rejtve (`data-ready`), az űrlap most `mailto:`. |
+| `selyem-robert/` | Selyem Róbert E.V. — burkolás, Kéthely | Kész szövegekkel; a fotóhelyek (rejtett `.ph-label` jelöléssel) valódi munkafotókra várnak. A projektkategóriákat (fürdőszoba, konyha…) a valódi fotókhoz kell igazítani. Előtte–utána slider rejtve (`data-ready`), az űrlap most `mailto:`. |
