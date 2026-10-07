@@ -11,7 +11,7 @@
 <meta property="og:locale" content="hu_HU">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wdth,wght@75..100,400..700&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=Inter:wght@400;500;600&display=swap">
 
 <script type="application/ld+json">
 {
@@ -586,6 +586,49 @@ p.proj-scope span{color:var(--muted);font-size:.75rem}
 .ftr-mark span{color:var(--fg-2)}
 .ftr-base a{font-weight:400;letter-spacing:.04em;color:var(--fg-2)}
 
+
+/* ===================== Tipográfia v8: Inter Tight + Inter ===================== */
+:root{--f-serif:"Inter Tight","Inter","Helvetica Neue",Arial,sans-serif;--f-ui:"Inter","Helvetica Neue",Arial,sans-serif;--t-h2:clamp(1.5rem,2.2vw,2.25rem);--t-hero:clamp(2.125rem,min(4.4vw,7.6svh),4rem);--t-h3:clamp(1.125rem,1.4vw,1.375rem)}
+body{font-size:.9375rem;line-height:1.6;font-feature-settings:"cv11","ss01"}
+.h2,.hero h1,.contact h2,h3.proj-title,.svc-t,.step-n,.score,.conv-r b,.cr-t,.ftr-mark,.mmenu nav a,.tr-item blockquote,.call a,.ab-sign,.proj-id{font-family:var(--f-serif);font-weight:500;font-style:normal;letter-spacing:-.025em}
+.hero h1{line-height:1.02;letter-spacing:-.035em}
+.it{font-style:normal}
+.h2{line-height:1.1}
+.svc-t{font-size:clamp(1rem,1.2vw,1.1875rem);letter-spacing:-.015em}
+h3.proj-title{font-size:var(--t-h3)}
+.step-n,.step.on .step-n{font-size:1.0625rem;font-weight:500;letter-spacing:0}
+.score{font-size:clamp(2.5rem,3.4vw,3.25rem);font-weight:400}
+.conv-r b{font-size:clamp(1.125rem,1.4vw,1.375rem)}
+.cr-t{font-size:clamp(1.0625rem,1.3vw,1.25rem)}
+.contact h2{font-size:clamp(1.875rem,3.2vw,3rem);letter-spacing:-.03em}
+.call a{font-size:clamp(1.375rem,2vw,1.875rem);letter-spacing:-.02em}
+.tr-item blockquote{font-weight:400;font-size:clamp(1rem,1.2vw,1.1875rem);line-height:1.5;letter-spacing:-.01em}
+.tr-item blockquote.ph-text{font-style:normal}
+.ab-sign{font-size:1.0625rem!important}
+.mmenu nav a{font-size:clamp(1.5rem,6.4vw,2rem)}
+.ftr-mark{font-size:clamp(1.25rem,2.2vw,1.75rem);letter-spacing:-.02em;white-space:normal;margin-top:clamp(32px,3.4vw,52px)}
+/* ritkítás visszafogva */
+.label{font-size:.6875rem;letter-spacing:.12em}
+.brand-n{font-size:.8125rem;letter-spacing:.1em}
+.brand-s{font-size:.5625rem;letter-spacing:.14em}
+.btn{letter-spacing:.08em;font-size:.75rem}
+.mbar a{letter-spacing:.08em}
+.ph-cap b,.tblock span,.ly-cap{letter-spacing:.1em}
+.tblock b{letter-spacing:.04em}
+.ly-steps h3,.form-h h3,.conv-l li{letter-spacing:.08em}
+.ly-svg text,.hero-plan text{letter-spacing:.12em}
+.fld--tel input{letter-spacing:0}
+
+
+/* ===================== Csak hívás (v8) ===================== */
+.ct-grid{align-items:end}
+.ct-call{grid-column:1/span 6;position:static}
+.ct-side{grid-column:8/span 5}
+.ct-meta{grid-template-columns:1fr;gap:14px;border-top:1px solid var(--line);padding-top:16px}
+.call a{font-size:clamp(1.625rem,2.6vw,2.375rem)}
+.hdr-cta .num,.hero-cta .num{letter-spacing:.02em;font-weight:500}
+.mbar{grid-template-columns:1fr!important}
+
 /* ================= Tablet ================= */
 @media (max-width:1180px){
   .nav,.rail{display:none}
@@ -746,6 +789,16 @@ p.proj-scope span{color:var(--muted);font-size:.75rem}
   .strip .ph{height:min(40vh,260px)}
 }
 
+
+@media (max-width:767px){
+  .ftr-mark{font-size:1.25rem}
+  .hero h1{font-size:clamp(2.125rem,9.6vw,2.625rem)}
+  .contact h2{font-size:1.875rem}
+  .h2{font-size:1.5rem}
+}
+
+@media (max-width:1023px){ .ct-call,.ct-side{grid-column:1/-1} .ct-grid{row-gap:18px} .call{border-bottom:0} }
+@media (max-width:767px){ .mbar a{background:var(--bronze)!important;color:#F7F2EA!important} }
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   *,*::before,*::after{transition-duration:.01ms!important;animation:none!important}
@@ -776,7 +829,7 @@ p.proj-scope span{color:var(--muted);font-size:.75rem}
       <a class="tlink" href="#rolunk">Rólunk</a>
       <a class="tlink" href="#kapcsolat">Kapcsolat</a>
     </nav>
-    <a class="btn btn--line hdr-cta" href="#ajanlat">Ajánlatkérés <span class="ar">→</span></a>
+    <a class="btn btn--line hdr-cta" href="tel:+36701731379">Hívás <span class="num">+36 70 173 13 79</span></a>
     <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mmenu" id="menuBtn"><span class="mb-l">MENU</span><i aria-hidden="true"></i></button>
   </div>
 </header>
@@ -807,7 +860,7 @@ p.proj-scope span{color:var(--muted);font-size:.75rem}
           <p class="hero-lede">Lakások és családi házak precíz kivitelezése a bontástól az elkészült otthonig.</p>
           <div class="hero-cta">
             <a class="btn btn--fill only-m" href="tel:+36701731379">Hívás most <span class="ar">↗</span></a>
-            <a class="btn btn--fill only-d" href="#ajanlat">Ajánlatot kérek <span class="ar">→</span></a>
+            <a class="btn btn--fill only-d" href="tel:+36701731379">Hívás <span class="num">+36 70 173 13 79</span></a>
             <a class="btn btn--line only-d" href="#munkaink">Munkáink <span class="ar">↓</span></a>
           </div>
         </div>
@@ -938,7 +991,7 @@ p.proj-scope span{color:var(--muted);font-size:.75rem}
         <p class="label kick">Szolgáltatások</p>
         <h2 id="svc-h" class="h2">Amit vállalunk</h2>
         <p>Egy felújításon belül, egy ütemtervben. Budapesten és Pest megyében.</p>
-        <a class="tlink side-link" href="#ajanlat">Ajánlatot kérek →</a>
+        <a class="tlink side-link" href="tel:+36701731379">Hívás: +36 70 173 13 79</a>
       </div>
       <div class="svc-list" id="svcList"><div class="svc-prev" aria-hidden="true" id="svcPrev"></div></div>
     </div>
@@ -955,7 +1008,7 @@ p.proj-scope span{color:var(--muted);font-size:.75rem}
       <ol class="steps" id="steps">
         <li class="step"><span class="step-n">01</span><h3>Első egyeztetés</h3><p>Telefonon röviden átbeszéljük a feladatot.</p></li>
         <li class="step"><span class="step-n">02</span><h3>Helyszíni felmérés</h3><p>Megnézzük a munkaterületet és pontosítjuk az igényeket.</p></li>
-        <li class="step"><span class="step-n">03</span><h3>Ajánlat</h3><p>Átláthatóan összefoglaljuk a vállalt munkát.</p></li>
+        <li class="step"><span class="step-n">03</span><h3>Árajánlat</h3><p>Átláthatóan összefoglaljuk a vállalt munkát.</p></li>
         <li class="step"><span class="step-n">04</span><h3>Kivitelezés</h3><p>A munkafolyamatokat összehangoltan végezzük.</p></li>
         <li class="step"><span class="step-n">05</span><h3>Átadás</h3><p>A kész munkát közösen ellenőrizzük és átadjuk.</p></li>
       </ol>
@@ -1016,41 +1069,14 @@ p.proj-scope span{color:var(--muted);font-size:.75rem}
             <span class="label">Hívás</span>
             <a href="tel:+36701731379">+36 70 173 13 79 <span class="ar">↗</span></a>
           </div>
+        </div>
+        <div class="ct-side">
           <div class="ct-meta">
             <div>E-mail<b>tgodzsak@gmail.com</b></div>
             <div>Szolgáltatási terület<b>Budapest és környéke / Pest megye</b></div>
+            <div>Vállalás<b>Teljes lakás- és házfelújítás</b></div>
           </div>
         </div>
-        <form class="form" id="ajanlat" novalidate aria-labelledby="f-h">
-          <div class="form-h"><h3 id="f-h">Ajánlatkérés</h3><p>Rövid űrlap. Visszahívjuk.</p></div>
-          <div class="f2">
-            <div class="fld"><label for="f-name"><b>Név</b></label><input id="f-name" name="nev" autocomplete="name" required placeholder="Teljes név"><span class="err" aria-live="polite"></span></div>
-            <div class="fld fld--tel"><label for="f-tel"><b>Telefonszám</b> · ezen hívjuk vissza</label><input id="f-tel" name="telefon" type="tel" inputmode="tel" autocomplete="tel" required placeholder="+36 __ ___ ____"><span class="err" aria-live="polite"></span></div>
-          </div>
-          <div class="f2">
-            <div class="fld"><label for="f-mail">E-mail (nem kötelező)</label><input id="f-mail" name="email" type="email" autocomplete="email" placeholder="nev@email.hu"><span class="err" aria-live="polite"></span></div>
-            <div class="fld"><label for="f-loc"><b>Hol található az ingatlan?</b></label><input id="f-loc" name="helyszin" autocomplete="address-level2" placeholder="pl. Budapest XI. vagy Érd"></div>
-          </div>
-          <fieldset class="fld">
-            <legend><b>Milyen munkáról van szó?</b></legend>
-            <div class="chips">
-              <label><input type="checkbox" id="w1" name="munka" value="Teljes lakásfelújítás"><span>Teljes lakásfelújítás</span></label>
-              <label><input type="checkbox" id="w2" name="munka" value="Családi ház felújítás"><span>Családi ház felújítás</span></label>
-              <label><input type="checkbox" id="w3" name="munka" value="Festés"><span>Festés</span></label>
-              <label><input type="checkbox" id="w4" name="munka" value="Gipszkarton"><span>Gipszkarton</span></label>
-              <label><input type="checkbox" id="w5" name="munka" value="Kőművesmunka"><span>Kőművesmunka</span></label>
-              <label><input type="checkbox" id="w6" name="munka" value="Hőszigetelés"><span>Hőszigetelés</span></label>
-              <label><input type="checkbox" id="w7" name="munka" value="Bontás"><span>Bontás</span></label>
-              <label><input type="checkbox" id="w8" name="munka" value="Egyéb"><span>Egyéb</span></label>
-            </div>
-          </fieldset>
-          <div class="fld"><label for="f-msg">Rövid leírás</label><textarea id="f-msg" name="leiras" rows="2" placeholder="Pl. 62 m²-es panellakás, fürdő és konyha is érintett, tavaszi kezdés."></textarea></div>
-          <input class="hp" type="text" id="f-hp" name="weboldal" tabindex="-1" autocomplete="off" aria-hidden="true">
-          <div class="form-sub">
-            <button class="btn btn--bronze" type="submit">Kérek visszahívást <span class="ar">→</span></button>
-            <small>Az adatokat csak a visszahíváshoz használjuk. <a class="tlink" href="#adatkezeles">Adatkezelés</a></small>
-          </div>
-        </form>
       </div>
     </div>
   </section>
@@ -1074,8 +1100,7 @@ p.proj-scope span{color:var(--muted);font-size:.75rem}
 </footer>
 
 <nav class="mbar" id="mbar" aria-label="Gyors elérés">
-  <a href="tel:+36701731379">HÍVÁS ↗</a>
-  <a href="#ajanlat">AJÁNLATKÉRÉS →</a>
+  <a href="tel:+36701731379">Hívás · +36 70 173 13 79</a>
 </nav>
 
 <script>
@@ -1323,21 +1348,6 @@ p.proj-scope span{color:var(--muted);font-size:.75rem}
   mbtn.addEventListener("click", function(){ menu(!document.body.classList.contains("menu-open")); });
   $$("a", mmenu).forEach(function(a){ a.addEventListener("click", function(){ menu(false); }); });
   document.addEventListener("keydown", function(e){ if (e.key === "Escape") menu(false); });
-
-  /* --- Űrlap --- */
-  var form = $("#ajanlat");
-  function fieldErr(id, msg){ var f = $("#" + id).closest(".fld"); f.classList.toggle("bad", !!msg); $(".err", f).textContent = msg || ""; }
-  form.addEventListener("submit", function(e){
-    e.preventDefault();
-    if ($("#f-hp").value) return;
-    var ok = true, name = $("#f-name").value.trim(), tel = $("#f-tel").value.replace(/[^\d+]/g, ""), mail = $("#f-mail").value.trim();
-    if (name.length < 2) { fieldErr("f-name", "Kérjük, adja meg a nevét."); ok = false; } else fieldErr("f-name");
-    if (tel.replace(/\D/g, "").length < 9) { fieldErr("f-tel", "Adjon meg egy telefonszámot, amin visszahívhatjuk."); ok = false; } else fieldErr("f-tel");
-    if (mail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)) { fieldErr("f-mail", "Az e-mail-cím formátuma nem megfelelő."); ok = false; } else fieldErr("f-mail");
-    if (!ok) { var b = $(".fld.bad input", form); if (b) b.focus(); return; }
-    /* Élesítéskor ide jön a szerveroldali beküldés (fetch POST). */
-    form.innerHTML = '<div class="form-done" role="status"><h3>Az űrlap még nincs élesítve</h3><p>Ez az előnézet nem küld el adatot. Az éles oldalon itt jelenik meg a visszaigazolás.</p><p>Addig is hívjon: <a href="tel:+36701731379">+36 70 173 13 79</a></p></div>';
-  });
 
   /* --- Megjelenés görgetéskor --- */
   var rv = $$(".rv-img, .rv-txt, .rv-draw");
