@@ -464,6 +464,128 @@ html.js .rv-img.in .sk{clip-path:inset(0)}
 html.js .rv-txt{transform:translateY(14px);opacity:.001;transition:transform .9s var(--ease),opacity .9s var(--ease)}
 html.js .rv-txt.in{transform:none;opacity:1}
 
+/* ===================== AUDIT – felülírások (v7) ===================== */
+@font-face{font-family:"NR Fallback";src:local("Georgia");size-adjust:94%;ascent-override:92%}
+:root{--f-serif:"Newsreader","NR Fallback",Georgia,serif;--sec:clamp(64px,6.4vw,112px);--t-h2:clamp(1.75rem,2.6vw,2.625rem);--bg-2:#1B1C19}
+[hidden]{display:none!important}
+section[id],form[id]{scroll-margin-top:80px}
+.h2{letter-spacing:-.012em}
+.hero h1{letter-spacing:-.02em}
+.kick::before{width:20px}
+.layers,.proc,.contact{border-top:1px solid var(--line)}
+.btn,.hdr-cta{min-height:44px}
+.hdr-cta{font-size:.6875rem}
+
+/* Fotóhely: papírtónus + vonalrajz + rajzlap-szövegmező */
+.ph::before{display:none}
+.ph::after{background:linear-gradient(105deg,rgba(255,232,200,.06) 0%,rgba(255,232,200,0) 40%)}
+.ph-cap{left:auto;right:14px;bottom:14px;display:block;max-width:calc(100% - 28px);padding:7px 10px;border:1px solid rgba(198,188,170,.3);background:rgba(18,19,18,.6);font-size:.6875rem;line-height:1.4;color:var(--fg-2)}
+.ph-cap b{display:block;font-size:.5625rem;letter-spacing:.16em;margin-bottom:1px;color:var(--sand)}
+.ph--light .ph-cap{border-color:rgba(21,22,21,.2);background:rgba(242,240,234,.75);color:#3A3A35}
+.ph--light .ph-cap b{color:#151615}
+.ph .sk{color:rgba(198,188,170,.5)}
+
+/* Hero */
+.hero-art{align-items:flex-end;padding-bottom:4px}
+.hero-plan{max-height:92%}
+.hero-plan text{font-size:10px}
+.tblock{grid-template-columns:repeat(3,minmax(0,1fr))}
+.tblock span{font-size:.625rem;color:var(--muted)}
+
+/* Szemlélet */
+.st-h{grid-column:1/span 6}
+.st-h .h2{max-width:20ch}
+.cr-head .label{margin:0}
+.st-copy{grid-column:8/span 5}
+.conv-dot{width:8px;height:8px;border-radius:0;box-shadow:none}
+.conv-r b{font-size:clamp(1.375rem,1.8vw,1.75rem)}
+
+/* Rétegek */
+.layers{height:250vh}
+.ly-steps li{opacity:.55}
+.ly-svg .lead{opacity:.5}
+.ly-cap{padding-left:9.4%}
+.ly-bar i{background:var(--sand)}
+
+/* Referenciák */
+.proj--b .m2{align-self:start;margin-bottom:0}
+.proj--b .proj-meta{margin-top:clamp(18px,2vw,28px)}
+.proj-meta{display:flex;justify-content:space-between;align-items:baseline;gap:10px 32px;flex-wrap:wrap}
+h3.proj-title{font-family:var(--f-serif);font-weight:400;font-size:var(--t-h3);line-height:1.15;letter-spacing:-.01em;display:flex;gap:14px;align-items:baseline;transition:transform .6s var(--ease)}
+.proj-title .num{font-family:var(--f-ui);font-size:.75rem;letter-spacing:.1em;color:var(--muted)}
+p.proj-scope{font-size:.8125rem;line-height:1.5;color:var(--fg-2);text-align:right;display:flex;flex-direction:column;gap:2px}
+p.proj-scope span{color:var(--muted);font-size:.75rem}
+.proj:hover h3.proj-title{transform:translateX(4px)}
+
+/* Oldalfejes szekciók (szolgáltatások, folyamat) */
+.side{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:28px clamp(20px,2.6vw,44px);align-items:start}
+.side-h{grid-column:1/span 4;position:sticky;top:96px;display:flex;flex-direction:column;gap:14px}
+.side-h p{color:var(--muted);font-size:var(--t-s);max-width:24em}
+.side-link{font-size:.8125rem;width:fit-content;color:var(--fg);margin-top:4px}
+.svc-list,.steps{grid-column:5/span 8}
+.svc-head{grid-template-columns:40px minmax(0,1fr) minmax(0,1.15fr) 168px;min-height:60px;gap:16px;padding-block:10px}
+.svc-d{max-width:none}
+.svc-ar{display:none}
+.svc-prev{width:168px}
+.svc-t{font-size:clamp(1.125rem,1.45vw,1.5rem)}
+
+/* Folyamat: ütemterv-lista */
+.steps{display:flex;flex-direction:column;border-top:1px solid var(--line);padding:0}
+.step{display:grid;grid-template-columns:56px minmax(0,200px) minmax(0,1fr);gap:16px;align-items:baseline;padding:16px 0;border-bottom:1px solid var(--line)}
+.step::before{display:none}
+.step-n,.step.on .step-n{font-size:1.375rem;color:var(--sand)}
+.step h3{margin:0;font-size:.9375rem;font-weight:500;letter-spacing:0;text-transform:none}
+.step p{margin:0;color:var(--fg-2)}
+
+/* Ügyfelek */
+.trust{padding-block:var(--sec) calc(var(--sec)*.5)}
+.tr-list{grid-column:5/span 8;display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,2.6vw,44px)}
+.tr-item{margin:0;display:flex;flex-direction:column;justify-content:space-between;gap:18px;padding-top:16px;border-top:1px solid var(--line-2)}
+.tr-item blockquote{margin:0;font-family:var(--f-serif);font-weight:400;font-size:clamp(1.125rem,1.4vw,1.375rem);line-height:1.38;letter-spacing:-.005em;color:var(--fg)}
+.tr-item blockquote.ph-text{color:var(--muted);font-style:italic}
+.tr-item figcaption{font-size:.75rem;color:var(--muted)}
+.tr-item figcaption b{color:var(--fg);font-weight:600}
+.ticks i{width:6px;height:6px;background:var(--fg)}
+
+/* Rólunk */
+.ab-grid{align-items:start}
+.ab-img{grid-column:1/span 5}
+.ab-copy{grid-column:7/span 5;padding-top:clamp(0px,5vw,80px)}
+.ab-copy p{font-size:var(--t-b);color:var(--fg-2)}
+.ab-sign{font-family:var(--f-serif);font-size:1.25rem!important;color:var(--fg)!important;border-top:1px solid var(--line);padding-top:14px;margin-top:4px}
+.ab-sign span{font-family:var(--f-ui);font-size:.8125rem;color:var(--muted)}
+
+/* Munka közben */
+.craft{padding-block:calc(var(--sec)*.8)}
+.cr-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px 20px;flex-wrap:wrap;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+.cr-t{font-family:var(--f-serif);font-weight:400;font-size:clamp(1.25rem,1.6vw,1.5rem);letter-spacing:-.01em}
+.strip .ph{height:clamp(180px,20vw,300px)}
+.strip figcaption{width:100%}
+.strip figcaption i{font-style:normal;color:var(--muted);margin-left:auto}
+
+/* Kapcsolat */
+.ct-grid{margin-top:0;padding-top:0;border-top:0;align-items:start}
+.ct-call{position:sticky;top:96px}
+.contact h2{font-size:clamp(2.25rem,4vw,3.75rem)}
+.fld label,.fld legend{font-size:.75rem;color:var(--fg-2)}
+.fld label b,.fld legend b{font-weight:500;color:var(--fg-2)}
+.fld input{height:46px}
+.fld--tel input{font-family:var(--f-ui);font-size:16px;letter-spacing:.02em}
+.fld textarea{resize:none;min-height:72px}
+.chips{gap:2px 20px}
+.chips span{border:0;min-height:36px;padding:0;border-bottom:1px solid transparent;color:var(--fg-2)}
+.chips span::before{content:"";width:9px;height:9px;border:1px solid var(--line-2);margin-right:9px;flex:none}
+.chips label:hover span{color:var(--fg)}
+.chips input:checked+span{background:none;color:var(--fg);border-bottom-color:transparent}
+.chips input:checked+span::before{background:var(--sand);border-color:var(--sand)}
+
+/* Lábléc */
+.f-a{grid-column:1/span 4}.f-b{grid-column:7/span 3}.f-c{grid-column:10/span 3}
+.f-nav{display:flex;flex-direction:column;gap:5px}
+.f-b strong{font-weight:600;color:var(--fg)}
+.ftr-mark span{color:var(--fg-2)}
+.ftr-base a{font-weight:400;letter-spacing:.04em;color:var(--fg-2)}
+
 /* ================= Tablet ================= */
 @media (max-width:1180px){
   .nav,.rail{display:none}
@@ -584,6 +706,46 @@ html.js .rv-txt.in{transform:none;opacity:1}
 @media (min-width:768px){ .svc-body{display:none} .only-m{display:none!important} }
 @media (max-width:767px){ .only-m{display:inline-flex} }
 
+/* ===================== AUDIT – reszponzív felülírások (v7) ===================== */
+@media (min-width:1024px) and (max-width:1180px){
+  .ct-call{grid-column:1/span 5}.form{grid-column:6/span 7}
+  .f-a{grid-column:1/span 5}.f-b{grid-column:6/span 3}.f-c{grid-column:9/span 4}
+}
+@media (max-width:1180px){
+  .tblock > :nth-child(3){display:flex}
+}
+@media (max-width:1023px){
+  .side-h{grid-column:1/-1;position:static}
+  .svc-list,.steps{grid-column:1/-1}
+  .svc-head{grid-template-columns:40px minmax(0,1fr) minmax(0,1.15fr)}
+  .ct-call{position:static}
+  .f-a{grid-column:1/span 6}.f-b{grid-column:7/span 6}.f-c{grid-column:1/-1}
+  .f-nav{display:grid;grid-template-columns:repeat(3,auto);justify-content:start;gap:5px 32px}
+  .ly-draw{order:0}
+  .tr-list{grid-column:1/-1}
+}
+@media (max-width:767px){
+  .hero-art{opacity:.35;height:42%}
+  .tblock{grid-template-columns:1fr 1fr}
+  .tblock > :nth-child(2){display:none}
+  .tblock > :nth-child(3){display:flex}
+  .conv{height:auto;grid-template-columns:auto minmax(0,1fr);grid-template-rows:150px auto;row-gap:14px}
+  .conv-r{grid-column:1/-1;flex-direction:row;align-items:center;max-width:none;justify-content:flex-end}
+  .st-copy{grid-column:1/-1}
+  .proj--a .ph{--ar:16/9}
+  .proj-meta{flex-direction:column;align-items:flex-start;gap:6px}
+  p.proj-scope{text-align:left}
+  .step{grid-template-columns:40px minmax(0,1fr);gap:4px 12px}
+  .step p{grid-column:2}
+  .tr-list{grid-template-columns:1fr}
+  .ab-copy{padding-top:0}
+  .f-nav{grid-template-columns:1fr 1fr;gap:5px 18px}
+  .ftr-grid{grid-template-columns:1fr!important}
+  .f-a,.f-b,.f-c{grid-column:1/-1!important}
+  .ph-cap{right:10px;bottom:10px;max-width:calc(100% - 20px)}
+  .strip .ph{height:min(40vh,260px)}
+}
+
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   *,*::before,*::after{transition-duration:.01ms!important;animation:none!important}
@@ -600,8 +762,6 @@ html.js .rv-txt.in{transform:none;opacity:1}
 </head>
 <body>
 
-<div class="progress" aria-hidden="true"></div>
-<p class="rail" aria-hidden="true"><i></i><span id="railN">01</span><b id="railT">Kezdőlap</b></p>
 
 <header class="hdr" id="top">
   <div class="wrap hdr-in">
@@ -638,9 +798,8 @@ html.js .rv-txt.in{transform:none;opacity:1}
 
 <main>
   <!-- HERO: rajzlap -->
-  <section class="hero" aria-labelledby="h1" data-rail="Kezdőlap">
+  <section class="hero" aria-labelledby="h1">
     <div class="sheet">
-      <div class="coords" id="coords" aria-hidden="true"></div>
       <div class="sheet-main">
         <div class="hero-copy">
           <p class="label kick" style="color:var(--sand)">Budapest / Pest megye</p>
@@ -649,7 +808,6 @@ html.js .rv-txt.in{transform:none;opacity:1}
           <div class="hero-cta">
             <a class="btn btn--fill only-m" href="tel:+36701731379">Hívás most <span class="ar">↗</span></a>
             <a class="btn btn--fill only-d" href="#ajanlat">Ajánlatot kérek <span class="ar">→</span></a>
-            <a class="btn btn--line only-m" href="#ajanlat">Ajánlatot kérek <span class="ar">→</span></a>
             <a class="btn btn--line only-d" href="#munkaink">Munkáink <span class="ar">↓</span></a>
           </div>
         </div>
@@ -673,11 +831,9 @@ html.js .rv-txt.in{transform:none;opacity:1}
           </svg>
           <div class="sweep"></div>
         </div>
-        <p class="ph-note">Hero fotó helye<br>elkészült felújítás · min. 2400 px</p>
       </div>
       <div class="tblock">
         <div><span>Kivitelező</span><b>Godzsák Tamás E.V.</b></div>
-        <div><span>Terület</span><b>Budapest / Pest megye</b></div>
         <div><span>Vállalás</span><b>Teljes felújítás</b></div>
         <a href="tel:+36701731379"><span>Hívás</span><b class="num">+36 70 173 13 79</b></a>
       </div>
@@ -685,10 +841,10 @@ html.js .rv-txt.in{transform:none;opacity:1}
   </section>
 
   <!-- STATEMENT -->
-  <section class="statement" aria-labelledby="st-h" data-rail="Szemlélet">
+  <section class="statement" aria-labelledby="st-h">
     <div class="wrap">
       <div class="g12">
-        <div class="st-h"><h2 id="st-h" class="h2 rv-txt"><span class="dim">Nem öt külön szakember.</span> Egy összehangolt kivitelezés.</h2></div>
+        <div class="st-h"><h2 id="st-h" class="h2"><span class="dim">Nem öt külön szakember.</span> Egy összehangolt kivitelezés.</h2></div>
         <p class="st-copy">Egy teljes felújítás akkor működik jól, ha a munkafolyamatok nem külön életet élnek. A bontástól, falazástól és gipszkartonozástól a festésig és a befejező munkákig összehangolt kivitelezésben gondolkodunk.</p>
       </div>
       <div class="conv rv-draw" role="img" aria-label="Öt szakterület egy kivitelezőnél">
@@ -698,21 +854,16 @@ html.js .rv-txt.in{transform:none;opacity:1}
         </svg>
         <div class="conv-r"><span class="conv-dot" aria-hidden="true"></span><div><b>Egy kézben</b><small>Egy ütemterv, egy felelős</small></div></div>
       </div>
-      <ul class="facts">
-        <li><span class="label">Vállalás</span><strong>Teljes felújítás</strong></li>
-        <li><span class="label">Terület</span><strong>Budapest és környéke</strong></li>
-        <li><span class="label">Kapcsolattartás</span><strong>Közvetlenül, egy emberrel</strong></li>
-      </ul>
     </div>
   </section>
 
   <!-- RÉTEGRŐL RÉTEGRE -->
-  <section class="layers" id="retegek" aria-labelledby="ly-h" data-rail="Rétegek">
+  <section class="layers" id="retegek" aria-labelledby="ly-h">
     <div class="ly-sticky">
       <div class="wrap ly-grid">
         <div class="ly-copy">
           <p class="label kick">A bontástól az utolsó ecsetvonásig</p>
-          <h2 id="ly-h" class="h2">Rétegről <span class="it">rétegre.</span></h2>
+          <h2 id="ly-h" class="h2">Rétegről rétegre.</h2>
           <ol class="ly-steps" id="lySteps">
             <li class="on"><span class="n">01</span><div><h3>Bontás</h3><div class="bd"><p>A régi rétegek le, a sitt el. Kiderül, mi van a fal mögött.</p></div></div></li>
             <li><span class="n">02</span><div><h3>Kőműves munka</h3><div class="bd"><p>Falazás, javítás, vakolás: egyenes, stabil alap.</p></div></div></li>
@@ -752,11 +903,11 @@ html.js .rv-txt.in{transform:none;opacity:1}
   </section>
 
   <!-- MUNKÁINK -->
-  <section class="work" id="munkaink" aria-labelledby="work-h" data-rail="Munkáink">
+  <section class="work" id="munkaink" aria-labelledby="work-h">
     <div class="wrap">
       <div class="shead">
         <p class="label kick">Munkáink</p>
-        <h2 id="work-h" class="h2 rv-txt">Referenciák</h2>
+        <h2 id="work-h" class="h2">Referenciák</h2>
         <p>Elkészült projektek, valódi fotókkal.</p>
       </div>
       <div id="projects"></div>
@@ -764,11 +915,11 @@ html.js .rv-txt.in{transform:none;opacity:1}
   </section>
 
   <!-- ELŐTTE / UTÁNA -->
-  <section class="ba" aria-labelledby="ba-h" data-rail="Előtte / utána">
+  <section class="ba" id="elotte-utana" aria-labelledby="ba-h" hidden>
     <div class="wrap">
       <div class="shead">
         <p class="label kick">Előtte / Utána</p>
-        <h2 id="ba-h" class="h2 rv-txt">Két <span class="it">állapot</span></h2>
+        <h2 id="ba-h" class="h2">Előtte és utána</h2>
         <p>Húzza a középső vonalat.</p>
       </div>
       <div class="ba-frame" id="ba" style="--pos:50%">
@@ -777,33 +928,31 @@ html.js .rv-txt.in{transform:none;opacity:1}
         <span class="ba-tag l">ELŐTTE</span><span class="ba-tag r">UTÁNA</span>
         <div class="ba-handle" role="slider" tabindex="0" aria-label="Előtte–utána összehasonlítás" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"><span class="ba-knob" aria-hidden="true">‹&nbsp;›</span></div>
       </div>
-      <p class="ba-note">Fotópár feltöltésre vár</p>
     </div>
   </section>
 
   <!-- SZOLGÁLTATÁSOK -->
-  <section class="svc" id="szolgaltatasok" aria-labelledby="svc-h" data-rail="Szolgáltatások">
-    <div class="wrap">
-      <div class="shead">
+  <section class="svc" id="szolgaltatasok" aria-labelledby="svc-h">
+    <div class="wrap side">
+      <div class="side-h">
         <p class="label kick">Szolgáltatások</p>
-        <h2 id="svc-h" class="h2 rv-txt">Amit <span class="it">vállalunk</span></h2>
-        <p>Egy felújításon belül, egy ütemtervben.</p>
+        <h2 id="svc-h" class="h2">Amit vállalunk</h2>
+        <p>Egy felújításon belül, egy ütemtervben. Budapesten és Pest megyében.</p>
+        <a class="tlink side-link" href="#ajanlat">Ajánlatot kérek →</a>
       </div>
       <div class="svc-list" id="svcList"><div class="svc-prev" aria-hidden="true" id="svcPrev"></div></div>
-      <div class="svc-foot"><span>Budapest és Pest megye</span><a class="tlink" href="#ajanlat">Ajánlatot kérek →</a></div>
     </div>
   </section>
 
   <!-- FOLYAMAT -->
-  <section class="proc" id="folyamat" aria-labelledby="proc-h" data-rail="Folyamat">
-    <div class="wrap">
-      <div class="shead">
+  <section class="proc" id="folyamat" aria-labelledby="proc-h">
+    <div class="wrap side">
+      <div class="side-h">
         <p class="label kick">Hogyan dolgozunk?</p>
-        <h2 id="proc-h" class="h2 rv-txt">Öt lépés az <span class="it">átadásig</span></h2>
+        <h2 id="proc-h" class="h2">Öt lépés az átadásig</h2>
         <p>Mindig tudja, hol tart a munka.</p>
       </div>
       <ol class="steps" id="steps">
-        <li class="track" aria-hidden="true"><i></i></li>
         <li class="step"><span class="step-n">01</span><h3>Első egyeztetés</h3><p>Telefonon röviden átbeszéljük a feladatot.</p></li>
         <li class="step"><span class="step-n">02</span><h3>Helyszíni felmérés</h3><p>Megnézzük a munkaterületet és pontosítjuk az igényeket.</p></li>
         <li class="step"><span class="step-n">03</span><h3>Ajánlat</h3><p>Átláthatóan összefoglaljuk a vállalt munkát.</p></li>
@@ -815,7 +964,7 @@ html.js .rv-txt.in{transform:none;opacity:1}
 
   <!-- VILÁGOS SÁV -->
   <div class="light band">
-    <section class="trust" aria-labelledby="tr-h" data-rail="Ügyfelek">
+    <section class="trust" aria-labelledby="tr-h">
       <div class="wrap tr-grid">
         <div class="tr-side">
           <h2 class="label kick" id="tr-h">Ügyfelek mondták</h2>
@@ -823,48 +972,33 @@ html.js .rv-txt.in{transform:none;opacity:1}
           <div class="ticks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
           <p class="tr-src">Két nyilvános ügyfélértékelés alapján.</p>
         </div>
-        <div class="tr-quote" id="trq">
-          <span class="tr-glyph" aria-hidden="true">„</span>
-          <blockquote class="ph-text" id="trText"></blockquote>
-          <div class="tr-foot">
-            <p class="tr-who" id="trWho"></p>
-            <div class="tr-nav">
-              <button type="button" id="trPrev" aria-label="Előző értékelés">←</button>
-              <span class="tr-count" id="trCount" aria-live="polite">01 / 02</span>
-              <button type="button" id="trNext" aria-label="Következő értékelés">→</button>
-            </div>
-          </div>
-        </div>
+        <div class="tr-list" id="trList"></div>
       </div>
     </section>
 
-    <section class="about" id="rolunk" aria-labelledby="ab-h" data-rail="Rólunk">
+    <section class="about" id="rolunk" aria-labelledby="ab-h">
       <div class="wrap ab-grid">
         <figure class="ph ph--light l-plaster ab-img rv-img" data-src="" data-alt="Godzsák Tamás munka közben">
           <span class="tone"></span>
-          <span class="ph-cap"><span><b>Portré helye</b>Godzsák Tamás munka közben</span><span class="r">4:5</span></span>
+          <span class="ph-cap"><b>Portré</b>Godzsák Tamás munka közben – fotó helye</span>
         </figure>
         <div class="ab-copy">
           <p class="label kick">Rólunk</p>
-          <h2 id="ab-h" class="h2 rv-txt">A jó felújítás nem a végén <span class="it">kezdődik.</span></h2>
-          <p class="lead">A pontos kivitelezés már az első egyeztetésnél kezdődik. Fontos, hogy a munkafolyamatok egymásra épüljenek, az ügyfél tudja, mi történik, és a részletek se vesszenek el a kivitelezés közben.</p>
+          <h2 id="ab-h" class="h2">A jó felújítás nem a végén kezdődik.</h2>
+          <p>A pontos kivitelezés már az első egyeztetésnél kezdődik. Fontos, hogy a munkafolyamatok egymásra épüljenek, az ügyfél tudja, mi történik, és a részletek se vesszenek el a kivitelezés közben.</p>
           <p>Teljes lakás- és házfelújításokat, valamint a hozzájuk kapcsolódó kőműves, gipszkarton-, festési és hőszigetelési munkákat vállalunk Budapesten és környékén.</p>
-          <div class="ab-sign">
-            <span><b>Godzsák Tamás E.V.</b>Kivitelezés / felújítás</span>
-            <span><b>Kapcsolat</b>Közvetlenül a kivitelezővel</span>
-          </div>
+          <p class="ab-sign">Godzsák Tamás <span>· egyéni vállalkozó, kivitelező</span></p>
         </div>
       </div>
     </section>
   </div>
 
   <!-- MUNKA KÖZBEN -->
-  <section class="craft" aria-labelledby="cr-h" data-rail="Munka közben">
+  <section class="craft" aria-labelledby="cr-h">
     <div class="wrap">
-      <div class="shead">
+      <div class="cr-head">
         <p class="label kick">Munka közben</p>
-        <h2 id="cr-h" class="h2 rv-txt">Anyag és <span class="it">részlet</span></h2>
-        <p>Valódi munka, közelről.</p>
+        <h2 id="cr-h" class="cr-t">Anyag és részlet, közelről.</h2>
       </div>
     </div>
     <div class="strip-vp" id="stripVp"><div class="strip" id="strip"></div></div>
@@ -872,11 +1006,11 @@ html.js .rv-txt.in{transform:none;opacity:1}
   </section>
 
   <!-- KAPCSOLAT -->
-  <section class="contact" id="kapcsolat" aria-labelledby="ct-h" data-rail="Kapcsolat">
+  <section class="contact" id="kapcsolat" aria-labelledby="ct-h">
     <div class="wrap">
-      <h2 id="ct-h" class="rv-txt">Felújítást <span class="it">tervez?</span></h2>
       <div class="ct-grid">
         <div class="ct-call">
+          <h2 id="ct-h">Felújítást <span class="it">tervez?</span></h2>
           <p>Beszéljük át röviden, mire van szükség.</p>
           <div class="call">
             <span class="label">Hívás</span>
@@ -910,7 +1044,7 @@ html.js .rv-txt.in{transform:none;opacity:1}
               <label><input type="checkbox" id="w8" name="munka" value="Egyéb"><span>Egyéb</span></label>
             </div>
           </fieldset>
-          <div class="fld"><label for="f-msg">Rövid leírás</label><textarea id="f-msg" name="leiras" rows="3" placeholder="Pl. 62 m²-es panellakás, fürdő és konyha is érintett, tavaszi kezdés."></textarea></div>
+          <div class="fld"><label for="f-msg">Rövid leírás</label><textarea id="f-msg" name="leiras" rows="2" placeholder="Pl. 62 m²-es panellakás, fürdő és konyha is érintett, tavaszi kezdés."></textarea></div>
           <input class="hp" type="text" id="f-hp" name="weboldal" tabindex="-1" autocomplete="off" aria-hidden="true">
           <div class="form-sub">
             <button class="btn btn--bronze" type="submit">Kérek visszahívást <span class="ar">→</span></button>
@@ -926,11 +1060,12 @@ html.js .rv-txt.in{transform:none;opacity:1}
   <div class="wrap">
     <div class="ftr-grid">
       <div class="f-a"><span class="label">Godzsák Tamás E.V.</span><span>Teljes lakás- és házfelújítás</span><span>Budapest és környéke</span></div>
-      <div class="f-b"><span class="label">Kapcsolat</span><a class="tlink" href="tel:+36701731379"><strong style="font-weight:600;color:var(--fg)">+36 70 173 13 79</strong></a><a class="tlink" href="mailto:tgodzsak@gmail.com">tgodzsak@gmail.com</a></div>
-      <div class="f-c"><span class="label">Oldal</span><a class="tlink" href="#munkaink">Munkáink</a><a class="tlink" href="#szolgaltatasok">Szolgáltatások</a><a class="tlink" href="#folyamat">Folyamat</a></div>
-      <div class="f-d"><span class="label">&nbsp;</span><a class="tlink" href="#rolunk">Rólunk</a><a class="tlink" href="#kapcsolat">Kapcsolat</a><a class="tlink" href="#adatkezeles" id="adatkezeles">Adatkezelési tájékoztató</a></div>
+      <div class="f-b"><span class="label">Kapcsolat</span><a class="tlink" href="tel:+36701731379"><strong>+36 70 173 13 79</strong></a><a class="tlink" href="mailto:tgodzsak@gmail.com">tgodzsak@gmail.com</a></div>
+      <div class="f-c"><span class="label">Oldal</span>
+        <ul class="f-nav"><li><a class="tlink" href="#munkaink">Munkáink</a></li><li><a class="tlink" href="#szolgaltatasok">Szolgáltatások</a></li><li><a class="tlink" href="#folyamat">Folyamat</a></li><li><a class="tlink" href="#rolunk">Rólunk</a></li><li><a class="tlink" href="#kapcsolat">Kapcsolat</a></li><li><a class="tlink" href="#adatkezeles" id="adatkezeles">Adatkezelési tájékoztató</a></li></ul>
+      </div>
     </div>
-    <p class="ftr-mark" aria-hidden="true">Godzsák Tamás <span class="it">E.V.</span></p>
+    <p class="ftr-mark" aria-hidden="true">Godzsák Tamás <span>E.V.</span></p>
     <div class="ftr-base">
       <span>© <span id="yr">2026</span> Godzsák Tamás E.V.</span>
       <span>Weboldal: <a href="https://daekon.hu" target="_blank" rel="noopener">DAEKON</a></span>
@@ -960,16 +1095,12 @@ html.js .rv-txt.in{transform:none;opacity:1}
      ================================================================== */
   var PROJECTS = [
     { layout:"a", type:"Teljes lakásfelújítás", location:null, url:null,
-      scope:["Teljes felújítás","Festés","Gipszkarton","Kőműves munkák","Befejező munkák"],
+      scope:["Bontás","Kőműves munkák","Gipszkarton","Festés","Befejező munkák"],
       media:[{ tone:"t-lime", ar:"21/9", cap:"Elkészült nappali / étkező", src:"", sk:"room", o:{dx:-.06, win:"l", back:"sofa"} }] },
     { layout:"b", type:"Családi ház felújítás", location:null, url:null,
       scope:["Korszerűsítés","Hőszigetelés","Kőműves munkák","Festés"],
       media:[{ tone:"t-plaster", ar:"4/3", cap:"Fő tér", src:"", sk:"room", o:{dx:.08, win:"r", back:"door"} },
-             { tone:"t-concrete", ar:"3/4", cap:"Közlekedő – álló kép", src:"", sk:"door" }] },
-    { layout:"c", type:"Teljes lakásfelújítás", location:null, url:null,
-      scope:["Teljes felújítás","Gipszkarton","Festés","Befejező munkák"],
-      media:[{ tone:"t-oak", ar:"4/5", cap:"Részlet – csomópont, illesztés", src:"", sk:"door" },
-             { tone:"t-lime", ar:"16/11", cap:"Anyag közeli – burkolat", src:"", sk:"floor" }] }
+             { tone:"t-concrete", ar:"3/4", cap:"Részlet – ajtó, csomópont", src:"", sk:"door" }] }
   ];
   var SERVICES = [
     ["01","Teljes lakásfelújítás","Komplett belső felújítás a bontástól az átadásig.","t-lime"],
@@ -982,7 +1113,7 @@ html.js .rv-txt.in{transform:none;opacity:1}
   ];
   /* Két nyilvános értékelés: szövegük szó szerint, hozzájárulással kerül ide. */
   var REVIEWS = [ { text:null, name:null, source:"Nyilvános ügyfélértékelés" }, { text:null, name:null, source:"Nyilvános ügyfélértékelés" } ];
-  var CRAFT = [["Anyagok","4/5","t-plaster"],["Fal","3/4","t-concrete"],["Gipszkarton","16/11","t-lime"],["Szerszám","4/5","t-shadow"],["Festés","3/4","t-lime"],["Részlet","1/1","t-oak"],["Elkészült felület","16/11","t-plaster"],["Munkafolyamat","4/5","t-concrete"]];
+  var CRAFT = [["Anyagok","4/5","t-plaster"],["Fal","3/4","t-concrete"],["Gipszkarton","16/11","t-lime"],["Festés","3/4","t-plaster"],["Részlet","1/1","t-concrete"],["Elkészült felület","16/11","t-lime"]];
 
   /* --- Rajzlap koordináták --- */
   (function(){
@@ -1034,20 +1165,19 @@ html.js .rv-txt.in{transform:none;opacity:1}
   function ph(m, cls, ref){
     return '<figure class="ph ' + m.tone + ' ' + (cls||"") + ' rv-img" style="--ar:' + m.ar + '" data-src="' + esc(m.src||"") + '" data-srcset="' + esc(m.srcset||"") + '" data-alt="' + esc(m.cap) + '">' +
       '<span class="tone"></span>' + (m.sk && !m.src ? sketch(m.sk, m.ar, m.o) : "") +
-      '<span class="ph-cap"><span><b>' + esc(ref) + '</b>' + esc(m.cap) + '</span><span class="r">' + m.ar.replace("/",":") + '</span></span></figure>';
+      (ref ? '<span class="ph-cap"><b>' + esc(ref) + '</b>' + esc(m.cap) + ' – fotó helye</span>' : '') + '</figure>';
   }
 
   /* --- Referenciák --- */
   $("#projects").innerHTML = PROJECTS.map(function(p, i){
     var n = ("0" + (i+1)).slice(-2);
-    var media = p.media.map(function(m, j){ return ph(m, "m" + (j+1), "Referencia " + n + " · " + "ABC"[j] + " · fotó helye"); }).join("");
+    var media = p.media.map(function(m, j){ return ph(m, "m" + (j+1), "Ref " + n + "-" + "AB"[j]); }).join("");
     var tag = p.url ? "a" : "article";
     return '<' + tag + ' class="proj proj--' + p.layout + '"' + (p.url ? ' href="' + esc(p.url) + '"' : '') + '>' +
       '<div class="proj-media">' + media + '</div>' +
-      '<div class="proj-meta"><p class="proj-id num">' + n + '</p>' +
-        '<div class="proj-title"><h3>' + esc(p.type) + '</h3><p>' + (p.location ? esc(p.location) : "Projektadat feltöltésre vár") + '</p></div>' +
-        '<ul class="proj-scope">' + p.scope.map(function(s){ return "<li>" + esc(s) + "</li>"; }).join("") + '</ul>' +
-        '<span class="proj-link">Projekt megtekintése <span class="ar">→</span></span>' +
+      '<div class="proj-meta"><h3 class="proj-title"><span class="num">' + n + '</span>' + esc(p.type) + '</h3>' +
+        '<p class="proj-scope">' + p.scope.map(esc).join(", ") + '<span>' + (p.location ? esc(p.location) : "Helyszín és év: projektadat feltöltésre vár") + '</span></p>' +
+        (p.url ? '<span class="proj-link">Projekt megtekintése <span class="ar">→</span></span>' : '') +
       '</div></' + tag + '>';
   }).join("");
 
@@ -1062,7 +1192,7 @@ html.js .rv-txt.in{transform:none;opacity:1}
       '</button><div class="svc-body" id="svcb' + i + '"><div><p>' + esc(s[2]) + '</p></div></div></div>';
   }).join(""));
   prev.innerHTML = SERVICES.map(function(s, i){
-    return '<div class="ph ' + s[3] + '" data-i="' + i + '"><span class="tone"></span>' + sketch("room", "4/3", SVC_SK[i]) + '<span class="ph-cap"><span><b>Projektkép</b>' + esc(s[1]) + '</span></span></div>';
+    return '<div class="ph ' + s[3] + '" data-i="' + i + '"><span class="tone"></span>' + sketch("room", "4/3", SVC_SK[i]) + '<span class="ph-cap"><b>Projektkép</b>' + esc(s[1]) + '</span></div>';
   }).join("");
   var canHover = window.matchMedia("(hover: hover) and (min-width: 1024px)");
   $$(".svc-row", list).forEach(function(row){
@@ -1084,13 +1214,9 @@ html.js .rv-txt.in{transform:none;opacity:1}
   /* --- Munka közben szalag --- */
   $("#strip").innerHTML = CRAFT.map(function(c, i){
     var n = ("0" + (i+1)).slice(-2);
-    return '<figure>' + ph({tone:c[2], ar:c[1], cap:c[0] + " – fotó helye"}, "", "Munka közben " + n).replace("<figure", "<div").replace(/<\/figure>$/, "</div>") +
+    return '<figure>' + ph({tone:c[2], ar:c[1], cap:c[0]}, "", "").replace("<figure", "<div").replace(/<\/figure>$/, "</div>") +
       '<figcaption><span class="num">' + n + '</span><b>' + esc(c[0]) + '</b></figcaption></figure>';
   }).join("");
-
-  /* --- Kapcsolat háttér-alaprajz --- */
-  var hp = $(".hero-plan");
-  if (hp) { var cp = hp.cloneNode(true); cp.setAttribute("class", "ct-plan"); cp.setAttribute("aria-hidden", "true"); $$(".dr", cp).forEach(function(p){ p.removeAttribute("class"); }); $("#kapcsolat").insertBefore(cp, $("#kapcsolat").firstChild); }
 
   /* --- Valódi képek, ha van src --- */
   $$(".ph[data-src]").forEach(function(el){
@@ -1121,12 +1247,11 @@ html.js .rv-txt.in{transform:none;opacity:1}
   var lime = function(n,u,v){ return n(u*3,v*3,5)*.9+n(u*16+7,v*16+3,3)*.3-.12; };
   var oak = function(n,u,v){ var w=n(u*2,v*1.4,3); return (.5+.5*Math.sin((u*11+w*3.2)*6.2832))*.5+w*.35+n(u*140,v*3,2)*.3-.12; };
   var RECIPES = {
-    "t-lime":    { c:["#3B3A35","#1C1D1A"], f:lime },
-    "t-plaster": { c:["#423E37","#1D1C19"], f:plaster },
-    "t-concrete":{ c:["#4A4842","#22221F"], f:function(n,u,v){ return n(u*5,v*5,5)*.95+n(u*40,v*40,2)*.25-.14; }, pores:true },
-    "t-oak":     { c:["#5C4733","#271F17"], f:oak },
-    "t-shadow":  { c:["#2E2E2A","#141513"], f:lime },
-    "l-plaster": { c:["#EDE7DB","#C4B8A3"], f:plaster }
+    "t-lime":    { c:["#34332E","#272622"], f:lime },
+    "t-plaster": { c:["#37342E","#282622"], f:plaster },
+    "t-concrete":{ c:["#33322E","#252421"], f:function(n,u,v){ return n(u*5,v*5,5)*.95+n(u*40,v*40,2)*.25-.14; } },
+    "t-shadow":  { c:["#2C2B27","#201F1C"], f:lime },
+    "l-plaster": { c:["#E6E0D3","#D6CDBC"], f:plaster }
   };
   function buildTex(key){
     var R = RECIPES[key], S = 400, cv = document.createElement("canvas"); cv.width = cv.height = S;
@@ -1151,19 +1276,14 @@ html.js .rv-txt.in{transform:none;opacity:1}
     })();
   })();
 
-  /* --- Értékelések --- */
-  var ri = 0, trq = $("#trq");
-  function renderReview(){
-    var r = REVIEWS[ri], t = $("#trText");
-    if (r.text) { t.className = ""; t.textContent = "„" + r.text + "”"; }
-    else { t.className = "ph-text"; t.innerHTML = "„Ide kerül a <em>" + (ri+1) + ". nyilvános értékelés</em> szövege, szó szerint, az ügyfél hozzájárulásával.”"; }
-    $("#trWho").innerHTML = "<b>" + (r.name ? esc(r.name) : "Ügyfél neve") + "</b> · " + esc(r.source);
-    $("#trCount").textContent = ("0" + (ri+1)).slice(-2) + " / " + ("0" + REVIEWS.length).slice(-2);
-  }
-  function go(d){ trq.classList.add("swap"); setTimeout(function(){ ri = (ri + d + REVIEWS.length) % REVIEWS.length; renderReview(); trq.classList.remove("swap"); }, reduce ? 0 : 280); }
-  $("#trPrev").addEventListener("click", function(){ go(-1); });
-  $("#trNext").addEventListener("click", function(){ go(1); });
-  renderReview();
+  /* --- Értékelések: mindkettő egymás mellett --- */
+  $("#trList").innerHTML = REVIEWS.map(function(r, i){
+    var body = r.text ? '<blockquote>„' + esc(r.text) + '”</blockquote>' : '<blockquote class="ph-text">Ide kerül az ' + (i+1) + '. nyilvános értékelés szövege, szó szerint, az ügyfél hozzájárulásával.</blockquote>';
+    return '<figure class="tr-item">' + body + '<figcaption><b>' + (r.name ? esc(r.name) : "Ügyfél neve") + '</b> · ' + esc(r.source) + '</figcaption></figure>';
+  }).join("");
+
+  /* --- Előtte / utána: csak valódi fotópárral jelenik meg --- */
+  (function(){ var a = $(".ba-after"), b = $(".ba-before"); if (a && b && a.getAttribute("data-src") && b.getAttribute("data-src")) $("#elotte-utana").hidden = false; })();
 
   /* --- Előtte / utána --- */
   var ba = $("#ba"), handle = $(".ba-handle", ba), dragging = false, pos = 50, startX = 0, startY = 0, pendingTouch = false;
@@ -1236,21 +1356,17 @@ html.js .rv-txt.in{transform:none;opacity:1}
   }
 
   /* --- Görgetéshez kötött mozgások --- */
-  var hdr = $(".hdr"), bar = $(".progress"), mbar = $("#mbar"), steps = $("#steps"), track = $(".track", steps), stepEls = $$(".step", steps),
-      stripVp = $("#stripVp"), strip = $("#strip"), hero = $(".hero"), railN = $("#railN"), railT = $("#railT"), secs = $$("[data-rail]"), navA = $$(".nav a");
+  var hdr = $(".hdr"), mbar = $("#mbar"), stripVp = $("#stripVp"), strip = $("#strip"), hero = $(".hero"), contact = $("#kapcsolat"), ftr = $(".ftr"), navA = $$(".nav a"), secs = $$("main section[id]");
   var desk = window.matchMedia("(min-width: 768px)"), wide = window.matchMedia("(min-width: 1024px)"), ticking = false;
   function clamp(v){ return v < 0 ? 0 : v > 1 ? 1 : v; }
   function onScroll(){
     ticking = false;
-    var y = window.scrollY, vh = window.innerHeight, max = document.documentElement.scrollHeight - vh;
+    var y = window.scrollY, vh = window.innerHeight;
     hdr.classList.toggle("is-compact", y > 24);
-    bar.style.transform = "scaleX(" + (max > 0 ? y / max : 0) + ")";
-    mbar.classList.toggle("on", y > hero.offsetHeight * .6);
-    // oldalsín
-    var cur = 0; secs.forEach(function(s, i){ if (s.getBoundingClientRect().top < vh * .45) cur = i; });
-    railN.textContent = ("0" + (cur + 1)).slice(-2); railT.textContent = secs[cur].getAttribute("data-rail");
-    var id = secs[cur].id; navA.forEach(function(a){ a.classList.toggle("on", id && a.getAttribute("href") === "#" + id); });
-    // rétegek
+    var ct = contact.getBoundingClientRect();
+    mbar.classList.toggle("on", y > hero.offsetHeight * .6 && ct.top > vh * .9);
+    var id = ""; secs.forEach(function(s){ if (s.getBoundingClientRect().top < vh * .45) id = s.id; });
+    navA.forEach(function(a){ a.classList.toggle("on", !!id && a.getAttribute("href") === "#" + id); });
     if (wide.matches) {
       var lr = ly.getBoundingClientRect(), lp = clamp(-lr.top / (lr.height - vh));
       setStage(Math.min(4, Math.floor(lp * 5)));
@@ -1258,14 +1374,8 @@ html.js .rv-txt.in{transform:none;opacity:1}
     } else if (!lySvg.classList.contains("s4")) {
       setStage(4); lyItems.forEach(function(li){ li.classList.add("on"); }); lyLeads.forEach(function(l){ l.classList.add("on"); });
     }
-    // folyamat
-    var r = steps.getBoundingClientRect(), p = wide.matches ? clamp((vh * .82 - r.top) / (vh * .5)) : clamp((vh * .7 - r.top) / r.height);
-    if (reduce) p = 1;
-    track.style.setProperty("--p", p.toFixed(3));
-    stepEls.forEach(function(s, i){ var th = wide.matches ? i / stepEls.length : s.offsetTop / r.height; s.classList.toggle("on", p > th + .001 || p === 1); });
-    // szalag
     if (desk.matches && !reduce) {
-      var sr = stripVp.getBoundingClientRect(), sp = clamp((vh - sr.top) / (vh + sr.height)), over = strip.scrollWidth - stripVp.clientWidth;
+      var sr = stripVp.getBoundingClientRect(), sp = clamp((vh * .3 - sr.top) / (vh * .9)), over = Math.min(240, Math.max(0, strip.scrollWidth - stripVp.clientWidth));
       strip.style.transform = "translate3d(" + (-over * sp).toFixed(1) + "px,0,0)";
     }
   }
