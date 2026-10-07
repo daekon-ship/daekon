@@ -257,20 +257,20 @@ em{font-style:italic;color:var(--brass);font-weight:inherit}
 .c-r{position:relative;overflow:hidden;padding:clamp(48px,6vw,88px) var(--pad);display:flex;flex-direction:column;justify-content:center;gap:20px}
 .c-r>.tx{position:absolute;inset:0}
 .c-r>*:not(.tx){position:relative;z-index:1}
-.tel{font-family:var(--head);font-weight:500;letter-spacing:-.03em;font-size:clamp(24px,2.4vw,34px);line-height:1;text-decoration:none;white-space:nowrap;transition:color .3s}
+.tel{font-family:var(--head);font-weight:500;letter-spacing:.02em;font-size:17px;line-height:1.3;text-decoration:none;white-space:nowrap;transition:color .3s}
 .tel:hover{color:var(--brass-l)}
 @media (min-width:1024px){.contact{grid-template-columns:44% 1fr}.c-l{padding-right:clamp(32px,4vw,72px)}.c-r{padding-left:clamp(48px,6vw,96px)}}
 
 .foot{position:relative;overflow:hidden;padding:clamp(52px,6vw,88px) var(--pad) calc(24px + env(safe-area-inset-bottom))}
 .foot>.tx{position:absolute;inset:0}
 .foot>*:not(.tx){position:relative;z-index:1}
-.foot .t1{font-size:clamp(24px,2.5vw,34px)}
+.foot .t1{font-size:clamp(22px,2vw,28px)}
 .fgrid{display:grid;gap:28px;margin-top:clamp(28px,3.5vw,48px)}
 .fgrid .k{display:block;margin-bottom:10px}
 .fgrid p,.fgrid nav a{font-size:13px;line-height:1.8;color:#D6CDC2}
 .fgrid nav{display:flex;flex-direction:column}
 .fgrid nav a{text-decoration:none}.fgrid nav a:hover{color:var(--ivory)}
-.fbig a{display:block;font-family:var(--head);font-weight:500;letter-spacing:-.02em;font-size:clamp(17px,1.4vw,21px);text-decoration:none;line-height:1.25}
+.fbig a{display:block;font-family:var(--head);font-weight:500;letter-spacing:.01em;font-size:15px;text-decoration:none;line-height:1.25}
 .fbig a+a{font-size:13px;color:#D6CDC2;margin-top:6px}
 .fbot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;margin-top:clamp(28px,3.5vw,48px);padding-top:16px;border-top:1px solid var(--line-d);font-size:13px;color:#A79D92}
 .fbot a{color:var(--ivory)}
@@ -316,13 +316,6 @@ body::before{content:"";position:fixed;inset:0;z-index:90;pointer-events:none;op
 .btn.lt{position:relative;overflow:hidden}
 .btn.lt::after{content:"";position:absolute;inset:auto 0 0 0;height:2px;background:linear-gradient(90deg,#8C6E45,#E4CC9C,#8C6E45);transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease)}
 .btn.lt:hover::after{transform:scaleX(1)}
-/* futószalag */
-.run{background:var(--nero);color:var(--ivory);overflow:hidden;border-top:1px solid rgba(201,169,119,.25);border-bottom:1px solid rgba(201,169,119,.25)}
-.run-in{display:flex;width:max-content;animation:run 38s linear infinite}
-.run span{display:flex;align-items:center;gap:28px;padding:18px 28px 18px 0;font-family:var(--head);font-weight:500;font-size:clamp(15px,1.3vw,19px);letter-spacing:-.005em;white-space:nowrap}
-.run span::after{content:"";width:7px;height:7px;background:var(--brass-l);transform:rotate(45deg)}
-.run span:nth-child(even){color:var(--brass-l);font-style:italic}
-@keyframes run{to{transform:translateX(-50%)}}
 /* fény a márványon */
 .gloss::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(420px circle at var(--mx,50%) var(--my,30%),rgba(255,255,255,.34),transparent 50%);opacity:0;transition:opacity .5s;mix-blend-mode:soft-light}
 .gloss:hover::before{opacity:1}
@@ -340,7 +333,7 @@ body::before{content:"";position:fixed;inset:0;z-index:90;pointer-events:none;op
 .card:hover .cm,.gloss:hover>.cm{opacity:1;inset:16px}
 .card .cap b{transition:color .3s}.card:hover .cap b{color:var(--brass)}
 @media (prefers-reduced-motion:reduce){
-  .sl{opacity:1;transform:none}.tr{display:none}.run-in{animation:none}.face::before{animation:none}
+  .sl{opacity:1;transform:none}.tr{display:none}.face::before{animation:none}
   *,*::before,*::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}
   [data-r]{opacity:1;transform:none;clip-path:none!important}
   .tiles{display:none}.hero-bg{transform:none}
@@ -392,7 +385,6 @@ body::before{content:"";position:fixed;inset:0;z-index:90;pointer-events:none;op
   <span class="scroll-cue" aria-hidden="true"></span>
 </section>
 
-<div class="run" aria-hidden="true"><div class="run-in"><span>Komplett burkolás</span><span>Falburkolás</span><span>Padlóburkolás</span><span>Csempézés</span><span>Parketta</span><span>Egyedi megoldások</span><span>Komplett burkolás</span><span>Falburkolás</span><span>Padlóburkolás</span><span>Csempézés</span><span>Parketta</span><span>Egyedi megoldások</span></div></div>
 
 <section class="sec wrap" id="szemlelet" aria-labelledby="sz-h">
   <div class="intro">
