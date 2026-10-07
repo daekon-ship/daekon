@@ -21,9 +21,9 @@ abstract final class MpTheme {
       outlineVariant: MpColors.line,
     );
 
-    final inputBorder = OutlineInputBorder(
+    const inputBorder = OutlineInputBorder(
       borderRadius: MpRadius.mdAll,
-      borderSide: const BorderSide(color: MpColors.line),
+      borderSide: BorderSide(color: MpColors.line),
     );
 
     return ThemeData(

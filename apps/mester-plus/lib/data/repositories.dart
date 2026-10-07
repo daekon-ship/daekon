@@ -104,7 +104,7 @@ class ProjectRepository {
   ProjectRepository(this._db);
   final AppDatabase _db;
 
-  JoinedSelectStatement<$ProjectsTable, Project> _joined() {
+  JoinedSelectStatement<HasResultSet, dynamic> _joined() {
     return _db.select(_db.projects).join([
       innerJoin(_db.customers, _db.customers.id.equalsExp(_db.projects.customerId)),
     ]);

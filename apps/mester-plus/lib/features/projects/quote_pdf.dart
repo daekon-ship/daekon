@@ -41,7 +41,7 @@ class QuotePdf {
   static const _line = PdfColor.fromInt(0xFFCBC5B8);
   static const _shade = PdfColor.fromInt(0xFFF5F3EE);
 
-  /// Fájlnév: Arajanlat_MP-2026-001.pdf / Arajanlat_tervezet_<projekt>.pdf
+  /// Fájlnév: `Arajanlat_MP-2026-001.pdf`, tervezetnél `Arajanlat_tervezet_(projektnév).pdf`.
   static String fileName(Project p) {
     final base = p.quoteNumber ?? 'tervezet_${p.title}';
     final safe = base

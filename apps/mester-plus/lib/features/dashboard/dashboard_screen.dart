@@ -166,9 +166,9 @@ class _HeroCard extends StatelessWidget {
     final onBrandMuted = MpColors.onBrand.withValues(alpha: 0.62);
     return Container(
       padding: const EdgeInsets.all(MpSpace.x5),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         borderRadius: MpRadius.xlAll,
-        gradient: const LinearGradient(
+        gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [MpColors.brand, MpColors.brandSoft],

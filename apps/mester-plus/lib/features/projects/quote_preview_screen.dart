@@ -233,7 +233,7 @@ class _Paper extends StatelessWidget {
 
     return Container(
       padding: const EdgeInsets.all(MpSpace.x5),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: MpColors.surface,
         borderRadius: MpRadius.smAll,
         boxShadow: MpShadow.raised,
@@ -339,7 +339,7 @@ class _Paper extends StatelessWidget {
           ),
           if (totals.vatRateBp == 0) ...[
             const SizedBox(height: MpSpace.x3),
-            Text('Az ajánlat ÁFA-t nem tartalmaz (adómentes vagy fordított adózás alá eső).', style: small),
+            const Text('Az ajánlat ÁFA-t nem tartalmaz (adómentes vagy fordított adózás alá eső).', style: small),
           ],
           if (company.quoteFooter.trim().isNotEmpty) ...[
             const SizedBox(height: MpSpace.x5),

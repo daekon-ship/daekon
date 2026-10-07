@@ -45,7 +45,7 @@ class ProjectCard extends StatelessWidget {
           const SizedBox(height: MpSpace.x3),
           Row(
             children: [
-              Icon(Icons.schedule, size: 15, color: MpColors.inkFaint),
+              const Icon(Icons.schedule, size: 15, color: MpColors.inkFaint),
               const SizedBox(width: 6),
               Text(Fmt.date(p.updatedAt), style: MpText.mono),
               if (p.quoteNumber != null) ...[

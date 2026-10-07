@@ -130,7 +130,7 @@ class HufInputFormatter extends TextInputFormatter {
       }
     }
     // Vezető nullák nélkül (de egyetlen „0” maradhat).
-    var raw = digits.toString().replaceFirst(RegExp(r'^0+(?=\d)'), '');
+    final raw = digits.toString().replaceFirst(RegExp(r'^0+(?=\d)'), '');
     final removedZeros = digits.length - raw.length;
     digitsBeforeCursor = (digitsBeforeCursor - removedZeros).clamp(0, raw.length);
 
