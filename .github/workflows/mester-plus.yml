@@ -72,7 +72,16 @@ jobs:
         run: tool/ci_step.sh "Analyze" flutter analyze --no-fatal-infos
 
       - name: Tesztek
-        run: tool/ci_step.sh "Tesztek" flutter test --reporter expanded
+        run: |
+          set -o pipefail
+          flutter test --reporter expanded 2>&1 | tee /tmp/test.log || {
+            echo "::group::Hibás tesztek"
+            grep -nE "\[E\]|Expected:|Actual:|Which:|Exception|Error:|package:mester_plus|test/.*\.dart [0-9]+:[0-9]+" /tmp/test.log | head -120
+            echo "::endgroup::"
+            msg="$(grep -E "\[E\]|Expected:|Actual:|Which:|Exception|Error:" /tmp/test.log | head -40 | sed -e 's/%/%25/g' | awk '{printf "%s%%0A", $0}')"
+            echo "::error title=Tesztek::${msg}"
+            exit 1
+          }
 
       - name: Android App Bundle build
         run: tool/ci_step.sh "AAB build" flutter build appbundle --release
