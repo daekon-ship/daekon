@@ -19,6 +19,7 @@
 {
   "@context": "https://schema.org",
   "@graph": [
+    {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Hogyan kérhetek ajánlatot?", "acceptedAnswer": {"@type": "Answer", "text": "Egy telefonhívással: röviden átbeszéljük, mit szeretne, majd egyeztetünk egy helyszíni felmérést. Az ajánlat a felmérés után, a valós feladat alapján készül."}}, {"@type": "Question", "name": "Hol vállal munkát?", "acceptedAnswer": {"@type": "Answer", "text": "Kéthelyről indulok, elsősorban Somogy megyében dolgozom. Más helyszín egyeztetéssel."}}, {"@type": "Question", "name": "Milyen munkákat vállal?", "acceptedAnswer": {"@type": "Answer", "text": "Komplett burkolást: fal- és padlóburkolást, csempézést, parkettát, és egyedi megoldásokat egyeztetés alapján."}}, {"@type": "Question", "name": "Mennyi idő alatt készül el egy burkolás?", "acceptedAnswer": {"@type": "Answer", "text": "A helyiség méretétől, az aljzat állapotától és a választott anyagtól függ. A felmérés után pontos ütemet tudok mondani."}}, {"@type": "Question", "name": "Miért fontos a felmérés?", "acceptedAnswer": {"@type": "Answer", "text": "Mert ott derül ki, milyen az aljzat, mennyire egyenesek a falak, és honnan érdemes indítani a kiosztást. Ettől lesz pontos az ajánlat, és szép a végeredmény."}}]},
     {
       "@type": ["HomeAndConstructionBusiness", "LocalBusiness"],
       "@id": "#vallalkozas",
@@ -1064,6 +1065,48 @@ html.js .pats .pat svg{clip-path:none!important}
 .progress{background:linear-gradient(90deg,#8C6E45,#E4CC9C,#C9A977);height:2px}
 @media (max-width:1023px){.kio-g{grid-template-columns:1fr}.viz{aspect-ratio:4/3}}
 @media (max-width:767px){.ctrl .pats{gap:8px}.ctrl .pat .pc{font-size:.75rem}.ctrl .pat .pc .num{display:none}.mat{font-size:.75rem;padding-right:10px}.ab-ph{max-width:220px}.viz-cap{left:10px;bottom:10px}.ctrl-cta{align-self:stretch}}
+
+/* ===================== Finomítás v3 ===================== */
+.scene{background:#2B2722}
+.scene .tone{background:none!important}
+.ph.has-img .sc-in,.ph.has-img .sc-tag{display:none}
+.sc-in{position:absolute;inset:0;z-index:1;overflow:hidden;perspective:700px;perspective-origin:50% 22%}
+.sc-in::after{content:"";position:absolute;inset:0;z-index:3;pointer-events:none;background:radial-gradient(120% 95% at 50% 35%,transparent 55%,rgba(10,10,9,.5)),linear-gradient(105deg,rgba(255,240,215,.10),transparent 40%)}
+.sc-wall{position:absolute;left:0;right:0;top:0;height:50%;z-index:2;background:linear-gradient(180deg,#E9E3D8,#D9D1C3);background-size:cover;background-position:center}
+.sc-wall svg,.sc-floor svg{position:absolute;inset:0;width:100%;height:100%}
+.sc-wall::after{content:"";position:absolute;left:0;right:0;bottom:0;height:35%;background:linear-gradient(0deg,rgba(30,24,18,.3),transparent);pointer-events:none}
+.sc-floor{position:absolute;left:-70%;right:-70%;top:50%;height:110%;transform-origin:50% 0;transform:rotateX(64deg);z-index:1}
+.sc-tex{position:absolute;inset:0;background-size:480px auto;background-repeat:repeat}
+.sc-shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(25,20,15,.5),rgba(25,20,15,0) 55%)}
+.sc-glass{position:absolute;right:14%;top:10%;width:24%;bottom:0;border:1px solid rgba(255,255,255,.75);border-bottom:0;background:linear-gradient(120deg,rgba(255,255,255,.32),rgba(255,255,255,.05) 45%,rgba(255,255,255,.2));z-index:2}
+.sc-win{position:absolute;left:12%;top:14%;width:20%;height:66%;background:linear-gradient(165deg,#fff,#F6EEDF);box-shadow:0 0 50px 16px rgba(255,246,226,.5);outline:5px solid #E3DCCF}
+.sc-brass{position:absolute;left:0;right:0;bottom:0;height:4px;background:linear-gradient(90deg,#8C6E45,#E4CC9C 40%,#A8854F 70%,#C9A977);z-index:2}
+.sc-tag{position:absolute;left:12px;top:12px;z-index:4;font-size:.5625rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#3A3A35;background:rgba(242,240,234,.85);padding:4px 7px}
+html.js .rv-img .sc-in{transform:scale(1.12);transition:transform 1.8s var(--ease)}
+html.js .rv-img.in .sc-in{transform:none}
+.proj:hover .sc-in{transform:scale(1.03)!important}
+.cr-sk{color:rgba(228,204,156,.8)!important;padding:18%}
+.cr-sk path{stroke-width:1.3!important}
+.strip figure:hover .cr-sk{color:#E4CC9C!important}
+.si{width:18px;height:18px;flex:none;fill:none;stroke:var(--bronze-l);stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round;margin-right:10px}
+.step h3{display:flex;align-items:center}
+html.js .hero-plan .kp{opacity:0;transform-box:fill-box;transform-origin:center;animation:kpin .6s ease 3.4s forwards,kpp 2.6s ease-in-out 4s infinite}
+@keyframes kpin{to{opacity:1}}
+@keyframes kpp{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.5);opacity:.35}}
+.faq{padding-block:var(--sec);border-top:1px solid var(--line)}
+.faq-list{grid-column:5/span 8;border-top:1px solid var(--line)}
+.faq details{border-bottom:1px solid var(--line)}
+.faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:18px 0;font-family:var(--f-serif);font-weight:500;font-size:clamp(1rem,1.15vw,1.125rem);letter-spacing:-.01em;transition:color .3s}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary:hover{color:var(--sand)}
+.faq summary i{position:relative;width:12px;height:12px;flex:none}
+.faq summary i::before,.faq summary i::after{content:"";position:absolute;left:0;top:50%;width:12px;height:1px;background:var(--bronze-l);transition:transform .4s var(--ease)}
+.faq summary i::after{transform:rotate(90deg)}
+.faq details[open] summary i::after{transform:rotate(0)}
+.faq details p{padding:0 0 20px;color:var(--fg-2);font-size:var(--t-s);max-width:40em}
+@media (max-width:1023px){.faq-list{grid-column:1/-1}}
+@media (prefers-reduced-motion:reduce){.hero-plan .kp{animation:none;opacity:1}}
+.proj--b .ph-cap{font-size:0;padding:5px 8px}.proj--b .ph-cap b{margin:0}
 </style>
 </head>
 <body>
@@ -1302,11 +1345,11 @@ html.js .pats .pat svg{clip-path:none!important}
         <p>Az első hívástól az átadásig ugyanazzal beszél.</p>
       </div>
       <ol class="steps" id="steps">
-        <li class="step"><span class="step-n">01</span><h3>Kapcsolat</h3><p>Telefonon röviden átbeszéljük, mit szeretne és mikorra.</p></li>
-        <li class="step"><span class="step-n">02</span><h3>Felmérés</h3><p>Megnézem a helyszínt, a felületet, és pontosítjuk az igényeket.</p></li>
-        <li class="step"><span class="step-n">03</span><h3>Ajánlat</h3><p>A feladat alapján egyeztetett kivitelezés, átláthatóan.</p></li>
-        <li class="step"><span class="step-n">04</span><h3>Kivitelezés</h3><p>Precíz munkavégzés, közben folyamatos egyeztetés.</p></li>
-        <li class="step"><span class="step-n">05</span><h3>Átadás</h3><p>A kész munkát közösen végignézzük, és csak utána adom át.</p></li>
+        <li class="step"><span class="step-n">01</span><h3><svg class="si" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h4l2 5-2.5 1.5a11 11 0 0 0 5 5L16 12l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 4 5a2 2 0 0 1 2-2z"/></svg>Kapcsolat</h3><p>Telefonon röviden átbeszéljük, mit szeretne és mikorra.</p></li>
+        <li class="step"><span class="step-n">02</span><h3><svg class="si" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8h18v8H3zM7 8v3M11 8v4M15 8v3M19 8v4"/></svg>Felmérés</h3><p>Megnézem a helyszínt, a felületet, és pontosítjuk az igényeket.</p></li>
+        <li class="step"><span class="step-n">03</span><h3><svg class="si" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l4 4v14H6zM15 3v4h4M9 12h7M9 16h7"/></svg>Ajánlat</h3><p>A feladat alapján egyeztetett kivitelezés, átláthatóan.</p></li>
+        <li class="step"><span class="step-n">04</span><h3><svg class="si" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h13v6H4zM4 15l1.6 2.2 1.6-2.2 1.6 2.2 1.6-2.2 1.6 2.2 1.6-2.2 1.6 2.2 1.6-2.2M17 12h2.5l1.5-3"/></svg>Kivitelezés</h3><p>Precíz munkavégzés, közben folyamatos egyeztetés.</p></li>
+        <li class="step"><span class="step-n">05</span><h3><svg class="si" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v16H4zM8 12l3 3 5-6"/></svg>Átadás</h3><p>A kész munkát közösen végignézzük, és csak utána adom át.</p></li>
       </ol>
     </div>
   </section>
@@ -1346,6 +1389,24 @@ html.js .pats .pat svg{clip-path:none!important}
     </div>
     <div class="strip-vp" id="stripVp"><div class="strip" id="strip"></div></div>
     <div class="wrap"><p class="strip-hint only-m">Lapozzon oldalra →</p></div>
+  </section>
+
+  <!-- GYIK -->
+  <section class="faq" id="gyik" aria-labelledby="faq-h">
+    <div class="wrap side">
+      <div class="side-h">
+        <p class="label kick">Gyakori kérdések</p>
+        <h2 id="faq-h" class="h2">Amit érdemes tudni</h2>
+        <p>Ha valamire nem talál itt választ, hívjon nyugodtan.</p>
+      </div>
+      <div class="faq-list">
+          <details><summary>Hogyan kérhetek ajánlatot?<i aria-hidden="true"></i></summary><p>Egy telefonhívással: röviden átbeszéljük, mit szeretne, majd egyeztetünk egy helyszíni felmérést. Az ajánlat a felmérés után, a valós feladat alapján készül.</p></details>
+          <details><summary>Hol vállal munkát?<i aria-hidden="true"></i></summary><p>Kéthelyről indulok, elsősorban Somogy megyében dolgozom. Más helyszín egyeztetéssel.</p></details>
+          <details><summary>Milyen munkákat vállal?<i aria-hidden="true"></i></summary><p>Komplett burkolást: fal- és padlóburkolást, csempézést, parkettát, és egyedi megoldásokat egyeztetés alapján.</p></details>
+          <details><summary>Mennyi idő alatt készül el egy burkolás?<i aria-hidden="true"></i></summary><p>A helyiség méretétől, az aljzat állapotától és a választott anyagtól függ. A felmérés után pontos ütemet tudok mondani.</p></details>
+          <details><summary>Miért fontos a felmérés?<i aria-hidden="true"></i></summary><p>Mert ott derül ki, milyen az aljzat, mennyire egyenesek a falak, és honnan érdemes indítani a kiosztást. Ettől lesz pontos az ajánlat, és szép a végeredmény.</p></details>
+      </div>
+    </div>
   </section>
 
   <!-- KAPCSOLAT -->
@@ -1411,11 +1472,11 @@ html.js .pats .pat svg{clip-path:none!important}
   var PROJECTS = [
     { layout:"a", type:"Fürdőszoba – fal- és padlóburkolás", location:null, url:null,
       scope:["Aljzat-előkészítés","Vízszigetelés","Falburkolás","Padlóburkolás","Fugázás"],
-      media:[{ tone:"t-nero", ar:"16/10", cap:"Elkészült fürdőszoba", src:"", sk:"room", o:{dx:-.06, win:"l"} }] },
+      media:[{ tone:"t-nero", ar:"16/10", cap:"Elkészült fürdőszoba", src:"", scene:"bath" }] },
     { layout:"b", type:"Konyha és nappali – padló", location:null, url:null,
       scope:["Kiegyenlítés","Padlóburkolás","Élzárás"],
-      media:[{ tone:"t-greyd", ar:"4/3", cap:"Fő tér", src:"", sk:"room", o:{dx:.08, win:"r", back:"door"} },
-             { tone:"t-beiged", ar:"4/3", cap:"Részlet – padló, csatlakozás", src:"", sk:"floor" }] }
+      media:[{ tone:"t-greyd", ar:"4/3", cap:"Fő tér", src:"", scene:"living" },
+             { tone:"t-beiged", ar:"4/3", cap:"Részlet – padló, csatlakozás", src:"", scene:"detail" }] }
   ];
   var SERVICES = [
     ["01","Komplett burkolás","A felület előkészítésétől az utolsó fugáig, egy kézben.","t-nero"],
@@ -1437,7 +1498,7 @@ html.js .pats .pat svg{clip-path:none!important}
       var cx = (xs[i] + xs[i+1]) / 2, cy = (ys[j] + ys[j+1]) / 2, d = Math.sqrt(Math.pow((cx - 400) / 77, 2) + Math.pow((cy - 300) / 76, 2));
       h += '<rect class="tf" x="' + (xs[i] + 1.5) + '" y="' + (ys[j] + 1.5) + '" width="' + (xs[i+1] - xs[i] - 3) + '" height="' + (ys[j+1] - ys[j] - 3) + '" fill="url(#mtex)" style="animation-delay:' + (2.1 + d * .16).toFixed(2) + 's"/>';
     }
-    g.innerHTML = h;
+    g.innerHTML = h + '<circle class="kp" cx="400" cy="300" r="15" fill="none" stroke="#C9A977" stroke-width="2"/>';
   })();
 
   /* --- Rajzlap koordináták --- */
@@ -1490,7 +1551,36 @@ html.js .pats .pat svg{clip-path:none!important}
     return '<svg class="sk" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none" aria-hidden="true"><path d="' + main + '"/><path class="fine" d="' + fine + '"/></svg>';
   }
 
+  /* --- Burkolt térbeli illusztrációk (nem fotó) --- */
+  function tileJoints(p, W, H, T, Th){
+    var d = "", x, y, cx = W / 2, cy = H / 2; Th = Th || T;
+    function R(x, y, w, h){ return "M" + x.toFixed(1) + " " + y.toFixed(1) + "h" + w.toFixed(1) + "v" + h.toFixed(1) + "h" + (-w).toFixed(1) + "Z"; }
+    if (p === "p1") { for (x = cx % T; x < W; x += T) d += "M" + x.toFixed(1) + " 0V" + H; for (y = cy % Th; y < H; y += Th) d += "M0 " + y.toFixed(1) + "H" + W; }
+    else if (p === "p2") { var r = 0; for (y = cy % T - T; y < H; y += T, r++) { d += "M0 " + y.toFixed(1) + "H" + W; for (x = (cx % (2 * T)) - 2 * T + (r % 2 ? T : 0); x < W; x += 2 * T) d += "M" + x.toFixed(1) + " " + y.toFixed(1) + "v" + T; } }
+    return d;
+  }
+  var SCENES = {
+    bath:   { wall:"img/marble-white.webp", wj:"rgba(120,110,95,.5)", tw:.12, th:.24, floor:"img/marble-grey.webp", fj:"rgba(40,40,40,.5)", fp:"p1", extra:'<span class="sc-glass"></span>' },
+    living: { wall:"", wj:"", floor:"img/marble-beige.webp", fj:"rgba(92,72,48,.5)", fp:"p2", extra:'<span class="sc-win"></span>' },
+    detail: { wall:"img/marble-white.webp", wj:"rgba(120,110,95,.5)", tw:.2, th:.2, floor:"img/marble-nero.webp", fj:"rgba(232,224,210,.4)", fp:"p1", extra:'<span class="sc-brass"></span>' }
+  };
+  function scene(m){
+    var c = SCENES[m.scene];
+    return '<div class="sc-in" aria-hidden="true"><div class="sc-wall"' + (c.wall ? ' style="background-image:url(' + c.wall + ')"' : '') + '><svg class="sc-wj"></svg>' + c.extra + '</div>' +
+      '<div class="sc-floor"><div class="sc-tex" style="background-image:url(' + c.floor + ')"></div><svg class="sc-fj"></svg><div class="sc-shade"></div></div></div><span class="sc-tag">Illusztráció</span>';
+  }
+  function drawScenes(){
+    $$(".scene").forEach(function(el){
+      var c = SCENES[el.getAttribute("data-scene")]; if (!c) return;
+      var fl = $(".sc-floor", el), fj = $(".sc-fj", el), wl = $(".sc-wall", el), wj = $(".sc-wj", el);
+      var W = fl.offsetWidth, H = fl.offsetHeight, T = Math.max(40, W / 20);
+      fj.setAttribute("viewBox", "0 0 " + W + " " + H); fj.innerHTML = '<path d="' + tileJoints(c.fp, W, H, T) + '" stroke="' + c.fj + '" stroke-width="3" fill="none"/>';
+      if (c.wall) { var w2 = wl.offsetWidth, h2 = wl.offsetHeight; wj.setAttribute("viewBox", "0 0 " + w2 + " " + h2); wj.innerHTML = '<path d="' + tileJoints("p1", w2, h2, w2 * c.tw, w2 * c.th) + '" stroke="' + c.wj + '" stroke-width="1.6" fill="none"/>'; }
+    });
+  }
   function ph(m, cls, ref){
+    if (m.scene && !m.src) return '<figure class="ph scene ' + (cls||"") + ' rv-img" data-scene="' + m.scene + '" style="--ar:' + m.ar + '" data-src="" data-alt="' + esc(m.cap) + '"><span class="tone"></span>' + scene(m) +
+      '<span class="ph-cap"><b>Fotók hamarosan</b>' + (ref ? esc(ref) : '') + '</span></figure>';
     return '<figure class="ph ' + m.tone + ' ' + (cls||"") + ' rv-img" style="--ar:' + m.ar + '" data-src="' + esc(m.src||"") + '" data-srcset="' + esc(m.srcset||"") + '" data-alt="' + esc(m.cap) + '">' +
       '<span class="tone"></span>' + (m.sk && !m.src ? sketch(m.sk, m.ar, m.o) : "") +
       (ref === false ? '' : '<span class="ph-cap"><b>Fotók hamarosan</b>' + (ref ? esc(ref) : '') + '</span>') + '</figure>';
@@ -1508,6 +1598,8 @@ html.js .pats .pat svg{clip-path:none!important}
         (p.url ? '<span class="proj-link">Projekt megtekintése <span class="ar">→</span></span>' : '') +
       '</div></' + tag + '>';
   }).join("");
+
+  drawScenes(); var srt; window.addEventListener("resize", function(){ clearTimeout(srt); srt = setTimeout(drawScenes, 150); });
 
   /* --- Szolgáltatások --- */
   var list = $("#svcList"), prev = $("#svcPrev");
@@ -1539,10 +1631,11 @@ html.js .pats .pat svg{clip-path:none!important}
   });
   list.addEventListener("mouseleave", function(){ prev.classList.remove("on"); });
 
+  var CRSK = ["<path d=\"M20 38h38v38h-38Z\"/><path d=\"M30 30h38v38h-38Z\"/><path d=\"M40 22h38v38h-38Z\"/>", "<path d=\"M20 20h60v60h-60ZM40 20v60M60 20v60M20 40h60M20 60h60\"/><path d=\"M42 50h16M50 42v16M56 50a6 6 0 1 1 -12 0a6 6 0 1 1 12 0\"/>", "<path d=\"M22 22h56v56h-56Z\"/><path stroke-dasharray=\"4 3\" d=\"M22 66L78 34\"/><path d=\"M86 30a8 8 0 1 1 -16 0a8 8 0 1 1 16 0M78 30h0\"/>", "<path d=\"M14 42h72v16h-72ZM40 46h20v8h-20Z\"/><path d=\"M52.5 50a2.5 2.5 0 1 1 -5 0a2.5 2.5 0 1 1 5 0M10 72h80M20 72v-4M35 72v-4M50 72v-6M65 72v-4M80 72v-4\"/>", "<path d=\"M18 18h29v29h-29ZM53 18h29v29h-29ZM18 53h29v29h-29ZM53 53h29v29h-29Z\"/><path d=\"M44 50h12M50 44v12\"/>", "<path d=\"M8 84H92M18 68H82M26 57H74M32 49H68M8 84L32 49M36 84L44.5 49M64 84L55.5 49M92 84L68 49\"/><path d=\"M58 60l10-8M66 66l12-10\" opacity=\".6\"/>"];
   /* --- Munka közben szalag --- */
   $("#strip").innerHTML = CRAFT.map(function(c, i){
     var n = ("0" + (i+1)).slice(-2);
-    return '<figure>' + ph({tone:c[2], ar:c[1], cap:c[0]}, "", "").replace("<figure", "<div").replace(/<\/figure>$/, "</div>") +
+    return '<figure>' + ph({tone:c[2], ar:c[1], cap:c[0]}, "", "").replace("<figure", "<div").replace(/<\/figure>$/, "</div>").replace('<span class="ph-cap">', '<svg class="sk cr-sk" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" aria-hidden="true">' + CRSK[i] + '</svg><span class="ph-cap">') +
       '<figcaption><span class="num">' + n + '</span><b>' + esc(c[0]) + '</b></figcaption></figure>';
   }).join("");
 
@@ -1758,10 +1851,10 @@ html.js .pats .pat svg{clip-path:none!important}
     document.body.appendChild(intro);
     var heroCopy = $(".hero-copy"); heroCopy.style.animationPlayState = "paused";
     $$(".hero-copy > *").forEach(function(el){ el.style.animationPlayState = "paused"; });
-    $$(".hero-plan .dr, .hero-plan text, .hero-plan .tf, .sweep").forEach(function(el){ el.style.animationPlayState = "paused"; });
+    $$(".hero-plan .dr, .hero-plan text, .hero-plan .tf, .hero-plan .kp, .sweep").forEach(function(el){ el.style.animationPlayState = "paused"; });
     setTimeout(function(){
       intro.classList.add("out");
-      $$(".hero-copy > *, .hero-plan .dr, .hero-plan text, .hero-plan .tf, .sweep").forEach(function(el){ el.style.animationPlayState = "running"; });
+      $$(".hero-copy > *, .hero-plan .dr, .hero-plan text, .hero-plan .tf, .hero-plan .kp, .sweep").forEach(function(el){ el.style.animationPlayState = "running"; });
       setTimeout(function(){ intro.remove(); }, 1100);
     }, 1350);
   }
