@@ -136,14 +136,23 @@ body.menu-open .head .hcall{display:none}
 .hero .k{display:flex;align-items:center;gap:10px}
 .hero .k{color:#CFC4B8}.hero .k::before{content:"";width:22px;height:1.5px;background:var(--or)}
 .hero h1{font-family:var(--head);font-weight:500;letter-spacing:-.035em;line-height:1.02;font-size:clamp(2.25rem,4vw,3.5rem);margin:18px 0 18px}
-.hero h1 .lp{color:var(--or)}.hero h1 em{font-style:normal;display:block;color:var(--cream)}
+.hero h1 .lp{color:var(--or)}
+.hero h1 .ln{display:block;overflow:hidden;padding-bottom:.06em}
+.hero h1 .ln > span{display:inline-block;transform:translateY(105%);animation:lnup 1s var(--ease) forwards;animation-delay:var(--dl,.2s)}
+.hero h1 .ln + .ln > span{animation-delay:calc(var(--dl,.2s) + .12s)}
+@keyframes lnup{to{transform:none}}
+html.intro-on .hero h1{--dl:1.55s}.hero h1 em{font-style:normal;display:block;color:var(--cream)}
 .hero p.lead{font-size:16px;max-width:30em;color:#BDB2A6}
 .hero-cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
 /* lapozó csempefal */
 .wall{position:relative}
-.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;perspective:1100px}
-.tl{aspect-ratio:1;position:relative;transform-style:preserve-3d;transition:transform .95s var(--flip)}
-.tl .f{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;background-repeat:no-repeat;box-shadow:0 20px 30px -18px rgba(0,0,0,.8),0 2px 0 rgba(255,255,255,.08) inset}
+.wall-3d{perspective:1400px}
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;padding:4px;background:#0C0907;perspective:1100px;transform:rotateY(var(--ry,0deg)) rotateX(var(--rx,0deg));transition:transform .5s var(--ease);box-shadow:0 50px 90px -45px rgba(0,0,0,.95),0 0 0 1px rgba(255,255,255,.05),0 0 120px -30px rgba(219,106,47,.35);position:relative;overflow:hidden}
+.tiles::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(105deg,transparent 35%,rgba(255,240,220,.28) 50%,transparent 65%);background-size:300% 100%;background-position:130% 0;z-index:5}
+.tiles.sh::after{animation:shine 1.3s var(--ease) .55s}
+@keyframes shine{from{background-position:130% 0}to{background-position:-40% 0}}
+.tl{aspect-ratio:1;position:relative;transform-style:preserve-3d;transition:transform .8s var(--flip)}
+.tl .f{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;background-repeat:no-repeat;box-shadow:inset 0 1px 0 rgba(255,255,255,.12),inset 0 -1px 0 rgba(0,0,0,.25)}
 .tl .f::after{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.18),transparent 45%,rgba(0,0,0,.08))}
 .tl .b{transform:rotateY(180deg)}
 .wall-cap{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-top:16px;font-size:13px}
@@ -183,6 +192,14 @@ body.menu-open .head .hcall{display:none}
 .gc .cap{position:absolute;left:14px;right:14px;bottom:12px;z-index:2;display:flex;justify-content:space-between;align-items:flex-end;gap:10px;font-size:12px}
 .gc .cap b{font-weight:600;letter-spacing:.1em;text-transform:uppercase;font-size:10px;background:var(--or);color:var(--ink);padding:4px 7px}
 .gc .cap span{color:#E9DFD2}
+.gc::before{content:"";position:absolute;inset:12px;z-index:3;pointer-events:none;opacity:0;transition:opacity .4s,inset .5s var(--ease);background:linear-gradient(var(--or),var(--or)) left top/18px 2px no-repeat,linear-gradient(var(--or),var(--or)) left top/2px 18px no-repeat,linear-gradient(var(--or),var(--or)) right bottom/18px 2px no-repeat,linear-gradient(var(--or),var(--or)) right bottom/2px 18px no-repeat}
+.gc:hover::before{opacity:1;inset:16px}
+.gc .ttl{position:absolute;left:18px;bottom:16px;z-index:2;display:flex;flex-direction:column;gap:2px}
+.gc .ttl span{font-size:11px;font-weight:600;letter-spacing:.14em;color:var(--or)}
+.gc .ttl b{font-family:var(--head);font-weight:500;font-size:clamp(1.25rem,2vw,1.75rem);letter-spacing:-.02em;color:#fff;text-shadow:0 2px 18px rgba(0,0,0,.45)}
+.gc:first-child .cap{top:12px;bottom:auto;left:12px;right:auto}
+.gc:first-child .cap span{display:none}
+.gc:first-child::after{background:linear-gradient(0deg,rgba(14,11,9,.7),transparent 55%)}
 .gc.flip{animation:gflip .8s var(--flip) both}
 @keyframes gflip{0%{transform:rotateY(0)}49%{transform:rotateY(-90deg);filter:brightness(.6)}51%{transform:rotateY(90deg);filter:brightness(.6)}100%{transform:rotateY(0)}}
 .g-foot{margin-top:18px;font-size:13px;color:var(--muted)}
@@ -220,6 +237,7 @@ body.menu-open .head .hcall{display:none}
 .contact .h2{font-size:clamp(1.9rem,3vw,2.75rem)}
 .contact .k{color:var(--or)}.contact .h2 .lp{color:var(--or)}
 .contact p{margin-top:12px;max-width:28em;color:#BDB2A6}
+.ct-cta{margin-top:24px}
 .ct-list{border-top:1.5px solid var(--or)}
 .ct-list a,.ct-list div{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid rgba(247,241,233,.14);font-size:15px}
 .ct-list span{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
@@ -244,6 +262,7 @@ body.menu-open .head .hcall{display:none}
 html.js [data-r]{opacity:0;transform:translateY(22px);transition:opacity .9s var(--ease),transform 1s var(--ease)}
 html.js [data-r].in{opacity:1;transform:none}
 
+@media (max-width:959px){.wall{max-width:540px;width:100%;margin-inline:auto}.gc .cap span{display:none}.gc .cap b{white-space:nowrap}}
 /* Mobil */
 @media (max-width:767px){
   .head{gap:12px}
@@ -293,7 +312,7 @@ html.js [data-r].in{opacity:1;transform:none}
     <div class="hero-g">
       <div data-r>
         <p class="k">Selyem Róbert · burkoló · Kéthely</p>
-        <h1 id="h1"><span class="lp">Lapozzunk!</span> <em>Új burkolat, új fejezet.</em></h1>
+        <h1 id="h1"><span class="ln"><span class="lp">Lapozzunk!</span></span> <em class="ln"><span>Új burkolat, új fejezet.</span></em></h1>
         <p class="lead">Hideg- és melegburkolás, térburkolat, kőszőnyeg – Somogy megyében, a felméréstől az utolsó lapig.</p>
         <div class="hero-cta">
           <a class="btn btn-or" href="tel:+36202211366">Hívás: <span class="num">+36 20 221 1366</span></a>
@@ -302,7 +321,7 @@ html.js [data-r].in{opacity:1;transform:none}
       </div>
       <div class="wall" data-r>
         <span class="wall-tag">Anyagminta</span>
-        <div class="tiles" id="tiles" aria-hidden="true"></div>
+        <div class="wall-3d"><div class="tiles" id="tiles" aria-hidden="true"></div></div>
         <div class="wall-cap" aria-live="polite">
           <div><span class="num" id="wallN">01 / 04</span> &nbsp;<b id="wallT">Hidegburkolás</b></div>
           <div class="pg"><button type="button" id="wallP" aria-label="Előző lap">←</button><button type="button" id="wallX" aria-label="Lapozzunk – következő lap">→</button></div>
@@ -363,6 +382,7 @@ html.js [data-r].in{opacity:1;transform:none}
         <p class="k">Kapcsolat</p>
         <h2 class="h2" id="ct-h" style="margin-top:10px"><span class="lp">Lapozzunk!</span> Hívjon.</h2>
         <p>Pár perc alatt átbeszéljük, mit szeretne. A részleteket a felmérésen pontosítjuk.</p>
+        <a class="btn btn-or ct-cta" href="tel:+36202211366">Lapozzunk – hívás most <span class="ar">→</span></a>
       </div>
       <div class="ct-list" data-r>
         <a href="tel:+36202211366"><span>Telefon</span><b class="num">+36 20 221 1366</b></a>
@@ -409,6 +429,7 @@ html.js [data-r].in{opacity:1;transform:none}
   /* Intró: lapozás */
   if (!reduce && !sessionStorageGet()) {
     var it = document.createElement("div"); it.className = "intro"; it.setAttribute("aria-hidden", "true");
+    doc.classList.add("intro-on");
     it.innerHTML = '<div class="intro-t"><i></i><i></i><i></i><i></i></div><b>Lapozzunk!</b>';
     document.body.appendChild(it);
     setTimeout(function(){ it.classList.add("out"); setTimeout(function(){ it.remove(); }, 950); }, 1250);
@@ -423,7 +444,7 @@ html.js [data-r].in{opacity:1;transform:none}
     t.innerHTML = '<div class="f a"></div><div class="f b"></div>';
     var bp = (x / (C - 1) * 100) + "% " + (y / (R - 1) * 100) + "%";
     $$(".f", t).forEach(function(f){ f.style.backgroundSize = (C * 100) + "% " + (R * 100) + "%"; f.style.backgroundPosition = bp; });
-    t.dataset.d = (x + y) * 70; t.dataset.r = 0; tiles.appendChild(t); tl.push(t);
+    t.dataset.d = (x + y) * 45; t.dataset.r = 0; tiles.appendChild(t); tl.push(t);
   }
   var WALL = ["marble-white", "wood", "pavers", "pebble"];
   tl.forEach(function(t){ $(".a", t).style.backgroundImage = img(WALL[0]); });
@@ -434,6 +455,7 @@ html.js [data-r].in{opacity:1;transform:none}
       hidden.style.backgroundImage = img(WALL[cur]);
       setTimeout(function(){ r += 180; t.dataset.r = r; t.style.transform = "rotateY(" + r + "deg)"; }, reduce ? 0 : +t.dataset.d);
     });
+    tiles.classList.remove("sh"); void tiles.offsetWidth; tiles.classList.add("sh");
     $("#wallN").textContent = pad(cur + 1) + " / " + pad(WALL.length);
     $("#wallT").textContent = CATS[cur].t;
   }
@@ -444,10 +466,16 @@ html.js [data-r].in{opacity:1;transform:none}
   $("#wallP").addEventListener("click", function(){ stop(); wallTo(cur - 1); play(); });
   if ("IntersectionObserver" in window) new IntersectionObserver(function(es){ es.forEach(function(e){ e.isIntersecting ? play() : stop(); }); }).observe(tiles); else play();
 
+  if (!reduce && matchMedia("(hover:hover) and (pointer:fine)").matches) {
+    var heroEl = $(".hero");
+    heroEl.addEventListener("pointermove", function(e){ var r = tiles.getBoundingClientRect(), px = (e.clientX - r.left) / r.width - .5, py = (e.clientY - r.top) / r.height - .5; tiles.style.setProperty("--ry", (px * 10).toFixed(2) + "deg"); tiles.style.setProperty("--rx", (-py * 8).toFixed(2) + "deg"); });
+    heroEl.addEventListener("pointerleave", function(){ tiles.style.setProperty("--ry", "0deg"); tiles.style.setProperty("--rx", "0deg"); });
+  }
+
   /* Galéria: lapozható kategóriák */
   var tabs = $("#tabs"), grid = $("#grid"), gi = 0;
   tabs.innerHTML = CATS.map(function(c, i){ return '<button type="button" class="tab" role="tab" aria-selected="' + (i === 0) + '" data-i="' + i + '"><span class="n num">' + pad(i + 1) + '</span><b>' + c.t + '</b></button>'; }).join("");
-  grid.innerHTML = POS.map(function(p, j){ return '<figure class="gc"><div class="im"></div><figcaption class="cap"><b>Fotók hamarosan</b><span></span></figcaption></figure>'; }).join("");
+  grid.innerHTML = POS.map(function(p, j){ return '<figure class="gc"><div class="im"></div>' + (j ? '' : '<div class="ttl"><span class="num"></span><b></b></div>') + '<figcaption class="cap"><b>Fotók hamarosan</b><span></span></figcaption></figure>'; }).join("");
   function fill(i){
     var c = CATS[i];
     $$(".gc", grid).forEach(function(g, j){
@@ -455,6 +483,7 @@ html.js [data-r].in{opacity:1;transform:none}
       $(".cap span", g).textContent = c.t + " · " + pad(j + 1);
     });
     $("#gDesc").textContent = c.d;
+    $(".ttl span", grid).textContent = pad(i + 1) + " / " + pad(CATS.length); $(".ttl b", grid).textContent = c.t;
   }
   function galTo(n){
     gi = (n + CATS.length) % CATS.length;
