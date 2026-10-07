@@ -16,17 +16,48 @@ import 'package:mester_plus/domain/enums.dart';
 /// Memória-tároló a tesztekhez (a valódi az Android Keystore-t használja).
 class _MemStorage extends Fake implements FlutterSecureStorage {
   final Map<String, String> _m = {};
+
   @override
-  Future<String?> read({required String key, IOSOptions? iOptions, AndroidOptions? aOptions, LinuxOptions? lOptions,
-      WebOptions? webOptions, MacOsOptions? mOptions, WindowsOptions? wOptions}) async => _m[key];
+  Future<String?> read({
+    required String key,
+    AppleOptions? iOptions,
+    AndroidOptions? aOptions,
+    LinuxOptions? lOptions,
+    WebOptions? webOptions,
+    AppleOptions? mOptions,
+    WindowsOptions? wOptions,
+  }) async =>
+      _m[key];
+
   @override
-  Future<void> write({required String key, required String? value, IOSOptions? iOptions, AndroidOptions? aOptions,
-      LinuxOptions? lOptions, WebOptions? webOptions, MacOsOptions? mOptions, WindowsOptions? wOptions}) async {
-    if (value == null) _m.remove(key); else _m[key] = value;
+  Future<void> write({
+    required String key,
+    required String? value,
+    AppleOptions? iOptions,
+    AndroidOptions? aOptions,
+    LinuxOptions? lOptions,
+    WebOptions? webOptions,
+    AppleOptions? mOptions,
+    WindowsOptions? wOptions,
+  }) async {
+    if (value == null) {
+      _m.remove(key);
+    } else {
+      _m[key] = value;
+    }
   }
+
   @override
-  Future<void> delete({required String key, IOSOptions? iOptions, AndroidOptions? aOptions, LinuxOptions? lOptions,
-      WebOptions? webOptions, MacOsOptions? mOptions, WindowsOptions? wOptions}) async => _m.remove(key);
+  Future<void> delete({
+    required String key,
+    AppleOptions? iOptions,
+    AndroidOptions? aOptions,
+    LinuxOptions? lOptions,
+    WebOptions? webOptions,
+    AppleOptions? mOptions,
+    WindowsOptions? wOptions,
+  }) async =>
+      _m.remove(key);
 }
 
 void main() {
@@ -43,8 +74,8 @@ void main() {
     test('a kulcs a PRAGMA-ban nem kerülhet SQL-injekció alá (csak hex)', () {
       final hex = DatabaseKeyStore.generateHex(Random(1));
       final pragma = rawKeyPragma(hex);
-      expect(pragma, "PRAGMA key = \"x'$hex'\"");
-      expect(RegExp(r"^PRAGMA key = \"x'[0-9a-f]{64}'\"$").hasMatch(pragma), isTrue);
+      expect(pragma, 'PRAGMA key = "x\'$hex\'"');
+      expect(RegExp('^PRAGMA key = "x\'[0-9a-f]{64}\'"\$').hasMatch(pragma), isTrue);
     });
 
     test('sérült tárolt kulcsnál hibát jelez, nem generál újat csendben', () async {

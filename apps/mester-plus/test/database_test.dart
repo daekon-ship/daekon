@@ -17,7 +17,7 @@ import 'package:sqlite3/sqlite3.dart';
 /// nem bukik el.
 Object _skipReason() {
   try {
-    sqlite3.openInMemory().dispose();
+    sqlite3.openInMemory().close();
     return false;
   } catch (_) {
     return 'Natív SQLite nem érhető el ezen a gépen — adatbázis-tesztek kihagyva (ld. README).';

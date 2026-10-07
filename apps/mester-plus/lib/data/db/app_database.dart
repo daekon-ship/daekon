@@ -185,7 +185,7 @@ class CompanyProfiles extends Table {
 ])
 class AppDatabase extends _$AppDatabase {
   /// Teszteléshez / egyedi végrehajtóval (pl. `NativeDatabase.memory()`).
-  AppDatabase(QueryExecutor executor) : super(executor);
+  AppDatabase(super.executor);
 
   /// Éles: titkosított adatbázis a készüléken, a kulcs a biztonságos tárolóból.
   AppDatabase.encrypted(DatabaseKeyStore keys)

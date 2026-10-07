@@ -342,6 +342,7 @@ class _SecuritySectionState extends ConsumerState<_SecuritySection> {
     if (!ok || !mounted) return;
     await ref.read(lockStateProvider.notifier).refresh();
     ref.read(lockStateProvider.notifier).unlock();
+    if (!mounted) return;
     setState(() => _enabled = true);
     showInfo(context, 'PIN-zár bekapcsolva');
   }
@@ -358,6 +359,7 @@ class _SecuritySectionState extends ConsumerState<_SecuritySection> {
     final ok = await runGuarded(context, () => ref.read(pinLockProvider).clear());
     if (!ok || !mounted) return;
     await ref.read(lockStateProvider.notifier).refresh();
+    if (!mounted) return;
     setState(() => _enabled = false);
     showInfo(context, 'PIN-zár kikapcsolva');
   }
