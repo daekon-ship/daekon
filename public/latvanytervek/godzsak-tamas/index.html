@@ -665,7 +665,7 @@ p.proj-scope{text-align:left}
 .conv{height:clamp(130px,9vw,160px);margin-top:clamp(28px,3vw,48px)}
 
 .strip .ph-cap{display:none}
-.cr-t span{font-family:var(--f-ui);font-size:.6875rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--sand);margin-left:10px;white-space:nowrap}
+.cr-t .note{font-family:var(--f-ui);font-size:.6875rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--sand);margin-left:10px;white-space:nowrap}
 
 /* Kompakt v10: még kisebb referencia-képek */
 .proj-media{grid-column:1/span 4}
@@ -930,6 +930,10 @@ body.menu-open .hdr{transform:none}
 .strip figure .ph{transition:transform .6s var(--ease)}
 .strip figure:hover .ph .tone{transform:scale(1.06)}
 
+.ab-sign{flex-direction:column;gap:2px!important}.ab-sign span{display:block}
+.cr-t .note .wd > span{transform:none}
+@media (max-width:1023px){ .steps{padding-left:0} }
+@media (max-width:767px){ .cr-head{flex-direction:column;align-items:flex-start;gap:6px} .cr-t .note{margin-left:0;display:block;margin-top:4px} }
 @media (prefers-reduced-motion:reduce){
   .intro{display:none}
   .wd > span{transform:none!important}
@@ -1151,7 +1155,7 @@ body.menu-open .hdr{transform:none}
   </section>
 
   <!-- VILÁGOS SÁV -->
-  <div class="light band">
+  <div class="band">
 
     <section class="about" id="rolunk" aria-labelledby="ab-h">
       <div class="wrap ab-grid">
@@ -1162,7 +1166,7 @@ body.menu-open .hdr{transform:none}
         <div class="ab-text">
           <p>Hanem az első beszélgetésnél. Ott dől el, hogy a munkák jó sorrendben követik-e egymást, és hogy Ön mindig tudja-e, mi történik a lakásában.</p>
           <p>Teljes lakás- és házfelújítást vállalunk Budapesten és Pest megyében, a hozzá tartozó kőműves, gipszkarton-, festési és hőszigetelési munkákkal együtt. Végig közvetlenül a kivitelezővel beszél.</p>
-          <p class="ab-sign">Godzsák Tamás <span>· egyéni vállalkozó, kivitelező</span></p>
+          <p class="ab-sign">Godzsák Tamás <span>Egyéni vállalkozó, kivitelező</span></p>
         </div>
       </div>
     </section>
@@ -1173,7 +1177,7 @@ body.menu-open .hdr{transform:none}
     <div class="wrap">
       <div class="cr-head">
         <p class="label kick">Munka közben</p>
-        <h2 id="cr-h" class="cr-t">Anyag és részlet, közelről. <span>Fotók hamarosan</span></h2>
+        <h2 id="cr-h" class="cr-t">Anyag és részlet, közelről. <span class="note">Fotók hamarosan</span></h2>
       </div>
     </div>
     <div class="strip-vp" id="stripVp"><div class="strip" id="strip"></div></div>
