@@ -629,6 +629,12 @@ h3.proj-title{font-size:var(--t-h3)}
 .hdr-cta .num,.hero-cta .num{letter-spacing:.02em;font-weight:500}
 .mbar{grid-template-columns:1fr!important}
 
+
+/* „Fotók hamarosan” jelzés */
+.ph-cap b{font-size:.625rem;letter-spacing:.12em;color:var(--sand);margin-bottom:2px}
+.ph-cap{font-size:.6875rem}
+.strip .ph-cap{right:10px;bottom:10px;padding:5px 8px}
+
 /* ================= Tablet ================= */
 @media (max-width:1180px){
   .nav,.rail{display:none}
@@ -785,7 +791,7 @@ h3.proj-title{font-size:var(--t-h3)}
   .f-nav{grid-template-columns:1fr 1fr;gap:5px 18px}
   .ftr-grid{grid-template-columns:1fr!important}
   .f-a,.f-b,.f-c{grid-column:1/-1!important}
-  .ph-cap{right:10px;bottom:10px;max-width:calc(100% - 20px)}
+  .ph-cap{left:auto;right:10px;bottom:10px;max-width:calc(100% - 20px)}
   .strip .ph{height:min(40vh,260px)}
 }
 
@@ -976,8 +982,8 @@ h3.proj-title{font-size:var(--t-h3)}
         <p>Húzza a középső vonalat.</p>
       </div>
       <div class="ba-frame" id="ba" style="--pos:50%">
-        <div class="ph t-lime ba-after" data-src="" data-alt="Utána: elkészült helyiség"><span class="tone"></span><span class="ph-cap"><span><b>Utána</b>Elkészült állapot – fotó helye</span><span class="r">16:9</span></span></div>
-        <div class="ph t-concrete ba-before" data-src="" data-alt="Előtte: a helyiség a felújítás előtt"><span class="tone"></span><span class="ph-cap"><span><b>Előtte</b>Kiinduló állapot – fotó helye</span><span class="r">16:9</span></span></div>
+        <div class="ph t-lime ba-after" data-src="" data-alt="Utána: elkészült helyiség"><span class="tone"></span><span class="ph-cap"><b>Fotók hamarosan</b>Utána</span></div>
+        <div class="ph t-concrete ba-before" data-src="" data-alt="Előtte: a helyiség a felújítás előtt"><span class="tone"></span><span class="ph-cap"><b>Fotók hamarosan</b>Előtte</span></div>
         <span class="ba-tag l">ELŐTTE</span><span class="ba-tag r">UTÁNA</span>
         <div class="ba-handle" role="slider" tabindex="0" aria-label="Előtte–utána összehasonlítás" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"><span class="ba-knob" aria-hidden="true">‹&nbsp;›</span></div>
       </div>
@@ -1033,7 +1039,7 @@ h3.proj-title{font-size:var(--t-h3)}
       <div class="wrap ab-grid">
         <figure class="ph ph--light l-plaster ab-img rv-img" data-src="" data-alt="Godzsák Tamás munka közben">
           <span class="tone"></span>
-          <span class="ph-cap"><b>Portré</b>Godzsák Tamás munka közben – fotó helye</span>
+          <span class="ph-cap"><b>Fotók hamarosan</b>Godzsák Tamás munka közben</span>
         </figure>
         <div class="ab-copy">
           <p class="label kick">Rólunk</p>
@@ -1116,7 +1122,7 @@ h3.proj-title{font-size:var(--t-h3)}
   /* ==================================================================
      TARTALOM — itt cserélhető valódi adatra.
      src: kép URL (WebP/AVIF), srcset: "kep-800.avif 800w, kep-1600.avif 1600w"
-     null = "Projektadat feltöltésre vár". Semmit nem találunk ki.
+     null = "Helyszín és részletek hamarosan". Semmit nem találunk ki.
      ================================================================== */
   var PROJECTS = [
     { layout:"a", type:"Teljes lakásfelújítás", location:null, url:null,
@@ -1190,18 +1196,18 @@ h3.proj-title{font-size:var(--t-h3)}
   function ph(m, cls, ref){
     return '<figure class="ph ' + m.tone + ' ' + (cls||"") + ' rv-img" style="--ar:' + m.ar + '" data-src="' + esc(m.src||"") + '" data-srcset="' + esc(m.srcset||"") + '" data-alt="' + esc(m.cap) + '">' +
       '<span class="tone"></span>' + (m.sk && !m.src ? sketch(m.sk, m.ar, m.o) : "") +
-      (ref ? '<span class="ph-cap"><b>' + esc(ref) + '</b>' + esc(m.cap) + ' – fotó helye</span>' : '') + '</figure>';
+      (ref === false ? '' : '<span class="ph-cap"><b>Fotók hamarosan</b>' + (ref ? esc(ref) : '') + '</span>') + '</figure>';
   }
 
   /* --- Referenciák --- */
   $("#projects").innerHTML = PROJECTS.map(function(p, i){
     var n = ("0" + (i+1)).slice(-2);
-    var media = p.media.map(function(m, j){ return ph(m, "m" + (j+1), "Ref " + n + "-" + "AB"[j]); }).join("");
+    var media = p.media.map(function(m, j){ return ph(m, "m" + (j+1), m.cap); }).join("");
     var tag = p.url ? "a" : "article";
     return '<' + tag + ' class="proj proj--' + p.layout + '"' + (p.url ? ' href="' + esc(p.url) + '"' : '') + '>' +
       '<div class="proj-media">' + media + '</div>' +
       '<div class="proj-meta"><h3 class="proj-title"><span class="num">' + n + '</span>' + esc(p.type) + '</h3>' +
-        '<p class="proj-scope">' + p.scope.map(esc).join(", ") + '<span>' + (p.location ? esc(p.location) : "Helyszín és év: projektadat feltöltésre vár") + '</span></p>' +
+        '<p class="proj-scope">' + p.scope.map(esc).join(", ") + '<span>' + (p.location ? esc(p.location) : "Helyszín és részletek hamarosan") + '</span></p>' +
         (p.url ? '<span class="proj-link">Projekt megtekintése <span class="ar">→</span></span>' : '') +
       '</div></' + tag + '>';
   }).join("");
@@ -1217,7 +1223,7 @@ h3.proj-title{font-size:var(--t-h3)}
       '</button><div class="svc-body" id="svcb' + i + '"><div><p>' + esc(s[2]) + '</p></div></div></div>';
   }).join(""));
   prev.innerHTML = SERVICES.map(function(s, i){
-    return '<div class="ph ' + s[3] + '" data-i="' + i + '"><span class="tone"></span>' + sketch("room", "4/3", SVC_SK[i]) + '<span class="ph-cap"><b>Projektkép</b>' + esc(s[1]) + '</span></div>';
+    return '<div class="ph ' + s[3] + '" data-i="' + i + '"><span class="tone"></span>' + sketch("room", "4/3", SVC_SK[i]) + '<span class="ph-cap"><b>Fotók hamarosan</b>' + esc(s[1]) + '</span></div>';
   }).join("");
   var canHover = window.matchMedia("(hover: hover) and (min-width: 1024px)");
   $$(".svc-row", list).forEach(function(row){
