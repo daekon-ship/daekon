@@ -38,8 +38,6 @@ dev_dependencies:
   flutter_lints: ^5.0.0
   drift_dev: ^2.26.0
   build_runner: ^2.4.15
-  # Csak a DB-tesztekhez (natív SQLite elérhetőségének ellenőrzése).
-  sqlite3: ^2.4.0
   # App-ikon és indítóképernyő generálása (Android adaptív + monokróm ikon, Android 12+ splash)
   flutter_launcher_icons: ^0.14.3
   flutter_native_splash: ^2.4.4
