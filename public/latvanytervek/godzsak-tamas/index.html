@@ -715,7 +715,8 @@ p.proj-scope{text-align:left}
   .ly-grid{grid-template-columns:minmax(0,1fr)}
   .ly-copy,.ly-draw{grid-column:1/-1}
   .ly-draw{order:-1;max-width:540px}
-  .ly-steps li{opacity:1}
+  .ly-steps li{opacity:.4;transition:opacity .5s}
+  .ly-steps li.on{opacity:1}
   .ly-steps .bd{grid-template-rows:1fr}
   .ly-steps .bd > p{padding-top:4px}
   .ly-bar{display:none}
@@ -936,26 +937,11 @@ body.menu-open .hdr{transform:none}
 @media (max-width:767px){ .cr-head{flex-direction:column;align-items:flex-start;gap:6px} .cr-t .note{margin-left:0;display:block;margin-top:4px} }
 .call a{font-size:1.125rem!important;font-weight:500;letter-spacing:0}
 @media (max-width:767px){ .call a{font-size:1rem!important} }
-@media (prefers-reduced-motion:reduce){
-  .intro{display:none}
-  .wd > span{transform:none!important}
-  html.js .step{opacity:1;transform:none}
-  .step::after{transform:scaleX(1)}
-  html.js .rv-img .tone,html.js .rv-img .sk{transform:none}
-  .lamp,.plan-hi{display:none}
-}
-
+/* Mozgáscsökkentés: csak a nagy elmozdulásokat vesszük vissza, a megjelenő animációk maradnak */
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
-  *,*::before,*::after{transition-duration:.01ms!important;animation:none!important}
-  html.js .rv-img,html.js .rv-txt{clip-path:none;transform:none;opacity:1}
-  html.js .rv-img .sk,html.js .rv-draw .conv-svg{clip-path:none}
-  html.js .rv-draw .conv-dot{transform:none}
-  html.js .hero-plan .dr{stroke-dashoffset:0}
-  html.js .hero-plan text{opacity:.75}
-  html.js .hero-copy > *{opacity:1;transform:none}
-  .strip{transform:none!important}
-  .strip-vp{overflow-x:auto}
+  .tilt{transform:none!important}
+  .mag{transform:none!important}
 }
 </style>
 </head>
@@ -1235,7 +1221,8 @@ body.menu-open .hdr{transform:none}
   "use strict";
   var doc = document.documentElement;
   doc.classList.add("js");
-  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var reduce = false; /* a megjelenő animációk mobilon / energiatakarékos módban is futnak */
   var $ = function(s, r){ return (r||document).querySelector(s); };
   var $$ = function(s, r){ return Array.prototype.slice.call((r||document).querySelectorAll(s)); };
   var esc = function(s){ return String(s).replace(/[&<>"]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); };
@@ -1508,8 +1495,11 @@ body.menu-open .hdr{transform:none}
       var lr = ly.getBoundingClientRect(), lp = clamp(-lr.top / (lr.height - vh));
       setStage(Math.min(4, Math.floor(lp * 5)));
       lyBar.style.transform = "scaleX(" + lp.toFixed(3) + ")";
-    } else if (!lySvg.classList.contains("s4")) {
-      setStage(4); lyItems.forEach(function(li){ li.classList.add("on"); }); lyLeads.forEach(function(l){ l.classList.add("on"); });
+    } else {
+      var mr = lySvg.getBoundingClientRect(), mp = clamp((vh * .95 - mr.top) / (vh * .6));
+      var st = Math.min(4, Math.floor(mp * 5));
+      setStage(st);
+      lyItems.forEach(function(li, k){ li.classList.toggle("on", k <= st); });
     }
     if (desk.matches && !reduce) {
       var sr = stripVp.getBoundingClientRect(), sp = clamp((vh * .3 - sr.top) / (vh * .9)), over = Math.min(240, Math.max(0, strip.scrollWidth - stripVp.clientWidth));
@@ -1585,13 +1575,17 @@ body.menu-open .hdr{transform:none}
     document.addEventListener("pointermove", function(e){
       lamps.forEach(function(L){ var r = L.host.getBoundingClientRect(); L.tx = (e.clientX - r.left) / r.width; L.ty = (e.clientY - r.top) / r.height; L.user = true; });
       var ar = art.getBoundingClientRect(); px = (e.clientX - ar.left) / ar.width; py = (e.clientY - ar.top) / ar.height;
-      if (fine && py > -0.3 && py < 1.3) tiltEl.style.transform = "rotateY(" + ((px - .5) * 7).toFixed(2) + "deg) rotateX(" + ((.5 - py) * 5).toFixed(2) + "deg)";
+      if (fine && !reduceMotion && py > -0.3 && py < 1.3) tiltEl.style.transform = "rotateY(" + ((px - .5) * 7).toFixed(2) + "deg) rotateX(" + ((.5 - py) * 5).toFixed(2) + "deg)";
       hi.style.setProperty("--px", (px * 100).toFixed(1) + "%"); hi.style.setProperty("--py", (py * 100).toFixed(1) + "%");
+    }, { passive: true });
+    document.addEventListener("touchmove", function(e){
+      var t = e.touches[0]; if (!t) return;
+      lamps.forEach(function(L){ var r = L.host.getBoundingClientRect(); if (t.clientY > r.top && t.clientY < r.bottom) { L.tx = (t.clientX - r.left) / r.width; L.ty = (t.clientY - r.top) / r.height; L.touchT = performance.now(); } });
     }, { passive: true });
     var t0 = performance.now();
     (function loop(t){
       lamps.forEach(function(L, k){
-        if (!fine || !L.user) { var s = (t - t0) / 1000 + k * 2; L.tx = .5 + Math.sin(s * .35) * .32; L.ty = .45 + Math.cos(s * .27) * .25;
+        if ((!fine || !L.user) && !(L.touchT && t - L.touchT < 1500)) { var s = (t - t0) / 1000 + k * 2; L.tx = .5 + Math.sin(s * .35) * .32; L.ty = .45 + Math.cos(s * .27) * .25;
           if (L.el.parentNode === heroSheet) { hi.style.setProperty("--px", ((L.x * heroSheet.clientWidth - art.offsetLeft) / art.clientWidth * 100).toFixed(1) + "%"); hi.style.setProperty("--py", ((L.y * heroSheet.clientHeight - art.offsetTop) / art.clientHeight * 100).toFixed(1) + "%"); } }
         L.x += (L.tx - L.x) * .08; L.y += (L.ty - L.y) * .08;
         L.el.style.setProperty("--mx", (L.x * 100).toFixed(2) + "%"); L.el.style.setProperty("--my", (L.y * 100).toFixed(2) + "%");
@@ -1601,7 +1595,7 @@ body.menu-open .hdr{transform:none}
   }
 
   /* Mágneses gombok */
-  if (fine && !reduce) {
+  if (fine && !reduceMotion) {
     $$(".hero-cta .btn, .hdr-cta").forEach(function(b){
       b.classList.add("mag");
       b.addEventListener("pointermove", function(e){ var r = b.getBoundingClientRect(); b.style.transform = "translate(" + ((e.clientX - r.left - r.width / 2) * .18).toFixed(1) + "px," + ((e.clientY - r.top - r.height / 2) * .3).toFixed(1) + "px)"; });
