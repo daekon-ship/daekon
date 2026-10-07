@@ -6,9 +6,9 @@
 ## Koncepció
 
 Kortárs nápolyi pizzéria, olasz editorial hangulattal. Pergamen alap, grafitfekete, paradicsompiros hangsúly, bazsalikomzöld csak jelzésként.
-Bodoni Moda (címek, olasz klasszikus) + Schibsted Grotesk (UI). Fraunces nincs. A betűméretek mérsékeltek: a hero „STOPIZZA” legfeljebb 92 px.
+DM Serif Display (címek) + Schibsted Grotesk (UI). Fraunces nincs. A betűméretek mérsékeltek: a hero „STOPIZZA” legfeljebb 92 px.
 
-Szekciók: hero (kilógó pizza + „32 cm” pecsét) · marquee · 4 állítás · A legkeresettebbek (vízszintesen húzható sor) · Hozzáállás (editorial képkivágások) · Alapanyagok (5 kép + leírás) · Teljes étlap (ragadós kategóriasáv) · Non solo pizza · Vélemények (szerkezet) · Helyszín · Lábléc.
+Szekciók: hero (kilógó pizza + „32 cm” pecsét) · marquee · 4 állítás · A legkeresettebbek (vízszintesen húzható sor) · Hozzáállás (egyenes képsor) · Alapanyagok (5 kép + leírás) · Teljes étlap (ragadós kategóriasáv) · Non solo pizza · Vélemények (szerkezet) · Helyszín · Lábléc.
 
 Rendelés: kosár-drawer (mobilon alsó lap), mennyiség, extrák, megjegyzés, minimumrendelés-sáv, összeg. Mobilon fix alsó sáv: Étlap | Rendelés | Hívás. A nyitvatartási állapot (Rendelést fogadunk / Zárva) budapesti idő szerint él.
 
