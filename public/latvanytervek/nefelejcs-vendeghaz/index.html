@@ -8,14 +8,14 @@
 <meta name="theme-color" content="#FFFFFF">
 <meta property="og:title" content="Nefelejcs Vendégház – Bakonybél">
 <meta property="og:description" content="Három különálló apartman hegyre néző kerttel, Bakonybél csendes utcájában.">
-<meta property="og:image" content="https://daekon-ship.github.io/daekon/latvanytervek/nefelejcs-vendeghaz/img/kert-kilatas.webp">
+<meta property="og:image" content="https://daekon-ship.github.io/daekon/latvanytervek/nefelejcs-vendeghaz/img/terasz.webp">
 <meta property="og:locale" content="hu_HU">
 <!-- Látványterv-előnézet: élesítéskor a noindex törlendő. A fotók a vendégház saját képei (img/). -->
 <meta name="robots" content="noindex">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2326402F'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='Arial' font-size='18' fill='%23fff'%3EN%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&display=swap">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"LodgingBusiness","name":"Nefelejcs Vendégház","telephone":"+36703191669","email":"nefelejcsvendeghazunk@gmail.com","checkinTime":"15:00","checkoutTime":"10:00","address":{"@type":"PostalAddress","streetAddress":"Petőfi u. 23.","postalCode":"8427","addressLocality":"Bakonybél","addressCountry":"HU"}}
 </script>
@@ -235,6 +235,168 @@ section{scroll-margin-top:72px}
   .lb .pv,.lb .nx{top:auto;bottom:56px;transform:none}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* Premium editorial redesign – natural materials, authentic photography, subtle motion */
+:root{--bg:#fefdf9;--bg2:#f4f3ed;--green:#1b3d30;--green-dark:#113127;--text:#25342c;--muted:#66716a;--line:#dedfd6;--font:"DM Sans",system-ui,sans-serif;--serif:"Cormorant Garamond",Georgia,serif;--wrap:1240px}
+body{font-size:16px;line-height:1.7;background:var(--bg)}
+h1,h2,h3{letter-spacing:-.035em}
+h2{font:500 clamp(40px,4.8vw,67px)/1.04 var(--serif)}
+h3{font:600 clamp(27px,3vw,39px)/1.13 var(--serif)}
+h2 em{font-weight:500;font-style:italic;color:#7a8b76}
+.btn{border-radius:60px;gap:15px;padding:0 25px;min-height:52px;font-weight:600;transition:transform .25s,box-shadow .25s,color .25s,background .25s,border-color .25s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(20,50,30,.14)}
+.btn:active{transform:translateY(0)}
+.btn-ghost{border-color:rgba(27,61,48,.4)}
+.pic{border-radius:9px}
+.pic img{transition:transform .85s cubic-bezier(.22,1,.36,1),filter .5s}
+.pic:hover img{transform:scale(1.055)}
+.hdr{background:rgba(254,253,249,.94);border-color:rgba(30,55,40,.1);backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px);transition:box-shadow .3s}
+.hdr.scrolled{box-shadow:0 12px 35px rgba(19,45,28,.09)}
+.brand{font:600 26px/1.1 var(--serif);letter-spacing:-.035em}
+.brand small{font:500 10px/1.5 var(--font);letter-spacing:.23em;text-transform:uppercase}
+.nav a{font-size:14px;font-weight:600}
+.nav a:not(.btn):hover{text-decoration:none}
+.hero{position:relative;display:flex;align-items:center;isolation:isolate;overflow:hidden;background:#173428;color:white;min-height:clamp(660px,calc(100svh - 72px),870px)}
+.hero-pic{position:absolute;z-index:-2;inset:0;height:100%;width:100%;min-height:0;max-height:none;border-radius:0}
+.hero-pic img{object-position:center 54%;filter:saturate(.86);animation:photoMove 23s ease-in-out infinite alternate}
+.hero-pic:hover img{transform:none}
+.hero:before{content:"";position:absolute;z-index:-1;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(5,22,16,.85),rgba(5,22,16,.58) 47%,rgba(5,22,16,.2) 100%),linear-gradient(0deg,rgba(5,22,16,.42),transparent 37%)}
+.hero-text{display:block;width:100%;max-width:1150px;padding:clamp(100px,10vw,155px) var(--gut) clamp(115px,9vw,155px) max(var(--gut),calc((100vw - var(--wrap))/2))}
+.hero-text>*{max-width:850px}
+.hero-kicker,.eyebrow{display:inline-block;font:700 11px/1.4 var(--font);letter-spacing:.22em;text-transform:uppercase}
+.hero-kicker{color:#eadab7;margin-bottom:26px}
+.hero-kicker:before{content:"";display:inline-block;width:7px;height:7px;margin-right:14px;vertical-align:2px;background:#e7d2a7;border-radius:50%;box-shadow:0 0 0 5px rgba(232,208,169,.15)}
+.hero h1{font:500 clamp(61px,7.3vw,108px)/.97 var(--serif);letter-spacing:-.05em;color:white;margin:0 0 27px;max-width:880px;text-wrap:balance}
+.hero h1 em{font-weight:500;color:#f3dcb9}
+.hero p{max-width:600px;color:rgba(255,255,255,.92);font-size:clamp(16px,1.45vw,20px);line-height:1.75;margin:0 0 33px}
+.hero-btns{gap:13px}
+.hero-btns .btn{min-height:58px}
+.hero .btn-solid{background:#f2e8d6;border-color:#f2e8d6;color:#173428}
+.hero .btn-solid:hover{background:white;border-color:white;color:#173428}
+.hero .btn-ghost{border-color:rgba(255,255,255,.7);background:rgba(255,255,255,.07);color:white}
+.hero .btn-ghost:hover{background:rgba(255,255,255,.2)}
+.hero-details{display:flex;gap:19px;align-items:center;margin-top:55px;color:rgba(255,255,255,.86);font-size:13px}
+.hero-details strong{font:600 22px var(--serif)}
+.hero-details i{height:18px;width:1px;background:rgba(255,255,255,.45)}
+.hero-scroll{position:absolute;right:max(var(--gut),calc((100vw - var(--wrap))/2));bottom:45px;display:flex;align-items:center;gap:18px;color:white;text-decoration:none;font-size:11px;font-weight:700;letter-spacing:.17em;text-transform:uppercase}
+.hero-scroll span{font-size:25px;animation:scrollArrow 2.7s ease-in-out infinite}
+.highlights{background:#eaede6}
+.highlights-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+.highlight{display:flex;align-items:center;gap:18px;padding:31px 24px;border-right:1px solid #d6dbd2}
+.highlight:first-child{padding-left:0}
+.highlight:last-child{border:0;padding-right:0}
+.highlight>b{font:italic 500 34px var(--serif);color:#859a83}
+.highlight>div{display:grid;gap:4px}
+.highlight strong{font-size:14px;line-height:1.4}
+.highlight small{font-size:12px;line-height:1.4;color:var(--muted)}
+.eyebrow{color:#8d816c;margin:0 0 21px}
+.eyebrow-light{color:#e7d3ab}
+.about,.garden,.gallery{padding:clamp(90px,10vw,145px) 0}
+.about-grid{grid-template-columns:5.5fr 6.5fr;align-items:center}
+.about-text{gap:22px}
+.about-text p,.garden .lead{line-height:1.9}
+.about-text .rating{border:1px solid #dadecf;border-radius:9px;background:#f3f6ee;color:var(--green);padding:19px 23px;font-weight:600}
+.strip{gap:12px}
+.strip .pic,.strip .pic:not(:first-child){aspect-ratio:4/5}
+.strip .pic:nth-child(2){transform:translateY(23px)}
+.strip .pic:nth-child(3){transform:translateY(45px)}
+.apts{padding:clamp(90px,10vw,140px) 0;background:#f5f4ee}
+.apts>.wrap>h2{margin-bottom:19px}
+.apts>.wrap>p{max-width:680px;margin-bottom:54px}
+.apt{grid-template-columns:1.08fr .92fr;align-items:center;gap:clamp(32px,5vw,78px);padding:clamp(46px,6vw,83px) 0}
+.apt:nth-of-type(even) .apt-main{order:2}
+.apt:nth-of-type(even) .apt-info{order:1}
+.apt-main .pic{border-radius:8px}
+.apt-main>.pic{aspect-ratio:1.35}
+.apt-info{gap:17px}
+.apt-info h3{font-size:clamp(34px,3.7vw,50px)}
+.apt-info .for{font-size:13px;color:#867d68;letter-spacing:.04em}
+.apt-info p.desc{line-height:1.9}
+.apt-no{font:700 11px var(--font);color:#8b987f;letter-spacing:.25em}
+.spec div{padding:12px 0;font-size:14px}
+.apt-info .btn{margin-top:16px}
+.apt-info .btn:after{content:"↗";font-size:18px}
+.apts .note{padding:27px 30px;border:0;background:#e8ece3;border-radius:9px}
+.garden-grid{grid-template-columns:1.05fr .95fr;align-items:center}
+.garden .lead{font-size:18px;margin-top:16px}
+.garden .cols li{padding:13px 0;font-size:14px}
+.garden-pics{gap:12px}
+.area{position:relative;overflow:hidden;padding:clamp(90px,10vw,140px) 0;background:linear-gradient(125deg,#173b2e,#17382d 64%,#315542)}
+.area:after{content:"BAKONY";position:absolute;right:-3vw;bottom:-11vw;font:600 clamp(130px,23vw,350px)/1 var(--serif);letter-spacing:-.06em;color:rgba(255,255,255,.04);pointer-events:none}
+.area h2{font-size:clamp(45px,5vw,70px)}
+.area h2 em{color:#dfcba5}
+.area p{line-height:1.9}
+.dist li{padding:17px 0;font-size:14px}
+.gallery h2{margin-bottom:36px}
+.gal{gap:13px}
+.gal button,.gal .pic{border-radius:8px;overflow:hidden}
+.gal button:hover img{opacity:1;transform:scale(1.08)}
+.book{padding:clamp(90px,10vw,140px) 0;background:#eaeee6}
+.book-info>p{line-height:1.9}
+.form{border-radius:13px;border-color:#d9ddd1;box-shadow:0 25px 55px rgba(20,53,35,.08);padding:clamp(24px,4vw,49px)}
+.form h3{font-size:40px}
+.f input,.f select,.f textarea{border-radius:7px}
+.map{border-radius:10px;overflow:hidden}
+.ftr{background:#f9f8f4}
+.ftr .brand{font-size:28px}
+@keyframes photoMove{from{transform:scale(1.02)}to{transform:scale(1.085) translateX(-.8%)}}
+@keyframes scrollArrow{0%,100%{transform:translateY(-4px)}50%{transform:translateY(5px)}}
+@keyframes heroEnter{from{opacity:0;transform:translateY(25px)}to{opacity:1;transform:translateY(0)}}
+.hero-kicker,.hero h1,.hero p,.hero-btns,.hero-details{animation:heroEnter .85s both cubic-bezier(.22,1,.36,1)}
+.hero h1{animation-delay:.12s}.hero p{animation-delay:.24s}.hero-btns{animation-delay:.36s}.hero-details{animation-delay:.48s}
+.js-motion .reveal{opacity:0;transform:translateY(27px);transition:opacity .85s cubic-bezier(.22,1,.36,1),transform .85s cubic-bezier(.22,1,.36,1)}
+.js-motion .reveal.visible{opacity:1;transform:translateY(0)}
+@media(max-width:1050px){.highlight{padding:25px 13px;gap:12px}.highlight>b{font-size:27px}}
+@media(max-width:860px){
+ .hero{display:flex;align-items:flex-end;min-height:720px}
+ .hero-pic{order:initial;position:absolute;inset:0;aspect-ratio:auto;height:100%}
+ .hero:before{background:linear-gradient(0deg,rgba(5,23,16,.92),rgba(5,23,16,.53) 64%,rgba(5,23,16,.13))}
+ .hero-text{max-width:none;padding:115px var(--gut) 100px}
+ .hero h1{font-size:clamp(58px,9vw,92px)}
+ .hero-scroll{right:var(--gut);bottom:26px}
+ .highlights-grid{grid-template-columns:1fr}
+ .highlight,.highlight:first-child,.highlight:last-child{padding:20px 0;border:0;border-bottom:1px solid #d4dacf}
+ .highlight:last-child{border:0}
+ .about-grid,.garden-grid,.area-grid,.book-grid{grid-template-columns:1fr}
+ .strip .pic:nth-child(2),.strip .pic:nth-child(3){transform:none}
+ .apt{grid-template-columns:1fr;gap:24px}
+ .apt:nth-of-type(even) .apt-main,.apt:nth-of-type(even) .apt-info{order:initial}
+ .apt-info{position:static}
+ .garden .cols{grid-template-columns:1fr 1fr}
+}
+@media(max-width:560px){
+ body{font-size:15px}
+ h2{font-size:clamp(39px,11vw,53px)}
+ .brand{font-size:22px}
+ .hdr .wrap{height:68px}
+ .open .nav{top:68px}
+ .hero{min-height:max(665px,calc(100svh - 68px))}
+ .hero-text{padding:98px var(--gut) 78px}
+ .hero-kicker{font-size:10px;margin-bottom:21px}
+ .hero h1{font-size:clamp(52px,13vw,76px);margin-bottom:20px}
+ .hero p{font-size:15px;margin-bottom:28px;line-height:1.65}
+ .hero-btns{gap:11px}
+ .hero-btns .btn{flex:1 1 100%;min-height:53px}
+ .hero-details{margin-top:27px;gap:12px;font-size:11px;flex-wrap:wrap}
+ .hero-scroll{display:none}
+ .about,.garden,.gallery,.apts,.book,.area{padding:80px 0}
+ .strip{gap:8px}
+ .strip .pic:first-child{aspect-ratio:1.7}
+ .apt{padding:40px 0}
+ .apt-info h3{font-size:38px}
+ .apt-main>.pic{aspect-ratio:1.28}
+ .apt-info .btn{width:100%}
+ .garden .cols{grid-template-columns:1fr}
+ .gallery h2{margin-bottom:24px}
+ .gal{gap:8px}
+ .apts .note{padding:22px}
+ .form{padding:25px 19px}
+ .form h3{font-size:34px}
+}
+@media(prefers-reduced-motion:reduce){
+ *,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+ .js-motion .reveal{opacity:1;transform:none}
+}
 </style>
 </head>
 <body>
@@ -256,22 +418,32 @@ section{scroll-margin-top:72px}
 
 <main id="top">
 
-<section class="hero">
+<section class="hero" aria-labelledby="hero-title">
+  <div class="pic hero-pic"><img src="img/terasz.webp" alt="A Nefelejcs Vendégház terasza és pihenőkertje" fetchpriority="high" decoding="async"></div>
   <div class="hero-text">
-    <h1>Pihenés Bakonybél szívében</h1>
-    <p>Három különálló apartman egy csendes utcában, hegyre néző kerttel. Családoknak, pároknak és baráti társaságoknak, egész évben.</p>
+    <span class="hero-kicker">Bakonybél · Magas-Bakony</span>
+    <h1 id="hero-title">Ahol a természet<br><em>közelebb kerül.</em></h1>
+    <p>Kapcsolódjon ki Bakonybél szívében. Három különálló apartman, nyugodt kert, és a Bakony túraútvonalai egy karnyújtásnyira.</p>
     <div class="hero-btns">
-      <a class="btn btn-solid" href="#foglalas">Foglalás / Érdeklődés</a>
-      <a class="btn btn-ghost" href="#apartmanok">Apartmanok megtekintése</a>
+      <a class="btn btn-solid" href="#foglalas">Érdeklődés &amp; foglalás <span aria-hidden="true">↗</span></a>
+      <a class="btn btn-ghost" href="#apartmanok">Apartmanok felfedezése <span aria-hidden="true">→</span></a>
     </div>
+    <div class="hero-details"><span><strong>3</strong> különálló apartman</span><i aria-hidden="true"></i><span>Nyitva egész évben</span></div>
   </div>
-  <div class="pic hero-pic"><img src="img/kert-kilatas.webp" alt="A vendégház kertje a játszótérrel, mögötte a bakonyi dombok" fetchpriority="high"></div>
+  <a class="hero-scroll" href="#rolunk">Fedezze fel <span aria-hidden="true">↓</span></a>
 </section>
+<div class="highlights" aria-label="A vendégház előnyei">
+  <div class="wrap highlights-grid">
+    <div class="highlight"><b>01</b><div><strong>Bakonybél nyugalma</strong><small>Természet és túraútvonalak</small></div></div>
+    <div class="highlight"><b>02</b><div><strong>Otthonos apartmanok</strong><small>Saját fürdőszoba és konyha</small></div></div>
+    <div class="highlight"><b>03</b><div><strong>Hangulatos kert</strong><small>Grillezés, pihenés, kikapcsolódás</small></div></div>
+  </div>
+</div>
 
 <section class="about" id="rolunk">
   <div class="wrap about-grid">
     <div class="about-text">
-      <h2>A vendégházról</h2>
+      <span class="eyebrow">Nefelejcs Vendégház</span><h2>Megérkezni. Megpihenni. <em>Otthon lenni.</em></h2>
       <p>A Nefelejcs Vendégház Bakonybél egyik barátságos vendégháza, néhány perc sétára a falu központjától. Három különálló apartmanunk van: mindegyikhez saját fürdőszoba és teljesen felszerelt konyha tartozik.</p>
       <p>A kert közös. Van benne fedett főzőhely, két szalonnasütő, pingpongasztal, hinta és trambulin, és egy pihenősarok, ahonnan a dombokra látni. A ház mögött kezdődnek a túraútvonalak; a monostor 200 méterre van.</p>
       <p>A foglalást mi, a házigazdák intézzük. Ha kérdése van, hívjon vagy írjon, személyesen válaszolunk.</p>
@@ -287,7 +459,7 @@ section{scroll-margin-top:72px}
 
 <section class="apts" id="apartmanok">
   <div class="wrap">
-    <h2>Apartmanok</h2>
+    <span class="eyebrow">Találja meg a saját helyét</span><h2>Válasszon apartmanjaink közül</h2>
     <p class="muted">Mindhárom apartman különálló. Wifi, légkondicionálás és televízió mindegyikben van. Az árakat a dátumok ismeretében küldjük el.</p>
 
     <article class="apt">
@@ -300,6 +472,7 @@ section{scroll-margin-top:72px}
         </div>
       </div>
       <div class="apt-info">
+        <span class="apt-no">01 / 03</span>
         <h3>Földszinti apartman</h3>
         <p class="for">Pároknak és kisgyermekes családoknak</p>
         <p class="desc">Lépcső nélkül, közvetlen kijárattal a kertbe. Franciaágyas hálószoba, sarokkanapés nappali televízióval, külön konyha és zuhanyzós fürdőszoba.</p>
@@ -323,6 +496,7 @@ section{scroll-margin-top:72px}
         </div>
       </div>
       <div class="apt-info">
+        <span class="apt-no">02 / 03</span>
         <h3>Emeleti apartman</h3>
         <p class="for">Baráti társaságoknak és nagyobb családoknak</p>
         <p class="desc">Tágas, hegyekre néző apartman két franciaágyas szobával és egy háromágyas galériával. A nappaliban kandalló és kihúzható kanapé, külön konyha és fürdőszoba.</p>
@@ -346,6 +520,7 @@ section{scroll-margin-top:72px}
         </div>
       </div>
       <div class="apt-info">
+        <span class="apt-no">03 / 03</span>
         <h3>Kétszemélyes apartmanház</h3>
         <p class="for">Kettesben töltött napokra</p>
         <p class="desc">Teljesen felszerelt, különálló kis ház két fő részére. Saját konyha és fürdőszoba; a közös kert, a tűzrakó és a fedett főzőhely néhány lépésre van.</p>
@@ -364,7 +539,7 @@ section{scroll-margin-top:72px}
 <section class="garden" id="kert">
   <div class="wrap garden-grid">
     <div>
-      <h2>A ház és a kert</h2>
+      <span class="eyebrow">A jó pillanatok helye</span><h2>Közös élmények, <em>nyugodt pillanatok.</em></h2>
       <p class="lead">A kert minden vendégünké, a konyha minden apartmanban saját.</p>
       <div class="cols">
         <ul>
@@ -396,7 +571,7 @@ section{scroll-margin-top:72px}
 <section class="area" id="kornyek">
   <div class="wrap area-grid">
     <div class="area-text">
-      <h2>Bakonybél és a környék</h2>
+      <span class="eyebrow eyebrow-light">Fedezze fel a Bakonyt</span><h2>Természet, amely <em>visszahív.</em></h2>
       <p>Bakonybél a Magas-Bakony közepén fekszik, erdővel körülvéve. A faluból jelzett túraútvonalak indulnak minden irányba, a házhoz legközelebb a Boroszlán tanösvény. A Szent Mauríciusz Monostor és a Tájház sétatávolságra van.</p>
       <p>Esténként érdemes a csillagdába menni: a környéken kevés a fény, az égbolt tiszta. Télen 22 kilométerre lehet síelni, a többi évszakban túrázni, biciklizni, gombászni.</p>
     </div>
@@ -415,7 +590,7 @@ section{scroll-margin-top:72px}
 
 <section class="gallery" id="galeria">
   <div class="wrap">
-    <h2>Képek</h2>
+    <span class="eyebrow">Pillanatok nálunk</span><h2>Nézzen körül a vendégházban</h2>
     <div class="gal" id="gal"></div>
   </div>
 </section>
@@ -423,7 +598,7 @@ section{scroll-margin-top:72px}
 <section class="book" id="foglalas">
   <div class="wrap book-grid">
     <div class="book-info">
-      <h2>Foglalás és érdeklődés</h2>
+      <span class="eyebrow">Tervezze meg a pihenést</span><h2>Indulhat a <em>kikapcsolódás?</em></h2>
       <p>Írja meg, mikor és hányan érkeznének. Visszajelzünk a szabad időpontokról és az árról. Az érdeklődés nem jár foglalási kötelezettséggel.</p>
       <ul class="lines">
         <li><span>Telefon</span><a href="tel:+36703191669">+36 70 319 1669</a></li>
@@ -458,11 +633,11 @@ section{scroll-margin-top:72px}
         <div class="f"><label for="msg">Üzenet</label><textarea id="msg"></textarea></div>
         <label class="chk" id="f-ok"><input type="checkbox" id="ok"><span>Elfogadom az <a class="link" href="#">adatkezelési tájékoztatót</a>. *</span></label>
         <input type="text" name="website" tabindex="-1" autocomplete="off" class="sr" aria-hidden="true">
-        <button class="btn btn-solid" type="submit">Érdeklődés elküldése</button>
+        <button class="btn btn-solid" type="submit">E-mailes érdeklődés megnyitása ↗</button>
       </div>
       <div class="done" role="status" aria-live="polite">
-        <h3>Köszönjük, megkaptuk.</h3>
-        <p>Hamarosan jelentkezünk a szabad időpontokkal. Ha sürgős, hívjon: <a class="link" href="tel:+36703191669">+36 70 319 1669</a></p>
+        <h3>Az e-mail előkészítve.</h3>
+        <p>Az érdeklődés csak akkor jut el a szállásadóhoz, ha az e-mail-alkalmazásban elküldi az üzenetet. Ha nem nyílt meg, írjon a nefelejcsvendeghazunk@gmail.com címre, vagy hívjon: <a class="link" href="tel:+36703191669">+36 70 319 1669</a></p>
       </div>
     </form>
   </div>
@@ -560,6 +735,17 @@ section{scroll-margin-top:72px}
   var sx=0;lb.addEventListener('touchstart',function(e){sx=e.touches[0].clientX},{passive:true});
   lb.addEventListener('touchend',function(e){var dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>50)show(cur+(dx<0?1:-1))});
 
+  var header=d.querySelector('.hdr');
+  function onScrollHeader(){header.classList.toggle('scrolled',window.scrollY>20)}
+  window.addEventListener('scroll',onScrollHeader,{passive:true});onScrollHeader();
+  if('IntersectionObserver' in window && !(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches)){
+    d.documentElement.classList.add('js-motion');
+    var revealTargets=d.querySelectorAll('.highlights,.about-grid,.apt,.garden-grid,.area-grid,.gallery .wrap,.book-grid');
+    var observer=new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){if(entry.isIntersecting){entry.target.classList.add('visible');observer.unobserve(entry.target)}});
+    },{threshold:.06,rootMargin:'0px 0px -50px 0px'});
+    revealTargets.forEach(function(el){el.classList.add('reveal');observer.observe(el)});
+  }
   var burger=d.getElementById('burger');
   function menu(o){d.body.classList.toggle('open',o);burger.setAttribute('aria-expanded',o);burger.textContent=o?'Bezár':'Menü'}
   burger.onclick=function(){menu(!d.body.classList.contains('open'))};
@@ -584,6 +770,21 @@ section{scroll-margin-top:72px}
     ].forEach(function(x){var el=d.getElementById(x[1]),ok=x[2](el.value);d.getElementById(x[0]).classList.toggle('bad',!ok);if(!ok&&!first)first=el});
     var ok=d.getElementById('ok'); d.getElementById('f-ok').classList.toggle('bad',!ok.checked); if(!ok.checked&&!first)first=ok;
     if(first){first.focus();return}
+    var aptEl=d.getElementById('apt'), aptLabel=aptEl.options[aptEl.selectedIndex].text;
+    var detail=[
+      'Név: '+d.getElementById('name').value.trim(),
+      'Telefonszám: '+d.getElementById('tel').value.trim(),
+      'E-mail: '+d.getElementById('mail').value.trim(),
+      'Érkezés: '+(from.value||'Nincs megadva'),
+      'Távozás: '+(to.value||'Nincs megadva'),
+      'Apartman: '+aptLabel,
+      'Felnőttek: '+d.getElementById('adult').value,
+      'Gyermekek: '+d.getElementById('kid').value,
+      '',
+      'Üzenet:',
+      d.getElementById('msg').value.trim()||'Érdeklődöm a szabad időpontokról és az árakról.'
+    ].join('\\n');
+    location.href='mailto:nefelejcsvendeghazunk@gmail.com?subject='+encodeURIComponent('Szállásérdeklődés - Nefelejcs Vendégház')+'&body='+encodeURIComponent(detail);
     f.classList.add('sent'); f.scrollIntoView({behavior:'smooth',block:'center'});
   });
 })();
