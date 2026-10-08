@@ -186,7 +186,7 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:1;opa
 .hero-note{margin-top:30px;font-size:13px;color:var(--muted);letter-spacing:.02em}
 .hero-note b{color:var(--ink);font-weight:600}
 /* pizza */
-.hero-pizza{position:absolute;z-index:1;right:calc(-1 * clamp(120px,12vw,300px));top:calc(50% + var(--nav-h) / 2);width:min(88vh,1000px,64vw);aspect-ratio:1;translate:0 -46%;pointer-events:none}
+.hero-pizza{position:absolute;z-index:1;right:var(--gut);top:calc(50% + var(--nav-h) / 2);width:min(74vh,760px,46vw);aspect-ratio:1;translate:0 -46%;pointer-events:none}
 .hero-pizza .disc{position:absolute;inset:0;border-radius:50%;overflow:hidden;box-shadow:0 40px 90px -30px rgba(60,30,10,.55),0 0 0 1px rgba(27,26,23,.06);will-change:transform}
 .hero-pizza .disc img{width:100%;height:100%;object-fit:cover;transform:scale(1.12)}
 .js .hero-pizza .disc{transform:scale(.94);opacity:0;transition:transform 1.6s var(--ease-out),opacity 1s var(--ease)}
@@ -232,22 +232,21 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:1;opa
    ========================================================================== */
 .best{position:relative;background:var(--paper)}
 .best-sticky{position:relative;padding:clamp(72px,9vw,120px) 0 clamp(64px,8vw,104px)}
-.best-track{display:flex;align-items:flex-start;gap:0;padding:0 var(--gut);will-change:transform}
+.best-track{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(28px,4vw,56px) clamp(20px,3vw,40px);max-width:var(--max);margin:0 auto;padding:0 var(--gut)}
 .best-intro .lead{max-width:34ch}
-.best-intro{width:auto!important;max-width:var(--max);margin:0 auto 36px;padding:0 var(--gut)!important}
+.best-intro{width:auto!important;max-width:var(--max);margin:0 auto 40px;padding:0 var(--gut)!important}
 .best-intro{flex:none;width:min(420px,82vw);padding-right:clamp(24px,4vw,64px)}
 .best-intro .lead{margin:22px 0 28px}
 .best-count{margin-top:34px;display:flex;align-items:center;gap:14px;font:600 11.5px/1 var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
 .best-count .bar{width:120px;height:1.5px;background:var(--line);position:relative;overflow:hidden}
 .best-count .bar i{position:absolute;inset:0;background:var(--red);transform-origin:left;transform:scaleX(var(--p,0))}
-.pz{flex:none;position:relative;width:clamp(280px,30vw,420px)}
-.best-track{gap:clamp(20px,2.5vw,40px)}
+.pz{position:relative;min-width:0}
 
 .pz-photo{position:relative;width:100%;aspect-ratio:1;border-radius:50%;overflow:hidden;cursor:pointer;box-shadow:0 30px 60px -28px rgba(60,30,10,.5);transition:box-shadow .5s}
 .pz-photo img{width:100%;height:100%;object-fit:cover;transform:scale(1.08);transition:transform 1.2s var(--ease-out)}
 .pz:hover .pz-photo img{transform:scale(1.15) rotate(6deg)}
 .pz-num{position:absolute;z-index:2;top:2%;left:4%;font:italic 400 15px/1 var(--serif);color:var(--ink);background:var(--paper);width:52px;height:52px;border-radius:50%;display:grid;place-items:center;box-shadow:0 0 0 1px var(--line)}
-.pz-body{position:relative;padding:22px 8% 0 10%}
+.pz-body{position:relative;padding:20px 4% 0}
 .pz h3{margin:0;font:400 clamp(28px,2.6vw,38px)/1 var(--serif);letter-spacing:-.005em}
 .pz-ing{margin:10px 0 0;font-size:14px;line-height:1.5;color:var(--ink-2)}
 .pz-ing span+span::before{content:" / ";color:var(--red)}
@@ -256,12 +255,9 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:1;opa
 .price small{font-size:12px;font-weight:500;color:var(--muted);letter-spacing:.06em;margin-left:3px}
 .pz-tag{position:absolute;z-index:2;right:12%;top:6%;font:600 10.5px/1 var(--sans);letter-spacing:.18em;text-transform:uppercase;background:var(--ink);color:var(--paper);padding:8px 11px;border-radius:999px}
 .pz-hint{display:none}
-.best-end{flex:none;width:clamp(260px,24vw,340px);align-self:center;padding:36px 0 36px 32px;border-left:1px solid var(--line-2)}
+.best-end{align-self:center;padding:24px 0 24px 28px;border-left:1px solid var(--line-2)}
 .best-end p{font:italic 400 clamp(22px,2vw,28px)/1.2 var(--serif);margin:0 0 20px}
 /* nem rögzített: natív vízszintes görgetés */
-.best-track{overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding-bottom:12px}
-.best-track::-webkit-scrollbar{display:none}
-.pz,.best-end{scroll-snap-align:start;scroll-margin-left:var(--gut)}
 
 /* ==========================================================================
    STORY
@@ -521,7 +517,7 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:1;opa
    RESZPONZÍV
    ========================================================================== */
 @media (min-width:960px) and (max-width:1199px){
-  .hero-pizza{width:min(76vh,58vw);right:-22vw}
+  .hero-pizza{width:min(66vh,44vw)}
 }
 @media (max-width:1180px){
   .nav-links{gap:22px}
@@ -538,16 +534,18 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:1;opa
 }
 @media (max-width:959px){
   :root{--nav-h:62px}
+  .best-track{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .best-end{grid-column:1 / -1;border-left:0;padding:0;border-top:1px solid var(--line-2);padding-top:28px}
   .nav-links,.nav-r .nav-cta{display:none}
   .burger{display:grid}
   .nav-r{gap:12px}
   /* hero — mobil-külön kompozíció */
   .hero{min-height:auto}
   .hero-inner{position:relative;min-height:auto;align-content:start}
-  .hero-pizza{position:relative;right:auto;top:auto;translate:none;width:min(96vw,460px);margin:calc(-1 * min(22vw,110px)) calc(-1 * min(16vw,90px)) 0 auto;order:-1}
+  .hero-pizza{position:relative;right:auto;top:auto;translate:none;width:min(78vw,400px);margin:8px auto 0;order:-1}
   .hero-pizza .ring{inset:-4%}
   .hero-pizza .ring::after{display:none}
-  .seal{width:96px;height:96px;top:auto;bottom:4%;left:-4px}
+  .seal{width:92px;height:92px;top:auto;bottom:2%;left:-10px}
   .seal .core{font-size:17px}
   .wordmark{font-size:clamp(46px,13vw,64px)}
   .h1-sub{margin-top:12px;font-size:clamp(24px,6.6vw,30px)}
@@ -597,7 +595,6 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:1;opa
   .fig-c{grid-column:1 / span 6}
   .fig-d{grid-column:7 / span 6}
   .story-quote{grid-column:1 / -1;margin-top:20px;padding:0}
-  .pz{width:min(76vw,320px)}
   .pz-body{padding:18px 4% 0 6%}
   .best-intro{width:min(84vw,360px)}
   .best-end{width:min(70vw,280px);padding-left:22px}
@@ -608,6 +605,7 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:1;opa
   .foot-mark{flex-direction:column;align-items:flex-start}
 }
 @media (max-width:420px){
+  .best-track{grid-template-columns:1fr}
   .hero-cta .btn{flex:1 1 auto}
   .sig ul{grid-template-columns:1fr}
   .sig li{border-left:0!important;border-top:1px solid var(--line);padding:24px var(--gut)}
@@ -752,7 +750,6 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:1;opa
         <h2 class="h2 mask js-mask" id="h-best"><span class="ln"><span>A legkere-</span></span><span class="ln"><span>settebbek.</span></span></h2>
         <p class="lead rv">Öt pizza, amit a legtöbben kérnek. Ha most jársz nálunk először, innen indulj.</p>
         <a class="link-u" href="#etlap">Teljes étlap <span aria-hidden="true">→</span></a>
-        <div class="best-count" aria-hidden="true"><span class="js-best-i">01</span><span class="bar"><i class="js-best-bar"></i></span><span>05</span></div>
       </div>
     <div class="best-track" id="bestTrack">
       <!-- A pizzák a PIZZAS tömbből renderelődnek (lent, JS) -->
@@ -1241,9 +1238,6 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:1;opa
   requestAnimationFrame(function(){setTimeout(function(){d.getElementById('hero').classList.add('in')},60)});
 
   /* ---------------- LEGKERESETTEBBEK — rögzített vízszintes ---------------- */
-  var bBar=d.querySelector('.js-best-bar'), bI=d.querySelector('.js-best-i');
-  function bestProgress(p){bBar.style.setProperty('--p',p.toFixed(3));bI.textContent='0'+Math.min(5,Math.max(1,Math.round(p*4)+1))}
-  track.addEventListener('scroll',function(){var m=track.scrollWidth-track.clientWidth;bestProgress(m>0?track.scrollLeft/m:0)},{passive:true});
 
   /* ---------------- SCROLL LOOP ---------------- */
   var nav=d.getElementById('nav');
