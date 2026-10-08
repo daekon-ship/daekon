@@ -125,6 +125,30 @@ figcaption{font:italic 400 16.5px/1.4 var(--serif);color:var(--muted);margin-top
 .js .hero .h2{animation-delay:.25s}.js .hero .h3{animation-delay:.45s}.js .hero .h4{animation-delay:.65s}.js .hero .h5{animation-delay:.9s}
 @keyframes up{to{opacity:1;transform:none}}
 
+/* nagy képernyőn osztott hero: az álló fotó nem bírja a teljes szélességet */
+@media (min-width:1000px){
+  .hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);align-items:stretch;background:var(--cream);color:var(--forest);min-height:min(100vh,860px)}
+  .hero::before{display:none}
+  .hero-bg{position:relative;inset:auto;grid-column:2;grid-row:1;height:auto;min-height:0;align-self:stretch;will-change:auto;transform:none!important}
+  .hero-bg img{position:absolute;inset:76px 0 0 0;height:calc(100% - 76px);object-position:50% 62%}
+  .hero-in{grid-column:1;grid-row:1;display:flex;flex-direction:column;justify-content:center;max-width:none;padding:130px clamp(32px,4vw,72px) 44px max(var(--gut),calc((100vw - var(--wrap)) / 2))}
+  .hero h1{color:var(--forest);text-shadow:none;max-width:14ch}
+  .hero p{color:var(--muted);text-shadow:none}
+  .hero .btn-cream{background:var(--forest);color:var(--cream);border-color:var(--forest)}
+  .hero .btn-cream::before{background:var(--gold)}
+  .hero .btn-cream:hover{color:var(--ink);border-color:var(--gold)}
+  .hero .btn-outline-light{color:var(--forest);border-color:var(--forest)}
+  .hero .btn-outline-light::before{background:var(--forest)}
+  .hero .btn-outline-light:hover{color:var(--cream)}
+  .hero-foot{margin-top:auto;padding-top:22px;border-top-color:var(--line);color:var(--muted)}
+  .scroll i{background:var(--line)}
+  .scroll i::after{background:var(--forest)}
+  .hdr{color:var(--forest);background:rgba(245,241,232,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+  .hdr:not(.solid) .nav .btn{background:var(--forest);color:var(--cream);border-color:var(--forest)}
+  .hdr:not(.solid) .nav .btn::before{background:var(--gold)}
+  .hero-in{padding-top:110px}
+}
+
 /* bemutatkozás */
 .intro{padding:clamp(80px,10vw,140px) 0 clamp(64px,8vw,110px)}
 .intro-grid{display:grid;grid-template-columns:5fr 6fr;gap:clamp(32px,6vw,96px);align-items:start;margin-bottom:clamp(56px,7vw,96px)}
@@ -717,7 +741,7 @@ figcaption{font:italic 400 16.5px/1.4 var(--serif);color:var(--muted);margin-top
     hdr.classList.toggle('solid',y>innerHeight*.6||d.body.classList.contains('open'));
     var r=book.getBoundingClientRect();
     mbar.classList.toggle('show',y>innerHeight*.8&&!(r.top<innerHeight&&r.bottom>0));
-    if(!reduce&&!coarse&&y<innerHeight*1.2) bg.style.transform='translateY('+(y*.18)+'px)';
+    if(!reduce&&!coarse&&innerWidth<1000&&y<innerHeight*1.2) bg.style.transform='translateY('+(y*.18)+'px)';
   }
   addEventListener('scroll',function(){if(!ticking){ticking=true;requestAnimationFrame(tick)}},{passive:true}); tick();
   requestAnimationFrame(function(){bg.classList.add('go')});
