@@ -157,12 +157,10 @@ figcaption{font:italic 400 16.5px/1.4 var(--serif);color:var(--muted);margin-top
 .intro-text p{color:var(--muted)}
 .intro-text .sign{display:flex;align-items:center;gap:16px;padding-top:22px;margin-top:6px;border-top:1px solid var(--line);color:var(--ink);font-size:15px}
 .intro-text .sign b{font:400 24px/1 var(--serif);color:var(--forest)}
-.compo{display:grid;grid-template-columns:7fr 5fr;grid-template-rows:auto auto;gap:clamp(14px,2vw,24px);align-items:start}
+.compo{display:grid;grid-template-columns:15fr 8fr 8fr;gap:clamp(14px,2vw,24px);align-items:start}
 .compo figure{margin:0}
-.compo .a{grid-row:span 2}
-.compo .a .pic{aspect-ratio:4/3}
-.compo .b .pic{aspect-ratio:4/5;max-width:78%;margin-left:auto}
-.compo .c .pic{aspect-ratio:3/2}
+.compo .a .pic{aspect-ratio:3/2}
+.compo .b .pic,.compo .c .pic{aspect-ratio:4/5}
 
 /* apartmanok */
 .apts{background:#fff;padding:clamp(80px,10vw,140px) 0}
@@ -191,27 +189,25 @@ figcaption{font:italic 400 16.5px/1.4 var(--serif);color:var(--muted);margin-top
 .apt-2 .apt-main{aspect-ratio:21/9}
 .apt-2 .apt-main img{object-position:50% 60%}
 .apt-2 .apt-low{display:grid;grid-template-columns:5fr 7fr;gap:clamp(24px,4vw,64px);align-items:start}
-.apt-2 .apt-info{background:var(--sand-2);padding:clamp(28px,3.5vw,48px);margin-top:calc(-1 * clamp(40px,6vw,96px));position:relative;z-index:1}
-.apt-2 .thumbs{padding-top:clamp(12px,1.5vw,18px)}
+.apt-2 .apt-info{padding-top:4px}
 /* 3: szöveg bal, kép jobb */
 .apt-3{grid-template-columns:5fr 7fr}
 .apt-3 .apt-info{order:-1;padding-top:10px}
-.apt-3 .apt-main{aspect-ratio:4/5;max-width:86%;margin-left:auto}
+.apt-3 .apt-main{aspect-ratio:4/3}
 .apt-3 .thumbs{grid-template-columns:repeat(3,1fr)}
 .apts-note{margin-top:clamp(56px,7vw,96px);padding-top:28px;border-top:1px solid var(--line);color:var(--muted);max-width:64ch}
 
 /* kert */
 .garden{background:var(--forest);color:var(--cream);padding:clamp(80px,10vw,140px) 0;position:relative;overflow:hidden}
 .garden h2{color:var(--cream)}
-.garden-grid{display:grid;grid-template-columns:6fr 5fr;gap:clamp(36px,6vw,96px);align-items:center}
+.garden-grid{display:grid;grid-template-columns:7fr 5fr;gap:clamp(36px,6vw,96px);align-items:start}
 .garden .lead{color:rgba(245,241,232,.76);margin:16px 0 30px;max-width:46ch}
 .amen{display:grid;grid-template-columns:1fr 1fr;gap:0 36px}
 .amen ul{list-style:none;margin:0;padding:0}
 .amen li{padding:11px 0;border-bottom:1px solid rgba(245,241,232,.16);font-size:15px;display:flex;gap:14px;align-items:baseline}
 .amen li::before{content:"";flex:none;width:14px;height:1px;background:var(--gold);transform:translateY(-4px)}
-.garden-pic{position:relative;padding:0 0 clamp(28px,4vw,48px) clamp(28px,4vw,48px)}
-.garden-pic::before{content:"";position:absolute;left:0;bottom:0;width:70%;height:70%;border:1px solid var(--gold);opacity:.6}
-.garden-pic .pic{aspect-ratio:4/5;position:relative}
+.garden-pic{margin:0}
+.garden-pic .pic{aspect-ratio:4/5}
 .garden-pic figcaption{color:rgba(245,241,232,.7)}
 
 /* környék */
@@ -312,15 +308,14 @@ figcaption{font:italic 400 16.5px/1.4 var(--serif);color:var(--muted);margin-top
   .open .nav .btn{margin-top:18px;min-height:50px}
   .hero-in{padding-top:110px}
   .hero::before{background:linear-gradient(180deg,rgba(20,32,24,.5) 0%,rgba(20,32,24,.2) 22%,rgba(20,32,24,.58) 45%,rgba(20,32,24,.94) 100%)}
-  .garden-pic{padding:0}
-  .garden-pic::before{display:none}
   .intro-grid,.apts-head,.garden-grid,.area-grid,.book-grid{grid-template-columns:1fr}
   .apt-1,.apt-3{grid-template-columns:1fr}
   .apt-3 .apt-info{order:0}
   .apt-3 .apt-main{max-width:none;aspect-ratio:4/3}
   .apt-2 .apt-main{aspect-ratio:16/9}
-  .apt-2 .apt-low{grid-template-columns:1fr}
-  .apt-2 .apt-info{margin-top:0}
+  .apt-2 .apt-low{grid-template-columns:1fr;gap:clamp(12px,1.5vw,18px) 0}
+  .apt-2 .thumbs{order:-1}
+  .apt-2 .apt-info{padding-top:16px}
   .garden-grid{gap:48px}
   .garden-pic{max-width:520px;margin:0}
   .mbar{display:grid;grid-template-columns:1fr 1.4fr;gap:8px;position:fixed;left:0;right:0;bottom:0;z-index:60;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:rgba(245,241,232,.96);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 -1px 0 var(--line);transform:translateY(110%);transition:transform .35s var(--ease)}
@@ -340,10 +335,8 @@ figcaption{font:italic 400 16.5px/1.4 var(--serif);color:var(--muted);margin-top
   .hero h1{max-width:none}
   .hero-cta .btn{flex:1 1 100%}
   .hero-foot{flex-direction:column;align-items:flex-start;gap:14px}
-  .compo{grid-template-columns:1fr 1fr}
-  .compo .a{grid-column:span 2;grid-row:auto}
-  .compo .b .pic{max-width:none;aspect-ratio:4/5}
-  .compo .c .pic{aspect-ratio:4/5}
+  .compo{grid-template-columns:1fr 1fr;gap:12px}
+  .compo .a{grid-column:span 2}
   .thumbs{gap:8px}
   .spec div{grid-template-columns:1fr;gap:2px}
   .apt-act .btn{flex:1 1 100%}
@@ -364,6 +357,7 @@ figcaption{font:italic 400 16.5px/1.4 var(--serif);color:var(--muted);margin-top
   .mbar .btn{font-size:13px;padding:0 8px;white-space:nowrap}
   .compo{grid-template-columns:1fr}
   .compo .a{grid-column:auto}
+  .compo .b .pic,.compo .c .pic{aspect-ratio:3/2}
   .thumbs{grid-template-columns:repeat(3,1fr)}
 }
 @media (prefers-reduced-motion:reduce){
@@ -423,7 +417,7 @@ figcaption{font:italic 400 16.5px/1.4 var(--serif);color:var(--muted);margin-top
     <div class="compo">
       <figure class="a"><div class="pic zoom rv-img"><img loading="lazy" src="img/haz-kivulrol.webp" alt="A vendégház a Petőfi utca felől, pergolával és fakapuval"></div><figcaption class="rv">A ház a Petőfi utca felől</figcaption></figure>
       <figure class="b"><div class="pic zoom rv-img"><img loading="lazy" src="img/kert-pergola.webp" alt="Pergola és virágágyások a kertben"></div><figcaption class="rv">Pergola a kert végében</figcaption></figure>
-      <figure class="c"><div class="pic zoom rv-img"><img loading="lazy" src="img/kert-kilatas.webp" alt="A kert és a játszótér, mögötte a bakonyi dombok" style="object-position:50% 40%"></div><figcaption class="rv">Kilátás a kertből a dombokra</figcaption></figure>
+      <figure class="c"><div class="pic zoom rv-img"><img loading="lazy" src="img/terasz.webp" alt="A terasz grillel és függőággyal" style="object-position:50% 68%"></div><figcaption class="rv">A terasz, ahol az esték kezdődnek</figcaption></figure>
     </div>
   </div>
 </section>
@@ -540,8 +534,8 @@ figcaption{font:italic 400 16.5px/1.4 var(--serif);color:var(--muted);margin-top
       </div>
     </div>
     <figure class="garden-pic">
-      <div class="pic zoom rv-img"><img loading="lazy" src="img/terasz.webp" alt="A terasz napernyővel, grillel és függőággyal" style="object-position:50% 70%"></div>
-      <figcaption class="rv">A terasz, ahol az esték kezdődnek</figcaption>
+      <div class="pic zoom rv-img"><img loading="lazy" src="img/kert-kilatas.webp" alt="A kert a játszótérrel, mögötte a bakonyi dombok"></div>
+      <figcaption class="rv">A kert, a játszótér és mögötte a dombok</figcaption>
     </figure>
   </div>
 </section>
