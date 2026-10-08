@@ -18,7 +18,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;1,8..60,300;1,8..60,400&family=Albert+Sans:wght@400;500;600&display=swap">
 <script>document.documentElement.className='js'</script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LodgingBusiness","name":"Nefelejcs Vendégház","telephone":"+36703191669","email":"nefelejcsvendeghazunk@gmail.com","checkinTime":"15:00","checkoutTime":"10:00","address":{"@type":"PostalAddress","streetAddress":"Petőfi u. 23.","postalCode":"8427","addressLocality":"Bakonybél","addressCountry":"HU"}}
+{"@context":"https://schema.org","@type":"LodgingBusiness","name":"Nefelejcs Vendégház","telephone":"+36703191669","checkinTime":"15:00","checkoutTime":"10:00","address":{"@type":"PostalAddress","streetAddress":"Petőfi u. 23.","postalCode":"8427","addressLocality":"Bakonybél","addressCountry":"HU"}}
 </script>
 <style>
 :root{
@@ -265,17 +265,18 @@ figcaption{font:italic 400 16.5px/1.4 var(--serif);color:var(--muted);margin-top
 
 /* foglalás */
 .book{background:var(--sand-2);padding:clamp(80px,10vw,140px) 0}
-.book-grid{display:grid;grid-template-columns:5fr 6fr;gap:clamp(36px,6vw,96px);align-items:start}
+.book-grid{display:grid;grid-template-columns:5fr 6fr;gap:clamp(36px,6vw,96px);align-items:stretch}
 .book-info{display:grid;gap:26px}
 .book-info h2{max-width:14ch}
 .book-info>p{color:var(--muted)}
+.book-info>.btn{justify-self:start}
 .lines{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
 .lines li{display:grid;grid-template-columns:110px 1fr;gap:16px;padding:13px 0;border-bottom:1px solid var(--line);font-size:15.5px}
 .lines span{color:var(--muted)}
 .lines b{font-weight:500}
 .lines a{text-decoration:none;font-weight:500;color:var(--forest);overflow-wrap:anywhere}
 .lines a:hover{text-decoration:underline;text-underline-offset:4px}
-.map{aspect-ratio:16/10;background:var(--sand)}
+.map{min-height:360px;background:var(--sand)}
 .map iframe{width:100%;height:100%;border:0;filter:saturate(.7) sepia(.08)}
 .form{background:#fff;padding:clamp(24px,3.5vw,44px);border:1px solid var(--line)}
 .form h3{margin-bottom:6px}
@@ -337,7 +338,7 @@ figcaption{font:italic 400 16.5px/1.4 var(--serif);color:var(--muted);margin-top
   .apt-2 .apt-info{padding-top:16px}
   .garden-grid{gap:48px}
   .garden-pic{max-width:520px;margin:0}
-  .mbar{display:grid;grid-template-columns:1fr 1.4fr;gap:8px;position:fixed;left:0;right:0;bottom:0;z-index:60;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:rgba(245,241,232,.96);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 -1px 0 var(--line);transform:translateY(110%);transition:transform .35s var(--ease)}
+  .mbar{display:block;position:fixed;left:0;right:0;bottom:0;z-index:60;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:rgba(245,241,232,.96);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 -1px 0 var(--line);transform:translateY(110%);transition:transform .35s var(--ease)}
   .mbar.show{transform:none}
   .mbar .btn{min-height:50px;padding:0 14px;font-size:14px}
   .ftr{padding-bottom:110px}
@@ -392,9 +393,9 @@ figcaption{font:italic 400 16.5px/1.4 var(--serif);color:var(--muted);margin-top
       <a href="#apartmanok">Apartmanok</a>
       <a href="#kert">A ház és a kert</a>
       <a href="#kornyek">Környék</a>
-      <a href="#galeria" class="wide">Képek</a>
-      <a class="wide" href="tel:+36703191669">+36 70 319 1669</a>
-      <a class="btn btn-forest" href="#foglalas">Foglalás / Érdeklődés</a>
+      <a href="#galeria">Képek</a>
+      <a href="#foglalas">Kapcsolat</a>
+      <a class="btn btn-forest" href="tel:+36703191669">Hívás: +36 70 319 1669</a>
     </nav>
     <button class="burger" id="burger" type="button" aria-expanded="false" aria-controls="nav">Menü</button>
   </div>
@@ -408,11 +409,10 @@ figcaption{font:italic 400 16.5px/1.4 var(--serif);color:var(--muted);margin-top
     <h1><span class="h h1">Ahol a természet</span><span class="h h2"><em>közelebb kerül.</em></span></h1>
     <p class="h h3">Három különálló apartman Bakonybél csendes utcájában, hegyre néző kerttel. Családoknak, pároknak és baráti társaságoknak, egész évben.</p>
     <div class="hero-cta h h4">
-      <a class="btn btn-cream" href="#foglalas">Foglalás / Érdeklődés</a>
-      <a class="btn btn-outline-light" href="#apartmanok">Apartmanok megtekintése</a>
+      <a class="btn btn-cream" href="tel:+36703191669">Hívás: +36 70 319 1669</a>
     </div>
     <div class="hero-foot h h5">
-      <div><span>8427 Bakonybél, Petőfi utca 23.</span><span>200 méterre a Szent Mauríciusz Monostortól</span></div>
+      <div><span>8427 Bakonybél, Petőfi utca 23.</span><span>Hívjon, és személyesen egyeztetünk időpontot.</span></div>
       <div class="scroll" aria-hidden="true"><i></i>Görgessen</div>
     </div>
   </div>
@@ -464,7 +464,7 @@ figcaption{font:italic 400 16.5px/1.4 var(--serif);color:var(--muted);margin-top
           <div><dt>Gyerekeknek</dt><dd>Utazóágy és babakád kérhető</dd></div>
         </dl>
         <div class="apt-act rv d3">
-          <a class="btn btn-forest" href="#foglalas" data-apt="foldszint">Érdeklődöm erre az apartmanra</a>
+          <a class="btn btn-forest" href="tel:+36703191669">Hívás a foglaláshoz</a>
           <button class="btn btn-outline" type="button" data-set="f" data-i="0">Képek megtekintése</button>
         </div>
       </div>
@@ -484,7 +484,7 @@ figcaption{font:italic 400 16.5px/1.4 var(--serif);color:var(--muted);margin-top
             <div><dt>Kilátás</dt><dd>A Bakony dombjaira</dd></div>
           </dl>
           <div class="apt-act">
-            <a class="btn btn-forest" href="#foglalas" data-apt="emelet">Érdeklődöm erre az apartmanra</a>
+            <a class="btn btn-forest" href="tel:+36703191669">Hívás a foglaláshoz</a>
             <button class="btn btn-outline" type="button" data-set="e" data-i="0">Képek megtekintése</button>
           </div>
         </div>
@@ -514,13 +514,13 @@ figcaption{font:italic 400 16.5px/1.4 var(--serif);color:var(--muted);margin-top
           <div><dt>Elrendezés</dt><dd>Különálló ház, teljesen felszerelve</dd></div>
         </dl>
         <div class="apt-act rv d3">
-          <a class="btn btn-forest" href="#foglalas" data-apt="haz">Érdeklődöm erre az apartmanra</a>
+          <a class="btn btn-forest" href="tel:+36703191669">Hívás a foglaláshoz</a>
           <button class="btn btn-outline" type="button" data-set="h" data-i="0">Képek megtekintése</button>
         </div>
       </div>
     </article>
 
-    <p class="apts-note rv">Nagyobb társasággal érkeznek? Az apartmanok együtt is foglalhatók. <a class="tlink" href="#foglalas">Írja meg, hányan jönnének</a>, és javaslunk elosztást.</p>
+    <p class="apts-note rv">Nagyobb társasággal érkeznek? Az apartmanok együtt is foglalhatók. <a class="tlink" href="tel:+36703191669">Hívjon</a>, és javaslunk elosztást.</p>
   </div>
 </section>
 
@@ -587,52 +587,19 @@ figcaption{font:italic 400 16.5px/1.4 var(--serif);color:var(--muted);margin-top
 <section class="book" id="foglalas">
   <div class="wrap book-grid">
     <div class="book-info">
-      <h2 class="rv">Foglaljon időben, <em>személyesen válaszolunk</em></h2>
-      <p class="rv d1">Írja meg, mikor és hányan érkeznének. Visszajelzünk a szabad időpontokról és az árról. Az érdeklődés nem jár foglalási kötelezettséggel.</p>
+      <h2 class="rv">Foglaljon időben, <em>telefonon</em></h2>
+      <p class="rv d1">Hívjon minket, és személyesen egyeztetjük a szabad időpontokat és az árat. A foglalást mi, a házigazdák erősítjük meg.</p>
+      <a class="btn btn-forest rv d1" href="tel:+36703191669">Hívás: +36 70 319 1669</a>
       <ul class="lines rv d2">
         <li><span>Telefon</span><a href="tel:+36703191669">+36 70 319 1669</a></li>
-        <li><span>E-mail</span><a href="mailto:nefelejcsvendeghazunk@gmail.com">nefelejcsvendeghazunk@gmail.com</a></li>
         <li><span>Cím</span><a href="https://www.google.com/maps/search/?api=1&query=8427%20Bakonyb%C3%A9l%2C%20Pet%C5%91fi%20u.%2023." target="_blank" rel="noopener">8427 Bakonybél, Petőfi u. 23.</a></li>
         <li><span>Érkezés</span><b>15:00 és 19:00 között</b></li>
         <li><span>Távozás</span><b>10:00-ig</b></li>
         <li><span>Fizetés</span><b>Készpénz, SZÉP-kártya</b></li>
+        <li><span>NTAK</span><b>EG24097572</b></li>
       </ul>
-      <div class="map rv d3"><iframe title="A vendégház helye a térképen" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=8427%20Bakonyb%C3%A9l%2C%20Pet%C5%91fi%20u.%2023.&z=15&output=embed"></iframe></div>
     </div>
-
-    <form class="form rv d1" id="form" novalidate>
-      <div class="fb">
-        <h3>Érdeklődés</h3>
-        <p class="hint">A csillaggal jelölt mezőket kérjük kitölteni. Az üzenet a saját levelezőprogramjából megy el nekünk.</p>
-        <div class="row">
-          <div class="f"><label for="from">Érkezés</label><input id="from" type="date"></div>
-          <div class="f"><label for="to">Távozás</label><input id="to" type="date"></div>
-        </div>
-        <div class="f"><label for="apt">Apartman</label>
-          <select id="apt"><option value="">Még nem tudom</option><option value="foldszint">Földszinti apartman</option><option value="emelet">Emeleti apartman</option><option value="haz">Kétszemélyes apartmanház</option><option value="tobb">Több apartman</option></select></div>
-        <div class="row">
-          <div class="f"><label for="adult">Felnőttek</label><select id="adult"><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8 vagy több</option></select></div>
-          <div class="f"><label for="kid">Gyermekek</label><select id="kid"><option>0</option><option>1</option><option>2</option><option>3</option><option>4 vagy több</option></select></div>
-        </div>
-        <div class="f" id="f-name"><label for="name">Név *</label><input id="name" autocomplete="name"><span class="err">Kérjük, adja meg a nevét.</span></div>
-        <div class="row">
-          <div class="f" id="f-tel"><label for="tel">Telefonszám *</label><input id="tel" type="tel" inputmode="tel" autocomplete="tel"><span class="err">Kérjük, adjon meg telefonszámot.</span></div>
-          <div class="f" id="f-mail"><label for="mail">E-mail *</label><input id="mail" type="email" autocomplete="email"><span class="err">Ellenőrizze az e-mail-címet.</span></div>
-        </div>
-        <div class="f"><label for="msg">Üzenet</label><textarea id="msg"></textarea></div>
-        <label class="chk" id="f-ok"><input type="checkbox" id="ok"><span>Elfogadom az <a class="tlink" href="#">adatkezelési tájékoztatót</a>. *</span></label>
-        <input type="text" name="website" tabindex="-1" autocomplete="off" class="sr" aria-hidden="true">
-        <div class="send">
-          <small>Hamarosan személyesen válaszolunk.</small>
-          <button class="btn btn-forest" type="submit">Érdeklődés küldése e-mailben</button>
-        </div>
-      </div>
-      <div class="after" role="status" aria-live="polite">
-        <h3>Már csak el kell küldeni</h3>
-        <p>Megnyitottuk a levelezőprogramját a kitöltött adatokkal. Ha nem nyílt meg, írjon közvetlenül a <a class="tlink" href="mailto:nefelejcsvendeghazunk@gmail.com">nefelejcsvendeghazunk@gmail.com</a> címre, vagy hívjon: <a class="tlink" href="tel:+36703191669">+36 70 319 1669</a>.</p>
-        <a class="btn btn-outline" id="again" href="mailto:nefelejcsvendeghazunk@gmail.com">Levél megnyitása újra</a>
-      </div>
-    </form>
+    <div class="map rv d1"><iframe title="A vendégház helye a térképen" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=8427%20Bakonyb%C3%A9l%2C%20Pet%C5%91fi%20u.%2023.&z=15&output=embed"></iframe></div>
   </div>
 </section>
 </main>
@@ -649,7 +616,6 @@ figcaption{font:italic 400 16.5px/1.4 var(--serif);color:var(--muted);margin-top
         <ul>
           <li>8427 Bakonybél, Petőfi u. 23.</li>
           <li><a href="tel:+36703191669">+36 70 319 1669</a></li>
-          <li><a href="mailto:nefelejcsvendeghazunk@gmail.com">nefelejcsvendeghazunk@gmail.com</a></li>
           <li><a href="#">Facebook</a></li>
         </ul>
       </div>
@@ -660,7 +626,7 @@ figcaption{font:italic 400 16.5px/1.4 var(--serif);color:var(--muted);margin-top
           <li><a href="#kert">A ház és a kert</a></li>
           <li><a href="#kornyek">Környék</a></li>
           <li><a href="#galeria">Képek</a></li>
-          <li><a href="#foglalas">Foglalás</a></li>
+          <li><a href="#foglalas">Kapcsolat</a></li>
         </ul>
       </div>
       <div>
@@ -677,8 +643,7 @@ figcaption{font:italic 400 16.5px/1.4 var(--serif);color:var(--muted);margin-top
 </footer>
 
 <div class="mbar" id="mbar">
-  <a class="btn btn-outline" href="tel:+36703191669">Hívás</a>
-  <a class="btn btn-forest" href="#foglalas">Foglalás / Érdeklődés</a>
+  <a class="btn btn-forest" href="tel:+36703191669">Hívás: +36 70 319 1669</a>
 </div>
 
 <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Képnézegető">
@@ -767,39 +732,6 @@ figcaption{font:italic 400 16.5px/1.4 var(--serif);color:var(--muted);margin-top
     setTimeout(function(){els.forEach(function(el){el.classList.add('in')})},4000);
   } else { els.forEach(function(el){el.classList.add('in')}) }
 
-  /* Apartmanválasztás → űrlap */
-  d.querySelectorAll('[data-apt]').forEach(function(a){a.addEventListener('click',function(){d.getElementById('apt').value=a.dataset.apt})});
-  var today=new Date().toISOString().slice(0,10), from=d.getElementById('from'), to=d.getElementById('to');
-  from.min=today; to.min=today;
-  from.addEventListener('change',function(){to.min=from.value||today;if(to.value&&to.value<=from.value)to.value=''});
-
-  /* Űrlap – nincs háttérrendszer: a kitöltött adatokkal e-mailt nyit meg */
-  var f=d.getElementById('form');
-  f.addEventListener('submit',function(e){
-    e.preventDefault(); if(f.website.value) return;
-    var first=null;
-    [['f-name','name',function(v){return v.trim().length>1}],
-     ['f-tel','tel',function(v){return v.replace(/\D/g,'').length>=8}],
-     ['f-mail','mail',function(v){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim())}]
-    ].forEach(function(x){var el=d.getElementById(x[1]),ok=x[2](el.value);d.getElementById(x[0]).classList.toggle('bad',!ok);if(!ok&&!first)first=el});
-    var ok=d.getElementById('ok'); d.getElementById('f-ok').classList.toggle('bad',!ok.checked); if(!ok.checked&&!first)first=ok;
-    if(first){first.focus();return}
-    var sel=d.getElementById('apt'), aptName=sel.options[sel.selectedIndex].text;
-    var body=['Érdeklődés – Nefelejcs Vendégház','',
-      'Név: '+d.getElementById('name').value.trim(),
-      'Telefon: '+d.getElementById('tel').value.trim(),
-      'E-mail: '+d.getElementById('mail').value.trim(),
-      'Érkezés: '+(from.value||'–'),
-      'Távozás: '+(to.value||'–'),
-      'Apartman: '+aptName,
-      'Felnőttek: '+d.getElementById('adult').value,
-      'Gyermekek: '+d.getElementById('kid').value,
-      '','Üzenet:',d.getElementById('msg').value.trim()||'–'].join('\n');
-    var href='mailto:nefelejcsvendeghazunk@gmail.com?subject='+encodeURIComponent('Érdeklődés: '+aptName+(from.value?' – '+from.value:''))+'&body='+encodeURIComponent(body);
-    d.getElementById('again').href=href;
-    location.href=href;
-    f.classList.add('sent'); f.scrollIntoView({behavior:'smooth',block:'center'});
-  });
 })();
 </script>
 </body>
