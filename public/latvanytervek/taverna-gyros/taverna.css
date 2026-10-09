@@ -920,3 +920,9 @@ body.drawer-open .dock, body.lb-open .dock { transform: translateY(110%); }
 .dock { grid-template-columns: 1fr 1.7fr; }
 .dock a { min-height: 52px; }
 @media (max-width: 379px) { .hero-cta { grid-template-columns: 1fr !important; } }
+/* mobil hero-kép: teljes tartalomszélesség, középre, kompakt arány */
+@media (max-width: 899px) {
+  .hero-stage { width: 100% !important; max-width: 520px; margin: 6px auto 4px !important; }
+  .hero-arch { aspect-ratio: 1 / 1 !important; border-radius: 22px !important; }
+  .hero-arch img { object-position: 50% 42% !important; }
+}
