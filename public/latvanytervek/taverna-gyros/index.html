@@ -6,170 +6,124 @@
 <title>Taverna Gyros Bár és Kávézó — Monor</title>
 <meta name="description" content="Gyros, burger, frissensültek és Pellini kávé Monoron, a Móricz Zsigmond utca 39.-ben. Helyben, elvitelre és házhozszállítással. Telefonos rendelés: +36 70 775 8585.">
 <meta name="robots" content="noindex">
-<meta name="theme-color" content="#141311">
+<meta name="theme-color" content="#3FB8AF">
 <link rel="icon" href="img/favicon.png" type="image/png">
 <link rel="preload" href="fonts/archivo-var.woff" as="font" type="font/woff" crossorigin>
-<link rel="preload" as="image" href="img/burger-fekete-1100.avif" type="image/avif" imagesrcset="img/burger-fekete-640.avif 640w, img/burger-fekete-1100.avif 1100w, img/burger-fekete-1440.avif 1440w" imagesizes="(min-width: 900px) 42vw, calc(100vw - 32px)">
+<link rel="preload" as="image" href="img/burger-fekete-1100.avif" type="image/avif" imagesrcset="img/burger-fekete-640.avif 640w, img/burger-fekete-1100.avif 1100w, img/burger-fekete-1440.avif 1440w" imagesizes="(min-width: 900px) 500px, calc(100vw - 40px)">
 <link rel="stylesheet" href="taverna.css">
 <script>
   (function () {
-    var d = document.documentElement; d.classList.add('js');
-    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    var d = document.documentElement;
+    d.classList.add('js');
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       d.classList.add('anim');
-      setTimeout(function () { if (!window.__tvOK) d.classList.remove('anim'); }, 3000);
+      // biztonsági háló: ha a mozgásrendszer nem indul el, a tartalom 2,5 mp múlva akkor is látszik
+      window.__animFallback = setTimeout(function () { d.classList.remove('anim'); }, 2500);
     }
   })();
 </script>
 </head>
 <body>
 <a class="skip" href="#tartalom">Ugrás a tartalomhoz</a>
-<div class="progress" aria-hidden="true"></div>
 
-<header class="hdr" id="fejlec">
-  <div class="wrap hdr-in">
-    <a class="brand" href="#top" aria-label="Taverna Gyros — az oldal teteje"><span class="logo-mask" aria-hidden="true"></span></a>
-    <nav class="nav" aria-label="Fő navigáció">
-      <a href="#retegek">A pita</a>
+<header class="site-head" id="fejlec">
+  <div class="head-in">
+    <a class="brand" href="#top" aria-label="Taverna Gyros — vissza az oldal tetejére">
+      <span class="logo-mask" aria-hidden="true"></span>
+    </a>
+    <nav class="head-nav" aria-label="Fő navigáció">
       <a href="#etlap">Étlap</a>
+      <a href="#hazhoz">Házhozszállítás</a>
       <a href="#galeria">Galéria</a>
-      <a href="#hazhoz">Kiszállítás</a>
       <a href="#kapcsolat">Kapcsolat</a>
     </nav>
-    <a class="btn btn--line hdr-cta" href="tel:+36707758585">Hívás <span class="num">+36 70 775 8585</span></a>
-    <button class="menu-btn head-burger" type="button" aria-expanded="false" aria-controls="drawer"><span class="sr">Menü megnyitása</span><span aria-hidden="true">Menü</span><i aria-hidden="true"></i></button>
+    <a class="head-call" href="tel:+36707758585"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6.6 10.8a15.2 15.2 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z"/></svg><span>70 775 8585</span></a>
+    <button class="head-burger" type="button" aria-expanded="false" aria-controls="drawer"><span class="sr">Menü megnyitása</span><i></i><i></i></button>
   </div>
 </header>
 
 <div class="drawer" id="drawer" hidden>
   <nav aria-label="Mobil navigáció">
-    <a href="#retegek">A pita <span>01</span></a>
-    <a href="#kedvencek">Kedvencek <span>02</span></a>
-    <a href="#etlap">Étlap <span>03</span></a>
-    <a href="#galeria">Galéria <span>04</span></a>
-    <a href="#hazhoz">Kiszállítás <span>05</span></a>
-    <a href="#kapcsolat">Kapcsolat <span>06</span></a>
+    <a href="#etlap">Étlap</a>
+    <a href="#kedvencek">Kedvencek</a>
+    <a href="#hazhoz">Házhozszállítás</a>
+    <a href="#galeria">Galéria</a>
+    <a href="#ajanlat">Ajánlatok</a>
+    <a href="#kapcsolat">Kapcsolat</a>
   </nav>
-  <div class="drawer-foot">
-    <p class="label" data-status>H–Szo 11:00–21:00</p>
-    <a class="btn btn--fill" href="tel:+36707758585">Hívás <span class="num">+36 70 775 8585</span></a>
-  </div>
+  <a class="btn btn-ink btn-big" href="tel:+36707758585">Hívás: +36 70 775 8585</a>
+  <p class="drawer-note"><span data-status>H–Szo 11:00–21:00</span></p>
 </div>
 
 <main id="tartalom">
 
 <!-- ============ HERO ============ -->
 <section class="hero" id="top" aria-labelledby="hero-cim">
-  <div class="wrap">
-    <div class="hero-frame">
-      <div class="hero-copy">
-        <p class="label kick" data-in>Monor · Móricz Zsigmond u. 39.</p>
-        <h1 id="hero-cim" class="hero-title" data-in>Gyros és burger.<br><span class="soft">Rendelésre készítve.</span></h1>
-        <p class="hero-lede" data-in>Gyrosbár és kávézó Monoron. Pitában, tálon vagy dobozban, hétféle burger, frissensültek és Pellini kávé — helyben, elvitelre vagy házhoz szállítva.</p>
-        <div class="hero-cta" data-in>
-          <a class="btn btn--fill" href="tel:+36707758585">Hívás <span class="num">+36 70 775 8585</span></a>
-          <a class="btn btn--line" href="#etlap">Étlap <span class="ar" aria-hidden="true">→</span></a>
+  <div class="hero-in">
+    <div class="hero-copy">
+      <p class="hero-status" data-hero="fade"><i class="dot" aria-hidden="true"></i><span data-status>H–Szo 11:00–21:00 · telefonos rendelés 20:30-ig</span></p>
+      <h1 id="hero-cim" class="hero-title">
+        <span class="ln"><span data-hero="line">Gyros és burger,</span></span>
+        <span class="ln"><span data-hero="line">rendelésre készítve.</span></span>
+      </h1>
+      <p class="hero-lede" data-hero="fade">Taverna Gyros bár és kávézó a Móricz Zsigmond utcában, Monoron. Frissensültek, tálak és Pellini kávé — helyben, elvitelre, vagy házhoz Monoron és tíz környező településen.</p>
+      <div class="hero-cta" data-hero="fade">
+        <a class="btn btn-ink btn-big" href="tel:+36707758585"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6.6 10.8a15.2 15.2 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z"/></svg><span>Rendelés: 70 775 8585</span></a>
+        <a class="btn btn-line btn-big" href="#etlap"><span>Étlap</span></a>
+      </div>
+    </div>
+
+    <div class="hero-stage" aria-hidden="false">
+      <figure class="arch hero-arch" data-hero="arch">
+        <div class="arch-img" data-depth>
+          <picture><source type="image/avif" srcset="img/burger-fekete-640.avif 640w, img/burger-fekete-1100.avif 1100w, img/burger-fekete-1440.avif 1440w" sizes="(min-width: 900px) 500px, calc(100vw - 40px)"><img src="img/burger-fekete-1100.webp" srcset="img/burger-fekete-640.webp 640w, img/burger-fekete-1100.webp 1100w, img/burger-fekete-1440.webp 1440w" sizes="(min-width: 900px) 500px, calc(100vw - 40px)" width="1440" height="1920" loading="eager" fetchpriority="high" decoding="async" alt="A Taverna burgere fekete, szezámos zsemlében, olvadt cheddarral, baconnel és steakburgonyával"></picture>
         </div>
-      </div>
-      <figure class="ph hero-ph" data-in>
-        <picture><source type="image/avif" srcset="img/burger-fekete-640.avif 640w, img/burger-fekete-1100.avif 1100w, img/burger-fekete-1440.avif 1440w" sizes="(min-width: 900px) 42vw, calc(100vw - 32px)"><img src="img/burger-fekete-1100.webp" srcset="img/burger-fekete-640.webp 640w, img/burger-fekete-1100.webp 1100w, img/burger-fekete-1440.webp 1440w" sizes="(min-width: 900px) 42vw, calc(100vw - 32px)" width="1440" height="1920" loading="eager" fetchpriority="high" decoding="async" alt="A Taverna burgere fekete, szezámos zsemlében, olvadt cheddarral, baconnel és steakburgonyával"></picture>
-        <figcaption class="ph-cap"><span><b>Burger fekete zsemlében</b>Saját fotó</span><span class="r num">01</span></figcaption>
       </figure>
-      <dl class="hero-meta">
-        <div><dt class="label">Nyitvatartás</dt><dd><span data-status>H–Szo 11:00–21:00</span></dd></div>
-        <div><dt class="label">Rendelés</dt><dd>Telefonon, 20:30-ig</dd></div>
-        <div><dt class="label">Kiszállítás</dt><dd>Monoron 3 500 Ft felett ingyenes</dd></div>
-      </dl>
     </div>
   </div>
 </section>
 
-<!-- ============ RÉTEGRŐL RÉTEGRE ============ -->
-<section class="layers" id="retegek" aria-labelledby="ly-cim">
-  <div class="wrap layers-grid">
-    <div class="layers-copy">
-      <p class="label kick" data-in>Rétegről rétegre</p>
-      <h2 id="ly-cim" class="h2" data-in>Egy gyros pita.<br><span class="soft">Öt réteg, egy kézben.</span></h2>
-      <p class="lead" data-in>A Taverna klasszikusa, ahogy az étlapjukon áll. Kérhető tálon, dobozban vagy csak hússal is.</p>
-      <ol class="ly-list" data-in>
-        <li data-ly="1"><span class="n num">01</span><b>Görög pita</b><span>Az alap, ebbe kerül minden.</span></li>
-        <li data-ly="2"><span class="n num">02</span><b>Gyros hús</b><span>A nyársról szelve. Csak húsos pitában 20 dkg.</span></li>
-        <li data-ly="3"><span class="n num">03</span><b>4 féle saláta</b><span>Négyféle saláta, ahogy az étlapon szerepel.</span></li>
-        <li data-ly="4"><span class="n num">04</span><b>Paradicsom</b><span>Friss szeletek.</span></li>
-        <li data-ly="5"><span class="n num">05</span><b>Lilahagyma</b><span>Vékony karikák a tetejére.</span></li>
-      </ol>
-      <p class="ly-price"><span class="label">Gyros pitában</span><b class="num">2 730 Ft<sup>*</sup></b></p>
-    </div>
-    <figure class="layers-fig" data-layers>
-      <svg class="layers-svg" viewBox="0 0 520 556" role="img" aria-labelledby="ly-t ly-d">
-<title id="ly-t">Gyros pitában, rétegenként</title>
-<desc id="ly-d">Vonalrajz: alulról felfelé görög pita, gyros hús, négyféle saláta, paradicsom és lilahagyma.</desc>
-<defs>
-<clipPath id="ly-c5"><ellipse cx="200" cy="80.0" rx="148" ry="38"/></clipPath>
-<clipPath id="ly-c4"><ellipse cx="200" cy="180.0" rx="148" ry="38"/></clipPath>
-<clipPath id="ly-c3"><ellipse cx="200" cy="280.0" rx="148" ry="38"/></clipPath>
-<clipPath id="ly-c2"><ellipse cx="200" cy="380.0" rx="148" ry="38"/></clipPath>
-<clipPath id="ly-c1"><ellipse cx="200" cy="480.0" rx="148" ry="38"/></clipPath>
-</defs>
-<line class="axis" x1="200" y1="18" x2="200" y2="542"/>
-<g class="ly" data-ly="5">
-<ellipse class="foot" cx="200" cy="80.0" rx="150" ry="40"/>
-<g clip-path="url(#ly-c5)" class="tex"><ellipse cx="108.0" cy="76.0" rx="17" ry="5.6"/><ellipse class="fine" cx="108.0" cy="76.0" rx="11" ry="3.6"/><ellipse cx="150.0" cy="64.0" rx="17" ry="5.6"/><ellipse class="fine" cx="150.0" cy="64.0" rx="11" ry="3.6"/><ellipse cx="196.0" cy="72.0" rx="17" ry="5.6"/><ellipse class="fine" cx="196.0" cy="72.0" rx="11" ry="3.6"/><ellipse cx="244.0" cy="64.0" rx="17" ry="5.6"/><ellipse class="fine" cx="244.0" cy="64.0" rx="11" ry="3.6"/><ellipse cx="292.0" cy="76.0" rx="17" ry="5.6"/><ellipse class="fine" cx="292.0" cy="76.0" rx="11" ry="3.6"/><ellipse cx="130.0" cy="94.0" rx="17" ry="5.6"/><ellipse class="fine" cx="130.0" cy="94.0" rx="11" ry="3.6"/><ellipse cx="178.0" cy="96.0" rx="17" ry="5.6"/><ellipse class="fine" cx="178.0" cy="96.0" rx="11" ry="3.6"/><ellipse cx="226.0" cy="94.0" rx="17" ry="5.6"/><ellipse class="fine" cx="226.0" cy="94.0" rx="11" ry="3.6"/><ellipse cx="270.0" cy="92.0" rx="17" ry="5.6"/><ellipse class="fine" cx="270.0" cy="92.0" rx="11" ry="3.6"/></g>
-<g class="lead"><circle class="pin" cx="360" cy="80.0" r="2.6"/><line x1="360" y1="80.0" x2="370" y2="80.0"/><text class="lbl-n" x="380" y="74.0">05</text><text class="lbl" x="380" y="92.0">Lilahagyma</text></g>
-</g>
-<g class="ly" data-ly="4">
-<ellipse class="foot" cx="200" cy="180.0" rx="150" ry="40"/>
-<g clip-path="url(#ly-c4)" class="tex"><ellipse cx="112.0" cy="174.0" rx="24" ry="8"/><ellipse class="fine" cx="112.0" cy="174.0" rx="17" ry="5.2"/><circle class="dot" cx="105.0" cy="175.0" r="1"/><circle class="dot" cx="112.0" cy="173.0" r="1"/><circle class="dot" cx="119.0" cy="175.0" r="1"/><ellipse cx="162.0" cy="164.0" rx="24" ry="8"/><ellipse class="fine" cx="162.0" cy="164.0" rx="17" ry="5.2"/><circle class="dot" cx="155.0" cy="165.0" r="1"/><circle class="dot" cx="162.0" cy="163.0" r="1"/><circle class="dot" cx="169.0" cy="165.0" r="1"/><ellipse cx="214.0" cy="170.0" rx="24" ry="8"/><ellipse class="fine" cx="214.0" cy="170.0" rx="17" ry="5.2"/><circle class="dot" cx="207.0" cy="171.0" r="1"/><circle class="dot" cx="214.0" cy="169.0" r="1"/><circle class="dot" cx="221.0" cy="171.0" r="1"/><ellipse cx="266.0" cy="166.0" rx="24" ry="8"/><ellipse class="fine" cx="266.0" cy="166.0" rx="17" ry="5.2"/><circle class="dot" cx="259.0" cy="167.0" r="1"/><circle class="dot" cx="266.0" cy="165.0" r="1"/><circle class="dot" cx="273.0" cy="167.0" r="1"/><ellipse cx="138.0" cy="194.0" rx="24" ry="8"/><ellipse class="fine" cx="138.0" cy="194.0" rx="17" ry="5.2"/><circle class="dot" cx="131.0" cy="195.0" r="1"/><circle class="dot" cx="138.0" cy="193.0" r="1"/><circle class="dot" cx="145.0" cy="195.0" r="1"/><ellipse cx="194.0" cy="196.0" rx="24" ry="8"/><ellipse class="fine" cx="194.0" cy="196.0" rx="17" ry="5.2"/><circle class="dot" cx="187.0" cy="197.0" r="1"/><circle class="dot" cx="194.0" cy="195.0" r="1"/><circle class="dot" cx="201.0" cy="197.0" r="1"/><ellipse cx="252.0" cy="192.0" rx="24" ry="8"/><ellipse class="fine" cx="252.0" cy="192.0" rx="17" ry="5.2"/><circle class="dot" cx="245.0" cy="193.0" r="1"/><circle class="dot" cx="252.0" cy="191.0" r="1"/><circle class="dot" cx="259.0" cy="193.0" r="1"/><ellipse cx="300.0" cy="182.0" rx="24" ry="8"/><ellipse class="fine" cx="300.0" cy="182.0" rx="17" ry="5.2"/><circle class="dot" cx="293.0" cy="183.0" r="1"/><circle class="dot" cx="300.0" cy="181.0" r="1"/><circle class="dot" cx="307.0" cy="183.0" r="1"/></g>
-<g class="lead"><circle class="pin" cx="360" cy="180.0" r="2.6"/><line x1="360" y1="180.0" x2="370" y2="180.0"/><text class="lbl-n" x="380" y="174.0">04</text><text class="lbl" x="380" y="192.0">Paradicsom</text></g>
-</g>
-<g class="ly" data-ly="3">
-<path class="fillmask" d="M50 280.0v9A150 40 0 0 0 350 289.0v-9A150 40 0 0 0 50 280.0Z"/>
-<path class="side" d="M50 280.0v9A150 40 0 0 0 350 289.0v-9"/>
-<path class="edge" d="M349.4 280.0L353.3 282.1L353.6 284.3L345.0 286.1L341.7 288.0L341.9 290.1L344.1 292.5L344.9 294.8L336.5 296.2L329.7 297.6L324.6 299.2L325.0 301.7L325.2 304.3L320.2 306.0L308.9 306.1L301.6 307.1L299.2 309.4L297.6 312.1L291.3 313.5L281.8 313.6L273.6 314.0L265.4 314.2L262.0 317.1L255.3 318.4L246.9 318.5L237.8 317.6L230.0 317.6L223.4 319.4L216.0 320.5L208.1 321.3L200.0 320.1L192.4 318.5L184.7 318.8L176.5 319.5L168.1 320.1L160.8 319.0L154.4 317.4L148.2 316.0L139.7 316.1L129.8 316.7L122.8 315.7L119.0 313.3L114.1 311.5L107.4 310.5L98.8 310.0L90.0 309.3L86.9 307.2L85.1 304.8L82.0 302.9L75.3 301.6L64.7 300.8L63.8 298.5L64.2 296.1L63.9 293.9L61.5 292.0L52.6 290.5L49.8 288.5L49.6 286.4L53.8 284.1L54.7 282.0L48.6 280.0L46.1 277.8L46.2 275.7L53.1 273.8L58.1 272.0L57.8 269.8L53.2 267.3L53.7 265.0L62.1 263.6L69.6 262.3L75.4 260.8L73.1 258.0L74.2 255.6L79.3 253.9L89.3 253.4L98.2 252.9L101.3 250.8L103.0 248.1L109.9 246.9L118.1 246.4L127.9 246.7L134.5 245.7L139.2 243.6L144.1 241.1L153.1 241.5L162.1 242.3L170.0 242.3L176.6 240.6L184.1 239.6L191.9 238.8L200.0 240.0L207.7 241.0L215.4 240.9L223.9 239.7L232.1 239.7L239.4 240.8L245.2 242.9L252.4 243.6L261.2 243.3L269.5 243.6L276.7 244.6L280.9 246.8L284.7 248.9L292.2 249.7L302.0 249.8L309.2 250.9L311.7 253.2L313.6 255.5L316.9 257.3L325.5 258.3L335.3 259.2L338.0 261.2L336.1 263.8L335.6 266.1L340.3 267.8L345.9 269.6L353.2 271.3L350.8 273.6L346.6 275.9L346.1 278.0Z"/>
-<g clip-path="url(#ly-c3)" class="tex"><path class="fine" d="M173.5 269.4L167.1 275.7"/><path class="fine" d="M110.4 254.5L128.9 255.8"/><path class="fine" d="M96.6 268.7L83.4 271.2"/><path class="fine" d="M227.4 250.6L235.5 257.6"/><path class="fine" d="M175.4 252.1L149.6 252.4"/><path class="fine" d="M183.4 277.7L197.8 279.9"/><path class="fine" d="M145.4 259.9L167.8 265.5"/><path class="fine" d="M197.0 253.6L218.6 254.4"/><path class="fine" d="M215.3 310.4L200.2 320.0"/><path class="fine" d="M140.2 267.8L127.9 272.6"/><path class="fine" d="M201.9 297.8L216.1 303.2"/><path class="fine" d="M306.0 298.4L288.6 306.7"/><path class="fine" d="M115.1 280.9L134.0 281.7"/><path class="fine" d="M131.3 288.1L135.8 300.2"/><path class="fine" d="M319.1 267.5L332.0 272.6"/><path class="fine" d="M127.1 256.7L105.5 259.8"/><path class="fine" d="M303.3 275.4L284.6 281.6"/><path class="fine" d="M95.8 288.0L75.0 295.6"/><path class="fine" d="M275.5 276.1L262.5 280.7"/><path class="fine" d="M149.3 296.3L158.2 308.0"/><path class="fine" d="M162.4 310.1L183.2 315.6"/><path class="fine" d="M108.9 298.5L95.8 309.5"/><path class="fine" d="M150.8 283.4L166.6 283.7"/><path class="fine" d="M340.4 290.0L319.5 292.0"/><path class="fine" d="M171.7 303.8L191.8 310.9"/><path class="fine" d="M133.8 261.0L129.2 268.5"/></g>
-<g class="lead"><circle class="pin" cx="360" cy="280.0" r="2.6"/><line x1="360" y1="280.0" x2="370" y2="280.0"/><text class="lbl-n" x="380" y="274.0">03</text><text class="lbl" x="380" y="292.0">4 féle saláta</text></g>
-</g>
-<g class="ly" data-ly="2">
-<ellipse class="foot" cx="200" cy="380.0" rx="150" ry="40"/>
-<g clip-path="url(#ly-c2)" class="tex"><path d="M124.9 372.7Q134.5 372.7 144.2 375.5q-2 4 -6 3Q134.5 377.7 126.9 376.7Z"/><path d="M172.4 386.5Q188.6 390.2 204.8 385.6q-2 4 -6 3Q188.6 395.2 174.4 390.5Z"/><path d="M188.0 384.5Q200.4 381.7 212.9 380.1q-2 4 -6 3Q200.4 386.7 190.0 388.5Z"/><path d="M268.7 355.2Q281.4 356.8 294.0 357.2q-2 4 -6 3Q281.4 361.8 270.7 359.2Z"/><path d="M139.5 380.0Q152.7 377.4 165.8 382.7q-2 4 -6 3Q152.7 382.4 141.5 384.0Z"/><path d="M205.4 360.7Q216.4 361.8 227.4 362.8q-2 4 -6 3Q216.4 366.8 207.4 364.7Z"/><path d="M200.5 399.2Q216.8 400.0 233.1 398.5q-2 4 -6 3Q216.8 405.0 202.5 403.2Z"/><path d="M187.0 381.1Q201.5 381.2 216.0 380.6q-2 4 -6 3Q201.5 386.2 189.0 385.1Z"/><path d="M179.9 410.1Q194.0 416.4 208.1 413.9q-2 4 -6 3Q194.0 421.4 181.9 414.1Z"/><path d="M118.5 382.4Q134.6 380.7 150.7 386.3q-2 4 -6 3Q134.6 385.7 120.5 386.4Z"/><path d="M87.7 376.7Q97.1 371.5 106.5 374.9q-2 4 -6 3Q97.1 376.5 89.7 380.7Z"/><path d="M230.4 402.5Q246.1 402.8 261.8 398.7q-2 4 -6 3Q246.1 407.8 232.4 406.5Z"/><path d="M228.4 351.5Q243.6 351.3 258.8 356.7q-2 4 -6 3Q243.6 356.3 230.4 355.5Z"/><path d="M310.9 370.5Q323.1 375.9 335.2 374.8q-2 4 -6 3Q323.1 380.9 312.9 374.5Z"/><path d="M94.9 375.8Q107.9 372.0 121.0 374.3q-2 4 -6 3Q107.9 377.0 96.9 379.8Z"/><path d="M141.5 395.9Q150.6 395.5 159.8 396.3q-2 4 -6 3Q150.6 400.5 143.5 399.9Z"/><path d="M224.7 379.3Q233.7 383.8 242.7 382.5q-2 4 -6 3Q233.7 388.8 226.7 383.3Z"/><path d="M265.9 363.6Q275.9 367.5 285.9 363.1q-2 4 -6 3Q275.9 372.5 267.9 367.6Z"/><path d="M277.0 361.0Q286.8 363.2 296.5 364.0q-2 4 -6 3Q286.8 368.2 279.0 365.0Z"/><path d="M245.1 349.6Q254.5 349.5 263.9 350.8q-2 4 -6 3Q254.5 354.5 247.1 353.6Z"/><path d="M227.2 400.7Q236.6 397.5 245.9 403.1q-2 4 -6 3Q236.6 402.5 229.2 404.7Z"/><path d="M287.0 376.4Q298.7 380.9 310.4 376.9q-2 4 -6 3Q298.7 385.9 289.0 380.4Z"/><path d="M123.9 354.3Q136.9 349.2 149.9 351.9q-2 4 -6 3Q136.9 354.2 125.9 358.3Z"/><path d="M107.6 365.3Q118.9 364.3 130.1 367.4q-2 4 -6 3Q118.9 369.3 109.6 369.3Z"/><path d="M188.9 358.6Q200.0 354.1 211.1 354.7q-2 4 -6 3Q200.0 359.1 190.9 362.6Z"/><path d="M201.7 355.6Q213.9 353.5 226.1 359.4q-2 4 -6 3Q213.9 358.5 203.7 359.6Z"/><path d="M274.1 373.6Q286.7 374.0 299.4 376.6q-2 4 -6 3Q286.7 379.0 276.1 377.6Z"/><path d="M185.1 394.5Q201.8 396.9 218.6 392.7q-2 4 -6 3Q201.8 401.9 187.1 398.5Z"/><path d="M244.1 390.5Q256.2 385.4 268.4 389.2q-2 4 -6 3Q256.2 390.4 246.1 394.5Z"/><path d="M255.6 363.8Q265.5 365.7 275.4 360.8q-2 4 -6 3Q265.5 370.7 257.6 367.8Z"/><path d="M289.7 393.4Q300.8 390.3 311.9 391.4q-2 4 -6 3Q300.8 395.3 291.7 397.4Z"/><path d="M176.6 356.2Q189.0 359.8 201.4 354.1q-2 4 -6 3Q189.0 364.8 178.6 360.2Z"/><path d="M318.2 381.7Q328.6 381.5 338.9 385.2q-2 4 -6 3Q328.6 386.5 320.2 385.7Z"/><path d="M155.1 379.5Q167.8 378.2 180.5 376.8q-2 4 -6 3Q167.8 383.2 157.1 383.5Z"/></g>
-<g class="lead"><circle class="pin" cx="360" cy="380.0" r="2.6"/><line x1="360" y1="380.0" x2="370" y2="380.0"/><text class="lbl-n" x="380" y="374.0">02</text><text class="lbl" x="380" y="392.0">Gyros hús</text></g>
-</g>
-<g class="ly" data-ly="1">
-<path class="fillmask" d="M50 480.0v9A150 40 0 0 0 350 489.0v-9A150 40 0 0 0 50 480.0Z"/>
-<path class="side" d="M50 480.0v9A150 40 0 0 0 350 489.0v-9"/>
-<ellipse class="edge" cx="200" cy="480.0" rx="150" ry="40"/>
-<g clip-path="url(#ly-c1)" class="tex"><ellipse class="fine" cx="200" cy="480.0" rx="136" ry="36.0"/><path class="fine" d="M92.0 473.1q3 -2 6 0"/><path class="fine" d="M146.9 461.8q3 -2 6 0"/><path class="fine" d="M218.9 482.0q3 -2 6 0"/><path class="fine" d="M261.1 490.8q3 -2 6 0"/><path class="fine" d="M252.3 505.9q3 -2 6 0"/><path class="fine" d="M168.7 468.1q3 -2 6 0"/><path class="fine" d="M254.4 489.8q3 -2 6 0"/><path class="fine" d="M297.3 488.7q3 -2 6 0"/><path class="fine" d="M256.9 501.3q3 -2 6 0"/><path class="fine" d="M104.7 481.6q3 -2 6 0"/><path class="fine" d="M198.1 502.9q3 -2 6 0"/><path class="fine" d="M275.0 502.3q3 -2 6 0"/><path class="fine" d="M218.5 506.8q3 -2 6 0"/><path class="fine" d="M243.8 493.2q3 -2 6 0"/><path class="fine" d="M103.1 470.5q3 -2 6 0"/><path class="fine" d="M212.0 488.7q3 -2 6 0"/><path class="fine" d="M229.3 492.3q3 -2 6 0"/><path class="fine" d="M194.3 446.1q3 -2 6 0"/><path class="fine" d="M273.2 496.9q3 -2 6 0"/><path class="fine" d="M197.8 482.4q3 -2 6 0"/><path class="fine" d="M237.8 450.4q3 -2 6 0"/><path class="fine" d="M257.6 463.1q3 -2 6 0"/><path class="fine" d="M88.1 464.0q3 -2 6 0"/><path class="fine" d="M255.7 459.9q3 -2 6 0"/><path class="fine" d="M195.5 472.0q3 -2 6 0"/><path class="fine" d="M191.6 492.5q3 -2 6 0"/><path class="fine" d="M265.3 488.0q3 -2 6 0"/><path class="fine" d="M233.5 451.2q3 -2 6 0"/><path class="fine" d="M106.7 463.2q3 -2 6 0"/><path class="fine" d="M259.3 466.6q3 -2 6 0"/><path class="fine" d="M214.3 446.7q3 -2 6 0"/><path class="fine" d="M84.5 464.2q3 -2 6 0"/><path class="fine" d="M241.0 493.1q3 -2 6 0"/><path class="fine" d="M242.0 465.7q3 -2 6 0"/></g>
-<g class="lead"><circle class="pin" cx="360" cy="480.0" r="2.6"/><line x1="360" y1="480.0" x2="370" y2="480.0"/><text class="lbl-n" x="380" y="474.0">01</text><text class="lbl" x="380" y="492.0">Görög pita</text></g>
-</g>
-<text class="cap" x="18" y="550">Gyros pitában · rétegrend · vonalrajz</text>
-</svg>
-    </figure>
-  </div>
-</section>
-
-<!-- ============ KEDVENCEK ============ -->
-<section class="fav" id="kedvencek" aria-labelledby="fav-cim">
+<!-- ============ SIGNATURE ============ -->
+<section class="sig" id="kedvencek" aria-labelledby="sig-cim">
   <div class="wrap">
-    <header class="sec-head">
-      <div>
-        <p class="label kick" data-in>A pultról</p>
-        <h2 id="fav-cim" class="h2" data-in>Három tányér.<br><span class="soft">A Taverna saját fotóin.</span></h2>
-      </div>
-      <p class="sec-note" data-in>Ahogy a vendég elé kerül. Az árak a korábbi étlapról valók, ellenőrzés alatt.</p>
+    <header class="sig-head">
+      <h2 id="sig-cim" class="h2" data-split>A pultról, ahogy kijön.</h2>
+      <p class="sig-lede" data-rise>Három tányér a Taverna saját fotóiról, úgy, ahogy a vendég elé kerül.</p>
     </header>
-    <ol class="fav-list">
-      <li data-in>
-        <figure class="ph" style="--ar:4/5"><picture><source type="image/avif" srcset="img/burger-kes-640.avif 640w, img/burger-kes-1100.avif 1080w" sizes="(min-width: 760px) 32vw, 82vw"><img src="img/burger-kes-1100.webp" srcset="img/burger-kes-640.webp 640w, img/burger-kes-1100.webp 1080w" sizes="(min-width: 760px) 32vw, 82vw" width="1080" height="1080" loading="lazy" decoding="async" alt="Burger késsel átszúrva a Taverna lime-zöld asztalán"></picture></figure>
-        <div class="fav-cap"><span class="n num">01</span><b>Hamburgerek</b><span>Hétféle, kicsi és normál méretben, a sima hamburgertől a Taverna Burgerig.</span><em class="num">2 180 Ft-tól<sup>*</sup></em></div>
-      </li>
-      <li data-in>
-        <figure class="ph" style="--ar:4/5"><picture><source type="image/avif" srcset="img/csirke-kozel-640.avif 512w, img/csirke-kozel-1100.avif 620w" sizes="(min-width: 760px) 32vw, 82vw"><img src="img/csirke-kozel-1100.webp" srcset="img/csirke-kozel-640.webp 512w, img/csirke-kozel-1100.webp 620w" sizes="(min-width: 760px) 32vw, 82vw" width="620" height="775" loading="lazy" decoding="async" alt="Szezámos rántott csirkemellcsíkok jázminrizzsel és két szósszal"></picture></figure>
-        <div class="fav-cap"><span class="n num">02</span><b>Rántott csirkemell ropogós bundában</b><span>Jázminrizzsel és kétféle szósszal.</span><em class="num">3 520 Ft<sup>*</sup></em></div>
-      </li>
-      <li data-in>
-        <figure class="ph" style="--ar:4/5"><picture><source type="image/avif" srcset="img/burger-terasz-640.avif 640w, img/burger-terasz-1100.avif 1100w, img/burger-terasz-1600.avif 1600w" sizes="(min-width: 760px) 32vw, 82vw"><img src="img/burger-terasz-1100.webp" srcset="img/burger-terasz-640.webp 640w, img/burger-terasz-1100.webp 1100w, img/burger-terasz-1600.webp 1600w" sizes="(min-width: 760px) 32vw, 82vw" width="1638" height="2048" loading="lazy" decoding="async" alt="Dupla burger hasábburgonyával a terasz asztalán"></picture></figure>
-        <div class="fav-cap"><span class="n num">03</span><b>Burger hasábbal, a teraszon</b><span>Hasábburgonya 990 Ft<sup>*</sup>, sajtosan 1 100 Ft<sup>*</sup>.</span><em class="num">Köret</em></div>
-      </li>
-    </ol>
+
+    <div class="sig-grid">
+      <figure class="sig-a" data-wipe="left">
+        <div class="sig-frame"><picture><source type="image/avif" srcset="img/burger-kes-640.avif 640w, img/burger-kes-1100.avif 1080w" sizes="(min-width: 900px) 52vw, 92vw"><img src="img/burger-kes-1100.webp" srcset="img/burger-kes-640.webp 640w, img/burger-kes-1100.webp 1080w" sizes="(min-width: 900px) 52vw, 92vw" width="1080" height="1080" loading="lazy" decoding="async" alt="Burger késsel átszúrva, a Taverna lime-zöld asztalán"></picture></div>
+        <figcaption>
+          <b>Hamburgerek</b>
+          <span>Hétféle, mindegyik kicsi és normál méretben, a sima hamburgertől a jalapeños, baconös Taverna Burgerig.</span>
+          <em>2 180 Ft-tól<sup>*</sup></em>
+        </figcaption>
+      </figure>
+
+      <figure class="sig-b" data-wipe="up">
+        <div class="sig-frame"><picture><source type="image/avif" srcset="img/csirke-kozel-640.avif 512w, img/csirke-kozel-1100.avif 620w" sizes="(min-width: 760px) 30vw, 80vw"><img src="img/csirke-kozel-1100.webp" srcset="img/csirke-kozel-640.webp 512w, img/csirke-kozel-1100.webp 620w" sizes="(min-width: 760px) 30vw, 80vw" width="620" height="775" loading="lazy" decoding="async" alt="Szezámos rántott csirkemellcsíkok jázminrizzsel és két szósszal"></picture></div>
+        <figcaption>
+          <b>Rántott csirkemell ropogós bundában</b>
+          <span>Jázminrizzsel és kétféle szósszal.</span>
+          <em>3 520 Ft<sup>*</sup></em>
+        </figcaption>
+      </figure>
+
+      <figure class="sig-c" data-wipe="right">
+        <div class="sig-frame"><picture><source type="image/avif" srcset="img/burger-terasz-640.avif 640w, img/burger-terasz-1100.avif 1100w, img/burger-terasz-1600.avif 1600w" sizes="(min-width: 900px) 30vw, 92vw"><img src="img/burger-terasz-1100.webp" srcset="img/burger-terasz-640.webp 640w, img/burger-terasz-1100.webp 1100w, img/burger-terasz-1600.webp 1600w" sizes="(min-width: 900px) 30vw, 92vw" width="1638" height="2048" loading="lazy" decoding="async" alt="Dupla burger hasábburgonyával a terasz asztalán"></picture></div>
+        <figcaption>
+          <b>Burger hasábbal, a teraszon</b>
+          <span>Hasábburgonya köretként 990 Ft<sup>*</sup>, sajtosan 1 100 Ft<sup>*</sup>.</span>
+        </figcaption>
+      </figure>
+
+      <aside class="sig-quote" data-rise>
+        <p>Gyros pitában, tálon vagy dobozban — a hús ugyanarról a nyársról.</p>
+        <a class="link-under" href="#etlap" data-cat-link="pita">Pita és box az étlapon</a>
+      </aside>
+    </div>
+    <p class="price-note"><sup>*</sup> Az árak a korábbi étlapról származnak, még nincsenek ellenőrizve. A pultnál érvényes ár az irányadó.</p>
   </div>
 </section>
 
@@ -177,44 +131,71 @@
 <section class="menu" id="etlap" aria-labelledby="etlap-cim">
   <div class="wrap menu-in">
     <div class="menu-side">
-      <p class="label kick">Teljes étlap · <span data-menu-total>82</span> tétel</p>
-      <h2 id="etlap-cim" class="h2">Étlap.<br><span class="soft">Nyolc fejezet.</span></h2>
+      <h2 id="etlap-cim" class="h2" data-split>Étlap</h2>
+      <p class="menu-count"><b data-menu-total>82</b> tétel nyolc fejezetben. Telefonon rendelhető: <a href="tel:+36707758585">+36 70 775 8585</a>.</p>
       <label class="menu-search">
         <span class="sr">Keresés az étlapban</span>
         <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
-        <input type="search" placeholder="Keresés: baklava, sajt, latte" autocomplete="off" data-menu-search>
+        <input type="search" placeholder="Keresés: pl. baklava, sajt, latte" autocomplete="off" data-menu-search>
       </label>
       <div class="menu-tabs" role="tablist" aria-label="Étlap fejezetek" data-menu-tabs></div>
     </div>
+
     <div class="menu-main">
       <div class="menu-panel" role="tabpanel" tabindex="-1" aria-live="polite" data-menu-panel></div>
-      <p class="fine-note"><sup>*</sup> Az árak forintban, adagonként, a korábbi étlap alapján — ellenőrzés alatt. A pultnál érvényes ár az irányadó. Burgereknél: kicsi / normál.</p>
+      <p class="price-note">Az árak forintban, adagonként, a korábbi étlap alapján — ellenőrzés alatt. Burgereknél: kicsi / normál.</p>
     </div>
   </div>
 </section>
 
-<!-- ============ A TAVERNA (világos sáv) ============ -->
-<section class="about light" id="hely" aria-labelledby="ab-cim">
-  <div class="wrap about-grid">
-    <div class="about-copy">
-      <p class="label kick" data-in>A Taverna</p>
-      <h2 id="ab-cim" class="h2" data-in>Gyrosbár és kávézó.<br><span class="soft">Egy fedél alatt.</span></h2>
-      <p class="lead" data-in>Aki siet, a pultnál viszi a pitáját. Aki ráér, kiül a terasz napernyői alá egy limonádéval vagy egy Pellini kávéval.</p>
-      <dl class="facts" data-in>
-        <div><dt class="label">Ülőhely</dt><dd>Bent és a szabadtéri teraszon</dd></div>
-        <div><dt class="label">Kávé</dt><dd>Pellini — espresso, cappuccino, latte, jeges kávé</dd></div>
-        <div><dt class="label">Rendelés</dt><dd>Helyben, elvitelre, házhoz; telefonon 20:30-ig</dd></div>
-        <div><dt class="label">Fizetés</dt><dd>Készpénz, bankkártya, SZÉP-kártya (OTP, K&amp;H, MBH)</dd></div>
+<!-- ============ EXPERIENCE ============ -->
+<section class="exp" id="hely" aria-labelledby="exp-cim">
+  <div class="wrap exp-grid">
+    <figure class="arch exp-arch" data-arch-scroll>
+      <div class="arch-img"><picture><source type="image/avif" srcset="img/etterem-kivul-640.avif 640w, img/etterem-kivul-1100.avif 960w" sizes="(min-width: 900px) 34vw, 86vw"><img src="img/etterem-kivul-1100.webp" srcset="img/etterem-kivul-640.webp 640w, img/etterem-kivul-1100.webp 960w" sizes="(min-width: 900px) 34vw, 86vw" width="960" height="960" loading="lazy" decoding="async" alt="A Taverna épülete a Móricz Zsigmond utcában, napernyőkkel és terasszal"></picture></div>
+    </figure>
+
+    <div class="exp-copy">
+      <h2 id="exp-cim" class="h2" data-split>Asztal a teraszon, kávé a pultnál.</h2>
+      <p data-rise>A Taverna gyrosbár és kávézó egyben: aki siet, a pultnál viszi a pitáját, aki ráér, kiül a terasz napernyői alá egy limonádéval vagy egy Pellini kávéval.</p>
+      <dl class="exp-facts" data-rise>
+        <div><dt>Ülőhely</dt><dd>Bent és a szabadtéri teraszon</dd></div>
+        <div><dt>Kávé</dt><dd>Pellini — espresso, cappuccino, latte, jeges kávé</dd></div>
+        <div><dt>Rendelés</dt><dd>Helyben, elvitelre, házhoz; telefonon 20:30-ig</dd></div>
+        <div><dt>Fizetés</dt><dd>Készpénz, bankkártya, SZÉP-kártya (OTP, K&amp;H, MBH)</dd></div>
       </dl>
     </div>
-    <figure class="ph ph--light about-a" style="--ar:1/1" data-in>
-      <picture><source type="image/avif" srcset="img/etterem-kivul-640.avif 640w, img/etterem-kivul-1100.avif 960w" sizes="(min-width: 760px) 30vw, 92vw"><img src="img/etterem-kivul-1100.webp" srcset="img/etterem-kivul-640.webp 640w, img/etterem-kivul-1100.webp 960w" sizes="(min-width: 760px) 30vw, 92vw" width="960" height="960" loading="lazy" decoding="async" alt="A Taverna épülete a Móricz Zsigmond utcában, napernyőkkel és terasszal"></picture>
-      <figcaption class="ph-cap"><span><b>Az épület</b>Móricz Zsigmond u. 39.</span><span class="r num">02</span></figcaption>
+
+    <figure class="exp-wide" data-slide>
+      <div class="exp-wide-img"><picture><source type="image/avif" srcset="img/terasz-italok-640.avif 640w, img/terasz-italok-1100.avif 1100w, img/terasz-italok-1600.avif 1600w" sizes="(min-width: 900px) 58vw, 92vw"><img src="img/terasz-italok-1100.webp" srcset="img/terasz-italok-640.webp 640w, img/terasz-italok-1100.webp 1100w, img/terasz-italok-1600.webp 1600w" sizes="(min-width: 900px) 58vw, 92vw" width="2048" height="1536" loading="lazy" decoding="async" alt="Mojito, piña colada és spritz a terasz asztalán, mögötte leanderek"></picture></div>
+      <figcaption>A terasz nyáron, leanderek között.</figcaption>
     </figure>
-    <figure class="ph ph--light about-b" style="--ar:4/3" data-in>
-      <picture><source type="image/avif" srcset="img/terasz-italok-640.avif 640w, img/terasz-italok-1100.avif 1100w, img/terasz-italok-1600.avif 1600w" sizes="(min-width: 760px) 30vw, 92vw"><img src="img/terasz-italok-1100.webp" srcset="img/terasz-italok-640.webp 640w, img/terasz-italok-1100.webp 1100w, img/terasz-italok-1600.webp 1600w" sizes="(min-width: 760px) 30vw, 92vw" width="2048" height="1536" loading="lazy" decoding="async" alt="Mojito, piña colada és spritz a terasz asztalán, mögötte leanderek"></picture>
-      <figcaption class="ph-cap"><span><b>A terasz</b>Nyáron, leanderek között</span><span class="r num">03</span></figcaption>
-    </figure>
+  </div>
+</section>
+
+<!-- ============ SHOWCASE ============ -->
+<section class="show" id="kozelrol" aria-labelledby="show-cim">
+  <div class="show-track">
+    <div class="show-sticky">
+      <div class="wrap show-in">
+        <div class="show-copy">
+          <h2 id="show-cim" class="h2">Közelről.</h2>
+          <ol class="show-list">
+            <li class="is-on"><button type="button" data-step="0"><b>A nyárs</b><span>Rétegenként felhúzott hús, lassan sül, rendelésre szeljük.</span></button></li>
+            <li><button type="button" data-step="1"><b>Fekete zsemle</b><span>Szezámos fekete buci, olvadt cheddar, steakburgonya.</span></button></li>
+            <li><button type="button" data-step="2"><b>Ropogós csík</b><span>Szezámos bunda, jázminrizs, édes chili és fokhagymás szósz.</span></button></li>
+            <li><button type="button" data-step="3"><b>Csavart fagyi</b><span>Kicsi 890, nagy 1 190 forint — a krétatábla szerint.</span></button></li>
+          </ol>
+        </div>
+        <div class="show-stage" aria-hidden="true">
+          <div class="show-shot is-on" data-shot="0"><picture><source type="image/avif" srcset="img/gyros-nyars-640.avif 640w, img/gyros-nyars-1100.avif 1100w" sizes="(min-width: 900px) 46vw, 88vw"><img src="img/gyros-nyars-1100.webp" srcset="img/gyros-nyars-640.webp 640w, img/gyros-nyars-1100.webp 1100w" sizes="(min-width: 900px) 46vw, 88vw" width="1440" height="1920" loading="lazy" decoding="async" alt="A gyrosnyárs közelről"></picture></div>
+          <div class="show-shot" data-shot="1"><picture><source type="image/avif" srcset="img/burger-fekete-640.avif 640w, img/burger-fekete-1100.avif 1100w, img/burger-fekete-1440.avif 1440w" sizes="(min-width: 900px) 46vw, 88vw"><img src="img/burger-fekete-1100.webp" srcset="img/burger-fekete-640.webp 640w, img/burger-fekete-1100.webp 1100w, img/burger-fekete-1440.webp 1440w" sizes="(min-width: 900px) 46vw, 88vw" width="1440" height="1920" loading="lazy" decoding="async" alt="Burger fekete zsemlében"></picture></div>
+          <div class="show-shot" data-shot="2"><picture><source type="image/avif" srcset="img/csirke-kozel-640.avif 512w, img/csirke-kozel-1100.avif 620w" sizes="(min-width: 760px) 46vw, 88vw"><img src="img/csirke-kozel-1100.webp" srcset="img/csirke-kozel-640.webp 512w, img/csirke-kozel-1100.webp 620w" sizes="(min-width: 760px) 46vw, 88vw" width="620" height="775" loading="lazy" decoding="async" alt="Rántott csirkemellcsíkok rizzsel"></picture></div>
+          <div class="show-shot" data-shot="3"><picture><source type="image/avif" srcset="img/csavart-fagyi-640.avif 640w, img/csavart-fagyi-1100.avif 1100w" sizes="(min-width: 900px) 46vw, 88vw"><img src="img/csavart-fagyi-1100.webp" srcset="img/csavart-fagyi-640.webp 640w, img/csavart-fagyi-1100.webp 1100w" sizes="(min-width: 900px) 46vw, 88vw" width="1558" height="2048" loading="lazy" decoding="async" alt="Csavart fagyi tölcsérben, mögötte a krétatábla az árakkal"></picture></div>
+          <p class="show-counter"><span data-show-n>1</span> / 4</p>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -222,9 +203,8 @@
 <section class="gal" id="galeria" aria-labelledby="gal-cim">
   <div class="wrap gal-layout">
     <header class="gal-head">
-      <p class="label kick" data-in>Galéria</p>
-      <h2 id="gal-cim" class="h2" data-in>Nyolc kép.<br><span class="soft">Mind a Tavernából.</span></h2>
-      <p class="sec-note" data-in>Koppints bármelyikre a teljes mérethez.</p>
+      <h2 id="gal-cim" class="h2" data-split>Fotók a Tavernából.</h2>
+      <p data-rise>Nyolc kép a Taverna saját anyagából. Koppints bármelyikre a teljes mérethez.</p>
     </header>
     <ul class="gal-grid" data-gallery>
       <li class="g1"><button type="button" data-lb="0"><picture><source type="image/avif" srcset="img/etterem-kivul-640.avif 640w, img/etterem-kivul-1100.avif 960w" sizes="(min-width: 760px) 32vw, 82vw"><img src="img/etterem-kivul-1100.webp" srcset="img/etterem-kivul-640.webp 640w, img/etterem-kivul-1100.webp 960w" sizes="(min-width: 760px) 32vw, 82vw" width="960" height="960" loading="lazy" decoding="async" alt="Az étterem épülete és a terasz"></picture></button></li>
@@ -236,37 +216,37 @@
       <li class="g7"><button type="button" data-lb="6"><picture><source type="image/avif" srcset="img/csirke-rizs-640.avif 640w, img/csirke-rizs-1100.avif 1080w" sizes="(min-width: 760px) 32vw, 82vw"><img src="img/csirke-rizs-1100.webp" srcset="img/csirke-rizs-640.webp 640w, img/csirke-rizs-1100.webp 1080w" sizes="(min-width: 760px) 32vw, 82vw" width="1080" height="1080" loading="lazy" decoding="async" alt="Rántott csirkemell rizzsel"></picture></button></li>
       <li class="g8"><button type="button" data-lb="7"><picture><source type="image/avif" srcset="img/burger-fekete-640.avif 640w, img/burger-fekete-1100.avif 1100w, img/burger-fekete-1440.avif 1440w" sizes="(min-width: 760px) 32vw, 82vw"><img src="img/burger-fekete-1100.webp" srcset="img/burger-fekete-640.webp 640w, img/burger-fekete-1100.webp 1100w, img/burger-fekete-1440.webp 1440w" sizes="(min-width: 760px) 32vw, 82vw" width="1440" height="1920" loading="lazy" decoding="async" alt="Burger fekete zsemlében"></picture></button></li>
     </ul>
-    <p class="gal-swipe label" aria-hidden="true"><span data-gal-n>1</span> / 8 · lapozz oldalra</p>
+    <p class="gal-swipe" aria-hidden="true"><span data-gal-n>1</span> / 8 · húzd oldalra</p>
   </div>
 </section>
 
-<!-- ============ KISZÁLLÍTÁS ============ -->
+<!-- ============ HÁZHOZSZÁLLÍTÁS ============ -->
 <section class="del" id="hazhoz" aria-labelledby="del-cim">
   <div class="wrap del-grid">
     <div class="del-copy">
-      <p class="label kick" data-in>Kiszállítás</p>
-      <h2 id="del-cim" class="h2" data-in>Monor és tíz település.<br><span class="soft">Telefonos rendeléssel.</span></h2>
-      <ol class="rows" data-in>
-        <li><span class="n num">01</span><b>Monor</b><span>3 500 Ft feletti rendelésnél a kiszállítás ingyenes.</span></li>
-        <li><span class="n num">02</span><b>Környező települések</b><span>A szállítási díjat és a minimum rendelést telefonon egyeztetjük.</span></li>
-        <li><span class="n num">03</span><b>Rendelésfelvétel</b><span>Hétfőtől szombatig 20:30-ig.</span></li>
-      </ol>
-      <a class="btn btn--accent" href="tel:+36707758585" data-in>Rendelés <span class="num">+36 70 775 8585</span></a>
+      <h2 id="del-cim" class="h2" data-split>Házhoz visszük, Monoron és tíz szomszéd faluban.</h2>
+      <ul class="del-rules" data-rise>
+        <li><b>Monor</b><span>3 500 Ft feletti rendelésnél a kiszállítás ingyenes.</span></li>
+        <li><b>Környező települések</b><span>A szállítási díjat és a minimum rendelést telefonon egyeztetjük.</span></li>
+        <li><b>Rendelésfelvétel</b><span>Hétfőtől szombatig 20:30-ig, telefonon.</span></li>
+      </ul>
+      <a class="btn btn-ink btn-big" href="tel:+36707758585" data-rise><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6.6 10.8a15.2 15.2 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z"/></svg><span>Rendelés: +36 70 775 8585</span></a>
     </div>
-    <figure class="del-dial ph-frame" data-in>
-      <svg viewBox="-60 0 520 400" role="img" aria-labelledby="dial-cim">
+
+    <figure class="del-dial">
+      <svg viewBox="0 0 400 400" role="img" aria-labelledby="dial-cim">
         <title id="dial-cim">Kiszállítási körzet: Monor és a környező tíz település, irány szerint</title>
         <g class="dial-rings" aria-hidden="true">
           <circle cx="200" cy="200" r="70"/><circle cx="200" cy="200" r="120"/><circle cx="200" cy="200" r="168"/>
         </g>
-        <g aria-hidden="true" data-dial></g>
-        <circle class="dial-core" cx="200" cy="200" r="5"/>
-        <text class="dial-monor" x="200" y="226" text-anchor="middle">Monor</text>
-        <text class="dial-n" x="200" y="22" text-anchor="middle">É</text>
+        <g class="dial-spokes" aria-hidden="true" data-dial></g>
+        <circle class="dial-core" cx="200" cy="200" r="34"/>
+        <text class="dial-monor" x="200" y="205" text-anchor="middle">Monor</text>
       </svg>
-      <figcaption class="label">Irány szerinti vázlat · nem méretarányos</figcaption>
+      <figcaption>Irány szerinti vázlat, nem méretarányos térkép.</figcaption>
     </figure>
-    <ul class="towns" aria-label="Települések, ahová szállítunk" data-in>
+
+    <ul class="del-towns" aria-label="Települések, ahová szállítunk">
       <li>Monor</li><li>Monorierdő</li><li>Pilis</li><li>Gyömrő</li><li>Vasad</li><li>Csévharaszt</li><li>Péteri</li><li>Gomba</li><li>Nyáregyháza</li><li>Bénye</li><li>Üllő</li>
     </ul>
   </div>
@@ -275,19 +255,19 @@
 <!-- ============ AJÁNLATOK ============ -->
 <section class="offer" id="ajanlat" aria-labelledby="offer-cim">
   <div class="wrap offer-grid">
-    <figure class="ph offer-ph" style="--ar:480/705" data-in>
+    <figure class="offer-card" data-tilt>
       <picture><source srcset="img/asztali-kartya.avif" type="image/avif"><img src="img/asztali-kartya.webp" width="480" height="705" loading="lazy" decoding="async" alt="A Taverna asztali reklámkártyája: Gyros Box újdonság és pita menü cheddar sajtos hasábbal"></picture>
-      <figcaption class="ph-cap"><span><b>Asztali kártya</b>Részlet saját fotóról, dátum nélkül</span><span class="r num">04</span></figcaption>
+      <figcaption>Részlet a Taverna egyik saját fotójáról. A kártya dátuma nem ismert.</figcaption>
     </figure>
     <div class="offer-copy">
-      <p class="label kick" data-in>Az asztali kártyáról</p>
-      <h2 id="offer-cim" class="h2" data-in>Ajánlatok.<br><span class="soft">Amit újdonságként hirdetnek.</span></h2>
-      <ol class="rows" data-in>
-        <li><span class="n num">01</span><b>Gyros Box</b><span>Gyros hús, tzatziki, pikáns saláta és hasábburgonya egy dobozban.</span></li>
-        <li><span class="n num">02</span><b>Pita menü cheddar sajtos hasábbal</b><span>A kártyán 2 690 Ft.</span></li>
-        <li><span class="n num">03</span><b>Csavart fagyi</b><span>Kicsi 890 Ft, nagy 1 190 Ft — a bejárati krétatábla szerint.</span></li>
-      </ol>
-      <a class="tlink" href="https://www.facebook.com/tavernagyrosmonor/" target="_blank" rel="noopener">Napi menü a Facebookon <span aria-hidden="true">↗</span></a>
+      <h2 id="offer-cim" class="h2" data-split>Az asztali kártyáról.</h2>
+      <p class="offer-lede" data-rise>Amit a Taverna saját fotóin újdonságként hirdet. A napi menü és a friss ajánlatok a Facebook-oldalon jelennek meg.</p>
+      <ul class="offer-list" data-rise>
+        <li><b>Gyros Box</b><span>Újdonságként jelölve. Gyros hús, tzatziki, pikáns saláta és hasábburgonya egy dobozban.</span></li>
+        <li><b>Pita menü cheddar sajtos hasábbal</b><span>A kártyán 2 690 Ft.</span></li>
+        <li><b>Csavart fagyi</b><span>Kicsi 890 Ft, nagy 1 190 Ft — a bejárati krétatábla szerint.</span></li>
+      </ul>
+      <a class="btn btn-lime btn-big" href="https://www.facebook.com/tavernagyrosmonor/" target="_blank" rel="noopener"><span>Napi menü a Facebookon</span></a>
     </div>
   </div>
 </section>
@@ -296,58 +276,72 @@
 <section class="contact" id="kapcsolat" aria-labelledby="kap-cim">
   <div class="wrap contact-grid">
     <div class="contact-copy">
-      <p class="label kick" data-in>Kapcsolat</p>
-      <h2 id="kap-cim" class="h2" data-in>Éhes vagy?<br><span class="soft">Hívj, és elkészítjük.</span></h2>
-      <a class="tel num" href="tel:+36707758585" data-in>+36 70 775 8585 <span aria-hidden="true">↗</span></a>
-      <dl class="cells" data-in>
-        <div><dt class="label">Cím</dt><dd>2200 Monor,<br>Móricz Zsigmond u. 39.</dd></div>
-        <div><dt class="label">Fizetés</dt><dd>Készpénz, bankkártya,<br>SZÉP-kártya</dd></div>
-      </dl>
-      <table class="hours" data-in>
-        <caption class="label">Nyitvatartás</caption>
+      <h2 id="kap-cim" class="h2" data-split>Móricz Zsigmond utca 39.</h2>
+      <p class="contact-addr" data-rise>Taverna Gyros Bár és Kávézó<br>2200 Monor</p>
+      <table class="hours" data-rise>
+        <caption>Nyitvatartás</caption>
         <tbody>
-          <tr data-day="1"><th scope="row">Hétfő</th><td class="num">11:00–21:00</td></tr>
-          <tr data-day="2"><th scope="row">Kedd</th><td class="num">11:00–21:00</td></tr>
-          <tr data-day="3"><th scope="row">Szerda</th><td class="num">11:00–21:00</td></tr>
-          <tr data-day="4"><th scope="row">Csütörtök</th><td class="num">11:00–21:00</td></tr>
-          <tr data-day="5"><th scope="row">Péntek</th><td class="num">11:00–21:00</td></tr>
-          <tr data-day="6"><th scope="row">Szombat</th><td class="num">11:00–21:00</td></tr>
+          <tr data-day="1"><th scope="row">Hétfő</th><td>11:00–21:00</td></tr>
+          <tr data-day="2"><th scope="row">Kedd</th><td>11:00–21:00</td></tr>
+          <tr data-day="3"><th scope="row">Szerda</th><td>11:00–21:00</td></tr>
+          <tr data-day="4"><th scope="row">Csütörtök</th><td>11:00–21:00</td></tr>
+          <tr data-day="5"><th scope="row">Péntek</th><td>11:00–21:00</td></tr>
+          <tr data-day="6"><th scope="row">Szombat</th><td>11:00–21:00</td></tr>
           <tr data-day="0"><th scope="row">Vasárnap</th><td>Zárva</td></tr>
         </tbody>
       </table>
-      <p class="fine-note">Telefonos rendelésfelvétel zárás előtt fél órával, 20:30-ig.</p>
+      <p class="hours-note">Telefonos rendelésfelvétel zárás előtt fél órával, 20:30-ig.</p>
+      <div class="contact-cta" data-rise>
+        <a class="btn btn-ink btn-big" href="tel:+36707758585"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6.6 10.8a15.2 15.2 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z"/></svg><span>+36 70 775 8585</span></a>
+        <a class="btn btn-line-dark btn-big" href="https://www.google.com/maps/dir/?api=1&amp;destination=Monor%2C%20M%C3%B3ricz%20Zsigmond%20utca%2039" target="_blank" rel="noopener"><span>Útvonaltervezés</span></a>
+      </div>
     </div>
-    <figure class="contact-map ph-frame" data-in>
-      <div class="map-fallback"><p>2200 Monor, Móricz Zsigmond u. 39.</p><a class="tlink" href="https://www.google.com/maps/search/?api=1&amp;query=Monor%2C%20M%C3%B3ricz%20Zsigmond%20utca%2039" target="_blank" rel="noopener">Megnyitás a Google Térképen ↗</a></div>
+    <div class="contact-map" data-wipe="up">
+      <div class="map-fallback"><p>2200 Monor, Móricz Zsigmond u. 39.</p><a href="https://www.google.com/maps/search/?api=1&amp;query=Monor%2C%20M%C3%B3ricz%20Zsigmond%20utca%2039" target="_blank" rel="noopener">Megnyitás a Google Térképen</a></div>
       <iframe title="Térkép: Taverna Gyros, 2200 Monor, Móricz Zsigmond utca 39." loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=2200%20Monor%2C%20M%C3%B3ricz%20Zsigmond%20utca%2039&amp;output=embed"></iframe>
-      <a class="tlink map-dir" href="https://www.google.com/maps/dir/?api=1&amp;destination=Monor%2C%20M%C3%B3ricz%20Zsigmond%20utca%2039" target="_blank" rel="noopener">Útvonaltervezés ↗</a>
-    </figure>
+    </div>
   </div>
 </section>
 
 </main>
 
+<!-- ============ FOOTER ============ -->
 <footer class="foot">
   <div class="wrap">
     <div class="foot-top">
       <span class="logo-mask foot-logo" aria-hidden="true"></span>
-      <p class="foot-claim">Gyrosbár és kávézó Monoron, a Móricz Zsigmond utcában.</p>
+      <a class="btn btn-lime btn-big" href="tel:+36707758585"><span>Rendelés: +36 70 775 8585</span></a>
     </div>
     <div class="foot-cols">
-      <div><h3 class="label">Cím</h3><p>2200 Monor,<br>Móricz Zsigmond u. 39.</p></div>
-      <div><h3 class="label">Rendelés</h3><p><a href="tel:+36707758585" class="num">+36 70 775 8585</a><br>H–Szo 20:30-ig</p></div>
-      <div><h3 class="label">Nyitvatartás</h3><p>Hétfő–szombat 11:00–21:00<br>Vasárnap zárva</p></div>
-      <div><h3 class="label">Oldal</h3><p><a href="#etlap">Étlap</a><br><a href="#hazhoz">Kiszállítás</a><br><a href="https://www.facebook.com/tavernagyrosmonor/" target="_blank" rel="noopener">Facebook</a></p></div>
+      <div>
+        <h3>Cím</h3>
+        <p>2200 Monor,<br>Móricz Zsigmond u. 39.</p>
+      </div>
+      <div>
+        <h3>Rendelés</h3>
+        <p><a href="tel:+36707758585">+36 70 775 8585</a><br>H–Szo 20:30-ig</p>
+      </div>
+      <div>
+        <h3>Nyitvatartás</h3>
+        <p>Hétfő–szombat 11:00–21:00<br>Vasárnap zárva</p>
+      </div>
+      <div>
+        <h3>Oldalon</h3>
+        <p><a href="#etlap">Étlap</a><br><a href="#hazhoz">Házhozszállítás</a><br><a href="https://www.facebook.com/tavernagyrosmonor/" target="_blank" rel="noopener">Facebook</a></p>
+      </div>
     </div>
-    <div class="foot-legal"><span>© 2026 Taverna Gyros Bár és Kávézó</span><span>Látványterv · árak ellenőrzés alatt · DAEKON</span></div>
+    <p class="foot-legal">© 2026 Taverna Gyros Bár és Kávézó, Monor. Látványterv — az árak és ajánlatok ellenőrzés alatt.</p>
   </div>
 </footer>
 
-<a class="dock" href="tel:+36707758585"><span>Hívás</span><span class="num">+36 70 775 8585</span></a>
+<nav class="dock" aria-label="Gyors rendelés">
+  <a class="dock-menu" href="#etlap">Étlap</a>
+  <a class="dock-call" href="tel:+36707758585"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6.6 10.8a15.2 15.2 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z"/></svg>Hívás és rendelés</a>
+</nav>
 
 <div class="lb" id="lightbox" role="dialog" aria-modal="true" aria-label="Képnézegető" hidden>
   <figure class="lb-fig"><img alt="" data-lb-img><figcaption data-lb-cap></figcaption></figure>
-  <p class="lb-n label" data-lb-n></p>
+  <p class="lb-n" data-lb-n></p>
   <button class="lb-btn lb-close" type="button" data-lb-close aria-label="Bezárás"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
   <button class="lb-btn lb-prev" type="button" data-lb-prev aria-label="Előző kép"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
   <button class="lb-btn lb-next" type="button" data-lb-next aria-label="Következő kép"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
