@@ -6,12 +6,15 @@
 
 Teljes újratervezés. A régi (Freebuff/Codebuff) oldalból csak adat és szöveg került át, dizájn, szerkezet és animáció nem.
 
-## Koncepció — „A kulcs nálunk van”
+## Koncepció — 5. változat: sötét, filmszerű („A kulcs nálunk van”)
 
-Egyetlen, a márkából vett gondolat fut végig: a logó **kulcslyuka**, benne a **borospohárral**. Minden logó-elem az ügyfél eredeti vektoros PDF-jéből (`client-assets/bomamor_logo_final.pdf`) van kivágva.
+Az ügyfél választása alapján: sötét vászon, teljes képernyős jelenetek görgetésre, kevés szöveg, filmszemcse. Minden logó-elem az eredeti PDF-vektorokból.
 
-- **Hero:** a „kézből ajánlva” cím alatt kéz nyúl a Bormámor-palackért. A fotó a palack címkéjén lévő kulcslyukból nyílik ki — a kulcslyuk pontosan a címke jelére illeszkedik, aztán kitárul a teljes kép.
-- **Borok:** egyetlen valódi kóstolósor (négy pohár a hordón). Stílusváltáskor a kamera kihúz, a teljes sort mutatja a poharak nevével, majd ráközelít a választott pohárra; a többi elsötétül.
+1. **Nyitójelenet (rögzítve görgetés közben):** fekete képernyő, a logó kulcslyuka. Mögötte a fotó úgy áll, hogy a palack címkéjén lévő kulcslyuk pont a mi kulcslyukunkba essen. Görgetésre a kulcslyuk kinyílik, és kitárul a teljes kép (kéz nyúl a palackért — „kézből ajánlva”).
+2. **Kóstolósor (asztalon rögzítve):** szélesvásznú (2,39:1) keretben a négy pohár. Görgetésre a kamera pohárról pohárra halad (fehér → rosé → siller → vörös), a választott pohár megvilágítva, alatta felirat és haladásjelző; a végén pezsgő: a logó pohara buborékokkal. A fülek a megfelelő pontra ugranak. Mobilon érintésre vált.
+3. **Kulcs a minőséghez:** teljes szélességű kép (dugóhúzó, kulcslyuk a dugón), lassú ráközelítés; a fő mondat olvasás közben szavanként gyullad ki.
+4. **Több mint bor:** kulcslyuk alakú dugó-fotó, mellette a kínálat sorai — mindig az a sor világít, amelyik a képernyő közepén van.
+5. **Kóstolók** (mustszín), **események**, **jelentkezés**, **Monor** (szavanként kigyúló felirat), **kapcsolat** — mind sötét alapon.
 
 ## Designrendszer
 
