@@ -721,3 +721,19 @@ body.drawer-open .dock, body.lb-open .dock { transform: translateY(110%); }
 }
 .sig-frame, .exp-wide-img, .gal-grid li { box-shadow: 0 24px 50px -24px rgba(0, 0, 0, .6); }
 .contact-map { border: 0; box-shadow: 0 0 0 1px var(--line-ink); }
+/* térkép: kompakt, nem boltíves torony */
+.contact-map { aspect-ratio: 16 / 10 !important; border-radius: 18px; max-height: 320px; width: 100%; }
+@media (min-width: 760px) { .contact-map { grid-column: 8 / 13; aspect-ratio: 4 / 3.4 !important; max-height: 380px; align-self: start; margin-top: 8px; } }
+.nw { white-space: nowrap; }
+/* hero tények: egyenletes, rövid sorok */
+.hero-facts span { white-space: nowrap; }
+@media (max-width: 380px) { .hero-facts b { font-size: 1rem; } .hero-facts span { font-size: .74rem; } .hero-facts li + li { padding-left: 10px; } }
+/* kapcsolat: a két gomb egy sorban, egyforma magasan */
+.contact-cta { flex-wrap: nowrap; gap: 8px; }
+.contact-cta .btn { flex: 1 1 0; min-width: 0; padding: 0 14px; font-size: 1rem; }
+@media (min-width: 760px) { .contact-cta .btn { flex: 0 0 auto; padding: 0 24px; } }
+/* lábléc: rövid, nem törő sorok */
+.foot-cols p { overflow-wrap: normal; }
+.contact-cta { flex-wrap: wrap; }
+.contact-cta .btn { flex: 1 1 130px; }
+@media (min-width: 760px) { .contact-cta .btn { flex: 0 0 auto; } }
