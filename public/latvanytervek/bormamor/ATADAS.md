@@ -16,6 +16,17 @@ Az ügyfél választása alapján: sötét vászon, teljes képernyős jelenetek
 4. **Több mint bor:** kulcslyuk alakú dugó-fotó, mellette a kínálat sorai — mindig az a sor világít, amelyik a képernyő közepén van.
 5. **Kóstolók** (mustszín), **események**, **jelentkezés**, **Monor** (szavanként kigyúló felirat), **kapcsolat** — mind sötét alapon.
 
+## 7. kör — „cinematic luxury” brief szerint
+
+- **Színek:** pezsgőarany (#C9A86C) hajszálvonalakhoz, aktív menüponthoz, kiemelésekhez; krémszínű szöveg (#EEE5D4). Arany csak vonalakban és kiemelésekben, felületként nem.
+- **Fejléc:** görgetésre alacsonyabb és sötét üveghatású lesz, arany aláhúzás, aktív szekció arannyal; mobilmenü függönyként nyílik, a pontok lépcsőzetesen érkeznek.
+- **Hero (rögzítés nélkül):** sötétből a címke kulcslyukán át nyílik ki a kép (~2,5 s, közben minden kattintható), lassú közelítés, a BORMÁMOR betűnként érkezik (az eredeti logó betűi), arany vonal és arany keret rajzolódik ki, egérmozgásra finom mélység; görgetésre a kép közelebb jön, elsötétül, a szöveg gyorsabban halad. Az átmenet transformmal megy, layout shift 0.
+- **Borok:** asztalon rögzített kóstolósor-jelenet (sticky storytelling) maradt, kategóriánként más fény a keret mögött (fehér: arany, rosé: rózsaszín, siller: rubin, vörös: mély bordó, pezsgő: pezsgőszín), arany keret, hoverre fényesedés. **Mobilon külön kompozíció:** egymás alatti borkártyák, mindegyik a saját poharára vágott nagy képpel, maszkos feltárással.
+- **Ajándékcsomag-összeállító:** 4 lépés (Kinek? → Tételek → Csomagolás és átvétel → Összegzés), animált folyamatjelző, kártyaváltás, kártyás választók (címzett, csomagolás, átvételi nap), prémium összegző kártya. A kosár alulról felcsúszó lapként megmaradt; „Tovább a véglegesítéshez” az összegzés lépésre visz.
+- **Események:** üres állapotban kirajzolódó arany kulcslyuk „A következő alkalom — Hamarosan” felirattal; ha lesz esemény, aszimmetrikus, váltakozó kép–szöveg elrendezés, képfeltárás, görgetésre érkező dátum.
+- **Szekciók között** arany hajszálvonalak rajzolódnak ki.
+- **Betűméret:** a brief „nagy” címeket kér; a mérsékelt méretet tartottam (a korábbi szabály szerint) — kérésre növelhető.
+
 ## Összeállító (kosár, átvétel a boltban) — 6. kör
 
 Webshopszerű összeállító, **kiszállítás és online fizetés nélkül**: a vevő összeállítja, mi előkészítjük, a boltban veszi át.

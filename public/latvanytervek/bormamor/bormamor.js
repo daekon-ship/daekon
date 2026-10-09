@@ -38,7 +38,14 @@
 
   /* ── MOBILMENÜ ───────────────────────────── */
   var menu = $("#menu"), openBtn = $("[data-menu-open]"), closeBtn = $("[data-menu-close]");
-  function openMenu() { menu.hidden = false; openBtn.setAttribute("aria-expanded", "true"); document.body.style.overflow = "hidden"; closeBtn.focus(); }
+  function openMenu() {
+    menu.hidden = false; openBtn.setAttribute("aria-expanded", "true"); document.body.style.overflow = "hidden"; closeBtn.focus();
+    if (!reduce && window.gsap) {
+      gsap.fromTo(menu, { clipPath: "inset(0 0 100% 0)" }, { clipPath: "inset(0 0 0% 0)", duration: .6, ease: "power3.inOut" });
+      gsap.fromTo("#menu nav a", { y: 26, opacity: 0 }, { y: 0, opacity: 1, duration: .6, stagger: .045, ease: "power3.out", delay: .2 });
+      gsap.fromTo(".menu__foot", { opacity: 0 }, { opacity: 1, duration: .6, delay: .5 });
+    }
+  }
   function closeMenu(focusBack) { menu.hidden = true; openBtn.setAttribute("aria-expanded", "false"); document.body.style.overflow = ""; if (focusBack) openBtn.focus(); }
   openBtn.addEventListener("click", openMenu);
   closeBtn.addEventListener("click", function () { closeMenu(true); });
@@ -60,6 +67,9 @@
   var STATES = [{ x: null, overview: true }].concat(D.borok);   // 0 = a teljes sor, aztán a borstílusok
   var active = -1, wineScrub = null;
 
+  // kategóriánként más fény a keret mögött: a bor színe
+  var GLOW = { feher: [214, 164, 70], rose: [214, 120, 122], siller: [168, 40, 62], voros: [110, 14, 32], pezsgo: [232, 210, 150] };
+  var GLOW0 = [201, 168, 108];
   function measure() {
     var W = frame.clientWidth, H = frame.clientHeight;
     base.w = Math.max(W, H * AR); base.h = base.w / AR;
@@ -73,7 +83,7 @@
     var cw = base.w * s, ch = base.h * s;
     var x = b.x == null || cw <= W ? (W - cw) / 2 : clamp(W / 2 - b.x * cw, W - cw, 0);
     var y = b.y == null || ch <= H ? (H - ch) / 2 : clamp(H / 2 - b.y * ch, H - ch, 0);
-    return { x: x, y: y, s: s, sx: b.x == null ? W / 2 : b.x * cw + x, sy: b.y == null ? H / 2 : b.y * ch + y, r: b.x == null ? 0 : .1 * cw, a: b.x == null ? 0 : 1, sp: b.x == null && !b.overview ? 1 : 0 };
+    return { x: x, y: y, s: s, sx: b.x == null ? W / 2 : b.x * cw + x, sy: b.y == null ? H / 2 : b.y * ch + y, r: b.x == null ? 0 : .1 * cw, a: b.x == null ? 0 : 1, sp: b.x == null && !b.overview ? 1 : 0, g: (GLOW[b.id] || GLOW0).slice() };
   }
   function render(st) {
     cam.style.transform = "translate(" + st.x + "px," + st.y + "px) scale(" + st.s + ")";
@@ -84,10 +94,12 @@
       ? "radial-gradient(ellipse " + st.r + "px " + (st.r * 1.5) + "px at " + st.sx + "px " + st.sy + "px, transparent 68%, " + c + " 100%)"
       : c;
     sparkle.style.opacity = st.sp.toFixed(3);
+    if (st.g) wineSec.style.setProperty("--glow", st.g.map(Math.round).join(","));
   }
   function mix(a, b, t) {
     return { x: lerp(a.x, b.x, t), y: lerp(a.y, b.y, t), s: lerp(a.s, b.s, t), sx: lerp(a.sx, b.sx, t), sy: lerp(a.sy, b.sy, t),
-      r: lerp(a.r || b.r, b.r || a.r, t), a: lerp(a.a, b.a, t), sp: lerp(a.sp, b.sp, t) };
+      r: lerp(a.r || b.r, b.r || a.r, t), a: lerp(a.a, b.a, t), sp: lerp(a.sp, b.sp, t),
+      g: (a.g || GLOW0).map(function (v, k) { return lerp(v, (b.g || GLOW0)[k], t); }) };
   }
   function setActive(i) {   // i: borstílus index (0–4), -1: semmi
     if (i === active) return;
@@ -147,6 +159,35 @@
     }
   }
 
+  /* mobil: a borstílusok egymás alatt, mindegyik saját „lencsével” a kóstolósor fotóján */
+  var wineCards = window.matchMedia("(max-width: 700px)").matches && wineSec && D.borok.length;
+  if (wineCards) {
+    wineSec.classList.add("wine--cards");
+    var list = document.createElement("div");
+    list.className = "wcards";
+    list.innerHTML = D.borok.map(function (b, i) {
+      var lens = b.x != null
+        ? '<div class="wcard__lens" data-lens data-x="' + b.x + '" data-y="' + b.y + '"><img src="img/poharak.webp" srcset="img/poharak.webp 1600w, img/poharak-2x.webp 3200w" sizes="450vw" width="1600" height="619" alt="' + esc(b.alt) + '" loading="lazy" decoding="async"></div>'
+        : '<div class="wcard__lens wcard__lens--sparkle">' + sparkle.innerHTML.replace(/sp-glass/g, "sp-glass-m") + "</div>";
+      return '<article class="wcard" style="--glow:' + (GLOW[b.id] || GLOW0).join(",") + '">' + lens +
+        '<div class="wcard__body"><h3>' + esc(b.nev) + "</h3><p>" + esc(b.leiras) + '</p><p class="wpanel__pair">Ajánljuk: ' + esc(b.illik.toLowerCase()) + "</p>" +
+        '<button type="button" class="wpanel__add" data-add-cat="' + esc(b.id) + '">+ Kosárba</button></div></article>';
+    }).join("");
+    wineSec.querySelector(".wine__stage").insertBefore(list, $(".wine__note", wineSec));
+    var placeLens = function () {
+      $$("[data-lens]", list).forEach(function (l) {
+        var img = l.querySelector("img"), cw = l.clientWidth, chh = l.clientHeight, x = +l.dataset.x, y = +l.dataset.y;
+        var iw = cw / .26, ih = iw / AR;
+        img.style.width = iw + "px"; img.style.height = ih + "px";
+        img.style.left = (cw / 2 - x * iw) + "px"; img.style.top = clamp(chh * .52 - y * ih, chh - ih, 0) + "px";
+      });
+    };
+    placeLens(); window.addEventListener("resize", placeLens);
+    // buborékok a mobil pezsgő-kártyában is
+    var mb = $(".wcard__lens--sparkle [data-bubbles]", list);
+    if (mb) mb.removeAttribute("data-bubbles");
+  }
+
   var camNow = null;
   function goWine(i) {
     if (wineScrub) {   // asztali, görgetett jelenet: a fülek a megfelelő görgetési pontra visznek
@@ -194,10 +235,11 @@
     if (!upcoming.length) {
       evEl.innerHTML =
         '<div class="empty">' +
-        '<svg class="empty__mark" viewBox="0 0 367.99 588.19" aria-hidden="true"><use href="#i-keyhole"/></svg>' +
+        '<div class="empty__art" aria-hidden="true"><svg class="empty__kh" viewBox="215.7 301.81 367.99 588.19"><path pathLength="1" d="' + $("#clip-keyhole path").getAttribute("d") + '"/></svg>' +
+        '<span class="empty__label">A következő alkalom</span><span class="empty__date">Hamarosan</span></div>' +
         '<div class="empty__body"><h3>Most nincs meghirdetett esemény</h3>' +
         "<p>A következő kóstolót a Facebook-oldalunkon jelentjük be először. Ha szeretnéd, szólunk neked is, amint megvan az időpont.</p>" +
-        '<div class="empty__cta"><a class="btn btn--wine" href="#jelentkezes" data-preset="Következő kóstoló">Értesítést kérek</a>' +
+        '<div class="empty__cta"><a class="btn btn--gold" href="#jelentkezes" data-preset="Következő kóstoló">Értesítést kérek</a>' +
         '<a class="btn btn--line-dark" href="https://www.facebook.com/bormamormonor/" target="_blank" rel="noopener">Bormámor a Facebookon</a></div></div></div>';
     } else {
       evEl.innerHTML = upcoming.map(function (e) {
@@ -240,10 +282,9 @@
   });
 
   var HU_DAYS_CAP = ["Vasárnap", "Hétfő", "Kedd", "Szerda", "Csütörtök", "Péntek", "Szombat"];
-  /* ── ÖSSZEÁLLÍTÓ + KOSÁR (átvétel a boltban, kiszállítás nincs) ── */
+  /* ── AJÁNDÉKCSOMAG-ÖSSZEÁLLÍTÓ + KOSÁR (átvétel a boltban, kiszállítás nincs) ── */
   var O = D.osszeallito || { kategoriak: [], keretek: ["Mindegy"], csomagolas: ["Nem kell"] };
   var CAT = {}; O.kategoriak.forEach(function (k) { CAT[k.id] = k; });
-  var WINE2CAT = { feher: "feher", rose: "rose", siller: "siller", voros: "voros", pezsgo: "pezsgo" };
   var cart = { lines: {} };
   try { var saved = JSON.parse(localStorage.getItem("bm-kosar") || "null"); if (saved && saved.lines) cart = saved; } catch (x) {}
   function saveCart() { try { localStorage.setItem("bm-kosar", JSON.stringify(cart)); } catch (x) {} }
@@ -252,6 +293,7 @@
   var catalogEl = $("[data-catalog]"), linesEl = $("[data-cart-lines]"), emptyEl = $("[data-cart-empty]");
   var countEl = $("[data-cart-count]"), bar = $("[data-cartbar]"), sumEl = $("[data-cartbar-sum]"), toastEl = $("[data-toast]");
   var sheet = $("[data-sheet]"), sheetPanel = $("[data-sheet-panel]"), sheetOpen = false, sheetReturn = null;
+  var cform = $("[data-cart-form]"), cstatus = $("[data-cart-status]");
 
   function stepper(id, qty) {
     return '<div class="step" data-id="' + id + '">' +
@@ -259,14 +301,19 @@
       '<span class="step__n" aria-live="polite">' + qty + '</span>' +
       '<button type="button" class="step__b" data-inc aria-label="Eggyel több: ' + esc(CAT[id].nev) + '">+</button></div>';
   }
+  function keretSel(id, l) {
+    return '<label class="keret"><span>Keret palackonként</span><select data-keret="' + id + '">' +
+      O.keretek.map(function (k) { return "<option" + (k === l.keret ? " selected" : "") + ">" + esc(k) + "</option>"; }).join("") + "</select></label>";
+  }
   function renderCatalog() {
     if (!catalogEl) return;
     var groups = {};
     O.kategoriak.forEach(function (k) { (groups[k.csoport] = groups[k.csoport] || []).push(k); });
     catalogEl.innerHTML = Object.keys(groups).map(function (g) {
       return '<div class="bgroup"><h3 class="bgroup__h">' + esc(g) + '</h3><ul class="bgroup__list">' + groups[g].map(function (k) {
-        var q = cart.lines[k.id] ? cart.lines[k.id].qty : 0;
-        return '<li class="bitem' + (q ? " is-on" : "") + '" data-item="' + k.id + '"><span class="bitem__n">' + esc(k.nev) + "</span>" + stepper(k.id, q) + "</li>";
+        var l = cart.lines[k.id], q = l ? l.qty : 0;
+        return '<li class="bitem' + (q ? " is-on" : "") + '" data-item="' + k.id + '"><div class="bitem__row"><span class="bitem__n">' + esc(k.nev) + "</span>" + stepper(k.id, q) + "</div>" +
+          (q ? keretSel(k.id, l) : "") + "</li>";
       }).join("") + "</ul></div>";
     }).join("");
   }
@@ -274,17 +321,17 @@
     var ids = Object.keys(cart.lines), n = count();
     if (linesEl) linesEl.innerHTML = ids.map(function (id) {
       var l = cart.lines[id];
-      return '<li class="cline"><div class="cline__top"><span class="cline__n">' + esc(CAT[id].nev) + "</span>" + stepper(id, l.qty) + "</div>" +
-        '<label class="cline__k"><span>Keret palackonként</span><select data-keret="' + id + '">' +
-        O.keretek.map(function (k) { return '<option' + (k === l.keret ? " selected" : "") + ">" + esc(k) + "</option>"; }).join("") + "</select></label></li>";
+      return '<li class="cline"><div class="cline__top"><span class="cline__n">' + esc(CAT[id].nev) + "</span>" + stepper(id, l.qty) + "</div>" + keretSel(id, l) + "</li>";
     }).join("");
     if (emptyEl) emptyEl.hidden = n > 0;
     if (countEl) countEl.textContent = n + " tétel";
     if (sumEl) sumEl.textContent = ids.map(function (id) { return cart.lines[id].qty + " " + CAT[id].nev.toLowerCase(); }).join(", ");
     $$("[data-navcart-count], [data-cartfab-count]").forEach(function (e) { e.textContent = n; });
     $$("[data-navcart]").forEach(function (e) { e.classList.toggle("has-items", n > 0); });
+    var fin = $("[data-cart-finish]"); if (fin) fin.disabled = n === 0;
     updateFab();
     renderCatalog();
+    if (step === 3) renderSummary();
   }
   function setQty(id, q, silent) {
     if (!CAT[id]) return;
@@ -303,13 +350,13 @@
   }
   document.addEventListener("click", function (e) {
     var b = e.target.closest("[data-inc],[data-dec]");
-    if (b) { var id = b.closest("[data-id]").getAttribute("data-id"), cur = cart.lines[id] ? cart.lines[id].qty : 0; setQty(id, cur + (b.hasAttribute("data-inc") ? 1 : -1)); return; }
+    if (b) { var id = b.closest("[data-id]").getAttribute("data-id"), cur = cart.lines[id] ? cart.lines[id].qty : 0; setQty(id, cur + (b.hasAttribute("data-inc") ? 1 : -1), !!b.closest("[data-cfg]")); return; }
     var a = e.target.closest("[data-add-cat]");
     if (a) { add(a.getAttribute("data-add-cat")); return; }
   });
   document.addEventListener("change", function (e) {
-    var s = e.target.closest("[data-keret]");
-    if (s) { var id = s.getAttribute("data-keret"); if (cart.lines[id]) { cart.lines[id].keret = s.value; saveCart(); } }
+    var sl = e.target.closest("[data-keret]");
+    if (sl) { var id = sl.getAttribute("data-keret"); if (cart.lines[id]) { cart.lines[id].keret = sl.value; saveCart(); $$('[data-keret="' + id + '"]').forEach(function (o) { o.value = sl.value; }); } }
   });
 
   // polc sorai: „Kosárba” gomb minden sorhoz
@@ -317,30 +364,90 @@
     var id = li.getAttribute("data-add"), b = document.createElement("button");
     b.type = "button"; b.className = "shelf__add";
     if (id) { b.setAttribute("data-add-cat", id); b.textContent = "Kosárba"; b.setAttribute("aria-label", "Kosárba: " + CAT[id].nev); }
-    else if (li.hasAttribute("data-gift")) { b.textContent = "Ajándékot állítok össze"; b.addEventListener("click", function () { var g = $("[data-gift-toggle]"); g.checked = true; g.dispatchEvent(new Event("change")); openSheet(); }); }
+    else if (li.hasAttribute("data-gift")) {
+      b.textContent = "Ajándékot állítok össze";
+      b.addEventListener("click", function () { var r = cform && cform.querySelector('[name="kinek"][value="ajandek"]'); if (r) { r.checked = true; r.dispatchEvent(new Event("change", { bubbles: true })); } goStep(0, true); $("#osszeallito").scrollIntoView({ behavior: reduce ? "auto" : "smooth" }); });
+    }
     li.appendChild(b);
   });
 
-  // ajándék, csomagolás, átvételi napok (csak nyitvatartási napok: péntek, szombat)
-  var giftT = $("[data-gift-toggle]"), giftBox = $("[data-giftbox]");
-  if (giftT) giftT.addEventListener("change", function () { giftBox.hidden = !giftT.checked; });
-  var packSel = $("[data-pack]");
-  if (packSel) packSel.innerHTML = O.csomagolas.map(function (c) { return "<option>" + esc(c) + "</option>"; }).join("");
-  var pickSel = $("[data-pickup]");
-  if (pickSel) {
-    var opts = [], d = new Date(); d.setHours(0, 0, 0, 0);
+  /* lépések */
+  var steps = $$("[data-step]"), step = 0, STEPN = steps.length;
+  var nextB = $("[data-cfg-next]"), prevB = $("[data-cfg-prev]"), sendB = $("[data-cart-send]"), barFill = $("[data-cfg-bar]");
+  function canLeave(i) {
+    cstatus.className = "cart__status"; cstatus.textContent = "";
+    if (i === 1 && !count()) { cstatus.classList.add("is-err"); cstatus.textContent = "Válassz legalább egy tételt."; return false; }
+    if (i === 2 && !(cform.elements.atvetel && cform.elements.atvetel.value)) { cstatus.classList.add("is-err"); cstatus.textContent = "Válaszd ki, mikor jönnél érte."; return false; }
+    return true;
+  }
+  function goStep(i, quiet) {
+    i = clamp(i, 0, STEPN - 1);
+    if (i > step) { for (var k = step; k < i; k++) if (!canLeave(k)) { i = k; break; } }
+    var dir = i >= step ? 1 : -1, old = steps[step], nw = steps[i];
+    step = i;
+    $$("[data-step-tab]").forEach(function (t, j) { t.classList.toggle("is-on", j === i); t.classList.toggle("is-done", j < i); var bt = t.querySelector("button"); if (j === i) bt.setAttribute("aria-current", "step"); else bt.removeAttribute("aria-current"); });
+    if (barFill) barFill.style.transform = "scaleX(" + ((i + 1) / STEPN) + ")";
+    prevB.disabled = i === 0;
+    nextB.hidden = i === STEPN - 1; sendB.hidden = i !== STEPN - 1;
+    if (i === 3) renderSummary();
+    if (old === nw) { steps.forEach(function (st2, j) { st2.hidden = j !== i; }); return; }
+    if (!reduce && window.gsap && !quiet) {
+      gsap.to(old, { x: -40 * dir, opacity: 0, duration: .28, ease: "power2.in", onComplete: function () {
+        old.hidden = true; gsap.set(old, { x: 0, opacity: 1 });
+        nw.hidden = false;
+        gsap.fromTo(nw, { x: 48 * dir, opacity: 0 }, { x: 0, opacity: 1, duration: .5, ease: "power3.out" });
+        gsap.from(nw.querySelectorAll(".choice__card, .bitem, .summary__row, .cfield"), { y: 14, opacity: 0, duration: .45, stagger: .03, ease: "power2.out", delay: .08 });
+      } });
+    } else { steps.forEach(function (st2, j) { st2.hidden = j !== i; }); }
+    if (!quiet) { var top = $("[data-cfg]").getBoundingClientRect().top; if (top < 0 || top > window.innerHeight * .6) $("[data-cfg]").scrollIntoView({ behavior: reduce ? "auto" : "smooth" }); }
+  }
+  if (nextB) {
+    nextB.addEventListener("click", function () { if (canLeave(step)) goStep(step + 1); });
+    prevB.addEventListener("click", function () { goStep(step - 1); });
+    $$("[data-step-tab] button").forEach(function (b, j) { b.addEventListener("click", function () { goStep(j); }); });
+    goStep(0, true);
+  }
+
+  // kinek: ajándék mezők
+  var giftBox = $("[data-giftbox]");
+  if (cform) cform.addEventListener("change", function (e) {
+    if (e.target.name === "kinek") { giftBox.hidden = e.target.value !== "ajandek"; if (!giftBox.hidden && !reduce && window.gsap) gsap.from(giftBox, { y: 12, opacity: 0, duration: .45 }); }
+  });
+  // csomagolás és átvételi napok kártyaként
+  var packEl = $("[data-pack]");
+  if (packEl) packEl.innerHTML = O.csomagolas.map(function (c, i) {
+    return '<label class="choice__card choice__card--sm"><input type="radio" name="csomag" value="' + esc(c) + '"' + (i === 0 ? " checked" : "") + '><span class="choice__t">' + esc(c) + "</span></label>";
+  }).join("");
+  var pickEl = $("[data-pickup]");
+  if (pickEl) {
+    var opts = [], d0 = new Date(); d0.setHours(0, 0, 0, 0);
     for (var i = 1; opts.length < 6 && i < 40; i++) {
-      var x = new Date(d); x.setDate(d.getDate() + i);
+      var x = new Date(d0); x.setDate(d0.getDate() + i);
       var wd = x.getDay();
-      if (wd === 5 || wd === 6) opts.push(HU_DAYS_CAP[wd] + ", " + HU_MONTHS[x.getMonth()] + " " + x.getDate() + ". (" + (wd === 5 ? "10–18" : "9–14") + ")");
+      if (wd === 5 || wd === 6) opts.push({ nap: HU_DAYS_CAP[wd], datum: HU_MONTHS[x.getMonth()] + " " + x.getDate() + ".", ido: wd === 5 ? "10–18" : "9–14" });
     }
-    pickSel.innerHTML = opts.map(function (o) { return "<option>" + esc(o) + "</option>"; }).join("");
+    pickEl.innerHTML = opts.map(function (o, j) {
+      var v = o.nap + ", " + o.datum + " (" + o.ido + ")";
+      return '<label class="choice__card choice__card--day"><input type="radio" name="atvetel" value="' + esc(v) + '"' + (j === 0 ? " checked" : "") + '><span class="choice__d">' + esc(o.nap) + '</span><span class="choice__t">' + esc(o.datum) + '</span><span class="choice__d">' + esc(o.ido) + "</span></label>";
+    }).join("");
+  }
+  function renderSummary() {
+    var el = $("[data-summary]"); if (!el || !cform) return;
+    var f = cform.elements, gift = f.kinek.value === "ajandek";
+    var rows = Object.keys(cart.lines).map(function (id) { var l = cart.lines[id]; return '<div class="summary__row"><span>' + esc(CAT[id].nev) + '</span><span>' + l.qty + " db</span><span>" + esc(l.keret) + "</span></div>"; }).join("");
+    el.innerHTML =
+      '<div class="summary__card">' +
+      '<p class="summary__k">' + (gift ? "Ajándékcsomag" + (f.cimzett.value.trim() ? " — " + esc(f.cimzett.value.trim()) : "") : "Saját válogatás") + "</p>" +
+      '<div class="summary__rows">' + (rows || '<p class="summary__empty">Még nincs tétel — lépj vissza a Tételek lépésre.</p>') + "</div>" +
+      '<dl class="summary__meta"><div><dt>Csomagolás</dt><dd>' + esc(f.csomag.value) + '</dd></div><div><dt>Átvétel</dt><dd>' + esc(f.atvetel.value) + "</dd></div>" +
+      (gift && f.uzenet.value.trim() ? "<div><dt>Kártya</dt><dd>„" + esc(f.uzenet.value.trim()) + "”</dd></div>" : "") + "</dl>" +
+      '<svg class="summary__mark" viewBox="0 0 367.99 588.19" aria-hidden="true"><use href="#i-keyhole"/></svg></div>';
   }
 
   // küldés: ellenőrzés, majd e-mail-piszkozat (háttérrendszer nélkül)
-  var cform = $("[data-cart-form]"), cstatus = $("[data-cart-status]");
   if (cform) cform.addEventListener("submit", function (e) {
     e.preventDefault();
+    if (step !== STEPN - 1) { if (canLeave(step)) goStep(step + 1); return; }
     cstatus.className = "cart__status"; cstatus.textContent = "";
     var f = cform.elements, errs = [];
     var mark = function (el, msg) {
@@ -353,23 +460,18 @@
     mark(f.nev, f.nev.value.trim().length < 2 ? "Add meg a neved." : "");
     mark(f.telefon, /^[+0-9 ()\/-]{6,20}$/.test(f.telefon.value.trim()) ? "" : "Adj meg egy telefonszámot, hogy egyeztetni tudjunk.");
     mark(f.email, /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(f.email.value.trim()) ? "" : "Adj meg egy érvényes e-mail-címet.");
-    if (!f.kor.checked) errs.push(f.kor);
-    if (!f.adat.checked) errs.push(f.adat);
-    if (errs.length) {
-      errs[0].focus();
-      cstatus.classList.add("is-err");
-      cstatus.textContent = !f.kor.checked ? "Alkoholt csak 18 év felettieknek állítunk össze — jelöld be, ha elmúltál 18." : "Néhány mezőt javítani kell.";
-      if (f.kor.checked && !f.adat.checked) cstatus.textContent = "Az elküldéshez el kell fogadnod az adatkezelési tájékoztatót.";
-      return;
-    }
+    if (errs.length) { errs[0].focus(); cstatus.classList.add("is-err"); cstatus.textContent = "Néhány mezőt javítani kell."; return; }
+    if (!f.kor.checked) { f.kor.focus(); cstatus.classList.add("is-err"); cstatus.textContent = "Alkoholt csak 18 év felettieknek állítunk össze — jelöld be, ha elmúltál 18."; return; }
+    if (!f.adat.checked) { f.adat.focus(); cstatus.classList.add("is-err"); cstatus.textContent = "Az elküldéshez el kell fogadnod az adatkezelési tájékoztatót."; return; }
+    var gift = f.kinek.value === "ajandek";
     var lines = Object.keys(cart.lines).map(function (id) { var l = cart.lines[id]; return "- " + CAT[id].nev + ": " + l.qty + " db (keret: " + l.keret + ")"; });
     var body = ["Összeállítás átvétele a boltban", "", "Tételek:"].concat(lines, [
-      "", "Átvétel: " + f.atvetel.value,
-      "Ajándék: " + (f.ajandek.checked ? "igen — " + (f.cimzett.value.trim() || "címzett nincs megadva") + ", csomagolás: " + f.csomag.value + (f.uzenet.value.trim() ? ", kártya: „" + f.uzenet.value.trim() + "”" : "") : "nem"),
+      "", "Átvétel: " + f.atvetel.value, "Csomagolás: " + f.csomag.value,
+      "Ajándék: " + (gift ? "igen — " + (f.cimzett.value.trim() || "címzett nincs megadva") + (f.uzenet.value.trim() ? ", kártya: „" + f.uzenet.value.trim() + "”" : "") : "nem"),
       "Kérés: " + (f.megjegyzes.value.trim() || "—"),
       "", "Név: " + f.nev.value.trim(), "Telefon: " + f.telefon.value.trim(), "E-mail: " + f.email.value.trim(),
       "", "18 év feletti vagyok; az adatkezelési tájékoztatót elfogadtam."]).join("\n");
-    window.location.href = "mailto:bormamormonor@gmail.com?subject=" + encodeURIComponent("Összeállítás: " + count() + " tétel — " + f.nev.value.trim()) + "&body=" + encodeURIComponent(body);
+    window.location.href = "mailto:bormamormonor@gmail.com?subject=" + encodeURIComponent((gift ? "Ajándékcsomag" : "Összeállítás") + ": " + count() + " tétel — " + f.nev.value.trim()) + "&body=" + encodeURIComponent(body);
     cstatus.classList.add("is-ok");
     cstatus.textContent = "Megnyílt az e-mail-piszkozat az összeállítással. Küldd el, és visszaigazoljuk, mikor veheted át.";
   });
@@ -377,7 +479,9 @@
   // kosár alulról felcsúszó lapként; alul sáv, ha van tétel
   function updateFab() {
     if (!bar) return;
-    var show = count() > 0 && !sheetOpen && !!$("#osszeallito") && window.scrollY > window.innerHeight * .8;
+    var cfgVis = false, cfg = $("[data-cfg]");
+    if (cfg) { var r = cfg.getBoundingClientRect(); cfgVis = r.top < window.innerHeight * .8 && r.bottom > window.innerHeight * .3; }
+    var show = count() > 0 && !sheetOpen && !cfgVis && window.scrollY > window.innerHeight * .8;
     bar.hidden = !show;
     document.documentElement.classList.toggle("has-cartbar", show);
   }
@@ -389,35 +493,36 @@
     sheet.hidden = false; sheetOpen = true; updateFab();
     document.body.style.overflow = "hidden";
     requestAnimationFrame(function () { sheet.classList.add("is-open"); });
+    if (!reduce && window.gsap) gsap.from(".cline", { y: 16, opacity: 0, duration: .45, stagger: .05, delay: .18, ease: "power2.out" });
     setTimeout(function () { sheetPanel.focus(); }, 60);
   }
-  function closeSheet() {
+  function closeSheet(cb) {
     if (!sheetOpen) return;
     sheet.classList.remove("is-open"); sheetOpen = false;
     document.body.style.overflow = "";
-    setTimeout(function () { if (!sheetOpen) sheet.hidden = true; }, reduce ? 0 : 420);
+    setTimeout(function () { if (!sheetOpen) sheet.hidden = true; if (typeof cb === "function") cb(); }, reduce ? 0 : 420);
     updateFab();
-    if (sheetReturn && sheetReturn.focus) sheetReturn.focus();
+    if (typeof cb !== "function" && sheetReturn && sheetReturn.focus) sheetReturn.focus();
   }
   $$("[data-sheet-open]").forEach(function (b) { b.addEventListener("click", openSheet); });
-  $$("[data-sheet-close]").forEach(function (b) { b.addEventListener("click", closeSheet); });
+  $$("[data-sheet-close]").forEach(function (b) { b.addEventListener("click", function () { closeSheet(); }); });
+  var finB = $("[data-cart-finish]");
+  if (finB) finB.addEventListener("click", function () { closeSheet(function () { goStep(count() ? 2 : 1, true); goStep(3); $("[data-cfg]").scrollIntoView({ behavior: reduce ? "auto" : "smooth" }); }); });
   if (sheet) {
     sheet.addEventListener("keydown", function (e) {
       if (e.key === "Escape") closeSheet();
       if (e.key === "Tab") {
-        var f = $$("a[href],button:not([disabled]),input,select,textarea", sheetPanel).filter(function (x) { return x.offsetParent !== null; });
-        var first = f[0], last = f[f.length - 1];
+        var fs = $$("a[href],button:not([disabled]),input,select,textarea", sheetPanel).filter(function (x) { return x.offsetParent !== null; });
+        var first = fs[0], last = fs[fs.length - 1];
         if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
         else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
       }
     });
-    // lehúzással is bezárható (érintőképernyőn, a fejlécnél fogva)
     var sy = null, head = $(".cart__head", sheetPanel);
     head.addEventListener("touchstart", function (e) { sy = e.touches[0].clientY; }, { passive: true });
-    head.addEventListener("touchmove", function (e) { if (sy == null) return; var dy = Math.max(0, e.touches[0].clientY - sy); sheetPanel.style.transform = "translateY(" + dy + "px)"; }, { passive: true });
+    head.addEventListener("touchmove", function (e) { if (sy == null) return; var dy = Math.max(0, e.touches[0].clientY - sy); sheetPanel.style.transform = "translate(-50%," + dy + "px)"; }, { passive: true });
     head.addEventListener("touchend", function (e) { if (sy == null) return; var dy = e.changedTouches[0].clientY - sy; sy = null; sheetPanel.style.transform = ""; if (dy > 90) closeSheet(); });
   }
-  // a „Kosárba” gombok után a sáv villan egyet
   var bump = function () { if (bar && !bar.hidden) { bar.classList.remove("is-bump"); void bar.offsetWidth; bar.classList.add("is-bump"); } };
   renderCart();
 
@@ -561,7 +666,7 @@
       es.forEach(function (e) { if (e.isIntersecting) blockers.add(e.target); else blockers.delete(e.target); });
       upd();
     });
-    ["#jelentkezes", "#kapcsolat", ".foot"].forEach(function (sel) { var el = $(sel); if (el) bo.observe(el); });
+    ["#osszeallito", "#jelentkezes", "#kapcsolat", ".foot"].forEach(function (sel) { var el = $(sel); if (el) bo.observe(el); });
     document.addEventListener("focusin", function (e) { typing = /INPUT|SELECT|TEXTAREA/.test(e.target.tagName); upd(); });
     document.addEventListener("focusout", function () { typing = false; upd(); });
   }
@@ -587,60 +692,89 @@
     return $$(".w", el);
   }
 
-  /* A — NYITÓJELENET: a kép a címke kulcslyukán át látszik, görgetésre a kulcslyuk kinyílik */
-  function openScene() {
-    var sec = $("[data-open]"), img = $("[data-open-img]"), svg = $("[data-lock]");
-    if (!sec || !img || !svg) return;
+  /* A — NYITÓJELENET: sötétből, a címke kulcslyukán át tárul fel a kép (betöltéskor, görgetés-rögzítés nélkül) */
+  function openScene(wide) {
+    var sec = $("[data-open]"), img = $("[data-open-img]"), svg = $("[data-lock]"), media = $("[data-open-media]");
+    if (!sec || !img || !svg) return null;
     var KD = $("#clip-keyhole path").getAttribute("d");
     svg.innerHTML = '<defs><mask id="lockm" maskUnits="userSpaceOnUse"><rect class="lk-bg" fill="#fff"/><path class="lk" d="' + KD + '" fill="#000"/></mask></defs>' +
       '<rect class="lk-bg" fill="#0C0708" mask="url(#lockm)"/>' +
-      '<path class="lk lk-line" d="' + KD + '" fill="none" stroke="#BBB7B0" stroke-width="1.5" vector-effect="non-scaling-stroke"/>';
-    var G = {}, state = { intro: 0, p: 0 };
+      '<path class="lk lk-line" d="' + KD + '" fill="none" stroke="#C9A86C" stroke-width="1.2" vector-effect="non-scaling-stroke"/>';
+    var G = {}, st = { h: 0, open: 0 };
 
     function layout() {
       var W = sec.clientWidth, H = sec.clientHeight, mob = window.matchMedia("(max-width: 700px)").matches;
       var iw = mob ? 1000 : 1640, ih = 720, lx = mob ? 510 : 810, ly = 348;      // a címke kulcslyukának helye a képen
-      var cx = W < 861 ? W / 2 : W * .66, cy = W < 861 ? H * .33 : H * .46;
+      var cx = W < 861 ? W / 2 : W * .66, cy = W < 861 ? H * .25 : H * .46;
       var k = Math.max(W / iw, H / ih, cx / lx, (W - cx) / (iw - lx), cy / ly, (H - cy) / (ih - ly));
-      // kezdő keret: a címke kulcslyuka pont a mi kulcslyukunkba esik; végső keret: a teljes jelenet kitölti a képernyőt
       var ke = Math.max(W / iw, H / ih);
-      var r0 = { l: cx - lx * k, t: cy - ly * k, w: iw * k, h: ih * k };
-      var r1 = { l: (W - iw * ke) * (lx / iw), t: (H - ih * ke) * (ly / ih), w: iw * ke, h: ih * ke };
-      img.style.cssText = "right:auto;bottom:auto;object-fit:fill;transform-origin:50% 50%";
+      G = { W: W, H: H, cx: cx, cy: cy, h0: W < 861 ? Math.min(H * .26, W * .6) : H * .52, hMax: Math.max(W, H) * 6,
+        r0: { l: cx - lx * k, t: cy - ly * k, w: iw * k, h: ih * k },
+        r1: { l: (W - iw * ke) * (lx / iw), t: (H - ih * ke) * (ly / ih), w: iw * ke, h: ih * ke } };
+      // a kép végső helyén áll; a kezdő keretet csak transformmal érjük el (nincs layout shift)
+      img.style.cssText = "right:auto;bottom:auto;object-fit:fill;transform-origin:0 0;left:" + G.r1.l + "px;top:" + G.r1.t + "px;width:" + G.r1.w + "px;height:" + G.r1.h + "px";
       svg.setAttribute("viewBox", "0 0 " + W + " " + H);
       $$(".lk-bg", svg).forEach(function (r) { r.setAttribute("width", W); r.setAttribute("height", H); });
-      G = { W: W, H: H, cx: cx, cy: cy, h0: W < 861 ? Math.min(H * .38, W * .95) : H * .64, hMax: Math.max(W, H) * 6, k: k, r0: r0, r1: r1 };
       draw();
     }
     function draw() {
-      // intro: 0 → a kulcslyuk megnyílik a nyugalmi méretre; p: 0 → 1 görgetéssel teljesen kitárul
-      var h = G.h0 * smooth(state.intro);
-      if (state.p > 0) h = lerp(G.h0, G.hMax, Math.pow(state.p, 2.2));
+      var h = st.open > 0 ? lerp(G.h0, G.hMax, Math.pow(st.open, 2.4)) : st.h;
       var sc = Math.max(h, .001) / KH.h;
       $$(".lk", svg).forEach(function (el) { el.setAttribute("transform", "translate(" + G.cx + " " + G.cy + ") scale(" + sc + ") translate(" + -KH.cx + " " + -KH.cy + ")"); });
-      $(".lk-line", svg).style.opacity = (1 - clamp(state.p * 3, 0, 1)).toFixed(3);
-      svg.style.visibility = state.p > .985 ? "hidden" : "visible";
-      var e = smooth((state.p - .15) / .85), r0 = G.r0, r1 = G.r1;
-      img.style.left = lerp(r0.l, r1.l, e) + "px"; img.style.top = lerp(r0.t, r1.t, e) + "px";
-      img.style.width = lerp(r0.w, r1.w, e) + "px"; img.style.height = lerp(r0.h, r1.h, e) + "px";
+      $(".lk-line", svg).style.opacity = (1 - clamp(st.open * 2.5, 0, 1)).toFixed(3);
+      svg.style.visibility = st.open > .99 ? "hidden" : "visible";
+      var e = smooth(st.open), r0 = G.r0, r1 = G.r1;
+      var w = lerp(r0.w, r1.w, e), sc2 = w / r1.w;
+      img.style.transform = "translate(" + (lerp(r0.l, r1.l, e) - r1.l) + "px," + (lerp(r0.t, r1.t, e) - r1.t) + "px) scale(" + sc2 + ")";
     }
     layout();
     window.addEventListener("resize", layout);
 
-    gsap.to(state, { intro: 1, duration: 1.3, ease: "power3.out", delay: .15, onUpdate: draw });
-    ScrollTrigger.create({
-      trigger: sec, start: "top top", end: function () { return "+=" + Math.round(sec.clientHeight * (G.W < 861 ? .8 : 1.1)); },
-      pin: true, scrub: true, anticipatePin: 1,
-      onUpdate: function (self) { state.p = self.progress; if (state.intro < 1 && self.progress > 0) state.intro = 1; draw(); },
-      onRefresh: layout
-    });
+    // koreográfia: kulcslyuk → kitárulás → lassú közelítés (~2,6 s, közben minden kattintható)
+    var tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+    tl.to(st, { h: function () { return G.h0; }, duration: 1, ease: "power2.out", onUpdate: draw }, .1)
+      .to(st, { open: 1, duration: 1.6, ease: "power2.inOut", onUpdate: draw }, 1.15)
+      .fromTo(media, { scale: 1.1 }, { scale: 1, duration: 6, ease: "power1.out" }, .1)
+      .from(".open__wm .wm-l", { yPercent: 70, opacity: 0, duration: .9, stagger: .05, ease: "power3.out" }, .15)
+      .from("[data-goldline]", { scaleX: 0, duration: 1.2, ease: "power2.inOut" }, .6)
+      .from(".open__frame line", { attr: { x2: function (i, el) { return el.getAttribute("x1"); }, y2: function (i, el) { return el.getAttribute("y1"); } }, duration: 1.4, ease: "power2.inOut", stagger: .12 }, 1.2)
+      .from(".open__slogan", { opacity: 0, y: 10, duration: .7 }, .3)
+      .from(".open__h1 .line>span", { yPercent: 108, duration: 1, stagger: .1 }, .35)
+      .from(".open__lead, .open__cta .btn", { opacity: 0, y: 12, duration: .6, stagger: .08 }, .6)
+      .from(".open__facts", { opacity: 0, duration: .8 }, 1.4);
+
+    // görgetésre: a kép közelebb jön és elsötétül, a szöveg gyorsabban halad — átvezetés a borokhoz
+    gsap.to(media, { yPercent: 8, scale: 1.12, ease: "none", scrollTrigger: { trigger: sec, start: "top top", end: "bottom top", scrub: true } });
+    gsap.to("[data-open-shade]", { opacity: 1.6, ease: "none", scrollTrigger: { trigger: sec, start: "top top", end: "bottom top", scrub: true } });
+    gsap.to("[data-open-copy]", { yPercent: -18, opacity: .15, ease: "none", scrollTrigger: { trigger: sec, start: "top top", end: "bottom top", scrub: true } });
     gsap.to(".open__hint", { opacity: 0, scrollTrigger: { trigger: sec, start: "top top", end: "+=120", scrub: true } });
+
+    // egérre minimális mélység (csak egérrel, asztalon)
+    if (wide && window.matchMedia("(pointer: fine)").matches) {
+      var photo = $(".open__photo");
+      var mx = gsap.quickTo(photo, "x", { duration: 1.2, ease: "power3.out" }), my = gsap.quickTo(photo, "y", { duration: 1.2, ease: "power3.out" });
+      var cx = gsap.quickTo("[data-open-copy]", "x", { duration: 1.4, ease: "power3.out" });
+      sec.addEventListener("pointermove", function (e) {
+        var nx = e.clientX / window.innerWidth - .5, ny = e.clientY / window.innerHeight - .5;
+        mx(-nx * 16); my(-ny * 10); cx(nx * 6);
+      });
+    }
+    return tl;
   }
 
   /* C — KÓSTOLÓSOR asztalon: görgetésre pohárról pohárra (a jelenet közben rögzítve) */
   function wineScene(wide) {
     if (!wineSec || !D.borok.length) return;
-    if (!wide) {   // mobilon érintésre vált; a jelenet a teljes sorral indul, és belépéskor ráközelít
+    if (wineCards) {   // mobil kártyák: maszkos feltárás, a lencsében a kép lassabban mozog
+      $$(".wcard", wineSec).forEach(function (c, i) {
+        gsap.from(c.querySelector(".wcard__lens"), { clipPath: i % 2 ? "inset(0 0 0 100%)" : "inset(0 100% 0 0)", duration: 1.1, ease: "power3.inOut", scrollTrigger: { trigger: c, start: "top 85%", once: true } });
+        gsap.from(c.querySelector(".wcard__body"), { y: 24, opacity: 0, duration: .8, ease: "power3.out", scrollTrigger: { trigger: c, start: "top 80%", once: true } });
+        var im = c.querySelector(".wcard__lens img");
+        if (im) gsap.fromTo(im, { yPercent: -4 }, { yPercent: 4, ease: "none", scrollTrigger: { trigger: c, start: "top bottom", end: "bottom top", scrub: true } });
+      });
+      return;
+    }
+    if (!wide) {   // tablet: érintésre vált; a jelenet a teljes sorral indul, és belépéskor ráközelít
       camNow = camTarget(STATES[0]); render(camNow); setActive(-1);
       ScrollTrigger.create({ trigger: frame, start: "top 70%", once: true, onEnter: function () { if (active < 0) goWine(0); } });
       return;
@@ -671,15 +805,15 @@
     root.classList.add("js-motion");
     var wide = window.matchMedia("(min-width: 861px)").matches;
 
-    openScene();
+    openScene(wide);
     root.classList.remove("pre-anim");
-    gsap.timeline({ defaults: { ease: "power3.out" }, delay: .35 })
-      .from(".open__slogan", { opacity: 0, y: 10, duration: .8 }, 0)
-      .from(".open__h1 .line>span", { yPercent: 105, duration: 1.1, stagger: .12 }, .1)
-      .from(".open__lead, .open__cta .btn", { opacity: 0, y: 10, duration: .7, stagger: .08 }, .5)
-      .from(".open__facts", { opacity: 0, duration: .9 }, .8);
 
     wineScene(wide);
+
+    /* arany hajszálvonalak a szekciók között: középről kifelé rajzolódnak */
+    $$("[data-rule]").forEach(function (r) {
+      gsap.from(r, { scaleX: 0, duration: 1.6, ease: "power2.inOut", scrollTrigger: { trigger: r, start: "top 92%", once: true } });
+    });
 
     /* B — címsorok sorról sorra */
     $$(".reveal-lines").forEach(function (h) {
@@ -710,6 +844,17 @@
       gsap.from(f, { scale: .82, opacity: 0, duration: 1.3, ease: "power3.out", scrollTrigger: { trigger: f, start: "top 85%", once: true } });
       var im = f.querySelector("img");
       if (im) gsap.fromTo(im, { scale: 1.18 }, { scale: 1, ease: "none", scrollTrigger: { trigger: f, start: "top bottom", end: "bottom top", scrub: true } });
+    });
+
+    /* események: a kulcslyuk aranyvonala kirajzolódik; eseménykártyák dátuma görgetésre érkezik */
+    var ekh = $(".empty__kh path");
+    if (ekh) {
+      gsap.fromTo(ekh, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 2, ease: "power2.inOut", scrollTrigger: { trigger: ".empty", start: "top 80%", once: true } });
+      gsap.from(".empty__date, .empty__label", { y: 20, opacity: 0, duration: .9, stagger: .12, ease: "power3.out", scrollTrigger: { trigger: ".empty", start: "top 75%", once: true } });
+    }
+    $$(".ev").forEach(function (ev, i) {
+      gsap.from(ev.querySelector(".ev__img"), { clipPath: i % 2 ? "inset(0 0 0 100%)" : "inset(0 100% 0 0)", duration: 1.2, ease: "power3.inOut", scrollTrigger: { trigger: ev, start: "top 82%", once: true } });
+      gsap.from(ev.querySelectorAll(".ev__date, .ev__body h3, .ev__body p, .ev__cta"), { y: 18, opacity: 0, duration: .7, stagger: .08, ease: "power3.out", scrollTrigger: { trigger: ev, start: "top 75%", once: true } });
     });
 
     /* Monor — a kulcslyuk a háttérben lassan mozdul */
