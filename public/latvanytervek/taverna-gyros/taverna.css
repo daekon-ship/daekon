@@ -1012,3 +1012,7 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid 
 .lb-btn { border-radius: 50% !important; }
 @media (max-width: 899px) { .lb-prev, .lb-next { background: rgba(20, 17, 14, .62) !important; color: var(--cream) !important; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); } }
 .foot-cols a { min-width: 44px; }
+/* hero-kép: mérsékelt méret (nem domináló) */
+@media (max-width: 899px) { .hero-stage { width: min(76vw, 300px) !important; margin: 6px auto 6px !important; } }
+@media (min-width: 900px) { .hero-stage { width: min(100%, 420px, calc((100svh - var(--head-h) - 160px) * .857)) !important; min-width: 320px; } }
+@media (min-width: 900px) { .hero { min-height: min(78svh, 720px) !important; } .hero-stage { margin: 0 auto !important; } }
