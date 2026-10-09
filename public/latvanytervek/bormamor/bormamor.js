@@ -159,33 +159,64 @@
     }
   }
 
-  /* mobil: a borstílusok egymás alatt, mindegyik saját „lencsével” a kóstolósor fotóján */
+  /* mobil: egyetlen kóstolósor, oldalra húzható — poharanként megáll, alatta a kiválasztott bor */
   var wineCards = window.matchMedia("(max-width: 700px)").matches && wineSec && D.borok.length;
+  var swipeTrack = null;
   if (wineCards) {
     wineSec.classList.add("wine--cards");
-    var list = document.createElement("div");
-    list.className = "wcards";
-    list.innerHTML = D.borok.map(function (b, i) {
-      var lens = b.x != null
-        ? '<div class="wcard__lens" data-lens data-x="' + b.x + '" data-y="' + b.y + '"><img src="img/poharak.webp" srcset="img/poharak.webp 1600w, img/poharak-2x.webp 3200w" sizes="450vw" width="1600" height="619" alt="' + esc(b.alt) + '" loading="lazy" decoding="async"></div>'
-        : '<div class="wcard__lens wcard__lens--sparkle">' + sparkle.innerHTML.replace(/sp-glass/g, "sp-glass-m") + "</div>";
-      return '<article class="wcard" style="--glow:' + (GLOW[b.id] || GLOW0).join(",") + '">' + lens +
-        '<div class="wcard__body"><h3>' + esc(b.nev) + "</h3><p>" + esc(b.leiras) + '</p><p class="wpanel__pair">Ajánljuk: ' + esc(b.illik.toLowerCase()) + "</p>" +
-        '<button type="button" class="wpanel__add" data-add-cat="' + esc(b.id) + '">+ Kosárba</button></div></article>';
-    }).join("");
-    wineSec.querySelector(".wine__stage").insertBefore(list, $(".wine__note", wineSec));
-    var placeLens = function () {
-      $$("[data-lens]", list).forEach(function (l) {
-        var img = l.querySelector("img"), cw = l.clientWidth, chh = l.clientHeight, x = +l.dataset.x, y = +l.dataset.y;
-        var iw = cw / .26, ih = iw / AR;
-        img.style.width = iw + "px"; img.style.height = ih + "px";
-        img.style.left = (cw / 2 - x * iw) + "px"; img.style.top = clamp(chh * .52 - y * ih, chh - ih, 0) + "px";
-      });
-    };
-    placeLens(); window.addEventListener("resize", placeLens);
-    // buborékok a mobil pezsgő-kártyában is
-    var mb = $(".wcard__lens--sparkle [data-bubbles]", list);
+    var sw = document.createElement("div");
+    sw.className = "wswipe";
+    var glasses = D.borok.filter(function (b) { return b.x != null; });
+    var hasPezsgo = D.borok.some(function (b) { return b.x == null; });
+    sw.innerHTML =
+      '<div class="wswipe__stage"><div class="wswipe__track" data-track tabindex="0" role="group" aria-label="Kóstolósor — húzd oldalra">' +
+        '<div class="wswipe__strip"><img src="img/poharak.webp" srcset="img/poharak.webp 1600w, img/poharak-2x.webp 3200w" sizes="1200px" width="1600" height="619" alt="Négy pohár bor egy hordón: fehér, rosé, siller és vörös" decoding="async">' +
+        glasses.map(function (b) { return '<span class="wswipe__snap" style="left:' + (b.x * 100) + '%"></span>'; }).join("") + "</div>" +
+        (hasPezsgo ? '<div class="wswipe__fizz">' + sparkle.innerHTML.replace(/sp-glass/g, "sp-glass-m") + '<span class="wswipe__snap" style="left:50%"></span></div>' : "") +
+      '</div><span class="wswipe__view" aria-hidden="true"></span></div>' +
+      '<p class="wswipe__hint" aria-hidden="true"><span></span>Húzd oldalra a poharakért</p>' +
+      '<div class="wswipe__tabs" role="tablist" aria-label="Borstílusok">' + D.borok.map(function (b, i) {
+        return '<button type="button" class="vtab" role="tab" data-sw="' + i + '" aria-selected="' + (i ? "false" : "true") + '">' + esc(b.rovid) + "</button>"; }).join("") + "</div>" +
+      '<div class="wswipe__panels">' + D.borok.map(function (b, i) {
+        return '<article class="wswipe__panel' + (i ? "" : " is-on") + '"' + (i ? ' aria-hidden="true"' : "") + "><h3>" + esc(b.nev) + "</h3><p>" + esc(b.leiras) + '</p><p class="wpanel__pair">Ajánljuk: ' + esc(b.illik.toLowerCase()) + "</p>" +
+          '<button type="button" class="wpanel__add" data-add-cat="' + esc(b.id) + '"' + (i ? ' tabindex="-1"' : "") + ">+ Kosárba</button></article>"; }).join("") + "</div>";
+    wineSec.querySelector(".wine__stage").insertBefore(sw, $(".wine__note", wineSec));
+    var mb = $(".wswipe__fizz [data-bubbles]", sw);
     if (mb) mb.removeAttribute("data-bubbles");
+    swipeTrack = $("[data-track]", sw);
+    var snaps = $$(".wswipe__snap", sw), swOn = 0, swTicking = false;
+    var snapX = function (el) { var r = el.getBoundingClientRect(), t = swipeTrack.getBoundingClientRect(); return swipeTrack.scrollLeft + r.left - t.left; };
+    var setSw = function (i) {
+      if (i === swOn) return;
+      swOn = i;
+      $$(".vtab", sw).forEach(function (t, k) { t.setAttribute("aria-selected", k === i ? "true" : "false"); });
+      $$(".wswipe__panel", sw).forEach(function (p, k) {
+        p.classList.toggle("is-on", k === i);
+        if (k === i) p.removeAttribute("aria-hidden"); else p.setAttribute("aria-hidden", "true");
+        p.querySelector("button").tabIndex = k === i ? 0 : -1;
+      });
+      wineSec.style.setProperty("--glow", (GLOW[D.borok[i].id] || GLOW0).join(","));
+    };
+    swipeTrack.addEventListener("scroll", function () {
+      sw.classList.add("is-moved");
+      if (swTicking) return; swTicking = true;
+      requestAnimationFrame(function () {
+        swTicking = false;
+        var c = swipeTrack.scrollLeft + swipeTrack.clientWidth / 2, best = 0, bd = Infinity;
+        snaps.forEach(function (sn, k) { var d = Math.abs(snapX(sn) - c); if (d < bd) { bd = d; best = k; } });
+        setSw(best);
+      });
+    }, { passive: true });
+    $$(".vtab", sw).forEach(function (t, k) {
+      t.addEventListener("click", function () {
+        swipeTrack.scrollTo({ left: snapX(snaps[k]) - swipeTrack.clientWidth / 2, behavior: reduce ? "auto" : "smooth" });
+        setSw(k);
+      });
+    });
+    var swStart = function () { swipeTrack.scrollLeft = snapX(snaps[0]) - swipeTrack.clientWidth / 2; };
+    var swImg = $("img", sw);
+    if (swImg.complete) swStart(); else swImg.addEventListener("load", swStart);
+    wineSec.style.setProperty("--glow", (GLOW[D.borok[0].id] || GLOW0).join(","));
   }
 
   var camNow = null;
@@ -694,7 +725,7 @@
 
   /* A — NYITÓJELENET: sötétből, a címke kulcslyukán át tárul fel a kép (betöltéskor, görgetés-rögzítés nélkül) */
   function openScene(wide) {
-    var sec = $("[data-open]"), img = $("[data-open-img]"), svg = $("[data-lock]"), media = $("[data-open-media]");
+    var sec = $("[data-open]"), img = $("[data-open-img]"), svg = $("[data-lock]"), media = $("[data-open-media]"), photo = $(".open__photo");
     if (!sec || !img || !svg) return null;
     var KD = $("#clip-keyhole path").getAttribute("d");
     svg.innerHTML = '<defs><mask id="lockm" maskUnits="userSpaceOnUse"><rect class="lk-bg" fill="#fff"/><path class="lk" d="' + KD + '" fill="#000"/></mask></defs>' +
@@ -705,12 +736,15 @@
     function layout() {
       var W = sec.clientWidth, H = sec.clientHeight, mob = window.matchMedia("(max-width: 700px)").matches;
       var iw = mob ? 1000 : 1640, ih = 720, lx = mob ? 510 : 810, ly = 348;      // a címke kulcslyukának helye a képen
-      var cx = W < 861 ? W / 2 : W * .66, cy = W < 861 ? H * .25 : H * .46;
-      var k = Math.max(W / iw, H / ih, cx / lx, (W - cx) / (iw - lx), cy / ly, (H - cy) / (ih - ly));
-      var ke = Math.max(W / iw, H / ih);
-      G = { W: W, H: H, cx: cx, cy: cy, h0: W < 861 ? Math.min(H * .26, W * .6) : H * .52, hMax: Math.max(W, H) * 6,
-        r0: { l: cx - lx * k, t: cy - ly * k, w: iw * k, h: ih * k },
-        r1: { l: (W - iw * ke) * (lx / iw), t: (H - ih * ke) * (ly / ih), w: iw * ke, h: ih * ke } };
+      // a fotó doboza (telefonon csak a felső sáv, alatta a szöveg) — a kép ehhez igazodik
+      var pw = photo.clientWidth, ph = photo.clientHeight, ox = media.offsetLeft + photo.offsetLeft, oy = media.offsetTop + photo.offsetTop;
+      var cx = W < 861 ? W / 2 : W * .66, cy = W < 861 ? oy + ph * (W < 561 ? .5 : .25) : H * .46;
+      var px = cx - ox, py = cy - oy;
+      var k = Math.max(pw / iw, ph / ih, px / lx, (pw - px) / (iw - lx), py / ly, (ph - py) / (ih - ly));
+      var ke = Math.max(pw / iw, ph / ih);
+      G = { W: W, H: H, cx: cx, cy: cy, h0: W < 861 ? Math.min(ph * (W < 561 ? .5 : .26), W * .6) : H * .52, hMax: Math.max(W, H) * 6,
+        r0: { l: px - lx * k, t: py - ly * k, w: iw * k, h: ih * k },
+        r1: { l: (pw - iw * ke) * (lx / iw), t: (ph - ih * ke) * (ly / ih), w: iw * ke, h: ih * ke } };
       // a kép végső helyén áll; a kezdő keretet csak transformmal érjük el (nincs layout shift)
       img.style.cssText = "right:auto;bottom:auto;object-fit:fill;transform-origin:0 0;left:" + G.r1.l + "px;top:" + G.r1.t + "px;width:" + G.r1.w + "px;height:" + G.r1.h + "px";
       svg.setAttribute("viewBox", "0 0 " + W + " " + H);
@@ -751,7 +785,6 @@
 
     // egérre minimális mélység (csak egérrel, asztalon)
     if (wide && window.matchMedia("(pointer: fine)").matches) {
-      var photo = $(".open__photo");
       var mx = gsap.quickTo(photo, "x", { duration: 1.2, ease: "power3.out" }), my = gsap.quickTo(photo, "y", { duration: 1.2, ease: "power3.out" });
       var cx = gsap.quickTo("[data-open-copy]", "x", { duration: 1.4, ease: "power3.out" });
       sec.addEventListener("pointermove", function (e) {
@@ -765,13 +798,12 @@
   /* C — KÓSTOLÓSOR asztalon: görgetésre pohárról pohárra (a jelenet közben rögzítve) */
   function wineScene(wide) {
     if (!wineSec || !D.borok.length) return;
-    if (wineCards) {   // mobil kártyák: maszkos feltárás, a lencsében a kép lassabban mozog
-      $$(".wcard", wineSec).forEach(function (c, i) {
-        gsap.from(c.querySelector(".wcard__lens"), { clipPath: i % 2 ? "inset(0 0 0 100%)" : "inset(0 100% 0 0)", duration: 1.1, ease: "power3.inOut", scrollTrigger: { trigger: c, start: "top 85%", once: true } });
-        gsap.from(c.querySelector(".wcard__body"), { y: 24, opacity: 0, duration: .8, ease: "power3.out", scrollTrigger: { trigger: c, start: "top 80%", once: true } });
-        var im = c.querySelector(".wcard__lens img");
-        if (im) gsap.fromTo(im, { yPercent: -4 }, { yPercent: 4, ease: "none", scrollTrigger: { trigger: c, start: "top bottom", end: "bottom top", scrub: true } });
-      });
+    if (wineCards) {   // mobil: a kóstolósor alulról tárul fel, a fülek és a szöveg utána érkeznek
+      var swEl = $(".wswipe", wineSec);
+      gsap.from(".wswipe__stage", { clipPath: "inset(100% 0 0 0)", duration: 1.2, ease: "power3.inOut", scrollTrigger: { trigger: swEl, start: "top 85%", once: true } });
+      gsap.from(".wswipe__strip img", { scale: 1.12, duration: 1.6, ease: "power2.out", scrollTrigger: { trigger: swEl, start: "top 85%", once: true } });
+      gsap.from(".wswipe__view", { opacity: 0, scale: .92, duration: .8, delay: .7, ease: "power2.out", scrollTrigger: { trigger: swEl, start: "top 85%", once: true } });
+      gsap.from(".wswipe__tabs .vtab, .wswipe__panels", { y: 16, opacity: 0, duration: .7, stagger: .06, ease: "power3.out", scrollTrigger: { trigger: ".wswipe__tabs", start: "top 90%", once: true } });
       return;
     }
     if (!wide) {   // tablet: érintésre vált; a jelenet a teljes sorral indul, és belépéskor ráközelít

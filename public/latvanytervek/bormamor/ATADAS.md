@@ -154,3 +154,9 @@ js/gsap.min.js, js/ScrollTrigger.min.js
 fonts/            Instrument Serif, Outfit (WOFF, latin + latin-ext) + OFL licencek
 img/              WebP képek, favicon.svg, og.jpg
 ```
+
+## 8. kör — mobil átrajzolás
+- Nyitókép telefonon: külön kompozíció — fent a fotó (kéz, kulcslyukas címke), alatta a szöveg; a fejléc logója a nyitóképen elrejtve (ne legyen kétszer BORMÁMOR), görgetésre jelenik meg.
+- Borok telefonon: az 5 nagy, homályos kivágás helyett egyetlen, oldalra húzható kóstolósor; poharanként megáll, középen arany keresőkeret, alatta fülek és a kiválasztott bor; a sor végén a pezsgő.
+- „Több mint bor”: telefonon minden tétel teljes fénnyel (nem tűnnek letiltottnak).
+- Jelentkezési űrlap: sötét mezők az oldal stílusában (korábban világos krém doboz volt).
