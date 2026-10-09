@@ -112,7 +112,7 @@
     stage.addEventListener('pointerleave', function () { $('.gc-1', stage).style.transform = ''; $('.gc-2', stage).style.transform = ''; });
   }
 
-  /* ---------- prices & builder ---------- */
+  /* ---------- price tabs ---------- */
   var tabs = $$('.p-tab'), panels = $$('.p-panel');
   var showCat = function (cat, focus) {
     tabs.forEach(function (t) {
@@ -133,77 +133,6 @@
     });
   });
   $$('[data-goto]').forEach(function (a) { a.addEventListener('click', function () { showCat(a.dataset.goto); }); });
-
-  var items = $$('.mi'), note = $('#uzenet'), list = $('.note-list'), empty = $('.note-empty');
-  var sumRow = $('.note-sum'), sumB = $('.note-sum b'), hint = $('.note-hint'), send = $('.note-send');
-  var nameIn = $('.note-name input'), whens = $$('.note-when input'), mgo = $('.mbar-go span');
-  var nameOf = function (b) {
-    var n = $('.mi-n', b).cloneNode(true);
-    $$('small,.pill', n).forEach(function (x) { x.remove(); });
-    return n.textContent.trim().replace(/\s+/g, ' ');
-  };
-  var render = function () {
-    var sel = items.filter(function (b) { return b.getAttribute('aria-pressed') === 'true'; });
-    list.innerHTML = '';
-    var total = 0, from = false, ask = false;
-    sel.forEach(function (b) {
-      total += +b.dataset.price || 0;
-      if (b.dataset.from) from = true;
-      if (b.dataset.ask) ask = true;
-      var li = document.createElement('li');
-      var n = document.createElement('span'); n.textContent = nameOf(b);
-      var p = document.createElement('b'); p.textContent = $('.mi-p', b).textContent.trim();
-      var x = document.createElement('button'); x.type = 'button'; x.textContent = '×'; x.setAttribute('aria-label', nameOf(b) + ' törlése');
-      x.addEventListener('click', function () { b.setAttribute('aria-pressed', 'false'); render(); });
-      li.appendChild(n); li.appendChild(p); li.appendChild(x); list.appendChild(li);
-    });
-    empty.hidden = sel.length > 0;
-    sumRow.hidden = !sel.length;
-    sumB.textContent = (from || ask ? 'kb. ' : '') + ft(total);
-    var h = [];
-    if (from) h.push('A „-tól” árak a köröm állapotától függnek.');
-    if (ask) h.push('Az UV-LED pilla árát Bogi megírja.');
-    hint.textContent = h.join(' '); hint.hidden = !h.length;
-    tabs.forEach(function (t) {
-      var c = sel.filter(function (b) { return b.closest('.p-panel').dataset.cat === t.dataset.cat; }).length;
-      var i = $('i', t); i.textContent = c || ''; i.classList.toggle('has', c > 0);
-    });
-    if (mgo) mgo.textContent = sel.length ? sel.length + ' kezelés · ' + sumB.textContent : 'Időpontot kérek';
-    var L = ['Szia Bogi!', '', 'Ezekre szeretnék időpontot kérni:'];
-    sel.forEach(function (b) { L.push('– ' + nameOf(b) + ' (' + $('.mi-p', b).textContent.trim() + ')'); });
-    if (sel.length) L.push('', 'Összesen: ' + sumB.textContent.replace(/ /g, ' '));
-    var w = whens.filter(function (x) { return x.checked; }).map(function (x) { return x.value; });
-    if (w.length) L.push('', 'Nekem ' + w.join(', ') + ' lenne jó.');
-    var nm = nameIn.value.trim();
-    L.push('', 'Köszönöm!'); if (nm) L.push(nm);
-    send.href = 'mailto:bogibense@gmail.com?subject=' + encodeURIComponent('Időpontkérés' + (nm ? ' – ' + nm : '')) + '&body=' + encodeURIComponent(L.join('\n'));
-    send.classList.toggle('is-off', !sel.length);
-    send.setAttribute('aria-disabled', sel.length ? 'false' : 'true');
-  };
-  items.forEach(function (b) {
-    b.addEventListener('click', function () {
-      b.setAttribute('aria-pressed', b.getAttribute('aria-pressed') === 'true' ? 'false' : 'true');
-      render();
-    });
-  });
-  whens.forEach(function (x) { x.addEventListener('change', render); });
-  nameIn.addEventListener('input', render);
-  send.addEventListener('click', function (e) { if (send.classList.contains('is-off')) e.preventDefault(); });
-
-  /* mobile sheet */
-  var bg = document.createElement('div'); bg.className = 'note-bg'; document.body.appendChild(bg);
-  var last = null;
-  var openSheet = function () { last = document.activeElement; note.classList.add('is-open'); bg.classList.add('is-on'); document.documentElement.style.overflow = 'hidden'; setTimeout(function () { $('.note-x').focus(); }, 60); };
-  var closeSheet = function () { note.classList.remove('is-open'); bg.classList.remove('is-on'); document.documentElement.style.overflow = ''; if (last && last.focus) last.focus(); };
-  $('.mbar-go').addEventListener('click', function () {
-    var any = items.some(function (b) { return b.getAttribute('aria-pressed') === 'true'; });
-    if (any) openSheet(); else $('#arak').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
-  });
-  bg.addEventListener('click', closeSheet);
-  $('.note-x').addEventListener('click', closeSheet);
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && note.classList.contains('is-open')) closeSheet(); });
-  desktop.addEventListener && desktop.addEventListener('change', function () { if (desktop.matches) closeSheet(); });
-  render();
 
   /* ---------- lightbox ---------- */
   var lb = $('.lb'), lbImg = $('.lb img'), lbCap = $('.lb figcaption'), group = [], gi = 0, lbLast = null;

@@ -10,7 +10,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%231F1424'/%3E%3Cpath d='M8 32C18 18 46 18 56 32C46 46 18 46 8 32Z' fill='%23CBB8E6'/%3E%3C/svg%3E">
 <link rel="preload" href="fonts/bodonimoda.woff" as="font" type="font/woff" crossorigin>
 <link rel="preload" href="fonts/hanken-var.woff" as="font" type="font/woff" crossorigin>
-<link rel="stylesheet" href="levendula.css?v=7">
+<link rel="stylesheet" href="levendula.css?v=9">
 <script>document.documentElement.classList.add('js')</script>
 </head>
 <body>
@@ -30,17 +30,19 @@
       <a href="#rolam">Rólam</a>
       <a href="#kapcsolat">Kapcsolat</a>
     </nav>
-    <a class="btn btn-sm hdr-cta" href="#arak">Időpontot kérek</a>
+    <a class="hdr-ig" href="https://www.instagram.com/levendula_szepsegszalon/" target="_blank" rel="noopener" aria-label="Instagram"><svg class="ig-ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle class="dot" cx="17.3" cy="6.7" r="1.1"/></svg><span>Instagram</span></a>
+    <a class="btn btn-sm hdr-cta" href="tel:+36308636558">Hívás</a>
     <button class="burger" type="button" aria-label="Menü megnyitása" aria-expanded="false" aria-controls="mmenu"><span></span><span></span></button>
   </div>
   <nav class="mmenu" id="mmenu" aria-label="Mobil menü" hidden>
     <a href="#kezelesek">Kezelések</a>
-    <a href="#arak">Árak és időpont</a>
+    <a href="#arak">Árak</a>
     <a href="#munkaim">Munkáim</a>
     <a href="#rolam">Rólam</a>
     <a href="#utalvany">Ajándékutalvány</a>
     <a href="#kapcsolat">Kapcsolat</a>
     <a class="mmenu-tel" href="tel:+36308636558">+36 30 863 6558</a>
+    <a class="mmenu-tel" href="https://www.instagram.com/levendula_szepsegszalon/" target="_blank" rel="noopener">Instagram: @levendula_szepsegszalon</a>
   </nav>
 </header>
 
@@ -54,15 +56,15 @@
       <h1>Egy kis idő, ami csak rólad szól.</h1>
       <p class="hero-lead">Műszempilla, pedikűr, masszázs és arckezelés Bense Boglárka kis, csendes szalonjában – mindig csak egy vendéggel.</p>
       <div class="hero-cta">
-        <a class="btn btn-lav" href="#arak">Kezelést választok</a>
-        <a class="btn btn-ghost" href="tel:+36308636558">+36 30 863 6558</a>
+        <a class="btn btn-lav" href="tel:+36308636558">Hívás: +36 30 863 6558</a>
+        <a class="btn btn-ghost btn-ig" href="https://www.instagram.com/levendula_szepsegszalon/" target="_blank" rel="noopener"><svg class="ig-ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle class="dot" cx="17.3" cy="6.7" r="1.1"/></svg>Munkáim az Instagramon</a>
       </div>
     </div>
 
     <dl class="hero-info">
       <div><dt>Cím</dt><dd>1144 Budapest, Füredi utca 11/C<br>44-es kapucsengő</dd></div>
-      <div><dt>Időpont</dt><dd><a href="tel:+36308636558">+36 30 863 6558</a><br><a href="mailto:bogibense@gmail.com">bogibense@gmail.com</a></dd></div>
-      <div><dt>Kezelések</dt><dd>Műszempilla, pedikűr, arckezelés, masszázs, gyantázás</dd></div>
+      <div><dt>Időpont telefonon</dt><dd><a href="tel:+36308636558">+36 30 863 6558</a></dd></div>
+      <div><dt>Instagram</dt><dd><a href="https://www.instagram.com/levendula_szepsegszalon/" target="_blank" rel="noopener">@levendula_szepsegszalon</a></dd></div>
     </dl>
   </div>
 </section>
@@ -71,7 +73,7 @@
 <section class="svc" id="kezelesek" aria-labelledby="svc-title">
   <div class="svc-head wrap">
     <h2 id="svc-title">Öt dolog, amit nagyon szeretek csinálni</h2>
-    <p>Minden kezelést a te bőrödhöz, szemedhez, lábadhoz igazítok. Válaszd ki, mi érdekel, és a teljes árat lent megtalálod.</p>
+    <p>Minden kezelést a te bőrödhöz, szemedhez, lábadhoz igazítok. Időpontért hívj, a friss munkáimat pedig az Instagramon látod.</p>
   </div>
 
   <div class="svc-viewport">
@@ -89,7 +91,7 @@
             <li><span>Szempilla lifting + festés</span><b>9 000 Ft</b></li>
           </ul>
           <p class="sp-new"><span class="pill">Hamarosan</span> UV-LED műszempilla építés</p>
-          <a class="sp-link" href="#arak" data-goto="pilla">Mind a 12 kezelés és ár</a>
+          <div class="sp-links"><a class="sp-link" href="#arak" data-goto="pilla">Mind a 12 kezelés és ár</a><a class="sp-link" href="https://www.instagram.com/levendula_szepsegszalon/" target="_blank" rel="noopener">Képek az Instagramon</a></div>
         </div>
       </article>
 
@@ -103,7 +105,7 @@
             <li><span>Esztétikai pedikűr</span><b>7 000 Ft</b></li>
             <li><span>Esztétikai pedikűr + géllakk</span><b>10 000 Ft-tól</b></li>
           </ul>
-          <a class="sp-link" href="#arak" data-goto="pedikur">Mind a 12 kezelés és ár</a>
+          <div class="sp-links"><a class="sp-link" href="#arak" data-goto="pedikur">Mind a 12 kezelés és ár</a><a class="sp-link" href="https://www.instagram.com/levendula_szepsegszalon/" target="_blank" rel="noopener">Képek az Instagramon</a></div>
         </div>
       </article>
 
@@ -117,7 +119,7 @@
             <li><span>Lávaköves arcmasszázs</span><b>6 000 Ft</b></li>
             <li><span>Keleti spa lifting arcmasszázs</span><b>6 500 Ft</b></li>
           </ul>
-          <a class="sp-link" href="#arak" data-goto="arc">Mind a 6 kezelés és ár</a>
+          <div class="sp-links"><a class="sp-link" href="#arak" data-goto="arc">Mind a 6 kezelés és ár</a><a class="sp-link" href="https://www.instagram.com/levendula_szepsegszalon/" target="_blank" rel="noopener">Képek az Instagramon</a></div>
         </div>
       </article>
 
@@ -131,7 +133,7 @@
             <li><span>Lávaköves masszázs, 60 perc</span><b>9 000 Ft</b></li>
             <li><span>Thai talpmasszázs</span><b>8 000 Ft</b></li>
           </ul>
-          <a class="sp-link" href="#arak" data-goto="masszazs">Mind a 8 kezelés és ár</a>
+          <div class="sp-links"><a class="sp-link" href="#arak" data-goto="masszazs">Mind a 8 kezelés és ár</a><a class="sp-link" href="https://www.instagram.com/levendula_szepsegszalon/" target="_blank" rel="noopener">Képek az Instagramon</a></div>
         </div>
       </article>
 
@@ -147,7 +149,7 @@
             <li><span>Láb végig</span><b>5 500 Ft</b></li>
             <li><span>Teljes hát</span><b>5 500 Ft</b></li>
           </ul>
-          <a class="sp-link" href="#arak" data-goto="gyanta">Mind a 10 terület és ár</a>
+          <div class="sp-links"><a class="sp-link" href="#arak" data-goto="gyanta">Mind a 10 terület és ár</a><a class="sp-link" href="https://www.instagram.com/levendula_szepsegszalon/" target="_blank" rel="noopener">Képek az Instagramon</a></div>
         </div>
       </article>
 
@@ -160,115 +162,100 @@
 <section class="prices" id="arak" aria-labelledby="arak-title">
   <div class="wrap">
     <div class="p-head">
-      <h2 id="arak-title">Árak és időpontkérés</h2>
-      <p>Jelöld be, amit szeretnél – az oldal összeadja, és egy üzenetben elküldheted Boginak. Ő visszaír egy szabad időponttal. Az árak 2026. október 1-jétől érvényesek.</p>
+      <h2 id="arak-title">Árak</h2>
+      <p>A teljes árlista, 2026. október 1-jétől érvényes árakkal. Időpontot telefonon egyeztetünk.</p>
     </div>
 
     <div class="p-layout">
       <div class="p-main">
         <div class="p-tabs" role="tablist" aria-label="Kategóriák">
-          <button class="p-tab is-on" role="tab" type="button" id="t-pilla" aria-controls="c-pilla" aria-selected="true" data-cat="pilla">Pilla és szemöldök<i></i></button>
-          <button class="p-tab" role="tab" type="button" id="t-pedikur" aria-controls="c-pedikur" aria-selected="false" data-cat="pedikur" tabindex="-1">Pedikűr<i></i></button>
-          <button class="p-tab" role="tab" type="button" id="t-arc" aria-controls="c-arc" aria-selected="false" data-cat="arc" tabindex="-1">Arc<i></i></button>
-          <button class="p-tab" role="tab" type="button" id="t-masszazs" aria-controls="c-masszazs" aria-selected="false" data-cat="masszazs" tabindex="-1">Masszázs<i></i></button>
-          <button class="p-tab" role="tab" type="button" id="t-gyanta" aria-controls="c-gyanta" aria-selected="false" data-cat="gyanta" tabindex="-1">Gyantázás<i></i></button>
+          <button class="p-tab is-on" role="tab" type="button" id="t-pilla" aria-controls="c-pilla" aria-selected="true" data-cat="pilla">Pilla és szemöldök</button>
+          <button class="p-tab" role="tab" type="button" id="t-pedikur" aria-controls="c-pedikur" aria-selected="false" data-cat="pedikur" tabindex="-1">Pedikűr</button>
+          <button class="p-tab" role="tab" type="button" id="t-arc" aria-controls="c-arc" aria-selected="false" data-cat="arc" tabindex="-1">Arc</button>
+          <button class="p-tab" role="tab" type="button" id="t-masszazs" aria-controls="c-masszazs" aria-selected="false" data-cat="masszazs" tabindex="-1">Masszázs</button>
+          <button class="p-tab" role="tab" type="button" id="t-gyanta" aria-controls="c-gyanta" aria-selected="false" data-cat="gyanta" tabindex="-1">Gyantázás</button>
         </div>
 
         <div class="p-panel" id="c-pilla" role="tabpanel" aria-labelledby="t-pilla" data-cat="pilla">
           <ul class="menu">
-            <li><button class="mi" type="button" aria-pressed="false" data-price="1000"><span class="mi-n">Szemöldök szedés</span><span class="mi-p">1 000 Ft</span></button></li>
-            <li><button class="mi" type="button" aria-pressed="false" data-price="1800"><span class="mi-n">Szemöldök festés</span><span class="mi-p">1 800 Ft</span></button></li>
-            <li><button class="mi" type="button" aria-pressed="false" data-price="2000"><span class="mi-n">Szempilla festés</span><span class="mi-p">2 000 Ft</span></button></li>
-            <li><button class="mi" type="button" aria-pressed="false" data-price="9000"><span class="mi-n">Szempilla lifting + festés</span><span class="mi-p">9 000 Ft</span></button></li>
-            <li><button class="mi" type="button" aria-pressed="false" data-price="9000"><span class="mi-n">1D műszempilla építés</span><span class="mi-p">9 000 Ft</span></button></li>
-            <li><button class="mi mi-sub" type="button" aria-pressed="false" data-price="8500"><span class="mi-n">1D töltés, 3 héten belül</span><span class="mi-p">8 500 Ft</span></button></li>
-            <li><button class="mi" type="button" aria-pressed="false" data-price="11000"><span class="mi-n">2D műszempilla építés</span><span class="mi-p">11 000 Ft</span></button></li>
-            <li><button class="mi mi-sub" type="button" aria-pressed="false" data-price="10000"><span class="mi-n">2D töltés, 3 héten belül</span><span class="mi-p">10 000 Ft</span></button></li>
-            <li><button class="mi" type="button" aria-pressed="false" data-price="13000"><span class="mi-n">3D műszempilla építés</span><span class="mi-p">13 000 Ft</span></button></li>
-            <li><button class="mi mi-sub" type="button" aria-pressed="false" data-price="12000"><span class="mi-n">3D töltés, 3 héten belül</span><span class="mi-p">12 000 Ft</span></button></li>
-            <li><button class="mi" type="button" aria-pressed="false" data-price="0" data-ask="1"><span class="mi-n">UV-LED műszempilla építés <span class="pill">hamarosan</span></span><span class="mi-p mi-p-txt">ár egyeztetés</span></button></li>
+            <li><div class="mi"><span class="mi-n">Szemöldök szedés</span><span class="mi-p">1 000 Ft</span></div></li>
+            <li><div class="mi"><span class="mi-n">Szemöldök festés</span><span class="mi-p">1 800 Ft</span></div></li>
+            <li><div class="mi"><span class="mi-n">Szempilla festés</span><span class="mi-p">2 000 Ft</span></div></li>
+            <li><div class="mi"><span class="mi-n">Szempilla lifting + festés</span><span class="mi-p">9 000 Ft</span></div></li>
+            <li><div class="mi"><span class="mi-n">1D műszempilla építés</span><span class="mi-p">9 000 Ft</span></div></li>
+            <li><div class="mi mi-sub"><span class="mi-n">1D töltés, 3 héten belül</span><span class="mi-p">8 500 Ft</span></div></li>
+            <li><div class="mi"><span class="mi-n">2D műszempilla építés</span><span class="mi-p">11 000 Ft</span></div></li>
+            <li><div class="mi mi-sub"><span class="mi-n">2D töltés, 3 héten belül</span><span class="mi-p">10 000 Ft</span></div></li>
+            <li><div class="mi"><span class="mi-n">3D műszempilla építés</span><span class="mi-p">13 000 Ft</span></div></li>
+            <li><div class="mi mi-sub"><span class="mi-n">3D töltés, 3 héten belül</span><span class="mi-p">12 000 Ft</span></div></li>
+            <li><div class="mi"><span class="mi-n">UV-LED műszempilla építés <span class="pill">hamarosan</span></span><span class="mi-p mi-p-txt">ár egyeztetés</span></div></li>
           </ul>
         </div>
 
         <div class="p-panel" id="c-pedikur" role="tabpanel" aria-labelledby="t-pedikur" data-cat="pedikur" hidden>
           <ul class="menu">
-            <li><button class="mi" type="button" aria-pressed="false" data-price="3500"><span class="mi-n">Mini pedikűr<small>körömformázás, körömágy-tisztítás</small></span><span class="mi-p">3 500 Ft</span></button></li>
-            <li><button class="mi" type="button" aria-pressed="false" data-price="5000"><span class="mi-n">Mini pedikűr + lakk</span><span class="mi-p">5 000 Ft</span></button></li>
-            <li><button class="mi" type="button" aria-pressed="false" data-price="7000"><span class="mi-n">Mini pedikűr + géllakk</span><span class="mi-p">7 000 Ft</span></button></li>
-            <li><button class="mi" type="button" aria-pressed="false" data-price="5000"><span class="mi-n">Mini pedikűr + japán méhviaszos ápolás</span><span class="mi-p">5 000 Ft</span></button></li>
-            <li><button class="mi" type="button" aria-pressed="false" data-price="7000"><span class="mi-n">Esztétikai pedikűr<small>körömápolás, talpápolás</small></span><span class="mi-p">7 000 Ft</span></button></li>
-            <li><button class="mi" type="button" aria-pressed="false" data-price="8000" data-from="1"><span class="mi-n">Esztétikai pedikűr + lakk</span><span class="mi-p">8 000 Ft-tól</span></button></li>
-            <li><button class="mi" type="button" aria-pressed="false" data-price="10000" data-from="1"><span class="mi-n">Esztétikai pedikűr + géllakk</span><span class="mi-p">10 000 Ft-tól</span></button></li>
-            <li><button class="mi" type="button" aria-pressed="false" data-price="8000"><span class="mi-n">Esztétikai pedikűr + japán méhviaszos ápolás</span><span class="mi-p">8 000 Ft</span></button></li>
+            <li><div class="mi"><span class="mi-n">Mini pedikűr<small>körömformázás, körömágy-tisztítás</small></span><span class="mi-p">3 500 Ft</span></div></li>
+            <li><div class="mi"><span class="mi-n">Mini pedikűr + lakk</span><span class="mi-p">5 000 Ft</span></div></li>
+            <li><div class="mi"><span class="mi-n">Mini pedikűr + géllakk</span><span class="mi-p">7 000 Ft</span></div></li>
+            <li><div class="mi"><span class="mi-n">Mini pedikűr + japán méhviaszos ápolás</span><span class="mi-p">5 000 Ft</span></div></li>
+            <li><div class="mi"><span class="mi-n">Esztétikai pedikűr<small>körömápolás, talpápolás</small></span><span class="mi-p">7 000 Ft</span></div></li>
+            <li><div class="mi"><span class="mi-n">Esztétikai pedikűr + lakk</span><span class="mi-p">8 000 Ft-tól</span></div></li>
+            <li><div class="mi"><span class="mi-n">Esztétikai pedikűr + géllakk</span><span class="mi-p">10 000 Ft-tól</span></div></li>
+            <li><div class="mi"><span class="mi-n">Esztétikai pedikűr + japán méhviaszos ápolás</span><span class="mi-p">8 000 Ft</span></div></li>
             <li class="menu-sep">Kiegészítők a kezelés mellé</li>
-            <li><button class="mi" type="button" aria-pressed="false" data-price="500"><span class="mi-n">Francia lakkozás</span><span class="mi-p">+ 500 Ft</span></button></li>
-            <li><button class="mi" type="button" aria-pressed="false" data-price="800"><span class="mi-n">Géllakk leszedés</span><span class="mi-p">+ 800 Ft</span></button></li>
-            <li><button class="mi" type="button" aria-pressed="false" data-price="300"><span class="mi-n">Díszítés: kő, matrica, fólia</span><span class="mi-p">+ 300 Ft</span></button></li>
-            <li><button class="mi" type="button" aria-pressed="false" data-price="1000"><span class="mi-n">Tyúkszem, benőtt köröm, sarokrepedés kezelése</span><span class="mi-p">+ 1 000 Ft</span></button></li>
+            <li><div class="mi"><span class="mi-n">Francia lakkozás</span><span class="mi-p">+ 500 Ft</span></div></li>
+            <li><div class="mi"><span class="mi-n">Géllakk leszedés</span><span class="mi-p">+ 800 Ft</span></div></li>
+            <li><div class="mi"><span class="mi-n">Díszítés: kő, matrica, fólia</span><span class="mi-p">+ 300 Ft</span></div></li>
+            <li><div class="mi"><span class="mi-n">Tyúkszem, benőtt köröm, sarokrepedés kezelése</span><span class="mi-p">+ 1 000 Ft</span></div></li>
           </ul>
         </div>
 
         <div class="p-panel" id="c-arc" role="tabpanel" aria-labelledby="t-arc" data-cat="arc" hidden>
           <ul class="menu">
-            <li><button class="mi" type="button" aria-pressed="false" data-price="5000"><span class="mi-n">Arcmasszázs kezelés<small>krémes, kozmetikai</small></span><span class="mi-p">5 000 Ft</span></button></li>
-            <li><button class="mi" type="button" aria-pressed="false" data-price="6000"><span class="mi-n">Arcmasszázs + pakolás</span><span class="mi-p">6 000 Ft</span></button></li>
-            <li><button class="mi" type="button" aria-pressed="false" data-price="5500"><span class="mi-n">Meleg szépségvitaminos arcmasszázs</span><span class="mi-p">5 500 Ft</span></button></li>
-            <li><button class="mi" type="button" aria-pressed="false" data-price="6000"><span class="mi-n">Lávaköves arcmasszázs</span><span class="mi-p">6 000 Ft</span></button></li>
-            <li><button class="mi" type="button" aria-pressed="false" data-price="7000"><span class="mi-n">Lávaköves arcmasszázs + legyezőecset</span><span class="mi-p">7 000 Ft</span></button></li>
-            <li><button class="mi" type="button" aria-pressed="false" data-price="6500"><span class="mi-n">Keleti spa lifting arcmasszázs</span><span class="mi-p">6 500 Ft</span></button></li>
+            <li><div class="mi"><span class="mi-n">Arcmasszázs kezelés<small>krémes, kozmetikai</small></span><span class="mi-p">5 000 Ft</span></div></li>
+            <li><div class="mi"><span class="mi-n">Arcmasszázs + pakolás</span><span class="mi-p">6 000 Ft</span></div></li>
+            <li><div class="mi"><span class="mi-n">Meleg szépségvitaminos arcmasszázs</span><span class="mi-p">5 500 Ft</span></div></li>
+            <li><div class="mi"><span class="mi-n">Lávaköves arcmasszázs</span><span class="mi-p">6 000 Ft</span></div></li>
+            <li><div class="mi"><span class="mi-n">Lávaköves arcmasszázs + legyezőecset</span><span class="mi-p">7 000 Ft</span></div></li>
+            <li><div class="mi"><span class="mi-n">Keleti spa lifting arcmasszázs</span><span class="mi-p">6 500 Ft</span></div></li>
           </ul>
         </div>
 
         <div class="p-panel" id="c-masszazs" role="tabpanel" aria-labelledby="t-masszazs" data-cat="masszazs" hidden>
           <ul class="menu">
-            <li><button class="mi" type="button" aria-pressed="false" data-price="8000"><span class="mi-n">Svéd masszázs, 60 perc</span><span class="mi-p">8 000 Ft</span></button></li>
-            <li><button class="mi" type="button" aria-pressed="false" data-price="12000"><span class="mi-n">Svéd masszázs, 90 perc</span><span class="mi-p">12 000 Ft</span></button></li>
-            <li><button class="mi" type="button" aria-pressed="false" data-price="32000"><span class="mi-n">Bérlet: 5 × 60 perc svéd masszázs</span><span class="mi-p">32 000 Ft</span></button></li>
-            <li><button class="mi" type="button" aria-pressed="false" data-price="9000"><span class="mi-n">Lávaköves masszázs, 60 perc</span><span class="mi-p">9 000 Ft</span></button></li>
-            <li><button class="mi" type="button" aria-pressed="false" data-price="13000"><span class="mi-n">Lávaköves masszázs, 90 perc</span><span class="mi-p">13 000 Ft</span></button></li>
-            <li><button class="mi" type="button" aria-pressed="false" data-price="8000"><span class="mi-n">Thai talpmasszázs</span><span class="mi-p">8 000 Ft</span></button></li>
-            <li><button class="mi" type="button" aria-pressed="false" data-price="32000"><span class="mi-n">Bérlet: 5 alkalom thai talpmasszázs</span><span class="mi-p">32 000 Ft</span></button></li>
-            <li><button class="mi" type="button" aria-pressed="false" data-price="1000"><span class="mi-n">Köpölyözés a masszázs mellé</span><span class="mi-p">+ 1 000 Ft</span></button></li>
+            <li><div class="mi"><span class="mi-n">Svéd masszázs, 60 perc</span><span class="mi-p">8 000 Ft</span></div></li>
+            <li><div class="mi"><span class="mi-n">Svéd masszázs, 90 perc</span><span class="mi-p">12 000 Ft</span></div></li>
+            <li><div class="mi"><span class="mi-n">Bérlet: 5 × 60 perc svéd masszázs</span><span class="mi-p">32 000 Ft</span></div></li>
+            <li><div class="mi"><span class="mi-n">Lávaköves masszázs, 60 perc</span><span class="mi-p">9 000 Ft</span></div></li>
+            <li><div class="mi"><span class="mi-n">Lávaköves masszázs, 90 perc</span><span class="mi-p">13 000 Ft</span></div></li>
+            <li><div class="mi"><span class="mi-n">Thai talpmasszázs</span><span class="mi-p">8 000 Ft</span></div></li>
+            <li><div class="mi"><span class="mi-n">Bérlet: 5 alkalom thai talpmasszázs</span><span class="mi-p">32 000 Ft</span></div></li>
+            <li><div class="mi"><span class="mi-n">Köpölyözés a masszázs mellé</span><span class="mi-p">+ 1 000 Ft</span></div></li>
           </ul>
         </div>
 
         <div class="p-panel" id="c-gyanta" role="tabpanel" aria-labelledby="t-gyanta" data-cat="gyanta" hidden>
           <ul class="menu">
-            <li><button class="mi" type="button" aria-pressed="false" data-price="1200"><span class="mi-n">Szemöldök vagy bajusz</span><span class="mi-p">1 200 Ft</span></button></li>
-            <li><button class="mi" type="button" aria-pressed="false" data-price="2000"><span class="mi-n">Hónalj<small>cukorpasztával</small></span><span class="mi-p">2 000 Ft</span></button></li>
-            <li><button class="mi" type="button" aria-pressed="false" data-price="2500"><span class="mi-n">Bikinivonal<small>cukorpasztával</small></span><span class="mi-p">2 500 Ft</span></button></li>
-            <li><button class="mi" type="button" aria-pressed="false" data-price="3000"><span class="mi-n">Comb</span><span class="mi-p">3 000 Ft</span></button></li>
-            <li><button class="mi" type="button" aria-pressed="false" data-price="3500"><span class="mi-n">Láb térdig</span><span class="mi-p">3 500 Ft</span></button></li>
-            <li><button class="mi" type="button" aria-pressed="false" data-price="5500"><span class="mi-n">Láb végig</span><span class="mi-p">5 500 Ft</span></button></li>
-            <li><button class="mi" type="button" aria-pressed="false" data-price="3000"><span class="mi-n">Alkar</span><span class="mi-p">3 000 Ft</span></button></li>
-            <li><button class="mi" type="button" aria-pressed="false" data-price="4000"><span class="mi-n">Kar végig</span><span class="mi-p">4 000 Ft</span></button></li>
-            <li><button class="mi" type="button" aria-pressed="false" data-price="4000"><span class="mi-n">Mellkas</span><span class="mi-p">4 000 Ft</span></button></li>
-            <li><button class="mi" type="button" aria-pressed="false" data-price="5500"><span class="mi-n">Teljes hát</span><span class="mi-p">5 500 Ft</span></button></li>
+            <li><div class="mi"><span class="mi-n">Szemöldök vagy bajusz</span><span class="mi-p">1 200 Ft</span></div></li>
+            <li><div class="mi"><span class="mi-n">Hónalj<small>cukorpasztával</small></span><span class="mi-p">2 000 Ft</span></div></li>
+            <li><div class="mi"><span class="mi-n">Bikinivonal<small>cukorpasztával</small></span><span class="mi-p">2 500 Ft</span></div></li>
+            <li><div class="mi"><span class="mi-n">Comb</span><span class="mi-p">3 000 Ft</span></div></li>
+            <li><div class="mi"><span class="mi-n">Láb térdig</span><span class="mi-p">3 500 Ft</span></div></li>
+            <li><div class="mi"><span class="mi-n">Láb végig</span><span class="mi-p">5 500 Ft</span></div></li>
+            <li><div class="mi"><span class="mi-n">Alkar</span><span class="mi-p">3 000 Ft</span></div></li>
+            <li><div class="mi"><span class="mi-n">Kar végig</span><span class="mi-p">4 000 Ft</span></div></li>
+            <li><div class="mi"><span class="mi-n">Mellkas</span><span class="mi-p">4 000 Ft</span></div></li>
+            <li><div class="mi"><span class="mi-n">Teljes hát</span><span class="mi-p">5 500 Ft</span></div></li>
           </ul>
         </div>
       </div>
 
-      <aside class="note" id="uzenet" aria-labelledby="note-t">
-        <div class="note-card">
-          <div class="note-top">
-            <h3 id="note-t">Üzenet Boginak</h3>
-            <button class="note-x" type="button" aria-label="Bezárás">×</button>
-          </div>
-          <p class="note-empty">Még üres. Koppints egy kezelésre a listában, és ide kerül.</p>
-          <ul class="note-list" aria-live="polite"></ul>
-          <div class="note-sum" hidden><span>Összesen</span><b>0 Ft</b></div>
-          <p class="note-hint" hidden></p>
-          <fieldset class="note-when">
-            <legend>Mikor lenne jó?</legend>
-            <label><input type="checkbox" value="hétköznap délelőtt"><span>Hétköznap délelőtt</span></label>
-            <label><input type="checkbox" value="hétköznap délután"><span>Hétköznap délután</span></label>
-            <label><input type="checkbox" value="hétvégén"><span>Hétvégén</span></label>
-            <label><input type="checkbox" value="bármikor"><span>Bármikor</span></label>
-          </fieldset>
-          <label class="note-name"><span>A neved</span><input type="text" autocomplete="name" placeholder="pl. Kiss Anna"></label>
-          <a class="btn btn-night btn-block note-send is-off" href="mailto:bogibense@gmail.com?subject=Id%C5%91pontk%C3%A9r%C3%A9s" aria-disabled="true">Elküldöm e-mailben</a>
-          <p class="note-alt">Megnyílik a leveleződ a kész üzenettel. Inkább beszélnél? <a href="tel:+36308636558">+36 30 863 6558</a></p>
-        </div>
+      <aside class="p-call">
+        <h3>Időpontot telefonon kérj</h3>
+        <p>Hívj, és megbeszéljük, mikor jó neked. Ha épp kezelek, visszahívlak.</p>
+        <a class="btn btn-lav btn-block" href="tel:+36308636558">+36 30 863 6558</a>
+        <a class="btn btn-ghost btn-block btn-ig" href="https://www.instagram.com/levendula_szepsegszalon/" target="_blank" rel="noopener"><svg class="ig-ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle class="dot" cx="17.3" cy="6.7" r="1.1"/></svg>Írj Instagramon</a>
+        <p class="p-call-note">A friss munkáimat az Instagramon teszem közzé.</p>
       </aside>
     </div>
   </div>
@@ -278,7 +265,7 @@
 <section class="work" id="munkaim" aria-labelledby="work-title">
   <div class="wrap work-head">
     <h2 id="work-title">Munkáim</h2>
-    <p>Minden kép a szalonban készült, valódi vendégekről. Kattints bármelyikre, és nagyban is megnézheted.</p>
+    <p>Minden kép a szalonban készült, valódi vendégekről. A legfrissebbeket az Instagramon találod: <a class="work-ig" href="https://www.instagram.com/levendula_szepsegszalon/" target="_blank" rel="noopener">@levendula_szepsegszalon</a></p>
   </div>
   <div class="wrap work-cols">
     <div class="wc">
@@ -301,8 +288,17 @@
     </div>
   </div>
   <div class="wrap work-foot">
-    <a class="btn btn-ghost" href="https://www.instagram.com/levendula_szepsegszalon/" target="_blank" rel="noopener">Még több munka az Instagramon</a>
+    <a class="btn btn-lav btn-ig" href="https://www.instagram.com/levendula_szepsegszalon/" target="_blank" rel="noopener"><svg class="ig-ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle class="dot" cx="17.3" cy="6.7" r="1.1"/></svg>Még több munka az Instagramon</a>
   </div>
+</section>
+
+<!-- ============ INSTAGRAM ============ -->
+<section class="igband" aria-label="Instagram">
+  <a class="wrap igband-in" href="https://www.instagram.com/levendula_szepsegszalon/" target="_blank" rel="noopener">
+    <svg class="ig-ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle class="dot" cx="17.3" cy="6.7" r="1.1"/></svg>
+    <span class="igband-t">Kövesd a szalont az Instagramon</span>
+    <span class="igband-h">@levendula_szepsegszalon</span>
+  </a>
 </section>
 
 <!-- ============ RÓLAM + OKLEVELEK ============ -->
@@ -316,6 +312,7 @@
       <p class="about-lead">Kis szalont vezetek, ahol nem futószalagon mennek a kezelések. Amíg nálam vagy, csak rád figyelek.</p>
       <p>Szeretem a pontos, igényes munkát, és azt a pillanatot, amikor valaki felkel az ágyról, és látszik rajta, hogy kipihente magát. A legtöbb vendégem évek óta hozzám jár – ennél jobb visszajelzést nem tudok elképzelni.</p>
       <p>Rendszeresen járok képzésekre. A szempillaépítést a Lash &amp; Lashes Academyn tanultam, a masszázstechnikákat több tanfolyamon.</p>
+      <p><a class="about-ig" href="https://www.instagram.com/levendula_szepsegszalon/" target="_blank" rel="noopener">Nézd meg a munkáimat az Instagramon</a></p>
     </div>
   </div>
 
@@ -341,8 +338,8 @@
     </div>
     <div class="gift-text">
       <h2 id="gift-title">Ajándék, amit tényleg kipihennek</h2>
-      <p>Kézzel kitöltött Levendula-utalvány bármelyik kezelésre – például egy 60 perces svéd masszázsra. Írd meg, kinek és mire szeretnéd, és megbeszéljük, hogyan kapod meg.</p>
-      <a class="btn btn-night" href="mailto:bogibense@gmail.com?subject=Aj%C3%A1nd%C3%A9kutalv%C3%A1ny">Utalványt kérek</a>
+      <p>Kézzel kitöltött Levendula-utalvány bármelyik kezelésre – például egy 60 perces svéd masszázsra. Hívj, vagy írj Instagramon, és megbeszéljük, kinek és mire szeretnéd.</p>
+      <div class="gift-cta"><a class="btn btn-night" href="tel:+36308636558">Hívom Bogit</a><a class="btn btn-ghost-ink btn-ig" href="https://www.instagram.com/levendula_szepsegszalon/" target="_blank" rel="noopener"><svg class="ig-ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle class="dot" cx="17.3" cy="6.7" r="1.1"/></svg>Írok Instagramon</a></div>
     </div>
   </div>
 </section>
@@ -354,15 +351,15 @@
       <h2 id="contact-title">Gyere el, a 44-es csengőnél várlak.</h2>
       <div class="contact-cta">
         <a class="btn btn-lav" href="tel:+36308636558">Felhívom Bogit</a>
+        <a class="btn btn-ghost btn-ig" href="https://www.instagram.com/levendula_szepsegszalon/" target="_blank" rel="noopener"><svg class="ig-ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle class="dot" cx="17.3" cy="6.7" r="1.1"/></svg>Instagram</a>
         <a class="btn btn-ghost" href="https://www.google.com/maps/search/?api=1&amp;query=Budapest%2C+F%C3%BCredi+utca+11%2FC" target="_blank" rel="noopener">Útvonal a térképen</a>
       </div>
-      <p class="contact-note">Időpontot telefonon vagy üzenetben egyeztetünk, online foglalás nincs.</p>
+      <p class="contact-note">Időpontot telefonon egyeztetünk. Instagramon üzenetben is elérsz.</p>
     </div>
     <div class="contact-side">
         <dl class="cl">
         <div><dt>Cím</dt><dd>1144 Budapest, Füredi utca 11/C<br><span class="cl-note">a kapunál a 44-es csengőt nyomd</span></dd></div>
         <div><dt>Telefon</dt><dd><a href="tel:+36308636558">+36 30 863 6558</a></dd></div>
-        <div><dt>E-mail</dt><dd><a href="mailto:bogibense@gmail.com">bogibense@gmail.com</a></dd></div>
         <div><dt>Instagram</dt><dd><a href="https://www.instagram.com/levendula_szepsegszalon/" target="_blank" rel="noopener">@levendula_szepsegszalon</a></dd></div>
       </dl>
     </div>
@@ -389,8 +386,8 @@
 </footer>
 
 <div class="mbar" aria-hidden="true">
-  <a class="btn btn-ghost-ink mbar-call" href="tel:+36308636558" tabindex="-1">Hívás</a>
-  <button class="btn btn-night mbar-go" type="button" tabindex="-1"><span>Időpontot kérek</span></button>
+  <a class="btn btn-ghost-ink btn-ig mbar-ig" href="https://www.instagram.com/levendula_szepsegszalon/" target="_blank" rel="noopener" tabindex="-1"><svg class="ig-ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle class="dot" cx="17.3" cy="6.7" r="1.1"/></svg>Instagram</a>
+  <a class="btn btn-night mbar-call" href="tel:+36308636558" tabindex="-1">Hívás</a>
 </div>
 
 <div class="lb" hidden role="dialog" aria-modal="true" aria-label="Kép nagyítva">
@@ -402,6 +399,6 @@
 
 <script src="js/gsap.min.js"></script>
 <script src="js/ScrollTrigger.min.js"></script>
-<script src="levendula.js?v=6"></script>
+<script src="levendula.js?v=8"></script>
 </body>
 </html>
