@@ -34,7 +34,7 @@
     <nav class="head-nav" aria-label="Fő navigáció">
       <a href="#etlap">Étlap</a>
       <a href="#hazhoz">Házhozszállítás</a>
-      <a href="#galeria">Galéria</a>
+      <button type="button" data-open-gallery aria-haspopup="dialog" aria-controls="lightbox">Galéria</button>
       <a href="#kapcsolat">Kapcsolat</a>
     </nav>
     <a class="head-call" href="tel:+36707758585"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6.6 10.8a15.2 15.2 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z"/></svg><span>70&nbsp;775 8585</span></a>
@@ -47,7 +47,7 @@
     <a href="#etlap">Étlap</a>
     <a href="#kedvencek">Kedvencek</a>
     <a href="#hazhoz">Házhozszállítás</a>
-    <a href="#galeria">Galéria</a>
+    <button type="button" data-open-gallery aria-haspopup="dialog" aria-controls="lightbox">Galéria</button>
     <a href="#kapcsolat">Kapcsolat</a>
   </nav>
   <a class="btn btn-ink btn-big" href="tel:+36707758585">Hívás: +36 70&nbsp;775 8585</a>
@@ -60,12 +60,14 @@
 <section class="hero" id="top" aria-labelledby="hero-cim">
   <div class="hero-in">
     <div class="hero-copy">
+      <p class="hero-kicker" data-hero="fade">Monor · Móricz Zsigmond utca 39.</p>
       <p class="hero-status" data-hero="fade"><i class="dot" aria-hidden="true"></i><span data-status>H–Szo 11:00–21:00 · telefonos rendelés 20:30‑ig</span></p>
       <h1 id="hero-cim" class="hero-title">
-        <span class="ln"><span data-hero="line">Gyros és burger,</span></span>
-        <span class="ln"><span data-hero="line">rendelésre készítve.</span></span>
+        <span class="ln"><span data-hero="line">GYROS.</span></span>
+        <span class="ln"><span data-hero="line">BURGER.</span></span>
+        <span class="ln"><span data-hero="line" class="accent">TAVERNA.</span></span>
       </h1>
-      <p class="hero-lede" data-hero="fade">Gyrosbár és kávézó Monoron, a Móricz Zsigmond utcában. Helyben, elvitelre vagy házhoz szállítva.</p>
+      <p class="hero-lede" data-hero="fade">Forrón a tányérra, frissen a kezedbe. Gyros, burgerek és kedvencek Monoron — helyben, elvitelre vagy házhoz szállítva.</p>
       <div class="hero-cta" data-hero="fade">
         <a class="btn btn-ink btn-big" href="tel:+36707758585"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6.6 10.8a15.2 15.2 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z"/></svg><span>Rendelés: 70&nbsp;775 8585</span></a>
         <a class="btn btn-line btn-big" href="#etlap"><span>Étlap</span></a>
@@ -83,6 +85,10 @@
           <picture><source type="image/avif" srcset="img/burger-fekete-640.avif 640w, img/burger-fekete-1100.avif 1100w, img/burger-fekete-1440.avif 1440w" sizes="(min-width: 900px) 400px, min(80vw, 330px)"><img src="img/burger-fekete-1100.webp" srcset="img/burger-fekete-640.webp 640w, img/burger-fekete-1100.webp 1100w, img/burger-fekete-1440.webp 1440w" sizes="(min-width: 900px) 400px, min(80vw, 330px)" width="1440" height="1680" loading="eager" fetchpriority="high" decoding="async" alt="A Taverna burgere fekete, szezámos zsemlében, olvadt sajttal, baconnel és steakburgonyával"></picture>
         </div>
       </figure>
+      <div class="hero-float" data-hero="fade">
+        <img src="img/gyros-nyars-640.webp" width="160" height="184" alt="" loading="eager" decoding="async">
+        <span><small>Frissen a nyársról</small><strong>Így készül a gyros</strong>Monoron, a Tavernában.</span>
+      </div>
     </div>
   </div>
 </section>
@@ -97,7 +103,8 @@
 <section class="sig" id="kedvencek" aria-labelledby="sig-cim">
   <div class="wrap">
     <header class="sig-head">
-      <h2 id="sig-cim" class="h2" data-split>A pultról, ahogy kijön.</h2>
+      <p class="sig-eyebrow" data-rise>A Taverna kedvencei</p>
+      <h2 id="sig-cim" class="h2" data-split>Ételek, amikért érdemes megállni.</h2>
       
     </header>
 
@@ -111,18 +118,24 @@
       </figure>
 
       <figure class="sig-b" data-wipe="up">
-        <div class="sig-frame"><span class="tag">3&nbsp;520&nbsp;Ft</span><picture><source type="image/avif" srcset="img/fav-csirke-480.avif 480w, img/fav-csirke-800.avif 800w" sizes="(min-width: 760px) 30vw, 40vw"><img src="img/fav-csirke-800.webp" srcset="img/fav-csirke-480.webp 480w, img/fav-csirke-800.webp 800w" sizes="(min-width: 760px) 30vw, 40vw" width="800" height="600" loading="lazy" decoding="async" alt="Szezámos rántott csirkemellcsíkok jázminrizzsel és két szósszal"></picture></div>
+        <div class="sig-frame">
+          <span class="tag">Frissen a nyársról</span>
+          <img src="img/gyros-nyars-1100.webp" width="850" height="980" alt="Frissen sült gyros a forgó nyárson" loading="lazy" decoding="async">
+        </div>
         <figcaption>
-          <b>Rántott csirkemell ropogós bundában</b>
-          <span>Jázminrizzsel és kétféle szósszal.</span>
+          <b>Gyros, ahogy szeretjük</b>
+          <span>Pitában, boxban vagy tálon — nézd meg a gyrosválasztékot az étlapon.</span>
         </figcaption>
       </figure>
 
       <figure class="sig-c" data-wipe="right">
-        <div class="sig-frame"><span class="tag">+ hasáb 990&nbsp;Ft</span><picture><source type="image/avif" srcset="img/fav-terasz-480.avif 480w, img/fav-terasz-800.avif 800w" sizes="(min-width: 760px) 30vw, 40vw"><img src="img/fav-terasz-800.webp" srcset="img/fav-terasz-480.webp 480w, img/fav-terasz-800.webp 800w" sizes="(min-width: 760px) 30vw, 40vw" width="800" height="600" loading="lazy" decoding="async" alt="Dupla burger hasábburgonyával a terasz asztalán"></picture></div>
+        <div class="sig-frame">
+          <span class="tag">3&nbsp;520&nbsp;Ft*</span>
+          <img src="img/csirke-rizs-1100.webp" width="850" height="850" alt="Ropogós bundás csirkemell körettel és szósszal" loading="lazy" decoding="async">
+        </div>
         <figcaption>
-          <b>Burger hasábbal, a teraszon</b>
-          <span>Hasábburgonya köretként 990&nbsp;Ft<sup>*</sup>, sajtosan 1&nbsp;100&nbsp;Ft<sup>*</sup>.</span>
+          <b>Ropogós csirkemell</b>
+          <span>Jázminrizs és kétféle szósz — a tartalmas ebédhez.</span>
         </figcaption>
       </figure>
 
@@ -139,6 +152,7 @@
 <section class="menu" id="etlap" aria-labelledby="etlap-cim">
   <div class="wrap menu-in">
     <div class="menu-side">
+      <p class="menu-eyebrow">Válassz kedvedre</p>
       <h2 id="etlap-cim" class="h2" data-split>Étlap</h2>
       <p class="menu-count"><b data-menu-total>82</b> tétel nyolc fejezetben. Telefonon rendelhető: <a href="tel:+36707758585">+36 70&nbsp;775 8585</a>.</p>
       <label class="menu-search">
@@ -174,31 +188,6 @@
       </dl>
     </div>
 
-    <figure class="exp-wide" data-slide>
-      <div class="exp-wide-img"><picture><source type="image/avif" srcset="img/terasz-italok-640.avif 640w, img/terasz-italok-1100.avif 1100w, img/terasz-italok-1600.avif 1600w" sizes="(min-width: 900px) 58vw, 92vw"><img src="img/terasz-italok-1100.webp" srcset="img/terasz-italok-640.webp 640w, img/terasz-italok-1100.webp 1100w, img/terasz-italok-1600.webp 1600w" sizes="(min-width: 900px) 58vw, 92vw" width="2048" height="1536" loading="lazy" decoding="async" alt="Mojito, piña colada és spritz a terasz asztalán, mögötte leanderek"></picture></div>
-      <figcaption>A terasz nyáron, leanderek között.</figcaption>
-    </figure>
-  </div>
-</section>
-
-<!-- ============ GALÉRIA ============ -->
-<section class="gal" id="galeria" aria-labelledby="gal-cim">
-  <div class="wrap gal-layout">
-    <header class="gal-head">
-      <h2 id="gal-cim" class="h2" data-split>Fotók a Tavernából.</h2>
-      <p data-rise>Koppints egy képre a teljes mérethez.</p>
-    </header>
-    <ul class="gal-grid" data-gallery>
-      <li class="g1"><button type="button" data-lb="0"><picture><source type="image/avif" srcset="img/etterem-kivul-640.avif 640w, img/etterem-kivul-1100.avif 960w" sizes="(min-width: 760px) 32vw, 82vw"><img src="img/etterem-kivul-1100.webp" srcset="img/etterem-kivul-640.webp 640w, img/etterem-kivul-1100.webp 960w" sizes="(min-width: 760px) 32vw, 82vw" width="960" height="960" loading="lazy" decoding="async" alt="Az étterem épülete és a terasz"></picture></button></li>
-      <li class="g2"><button type="button" data-lb="1"><picture><source type="image/avif" srcset="img/gyros-nyars-640.avif 640w, img/gyros-nyars-1100.avif 1100w" sizes="(min-width: 760px) 32vw, 82vw"><img src="img/gyros-nyars-1100.webp" srcset="img/gyros-nyars-640.webp 640w, img/gyros-nyars-1100.webp 1100w" sizes="(min-width: 760px) 32vw, 82vw" width="1440" height="1920" loading="lazy" decoding="async" alt="Gyrosnyárs a pult mögött"></picture></button></li>
-      <li class="g3"><button type="button" data-lb="2"><picture><source type="image/avif" srcset="img/terasz-italok-640.avif 640w, img/terasz-italok-1100.avif 1100w, img/terasz-italok-1600.avif 1600w" sizes="(min-width: 760px) 32vw, 82vw"><img src="img/terasz-italok-1100.webp" srcset="img/terasz-italok-640.webp 640w, img/terasz-italok-1100.webp 1100w, img/terasz-italok-1600.webp 1600w" sizes="(min-width: 760px) 32vw, 82vw" width="2048" height="1536" loading="lazy" decoding="async" alt="Koktélok a teraszon"></picture></button></li>
-      <li class="g4"><button type="button" data-lb="3"><picture><source type="image/avif" srcset="img/burger-kes-640.avif 640w, img/burger-kes-1100.avif 1080w" sizes="(min-width: 760px) 32vw, 82vw"><img src="img/burger-kes-1100.webp" srcset="img/burger-kes-640.webp 640w, img/burger-kes-1100.webp 1080w" sizes="(min-width: 760px) 32vw, 82vw" width="1080" height="1080" loading="lazy" decoding="async" alt="Burger késsel átszúrva"></picture></button></li>
-      <li class="g5"><button type="button" data-lb="4"><picture><source type="image/avif" srcset="img/csavart-fagyi-640.avif 640w, img/csavart-fagyi-1100.avif 1100w" sizes="(min-width: 760px) 32vw, 82vw"><img src="img/csavart-fagyi-1100.webp" srcset="img/csavart-fagyi-640.webp 640w, img/csavart-fagyi-1100.webp 1100w" sizes="(min-width: 760px) 32vw, 82vw" width="1558" height="2048" loading="lazy" decoding="async" alt="Csavart fagyi a krétatábla előtt"></picture></button></li>
-      <li class="g6"><button type="button" data-lb="5"><picture><source type="image/avif" srcset="img/burger-terasz-640.avif 640w, img/burger-terasz-1100.avif 1100w, img/burger-terasz-1600.avif 1600w" sizes="(min-width: 760px) 32vw, 82vw"><img src="img/burger-terasz-1100.webp" srcset="img/burger-terasz-640.webp 640w, img/burger-terasz-1100.webp 1100w, img/burger-terasz-1600.webp 1600w" sizes="(min-width: 760px) 32vw, 82vw" width="1638" height="2048" loading="lazy" decoding="async" alt="Dupla burger hasábburgonyával"></picture></button></li>
-      <li class="g7"><button type="button" data-lb="6"><picture><source type="image/avif" srcset="img/csirke-rizs-640.avif 640w, img/csirke-rizs-1100.avif 1080w" sizes="(min-width: 760px) 32vw, 82vw"><img src="img/csirke-rizs-1100.webp" srcset="img/csirke-rizs-640.webp 640w, img/csirke-rizs-1100.webp 1080w" sizes="(min-width: 760px) 32vw, 82vw" width="1080" height="1080" loading="lazy" decoding="async" alt="Rántott csirkemell rizzsel"></picture></button></li>
-      <li class="g8"><button type="button" data-lb="7"><picture><source type="image/avif" srcset="img/burger-fekete-640.avif 640w, img/burger-fekete-1100.avif 1100w, img/burger-fekete-1440.avif 1440w" sizes="(min-width: 760px) 32vw, 82vw"><img src="img/burger-fekete-1100.webp" srcset="img/burger-fekete-640.webp 640w, img/burger-fekete-1100.webp 1100w, img/burger-fekete-1440.webp 1440w" sizes="(min-width: 760px) 32vw, 82vw" width="1440" height="1680" loading="lazy" decoding="async" alt="Burger fekete zsemlében"></picture></button></li>
-    </ul>
-    <p class="gal-swipe" aria-hidden="true"><span data-gal-n>1</span> / 8 · húzd oldalra</p>
   </div>
 </section>
 
@@ -254,6 +243,20 @@
 </section>
 
 </main>
+
+<!-- Rejtett forrásképek a menüből nyíló teljes képernyős galériához. -->
+<div class="gallery-data" hidden aria-hidden="true">
+  <ul class="gallery-source">
+      <li class="g1"><button type="button" data-lb="0"><picture><source type="image/avif" srcset="img/etterem-kivul-640.avif 640w, img/etterem-kivul-1100.avif 960w" sizes="(min-width: 760px) 32vw, 82vw"><img src="img/etterem-kivul-1100.webp" srcset="img/etterem-kivul-640.webp 640w, img/etterem-kivul-1100.webp 960w" sizes="(min-width: 760px) 32vw, 82vw" width="960" height="960" loading="lazy" decoding="async" alt="Az étterem épülete és a terasz"></picture></button></li>
+      <li class="g2"><button type="button" data-lb="1"><picture><source type="image/avif" srcset="img/gyros-nyars-640.avif 640w, img/gyros-nyars-1100.avif 1100w" sizes="(min-width: 760px) 32vw, 82vw"><img src="img/gyros-nyars-1100.webp" srcset="img/gyros-nyars-640.webp 640w, img/gyros-nyars-1100.webp 1100w" sizes="(min-width: 760px) 32vw, 82vw" width="1440" height="1920" loading="lazy" decoding="async" alt="Gyrosnyárs a pult mögött"></picture></button></li>
+      <li class="g3"><button type="button" data-lb="2"><picture><source type="image/avif" srcset="img/terasz-italok-640.avif 640w, img/terasz-italok-1100.avif 1100w, img/terasz-italok-1600.avif 1600w" sizes="(min-width: 760px) 32vw, 82vw"><img src="img/terasz-italok-1100.webp" srcset="img/terasz-italok-640.webp 640w, img/terasz-italok-1100.webp 1100w, img/terasz-italok-1600.webp 1600w" sizes="(min-width: 760px) 32vw, 82vw" width="2048" height="1536" loading="lazy" decoding="async" alt="Koktélok a teraszon"></picture></button></li>
+      <li class="g4"><button type="button" data-lb="3"><picture><source type="image/avif" srcset="img/burger-kes-640.avif 640w, img/burger-kes-1100.avif 1080w" sizes="(min-width: 760px) 32vw, 82vw"><img src="img/burger-kes-1100.webp" srcset="img/burger-kes-640.webp 640w, img/burger-kes-1100.webp 1080w" sizes="(min-width: 760px) 32vw, 82vw" width="1080" height="1080" loading="lazy" decoding="async" alt="Burger késsel átszúrva"></picture></button></li>
+      <li class="g5"><button type="button" data-lb="4"><picture><source type="image/avif" srcset="img/csavart-fagyi-640.avif 640w, img/csavart-fagyi-1100.avif 1100w" sizes="(min-width: 760px) 32vw, 82vw"><img src="img/csavart-fagyi-1100.webp" srcset="img/csavart-fagyi-640.webp 640w, img/csavart-fagyi-1100.webp 1100w" sizes="(min-width: 760px) 32vw, 82vw" width="1558" height="2048" loading="lazy" decoding="async" alt="Csavart fagyi a krétatábla előtt"></picture></button></li>
+      <li class="g6"><button type="button" data-lb="5"><picture><source type="image/avif" srcset="img/burger-terasz-640.avif 640w, img/burger-terasz-1100.avif 1100w, img/burger-terasz-1600.avif 1600w" sizes="(min-width: 760px) 32vw, 82vw"><img src="img/burger-terasz-1100.webp" srcset="img/burger-terasz-640.webp 640w, img/burger-terasz-1100.webp 1100w, img/burger-terasz-1600.webp 1600w" sizes="(min-width: 760px) 32vw, 82vw" width="1638" height="2048" loading="lazy" decoding="async" alt="Dupla burger hasábburgonyával"></picture></button></li>
+      <li class="g7"><button type="button" data-lb="6"><picture><source type="image/avif" srcset="img/csirke-rizs-640.avif 640w, img/csirke-rizs-1100.avif 1080w" sizes="(min-width: 760px) 32vw, 82vw"><img src="img/csirke-rizs-1100.webp" srcset="img/csirke-rizs-640.webp 640w, img/csirke-rizs-1100.webp 1080w" sizes="(min-width: 760px) 32vw, 82vw" width="1080" height="1080" loading="lazy" decoding="async" alt="Rántott csirkemell rizzsel"></picture></button></li>
+      <li class="g8"><button type="button" data-lb="7"><picture><source type="image/avif" srcset="img/burger-fekete-640.avif 640w, img/burger-fekete-1100.avif 1100w, img/burger-fekete-1440.avif 1440w" sizes="(min-width: 760px) 32vw, 82vw"><img src="img/burger-fekete-1100.webp" srcset="img/burger-fekete-640.webp 640w, img/burger-fekete-1100.webp 1100w, img/burger-fekete-1440.webp 1440w" sizes="(min-width: 760px) 32vw, 82vw" width="1440" height="1680" loading="lazy" decoding="async" alt="Burger fekete zsemlében"></picture></button></li>
+    </ul>
+</div>
 
 <!-- ============ FOOTER ============ -->
 <footer class="foot">
