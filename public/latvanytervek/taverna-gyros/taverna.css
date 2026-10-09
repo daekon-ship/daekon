@@ -241,7 +241,7 @@ body.drawer-open .site-head { background: transparent; color: var(--ink); -webki
   .hero-stage { width: min(56vw, 360px); }
 }
 @media (min-width: 900px) {
-  .hero { padding: calc(var(--head-h) + 24px) 0 64px; min-height: min(100svh, 900px); display: flex; align-items: center; }
+  .hero { padding: calc(var(--head-h) + 32px) 0 72px; min-height: min(92svh, 860px); display: flex; align-items: center; }
   .hero-in {
     width: 100%;
     grid-template-columns: minmax(0, 1.08fr) minmax(0, .92fr);
@@ -249,7 +249,7 @@ body.drawer-open .site-head { background: transparent; color: var(--ink); -webki
     column-gap: clamp(32px, 4vw, 72px); align-items: center;
   }
   .hero-copy { display: flex; flex-direction: column; gap: 26px; grid-area: copy; position: relative; z-index: 2; }
-  .hero-stage { width: min(100%, 400px, calc((100svh - var(--head-h) - 140px) * .86)); min-width: 320px; margin: 0 0 0 auto; }
+  .hero-stage { width: min(100%, 460px, calc((92svh - var(--head-h) - 140px) * .86)); min-width: 320px; margin: 0 auto; }
     .hero-cta .btn-ink { flex: 0 0 auto; }
 }
 
@@ -675,3 +675,49 @@ body.drawer-open .dock, body.lb-open .dock { transform: translateY(110%); }
   .hero-cta .btn { padding: 0 16px; font-size: 1rem; }
   .hero-cta .btn-ink { flex: 1 1 auto; min-width: 0; }
 }
+
+/* =========================================================
+   FINOMHANGOLÁS — mélység és fény a sötét felületeken
+   ========================================================= */
+.hero {
+  background:
+    radial-gradient(52% 62% at 76% 48%, rgba(63, 184, 175, .24), rgba(63, 184, 175, 0) 70%),
+    radial-gradient(40% 50% at 8% 100%, rgba(240, 178, 58, .08), rgba(240, 178, 58, 0) 70%),
+    var(--night);
+}
+.hero-arch {
+  box-shadow: 0 30px 70px -20px rgba(0, 0, 0, .65), 0 0 0 1px rgba(244, 237, 225, .08);
+  outline: 1px solid rgba(63, 184, 175, .45); outline-offset: 10px;
+}
+.hero-title { text-wrap: balance; }
+.hero-facts {
+  grid-area: facts; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-top: 1px solid rgba(244, 237, 225, .16); margin-top: 6px;
+}
+.hero-facts li { display: grid; gap: 2px; padding: 14px 12px 0 0; }
+.hero-facts li + li { padding-left: 14px; border-left: 1px solid rgba(244, 237, 225, .16); }
+.hero-facts b { font-family: var(--display); font-weight: 750; font-stretch: 85%; font-size: 1.15rem; color: var(--lime); font-variant-numeric: tabular-nums; line-height: 1.1; }
+.hero-facts span { font-size: .8rem; line-height: 1.35; color: var(--muted-cream); }
+.hero-in { grid-template-areas: "status" "title" "stage" "lede" "cta" "facts"; }
+@media (min-width: 900px) {
+  .hero-in { grid-template-areas: "copy stage"; }
+  .hero-facts { max-width: 520px; margin-top: 10px; }
+  .hero-facts span { font-size: .85rem; }
+}
+.del {
+  background:
+    radial-gradient(50% 60% at 82% 40%, rgba(63, 184, 175, .2), rgba(63, 184, 175, 0) 70%),
+    var(--night);
+}
+.exp {
+  background:
+    radial-gradient(45% 55% at 15% 30%, rgba(63, 184, 175, .16), rgba(63, 184, 175, 0) 70%),
+    var(--teal-deep);
+}
+.sig, .offer, .show, .foot {
+  background:
+    radial-gradient(50% 40% at 90% 0%, rgba(240, 178, 58, .06), rgba(240, 178, 58, 0) 70%),
+    var(--ink);
+}
+.sig-frame, .exp-wide-img, .gal-grid li { box-shadow: 0 24px 50px -24px rgba(0, 0, 0, .6); }
+.contact-map { border: 0; box-shadow: 0 0 0 1px var(--line-ink); }
