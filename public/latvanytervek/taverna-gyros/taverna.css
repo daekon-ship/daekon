@@ -1016,3 +1016,13 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid 
 @media (max-width: 899px) { .hero-stage { width: min(76vw, 300px) !important; margin: 6px auto 6px !important; } }
 @media (min-width: 900px) { .hero-stage { width: min(100%, 420px, calc((100svh - var(--head-h) - 160px) * .857)) !important; min-width: 320px; } }
 @media (min-width: 900px) { .hero { min-height: min(78svh, 720px) !important; } .hero-stage { margin: 0 auto !important; } }
+/* mobil: a hero-kép széltől szélig, lapos kivágással, hogy ne legyen túl magas */
+@media (max-width: 899px) {
+  .hero-stage { width: auto !important; max-width: none !important; margin: 8px calc(var(--gutter) * -1) 6px !important; }
+  .hero-arch { aspect-ratio: 5 / 4 !important; border-radius: 0 !important; box-shadow: none !important; }
+  .hero-arch img { object-position: 50% 46% !important; }
+}
+@media (min-width: 600px) and (max-width: 899px) {
+  .hero-arch { aspect-ratio: 16 / 10 !important; }
+  .hero-arch img { object-position: 50% 34% !important; }
+}
