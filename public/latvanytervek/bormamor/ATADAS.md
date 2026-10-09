@@ -16,6 +16,23 @@ Az ügyfél választása alapján: sötét vászon, teljes képernyős jelenetek
 4. **Több mint bor:** kulcslyuk alakú dugó-fotó, mellette a kínálat sorai — mindig az a sor világít, amelyik a képernyő közepén van.
 5. **Kóstolók** (mustszín), **események**, **jelentkezés**, **Monor** (szavanként kigyúló felirat), **kapcsolat** — mind sötét alapon.
 
+## Összeállító (kosár, átvétel a boltban) — 6. kör
+
+Webshopszerű összeállító, **kiszállítás és online fizetés nélkül**: a vevő összeállítja, mi előkészítjük, a boltban veszi át.
+
+- **Hol:** saját szekció (`#osszeallito`), a fejlécben „Kosár” számlálóval; a borstílusoknál „+ Kosárba”, a polc soraiban „Kosárba” gomb; mobilon lebegő kosárgomb.
+- **Mit választ:** kategóriát (5 borstílus + 5 egyéb), mennyiséget (léptető), és tételenként keretet („Mindegy”, „5 000 Ft-ig”, „5–10 000 Ft”, „10 000 Ft felett”). **Nincsenek kitalált termékek és árak** — a pontos tételeket a bolt ajánlja. Ha lesz valódi terméklista, a `js/adatok.js` → `osszeallito.termekek` tömbbe kerülhet.
+- **Ajándék:** címzett, üzenet a kártyára (max. 160 karakter), csomagolás (Nem kell / Díszdoboz / Szalag és kártya).
+- **Átvétel:** csak nyitvatartási napok (a következő 6 péntek/szombat, a holnapi naptól).
+- **Kötelező:** név, telefon, e-mail, 18 év feletti nyilatkozat, adatkezelés elfogadása.
+- **Küldés most:** e-mail-piszkozat a bormamormonor@gmail.com címre a teljes összeállítással (demó, az oldalon jelölve). A kosár a böngészőben megmarad.
+- **Egyeztetendő:** fizetés átvételkor (feltételezés); a keret-sávok; a csomagolási lehetőségek és díjuk; meddig tartják félre az összeállítást; alkoholértékesítési és fogyasztóvédelmi szabályok (online megrendelés átvétellel).
+- **Élesítéshez:** a jelentkezési űrlappal közös háttérrendszer (értesítés a boltnak, visszaigazolás a vevőnek, admin-lista az összeállításokról, státusz: „előkészítve / átvéve”).
+
+## Képminőség — 6. kör
+
+A forrásképek legfeljebb 1640 px szélesek voltak. Mind a négy használt fotót helyben, egy nyílt Real-ESRGAN-típusú (SRVGGNet, Upscayl „lite” x4) modellel 4×-esre nagyítottam, ami a JPEG-zajt is eltünteti; ezekből 1×/2× (a nyitóképből 4K, 3840 px) WebP készült, `srcset`-tel. A felskálázás élesít és tisztít, de **nem pótolja az eredeti nagy felbontású fájlt** — ha a grafikus (Marcell Szűcs) meg tudja adni az eredeti fotókat, azokra kell cserélni. A közösségimédia-grafikákat (palackok felülről, kulcslyuk dugókból) kivettem — beégetett logós posztok voltak. A filmszemcse is kikerült.
+
 ## Designrendszer
 
 | Szerep | Érték |

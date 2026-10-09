@@ -21,21 +21,21 @@ window.BORMAMOR = {
   esemenyek: [],
 
   /* BORSTÍLUSOK — a „monori borok világa” szekció.
-   * x, y: a pohár közepe a poharak.webp képen (0–1). A pezsgőnek nincs saját fotója: x = null. */
+   * x, y: a pohár közepe a poharak.webp képen (1600×619) (0–1). A pezsgőnek nincs saját fotója: x = null. */
   borok: [
-    { id: "feher",  nev: "Fehérborok", rovid: "Fehér", x: .177, y: .56,
+    { id: "feher",  nev: "Fehérborok", rovid: "Fehér", x: .177, y: .57,
       alt: "Pohár aranyló fehérbor egy hordó tetején",
       leiras: "Friss, ropogós tételek és testesebb, érlelt fehérek — vacsorához, nyári estékhez, ajándékba.",
       illik: "Halhoz, szárnyashoz, könnyű vacsorához" },
-    { id: "rose",   nev: "Rosék", rovid: "Rosé", x: .391, y: .56,
+    { id: "rose",   nev: "Rosék", rovid: "Rosé", x: .391, y: .57,
       alt: "Pohár rozé egy hordó tetején",
       leiras: "Gyümölcsös, könnyed rosék teraszra, grillhez és hosszú beszélgetésekhez.",
       illik: "Grillhez, salátához, baráti estéhez" },
-    { id: "siller", nev: "Sillerek", rovid: "Siller", x: .613, y: .56,
+    { id: "siller", nev: "Sillerek", rovid: "Siller", x: .613, y: .57,
       alt: "Pohár mélyrubin siller egy hordó tetején",
       leiras: "A rosé és a vörös között: élénk, mély színű, mégis könnyed borok — a siller régi magyar hagyomány.",
       illik: "Sültekhez, sajtokhoz, nyári vacsorához" },
-    { id: "voros",  nev: "Vörösborok", rovid: "Vörös", x: .835, y: .56,
+    { id: "voros",  nev: "Vörösborok", rovid: "Vörös", x: .835, y: .57,
       alt: "Pohár sötét vörösbor egy hordó tetején",
       leiras: "Könnyed, gyümölcsös vörösöktől a testes, érlelt tételekig — hosszú estékre és ünnepi asztalra.",
       illik: "Vadhoz, marhához, ünnepi asztalhoz" },
@@ -43,6 +43,28 @@ window.BORMAMOR = {
       alt: "",
       leiras: "Magyar pezsgők koccintáshoz, meglepetéshez, kis és nagy ünnepekhez.",
       illik: "Koccintáshoz, ajándékba, ünnepre" }
-  ]
+  ],
 
+  /* ÖSSZEÁLLÍTÓ — kosár kiszállítás nélkül: a vevő összeállítja, a bolt előkészíti, átvétel a boltban.
+   * Nincsenek kitalált termékek és árak: a vevő kategóriát, mennyiséget és keretet választ,
+   * a pontos tételeket a bolt ajánlja. Ha lesz valódi terméklista, a „termekek” tömbbe kerülhet.
+   */
+  osszeallito: {
+    kategoriak: [
+      { id: "feher",   nev: "Fehérbor",   csoport: "Borok" },
+      { id: "rose",    nev: "Rosé",       csoport: "Borok" },
+      { id: "siller",  nev: "Siller",     csoport: "Borok" },
+      { id: "voros",   nev: "Vörösbor",   csoport: "Borok" },
+      { id: "pezsgo",  nev: "Pezsgő",     csoport: "Borok" },
+      { id: "sor",     nev: "Kézműves sör",          csoport: "Több mint bor" },
+      { id: "palinka", nev: "Pálinka",               csoport: "Több mint bor" },
+      { id: "whisky",  nev: "Whisky vagy gin",       csoport: "Több mint bor" },
+      { id: "rum",     nev: "Rum vagy konyak",       csoport: "Több mint bor" },
+      { id: "gasztro", nev: "Kézműves különlegesség", csoport: "Több mint bor" }
+    ],
+    /* palackonkénti keret — a vevő kívánsága, nem bolti ár (egyeztetendő a bolttal) */
+    keretek: ["Mindegy", "5 000 Ft-ig", "5–10 000 Ft", "10 000 Ft felett"],
+    csomagolas: ["Nem kell", "Díszdoboz", "Szalag és kártya"],
+    termekek: []
+  }
 };

@@ -56,7 +56,7 @@
   var wineSec = $("[data-wine]"), frame = $("[data-frame]"), cam = $("[data-cam]"), dim = $("[data-dim]");
   var pinsEl = $("[data-pins]"), sparkle = $("[data-sparkle]");
   var tabsEl = $("[data-wine-tabs]"), panelsEl = $("[data-wine-panels]");
-  var AR = 1240 / 470, base = { w: 0, h: 0, fit: 1 };
+  var AR = 1600 / 619, base = { w: 0, h: 0, fit: 1 };
   var STATES = [{ x: null, overview: true }].concat(D.borok);   // 0 = a teljes sor, aztán a borstílusok
   var active = -1, wineScrub = null;
 
@@ -111,7 +111,8 @@
       var p = document.createElement("div");
       p.className = "wpanel"; p.id = "wp-" + b.id; p.hidden = true;
       p.setAttribute("role", "tabpanel"); p.setAttribute("aria-labelledby", "wt-" + b.id);
-      p.innerHTML = "<h3>" + esc(b.nev) + "</h3><p>" + esc(b.leiras) + '</p><p class="wpanel__pair">Ajánljuk: ' + esc(b.illik.toLowerCase()) + "</p>";
+      p.innerHTML = "<h3>" + esc(b.nev) + "</h3><p>" + esc(b.leiras) + '</p><p class="wpanel__pair">Ajánljuk: ' + esc(b.illik.toLowerCase()) + "</p>" +
+        '<button type="button" class="wpanel__add" data-add-cat="' + esc(b.id) + '">+ Kosárba</button>';
       panelsEl.appendChild(p);
 
       if (b.x != null) {
@@ -193,7 +194,7 @@
     if (!upcoming.length) {
       evEl.innerHTML =
         '<div class="empty">' +
-        '<figure class="empty__img"><img src="img/kulcslyuk-dugok-m.webp" srcset="img/kulcslyuk-dugok-m.webp 600w, img/kulcslyuk-dugok.webp 900w" sizes="(max-width:760px) 60vw, 300px" width="900" height="900" alt="A Bormámor kulcslyuk-emblémája borosdugókból kirakva" loading="lazy" decoding="async" data-lb="img/kulcslyuk-dugok.webp"><figcaption>Zárva, amíg nincs időpont — de a kulcs nálunk van.</figcaption></figure>' +
+        '<svg class="empty__mark" viewBox="0 0 367.99 588.19" aria-hidden="true"><use href="#i-keyhole"/></svg>' +
         '<div class="empty__body"><h3>Most nincs meghirdetett esemény</h3>' +
         "<p>A következő kóstolót a Facebook-oldalunkon jelentjük be először. Ha szeretnéd, szólunk neked is, amint megvan az időpont.</p>" +
         '<div class="empty__cta"><a class="btn btn--wine" href="#jelentkezes" data-preset="Következő kóstoló">Értesítést kérek</a>' +
@@ -237,6 +238,145 @@
     var sel = $("[data-event-select]"), v = a.getAttribute("data-preset");
     $$("option", sel).forEach(function (o) { if (o.value === v) sel.value = v; });
   });
+
+  var HU_DAYS_CAP = ["Vasárnap", "Hétfő", "Kedd", "Szerda", "Csütörtök", "Péntek", "Szombat"];
+  /* ── ÖSSZEÁLLÍTÓ + KOSÁR (átvétel a boltban, kiszállítás nincs) ── */
+  var O = D.osszeallito || { kategoriak: [], keretek: ["Mindegy"], csomagolas: ["Nem kell"] };
+  var CAT = {}; O.kategoriak.forEach(function (k) { CAT[k.id] = k; });
+  var WINE2CAT = { feher: "feher", rose: "rose", siller: "siller", voros: "voros", pezsgo: "pezsgo" };
+  var cart = { lines: {} };
+  try { var saved = JSON.parse(localStorage.getItem("bm-kosar") || "null"); if (saved && saved.lines) cart = saved; } catch (x) {}
+  function saveCart() { try { localStorage.setItem("bm-kosar", JSON.stringify(cart)); } catch (x) {} }
+  function count() { var n = 0; Object.keys(cart.lines).forEach(function (k) { n += cart.lines[k].qty; }); return n; }
+
+  var catalogEl = $("[data-catalog]"), linesEl = $("[data-cart-lines]"), emptyEl = $("[data-cart-empty]");
+  var countEl = $("[data-cart-count]"), fab = $("[data-cartfab]"), toastEl = $("[data-toast]");
+
+  function stepper(id, qty) {
+    return '<div class="step" data-id="' + id + '">' +
+      '<button type="button" class="step__b" data-dec aria-label="Eggyel kevesebb: ' + esc(CAT[id].nev) + '"' + (qty ? "" : " disabled") + '>−</button>' +
+      '<span class="step__n" aria-live="polite">' + qty + '</span>' +
+      '<button type="button" class="step__b" data-inc aria-label="Eggyel több: ' + esc(CAT[id].nev) + '">+</button></div>';
+  }
+  function renderCatalog() {
+    if (!catalogEl) return;
+    var groups = {};
+    O.kategoriak.forEach(function (k) { (groups[k.csoport] = groups[k.csoport] || []).push(k); });
+    catalogEl.innerHTML = Object.keys(groups).map(function (g) {
+      return '<div class="bgroup"><h3 class="bgroup__h">' + esc(g) + '</h3><ul class="bgroup__list">' + groups[g].map(function (k) {
+        var q = cart.lines[k.id] ? cart.lines[k.id].qty : 0;
+        return '<li class="bitem' + (q ? " is-on" : "") + '" data-item="' + k.id + '"><span class="bitem__n">' + esc(k.nev) + "</span>" + stepper(k.id, q) + "</li>";
+      }).join("") + "</ul></div>";
+    }).join("");
+  }
+  function renderCart() {
+    var ids = Object.keys(cart.lines), n = count();
+    if (linesEl) linesEl.innerHTML = ids.map(function (id) {
+      var l = cart.lines[id];
+      return '<li class="cline"><div class="cline__top"><span class="cline__n">' + esc(CAT[id].nev) + "</span>" + stepper(id, l.qty) + "</div>" +
+        '<label class="cline__k"><span>Keret palackonként</span><select data-keret="' + id + '">' +
+        O.keretek.map(function (k) { return '<option' + (k === l.keret ? " selected" : "") + ">" + esc(k) + "</option>"; }).join("") + "</select></label></li>";
+    }).join("");
+    if (emptyEl) emptyEl.hidden = n > 0;
+    if (countEl) countEl.textContent = n + (n === 1 ? " tétel" : " tétel");
+    $$("[data-navcart-count], [data-cartfab-count]").forEach(function (e) { e.textContent = n; });
+    $$("[data-navcart]").forEach(function (e) { e.classList.toggle("has-items", n > 0); });
+    updateFab();
+    renderCatalog();
+  }
+  function setQty(id, q, silent) {
+    if (!CAT[id]) return;
+    q = clamp(q, 0, 48);
+    if (q === 0) delete cart.lines[id];
+    else cart.lines[id] = { qty: q, keret: (cart.lines[id] && cart.lines[id].keret) || O.keretek[0] };
+    saveCart(); renderCart();
+    if (!silent && q > 0) toast(CAT[id].nev + " — kosárban: " + q + " db");
+  }
+  function add(id) { setQty(id, (cart.lines[id] ? cart.lines[id].qty : 0) + 1); }
+  var toastT;
+  function toast(msg) {
+    if (!toastEl) return;
+    toastEl.textContent = msg; toastEl.classList.add("is-on");
+    clearTimeout(toastT); toastT = setTimeout(function () { toastEl.classList.remove("is-on"); }, 2200);
+  }
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest("[data-inc],[data-dec]");
+    if (b) { var id = b.closest("[data-id]").getAttribute("data-id"), cur = cart.lines[id] ? cart.lines[id].qty : 0; setQty(id, cur + (b.hasAttribute("data-inc") ? 1 : -1)); return; }
+    var a = e.target.closest("[data-add-cat]");
+    if (a) { add(a.getAttribute("data-add-cat")); return; }
+  });
+  document.addEventListener("change", function (e) {
+    var s = e.target.closest("[data-keret]");
+    if (s) { var id = s.getAttribute("data-keret"); if (cart.lines[id]) { cart.lines[id].keret = s.value; saveCart(); } }
+  });
+
+  // polc sorai: „Kosárba” gomb minden sorhoz
+  $$("[data-shelf] li").forEach(function (li) {
+    var id = li.getAttribute("data-add"), b = document.createElement("button");
+    b.type = "button"; b.className = "shelf__add";
+    if (id) { b.setAttribute("data-add-cat", id); b.textContent = "Kosárba"; b.setAttribute("aria-label", "Kosárba: " + CAT[id].nev); }
+    else if (li.hasAttribute("data-gift")) { b.textContent = "Ajándékot állítok össze"; b.addEventListener("click", function () { var g = $("[data-gift-toggle]"); g.checked = true; g.dispatchEvent(new Event("change")); $("#osszeallito").scrollIntoView({ behavior: reduce ? "auto" : "smooth" }); }); }
+    li.appendChild(b);
+  });
+
+  // ajándék, csomagolás, átvételi napok (csak nyitvatartási napok: péntek, szombat)
+  var giftT = $("[data-gift-toggle]"), giftBox = $("[data-giftbox]");
+  if (giftT) giftT.addEventListener("change", function () { giftBox.hidden = !giftT.checked; });
+  var packSel = $("[data-pack]");
+  if (packSel) packSel.innerHTML = O.csomagolas.map(function (c) { return "<option>" + esc(c) + "</option>"; }).join("");
+  var pickSel = $("[data-pickup]");
+  if (pickSel) {
+    var opts = [], d = new Date(); d.setHours(0, 0, 0, 0);
+    for (var i = 1; opts.length < 6 && i < 40; i++) {
+      var x = new Date(d); x.setDate(d.getDate() + i);
+      var wd = x.getDay();
+      if (wd === 5 || wd === 6) opts.push(HU_DAYS_CAP[wd] + ", " + HU_MONTHS[x.getMonth()] + " " + x.getDate() + ". (" + (wd === 5 ? "10–18" : "9–14") + ")");
+    }
+    pickSel.innerHTML = opts.map(function (o) { return "<option>" + esc(o) + "</option>"; }).join("");
+  }
+
+  // küldés: ellenőrzés, majd e-mail-piszkozat (háttérrendszer nélkül)
+  var cform = $("[data-cart-form]"), cstatus = $("[data-cart-status]");
+  if (cform) cform.addEventListener("submit", function (e) {
+    e.preventDefault();
+    cstatus.className = "cart__status"; cstatus.textContent = "";
+    var f = cform.elements, errs = [];
+    var mark = function (el, msg) {
+      var p = el.parentElement.querySelector(".cfield__err");
+      el.setAttribute("aria-invalid", msg ? "true" : "false");
+      if (p) { p.textContent = msg || ""; p.hidden = !msg; }
+      if (msg) errs.push(el);
+    };
+    if (!count()) { cstatus.classList.add("is-err"); cstatus.textContent = "A kosár üres — adj hozzá legalább egy tételt."; return; }
+    mark(f.nev, f.nev.value.trim().length < 2 ? "Add meg a neved." : "");
+    mark(f.telefon, /^[+0-9 ()\/-]{6,20}$/.test(f.telefon.value.trim()) ? "" : "Adj meg egy telefonszámot, hogy egyeztetni tudjunk.");
+    mark(f.email, /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(f.email.value.trim()) ? "" : "Adj meg egy érvényes e-mail-címet.");
+    if (!f.kor.checked) errs.push(f.kor);
+    if (!f.adat.checked) errs.push(f.adat);
+    if (errs.length) {
+      errs[0].focus();
+      cstatus.classList.add("is-err");
+      cstatus.textContent = !f.kor.checked ? "Alkoholt csak 18 év felettieknek állítunk össze — jelöld be, ha elmúltál 18." : "Néhány mezőt javítani kell.";
+      if (f.kor.checked && !f.adat.checked) cstatus.textContent = "Az elküldéshez el kell fogadnod az adatkezelési tájékoztatót.";
+      return;
+    }
+    var lines = Object.keys(cart.lines).map(function (id) { var l = cart.lines[id]; return "- " + CAT[id].nev + ": " + l.qty + " db (keret: " + l.keret + ")"; });
+    var body = ["Összeállítás átvétele a boltban", "", "Tételek:"].concat(lines, [
+      "", "Átvétel: " + f.atvetel.value,
+      "Ajándék: " + (f.ajandek.checked ? "igen — " + (f.cimzett.value.trim() || "címzett nincs megadva") + ", csomagolás: " + f.csomag.value + (f.uzenet.value.trim() ? ", kártya: „" + f.uzenet.value.trim() + "”" : "") : "nem"),
+      "Kérés: " + (f.megjegyzes.value.trim() || "—"),
+      "", "Név: " + f.nev.value.trim(), "Telefon: " + f.telefon.value.trim(), "E-mail: " + f.email.value.trim(),
+      "", "18 év feletti vagyok; az adatkezelési tájékoztatót elfogadtam."]).join("\n");
+    window.location.href = "mailto:bormamormonor@gmail.com?subject=" + encodeURIComponent("Összeállítás: " + count() + " tétel — " + f.nev.value.trim()) + "&body=" + encodeURIComponent(body);
+    cstatus.classList.add("is-ok");
+    cstatus.textContent = "Megnyílt az e-mail-piszkozat az összeállítással. Küldd el, és visszaigazoljuk, mikor veheted át.";
+  });
+
+  // lebegő kosárgomb mobilon, ha van tétel és a kosár nem látszik
+  var cartVisible = false;
+  function updateFab() { if (fab) fab.hidden = !(count() > 0 && !cartVisible); }
+  if ("IntersectionObserver" in window && $("#kosar")) new IntersectionObserver(function (es) { cartVisible = es[0].isIntersecting; updateFab(); }).observe($("#kosar"));
+  renderCart();
 
   /* ── JELENTKEZÉS ─────────────────────────── */
   var form = $("[data-form]");
@@ -528,7 +668,6 @@
       var im = f.querySelector("img");
       if (im) gsap.fromTo(im, { scale: 1.18 }, { scale: 1, ease: "none", scrollTrigger: { trigger: f, start: "top bottom", end: "bottom top", scrub: true } });
     });
-    gsap.from(".empty__img", { clipPath: "inset(100% 0 0 0)", duration: 1.1, ease: "power3.inOut", scrollTrigger: { trigger: ".empty__img", start: "top 88%", once: true } });
 
     /* Monor — a kulcslyuk a háttérben lassan mozdul */
     gsap.fromTo(".monor__mark", { yPercent: -60 }, { yPercent: -40, ease: "none", scrollTrigger: { trigger: ".monor", start: "top bottom", end: "bottom top", scrub: true } });

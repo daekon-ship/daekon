@@ -13,7 +13,7 @@
 <meta property="og:image" content="img/og.jpg">
 <meta property="og:locale" content="hu_HU">
 <link rel="preload" href="fonts/instrumentserif-regular.woff" as="font" type="font/woff" crossorigin>
-<link rel="preload" href="img/nyito.webp" as="image" type="image/webp" media="(min-width: 701px)">
+<link rel="preload" href="img/nyito.webp" as="image" type="image/webp" media="(min-width: 701px)" imagesrcset="img/nyito.webp 1920w, img/nyito-4k.webp 3840w" imagesizes="100vw">
 <link rel="preload" href="img/nyito-m.webp" as="image" type="image/webp" media="(max-width: 700px)">
 <link rel="preload" href="fonts/outfit-regular.woff" as="font" type="font/woff" crossorigin>
 <link rel="stylesheet" href="bormamor.css?v=5">
@@ -44,11 +44,12 @@
     </a>
     <nav class="nav__links" aria-label="Fő navigáció">
       <a href="#borok">Borok</a>
+      <a href="#osszeallito">Összeállító</a>
       <a href="#kostolok">Kóstolók</a>
       <a href="#esemenyek">Események</a>
-      <a href="#monor">Monor</a>
       <a href="#kapcsolat">Kapcsolat</a>
     </nav>
+    <a class="nav__cart" href="#kosar" data-navcart>Kosár <b data-navcart-count>0</b></a>
     <a class="nav__tel" href="tel:+36203830016">+36 20 383 0016</a>
     <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="menu" data-menu-open>
       <span class="nav__toggle-label">Menü</span>
@@ -63,6 +64,7 @@
     <nav aria-label="Mobil navigáció">
       <a href="#borok">Borok</a>
       <a href="#tobb-mint-bor">Több mint bor</a>
+      <a href="#osszeallito">Összeállító</a>
       <a href="#kostolok">Kóstolók</a>
       <a href="#esemenyek">Események</a>
       <a href="#jelentkezes">Jelentkezés</a>
@@ -82,8 +84,8 @@
 <section class="open" id="top" aria-labelledby="hero-cim" data-open>
   <div class="open__stage">
     <picture class="open__photo">
-      <source media="(max-width: 700px)" srcset="img/nyito-m.webp" width="1000" height="720">
-      <img src="img/nyito.webp" width="1640" height="720" alt="Kéz nyúl egy kulcslyukas Bormámor-címkés borosüveg felé sötét fa asztalon" fetchpriority="high" decoding="async" data-open-img>
+      <source media="(max-width: 700px)" srcset="img/nyito-m.webp" width="1500" height="1080">
+      <img src="img/nyito.webp" srcset="img/nyito.webp 1920w, img/nyito-4k.webp 3840w" sizes="100vw" width="1920" height="843" alt="Kéz nyúl egy kulcslyukas Bormámor-címkés borosüveg felé sötét fa asztalon" fetchpriority="high" decoding="async" data-open-img>
     </picture>
     <svg class="open__lock" data-lock aria-hidden="true"></svg>
     <div class="open__shade" aria-hidden="true"></div>
@@ -94,7 +96,7 @@
       <p class="open__lead">Borkereskedés Monoron, a Kiss Ernő utcában.</p>
       <div class="open__cta">
         <a class="btn btn--light" href="#borok">Fedezd fel a Bormámort</a>
-        <a class="btn btn--line" href="#kostolok">Kóstolók és események</a>
+        <a class="btn btn--line" href="#osszeallito">Állítsd össze</a>
       </div>
     </div>
 
@@ -117,7 +119,7 @@
 
     <figure class="frame" data-frame>
       <div class="frame__cam" data-cam>
-        <img src="img/poharak.webp" width="1240" height="470" alt="Négy kóstolópohár egy hordó tetején: fehér, rosé, siller és vörös bor" decoding="async">
+        <img src="img/poharak.webp" srcset="img/poharak.webp 1600w, img/poharak-2x.webp 3200w" sizes="(max-width: 700px) 200vw, 120vw" width="1600" height="619" alt="Négy kóstolópohár egy hordó tetején: fehér, rosé, siller és vörös bor" decoding="async">
         <div class="frame__pins" data-pins></div>
       </div>
       <div class="frame__dim" data-dim aria-hidden="true"></div>
@@ -143,8 +145,8 @@
 <section class="key" id="kulcs" aria-labelledby="kulcs-cim">
   <figure class="key__film" data-film>
     <picture>
-      <source media="(max-width: 700px)" srcset="img/dugohuzo-szeles-m.webp" width="900" height="545">
-      <img src="img/dugohuzo-szeles.webp" width="1640" height="605" alt="Dugóhúzó és két dugó, mindkettőn a Bormámor kulcslyuk-jele, sötét fa asztalon" loading="lazy" decoding="async" data-lb="img/dugohuzo-szeles.webp">
+      <source media="(max-width: 700px)" srcset="img/dugohuzo-szeles-m.webp" width="1200" height="726">
+      <img src="img/dugohuzo-szeles.webp" srcset="img/dugohuzo-szeles.webp 1640w, img/dugohuzo-szeles-2x.webp 3280w" sizes="100vw" width="1640" height="605" alt="Dugóhúzó és két dugó, mindkettőn a Bormámor kulcslyuk-jele, sötét fa asztalon" loading="lazy" decoding="async" data-lb="img/dugohuzo-szeles-2x.webp">
     </picture>
     <figcaption class="sub">A kulcslyuk a dugón is.</figcaption>
   </figure>
@@ -164,7 +166,7 @@
   <div class="wrap shelf__in">
     <div class="shelf__visual">
       <figure class="keyhole-photo" data-kh-photo>
-        <img src="img/dugok.webp" width="610" height="720" alt="Halomnyi használt borosdugó közelről" loading="lazy" decoding="async" data-lb="img/dugok.webp">
+        <img src="img/dugok.webp" width="1220" height="1440" alt="Halomnyi használt borosdugó közelről" loading="lazy" decoding="async" data-lb="img/dugok.webp">
       </figure>
       <p class="sub sub--left">Ahány dugó, annyi palack.</p>
     </div>
@@ -172,16 +174,71 @@
       <h2 id="tobb-cim" class="h2 reveal-lines">Több mint bor</h2>
       <p class="shelf__lead">A polcon időszakosan ezek is ott vannak. A készlet változik — ha valamit biztosan keresel, előtte telefonálj.</p>
       <ol class="shelf__list" data-shelf>
-        <li><b>Kézműves sörök</b><span>Kis főzdék tételei, amelyek nem kerülnek a szupermarket polcaira.</span></li>
-        <li><b>Pálinkák</b><span>Gyümölcsből, gondosan főzve — kóstolásra és ajándékba.</span></li>
-        <li><b>Whisky és gin</b><span>Válogatott prémium tételek, ha nem bor kerül az asztalra.</span></li>
-        <li><b>Rum és konyak</b><span>Lassú estékre, egy pohárnyi beszélgetéshez.</span></li>
-        <li><b>Kézműves különlegességek</b><span>Helyi és hazai gasztronómiai termékek a bor mellé.</span></li>
-        <li><b>Ajándékba</b><span>Mondd el, kinek keresed, és összeállítjuk vele együtt.</span></li>
+        <li data-add="sor"><b>Kézműves sörök</b><span>Kis főzdék tételei, amelyek nem kerülnek a szupermarket polcaira.</span></li>
+        <li data-add="palinka"><b>Pálinkák</b><span>Gyümölcsből, gondosan főzve — kóstolásra és ajándékba.</span></li>
+        <li data-add="whisky"><b>Whisky és gin</b><span>Válogatott prémium tételek, ha nem bor kerül az asztalra.</span></li>
+        <li data-add="rum"><b>Rum és konyak</b><span>Lassú estékre, egy pohárnyi beszélgetéshez.</span></li>
+        <li data-add="gasztro"><b>Kézműves különlegességek</b><span>Helyi és hazai gasztronómiai termékek a bor mellé.</span></li>
+        <li data-gift><b>Ajándékba</b><span>Mondd el, kinek keresed, és összeállítjuk vele együtt.</span></li>
       </ol>
     </div>
   </div>
 </section>
+
+<!-- ÖSSZEÁLLÍTÓ — kosár kiszállítás nélkül, átvétel a boltban ───────── -->
+<section class="build" id="osszeallito" aria-labelledby="build-cim">
+  <div class="wrap">
+    <header class="build__head">
+      <h2 id="build-cim" class="h2 reveal-lines">Állítsd össze, mi előkészítjük</h2>
+      <p>Borok, pálinkák, különlegességek — magadnak vagy ajándékba. Nincs kiszállítás: összekészítjük, és a boltban veszed át.</p>
+      <ol class="build__steps">
+        <li>Összeállítod</li>
+        <li>Elküldöd</li>
+        <li>Visszaigazoljuk</li>
+        <li>Átveszed a boltban</li>
+      </ol>
+    </header>
+
+    <div class="build__grid">
+      <div class="build__catalog" data-catalog></div>
+
+      <aside class="cart" id="kosar" aria-labelledby="kosar-cim">
+        <div class="cart__head">
+          <h3 id="kosar-cim">Kosár</h3>
+          <span class="cart__count" data-cart-count>0 tétel</span>
+        </div>
+        <p class="cart__empty" data-cart-empty>Még üres. Válassz a listából — a pontos tételeket mi ajánljuk a megadott keret szerint.</p>
+        <ul class="cart__lines" data-cart-lines></ul>
+
+        <form class="cart__form" data-cart-form novalidate>
+          <label class="cart__gift">
+            <input type="checkbox" name="ajandek" data-gift-toggle>
+            <span>Ajándékba lesz</span>
+          </label>
+          <div class="cart__giftbox" data-giftbox hidden>
+            <div class="cfield"><label for="c-cimzett">Kinek szól?</label><input id="c-cimzett" name="cimzett" type="text" maxlength="60" placeholder="pl. Apának"></div>
+            <div class="cfield"><label for="c-uzenet">Üzenet a kártyára <span>(nem kötelező)</span></label><textarea id="c-uzenet" name="uzenet" rows="2" maxlength="160"></textarea></div>
+            <div class="cfield"><label for="c-csomag">Csomagolás</label><select id="c-csomag" name="csomag" data-pack></select></div>
+          </div>
+
+          <div class="cfield"><label for="c-atvetel">Mikor jönnél érte?</label><select id="c-atvetel" name="atvetel" data-pickup required></select></div>
+          <div class="cfield"><label for="c-nev">Név</label><input id="c-nev" name="nev" type="text" autocomplete="name" required maxlength="80"><p class="cfield__err" hidden></p></div>
+          <div class="cfield cfield--half"><label for="c-tel">Telefon</label><input id="c-tel" name="telefon" type="tel" autocomplete="tel" inputmode="tel" required maxlength="30"><p class="cfield__err" hidden></p></div>
+          <div class="cfield cfield--half"><label for="c-email">E-mail</label><input id="c-email" name="email" type="email" autocomplete="email" inputmode="email" required maxlength="120"><p class="cfield__err" hidden></p></div>
+          <div class="cfield"><label for="c-megj">Kérés a válogatáshoz <span>(nem kötelező)</span></label><textarea id="c-megj" name="megjegyzes" rows="2" maxlength="600" placeholder="pl. száraz fehér, monori pincéből"></textarea></div>
+          <label class="ccheck"><input type="checkbox" name="kor" required><span>Elmúltam 18 éves.</span></label>
+          <label class="ccheck"><input type="checkbox" name="adat" required><span>Elfogadom az <a class="link" href="#adatkezeles">adatkezelési tájékoztatót</a>.</span></label>
+          <button class="btn btn--light cart__send" type="submit" data-cart-send>Összeállítás elküldése</button>
+          <p class="cart__status" data-cart-status role="status" aria-live="polite"></p>
+          <p class="cart__note">Fizetés átvételkor, a boltban. Az összeállítást telefonon vagy e-mailben visszaigazoljuk. <b>Látványterv-állapot:</b> a küldés most e-mail-piszkozatot nyit.</p>
+        </form>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<a class="cartfab" href="#kosar" data-cartfab hidden>Kosár <b data-cartfab-count>0</b></a>
+<div class="toast" data-toast role="status" aria-live="polite"></div>
 
 <!-- 5. KÓSTOLÓK ──────────────────────────────────────────────────── -->
 <section class="taste" id="kostolok" aria-labelledby="kostolo-cim">
@@ -191,12 +248,6 @@
       <p>A bor akkor válik történetté, amikor együtt kóstoljuk. Időszakosan kóstolókat és gasztronómiai esteket tartunk, mindig más témával.</p>
       <a class="btn btn--light" href="#jelentkezes" data-preset="Következő kóstoló">Érdeklődöm a következő kóstolóról</a>
     </div>
-    <figure class="taste__visual">
-      <div class="keyhole-photo keyhole-photo--dark" data-kh-photo>
-        <img src="img/palackok-felulrol.webp" width="540" height="404" alt="Sötét borosüvegek felülről, köztük a Bormámor kulcslyuk-emblémája" loading="lazy" decoding="async" data-lb="img/palackok-felulrol.webp">
-      </div>
-      <figcaption class="sub">Kóstolóra váró palackok.</figcaption>
-    </figure>
     <dl class="taste__list">
       <div><dt>Borkóstolók</dt><dd>Monori és magyar borok, vezetett sorrendben, egy asztal körül.</dd></div>
       <div><dt>Tematikus kóstolók</dt><dd>Pálinka, whisky, pezsgő — alkalmanként más fókusszal.</dd></div>
@@ -336,7 +387,6 @@
   <p class="lb__count" data-lb-count></p>
 </dialog>
 
-<div class="grain" aria-hidden="true"></div>
 
 <script src="js/adatok.js?v=5"></script>
 <script src="js/gsap.min.js" defer></script>
