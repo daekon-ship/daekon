@@ -23,11 +23,12 @@
 :root {
   --teal: #3FB8AF;        /* a logó türkize */
   --teal-deep: #0F3B37;   /* mélytürkiz felület */
-  --ink: #1C1612;         /* meleg szénfekete */
+  --ink: #14110E;         /* meleg szénfekete */
   --ink-2: #2A221C;
-  --cream: #F4EBDA;       /* pita-krém */
+  --cream: #F4EDE1;       /* pita-krém */
   --cream-2: #E8DBC2;
-  --lime: #C9DC3E;        /* a Taverna asztalainak lime-ja */
+  --lime: #F0B23A;        /* sáfrány — a sült krumpli és a pita színe; a rendelés-gomb */
+  --night: #0E2F2C;       /* éjtürkiz: hero és kiszállítás alapja */
   --muted-cream: rgba(244, 235, 218, .74);
   --muted-ink: #5A5047;
   --line-cream: rgba(244, 235, 218, .2);
@@ -143,7 +144,8 @@ sup { font-size: .7em; line-height: 0; }
   color: var(--ink);
   transition: background-color .35s, color .35s, transform .4s var(--ease);
 }
-.site-head.is-scrolled { background: var(--teal); box-shadow: 0 1px 0 rgba(28, 22, 18, .18); }
+.site-head { color: var(--cream); }
+.site-head.is-scrolled { background: var(--night); box-shadow: 0 1px 0 rgba(244, 237, 225, .1); }
 .site-head.is-solid { background: rgba(28, 22, 18, .94); color: var(--cream); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
 .site-head.is-hidden { transform: translateY(-100%); }
 .head-in {
@@ -199,7 +201,7 @@ body.drawer-open .site-head { background: transparent; color: var(--ink); -webki
    01 HERO
    ========================================================= */
 .hero {
-  position: relative; background: var(--teal); color: var(--ink);
+  position: relative; background: var(--night); color: var(--cream);
   padding: calc(var(--head-h) + 10px) 0 36px;
   overflow: clip;
 }
@@ -211,8 +213,8 @@ body.drawer-open .site-head { background: transparent; color: var(--ink); -webki
 }
 .hero-copy { display: contents; }
 .hero-status { grid-area: status; display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: .95rem; }
-.dot { width: 11px; height: 11px; border-radius: 50%; background: var(--ink); box-shadow: 0 0 0 3px rgba(28, 22, 18, .18); flex: none; }
-.is-open .dot { background: var(--lime); box-shadow: 0 0 0 2px var(--ink); }
+.dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(244, 237, 225, .45); flex: none; }
+.is-open .dot { background: var(--teal); box-shadow: 0 0 0 4px rgba(63, 184, 175, .25); }
 .hero-title {
   grid-area: title;
   font-family: var(--display); font-size: var(--fs-hero); font-weight: 850; font-stretch: 64%;
@@ -226,7 +228,7 @@ body.drawer-open .site-head { background: transparent; color: var(--ink); -webki
 
 .hero-stage {
   grid-area: stage; position: relative;
-  width: 100%; max-width: 440px; margin: 4px 0 0;
+  width: min(80%, 330px); margin: 4px 0 0;
   perspective: 1100px;
 }
 .arch { position: relative; border-radius: var(--arch); overflow: hidden; background: var(--ink-2); }
@@ -236,7 +238,7 @@ body.drawer-open .site-head { background: transparent; color: var(--ink); -webki
 .hero-arch img { object-position: 50% 50%; }
 
 @media (min-width: 600px) {
-  .hero-stage { width: min(70vw, 440px); }
+  .hero-stage { width: min(56vw, 360px); }
 }
 @media (min-width: 900px) {
   .hero { padding: calc(var(--head-h) + 24px) 0 64px; min-height: min(100svh, 900px); display: flex; align-items: center; }
@@ -247,7 +249,7 @@ body.drawer-open .site-head { background: transparent; color: var(--ink); -webki
     column-gap: clamp(32px, 4vw, 72px); align-items: center;
   }
   .hero-copy { display: flex; flex-direction: column; gap: 26px; grid-area: copy; position: relative; z-index: 2; }
-  .hero-stage { width: min(100%, 500px, calc((100svh - var(--head-h) - 100px) * .75)); min-width: 340px; margin: 0 0 0 auto; }
+  .hero-stage { width: min(100%, 400px, calc((100svh - var(--head-h) - 140px) * .86)); min-width: 320px; margin: 0 0 0 auto; }
     .hero-cta .btn-ink { flex: 0 0 auto; }
 }
 
@@ -262,10 +264,10 @@ body.drawer-open .site-head { background: transparent; color: var(--ink); -webki
 .sig-frame { overflow: hidden; background: var(--ink-2); }
 .sig-frame img { width: 100%; height: 100%; object-fit: cover; }
 .sig-a .sig-frame { aspect-ratio: 1; border-radius: 6px; }
-.sig-b { width: 100%; }
+.sig-b { width: 82%; }
 .sig-b .sig-frame { aspect-ratio: 4 / 5; border-radius: var(--arch); }
 .sig-b img { object-position: 50% 60%; }
-.sig-c { width: 100%; }
+.sig-c { width: 82%; margin-left: auto; }
 .sig-c .sig-frame { aspect-ratio: 1; border-radius: 6px 6px 140px 6px; }
 .sig-c img { object-position: 50% 94%; }
 .sig-grid figcaption { display: grid; gap: 4px; max-width: 46ch; }
@@ -281,7 +283,7 @@ body.drawer-open .site-head { background: transparent; color: var(--ink); -webki
   .sig-a { grid-column: 1 / 8; grid-row: 1; }
   .sig-b { grid-column: 8 / 13; grid-row: 1; width: auto; margin: 0; }
   .sig-quote { grid-column: 1 / 8; grid-row: 2; margin-top: 56px; }
-  .sig-c { grid-column: 8 / 13; grid-row: 2; width: auto; margin-top: 56px; }
+  .sig-c { grid-column: 8 / 13; grid-row: 2; width: auto; margin: 56px 0 0; }
 }
 
 /* =========================================================
@@ -529,29 +531,31 @@ body.drawer-open .site-head { background: transparent; color: var(--ink); -webki
 /* =========================================================
    07 HÁZHOZSZÁLLÍTÁS
    ========================================================= */
-.del { background: var(--teal); color: var(--ink); padding: var(--sec) 0; overflow: clip; }
+.del { background: var(--night); color: var(--cream); padding: var(--sec) 0; overflow: clip; }
 .del-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 28px; }
 .del-copy { display: grid; gap: 26px; align-content: start; }
 .del-copy .btn { justify-self: start; }
 .del-rules { display: grid; }
-.del-rules li { display: grid; gap: 2px; padding: 11px 0; border-top: 2px solid rgba(28, 22, 18, .28); }
+.del-rules li { display: grid; gap: 2px; padding: 11px 0; border-top: 1px solid rgba(244, 237, 225, .18); }
+.del-rules span { color: var(--muted-cream); }
+.del-rules b { color: var(--teal); }
 .del-rules b { font-family: var(--display); font-weight: 800; font-stretch: 80%; font-size: 1.2rem; }
 .del-dial { display: grid; gap: 8px; justify-items: center; }
 .del-dial svg { width: 100%; max-width: 520px; height: auto; overflow: visible; }
-.dial-rings circle { fill: none; stroke: rgba(28, 22, 18, .3); stroke-width: 1.5; stroke-dasharray: 3 6; }
-.dial-core { fill: var(--ink); }
-.dial-monor { font-family: var(--display); font-weight: 800; font-stretch: 80%; font-size: 15px; fill: var(--lime); }
-.dial-spoke { stroke: var(--ink); stroke-width: 2; }
-.dial-dot { fill: var(--ink); }
-.dial-label { font-family: var(--display); font-weight: 700; font-stretch: 85%; font-size: 15px; fill: var(--ink); }
-.del-dial figcaption { font-size: .85rem; font-weight: 500; }
+.dial-rings circle { fill: none; stroke: rgba(244, 237, 225, .25); stroke-width: 1.5; stroke-dasharray: 3 6; }
+.dial-core { fill: var(--teal); }
+.dial-monor { font-family: var(--display); font-weight: 800; font-stretch: 80%; font-size: 15px; fill: var(--night); }
+.dial-spoke { stroke: var(--teal); stroke-width: 1.5; }
+.dial-dot { fill: var(--teal); }
+.dial-label { font-family: var(--display); font-weight: 700; font-stretch: 85%; font-size: 15px; fill: var(--cream); }
+.del-dial figcaption { font-size: .85rem; font-weight: 500; color: var(--muted-cream); }
 .del-towns {
   display: flex; flex-wrap: wrap; gap: 4px 0;
   font-family: var(--display); font-weight: 750; font-stretch: 72%; font-size: clamp(1.25rem, 1rem + 1.2vw, 2rem); line-height: 1.25;
-  padding-top: 22px; border-top: 3px solid var(--ink);
+  padding-top: 22px; border-top: 1px solid rgba(244, 237, 225, .25);
 }
 .del-towns li:not(:first-child):not(:last-child)::after { content: "/"; margin: 0 .35em; opacity: .45; font-weight: 500; }
-.del-towns li:first-child { background: var(--ink); color: var(--teal); padding: 0 .3em; margin-right: .45em; border-radius: 10px 10px 3px 3px; }
+.del-towns li:first-child { background: var(--teal); color: var(--night); padding: 0 .3em; margin-right: .45em; border-radius: 10px 10px 3px 3px; }
 
 @media (min-width: 760px) {
   .del-grid { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: clamp(20px, 2vw, 32px); align-items: center; }
@@ -654,4 +658,20 @@ body.drawer-open .dock, body.lb-open .dock { transform: translateY(110%); }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; scroll-behavior: auto !important; }
+}
+
+/* =========================================================
+   SZÍNVILÁG — éjtürkiz felületek (hero, kiszállítás)
+   A sötét felületeken a fő gomb türkiz, a körvonalas gomb krém.
+   ========================================================= */
+.hero .btn-ink, .del .btn-ink { background: var(--teal); color: var(--night); --fill: var(--cream); }
+.hero .btn-ink:hover, .del .btn-ink:hover, .hero .btn-ink:focus-visible, .del .btn-ink:focus-visible { color: var(--night); }
+.hero .btn-line { border-color: rgba(244, 237, 225, .7); color: var(--cream); --fill: var(--cream); }
+.hero .btn-line:hover, .hero .btn-line:focus-visible { color: var(--night); }
+.hero-lede { color: var(--muted-cream); }
+.dock-call, .btn-lime { color: var(--ink); }
+@media (max-width: 599px) {
+  .hero-cta { flex-wrap: nowrap; gap: 8px; }
+  .hero-cta .btn { padding: 0 16px; font-size: 1rem; }
+  .hero-cta .btn-ink { flex: 1 1 auto; min-width: 0; }
 }
