@@ -15,7 +15,7 @@
 <link rel="preload" href="fonts/instrumentserif-regular.woff" as="font" type="font/woff" crossorigin>
 <link rel="preload" href="fonts/outfit-regular.woff" as="font" type="font/woff" crossorigin>
 <link rel="preload" href="img/dugo-kulcslyuk.webp" as="image" type="image/webp">
-<link rel="stylesheet" href="bormamor.css?v=2">
+<link rel="stylesheet" href="bormamor.css?v=3">
 <script>if(!matchMedia("(prefers-reduced-motion: reduce)").matches){document.documentElement.classList.add("pre-anim");setTimeout(function(){document.documentElement.classList.remove("pre-anim")},3500)}</script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"LiquorStore","name":"Bormámor Monor Borkereskedés","slogan":"Kulcs a minőséghez","telephone":"+36203830016","email":"bormamormonor@gmail.com","address":{"@type":"PostalAddress","streetAddress":"Kiss Ernő utca 9.","postalCode":"2200","addressLocality":"Monor","addressCountry":"HU"},"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":"Friday","opens":"10:00","closes":"18:00"},{"@type":"OpeningHoursSpecification","dayOfWeek":"Saturday","opens":"09:00","closes":"14:00"}],"sameAs":["https://www.facebook.com/bormamormonor/"]}
@@ -45,7 +45,7 @@
       <a href="#borok">Borok</a>
       <a href="#kostolok">Kóstolók</a>
       <a href="#esemenyek">Események</a>
-      <a href="#galeria">Galéria</a>
+      <a href="#monor">Monor</a>
       <a href="#kapcsolat">Kapcsolat</a>
     </nav>
     <a class="nav__tel" href="tel:+36203830016">+36 20 383 0016</a>
@@ -66,7 +66,6 @@
       <a href="#esemenyek">Események</a>
       <a href="#jelentkezes">Jelentkezés</a>
       <a href="#monor">Monor</a>
-      <a href="#galeria">Galéria</a>
       <a href="#kapcsolat">Kapcsolat</a>
     </nav>
     <div class="menu__foot">
@@ -165,7 +164,7 @@
     <figure class="story__photo" data-mask-reveal>
       <picture>
         <source media="(max-width: 860px)" srcset="img/palack-kez-allo.webp">
-        <img src="img/palack-kez.webp" width="1290" height="360" alt="Kéz nyúl egy Bormámor-címkés borosüvegért sötét fa felületen" loading="lazy" decoding="async">
+        <img src="img/palack-kez.webp" width="1290" height="360" alt="Kéz nyúl egy Bormámor-címkés borosüvegért sötét fa felületen" loading="lazy" decoding="async" data-lb="img/palack-kez.webp">
       </picture>
     </figure>
   </div>
@@ -179,11 +178,10 @@
       <p class="sec-head__lead">A polcokon időszakosan ezek is megtalálhatók. A készlet változik, ezért ha valamit biztosan keresel, előtte érdemes telefonálni.</p>
     </header>
     <ul class="more__grid">
-      <li class="tile tile--photo tile--a"><img src="img/dugok.webp" width="610" height="720" alt="Halomban álló, használt borosdugók közelről" loading="lazy" decoding="async"></li>
+      <li class="tile tile--photo tile--a"><img src="img/dugok.webp" width="610" height="720" alt="Halomban álló, használt borosdugók közelről" loading="lazy" decoding="async" data-lb="img/dugok.webp"></li>
       <li class="tile tile--b"><h3>Kézműves sörök</h3><p>Kis főzdék tételei, amelyek nem kerülnek a szupermarket polcaira.</p></li>
       <li class="tile tile--c tile--wine"><h3>Pálinkák</h3><p>Gyümölcsből, gondosan főzve — kóstolásra és ajándékba.</p></li>
       <li class="tile tile--d"><h3>Whisky és gin</h3><p>Válogatott prémium tételek, ha nem bor kerül az asztalra.</p></li>
-      <li class="tile tile--e tile--photo"><img src="img/palackok-felulrol.webp" width="540" height="404" alt="Sötét borosüvegek felülről, köztük a Bormámor kulcslyuk-emblémája" loading="lazy" decoding="async"></li>
       <li class="tile tile--f tile--stone"><h3>Rum és konyak</h3><p>Lassú estékre, egy pohárnyi beszélgetéshez.</p></li>
       <li class="tile tile--g"><h3>Kézműves különlegességek</h3><p>Helyi és hazai gasztronómiai termékek, amelyek jól illenek a borhoz.</p></li>
       <li class="tile tile--h tile--ink"><h3>Ajándékba</h3><p>Mondd el, kinek keresed, és összeállítjuk vele együtt.</p></li>
@@ -196,7 +194,7 @@
   <figure class="tasting__pano" data-pano>
     <picture>
       <source media="(max-width: 860px)" srcset="img/poharak-kozel.webp">
-      <img src="img/poharak.webp" width="1240" height="470" alt="Négy kóstolópohár egy hordó tetején: fehér, rosé, siller és vörös bor" loading="lazy" decoding="async">
+      <img src="img/poharak.webp" width="1240" height="470" alt="Négy kóstolópohár egy hordó tetején: fehér, rosé, siller és vörös bor" loading="lazy" decoding="async" data-lb="img/poharak.webp">
     </picture>
   </figure>
   <div class="wrap tasting__in">
@@ -238,6 +236,9 @@
       <h2 id="jel-cim" class="h2 reveal-lines">Jelentkezés, érdeklődés</h2>
       <p>Jelentkezz egy meghirdetett eseményre, vagy jelezd, ha a következő kóstolóról szeretnél elsőként hallani. Lénárd László személyesen válaszol.</p>
       <p class="signup__demo" role="note"><b>Látványterv-állapot:</b> az űrlap jelenleg e-mail-piszkozatot nyit a bormamormonor@gmail.com címre. Automatikus visszaigazolás és jelentkezőlista a háttérrendszer bekötése után lesz.</p>
+      <figure class="signup__photo">
+        <img src="img/palackok-felulrol.webp" width="540" height="404" alt="Sötét borosüvegek felülről, köztük a Bormámor kulcslyuk-emblémája" loading="lazy" decoding="async" data-lb="img/palackok-felulrol.webp">
+      </figure>
     </div>
     <form class="form" data-form novalidate>
       <div class="field">
@@ -292,23 +293,14 @@
 <!-- MONOR ────────────────────────────────────────── -->
 <section class="monor" id="monor" aria-labelledby="monor-cim">
   <div class="wrap monor__in">
-    <svg class="monor__mark" viewBox="0 0 367.99 588.19" aria-hidden="true"><use href="#i-keyhole"/></svg>
+    <figure class="monor__photo">
+      <img src="img/kulcslyuk-dugok-m.webp" srcset="img/kulcslyuk-dugok-m.webp 600w, img/kulcslyuk-dugok.webp 900w" sizes="(max-width:860px) 60vw, 30vw" width="900" height="900" alt="A Bormámor kulcslyuk-emblémája borosdugókból kirakva" loading="lazy" decoding="async" data-lb="img/kulcslyuk-dugok.webp">
+    </figure>
     <h2 id="monor-cim" class="h2 monor__h reveal-lines">Monor és a pincefalu</h2>
     <div class="monor__cols">
       <p>Monoron a bor régóta a helyi élet része: a Strázsahegy pincesorai, a környék termelői és az itt élők vendégszeretete nélkül nem lenne miből válogatnunk.</p>
       <p>A Bormámor nem pincészet. Mi válogatunk, kóstolunk és ajánlunk — hogy a monori borok egy helyen, egy kézből legyenek elérhetők, a város közepén.</p>
     </div>
-  </div>
-</section>
-
-<!-- GALÉRIA ──────────────────────────────────────── -->
-<section class="gallery" id="galeria" aria-labelledby="gal-cim">
-  <div class="wrap">
-    <header class="sec-head sec-head--split">
-      <h2 id="gal-cim" class="h2 reveal-lines">Galéria</h2>
-      <p class="sec-head__lead">Dugók, poharak, palackok — a Bormámor saját képeiből. Friss fotókat a <a class="link" href="https://www.facebook.com/bormamormonor/" target="_blank" rel="noopener">Facebook-oldalunkon</a> találsz.</p>
-    </header>
-    <div class="gallery__grid" data-gallery></div>
   </div>
 </section>
 
@@ -363,9 +355,9 @@
   <p class="lb__count" data-lb-count></p>
 </dialog>
 
-<script src="js/adatok.js?v=2"></script>
+<script src="js/adatok.js?v=3"></script>
 <script src="js/gsap.min.js" defer></script>
 <script src="js/ScrollTrigger.min.js" defer></script>
-<script src="bormamor.js?v=2" defer></script>
+<script src="bormamor.js?v=3" defer></script>
 </body>
 </html>

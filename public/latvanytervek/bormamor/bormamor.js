@@ -2,7 +2,7 @@
 (function () {
   "use strict";
 
-  var D = window.BORMAMOR || { esemenyek: [], borok: [], galeria: [] };
+  var D = window.BORMAMOR || { esemenyek: [], borok: [] };
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
@@ -147,8 +147,8 @@
     if (!upcoming.length) {
       evEl.innerHTML =
         '<div class="empty">' +
-        '<svg class="empty__mark" viewBox="0 0 367.99 588.19" aria-hidden="true"><use href="#i-keyhole"/></svg>' +
-        "<div><h3>Most nincs meghirdetett esemény</h3>" +
+        '<div class="empty__img"><img src="img/dugohuzo-m.webp" srcset="img/dugohuzo-m.webp 720w, img/dugohuzo.webp 1400w" sizes="(max-width:760px) 92vw, 45vw" width="1400" height="582" alt="Dugóhúzó és két dugó, rajtuk a Bormámor kulcslyuk-jele" loading="lazy" decoding="async" data-lb="img/dugohuzo.webp"></div>' +
+        '<div class="empty__body"><h3>Most nincs meghirdetett esemény</h3>' +
         "<p>A következő kóstolót a Facebook-oldalunkon jelentjük be először. Ha szeretnéd, szólunk neked is, amint megvan az időpont.</p>" +
         '<div class="empty__cta"><a class="btn btn--wine" href="#jelentkezes" data-preset="Következő kóstoló">Értesítést kérek</a>' +
         '<a class="btn btn--line-dark" href="https://www.facebook.com/bormamormonor/" target="_blank" rel="noopener">Bormámor a Facebookon</a></div></div></div>';
@@ -259,30 +259,29 @@
     });
   }
 
-  /* ── GALÉRIA + LIGHTBOX ──────────────────── */
-  var gal = $("[data-gallery]"), lb = $("[data-lightbox]");
+  /* ── KÉPNÉZEGETŐ: az oldalba szétosztott fotók, sorrendben ── */
+  var lb = $("[data-lightbox]");
   var lbImg = $("[data-lb-img]"), lbCap = $("[data-lb-cap]"), lbCount = $("[data-lb-count]"), lbIndex = 0, lbReturn = null;
-  if (gal && D.galeria.length) {
-    var rows = [];
-    for (var r = 0; r < D.galeria.length; r += 3) rows.push(D.galeria.slice(r, r + 3));
-    gal.innerHTML = rows.map(function (row, ri) {
-      return '<div class="gallery__row">' + row.map(function (g, k) {
-        var i = ri * 3 + k, src = g.kicsi || g.kep;
-        var set = g.kicsi ? esc(g.kicsi) + " " + g.kw + "w, " + esc(g.kep) + " " + g.w + "w" : esc(g.kep) + " " + g.w + "w";
-        return '<div class="gallery__item" style="--ar:' + (g.w / g.h).toFixed(3) + '">' +
-          '<button class="gthumb" type="button" data-gi="' + i + '" aria-label="Nagyítás: ' + esc(g.alt) + '">' +
-          '<img src="' + esc(src) + '" srcset="' + set + '" sizes="(max-width:600px) 92vw, 40vw" alt="' + esc(g.alt) + '" width="' + g.w + '" height="' + g.h + '" loading="lazy" decoding="async"></button></div>';
-      }).join("") + "</div>";
-    }).join("");
-    gal.addEventListener("click", function (e) {
-      var b = e.target.closest("[data-gi]"); if (!b) return;
-      lbReturn = b; showLb(+b.getAttribute("data-gi"));
-      if (typeof lb.showModal === "function") lb.showModal(); else lb.setAttribute("open", "");
-      $("[data-lb-close]").focus();
+  var LB = [];
+  function registerLb() {
+    LB = [];
+    $$("img[data-lb]").forEach(function (img) {
+      var i = LB.length;
+      LB.push({ kep: img.getAttribute("data-lb"), alt: img.alt });
+      var host = img.closest("figure, li, .empty__img") || img.parentElement;
+      if (host.querySelector(":scope > .zoom")) return;
+      var b = document.createElement("button");
+      b.type = "button"; b.className = "zoom"; b.setAttribute("aria-label", "Nagyítás: " + img.alt);
+      b.addEventListener("click", function () {
+        lbReturn = b; showLb(i);
+        if (typeof lb.showModal === "function") lb.showModal(); else lb.setAttribute("open", "");
+        $("[data-lb-close]").focus();
+      });
+      host.appendChild(b);
     });
   }
   function showLb(i) {
-    var n = D.galeria.length; lbIndex = (i + n) % n; var g = D.galeria[lbIndex];
+    var n = LB.length; lbIndex = (i + n) % n; var g = LB[lbIndex];
     lbImg.src = g.kep; lbImg.alt = g.alt; lbCap.textContent = g.alt; lbCount.textContent = (lbIndex + 1) + " / " + n;
     if (!reduce && window.gsap) gsap.fromTo(lbImg, { opacity: 0, scale: .985 }, { opacity: 1, scale: 1, duration: .45, ease: "power2.out" });
   }
@@ -304,6 +303,8 @@
       if (Math.abs(dx) > 40) showLb(lbIndex + (dx < 0 ? 1 : -1));
     }, { passive: true });
   }
+
+  registerLb();
 
   /* ── TÉRKÉP (csak kattintásra töltődik) ──── */
   var mapBtn = $("[data-map-load]");
@@ -412,14 +413,11 @@
       gsap.from(t, { clipPath: i % 2 ? "inset(0 0 100% 0)" : "inset(100% 0 0 0)", duration: 1.1, ease: "power3.inOut",
         scrollTrigger: { trigger: t, start: "top 90%", once: true } });
     });
-    $$(".gallery__item").forEach(function (li, i) {
-      var from = ["inset(0 100% 0 0)", "inset(100% 0 0 0)", "inset(0 0 0 100%)"][i % 3];
-      gsap.from(li, { clipPath: from, duration: 1.1, ease: "power3.inOut", scrollTrigger: { trigger: li, start: "top 92%", once: true } });
-    });
-
     /* Monor — a kulcslyuk lassan elmozdul a szöveg mögött */
-    if (wide) gsap.fromTo(".monor__mark", { yPercent: -10 }, { yPercent: 10, ease: "none",
-      scrollTrigger: { trigger: ".monor", start: "top bottom", end: "bottom top", scrub: true } });
+    gsap.from(".monor__photo", { clipPath: "inset(100% 0 0 0)", duration: 1.2, ease: "power3.inOut",
+      scrollTrigger: { trigger: ".monor__photo", start: "top 85%", once: true } });
+    gsap.from(".empty__img", { clipPath: "inset(0 100% 0 0)", duration: 1.1, ease: "power3.inOut",
+      scrollTrigger: { trigger: ".empty__img", start: "top 88%", once: true } });
 
     window.addEventListener("load", function () { ScrollTrigger.refresh(); });
   }

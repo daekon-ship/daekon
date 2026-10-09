@@ -54,7 +54,7 @@ Kizárólag az ügyfél `client-assets` mappájából, a beégetett feliratok ki
 | `pohar-feher/rose/siller/voros.webp` | elemek-05 (a négy pohár egyenként) | borstílusok |
 | `poharak(-m).webp` | elemek-05 | kóstolók, galéria |
 | `palack-kez(-m, -allo).webp` | elemek-07 | Kulcs a minőséghez, galéria |
-| `dugok.webp`, `dugok-bal.webp` | elemek-06 | Több mint bor, galéria |
+| `dugok.webp` | elemek-06 | Több mint bor |
 | `palackok-felulrol.webp` | FB_IMG_1581839014017 | Több mint bor, galéria |
 | `dugohuzo(-m).webp`, `kulcslyuk-dugok(-m).webp` | elemek-08, elemek-10 | galéria |
 
@@ -70,7 +70,7 @@ Nincs stock-, nincs generált kép, nincs kitalált címke.
 6. **Lénárd László neve** a szövegben aláírásként szerepel — hozzájárulás kell.
 7. **Adatkezelési tájékoztató** szövege hiányzik (a lábléc jelzi).
 8. **Alkoholos termékek:** a lábléc 18+ és felelős fogyasztás mondata maradjon; reklám- és fogyasztóvédelmi átnézés javasolt.
-9. Ügyfél korábban kivetette a galériát a régi oldalról (V9). Az új brief kéri — dönteni kell, maradjon-e.
+9. Külön galéria-blokk nincs (az ügyfél a régi oldalon is kivetette); a képnézegető a szekciókba szétosztott fotókon működik.
 
 ## Mi hiányzik / mi demó
 
@@ -113,13 +113,30 @@ Telefon-emulációval (érintés, 2× pixelsűrűség), képernyőnként görget
 - **Tablet (641–860 px):** a hero kétoszlopos maradt, a kulcslyuk a szöveg mellett áll.
 - Parallax csak 861 px fölött.
 
+## Képelosztás (3. kör)
+
+A külön galéria-blokk megszűnt: egy halomba gyűjtötte és ismételte a képeket. Minden fotó **egyszer**, a hozzá illő szekcióban szerepel, és mind kattintásra nagyítható (billentyűzettel és lapozással is, egy közös képnézegetőben):
+
+| Szekció | Kép |
+|---|---|
+| Hero | kulcslyukas dugó |
+| Borok | a négy pohár egyenként |
+| Kulcs a minőséghez | kéz + címkés palack |
+| Több mint bor | dugóhalom |
+| Kóstolók | négy pohár a hordón |
+| Események (üres állapot) | dugóhúzó és dugók |
+| Jelentkezés | palackok felülről |
+| Monor | kulcslyuk dugókból |
+
+A `dugok-bal.webp` (a dugóhalom ismétlése) törölve.
+
 ## Fájlok
 
 ```
 index.html        oldal (inline SVG logó-szimbólumokkal)
 bormamor.css      design system + layout
 bormamor.js       interakciók, animációk
-js/adatok.js      ESEMÉNYEK, BORSTÍLUSOK, GALÉRIA — itt frissíthető
+js/adatok.js      ESEMÉNYEK, BORSTÍLUSOK — itt frissíthető
 js/gsap.min.js, js/ScrollTrigger.min.js
 fonts/            Instrument Serif, Outfit (WOFF, latin + latin-ext) + OFL licencek
 img/              WebP képek, favicon.svg, og.jpg

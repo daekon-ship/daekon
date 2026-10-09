@@ -42,16 +42,6 @@ window.BORMAMOR = {
       alt: "",
       leiras: "Magyar pezsgők koccintáshoz, meglepetéshez, kis és nagy ünnepekhez.",
       illik: "Koccintáshoz, ajándékba, ünnepre" }
-  ],
-
-  /* GALÉRIA — csak a Bormámor saját / arculati képei.
-   * Hármasával egy sorba kerülnek; a képek sosem vágódnak, a sor magassága igazodik. */
-  galeria: [
-    { kep: "img/dugohuzo.webp",          kicsi: "img/dugohuzo-m.webp",        kw: 720, w: 1400, h: 582, alt: "Dugóhúzó és két dugó, rajtuk a Bormámor kulcslyuk-jele" },
-    { kep: "img/kulcslyuk-dugok.webp",   kicsi: "img/kulcslyuk-dugok-m.webp", kw: 600, w: 900,  h: 900, alt: "A kulcslyuk-embléma borosdugókból kirakva" },
-    { kep: "img/dugok-bal.webp",                                              w: 600,  h: 720, alt: "Használt borosdugók közelről" },
-    { kep: "img/poharak.webp",           kicsi: "img/poharak-m.webp",         kw: 760, w: 1240, h: 470, alt: "Négy kóstolópohár egy hordó tetején" },
-    { kep: "img/palackok-felulrol.webp",                                      w: 540,  h: 404, alt: "Borosüvegek felülről, köztük a kulcslyuk-embléma" },
-    { kep: "img/palack-kez-allo.webp",                                        w: 760,  h: 400, alt: "Bormámor-címkés palack egy kéz mellett" }
   ]
+
 };
