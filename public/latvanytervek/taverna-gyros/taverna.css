@@ -775,3 +775,53 @@ body.drawer-open .dock, body.lb-open .dock { transform: translateY(110%); }
   .exp-wide-img { aspect-ratio: 16 / 10 !important; }
   .exp-arch { width: 70% !important; }
 }
+/* =========================================================
+   KEDVENCEK — kompakt: kis, csak-étel képek, egységes keret
+   ========================================================= */
+.sig-grid { display: grid !important; grid-template-columns: minmax(0, 1fr) !important; gap: 14px !important; }
+.sig-grid > figure { display: grid !important; grid-template-columns: 42% minmax(0, 1fr); gap: 14px !important; align-items: center; width: 100% !important; margin: 0 !important; grid-column: auto !important; grid-row: auto !important; }
+.sig-grid .sig-frame { aspect-ratio: 4 / 3 !important; border-radius: 14px !important; }
+.sig-grid .sig-frame img { object-position: 50% 50% !important; transform: none !important; }
+.sig-grid figcaption { gap: 2px !important; }
+.sig-grid figcaption b { font-size: 1.05rem !important; line-height: 1.2; }
+.sig-grid figcaption span { font-size: .875rem; line-height: 1.45; }
+.sig-grid figcaption em { font-size: 1rem !important; }
+.sig-quote { margin: 8px 0 0 !important; padding-top: 14px !important; grid-column: auto !important; grid-row: auto !important; }
+.sig-quote p { font-size: clamp(1.15rem, 1rem + .6vw, 1.5rem) !important; }
+@media (min-width: 760px) {
+  .sig-grid { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; column-gap: clamp(16px, 2vw, 28px) !important; row-gap: 22px !important; }
+  .sig-grid > figure { grid-template-columns: minmax(0, 1fr); align-items: start; gap: 12px !important; }
+  .sig-quote { grid-column: 1 / -1 !important; display: flex !important; align-items: baseline; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+  .sig-quote p { max-width: none !important; }
+}
+/* =========================================================
+   ÉTLAP-SZALAG — lassan úszó, valós tételek és árak
+   ========================================================= */
+.ticker {
+  display: flex; overflow: hidden; text-decoration: none;
+  background: var(--lime); color: var(--ink);
+  border-block: 1px solid rgba(20, 17, 14, .25);
+  -webkit-mask: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+          mask: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+.ticker-row { display: flex; flex: none; gap: 0; padding: 0; margin: 0; animation: tick 46s linear infinite; }
+.ticker:hover .ticker-row { animation-play-state: paused; }
+.ticker-row li { display: flex; align-items: baseline; gap: 10px; padding: 13px 22px; white-space: nowrap; }
+.ticker-row li::after { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--night); margin-left: 22px; align-self: center; }
+.ticker-row b { font-family: var(--display); font-weight: 750; font-stretch: 82%; font-size: 1.02rem; }
+.ticker-row span { font-weight: 600; font-size: .9rem; font-variant-numeric: tabular-nums; opacity: .8; }
+@keyframes tick { to { transform: translateX(-100%); } }
+@media (prefers-reduced-motion: reduce) { .ticker-row { animation: none; } }
+
+/* árcímke a kedvencek fotóin */
+.sig-frame { position: relative; }
+.tag {
+  position: absolute; left: 8px; top: 8px; z-index: 2;
+  background: var(--lime); color: var(--ink);
+  font-family: var(--display); font-weight: 750; font-stretch: 85%; font-size: .82rem; font-variant-numeric: tabular-nums;
+  padding: 4px 9px 3px; border-radius: 999px; box-shadow: 0 4px 12px rgba(0, 0, 0, .35); white-space: nowrap;
+}
+@media (min-width: 760px) { .tag { left: 12px; top: 12px; font-size: .95rem; padding: 6px 12px 5px; } }
+.ticker { -webkit-mask: none; mask: none; }
+@media (min-width: 760px) { .ticker-row li { padding: 16px 28px; } .ticker-row b { font-size: 1.15rem; } .ticker-row span { font-size: 1rem; } }
+@media (max-width: 759px) { .tag { font-size: .74rem; padding: 3px 8px 2px; left: 6px; top: 6px; } }
