@@ -104,7 +104,8 @@ button,input,select,textarea{font:inherit;color:inherit}
 .nav__toggle-bars i:last-child{width:14px;justify-self:end}
 .nav.is-scrolled,.nav.is-solid{background:rgba(12,7,8,.84);box-shadow:0 1px 0 rgba(201,168,108,.16);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
 @media (max-width:1060px){.nav__links{display:none}.nav__cart{margin-left:auto}.nav__cart:not(.has-items)+.nav__tel{margin-left:auto}.nav__toggle{display:inline-flex;margin-left:8px}}
-@media (max-width:560px){.nav__tel{display:none}.nav__toggle{margin-left:auto}.wm{width:150px;height:18px}.nav__in{height:64px}}
+@media (max-width:560px){.nav__tel{display:none}.nav__toggle{margin-left:auto}.nav__cart.has-items~.nav__toggle{margin-left:0}.wm{width:150px;height:18px}.nav__in{height:64px;gap:10px}.nav .nav__cart{font-size:0;padding:10px 8px;gap:0}.nav .nav__cart b{font-size:.75rem;min-width:26px;height:26px}}
+@media (max-width:400px){.wm{width:128px;height:16px}}
 
 .menu{position:fixed;inset:0;z-index:60;background:var(--black);color:var(--pale);overflow-y:auto}
 .menu[hidden]{display:none}
@@ -229,8 +230,8 @@ button,input,select,textarea{font:inherit;color:inherit}
 .wswipe__strip{position:relative;flex:none;height:100%}
 .wswipe__strip img{display:block;height:100%;width:auto;max-width:none}
 .wswipe__snap{position:absolute;top:0;width:1px;height:1px;scroll-snap-align:center;pointer-events:none}
-.wswipe__fizz{position:relative;flex:none;width:min(78vw,320px);height:100%;display:flex;align-items:center;justify-content:center;color:var(--gold);background:radial-gradient(ellipse at 50% 60%,rgba(201,168,108,.16),transparent 65%),linear-gradient(90deg,#000,var(--black) 30%)}
-.wswipe__fizz svg{height:58%;width:auto;overflow:visible}
+.wswipe__fizz{position:relative;flex:none;width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--gold);background:radial-gradient(ellipse at 50% 60%,rgba(201,168,108,.16),transparent 65%),linear-gradient(90deg,#000,var(--black) 30%)}
+.wswipe__fizz svg{height:auto;width:min(44vw,180px);max-height:62%;overflow:visible}
 .wswipe__view{position:absolute;top:14px;bottom:14px;left:50%;width:min(56vw,230px);transform:translateX(-50%);border:1px solid rgba(201,168,108,.55);pointer-events:none;box-shadow:0 0 0 100vmax rgba(12,7,8,.28)}
 .wswipe__stage{overflow:hidden}
 .wswipe__hint{display:flex;align-items:center;gap:10px;margin:14px 0 0;font-size:.8125rem;color:var(--mute);transition:opacity .5s}
