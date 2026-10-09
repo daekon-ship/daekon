@@ -250,7 +250,8 @@
   function count() { var n = 0; Object.keys(cart.lines).forEach(function (k) { n += cart.lines[k].qty; }); return n; }
 
   var catalogEl = $("[data-catalog]"), linesEl = $("[data-cart-lines]"), emptyEl = $("[data-cart-empty]");
-  var countEl = $("[data-cart-count]"), fab = $("[data-cartfab]"), toastEl = $("[data-toast]");
+  var countEl = $("[data-cart-count]"), bar = $("[data-cartbar]"), sumEl = $("[data-cartbar-sum]"), toastEl = $("[data-toast]");
+  var sheet = $("[data-sheet]"), sheetPanel = $("[data-sheet-panel]"), sheetOpen = false, sheetReturn = null;
 
   function stepper(id, qty) {
     return '<div class="step" data-id="' + id + '">' +
@@ -278,7 +279,8 @@
         O.keretek.map(function (k) { return '<option' + (k === l.keret ? " selected" : "") + ">" + esc(k) + "</option>"; }).join("") + "</select></label></li>";
     }).join("");
     if (emptyEl) emptyEl.hidden = n > 0;
-    if (countEl) countEl.textContent = n + (n === 1 ? " tétel" : " tétel");
+    if (countEl) countEl.textContent = n + " tétel";
+    if (sumEl) sumEl.textContent = ids.map(function (id) { return cart.lines[id].qty + " " + CAT[id].nev.toLowerCase(); }).join(", ");
     $$("[data-navcart-count], [data-cartfab-count]").forEach(function (e) { e.textContent = n; });
     $$("[data-navcart]").forEach(function (e) { e.classList.toggle("has-items", n > 0); });
     updateFab();
@@ -290,7 +292,7 @@
     if (q === 0) delete cart.lines[id];
     else cart.lines[id] = { qty: q, keret: (cart.lines[id] && cart.lines[id].keret) || O.keretek[0] };
     saveCart(); renderCart();
-    if (!silent && q > 0) toast(CAT[id].nev + " — kosárban: " + q + " db");
+    if (!silent && q > 0) { toast(CAT[id].nev + " — kosárban: " + q + " db"); bump(); }
   }
   function add(id) { setQty(id, (cart.lines[id] ? cart.lines[id].qty : 0) + 1); }
   var toastT;
@@ -315,7 +317,7 @@
     var id = li.getAttribute("data-add"), b = document.createElement("button");
     b.type = "button"; b.className = "shelf__add";
     if (id) { b.setAttribute("data-add-cat", id); b.textContent = "Kosárba"; b.setAttribute("aria-label", "Kosárba: " + CAT[id].nev); }
-    else if (li.hasAttribute("data-gift")) { b.textContent = "Ajándékot állítok össze"; b.addEventListener("click", function () { var g = $("[data-gift-toggle]"); g.checked = true; g.dispatchEvent(new Event("change")); $("#osszeallito").scrollIntoView({ behavior: reduce ? "auto" : "smooth" }); }); }
+    else if (li.hasAttribute("data-gift")) { b.textContent = "Ajándékot állítok össze"; b.addEventListener("click", function () { var g = $("[data-gift-toggle]"); g.checked = true; g.dispatchEvent(new Event("change")); openSheet(); }); }
     li.appendChild(b);
   });
 
@@ -372,10 +374,51 @@
     cstatus.textContent = "Megnyílt az e-mail-piszkozat az összeállítással. Küldd el, és visszaigazoljuk, mikor veheted át.";
   });
 
-  // lebegő kosárgomb mobilon, ha van tétel és a kosár nem látszik
-  var cartVisible = false;
-  function updateFab() { if (fab) fab.hidden = !(count() > 0 && !cartVisible); }
-  if ("IntersectionObserver" in window && $("#kosar")) new IntersectionObserver(function (es) { cartVisible = es[0].isIntersecting; updateFab(); }).observe($("#kosar"));
+  // kosár alulról felcsúszó lapként; alul sáv, ha van tétel
+  function updateFab() {
+    if (!bar) return;
+    var show = count() > 0 && !sheetOpen && !!$("#osszeallito") && window.scrollY > window.innerHeight * .8;
+    bar.hidden = !show;
+    document.documentElement.classList.toggle("has-cartbar", show);
+  }
+  window.addEventListener("scroll", updateFab, { passive: true });
+  function openSheet(e) {
+    if (e) e.preventDefault();
+    if (!sheet || sheetOpen) return;
+    sheetReturn = document.activeElement;
+    sheet.hidden = false; sheetOpen = true; updateFab();
+    document.body.style.overflow = "hidden";
+    requestAnimationFrame(function () { sheet.classList.add("is-open"); });
+    setTimeout(function () { sheetPanel.focus(); }, 60);
+  }
+  function closeSheet() {
+    if (!sheetOpen) return;
+    sheet.classList.remove("is-open"); sheetOpen = false;
+    document.body.style.overflow = "";
+    setTimeout(function () { if (!sheetOpen) sheet.hidden = true; }, reduce ? 0 : 420);
+    updateFab();
+    if (sheetReturn && sheetReturn.focus) sheetReturn.focus();
+  }
+  $$("[data-sheet-open]").forEach(function (b) { b.addEventListener("click", openSheet); });
+  $$("[data-sheet-close]").forEach(function (b) { b.addEventListener("click", closeSheet); });
+  if (sheet) {
+    sheet.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") closeSheet();
+      if (e.key === "Tab") {
+        var f = $$("a[href],button:not([disabled]),input,select,textarea", sheetPanel).filter(function (x) { return x.offsetParent !== null; });
+        var first = f[0], last = f[f.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    });
+    // lehúzással is bezárható (érintőképernyőn, a fejlécnél fogva)
+    var sy = null, head = $(".cart__head", sheetPanel);
+    head.addEventListener("touchstart", function (e) { sy = e.touches[0].clientY; }, { passive: true });
+    head.addEventListener("touchmove", function (e) { if (sy == null) return; var dy = Math.max(0, e.touches[0].clientY - sy); sheetPanel.style.transform = "translateY(" + dy + "px)"; }, { passive: true });
+    head.addEventListener("touchend", function (e) { if (sy == null) return; var dy = e.changedTouches[0].clientY - sy; sy = null; sheetPanel.style.transform = ""; if (dy > 90) closeSheet(); });
+  }
+  // a „Kosárba” gombok után a sáv villan egyet
+  var bump = function () { if (bar && !bar.hidden) { bar.classList.remove("is-bump"); void bar.offsetWidth; bar.classList.add("is-bump"); } };
   renderCart();
 
   /* ── JELENTKEZÉS ─────────────────────────── */

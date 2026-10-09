@@ -49,7 +49,7 @@
       <a href="#esemenyek">Események</a>
       <a href="#kapcsolat">Kapcsolat</a>
     </nav>
-    <a class="nav__cart" href="#kosar" data-navcart>Kosár <b data-navcart-count>0</b></a>
+    <a class="nav__cart" href="#kosar" data-navcart data-sheet-open>Kosár <b data-navcart-count>0</b></a>
     <a class="nav__tel" href="tel:+36203830016">+36 20 383 0016</a>
     <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="menu" data-menu-open>
       <span class="nav__toggle-label">Menü</span>
@@ -199,13 +199,17 @@
       </ol>
     </header>
 
-    <div class="build__grid">
-      <div class="build__catalog" data-catalog></div>
+    <div class="build__catalog" data-catalog></div>
+  </div>
+</section>
 
-      <aside class="cart" id="kosar" aria-labelledby="kosar-cim">
+<div class="sheet" data-sheet hidden>
+  <div class="sheet__backdrop" data-sheet-close></div>
+  <section class="sheet__panel cart" id="kosar" role="dialog" aria-modal="true" aria-labelledby="kosar-cim" tabindex="-1" data-sheet-panel>
         <div class="cart__head">
-          <h3 id="kosar-cim">Kosár</h3>
-          <span class="cart__count" data-cart-count>0 tétel</span>
+          <span class="sheet__grip" aria-hidden="true"></span>
+          <h3 id="kosar-cim">Kosár <span class="cart__count" data-cart-count>0 tétel</span></h3>
+          <button class="sheet__close" type="button" data-sheet-close>Bezárás</button>
         </div>
         <p class="cart__empty" data-cart-empty>Még üres. Válassz a listából — a pontos tételeket mi ajánljuk a megadott keret szerint.</p>
         <ul class="cart__lines" data-cart-lines></ul>
@@ -232,12 +236,16 @@
           <p class="cart__status" data-cart-status role="status" aria-live="polite"></p>
           <p class="cart__note">Fizetés átvételkor, a boltban. Az összeállítást telefonon vagy e-mailben visszaigazoljuk. <b>Látványterv-állapot:</b> a küldés most e-mail-piszkozatot nyit.</p>
         </form>
-      </aside>
-    </div>
-  </div>
-</section>
+        </section>
+</div>
 
-<a class="cartfab" href="#kosar" data-cartfab hidden>Kosár <b data-cartfab-count>0</b></a>
+<div class="cartbar" data-cartbar hidden>
+  <button class="cartbar__btn" type="button" data-sheet-open>
+    <span class="cartbar__n" data-cartfab-count>0</span>
+    <span class="cartbar__txt"><b>Kosár</b><span data-cartbar-sum></span></span>
+    <span class="cartbar__go">Tovább</span>
+  </button>
+</div>
 <div class="toast" data-toast role="status" aria-live="polite"></div>
 
 <!-- 5. KÓSTOLÓK ──────────────────────────────────────────────────── -->

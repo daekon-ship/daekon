@@ -20,7 +20,8 @@ Az ügyfél választása alapján: sötét vászon, teljes képernyős jelenetek
 
 Webshopszerű összeállító, **kiszállítás és online fizetés nélkül**: a vevő összeállítja, mi előkészítjük, a boltban veszi át.
 
-- **Hol:** saját szekció (`#osszeallito`), a fejlécben „Kosár” számlálóval; a borstílusoknál „+ Kosárba”, a polc soraiban „Kosárba” gomb; mobilon lebegő kosárgomb.
+- **Hol:** saját szekció (`#osszeallito`) a választható kategóriákkal; a borstílusoknál „+ Kosárba”, a polc soraiban „Kosárba” gomb.
+- **Kosár:** alulról felcsúszó lap (asztalon és mobilon is). Ha van tétel, alul sáv mutatja a darabszámot és a tartalmat („Tovább”); a fejléc „Kosár” gombja is ezt nyitja. Esc, háttérre kattintás vagy lehúzás zárja.
 - **Mit választ:** kategóriát (5 borstílus + 5 egyéb), mennyiséget (léptető), és tételenként keretet („Mindegy”, „5 000 Ft-ig”, „5–10 000 Ft”, „10 000 Ft felett”). **Nincsenek kitalált termékek és árak** — a pontos tételeket a bolt ajánlja. Ha lesz valódi terméklista, a `js/adatok.js` → `osszeallito.termekek` tömbbe kerülhet.
 - **Ajándék:** címzett, üzenet a kártyára (max. 160 karakter), csomagolás (Nem kell / Díszdoboz / Szalag és kártya).
 - **Átvétel:** csak nyitvatartási napok (a következő 6 péntek/szombat, a holnapi naptól).
