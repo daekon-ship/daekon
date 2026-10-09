@@ -1,6 +1,6 @@
 /* Taverna Gyros Monor — látványterv 2026
    Felület: nyitvatartás-állapot, fejléc, mobil menü, étlap (fejezetek + keresés),
-   galéria-lightbox, kiszállítási iránytű, közelről-színpad.
+   menüből nyitható galéria-lightbox és a rendelési folyamat.
    Mozgás: GSAP + ScrollTrigger (helyben), csak ha a mozgáscsökkentés nincs bekapcsolva. */
 (function () {
   'use strict';
@@ -176,13 +176,16 @@
   });
   var lbI = 0, lastFocus = null;
   function showLb(i) {
+    if (!shots.length) return;
     lbI = (i + shots.length) % shots.length;
     var s = shots[lbI];
     lbImg.src = s.src; lbImg.alt = s.alt; lbCap.textContent = s.alt; lbN.textContent = (lbI + 1) + ' / ' + shots.length;
     if (animOn) gsap.fromTo(lbImg, { opacity: 0, scale: .97 }, { opacity: 1, scale: 1, duration: .35, ease: 'power2.out' });
   }
-  function openLb(i) {
-    lastFocus = document.activeElement; lb.hidden = false; document.body.classList.add('lb-open');
+  function openLb(i, returnFocus) {
+    if (!shots.length) return;
+    lastFocus = returnFocus || document.activeElement;
+    lb.hidden = false; document.body.classList.add('lb-open');
     document.body.style.overflow = 'hidden'; showLb(i); $('[data-lb-close]').focus();
   }
   function closeLb() {
@@ -211,12 +214,14 @@
     var dx = e.clientX - sx, dy = e.clientY - sy; sx = null;
     if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) showLb(lbI + (dx < 0 ? 1 : -1));
   });
-  var galGrid = $('[data-gallery]'), galN = $('[data-gal-n]');
-  galGrid.addEventListener('scroll', function () {
-    var items = galGrid.children, mid = galGrid.scrollLeft + galGrid.clientWidth / 2, best = 0, bd = 1e9;
-    for (var i = 0; i < items.length; i++) { var c = items[i].offsetLeft + items[i].offsetWidth / 2, d = Math.abs(c - mid); if (d < bd) { bd = d; best = i; } }
-    galN.textContent = best + 1;
-  }, { passive: true });
+  /* A galéria képei a főoldalon nem látszanak. Menüpontra indul a lightbox. */
+  $$('[data-open-gallery]').forEach(function (trigger) {
+    trigger.addEventListener('click', function () {
+      var fromDrawer = !!trigger.closest('#drawer');
+      if (fromDrawer) setDrawer(false);
+      openLb(0, fromDrawer ? burger : trigger);
+    });
+  });
 
   /* =========================================================
      MOZGÁS
@@ -281,20 +286,6 @@
       });
     }
     $$('[data-wipe], [data-slide], .exp-arch, [data-tilt]').forEach(function (el) { showUp(el); });
-
-    /* ---- 06 galéria: fokozatos feltárás ---- */
-    mm.add('(min-width: 760px)', function () {
-      gsap.set('.gal-grid li', { opacity: 0 });
-      ScrollTrigger.batch('.gal-grid li', {
-        start: 'top 96%', once: true,
-        onEnter: function (els) {
-          gsap.fromTo(els, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: .6, ease: 'power2.out', stagger: .06, clearProps: 'transform,opacity' });
-        }
-      });
-    });
-    mm.add('(max-width: 759px)', function () {
-      gsap.fromTo('.gal-grid li', { opacity: 0 }, { opacity: 1, duration: .5, stagger: .05, ease: 'power2.out', clearProps: 'opacity', scrollTrigger: { trigger: '.gal-grid', start: 'top 96%', once: true } });
-    });
 
     /* ---- 07 szállítás ---- */
     gsap.fromTo('.del-towns li', { yPercent: 60, opacity: 0 }, { yPercent: 0, opacity: 1, duration: .6, stagger: .04, ease: 'power3.out', scrollTrigger: { trigger: '.del-towns', start: 'top 92%', once: true } });
