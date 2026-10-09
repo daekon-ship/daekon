@@ -296,7 +296,7 @@
     .fromTo('[data-hero="fade"]', { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: .7, stagger: .07, ease: 'power3.out' }, .7);
 
   /* ---- hero: görgetésre mélység + a tányér „forog” ---- */
-  gsap.to('.hero-arch .arch-img', { yPercent: 10, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
+  gsap.to('.hero-arch .arch-img', { yPercent: 8, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
   gsap.to('.ring', { rotate: 220, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: .6 } });
   mm.add('(min-width: 900px)', function () {
     gsap.to('.hero-arch', { rotateY: -9, rotateX: 3, scale: .95, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
@@ -333,8 +333,6 @@
       if (cap) tl.fromTo(cap.children, { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: .6, stagger: .07, ease: 'power3.out' }, .7);
     });
     mm.add('(min-width: 900px)', function () {
-      gsap.to('.sig-b .sig-frame img', { yPercent: -8, ease: 'none', scrollTrigger: { trigger: '.sig-b', start: 'top bottom', end: 'bottom top', scrub: true } });
-      gsap.to('.sig-c', { y: -50, ease: 'none', scrollTrigger: { trigger: '.sig-grid', start: 'top bottom', end: 'bottom top', scrub: true } });
     });
 
     /* ---- 04 élmény: a boltív kinyílik, a terasz oldalról érkezik ---- */
@@ -375,7 +373,7 @@
     });
 
     /* ---- 06 galéria: fokozatos feltárás ---- */
-    mm.add('(min-width: 600px)', function () {
+    mm.add('(min-width: 760px)', function () {
       gsap.set('.gal-grid li', { opacity: 0 });
       ScrollTrigger.batch('.gal-grid li', {
         start: 'top 88%', once: true,
@@ -385,7 +383,7 @@
         }
       });
     });
-    mm.add('(max-width: 599px)', function () {
+    mm.add('(max-width: 759px)', function () {
       gsap.fromTo('.gal-grid li', { x: 60, opacity: 0 }, { x: 0, opacity: 1, duration: .8, stagger: .08, ease: 'power3.out', scrollTrigger: { trigger: '.gal-grid', start: 'top 85%', once: true } });
     });
 
