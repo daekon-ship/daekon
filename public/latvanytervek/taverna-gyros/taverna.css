@@ -1019,10 +1019,10 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid 
 /* mobil: a hero-kép széltől szélig, lapos kivágással, hogy ne legyen túl magas */
 @media (max-width: 899px) {
   .hero-stage { width: auto !important; max-width: none !important; margin: 8px calc(var(--gutter) * -1) 6px !important; }
-  .hero-arch { aspect-ratio: 5 / 4 !important; border-radius: 0 !important; box-shadow: none !important; }
-  .hero-arch img { object-position: 50% 46% !important; }
+  .hero-arch { aspect-ratio: 1 / 1 !important; border-radius: 0 !important; box-shadow: none !important; }
+  .hero-arch img { object-position: 50% 6% !important; }
 }
 @media (min-width: 600px) and (max-width: 899px) {
-  .hero-arch { aspect-ratio: 16 / 10 !important; }
-  .hero-arch img { object-position: 50% 34% !important; }
+  .hero-arch { aspect-ratio: 4 / 3 !important; }
+  .hero-arch img { object-position: 50% 12% !important; }
 }
