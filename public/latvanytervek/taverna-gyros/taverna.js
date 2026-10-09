@@ -210,12 +210,14 @@
     var dx = e.clientX - sx, dy = e.clientY - sy; sx = null;
     if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) showLb(lbI + (dx < 0 ? 1 : -1));
   });
-  var galGrid = $('[data-gallery]'), galN = $('[data-gal-n]');
-  galGrid.addEventListener('scroll', function () {
-    var items = galGrid.children, mid = galGrid.scrollLeft + galGrid.clientWidth / 2, best = 0, bd = 1e9;
-    for (var i = 0; i < items.length; i++) { var c = items[i].offsetLeft + items[i].offsetWidth / 2, d = Math.abs(c - mid); if (d < bd) { bd = d; best = i; } }
-    galN.textContent = best + 1;
-  }, { passive: true });
+  // a galéria a menüből nyílik: „Galéria” → képnézegető az első képpel
+  $$('[data-open-gallery]').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      e.preventDefault();
+      if (document.body.classList.contains('drawer-open')) setDrawer(false);
+      openLb(0);
+    });
+  });
 
   /* =========================================================
      MOZGÁS
