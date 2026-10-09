@@ -374,3 +374,7 @@ button{font:inherit;color:inherit}
 @media (max-width:640px){
   .igband-in{gap:10px 14px}
 }
+
+/* ajándékkártya: egy kép, egyenesen */
+.gift-card{max-width:560px}
+.gift-card img{width:100%;border-radius:6px;box-shadow:0 30px 50px -30px rgba(31,20,36,.55)}

@@ -100,18 +100,6 @@
   }
   onScroll();
 
-  /* gift tilt (pointer) */
-  var stage = $('.gift-stage');
-  if (stage && !reduce && window.matchMedia('(hover:hover)').matches) {
-    stage.addEventListener('pointermove', function (e) {
-      var r = stage.getBoundingClientRect();
-      var px = (e.clientX - r.left) / r.width - 0.5, py = (e.clientY - r.top) / r.height - 0.5;
-      $('.gc-1', stage).style.transform = 'rotate(-8deg) rotateY(' + (px * 14) + 'deg) rotateX(' + (-py * 10) + 'deg) translateZ(10px)';
-      $('.gc-2', stage).style.transform = 'rotate(4deg) rotateY(' + (px * 20) + 'deg) rotateX(' + (-py * 14) + 'deg) translateZ(30px)';
-    });
-    stage.addEventListener('pointerleave', function () { $('.gc-1', stage).style.transform = ''; $('.gc-2', stage).style.transform = ''; });
-  }
-
   /* ---------- price tabs ---------- */
   var tabs = $$('.p-tab'), panels = $$('.p-panel');
   var showCat = function (cat, focus) {
