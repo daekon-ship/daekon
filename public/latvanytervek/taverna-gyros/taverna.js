@@ -1,6 +1,6 @@
 /* Taverna Gyros Monor — látványterv 2026
    Felület: nyitvatartás-állapot, fejléc, mobil menü, étlap (fejezetek + keresés),
-   menüből nyitható galéria-lightbox és a rendelési folyamat.
+   galéria-lightbox, kiszállítási iránytű, közelről-színpad.
    Mozgás: GSAP + ScrollTrigger (helyben), csak ha a mozgáscsökkentés nincs bekapcsolva. */
 (function () {
   'use strict';
@@ -123,8 +123,7 @@
     panel.innerHTML = '<div class="menu-panel-head"><h3>' + esc(c.name) + '</h3><p>' + esc(c.lede) + '</p></div>' +
       '<ul class="menu-list">' + c.items.map(function (it) { return rowHtml(it); }).join('') + '</ul>';
     if (animate && animOn) {
-      gsap.fromTo($('.menu-panel-head h3', panel), { yPercent: 100, clipPath: 'inset(0 0 100% 0)' }, { yPercent: 0, clipPath: 'inset(0 0 0% 0)', duration: .55, ease: 'power3.out' });
-      gsap.fromTo($$('.menu-row', panel), { x: -18, opacity: 0 }, { x: 0, opacity: 1, duration: .45, ease: 'power2.out', stagger: .025, clearProps: 'transform,opacity' });
+      gsap.fromTo(panel, { opacity: 0 }, { opacity: 1, duration: .25, ease: 'power1.out', clearProps: 'opacity' });
     }
     var t = $('#tab-' + id);
   }
@@ -176,16 +175,13 @@
   });
   var lbI = 0, lastFocus = null;
   function showLb(i) {
-    if (!shots.length) return;
     lbI = (i + shots.length) % shots.length;
     var s = shots[lbI];
     lbImg.src = s.src; lbImg.alt = s.alt; lbCap.textContent = s.alt; lbN.textContent = (lbI + 1) + ' / ' + shots.length;
     if (animOn) gsap.fromTo(lbImg, { opacity: 0, scale: .97 }, { opacity: 1, scale: 1, duration: .35, ease: 'power2.out' });
   }
-  function openLb(i, returnFocus) {
-    if (!shots.length) return;
-    lastFocus = returnFocus || document.activeElement;
-    lb.hidden = false; document.body.classList.add('lb-open');
+  function openLb(i) {
+    lastFocus = document.activeElement; lb.hidden = false; document.body.classList.add('lb-open');
     document.body.style.overflow = 'hidden'; showLb(i); $('[data-lb-close]').focus();
   }
   function closeLb() {
@@ -214,14 +210,12 @@
     var dx = e.clientX - sx, dy = e.clientY - sy; sx = null;
     if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) showLb(lbI + (dx < 0 ? 1 : -1));
   });
-  /* A galéria képei a főoldalon nem látszanak. Menüpontra indul a lightbox. */
-  $$('[data-open-gallery]').forEach(function (trigger) {
-    trigger.addEventListener('click', function () {
-      var fromDrawer = !!trigger.closest('#drawer');
-      if (fromDrawer) setDrawer(false);
-      openLb(0, fromDrawer ? burger : trigger);
-    });
-  });
+  var galGrid = $('[data-gallery]'), galN = $('[data-gal-n]');
+  galGrid.addEventListener('scroll', function () {
+    var items = galGrid.children, mid = galGrid.scrollLeft + galGrid.clientWidth / 2, best = 0, bd = 1e9;
+    for (var i = 0; i < items.length; i++) { var c = items[i].offsetLeft + items[i].offsetWidth / 2, d = Math.abs(c - mid); if (d < bd) { bd = d; best = i; } }
+    galN.textContent = best + 1;
+  }, { passive: true });
 
   /* =========================================================
      MOZGÁS
@@ -256,43 +250,9 @@
 
   /* ---- hero: görgetésre mélység + a tányér „forog” ---- */
   mm.add('(min-width: 900px)', function () {
-    gsap.to('.hero-copy', { y: -70, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
   });
 
-  fontsReady.then(function () {
-    /* ---- címek soronként ---- */
-    $$('[data-split]').forEach(function (el) {
-      var s = splitLines(el);
-      gsap.fromTo(s.inner, { yPercent: 108 }, {
-        yPercent: 0, duration: .9, ease: 'power4.out', stagger: .09,
-        scrollTrigger: { trigger: el, start: 'top 86%', once: true },
-        onComplete: s.revert
-      });
-    });
-
-    /* ---- bekezdések: rövid emelkedés ---- */
-    gsap.set('[data-rise]', { opacity: 0 });
-    ScrollTrigger.batch('[data-rise]', {
-      start: 'top 90%', once: true,
-      onEnter: function (els) { gsap.fromTo(els, { y: 26, opacity: 0 }, { y: 0, opacity: 1, duration: .7, ease: 'power3.out', stagger: .08, clearProps: 'transform,opacity' }); }
-    });
-
-    /* ---- képek: korán induló, rövid megjelenés teljes keretben —
-       nincs oldalról becsúszó vagy félig kivágott köztes állapot ---- */
-    function showUp(el, delay) {
-      gsap.fromTo(el, { opacity: 0, y: 24 }, {
-        opacity: 1, y: 0, duration: .6, delay: delay || 0, ease: 'power2.out', clearProps: 'transform,opacity',
-        scrollTrigger: { trigger: el, start: 'top 96%', once: true }
-      });
-    }
-    $$('[data-wipe], [data-slide], .exp-arch, [data-tilt]').forEach(function (el) { showUp(el); });
-
-    /* ---- 07 szállítás ---- */
-    gsap.fromTo('.del-towns li', { yPercent: 60, opacity: 0 }, { yPercent: 0, opacity: 1, duration: .6, stagger: .04, ease: 'power3.out', scrollTrigger: { trigger: '.del-towns', start: 'top 92%', once: true } });
-
-
-    ScrollTrigger.refresh();
-  });
+  /* görgetéshez kötött szöveg- és képanimáció nincs: a tartalom mindig teljesen, fixen látszik */
 
   // a ragadós szakasz méretei a képek betöltése után változhatnak
   window.addEventListener('load', function () { ScrollTrigger.refresh(); });
