@@ -902,3 +902,21 @@ body.drawer-open .dock, body.lb-open .dock { transform: translateY(110%); }
 .spit-card img { grid-column: 1; grid-row: 1; }
 .spit-card figcaption { grid-column: 2; grid-row: 1; }
 @media (max-width: 899px) { .hero-stage { margin-bottom: 26px !important; } .spit-card { bottom: -22px; } }
+/* =========================================================
+   GOMBOK — egységes arány mindenhol
+   ========================================================= */
+:root { --btn-r: 14px; }
+.btn, .btn-big, .head-call, .dock a { border-radius: 14px !important; }
+.btn-big { min-height: 54px !important; padding: 0 22px !important; font-size: 1.02rem !important; }
+.hero-cta { display: grid !important; grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); gap: 10px !important; flex-wrap: nowrap; }
+.hero-cta .btn { width: 100%; min-width: 0; padding: 0 14px !important; }
+@media (min-width: 900px) { .hero-cta { grid-template-columns: auto auto; justify-content: start; } .hero-cta .btn { padding: 0 26px !important; } }
+.del-copy .btn, .contact-cta .btn, .foot-top .btn { min-width: 0; }
+@media (max-width: 759px) {
+  .del-copy .btn, .foot-top .btn { width: 100%; justify-self: stretch; }
+  .contact-cta { display: grid !important; grid-template-columns: 1fr 1fr; }
+  .contact-cta .btn { width: 100%; padding: 0 12px !important; }
+}
+.dock { grid-template-columns: 1fr 1.7fr; }
+.dock a { min-height: 52px; }
+@media (max-width: 379px) { .hero-cta { grid-template-columns: 1fr !important; } }
