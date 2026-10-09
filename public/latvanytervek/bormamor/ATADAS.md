@@ -102,6 +102,17 @@ mind a 10 szélességen **0 vízszintes túllógás**, 0 konzolhiba, 0 sikertele
 
 **Funkciótesztek:** fülváltás (egér + nyilak), mobilmenü (Esc, fókuszcsapda), űrlap hibaüzenetek és sikeres ág, lightbox (nyilak, Esc, swipe), térkép kattintásra töltése, esemény-archívum múltbeli dátummal, csökkentett mozgás — mind lefutott.
 
+## Mobil-audit javítások (2. kör, 2026-10-09)
+
+Telefon-emulációval (érintés, 2× pixelsűrűség), képernyőnként görgetve átnézve 320, 390 és 768 px-en:
+- **Galéria:** a képek többé nem vágódnak álló formára — hármas sorokban, saját arányukban állnak (asztalon), mobilon egymás alatt teljes képpel.
+- **Kóstoló-panoráma:** mobilon külön, közelebbi vágás (`poharak-kozel.webp`), nincs rácsúszó cím, nincs görgetéshez kötött vágás.
+- **Fejléc:** görgetéskor azonnal tömör háttért kap, a hero szövege nem látszik át alatta.
+- **Gyorssáv (Hívás/Útvonal):** lefelé görgetéskor elbújik, az űrlapnál, a kapcsolatnál, a láblécnél és gépelés közben nem jelenik meg.
+- **Több mint bor:** 380 px alatt a fotócsempék kerete megszűnt (belső margó hiba), 370 px alatt egyoszlopos.
+- **Tablet (641–860 px):** a hero kétoszlopos maradt, a kulcslyuk a szöveg mellett áll.
+- Parallax csak 861 px fölött.
+
 ## Fájlok
 
 ```

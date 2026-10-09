@@ -14,6 +14,7 @@
   var hero = $(".hero");
   function onScrollNav() {
     var limit = hero ? hero.offsetHeight - 80 : 40;
+    nav.classList.toggle("is-scrolled", window.scrollY > 8);
     nav.classList.toggle("is-solid", window.scrollY > limit);
   }
   window.addEventListener("scroll", onScrollNav, { passive: true });
@@ -262,9 +263,16 @@
   var gal = $("[data-gallery]"), lb = $("[data-lightbox]");
   var lbImg = $("[data-lb-img]"), lbCap = $("[data-lb-cap]"), lbCount = $("[data-lb-count]"), lbIndex = 0, lbReturn = null;
   if (gal && D.galeria.length) {
-    gal.innerHTML = D.galeria.map(function (g, i) {
-      return '<li><button class="gthumb" type="button" data-gi="' + i + '" aria-label="Nagyítás: ' + esc(g.alt) + '">' +
-        '<img src="' + esc(g.kicsi || g.kep) + '" srcset="' + esc(g.kicsi || g.kep) + " 760w, " + esc(g.kep) + " " + g.w + 'w" sizes="(max-width:760px) 82vw, 60vw" alt="' + esc(g.alt) + '" width="' + g.w + '" height="' + g.h + '" loading="lazy" decoding="async"></button></li>';
+    var rows = [];
+    for (var r = 0; r < D.galeria.length; r += 3) rows.push(D.galeria.slice(r, r + 3));
+    gal.innerHTML = rows.map(function (row, ri) {
+      return '<div class="gallery__row">' + row.map(function (g, k) {
+        var i = ri * 3 + k, src = g.kicsi || g.kep;
+        var set = g.kicsi ? esc(g.kicsi) + " " + g.kw + "w, " + esc(g.kep) + " " + g.w + "w" : esc(g.kep) + " " + g.w + "w";
+        return '<div class="gallery__item" style="--ar:' + (g.w / g.h).toFixed(3) + '">' +
+          '<button class="gthumb" type="button" data-gi="' + i + '" aria-label="Nagyítás: ' + esc(g.alt) + '">' +
+          '<img src="' + esc(src) + '" srcset="' + set + '" sizes="(max-width:600px) 92vw, 40vw" alt="' + esc(g.alt) + '" width="' + g.w + '" height="' + g.h + '" loading="lazy" decoding="async"></button></div>';
+      }).join("") + "</div>";
     }).join("");
     gal.addEventListener("click", function (e) {
       var b = e.target.closest("[data-gi]"); if (!b) return;
@@ -308,14 +316,23 @@
   });
 
   /* ── MOBIL GYORSSÁV ──────────────────────── */
-  var dock = $("[data-dock]"), contact = $("#kapcsolat");
+  var dock = $("[data-dock]");
   if (dock && "IntersectionObserver" in window) {
-    var heroGone = false, contactIn = false;
-    var upd = function () { dock.classList.toggle("is-on", heroGone && !contactIn); };
+    var heroGone = false, blockers = new Set(), typing = false, goingDown = false, lastY = window.scrollY;
+    var upd = function () { dock.classList.toggle("is-on", heroGone && !blockers.size && !typing && !goingDown); };
+    // lefelé görgetéskor (olvasás közben) elbújik, hogy ne takarjon; felfelé görgetésre előjön
+    window.addEventListener("scroll", function () {
+      var y = window.scrollY;
+      if (Math.abs(y - lastY) > 12) { goingDown = y > lastY; lastY = y; upd(); }
+    }, { passive: true });
     new IntersectionObserver(function (es) { heroGone = !es[0].isIntersecting; upd(); }).observe(hero);
-    new IntersectionObserver(function (es) { contactIn = es[0].isIntersecting; upd(); }, { rootMargin: "0px 0px -10% 0px" }).observe(contact);
-    var foot = $(".foot");
-    new IntersectionObserver(function (es) { if (es[0].isIntersecting) { contactIn = true; upd(); } }).observe(foot);
+    var bo = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) blockers.add(e.target); else blockers.delete(e.target); });
+      upd();
+    });
+    ["#jelentkezes", "#kapcsolat", ".foot"].forEach(function (sel) { var el = $(sel); if (el) bo.observe(el); });
+    document.addEventListener("focusin", function (e) { typing = /INPUT|SELECT|TEXTAREA/.test(e.target.tagName); upd(); });
+    document.addEventListener("focusout", function () { typing = false; upd(); });
   }
 
   /* ── MOZGÁS ──────────────────────────────── */
@@ -340,6 +357,7 @@
     gsap.registerPlugin(ScrollTrigger);
     root.classList.add("js-motion");
     root.classList.remove("pre-anim");
+    var wide = window.matchMedia("(min-width: 861px)").matches;
 
     /* A — kulcslyuk-belépő: körvonal, fotó, a pohár megtelik */
     var line = $(".kh__line");
@@ -355,8 +373,8 @@
         .from(".hero__slogan, .hero__lead", { opacity: 0, y: 12, duration: .8, stagger: .1 }, .5)
         .from(".hero__cta .btn", { opacity: 0, y: 10, duration: .6, stagger: .08 }, .7)
         .from(".hero__facts", { opacity: 0, duration: .8 }, .9);
-      // finom mélység görgetéskor
-      gsap.to(".hero__mark", { yPercent: 8, ease: "none", scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true } });
+      // finom mélység görgetéskor — csak széles kijelzőn, ahol a kép a szöveg mellett áll
+      if (wide) gsap.to(".hero__mark", { yPercent: 8, ease: "none", scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true } });
     }
 
     /* B — címsorok sorról sorra emelkednek */
@@ -381,24 +399,26 @@
     if (story) gsap.fromTo(story, { clipPath: "inset(0 0 0 100%)" }, { clipPath: "inset(0 0 0 0%)", duration: 1.4, ease: "power3.inOut",
       scrollTrigger: { trigger: story, start: "top 82%", once: true } });
     var pano = $("[data-pano] img");
-    if (pano) {
-      gsap.fromTo("[data-pano]", { clipPath: "inset(18% 22% 18% 22%)" }, { clipPath: "inset(0% 0% 0% 0%)", ease: "none",
-        scrollTrigger: { trigger: "[data-pano]", start: "top 90%", end: "top 25%", scrub: .5 } });
-      gsap.fromTo(pano, { scale: 1.12 }, { scale: 1, ease: "none",
+    if (pano && wide) {
+      gsap.fromTo("[data-pano]", { clipPath: "inset(14% 18% 14% 18%)" }, { clipPath: "inset(0% 0% 0% 0%)", ease: "none",
+        scrollTrigger: { trigger: "[data-pano]", start: "top 92%", end: "top 35%", scrub: .5 } });
+      gsap.fromTo(pano, { scale: 1.08 }, { scale: 1, ease: "none",
         scrollTrigger: { trigger: "[data-pano]", start: "top bottom", end: "bottom top", scrub: true } });
+    } else if (pano) {
+      gsap.from("[data-pano]", { clipPath: "inset(0 0 100% 0)", duration: 1.1, ease: "power3.inOut",
+        scrollTrigger: { trigger: "[data-pano]", start: "top 88%", once: true } });
     }
     $$(".more__grid .tile").forEach(function (t, i) {
       gsap.from(t, { clipPath: i % 2 ? "inset(0 0 100% 0)" : "inset(100% 0 0 0)", duration: 1.1, ease: "power3.inOut",
         scrollTrigger: { trigger: t, start: "top 90%", once: true } });
     });
-    $$(".gallery__grid li").forEach(function (li, i) {
-      var from = ["inset(0 100% 0 0)", "inset(100% 0 0 0)", "inset(0 0 0 100%)", "inset(0 0 100% 0)"][i % 4];
-      gsap.from(li, { clipPath: from, duration: 1.2, ease: "power3.inOut", scrollTrigger: { trigger: li, start: "top 92%", once: true } });
-      gsap.from(li.querySelector("img"), { scale: 1.15, duration: 1.6, ease: "power3.out", scrollTrigger: { trigger: li, start: "top 92%", once: true } });
+    $$(".gallery__item").forEach(function (li, i) {
+      var from = ["inset(0 100% 0 0)", "inset(100% 0 0 0)", "inset(0 0 0 100%)"][i % 3];
+      gsap.from(li, { clipPath: from, duration: 1.1, ease: "power3.inOut", scrollTrigger: { trigger: li, start: "top 92%", once: true } });
     });
 
     /* Monor — a kulcslyuk lassan elmozdul a szöveg mögött */
-    gsap.fromTo(".monor__mark", { yPercent: -10 }, { yPercent: 10, ease: "none",
+    if (wide) gsap.fromTo(".monor__mark", { yPercent: -10 }, { yPercent: 10, ease: "none",
       scrollTrigger: { trigger: ".monor", start: "top bottom", end: "bottom top", scrub: true } });
 
     window.addEventListener("load", function () { ScrollTrigger.refresh(); });
