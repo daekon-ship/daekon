@@ -50,6 +50,7 @@
   var lastY = window.scrollY;
   function onScroll() {
     var y = window.scrollY, hb = hero.offsetHeight - 80;
+    head.classList.toggle('is-scrolled', y > 8);
     head.classList.toggle('is-solid', y > hb);
     if (!document.body.classList.contains('drawer-open')) head.classList.toggle('is-hidden', y > hb + 200 && y > lastY + 2);
     if (y < lastY - 2) head.classList.remove('is-hidden');
@@ -290,7 +291,6 @@
   heroTl
     .fromTo('[data-hero="arch"] .arch-img', { clipPath: 'inset(100% 0% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.15 }, 0)
     .fromTo('[data-hero="arch"] img', { scale: 1.35 }, { scale: 1, duration: 1.5, ease: 'expo.out' }, 0)
-    .fromTo('.arch-ghost', { opacity: 0, x: 0, y: 0 }, { opacity: 1, x: -16, y: 16, duration: 1, ease: 'power3.out' }, .45)
     .fromTo('[data-hero="line"]', { y: 0, yPercent: 105 }, { y: 0, yPercent: 0, duration: .95, stagger: .1 }, .12)
     .fromTo('[data-hero="plate"]', { opacity: 0, scale: .55, rotate: -120 }, { opacity: 1, scale: 1, rotate: 0, duration: 1.1, ease: 'back.out(1.4)' }, .55)
     .fromTo('[data-hero="fade"]', { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: .7, stagger: .07, ease: 'power3.out' }, .7);
@@ -322,29 +322,15 @@
       onEnter: function (els) { gsap.fromTo(els, { y: 26, opacity: 0 }, { y: 0, opacity: 1, duration: .7, ease: 'power3.out', stagger: .08, clearProps: 'transform,opacity' }); }
     });
 
-    /* ---- 02 kedvencek: irányított képfeltárás ---- */
-    var wipeFrom = { left: 'inset(0% 100% 0% 0%)', right: 'inset(0% 0% 0% 100%)', up: 'inset(100% 0% 0% 0%)' };
-    $$('[data-wipe]').forEach(function (fig) {
-      var frame = $('.sig-frame', fig) || fig, img = $('img', frame) || $('iframe', frame);
-      var tl = gsap.timeline({ scrollTrigger: { trigger: fig, start: 'top 82%', once: true } });
-      tl.fromTo(frame, { clipPath: wipeFrom[fig.dataset.wipe] }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.2, ease: 'expo.inOut' });
-      if (img && img.tagName === 'IMG') tl.fromTo(img, { scale: 1.28 }, { scale: 1, duration: 1.6, ease: 'expo.out' }, .15);
-      var cap = $('figcaption', fig);
-      if (cap) tl.fromTo(cap.children, { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: .6, stagger: .07, ease: 'power3.out' }, .7);
-    });
-    mm.add('(min-width: 900px)', function () {
-    });
-
-    /* ---- 04 élmény: a boltív kinyílik, a terasz oldalról érkezik ---- */
-    gsap.fromTo('.exp-arch', { clipPath: 'inset(18% 14% 0% 14% round 999px 999px 10px 10px)' }, {
-      clipPath: 'inset(0% 0% 0% 0% round 999px 999px 10px 10px)', ease: 'none',
-      scrollTrigger: { trigger: '.exp-arch', start: 'top 92%', end: 'top 30%', scrub: true }
-    });
-    gsap.fromTo('.exp-arch .arch-img', { yPercent: -6 }, { yPercent: 6, ease: 'none', scrollTrigger: { trigger: '.exp-arch', start: 'top bottom', end: 'bottom top', scrub: true } });
-    var slideTl = gsap.timeline({ scrollTrigger: { trigger: '[data-slide]', start: 'top 85%', once: true } });
-    slideTl.fromTo('[data-slide] .exp-wide-img', { clipPath: 'inset(0% 0% 0% 100%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.3, ease: 'expo.inOut' })
-      .fromTo('[data-slide] img', { xPercent: 12, scale: 1.15 }, { xPercent: 0, scale: 1, duration: 1.6, ease: 'expo.out' }, .1)
-      .fromTo('[data-slide] figcaption', { opacity: 0 }, { opacity: 1, duration: .5 }, .9);
+    /* ---- képek: korán induló, rövid megjelenés teljes keretben —
+       nincs oldalról becsúszó vagy félig kivágott köztes állapot ---- */
+    function showUp(el, delay) {
+      gsap.fromTo(el, { opacity: 0, y: 24 }, {
+        opacity: 1, y: 0, duration: .6, delay: delay || 0, ease: 'power2.out', clearProps: 'transform,opacity',
+        scrollTrigger: { trigger: el, start: 'top 96%', once: true }
+      });
+    }
+    $$('[data-wipe], [data-slide], .exp-arch, [data-tilt]').forEach(function (el) { showUp(el); });
 
     /* ---- 05 közelről: ragadós színpad, kör alakú „tányér” átmenetek ---- */
     document.querySelector('.show').classList.add('anim-ready');
@@ -376,15 +362,14 @@
     mm.add('(min-width: 760px)', function () {
       gsap.set('.gal-grid li', { opacity: 0 });
       ScrollTrigger.batch('.gal-grid li', {
-        start: 'top 88%', once: true,
+        start: 'top 96%', once: true,
         onEnter: function (els) {
-          gsap.fromTo(els, { clipPath: 'inset(12% 12% 12% 12%)', opacity: 0 }, { clipPath: 'inset(0% 0% 0% 0%)', opacity: 1, duration: 1, ease: 'expo.out', stagger: .09 });
-          gsap.fromTo(els.map(function (e) { return $('img', e); }), { scale: 1.2 }, { scale: 1, duration: 1.4, ease: 'expo.out', stagger: .09, clearProps: 'transform' });
+          gsap.fromTo(els, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: .6, ease: 'power2.out', stagger: .06, clearProps: 'transform,opacity' });
         }
       });
     });
     mm.add('(max-width: 759px)', function () {
-      gsap.fromTo('.gal-grid li', { x: 60, opacity: 0 }, { x: 0, opacity: 1, duration: .8, stagger: .08, ease: 'power3.out', scrollTrigger: { trigger: '.gal-grid', start: 'top 85%', once: true } });
+      gsap.fromTo('.gal-grid li', { opacity: 0 }, { opacity: 1, duration: .5, stagger: .05, ease: 'power2.out', clearProps: 'opacity', scrollTrigger: { trigger: '.gal-grid', start: 'top 96%', once: true } });
     });
 
     /* ---- 07 szállítás: a küllők kirajzolódnak ---- */
@@ -401,8 +386,6 @@
       .fromTo('.dial-label', { opacity: 0 }, { opacity: 1, duration: .4, stagger: .05 }, .7);
     gsap.fromTo('.del-towns li', { yPercent: 60, opacity: 0 }, { yPercent: 0, opacity: 1, duration: .6, stagger: .04, ease: 'power3.out', scrollTrigger: { trigger: '.del-towns', start: 'top 92%', once: true } });
 
-    /* ---- 08 ajánlat: a kártya „leteszik” az asztalra ---- */
-    gsap.fromTo('[data-tilt] img', { rotate: -16, y: 60, opacity: 0 }, { rotate: -3, y: 0, opacity: 1, duration: 1.1, ease: 'back.out(1.2)', scrollTrigger: { trigger: '[data-tilt]', start: 'top 82%', once: true } });
 
     ScrollTrigger.refresh();
   });
