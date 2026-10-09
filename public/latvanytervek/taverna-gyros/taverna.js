@@ -127,7 +127,6 @@
       gsap.fromTo($$('.menu-row', panel), { x: -18, opacity: 0 }, { x: 0, opacity: 1, duration: .45, ease: 'power2.out', stagger: .025, clearProps: 'transform,opacity' });
     }
     var t = $('#tab-' + id);
-    if (t && tabsEl.scrollWidth > tabsEl.clientWidth) tabsEl.scrollTo({ left: t.offsetLeft - 20, behavior: reduce ? 'auto' : 'smooth' });
   }
   function renderSearch(q) {
     var hits = [];
@@ -295,9 +294,7 @@
     .fromTo('[data-hero="fade"]', { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: .7, stagger: .07, ease: 'power3.out' }, .7);
 
   /* ---- hero: görgetésre mélység + a tányér „forog” ---- */
-  gsap.to('.hero-arch .arch-img', { yPercent: 8, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
   mm.add('(min-width: 900px)', function () {
-    gsap.to('.hero-arch', { rotateY: -9, rotateX: 3, scale: .95, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
     gsap.to('.hero-copy', { y: -70, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
   });
 
