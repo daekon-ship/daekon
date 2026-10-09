@@ -112,38 +112,9 @@
             onUpdate: function (s) { gsap.set(bar, { scaleX: s.progress }); }
           }
         });
-        $$('.sp-img img').forEach(function (im) {
-          gsap.fromTo(im, { xPercent: -5 }, {
-            xPercent: 5, ease: 'none',
-            scrollTrigger: { trigger: im.closest('.sp'), containerAnimation: h, start: 'left right', end: 'right left', scrub: true }
-          });
-        });
-
-        /* gallery: columns drift at different speeds */
-        $$('.wc').forEach(function (c) {
-          var s = parseFloat(c.dataset.speed) || 0;
-          gsap.fromTo(c, { y: -s * 1600 }, { y: s * 1600, ease: 'none', scrollTrigger: { trigger: '.work', start: 'top bottom', end: 'bottom top', scrub: true } });
-        });
-
-        /* certificates: a pile that spreads out */
-        var certs = $$('.cert'), box = $('.certs');
-        var rot = [-11, 7, -4, 9, -8, 5];
-        gsap.from(certs, {
-          x: function (i, el) { var b = box.getBoundingClientRect(), r = el.getBoundingClientRect(); return (b.left + b.width / 2) - (r.left + r.width / 2); },
-          y: function (i) { return 40 + i * 4; },
-          rotation: function (i) { return rot[i % rot.length]; },
-          ease: 'power2.out',
-          scrollTrigger: { trigger: box, start: 'top 92%', end: 'top 45%', scrub: 0.6, invalidateOnRefresh: true }
-        });
-
-        /* gift cards drift up */
-        gsap.from('.gc-1', { y: 80, rotation: -16, scrollTrigger: { trigger: '.gift', start: 'top 85%', end: 'center 55%', scrub: 0.6 } });
-        gsap.from('.gc-2', { y: 140, rotation: 12, scrollTrigger: { trigger: '.gift', start: 'top 85%', end: 'center 55%', scrub: 0.6 } });
       },
       '(max-width:1000px)': function () {
-        gsap.utils.toArray('.sp, .wi, .cert').forEach(function (el) {
-          gsap.from(el, { opacity: 0, y: 30, duration: 0.8, ease: 'power2.out', scrollTrigger: { trigger: el, start: 'top 90%', once: true } });
-        });
+        /* mobil: nincs képmozgatás */
       }
     });
 
