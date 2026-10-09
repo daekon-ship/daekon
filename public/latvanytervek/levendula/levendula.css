@@ -138,7 +138,7 @@ button{font:inherit;color:inherit}
 .sp-body > p,.sp-card > p{margin-top:14px;color:var(--on-dark-2);max-width:440px}
 .sp-prices{margin-top:26px;border-top:1px solid var(--line-d);max-width:460px}
 .sp-prices li{display:flex;justify-content:space-between;gap:16px;align-items:baseline;padding:11px 0;border-bottom:1px solid var(--line-d);font-size:15.5px}
-.sp-prices b{font-family:var(--serif);font-weight:500;font-size:19px;white-space:nowrap;color:#F6F1FA;font-variant-numeric:lining-nums}
+.sp-prices b{font-family:var(--sans);font-weight:600;font-size:16.5px;white-space:nowrap;color:#F6F1FA;font-variant-numeric:tabular-nums}
 .sp-new{margin-top:16px;font-size:15px;color:var(--on-dark-2);display:flex;align-items:center;gap:10px}
 .sp-link{display:inline-block;margin-top:24px;font-size:15px;font-weight:600;color:var(--lav);text-decoration:none;border-bottom:1px solid rgba(203,184,230,.5);padding-bottom:3px;transition:border-color .2s}
 .sp-link:hover{border-color:var(--lav)}
@@ -179,7 +179,7 @@ button{font:inherit;color:inherit}
 .mi::after{content:"";order:2;border-bottom:1px dotted rgba(36,24,43,.3);transform:translateY(-5px)}
 .mi-n{order:1;font-size:16.5px;line-height:1.35}
 .mi-n small{display:block;font-size:14px;color:var(--muted);margin-top:2px}
-.mi-p{order:3;font-family:var(--serif);font-weight:500;font-size:19px;white-space:nowrap;font-variant-numeric:lining-nums tabular-nums}
+.mi-p{order:3;font-family:var(--sans);font-weight:600;font-size:16.5px;white-space:nowrap;font-variant-numeric:tabular-nums}
 .mi-p-txt{font-family:var(--sans);font-size:14.5px;font-weight:500;color:var(--muted)}
 .mi-sub .mi-n{padding-left:18px;color:#3F3049;position:relative}
 .mi-sub .mi-n::before{content:"";position:absolute;left:2px;top:.7em;width:9px;height:1px;background:rgba(36,24,43,.4)}
@@ -330,7 +330,7 @@ button{font:inherit;color:inherit}
   .mi{gap:10px;padding:14px 0;grid-template-columns:minmax(0,1fr) auto}
   .mi::after{display:none}
   .mi-n{font-size:16px}
-  .mi-p{font-size:17.5px}
+  .mi-p{font-size:16px}
   .certs{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
   .cert img{height:150px}
   .cl > div{grid-template-columns:1fr;gap:2px}
