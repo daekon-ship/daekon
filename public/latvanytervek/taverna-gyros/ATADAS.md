@@ -29,6 +29,7 @@ Szekciók: hero · kedvencek · teljes étlap · élmény (terasz, kávé) · k�
 - Galéria: mobilon húzható sáv, lightbox érintéses lapozással, Esc, nyilak, fókuszcsapda.
 - Érintési célok legalább 44 px magasak; látható fókusz; mozgáscsökkentéssel tesztelve.
 - **Képaudit (2. kör):** minden kép 320–1920 px között, görgetés közben 1/4 képernyőnként mérve: egyik kép sem hagy rést a keretében, egyik keret sem lóg ki a tartalomsávból, egyik kép sem takar szöveget. Javítva: hero-parallaxis rés, a kedvencek burgerképe rácsúszott a csirke feliratára, a csirkefotó külön kivágást kapott (`csirke-kozel`), a burgerfotón nem látszik a kar, a galéria új háromhasábos rácsa a képek saját arányához igazodik (nincs torz kivágás), a közelről-színpad 320–360 px-en nem lóg ki.
+- **4. kör (ügyfél kérésére):** kikerült az asztali kártyás „Ajánlatok” szekció, a kitalált kiszállítási iránytű és az ismétlődő „Közelről” szekció. Mobilon kb. 12 900 px helyett 8 500 px az oldal.
 - A Google-térkép a fejlesztői környezetben nem tölthető be (hálózati tiltás); élesben a beágyazás betölt, alatta tartalék link van.
 
 ## Egyeztetendő

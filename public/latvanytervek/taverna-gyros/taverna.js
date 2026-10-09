@@ -218,50 +218,6 @@
     galN.textContent = best + 1;
   }, { passive: true });
 
-  /* ---------------- kiszállítási iránytű ---------------- */
-  var TOWNS = [ // [név, irány fokban (É = 0), gyűrű]
-    ['Gomba', 20, 0], ['Péteri', 262, 0],
-    ['Monorierdő', 140, 1], ['Csévharaszt', 182, 1], ['Vasad', 212, 1], ['Gyömrő', 338, 1],
-    ['Bénye', 62, 2], ['Pilis', 100, 2], ['Nyáregyháza', 158, 2], ['Üllő', 305, 2]
-  ];
-  var R = [70, 120, 168];
-  var dial = $('[data-dial]'), NS = 'http://www.w3.org/2000/svg';
-  TOWNS.forEach(function (t) {
-    var a = (t[1] - 90) * Math.PI / 180, r = R[t[2]];
-    var x = 200 + Math.cos(a) * r, y = 200 + Math.sin(a) * r;
-    var x0 = 200 + Math.cos(a) * 36, y0 = 200 + Math.sin(a) * 36;
-    var g = document.createElementNS(NS, 'g'); g.setAttribute('class', 'dial-town');
-    var l = document.createElementNS(NS, 'line');
-    l.setAttribute('x1', x0.toFixed(1)); l.setAttribute('y1', y0.toFixed(1)); l.setAttribute('x2', x.toFixed(1)); l.setAttribute('y2', y.toFixed(1));
-    l.setAttribute('class', 'dial-spoke');
-    var c = document.createElementNS(NS, 'circle'); c.setAttribute('cx', x.toFixed(1)); c.setAttribute('cy', y.toFixed(1)); c.setAttribute('r', 6); c.setAttribute('class', 'dial-dot');
-    var tx = document.createElementNS(NS, 'text'); tx.setAttribute('class', 'dial-label'); tx.textContent = t[0];
-    var dx = Math.cos(a), dy = Math.sin(a);
-    if (Math.abs(dx) < .3) { tx.setAttribute('text-anchor', 'middle'); tx.setAttribute('x', x.toFixed(1)); tx.setAttribute('y', (y + (dy < 0 ? -14 : 24)).toFixed(1)); }
-    else { tx.setAttribute('text-anchor', dx > 0 ? 'start' : 'end'); tx.setAttribute('x', (x + (dx > 0 ? 12 : -12)).toFixed(1)); tx.setAttribute('y', (y + 5).toFixed(1)); }
-    g.appendChild(l); g.appendChild(c); g.appendChild(tx); dial.appendChild(g);
-  });
-
-  /* ---------------- közelről: gombok (mozgás nélkül is működik) ---------------- */
-  var showBtns = $$('.show-list button'), showShots = $$('.show-shot'), showN = $('[data-show-n]');
-  function setShow(i) {
-    showBtns.forEach(function (b, k) { b.parentNode.classList.toggle('is-on', k === i); b.setAttribute('aria-pressed', k === i ? 'true' : 'false'); });
-    if (showN) showN.textContent = i + 1;
-  }
-  var showST = null, showSeg = [];
-  showBtns.forEach(function (b, i) {
-    b.addEventListener('click', function () {
-      if (showST) {
-        var y = showST.start + (showST.end - showST.start) * showSeg[i];
-        window.scrollTo({ top: y + 2, behavior: 'smooth' });
-      } else {
-        showShots.forEach(function (s, k) { s.classList.toggle('is-on', k === i); });
-        setShow(i);
-      }
-    });
-  });
-  setShow(0);
-
   /* =========================================================
      MOZGÁS
      ========================================================= */
@@ -326,32 +282,6 @@
     }
     $$('[data-wipe], [data-slide], .exp-arch, [data-tilt]').forEach(function (el) { showUp(el); });
 
-    /* ---- 05 közelről: ragadós színpad, kör alakú „tányér” átmenetek ---- */
-    document.querySelector('.show').classList.add('anim-ready');
-    var showTl = gsap.timeline({ defaults: { ease: 'none' } });
-    var seg = 1.3, total = 0;
-    showShots.forEach(function (s, i) { s.style.zIndex = i + 1; if (i) gsap.set(s, { clipPath: 'circle(0% at 50% 62%)' }); });
-    showSeg = [0];
-    for (var i = 1; i < showShots.length; i++) {
-      var at = (i - 1) * seg + .35;
-      showTl.to(showShots[i], { clipPath: 'circle(78% at 50% 62%)', duration: 1, ease: 'power2.inOut' }, at)
-        .fromTo($('img', showShots[i]), { scale: 1.3, rotate: -6 }, { scale: 1, rotate: 0, duration: 1, ease: 'power2.out' }, at)
-        .to($('img', showShots[i - 1]), { scale: 1.12, duration: 1 }, at);
-      showSeg.push(at + 1);
-      total = at + 1;
-    }
-    showTl.to({}, { duration: .35 }, total);
-    var tlDur = showTl.duration();
-    showSeg = showSeg.map(function (t) { return t / tlDur; });
-    showST = ScrollTrigger.create({
-      trigger: '.show-track', start: 'top top', end: 'bottom bottom', scrub: .4, animation: showTl,
-      onUpdate: function (self) {
-        var t = self.progress * tlDur, idx = 0;
-        for (var k = 1; k < showShots.length; k++) if (t >= (k - 1) * seg + .35 + .5) idx = k;
-        if (idx !== setShow.cur) { setShow.cur = idx; setShow(idx); }
-      }
-    });
-
     /* ---- 06 galéria: fokozatos feltárás ---- */
     mm.add('(min-width: 760px)', function () {
       gsap.set('.gal-grid li', { opacity: 0 });
@@ -366,18 +296,7 @@
       gsap.fromTo('.gal-grid li', { opacity: 0 }, { opacity: 1, duration: .5, stagger: .05, ease: 'power2.out', clearProps: 'opacity', scrollTrigger: { trigger: '.gal-grid', start: 'top 96%', once: true } });
     });
 
-    /* ---- 07 szállítás: a küllők kirajzolódnak ---- */
-    var spokes = $$('.dial-spoke');
-    spokes.forEach(function (l) {
-      var len = Math.hypot(l.x2.baseVal.value - l.x1.baseVal.value, l.y2.baseVal.value - l.y1.baseVal.value);
-      l.style.strokeDasharray = len; l.style.strokeDashoffset = len;
-    });
-    var dialTl = gsap.timeline({ scrollTrigger: { trigger: '.del-dial', start: 'top 80%', once: true } });
-    dialTl.fromTo('.dial-rings circle', { scale: .4, opacity: 0, transformOrigin: '200px 200px' }, { scale: 1, opacity: 1, duration: .9, stagger: .1, ease: 'expo.out' })
-      .fromTo('.dial-core, .dial-monor', { scale: 0, transformOrigin: '200px 200px' }, { scale: 1, duration: .6, ease: 'back.out(2)' }, .1)
-      .to(spokes, { strokeDashoffset: 0, duration: .6, stagger: .05, ease: 'power2.out' }, .35)
-      .fromTo('.dial-dot', { scale: 0, transformOrigin: 'center', transformBox: 'fill-box' }, { scale: 1, duration: .35, stagger: .05, ease: 'back.out(3)' }, .6)
-      .fromTo('.dial-label', { opacity: 0 }, { opacity: 1, duration: .4, stagger: .05 }, .7);
+    /* ---- 07 szállítás ---- */
     gsap.fromTo('.del-towns li', { yPercent: 60, opacity: 0 }, { yPercent: 0, opacity: 1, duration: .6, stagger: .04, ease: 'power3.out', scrollTrigger: { trigger: '.del-towns', start: 'top 92%', once: true } });
 
 

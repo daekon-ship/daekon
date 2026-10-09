@@ -561,7 +561,7 @@ body.drawer-open .site-head { background: transparent; color: var(--ink); -webki
   .del-grid { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: clamp(20px, 2vw, 32px); align-items: center; }
   .del-copy { grid-column: 1 / 7; }
   .del-dial { grid-column: 7 / 13; }
-  .del-towns { grid-column: 1 / 13; margin-top: 24px; }
+  .del-towns { grid-column: 8 / 13; margin-top: 0; align-self: center; }
 }
 
 /* =========================================================
