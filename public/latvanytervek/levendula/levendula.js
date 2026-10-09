@@ -64,43 +64,10 @@
   if (hasG && !reduce) {
     gsap.registerPlugin(ScrollTrigger);
 
-    /* eye opens on load */
-    eyeState.open = 0.02; drawEye();
-    var img = $('.eye image');
-    var start = function () {
-      ready();
-      gsap.to(eyeState, { open: 1, duration: 1.5, ease: 'expo.inOut', delay: 0.15, onUpdate: drawEye });
-    };
-    var pre = new Image(); pre.onload = start; pre.onerror = start; pre.src = img.getAttribute('href');
-    setTimeout(function () { if (!hero.classList.contains('is-ready')) start(); }, 1600);
+    requestAnimationFrame(ready);
 
     ScrollTrigger.matchMedia({
       '(min-width:1001px)': function () {
-        var eye = $('.eye');
-        /* hero: the eye widens into the whole screen */
-        var setStart = function () {
-          gsap.set(eye, { clearProps: 'top,right,width,height,transform' });
-          var hr = hero.getBoundingClientRect(), er = eye.getBoundingClientRect();
-          gsap.set(eye, { top: er.top - hr.top, right: hr.right - er.right, width: er.width, height: er.height, yPercent: 0, y: 0 });
-        };
-        setStart();
-        var shade = $('.eye-shade');
-        var tl = gsap.timeline({
-          defaults: { ease: 'none' },
-          scrollTrigger: {
-            trigger: hero, start: 'top top', end: '+=140%', pin: true, scrub: 0.7,
-            invalidateOnRefresh: true, onRefreshInit: setStart,
-            onRefresh: function (st) { pinExtra = st.end - st.start; onScroll(); }
-          }
-        });
-        tl.to('.hero-text', { opacity: 0, x: -70, duration: 0.45 }, 0)
-          .to('.hero-scroll', { opacity: 0, duration: 0.2 }, 0)
-          .to(eye, { top: 0, right: 0, width: function () { return window.innerWidth; }, height: function () { return hero.offsetHeight; }, duration: 1, ease: 'power2.inOut' }, 0)
-          .to(eyeState, { morph: 1, duration: 1, ease: 'power2.inOut', onUpdate: drawEye }, 0)
-          .to(shade, { opacity: 1, duration: 0.4 }, 0.6)
-          .fromTo('.hero-after', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.35 }, 0.78)
-          .to({}, { duration: 0.35 });
-
         /* services: horizontal ride */
         var track = $('.svc-track'), bar = $('.svc-progress i');
         var dist = function () { return Math.max(0, track.scrollWidth - window.innerWidth); };

@@ -10,7 +10,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%231F1424'/%3E%3Cpath d='M8 32C18 18 46 18 56 32C46 46 18 46 8 32Z' fill='%23CBB8E6'/%3E%3C/svg%3E">
 <link rel="preload" href="fonts/bodonimoda.woff" as="font" type="font/woff" crossorigin>
 <link rel="preload" href="fonts/hanken-var.woff" as="font" type="font/woff" crossorigin>
-<link rel="stylesheet" href="levendula.css?v=4">
+<link rel="stylesheet" href="levendula.css?v=5">
 <script>document.documentElement.classList.add('js')</script>
 </head>
 <body>
@@ -59,26 +59,9 @@
       </div>
     </div>
 
-    <div class="eye" aria-hidden="false">
-      <svg class="eye-svg" role="img" aria-label="Elkészült műszempilla közelről, a szalonban fotózva">
-        <defs>
-          <clipPath id="eyeClip" clipPathUnits="objectBoundingBox">
-            <path id="eyePath" d="M0,0.5 C0.12,0.3 0.3,0.06 0.5,0.06 C0.7,0.06 0.88,0.3 1,0.5 C0.88,0.7 0.7,0.94 0.5,0.94 C0.3,0.94 0.12,0.7 0,0.5 Z"/>
-          </clipPath>
-          <linearGradient id="eyeShade" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0.35" stop-color="#1F1424" stop-opacity="0"/>
-            <stop offset="1" stop-color="#1F1424" stop-opacity="0.85"/>
-          </linearGradient>
-        </defs>
-        <g clip-path="url(#eyeClip)">
-          <image href="img/pilla-kozeli.jpg" width="100%" height="100%" preserveAspectRatio="xMidYMid slice"/>
-          <rect class="eye-shade" width="100%" height="100%" fill="url(#eyeShade)" opacity="0"/>
-        </g>
-      </svg>
-      <p class="hero-after">Egyszerre csak egy vendég. Nincs sietés, nincs várakozó a sarokban – csak te és a kezelésed.</p>
-    </div>
-
-    <a class="hero-scroll" href="#kezelesek"><span>Görgess tovább</span></a>
+    <figure class="hero-photo">
+      <img src="img/pilla-kozeli.jpg" alt="Elkészült műszempilla közelről, a szalonban fotózva" width="1300" height="975" fetchpriority="high">
+    </figure>
   </div>
 </section>
 
@@ -421,6 +404,6 @@
 
 <script src="js/gsap.min.js"></script>
 <script src="js/ScrollTrigger.min.js"></script>
-<script src="levendula.js?v=4"></script>
+<script src="levendula.js?v=5"></script>
 </body>
 </html>
