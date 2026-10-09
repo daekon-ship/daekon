@@ -91,19 +91,23 @@ button{font:inherit;color:inherit}
 /* ============================================================
    HERO
    ============================================================ */
-.hero{position:relative;background:var(--night);color:var(--on-dark);height:min(100svh,860px);min-height:620px;overflow:hidden}
-.hero-stage{position:relative;height:100%;gap:56px;max-width:var(--max);margin-inline:auto;padding:var(--hdr) var(--pad) 0;display:flex;align-items:center}
-.hero-text{position:relative;z-index:3;max-width:min(470px,37vw)}
+.hero{position:relative;background:var(--night);color:var(--on-dark);overflow:hidden}
+.hero-stage{position:relative;max-width:var(--max);margin-inline:auto;padding:calc(var(--hdr) + clamp(64px,9vw,120px)) var(--pad) clamp(24px,3vw,40px);display:flex;align-items:flex-end;gap:56px}
+.hero-text{position:relative;z-index:3;max-width:min(600px,50vw)}
 .hero-kicker{font-size:14.5px;color:var(--on-dark-2);margin-bottom:22px;padding-left:34px;position:relative}
 .hero-kicker::before{content:"";position:absolute;left:0;top:50%;width:22px;height:1px;background:var(--lav)}
 .hero h1{font-size:clamp(36px,3.7vw,54px);line-height:1.06;color:#F6F1FA}
 .hero-lead{margin-top:22px;font-size:17.5px;line-height:1.6;color:var(--on-dark-2)}
 .hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
 
-.hero-photo{position:relative;z-index:2;margin-left:auto;width:min(54%,700px);height:min(68vh,620px);overflow:hidden;border-radius:3px;background:var(--night-2)}
-.hero-photo img{width:100%;height:100%;object-fit:cover;object-position:50% 62%}
-.js .hero-photo{opacity:0;transform:translateY(20px)}
-.js .is-ready .hero-photo{opacity:1;transform:none;transition:opacity 1s var(--ease) .2s,transform 1s var(--ease) .2s}
+.hero-info{margin:0 0 0 auto;width:min(380px,32vw);border-top:1px solid var(--line-d);position:relative;z-index:2}
+.hero-info > div{padding:16px 0;border-bottom:1px solid var(--line-d)}
+.hero-info dt{font-size:13.5px;color:var(--on-dark-2);margin-bottom:4px}
+.hero-info dd{margin:0;font-size:16px;line-height:1.5;color:#F6F1FA}
+.hero-info a{text-decoration:none;border-bottom:1px solid rgba(203,184,230,.4)}
+.hero-info a:hover{border-color:var(--lav)}
+.js .hero-info{opacity:0;transform:translateY(16px)}
+.js .is-ready .hero-info{opacity:1;transform:none;transition:opacity .9s var(--ease) .4s,transform .9s var(--ease) .4s}
 
 /* JS-enhanced desktop: the eye is absolutely managed by GSAP */
 .js .hero-text > *{opacity:0;transform:translateY(16px)}
@@ -323,7 +327,8 @@ button{font:inherit;color:inherit}
   .hero{height:auto;min-height:0}
   .hero-stage{flex-direction:column;align-items:stretch;padding:calc(var(--hdr) + 36px) var(--pad) 56px}
   .hero-text{max-width:560px}
-  .hero-photo{width:100%;height:auto;aspect-ratio:4/3;margin:36px 0 0}
+  .hero-info{width:100%;margin:40px 0 0}
+  .hero-text{max-width:600px}
 
   .svc-head,.p-head,.work-head{grid-template-columns:1fr;gap:12px;margin-bottom:32px}
   .svc-track{flex-direction:column;width:auto;gap:64px}
@@ -380,5 +385,5 @@ button{font:inherit;color:inherit}
 
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition-duration:.01ms!important}
-  .js .hero-text > *,.js .hero-photo{opacity:1;transform:none}
+  .js .hero-text > *,.js .hero-info{opacity:1;transform:none}
 }
