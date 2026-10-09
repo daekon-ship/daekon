@@ -737,3 +737,41 @@ body.drawer-open .dock, body.lb-open .dock { transform: translateY(110%); }
 .contact-cta { flex-wrap: wrap; }
 .contact-cta .btn { flex: 1 1 130px; }
 @media (min-width: 760px) { .contact-cta .btn { flex: 0 0 auto; } }
+/* =========================================================
+   KOMPAKT KÖR — kisebb szekciótávok, sűrűbb blokkok
+   ========================================================= */
+:root { --sec: clamp(44px, 2vw + 36px, 88px); }
+.hero-facts span { white-space: normal; }
+.hero-facts b { white-space: nowrap; font-size: 1.05rem; }
+.hero-facts li { padding-top: 12px; }
+@media (max-width: 380px) { .hero-facts b { font-size: .92rem; } }
+.hero { padding-bottom: 28px; }
+.hero-in { row-gap: 12px; }
+.sig-head { margin-bottom: 22px; }
+.sig-grid { gap: 28px; }
+.sig .price-note { margin-top: 28px; }
+.sig-quote { padding-top: 18px; }
+.menu-row { padding: 9px 0; }
+.menu-in { gap: 18px; }
+.exp-grid, .del-grid, .contact-grid { gap: 22px; }
+.exp-facts div, .del-rules li { padding: 9px 0; }
+.gal-head { margin-bottom: 18px; }
+.contact-copy { gap: 16px; }
+.foot { padding-top: 40px; }
+@media (min-width: 760px) {
+  .sig-quote { margin-top: 36px !important; }
+  .sig-c { margin-top: 36px !important; }
+  .exp-wide { margin-top: 24px !important; }
+}
+@media (max-width: 759px) {
+  .sig-b, .sig-c { width: 100% !important; }
+  .sig-grid figure { gap: 10px; }
+  .exp-arch { width: 78% !important; }
+}
+@media (max-width: 759px) {
+  .sig-a .sig-frame, .sig-c .sig-frame { aspect-ratio: 4 / 3 !important; }
+  .sig-b .sig-frame { aspect-ratio: 4 / 3.4 !important; }
+  .exp-facts { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; column-gap: 16px; }
+  .exp-wide-img { aspect-ratio: 16 / 10 !important; }
+  .exp-arch { width: 70% !important; }
+}
