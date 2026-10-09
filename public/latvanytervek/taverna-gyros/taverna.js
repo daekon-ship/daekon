@@ -123,7 +123,8 @@
     panel.innerHTML = '<div class="menu-panel-head"><h3>' + esc(c.name) + '</h3><p>' + esc(c.lede) + '</p></div>' +
       '<ul class="menu-list">' + c.items.map(function (it) { return rowHtml(it); }).join('') + '</ul>';
     if (animate && animOn) {
-      gsap.fromTo(panel, { opacity: 0 }, { opacity: 1, duration: .25, ease: 'power1.out', clearProps: 'opacity' });
+      gsap.fromTo(panel, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: .3, ease: 'power2.out', clearProps: 'opacity,transform' });
+      gsap.fromTo($$('.menu-row', panel).slice(0, 12), { opacity: 0 }, { opacity: 1, duration: .35, stagger: .025, delay: .05, clearProps: 'opacity' });
     }
     var t = $('#tab-' + id);
   }
@@ -141,7 +142,7 @@
 
   tabsEl.addEventListener('click', function (e) {
     var b = e.target.closest('.menu-tab'); if (!b) return;
-    if (search.value) search.value = '';
+    if (search.value) { search.value = ''; if (clearBtn) clearBtn.hidden = true; }
     renderCat(b.dataset.cat, true);
   });
   tabsEl.addEventListener('keydown', function (e) {
@@ -153,8 +154,10 @@
     else i = (i + (e.key === 'ArrowRight' || e.key === 'ArrowDown' ? 1 : -1) + tabs.length) % tabs.length;
     tabs[i].focus(); search.value = ''; renderCat(tabs[i].dataset.cat, true);
   });
-  var sTimer;
+  var sTimer, clearBtn = $('[data-menu-clear]');
+  if (clearBtn) clearBtn.addEventListener('click', function () { search.value = ''; clearBtn.hidden = true; renderCat(current, true); search.focus(); });
   search.addEventListener('input', function () {
+    if (clearBtn) clearBtn.hidden = !search.value;
     clearTimeout(sTimer);
     sTimer = setTimeout(function () {
       var q = fold(search.value.trim());
@@ -170,15 +173,33 @@
   var lb = $('#lightbox'), lbImg = $('[data-lb-img]'), lbCap = $('[data-lb-cap]'), lbN = $('[data-lb-n]');
   var shots = $$('[data-lb]').map(function (b) {
     var img = $('img', b), src = $('source', b);
-    var set = (src ? src.getAttribute('srcset') : img.getAttribute('srcset')).split(',').pop().trim().split(' ')[0];
-    return { src: set, alt: img.alt, btn: b };
+    var list = (src ? src.getAttribute('srcset') : img.getAttribute('srcset')).split(',').map(function (x) {
+      var p = x.trim().split(' '); return { u: p[0], w: parseInt(p[1], 10) || 0 };
+    }).sort(function (x, y) { return x.w - y.w; });
+    return { list: list, thumb: list[0].u, alt: img.alt, btn: b };
+  });
+  function pick(s) {
+    var need = Math.min(window.innerWidth, 1400) * (window.devicePixelRatio || 1);
+    for (var k = 0; k < s.list.length; k++) if (s.list[k].w >= need) return s.list[k].u;
+    return s.list[s.list.length - 1].u;
+  }
+  var thumbsEl = $('[data-lb-thumbs]');
+  shots.forEach(function (s, i) {
+    var t = document.createElement('button');
+    t.type = 'button'; t.className = 'lb-thumb'; t.setAttribute('aria-label', (i + 1) + '. kép: ' + s.alt);
+    t.innerHTML = '<img src="' + s.thumb + '" alt="" loading="lazy" decoding="async">';
+    t.addEventListener('click', function () { showLb(i); });
+    thumbsEl.appendChild(t);
   });
   var lbI = 0, lastFocus = null;
   function showLb(i) {
     lbI = (i + shots.length) % shots.length;
     var s = shots[lbI];
-    lbImg.src = s.src; lbImg.alt = s.alt; lbCap.textContent = s.alt; lbN.textContent = (lbI + 1) + ' / ' + shots.length;
-    if (animOn) gsap.fromTo(lbImg, { opacity: 0, scale: .97 }, { opacity: 1, scale: 1, duration: .35, ease: 'power2.out' });
+    lbImg.src = pick(s); lbImg.alt = s.alt; lbCap.textContent = s.alt; lbN.textContent = (lbI + 1) + ' / ' + shots.length;
+    $$('.lb-thumb', thumbsEl).forEach(function (t, k) { t.classList.toggle('is-on', k === lbI); if (k === lbI) t.setAttribute('aria-current', 'true'); else t.removeAttribute('aria-current'); });
+    var on = $$('.lb-thumb', thumbsEl)[lbI]; if (on && on.scrollIntoView) on.scrollIntoView({ block: 'nearest', inline: 'center' });
+    [lbI + 1, lbI - 1].forEach(function (n) { var x = new Image(); x.src = pick(shots[(n + shots.length) % shots.length]); });
+    if (animOn) gsap.fromTo(lbImg, { opacity: 0, scale: .985 }, { opacity: 1, scale: 1, duration: .35, ease: 'power2.out' });
   }
   function openLb(i) {
     lastFocus = document.activeElement; lb.hidden = false; document.body.classList.add('lb-open');
@@ -242,19 +263,42 @@
 
   var fontsReady = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
 
-  /* ---- 01 hero: filmszerű belépés ---- */
-  var heroTl = gsap.timeline({ defaults: { ease: 'power4.out' }, onComplete: function () { doc.classList.remove('anim'); } });
+  /* ---- 01 hero: filmszerű, de rövid belépés ---- */
+  var heroTl = gsap.timeline({ defaults: { ease: 'power3.out' }, onComplete: function () { doc.classList.remove('anim'); } });
   heroTl
-    .fromTo('[data-hero="arch"] .arch-img', { clipPath: 'inset(100% 0% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.15 }, 0)
-    .fromTo('[data-hero="arch"] img', { scale: 1.35 }, { scale: 1, duration: 1.5, ease: 'expo.out' }, 0)
-    .fromTo('[data-hero="line"]', { y: 0, yPercent: 105 }, { y: 0, yPercent: 0, duration: .95, stagger: .1 }, .12)
-    .fromTo('[data-hero="fade"]', { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: .7, stagger: .07, ease: 'power3.out' }, .7);
+    .fromTo('[data-hero="arch"] .arch-img', { clipPath: 'inset(14% 10% 14% 10% round 22px)' }, { clipPath: 'inset(0% 0% 0% 0% round 0px)', duration: 1.1, ease: 'expo.out' }, 0)
+    .fromTo('[data-hero="arch"] img', { scale: 1.12 }, { scale: 1, duration: 1.6, ease: 'expo.out' }, 0)
+    .fromTo('[data-hero="line"]', { y: 0, yPercent: 105 }, { y: 0, yPercent: 0, duration: .9, stagger: .09, ease: 'power4.out' }, .1)
+    .fromTo('[data-hero="fade"]', { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: .6, stagger: .06, clearProps: 'transform' }, .45);
 
-  /* ---- hero: görgetésre mélység + a tányér „forog” ---- */
+  /* ---- hero: szolid mélység görgetéskor, csak asztali nézetben ---- */
   mm.add('(min-width: 900px)', function () {
+    gsap.to('.hero-arch img', { yPercent: 4, scale: 1.04, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: .4 } });
+    gsap.to('.hero-copy', { y: -24, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: .4 } });
   });
 
-  /* görgetéshez kötött szöveg- és képanimáció nincs: a tartalom mindig teljesen, fixen látszik */
+  /* ---- görgetéses felfedés: rövid, korán induló, szövegmaszk nélkül ---- */
+  function rise(targets, opts) {
+    var els = typeof targets === 'string' ? $$(targets) : targets;
+    if (!els.length) return;
+    gsap.set(els, { opacity: 0, y: 18 });
+    ScrollTrigger.batch(els, {
+      start: 'top 94%', once: true,
+      onEnter: function (batch) {
+        gsap.to(batch, { opacity: 1, y: 0, duration: .6, ease: 'power3.out', stagger: (opts && opts.stagger) || .07, clearProps: 'transform,opacity' });
+      }
+    });
+  }
+  rise('[data-rv]');
+  rise('.sig-grid > figure, .sig-quote', { stagger: .09 });
+  rise('.exp-copy > p, .exp-facts > div, .del-rules li, .del-copy > .btn, .del-towns, .contact-addr, .hours, .contact-cta, .contact-map', { stagger: .05 });
+  rise('.menu-side > *:not(h2)', { stagger: .05 });
+
+  // képek: kis, precíz „beállás” a kereten belül (a keret sosem mozdul, így nincs rés)
+  $$('.sig-frame img, .exp-arch img, .exp-drinks-img img').forEach(function (img) {
+    gsap.fromTo(img, { scale: 1.08 }, { scale: 1, duration: 1.2, ease: 'expo.out', scrollTrigger: { trigger: img, start: 'top 94%', once: true } });
+  });
+  gsap.fromTo('.exp-drinks', { y: 28 }, { y: 0, duration: .9, ease: 'power3.out', scrollTrigger: { trigger: '.exp-stack', start: 'top 85%', once: true } });
 
   // a ragadós szakasz méretei a képek betöltése után változhatnak
   window.addEventListener('load', function () { ScrollTrigger.refresh(); });

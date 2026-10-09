@@ -46,3 +46,18 @@ Szekciók: hero · kedvencek · teljes étlap · élmény (terasz, kávé) · k�
 | Hiányzó fotók | Gyros pitában / tálon tányéron, étterembelső, pult, kávék, desszertek (baklava, marlenka, palacsinta), frissensültek | Saját fotók bekérése |
 | Értékelések | Nincsenek az oldalon (kitalált vélemény tilos) | Ha kell: valódi Google/Facebook idézetek engedéllyel |
 | Élesítés | `noindex` | Törölni, canonical + og címek |
+
+
+## Prémium véglegesítés (2026-10-09)
+
+Mentés előtte: `taverna-mentes-2026-10-09` ág a repóban.
+
+- Hero: nagyobb, domináns 4K burgerfotó (asztali nézetben max. 560 px), precízebb címméret, rövid maszkos képbeúszás és soronkénti cím-belépés, asztalon nagyon finom mélység görgetéskor. Mobilon a gombok közvetlenül a kép alatt.
+- Hero-tények: nyitvatartás, ingyenes házhozszállítás, cím (a kapcsolatra ugrik).
+- Animációk: GSAP, rövid felfedés (átlátszóság + 18 px), stagger a kártyákon, kis képbeállás a kereteken belül; nincs scroll-jacking, nincs szövegmaszk görgetéskor; reduced-motion mellett minden statikus.
+- Kártyák: árnyék, hover-zoom a valódi fotókon.
+- Étlap: keresésmező törlés-gombbal, elegánsabb panelváltás; mind a 82 tétel és ár változatlan.
+- Galéria: a főoldalon nincs galériablokk; a Galéria menüpont képnézegetőt nyit bélyegképsorral, lapozással (nyíl, húzás, billentyű), előtöltéssel, a kijelzőhöz illő képmérettel. JS nélkül egyszerű képlista.
+- Mobil alsó sáv: elmosott háttér, egyforma magas gombok, safe-area.
+- Billentyűzet: jól látható fókusz, fókuszcsapda a képnézegetőben, fókusz-visszaadás.
+- Ellenőrizve: 360/390/430/768/1024/1440 px, konzolhiba 0, hiányzó kép/hivatkozás 0, LCP helyben ~0,3–0,4 s, kezdeti letöltés ~650 KB.
