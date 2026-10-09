@@ -8,7 +8,7 @@ Teljes újratervezés. A régi projektből csak adat került át (étlap, árak,
 ## Koncepció — „a nyárs körül”
 
 - **Forma:** mediterrán boltív (hero, élmény, közelről-színpad, térkép) + kerek „tányér” kivágás. A gombok is boltív alakúak.
-- **Mozgásmotívum:** forgás. A hero tányér körüli felirat görgetésre fordul; a közelről-szakaszban kör alakú „tányér” átmenetek váltják a képeket.
+- **Hero (3. kör):** a fő kép a Taverna fekete zsemlés burgere (a legprémiumabb saját fotó), a kör alakú tányér és a „Holnap is forog” zárósor kikerült; a szövegek egyszerű, leíró hangon. Korábbi mozgásmotívum: forgás. A hero tányér körüli felirat görgetésre fordul; a közelről-szakaszban kör alakú „tányér” átmenetek váltják a képeket.
 - **Színek:** Taverna türkiz `#3FB8AF` (a logóból mintázva) nagy felületként, meleg szénfekete `#1C1612`, pita-krém `#F4EBDA`, mélytürkiz `#0F3B37`, lime `#C9DC3E` csak kiemelésre — a lime a Taverna saját asztalairól és szórólapjairól származik.
 - **Betűk:** Archivo (keskeny, nehéz display, változó szélesség) + Figtree (szöveg). Helyben hosztolva (`fonts/`, OFL). Fraunces nincs. A hero címe legfeljebb 88 px.
 - **Logó:** az eredeti logóból kivágott maszk (`img/logo-mask.webp`), CSS-sel bármilyen színre színezhető.

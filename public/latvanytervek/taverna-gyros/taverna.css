@@ -220,8 +220,6 @@ body.drawer-open .site-head { background: transparent; color: var(--ink); -webki
 }
 .hero-title .ln { display: block; overflow: clip; padding-bottom: .07em; margin-bottom: -.05em; }
 .hero-title .ln > span { display: inline-block; }
-.hero-title .ln { white-space: nowrap; }
-@media (min-width: 1200px) { .hero-title .ln:nth-child(2) { padding-left: .9em; } }
 .hero-lede { grid-area: lede; font-size: var(--fs-lead); max-width: 34ch; font-weight: 500; }
 .hero-cta { grid-area: cta; display: flex; flex-wrap: wrap; gap: 12px; }
 .hero-cta .btn-ink { flex: 1 1 auto; }
@@ -235,17 +233,7 @@ body.drawer-open .site-head { background: transparent; color: var(--ink); -webki
 .arch img { width: 100%; height: 100%; object-fit: cover; }
 .hero-arch { aspect-ratio: 3 / 4.15; transform-style: preserve-3d; }
 .hero-arch .arch-img { position: absolute; inset: -11% 0; }
-.hero-arch img { object-position: 30% 50%; }
-.plate {
-  position: absolute; left: -16%; bottom: -8%;
-  width: 46%; aspect-ratio: 1;
-}
-.plate-img { position: absolute; inset: 14%; border-radius: 50%; overflow: hidden; box-shadow: 0 0 0 6px var(--teal); }
-.plate-img img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 45%; transform: scale(1.15); }
-.ring { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
-.ring text { font-family: var(--display); font-weight: 700; font-stretch: 80%; font-size: 15.2px; letter-spacing: .06em; fill: var(--ink); }
-.hero-stage { margin-bottom: 14%; }
-.hero-tag { position: absolute; right: 0; top: calc(100% + 16px); max-width: 22ch; font-size: .85rem; line-height: 1.4; font-weight: 500; text-align: right; display: none; }
+.hero-arch img { object-position: 50% 42%; }
 
 @media (min-width: 600px) {
   .hero-stage { width: min(56vw, 400px); margin-right: 4vw; }
@@ -260,8 +248,7 @@ body.drawer-open .site-head { background: transparent; color: var(--ink); -webki
   }
   .hero-copy { display: flex; flex-direction: column; gap: 26px; grid-area: copy; position: relative; z-index: 2; }
   .hero-stage { width: min(100%, 480px, calc((100svh - var(--head-h) - 160px) * .72)); min-width: 340px; margin: 0 auto 40px; }
-  .hero-tag { display: block; }
-  .hero-cta .btn-ink { flex: 0 0 auto; }
+    .hero-cta .btn-ink { flex: 0 0 auto; }
 }
 
 /* =========================================================
@@ -627,11 +614,8 @@ body.drawer-open .site-head { background: transparent; color: var(--ink); -webki
    10 FOOTER
    ========================================================= */
 .foot { background: var(--ink); color: var(--cream); padding: clamp(72px, 8vw, 128px) 0 calc(28px + env(safe-area-inset-bottom)); }
-.foot-top { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 28px; padding-bottom: 40px; border-bottom: 2px solid var(--line-cream); }
-.foot-line { font-family: var(--display); font-weight: 850; font-stretch: 64%; font-size: clamp(2.4rem, 1.6rem + 3.2vw, 4.5rem); line-height: .95; }
-.foot-line .ln { display: block; overflow: clip; padding-bottom: .06em; }
-.foot-line .ln > span { display: inline-block; }
-.foot-logo { width: clamp(150px, 16vw, 220px); color: var(--teal); }
+.foot-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 28px; padding-bottom: 40px; border-bottom: 2px solid var(--line-cream); }
+.foot-logo { width: clamp(150px, 14vw, 200px); color: var(--teal); }
 .foot-cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 20px; padding: 36px 0; }
 .foot-cols h3 { font-family: var(--display); font-weight: 750; font-stretch: 85%; font-size: 1rem; color: var(--teal); margin-bottom: 6px; }
 .foot-cols p { color: var(--muted-cream); line-height: 1.75; }
@@ -670,7 +654,6 @@ body.drawer-open .dock, body.lb-open .dock { transform: translateY(110%); }
 .anim [data-hero="line"] { transform: translateY(105%); }
 .anim [data-hero="fade"] { opacity: 0; }
 .anim [data-hero="arch"] .arch-img { clip-path: inset(100% 0 0 0); }
-.anim [data-hero="plate"] { opacity: 0; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; scroll-behavior: auto !important; }

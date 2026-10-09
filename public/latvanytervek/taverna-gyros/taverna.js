@@ -292,16 +292,13 @@
     .fromTo('[data-hero="arch"] .arch-img', { clipPath: 'inset(100% 0% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.15 }, 0)
     .fromTo('[data-hero="arch"] img', { scale: 1.35 }, { scale: 1, duration: 1.5, ease: 'expo.out' }, 0)
     .fromTo('[data-hero="line"]', { y: 0, yPercent: 105 }, { y: 0, yPercent: 0, duration: .95, stagger: .1 }, .12)
-    .fromTo('[data-hero="plate"]', { opacity: 0, scale: .55, rotate: -120 }, { opacity: 1, scale: 1, rotate: 0, duration: 1.1, ease: 'back.out(1.4)' }, .55)
     .fromTo('[data-hero="fade"]', { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: .7, stagger: .07, ease: 'power3.out' }, .7);
 
   /* ---- hero: görgetésre mélység + a tányér „forog” ---- */
   gsap.to('.hero-arch .arch-img', { yPercent: 8, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
-  gsap.to('.ring', { rotate: 220, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: .6 } });
   mm.add('(min-width: 900px)', function () {
     gsap.to('.hero-arch', { rotateY: -9, rotateX: 3, scale: .95, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
     gsap.to('.hero-copy', { y: -70, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
-    gsap.to('.plate', { y: -60, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
   });
 
   fontsReady.then(function () {
