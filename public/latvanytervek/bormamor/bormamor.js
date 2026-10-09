@@ -59,23 +59,68 @@
     }
   });
 
-  /* ── BORSTÍLUSOK (fülek) ─────────────────── */
-  var tabsEl = $("[data-wine-tabs]"), panelsEl = $("[data-wine-panels]"), frame = $("[data-wine-frame]");
-  var current = -1;
-  if (tabsEl && D.borok.length) {
+  /* ── BORSTÍLUSOK: egy kóstolósor, a kamera a választott pohárra áll ── */
+  var vino = $("[data-vino]");
+  var tabsEl = $("[data-wine-tabs]"), panelsEl = $("[data-wine-panels]");
+  var stage = $("[data-stage]"), cam = $("[data-cam]"), dim = $("[data-dim]"), pinsEl = $("[data-pins]");
+  var sparkle = $("[data-sparkle]"), capEl = $("[data-vino-cap]");
+  var current = -1, camState = { x: 0, y: 0, s: 1 };
+  var DIM = .72;
+
+  var AR = 1240 / 470, base = { w: 0, h: 0, fit: 1 };
+  // a kép a színpad méretétől függetlenül mindig teljes arányban van a kamerán, így a poharak koordinátái pontosak
+  function measure() {
+    var W = stage.clientWidth, H = stage.clientHeight;
+    base.w = Math.max(W, H * AR); base.h = base.w / AR;
+    base.fit = Math.min(1, W / base.w, H / base.h);
+    cam.style.width = base.w + "px"; cam.style.height = base.h + "px";
+    return { W: W, H: H };
+  }
+  function camTarget(b) {
+    var d = measure(), W = d.W, H = d.H;
+    var s = b.x == null ? base.fit : (W < 600 ? .5 : .26) / .2 * W / base.w;
+    var cw = base.w * s, ch = base.h * s;
+    var x = b.x == null ? (W - cw) / 2 : Math.min(0, Math.max(W - cw, W / 2 - b.x * cw));
+    var y = b.y == null || ch <= H ? (H - ch) / 2 : Math.min(0, Math.max(H - ch, H / 2 - b.y * ch));
+    if (cw <= W) x = (W - cw) / 2;
+    return { x: x, y: y, s: s, sx: b.x == null ? W / 2 : b.x * cw + x, sy: b.y == null ? H / 2 : b.y * ch + y, r: b.x == null ? 0 : .1 * cw };
+  }
+  function applyCam(st) {
+    cam.style.transform = "translate(" + st.x + "px," + st.y + "px) scale(" + st.s + ")";
+    pinsEl.style.setProperty("--inv", (1 / st.s).toFixed(4));
+    pinsEl.style.opacity = Math.max(0, Math.min(1, (base.fit * 1.18 - st.s) / (base.fit * .18))).toFixed(3);
+  }
+  function applyDim(sx, sy, r, a) {
+    // a választott pohár körül világos kör, a többi pohár sötétebb
+    var c = "rgba(26,8,13," + (a * DIM).toFixed(3) + ")";
+    dim.style.background = r > 0
+      ? "radial-gradient(ellipse " + r + "px " + (r * 1.5) + "px at " + sx + "px " + sy + "px, transparent 70%, " + c + " 100%)"
+      : c;
+  }
+
+  if (vino && D.borok.length) {
     D.borok.forEach(function (b, i) {
       var t = document.createElement("button");
-      t.type = "button"; t.className = "wtab"; t.id = "wt-" + b.id;
+      t.type = "button"; t.className = "vtab"; t.id = "wt-" + b.id;
       t.setAttribute("role", "tab"); t.setAttribute("aria-controls", "wp-" + b.id);
-      t.innerHTML = '<span class="wtab__name">' + esc(b.nev) + '</span><span class="wtab__pair">' + esc(b.illik) + "</span>";
+      t.innerHTML = '<span class="vtab__dot" aria-hidden="true"></span>' + esc(b.nev);
       t.addEventListener("click", function () { selectWine(i, true); });
       tabsEl.appendChild(t);
 
       var p = document.createElement("div");
       p.className = "wpanel"; p.id = "wp-" + b.id; p.hidden = true;
       p.setAttribute("role", "tabpanel"); p.setAttribute("aria-labelledby", "wt-" + b.id); p.tabIndex = 0;
-      p.innerHTML = '<h3 class="sr">' + esc(b.nev) + "</h3><p>" + esc(b.leiras) + '</p><p class="wpanel__pair">Ajánljuk: ' + esc(b.illik.toLowerCase()) + "</p>";
+      p.innerHTML = "<h3>" + esc(b.nev) + "</h3><p>" + esc(b.leiras) + '</p><p class="wpanel__pair"><span>Ajánljuk</span>' + esc(b.illik) + "</p>";
       panelsEl.appendChild(p);
+
+      if (b.x != null) {
+        var pin = document.createElement("button");
+        pin.type = "button"; pin.className = "vpin"; pin.tabIndex = -1; pin.setAttribute("aria-hidden", "true");
+        pin.style.left = (b.x * 100) + "%";
+        pin.innerHTML = "<span>" + esc(b.rovid) + "</span>";
+        pin.addEventListener("click", function () { selectWine(i, true); });
+        pinsEl.appendChild(pin);
+      }
     });
     tabsEl.addEventListener("keydown", function (e) {
       var n = D.borok.length, k = e.key, i = current;
@@ -85,40 +130,57 @@
       e.preventDefault(); selectWine(i, true); tabsEl.children[i].focus();
     });
     selectWine(0, false);
-  }
-
-  function layerFor(b) {
-    var l = document.createElement("div");
-    l.className = "wf-layer";
-    if (b.kep) l.innerHTML = '<img src="' + esc(b.kep) + '" alt="" width="250" height="465" decoding="async">';
-    else l.innerHTML = '<div class="wf-emblem" style="position:absolute;inset:0">' + EMBLEM + "</div>";
-    return l;
+    window.addEventListener("resize", function () { var st = camTarget(D.borok[current]); camState = st; applyCam(st); applyDim(st.sx, st.sy, st.r, D.borok[current].x == null ? 0 : 1); });
   }
 
   function selectWine(i, animate) {
     if (i === current) return;
-    var prev = current; current = i;
-    $$(".wtab", tabsEl).forEach(function (t, j) {
+    current = i;
+    var b = D.borok[i];
+    $$(".vtab", tabsEl).forEach(function (t, j) {
       t.setAttribute("aria-selected", j === i ? "true" : "false");
       t.tabIndex = j === i ? 0 : -1;
     });
     $$(".wpanel", panelsEl).forEach(function (p, j) { p.hidden = j !== i; });
-    // görgetés a fülsávon mobilon
+    $$(".vpin", pinsEl).forEach(function (p, j) { p.classList.toggle("is-on", D.borok[j] === b); });
     var tab = tabsEl.children[i];
     if (tab && tabsEl.scrollWidth > tabsEl.clientWidth) tabsEl.scrollTo({ left: tab.offsetLeft - 20, behavior: reduce ? "auto" : "smooth" });
+    capEl.textContent = b.x != null ? "Balról a " + ["első", "második", "harmadik", "negyedik"][i] + " pohár: " + b.nev.toLowerCase() : "Pezsgő — a pultnál hűtve";
+    stage.classList.toggle("is-sparkle", b.x == null);
 
-    var layer = layerFor(D.borok[i]);
-    frame.appendChild(layer);
-    var old = $$(".wf-layer", frame).slice(0, -1);
+    var to = camTarget(b), on = b.x == null ? 0 : 1;
     if (animate && !reduce && window.gsap) {
-      // a bor „feltöltődik” a kulcslyukban: alulról felfelé nyíló vágás
-      gsap.fromTo(layer, { clipPath: "inset(100% 0 0 0)" }, { clipPath: "inset(0% 0 0 0)", duration: .9, ease: "power3.inOut",
-        onComplete: function () { old.forEach(function (o) { o.remove(); }); } });
-      var img = layer.querySelector("img");
-      if (img) gsap.fromTo(img, { scale: 1.12, yPercent: 4 }, { scale: 1, yPercent: 0, duration: 1.3, ease: "power3.out" });
-      gsap.fromTo(panelsEl.children[i], { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: .6, ease: "power2.out", delay: .15 });
+      var from = { x: camState.x, y: camState.y, s: camState.s };
+      var tl = gsap.timeline({ defaults: { ease: "power3.inOut" } });
+      // 1) kicsit kihúz, hogy látsszon, honnan hová megyünk; 2) ráközelít az új pohárra
+      var mid = camTarget({ x: null });
+      var dimObj = { a: 1, sx: parseFloat(dim.dataset.sx || to.sx), sy: parseFloat(dim.dataset.sy || to.sy), r: parseFloat(dim.dataset.r || to.r) };
+      tl.to(from, { x: mid.x, y: mid.y, s: mid.s, duration: .45, ease: "power2.in", onUpdate: function () { applyCam(from); } }, 0)
+        .to(dimObj, { a: .35, duration: .45, ease: "power2.in", onUpdate: function () { applyDim(dimObj.sx, dimObj.sy, dimObj.r, dimObj.a); } }, 0)
+        .to(from, { x: to.x, y: to.y, s: to.s, duration: .9, onUpdate: function () { applyCam(from); } }, .45)
+        .to(dimObj, { a: on, sx: to.sx, sy: to.sy, r: to.r || dimObj.r, duration: .9, onUpdate: function () { applyDim(dimObj.sx, dimObj.sy, dimObj.r, dimObj.a); } }, .45)
+        .fromTo(panelsEl.children[i], { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: .6, ease: "power2.out" }, .35);
+      if (b.x == null) tl.fromTo(sparkle, { opacity: 0, scale: .94 }, { opacity: 1, scale: 1, duration: .7, ease: "power2.out" }, .7);
+      else tl.to(sparkle, { opacity: 0, duration: .3 }, 0);
     } else {
-      old.forEach(function (o) { o.remove(); });
+      applyCam(to); applyDim(to.sx, to.sy, to.r, on);
+      if (sparkle) sparkle.style.opacity = b.x == null ? 1 : 0;
+    }
+    camState = { x: to.x, y: to.y, s: to.s };
+    dim.dataset.sx = to.sx; dim.dataset.sy = to.sy; dim.dataset.r = to.r || dim.dataset.r || 0;
+  }
+
+  // pezsgőbuborékok a logó poharában (csak a pezsgő nézetben látszanak)
+  var bubbles = $("[data-bubbles]");
+  if (bubbles) {
+    var ns = "http://www.w3.org/2000/svg";
+    for (var k = 0; k < 16; k++) {
+      var c = document.createElementNS(ns, "circle");
+      c.setAttribute("cx", 330 + Math.random() * 140); c.setAttribute("cy", 600 - Math.random() * 190);
+      c.setAttribute("r", 2.5 + Math.random() * 4); c.setAttribute("fill", "currentColor");
+      c.style.animationDelay = (-Math.random() * 3.2).toFixed(2) + "s";
+      c.style.animationDuration = (2.4 + Math.random() * 1.8).toFixed(2) + "s";
+      bubbles.appendChild(c);
     }
   }
 
@@ -147,7 +209,7 @@
     if (!upcoming.length) {
       evEl.innerHTML =
         '<div class="empty">' +
-        '<div class="empty__img"><img src="img/dugohuzo-m.webp" srcset="img/dugohuzo-m.webp 720w, img/dugohuzo.webp 1400w" sizes="(max-width:760px) 92vw, 45vw" width="1400" height="582" alt="Dugóhúzó és két dugó, rajtuk a Bormámor kulcslyuk-jele" loading="lazy" decoding="async" data-lb="img/dugohuzo.webp"></div>' +
+        '<figure class="empty__img"><img src="img/kulcslyuk-dugok-m.webp" srcset="img/kulcslyuk-dugok-m.webp 600w, img/kulcslyuk-dugok.webp 900w" sizes="(max-width:760px) 60vw, 300px" width="900" height="900" alt="A Bormámor kulcslyuk-emblémája borosdugókból kirakva" loading="lazy" decoding="async" data-lb="img/kulcslyuk-dugok.webp"><figcaption>Zárva, amíg nincs időpont — de a kulcs nálunk van.</figcaption></figure>' +
         '<div class="empty__body"><h3>Most nincs meghirdetett esemény</h3>' +
         "<p>A következő kóstolót a Facebook-oldalunkon jelentjük be először. Ha szeretnéd, szólunk neked is, amint megvan az időpont.</p>" +
         '<div class="empty__cta"><a class="btn btn--wine" href="#jelentkezes" data-preset="Következő kóstoló">Értesítést kérek</a>' +
@@ -360,23 +422,37 @@
     root.classList.remove("pre-anim");
     var wide = window.matchMedia("(min-width: 861px)").matches;
 
-    /* A — kulcslyuk-belépő: körvonal, fotó, a pohár megtelik */
-    var line = $(".kh__line");
-    if (line) {
-      var len = Math.ceil(line.getTotalLength());
-      line.style.setProperty("--len", len);
-      var tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-      tl.to(line, { strokeDashoffset: 0, duration: 1.4, ease: "power2.inOut" }, 0)
-        .from(".kh__photo", { opacity: 0, scale: 1.18, transformOrigin: "50% 50%", duration: 1.6 }, .35)
-        .from(".kh__wine", { y: 140, duration: 1.5, ease: "power2.inOut" }, .45)
-        .fromTo(".kh__wave", { x: 0 }, { x: -100, duration: 1.5, ease: "none" }, .45)
-        .from(".hero__h1 .line>span", { yPercent: 105, duration: 1.1, stagger: .12 }, .15)
-        .from(".hero__slogan, .hero__lead", { opacity: 0, y: 12, duration: .8, stagger: .1 }, .5)
-        .from(".hero__cta .btn", { opacity: 0, y: 10, duration: .6, stagger: .08 }, .7)
-        .from(".hero__facts", { opacity: 0, duration: .8 }, .9);
-      // finom mélység görgetéskor — csak széles kijelzőn, ahol a kép a szöveg mellett áll
-      if (wide) gsap.to(".hero__mark", { yPercent: 8, ease: "none", scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true } });
-    }
+    /* A — kulcslyukon át: a hero fotója a palack címkéjén lévő kulcslyukból nyílik ki */
+    var film = $("[data-film]"), lockSvg = $("[data-lock]");
+    var heroTl = gsap.timeline({ defaults: { ease: "power3.out" } });
+    if (film && lockSvg) {
+      var W = film.clientWidth, H = film.clientHeight, mob = window.matchMedia("(max-width: 700px)").matches;
+      var px = (mob ? .546 : .494) * W, py = .433 * H, h0 = (mob ? .31 : .355) * H;
+      var KD = $("#clip-keyhole path").getAttribute("d");
+      var NS = "http://www.w3.org/2000/svg";
+      lockSvg.setAttribute("viewBox", "0 0 " + W + " " + H);
+      lockSvg.innerHTML =
+        '<defs><mask id="lockm" maskUnits="userSpaceOnUse" x="0" y="0" width="' + W + '" height="' + H + '">' +
+        '<rect width="' + W + '" height="' + H + '" fill="#fff"/><path class="lk" d="' + KD + '" fill="#000"/></mask></defs>' +
+        '<rect width="' + W + '" height="' + H + '" fill="#3B0C14" mask="url(#lockm)"/>' +
+        '<path class="lk lk-line" d="' + KD + '" fill="none" stroke="#BBB7B0" stroke-width="2" vector-effect="non-scaling-stroke"/>';
+      var keyholes = $$(".lk", lockSvg), k = { h: h0 * .2 };
+      var place = function () {
+        var sc = k.h / 588.19;
+        keyholes.forEach(function (el) { el.setAttribute("transform", "translate(" + px + " " + py + ") scale(" + sc + ") translate(-399.7 -595.9)"); });
+      };
+      place();
+      root.classList.remove("pre-anim");
+      heroTl.to(k, { h: h0, duration: .8, ease: "power2.out", onUpdate: place }, .1)
+        .to(k, { h: Math.max(W, H) * 5, duration: 1.5, ease: "power3.in", onUpdate: place }, 1.15)
+        .to(".lk-line", { opacity: 0, duration: .5 }, 1.6)
+        .set(lockSvg, { display: "none" }, 2.7)
+        .from(film.querySelector("img"), { scale: 1.08, duration: 2.4, ease: "power2.out" }, .9);
+    } else root.classList.remove("pre-anim");
+    heroTl.from(".hero__h1 .line>span", { yPercent: 105, duration: 1.1, stagger: .12 }, .1)
+      .from(".hero__slogan, .hero__lead", { opacity: 0, y: 12, duration: .8, stagger: .1 }, .35)
+      .from(".hero__cta .btn", { opacity: 0, y: 10, duration: .6, stagger: .08 }, .5)
+      .from(".hero__facts", { opacity: 0, duration: .8 }, 1.6);
 
     /* B — címsorok sorról sorra emelkednek */
     $$(".reveal-lines").forEach(function (h) {
@@ -385,39 +461,36 @@
         scrollTrigger: { trigger: h, start: "top 86%", once: true } });
     });
 
-    /* D — a kulcs megrajzolódik a történet olvasása közben */
-    var keyPaths = $$(".keydraw path");
-    keyPaths.forEach(function (p) { var l = Math.ceil(p.getTotalLength()); p.style.strokeDasharray = l; p.style.strokeDashoffset = l; });
-    if (keyPaths.length) {
-      gsap.to(keyPaths, { strokeDashoffset: 0, ease: "none",
-        scrollTrigger: { trigger: ".story", start: "top 70%", end: "center 45%", scrub: .6 } });
-      gsap.to(".keydraw", { attr: { "fill-opacity": 1 }, duration: .8,
-        scrollTrigger: { trigger: ".story", start: "center 45%", once: true } });
+    /* C — borstílusok: a sor először egészében látszik, aztán a kamera az első pohárra áll */
+    if (vino && D.borok.length) {
+      var first = current;
+      current = -1; camState = camTarget({ x: null });
+      applyCam(camState); applyDim(0, 0, 0, 0);
+      $$(".vpin", pinsEl).forEach(function (p) { p.classList.remove("is-on"); });
+      var dimInit = camTarget(D.borok[first]);
+      dim.dataset.sx = dimInit.sx; dim.dataset.sy = dimInit.sy; dim.dataset.r = dimInit.r;
+      ScrollTrigger.create({ trigger: stage, start: "top 62%", once: true, onEnter: function () { if (current === -1) selectWine(first, true); } });
     }
 
+    /* D — a kulcs felülről lefelé előtűnik */
+    var key = $("[data-key]");
+    if (key) gsap.from(key, { clipPath: "inset(0 0 100% 0)", duration: 1.4, ease: "power3.inOut",
+      scrollTrigger: { trigger: ".story", start: "top 70%", once: true } });
+
     /* E — képek maszkos feltárása, mindegyik a saját irányából */
-    var story = $("[data-mask-reveal]");
-    if (story) gsap.fromTo(story, { clipPath: "inset(0 0 0 100%)" }, { clipPath: "inset(0 0 0 0%)", duration: 1.4, ease: "power3.inOut",
-      scrollTrigger: { trigger: story, start: "top 82%", once: true } });
-    var pano = $("[data-pano] img");
-    if (pano && wide) {
-      gsap.fromTo("[data-pano]", { clipPath: "inset(14% 18% 14% 18%)" }, { clipPath: "inset(0% 0% 0% 0%)", ease: "none",
-        scrollTrigger: { trigger: "[data-pano]", start: "top 92%", end: "top 35%", scrub: .5 } });
-      gsap.fromTo(pano, { scale: 1.08 }, { scale: 1, ease: "none",
-        scrollTrigger: { trigger: "[data-pano]", start: "top bottom", end: "bottom top", scrub: true } });
-    } else if (pano) {
-      gsap.from("[data-pano]", { clipPath: "inset(0 0 100% 0)", duration: 1.1, ease: "power3.inOut",
-        scrollTrigger: { trigger: "[data-pano]", start: "top 88%", once: true } });
-    }
-    $$(".more__grid .tile").forEach(function (t, i) {
-      gsap.from(t, { clipPath: i % 2 ? "inset(0 0 100% 0)" : "inset(100% 0 0 0)", duration: 1.1, ease: "power3.inOut",
-        scrollTrigger: { trigger: t, start: "top 90%", once: true } });
+    var dirs = ["inset(0 0 0 100%)", "inset(100% 0 0 0)", "inset(0 100% 0 0)"];
+    $$("[data-mask-reveal]").forEach(function (f, i) {
+      gsap.fromTo(f, { clipPath: dirs[i % 3] }, { clipPath: "inset(0 0 0 0%)", duration: 1.3, ease: "power3.inOut",
+        scrollTrigger: { trigger: f, start: "top 84%", once: true } });
+      var im = f.querySelector("img");
+      if (im) gsap.from(im, { scale: 1.12, duration: 1.8, ease: "power3.out", scrollTrigger: { trigger: f, start: "top 84%", once: true } });
     });
-    /* Monor — a kulcslyuk lassan elmozdul a szöveg mögött */
-    gsap.from(".monor__photo", { clipPath: "inset(100% 0 0 0)", duration: 1.2, ease: "power3.inOut",
-      scrollTrigger: { trigger: ".monor__photo", start: "top 85%", once: true } });
-    gsap.from(".empty__img", { clipPath: "inset(0 100% 0 0)", duration: 1.1, ease: "power3.inOut",
+    gsap.from(".empty__img", { clipPath: "inset(100% 0 0 0)", duration: 1.1, ease: "power3.inOut",
       scrollTrigger: { trigger: ".empty__img", start: "top 88%", once: true } });
+
+    /* Monor — a kulcslyuk lassan elmozdul a szöveg mögött (csak széles kijelzőn) */
+    if (wide) gsap.fromTo(".monor__mark", { yPercent: -10 }, { yPercent: 10, ease: "none",
+      scrollTrigger: { trigger: ".monor", start: "top bottom", end: "bottom top", scrub: true } });
 
     window.addEventListener("load", function () { ScrollTrigger.refresh(); });
   }

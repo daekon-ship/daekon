@@ -8,12 +8,10 @@ Teljes újratervezés. A régi (Freebuff/Codebuff) oldalból csak adat és szöv
 
 ## Koncepció — „A kulcs nálunk van”
 
-Egyetlen, a márkából vett vizuális gondolat fut végig: a logó **kulcslyuka**, benne a **borospohárral**.
-Minden logó-elem az ügyfél eredeti vektoros PDF-jéből (`client-assets/bomamor_logo_final.pdf`, Marcell Szűcs, 2020) lett kivágva — nincs újrarajzolt logó.
+Egyetlen, a márkából vett gondolat fut végig: a logó **kulcslyuka**, benne a **borospohárral**. Minden logó-elem az ügyfél eredeti vektoros PDF-jéből (`client-assets/bomamor_logo_final.pdf`) van kivágva.
 
-- A hero-ban a kulcslyuk ablak: mögötte egy kulcslyukas dugó fotója, a logó pohara pedig betöltéskor megtelik borral.
-- A borstílusok képei ugyanabban a kulcslyuk-formában ülnek.
-- A kulcs (a logó külön eleme) a „Kulcs a minőséghez” szekcióban görgetésre megrajzolódik.
+- **Hero:** a „kézből ajánlva” cím alatt kéz nyúl a Bormámor-palackért. A fotó a palack címkéjén lévő kulcslyukból nyílik ki — a kulcslyuk pontosan a címke jelére illeszkedik, aztán kitárul a teljes kép.
+- **Borok:** egyetlen valódi kóstolósor (négy pohár a hordón). Stílusváltáskor a kamera kihúz, a teljes sort mutatja a poharak nevével, majd ráközelít a választott pohárra; a többi elsötétül.
 
 ## Designrendszer
 
@@ -35,30 +33,28 @@ Arany nincs — a „prémium” hatást a tipográfia és a logó-színek adjá
 
 ## Animációk (GSAP 3.15 + ScrollTrigger, helyben)
 
-1. **Kulcslyuk-belépő** — a kulcslyuk körvonala megrajzolódik, a fotó beúszik, a pohár megtelik (≈2 s, nem blokkol, a gombok azonnal kattinthatók).
+1. **Kulcslyuk-feltárás (hero)** — a címke kulcslyukán át nyílik ki a fotó (≈2,5 s, a gombok közben kattinthatók).
 2. **Címsor-feltárás** — a szekciócímek soronként emelkednek elő.
-3. **Borstílus-váltás** — fülváltáskor az új kép alulról „feltöltődik” a kulcslyukban.
-4. **Kulcs-rajzolás** — görgetéssel arányosan rajzolódik ki a kulcs.
-5. **Maszkos képfeltárás** — történet-fotó oldalról, kóstoló-panoráma középről kinyílva, galéria- és csempeképek mind más irányból.
-6. **Mikrointerakciók** — gombkitöltés balról, menü-aláhúzás, lightbox-képváltás, finom parallax (hero, Monor).
+3. **Borstílus-váltó** — kamera a poharak között: kihúzás a teljes sorra (névcímkékkel), ráközelítés a választottra, reflektor a pohárra. Pezsgőnél külön nézet: a logó pohara, benne felszálló buborékok.
+4. **Kulcs** — a „Kulcs a minőséghez” mellett a logó kulcsa felülről előtűnik.
+5. **Maszkos képfeltárás** — a szekciók fotói más-más irányból nyílnak, enyhe ráközelítéssel.
+6. **Mikrointerakciók** — gombkitöltés, menü-aláhúzás, közös képnézegető, parallax (csak széles kijelzőn).
 
-`prefers-reduced-motion` esetén minden statikus. JS nélkül minden tartalom látszik.
+`prefers-reduced-motion` esetén minden statikus. JS nélkül minden tartalom és kép látszik.
 
-## Felhasznált képek (`img/`)
+## Felhasznált képek (`img/`) — minden kép egyszer, a tartalmához illő helyen
 
-Kizárólag az ügyfél `client-assets` mappájából, a beégetett feliratok kivágásával:
+| Szekció | Fájl | Forrás | Miért ide |
+|---|---|---|---|
+| Hero | `kez-palack(-m).webp` | elemek-07 (a beégetett BORMÁMOR felirat kiretusálva) | „kézből ajánlva” — kéz nyúl a palackért |
+| Borok | `poharak.webp` | elemek-05 | a négy pohár pontosan a négy borstílus |
+| Kulcs a minőséghez | `dugohuzo.webp`, mobilon `dugo-par.webp` | elemek-08 | a kulcslyuk a dugón is |
+| Több mint bor | `dugok.webp` | elemek-06 | „ahány dugó, annyi palack” |
+| Kóstolók | `palackok-felulrol.webp` | FB_IMG_1581839014017 | kóstolóra váró palackok |
+| Események (üres állapot) | `kulcslyuk-dugok(-m).webp` | elemek-10 | „zárva, amíg nincs időpont” |
 
-| Fájl | Forrás | Hol |
-|---|---|---|
-| `dugo-kulcslyuk.webp` | elemek-08 | hero kulcslyuk |
-| `pohar-feher/rose/siller/voros.webp` | elemek-05 (a négy pohár egyenként) | borstílusok |
-| `poharak(-m).webp` | elemek-05 | kóstolók, galéria |
-| `palack-kez(-m, -allo).webp` | elemek-07 | Kulcs a minőséghez, galéria |
-| `dugok.webp` | elemek-06 | Több mint bor |
-| `palackok-felulrol.webp` | FB_IMG_1581839014017 | Több mint bor, galéria |
-| `dugohuzo(-m).webp`, `kulcslyuk-dugok(-m).webp` | elemek-08, elemek-10 | galéria |
-
-Nincs stock-, nincs generált kép, nincs kitalált címke.
+Minden fotó alatt rövid képaláírás mondja meg, mit lát a látogató. Nincs stock-, nincs generált kép, nincs kitalált címke.
+Pezsgőről nincs fotó az anyagokban — a pezsgő nézet ezért a logó poharát mutatja buborékokkal. **Egy valódi pezsgős fotó a legjobb csere.**
 
 ## Ellenőrizendő az ügyféllel — publikálás előtt
 
@@ -71,6 +67,8 @@ Nincs stock-, nincs generált kép, nincs kitalált címke.
 7. **Adatkezelési tájékoztató** szövege hiányzik (a lábléc jelzi).
 8. **Alkoholos termékek:** a lábléc 18+ és felelős fogyasztás mondata maradjon; reklám- és fogyasztóvédelmi átnézés javasolt.
 9. Külön galéria-blokk nincs (az ügyfél a régi oldalon is kivetette); a képnézegető a szekciókba szétosztott fotókon működik.
+
+10. **Retus:** a hero kéz+palack fotójáról a grafikus által beégetett BORMÁMOR feliratot eltávolítottam (sötét fa háttérrel pótolva) — ezt az ügyféllel jóvá kell hagyatni.
 
 ## Mi hiányzik / mi demó
 
@@ -113,30 +111,13 @@ Telefon-emulációval (érintés, 2× pixelsűrűség), képernyőnként görget
 - **Tablet (641–860 px):** a hero kétoszlopos maradt, a kulcslyuk a szöveg mellett áll.
 - Parallax csak 861 px fölött.
 
-## Képelosztás (3. kör)
-
-A külön galéria-blokk megszűnt: egy halomba gyűjtötte és ismételte a képeket. Minden fotó **egyszer**, a hozzá illő szekcióban szerepel, és mind kattintásra nagyítható (billentyűzettel és lapozással is, egy közös képnézegetőben):
-
-| Szekció | Kép |
-|---|---|
-| Hero | kulcslyukas dugó |
-| Borok | a négy pohár egyenként |
-| Kulcs a minőséghez | kéz + címkés palack |
-| Több mint bor | dugóhalom |
-| Kóstolók | négy pohár a hordón |
-| Események (üres állapot) | dugóhúzó és dugók |
-| Jelentkezés | palackok felülről |
-| Monor | kulcslyuk dugókból |
-
-A `dugok-bal.webp` (a dugóhalom ismétlése) törölve.
-
 ## Fájlok
 
 ```
 index.html        oldal (inline SVG logó-szimbólumokkal)
 bormamor.css      design system + layout
 bormamor.js       interakciók, animációk
-js/adatok.js      ESEMÉNYEK, BORSTÍLUSOK — itt frissíthető
+js/adatok.js      ESEMÉNYEK, BORSTÍLUSOK (a poharak helyével) — itt frissíthető
 js/gsap.min.js, js/ScrollTrigger.min.js
 fonts/            Instrument Serif, Outfit (WOFF, latin + latin-ext) + OFL licencek
 img/              WebP képek, favicon.svg, og.jpg
