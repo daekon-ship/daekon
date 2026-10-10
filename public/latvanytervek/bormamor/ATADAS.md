@@ -167,3 +167,9 @@ img/              WebP képek, favicon.svg, og.jpg
 - „Több mint bor”: a még meg nem világított tételek kevésbé halványak (nem tűnnek letiltottnak).
 - Kóstolók: arany gomb; Monor-szekció: lapos piros helyett sötét háttér bordó fénnyel, halvány arany kulcslyuk (nem csonkolódik).
 - Térkép-helyőrző: arany kulcslyuk, finom keret.
+
+## 10. kör — mobil látvány
+- Nyitókép telefonon: teljes képernyős filmkocka; a kulcslyuk a címkén nyílik ki, a címke közelről a szöveg feletti sáv közepén, a szöveg alul mély árnyékon; arany keretvonal; nagy felbontású mobil forrás (nyito-m-2x.webp).
+- „Kulcs a minőséghez” telefonon álló, 4:5 filmkocka a kulcslyukas dugóról (dugohuzo-allo*.webp).
+- „Több mint bor” telefonon: a dugós fotó kulcslyukon át tárul fel — a lyuk görgetésre kitágul, amíg a teljes kép látszik.
+- Kóstolók: borszínekkel teli képsáv (rozé és siller pohár közelről) bordó átmenettel, lassú parallaxissal — asztalon is.

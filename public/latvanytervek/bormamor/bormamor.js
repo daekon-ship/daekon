@@ -738,13 +738,19 @@
       var iw = mob ? 1000 : 1640, ih = 720, lx = mob ? 510 : 810, ly = 348;      // a címke kulcslyukának helye a képen
       // a fotó doboza (telefonon csak a felső sáv, alatta a szöveg) — a kép ehhez igazodik
       var pw = photo.clientWidth, ph = photo.clientHeight, ox = media.offsetLeft + photo.offsetLeft, oy = media.offsetTop + photo.offsetTop;
-      var cx = W < 861 ? W / 2 : W * .66, cy = W < 861 ? oy + ph * (W < 561 ? .5 : .25) : H * .46;
+      // telefon: teljes képernyő — a címke a szöveg feletti sáv közepére kerül, közelről
+      var full = W < 561, copyEl = $("[data-open-copy]");
+      var copyTop = full && copyEl ? copyEl.offsetTop : H;
+      var cx = W < 861 ? W / 2 : W * .66, cy = full ? Math.max(130, (64 + copyTop) / 2 + 6) : W < 861 ? oy + ph * .25 : H * .46;
       var px = cx - ox, py = cy - oy;
-      var k = Math.max(pw / iw, ph / ih, px / lx, (pw - px) / (iw - lx), py / ly, (ph - py) / (ih - ly));
+      var k = full
+        ? Math.max(pw / iw, px / lx, (pw - px) / (iw - lx), py / ly, ph * .8 / ih)   // nem kell lefedni az alját: ott a szöveg, a kép elsötétül
+        : Math.max(pw / iw, ph / ih, px / lx, (pw - px) / (iw - lx), py / ly, (ph - py) / (ih - ly));
       var ke = Math.max(pw / iw, ph / ih);
-      G = { W: W, H: H, cx: cx, cy: cy, h0: W < 861 ? Math.min(ph * (W < 561 ? .5 : .26), W * .6) : H * .52, hMax: Math.max(W, H) * 6,
-        r0: { l: px - lx * k, t: py - ly * k, w: iw * k, h: ih * k },
-        r1: { l: (pw - iw * ke) * (lx / iw), t: (ph - ih * ke) * (ly / ih), w: iw * ke, h: ih * ke } };
+      var r0 = { l: px - lx * k, t: py - ly * k, w: iw * k, h: ih * k };
+      G = { W: W, H: H, cx: cx, cy: cy, h0: full ? Math.min((copyTop - 64) * .62, W * .62) : W < 861 ? Math.min(ph * .26, W * .6) : H * .52, hMax: Math.max(W, H) * 6,
+        r0: r0,
+        r1: full ? r0 : { l: (pw - iw * ke) * (lx / iw), t: (ph - ih * ke) * (ly / ih), w: iw * ke, h: ih * ke } };
       // a kép végső helyén áll; a kezdő keretet csak transformmal érjük el (nincs layout shift)
       img.style.cssText = "right:auto;bottom:auto;object-fit:fill;transform-origin:0 0;left:" + G.r1.l + "px;top:" + G.r1.t + "px;width:" + G.r1.w + "px;height:" + G.r1.h + "px";
       svg.setAttribute("viewBox", "0 0 " + W + " " + H);
@@ -871,8 +877,28 @@
       ScrollTrigger.create({ trigger: li, start: "top 62%", end: "bottom 38%", toggleClass: "is-lit" });
     });
 
+    /* G1 — telefonon a dugós fotó kulcslyukon át tárul fel: a lyuk görgetésre kitágul, amíg a teljes kép látszik */
+    var khMob = window.matchMedia("(max-width: 860px)").matches;
+    if (khMob) $$("[data-kh-photo]").forEach(function (f) {
+      var vis = f.parentElement, d = $("#clip-keyhole path").getAttribute("d");
+      var svgm = '<svg xmlns="http://www.w3.org/2000/svg" width="368" height="588" viewBox="' + (KH.cx - 184.0) + ' ' + (KH.cy - KH.h / 2) + ' 368 ' + KH.h + '"><path d="' + d + '"/></svg>';
+      var url = 'url("data:image/svg+xml,' + encodeURIComponent(svgm) + '")';
+      vis.classList.add("is-reveal");
+      f.style.webkitMaskImage = url; f.style.maskImage = url;
+      var st = { s: 46 };
+      var put = function () { var v = "auto " + st.s.toFixed(1) + "%"; f.style.webkitMaskSize = v; f.style.maskSize = v; };
+      put();
+      gsap.to(st, { s: 900, ease: "power2.in", onUpdate: put, scrollTrigger: { trigger: f, start: "top 70%", end: "bottom 35%", scrub: .3 } });
+      var im = f.querySelector("img");
+      if (im) gsap.fromTo(im, { scale: 1.25 }, { scale: 1, ease: "none", scrollTrigger: { trigger: f, start: "top bottom", end: "bottom top", scrub: true } });
+    });
+
+    /* Kóstolók képsáv: lassú parallaxis */
+    var band = $("[data-band] img");
+    if (band) gsap.fromTo(band, { yPercent: -6, scale: 1.08 }, { yPercent: 6, scale: 1, ease: "none", scrollTrigger: { trigger: "[data-band]", start: "top bottom", end: "bottom top", scrub: true } });
+
     /* G — kulcslyuk-képek: kinyílnak, majd lassan közelítenek */
-    $$("[data-kh-photo]").forEach(function (f) {
+    if (!khMob) $$("[data-kh-photo]").forEach(function (f) {
       gsap.from(f, { scale: .82, opacity: 0, duration: 1.3, ease: "power3.out", scrollTrigger: { trigger: f, start: "top 85%", once: true } });
       var im = f.querySelector("img");
       if (im) gsap.fromTo(im, { scale: 1.18 }, { scale: 1, ease: "none", scrollTrigger: { trigger: f, start: "top bottom", end: "bottom top", scrub: true } });
