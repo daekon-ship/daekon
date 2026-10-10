@@ -10,7 +10,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%231F1424'/%3E%3Cpath d='M33 56C32.6 44 32.2 30 32.4 9' stroke='%23A9C29A' stroke-width='2.4' fill='none'/%3E%3Cg fill='%23CBB8E6'%3E%3Cellipse cx='32.4' cy='10' rx='3' ry='4.4'/%3E%3Cellipse cx='28.4' cy='16' rx='3' ry='4.6' transform='rotate(-28 28.4 16)'/%3E%3Cellipse cx='36.4' cy='17' rx='3' ry='4.6' transform='rotate(28 36.4 17)'/%3E%3Cellipse cx='28.2' cy='24' rx='3.1' ry='4.7' transform='rotate(-30 28.2 24)'/%3E%3Cellipse cx='36.6' cy='25' rx='3.1' ry='4.7' transform='rotate(30 36.6 25)'/%3E%3Cellipse cx='28.6' cy='32' rx='3.1' ry='4.7' transform='rotate(-32 28.6 32)'/%3E%3Cellipse cx='36.2' cy='33' rx='3.1' ry='4.7' transform='rotate(32 36.2 33)'/%3E%3C/g%3E%3C/svg%3E">
 <link rel="preload" href="fonts/brygada-var.woff" as="font" type="font/woff" crossorigin>
 <link rel="preload" href="fonts/hanken-var.woff" as="font" type="font/woff" crossorigin>
-<link rel="stylesheet" href="levendula.css?v=13">
+<link rel="stylesheet" href="levendula.css?v=15">
 <script>document.documentElement.classList.add('js')</script>
 </head>
 <body>
@@ -90,7 +90,7 @@
             <li><span>3D műszempilla építés</span><b>13 000 Ft</b></li>
             <li><span>Szempilla lifting + festés</span><b>9 000 Ft</b></li>
           </ul>
-          <p class="sp-new"><span class="pill">Hamarosan</span> UV-LED műszempilla építés</p>
+          <p class="sp-new"><span class="pill">UV-LED</span> A műszempillát UV-LED technikával építem.</p>
           <div class="sp-links"><a class="sp-link" href="#arak" data-goto="pilla">Mind a 12 kezelés és ár</a><a class="sp-link" href="https://www.instagram.com/levendula_szepsegszalon/" target="_blank" rel="noopener">Képek az Instagramon</a></div>
         </div>
       </article>
@@ -112,12 +112,14 @@
         <figure class="sp-img"><img src="img/arcpakolas.jpg" alt="Arcpakolás felvitele a szalonban" width="1080" height="1080" loading="lazy"></figure>
         <div class="sp-body">
           <h3>Arckezelések</h3>
-          <p>Meleg vitaminos, lávaköves vagy keleti spa lifting arcmasszázs, pakolással. Fél óra, amikor tényleg csak fekszel.</p>
-          <ul class="sp-prices">
-            <li><span>Arcmasszázs + pakolás</span><b>6 000 Ft</b></li>
-            <li><span>Lávaköves arcmasszázs</span><b>6 000 Ft</b></li>
-            <li><span>Keleti spa lifting arcmasszázs</span><b>6 500 Ft</b></li>
-          </ul>
+          <p>Egy teljes óra, csak neked. Speciális arcmasszázs-tanfolyamot végeztem, így egy kezelésbe sok mindent össze tudok hangolni:</p>
+          <ol class="sp-steps">
+            <li><span><b>Tisztítás és radírozás</b></span></li>
+            <li><span><b>Arcmasszázs</b> – nyáron hűsítő jádeköves, télen meleg lávaköves</span></li>
+            <li><span><b>Meleg krió kanalas masszázs</b></span></li>
+            <li><span><b>Pakolás</b>, legyezőecsettel felvíve</span></li>
+          </ol>
+          <p class="sp-from">Arckezelés 5 000 Ft-tól – amit még hozzákérsz, az hozzáadódik.</p>
           <div class="sp-links"><a class="sp-link" href="#arak" data-goto="arc">Mind a 6 kezelés és ár</a><a class="sp-link" href="https://www.instagram.com/levendula_szepsegszalon/" target="_blank" rel="noopener">Képek az Instagramon</a></div>
         </div>
       </article>
@@ -162,7 +164,7 @@
   <div class="wrap">
     <div class="p-head">
       <h2 id="arak-title">Árak</h2>
-      <p>A teljes árlista, 2026. október 1-jétől érvényes árakkal. Időpontot telefonon egyeztetünk.</p>
+      <p>A teljes árlista, 2026. október 1-jétől érvényes árakkal. A kezelések kombinálhatók: amit még hozzákérsz, az hozzáadódik. Időpontot telefonon egyeztetünk.</p>
     </div>
 
     <div class="p-layout">
@@ -187,7 +189,7 @@
             <li><div class="mi mi-sub"><span class="mi-n">2D töltés, 3 héten belül</span><span class="mi-p">10 000 Ft</span></div></li>
             <li><div class="mi"><span class="mi-n">3D műszempilla építés</span><span class="mi-p">13 000 Ft</span></div></li>
             <li><div class="mi mi-sub"><span class="mi-n">3D töltés, 3 héten belül</span><span class="mi-p">12 000 Ft</span></div></li>
-            <li><div class="mi"><span class="mi-n">UV-LED műszempilla építés <span class="pill">hamarosan</span></span><span class="mi-p mi-p-txt">ár egyeztetés</span></div></li>
+            <li class="menu-note">A műszempillát UV-LED technikával építem.</li>
           </ul>
         </div>
 
@@ -210,6 +212,7 @@
         </div>
 
         <div class="p-panel" id="c-arc" role="tabpanel" aria-labelledby="t-arc" data-cat="arc" hidden>
+          <p class="p-note">Egy arckezelés mindennel együtt kb. egy óra: tisztítás, radírozás, arcmasszázs, pakolás. Az elemek egy kezelésen belül kombinálhatók – amit még hozzákérsz, az hozzáadódik az alapárhoz.</p>
           <ul class="menu">
             <li><div class="mi"><span class="mi-n">Arcmasszázs kezelés<small>krémes, kozmetikai</small></span><span class="mi-p">5 000 Ft</span></div></li>
             <li><div class="mi"><span class="mi-n">Arcmasszázs + pakolás</span><span class="mi-p">6 000 Ft</span></div></li>
@@ -279,7 +282,7 @@
       <h2 id="about-title">Bogi vagyok, a Levendula gazdája.</h2>
       <p class="about-lead">Kis szalont vezetek, ahol nem futószalagon mennek a kezelések. Amíg nálam vagy, csak rád figyelek.</p>
       <p>Szeretem a pontos, igényes munkát, és azt a pillanatot, amikor valaki felkel az ágyról, és látszik rajta, hogy kipihente magát. A legtöbb vendégem évek óta hozzám jár – ennél jobb visszajelzést nem tudok elképzelni.</p>
-      <p>Rendszeresen járok képzésekre. A szempillaépítést a Lash &amp; Lashes Academyn tanultam, a masszázstechnikákat több tanfolyamon.</p>
+      <p>Rendszeresen járok képzésekre. A szempillaépítést a Lash &amp; Lashes Academyn tanultam, ma már UV-LED technikával dolgozom. Speciális arcmasszázs-tanfolyamot is végeztem, ezért egy arckezelésbe sok mindent össze tudok hangolni – a vendégeim imádják.</p>
       <p><a class="about-ig" href="https://www.instagram.com/levendula_szepsegszalon/" target="_blank" rel="noopener">Nézd meg a munkáimat az Instagramon</a></p>
     </div>
   </div>

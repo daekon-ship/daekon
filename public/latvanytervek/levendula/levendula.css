@@ -381,3 +381,12 @@ button{font:inherit;color:inherit}
 /* ajándékkártya: egy kép, egyenesen */
 .gift-card{max-width:560px}
 .gift-card img{width:100%;border-radius:6px;box-shadow:0 30px 50px -30px rgba(31,20,36,.55)}
+
+/* ügyfélkérések: arckezelés menete, megjegyzések */
+.sp-steps{margin:18px 0 0;padding:0;list-style:none;counter-reset:st;max-width:460px;border-top:1px solid var(--line-d)}
+.sp-steps li{counter-increment:st;display:grid;grid-template-columns:28px 1fr;gap:10px;padding:9px 0;border-bottom:1px solid var(--line-d);font-size:15px;color:var(--on-dark-2)}
+.sp-steps li::before{content:counter(st);font-weight:600;color:var(--lav)}
+.sp-steps b{font-weight:600;color:#F6F1FA}
+.sp-from{margin-top:14px;font-size:15px;color:var(--on-dark-2)}
+.p-note{margin:16px 0 4px;padding:14px 16px;background:var(--mist);border-left:3px solid var(--lav-2);font-size:15px;color:#3F3049;max-width:640px}
+.menu-note{padding:14px 2px;font-size:15px;color:var(--muted)}
