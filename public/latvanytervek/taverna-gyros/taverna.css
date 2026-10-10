@@ -1026,3 +1026,34 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid 
   .hero-arch { aspect-ratio: 4 / 3 !important; }
   .hero-arch img { object-position: 50% 12% !important; }
 }
+/* ===== VIZUÁLIS FINOMÍTÁS (2026-10-10) ===== */
+/* házhoz: a települések keretes blokkban, mobilon rögtön a cím alatt */
+.del-area { border: 1px solid rgba(244, 237, 225, .16); border-radius: 18px; background: rgba(63, 184, 175, .07); padding: clamp(18px, 2.2vw, 30px); }
+.del-kicker { font-family: var(--display); font-weight: 800; font-stretch: 85%; font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; color: var(--teal); margin: 0 0 12px; }
+.del-area .del-towns { border-top: 0 !important; padding-top: 0 !important; margin: 0 !important; font-size: clamp(1.15rem, 1rem + .7vw, 1.6rem) !important; gap: 6px 0 !important; }
+@media (min-width: 900px) {
+  .del-grid { align-items: center !important; }
+  .del-area { grid-column: 8 / 13 !important; }
+}
+@media (max-width: 899px) {
+  .del-copy { display: contents !important; }
+  .del-grid { display: grid !important; grid-template-columns: minmax(0, 1fr) !important; gap: 20px !important; }
+  .del-grid > *, .del-copy > * { grid-column: 1 / -1 !important; }
+  .del-copy h2 { order: 0; } .del-area { order: 1; } .del-rules { order: 2; } .del-copy .btn { order: 3; }
+}
+/* asztali hero: kisebb üres sáv a szöveg és a kép között, kicsit nagyobb kép */
+@media (min-width: 900px) {
+  .hero-stage { width: min(100%, 480px, calc((100svh - var(--head-h) - 150px) * .857)) !important; }
+}
+/* tablet (760–899): az étlap és a terasz egy hasábban, nem szorul össze */
+@media (min-width: 760px) and (max-width: 899px) {
+  .menu-in { grid-template-columns: minmax(0, 1fr) !important; }
+  .menu-side, .menu-main { grid-column: 1 / -1 !important; position: static !important; }
+  .menu-count { max-width: none; }
+  .menu-tabs { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; gap: 6px !important; border-top: 0 !important; margin: 0 !important; }
+  .menu-tab { border: 2px solid var(--ink) !important; border-radius: var(--btn-r) !important; min-height: 46px !important; font-size: .98rem !important; padding: 0 12px !important; }
+  .exp-grid { grid-template-columns: minmax(0, 1fr) !important; row-gap: 28px !important; }
+  .exp-grid > * { grid-column: 1 / -1 !important; grid-row: auto !important; }
+  .exp-stack { max-width: 440px; }
+}
+.exp-arch img { object-position: 50% 50% !important; }

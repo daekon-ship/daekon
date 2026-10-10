@@ -61,3 +61,11 @@ Mentés előtte: `taverna-mentes-2026-10-09` ág a repóban.
 - Mobil alsó sáv: elmosott háttér, egyforma magas gombok, safe-area.
 - Billentyűzet: jól látható fókusz, fókuszcsapda a képnézegetőben, fókusz-visszaadás.
 - Ellenőrizve: 360/390/430/768/1024/1440 px, konzolhiba 0, hiányzó kép/hivatkozás 0, LCP helyben ~0,3–0,4 s, kezdeti letöltés ~650 KB.
+
+## Vizuális finomítás (2026-10-10)
+
+- Mobil hero: a burgerkép széltől szélig, négyzetes kivágással (tableten 4:3), élesített 4K-változatokkal; a nagy felbontású telefonok 2160 px-es képet kapnak.
+- Asztali hero: kicsit nagyobb kép (max. 480 px), kisebb üres sáv.
+- Házhoz: a települések keretes „Szállítási terület” blokkban; mobilon rögtön a cím alatt.
+- Tablet (760–899 px): az étlap és a terasz egy hasábban, a keresőmező nem vágódik le.
+- Étterem-fotó: levágva a fotó tetején látszó illesztési csík az égen.
