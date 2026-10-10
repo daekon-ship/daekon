@@ -160,3 +160,10 @@ img/              WebP képek, favicon.svg, og.jpg
 - Borok telefonon: az 5 nagy, homályos kivágás helyett egyetlen, oldalra húzható kóstolósor; poharanként megáll, középen arany keresőkeret, alatta fülek és a kiválasztott bor; a sor végén a pezsgő.
 - „Több mint bor”: telefonon minden tétel teljes fénnyel (nem tűnnek letiltottnak).
 - Jelentkezési űrlap: sötét mezők az oldal stílusában (korábban világos krém doboz volt).
+
+## 9. kör — teljes vizuális finomítás
+- Színkorrekció: a nyitókép és a kóstolósor fotóján a hideg, zöldes/lilás fa meleg sötétbarnára hangolva (szelektíven — a címke bordója és a borok színe érintetlen). Retusjóváhagyás a megrendelővel.
+- Kóstolósor (asztal): az áttekintő kép kitölti a keretet (nincs fekete sáv); pohárfeliratok sötét üveg + arany keret; a pezsgő-állapot sötét-arany (a piros panel helyett), egységesen a mobillal.
+- „Több mint bor”: a még meg nem világított tételek kevésbé halványak (nem tűnnek letiltottnak).
+- Kóstolók: arany gomb; Monor-szekció: lapos piros helyett sötét háttér bordó fénnyel, halvány arany kulcslyuk (nem csonkolódik).
+- Térkép-helyőrző: arany kulcslyuk, finom keret.

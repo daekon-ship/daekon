@@ -73,7 +73,7 @@
   function measure() {
     var W = frame.clientWidth, H = frame.clientHeight;
     base.w = Math.max(W, H * AR); base.h = base.w / AR;
-    base.fit = Math.min(1, W / base.w, H / base.h);
+    base.fit = 1;   // áttekintés: a fotó kitölti a keretet (nincs fekete sáv)
     cam.style.width = base.w + "px"; cam.style.height = base.h + "px";
     return { W: W, H: H };
   }
@@ -890,7 +890,7 @@
     });
 
     /* Monor — a kulcslyuk a háttérben lassan mozdul */
-    gsap.fromTo(".monor__mark", { yPercent: -60 }, { yPercent: -40, ease: "none", scrollTrigger: { trigger: ".monor", start: "top bottom", end: "bottom top", scrub: true } });
+    gsap.fromTo(".monor__mark", { yPercent: 6 }, { yPercent: -6, ease: "none", scrollTrigger: { trigger: ".monor", start: "top bottom", end: "bottom top", scrub: true } });
 
     window.addEventListener("load", function () { ScrollTrigger.refresh(); });
   }
