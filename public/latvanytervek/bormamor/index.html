@@ -13,10 +13,10 @@
 <meta property="og:image" content="img/og.jpg">
 <meta property="og:locale" content="hu_HU">
 <link rel="preload" href="fonts/instrumentserif-regular.woff" as="font" type="font/woff" crossorigin>
-<link rel="preload" href="img/nyito.webp" as="image" type="image/webp" media="(min-width: 701px)" imagesrcset="img/nyito.webp 1920w, img/nyito-4k.webp 3840w" imagesizes="100vw">
+<link rel="preload" href="img/nyito.webp" as="image" type="image/webp" media="(min-width: 701px)" imagesrcset="img/nyito.webp 1920w, img/nyito-4k.webp 3840w" imagesizes="(max-aspect-ratio: 16/7) 236vh, 104vw">
 <link rel="preload" as="image" type="image/webp" media="(max-width: 700px)" imagesrcset="img/nyito-m.webp 1500w, img/nyito-m-2x.webp 3000w" imagesizes="(max-width: 560px) 420vw, 100vw">
 <link rel="preload" href="fonts/outfit-regular.woff" as="font" type="font/woff" crossorigin>
-<link rel="stylesheet" href="bormamor.css?v=10">
+<link rel="stylesheet" href="bormamor.css?v=11">
 <script>if(!matchMedia("(prefers-reduced-motion: reduce)").matches){document.documentElement.classList.add("pre-anim");setTimeout(function(){document.documentElement.classList.remove("pre-anim")},3500)}</script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"LiquorStore","name":"Bormámor Monor Borkereskedés","slogan":"Kulcs a minőséghez","telephone":"+36203830016","email":"bormamormonor@gmail.com","address":{"@type":"PostalAddress","streetAddress":"Kiss Ernő utca 9.","postalCode":"2200","addressLocality":"Monor","addressCountry":"HU"},"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":"Friday","opens":"10:00","closes":"18:00"},{"@type":"OpeningHoursSpecification","dayOfWeek":"Saturday","opens":"09:00","closes":"14:00"}],"sameAs":["https://www.facebook.com/bormamormonor/"]}
@@ -86,7 +86,7 @@
     <div class="open__media" data-open-media>
       <picture class="open__photo">
         <source media="(max-width: 700px)" srcset="img/nyito-m.webp 1500w, img/nyito-m-2x.webp 3000w" sizes="(max-width: 560px) 420vw, 100vw" width="1500" height="1080">
-        <img src="img/nyito.webp" srcset="img/nyito.webp 1920w, img/nyito-4k.webp 3840w" sizes="100vw" width="1920" height="843" alt="Kéz nyúl egy kulcslyukas Bormámor-címkés borosüveg felé sötét fa asztalon" fetchpriority="high" decoding="async" data-open-img>
+        <img src="img/nyito.webp" srcset="img/nyito.webp 1920w, img/nyito-4k.webp 3840w" sizes="(max-aspect-ratio: 16/7) 236vh, 104vw" width="1920" height="843" alt="Kéz nyúl egy kulcslyukas Bormámor-címkés borosüveg felé sötét fa asztalon" fetchpriority="high" decoding="async" data-open-img>
       </picture>
     </div>
     <svg class="open__lock" data-lock aria-hidden="true"></svg>
@@ -452,9 +452,9 @@
 </dialog>
 
 
-<script src="js/adatok.js?v=10"></script>
+<script src="js/adatok.js?v=11"></script>
 <script src="js/gsap.min.js" defer></script>
 <script src="js/ScrollTrigger.min.js" defer></script>
-<script src="bormamor.js?v=10" defer></script>
+<script src="bormamor.js?v=11" defer></script>
 </body>
 </html>

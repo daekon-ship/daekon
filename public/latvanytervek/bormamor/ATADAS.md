@@ -173,3 +173,8 @@ img/              WebP képek, favicon.svg, og.jpg
 - „Kulcs a minőséghez” telefonon álló, 4:5 filmkocka a kulcslyukas dugóról (dugohuzo-allo*.webp).
 - „Több mint bor” telefonon: a dugós fotó kulcslyukon át tárul fel — a lyuk görgetésre kitágul, amíg a teljes kép látszik.
 - Kóstolók: borszínekkel teli képsáv (rozé és siller pohár közelről) bordó átmenettel, lassú parallaxissal — asztalon is.
+
+## 11. kör — éles címke a nyitóképen
+- A nyitókép címkéje a Bormámor logó eredeti vektorából újrarajzolva (a fotón látható kulcslyukra illesztve, 97% átfedés); a fény, az árnyék és a papírszemcse az eredeti fotóból — így a címke valódi, csak éles. Retusált kép: jóváhagyatni.
+- Kupak finom élesítés, palack helyi kontraszt.
+- Asztalon a 4K-s kép töltődik be (a sizes most a valódi megjelenítési szélességet adja meg; korábban 1920-as kép nagyítódott fel).
