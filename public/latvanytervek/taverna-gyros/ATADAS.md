@@ -69,3 +69,11 @@ Mentés előtte: `taverna-mentes-2026-10-09` ág a repóban.
 - Házhoz: a települések keretes „Szállítási terület” blokkban; mobilon rögtön a cím alatt.
 - Tablet (760–899 px): az étlap és a terasz egy hasábban, a keresőmező nem vágódik le.
 - Étterem-fotó: levágva a fotó tetején látszó illesztési csík az égen.
+
+## Mobil látvány (2026-10-10, 2. kör)
+
+- Hero mobilon: széltől szélig érő burgerkép közvetlenül a fejléc alatt, a cím a kép alján, sötét átmeneten; a nyitvatartás-jelző üveghatású címkében a kép tetején.
+- Kedvencek mobilon: oldalra lapozható kártyasor (scroll-snap) haladásjelzővel.
+- Étlap mobilon: egysoros, vízszintesen görgethető fejezetsáv, amely görgetéskor a képernyő tetején marad; fejezetváltáskor a sáv a kiválasztott fejezetre ugrik, a lista eleje látható marad.
+- Nyitvatartás: kártyába került, a mai nap „MA” jelölést kap.
+- Kis telefonon (320–379 px) a két hero-gomb egy sorban marad.

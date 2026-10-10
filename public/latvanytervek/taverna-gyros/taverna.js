@@ -54,6 +54,7 @@
     head.classList.toggle('is-solid', y > hb);
     if (!document.body.classList.contains('drawer-open')) head.classList.toggle('is-hidden', y > hb + 200 && y > lastY + 2);
     if (y < lastY - 2) head.classList.remove('is-hidden');
+    document.documentElement.classList.toggle('head-shown', !head.classList.contains('is-hidden'));
     lastY = y;
   }
   window.addEventListener('scroll', onScroll, { passive: true });
@@ -71,6 +72,20 @@
   $$('a', drawer).forEach(function (a) { a.addEventListener('click', function () { setDrawer(false); }); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !drawer.hidden) { setDrawer(false); burger.focus(); } });
   window.addEventListener('resize', function () { if (window.innerWidth >= 980 && !drawer.hidden) setDrawer(false); });
+
+  /* ---------------- kedvencek: lapozási jelző ---------------- */
+  var sigGrid = $('.sig-grid'), sigHint = $('.sig-hint');
+  if (sigGrid && sigHint) {
+    var paintHint = function () {
+      var max = sigGrid.scrollWidth - sigGrid.clientWidth;
+      var vis = sigGrid.clientWidth / sigGrid.scrollWidth;
+      var p = max > 0 ? vis + (1 - vis) * (sigGrid.scrollLeft / max) : 1;
+      sigHint.style.setProperty('--p', Math.round(p * 100) + '%');
+    };
+    sigGrid.addEventListener('scroll', paintHint, { passive: true });
+    window.addEventListener('resize', paintHint);
+    paintHint();
+  }
 
   /* ---------------- étlap ---------------- */
   var MENU = window.ETLAP || [];
@@ -144,7 +159,18 @@
     var b = e.target.closest('.menu-tab'); if (!b) return;
     if (search.value) { search.value = ''; if (clearBtn) clearBtn.hidden = true; }
     renderCat(b.dataset.cat, true);
+    centerTab(b); keepPanelInView();
   });
+  function centerTab(b) {
+    if (tabsEl.scrollWidth <= tabsEl.clientWidth + 2) return;
+    tabsEl.scrollTo({ left: b.offsetLeft - (tabsEl.clientWidth - b.offsetWidth) / 2, behavior: 'smooth' });
+  }
+  function keepPanelInView() {
+    if (getComputedStyle(tabsEl).position !== 'sticky') return;
+    var off = tabsEl.offsetHeight + (document.documentElement.classList.contains('head-shown') ? head.offsetHeight : 0) + 8;
+    var top = panel.getBoundingClientRect().top;
+    if (top < off) window.scrollTo({ top: window.scrollY + top - off, behavior: 'smooth' });
+  }
   tabsEl.addEventListener('keydown', function (e) {
     var keys = ['ArrowRight', 'ArrowDown', 'ArrowLeft', 'ArrowUp', 'Home', 'End'];
     if (keys.indexOf(e.key) < 0) return;

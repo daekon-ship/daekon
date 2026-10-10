@@ -1057,3 +1057,114 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid 
   .exp-stack { max-width: 440px; }
 }
 .exp-arch img { object-position: 50% 50% !important; }
+
+/* =========================================================
+   MOBIL LÁTVÁNY (2026-10-10) — filmszerű hero, lapozható kedvencek, ragadós étlapsáv
+   ========================================================= */
+.sig-quote { margin-top: 22px !important; }
+
+@media (max-width: 899px) {
+  /* hero: a kép a képernyő tetejétől indul, a cím a képen ül */
+  .hero { padding-top: 0 !important; padding-bottom: 26px !important; }
+  .hero-in { grid-template-areas: "media" "cta" "lede" "facts" !important; row-gap: 16px !important; }
+  .hero-stage { grid-area: media !important; margin: 0 calc(var(--gutter) * -1) !important; width: auto !important; max-width: none !important; position: relative; z-index: 0; }
+  .hero-arch { aspect-ratio: auto !important; height: min(132vw, 80svh); min-height: 440px; border-radius: 0 !important; outline: 0 !important; box-shadow: none !important; }
+  .hero-arch img { object-position: 50% 12% !important; }
+  .hero-arch::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 1;
+    background:
+      linear-gradient(180deg, rgba(14, 47, 44, .78) 0, rgba(14, 47, 44, 0) 24%),
+      linear-gradient(0deg, var(--night) 0, rgba(14, 47, 44, .92) 16%, rgba(14, 47, 44, .35) 40%, rgba(14, 47, 44, 0) 58%);
+  }
+  .hero-status, .hero-title { grid-area: media !important; position: relative; z-index: 2; }
+  .hero-status {
+    align-self: start; justify-self: start; margin-top: calc(var(--head-h) + 6px) !important;
+    padding: 7px 12px 7px 10px; border-radius: 999px; font-size: .85rem !important;
+    background: rgba(14, 47, 44, .62); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+    border: 1px solid rgba(244, 237, 225, .14);
+  }
+  .hero-title { align-self: end; margin-bottom: 4px !important; text-shadow: 0 2px 18px rgba(0, 0, 0, .45); }
+  .hero-title::before {
+    content: ""; display: block; width: 44px; height: 3px; border-radius: 3px; background: var(--lime); margin-bottom: 14px;
+  }
+  .hero-lede { margin-top: 0 !important; }
+}
+@media (min-width: 600px) and (max-width: 899px) {
+  .hero-arch { height: min(78vw, 66svh) !important; aspect-ratio: auto !important; }
+  .hero-arch img { object-position: 50% 18% !important; }
+}
+
+/* kedvencek: mobilon lapozható kártyasor */
+@media (max-width: 759px) {
+  .sig-grid {
+    display: grid !important; grid-auto-flow: column !important; grid-template-columns: none !important;
+    grid-auto-columns: min(74vw, 300px) !important; gap: 14px !important;
+    overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: var(--gutter);
+    margin: 0 calc(var(--gutter) * -1) !important; padding: 4px var(--gutter) 14px !important;
+    scrollbar-width: none; overscroll-behavior-x: contain;
+  }
+  .sig-grid::-webkit-scrollbar { display: none; }
+  .sig-grid > figure {
+    grid-template-columns: minmax(0, 1fr) !important; align-items: start !important; gap: 12px !important;
+    scroll-snap-align: start; background: rgba(244, 237, 225, .04); border: 1px solid rgba(244, 237, 225, .09);
+    border-radius: 20px; padding: 8px 8px 16px;
+  }
+  .sig-grid .sig-frame { aspect-ratio: 1 / 1 !important; border-radius: 14px !important; }
+  .sig-grid figcaption { padding: 0 6px; }
+  .sig-grid figcaption b { font-size: 1.12rem !important; }
+  .sig-hint { display: flex; align-items: center; gap: 8px; margin-top: 2px; font-size: .8rem; color: var(--muted-cream); }
+  .sig-hint i { display: block; height: 3px; flex: 0 0 44px; border-radius: 3px; background: rgba(244, 237, 225, .18); overflow: hidden; position: relative; }
+  .sig-hint i::after { content: ""; position: absolute; inset: 0 auto 0 0; width: var(--p, 34%); background: var(--lime); border-radius: 3px; transition: width .2s; }
+}
+@media (min-width: 760px) { .sig-hint { display: none; } }
+
+/* étlap: mobilon egysoros, ragadós fejezetsáv */
+@media (max-width: 759px) {
+  .menu-in { row-gap: 14px !important; }
+  .menu-side { display: contents !important; }
+  .menu-tabs {
+    position: sticky; top: 0; z-index: 20; display: flex !important; gap: 8px !important;
+    overflow-x: auto; scrollbar-width: none; scroll-snap-type: x proximity;
+    margin: 0 calc(var(--gutter) * -1) !important; padding: 10px var(--gutter) !important;
+    background: rgba(244, 237, 225, .94); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line-ink); transition: top .3s var(--ease);
+  }
+  .head-shown .menu-tabs { top: var(--head-h); }
+  .menu-tab {
+    flex: none; scroll-snap-align: start; min-height: 44px !important; padding: 0 14px !important; gap: 8px !important;
+    border: 1.5px solid rgba(20, 17, 14, .28) !important; border-radius: 999px !important; background: #fff8ea !important; font-size: 1rem !important;
+  }
+  .menu-tab[aria-selected="true"] { background: var(--ink) !important; color: var(--cream) !important; border-color: var(--ink) !important; }
+  .menu-main { margin-top: 6px; }
+  .menu-panel-head h3 { font-size: 1.9rem !important; }
+}
+@media (max-width: 899px) {
+  .hero-stage { margin-top: var(--head-h) !important; }
+  .hero-arch { height: auto !important; aspect-ratio: 6 / 7 !important; min-height: 0 !important; }
+  .hero-arch img { object-position: 50% 0% !important; }
+  .hero-arch::after { background: linear-gradient(0deg, var(--night) 0, rgba(14, 47, 44, .86) 17%, rgba(14, 47, 44, .3) 34%, rgba(14, 47, 44, 0) 46%) !important; }
+  .hero-status { margin-top: calc(var(--head-h) + 12px) !important; margin-left: 2px; }
+}
+@media (min-width: 600px) and (max-width: 899px) {
+  .hero-arch { aspect-ratio: 4 / 3 !important; }
+  .hero-arch img { object-position: 50% 14% !important; }
+}
+@media (max-width: 899px) {
+  .hero { background: radial-gradient(70% 40% at 50% 100%, rgba(63, 184, 175, .14), rgba(63, 184, 175, 0) 70%), var(--night) !important; }
+}
+/* nyitvatartás: kártyában, a mai nap kiemelve */
+.hours { border-collapse: separate !important; border-spacing: 0; background: #fffaf0; border: 1px solid var(--line-ink); border-radius: 16px; overflow: hidden; box-shadow: 0 14px 30px -22px rgba(20, 17, 14, .35); }
+.hours caption { padding: 0 0 10px !important; }
+.hours th, .hours td { padding: 9px 16px !important; }
+.hours tr:first-child th, .hours tr:first-child td { border-top: 0 !important; }
+.hours tr.is-today th { position: relative; }
+.hours tr.is-today th::after { content: "ma"; margin-left: 8px; font: 700 .7rem var(--text); text-transform: uppercase; letter-spacing: .06em; background: var(--ink); color: var(--lime); padding: 2px 6px; border-radius: 6px; vertical-align: 2px; }
+.hours-note { margin-top: 2px !important; }
+/* kis telefonon a két hero-gomb egy sorban */
+@media (max-width: 389px) {
+  .hero-cta { flex-wrap: nowrap !important; gap: 8px !important; }
+  .hero-cta .btn { padding-inline: 14px !important; min-width: 0 !important; }
+  .hero-cta .btn-line { flex: 0 0 auto; }
+  .hero-cta .btn svg { width: 18px; height: 18px; }
+}
+@media (max-width: 379px) { .hero-cta { grid-template-columns: minmax(0, 1fr) auto !important; } .hero-cta .btn { font-size: .95rem !important; } }
