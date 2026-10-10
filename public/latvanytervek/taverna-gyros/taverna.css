@@ -1063,36 +1063,6 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid 
    ========================================================= */
 .sig-quote { margin-top: 22px !important; }
 
-@media (max-width: 899px) {
-  /* hero: a kép a képernyő tetejétől indul, a cím a képen ül */
-  .hero { padding-top: 0 !important; padding-bottom: 26px !important; }
-  .hero-in { grid-template-areas: "media" "cta" "lede" "facts" !important; row-gap: 16px !important; }
-  .hero-stage { grid-area: media !important; margin: 0 calc(var(--gutter) * -1) !important; width: auto !important; max-width: none !important; position: relative; z-index: 0; }
-  .hero-arch { aspect-ratio: auto !important; height: min(132vw, 80svh); min-height: 440px; border-radius: 0 !important; outline: 0 !important; box-shadow: none !important; }
-  .hero-arch img { object-position: 50% 12% !important; }
-  .hero-arch::after {
-    content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 1;
-    background:
-      linear-gradient(180deg, rgba(14, 47, 44, .78) 0, rgba(14, 47, 44, 0) 24%),
-      linear-gradient(0deg, var(--night) 0, rgba(14, 47, 44, .92) 16%, rgba(14, 47, 44, .35) 40%, rgba(14, 47, 44, 0) 58%);
-  }
-  .hero-status, .hero-title { grid-area: media !important; position: relative; z-index: 2; }
-  .hero-status {
-    align-self: start; justify-self: start; margin-top: calc(var(--head-h) + 6px) !important;
-    padding: 7px 12px 7px 10px; border-radius: 999px; font-size: .85rem !important;
-    background: rgba(14, 47, 44, .62); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
-    border: 1px solid rgba(244, 237, 225, .14);
-  }
-  .hero-title { align-self: end; margin-bottom: 4px !important; text-shadow: 0 2px 18px rgba(0, 0, 0, .45); }
-  .hero-title::before {
-    content: ""; display: block; width: 44px; height: 3px; border-radius: 3px; background: var(--lime); margin-bottom: 14px;
-  }
-  .hero-lede { margin-top: 0 !important; }
-}
-@media (min-width: 600px) and (max-width: 899px) {
-  .hero-arch { height: min(78vw, 66svh) !important; aspect-ratio: auto !important; }
-  .hero-arch img { object-position: 50% 18% !important; }
-}
 
 /* kedvencek: mobilon lapozható kártyasor */
 @media (max-width: 759px) {
@@ -1137,20 +1107,6 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid 
   .menu-tab[aria-selected="true"] { background: var(--ink) !important; color: var(--cream) !important; border-color: var(--ink) !important; }
   .menu-main { margin-top: 6px; }
   .menu-panel-head h3 { font-size: 1.9rem !important; }
-}
-@media (max-width: 899px) {
-  .hero-stage { margin-top: var(--head-h) !important; }
-  .hero-arch { height: auto !important; aspect-ratio: 6 / 7 !important; min-height: 0 !important; }
-  .hero-arch img { object-position: 50% 0% !important; }
-  .hero-arch::after { background: linear-gradient(0deg, var(--night) 0, rgba(14, 47, 44, .86) 17%, rgba(14, 47, 44, .3) 34%, rgba(14, 47, 44, 0) 46%) !important; }
-  .hero-status { margin-top: calc(var(--head-h) + 12px) !important; margin-left: 2px; }
-}
-@media (min-width: 600px) and (max-width: 899px) {
-  .hero-arch { aspect-ratio: 4 / 3 !important; }
-  .hero-arch img { object-position: 50% 14% !important; }
-}
-@media (max-width: 899px) {
-  .hero { background: radial-gradient(70% 40% at 50% 100%, rgba(63, 184, 175, .14), rgba(63, 184, 175, 0) 70%), var(--night) !important; }
 }
 /* nyitvatartás: kártyában, a mai nap kiemelve */
 .hours { border-collapse: separate !important; border-spacing: 0; background: #fffaf0; border: 1px solid var(--line-ink); border-radius: 16px; overflow: hidden; box-shadow: 0 14px 30px -22px rgba(20, 17, 14, .35); }

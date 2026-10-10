@@ -72,7 +72,7 @@ Mentés előtte: `taverna-mentes-2026-10-09` ág a repóban.
 
 ## Mobil látvány (2026-10-10, 2. kör)
 
-- Hero mobilon: széltől szélig érő burgerkép közvetlenül a fejléc alatt, a cím a kép alján, sötét átmeneten; a nyitvatartás-jelző üveghatású címkében a kép tetején.
+- Hero mobilon: a filmszerű (átmenetes, a képre írt címes) változat az ügyfél kérésére visszakerült az előzőre — cím fölül, alatta a széltől szélig érő, színhű burgerkép.
 - Kedvencek mobilon: oldalra lapozható kártyasor (scroll-snap) haladásjelzővel.
 - Étlap mobilon: egysoros, vízszintesen görgethető fejezetsáv, amely görgetéskor a képernyő tetején marad; fejezetváltáskor a sáv a kiválasztott fejezetre ugrik, a lista eleje látható marad.
 - Nyitvatartás: kártyába került, a mai nap „MA” jelölést kap.
