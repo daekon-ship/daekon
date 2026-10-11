@@ -105,12 +105,16 @@
           <linearGradient id="bodyG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2A4462" stop-opacity=".55"/><stop offset=".45" stop-color="#111D2D" stop-opacity=".7"/><stop offset="1" stop-color="#080D14" stop-opacity=".9"/></linearGradient>
           <radialGradient id="floorGlow"><stop offset="0" stop-color="#16B8FF" stop-opacity=".22"/><stop offset="1" stop-color="#16B8FF" stop-opacity="0"/></radialGradient>
           <filter id="blur6" x="-20%" y="-400%" width="140%" height="900%"><feGaussianBlur stdDeviation="6"/></filter>
+          <filter id="blur18" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="18"/></filter>
+          <linearGradient id="sheenG" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".45" stop-color="#E9FAFF" stop-opacity=".55"/><stop offset=".7" stop-color="#E9FAFF" stop-opacity=".15"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
           <linearGradient id="floorG" x1="0" x2="1"><stop offset="0" stop-color="#91E7FF" stop-opacity="0"/><stop offset=".5" stop-color="#91E7FF" stop-opacity=".35"/><stop offset="1" stop-color="#91E7FF" stop-opacity="0"/></linearGradient>
         </defs>
         <g class="lamps">
-          <path d="M310 26L690 26L930 430L70 430Z" fill="url(#coneG)"/>
-          <path d="M320 24H680" stroke="#91E7FF" stroke-width="5" opacity=".75" filter="url(#blur6)"/>
-          <path d="M320 24H680" stroke="#EAF7FF" stroke-width="1.6"/>
+          <path class="cone" d="M330 28L670 28L900 430L100 430Z" fill="url(#coneG)" filter="url(#blur18)"/>
+          <path d="M336 30H664" stroke="#91E7FF" stroke-width="6" opacity=".8" filter="url(#blur6)"/>
+          <path d="M360 0V22M640 0V22" stroke="#5B6E86" stroke-width="1.2"/>
+          <path d="M330 22H670V28H330Z" fill="#111D2D" stroke="#7E91A8" stroke-width="1"/>
+          <path d="M336 29H664" stroke="#EAF7FF" stroke-width="1.8"/>
         </g>
         <ellipse class="glow" cx="495" cy="432" rx="440" ry="22" fill="url(#floorGlow)"/>
         <g class="lift">
@@ -137,6 +141,8 @@
             <path class="dr t" d="M760 262V292M796 288L768 297M782 331L765 306M738 331L755 306M724 288L752 297"/>
           </g>
         </g>
+        <path class="sheen" d="M140 238C340 228 620 224 900 216" stroke="url(#sheenG)" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+        <path class="sheen" d="M470 128L712 124C760 124 798 130 832 142" stroke="url(#sheenG)" stroke-width="1.6" fill="none" stroke-linecap="round" opacity=".7"/>
         <g class="dims">
           <path class="dr d" d="M230 380V404M760 380V404M230 396H760M230 300V380M760 300V380"/>
           <path class="dr d" d="M200 300H260M230 270V330M730 300H790M760 270V330"/>

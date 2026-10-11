@@ -66,11 +66,9 @@
      Saját fotó érkezésekor: src mező kitöltése (pl. 'img/emelo.webp') → a rajz helyett a fotó jelenik meg. */
   var SHOTS = [
     { cap: 'Emelőn álló jármű', vb: '-20 10 1040 440', src: '', fit: 'meet' },
-    { cap: 'Motortér', vb: '70 196 280 120', src: '', sys: 'motor' },
-    { cap: 'Fék és kerék', vb: '150 226 168 150', src: '', sys: 'fek' },
-    { cap: 'Diagnosztikai munka', vb: '340 170 200 120', src: '', sys: 'diag' },
-    { cap: 'Futómű', vb: '676 196 176 160', src: '', sys: 'futomu' },
-    { cap: 'Klímarendszer', vb: '56 190 400 120', src: '', sys: 'klima' }
+    { cap: 'Motortér', vb: '56 186 300 140', src: '', sys: 'motor' },
+    { cap: 'Fék és kerék', vb: '140 214 190 170', src: '', sys: 'fek' },
+    { cap: 'Futómű', vb: '666 186 196 180', src: '', sys: 'futomu' }
   ];
 
   /* Ellenőrzött vélemények (pl. Google) – amíg üres, a blokk nem jelenik meg. { text, name, source } */
@@ -100,7 +98,7 @@
     var c = car.cloneNode(true); c.removeAttribute('id'); s.appendChild(c);
     SYS_ORDER.forEach(function (k) {
       if (k !== litSys) return;
-      s.appendChild(svgEl('g', { class: 'sys' }, SYS[k].svg));
+      s.appendChild(svgEl('g', { class: 'sys on' }, SYS[k].svg));
     });
     s.appendChild(svgEl('path', { class: 'dr t', d: 'M-200 430H1200' }));
     return s;

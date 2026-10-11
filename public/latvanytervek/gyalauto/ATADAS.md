@@ -13,6 +13,15 @@ Az éles gyalauto.hu-hoz nem nyúltunk; a terv `noindex`.
 - Jel: hatlapfejű csavaranya (dupla kontúr, jeges cián) és benne egy „G”, amelynek keresztszára kék csavarpontban végződik — kulcsra húzott, precíz munka. Betöltéskor az anya elfordul, a G kirajzolódik; rámutatáskor az anya 60°-ot fordul.
 - Szókép: **GYÁL** félkövér + AUTÓ normál, Space Grotesk, ritkítva; alatta STABILTERV KFT. | Q-SERVICE PARTNER, kék elválasztóval. Favicon ugyanebből.
 
+## Teljes vizuális javítás (3. kör)
+- Egységes formavilág a logó csavaranyájából: a fő gombok kétsarkú, gépelt „lemez” formát kaptak (ferdén levágott sarkok, fényes élsúrolás rámutatáskor), a többi elem 4–6 px-es szögletes sarok — eltűntek a lekerekített „pill” gombok és dobozok.
+- Műszaki rajz-motívum: regisztrációs sarokjelek a szolgáltatáspanelen, az űrlapon, a térképen és a képkockákon; a listapontok és a folyamat lépésszámai hatszögek.
+- Hero: lámpatest felfüggesztéssel, lágy (elmosott) fénykúp, fényes él a karosszéria vállvonalán.
+- Szolgáltatásrajzok nagyobbak, rácsháttér helyett lágy fényfolt.
+- Diagnosztika: az inaktív pontok is látszanak.
+- Műhely: 6 helyett 4 erősebb képkocka (egy nagy + 3 „átvilágított” közeli: motortér, fék és kerék, futómű).
+- Mobil: tömörebb kapcsolat-blokk, gombok egymás mellett.
+
 ## Kompaktabb elrendezés (2. kör)
 - Hero nem tölti ki kötelezően a képernyőt: asztalon kb. 550 px, mobilon az autó, a cím, a két gomb és a telefonszám egy képernyőn.
 - Szekciótávolságok kb. harmadával kisebbek; kisebb címek (h2 max. 34 px), gombok, mezők, listasorok.
