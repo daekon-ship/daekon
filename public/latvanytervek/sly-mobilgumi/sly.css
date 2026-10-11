@@ -1203,3 +1203,76 @@ body{background:var(--rubber)}
 .link{color:var(--paper)}
 .sec--paper .link,.link--ink{color:var(--ink)}
 .dot--y{background:var(--paper)}
+
+/* =====================================================================
+   7. kör — szerkesztett részletek
+   ===================================================================== */
+/* Miért mobil: kijelentés + egy fotó + tények */
+.say2{padding:var(--sec) 0}
+.say2__grid{display:grid;gap:40px;align-items:end}
+.say2__in{max-width:none}
+.facts{display:grid;margin-top:40px;border-top:1px solid var(--line-d)}
+.facts>div{display:grid;grid-template-columns:minmax(0,180px) 1fr;gap:16px;padding:14px 0;border-bottom:1px solid var(--line-d);font-size:14.5px}
+.facts dt{color:var(--muted-d)}
+.facts dd{margin:0;color:var(--paper)}
+.say2__ph{margin:0;position:relative}
+.say2__ph img{width:100%;max-width:500px;aspect-ratio:4/5;object-fit:cover;filter:grayscale(.85) contrast(1.06);border-radius:4px}
+.say2__ph figcaption{display:flex;gap:12px;margin-top:12px;font-size:13px;color:var(--muted-d)}
+.say2__ph figcaption span{color:var(--paper)}
+@media (min-width:960px){.say2__grid{grid-template-columns:minmax(0,7fr) minmax(0,4fr);gap:80px}}
+@media (max-width:959px){.say2__ph img{aspect-ratio:4/3}}
+@media (max-width:899px){.facts{margin-top:28px}.facts>div{grid-template-columns:120px 1fr;font-size:13.5px;padding:11px 0}}
+
+/* S.O.S.: narancs foltok nélkül */
+.hz{display:none}
+.sos{border-top:1px solid rgba(210,58,48,.5)}
+.sos::before{background:radial-gradient(50% 60% at 0% 0%,rgba(210,58,48,.12),transparent 60%)}
+
+/* kalkulátor-kerék: vonalrajz */
+.cw__tyre{fill:none;stroke:var(--ink);stroke-width:2}
+.cw__tread{fill:none;stroke:var(--ink);stroke-width:12;stroke-dasharray:2 7;opacity:.35}
+.cw__rim{fill:none;stroke:var(--ink);stroke-width:2}
+.cw__rimin{fill:none;stroke:var(--ink);stroke-width:1;opacity:.4}
+.cw__spokes path{stroke:var(--ink);stroke-width:2;opacity:.7}
+.cw__hub{fill:var(--ink)}
+.cw__dim{stroke:var(--red);stroke-width:2;stroke-dasharray:none}
+
+/* kiszállási terület: szöveg, díszítés nélkül */
+.zone{margin-top:22px;padding-top:18px;border-top:1px solid var(--line-d);font-size:14.5px;color:#BFC3C7;max-width:46ch}
+.zone__k{display:block;margin-bottom:6px;font:500 11.5px/1 var(--f-body);letter-spacing:.18em;text-transform:uppercase;color:var(--muted-d)}
+.contact__wheel{display:none}
+
+/* műhely-metszet: finomabb vonal */
+.cut__body path,.cut__body circle{stroke-width:1.6}
+.cut__kit g{stroke-width:1.4}
+.cut__tags text{font:500 15px/1 var(--f-body)}
+
+/* lábléc */
+.ftr{padding:0 0 calc(28px + var(--safe-b));background:#070808;border-top:1px solid var(--line-d)}
+.ftr__cta{display:grid;gap:24px;padding:56px 0;border-bottom:1px solid var(--line-d)}
+.ftr__q{font:560 clamp(24px,1.1vw + 17px,34px)/1.12 var(--f-head);letter-spacing:-.024em}
+.ftr__q span{color:var(--muted-d)}
+.ftr__btns{display:grid;gap:10px}
+.ftr__cols{display:grid;gap:32px;padding:44px 0;border-bottom:1px solid var(--line-d)}
+.ftr__brand .brand__plate{display:inline-flex;height:36px;margin-bottom:16px}
+.ftr__brand p{font-size:14px;color:var(--muted-d);max-width:36ch}
+.ftr__col h3{font:500 11.5px/1 var(--f-body);letter-spacing:.18em;text-transform:uppercase;color:var(--muted-d);margin-bottom:14px}
+.ftr__col li{font-size:14.5px;color:#C9CDD1;padding:5px 0}
+.ftr__col li.is-sos{color:var(--red-soft)}
+.ftr__col a{text-decoration:none;color:#D9DCDF;transition:color .2s;display:inline-flex;min-height:32px;align-items:center}
+.ftr__col a:hover{color:#fff}
+.ftr__legal{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 24px;padding-top:22px;font-size:12.5px;color:var(--muted-d)}
+.ftr__demo{margin-top:14px;padding:0;border:0;font-size:12px;color:#6E7378}
+@media (min-width:760px){.ftr__btns{grid-template-columns:1fr 1fr}.ftr__cols{grid-template-columns:1.4fr 1fr 1fr 1fr}}
+@media (min-width:1000px){.ftr__cta{grid-template-columns:1fr 560px;align-items:center;padding:72px 0}}
+/* a maszkos feltárás a képen fut, nem a figurán – így az IntersectionObserver látja az elemet */
+.js .mask-reveal{clip-path:none}
+.js .mask-reveal img{clip-path:inset(100% 0 0 0);transform:scale(1.14);transition:clip-path 1.1s var(--ease),transform 1.6s var(--ease)}
+.js .mask-reveal.is-in img{clip-path:inset(0 0 0 0);transform:none}
+@media (prefers-reduced-motion:reduce){.js .mask-reveal img{clip-path:none !important;transform:none !important}}
+@media (max-width:759px){
+  .ftr__cta{padding:40px 0}
+  .ftr__cols{grid-template-columns:1fr 1fr;gap:28px 20px;padding:32px 0}
+  .ftr__brand,.ftr__col:last-child{grid-column:1/-1}
+  .ftr__col li{padding:2px 0;font-size:14px}
+}

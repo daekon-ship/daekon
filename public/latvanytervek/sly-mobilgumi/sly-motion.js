@@ -140,6 +140,12 @@
     d.addEventListener('pointerleave', function () { cur.classList.remove('is-on'); });
   }
 
+  /* listasorok finom érkezése */
+  ScrollTrigger.batch('.idx__list li, .field__list li, .acc details, .fleet__pts li, .facts > div', {
+    start: 'top 92%', once: true,
+    onEnter: function (els) { gsap.fromTo(els, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: .8, ease: 'expo.out', stagger: .06, overwrite: true }); }
+  });
+
   /* képek betöltése után újramérés */
   window.addEventListener('load', function () { ScrollTrigger.refresh(); });
 })();

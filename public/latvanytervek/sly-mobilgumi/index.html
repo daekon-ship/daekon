@@ -168,11 +168,20 @@
 
 <!-- ============ KIJELENTÉS (szavanként kigyúló) ============ -->
 <section class="say2" aria-labelledby="say2-k">
-  <figure class="float float--a" data-speed="-0.18"><img src="https://slymobilgumi.hu/wp-content/uploads/2021/06/munka3.jpg" alt="Szakember gumiszerelés közben" width="500" height="500" loading="lazy" referrerpolicy="no-referrer"><i class="grain"></i></figure>
-  <figure class="float float--b" data-speed="0.22"><img src="https://slymobilgumi.hu/wp-content/uploads/2021/06/munka6.jpg" alt="Kerékszerelési részlet" width="500" height="500" loading="lazy" referrerpolicy="no-referrer"><i class="grain"></i></figure>
-  <div class="wrap say2__in">
-    <p class="tagp" id="say2-k">Miért mobil?</p>
-    <p class="lit" id="lit">Nem neked kell a gumishoz menned, és nem kell a műhelyben várnod. A felszerelt szervizautó odaáll hozzád – otthon, a munkahelyen vagy a céges telephelyen –, és a munka ott készül el, ahol az autód áll.</p>
+  <div class="wrap say2__grid">
+    <div class="say2__in">
+      <p class="tagp" id="say2-k">Miért mobil?</p>
+      <p class="lit" id="lit">Nem neked kell a gumishoz menned, és nem kell a műhelyben várnod. A felszerelt szervizautó odaáll hozzád – otthon, a munkahelyen vagy a céges telephelyen –, és a munka ott készül el, ahol az autód áll.</p>
+      <dl class="facts">
+        <div><dt>Ingyenes kiszállás</dt><dd>Sopron 20 km-es körzetében, tervezett cserénél</dd></div>
+        <div><dt>Munkaidő</dt><dd>Hétfő–péntek 8:00–17:30</dd></div>
+        <div><dt>S.O.S. ügyelet</dt><dd>0–24, kizárólag defektjavítás</dd></div>
+      </dl>
+    </div>
+    <figure class="say2__ph mask-reveal">
+      <img src="https://slymobilgumi.hu/wp-content/uploads/2021/06/munka3.jpg" alt="Szakember gumiszerelés közben – saját fotó" width="500" height="500" loading="lazy" referrerpolicy="no-referrer">
+      <figcaption><span>Saját fotó</span>Gumiszerelés a helyszínen</figcaption>
+    </figure>
   </div>
 </section>
 
@@ -367,8 +376,7 @@
 <!-- ============ S.O.S. ============ -->
 <section class="sos" id="sos" aria-labelledby="sos-cim">
   <div class="sos__stripe" aria-hidden="true"></div>
-  <i class="hz hz--l" aria-hidden="true"></i><i class="hz hz--r" aria-hidden="true"></i>
-  <div class="wrap sos__grid">
+    <div class="wrap sos__grid">
     <div class="sos__main">
       <p class="eyebrow eyebrow--r"><span class="pulse" aria-hidden="true"></span>S.O.S. defektjavítás · 0–24</p>
       <h2 id="sos-cim" class="h2">Defekt az úton?<br>Kérj helyszíni segítséget.</h2>
@@ -422,7 +430,7 @@
       <div class="calc__vis" aria-hidden="true">
         <svg viewBox="-160 -160 320 320" class="calc__wheel">
           <circle r="150" class="cw__tyre"/>
-          <circle r="150" class="cw__tread"/>
+          <circle r="138" class="cw__tread"/>
           <circle id="cwRim" r="84" class="cw__rim"/>
           <circle id="cwRimIn" r="70" class="cw__rimin"/>
           <g class="cw__spokes" id="cwSpokes"><path d="M0 -20V-70M0 20V70M-20 0H-70M20 0H70"/></g>
@@ -747,20 +755,7 @@
           <div class="is-sos"><dt>S.O.S. defektjavítás</dt><dd>0–24</dd></div>
         </dl>
         <a class="fb" href="https://www.facebook.com/Slymobilgumi" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M13.5 21v-7.5h2.6l.4-3h-3V8.6c0-.9.3-1.5 1.5-1.5h1.6V4.4c-.3 0-1.2-.1-2.3-.1-2.3 0-3.8 1.4-3.8 3.9v2.3H7.9v3h2.6V21z"/></svg>facebook.com/Slymobilgumi</a>
-        <div class="area" aria-label="Szolgáltatási terület">
-          <svg viewBox="0 0 320 320" role="img" aria-labelledby="area-t">
-            <title id="area-t">Vázlatos ábra: Sopron, a 20 km-es ingyenes kiszállási körzet és a vonzáskörzet</title>
-            <circle cx="160" cy="160" r="150" class="area__outer"/>
-            <circle cx="160" cy="160" r="96" class="area__ring"/>
-            <circle cx="160" cy="160" r="48" class="area__inner"/>
-            <circle cx="160" cy="160" r="6" class="area__dot"/>
-            <circle cx="160" cy="160" r="14" class="area__ping"/>
-            <text x="160" y="186" text-anchor="middle" class="area__city">SOPRON</text>
-            <text x="160" y="58" text-anchor="middle" class="area__lbl">20 km</text>
-            <text x="160" y="40" text-anchor="middle" class="area__lbl area__lbl--dim">vonzáskörzet</text>
-          </svg>
-          <p class="area__cap"><i class="dot dot--y" aria-hidden="true"></i>Tervezett gumicserénél a 20 km-es körzetben ingyenes a kiszállás. Vázlatos ábra.</p>
-        </div>
+        <p class="zone"><span class="zone__k">Kiszállási terület</span>Sopron és vonzáskörzete. Tervezett gumicserénél a 20 km-es körzetben ingyenes a kiszállás; S.O.S. defektnél 400 Ft/km, telephelytől telephelyig.</p>
       </div>
 
       <form class="form form--dark reveal" id="idopont" novalidate>
@@ -789,18 +784,29 @@
 </main>
 
 <footer class="ftr">
-  <div class="ftr__track" aria-hidden="true"></div>
-  <div class="wrap ftr__in">
-    <div class="ftr__brand"><b>SLY Mobil Gumiszerviz</b><span>Mobil gumiszerviz Sopron és vonzáskörzete</span></div>
-    <nav class="ftr__nav" aria-label="Lábléc">
-      <a href="#szolgaltatasok">Szolgáltatások</a><a href="#arak">Árak</a><a href="#munkaink">Munkáink</a><a href="#flottaknak">Flottáknak</a><a href="#kapcsolat">Kapcsolat</a>
-    </nav>
+  <div class="wrap">
+    <div class="ftr__cta">
+      <p class="ftr__q">Defekt vagy szezonális csere?<br><span>Egy hívás, és megyünk.</span></p>
+      <div class="ftr__btns">
+        <a class="cta cta--sos" href="tel:+36707321908"><span class="cta__k"><span class="pulse" aria-hidden="true"></span>S.O.S. · 0–24</span><span class="cta__v">+36 70 732 1908</span></a>
+        <a class="cta cta--plan" href="#idopont"><span class="cta__k">Tervezett · munkaidőben</span><span class="cta__v">Időpontkérés</span></a>
+      </div>
+    </div>
+    <div class="ftr__cols">
+      <div class="ftr__brand">
+        <span class="brand__plate"><img src="https://slymobilgumi.hu/wp-content/uploads/2021/09/cropped-logouj.png" alt="SLY Mobil Gumiszerviz" width="1189" height="365" loading="lazy" referrerpolicy="no-referrer"></span>
+        <p>Mobil gumiszerviz Sopronban és vonzáskörzetében. Helyszíni gumicsere, kerékszerelés és 0–24 S.O.S. defektjavítás.</p>
+      </div>
+      <div class="ftr__col"><h3>Szolgáltatások</h3><ul><li><a href="#szolgaltatasok">Helyszíni gumicsere</a></li><li><a href="#szolgaltatasok">Kerékcsere, centrírozás</a></li><li><a href="#arak">Gumihotel</a></li><li><a href="#sos">S.O.S. defektjavítás</a></li><li><a href="#flottaknak">Flottáknak</a></li></ul></div>
+      <div class="ftr__col"><h3>Elérhetőség</h3><ul><li><a href="tel:+36707321908">+36 70 732 1908</a></li><li><a href="tel:+436765221185">+43 676 522 1185</a></li><li><a href="mailto:sly.mobilgumi@gmail.com">sly.mobilgumi@gmail.com</a></li><li><a href="https://www.facebook.com/Slymobilgumi" target="_blank" rel="noopener">Facebook</a></li></ul></div>
+      <div class="ftr__col"><h3>Nyitvatartás</h3><ul><li>Tervezett csere: H–P 8:00–17:30</li><li class="is-sos">S.O.S. defekt: 0–24</li><li>Sopron és vonzáskörzete</li></ul></div>
+    </div>
     <div class="ftr__legal">
       <span>Impresszum · Adatkezelési tájékoztató – <em>ügyféljóváhagyás után</em></span>
       <span>© 2026 SLY Mobil Gumiszerviz</span>
     </div>
+    <p class="ftr__demo">Látványterv – nem élő oldal. Az árak, a cégadatok és a fotók felhasználása egyeztetés alatt.</p>
   </div>
-  <p class="ftr__demo wrap">Látványterv – nem élő oldal. Az árak, a cégadatok és a fotók felhasználása egyeztetés alatt.</p>
 </footer>
 
 <div class="sosbar" id="sosbar">
