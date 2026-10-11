@@ -1015,3 +1015,191 @@ img.is-missing{opacity:0}
   .ppanel .ptable td,.pside__box .ptable td,.ptable--dark td{font-size:15.5px}
   .ptable th{font-size:14.5px}
 }
+
+/* =====================================================================
+   6. kör — prémium visszafogás: fekete · törtfehér · márkapiros
+   (a valódi SLY-logó piros–fekete; a sárga figyelmeztető-esztétika kivezetve)
+   ===================================================================== */
+:root{
+  --rubber:#0A0B0C;--asphalt:#101113;--graphite:#16181A;--graphite-2:#1F2225;
+  --paper:#F2F1ED;--paper-2:#E6E4DF;
+  --yellow:#F2F1ED;          /* korábbi kiemelő → törtfehér */
+  --yellow-2:#1D1F22;        /* világos felületen: grafit */
+  --red:#D23A30;--red-btn:#C3342B;--red-soft:#F07A70;
+  --muted-d:#8C9298;--muted-l:#6A6E73;
+  --line-d:rgba(242,241,237,.09);--line-l:rgba(10,11,12,.11);
+  --sec:clamp(64px,8vw,136px);
+}
+@media (max-width:899px){:root{--sec:60px}}
+body{background:var(--rubber)}
+.grain{opacity:.1}
+
+/* tipográfia: mondatkezdő, finom súly, szoros betűköz */
+.h2{font-stretch:100%;font-weight:560;text-transform:none;letter-spacing:-.026em;line-height:1.08;font-size:clamp(26px,1.25vw + 18px,40px)}
+.hx__h1{font-stretch:100%;font-weight:580;text-transform:none;letter-spacing:-.034em;line-height:1.02;font-size:clamp(32px,2vw + 20px,56px)}
+.hx__h1 .ln:first-child{color:var(--muted-d)}
+.hx__h1 em{color:var(--paper)}
+.hx__say p{font-stretch:100%;font-weight:560;text-transform:none;letter-spacing:-.03em;line-height:1.04}
+.hx__say p span+span{color:var(--muted-d)}
+.way__h{font-stretch:100%;font-weight:560;text-transform:none;letter-spacing:-.026em;line-height:1.06}
+.lit{font-stretch:100%;font-weight:460;letter-spacing:-.018em;line-height:1.3}
+.lit .w.hl{color:inherit}
+.story__steps h3,.idx__t b,.kitlist__i b,.fleet__pts h3,.acc summary,.field__list b,.h3,.form__h,.dispatch__row b,.menu__list span,.ftr__brand b{font-stretch:100%;font-weight:560;letter-spacing:-.012em}
+.mono,.cta__k,.hx__k,.cf__l,.ppanel__h small,.strip__count,.hx__cue,.intro__t span,.tel .mono,.calc__size span{font-family:var(--f-body);font-weight:500;letter-spacing:.14em}
+
+/* címkék: dísz nélkül, apró, ritkított */
+.eyebrow,.tagp{background:none;color:var(--muted-d);padding:0;border-radius:0;font:500 11.5px/1 var(--f-body);letter-spacing:.18em;text-transform:uppercase;margin-bottom:22px;gap:10px}
+.eyebrow::before,.tagp::before{content:"";display:block;width:5px;height:5px;border-radius:50%;background:var(--red)}
+.tagp{display:inline-flex;align-items:center}
+.sec--paper .eyebrow{background:none;color:var(--muted-l)}
+.sec--paper .eyebrow::before{background:var(--red);width:5px;height:5px}
+.eyebrow--r{background:none;color:var(--red-soft)}
+.eyebrow--r::before{display:none}
+
+/* fejléc */
+.hdr.is-solid{background:rgba(10,11,12,.86);backdrop-filter:saturate(1.4) blur(14px)}
+.brand__plate{background:#fff;box-shadow:none;border-radius:4px;padding:3px 8px}
+.brand__word b{color:var(--paper)}
+.nav a{font-weight:450;color:#BFC3C7}
+.nav a::after{height:1px;bottom:10px}
+.hdr__plan{color:var(--paper);font-weight:500}
+.hdr__progress{height:1px}
+.hdr__progress i{background:rgba(242,241,237,.55)}
+.btn--sos,.cta--sos,.sosbar__b{--bg:var(--red-btn);background:var(--red-btn)}
+
+/* hero: monokróm fotó, ezüst oldalfal */
+.plate{display:none}
+.hx__k{color:var(--muted-d)}
+.hx__pin::before{background:radial-gradient(60% 70% at 71% 55%,rgba(242,241,237,.05),transparent 65%)}
+.hx__tone,.hx__dots{display:none}
+.hx__photo::after{opacity:calc(var(--g) * .9)}
+.tyre__brand{font-size:19px;font-weight:620;font-stretch:112%;letter-spacing:9px;fill:#C9CDD1}
+.tyre__spec{fill:#4A4F55}
+.hx__tyre circle[stroke="#FFD12A"]{stroke:#6E747A;stroke-width:1.5}
+.hx__photo img{filter:grayscale(calc(.35 + var(--g) * .65)) contrast(calc(1.04 + var(--g) * .18)) brightness(.92)}
+.cta{border-radius:4px;min-height:64px}
+.cta__k{font-size:10.5px;opacity:.8}
+.cta__v{font-stretch:100%;font-weight:560;letter-spacing:-.01em}
+.cta--plan{background:var(--paper);color:var(--ink)}
+.cta--plan:hover{background:#fff}
+.hero__warn{color:var(--muted-d)}
+
+/* futószalag: csendes, sötét */
+.band{background:var(--rubber);color:var(--muted-d);border-block:1px solid var(--line-d);height:56px}
+.band::before,.band::after{display:none}
+.band__track{gap:34px;animation-duration:60s}
+.band__track span{font:500 12px/1 var(--f-body);font-stretch:100%;letter-spacing:.22em}
+.band__track span.r{color:var(--red-soft)}
+.band__track i{width:4px;height:4px;border:0;background:var(--muted-d)}
+
+/* két út: fekete-fehér fotó, sötét átmenet */
+.way__bg::after{display:none}
+.way__bg img{filter:grayscale(1) contrast(1.08) brightness(.62)}
+.way:hover .way__bg img{filter:grayscale(.7) contrast(1.08) brightness(.72)}
+.way--plan::after,.way--sos::after{background:linear-gradient(to top,rgba(10,11,12,.94) 0 28%,rgba(10,11,12,.15) 82%)}
+.way--plan,.way--sos{color:var(--paper)}
+.ways{gap:1px;background:var(--line-d)}
+.way__k{background:none !important;padding:0;color:var(--muted-d) !important;font:500 11.5px/1 var(--f-body);letter-spacing:.18em}
+.way--sos .way__k{color:var(--red-soft) !important}
+.way--sos .way__k .pulse{color:var(--red)}
+.way__f{font-weight:450;color:#C9CDD1}
+.way__f span::before{width:4px;height:4px;top:.65em;background:var(--muted-d)}
+.way__cta{font-weight:550}
+.way--sos .way__cta{color:var(--red-soft)}
+
+/* történet: finom vonalak */
+.road__line{height:1px;background:rgba(242,241,237,.18)}
+.road__fill{height:2px;background:var(--paper);bottom:13.5px}
+.road__stop{width:11px;height:11px;margin-left:-5.5px;border-width:1.5px;bottom:9px}
+.road__stop--end{margin-left:-11px}
+.road__van{color:var(--paper)}
+.r3d{opacity:.28}
+.story__steps .mono{color:var(--muted-d)}
+.story__steps li.is-on .mono{color:var(--red-soft)}
+
+/* műhely */
+.cut{box-shadow:none;background:#fff;border-radius:6px}
+.cut__kit g{fill:rgba(10,11,12,.05)}
+.cut__body path,.cut__body circle{stroke-width:2}
+.kitlist{border-top:1px solid var(--ink)}
+.kitlist__i b::before{background:none;border:1px solid var(--ink);width:20px;height:20px}
+.proof__ph img,.float img,.strip__i img,.peek img{filter:grayscale(.85) contrast(1.06)}
+.strip__i button:hover img{filter:grayscale(0) contrast(1.02)}
+
+/* szolgáltatás-index */
+.idx__g{border-bottom:1px solid rgba(242,241,237,.5);color:var(--muted-d)}
+.idx__g--r{border-color:var(--red)}
+.idx__list a::before{background:linear-gradient(90deg,rgba(242,241,237,.035),transparent 70%)}
+.idx__list a:hover .idx__t b{color:#fff}
+.idx__p{font:500 15px/1.3 var(--f-body);font-stretch:100%;letter-spacing:0;color:#D5D8DB;font-variant-numeric:tabular-nums}
+
+/* dekóder */
+.decode__box{background:var(--rubber);border-radius:6px}
+.decode__box::before{border-color:rgba(242,241,237,.03)}
+.code{font-family:var(--f-body);font-weight:500;letter-spacing:-.01em}
+.code button{border-bottom-width:1px}
+.code button.is-key:not([aria-selected="true"]){border-color:var(--paper)}
+.explain__k{color:var(--muted-d)}
+.explain__v{font-stretch:100%;font-weight:560}
+
+/* S.O.S.: komoly, nem harsány */
+.sos__stripe{display:none}
+.sos::before{background:radial-gradient(55% 70% at 0% 0%,rgba(210,58,48,.14),transparent 62%)}
+.hz{opacity:.35;width:360px;height:360px}
+.sign{border-radius:4px;animation:none}
+.sign__t b{font-family:var(--f-body);font-weight:600;letter-spacing:-.01em}
+
+/* árlista & kalkulátor */
+.prices{background:var(--paper)}
+.ppanel .ptable td,.pside__box .ptable td,.ptable--dark td{font:600 16.5px/1.3 var(--f-body);font-stretch:100%;letter-spacing:0;font-variant-numeric:tabular-nums}
+.ppanel__h{border-bottom:1px solid var(--ink)}
+.ptabs button{border-width:1px;border-radius:999px;font-weight:500}
+.ptabs button[aria-selected="true"]{color:var(--paper)}
+.vat{border-radius:999px}
+.vat__b{border-radius:999px;font-weight:500}
+.pside__box{border-radius:6px}
+.pside__h{color:var(--muted-d)}
+.pside__terms li{border-left:1px solid var(--ink)}
+.calc{border-radius:6px;box-shadow:0 1px 0 var(--line-l),0 30px 60px -40px rgba(0,0,0,.25)}
+.chip span{border-width:1px;border-radius:999px;font-weight:450}
+.chip--chk input:checked+span{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.calc__k{color:var(--muted-d)}
+.calc__sum dd{font-family:var(--f-body);font-weight:550}
+.calc__sum .is-total dd{color:var(--paper)}
+.calc__size b{font-family:var(--f-body);font-weight:600;letter-spacing:-.03em}
+.cw__rim{fill:#D7DADD}.cw__dim{stroke:var(--red)}
+.sec--paper .btn--y,.prices .btn--y{--bg:var(--ink);--fg:var(--paper)}
+.calc__out .btn--y{--bg:var(--paper);--fg:var(--ink)}
+
+/* munkáink */
+.strip__count b{font-family:var(--f-body);font-weight:600;font-stretch:100%;font-size:26px;letter-spacing:-.02em}
+.strip__i figcaption .mono{color:var(--muted-d)}
+.field__list time{color:var(--muted-d)}
+.field__list .is-sos time{color:var(--red-soft)}
+.partners__list li{background:#fff;border-radius:4px}
+
+/* flották, űrlapok, kapcsolat */
+.fleetline{border-color:var(--line-d)}
+.fleetline svg{stroke-width:1.4}
+.fleet__pts .mono{color:var(--muted-d)}
+.fleet__pts li:first-child{border-top:1px solid rgba(242,241,237,.5)}
+.form{border-radius:6px}
+.fld input,.fld select,.fld textarea,.sel select{border-width:1px;border-radius:4px}
+.fld input:focus,.fld select:focus,.fld textarea:focus{box-shadow:0 0 0 3px rgba(242,241,237,.12)}
+.tel--main{border-radius:6px}
+.tel--main b{font-family:var(--f-body);font-weight:600;letter-spacing:-.01em}
+.contact__h > span:not(.hw){color:var(--muted-d)}
+.area{border-radius:6px}
+.area__ring{fill:rgba(242,241,237,.04)}
+.acc{border-top:1px solid var(--ink)}
+.acc summary .mono{color:var(--muted-l)}
+
+/* kurzor, belépő, lábléc */
+@media (pointer:fine){.cur i{border:1px solid #fff}}
+.intro__tyre circle:first-child{stroke:var(--paper)}
+.intro__t b{color:var(--paper);font-stretch:112%;font-weight:700}
+.ftr__track{display:none}
+.ftr{padding-top:44px}
+.link{color:var(--paper)}
+.sec--paper .link,.link--ink{color:var(--ink)}
+.dot--y{background:var(--paper)}
