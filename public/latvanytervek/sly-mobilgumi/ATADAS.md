@@ -3,11 +3,17 @@
 Élő cím: https://daekon-ship.github.io/daekon/latvanytervek/sly-mobilgumi/
 Fájlok: `index.html`, `sly.css`, `sly.js` (függőség nélkül), `fonts/` (Archivo var + IBM Plex Sans/Mono, OFL).
 
-## Koncepció
-- „Mi megyünk hozzád”: antracit aszfalt, sárga útburkolati jel, vészpiros csak az S.O.S.-hez.
-- A tervezett gumicsere (H–P 8:00–17:30) és a 0–24 S.O.S. defekt végig külön színt, külön CTA-t és külön lépéssort kap.
-- Szekciók: hero (két CTA + ügyeleti figyelmeztetés) → két út → előnyök → a műhely a kocsiban (vázlatrajz, 4 berendezés) → hogyan működik (váltó: tervezett / S.O.S.) → szolgáltatások (mind a 13) → S.O.S. → teljes árlista (6 fül, nettó/bruttó) + díjkalkulátor → munkáink (3 fotó + 7 képes galéria, FB-munkatípusok, partnerlogók) → flották (ajánlatkérő) → GYIK (8 kérdés) → kapcsolat (időpontkérő, 20 km-es körzet).
-- Mobilon: alsó, rögzített S.O.S.-sáv (safe-area); elrejtődik a heróban, a kapcsolat szekcióban, a láblécnél, gépelés közben és nyitott menünél.
+## Koncepció (2. kör – „oldalfal”)
+- Hero: kódból rajzolt, görgetésre forgó kerék (SLY-feliratos oldalfal, könnyűfém felni, sárga féknyereg, „205/55 R16” méretvonal). Mobilon a kerék felső íve látszik, kifutva.
+- Sárga „futófelület” futószalag a szolgáltatásokkal.
+- „Az út hozzád”: ragadós jelenet – görgetésre a szervizautó végigmegy az úton, 4 megállóval (hívás → egyeztetés → kiszállás → kész).
+- A szervizautó metszetrajza a 4 berendezéssel (kirajzolódó vonalak) + 2 valódi fotó.
+- Szolgáltatások: szerkesztett, számozott index (mind a 13), csoportosítva; asztali gépen a sorok fölött a saját fotó követi a kurzort.
+- Oldalfal-dekóder: a „205/55 R16 91V · DOT 3824” jelölés részei koppintásra magyaráznak; az R16 az ársorhoz és a kalkulátorhoz visz.
+- S.O.S.: elakadásjelző-tábla stílusú hívógomb, 3 lépés, defektárak.
+- Árak: kalkulátor méretre skálázódó felnirajzzal + a teljes árlista 6 fülön, nettó/bruttó.
+- Munkáink: húzható filmszalag mind a 7 fotóval + nagyító galéria. Flották: rajzolt járműikon-sor + ajánlatkérő.
+- Mobilon alsó S.O.S.-sáv (safe-area), elrejtődik a heróban, a kapcsolatnál, gépeléskor és nyitott menünél. `prefers-reduced-motion`: forgás, ragadós jelenet és futószalag kikapcsol.
 
 ## Mi van ellenőrizve
 - Árak: a brief árlistája tételesen (2025. 02. 01-től visszavonásig). Bruttó = nettó × 1,27, kerekítve.
