@@ -92,7 +92,7 @@ p{margin:0}
 .hero-phone span{color:var(--soft);font-family:var(--fb);font-weight:400}
 .hero-art{margin:0 -7vw 0 -2vw;position:relative}
 #heroCar .body{fill:url(#bodyG)}
-.diag-svg .lamps,.diag-svg .glow,.frame .glow{display:none}
+.diag-svg .lamps,.diag-svg .glow{display:none}
 .car-svg{width:100%;height:auto;overflow:visible}
 .car-svg .dr{fill:none;stroke:#C9D6E4;stroke-width:2.2;stroke-linejoin:round;stroke-linecap:round}
 .car-svg .dr.t{stroke-width:1.3;stroke:#7E91A8}
@@ -113,7 +113,7 @@ p{margin:0}
 .sec-head p{margin-top:8px;color:var(--soft);font-size:16px}
 
 /* szekcióhatár: finom fény-vonal (vizuális összekötés) */
-.svc::before,.shop::before,.book::before{content:"";position:absolute;top:0;left:50%;width:min(1100px,90%);height:1px;transform:translateX(-50%);background:linear-gradient(90deg,transparent,var(--line2),transparent)}
+.svc::before,.book::before{content:"";position:absolute;top:0;left:50%;width:min(1100px,90%);height:1px;transform:translateX(-50%);background:linear-gradient(90deg,transparent,var(--line2),transparent)}
 
 /* ---------- szolgáltatások ---------- */
 .svc{background:linear-gradient(180deg,var(--g0),var(--g1))}
@@ -202,30 +202,6 @@ p{margin:0}
 .why-list dd{margin:0;color:#4A586B;font-size:14.5px}
 .why-list a{color:#0A6FA0;font-weight:600;text-decoration:none;white-space:nowrap}
 .reviews{margin-top:64px}
-
-/* ---------- műhely ---------- */
-.shop{background:var(--g0)}
-.shop-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));grid-auto-rows:clamp(108px,9.4vw,140px);gap:10px}
-.frame{all:unset;box-sizing:border-box;position:relative;border-radius:6px;overflow:hidden;cursor:zoom-in;background:radial-gradient(90% 90% at 30% 20%,#17283E,#0A111C 75%);border:1px solid var(--line)}
-.frame:focus-visible{outline:2px solid var(--ice);outline-offset:3px}
-.frame .media{position:absolute;inset:0;transition:transform 1s var(--e)}
-.frame .media svg{width:100%;height:100%}
-.frame::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(8,13,20,.85));pointer-events:none}
-.frame .cap{position:absolute;z-index:1;left:16px;right:16px;bottom:13px;font-size:14px;font-weight:600;font-family:var(--fh)}
-.frame .beam{position:absolute;inset:0;background:linear-gradient(115deg,transparent 30%,rgba(145,231,255,.10) 45%,transparent 60%);mix-blend-mode:screen;pointer-events:none}
-@media (hover:hover){.frame:hover .media{transform:scale(1.05)}}
-.frame:nth-child(1){grid-column:span 4;grid-row:span 3}
-.frame:nth-child(n+2){grid-column:span 2}
-.shop-note{margin-top:16px;font-size:13.5px;color:#6F84A0}
-.frame .dr{fill:none;stroke:#B9C8D8;stroke-width:1.5;stroke-linejoin:round;stroke-linecap:round;vector-effect:non-scaling-stroke}
-.frame .dr.t{stroke:#61758E;stroke-width:1}
-.frame .body{fill:rgba(17,29,45,.6);stroke:#DCE7F2}
-.frame .glass{fill:rgba(145,231,255,.05)}
-.frame .sys .dr{stroke:var(--ice)}
-.frame .sys .dr.glowline{filter:drop-shadow(0 0 4px rgba(22,184,255,.9))}
-.frame .sys .fillz{fill:rgba(22,184,255,.16)}
-.frame .dims,.frame .scan,.frame .hot{display:none}
-.frame text{display:none}
 
 /* ---------- folyamat ---------- */
 .flow{background:linear-gradient(180deg,var(--g0),var(--steel) 120%);overflow:hidden}
@@ -317,25 +293,8 @@ address{font-style:normal}
 /* ---------- mobil alsó sáv ---------- */
 .mbar{display:none}
 
-/* ---------- lightbox ---------- */
-.lb{position:fixed;inset:0;z-index:90;background:rgba(5,8,13,.94);display:grid;grid-template-columns:64px 1fr 64px;align-items:center;padding:24px}
-.lb[hidden]{display:none}
-.lb-fig{margin:0;max-width:1100px;width:100%;justify-self:center}
-.lb-media{aspect-ratio:16/10;border-radius:6px;overflow:hidden;border:1px solid var(--line2);background:radial-gradient(90% 90% at 30% 20%,#17283E,#0A111C 75%);position:relative}
-.lb-media .media{position:absolute;inset:0}
-.lb-media svg{width:100%;height:100%}
-.lb-media .dr{fill:none;stroke:#C9D6E4;stroke-width:1.6;vector-effect:non-scaling-stroke;stroke-linejoin:round;stroke-linecap:round}
-.lb-media .dr.t{stroke:#61758E;stroke-width:1}
-.lb-media .body{fill:rgba(17,29,45,.6)}
-.lb-media .sys .dr{stroke:var(--ice)}
-.lb-media .sys .fillz{fill:rgba(22,184,255,.16)}
-.lb-media .dims,.lb-media .scan,.lb-media .hot,.lb-media text{display:none}
-.lb figcaption{margin-top:14px;color:var(--soft);text-align:center}
-.lb-x{position:absolute;top:14px;right:16px;width:48px;height:48px;border-radius:4px;border:1px solid var(--line2);background:transparent;color:var(--ink);font-size:26px;cursor:pointer}
-.lb-nav{width:48px;height:48px;border-radius:4px;border:1px solid var(--line2);background:transparent;color:var(--ink);font-size:28px;cursor:pointer;justify-self:center}
-
 /* ---------- regisztrációs sarokjelek (műszaki rajz motívum) ---------- */
-.svc-panel::after,.book-form::after,.book-done::after,.map::after,.frame::before{content:"";position:absolute;inset:6px;z-index:2;pointer-events:none;
+.svc-panel::after,.book-form::after,.book-done::after,.map::after{content:"";position:absolute;inset:6px;z-index:2;pointer-events:none;
   background:linear-gradient(var(--ice),var(--ice)) 0 0/10px 1px,linear-gradient(var(--ice),var(--ice)) 0 0/1px 10px,
   linear-gradient(var(--ice),var(--ice)) 100% 0/10px 1px,linear-gradient(var(--ice),var(--ice)) 100% 0/1px 10px,
   linear-gradient(var(--ice),var(--ice)) 0 100%/10px 1px,linear-gradient(var(--ice),var(--ice)) 0 100%/1px 10px,
@@ -381,10 +340,6 @@ address{font-style:normal}
   .diag-stage{grid-template-columns:1fr}
   .diag-info{border-left:0;padding-left:0;border-top:1px solid var(--line2);padding-top:16px}
   .why-in{grid-template-columns:1fr}
-  .shop-grid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;margin:0 calc(var(--gut) * -1);padding:0 var(--gut) 6px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
-  .shop-grid::-webkit-scrollbar{display:none}
-  .frame{flex:0 0 78%;height:210px;scroll-snap-align:center}
-  .frame:nth-child(n){grid-column:auto;grid-row:auto}
   .flow-steps{grid-template-columns:1fr;gap:16px;padding-left:0}
   .flow-steps li{padding:0 0 0 52px}
   .flow-steps::before,.flow-steps::after{left:18px;right:auto;top:18px;bottom:18px;width:1px;height:auto}
@@ -402,9 +357,6 @@ address{font-style:normal}
   .mbar a:first-child{background:var(--blue);border-color:var(--blue);color:#041420;border-radius:0;clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px)}
   .mbar svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linejoin:round}
   body{padding-bottom:calc(64px + env(safe-area-inset-bottom))}
-  .lb{grid-template-columns:1fr;padding:16px}
-  .lb-nav{display:none}
-  .lb-media{aspect-ratio:4/3}
 }
 @media (max-width:640px){
   body{font-size:16px}
@@ -422,7 +374,6 @@ address{font-style:normal}
   .contact-cta .btn{flex:1 1 0}
   .done-actions .btn,.form-foot .btn{flex:1 1 100%}
   .final-in .btn{width:100%}
-  .frame{flex-basis:84%;height:190px}
   .sec{padding:48px 0}
   .sec-head{margin-bottom:20px}
   .menu nav a{font-size:19px;padding:12px 2px;min-height:50px}

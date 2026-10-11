@@ -9,6 +9,10 @@ Az éles gyalauto.hu-hoz nem nyúltunk; a terv `noindex`.
 - Paletta a brief szerint: grafit #080D14 + acélkék #111D2D dominál; elektromos kék #16B8FF a fő gombokon, jeges cián #91E7FF csak jelölésre; piros #F05A4F csak figyelmeztetésre és hibaüzenetre. Egy világos szekció (Miért a Gyálautó?) töri meg a sötétet.
 - Tipográfia: Space Grotesk (címek) + Manrope (szöveg), Google Fontsról. Mérsékelt címméretek (hero max. 58 px, mobilon 32–40 px). A brief csupa nagybetűs főcímei mondatkezdő írásmóddal szerepelnek (olvashatóbb, prémiumabb); a „GYÁL • Q-SERVICE PARTNER” jelölő és a diagnosztika-fülek maradtak nagybetűsek.
 
+## Műhely-szekció törölve (5. kör)
+- Az „Ismerje meg a műhelyt” szekció, a „A műhely” menüpont (asztali és mobil) és a képnagyító kikerült. A menü: Főoldal | Szolgáltatások | Miért minket? | Kapcsolat + Időpontkérés.
+- Ha később lesznek saját műhelyfotók, egy galéria a „Miért minket?” után visszatehető.
+
 ## Logó (4. kör – végleges koncepció)
 - Saját rajzolású, betűtípustól független szókép: GYÁLAUTÓ egyenes vonalú, ferdén levágott sarkú betűkkel, 10°-os dőléssel (mozgás, sebesség). A **GYÁL** törtfehér, az **AUTÓ** acélszürke, az ékezetek és a G keresztszára elektromos kék.
 - Jel: ferde, levágott sarkú lemez, benne átlós villás-csillagkulcs; a csillagvégben kék hatlapfejű anya. Önállóan is használható (favicon, profilkép, matrica).

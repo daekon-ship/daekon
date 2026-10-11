@@ -1,5 +1,5 @@
 /* GYÁLAUTÓ – látványterv (DAEKON, 2026)
-   Egy rajzolt autó vezet végig az oldalon: hero → diagnosztika → műhely-közelik. */
+   Egy rajzolt autó vezet végig az oldalon: hero → diagnosztika. */
 (function () {
   'use strict';
   var $ = function (s, r) { return (r || document).querySelector(s); };
@@ -62,15 +62,6 @@
   };
   var SYS_ORDER = ['motor', 'fek', 'futomu', 'klima', 'diag'];
 
-  /* Műhely-képkockák: ugyanannak a rajznak különböző „kameraállásai”.
-     Saját fotó érkezésekor: src mező kitöltése (pl. 'img/emelo.webp') → a rajz helyett a fotó jelenik meg. */
-  var SHOTS = [
-    { cap: 'Emelőn álló jármű', vb: '-20 10 1040 440', src: '', fit: 'meet' },
-    { cap: 'Motortér', vb: '56 186 300 140', src: '', sys: 'motor' },
-    { cap: 'Fék és kerék', vb: '140 214 190 170', src: '', sys: 'fek' },
-    { cap: 'Futómű', vb: '666 186 196 180', src: '', sys: 'futomu' }
-  ];
-
   /* Ellenőrzött vélemények (pl. Google) – amíg üres, a blokk nem jelenik meg. { text, name, source } */
   var REVIEWS = [];
 
@@ -88,28 +79,6 @@
     gsap.to(els, { strokeDashoffset: 0, duration: opts.d || 1.1, ease: 'power2.inOut', stagger: opts.s || 0.012, delay: opts.delay || 0, onComplete: function () { els.forEach(function (el) { el.style.strokeDasharray = ''; el.style.strokeDashoffset = ''; }); } });
   }
   function svgEl(tag, attrs, html) { var e = document.createElementNS(NS, tag); for (var k in attrs) e.setAttribute(k, attrs[k]); if (html) e.innerHTML = html; return e; }
-
-  /* teljes jelenet (emelő + autó + rendszerek) egy adott nézetből */
-  function scene(vb, litSys, fit) {
-    var s = svgEl('svg', { viewBox: vb, preserveAspectRatio: 'xMidYMid ' + (fit || 'slice'), 'aria-hidden': 'true' });
-    var lift = $('#heroCar .lift'), car = $('#car-shape');
-    if (fit === 'meet') s.appendChild($('#heroCar .lamps').cloneNode(true));
-    s.appendChild(lift.cloneNode(true));
-    var c = car.cloneNode(true); c.removeAttribute('id'); s.appendChild(c);
-    SYS_ORDER.forEach(function (k) {
-      if (k !== litSys) return;
-      s.appendChild(svgEl('g', { class: 'sys on' }, SYS[k].svg));
-    });
-    s.appendChild(svgEl('path', { class: 'dr t', d: 'M-200 430H1200' }));
-    return s;
-  }
-  function media(shot) {
-    var d = document.createElement('div');
-    d.className = 'media';
-    if (shot.src) { var im = new Image(); im.src = shot.src; im.alt = shot.cap; im.loading = 'lazy'; im.style.cssText = 'width:100%;height:100%;object-fit:cover'; d.appendChild(im); }
-    else d.appendChild(scene(shot.vb, shot.sys, shot.fit));
-    return d;
-  }
 
   /* ===================== NAVIGÁCIÓ ===================== */
   var nav = $('#nav'), burger = $('#burger'), menu = $('#menu'), mbar = $('#mbar'), hero = $('#fooldal');
@@ -134,7 +103,7 @@
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !menu.hidden) { setMenu(false); burger.focus(); } });
   desktop.addEventListener && desktop.addEventListener('change', function (m) { if (m.matches && !menu.hidden) setMenu(false); });
 
-  var linkFor = { fooldal: 'fooldal', szolgaltatasok: 'szolgaltatasok', diagnosztika: 'szolgaltatasok', miert: 'miert', muhely: 'muhely', kapcsolat: 'kapcsolat' };
+  var linkFor = { fooldal: 'fooldal', szolgaltatasok: 'szolgaltatasok', diagnosztika: 'szolgaltatasok', miert: 'miert', kapcsolat: 'kapcsolat' };
   if ('IntersectionObserver' in window) {
     var io = new IntersectionObserver(function (ents) {
       ents.forEach(function (en) {
@@ -237,40 +206,6 @@
     rv.innerHTML = '<h3>Ügyfeleink mondták</h3>' + REVIEWS.map(function (r) { return '<blockquote><p>' + r.text + '</p><footer>' + r.name + ' · ' + r.source + '</footer></blockquote>'; }).join('');
   }
 
-  /* ===================== MŰHELY + NAGYÍTÁS ===================== */
-  var grid = $('#shopGrid');
-  SHOTS.forEach(function (s, k) {
-    var b = document.createElement('button');
-    b.className = 'frame'; b.type = 'button'; b.setAttribute('aria-label', s.cap + ' – nagyítás');
-    b.appendChild(media(s));
-    b.insertAdjacentHTML('beforeend', '<span class="beam" aria-hidden="true"></span><span class="cap">' + s.cap + '</span>');
-    b.addEventListener('click', function () { openLb(k, b); });
-    grid.appendChild(b);
-  });
-  var lb = $('#lb'), lbMedia = $('#lbMedia'), lbCap = $('#lbCap'), lbi = 0, lbFrom = null;
-  function renderLb() {
-    var s = SHOTS[lbi]; lbMedia.innerHTML = ''; lbMedia.appendChild(media(s));
-    lbCap.textContent = s.cap + ' (' + (lbi + 1) + '/' + SHOTS.length + ')';
-    if (hasG()) gsap.fromTo(lbMedia, { opacity: 0, scale: 0.97 }, { opacity: 1, scale: 1, duration: 0.5, ease: 'power2.out' });
-  }
-  function openLb(k, from) { lbi = k; lbFrom = from; lb.hidden = false; document.body.style.overflow = 'hidden'; renderLb(); $('#lbX').focus(); }
-  function closeLb() { lb.hidden = true; document.body.style.overflow = ''; if (lbFrom) lbFrom.focus(); }
-  function stepLb(d) { lbi = (lbi + d + SHOTS.length) % SHOTS.length; renderLb(); }
-  $('#lbX').addEventListener('click', closeLb);
-  $('#lbPrev').addEventListener('click', function () { stepLb(-1); });
-  $('#lbNext').addEventListener('click', function () { stepLb(1); });
-  lb.addEventListener('click', function (e) { if (e.target === lb) closeLb(); });
-  document.addEventListener('keydown', function (e) {
-    if (lb.hidden) return;
-    if (e.key === 'Escape') closeLb();
-    if (e.key === 'ArrowRight') stepLb(1);
-    if (e.key === 'ArrowLeft') stepLb(-1);
-    if (e.key === 'Tab') { var f = $$('#lb button').filter(function (x) { return x.offsetParent; }); var i0 = f.indexOf(document.activeElement); e.preventDefault(); f[(i0 + (e.shiftKey ? -1 : 1) + f.length) % f.length].focus(); }
-  });
-  var tx = null;
-  lb.addEventListener('touchstart', function (e) { tx = e.touches[0].clientX; }, { passive: true });
-  lb.addEventListener('touchend', function (e) { if (tx === null) return; var dx = e.changedTouches[0].clientX - tx; if (Math.abs(dx) > 50) stepLb(dx < 0 ? 1 : -1); tx = null; });
-
   /* ===================== IDŐPONTKÉRÉS ===================== */
   var form = $('#bookForm'), chips = $('#svcChips'), done = $('#bookDone');
   SERVICES.concat([{ id: 'egyeb', name: 'Még nem tudom' }]).forEach(function (s) {
@@ -364,10 +299,6 @@
       function mv(e) { var r = h.getBoundingClientRect(); qx(e.clientX - r.left); qy(e.clientY - r.top); hc.style.opacity = 1; }
       function lv() { hc.style.opacity = 0; }
       h.addEventListener('mousemove', mv); h.addEventListener('mouseleave', lv);
-      /* képkockák finom parallaxa */
-      $$('.frame .media').forEach(function (m) {
-        gsap.fromTo(m, { yPercent: -4 }, { yPercent: 4, ease: 'none', scrollTrigger: { trigger: m.parentNode, start: 'top bottom', end: 'bottom top', scrub: true } });
-      });
       return function () { h.removeEventListener('mousemove', mv); h.removeEventListener('mouseleave', lv); };
     });
 
@@ -377,7 +308,6 @@
     gsap.from('.diag-svg', { opacity: 0, y: 30, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: '.diag-stage', start: 'top 80%', onEnter: function () { drawIn(dsvg, { d: 1.2, s: 0.006 }); } } });
     gsap.from('.why-list > div', { opacity: 0, y: 18, duration: 0.6, stagger: 0.08, ease: 'power2.out', scrollTrigger: { trigger: '.why-list', start: 'top 80%' } });
     gsap.from('.why-year', { opacity: 0, y: 18, duration: 0.7, ease: 'power2.out', scrollTrigger: { trigger: '.why-year', start: 'top 88%' } });
-    gsap.from('.frame', { clipPath: 'inset(100% 0 0 0 round 14px)', duration: 1, stagger: 0.08, ease: 'power3.inOut', scrollTrigger: { trigger: '#shopGrid', start: 'top 82%' } });
 
     /* folyamat: görgetéssel töltődő vonal */
     ScrollTrigger.create({ trigger: flow, start: 'top 75%', end: 'bottom 55%', scrub: 0.4, onUpdate: function (st) { setFlow(st.progress); } });
