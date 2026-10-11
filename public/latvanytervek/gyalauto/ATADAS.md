@@ -9,9 +9,11 @@ Az éles gyalauto.hu-hoz nem nyúltunk; a terv `noindex`.
 - Paletta a brief szerint: grafit #080D14 + acélkék #111D2D dominál; elektromos kék #16B8FF a fő gombokon, jeges cián #91E7FF csak jelölésre; piros #F05A4F csak figyelmeztetésre és hibaüzenetre. Egy világos szekció (Miért a Gyálautó?) töri meg a sötétet.
 - Tipográfia: Space Grotesk (címek) + Manrope (szöveg), Google Fontsról. Mérsékelt címméretek (hero max. 58 px, mobilon 32–40 px). A brief csupa nagybetűs főcímei mondatkezdő írásmóddal szerepelnek (olvashatóbb, prémiumabb); a „GYÁL • Q-SERVICE PARTNER” jelölő és a diagnosztika-fülek maradtak nagybetűsek.
 
-## Logó (2. kör)
-- Jel: hatlapfejű csavaranya (dupla kontúr, jeges cián) és benne egy „G”, amelynek keresztszára kék csavarpontban végződik — kulcsra húzott, precíz munka. Betöltéskor az anya elfordul, a G kirajzolódik; rámutatáskor az anya 60°-ot fordul.
-- Szókép: **GYÁL** félkövér + AUTÓ normál, Space Grotesk, ritkítva; alatta STABILTERV KFT. | Q-SERVICE PARTNER, kék elválasztóval. Favicon ugyanebből.
+## Logó (4. kör – végleges koncepció)
+- Saját rajzolású, betűtípustól független szókép: GYÁLAUTÓ egyenes vonalú, ferdén levágott sarkú betűkkel, 10°-os dőléssel (mozgás, sebesség). A **GYÁL** törtfehér, az **AUTÓ** acélszürke, az ékezetek és a G keresztszára elektromos kék.
+- Jel: ferde, levágott sarkú lemez a G-vel; önállóan is használható (favicon, profilkép, matrica).
+- Fájlok: `logo.svg` (teljes logó alsorral), `logo-jel.svg` (csak a jel). Mindkettő vektoros, nyomdai/matricás felhasználásra is alkalmas.
+- Betöltéskor a jel beúszik, a betűk egyenként megjelennek, a G kék szára kihúzódik.
 
 ## Teljes vizuális javítás (3. kör)
 - Egységes formavilág a logó csavaranyájából: a fő gombok kétsarkú, gépelt „lemez” formát kaptak (ferdén levágott sarkok, fényes élsúrolás rámutatáskor), a többi elem 4–6 px-es szögletes sarok — eltűntek a lekerekített „pill” gombok és dobozok.

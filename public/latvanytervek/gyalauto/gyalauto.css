@@ -49,17 +49,12 @@ p{margin:0}
 .nav.solid{background:rgba(8,13,20,.82);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-color:var(--line)}
 .nav.solid .nav-in{height:56px}
 .brand{display:flex;align-items:center;gap:11px;min-height:44px;text-decoration:none;margin-right:auto}
-.brand-mark{width:34px;height:34px;fill:none;stroke-linejoin:round;stroke-linecap:round;flex:none;overflow:visible}
-.brand-mark .nut{stroke:var(--ice);stroke-width:1.6;transform-origin:20px 20px;transition:transform .6s var(--e)}
-.brand-mark .nut-in{stroke:rgba(145,231,255,.3);stroke-width:1}
-.brand-mark .g{stroke:var(--paper);stroke-width:2.8}
-.brand-mark .dot{fill:var(--blue)}
-.brand:hover .brand-mark .nut{transform:rotate(60deg)}
-.brand-txt{display:flex;flex-direction:column;line-height:1}
-.brand-txt b{font-family:var(--fh);font-weight:700;font-size:18px;letter-spacing:.075em}
-.brand-txt b i{font-style:normal;font-weight:400;color:#B9C6D6}
-.brand-txt small{font-family:var(--fh);font-size:8.6px;font-weight:500;letter-spacing:.14em;color:var(--soft);margin-top:5px}
-.brand-txt small span{color:var(--blue);margin:0 2px}
+.brand{flex-direction:column;align-items:flex-start;justify-content:center;gap:4px}
+.logo{display:block;height:36px;width:auto;overflow:visible}
+.logo .lg-plate{transition:fill .3s}
+.brand:hover .logo .lg-plate{fill:#16304A}
+.brand-sub{font-family:var(--fh);font-size:8px;font-weight:600;letter-spacing:.075em;color:var(--soft);padding-left:3px;white-space:nowrap}
+.brand-sub span{color:var(--blue);margin:0 2px}
 .nav-links{display:flex;gap:26px}
 .nav-links a{position:relative;text-decoration:none;font-size:14.5px;color:var(--soft);padding:6px 0;transition:color .2s}
 .nav-links a::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1.5px;background:var(--ice);transform:scaleX(0);transform-origin:right;transition:transform .25s var(--e)}
@@ -310,11 +305,9 @@ address{font-style:normal}
 /* ---------- lábléc ---------- */
 .foot{background:var(--g0);border-top:1px solid var(--line);padding:28px 0 30px;font-size:14px;color:var(--soft)}
 .foot-in{display:grid;grid-template-columns:1fr auto;gap:24px 40px}
-.foot-brand{display:flex;align-items:center;gap:12px;color:var(--ink);font-size:11.5px;letter-spacing:.1em;margin-bottom:12px}
-.brand-mark.sm{width:28px;height:28px}
-.foot-brand b i{font-style:normal;font-weight:400;color:#B9C6D6}
+.foot-brand{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;color:var(--soft);font-size:11px;letter-spacing:.1em;margin-bottom:12px}
+.logo.sm{height:28px}
 .nw{white-space:nowrap}
-.foot-brand b{font-family:var(--fh);font-size:15px;margin-right:10px}
 .foot-in>*{min-width:0}
 .foot nav{display:flex;flex-wrap:wrap;gap:8px 22px;align-items:flex-start}
 .foot nav a{text-decoration:none}
@@ -415,8 +408,8 @@ address{font-style:normal}
 }
 @media (max-width:640px){
   body{font-size:16px}
-  .brand-txt b{font-size:16.5px}
-  .brand-txt small{font-size:8.5px;letter-spacing:.06em}
+  .logo{height:31px}
+  .brand-sub{font-size:7.2px;letter-spacing:.06em;padding-left:2px}
   .hero h1{font-size:clamp(32px,9vw,40px)}
   .hero-cta .btn{flex:1 1 0;padding:0 12px}
   .hero-sub{font-size:15.5px}
@@ -439,7 +432,7 @@ address{font-style:normal}
 }
 @media (max-width:360px){
   .hero-cta .btn{flex:1 1 100%}
-  .brand-txt small{display:none}
+  .brand-sub{display:none}
   .hero h1{font-size:30px}
 }
 
