@@ -1,19 +1,15 @@
 # SLY Mobil Gumiszerviz — látványterv, átadás
 
 Élő cím: https://daekon-ship.github.io/daekon/latvanytervek/sly-mobilgumi/
-Fájlok: `index.html`, `sly.css`, `sly.js` (függőség nélkül), `fonts/` (Archivo var + IBM Plex Sans/Mono, OFL).
+Fájlok: `index.html`, `sly.css`, `sly.js`, `sly-motion.js` (GSAP-jelenetek), `js/` (GSAP 3 + ScrollTrigger, helyben), `fonts/` (Archivo var + IBM Plex Sans/Mono, OFL).
 
-## Koncepció (2. kör – „oldalfal”)
-- Hero: kódból rajzolt, görgetésre forgó kerék (SLY-feliratos oldalfal, könnyűfém felni, sárga féknyereg, „205/55 R16” méretvonal). Mobilon a kerék felső íve látszik, kifutva.
-- Sárga „futófelület” futószalag a szolgáltatásokkal.
-- „Az út hozzád”: ragadós jelenet – görgetésre a szervizautó végigmegy az úton, 4 megállóval (hívás → egyeztetés → kiszállás → kész).
-- A szervizautó metszetrajza a 4 berendezéssel (kirajzolódó vonalak) + 2 valódi fotó.
-- Szolgáltatások: szerkesztett, számozott index (mind a 13), csoportosítva; asztali gépen a sorok fölött a saját fotó követi a kurzort.
-- Oldalfal-dekóder: a „205/55 R16 91V · DOT 3824” jelölés részei koppintásra magyaráznak; az R16 az ársorhoz és a kalkulátorhoz visz.
-- S.O.S.: elakadásjelző-tábla stílusú hívógomb, 3 lépés, defektárak.
-- Árak: kalkulátor méretre skálázódó felnirajzzal + a teljes árlista 6 fülön, nettó/bruttó.
-- Munkáink: húzható filmszalag mind a 7 fotóval + nagyító galéria. Flották: rajzolt járműikon-sor + ajánlatkérő.
-- Mobilon alsó S.O.S.-sáv (safe-area), elrejtődik a heróban, a kapcsolatnál, gépeléskor és nyitott menünél. `prefers-reduced-motion`: forgás, ragadós jelenet és futószalag kikapcsol.
+## Koncepció (3. kör – fotóközpontú, filmszerű)
+- **Nyitójelenet (asztali, rögzített):** a saját munkafotó egy forgó, SLY-feliratos abroncs „ablakán” át látszik; görgetésre az ablak kitágul, a fotó kitölti a képernyőt (fekete–sárga duotón, raszterpont, filmszemcse – így az 500 px-es eredeti is vállalható nagyban), majd megjelenik: „A műhely jön. Te maradsz.” Mobilon a kerék-ablak statikus, a szöveg alatta.
+- **Kijelentés:** a „Miért mobil?” mondat görgetésre szavanként gyúl ki, két saját fotó parallaxban lebeg mellette.
+- **Két út:** teljes szélességű, fotós plakát-panelek – sárga duotón „Tervezett” és vörös duotón „S.O.S.”; rámutatásra a kiválasztott kiszélesedik.
+- **Munkáink (asztali):** függőleges görgetés → vízszintes, rögzített fotósín számlálóval (01/07), képenkénti mélységi zoommal. Mobilon húzható szalag.
+- Megmaradt és finomodott: „Az út hozzád” jelenet mozgó szervizautóval, metszetrajz, 13 tételes szolgáltatás-index kurzort követő fotóval, oldalfal-dekóder, méretre skálázó kalkulátor, teljes árlista, flották, GYIK, kapcsolat.
+- Tipográfia: keskeny, nagybetűs Archivo plakátcímek (mérsékelt méret), IBM Plex szöveg. Mozgás: GSAP + ScrollTrigger helyben (`js/`), `prefers-reduced-motion` esetén minden jelenet statikus.
 
 ## Mi van ellenőrizve
 - Árak: a brief árlistája tételesen (2025. 02. 01-től visszavonásig). Bruttó = nettó × 1,27, kerekítve.

@@ -98,108 +98,56 @@
 
 <main id="tartalom">
 
-<!-- ============ HERO ============ -->
-<section class="hero" id="kezdolap" aria-labelledby="hero-cim">
-  <div class="hero__grid wrap">
-    <div class="hero__copy">
-      <p class="hero__k"><span class="hero__plate">SOPRON</span><span>Mobil gumiszerviz · Sopron és vonzáskörzete</span></p>
-      <h1 id="hero-cim" class="hero__h1">
-        <span class="ln"><span>Gumiprobléma?</span></span>
-        <span class="ln"><span>Mi megyünk <em>hozzád.</em></span></span>
-      </h1>
-      <p class="hero__lead">Helyszíni gumicsere, kerékszerelés és S.O.S. defektjavítás Sopronban és környékén. A felszerelt szervizautó odaáll az otthonodhoz, a munkahelyedhez vagy a céges telephelyhez – a műhely jön, te maradsz.</p>
-      <div class="hero__ctas">
-        <a class="cta cta--sos magnet" href="tel:+36707321908">
-          <span class="cta__k"><span class="pulse" aria-hidden="true"></span>S.O.S. defekt · 0–24</span>
-          <span class="cta__v">Hívás most</span>
-        </a>
-        <a class="cta cta--plan magnet" href="#idopont">
-          <span class="cta__k">Tervezett · H–P 8:00–17:30</span>
-          <span class="cta__v">Gumicsere időpontkérés</span>
-        </a>
-      </div>
-      <p class="hero__warn"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.5 15 14H1z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M8 6v4M8 11.6v.6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg><span>A 0–24 ügyelet <b>kizárólag S.O.S. defektjavításra</b> vonatkozik. Tervezett gumicsere munkaidőben, egyeztetett időpontban.</span></p>
+<!-- ============ HERO (rögzített nyitójelenet) ============ -->
+<section class="hx" id="kezdolap" aria-labelledby="hero-cim">
+  <div class="hx__pin" id="hxPin">
+    <div class="hx__photo" id="hxPhoto">
+      <img src="https://slymobilgumi.hu/wp-content/uploads/2021/06/munka2.jpg" alt="Helyszíni kerékszerelés – a SLY Mobil Gumiszerviz saját fotója" width="500" height="500" fetchpriority="high" referrerpolicy="no-referrer">
+      <i class="hx__tone"></i><i class="hx__dots"></i><i class="grain"></i>
     </div>
+    <svg class="hx__tyre" id="hxTyre" viewBox="-330 -330 660 660" aria-hidden="true">
+      <defs>
+        <radialGradient id="hx-rub" cx="0" cy="0" r="302" gradientUnits="userSpaceOnUse">
+          <stop offset=".66" stop-color="#1B1D20"/><stop offset=".84" stop-color="#141618"/><stop offset=".96" stop-color="#0C0D0E"/><stop offset="1" stop-color="#050606"/>
+        </radialGradient>
+        <path id="hx-top" d="M -224 0 A 224 224 0 0 1 224 0"/>
+        <path id="hx-bot" d="M -246 0 A 246 246 0 0 0 246 0"/>
+      </defs>
+      <g class="tyre__spin">
+        <circle r="254" fill="none" stroke="url(#hx-rub)" stroke-width="96"/>
+        <circle r="288" fill="none" stroke="#050606" stroke-width="26" stroke-dasharray="15 19"/>
+        <circle r="288" fill="none" stroke="#25282C" stroke-width="1" stroke-dasharray="15 19"/>
+        <circle r="270" fill="none" stroke="#08090A" stroke-width="6" stroke-dasharray="4 30"/>
+        <circle r="262" fill="none" stroke="#26292D" stroke-width="1.2"/>
+        <circle r="212" fill="none" stroke="#1F2124" stroke-width=".8"/>
+        <text class="tyre__brand"><textPath href="#hx-top" startOffset="50%" text-anchor="middle">SLY MOBIL GUMISZERVIZ</textPath></text>
+        <text class="tyre__spec"><textPath href="#hx-bot" startOffset="50%" text-anchor="middle">205/55 R16 91V · SOPRON · 0–24 S.O.S.</textPath></text>
+      </g>
+      <circle r="205" fill="none" stroke="#0A0B0C" stroke-width="6"/>
+      <circle r="201" fill="none" stroke="#FFD12A" stroke-width="2.5"/>
+    </svg>
 
-    <div class="hero__stage" aria-hidden="true">
-      <svg class="tyre" viewBox="-330 -330 660 660">
-        <defs>
-          <radialGradient id="tg-rubber" cx="0" cy="0" r="302" gradientUnits="userSpaceOnUse">
-            <stop offset=".64" stop-color="#1A1C1F"/><stop offset=".82" stop-color="#141618"/><stop offset=".95" stop-color="#0D0E10"/><stop offset="1" stop-color="#060707"/>
-          </radialGradient>
-          <radialGradient id="tg-rim" cx="-40" cy="-60" r="230" gradientUnits="userSpaceOnUse">
-            <stop offset="0" stop-color="#C9CDD1"/><stop offset=".45" stop-color="#8C9298"/><stop offset=".8" stop-color="#4C5157"/><stop offset="1" stop-color="#2E3236"/>
-          </radialGradient>
-          <linearGradient id="tg-spoke" x1="0" y1="-190" x2="0" y2="-40" gradientUnits="userSpaceOnUse">
-            <stop offset="0" stop-color="#9DA3A9"/><stop offset=".5" stop-color="#D6DADD"/><stop offset="1" stop-color="#6F757B"/>
-          </linearGradient>
-          <radialGradient id="tg-disc" cx="0" cy="0" r="150" gradientUnits="userSpaceOnUse">
-            <stop offset=".3" stop-color="#2B2E32"/><stop offset=".75" stop-color="#4A4E53"/><stop offset="1" stop-color="#34373B"/>
-          </radialGradient>
-          <linearGradient id="tg-light" x1="-1" y1="-1" x2="1" y2="1">
-            <stop offset="0" stop-color="#fff" stop-opacity=".10"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/>
-          </linearGradient>
-          <path id="tp-top" d="M -224 0 A 224 224 0 0 1 224 0"/>
-          <path id="tp-bot" d="M -246 0 A 246 246 0 0 0 246 0"/>
-        </defs>
-
-        <g class="tyre__spin">
-          <circle r="302" fill="url(#tg-rubber)"/>
-          <circle r="288" fill="none" stroke="#050606" stroke-width="26" stroke-dasharray="15 19"/>
-          <circle r="288" fill="none" stroke="#24272B" stroke-width="1" stroke-dasharray="15 19"/>
-          <circle r="270" fill="none" stroke="#08090A" stroke-width="6" stroke-dasharray="4 30"/>
-          <circle r="262" fill="none" stroke="#25282C" stroke-width="1.2"/>
-          <circle r="256" fill="none" stroke="#1D1F22" stroke-width=".8"/>
-          <circle r="212" fill="none" stroke="#1D1F22" stroke-width=".8"/>
-          <circle r="206" fill="none" stroke="#2A2D31" stroke-width="1.2"/>
-          <text class="tyre__brand"><textPath href="#tp-top" startOffset="50%" text-anchor="middle">SLY MOBIL GUMISZERVIZ</textPath></text>
-          <text class="tyre__spec"><textPath href="#tp-bot" startOffset="50%" text-anchor="middle">205/55 R16 91V · TUBELESS · SOPRON · M+S</textPath></text>
-          <circle r="204" fill="#0B0C0D"/>
-          <circle r="199" fill="url(#tg-rim)"/>
-          <circle r="186" fill="#121416"/>
-          <circle r="150" fill="url(#tg-disc)"/>
-          <g fill="#1E2023">
-            <circle cx="0" cy="-118" r="4"/><circle cx="0" cy="118" r="4"/><circle cx="-118" cy="0" r="4"/><circle cx="118" cy="0" r="4"/>
-            <circle cx="83" cy="-83" r="4"/><circle cx="-83" cy="83" r="4"/><circle cx="-83" cy="-83" r="4"/><circle cx="83" cy="83" r="4"/>
-            <circle cx="45" cy="-109" r="3.4"/><circle cx="-45" cy="109" r="3.4"/><circle cx="-109" cy="-45" r="3.4"/><circle cx="109" cy="45" r="3.4"/>
-          </g>
-          <circle r="150" fill="none" stroke="#5E6368" stroke-width="2"/>
-          <circle r="96" fill="#26292D"/>
-          <rect x="-4" y="-196" width="8" height="16" rx="2" fill="#B8BDC2" transform="rotate(22)"/>
-        </g>
-
-        <!-- féknyereg: nem forog -->
-        <path class="tyre__caliper" d="M -162 -40 A 166 166 0 0 1 -112 -122 L -92 -102 A 136 136 0 0 0 -132 -34 Z"/>
-
-        <g class="tyre__spin">
-          <g id="spoke">
-            <path d="M -13 -50 L -22 -184 Q 0 -192 22 -184 L 13 -50 Z" fill="url(#tg-spoke)"/>
-            <path d="M 0 -56 L 0 -182" stroke="#5B6066" stroke-width="1.4"/>
-          </g>
-          <use href="#spoke" transform="rotate(72)"/><use href="#spoke" transform="rotate(144)"/><use href="#spoke" transform="rotate(216)"/><use href="#spoke" transform="rotate(288)"/>
-          <circle r="54" fill="url(#tg-rim)"/>
-          <circle r="54" fill="none" stroke="#3A3E43" stroke-width="2"/>
-          <g fill="#25282C" stroke="#A7ADB2" stroke-width="1.6">
-            <circle cx="0" cy="-32" r="7"/><circle cx="30.4" cy="-9.9" r="7"/><circle cx="18.8" cy="25.9" r="7"/><circle cx="-18.8" cy="25.9" r="7"/><circle cx="-30.4" cy="-9.9" r="7"/>
-          </g>
-          <circle r="16" fill="#0E0F11"/>
-          <text class="tyre__cap" y="3.5" text-anchor="middle">SLY</text>
-        </g>
-        <circle r="302" fill="url(#tg-light)"/>
-      </svg>
-
-      <!-- méretvonalak: nem forognak -->
-      <svg class="dims" viewBox="0 0 660 660">
-        <path d="M470 120l60-60h110" class="dims__l"/>
-        <text x="540" y="52" class="dims__t">205/55 R16</text>
-      </svg>
-
-      <div class="dispatch">
-        <p class="dispatch__k"><span>Kiszállás</span><span>47,68° É · 16,58° K</span></p>
-        <div class="dispatch__row"><i class="dot dot--y"></i><div><b>Tervezett gumicsere</b><span>H–P 8:00–17:30 · 20 km-en belül ingyenes kiszállás</span></div></div>
-        <div class="dispatch__row"><i class="dot dot--r"></i><div><b>S.O.S. defektjavítás</b><span>0–24 · telefonos egyeztetéssel</span></div></div>
+    <div class="wrap hx__grid">
+      <div class="hx__copy" id="hxCopy">
+        <p class="hx__k"><span class="plate">SOPRON</span><span>Mobil gumiszerviz · Sopron és vonzáskörzete</span></p>
+        <h1 id="hero-cim" class="hx__h1">
+          <span class="ln"><span>Gumiprobléma?</span></span>
+          <span class="ln"><span>Mi megyünk <em>hozzád.</em></span></span>
+        </h1>
+        <p class="hx__lead">Helyszíni gumicsere, kerékszerelés és S.O.S. defektjavítás Sopronban és környékén – felszerelt szervizautóval, otthonodnál, munkahelyeden vagy a céges telephelyen.</p>
+        <div class="hero__ctas">
+          <a class="cta cta--sos magnet" href="tel:+36707321908"><span class="cta__k"><span class="pulse" aria-hidden="true"></span>S.O.S. defekt · 0–24</span><span class="cta__v">Hívás most</span></a>
+          <a class="cta cta--plan magnet" href="#idopont"><span class="cta__k">Tervezett · munkaidőben</span><span class="cta__v">Gumicsere időpontkérés</span></a>
+        </div>
+        <p class="hero__warn"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.5 15 14H1z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M8 6v4M8 11.6v.6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg><span>A 0–24 ügyelet <b>kizárólag S.O.S. defektjavításra</b> vonatkozik. Tervezett gumicsere munkaidőben, egyeztetett időpontban.</span></p>
       </div>
     </div>
+
+    <div class="hx__say" id="hxSay" aria-hidden="true">
+      <p><span>A műhely jön.</span><span>Te maradsz.</span></p>
+      <small>Saját fotó · helyszíni kerékszerelés</small>
+    </div>
+    <p class="hx__cue" id="hxCue" aria-hidden="true"><i></i>Görgess</p>
   </div>
 </section>
 
@@ -210,6 +158,38 @@
     <span>Helyszíni gumicsere</span><i></i><span>Kerékcentrírozás</span><i></i><span>Gumihotel</span><i></i><span class="r">0–24 S.O.S. defektjavítás</span><i></i><span>Flottaszerviz</span><i></i><span>Kamion · busz · munkagép</span><i></i>
   </div>
 </div>
+
+<!-- ============ KIJELENTÉS (szavanként kigyúló) ============ -->
+<section class="say2" aria-labelledby="say2-k">
+  <figure class="float float--a" data-speed="-0.18"><img src="https://slymobilgumi.hu/wp-content/uploads/2021/06/munka3.jpg" alt="Szakember gumiszerelés közben" width="500" height="500" loading="lazy" referrerpolicy="no-referrer"><i class="grain"></i></figure>
+  <figure class="float float--b" data-speed="0.22"><img src="https://slymobilgumi.hu/wp-content/uploads/2021/06/munka6.jpg" alt="Kerékszerelési részlet" width="500" height="500" loading="lazy" referrerpolicy="no-referrer"><i class="grain"></i></figure>
+  <div class="wrap say2__in">
+    <p class="tagp" id="say2-k">Miért mobil?</p>
+    <p class="lit" id="lit">Nem neked kell a gumishoz menned, és nem kell a műhelyben várnod. A felszerelt szervizautó odaáll hozzád – otthon, a munkahelyen vagy a céges telephelyen –, és a munka ott készül el, ahol az autód áll.</p>
+  </div>
+</section>
+
+<!-- ============ KÉT ÚT ============ -->
+<section class="ways" aria-label="Kétféle segítség: tervezett gumicsere vagy S.O.S. defekt">
+  <a class="way way--plan" href="#idopont">
+    <span class="way__bg"><img src="https://slymobilgumi.hu/wp-content/uploads/2021/06/munka7.jpg" alt="" width="500" height="500" loading="lazy" referrerpolicy="no-referrer"><i class="grain"></i></span>
+    <span class="way__c">
+      <span class="way__k">Tervezett</span>
+      <span class="way__h">Gumicsere,<br>ha neked kényelmes.</span>
+      <span class="way__f"><span>H–P 8:00–17:30</span><span>20 km-en belül ingyenes kiszállás</span><span>13&nbsp;000&nbsp;Ft&nbsp;+&nbsp;ÁFA-tól</span></span>
+      <span class="way__cta">Időpontot kérek</span>
+    </span>
+  </a>
+  <a class="way way--sos" href="tel:+36707321908">
+    <span class="way__bg"><img src="https://slymobilgumi.hu/wp-content/uploads/2021/06/munka6.jpg" alt="" width="500" height="500" loading="lazy" referrerpolicy="no-referrer"><i class="grain"></i></span>
+    <span class="way__c">
+      <span class="way__k"><span class="pulse" aria-hidden="true"></span>S.O.S. · 0–24</span>
+      <span class="way__h">Defekt?<br>Hívj, és egyeztetünk.</span>
+      <span class="way__f"><span>Telefonos egyeztetéssel</span><span>Kiszállás 400 Ft/km</span><span>15&nbsp;000&nbsp;Ft&nbsp;+&nbsp;ÁFA-tól</span></span>
+      <span class="way__cta">+36 70 732 1908 hívása</span>
+    </span>
+  </a>
+</section>
 
 <!-- ============ AZ ÚT HOZZÁD (ragadós jelenet) ============ -->
 <section class="story" id="story" aria-labelledby="story-cim">
@@ -612,6 +592,8 @@
     </div>
   </div>
   <div class="strip" id="strip" tabindex="0" aria-label="Munkafotók, vízszintesen görgethető">
+  <p class="strip__count" aria-hidden="true"><b id="stripN">01</b><span>/ 07 · Munkáink · saját fotók</span></p>
+  <div class="strip__track" id="stripTrack">
     <figure class="strip__i"><button type="button" data-gal="1"><img src="https://slymobilgumi.hu/wp-content/uploads/2021/06/munka2.jpg" alt="Helyszíni kerékszerelés" width="500" height="500" loading="lazy" referrerpolicy="no-referrer"></button><figcaption><span class="mono">01</span>Helyszíni kerékszerelés</figcaption></figure>
     <figure class="strip__i"><button type="button" data-gal="2"><img src="https://slymobilgumi.hu/wp-content/uploads/2021/06/munka3.jpg" alt="Szakember gumiszerelés közben" width="500" height="500" loading="lazy" referrerpolicy="no-referrer"></button><figcaption><span class="mono">02</span>Gumiszerelés közben</figcaption></figure>
     <figure class="strip__i"><button type="button" data-gal="0"><img src="https://slymobilgumi.hu/wp-content/uploads/2021/06/munka1.jpg" alt="Abroncs és felni részletfotó" width="500" height="500" loading="lazy" referrerpolicy="no-referrer"></button><figcaption><span class="mono">03</span>Abroncs és felni</figcaption></figure>
@@ -619,6 +601,7 @@
     <figure class="strip__i"><button type="button" data-gal="6"><img src="https://slymobilgumi.hu/wp-content/uploads/2021/06/munka7.jpg" alt="Autó és leszerelt kerekek" width="500" height="500" loading="lazy" referrerpolicy="no-referrer"></button><figcaption><span class="mono">05</span>Autó és leszerelt kerekek</figcaption></figure>
     <figure class="strip__i"><button type="button" data-gal="4"><img src="https://slymobilgumi.hu/wp-content/uploads/2021/06/munka5.jpg" alt="Gumiszerelő és centrírozó berendezések" width="500" height="500" loading="lazy" referrerpolicy="no-referrer"></button><figcaption><span class="mono">06</span>Szerelő- és centrírozógép</figcaption></figure>
     <figure class="strip__i"><button type="button" data-gal="3"><img src="https://slymobilgumi.hu/wp-content/uploads/2021/06/munka4.jpg" alt="Korábbi, sárga szervizautó és felszerelés – archív fotó" width="500" height="500" loading="lazy" referrerpolicy="no-referrer"></button><figcaption><span class="mono">07</span>Archív · korábbi szervizautó</figcaption></figure>
+  </div>
   </div>
 
   <div class="wrap">
@@ -830,6 +813,9 @@
   </div>
 </dialog>
 
+<script src="js/gsap.min.js" defer></script>
+<script src="js/ScrollTrigger.min.js" defer></script>
 <script src="sly.js" defer></script>
+<script src="sly-motion.js" defer></script>
 </body>
 </html>
