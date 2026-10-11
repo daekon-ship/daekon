@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 96" width="420" height="96">
+  <title>GYÁLAUTÓ – logó (koncepció, DAEKON 2026)</title>
+  <rect width="420" height="96" fill="#080D14"/>
+  <g transform="translate(18 18) scale(1.5)" fill="none" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M20 2.6L35.1 11.3V28.7L20 37.4L4.9 28.7V11.3Z" stroke="#91E7FF" stroke-width="1.6"/>
+    <path d="M20 6.6L31.6 13.3V26.7L20 33.4L8.4 26.7V13.3Z" stroke="#91E7FF" stroke-opacity=".3" stroke-width="1"/>
+    <path d="M26.2 14.3A8.4 8.4 0 1 0 28.4 20H20.6" stroke="#F4F7FA" stroke-width="2.8"/>
+    <circle cx="20.6" cy="20" r="1.6" fill="#16B8FF" stroke="none"/>
+  </g>
+  <text x="96" y="52" font-family="Space Grotesk, Inter, sans-serif" font-size="34" letter-spacing="2.6" fill="#F4F7FA"><tspan font-weight="700">GYÁL</tspan><tspan font-weight="400" fill="#B9C6D6">AUTÓ</tspan></text>
+  <text x="97" y="74" font-family="Space Grotesk, Inter, sans-serif" font-size="10.5" letter-spacing="2" fill="#93A3B8">STABILTERV KFT. | Q-SERVICE PARTNER</text>
+</svg>

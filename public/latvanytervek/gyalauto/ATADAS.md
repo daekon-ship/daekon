@@ -1,13 +1,23 @@
 # GYÁLAUTÓ (STABILTERV Kft.) — látványterv, átadás
 
 Élő cím: https://daekon-ship.github.io/daekon/latvanytervek/gyalauto/
-Fájlok: `index.html`, `gyalauto.css`, `gyalauto.js`, `js/` (GSAP 3 + ScrollTrigger, helyben).
+Fájlok: `index.html`, `gyalauto.css`, `gyalauto.js`, `logo.svg` (önálló logófájl), `js/` (GSAP 3 + ScrollTrigger, helyben).
 Az éles gyalauto.hu-hoz nem nyúltunk; a terv `noindex`.
 
 ## Koncepció
 - **„Műszaki rajz”**: nincs saját műhelyfotó, stockfotót nem használunk, ezért egyetlen, saját rajzolású kombi vezet végig az oldalon: a heróban emelőn áll (felülvilágítás, padlófény, szkennelő vonal), a diagnosztikai szekcióban ugyanaz az autó „átvilágítva” mutatja a rendszereket, a műhely-szekció képkockái pedig ugyanennek a rajznak közeli kameraállásai.
 - Paletta a brief szerint: grafit #080D14 + acélkék #111D2D dominál; elektromos kék #16B8FF a fő gombokon, jeges cián #91E7FF csak jelölésre; piros #F05A4F csak figyelmeztetésre és hibaüzenetre. Egy világos szekció (Miért a Gyálautó?) töri meg a sötétet.
 - Tipográfia: Space Grotesk (címek) + Manrope (szöveg), Google Fontsról. Mérsékelt címméretek (hero max. 58 px, mobilon 32–40 px). A brief csupa nagybetűs főcímei mondatkezdő írásmóddal szerepelnek (olvashatóbb, prémiumabb); a „GYÁL • Q-SERVICE PARTNER” jelölő és a diagnosztika-fülek maradtak nagybetűsek.
+
+## Logó (2. kör)
+- Jel: hatlapfejű csavaranya (dupla kontúr, jeges cián) és benne egy „G”, amelynek keresztszára kék csavarpontban végződik — kulcsra húzott, precíz munka. Betöltéskor az anya elfordul, a G kirajzolódik; rámutatáskor az anya 60°-ot fordul.
+- Szókép: **GYÁL** félkövér + AUTÓ normál, Space Grotesk, ritkítva; alatta STABILTERV KFT. | Q-SERVICE PARTNER, kék elválasztóval. Favicon ugyanebből.
+
+## Kompaktabb elrendezés (2. kör)
+- Hero nem tölti ki kötelezően a képernyőt: asztalon kb. 550 px, mobilon az autó, a cím, a két gomb és a telefonszám egy képernyőn.
+- Szekciótávolságok kb. harmadával kisebbek; kisebb címek (h2 max. 34 px), gombok, mezők, listasorok.
+- Szolgáltatáspanel: rajz és szöveg egymás mellett (kb. fele magasság). Mobilon a tételek két oszlopban.
+- Oldalhossz: asztalon ~7450 → ~5600 px.
 
 ## Szekciók
 Hero → Szolgáltatások (6 kategória: asztalon index + nagy panel saját rajzzal, mobilon harmonika) → Diagnosztika (5 fül + kattintható pontok az autón) → Miért a Gyálautó? → A műhely (6 képkocka, nagyítás, mobilon lapozós sáv) → Időpontkérés folyamata (görgetésre töltődő vonal) → Időpontkérő → Kapcsolat + térkép → záró CTA. Mobilon ragadós alsó sáv: Hívás | Útvonal (safe-area kezelve).
