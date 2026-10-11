@@ -11,9 +11,9 @@ Az éles gyalauto.hu-hoz nem nyúltunk; a terv `noindex`.
 
 ## Logó (4. kör – végleges koncepció)
 - Saját rajzolású, betűtípustól független szókép: GYÁLAUTÓ egyenes vonalú, ferdén levágott sarkú betűkkel, 10°-os dőléssel (mozgás, sebesség). A **GYÁL** törtfehér, az **AUTÓ** acélszürke, az ékezetek és a G keresztszára elektromos kék.
-- Jel: ferde, levágott sarkú lemez a G-vel; önállóan is használható (favicon, profilkép, matrica).
+- Jel: ferde, levágott sarkú lemez, benne átlós villás-csillagkulcs; a csillagvégben kék hatlapfejű anya. Önállóan is használható (favicon, profilkép, matrica).
 - Fájlok: `logo.svg` (teljes logó alsorral), `logo-jel.svg` (csak a jel). Mindkettő vektoros, nyomdai/matricás felhasználásra is alkalmas.
-- Betöltéskor a jel beúszik, a betűk egyenként megjelennek, a G kék szára kihúzódik.
+- Betöltéskor a jel beúszik és a kulcs „ráhúz” (elfordul a helyére), a betűk egyenként megjelennek; rámutatáskor az anya kivilágosodik.
 
 ## Teljes vizuális javítás (3. kör)
 - Egységes formavilág a logó csavaranyájából: a fő gombok kétsarkú, gépelt „lemez” formát kaptak (ferdén levágott sarkok, fényes élsúrolás rámutatáskor), a többi elem 4–6 px-es szögletes sarok — eltűntek a lekerekített „pill” gombok és dobozok.

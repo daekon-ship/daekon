@@ -52,7 +52,7 @@ p{margin:0}
 .brand{flex-direction:column;align-items:flex-start;justify-content:center;gap:4px}
 .logo{display:block;height:36px;width:auto;overflow:visible}
 .logo .lg-plate{transition:fill .3s}
-.brand:hover .logo .lg-plate{fill:#16304A}
+.brand:hover .logo .lg-nut{fill:var(--ice)}
 .brand-sub{font-family:var(--fh);font-size:8px;font-weight:600;letter-spacing:.075em;color:var(--soft);padding-left:3px;white-space:nowrap}
 .brand-sub span{color:var(--blue);margin:0 2px}
 .nav-links{display:flex;gap:26px}

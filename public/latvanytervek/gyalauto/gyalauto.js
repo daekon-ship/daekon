@@ -341,7 +341,7 @@
     var tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
     tl.from('.nav .lg-mark', { opacity: 0, x: -10, duration: 0.7 }, 0)
       .from('.nav .lg-word .lt', { opacity: 0, y: 8, duration: 0.45, stagger: 0.04 }, 0.1)
-      .from('.nav .lg-bar', { attr: { d: 'M26.5 20.5H26.5' }, duration: 0.5, ease: 'power2.out' }, 0.5)
+      .from('.nav .lg-wrench', { rotation: -70, svgOrigin: '31 23', duration: 0.9, ease: 'back.out(1.6)' }, 0.05)
       .from('.nav .brand-sub', { opacity: 0, duration: 0.6 }, 0.55)
       .from('.hero-bg', { opacity: 0, duration: 1.2, ease: 'power1.out' }, 0)
       .from('.hero-mark', { opacity: 0, x: -12, duration: 0.6 }, 0.15)
