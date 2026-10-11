@@ -70,7 +70,6 @@
       say.style.transform = 'translateY(' + ((1 - q) * 34).toFixed(1) + 'px)';
       cue.style.opacity = (1 - clamp(p / .1, 0, 1)).toFixed(3);
     }
-    photo.style.animation = 'none';
     var tw = gsap.to(st, {
       p: 1, ease: 'none', onUpdate: render,
       scrollTrigger: { trigger: pin, start: 'top top', end: '+=140%', pin: true, scrub: .7, anticipatePin: 1, onRefresh: render }
@@ -95,9 +94,63 @@
       strip.classList.remove('is-pinned'); works.classList.remove('has-pin');
       ['--r', '--g', '--tone', '--dots', '--cx', '--cy'].forEach(function (k) { photo.style.removeProperty(k); });
       [tyre, copy, say, cue].forEach(function (el) { el.removeAttribute('style'); });
-      photo.style.animation = ''; track.style.transform = '';
+      track.style.transform = '';
       tw.kill(); tw2.kill();
     };
+  });
+
+
+  /* ---- címek: szavanként felcsúsznak ---- */
+  function splitWords(el) {
+    Array.prototype.slice.call(el.childNodes).forEach(function (n) {
+      if (n.nodeType === 3) {
+        var frag = d.createDocumentFragment();
+        n.textContent.split(/(\s+)/).forEach(function (part) {
+          if (!part) return;
+          if (/^\s+$/.test(part)) { frag.appendChild(d.createTextNode(' ')); return; }
+          var o = d.createElement('span'); o.className = 'hw';
+          var i = d.createElement('span'); i.textContent = part; o.appendChild(i); frag.appendChild(o);
+        });
+        n.parentNode.replaceChild(frag, n);
+      } else if (n.nodeType === 1 && n.tagName !== 'BR') splitWords(n);
+    });
+  }
+  gsap.utils.toArray('.h2').forEach(function (h) {
+    splitWords(h);
+    gsap.from(h.querySelectorAll('.hw > span'), { yPercent: 110, rotate: 4, duration: 1, ease: 'expo.out', stagger: .045, scrollTrigger: { trigger: h, start: 'top 86%', once: true } });
+  });
+
+  /* ---- futószalag: a görgetés sebességére megdől ---- */
+  var band = d.querySelector('.band');
+  if (band) {
+    ScrollTrigger.create({ trigger: band, start: 'top bottom', end: 'bottom top', onUpdate: function (s) { var v = clamp(s.getVelocity() / -120, -14, 14); band.style.setProperty('--sk', v.toFixed(2) + 'deg'); clearTimeout(band._t); band._t = setTimeout(function () { band.style.setProperty('--sk', '0deg'); }, 160); } });
+  }
+
+  /* ---- gumi-kurzor ---- */
+  var cur = d.getElementById('cur');
+  if (cur && window.matchMedia('(pointer: fine)').matches) {
+    var ring = cur.firstElementChild, xTo = gsap.quickTo(cur, 'x', { duration: .35, ease: 'power3' }), yTo = gsap.quickTo(cur, 'y', { duration: .35, ease: 'power3' }), rot = 0, lx = 0, ly = 0;
+    window.addEventListener('pointermove', function (e) {
+      if (e.pointerType !== 'mouse') return;
+      cur.classList.add('is-on'); xTo(e.clientX); yTo(e.clientY);
+      rot += (Math.abs(e.clientX - lx) + Math.abs(e.clientY - ly)) * .9; lx = e.clientX; ly = e.clientY;
+      ring.style.transform = 'rotate(' + rot.toFixed(0) + 'deg)';
+    }, { passive: true });
+    d.addEventListener('pointerover', function (e) { cur.classList.toggle('is-hover', !!e.target.closest('a, button, label, summary, [role=tab]')); });
+    d.addEventListener('pointerleave', function () { cur.classList.remove('is-on'); });
+  }
+
+  /* ---- mobil hero: görgetésre a fotó kifut a kerékből ---- */
+  mm.add('(max-width: 899px)', function () {
+    var pin = d.getElementById('hxPin'), photo = d.getElementById('hxPhoto'), tyre = d.getElementById('hxTyre');
+    var st = { p: 0 };
+    var t = gsap.to(st, { p: 1, ease: 'none', onUpdate: function () {
+      var ts = parseFloat(getComputedStyle(tyre).width), r0 = ts * .303, e = st.p;
+      photo.style.setProperty('--r', (r0 + ts * .2 * e).toFixed(1) + 'px');
+      tyre.style.transform = 'scale(' + (1 + e * .25).toFixed(3) + ') rotate(' + (e * 40).toFixed(1) + 'deg)';
+      tyre.style.opacity = (1 - e * .7).toFixed(3);
+    }, scrollTrigger: { trigger: pin, start: 'top top', end: '60% top', scrub: .5 } });
+    return function () { t.kill(); photo.style.removeProperty('--r'); tyre.removeAttribute('style'); };
   });
 
   /* képek betöltése után újramérés */

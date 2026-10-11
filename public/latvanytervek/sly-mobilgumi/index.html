@@ -39,6 +39,13 @@
 </head>
 <body>
 <a class="skip" href="#tartalom">Ugrás a tartalomra</a>
+<div class="intro" id="intro" aria-hidden="true">
+  <div class="intro__in">
+    <svg class="intro__tyre" viewBox="-60 -60 120 120"><circle r="50" fill="none" stroke="#FFD12A" stroke-width="13" stroke-dasharray="7 6"/><circle r="33" fill="none" stroke="#F3F2EE" stroke-width="1.5"/><circle r="6" fill="#F3F2EE"/></svg>
+    <p class="intro__t"><b>SLY</b><span>Mobil gumiszerviz · Sopron</span></p>
+    <i class="intro__bar"><i></i></i>
+  </div>
+</div>
 
 <!-- közös rajzok -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
@@ -194,6 +201,7 @@
 <!-- ============ AZ ÚT HOZZÁD (ragadós jelenet) ============ -->
 <section class="story" id="story" aria-labelledby="story-cim">
   <div class="story__sticky">
+    <div class="r3d" aria-hidden="true"><div class="r3d__plane" id="r3d"></div></div>
     <div class="wrap story__in">
       <div class="story__head">
         <p class="eyebrow eyebrow--y">Hogyan működik?</p>
@@ -359,6 +367,7 @@
 <!-- ============ S.O.S. ============ -->
 <section class="sos" id="sos" aria-labelledby="sos-cim">
   <div class="sos__stripe" aria-hidden="true"></div>
+  <i class="hz hz--l" aria-hidden="true"></i><i class="hz hz--r" aria-hidden="true"></i>
   <div class="wrap sos__grid">
     <div class="sos__main">
       <p class="eyebrow eyebrow--r"><span class="pulse" aria-hidden="true"></span>S.O.S. defektjavítás · 0–24</p>
@@ -780,6 +789,7 @@
 </main>
 
 <footer class="ftr">
+  <div class="ftr__track" aria-hidden="true"></div>
   <div class="wrap ftr__in">
     <div class="ftr__brand"><b>SLY Mobil Gumiszerviz</b><span>Mobil gumiszerviz Sopron és vonzáskörzete</span></div>
     <nav class="ftr__nav" aria-label="Lábléc">
@@ -813,6 +823,7 @@
   </div>
 </dialog>
 
+<div class="cur" id="cur" aria-hidden="true"><i></i></div>
 <script src="js/gsap.min.js" defer></script>
 <script src="js/ScrollTrigger.min.js" defer></script>
 <script src="sly.js" defer></script>

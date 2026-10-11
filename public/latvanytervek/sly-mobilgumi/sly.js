@@ -11,7 +11,20 @@
   var IMG = 'https://slymobilgumi.hu/wp-content/uploads/2021/06/';
   var fmt = function (n) { return Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' Ft'; };
 
-  requestAnimationFrame(function () { d.body.classList.add('is-loaded'); });
+  /* ---- belépő: első látogatáskor rövid kerékforgás, utána írisz-nyitás ---- */
+  var intro = d.getElementById('intro'), seen = false;
+  try { seen = sessionStorage.getItem('slyIntro') === '1'; sessionStorage.setItem('slyIntro', '1'); } catch (e) {}
+  function go() { requestAnimationFrame(function () { d.body.classList.add('is-loaded'); }); }
+  if (!intro || seen || reduce) { if (intro) intro.classList.add('is-skip'); go(); }
+  else {
+    var t0 = performance.now(), fin = false;
+    var done = function () {
+      if (fin) return; fin = true;
+      setTimeout(function () { intro.classList.add('is-done'); setTimeout(go, 260); setTimeout(function () { intro.classList.add('is-skip'); }, 900); }, Math.max(0, 1150 - (performance.now() - t0)));
+    };
+    if (d.readyState === 'complete') done(); else window.addEventListener('load', done);
+    setTimeout(done, 1900);
+  }
 
   /* ---- képhiba-tartalék ---- */
   $$('img').forEach(function (img) {
@@ -93,12 +106,13 @@
   /* ---- „az út hozzád”: ragadós jelenet ---- */
   var story = $('#story'), sticky = story && $('.story__sticky', story), van = $('#van'), fill = $('#roadFill');
   var road = story && $('.road', story), stops = story ? $$('.road__stop', story) : [], steps = story ? $$('#steps li', story) : [];
+  var plane3d = d.getElementById('r3d');
   var storyLive = story && !reduce && getComputedStyle(sticky).position === 'sticky';
   function onStory() {
     if (!storyLive) return;
     var r = story.getBoundingClientRect(), total = story.offsetHeight - sticky.offsetHeight;
     var p = clamp(-r.top / (total || 1), 0, 1);
-    road.style.setProperty('--p', p.toFixed(4));
+    road.style.setProperty('--p', p.toFixed(4)); if (plane3d) plane3d.style.setProperty('--p', p.toFixed(4));
     var idx = Math.min(3, Math.floor(p * 4));
     steps.forEach(function (li, i) { li.classList.toggle('is-on', i === idx); });
     stops.forEach(function (s, i) { s.classList.toggle('is-on', p >= i / 3 - 0.01); });
