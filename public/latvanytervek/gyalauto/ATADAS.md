@@ -9,6 +9,11 @@ Az éles gyalauto.hu-hoz nem nyúltunk; a terv `noindex`.
 - Paletta a brief szerint: grafit #080D14 + acélkék #111D2D dominál; elektromos kék #16B8FF a fő gombokon, jeges cián #91E7FF csak jelölésre; piros #F05A4F csak figyelmeztetésre és hibaüzenetre. Egy világos szekció (Miért a Gyálautó?) töri meg a sötétet.
 - Tipográfia: Space Grotesk (címek) + Manrope (szöveg), Google Fontsról. Mérsékelt címméretek (hero max. 58 px, mobilon 32–40 px). A brief csupa nagybetűs főcímei mondatkezdő írásmóddal szerepelnek (olvashatóbb, prémiumabb); a „GYÁL • Q-SERVICE PARTNER” jelölő és a diagnosztika-fülek maradtak nagybetűsek.
 
+## Hívásra optimalizálás (7. kör)
+- Élő nyitvatartás-jelző a heróban, a mobilmenüben és a Kapcsolatnál (budapesti idő szerint): „Most nyitva · 16:30-ig”, zárás előtti órában „még X percig”, zárva „ma / holnap / hétfőn 8:00-kor nyitunk”. Ünnepnapokat nem kezel — élesítés előtt egyeztetendő, kell-e (pl. ünnepi lista).
+- Telefonon a hero fő gombja „Hívás most”, mellette „Időpontkérés”; a „Szolgáltatásaink” gomb csak asztalon van.
+- A diagnosztika húzható fülsora a jobb szélen halványodik (jelzi, hogy húzható), a végére érve a halványodás eltűnik.
+
 ## Tömör telefonos nézet (6. kör)
 - Telefonon az oldal 6957 → 4443 px (−36%), 390 px szélességen mérve.
 - Szolgáltatások: induláskor minden kategória csukva (6 sor), koppintásra nyílik.

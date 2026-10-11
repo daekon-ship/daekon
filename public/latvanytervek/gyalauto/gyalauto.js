@@ -80,6 +80,33 @@
   }
   function svgEl(tag, attrs, html) { var e = document.createElementNS(NS, tag); for (var k in attrs) e.setAttribute(k, attrs[k]); if (html) e.innerHTML = html; return e; }
 
+  /* ===================== NYITVATARTÁS (élő, budapesti idő) =====================
+     Rendes nyitvatartás: H–P 08:00–16:30. Ünnepnapokat nem kezel. */
+  function openText() {
+    var parts = {};
+    try {
+      new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Budapest', weekday: 'short', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' })
+        .formatToParts(new Date()).forEach(function (p) { parts[p.type] = p.value; });
+    } catch (e) { return null; }
+    var wd = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].indexOf(parts.weekday);
+    if (wd < 0) return null;
+    var t = (+parts.hour) * 60 + (+parts.minute), O = 480, C = 990, work = wd < 5;
+    if (work && t >= O && t < C) {
+      var left = C - t;
+      return { open: true, txt: left <= 60 ? 'Most nyitva · még ' + left + ' percig' : 'Most nyitva · 16:30-ig' };
+    }
+    var when = (work && t < O) ? 'ma' : (wd >= 4 ? 'hétfőn' : 'holnap');
+    return { open: false, txt: 'Most zárva · ' + when + ' 8:00-kor nyitunk' };
+  }
+  function paintOpen() {
+    var s = openText();
+    $$('[data-open]').forEach(function (el) {
+      if (!s) { el.hidden = true; return; }
+      el.textContent = s.txt; el.classList.toggle('is-open', s.open); el.classList.toggle('is-closed', !s.open);
+    });
+  }
+  paintOpen(); setInterval(paintOpen, 60000);
+
   /* ===================== NAVIGÁCIÓ ===================== */
   var nav = $('#nav'), burger = $('#burger'), menu = $('#menu'), mbar = $('#mbar'), hero = $('#fooldal');
   function onScroll() {
@@ -195,6 +222,8 @@
     var d = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key]; if (!d) return;
     e.preventDefault(); var j = SYS_ORDER.indexOf(dcur); showSys(SYS_ORDER[(j + d + SYS_ORDER.length) % SYS_ORDER.length], true);
   });
+  function tabEnd() { dtabs.classList.toggle('at-end', dtabs.scrollLeft + dtabs.clientWidth >= dtabs.scrollWidth - 4); }
+  dtabs.addEventListener('scroll', tabEnd, { passive: true }); window.addEventListener('resize', tabEnd); tabEnd();
   dsvg.addEventListener('click', function (e) { var g = e.target.closest('.hot'); if (g) showSys(g.dataset.k); });
   showSys('motor');
 
