@@ -9,6 +9,14 @@ Az éles gyalauto.hu-hoz nem nyúltunk; a terv `noindex`.
 - Paletta a brief szerint: grafit #080D14 + acélkék #111D2D dominál; elektromos kék #16B8FF a fő gombokon, jeges cián #91E7FF csak jelölésre; piros #F05A4F csak figyelmeztetésre és hibaüzenetre. Egy világos szekció (Miért a Gyálautó?) töri meg a sötétet.
 - Tipográfia: Space Grotesk (címek) + Manrope (szöveg), Google Fontsról. Mérsékelt címméretek (hero max. 58 px, mobilon 32–40 px). A brief csupa nagybetűs főcímei mondatkezdő írásmóddal szerepelnek (olvashatóbb, prémiumabb); a „GYÁL • Q-SERVICE PARTNER” jelölő és a diagnosztika-fülek maradtak nagybetűsek.
 
+## Tömör telefonos nézet (6. kör)
+- Telefonon az oldal 6957 → 4443 px (−36%), 390 px szélességen mérve.
+- Szolgáltatások: induláskor minden kategória csukva (6 sor), koppintásra nyílik.
+- Diagnosztika: a fülek egy sorban, oldalra húzhatók; a kapcsolódó szolgáltatások kis címkékként.
+- Miért minket?: kétoszlopos pipás lista, rövidebb bevezető.
+- Időpontkérő: márka / típus / évjárat egy sorban, telefon és e-mail egymás mellett, kisebb választógombok; a telefon/e-mail/nyitvatartás lista telefonon nem ismétlődik (a Kapcsolat részben megvan).
+- A záró „Hívjon” sáv telefonon rejtve (az alsó Hívás | Útvonal sáv kiváltja); lábléc tömörebb.
+
 ## Műhely-szekció törölve (5. kör)
 - Az „Ismerje meg a műhelyt” szekció, a „A műhely” menüpont (asztali és mobil) és a képnagyító kikerült. A menü: Főoldal | Szolgáltatások | Miért minket? | Kapcsolat + Időpontkérés.
 - Ha később lesznek saját műhelyfotók, egy galéria a „Miért minket?” után visszatehető.

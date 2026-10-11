@@ -387,6 +387,97 @@ address{font-style:normal}
   .hero h1{font-size:30px}
 }
 
+
+/* ---------- telefon: tömör nézet ---------- */
+.m-show{display:none}
+@media (max-width:640px){
+  .m-hide{display:none}
+  .m-show{display:inline}
+  body{line-height:1.5}
+  h2{font-size:23px}
+  .sec{padding:36px 0}
+  .sec-head{margin-bottom:14px}
+  .sec-head p{font-size:14.5px;margin-top:4px}
+  /* hero */
+  .hero-mark{margin-bottom:10px;font-size:11px}
+  .hero h1{font-size:clamp(29px,8.4vw,34px)}
+  .hero-sub{margin-top:10px;font-size:15px}
+  .hero-cta{margin-top:16px}
+  .hero-phone{margin-top:2px;font-size:14px}
+  .hero-facts{padding-top:10px;padding-bottom:14px}
+  .hero-facts li{font-size:13px}
+  /* szolgáltatások */
+  .acc-h{min-height:48px;padding:6px 2px}
+  .acc-h .t{font-size:15.5px}
+  .acc-b .svc-fig{height:104px}
+  .acc-b .svc-fig svg{height:92px}
+  .acc-b .svc-items li{font-size:13.5px;padding:5px 0}
+  /* diagnosztika */
+  .diag-head{margin-bottom:12px;gap:6px}
+  .diag-head p{font-size:14.5px}
+  .diag-tabs{display:flex;flex-wrap:nowrap;overflow-x:auto;gap:6px;margin:0 calc(var(--gut) * -1) 6px;padding:0 var(--gut) 2px;scrollbar-width:none}
+  .diag-tabs::-webkit-scrollbar{display:none}
+  .diag-tabs button{flex:none;min-height:38px;padding:0 12px;font-size:12px}
+  .diag-tabs button:last-child{grid-column:auto}
+  .diag-note{margin-top:2px;font-size:11.5px}
+  .diag-info{padding-top:12px}
+  .diag-info h3{font-size:18px}
+  .diag-info .lede{font-size:14px}
+  .diag-info .warn{margin-top:10px;font-size:12.5px}
+  .diag-info ul{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 14px}
+  .diag-info li{padding:5px 10px;border:1px solid var(--line);border-radius:4px;font-size:13px}
+  .diag-info .btn{width:100%}
+  /* miért */
+  .why .lead{font-size:14.5px;margin-top:10px}
+  .why-year{margin-top:14px;padding-top:12px;gap:12px}
+  .why-year .yr{font-size:22px}
+  .why-year p{font-size:13.5px}
+  .why-in{gap:20px}
+  .why-list{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}
+  .why-list>div{display:flex;align-items:flex-start;gap:8px;padding:9px 0;border-bottom:1px solid #C9D3DF}
+  .why-list>div::before{content:"";flex:none;width:9px;height:9px;margin-top:5px;background:#0A6FA0;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%)}
+  .why-list dt{font-size:13.5px;line-height:1.3}
+  .why-list dd{display:none}
+  .why-list>div:last-child{grid-column:1/-1}
+  .why-list>div:last-child dd{display:block;font-size:13px;margin-left:6px}
+  .why-list>div:last-child dd{display:none}
+  /* folyamat */
+  .flow-steps{gap:12px}
+  .flow-steps li{padding-left:48px}
+  .flow-steps h3{font-size:15px}
+  .flow-steps p{font-size:13px;margin-top:2px}
+  .flow-cta{margin-top:18px}
+  /* időpontkérés */
+  .book-in{gap:16px}
+  .book-side>p{font-size:14px}
+  .book-call{margin-top:14px}
+  .book-meta{display:none}
+  .book-form,.book-done{padding:16px 14px}
+  fieldset{margin-bottom:10px}
+  legend{font-size:14.5px;margin-bottom:8px}
+  .chips{gap:5px}
+  .chip span{min-height:36px;padding:0 10px;font-size:13px}
+  .row3{grid-template-columns:1fr 1fr 78px;gap:8px}
+  .row3.who{grid-template-columns:1fr 1fr}
+  .row3.who .f:first-child{grid-column:1/-1}
+  .f{margin-bottom:8px;font-size:12.5px;gap:4px}
+  .f input,.f textarea{min-height:44px;padding:9px 11px}
+  .f textarea{min-height:60px}
+  .form-foot p{display:none}
+  /* kapcsolat */
+  .contact dl{margin-top:12px}
+  .contact dl>div{padding:8px 0}
+  .contact dd{font-size:14.5px}
+  .contact-cta{margin-top:14px}
+  .map{min-height:200px}
+  .contact-in{gap:16px}
+  /* záró sáv: telefonon az alsó Hívás sáv kiváltja */
+  .final{display:none}
+  .foot{padding:20px 0 22px;font-size:13px}
+  .foot-in{gap:12px}
+  .foot nav{display:none}
+}
+
 /* ---------- mozgás kikapcsolva ---------- */
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}

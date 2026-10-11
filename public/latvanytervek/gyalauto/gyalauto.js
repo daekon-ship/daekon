@@ -155,8 +155,6 @@
     else if (d) { e.preventDefault(); showSvc((cur + d + SERVICES.length) % SERVICES.length, true); }
   });
   showSvc(0);
-  /* mobilon az első kategória nyitva */
-  var a0 = $('.acc', acc); a0.classList.add('open'); $('.acc-h', a0).setAttribute('aria-expanded', 'true');
   acc.addEventListener('click', function (e) {
     var h = e.target.closest('.acc-h'); if (!h) return;
     var box = h.closest('.acc'), open = !box.classList.contains('open');
