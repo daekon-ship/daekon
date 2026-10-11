@@ -392,6 +392,8 @@ address{font-style:normal}
   .diag-tabs button:last-child{grid-column:1/-1}
 }
 @media (max-width:360px){
+  .hero-mark{letter-spacing:.07em;gap:8px}
+  .hero-mark::before{width:14px}
   .hero-cta .btn{flex:1 1 100%}
   .brand-sub{display:none}
   .hero h1{font-size:30px}
