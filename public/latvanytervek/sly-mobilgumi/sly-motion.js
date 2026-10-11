@@ -140,19 +140,6 @@
     d.addEventListener('pointerleave', function () { cur.classList.remove('is-on'); });
   }
 
-  /* ---- mobil hero: görgetésre a fotó kifut a kerékből ---- */
-  mm.add('(max-width: 899px)', function () {
-    var pin = d.getElementById('hxPin'), photo = d.getElementById('hxPhoto'), tyre = d.getElementById('hxTyre');
-    var st = { p: 0 };
-    var t = gsap.to(st, { p: 1, ease: 'none', onUpdate: function () {
-      var ts = parseFloat(getComputedStyle(tyre).width), r0 = ts * .303, e = st.p;
-      photo.style.setProperty('--r', (r0 + ts * .2 * e).toFixed(1) + 'px');
-      tyre.style.transform = 'scale(' + (1 + e * .25).toFixed(3) + ') rotate(' + (e * 40).toFixed(1) + 'deg)';
-      tyre.style.opacity = (1 - e * .7).toFixed(3);
-    }, scrollTrigger: { trigger: pin, start: 'top top', end: '60% top', scrub: .5 } });
-    return function () { t.kill(); photo.style.removeProperty('--r'); tyre.removeAttribute('style'); };
-  });
-
   /* képek betöltése után újramérés */
   window.addEventListener('load', function () { ScrollTrigger.refresh(); });
 })();

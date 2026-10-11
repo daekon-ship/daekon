@@ -10,6 +10,7 @@ Fájlok: `index.html`, `sly.css`, `sly.js`, `sly-motion.js` (GSAP-jelenetek), `j
 - **Munkáink (asztali):** függőleges görgetés → vízszintes, rögzített fotósín számlálóval (01/07), képenkénti mélységi zoommal. Mobilon húzható szalag.
 - Megmaradt és finomodott: „Az út hozzád” jelenet mozgó szervizautóval, metszetrajz, 13 tételes szolgáltatás-index kurzort követő fotóval, oldalfal-dekóder, méretre skálázó kalkulátor, teljes árlista, flották, GYIK, kapcsolat.
 - **4. kör:** rövid belépő (forgó kerék, csak első látogatáskor, utána írisz-nyitás a heróra); a címek szavanként felcsúsznak; 3D perspektivikus út a „hozzád” jelenet mögött, görgetésre fut; vészvillogó fények az S.O.S.-nél; a futószalag a görgetés sebességére megdől; egérrel szaggatott „gumi” kurzor; mobilon görgetésre a fotó kifut a kerékből; plakát-számok az árakban; keréknyom a láblécben.
+- **5. kör (kompakt):** mobilon kisebb kerék-ablak (a hero a gombokkal együtt egy képernyőn), kisebb címek, logó, sávok és szekciótávolságok; javítva a forgó gumi elvándorlása (forgáspont = viewBox-origó).
 - Tipográfia: keskeny, nagybetűs Archivo plakátcímek (mérsékelt méret), IBM Plex szöveg. Mozgás: GSAP + ScrollTrigger helyben (`js/`), `prefers-reduced-motion` esetén minden jelenet statikus.
 
 ## Mi van ellenőrizve

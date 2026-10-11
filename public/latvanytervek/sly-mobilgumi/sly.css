@@ -890,3 +890,128 @@ img.is-missing{opacity:0}
   .cur{display:none !important}
 }
 .story__steps h3,.idx__t b,.kitlist__i b,.fleet__pts h3,.acc summary,.field__list b{font-stretch:84%;font-weight:720}
+
+/* =====================================================================
+   5. kör — kompakt méretek (mobil elsőként)
+   ===================================================================== */
+:root{--sec:clamp(56px,6vw,104px)}
+.h2{font-size:clamp(25px,1.2vw + 18px,38px)}
+.hx__h1{font-size:clamp(30px,1.9vw + 20px,50px)}
+.hx__say p{font-size:clamp(30px,2vw + 16px,50px)}
+.way__h{font-size:clamp(26px,1.4vw + 18px,40px)}
+.lit{font-size:clamp(20px,1vw + 15px,31px)}
+.h3{font-size:clamp(18px,.4vw + 15.5px,21px)}
+
+@media (max-width:899px){
+  :root{--hdr:58px;--fs-body:15.5px}
+  body{font-size:15.5px}
+  .brand__plate{height:32px;padding:3px 7px}
+  .brand__plate img{height:24px}
+  .burger{width:44px;height:44px}
+
+  /* hero: kis kerék-ablak, szöveg közvetlenül alatta */
+  .hx__pin{--ts:min(58vw,260px);--cy:calc(var(--hdr) + 10px + var(--ts) / 2)}
+  .hx__grid{padding-top:calc(var(--hdr) + 22px + var(--ts));padding-bottom:22px}
+  .hx__tyre{transform:none !important;opacity:1 !important}
+  .hx__k{margin-bottom:12px;gap:8px;font-size:10.5px}
+  .hx__k > span:not(.plate){display:none}
+  .plate{height:22px;font-size:11px;padding:0 8px 0 19px}
+  .plate::before{width:13px;font-size:8px}
+  .hx__h1{font-size:clamp(28px,7.6vw,34px);margin-bottom:12px}
+  .hx__lead{font-size:15px;line-height:1.5;margin-bottom:18px}
+  .hero__ctas{gap:8px;margin-bottom:12px}
+  .cta{min-height:56px;padding:9px 48px 9px 16px}
+  .cta__v{font-size:16px}
+  .cta__k{font-size:10px}
+  .hero__warn{font-size:12.5px}
+
+  .band{height:40px}
+  .band__track span{font-size:12.5px}
+  .band__track i{width:9px;height:9px;border-width:2px}
+
+  .eyebrow,.tagp,.way__k{font-size:11px;padding:5px 7px 4px;margin-bottom:14px}
+  .sec__head{margin-bottom:28px}
+  .lead{font-size:15.5px}
+
+  .say2{padding:64px 0}
+  .ways .way{min-height:340px;padding:22px var(--gut)}
+  .way__c{gap:10px}
+  .way__f{font-size:13px;gap:4px 14px}
+  .way__cta{font-size:14.5px}
+
+  .js .story{height:240vh}
+  .story__head{margin-bottom:22px}
+  .road{height:70px;margin-bottom:22px}
+  .road__van{width:110px;left:calc(var(--p,0) * (100% - 110px))}
+  .story__steps h3{font-size:19px}
+  .story__steps p{font-size:14.5px}
+
+  .workshop__head{margin-bottom:22px}
+  .cut{padding:10px 8px 8px}
+  .kitlist__i{padding:10px 0}
+  .kitlist__i b{font-size:15px}
+  .kitlist__i span{font-size:13.5px}
+  .proof{margin-top:24px}
+  .proof__ph--2{transform:translateY(16px)}
+
+  .idx__list a{padding:13px 0;grid-template-columns:30px 1fr}
+  .idx__t b{font-size:17px}
+  .idx__t em{font-size:13.5px;margin-top:2px}
+  .idx__p{font-size:15px}
+  .idx__g{padding:18px 0 8px}
+
+  .decode__box{padding:20px 16px 18px}
+  .code{font-size:24px;margin-bottom:16px}
+  .code button{min-height:44px;min-width:34px}
+  .explain{min-height:0;padding-top:14px}
+
+  .sign{padding:12px 16px 12px 12px;gap:12px}
+  .sign__tri{width:36px;height:33px}
+  .sign__t b{font-size:21px}
+  .sos__steps{margin-top:22px}
+  .sos__steps li{padding:11px 0 11px 34px;font-size:14px}
+  .ptable th,.ptable td{padding:11px 0}
+  .ppanel .ptable td,.pside__box .ptable td,.ptable--dark td{font-size:16.5px}
+
+  .prices__head{margin-bottom:22px}
+  .calc__vis{padding:14px 16px 0;gap:14px}
+  .calc__wheel{width:84px;height:84px}
+  .calc__size b{font-size:26px}
+  .calc__form{padding:16px 16px 18px;gap:16px}
+  .calc__out{padding:18px 16px}
+  .calc__sum .is-total dd{font-size:22px}
+  .chip span{font-size:14px;padding:0 12px}
+  .prices__all{margin:44px 0 12px}
+
+  .works__head{margin-bottom:20px}
+  .strip__i{width:min(66vw,300px)}
+  .strip__i:nth-child(even){margin-top:24px}
+  .field{margin-top:48px}
+  .field__list li{padding:12px 0}
+  .partners{margin-top:40px}
+
+  .fleet__top{margin-bottom:24px}
+  .fleetline{margin-bottom:28px}
+  .fleetline li{padding:12px 4px 10px;font-size:10px}
+  .fleetline svg{width:52px;height:30px}
+  .fleet__pts li{padding:12px 0}
+
+  .form{padding:20px 16px}
+  .form__grid{gap:10px;margin:14px 0 16px}
+  .acc summary{min-height:54px;font-size:16px;padding:10px 40px 10px 0}
+  .acc details>div{padding:0 0 16px 38px;font-size:14.5px}
+
+  .contact__h{margin-bottom:26px}
+  .tel{padding:12px 0}
+  .tel--main{padding:12px 14px}
+  .tel--main b{font-size:22px}
+  .area svg{max-width:200px}
+  .ftr{padding-top:44px}
+}
+/* forgás középpontja: a viewBox origója (0,0) – különben a gumi elvándorol */
+.tyre__spin{transform-box:view-box;transform-origin:0 0}
+@media (max-width:899px){
+  .ptable td{white-space:nowrap;min-width:0}
+  .ppanel .ptable td,.pside__box .ptable td,.ptable--dark td{font-size:15.5px}
+  .ptable th{font-size:14.5px}
+}
