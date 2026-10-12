@@ -5,16 +5,16 @@
 @font-face{font-family:"Archivo";src:url(fonts/archivo.woff) format("woff");font-weight:400 900;font-stretch:100% 125%;font-display:swap}
 
 :root{
-  --fekete:#0F1011;
-  --antracit:#1A1C1F;
-  --grafit:#26292D;
-  --vonal:#33363B;
+  --fekete:#13181D;
+  --antracit:#1C232A;
+  --grafit:#29323B;
+  --vonal:#36404A;
   --feher:#FFFFFF;
-  --tort:#F3F2EF;
+  --tort:#F2F1ED;
   --szurke:#6B6E73;
   --halvany:#A8ABB0;
-  --sarga:#FFC20E;
-  --sarga-m:#F0B400;
+  --sarga:#FFB81C;
+  --sarga-m:#F2A900;
   --sarga-s:#B88A00;
   --oldal:18px;
   --szakasz:72px;
@@ -71,10 +71,10 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
 /* ---------- fejléc ---------- */
 .fejlec{position:sticky;top:0;z-index:60;background:var(--fekete);border-bottom:3px solid var(--sarga);transition:box-shadow .3s}
 .fejlec.gorgetve{box-shadow:0 8px 30px rgba(0,0,0,.35)}
-.fejlec__belso{display:flex;align-items:center;gap:14px;min-height:68px}
+.fejlec__belso{display:flex;align-items:center;gap:12px;min-height:62px}
 .logo{margin-right:auto;display:block}
-.logo img{height:40px;width:auto}
-@media (min-width:1100px){.fejlec__belso{min-height:82px}.logo img{height:52px}}
+.logo img{height:32px;width:auto}
+@media (min-width:1100px){.fejlec__belso{min-height:76px}.logo img{height:40px}}
 .fejlec__hivas{min-height:46px;padding:0 14px}
 .fejlec__hivas-szoveg{display:none}
 @media (min-width:560px){.fejlec__hivas-szoveg{display:flex;flex-direction:column;line-height:1.1;text-align:left;letter-spacing:.01em;font-size:15.5px}.fejlec__hivas small{font-size:11px;font-weight:700;opacity:.75;letter-spacing:.06em}}
@@ -96,21 +96,21 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
 }
 
 /* ---------- hero ---------- */
-.hero{position:relative;background:var(--fekete);color:var(--feher);overflow:hidden;padding:120px 0 96px}
-@media (min-width:700px){.hero{padding-top:110px}}
-.hero__hatter{position:absolute;left:0;right:0;top:0;height:560px}
+.hero{position:relative;background:var(--fekete);color:var(--feher);overflow:hidden;padding:200px 0 96px}
+@media (min-width:700px){.hero{padding-top:260px}.hero__hatter{height:560px}}
+.hero__hatter{position:absolute;left:0;right:0;top:0;height:470px}
 @media (min-width:1000px){.hero__hatter{inset:0;height:auto}}
 .hero__hatter img{width:100%;height:100%;object-fit:cover;object-position:72% 70%}
 @media (min-width:1000px){.hero__hatter img{object-position:62% 40%}}
-.hero__hatter::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,16,17,.35) 0%,rgba(15,16,17,.55) 35%,rgba(15,16,17,.9) 70%,var(--fekete) 100%)}
+.hero__hatter::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(19,24,29,.15) 0%,rgba(19,24,29,.2) 30%,rgba(19,24,29,.75) 62%,var(--fekete) 92%)}
 .hero__racs{position:relative;display:grid;gap:30px}
-.hero__cimkek{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
-.hero__cimkek li{background:var(--sarga);color:var(--fekete);font-weight:800;font-size:11.5px;text-transform:uppercase;letter-spacing:.05em;padding:5px 10px;border-radius:3px}
+.hero__cimkek{display:flex;align-items:center;gap:10px;margin-bottom:14px;color:var(--sarga);font-weight:800;font-size:12.5px;text-transform:uppercase;letter-spacing:.07em;white-space:nowrap}
+.hero__cimkek i{width:5px;height:5px;background:var(--sarga);transform:rotate(45deg);flex:none}
 .hero h1{font-size:clamp(27px,7.6vw,32px);font-weight:900;text-transform:uppercase;letter-spacing:-.005em;line-height:1.02}
 .hero__al{margin-top:14px;color:#e4e5e7;font-size:15.5px;max-width:48ch}
 .pipak{margin-top:20px;display:grid;gap:9px}
 .pipak li{display:flex;gap:11px;align-items:flex-start;font-weight:600;font-size:14.5px}
-.pipak li::before{content:"";flex:none;width:22px;height:22px;margin-top:1px;border-radius:50%;background:var(--sarga) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='m6 12.5 4 4 8-9' fill='none' stroke='%230F1011' stroke-width='3'/%3E%3C/svg%3E") center/15px no-repeat}
+.pipak li::before{content:"";flex:none;width:22px;height:22px;margin-top:1px;border-radius:50%;background:var(--sarga) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='m6 12.5 4 4 8-9' fill='none' stroke='%2313181D' stroke-width='3'/%3E%3C/svg%3E") center/15px no-repeat}
 .pipak--sotet li{color:var(--fekete)}
 .hero__gombok{display:grid;gap:10px;margin-top:26px}
 @media (min-width:520px){.hero__gombok{display:flex;flex-wrap:wrap}}
@@ -140,28 +140,30 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
 .gyors__megj{margin-top:12px;text-align:center;font-size:14px;color:var(--szurke)}
 .gyors__megj a{font-weight:800;color:var(--fekete);text-decoration:none}
 
-.pecset{position:absolute;right:18px;top:22px;width:94px;transform:rotate(-8deg);display:none}
+.pecset{display:none!important}
 @media (min-width:700px){.pecset{display:block}}
 @media (min-width:1000px){
   .hero{padding:72px 0 150px;min-height:640px}
-  .hero__hatter::after{background:linear-gradient(90deg,rgba(15,16,17,.95) 0%,rgba(15,16,17,.8) 40%,rgba(15,16,17,.35) 70%,rgba(15,16,17,.55) 100%)}
+  .hero__hatter::after{background:linear-gradient(90deg,rgba(19,24,29,.94) 0%,rgba(19,24,29,.78) 38%,rgba(19,24,29,.2) 66%,rgba(19,24,29,.35) 100%),linear-gradient(180deg,transparent 70%,rgba(19,24,29,.9))}
   .hero__racs{grid-template-columns:1fr 400px;gap:56px;align-items:center}
-  .hero h1{font-size:clamp(44px,4.1vw,54px)}
+  .hero h1{font-size:46px}
   .hero__al{font-size:18px}
   .pecset{width:120px;right:auto;left:calc(50% + 70px);top:auto;bottom:150px}
 }
 
 /* ráúszó csempék */
 .hero-also{background:var(--fekete)}
-.csempek{position:relative;z-index:5;display:grid;grid-template-columns:1fr;gap:10px;margin-top:-64px}
+.csempek{position:relative;z-index:5;display:flex;gap:10px;margin-top:-56px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:var(--oldal);scrollbar-width:none;padding-bottom:6px}
+.csempek::-webkit-scrollbar{display:none}
+.csempe{flex:0 0 72%;scroll-snap-align:start}
 .csempe{position:relative;display:flex;align-items:flex-end;min-height:110px;border-radius:var(--r);overflow:hidden;text-decoration:none;color:var(--feher);background:var(--fekete);box-shadow:0 14px 34px rgba(0,0,0,.28);border-bottom:5px solid var(--sarga)}
 .csempe img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55;transition:opacity .3s,transform .6s var(--atm)}
 .csempe span{position:relative;padding:16px 18px;font-size:14px;color:#e8e8e8;display:block;width:100%;background:linear-gradient(transparent,rgba(0,0,0,.6))}
 .csempe b{display:block;font-size:17px;font-weight:900;text-transform:uppercase;color:var(--feher);letter-spacing:.01em}
-.csempe::after{content:"";position:absolute;right:16px;bottom:18px;width:34px;height:34px;border-radius:50%;background:var(--sarga) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5 12h13m-5-5 5 5-5 5' fill='none' stroke='%230F1011' stroke-width='2.6'/%3E%3C/svg%3E") center/18px no-repeat}
+.csempe::after{content:"";position:absolute;right:16px;bottom:18px;width:34px;height:34px;border-radius:50%;background:var(--sarga) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5 12h13m-5-5 5 5-5 5' fill='none' stroke='%2313181D' stroke-width='2.6'/%3E%3C/svg%3E") center/18px no-repeat}
 .csempe:hover img{opacity:.7;transform:scale(1.04)}
 @media (min-width:700px){.hero h1{font-size:40px}.fej h2,.garancia h2,.ajanlat h2,.rolunk h2{font-size:32px}.kartya h3{font-size:20px}.csempe b{font-size:19px}.tenyek dt{font-size:20px}.gyors h2{font-size:21px}}
-@media (min-width:700px){.csempek{grid-template-columns:repeat(3,1fr);gap:18px;margin-top:-92px}.csempe{min-height:170px}}
+@media (min-width:700px){.csempek{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:-92px;overflow:visible}.csempe{min-height:170px}}
 
 /* ---------- gerinces sárga bizalmi sáv ---------- */
 .bizalom{position:relative;background:var(--sarga);margin-top:-40px;z-index:1;padding:calc(40px + var(--gerinc) + 26px) 0 34px;clip-path:polygon(0 var(--gerinc),50% 0,100% var(--gerinc),100% 100%,0 100%)}
@@ -180,7 +182,7 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
 .fej__felso::before{content:"";width:22px;height:12px;background:var(--sarga);clip-path:polygon(0 100%,50% 0,100% 100%,80% 100%,50% 40%,20% 100%)}
 .fej h2,.garancia h2,.ajanlat h2{font-size:clamp(23px,6.4vw,26px);font-weight:900;text-transform:uppercase;letter-spacing:-.005em;line-height:1.05}
 .fej p:not(.fej__felso){margin-top:14px;color:#4a4d52}
-@media (min-width:1000px){.fej{margin-bottom:50px}.fej h2,.garancia h2,.ajanlat h2{font-size:clamp(36px,3.1vw,44px)}}
+@media (min-width:1000px){.fej{margin-bottom:46px}.fej h2,.garancia h2,.ajanlat h2{font-size:36px}}
 
 /* ---------- szolgáltatások ---------- */
 .szolg{background:var(--tort)}
@@ -196,22 +198,33 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
 .kartya__link{margin-top:auto;padding-top:6px;font-weight:800;text-transform:uppercase;font-size:14px;letter-spacing:.04em;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
 .kartya__link::after{content:"";width:18px;height:2.5px;background:var(--sarga);transition:width .25s}
 @media (hover:hover){.kartya:hover{transform:translateY(-4px);box-shadow:0 2px 0 #e3e2de,0 26px 50px -24px rgba(0,0,0,.45)}.kartya:hover .kartya__kep img{transform:scale(1.05)}.kartya:hover .kartya__link::after{width:30px}}
+@media (max-width:699px){
+  .szolg__racs{gap:12px}
+  .kartya{display:grid;grid-template-columns:108px 1fr}
+  .kartya__kep{aspect-ratio:auto;position:relative;min-height:0}
+  .kartya__kep img{position:absolute;inset:0}
+  .kartya__ikon{display:none}
+  .kartya__test{padding:14px 14px 16px;gap:6px}
+  .kartya h3{font-size:16px}
+  .kartya p{font-size:14px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .kartya__link{font-size:12.5px;margin-top:2px}
+}
 @media (min-width:700px){.szolg__racs{grid-template-columns:1fr 1fr;gap:24px}}
 @media (min-width:1050px){.szolg__racs{grid-template-columns:repeat(3,1fr)}}
 
 /* ---------- garancia ---------- */
 .garancia{position:relative;color:var(--feher);background:var(--fekete);padding:calc(var(--szakasz) + var(--gerinc)) 0 var(--szakasz);clip-path:polygon(0 var(--gerinc),50% 0,100% var(--gerinc),100% 100%,0 100%);margin-top:calc(var(--gerinc) * -1)}
-.garancia__kep{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.28}
-.garancia::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--fekete) 10%,rgba(15,16,17,.6))}
+.garancia__kep{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 70%;opacity:.22}
+.garancia::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--fekete) 10%,rgba(19,24,29,.55))}
 .garancia__racs{position:relative;display:grid;gap:30px;align-items:center}
-.garancia__jelveny{width:180px;margin:0 auto}
+.garancia__jelveny{width:104px;margin:0}
 .garancia__szoveg>p:not(.fej__felso){margin-top:16px;color:#d9dadc;max-width:56ch}
 .garancia .fej__felso{color:var(--sarga)}
 .tenyek{margin:28px 0 0;display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .tenyek div{border-left:4px solid var(--sarga);background:rgba(255,255,255,.06);padding:12px 14px}
 .tenyek dt{font-weight:900;font-size:17px;text-transform:uppercase;color:var(--sarga)}
 .tenyek dd{margin:2px 0 0;font-size:14px;color:#cfd0d3}
-@media (min-width:900px){.garancia__racs{grid-template-columns:320px 1fr;gap:72px}.garancia__jelveny{width:300px}.tenyek{grid-template-columns:repeat(4,1fr)}}
+@media (min-width:900px){.garancia__racs{grid-template-columns:320px 1fr;gap:72px}.garancia__jelveny{width:190px;margin:0 auto}.tenyek{grid-template-columns:repeat(4,1fr)}}
 
 /* ---------- módszer ---------- */
 .modszer{background:var(--feher)}
@@ -254,14 +267,14 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
 .szuro__gomb:hover{border-color:var(--fekete)}
 .szuro__gomb.aktiv{background:var(--fekete);color:var(--sarga);border-color:var(--fekete)}
 @media (min-width:900px){.szuro{margin-left:0;margin-right:0;padding:0;flex-wrap:wrap}}
-.galeria{columns:2;column-gap:8px}
-.galeria li{position:relative;border-radius:var(--r);overflow:hidden;background:#ddd;break-inside:avoid;margin-bottom:8px}
+.galeria{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.galeria li{position:relative;border-radius:var(--r);overflow:hidden;background:#ddd;aspect-ratio:1/1}
 .galeria li[hidden]{display:none}
-.galeria button{display:block;width:100%;padding:0;border:0;background:none}
-.galeria img{width:100%;height:auto;transition:transform .6s var(--atm)}
+.galeria button{display:block;width:100%;height:100%;padding:0;border:0;background:none}
+.galeria img{width:100%;height:100%;object-fit:cover;transition:transform .6s var(--atm)}
 .galeria .gf{position:absolute;left:0;right:0;bottom:0;padding:26px 12px 10px;font-size:13px;font-weight:600;text-align:left;color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.75));opacity:0;transition:opacity .3s;pointer-events:none}
 @media (hover:hover){.galeria li:hover img{transform:scale(1.04)}.galeria li:hover .gf{opacity:1}}
-@media (min-width:700px){.galeria{columns:3;column-gap:14px}.galeria li{margin-bottom:14px}}
+@media (min-width:700px){.galeria{grid-template-columns:repeat(3,1fr);gap:14px}.galeria li{aspect-ratio:4/3}}
 .galeria.zart li.tobb{display:none}
 .tobbgomb{display:flex;margin:22px auto 0}
 .tobbgomb[hidden]{display:none}
@@ -294,13 +307,14 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
 .terkep figcaption b{display:block;color:var(--sarga);text-transform:uppercase;font-weight:900;letter-spacing:.03em}
 .terkep__korok circle{fill:none;stroke:#3a3d42;stroke-width:1.2}
 .terkep__korok circle.kulso{stroke:var(--sarga);stroke-width:2;stroke-dasharray:6 6}
-.terkep__korok text{font:700 11px "Archivo";fill:#7d8086}
+.terkep__korok text{font:700 14px "Archivo";fill:#8a95a0}
 .terkep__varosok circle{fill:#fff}
-.terkep__varosok text{font:700 13px "Archivo";fill:#fff}
+.terkep__varosok g:not(.bazis) circle{r:6px}
+.terkep__varosok text{font:700 17px "Archivo";fill:#fff}
 .terkep__varosok .bazis circle.bel{fill:var(--sarga);stroke:var(--fekete);stroke-width:2}
 .terkep__varosok .bazis circle.gy{fill:rgba(255,194,14,.2);stroke:var(--sarga);stroke-width:2}
-.terkep__varosok .bazis text{font-weight:900;font-size:15px;fill:var(--sarga)}
-@media (min-width:1000px){.rolunk__racs{grid-template-columns:1fr 1fr;gap:80px}.rolunk h2{font-size:clamp(36px,3.1vw,44px)}}
+.terkep__varosok .bazis text{font-weight:900;font-size:19px;fill:var(--sarga)}
+@media (min-width:1000px){.rolunk__racs{grid-template-columns:1fr 1fr;gap:80px}.rolunk h2{font-size:36px}}
 
 /* ---------- GYIK ---------- */
 .gyik{background:var(--tort)}
@@ -311,7 +325,7 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
 .gyik details[open]{border-left-color:var(--sarga)}
 .gyik summary{list-style:none;cursor:pointer;padding:16px 52px 16px 16px;font-weight:800;font-size:15.5px;position:relative}
 .gyik summary::-webkit-details-marker{display:none}
-.gyik summary::after{content:"";position:absolute;right:16px;top:50%;width:26px;height:26px;margin-top:-13px;border-radius:50%;background:var(--fekete) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 5v14M5 12h14' fill='none' stroke='%23FFC20E' stroke-width='3'/%3E%3C/svg%3E") center/14px no-repeat;transition:transform .25s}
+.gyik summary::after{content:"";position:absolute;right:16px;top:50%;width:26px;height:26px;margin-top:-13px;border-radius:50%;background:var(--fekete) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 5v14M5 12h14' fill='none' stroke='%23FFB81C' stroke-width='3'/%3E%3C/svg%3E") center/14px no-repeat;transition:transform .25s}
 .gyik details[open] summary::after{transform:rotate(45deg)}
 .gyik details p{padding:0 18px 18px;color:#4a4d52}
 @media (min-width:1000px){.gyik__racs{grid-template-columns:5fr 7fr;gap:72px;align-items:start}}
@@ -324,8 +338,8 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
 .nagytel svg{width:30px;height:30px;fill:none;stroke:var(--fekete);stroke-width:2.4}
 .ajanlat__gombok{display:grid;grid-template-columns:1fr;gap:10px;margin-top:20px;max-width:480px}
 @media (min-width:480px){.ajanlat__gombok{grid-template-columns:1fr 1fr}}
-.elerhetoseg{margin:28px 0 0;display:grid;border-top:2px solid rgba(15,16,17,.15)}
-.elerhetoseg div{padding:12px 0;border-bottom:2px solid rgba(15,16,17,.15)}
+.elerhetoseg{margin:28px 0 0;display:grid;border-top:2px solid rgba(19,24,29,.15)}
+.elerhetoseg div{padding:12px 0;border-bottom:2px solid rgba(19,24,29,.15)}
 .elerhetoseg dt{font-size:12.5px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#5a4a00}
 .elerhetoseg dd{margin:2px 0 0;font-weight:700}
 .elerhetoseg a{text-decoration:none}
@@ -356,7 +370,7 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
 /* ---------- lábléc ---------- */
 .lab{background:var(--fekete);color:#cfd0d3;padding:56px 0 calc(110px + env(safe-area-inset-bottom))}
 .lab__racs{display:grid;gap:36px}
-.lab__marka img{width:140px}
+.lab__marka img{width:92px}
 .lab__marka p{margin-top:16px;font-size:15px;max-width:36ch;color:var(--halvany)}
 .lab h2{font-size:14px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:var(--sarga);margin-bottom:14px}
 .lab ul{display:grid;gap:8px;font-size:15px}

@@ -7,8 +7,8 @@ A régi webnode-os oldalhoz nem nyúltunk; a terv `noindex`.
 ## 2. kör – a vezető tetőfedő oldalak mintájára
 Az 1. kört („minimalista”, egyszerű betűlogó) az ügyfél gyengének találta. 14 vezető tetőfedő/tetőanyag oldalt fényképeztünk le asztalon és mobilon (Premier Roofing, Schulte, Bone Dry, Artisan, Malarkey, PREFA, Rheinzink, Velux, Heidler, Shingle Savers stb.), és az ott bevált elemekre építettük újra:
 - **Jelvény-logó** (`logo-jelveny.svg`): ház alakú jelvény túlnyúló tetővel és kéménnyel, sárga szalagon TETŐ.PRO, alatta TETŐSZAKÉRTŐ (az ügyfél a hatszögletű pajzs helyett ezt választotta). Fekvő változat a fejlécbe (`logo-fekvo.svg`), kis jel faviconnak (`jel.svg`, TP). Lapos színek, nincs fémes csillogás. Görbékké alakítva.
-- **Színek:** fekete #0F1011, antracit #1A1C1F, jelzősárga #FFC20E, törtfehér #F3F2EF. Erős sárga sávok (bizalmi sáv, ajánlat), a sávok és a garancia-blokk teteje **tetőgerinc alakú** (clip-path).
-- **Betű:** Archivo (helyben), vastag, csupa nagybetűs címek mérsékelt méretben (H1 max. 54 px, mobilon 34–42 px).
+- **Színek (3. kör):** kékes grafitfekete #13181D, antracit #1C232A, meleg borostyánsárga #FFB81C, törtfehér #F2F1ED – a tiszta fekete + citromsárga helyett, nemesebb hatás. Logók mindenhol kisebbek; mobilon vízszintes csempesor, soros szolgáltatás-kártyák, egyforma galériarács, nagyobb térképfeliratok. Erős sárga sávok (bizalmi sáv, ajánlat), a sávok és a garancia-blokk teteje **tetőgerinc alakú** (clip-path).
+- **Betű:** Archivo (helyben), vastag, csupa nagybetűs címek mérsékelt méretben (H1 asztalon 46 px, mobilon 27–32 px; szakaszcímek 36 / 23–26 px).
 - **Felső infósáv + ragadós fejléc** sárga alsó vonallal, a fejlécben „Hívjon most” gomb.
 - **Nyitókép:** teljes képes háttér (elkészült tetőtér-bővítés), címkék, H1, 3 pipás bizalmi pont, Hívás / Ajánlat gomb, jobbra **2 lépéses felmérés-kérő kártya** ikonos munkatípus-választóval, „Garancia” pecsét.
 - **Ráúszó csempék** (Tetőfedés, Lemezfedés, Bádogos munkák) a nyitókép aljára.
