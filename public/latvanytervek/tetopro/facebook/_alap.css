@@ -1,0 +1,5 @@
+@font-face{font-family:A;src:url(../fonts/archivo-v2.woff) format("woff");font-weight:400 900;font-stretch:75% 125%}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:A,sans-serif;background:#0E1215;color:#E9ECEE;-webkit-font-smoothing:antialiased}
+.am{background:linear-gradient(180deg,#FFC94A,#E39E07);-webkit-background-clip:text;background-clip:text;color:transparent}
+.cond{font-stretch:75%;font-weight:900;text-transform:uppercase}
