@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SLY – 3 irány a nyitóképhez</title>
+<meta name="robots" content="noindex, nofollow">
+<style>
+@font-face{font-family:"Hanken";src:url(../fonts/hanken-var.woff) format("woff");font-weight:100 900;font-display:swap}
+@font-face{font-family:"Instrument Serif";src:url(../fonts/instrumentserif-regular.woff) format("woff");font-weight:400;font-display:swap}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;font:400 16px/1.55 "Hanken",Arial,sans-serif;background:#111;color:#111;overflow-x:clip}
+img{display:block;max-width:100%}
+a{color:inherit}
+h1,h2,p,ul,dl,dd,figure{margin:0}
+ul{padding:0;list-style:none}
+.wrap{width:100%;max-width:1240px;margin:0 auto;padding-inline:20px}
+@media (min-width:768px){.wrap{padding-inline:40px}}
+
+/* választó */
+.pick{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 16px;background:#111;color:#eee;border-bottom:1px solid #2a2a2a;font-size:14px}
+.pick b{margin-right:auto;font-weight:600}
+.pick a{display:inline-flex;align-items:center;min-height:40px;padding:0 14px;border:1px solid #444;border-radius:999px;text-decoration:none}
+.pick a:hover{border-color:#eee}
+.lbl{position:absolute;z-index:5;left:16px;bottom:16px;padding:6px 10px;background:rgba(17,17,17,.82);color:#fff;font-size:12.5px;border-radius:4px}
+.dir{position:relative;scroll-margin-top:60px}
+
+/* ===================== A – Ipari: petróleum + jelzőnarancs ===================== */
+.a{--p:#0E2A36;--p2:#123848;--o:#FF6A1A;--c:#E9EEF0;background:var(--p);color:var(--c);min-height:calc(100svh - 61px);padding:56px 0 64px;overflow:hidden}
+.a .grid{display:grid;gap:40px;align-items:center}
+.a .tag{display:inline-flex;align-items:center;gap:10px;font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--o)}
+.a .tag::before{content:"";width:28px;height:3px;background:var(--o)}
+.a h1{margin:20px 0 20px;font-size:clamp(34px,2.6vw + 18px,56px);line-height:1;font-weight:800;letter-spacing:-.02em;text-transform:uppercase}
+.a h1 em{font-style:normal;color:var(--o)}
+.a p.lead{max-width:44ch;font-size:17.5px;color:#B8C6CC;margin-bottom:28px}
+.a .ctas{display:flex;flex-wrap:wrap;gap:10px}
+.a .btn{display:inline-flex;align-items:center;min-height:52px;padding:0 22px;font-weight:700;text-decoration:none;border-radius:2px}
+.a .btn--o{background:var(--o);color:#1A0B02}
+.a .btn--l{box-shadow:inset 0 0 0 2px var(--c)}
+.a .strip{display:flex;flex-wrap:wrap;gap:8px 24px;margin-top:36px;padding-top:20px;border-top:1px solid rgba(233,238,240,.18);font-size:14px;color:#B8C6CC}
+.a .strip b{color:var(--c)}
+.a .mosaic{display:grid;grid-template-columns:1fr 1fr;gap:10px;transform:rotate(-2deg)}
+.a .mosaic figure{position:relative;background:var(--p2);padding:8px 8px 30px;box-shadow:0 20px 40px -20px rgba(0,0,0,.6)}
+.a .mosaic figure:nth-child(2){transform:translateY(28px) rotate(3deg)}
+.a .mosaic figure:nth-child(3){transform:rotate(2deg)}
+.a .mosaic figure:nth-child(4){transform:translateY(24px) rotate(-3deg)}
+.a .mosaic img{width:100%;aspect-ratio:1;object-fit:cover}
+.a .mosaic figcaption{position:absolute;left:8px;bottom:7px;font-size:12px;color:#B8C6CC}
+.a .mosaic figure::before{content:"";position:absolute;z-index:2;top:-8px;left:50%;width:64px;height:18px;margin-left:-32px;background:rgba(255,106,26,.85);transform:rotate(-4deg)}
+@media (min-width:960px){.a .grid{grid-template-columns:1.05fr 1fr;gap:64px}}
+
+/* ===================== B – Élő állapot: erdőzöld + homok ===================== */
+.b{--g:#1D3A2C;--g2:#2C5642;--s:#EFE8DC;--s2:#E3D9C8;--ink:#17201B;background:var(--s);color:var(--ink);display:grid;min-height:calc(100svh - 61px)}
+.b .ph{position:relative;min-height:300px;overflow:hidden;background:var(--g)}
+.b .ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.1);mix-blend-mode:luminosity;opacity:.85}
+.b .ph::after{content:"";position:absolute;inset:0;background:linear-gradient(160deg,rgba(29,58,44,.15),rgba(29,58,44,.75))}
+.b .ph .cap{position:absolute;z-index:2;left:20px;right:20px;bottom:18px;color:#E9E2D4;font-size:13px}
+.b .side{display:flex;flex-direction:column;justify-content:center;padding:40px 20px 48px}
+.b .side>*{max-width:520px}
+.b .k{font-size:13.5px;font-weight:600;color:var(--g2);margin-bottom:18px}
+.b h1{font-size:clamp(32px,2.3vw + 18px,52px);line-height:1.04;font-weight:600;letter-spacing:-.03em;margin-bottom:18px}
+.b p.lead{color:#4B5650;font-size:17px;margin-bottom:26px;max-width:44ch}
+.b .now{display:grid;gap:4px;padding:18px 20px;margin-bottom:24px;background:#fff;border-left:4px solid var(--g);border-radius:2px;box-shadow:0 1px 0 rgba(0,0,0,.06)}
+.b .now small{font-size:12.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#6B746E}
+.b .now b{font-size:19px;font-weight:650}
+.b .now span{font-size:14.5px;color:#4B5650}
+.b .now.is-sos{border-color:#B8322A}
+.b .ctas{display:flex;flex-wrap:wrap;gap:10px}
+.b .btn{display:inline-flex;align-items:center;min-height:52px;padding:0 22px;font-weight:650;text-decoration:none;border-radius:999px}
+.b .btn--g{background:var(--g);color:#F4EFE6}
+.b .btn--r{background:#B8322A;color:#fff}
+.b dl{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:30px;border-top:1px solid #CFC4B1}
+.b dl div{padding:12px 12px 12px 0;border-bottom:1px solid #CFC4B1;font-size:14px}
+.b dt{color:#6B746E}
+.b dd{font-weight:600}
+@media (min-width:960px){.b{grid-template-columns:1fr 1fr}.b .ph{min-height:0}.b .side{padding:56px 64px}}
+
+/* ===================== C – Magazin: törtfehér + kobalt, szerif cím ===================== */
+.c{--bl:#2338D6;--pp:#F2F0EA;--ink:#141414;background:var(--pp);color:var(--ink);min-height:calc(100svh - 61px);padding:28px 0 56px}
+.c .mast{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;padding-bottom:14px;border-bottom:2px solid var(--ink);font-size:13px;font-weight:600}
+.c .mast b{font-size:15px;letter-spacing:.2em}
+.c .mast span{color:#5d5d5d;font-weight:500}
+.c .cover{display:grid;gap:28px;margin-top:28px;align-items:end}
+.c h1{font-family:"Instrument Serif",Georgia,serif;font-weight:400;font-size:clamp(40px,3vw + 22px,64px);line-height:1;letter-spacing:-.01em}
+.c h1 em{color:var(--bl)}
+.c p.lead{margin-top:18px;max-width:42ch;font-size:17px;color:#3f3f3f}
+.c .ctas{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+.c .btn{display:inline-flex;align-items:center;min-height:50px;padding:0 20px;font-weight:600;text-decoration:none;border-radius:0}
+.c .btn--b{background:var(--bl);color:#fff}
+.c .btn--k{box-shadow:inset 0 0 0 1.5px var(--ink)}
+.c .photo{position:relative;margin:0}
+.c .photo img{width:100%;max-width:500px;aspect-ratio:4/5;object-fit:cover}
+.c .photo figcaption{margin-top:8px;font-size:12.5px;color:#5d5d5d}
+.c .no{position:absolute;top:-14px;right:-6px;width:84px;height:84px;display:grid;place-items:center;border-radius:50%;background:var(--bl);color:#fff;font-size:12px;font-weight:700;text-align:center;line-height:1.15;transform:rotate(8deg)}
+.c .toc{display:grid;gap:0;margin-top:36px;border-top:1px solid #bdbab2}
+.c .toc li{display:grid;grid-template-columns:44px 1fr auto;gap:12px;align-items:baseline;padding:12px 0;border-bottom:1px solid #d3d0c8;font-size:15px}
+.c .toc span{font-family:"Instrument Serif",Georgia,serif;font-size:22px;color:var(--bl)}
+.c .toc em{font-style:normal;font-weight:600;color:var(--ink)}
+@media (min-width:960px){.c .cover{grid-template-columns:1.2fr .9fr .9fr;gap:40px}.c .toc{margin-top:0;align-self:end}}
+</style>
+</head>
+<body>
+<nav class="pick" aria-label="Irányok">
+  <b>SLY Mobil Gumiszerviz – 3 nyitókép-irány</b>
+  <a href="#a">A · Ipari</a><a href="#b">B · Élő állapot</a><a href="#c">C · Magazin</a>
+</nav>
+
+<!-- A -->
+<section class="dir a" id="a">
+  <div class="wrap grid">
+    <div>
+      <p class="tag">Mobil gumiszerviz · Sopron</p>
+      <h1>Gumiprobléma?<br><em>Mi megyünk</em> hozzád.</h1>
+      <p class="lead">Felszerelt szervizautó gumiszerelő géppel, centrírozóval, kompresszorral és aggregátorral – otthonodnál, munkahelyeden vagy a céges telephelyen.</p>
+      <div class="ctas">
+        <a class="btn btn--o" href="tel:+36707321908">S.O.S. defekt – hívás</a>
+        <a class="btn btn--l" href="#">Gumicsere időpontkérés</a>
+      </div>
+      <div class="strip"><span><b>0–24</b> S.O.S. defekt</span><span><b>H–P 8:00–17:30</b> tervezett csere</span><span><b>20 km</b> ingyenes kiszállás</span></div>
+    </div>
+    <div class="mosaic" aria-label="Saját munkafotók">
+      <figure><img src="https://slymobilgumi.hu/wp-content/uploads/2021/06/munka2.jpg" alt="Helyszíni kerékszerelés" referrerpolicy="no-referrer"><figcaption>Helyszíni kerékszerelés</figcaption></figure>
+      <figure><img src="https://slymobilgumi.hu/wp-content/uploads/2021/06/munka5.jpg" alt="Szerelő- és centrírozógép" referrerpolicy="no-referrer"><figcaption>A szervizautó gépei</figcaption></figure>
+      <figure><img src="https://slymobilgumi.hu/wp-content/uploads/2021/06/munka3.jpg" alt="Gumiszerelés közben" referrerpolicy="no-referrer"><figcaption>Gumiszerelés</figcaption></figure>
+      <figure><img src="https://slymobilgumi.hu/wp-content/uploads/2021/06/munka7.jpg" alt="Autó és leszerelt kerekek" referrerpolicy="no-referrer"><figcaption>Kerékcsere a helyszínen</figcaption></figure>
+    </div>
+  </div>
+  <p class="lbl">A · Ipari – petróleumkék + jelzőnarancs, „munkalap” fotómozaik</p>
+</section>
+
+<!-- B -->
+<section class="dir b" id="b">
+  <div class="ph">
+    <img src="https://slymobilgumi.hu/wp-content/uploads/2021/06/munka3.jpg" alt="Gumiszerelés a helyszínen – saját fotó" referrerpolicy="no-referrer">
+    <p class="cap">Saját fotó · gumiszerelés a helyszínen</p>
+  </div>
+  <div class="side">
+    <p class="k">SLY Mobil Gumiszerviz · Sopron és vonzáskörzete</p>
+    <h1>A gumicsere jön hozzád. Te maradsz, ahol vagy.</h1>
+    <p class="lead">Helyszíni gumicsere és kerékszerelés munkaidőben – váratlan defektnél éjjel-nappal.</p>
+    <div class="now" id="now"><small>Most</small><b>…</b><span></span></div>
+    <div class="ctas">
+      <a class="btn btn--r" href="tel:+36707321908">S.O.S. hívás</a>
+      <a class="btn btn--g" href="#">Időpontot kérek</a>
+    </div>
+    <dl>
+      <div><dt>Kerékcsere 4 db</dt><dd>13 000 Ft + ÁFA-tól</dd></div>
+      <div><dt>Kiszállás</dt><dd>20 km-en belül ingyenes</dd></div>
+    </dl>
+  </div>
+  <p class="lbl">B · Élő állapot – erdőzöld + homok, osztott kép, „most nyitva / most csak S.O.S.” kártya</p>
+</section>
+
+<!-- C -->
+<section class="dir c" id="c">
+  <div class="wrap">
+    <div class="mast"><b>SLY</b><span>Mobil gumiszerviz · Sopron · Szezonális gumicsere 2026 ősz</span><span>+36 70 732 1908</span></div>
+    <div class="cover">
+      <div>
+        <h1>Gumiprobléma?<br><em>Mi megyünk</em> hozzád.</h1>
+        <p class="lead">Helyszíni gumicsere, kerékszerelés és S.O.S. defektjavítás – a műhely a szervizautóban érkezik.</p>
+        <div class="ctas">
+          <a class="btn btn--b" href="#">Időpontkérés</a>
+          <a class="btn btn--k" href="tel:+36707321908">S.O.S. 0–24</a>
+        </div>
+      </div>
+      <figure class="photo">
+        <img src="https://slymobilgumi.hu/wp-content/uploads/2021/06/munka2.jpg" alt="Helyszíni kerékszerelés – saját fotó" referrerpolicy="no-referrer">
+        <span class="no">Sopron<br>20 km<br>ingyen</span>
+        <figcaption>Helyszíni kerékszerelés · saját fotó</figcaption>
+      </figure>
+      <ol class="toc">
+        <li><span>01</span><em>Helyszíni gumicsere</em>17 000 Ft-tól</li>
+        <li><span>02</span><em>Kerékcsere</em>13 000 Ft-tól</li>
+        <li><span>03</span><em>Gumihotel</em>12 000 Ft-tól</li>
+        <li><span>04</span><em>S.O.S. defekt</em>0–24</li>
+        <li><span>05</span><em>Flották</em>egyéni ár</li>
+      </ol>
+    </div>
+  </div>
+  <p class="lbl">C · Magazin – törtfehér + kobalt, szerif cím, címlap-elrendezés tartalomjegyzékkel</p>
+</section>
+
+<script>
+(function(){
+  var el=document.getElementById('now'); if(!el) return;
+  var t=new Date(), day=t.getDay(), m=t.getHours()*60+t.getMinutes();
+  var open=day>=1&&day<=5&&m>=480&&m<1050;
+  if(open){el.querySelector('b').textContent='Nyitva – tervezett gumicsere és S.O.S. is';el.querySelector('span').textContent='Hétfő–péntek 8:00–17:30';}
+  else{el.classList.add('is-sos');el.querySelector('b').textContent='Most csak S.O.S. defektjavítás';el.querySelector('span').textContent='0–24, telefonos egyeztetéssel · tervezett csere: H–P 8:00–17:30';}
+})();
+</script>
+</body>
+</html>
