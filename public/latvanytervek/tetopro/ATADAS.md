@@ -4,6 +4,13 @@
 Fájlok: `index.html`, `tetopro.css`, `tetopro.js`, `logo-jelveny.svg`, `logo-fekvo.svg`, `jel.svg`, `fonts/archivo.woff` (helyben), `img/` (15 saját fotó, WebP, 800 és 1600 px).
 A régi webnode-os oldalhoz nem nyúltunk; a terv `noindex`.
 
+## 5. kör – tiszta újraírás (érvényes változat)
+A korábbi rétegzett javítások helyett egy egységes CSS (`tetopro.css`) és egyszerűbb HTML.
+- Kompakt: H1 27 / 34 / 42 px, szakaszcímek 22 / 28 px, szöveg 15 px; szakaszközök 48 / 64 / 80 px. Oldalhossz mobilon ~6 000 px.
+- Sorrend: fejléc → nyitókép (cserépfedés-fotó, asztalon felmérés-kártya) → bizalmi sor → szolgáltatások (mobilon lapozható kártyák) → kiemelt munka (tetőtér-bővítés előtte/közben/utána + tények) → folyamat → munkáink (szűrhető galéria) → Rólunk + térkép → GYIK → ajánlat (sötét, űrlap) → lábléc.
+- Színek: grafit #14191E, papír #F5F4F1, borostyán #F5B21B. Mondatkezdő címek, nincs csupa nagybetű, nincs tetőgerinc-levágás.
+- Szövegtördelés: nincs `nowrap`; a „200 km‑es” és a telefonszám nem törhet szét. Gépi ellenőrzés 320, 360, 375, 412, 768, 1024, 1440 px-en: nincs kilógó vagy levágott szöveg, nincs vízszintes görgetés.
+
 ## 2. kör – a vezető tetőfedő oldalak mintájára
 Az 1. kört („minimalista”, egyszerű betűlogó) az ügyfél gyengének találta. 14 vezető tetőfedő/tetőanyag oldalt fényképeztünk le asztalon és mobilon (Premier Roofing, Schulte, Bone Dry, Artisan, Malarkey, PREFA, Rheinzink, Velux, Heidler, Shingle Savers stb.), és az ott bevált elemekre építettük újra:
 - **Jelvény-logó** (`logo-jelveny.svg`): ház alakú jelvény túlnyúló tetővel és kéménnyel, sárga szalagon TETŐ.PRO, alatta TETŐSZAKÉRTŐ (az ügyfél a hatszögletű pajzs helyett ezt választotta). Fekvő változat a fejlécbe (`logo-fekvo.svg`), kis jel faviconnak (`jel.svg`, TP). Lapos színek, nincs fémes csillogás. Görbékké alakítva.
