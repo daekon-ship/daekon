@@ -5,7 +5,7 @@ Fájlok: `index.html`, `tetopro.css`, `tetopro.js`, `logo-jelveny.svg`, `logo-fe
 A régi webnode-os oldalhoz nem nyúltunk; a terv `noindex`.
 
 ## 9. kör – végleges logó (az ügyfél által választott minta alapján)
-- Saját rajz: elkeskenyedő borostyán tetővonal kéménnyel, a gerinc alatt valódi ablak (keret, üveg tükröződéssel, osztólécek, párkány – a négy négyzet túl „Windows”-os volt, a szellőző nem tetszett), a jobb lejtőn kalapács; alatta vastag, keskeny „TETŐ” (borostyán) + „.PRO” (acélszürke), majd „TETŐSZAKÉRTŐ” vonalak között. Fájlok: `logo-teljes.svg` (sötét alapra), `logo-teljes-vilagos.svg` (világos alapra), `logo-jel.svg` (csak a tető, a fejlécbe). A fejlécben: tető felül, alatta HTML-szöveg (TETŐ borostyán, .PRO fehér, TETŐSZAKÉRTŐ). Lábléc: a teljes logó.
+- Saját rajz: kiemelt, vastag tető két tetősíkkal (bal világosabb, jobb sötétebb), eresz alatti éllel, három cserépsor-csíkkal, világos gerinccseréppel és kéménnyel – ablak nélkül (az ügyfél kérésére). Kalapácsos változat: `logo-teljes-kalapaccsal.svg`; alatta vastag, keskeny „TETŐ” (borostyán) + „.PRO” (acélszürke), majd „TETŐSZAKÉRTŐ” vonalak között. Fájlok: `logo-teljes.svg` (sötét alapra), `logo-teljes-vilagos.svg` (világos alapra), `logo-jel.svg` (csak a tető, a fejlécbe). A fejlécben: tető felül, alatta HTML-szöveg (TETŐ borostyán, .PRO fehér, TETŐSZAKÉRTŐ). Lábléc: a teljes logó.
 
 ## 7. kör – fejléc-logó (felülírva)
 - A fejlécben és a láblécben a logó: lekerekített sötét jel (`jel.svg`: borostyán tető kéménnyel, ház-körvonal, fehér TP) + HTML-szöveg „TETŐ.PRO” (19–21 px) és „TETŐSZAKÉRTŐ” (10,5–11 px, borostyán) – a korábbi SVG-ben az alsor alig látszott. A `jel.svg` a favicon is.
@@ -15,7 +15,7 @@ A régi webnode-os oldalhoz nem nyúltunk; a terv `noindex`.
 - A nagy telefonszám az ajánlat-szakaszban 18 px (asztalon 20 px).
 
 ## 9. kör – végleges logó (az ügyfél által választott minta alapján)
-- Saját rajz: elkeskenyedő borostyán tetővonal kéménnyel, a gerinc alatt valódi ablak (keret, üveg tükröződéssel, osztólécek, párkány – a négy négyzet túl „Windows”-os volt, a szellőző nem tetszett), a jobb lejtőn kalapács; alatta vastag, keskeny „TETŐ” (borostyán) + „.PRO” (acélszürke), majd „TETŐSZAKÉRTŐ” vonalak között. Fájlok: `logo-teljes.svg` (sötét alapra), `logo-teljes-vilagos.svg` (világos alapra), `logo-jel.svg` (csak a tető, a fejlécbe). A fejlécben: tető felül, alatta HTML-szöveg (TETŐ borostyán, .PRO fehér, TETŐSZAKÉRTŐ). Lábléc: a teljes logó.
+- Saját rajz: kiemelt, vastag tető két tetősíkkal (bal világosabb, jobb sötétebb), eresz alatti éllel, három cserépsor-csíkkal, világos gerinccseréppel és kéménnyel – ablak nélkül (az ügyfél kérésére). Kalapácsos változat: `logo-teljes-kalapaccsal.svg`; alatta vastag, keskeny „TETŐ” (borostyán) + „.PRO” (acélszürke), majd „TETŐSZAKÉRTŐ” vonalak között. Fájlok: `logo-teljes.svg` (sötét alapra), `logo-teljes-vilagos.svg` (világos alapra), `logo-jel.svg` (csak a tető, a fejlécbe). A fejlécben: tető felül, alatta HTML-szöveg (TETŐ borostyán, .PRO fehér, TETŐSZAKÉRTŐ). Lábléc: a teljes logó.
 
 ## 7. kör – fejléc-logó (felülírva)
 - Fejlécben és láblécben: lekerekített sötét jel (`jel.svg`: borostyán tető kéménnyel, ház-körvonal, fehér TP) + HTML-szöveg „TETŐ.PRO” (19–21 px) és „TETŐSZAKÉRTŐ” (10,5–11 px, borostyán) – a korábbi SVG-ben az alsor alig látszott. A `jel.svg` a favicon is.
