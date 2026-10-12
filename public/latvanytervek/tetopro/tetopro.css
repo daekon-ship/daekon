@@ -406,3 +406,78 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
   .lapozo{display:none}
 }
 @media (min-width:700px) and (max-width:999px){.szolg__racs{grid-template-columns:repeat(3,1fr);gap:12px}.kartya{aspect-ratio:4/3}}
+
+/* =====================================================================
+   „Sötét prémium” változat (sotet.html): teljesen sötét, filmszerű,
+   borostyán fények. A <html class="sotet"> kapcsolja be.
+   ===================================================================== */
+html.sotet{--bg:#0B0E11;--bg-2:#11161A;--bg-3:#181E23;--kontur:rgba(255,255,255,.08);--vil:#E9ECEE;--hal:#98A1A9}
+html.sotet body{background:var(--bg);color:var(--hal)}
+html.sotet h1,html.sotet h2,html.sotet h3{color:var(--vil)}
+html.sotet .fejlec{background:rgba(11,14,17,.92);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid rgba(245,178,27,.35)}
+html.sotet .menu{background:var(--bg)}
+html.sotet .hero{background:var(--bg)}
+html.sotet .hero__kep::after{background:linear-gradient(180deg,rgba(11,14,17,.4) 0%,rgba(11,14,17,0) 22%,rgba(11,14,17,.3) 45%,rgba(11,14,17,.92) 75%,var(--bg) 100%)}
+@media (min-width:1000px){html.sotet .hero{min-height:640px}html.sotet .hero__kep::after{background:radial-gradient(ellipse at 75% 40%,rgba(245,178,27,.10),transparent 55%),linear-gradient(90deg,rgba(11,14,17,.96) 0%,rgba(11,14,17,.8) 38%,rgba(11,14,17,.2) 70%,rgba(11,14,17,.5) 100%),linear-gradient(180deg,transparent 70%,var(--bg))}}
+html.sotet .gyors{background:rgba(17,22,26,.86);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border:1px solid var(--kontur);color:var(--hal);box-shadow:0 30px 70px rgba(0,0,0,.6)}
+html.sotet .gyors legend,html.sotet .gyors__megj a{color:var(--vil)}
+html.sotet .tipusok span{border-color:var(--kontur);color:var(--vil);background:rgba(255,255,255,.02)}
+html.sotet .tipusok svg{stroke:var(--amber)}
+html.sotet .tipusok input:checked+span{background:rgba(245,178,27,.12);border-color:var(--amber)}
+html.sotet .gyors__savok i{background:rgba(255,255,255,.1)}
+html.sotet .gyors__valasztott{color:var(--vil)}
+
+/* bizalmi sor: üveghatású sáv a nyitókép alján */
+html.sotet .bizalom{background:var(--bg);border-bottom:1px solid var(--kontur);border-top:1px solid var(--kontur)}
+html.sotet .bizalom li{border-color:var(--kontur)!important}
+html.sotet .bizalom svg{stroke:var(--amber)}
+html.sotet .bizalom b{color:var(--vil)}
+html.sotet .bizalom span{color:var(--hal)}
+
+/* szakaszok */
+html.sotet .szolg,html.sotet .munkak,html.sotet .gyik{background:var(--bg-2)}
+html.sotet .folyamat,html.sotet .rolunk{background:var(--bg)}
+html.sotet .fej p{color:var(--hal)}
+html.sotet .fej h2::after,html.sotet .kiemelt h2::after,html.sotet .rolunk h2::after,html.sotet .ajanlat h2::after{content:"";display:block;width:36px;height:2px;margin-top:12px;background:var(--amber)}
+html.sotet .nyillink{color:var(--vil)}
+html.sotet .kartya{background:var(--bg-3);box-shadow:0 18px 40px -20px rgba(0,0,0,.8);outline:1px solid var(--kontur);outline-offset:-1px}
+html.sotet .kiemelt{background:linear-gradient(180deg,var(--bg) 0%,#0F1418 100%)}
+html.sotet .kiemelt__fo{outline:1px solid rgba(245,178,27,.25);outline-offset:6px}
+html.sotet .tenyek{background:var(--kontur)}
+html.sotet .tenyek div{background:var(--bg-3)}
+html.sotet .lepesek::before{background:linear-gradient(90deg,var(--amber),rgba(245,178,27,.1))}
+html.sotet .lepesek span{background:var(--bg-3);color:var(--amber);box-shadow:inset 0 0 0 1px rgba(245,178,27,.4)}
+html.sotet .lepesek li:last-child span{background:var(--amber);color:var(--bg)}
+html.sotet .lepesek p{color:var(--hal)}
+html.sotet .szuro__gomb{background:transparent;border-color:var(--kontur);color:var(--hal)}
+html.sotet .szuro__gomb:hover{border-color:var(--amber);color:var(--vil)}
+html.sotet .szuro__gomb.aktiv{background:var(--amber);border-color:var(--amber);color:var(--bg)}
+html.sotet .galeria li{background:var(--bg-3)}
+html.sotet .gomb--vonal{border-color:rgba(255,255,255,.3);color:var(--vil)}
+html.sotet .gomb--vonal:hover{background:var(--vil);color:var(--bg)}
+html.sotet .gomb--sotet{background:var(--amber);color:var(--bg)}
+html.sotet .gomb--sotet:hover{background:var(--amber-d)}
+html.sotet .rolunk__bev,html.sotet .pipak li{color:var(--vil)}
+html.sotet .rolunk__racs>div>p:not(.rolunk__bev){color:var(--hal)}
+html.sotet .terkep{background:var(--bg-3);outline:1px solid var(--kontur)}
+html.sotet .gyik details{background:var(--bg-3);border-color:var(--kontur)}
+html.sotet .gyik details[open]{border-color:rgba(245,178,27,.4)}
+html.sotet .gyik summary{color:var(--vil)}
+html.sotet .gyik summary::after{background-color:rgba(255,255,255,.08);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 5v14M5 12h14' fill='none' stroke='%23F5B21B' stroke-width='2.6'/%3E%3C/svg%3E")}
+html.sotet .gyik details[open] summary::after{background-color:var(--amber);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 5v14M5 12h14' fill='none' stroke='%230B0E11' stroke-width='2.6'/%3E%3C/svg%3E")}
+html.sotet .gyik details p{color:var(--hal)}
+
+/* ajánlat: borostyán fény a háttérben */
+html.sotet .ajanlat{background:radial-gradient(ellipse at 15% 0%,rgba(245,178,27,.14),transparent 55%),var(--bg);border-top:1px solid rgba(245,178,27,.35)}
+html.sotet .elerhetoseg,html.sotet .elerhetoseg div{border-color:var(--kontur)}
+html.sotet .urlap{background:var(--bg-3);color:var(--hal);outline:1px solid var(--kontur)}
+html.sotet .urlap h3,html.sotet .mezo label,html.sotet .mezo legend{color:var(--vil)}
+html.sotet .mezo input,html.sotet .mezo textarea{background:var(--bg);border-color:var(--kontur);color:var(--vil)}
+html.sotet .mezo input:focus,html.sotet .mezo textarea:focus{border-color:var(--amber);background:var(--bg)}
+html.sotet .valaszto span{border-color:var(--kontur);color:var(--vil)}
+html.sotet .valaszto input:checked+span{background:var(--amber);border-color:var(--amber);color:var(--bg)}
+html.sotet .lab{background:#07090B;border-top:1px solid var(--kontur)}
+html.sotet .mobilsav{background:rgba(11,14,17,.95);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-top:1px solid rgba(245,178,27,.35)}
+html.sotet .gomb--feher{background:rgba(255,255,255,.1);color:var(--vil);border-color:rgba(255,255,255,.25)}
+html.sotet .gomb--feher:hover{background:rgba(255,255,255,.18)}
+html.sotet .gomb--sarga{box-shadow:0 8px 24px -8px rgba(245,178,27,.55)}
