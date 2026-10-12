@@ -196,3 +196,44 @@
   d.addEventListener('focusout', function () { st.typing = false; setTimeout(updateBar, 50); });
   updateBar();
 })();
+
+/* ---- 9. kör: sötét nyitójelenet – forgó abroncs, görgetésre kitáguló ablak ---- */
+(function () {
+  'use strict';
+  var d = document, reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var hx = d.querySelector('.hx'), pin = d.getElementById('hxPin'); if (!hx || !pin) return;
+  var photo = d.getElementById('hxPhoto'), tyre = d.getElementById('hxTyre'), copy = d.getElementById('hxCopy'), say = d.getElementById('hxSay'), cue = d.getElementById('hxCue');
+  var spin = d.querySelector('.hx__spin'), clamp = function (v, a, b) { return Math.max(a, Math.min(b, v)); };
+  var ease = function (t) { return t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; };
+  var visible = true, base = 0, last = 0, prog = 0;
+  function desktop() { return window.innerWidth >= 900 && !reduce; }
+  function render() {
+    if (!desktop()) { ['--r', '--cx', '--cy', '--g', '--fade'].forEach(function (k) { photo.style.removeProperty(k); }); [tyre, copy, say].forEach(function (el) { el.style.transform = ''; el.style.opacity = ''; }); return; }
+    var r = hx.getBoundingClientRect(), total = hx.offsetHeight - pin.offsetHeight;
+    var p = clamp(-r.top / (total || 1), 0, 1); prog = p;
+    var W = pin.clientWidth, H = pin.clientHeight, ts = Math.min(H * .78, W * .52), r0 = ts * .303;
+    var e = ease(clamp(p / .62, 0, 1));
+    var cx = W * .71 + (W * .5 - W * .71) * e, cy = H * .52;
+    var rEnd = Math.hypot(Math.max(cx, W - cx), Math.max(cy, H - cy)) * 1.02;
+    photo.style.setProperty('--cx', cx.toFixed(1) + 'px'); photo.style.setProperty('--cy', cy.toFixed(1) + 'px');
+    photo.style.setProperty('--r', (r0 + (rEnd - r0) * e).toFixed(1) + 'px');
+    photo.style.setProperty('--g', (.35 + e * .65).toFixed(3)); photo.style.setProperty('--fade', (e * .9).toFixed(3));
+    tyre.style.transform = 'scale(' + (1 + e * 2.3).toFixed(3) + ')'; tyre.style.opacity = (1 - clamp(e * 1.4, 0, 1)).toFixed(3);
+    var c = clamp(p / .26, 0, 1); copy.style.opacity = (1 - c).toFixed(3); copy.style.transform = 'translateY(' + (-40 * c).toFixed(1) + 'px)'; copy.style.pointerEvents = c > .6 ? 'none' : '';
+    var q = clamp((p - .6) / .28, 0, 1); say.style.opacity = q.toFixed(3); say.style.transform = 'translateY(' + ((1 - q) * 28).toFixed(1) + 'px)';
+    cue.style.opacity = (1 - clamp(p / .08, 0, 1)).toFixed(3);
+  }
+  var tick = false;
+  window.addEventListener('scroll', function () { if (tick) return; tick = true; requestAnimationFrame(function () { tick = false; render(); }); }, { passive: true });
+  window.addEventListener('resize', render); render();
+  if (!reduce) {
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { visible = es[0].isIntersecting; if (visible) requestAnimationFrame(loop); }).observe(pin);
+    var loop = function (t) {
+      if (!visible) return;
+      var dt = last ? Math.min(t - last, 64) : 16; last = t; base += dt * .005;
+      spin.setAttribute('transform', 'rotate(' + (base + window.scrollY * .2).toFixed(2) + ')');
+      requestAnimationFrame(loop);
+    };
+    requestAnimationFrame(loop);
+  }
+})();

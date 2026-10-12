@@ -11,6 +11,10 @@ A korábbi körök effektjei (rajzolt gumi, rajzfilmes szervizautó, 3D út, met
 - Szerkezet: hero (fotó + kulcsadatok sora) → két út (tervezett / S.O.S.) → 4 lépés → 13 tételes szolgáltatás-index (asztalon a sor fölött saját fotó) → a szervizautó felszereltsége (fotó + specifikációs sorok) → S.O.S. → árlista (6 fül, nettó/bruttó) + díjkalkulátor → munkáink (galéria + „A terepről” + partnerek) → flották + ajánlatkérő → GYIK → kapcsolat + időpontkérő → lábléc.
 - Mozgás: csak finom beúszás és képnagyítás rámutatásra; `prefers-reduced-motion` esetén semmi.
 
+## 9. kör – sötét, filmszerű nyitás
+- A hero sötét: a saját munkafotó egy lassan forgó abroncs ablakán át látszik (ezüst oldalfal-felirat, monokróm). Asztalon görgetésre az ablak kitágul, a fotó kitölti a képernyőt, majd: „A műhely jön. Te maradsz.” Mobilon statikus kerék-ablak, alatta a szöveg és a gombok. GSAP nélkül, saját könnyű kóddal; `prefers-reduced-motion` esetén statikus.
+- Alatta a 8. kör tiszta, rendezett oldala (kulcsadatok sora, két út, lépések, szolgáltatások, árak, munkák, flotta, GYIK, kapcsolat).
+
 ## Mi van ellenőrizve
 - Árak: a brief árlistája tételesen (2025. 02. 01-től visszavonásig). Bruttó = nettó × 1,27, kerekítve.
 - Kalkulátor: csak közzétett árak; felárak csak gumiszerelésnél; +50% a szolgáltatásdíjra munkaidőn túl; körzeten kívüli kiszállást nem számol.

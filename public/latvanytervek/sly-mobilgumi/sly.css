@@ -383,3 +383,48 @@ img.is-missing{opacity:0}
   *,*::before,*::after{animation:none !important;transition:none !important}
   .js .rv{opacity:1;transform:none}
 }
+
+/* =====================================================================
+   9. kör — sötét, filmszerű nyitás (görgetésre kitáguló kerék-ablak)
+   ===================================================================== */
+.hx{position:relative;background:#0B0C0D;color:#C9CDD1}
+.js .hx{height:230vh}
+.hx__pin{position:relative;overflow:hidden;isolation:isolate;height:calc(100svh - var(--hdr));min-height:600px;
+  --ts:min(78svh,52vw);--cx:71%;--cy:52%;--r:calc(var(--ts) * .303)}
+.js .hx__pin{position:sticky;top:var(--hdr)}
+.hx__pin::before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(55% 65% at 71% 52%,rgba(244,243,239,.06),transparent 65%)}
+.hx__photo{position:absolute;inset:0;z-index:0;overflow:hidden;clip-path:circle(var(--r) at var(--cx) var(--cy));--g:.35}
+.hx__photo img{position:absolute;max-width:none;left:calc(var(--cx) - var(--r));top:calc(var(--cy) - var(--r));width:calc(var(--r) * 2);height:calc(var(--r) * 2);object-fit:cover;filter:grayscale(var(--g)) contrast(1.06) brightness(.94)}
+.hx__photo::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(11,12,13,.85),rgba(11,12,13,0) 50%);opacity:var(--fade,0)}
+.hx__tyre{position:absolute;z-index:1;width:var(--ts);height:var(--ts);left:calc(var(--cx) - var(--ts) / 2);top:calc(var(--cy) - var(--ts) / 2);transform-origin:50% 50%;filter:drop-shadow(0 40px 70px rgba(0,0,0,.6));pointer-events:none}
+.hx__spin{transform-box:view-box;transform-origin:0 0}
+.hx__brand{font:640 19px/1 var(--f);letter-spacing:9px;fill:#C9CDD1}
+.hx__spec{font:500 12.5px/1 var(--f);letter-spacing:4px;fill:#4E5358}
+.hx__grid{position:relative;z-index:3;height:100%;display:flex;align-items:center}
+.hx__copy{max-width:min(540px,42vw)}
+.hx .kicker{color:#8F959A}
+.hx h1{font-size:clamp(34px,2.3vw + 18px,54px);line-height:1.03;letter-spacing:-.038em;color:var(--on-dark);margin-bottom:22px}
+.hx h1 span{color:#8F959A}
+.hx__lead{font-size:clamp(16.5px,.3vw + 15.5px,18px);max-width:46ch;margin-bottom:30px;color:#C9CDD1}
+.hx__note{font-size:13.5px;color:#8F959A}
+.hx__say{position:absolute;z-index:4;left:0;right:0;bottom:12%;text-align:center;opacity:0;pointer-events:none;padding:0 var(--gut)}
+.hx__say p{font-size:clamp(32px,2.2vw + 18px,52px);font-weight:560;letter-spacing:-.035em;line-height:1.04;color:var(--on-dark)}
+.hx__say p span{color:#9AA0A5}
+.hx__say small{display:block;margin-top:14px;font-size:12.5px;color:rgba(244,243,239,.7)}
+.hx__cue{position:absolute;z-index:4;left:50%;bottom:22px;transform:translateX(-50%);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#7D8388}
+.hx__cue::after{content:"";display:block;width:1px;height:28px;margin:8px auto 0;background:linear-gradient(#9AA0A5,transparent);animation:cue 1.8s var(--ease) infinite;transform-origin:top}
+@keyframes cue{0%{transform:scaleY(0)}50%{transform:scaleY(1)}100%{transform:scaleY(1);opacity:0}}
+.js .hx__photo{animation:iris 1.4s var(--ease) .1s backwards}
+@keyframes iris{from{clip-path:circle(0 at var(--cx) var(--cy))}}
+.keyband{background:var(--bg)}
+.keyband .keys{margin-top:0;border-top:0}
+@media (max-width:899px){
+  .js .hx{height:auto}
+  .hx__pin,.js .hx__pin{position:relative;top:auto;height:auto;min-height:0;--ts:min(62vw,300px);--cx:50%;--cy:calc(28px + var(--ts) / 2)}
+  .hx__grid{display:block;height:auto;padding-top:calc(52px + var(--ts));padding-bottom:36px}
+  .hx__copy{max-width:none}
+  .hx h1{font-size:clamp(30px,8vw,36px)}
+  .hx__say,.hx__cue{display:none}
+  .keyband .keys{margin-top:8px}
+}
+@media (prefers-reduced-motion:reduce){.js .hx{height:auto}.js .hx__pin{position:relative;top:auto}.hx__say,.hx__cue{display:none}}
