@@ -571,3 +571,16 @@ html.sotet .hero__gombok .gomb{min-height:46px;font-size:13px}
 @media (min-width:1000px){html.sotet .hero h1{font-size:50px}}
 .hero__kep picture{display:block;width:100%;height:100%}
 @media (max-width:999px){html.sotet .hero__kep img{object-position:50% 35%}html.sotet .hero{min-height:min(74svh,560px)}}
+
+/* 12. kör – kompakt fejléc-logó: kis tető a felirat mellett */
+html.sotet .logo{flex-direction:row;align-items:center;gap:8px}
+html.sotet .logo img.logo__jel{width:50px;margin:0}
+html.sotet .logo__szo{align-items:flex-start}
+html.sotet .logo__szo b{font-size:17px;line-height:1}
+html.sotet .logo__szo small{font-size:7px;letter-spacing:.22em;margin-top:3px}
+html.sotet .fejlec__sor{min-height:54px;padding-top:0;padding-bottom:0}
+@media (min-width:1060px){html.sotet .logo img.logo__jel{width:60px}html.sotet .logo__szo b{font-size:20px}html.sotet .logo__szo small{font-size:8px}html.sotet .fejlec__sor{min-height:62px}}
+@media (max-width:359px){html.sotet .logo img.logo__jel{width:42px}html.sotet .logo__szo b{font-size:15px}}
+html.sotet .logo img.logo__jel{width:60px}
+@media (min-width:1060px){html.sotet .logo img.logo__jel{width:70px}}
+@media (max-width:359px){html.sotet .logo img.logo__jel{width:48px}}
