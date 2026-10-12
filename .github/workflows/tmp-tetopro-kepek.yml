@@ -9,27 +9,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Fetch client images from old site
+      - name: Fetch fonts
         run: |
           set -e
-          mkdir -p _tetopro
-          cd _tetopro
-          for p in "" szolgaltatasok/ munkank/ rolunk/ kapcsolat/; do
-            curl -sSL "https://tetofedoa-tol-z-ig.webnode.hu/$p" -o "page_${p%/}.html" || true
-          done
-          cat page_*.html | grep -oE 'https://2f34479d4f\.cbaul-cdnwnd\.com/[^"'"'"' )?]+\.(jpe?g|png|webp)' | sed -E 's#/(700|1000|1920|450|200)/#/#' | sort -u > urls.txt
-          cat page_*.html | grep -oE 'https?://[^"'"'"' )]*cdnwnd[^"'"'"' )]*' | sort -u > allcdn.txt || true
-          cat urls.txt
-          i=0
-          while read u; do
-            i=$((i+1)); n=$(basename "$u")
-            curl -sSL "$u?ph=2f34479d4f" -o "$n" || true
-          done < urls.txt
+          mkdir -p _fonts && cd _fonts
+          curl -sSL -o BigShouldersDisplay.ttf "https://raw.githubusercontent.com/google/fonts/main/ofl/bigshouldersdisplay/BigShouldersDisplay%5Bwght%5D.ttf" || true
+          curl -sSL -o BigShoulders.ttf "https://raw.githubusercontent.com/google/fonts/main/ofl/bigshoulders/BigShoulders%5Bopsz,wght%5D.ttf" || true
+          curl -sSL -o Onest.ttf "https://raw.githubusercontent.com/google/fonts/main/ofl/onest/Onest%5Bwght%5D.ttf" || true
           ls -la
       - name: Commit
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
-          git add _tetopro
-          git commit -m "tmp: tetopro images" || true
+          git add _fonts
+          git commit -m "tmp: fonts" || true
           git push
