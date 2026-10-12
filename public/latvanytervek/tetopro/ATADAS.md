@@ -4,14 +4,20 @@
 Fájlok: `index.html`, `tetopro.css`, `tetopro.js`, `logo-jelveny.svg`, `logo-fekvo.svg`, `jel.svg`, `fonts/archivo.woff` (helyben), `img/` (15 saját fotó, WebP, 800 és 1600 px).
 A régi webnode-os oldalhoz nem nyúltunk; a terv `noindex`.
 
-## 7. kör – fejléc-logó
+## 9. kör – végleges logó (az ügyfél által választott minta alapján)
+- Saját rajz: elkeskenyedő borostyán tetővonal kéménnyel, a gerinc alatt négyosztatú ablak, a jobb lejtőn kalapács; alatta vastag, keskeny „TETŐ” (borostyán) + „.PRO” (acélszürke), majd „TETŐSZAKÉRTŐ” vonalak között. Fájlok: `logo-teljes.svg` (sötét alapra), `logo-teljes-vilagos.svg` (világos alapra), `logo-jel.svg` (csak a tető, a fejlécbe). A fejlécben: tető felül, alatta HTML-szöveg (TETŐ borostyán, .PRO fehér, TETŐSZAKÉRTŐ). Lábléc: a teljes logó.
+
+## 7. kör – fejléc-logó (felülírva)
 - A fejlécben és a láblécben a logó: lekerekített sötét jel (`jel.svg`: borostyán tető kéménnyel, ház-körvonal, fehér TP) + HTML-szöveg „TETŐ.PRO” (19–21 px) és „TETŐSZAKÉRTŐ” (10,5–11 px, borostyán) – a korábbi SVG-ben az alsor alig látszott. A `jel.svg` a favicon is.
 
 ## 8. kör – kompaktabb mobil
 - Szolgáltatások mobilon lapozás helyett 2 oszlopos rács (6 négyzetes kép, rajta a cím); tableten 3 oszlop.
 - A nagy telefonszám az ajánlat-szakaszban 18 px (asztalon 20 px).
 
-## 7. kör – fejléc-logó
+## 9. kör – végleges logó (az ügyfél által választott minta alapján)
+- Saját rajz: elkeskenyedő borostyán tetővonal kéménnyel, a gerinc alatt négyosztatú ablak, a jobb lejtőn kalapács; alatta vastag, keskeny „TETŐ” (borostyán) + „.PRO” (acélszürke), majd „TETŐSZAKÉRTŐ” vonalak között. Fájlok: `logo-teljes.svg` (sötét alapra), `logo-teljes-vilagos.svg` (világos alapra), `logo-jel.svg` (csak a tető, a fejlécbe). A fejlécben: tető felül, alatta HTML-szöveg (TETŐ borostyán, .PRO fehér, TETŐSZAKÉRTŐ). Lábléc: a teljes logó.
+
+## 7. kör – fejléc-logó (felülírva)
 - Fejlécben és láblécben: lekerekített sötét jel (`jel.svg`: borostyán tető kéménnyel, ház-körvonal, fehér TP) + HTML-szöveg „TETŐ.PRO” (19–21 px) és „TETŐSZAKÉRTŐ” (10,5–11 px, borostyán) – a korábbi SVG-ben az alsor alig látszott. A `jel.svg` a favicon is.
 
 ## 6. kör – szebb

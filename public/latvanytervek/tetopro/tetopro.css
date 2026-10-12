@@ -481,3 +481,21 @@ html.sotet .mobilsav{background:rgba(11,14,17,.95);-webkit-backdrop-filter:blur(
 html.sotet .gomb--feher{background:rgba(255,255,255,.1);color:var(--vil);border-color:rgba(255,255,255,.25)}
 html.sotet .gomb--feher:hover{background:rgba(255,255,255,.18)}
 html.sotet .gomb--sarga{box-shadow:0 8px 24px -8px rgba(245,178,27,.55)}
+
+/* ===== 9. kör – új logó: tető kéménnyel, ablakkal, kalapáccsal ===== */
+.logo img.logo__jel{height:30px;width:auto;border-radius:0;box-shadow:none}
+.logo{gap:8px}
+@media (min-width:1060px){.logo img.logo__jel{height:34px}}
+@media (max-width:359px){.logo img.logo__jel{height:24px}}
+.lab__logo{width:200px;height:auto}
+/* a fejléc-logó is a választott minta szerint: tető felül, felirat alatta */
+.logo{flex-direction:column;align-items:center;gap:0}
+.logo img.logo__jel{height:auto;width:118px;margin-bottom:-3px}
+.logo__szo{align-items:center}
+.logo__szo b{font-size:19px;letter-spacing:.02em}
+.logo__szo small{font-size:8.5px;letter-spacing:.24em;margin-top:3px}
+.fejlec__sor{min-height:64px}
+@media (min-width:1060px){.logo img.logo__jel{width:132px}.logo__szo b{font-size:21px}.logo__szo small{font-size:9.5px}.fejlec__sor{min-height:72px}}
+@media (max-width:359px){.logo img.logo__jel{width:100px}.logo__szo b{font-size:17px}.logo__szo small{font-size:7.5px}}
+.logo__szo b em{font-style:normal;color:var(--amber)}
+.logo__szo small{color:#C9CFD5}
