@@ -499,3 +499,7 @@ html.sotet .gomb--sarga{box-shadow:0 8px 24px -8px rgba(245,178,27,.55)}
 @media (max-width:359px){.logo img.logo__jel{width:100px}.logo__szo b{font-size:17px}.logo__szo small{font-size:7.5px}}
 .logo__szo b em{font-style:normal;color:var(--amber)}
 .logo__szo small{color:#C9CFD5}
+/* tető és felirat ne folyjon össze a fejlécben */
+.logo img.logo__jel{margin-bottom:3px}
+.fejlec__sor{min-height:70px;padding-top:4px;padding-bottom:4px}
+@media (min-width:1060px){.fejlec__sor{min-height:78px}}
