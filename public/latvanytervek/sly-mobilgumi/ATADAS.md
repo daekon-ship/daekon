@@ -1,19 +1,15 @@
 # SLY Mobil Gumiszerviz — látványterv, átadás
 
 Élő cím: https://daekon-ship.github.io/daekon/latvanytervek/sly-mobilgumi/
-Fájlok: `index.html`, `sly.css`, `sly.js`, `sly-motion.js` (GSAP-jelenetek), `js/` (GSAP 3 + ScrollTrigger, helyben), `fonts/` (Archivo var + IBM Plex Sans/Mono, OFL).
+Fájlok: `index.html`, `sly.css`, `sly.js` (függőség nélkül), `fonts/hanken-var.woff` (Hanken Grotesk, OFL).
 
-## Koncepció (3. kör – fotóközpontú, filmszerű)
-- **Nyitójelenet (asztali, rögzített):** a saját munkafotó egy forgó, SLY-feliratos abroncs „ablakán” át látszik; görgetésre az ablak kitágul, a fotó kitölti a képernyőt (fekete–sárga duotón, raszterpont, filmszemcse – így az 500 px-es eredeti is vállalható nagyban), majd megjelenik: „A műhely jön. Te maradsz.” Mobilon a kerék-ablak statikus, a szöveg alatta.
-- **Kijelentés:** a „Miért mobil?” mondat görgetésre szavanként gyúl ki, két saját fotó parallaxban lebeg mellette.
-- **Két út:** teljes szélességű, fotós plakát-panelek – sárga duotón „Tervezett” és vörös duotón „S.O.S.”; rámutatásra a kiválasztott kiszélesedik.
-- **Munkáink (asztali):** függőleges görgetés → vízszintes, rögzített fotósín számlálóval (01/07), képenkénti mélységi zoommal. Mobilon húzható szalag.
-- Megmaradt és finomodott: „Az út hozzád” jelenet mozgó szervizautóval, metszetrajz, 13 tételes szolgáltatás-index kurzort követő fotóval, oldalfal-dekóder, méretre skálázó kalkulátor, teljes árlista, flották, GYIK, kapcsolat.
-- **4. kör:** rövid belépő (forgó kerék, csak első látogatáskor, utána írisz-nyitás a heróra); a címek szavanként felcsúsznak; 3D perspektivikus út a „hozzád” jelenet mögött, görgetésre fut; vészvillogó fények az S.O.S.-nél; a futószalag a görgetés sebességére megdől; egérrel szaggatott „gumi” kurzor; mobilon görgetésre a fotó kifut a kerékből; plakát-számok az árakban; keréknyom a láblécben.
-- **5. kör (kompakt):** mobilon kisebb kerék-ablak (a hero a gombokkal együtt egy képernyőn), kisebb címek, logó, sávok és szekciótávolságok; javítva a forgó gumi elvándorlása (forgáspont = viewBox-origó).
-- **6. kör (prémium):** a valódi SLY-logó piros–fekete, ezért a sárga figyelmeztető-esztétika kikerült. Paletta: mély fekete, grafit, törtfehér + márkapiros (S.O.S.-hez és apró jelölésekhez). Mondatkezdő, finom súlyú Archivo címek; dísz nélküli, ritkított címkék; egységes fekete-fehér fotókezelés (a gyenge fényű telefonos képek így egységesek); csendes futószalag; vékony vonalak; lekerekített „pill” fülek és chipek.
-- **7. kör (szerkesztés):** „Miért mobil?” – kijelentés + egy fotó + ténysor (a lebegő képek helyett); S.O.S. narancs foltok nélkül; kalkulátor-kerék vonalrajz; térkép-ábra helyett tömör kiszállási szöveg; tagolt lábléc CTA-sávval, logóval és oszlopokkal; listasorok finom érkezése; javítva: a maszkos képfeltárás korábban csak 6 mp késéssel jelent meg.
-- Tipográfia (korábbi körök): keskeny, nagybetűs Archivo plakátcímek (mérsékelt méret), IBM Plex szöveg. Mozgás: GSAP + ScrollTrigger helyben (`js/`), `prefers-reduced-motion` esetén minden jelenet statikus.
+## Koncepció (8. kör – tiszta újraírás, szerkesztett stílus)
+A korábbi körök effektjei (rajzolt gumi, rajzfilmes szervizautó, 3D út, metszetrajz, belépő animáció, egyedi kurzor, futószalag) „gépi”, olcsó hatást keltettek – ezek mind kikerültek.
+- Világos papír alap (#F4F3EF), tintafekete szöveg, hajszálvonalak; a márkapiros csak az S.O.S.-hez és apró jelölésekhez. Az S.O.S.-blokk, a kalkulátor-összegző és a lábléc sötét.
+- Egyetlen betűcsalád (Hanken Grotesk), mérsékelt méretek, szoros betűköz a címeken.
+- Nincs rajzolt illusztráció: csak a cég saját fotói, natív méret közelében, enyhe színkezeléssel. A valódi logó fehér háttere a papíron eltűnik (multiply).
+- Szerkezet: hero (fotó + kulcsadatok sora) → két út (tervezett / S.O.S.) → 4 lépés → 13 tételes szolgáltatás-index (asztalon a sor fölött saját fotó) → a szervizautó felszereltsége (fotó + specifikációs sorok) → S.O.S. → árlista (6 fül, nettó/bruttó) + díjkalkulátor → munkáink (galéria + „A terepről” + partnerek) → flották + ajánlatkérő → GYIK → kapcsolat + időpontkérő → lábléc.
+- Mozgás: csak finom beúszás és képnagyítás rámutatásra; `prefers-reduced-motion` esetén semmi.
 
 ## Mi van ellenőrizve
 - Árak: a brief árlistája tételesen (2025. 02. 01-től visszavonásig). Bruttó = nettó × 1,27, kerekítve.
