@@ -342,3 +342,43 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
 @media (min-width:900px){.mobilsav{display:none}}
 
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important}}
+
+/* ===== 6. kör – szebb: teljes képes mobil nyitókép, magazin-kártyák, finom mozgás ===== */
+/* nyitókép mobilon: a szöveg a fotón ül */
+@media (max-width:999px){
+  .hero{display:flex;flex-direction:column;justify-content:flex-end;min-height:min(86svh,640px);overflow:hidden}
+  .hero__kep{position:absolute;inset:0;height:auto}
+  .hero__kep img{object-position:50% 40%}
+  .hero__kep::after{background:linear-gradient(180deg,rgba(20,25,30,.35) 0%,rgba(20,25,30,0) 22%,rgba(20,25,30,.25) 42%,rgba(20,25,30,.88) 70%,var(--ink) 100%)}
+  .hero__racs{padding-top:120px;padding-bottom:28px}
+}
+.hero__kep img{animation:lassuzoom 18s ease-out both}
+@keyframes lassuzoom{from{transform:scale(1.08)}to{transform:scale(1)}}
+.hero__szoveg>*{animation:beuszik .7s var(--atm) both}
+.hero__szoveg>*:nth-child(2){animation-delay:.08s}
+.hero__szoveg>*:nth-child(3){animation-delay:.16s}
+.hero__szoveg>*:nth-child(4){animation-delay:.24s}
+.hero__szoveg>*:nth-child(5){animation-delay:.32s}
+@keyframes beuszik{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.hero__fele{display:inline-flex;align-items:center;gap:8px}
+.hero__fele::before{content:"";width:18px;height:2px;background:var(--amber)}
+.hero h1{text-shadow:0 2px 24px rgba(0,0,0,.35)}
+
+/* szolgáltatás-kártyák: felirat a képen */
+.kartya{position:relative;border:0;background:var(--ink);aspect-ratio:4/5;box-shadow:0 10px 28px -16px rgba(20,25,30,.55)}
+.kartya img{position:absolute;inset:0;width:100%;height:100%;aspect-ratio:auto}
+.kartya::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,25,30,0) 35%,rgba(20,25,30,.55) 62%,rgba(20,25,30,.95) 100%);pointer-events:none}
+.kartya__test{position:absolute;left:0;right:0;bottom:0;z-index:1;border-top:0;padding:16px 16px 18px}
+.kartya__test::before{content:"";display:block;width:26px;height:3px;background:var(--amber);margin-bottom:10px}
+.kartya h3{color:var(--white);font-size:18px}
+.kartya p{color:#D5DADE;font-size:13.5px}
+@media (min-width:1000px){.kartya{aspect-ratio:4/3.4}.kartya h3{font-size:19px}}
+
+/* kiemelt fotó: kis felirat */
+.kiemelt__fo{position:relative;box-shadow:0 24px 50px -24px rgba(0,0,0,.7)}
+.kiemelt__fo::after{content:"Saját munka";position:absolute;left:12px;bottom:12px;background:rgba(20,25,30,.8);color:#fff;font-size:12px;font-weight:600;padding:5px 10px;border-radius:4px;border-left:3px solid var(--amber)}
+
+/* finom megjelenés görgetéskor */
+.js .felbukkan{opacity:0;transform:translateY(16px);transition:opacity .7s var(--atm),transform .7s var(--atm)}
+.js .felbukkan.lathato{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.hero__kep img,.hero__szoveg>*{animation:none}.js .felbukkan{opacity:1;transform:none}}

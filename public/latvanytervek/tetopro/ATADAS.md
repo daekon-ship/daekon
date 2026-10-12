@@ -4,7 +4,13 @@
 Fájlok: `index.html`, `tetopro.css`, `tetopro.js`, `logo-jelveny.svg`, `logo-fekvo.svg`, `jel.svg`, `fonts/archivo.woff` (helyben), `img/` (15 saját fotó, WebP, 800 és 1600 px).
 A régi webnode-os oldalhoz nem nyúltunk; a terv `noindex`.
 
-## 5. kör – tiszta újraírás (érvényes változat)
+## 6. kör – szebb
+- Minden fotó egységes színezést kapott (finom kontraszt, visszafogott kék ég, meleg tónus, enyhe élesítés) – a telefonos képek így egy sorozatnak hatnak. Az eredeti képek a régi oldalon megvannak.
+- Mobilon a nyitókép teljes képes, a szöveg a fotón ül. Betöltéskor a kép lassan „beáll” (18 mp-es finom közelítés), a szöveg soronként beúszik.
+- Szolgáltatás-kártyák: a cím és a leírás a fotón, sötét átmeneten (magazinszerű).
+- Kiemelt munka fotója „Saját munka” címkét kapott; a szakaszok görgetésre finoman jelennek meg (a vízszintesen lapozható kártyák nem). Csökkentett mozgásnál minden animáció kikapcsol.
+
+## 5. kör – tiszta újraírás (érvényes alap)
 A korábbi rétegzett javítások helyett egy egységes CSS (`tetopro.css`) és egyszerűbb HTML.
 - Kompakt: H1 27 / 34 / 42 px, szakaszcímek 22 / 28 px, szöveg 15 px; szakaszközök 48 / 64 / 80 px. Oldalhossz mobilon ~6 000 px.
 - Sorrend: fejléc → nyitókép (cserépfedés-fotó, asztalon felmérés-kártya) → bizalmi sor → szolgáltatások (mobilon lapozható kártyák) → kiemelt munka (tetőtér-bővítés előtte/közben/utána + tények) → folyamat → munkáink (szűrhető galéria) → Rólunk + térkép → GYIK → ajánlat (sötét, űrlap) → lábléc.

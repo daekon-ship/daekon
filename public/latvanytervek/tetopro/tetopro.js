@@ -276,5 +276,12 @@
     a.addEventListener("click", function (e) { e.preventDefault(); alert("Látványterv: a(z) " + a.dataset.egyeztetendo + " az ügyféllel egyeztetendő."); });
   });
 
+  /* finom megjelenés görgetéskor (szakaszfejek, kártyák) */
+  if ("IntersectionObserver" in window && !csokkentett) {
+    var elemek = $$(".fej, .kiemelt__fo, .kiemelt__szoveg, .lepesek li, .terkep, .gyik details, .urlap");
+    var fo = new IntersectionObserver(function (b) { b.forEach(function (x) { if (x.isIntersecting) { x.target.classList.add("lathato"); fo.unobserve(x.target); } }); }, { rootMargin: "0px 0px -8% 0px" });
+    elemek.forEach(function (e, i) { e.classList.add("felbukkan"); e.style.transitionDelay = (i % 3) * 60 + "ms"; fo.observe(e); });
+  }
+
   var ev = $("#ev"); if (ev) ev.textContent = new Date().getFullYear();
 })();
