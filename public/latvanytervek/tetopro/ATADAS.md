@@ -4,6 +4,12 @@
 Fájlok: `index.html`, `tetopro.css`, `tetopro.js`, `logo-jelveny.svg`, `logo-fekvo.svg`, `jel.svg`, `fonts/archivo.woff` (helyben), `img/` (15 saját fotó, WebP, 800 és 1600 px).
 A régi webnode-os oldalhoz nem nyúltunk; a terv `noindex`.
 
+## 10. kör – az egész oldal a logóra hangolva
+- A fő oldal (`index.html`) is a sötét, prémium alapot kapta (`<html class="sotet">`); `sotet.html` azonos.
+- Címek a logó betűjével: Archivo keskeny (75%), 900-as, nagybetűs; acélszürke átmenetes szín, mint a „.PRO”. Tények, telefonszám, fejléc „TETŐ”: borostyán átmenet, mint a logó „TETŐ” felirata. A betűfájl most 75–125% szélességet tartalmaz.
+- Szakaszcímek felett a logó tetővonala (borostyán ék) a sima csík helyett; gombok borostyán átmenettel, nagybetűs feliratokkal.
+- Fejléc: tető + „TETŐ.PRO / TETŐSZAKÉRTŐ” a logó arányaival; lábléc: teljes logó 210 px.
+
 ## 9. kör – végleges logó (az ügyfél által választott minta alapján)
 - Saját rajz (az ügyfél az 1. – kalapácsos – változatot választotta): kiemelt, vastag tető két tetősíkkal (bal világosabb, jobb sötétebb), eresz alatti éllel, cserépsorokkal és eltolt cserépillesztésekkel, élfénnyel, gerinccseréppel, kéménnyel; a tető alatt, a háromszögben vízszintes ácskalapács (bordás markolat, acélfej, kettéosztott karom). Ablak nincs; a tető és a felirat között tágabb hézag; alatta vastag, keskeny „TETŐ” (borostyán) + „.PRO” (acélszürke), majd „TETŐSZAKÉRTŐ” vonalak között. Fájlok: `logo-teljes.svg` (sötét alapra), `logo-teljes-vilagos.svg` (világos alapra), `logo-jel.svg` (csak a tető, a fejlécbe). A fejlécben: tető felül, alatta HTML-szöveg (TETŐ borostyán, .PRO fehér, TETŐSZAKÉRTŐ). Lábléc: a teljes logó.
 

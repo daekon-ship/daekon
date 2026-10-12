@@ -1,7 +1,7 @@
 /* Tető.pro – látványterv, 5. kör: tiszta újraírás.
    Kompakt méretek, fotóközpontú, egy betűcsalád, sehol nincs nowrap-ból eredő kilógás. */
 
-@font-face{font-family:"Archivo";src:url(fonts/archivo.woff) format("woff");font-weight:400 900;font-stretch:100% 125%;font-display:swap}
+@font-face{font-family:"Archivo";src:url(fonts/archivo.woff) format("woff");font-weight:400 900;font-stretch:75% 125%;font-display:swap}
 
 :root{
   --ink:#14191E;
@@ -503,3 +503,48 @@ html.sotet .gomb--sarga{box-shadow:0 8px 24px -8px rgba(245,178,27,.55)}
 .logo img.logo__jel{margin-bottom:3px}
 .fejlec__sor{min-height:70px;padding-top:4px;padding-bottom:4px}
 @media (min-width:1060px){.fejlec__sor{min-height:78px}}
+
+/* =====================================================================
+   10. kör – minden a logóhoz igazítva: keskeny-vastag betű, borostyán
+   és acél átmenetek, tető-motívum. (Sötét alap: html.sotet)
+   ===================================================================== */
+:root{--am-a:#FFC94A;--am-b:#E39E07;--ac-a:#F2F4F6;--ac-b:#A9B1B9}
+/* címek a logó betűjével: keskeny, nagyon vastag, nagybetűs */
+html.sotet h1,html.sotet h2,html.sotet h3,html.sotet .logo__szo b,html.sotet .tenyek dt,html.sotet .nagytel,html.sotet .lepesek span{font-stretch:75%;font-weight:900;text-transform:uppercase;letter-spacing:.01em}
+html.sotet .hero h1{font-size:34px;line-height:1.02}
+html.sotet .fej h2,html.sotet .kiemelt h2,html.sotet .rolunk h2,html.sotet .ajanlat h2{font-size:28px;line-height:1.05}
+html.sotet .kartya h3{font-size:19px}
+html.sotet .lepesek h3,html.sotet .urlap h3,html.sotet .gyors h2{font-size:18px}
+@media (min-width:700px){html.sotet .hero h1{font-size:44px}html.sotet .fej h2,html.sotet .kiemelt h2,html.sotet .rolunk h2,html.sotet .ajanlat h2{font-size:34px}}
+@media (min-width:1000px){html.sotet .hero h1{font-size:54px}html.sotet .fej h2,html.sotet .kiemelt h2,html.sotet .rolunk h2,html.sotet .ajanlat h2{font-size:38px}html.sotet .kartya h3{font-size:21px}}
+/* kulcsszavak a logó színeivel: borostyán átmenet + acél átmenet */
+html.sotet .hero h1,html.sotet .fej h2,html.sotet .kiemelt h2,html.sotet .rolunk h2,html.sotet .ajanlat h2{background:linear-gradient(180deg,var(--ac-a),var(--ac-b));-webkit-background-clip:text;background-clip:text;color:transparent}
+html.sotet .tenyek dt,html.sotet .nagytel,html.sotet .logo__szo b em{background:linear-gradient(180deg,var(--am-a),var(--am-b));-webkit-background-clip:text;background-clip:text;color:transparent}
+html.sotet .logo__szo b{background:linear-gradient(180deg,var(--ac-a),var(--ac-b));-webkit-background-clip:text;background-clip:text;color:transparent;font-size:22px}
+html.sotet .logo__szo small{color:#C9CFD5;font-size:8.5px;letter-spacing:.3em}
+html.sotet .hero__fele{color:var(--am-a)}
+/* tető-motívum a címek felett (a logó tetővonala) a sima vonal helyett */
+html.sotet .fej h2::after,html.sotet .kiemelt h2::after,html.sotet .rolunk h2::after,html.sotet .ajanlat h2::after{display:none}
+html.sotet .fej h2::before,html.sotet .kiemelt h2::before,html.sotet .rolunk h2::before,html.sotet .ajanlat h2::before{content:"";display:block;width:54px;height:14px;margin-bottom:12px;background:linear-gradient(180deg,var(--am-a),var(--am-b));clip-path:polygon(0 100%,50% 0,100% 100%,84% 100%,50% 30%,16% 100%)}
+html.sotet .fej--sor h2::before,html.sotet .fej h2::before{margin-left:0}
+/* gombok: borostyán átmenet, mint a logó TETŐ felirata */
+html.sotet .gomb--sarga,html.sotet .gomb--sotet,html.sotet .szuro__gomb.aktiv,html.sotet .valaszto input:checked+span,html.sotet .lepesek li:last-child span{background:linear-gradient(180deg,var(--am-a),var(--am-b));color:#14191E;border-color:transparent;font-weight:800}
+html.sotet .gomb{text-transform:uppercase;font-stretch:90%;letter-spacing:.04em;font-weight:800}
+html.sotet .gomb--sarga:hover,html.sotet .gomb--sotet:hover{filter:brightness(1.07)}
+/* kártyák: borostyán élfény alul, mint a tető eresze */
+html.sotet .kartya__test::before{background:linear-gradient(90deg,var(--am-a),var(--am-b));width:34px;height:3px}
+html.sotet .kartya h3{color:#fff}
+/* bizalmi ikonok és lépésszámok acél/borostyán */
+html.sotet .lepesek span{color:var(--am-a)}
+html.sotet .bizalom b{font-stretch:85%;text-transform:uppercase;letter-spacing:.02em}
+/* fejléc: tető fölötte, logóval azonos arány */
+html.sotet .logo img.logo__jel{width:124px;margin-bottom:2px}
+@media (min-width:1060px){html.sotet .logo img.logo__jel{width:136px}html.sotet .logo__szo b{font-size:24px}}
+@media (max-width:359px){html.sotet .logo img.logo__jel{width:104px}html.sotet .logo__szo b{font-size:19px}}
+/* nagy logó a nyitóképen asztalon, a felmérés-kártya fölött nem kell; a láblécben nagyobb */
+html.sotet .lab__logo{width:240px}
+/* telefonszám kicsi marad */
+html.sotet .nagytel{font-size:22px}
+@media (min-width:1000px){html.sotet .nagytel{font-size:26px}}
+html.sotet .lab__marka img.lab__logo{height:auto;width:210px}
+html.sotet .logo img.logo__jel{margin-bottom:5px}
