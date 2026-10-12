@@ -392,3 +392,17 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
 @media (min-width:1060px){.logo img{height:42px;width:42px}.logo__szo b{font-size:21px}.logo__szo small{font-size:11px}}
 @media (max-width:359px){.logo__szo b{font-size:17px}.logo__szo small{font-size:9.5px;letter-spacing:.12em}}
 .lab__marka .logo img{height:36px;width:36px}
+
+/* ===== 8. kör – kisebb telefonszám, kompakt szolgáltatás-rács mobilon ===== */
+.nagytel{font-size:18px;margin-top:10px}
+@media (min-width:1000px){.nagytel{font-size:20px}}
+@media (max-width:999px){
+  .szolg__racs{display:grid;grid-template-columns:1fr 1fr;gap:8px;overflow:visible;margin:0;padding:0;scroll-snap-type:none}
+  .kartya{aspect-ratio:1/1;flex:none;box-shadow:none}
+  .kartya__test{padding:10px 10px 11px}
+  .kartya__test::before{width:18px;height:2px;margin-bottom:6px}
+  .kartya h3{font-size:14px;line-height:1.2}
+  .kartya p{display:none}
+  .lapozo{display:none}
+}
+@media (min-width:700px) and (max-width:999px){.szolg__racs{grid-template-columns:repeat(3,1fr);gap:12px}.kartya{aspect-ratio:4/3}}

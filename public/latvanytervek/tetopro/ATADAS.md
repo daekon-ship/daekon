@@ -7,6 +7,13 @@ A régi webnode-os oldalhoz nem nyúltunk; a terv `noindex`.
 ## 7. kör – fejléc-logó
 - A fejlécben és a láblécben a logó: lekerekített sötét jel (`jel.svg`: borostyán tető kéménnyel, ház-körvonal, fehér TP) + HTML-szöveg „TETŐ.PRO” (19–21 px) és „TETŐSZAKÉRTŐ” (10,5–11 px, borostyán) – a korábbi SVG-ben az alsor alig látszott. A `jel.svg` a favicon is.
 
+## 8. kör – kompaktabb mobil
+- Szolgáltatások mobilon lapozás helyett 2 oszlopos rács (6 négyzetes kép, rajta a cím); tableten 3 oszlop.
+- A nagy telefonszám az ajánlat-szakaszban 18 px (asztalon 20 px).
+
+## 7. kör – fejléc-logó
+- Fejlécben és láblécben: lekerekített sötét jel (`jel.svg`: borostyán tető kéménnyel, ház-körvonal, fehér TP) + HTML-szöveg „TETŐ.PRO” (19–21 px) és „TETŐSZAKÉRTŐ” (10,5–11 px, borostyán) – a korábbi SVG-ben az alsor alig látszott. A `jel.svg` a favicon is.
+
 ## 6. kör – szebb
 - Minden fotó egységes színezést kapott (finom kontraszt, visszafogott kék ég, meleg tónus, enyhe élesítés) – a telefonos képek így egy sorozatnak hatnak. Az eredeti képek a régi oldalon megvannak.
 - Mobilon a nyitókép teljes képes, a szöveg a fotón ül. Betöltéskor a kép lassan „beáll” (18 mp-es finom közelítés), a szöveg soronként beúszik.
