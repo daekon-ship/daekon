@@ -8,17 +8,17 @@
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#0B0E11">
 <link rel="icon" href="jel.svg" type="image/svg+xml">
-<link rel="preload" href="fonts/archivo.woff" as="font" type="font/woff" crossorigin>
+<link rel="preload" href="fonts/archivo-v2.woff" as="font" type="font/woff" crossorigin>
 <link rel="preload" href="img/cserepfedes-vapa-1600.webp" as="image" media="(min-width: 700px)">
-<link rel="preload" href="img/cserepfedes-vapa-800.webp" as="image" media="(max-width: 699px)">
-<link rel="stylesheet" href="tetopro.css">
+<link rel="preload" href="img/lecezes-gerinc-800.webp" as="image" media="(max-width: 699px)">
+<link rel="stylesheet" href="tetopro.css?v=10">
 </head>
 <body>
 <a class="ugras" href="#tartalom">Ugrás a tartalomra</a>
 
 <header class="fejlec" id="fejlec">
   <div class="tarolo fejlec__sor">
-    <a class="logo" href="#" aria-label="Tető.pro – Tetőszakértő, vissza az oldal tetejére"><img class="logo__jel" src="logo-jel.svg" alt="" width="96" height="24"><span class="logo__szo"><b><em>TETŐ</em>.PRO</b><small>TETŐSZAKÉRTŐ</small></span></a>
+    <a class="logo" href="#" aria-label="Tető.pro – Tetőszakértő, vissza az oldal tetejére"><img class="logo__jel" src="logo-jel.svg?v=10" alt="" width="96" height="24"><span class="logo__szo"><b><em>TETŐ</em>.PRO</b><small>TETŐSZAKÉRTŐ</small></span></a>
     <nav class="menu" id="menu" aria-label="Fő menü">
       <a href="#szolgaltatasok">Szolgáltatások</a>
       <a href="#munkaink">Munkáink</a>
@@ -40,7 +40,7 @@
 <!-- NYITÓKÉP -->
 <section class="hero" aria-labelledby="hero-cim">
   <div class="hero__kep">
-    <img src="img/cserepfedes-vapa-1600.webp" srcset="img/cserepfedes-vapa-800.webp 800w, img/cserepfedes-vapa-1600.webp 1600w" sizes="100vw" alt="Saját munkánk: elkészült cserépfedés vápával" fetchpriority="high">
+    <picture><source media="(max-width: 999px)" srcset="img/lecezes-gerinc-800.webp 800w, img/lecezes-gerinc-1600.webp 1600w" sizes="100vw"><img src="img/cserepfedes-vapa-1600.webp" srcset="img/cserepfedes-vapa-800.webp 800w, img/cserepfedes-vapa-1600.webp 1600w" sizes="100vw" alt="Saját munkánk: tetőfedés" fetchpriority="high"></picture>
   </div>
   <div class="tarolo hero__racs">
     <div class="hero__szoveg">
@@ -284,7 +284,7 @@
 <footer class="lab">
   <div class="tarolo lab__racs">
     <div class="lab__marka">
-      <img class="lab__logo" src="logo-teljes.svg" alt="Tető.pro – Tetőszakértő" width="220" height="104" loading="lazy">
+      <img class="lab__logo" src="logo-teljes.svg?v=10" alt="Tető.pro – Tetőszakértő" width="220" height="104" loading="lazy">
       <p>Tetőfedés, lemezfedés, bádogos munkák és teraszok – Bugyiból, 200&nbsp;km&#8209;es körzetben.</p>
     </div>
     <div>
@@ -322,6 +322,6 @@
   <button class="nagyito__nyil nagyito__nyil--jobb" id="nzKov" aria-label="Következő kép"><svg viewBox="0 0 24 24"><path d="m9 4 8 8-8 8"/></svg></button>
 </div>
 
-<script src="tetopro.js"></script>
+<script src="tetopro.js?v=10"></script>
 </body>
 </html>

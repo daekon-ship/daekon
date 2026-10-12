@@ -1,7 +1,7 @@
 /* Tető.pro – látványterv, 5. kör: tiszta újraírás.
    Kompakt méretek, fotóközpontú, egy betűcsalád, sehol nincs nowrap-ból eredő kilógás. */
 
-@font-face{font-family:"Archivo";src:url(fonts/archivo.woff) format("woff");font-weight:400 900;font-stretch:75% 125%;font-display:swap}
+@font-face{font-family:"Archivo";src:url(fonts/archivo-v2.woff) format("woff");font-weight:400 900;font-stretch:75% 125%;font-display:swap}
 
 :root{
   --ink:#14191E;
@@ -548,3 +548,26 @@ html.sotet .nagytel{font-size:22px}
 @media (min-width:1000px){html.sotet .nagytel{font-size:26px}}
 html.sotet .lab__marka img.lab__logo{height:auto;width:210px}
 html.sotet .logo img.logo__jel{margin-bottom:5px}
+
+/* 11. kör – arányok mobilon */
+html.sotet .fejlec__sor{min-height:58px;padding-top:4px;padding-bottom:4px}
+html.sotet .logo img.logo__jel{width:84px;margin-bottom:2px}
+html.sotet .logo__szo b{font-size:17px}
+html.sotet .logo__szo small{font-size:7px;letter-spacing:.26em;margin-top:2px}
+html.sotet .fejlec__hivas,html.sotet .menugomb{min-height:40px;height:40px}
+@media (min-width:1060px){html.sotet .logo img.logo__jel{width:104px}html.sotet .logo__szo b{font-size:20px}html.sotet .logo__szo small{font-size:8px}html.sotet .fejlec__sor{min-height:66px}}
+/* nyitókép: kevesebb üres ég, kisebb cím */
+@media (max-width:999px){
+  html.sotet .hero{min-height:min(78svh,580px)}
+  html.sotet .hero__kep img{object-position:50% 78%}
+  html.sotet .hero__racs{padding-top:80px;padding-bottom:22px}
+}
+html.sotet .hero h1{font-size:30px}
+html.sotet .hero__al{font-size:14.5px}
+html.sotet .hero__fele{font-size:12px}
+html.sotet .hero__tenyek{font-size:12.5px}
+html.sotet .hero__gombok .gomb{min-height:46px;font-size:13px}
+@media (min-width:700px){html.sotet .hero h1{font-size:40px}}
+@media (min-width:1000px){html.sotet .hero h1{font-size:50px}}
+.hero__kep picture{display:block;width:100%;height:100%}
+@media (max-width:999px){html.sotet .hero__kep img{object-position:50% 35%}html.sotet .hero{min-height:min(74svh,560px)}}
