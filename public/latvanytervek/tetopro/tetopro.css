@@ -46,7 +46,7 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
 /* ---------- gombok ---------- */
 .gomb{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:50px;padding:0 22px;border-radius:var(--r);font-weight:800;font-size:15.5px;text-decoration:none;border:2px solid transparent;transition:background .2s,border-color .2s,color .2s,transform .2s;white-space:nowrap;text-transform:uppercase;letter-spacing:.03em}
 .gomb svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linejoin:round}
-.gomb--nagy{min-height:58px;padding:0 28px;font-size:16px}
+.gomb--nagy{min-height:54px;padding:0 24px;font-size:15px}
 .gomb--sarga{background:var(--sarga);color:var(--fekete)}
 .gomb--sarga:hover{background:var(--sarga-m)}
 .gomb--feher{background:var(--feher);color:var(--fekete)}
@@ -85,7 +85,7 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
 .menugomb[aria-expanded="true"] span:nth-child(3){transform:translateY(-7.5px) rotate(-45deg)}
 .menu{position:absolute;left:0;right:0;top:100%;background:var(--fekete);padding:6px var(--oldal) 22px;display:flex;flex-direction:column;border-bottom:3px solid var(--sarga);opacity:0;visibility:hidden;transform:translateY(-6px);transition:opacity .2s,transform .2s,visibility .2s}
 .menu.nyitva{opacity:1;visibility:visible;transform:none}
-.menu a{color:var(--feher);text-decoration:none;font-weight:700;font-size:18px;padding:14px 0;border-bottom:1px solid #26282b}
+.menu a{color:var(--feher);text-decoration:none;font-weight:700;font-size:16.5px;padding:14px 0;border-bottom:1px solid #26282b}
 .menu .menu__cta{margin-top:14px;border:0;background:var(--sarga);color:var(--fekete);text-align:center;border-radius:var(--r);text-transform:uppercase;font-size:15.5px;letter-spacing:.03em}
 @media (min-width:1080px){
   .menugomb{display:none}
@@ -105,11 +105,11 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
 .hero__hatter::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,16,17,.35) 0%,rgba(15,16,17,.55) 35%,rgba(15,16,17,.9) 70%,var(--fekete) 100%)}
 .hero__racs{position:relative;display:grid;gap:30px}
 .hero__cimkek{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
-.hero__cimkek li{background:var(--sarga);color:var(--fekete);font-weight:800;font-size:12.5px;text-transform:uppercase;letter-spacing:.05em;padding:5px 10px;border-radius:3px}
-.hero h1{font-size:clamp(34px,9vw,42px);font-weight:900;text-transform:uppercase;letter-spacing:-.005em;line-height:1.02}
-.hero__al{margin-top:16px;color:#e4e5e7;font-size:16.5px;max-width:48ch}
+.hero__cimkek li{background:var(--sarga);color:var(--fekete);font-weight:800;font-size:11.5px;text-transform:uppercase;letter-spacing:.05em;padding:5px 10px;border-radius:3px}
+.hero h1{font-size:clamp(27px,7.6vw,32px);font-weight:900;text-transform:uppercase;letter-spacing:-.005em;line-height:1.02}
+.hero__al{margin-top:14px;color:#e4e5e7;font-size:15.5px;max-width:48ch}
 .pipak{margin-top:20px;display:grid;gap:9px}
-.pipak li{display:flex;gap:11px;align-items:flex-start;font-weight:600;font-size:15.5px}
+.pipak li{display:flex;gap:11px;align-items:flex-start;font-weight:600;font-size:14.5px}
 .pipak li::before{content:"";flex:none;width:22px;height:22px;margin-top:1px;border-radius:50%;background:var(--sarga) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='m6 12.5 4 4 8-9' fill='none' stroke='%230F1011' stroke-width='3'/%3E%3C/svg%3E") center/15px no-repeat}
 .pipak--sotet li{color:var(--fekete)}
 .hero__gombok{display:grid;gap:10px;margin-top:26px}
@@ -118,7 +118,7 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
 /* gyors ajánlatkérő */
 .gyors{background:var(--feher);color:var(--fekete);border-radius:10px;padding:22px 18px 18px;box-shadow:0 24px 60px rgba(0,0,0,.45);border-top:6px solid var(--sarga);align-self:start}
 .gyors__fej{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
-.gyors h2{font-size:22px;font-weight:900;text-transform:uppercase}
+.gyors h2{font-size:18px;font-weight:900;text-transform:uppercase}
 .gyors__lepes{font-size:13px;font-weight:700;color:var(--szurke)}
 .gyors__savok{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:12px 0 16px}
 .gyors__savok i{height:5px;border-radius:3px;background:#e4e4e2;transition:background .3s}
@@ -157,9 +157,10 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
 .csempe{position:relative;display:flex;align-items:flex-end;min-height:110px;border-radius:var(--r);overflow:hidden;text-decoration:none;color:var(--feher);background:var(--fekete);box-shadow:0 14px 34px rgba(0,0,0,.28);border-bottom:5px solid var(--sarga)}
 .csempe img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55;transition:opacity .3s,transform .6s var(--atm)}
 .csempe span{position:relative;padding:16px 18px;font-size:14px;color:#e8e8e8;display:block;width:100%;background:linear-gradient(transparent,rgba(0,0,0,.6))}
-.csempe b{display:block;font-size:20px;font-weight:900;text-transform:uppercase;color:var(--feher);letter-spacing:.01em}
+.csempe b{display:block;font-size:17px;font-weight:900;text-transform:uppercase;color:var(--feher);letter-spacing:.01em}
 .csempe::after{content:"";position:absolute;right:16px;bottom:18px;width:34px;height:34px;border-radius:50%;background:var(--sarga) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5 12h13m-5-5 5 5-5 5' fill='none' stroke='%230F1011' stroke-width='2.6'/%3E%3C/svg%3E") center/18px no-repeat}
 .csempe:hover img{opacity:.7;transform:scale(1.04)}
+@media (min-width:700px){.hero h1{font-size:40px}.fej h2,.garancia h2,.ajanlat h2,.rolunk h2{font-size:32px}.kartya h3{font-size:20px}.csempe b{font-size:19px}.tenyek dt{font-size:20px}.gyors h2{font-size:21px}}
 @media (min-width:700px){.csempek{grid-template-columns:repeat(3,1fr);gap:18px;margin-top:-92px}.csempe{min-height:170px}}
 
 /* ---------- gerinces sárga bizalmi sáv ---------- */
@@ -167,8 +168,8 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
 .bizalom__lista{display:grid;grid-template-columns:1fr 1fr;gap:22px 16px}
 .bizalom li{display:flex;gap:12px;align-items:flex-start}
 .bizalom svg{flex:none;width:36px;height:36px;fill:none;stroke:var(--fekete);stroke-width:2.3;stroke-linejoin:round}
-.bizalom b{display:block;font-weight:900;text-transform:uppercase;font-size:14.5px;line-height:1.2;letter-spacing:.01em}
-.bizalom span{font-size:13.5px;line-height:1.35;display:block;margin-top:3px;color:#3a2d00}
+.bizalom b{display:block;font-weight:900;text-transform:uppercase;font-size:13px;line-height:1.2;letter-spacing:.01em}
+.bizalom span{font-size:12.5px;line-height:1.35;display:block;margin-top:3px;color:#3a2d00}
 @media (min-width:900px){.bizalom{padding-bottom:44px}.bizalom__lista{grid-template-columns:repeat(4,1fr);gap:24px}.bizalom b{font-size:16px}.bizalom span{font-size:14.5px}}
 
 /* ---------- szakasz fejek ---------- */
@@ -177,7 +178,7 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
 .fej--kozep{margin-left:auto;margin-right:auto;text-align:center}
 .fej__felso{display:inline-flex;align-items:center;gap:10px;font-weight:800;font-size:13.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--sarga-s);margin-bottom:10px}
 .fej__felso::before{content:"";width:22px;height:12px;background:var(--sarga);clip-path:polygon(0 100%,50% 0,100% 100%,80% 100%,50% 40%,20% 100%)}
-.fej h2,.garancia h2,.ajanlat h2{font-size:clamp(28px,7.2vw,34px);font-weight:900;text-transform:uppercase;letter-spacing:-.005em;line-height:1.05}
+.fej h2,.garancia h2,.ajanlat h2{font-size:clamp(23px,6.4vw,26px);font-weight:900;text-transform:uppercase;letter-spacing:-.005em;line-height:1.05}
 .fej p:not(.fej__felso){margin-top:14px;color:#4a4d52}
 @media (min-width:1000px){.fej{margin-bottom:50px}.fej h2,.garancia h2,.ajanlat h2{font-size:clamp(36px,3.1vw,44px)}}
 
@@ -190,7 +191,7 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
 .kartya__ikon{display:grid;place-items:center;position:relative;width:58px;height:58px;margin:-29px 0 0 20px;border-radius:50%;background:var(--sarga);border:4px solid var(--feher);z-index:2}
 .kartya__ikon svg{width:28px;height:28px;fill:none;stroke:var(--fekete);stroke-width:2.6;stroke-linejoin:round;stroke-linecap:round}
 .kartya__test{padding:12px 22px 24px;display:flex;flex-direction:column;gap:10px;flex:1}
-.kartya h3{font-size:21px;font-weight:900;text-transform:uppercase;letter-spacing:.005em}
+.kartya h3{font-size:18px;font-weight:900;text-transform:uppercase;letter-spacing:.005em}
 .kartya p{color:#4a4d52;font-size:15.5px}
 .kartya__link{margin-top:auto;padding-top:6px;font-weight:800;text-transform:uppercase;font-size:14px;letter-spacing:.04em;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
 .kartya__link::after{content:"";width:18px;height:2.5px;background:var(--sarga);transition:width .25s}
@@ -208,7 +209,7 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
 .garancia .fej__felso{color:var(--sarga)}
 .tenyek{margin:28px 0 0;display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .tenyek div{border-left:4px solid var(--sarga);background:rgba(255,255,255,.06);padding:12px 14px}
-.tenyek dt{font-weight:900;font-size:21px;text-transform:uppercase;color:var(--sarga)}
+.tenyek dt{font-weight:900;font-size:17px;text-transform:uppercase;color:var(--sarga)}
 .tenyek dd{margin:2px 0 0;font-size:14px;color:#cfd0d3}
 @media (min-width:900px){.garancia__racs{grid-template-columns:320px 1fr;gap:72px}.garancia__jelveny{width:300px}.tenyek{grid-template-columns:repeat(4,1fr)}}
 
@@ -219,9 +220,9 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
 .lepes__jel{grid-row:span 2;position:relative;width:64px;height:70px;display:grid;place-items:center}
 .lepes__jel svg{position:absolute;inset:0;width:100%;height:100%;fill:var(--fekete)}
 .lepes:last-child .lepes__jel svg{fill:var(--sarga)}
-.lepes__jel b{position:relative;font-size:26px;font-weight:900;color:var(--sarga)}
+.lepes__jel b{position:relative;font-size:22px;font-weight:900;color:var(--sarga)}
 .lepes:last-child .lepes__jel b{color:var(--fekete)}
-.lepes h3{font-size:19px;font-weight:900;text-transform:uppercase;padding-top:8px}
+.lepes h3{font-size:17px;font-weight:900;text-transform:uppercase;padding-top:8px}
 .lepes p{margin-top:6px;color:#4a4d52;font-size:15.5px}
 @media (min-width:900px){
   .lepesek{grid-template-columns:repeat(4,1fr);gap:28px;position:relative}
@@ -235,7 +236,7 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
 /* ---------- munkáink ---------- */
 .munkak{background:var(--tort)}
 .tortenet{margin-bottom:52px}
-.tortenet__cim{font-size:19px;font-weight:900;text-transform:uppercase;margin-bottom:16px}
+.tortenet__cim{font-size:17px;font-weight:900;text-transform:uppercase;margin-bottom:16px}
 .tortenet__sor{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:var(--oldal);margin:0 calc(var(--oldal)*-1);padding:0 var(--oldal) 4px;scrollbar-width:none}
 .tortenet__sor::-webkit-scrollbar{display:none}
 .tortenet__sor li{flex:0 0 80%;scroll-snap-align:start}
@@ -283,8 +284,8 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
 /* ---------- rólunk ---------- */
 .rolunk{background:var(--feher)}
 .rolunk__racs{display:grid;gap:40px;align-items:center}
-.rolunk h2{font-size:clamp(28px,7.2vw,34px);font-weight:900;text-transform:uppercase}
-.rolunk__bev{margin-top:16px;font-size:18px;font-weight:600}
+.rolunk h2{font-size:clamp(23px,6.4vw,26px);font-weight:900;text-transform:uppercase}
+.rolunk__bev{margin-top:16px;font-size:16.5px;font-weight:600}
 .rolunk__szoveg>p:not(.fej__felso):not(.rolunk__bev){margin-top:14px;color:#4a4d52}
 .rolunk .pipak{margin:22px 0 26px}
 .terkep{margin:0;background:var(--fekete);color:#d0d1d4;border-radius:10px;padding:18px;border-bottom:6px solid var(--sarga)}
@@ -308,7 +309,7 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
 .gyik__lista{display:grid;gap:10px}
 .gyik details{background:var(--feher);border-radius:var(--r);border-left:5px solid transparent;transition:border-color .2s}
 .gyik details[open]{border-left-color:var(--sarga)}
-.gyik summary{list-style:none;cursor:pointer;padding:18px 54px 18px 18px;font-weight:800;font-size:16.5px;position:relative}
+.gyik summary{list-style:none;cursor:pointer;padding:16px 52px 16px 16px;font-weight:800;font-size:15.5px;position:relative}
 .gyik summary::-webkit-details-marker{display:none}
 .gyik summary::after{content:"";position:absolute;right:16px;top:50%;width:26px;height:26px;margin-top:-13px;border-radius:50%;background:var(--fekete) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 5v14M5 12h14' fill='none' stroke='%23FFC20E' stroke-width='3'/%3E%3C/svg%3E") center/14px no-repeat;transition:transform .25s}
 .gyik details[open] summary::after{transform:rotate(45deg)}
@@ -319,7 +320,7 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
 .ajanlat{background:var(--sarga);padding:calc(var(--szakasz) + var(--gerinc)) 0 var(--szakasz);clip-path:polygon(0 var(--gerinc),50% 0,100% var(--gerinc),100% 100%,0 100%);margin-top:calc(var(--gerinc) * -1);position:relative}
 .ajanlat__racs{display:grid;gap:40px}
 .ajanlat__bal>p{margin-top:14px;max-width:46ch;font-size:17px;color:#2b2200}
-.nagytel{display:inline-flex;align-items:center;gap:12px;margin-top:24px;font-size:clamp(26px,7.4vw,36px);font-weight:900;text-decoration:none;letter-spacing:.005em}
+.nagytel{display:inline-flex;align-items:center;gap:12px;margin-top:22px;font-size:clamp(22px,6.4vw,30px);font-weight:900;text-decoration:none;letter-spacing:.005em}
 .nagytel svg{width:30px;height:30px;fill:none;stroke:var(--fekete);stroke-width:2.4}
 .ajanlat__gombok{display:grid;grid-template-columns:1fr;gap:10px;margin-top:20px;max-width:480px}
 @media (min-width:480px){.ajanlat__gombok{grid-template-columns:1fr 1fr}}
@@ -330,7 +331,7 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
 .elerhetoseg a{text-decoration:none}
 
 .urlap{background:var(--feher);border-radius:10px;padding:24px 18px;display:grid;gap:16px;box-shadow:0 24px 60px -20px rgba(0,0,0,.35)}
-.urlap h3{font-size:22px;font-weight:900;text-transform:uppercase}
+.urlap h3{font-size:19px;font-weight:900;text-transform:uppercase}
 .mezo{display:grid;gap:6px}
 .mezo label,.mezo legend{font-size:14px;font-weight:800;padding:0}
 .mezo legend{margin-bottom:8px}
