@@ -6,33 +6,41 @@
 <title>Tető.pro – Tetőfedés, lemezfedés, bádogos munkák | Bugyi és 200 km-es körzete</title>
 <meta name="description" content="Új tető, tetőfelújítás, lemezfedés, bádogos munkák, lapostető-szigetelés és teraszok garanciával. Bugyiból, 200 km-es körzetben. Ingyenes helyszíni felmérés: +36 70 265 6704.">
 <meta name="robots" content="noindex">
-<meta name="theme-color" content="#111213">
+<meta name="theme-color" content="#0F1011">
 <link rel="icon" href="jel.svg" type="image/svg+xml">
 <link rel="preload" href="fonts/archivo.woff" as="font" type="font/woff" crossorigin>
-<link rel="preload" href="img/cserepfedes-vapa-1600.webp" as="image" media="(min-width: 700px)">
-<link rel="preload" href="img/cserepfedes-vapa-800.webp" as="image" media="(max-width: 699px)">
+<link rel="preload" href="img/tetoter-kesz-1600.webp" as="image" media="(min-width: 700px)">
+<link rel="preload" href="img/tetoter-kesz-800.webp" as="image" media="(max-width: 699px)">
 <link rel="stylesheet" href="tetopro.css">
 </head>
 <body>
-
 <a class="ugras" href="#tartalom">Ugrás a tartalomra</a>
 
+<!-- felső információs sáv -->
+<div class="infosav">
+  <div class="tarolo infosav__belso">
+    <p><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4 10-10"/></svg>Ingyenes helyszíni felmérés</p>
+    <p class="infosav__kozep"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.1-7-11.5a7 7 0 0 1 14 0C19 14.9 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Bugyi és 200 km-es körzete</p>
+    <a href="tel:+36702656704"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 3.5 9.4 3l1.5 4.2-2 1.4a12 12 0 0 0 6.5 6.5l1.4-2 4.2 1.5-.5 2.8c-.2.9-1 1.6-2 1.6A15.5 15.5 0 0 1 3 5.5c0-1 .7-1.8 1.6-2Z"/></svg>+36 70 265 6704</a>
+  </div>
+</div>
+
 <header class="fejlec" id="fejlec">
-  <div class="fejlec__belso">
-    <a class="logo" href="#" aria-label="Tető.pro – vissza az oldal tetejére"><img src="logo.svg" alt="Tető.pro" width="150" height="58"></a>
+  <div class="tarolo fejlec__belso">
+    <a class="logo" href="#" aria-label="Tető.pro – vissza az oldal tetejére"><img src="logo-fekvo.svg" alt="Tető.pro – Tetőszakértő" width="220" height="72"></a>
     <nav class="menu" id="menu" aria-label="Fő menü">
       <a href="#szolgaltatasok">Szolgáltatások</a>
       <a href="#munkaink">Munkáink</a>
+      <a href="#modszer">Hogyan dolgozunk</a>
       <a href="#rolunk">Rólunk</a>
-      <a href="#folyamat">Hogyan dolgozunk</a>
-      <a href="#ajanlat">Kapcsolat</a>
-      <a class="menu__hivas" href="tel:+36702656704">+36 70 265 6704</a>
+      <a href="#gyik">GYIK</a>
+      <a class="menu__cta" href="#ajanlat">Ingyenes felmérés</a>
     </nav>
-    <a class="gomb gomb--sarga gomb--kicsi fejlec__hivas" href="tel:+36702656704">
+    <a class="gomb gomb--sarga fejlec__hivas" href="tel:+36702656704">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 3.5 9.4 3l1.5 4.2-2 1.4a12 12 0 0 0 6.5 6.5l1.4-2 4.2 1.5-.5 2.8c-.2.9-1 1.6-2 1.6A15.5 15.5 0 0 1 3 5.5c0-1 .7-1.8 1.6-2Z"/></svg>
-      <span>+36 70 265 6704</span>
+      <span class="fejlec__hivas-szoveg"><small>Hívjon most</small>+36 70 265 6704</span>
     </a>
-    <button class="menugomb" id="menugomb" aria-expanded="false" aria-controls="menu"><span></span><span></span><b class="rejtett">Menü</b></button>
+    <button class="menugomb" id="menugomb" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span><b class="rejtett">Menü</b></button>
   </div>
 </header>
 
@@ -40,184 +48,210 @@
 
 <!-- ============ HERO ============ -->
 <section class="hero" aria-labelledby="hero-cim">
-  <div class="hero__kep" id="heroKep" data-sorok="11">
-    <img src="img/cserepfedes-vapa-1600.webp" srcset="img/cserepfedes-vapa-800.webp 800w, img/cserepfedes-vapa-1600.webp 1600w" sizes="(min-width: 980px) 58vw, 100vw" alt="Frissen elkészült cserépfedés vápával, a háttérben kertvárosi házak és erdő" fetchpriority="high">
-    <p class="kepfelirat">Saját munkánk: cserépfedés vápával</p>
+  <div class="hero__hatter">
+    <img src="img/tetoter-kesz-1600.webp" srcset="img/tetoter-kesz-800.webp 800w, img/tetoter-kesz-1600.webp 1600w" sizes="100vw" alt="" fetchpriority="high">
   </div>
-  <div class="hero__szoveg">
-    <h1 id="hero-cim">Minőség a tető felett.</h1>
-    <p class="hero__al">Új tető, tetőfelújítás, lemezfedés és bádogos munkák garanciával. Bugyiból indulunk, és 200 km-es körzetben dolgozunk magánszemélyeknek és cégeknek.</p>
-    <div class="hero__gombok">
-      <a class="gomb gomb--sarga" href="tel:+36702656704">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 3.5 9.4 3l1.5 4.2-2 1.4a12 12 0 0 0 6.5 6.5l1.4-2 4.2 1.5-.5 2.8c-.2.9-1 1.6-2 1.6A15.5 15.5 0 0 1 3 5.5c0-1 .7-1.8 1.6-2Z"/></svg>
-        Hívás most
-      </a>
-      <a class="gomb gomb--vonal" href="#ajanlat">Ajánlatot kérek</a>
+  <div class="tarolo hero__racs">
+    <div class="hero__szoveg">
+      <ul class="hero__cimkek"><li>Tetőfedés</li><li>Lemezfedés</li><li>Bádogos munkák</li></ul>
+      <h1 id="hero-cim">Minőség a tető felett.</h1>
+      <p class="hero__al">Új tető, tetőfelújítás és javítás, lemezfedés, bádogozás és teraszok – egy csapattól, garanciával. Bugyiból indulunk, és 200 km-es körzetben dolgozunk.</p>
+      <ul class="pipak">
+        <li>Garancia minden elvégzett munkára</li>
+        <li>Ingyenes helyszíni felmérés, írásos ajánlat</li>
+        <li>Számlaképes: magánszemélynek és cégnek</li>
+      </ul>
+      <div class="hero__gombok">
+        <a class="gomb gomb--sarga gomb--nagy" href="tel:+36702656704">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 3.5 9.4 3l1.5 4.2-2 1.4a12 12 0 0 0 6.5 6.5l1.4-2 4.2 1.5-.5 2.8c-.2.9-1 1.6-2 1.6A15.5 15.5 0 0 1 3 5.5c0-1 .7-1.8 1.6-2Z"/></svg>
+          Hívás most
+        </a>
+        <a class="gomb gomb--feher gomb--nagy" href="#ajanlat">Ajánlatot kérek</a>
+      </div>
     </div>
-    <p class="hero__tel">
-      <a href="tel:+36702656704">+36 70 265 6704</a>
-      <span>A helyszíni felmérés ingyenes.</span>
-    </p>
+
+    <!-- gyors ajánlatkérő kártya -->
+    <form class="gyors" id="gyors" novalidate aria-labelledby="gyors-cim">
+      <div class="gyors__fej">
+        <h2 id="gyors-cim">Ingyenes felmérés</h2>
+        <p class="gyors__lepes"><span id="gyorsLepes">1</span>/2 lépés</p>
+      </div>
+      <div class="gyors__savok" aria-hidden="true"><i class="aktiv"></i><i id="gyorsSav2"></i></div>
+      <fieldset class="gyors__1" id="gyors1">
+        <legend>Milyen munkáról van szó?</legend>
+        <div class="tipusok">
+          <label><input type="radio" name="tipus" value="Új tető"><span><svg viewBox="0 0 40 40"><path d="M5 20 20 7l15 13"/><path d="M10 17v16h20V17"/><path d="M17 33v-8h6v8"/></svg>Új tető</span></label>
+          <label><input type="radio" name="tipus" value="Tetőfelújítás"><span><svg viewBox="0 0 40 40"><path d="M5 20 20 7l15 13"/><path d="M10 17v16h20V17"/><path d="m15 24 4 4 7-8"/></svg>Felújítás</span></label>
+          <label><input type="radio" name="tipus" value="Tetőjavítás, beázás"><span><svg viewBox="0 0 40 40"><path d="M5 20 20 7l15 13"/><path d="M20 19c-3 4-4 6-4 8a4 4 0 0 0 8 0c0-2-1-4-4-8Z"/></svg>Beázás, javítás</span></label>
+          <label><input type="radio" name="tipus" value="Lemezfedés"><span><svg viewBox="0 0 40 40"><path d="M5 22 20 9l15 13"/><path d="M11 18v14M16 14v18M21 11v21M26 14v18M31 18v14"/></svg>Lemezfedés</span></label>
+          <label><input type="radio" name="tipus" value="Bádogos munka"><span><svg viewBox="0 0 40 40"><path d="M6 12h28v4a4 4 0 0 1-4 4H10a4 4 0 0 1-4-4z"/><path d="M28 20v13"/><path d="M24 33h8"/></svg>Bádogozás</span></label>
+          <label><input type="radio" name="tipus" value="Terasz, lapostető, egyéb"><span><svg viewBox="0 0 40 40"><path d="M5 14h30"/><path d="M8 14v18M32 14v18"/><path d="M5 32h30"/><path d="M14 14l3-5h6l3 5"/></svg>Terasz, egyéb</span></label>
+        </div>
+        <button class="gomb gomb--sarga gomb--teli" type="button" id="gyorsTovabb">Tovább</button>
+      </fieldset>
+      <fieldset class="gyors__2" id="gyors2" hidden>
+        <legend class="rejtett">Elérhetőség</legend>
+        <p class="gyors__valasztott">Munka: <b id="gyorsTipus"></b> <button type="button" id="gyorsVissza">módosítás</button></p>
+        <div class="mezo"><label for="g-nev">Név</label><input id="g-nev" name="nev" autocomplete="name"></div>
+        <div class="mezo"><label for="g-tel">Telefonszám</label><input id="g-tel" name="tel" type="tel" inputmode="tel" autocomplete="tel"></div>
+        <div class="mezo"><label for="g-hely">Település</label><input id="g-hely" name="hely" autocomplete="address-level2"></div>
+        <p class="urlap__hiba" id="gyorsHiba" role="alert"></p>
+        <button class="gomb gomb--sarga gomb--teli" type="submit">Felmérést kérek</button>
+      </fieldset>
+      <p class="gyors__megj">Vagy hívjon: <a href="tel:+36702656704">+36 70 265 6704</a></p>
+    </form>
+  </div>
+
+  <div class="pecset" aria-hidden="true">
+    <svg viewBox="0 0 160 160">
+      <defs><path id="pkor" d="M80 80m-58 0a58 58 0 1 1 116 0a58 58 0 1 1-116 0"/></defs>
+      <circle cx="80" cy="80" r="78" fill="#FFC20E"/>
+      <circle cx="80" cy="80" r="70" fill="none" stroke="#0F1011" stroke-width="2" stroke-dasharray="3 4"/>
+      <text font-family="Archivo" font-weight="800" font-size="12.5" letter-spacing="2.6" fill="#0F1011"><textPath href="#pkor" startOffset="0">MINŐSÉG A TETŐ FELETT • TETŐ.PRO •</textPath></text>
+      <path d="M48 82 80 56l32 26" fill="none" stroke="#0F1011" stroke-width="7" stroke-linejoin="miter"/>
+      <text x="80" y="104" text-anchor="middle" font-family="Archivo" font-weight="900" font-size="17" fill="#0F1011">GARANCIA</text>
+    </svg>
   </div>
 </section>
 
-<!-- ============ BIZALMI SÁV ============ -->
-<section class="bizalom" aria-label="Amit garantálunk">
-  <ul class="bizalom__lista">
-    <li>
-      <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M4 22h24v5H4z"/><path d="M8 22v-3M12 22v-2M16 22v-3M20 22v-2M24 22v-3"/><path d="M6 12 16 5l10 7"/></svg>
-      <div><h2>Precíz munka</h2><p>Mért lécköz, egyenes sorok, zárt szegélyek.</p></div>
-    </li>
-    <li>
-      <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M5 11 16 5l11 6-11 6z"/><path d="m5 16 11 6 11-6"/><path d="m5 21 11 6 11-6"/></svg>
-      <div><h2>Tartós megoldások</h2><p>Évtizedekre tervezett rétegrend.</p></div>
-    </li>
-    <li>
-      <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M4 9h11v7H4zM17 9h11v7H17zM10 18h12v7H10z"/><path d="M4 18h4M24 18h4M4 25h4M24 25h4"/></svg>
-      <div><h2>Minőségi anyagok</h2><p>Ismert gyártók rendszerei, saját idomaikkal.</p></div>
-    </li>
-    <li>
-      <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 4 6 8v8c0 6 4.3 10 10 12 5.7-2 10-6 10-12V8z"/><path d="m11 16 4 4 6-8"/></svg>
-      <div><h2>Megbízható kivitelezés</h2><p>Garancia, számla, tartott határidő.</p></div>
-    </li>
+<div class="hero-also">
+<!-- ráúszó szolgáltatás-csempék -->
+<div class="tarolo csempek" aria-label="Fő szolgáltatások">
+  <a class="csempe" href="#szolgaltatasok"><img src="img/cserepfedes-uj-800.webp" alt="" loading="lazy"><span><b>Tetőfedés</b>új tető, felújítás, javítás</span></a>
+  <a class="csempe" href="#szolgaltatasok"><img src="img/lemezfedes-vapa-800.webp" alt="" loading="lazy"><span><b>Lemezfedés</b>cserepes- és trapézlemez</span></a>
+  <a class="csempe" href="#szolgaltatasok"><img src="img/vapa-badogozas-800.webp" alt="" loading="lazy"><span><b>Bádogos munkák</b>eresz, lefolyó, szegély</span></a>
+</div>
+
+<!-- ============ BIZALMI SÁV (sárga, gerinces) ============ -->
+<section class="bizalom" aria-label="Miért ránk bízhatja">
+  <ul class="tarolo bizalom__lista">
+    <li><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M5 30h30v5H5z"/><path d="M10 30v-4M15 30v-3M20 30v-4M25 30v-3M30 30v-4"/><path d="M7 17 20 7l13 10"/></svg><div><b>Precíz munka</b><span>Mért lécköz, zárt szegélyek</span></div></li>
+    <li><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M6 14 20 7l14 7-14 7z"/><path d="m6 20 14 7 14-7"/><path d="m6 26 14 7 14-7"/></svg><div><b>Tartós megoldások</b><span>Évtizedekre tervezett rétegrend</span></div></li>
+    <li><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M5 11h14v9H5zM21 11h14v9H21zM12 22h16v9H12z"/></svg><div><b>Minőségi anyagok</b><span>Gyári rendszerek, saját idomokkal</span></div></li>
+    <li><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 5 8 10v9c0 7.5 5 12.6 12 15 7-2.4 12-7.5 12-15v-9z"/><path d="m14 20 4.5 4.5L27 16"/></svg><div><b>Megbízható kivitelezés</b><span>Garancia, számla, határidő</span></div></li>
   </ul>
 </section>
+</div>
 
 <!-- ============ SZOLGÁLTATÁSOK ============ -->
 <section class="szakasz szolg" id="szolgaltatasok" aria-labelledby="szolg-cim">
   <div class="tarolo">
-    <div class="szakasz__fej">
-      <h2 id="szolg-cim">Amit a tetőn vállalunk</h2>
-      <p>A gerinctől az ereszcsatornáig mindent egy csapat csinál. Így nincs mutogatás, ha valami nem stimmel – és nem is szokott.</p>
+    <div class="fej fej--kozep">
+      <p class="fej__felso">Szolgáltatásaink</p>
+      <h2 id="szolg-cim">A gerinctől az ereszcsatornáig</h2>
+      <p>Minden tetőmunkát egy csapat végez, ezért egy felelőse van a végeredménynek. Válassza ki, mire van szüksége – a felmérés ingyenes.</p>
     </div>
-
-    <div class="szolg__racs" id="szolgRacs">
-      <article class="kartya kartya--nagy">
-        <div class="kartya__kep"><img src="img/cserepfedes-uj-800.webp" alt="Új cserépfedés a lécezésen, a háttérben a régi tetőrész" loading="lazy"></div>
+    <div class="szolg__racs">
+      <article class="kartya">
+        <div class="kartya__kep"><img src="img/cserepfedes-uj-800.webp" alt="Új cserépfedés a lécezésen" loading="lazy"></div>
+        <span class="kartya__ikon" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M5 20 20 7l15 13"/><path d="M10 17v16h20V17"/></svg></span>
         <div class="kartya__test">
           <h3>Tetőfedés</h3>
-          <p>Új tető, teljes felújítás vagy javítás, akár a tetőszerkezettel együtt. A fedés alá páraáteresztő fólia és mért lécezés kerül, hogy a tető évtizedekig száraz maradjon.</p>
-          <ul class="cimkek"><li>Új tető</li><li>Felújítás</li><li>Javítás</li><li>Tetőszerkezet</li></ul>
+          <p>Új tető, teljes felújítás vagy javítás, akár a tetőszerkezettel együtt. Páraáteresztő fólia és mért lécezés kerül a fedés alá, hogy a tető évtizedekig száraz maradjon.</p>
+          <a class="kartya__link" href="#ajanlat">Ajánlatot kérek</a>
         </div>
       </article>
-
-      <article class="kartya kartya--kozep">
-        <div class="kartya__kep"><img src="img/lemezfedes-vapa-800.webp" alt="Antracit lemezfedés vápával, mellette a lécezés" loading="lazy"></div>
+      <article class="kartya">
+        <div class="kartya__kep"><img src="img/lemezfedes-vapa-800.webp" alt="Antracit lemezfedés vápával" loading="lazy"></div>
+        <span class="kartya__ikon" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M5 22 20 9l15 13"/><path d="M11 18v14M16 14v18M21 11v21M26 14v18M31 18v14"/></svg></span>
         <div class="kartya__test">
           <h3>Lemezfedés</h3>
           <p>Cserepes lemez és trapézlemez lakóházra, garázsra, melléképületre. Könnyű, gyorsan elkészül, és szakszerű alátéttel csendes is.</p>
-          <ul class="cimkek"><li>Cserepes lemez</li><li>Trapézlemez</li><li>Melléképület</li></ul>
+          <a class="kartya__link" href="#ajanlat">Ajánlatot kérek</a>
         </div>
       </article>
-
       <article class="kartya">
-        <div class="kartya__kep"><img src="img/vapa-badogozas-800.webp" alt="Vápabádog a tetőlécezésen, felülnézetből" loading="lazy"></div>
+        <div class="kartya__kep"><img src="img/vapa-badogozas-800.webp" alt="Vápabádog a tetőlécezésen" loading="lazy"></div>
+        <span class="kartya__ikon" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M6 12h28v4a4 4 0 0 1-4 4H10a4 4 0 0 1-4-4z"/><path d="M28 20v13M24 33h8"/></svg></span>
         <div class="kartya__test">
           <h3>Bádogos munkák</h3>
           <p>Ereszcsatorna, lefolyó, kemény szegély, vápa- és kéménybádogozás. Minden bádogos lemezmunkát garanciával vállalunk.</p>
-          <ul class="cimkek"><li>Ereszcsatorna</li><li>Lefolyó</li><li>Szegélyek</li></ul>
+          <a class="kartya__link" href="#ajanlat">Ajánlatot kérek</a>
         </div>
       </article>
-
-      <article class="kartya kartya--rajz">
-        <div class="kartya__kep kartya__kep--rajz" aria-hidden="true">
-          <svg viewBox="0 0 320 200">
-            <g class="reteg">
-              <rect x="20" y="132" width="280" height="34" class="r-beton"/>
-              <rect x="20" y="118" width="280" height="14" class="r-hoszig"/>
-              <rect x="20" y="108" width="280" height="10" class="r-gozfek"/>
-              <rect x="20" y="94" width="280" height="14" class="r-lejtes"/>
-              <rect x="20" y="86" width="280" height="8" class="r-szig"/>
-            </g>
-            <path d="M20 86 H300" class="r-felso"/>
-            <g class="r-jel">
-              <path d="M300 90 h12"/><text x="300" y="76" text-anchor="end">PVC vagy bitumen</text>
-              <path d="M300 101 h12"/>
-              <path d="M300 125 h12"/>
-              <path d="M300 149 h12"/>
-            </g>
-          </svg>
-        </div>
+      <article class="kartya">
+        <div class="kartya__kep"><img src="img/fedes-felulnezet-800.webp" alt="Sötét fedés felülnézetből" loading="lazy"></div>
+        <span class="kartya__ikon" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M5 16h30v6H5z"/><path d="M5 26h30M5 31h30"/></svg></span>
         <div class="kartya__test">
           <h3>Lapostető-szigetelés</h3>
           <p>PVC-lemezes és bitumenes vízszigetelés lapostetőre, garázsra, teraszra. A régi réteget felmérjük, és csak azt bontjuk, amit kell.</p>
-          <ul class="cimkek"><li>PVC</li><li>Bitumenes</li><li>Javítás</li></ul>
+          <a class="kartya__link" href="#ajanlat">Ajánlatot kérek</a>
         </div>
       </article>
-
       <article class="kartya">
-        <div class="kartya__kep"><img src="img/terasz-fedett-800.webp" alt="Fedett terasz faszerkezettel és antracit lemezfedéssel" loading="lazy"></div>
+        <div class="kartya__kep"><img src="img/terasz-fedett-800.webp" alt="Fedett terasz lemezfedéssel" loading="lazy"></div>
+        <span class="kartya__ikon" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M5 14h30M8 14v18M32 14v18M5 32h30M14 14l3-5h6l3 5"/></svg></span>
         <div class="kartya__test">
           <h3>Teraszok, kocsibeállók</h3>
           <p>Fedett terasz, pergola, kocsibeálló – szerkezettel, fedéssel és bádogozással együtt, hogy a ház tetejéhez illő legyen.</p>
-          <ul class="cimkek"><li>Fedett terasz</li><li>Pergola</li><li>Kocsibeálló</li></ul>
+          <a class="kartya__link" href="#ajanlat">Ajánlatot kérek</a>
         </div>
       </article>
-
-      <article class="kartya kartya--szeles">
-        <div class="kartya__kep"><img src="img/terasz-pergola-800.webp" alt="Tetőtér-bővítés felépítménnyel, előtte fedett terasz pergolával" loading="lazy"></div>
+      <article class="kartya">
+        <div class="kartya__kep"><img src="img/tetoablak-800.webp" alt="Tetőablak beépítése cseréptetőbe" loading="lazy"></div>
+        <span class="kartya__ikon" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M8 33V12l12-6 12 6v21z"/><path d="M14 16h12v11H14zM20 16v11M14 21.5h12"/></svg></span>
         <div class="kartya__test">
-          <h3>Tetőtér-bővítés és egyedi munkák</h3>
-          <p>Felépítmény, tetőablak, ereszalj-deszkázás, egyedi formájú tetők. Ha nem szokványos a feladat, kimegyünk, felmérjük, és megmondjuk, hogyan lesz belőle tartós megoldás.</p>
-          <ul class="cimkek"><li>Tetőtér-bővítés</li><li>Tetőablak</li><li>Ereszalj</li><li>Egyedi tetők</li></ul>
+          <h3>Tetőtér-bővítés, egyedi munkák</h3>
+          <p>Felépítmény, tetőablak, ereszalj-deszkázás, egyedi formájú tetők. Ha nem szokványos a feladat, kimegyünk és megmondjuk, hogyan lesz belőle tartós megoldás.</p>
+          <a class="kartya__link" href="#ajanlat">Ajánlatot kérek</a>
         </div>
       </article>
     </div>
-    <div class="lapozo" id="szolgLapozo" aria-hidden="true"></div>
   </div>
 </section>
 
-<!-- ============ MIÉRT MI ============ -->
-<section class="szakasz miert" aria-labelledby="miert-cim">
-  <div class="tarolo miert__racs">
-    <figure class="miert__kep">
-      <img src="img/lecezes-gerinc-800.webp" srcset="img/lecezes-gerinc-800.webp 800w, img/lecezes-gerinc-1600.webp 1600w" sizes="(min-width: 980px) 40vw, 100vw" alt="Fólia és friss lécezés a gerincig, a háttérben a település és a hegyek" loading="lazy">
-      <figcaption class="kepfelirat">Fólia és lécezés a gerincig – ez marad a cserép alatt</figcaption>
-    </figure>
-    <div class="miert__szoveg">
-      <h2 id="miert-cim">Amit nem lát, azon múlik a tető</h2>
-      <p class="miert__bev">A cserép csak a felszín. A tető attól lesz tartós, ami alatta van: a fólia, a lécezés, a szegélyek és a bádog. Mi ezeket ugyanolyan gondosan csináljuk, mint a látható részt.</p>
-      <ul class="elony">
-        <li><h3>Precíz kivitelezés</h3><p>Mért lécköz, zsinórban futó sorok, zárt csatlakozások. A részleteken múlik, hogy egy tető húsz vagy ötven évig bírja.</p></li>
-        <li><h3>Modern megoldások</h3><p>Páraáteresztő fóliák, szellőző gerinc, gyári rendszerelemek – a mai anyagokkal dolgozunk, nem régi beidegződésekkel.</p></li>
-        <li><h3>Megbízható szakértelem</h3><p>Többéves tapasztalat cserép-, lemez- és lapostetőn, magán- és céges megrendelőknél.</p></li>
-        <li><h3>Minőségi anyagok</h3><p>Ismert gyártók rendszerei a hozzájuk tartozó idomokkal. Nem rakunk össze nem összeillő elemeket.</p></li>
-        <li><h3>Hosszú távú megoldások</h3><p>Javításnál a beázás okát keressük, nem csak a foltot tüntetjük el a plafonról.</p></li>
-        <li><h3>Biztonság és tartósság</h3><p>Szabályos munkavédelem a tetőn, rendezett munkaterület, garancia az elvégzett munkára.</p></li>
-      </ul>
+<!-- ============ GARANCIA ============ -->
+<section class="garancia" aria-labelledby="gar-cim">
+  <img class="garancia__kep" src="img/lecezes-gerinc-1600.webp" alt="" loading="lazy">
+  <div class="tarolo garancia__racs">
+    <div class="garancia__jelveny" aria-hidden="true">
+      <img src="logo-jelveny.svg" alt="" loading="lazy">
+    </div>
+    <div class="garancia__szoveg">
+      <p class="fej__felso">A Tető.pro garancia</p>
+      <h2 id="gar-cim">Amit nem lát, azon múlik a tető</h2>
+      <p>A cserép csak a felszín. A tető attól tartós, ami alatta van: a fólia, a lécezés, a szegélyek és a bádog. Ezeket ugyanolyan gondosan csináljuk, mint a látható részt – és az elvégzett munkára garanciát adunk.</p>
       <dl class="tenyek">
         <div><dt>Garancia</dt><dd>minden elvégzett munkára</dd></div>
-        <div><dt>Számlaképes</dt><dd>magánszemélynek és cégnek</dd></div>
         <div><dt>Ingyenes</dt><dd>helyszíni felmérés</dd></div>
+        <div><dt>Számla</dt><dd>magánszemélynek, cégnek</dd></div>
         <div><dt>200 km</dt><dd>körzetben dolgozunk</dd></div>
       </dl>
     </div>
   </div>
 </section>
 
+<!-- ============ MÓDSZER ============ -->
+<section class="szakasz modszer" id="modszer" aria-labelledby="modszer-cim">
+  <div class="tarolo">
+    <div class="fej fej--kozep">
+      <p class="fej__felso">Így dolgozunk</p>
+      <h2 id="modszer-cim">Négy lépés a hívástól az átadásig</h2>
+    </div>
+    <ol class="lepesek">
+      <li class="lepes"><span class="lepes__jel"><svg viewBox="0 0 64 70" aria-hidden="true"><path d="M32 2 62 20v26c0 4-2 6-5 7L32 68 7 53c-3-1-5-3-5-7V20z"/></svg><b>1</b></span><h3>Kapcsolatfelvétel</h3><p>Hívjon vagy írjon. Pár kérdés alapján már a telefonban megmondjuk, mire számíthat.</p></li>
+      <li class="lepes"><span class="lepes__jel"><svg viewBox="0 0 64 70" aria-hidden="true"><path d="M32 2 62 20v26c0 4-2 6-5 7L32 68 7 53c-3-1-5-3-5-7V20z"/></svg><b>2</b></span><h3>Felmérés, ajánlat</h3><p>Kimegyünk, felmérjük a tetőt, és írásos árajánlatot adunk. A felmérés ingyenes.</p></li>
+      <li class="lepes"><span class="lepes__jel"><svg viewBox="0 0 64 70" aria-hidden="true"><path d="M32 2 62 20v26c0 4-2 6-5 7L32 68 7 53c-3-1-5-3-5-7V20z"/></svg><b>3</b></span><h3>Kivitelezés</h3><p>Egyeztetett kezdés, rendezett munkaterület, folyamatos tájékoztatás a munka alatt.</p></li>
+      <li class="lepes"><span class="lepes__jel"><svg viewBox="0 0 64 70" aria-hidden="true"><path d="M32 2 62 20v26c0 4-2 6-5 7L32 68 7 53c-3-1-5-3-5-7V20z"/></svg><b>4</b></span><h3>Átadás, garancia</h3><p>Közös bejárás, takarítás, számla és garancia. A tető ezután évtizedekig nem kérdés.</p></li>
+    </ol>
+  </div>
+</section>
+
 <!-- ============ MUNKÁINK ============ -->
 <section class="szakasz munkak" id="munkaink" aria-labelledby="munkak-cim">
   <div class="tarolo">
-    <div class="szakasz__fej">
+    <div class="fej">
+      <p class="fej__felso">Referenciák</p>
       <h2 id="munkak-cim">Munkáink</h2>
       <p>Minden kép a saját munkánkról készült. Egy referencia többet mond bármilyen ígéretnél.</p>
     </div>
 
-    <div class="tortenet" aria-label="Egy tetőtér-bővítés három állapotban">
+    <div class="tortenet">
       <h3 class="tortenet__cim">Egy tetőtér-bővítés, elejétől a végéig</h3>
       <ol class="tortenet__sor">
-        <li>
-          <button class="tortenet__kep" data-kep="tetoter-elotte"><img src="img/tetoter-elotte-800.webp" alt="A ház a bontás után, nyitott tetőrésszel" loading="lazy"></button>
-          <p><b>Kiindulás</b> Bontás, a régi tetőrész helyén nyitott szerkezet.</p>
-        </li>
-        <li>
-          <button class="tortenet__kep" data-kep="tetoter-szerkezet"><img src="img/tetoter-szerkezet-800.webp" alt="Az új felépítmény faszerkezete a tetőn" loading="lazy"></button>
-          <p><b>Szerkezet</b> Az új felépítmény vázszerkezete és a fedés előkészítése.</p>
-        </li>
-        <li>
-          <button class="tortenet__kep" data-kep="tetoter-kesz"><img src="img/tetoter-kesz-800.webp" alt="Elkészült tetőtér-bővítés ablaksorral" loading="lazy"></button>
-          <p><b>Átadva</b> Burkolt felépítmény, ablaksor, új fedés és bádogozás.</p>
-        </li>
+        <li><button class="tortenet__kep" data-kep="tetoter-elotte"><img src="img/tetoter-elotte-800.webp" alt="A ház a bontás után, nyitott tetőrésszel" loading="lazy"><span>Előtte</span></button><p><b>Kiindulás</b>Bontás, a régi tetőrész helyén nyitott szerkezet.</p></li>
+        <li><button class="tortenet__kep" data-kep="tetoter-szerkezet"><img src="img/tetoter-szerkezet-800.webp" alt="Az új felépítmény faszerkezete a tetőn" loading="lazy"><span>Közben</span></button><p><b>Szerkezet</b>Az új felépítmény vázszerkezete, a fedés előkészítése.</p></li>
+        <li><button class="tortenet__kep" data-kep="tetoter-kesz"><img src="img/tetoter-kesz-800.webp" alt="Elkészült tetőtér-bővítés ablaksorral" loading="lazy"><span class="sarga">Utána</span></button><p><b>Átadva</b>Burkolt felépítmény, ablaksor, új fedés és bádogozás.</p></li>
       </ol>
     </div>
 
@@ -230,7 +264,7 @@
       <button class="szuro__gomb" data-szuro="kozben" aria-pressed="false">Munka közben</button>
     </div>
     <ul class="galeria zart" id="galeria"></ul>
-    <button class="gomb gomb--vonal tobbgomb" id="tobbgomb" type="button">Összes kép megjelenítése</button>
+    <button class="gomb gomb--vonal tobbgomb" id="tobbgomb" type="button">Összes kép</button>
   </div>
 </section>
 
@@ -238,44 +272,46 @@
 <section class="szakasz rolunk" id="rolunk" aria-labelledby="rolunk-cim">
   <div class="tarolo rolunk__racs">
     <div class="rolunk__szoveg">
+      <p class="fej__felso">Rólunk</p>
       <h2 id="rolunk-cim">János és csapata</h2>
       <p class="rolunk__bev">A Tető.pro mögött egy összeszokott tetőfedő csapat áll. Évek óta tetőkön dolgozunk: új tetőt építünk, régit újítunk fel, javítunk és bádogozunk.</p>
-      <p>Ugyanazok az emberek mérik fel a tetőt, akik utána megcsinálják. Ezért a felmérésen elhangzottak a kivitelezésnél is érvényesek. Pontosan megbeszéljük, mi készül, miből és mennyiért – és tartjuk magunkat hozzá.</p>
-      <p>Bugyiból indulunk, és 200 km-es körzetben vállalunk munkát Pest, Bács-Kiskun, Jász-Nagykun-Szolnok és Csongrád-Csanád megyében. Számlaképesek vagyunk, az elvégzett munkára garanciát adunk.</p>
-      <ul class="rolunk__ertek">
-        <li><b>Szakértelem</b> cserép-, lemez- és lapostetőn</li>
-        <li><b>Megbízhatóság</b> a megbeszélt határidővel</li>
-        <li><b>Ügyfélközpontúság</b> elérhető telefonon, munka közben is</li>
+      <p>Ugyanazok az emberek mérik fel a tetőt, akik utána megcsinálják, ezért a felmérésen elhangzottak a kivitelezésnél is érvényesek. Pontosan megbeszéljük, mi készül, miből és mennyiért – és tartjuk magunkat hozzá.</p>
+      <ul class="pipak pipak--sotet">
+        <li>Szakértelem cserép-, lemez- és lapostetőn</li>
+        <li>Megbízhatóság: a megbeszélt határidővel</li>
+        <li>Elérhetők vagyunk telefonon, munka közben is</li>
       </ul>
+      <a class="gomb gomb--fekete" href="tel:+36702656704">Hívja Jánost: +36 70 265 6704</a>
     </div>
-    <figure class="terkep" aria-labelledby="terkep-cim">
-      <svg viewBox="0 0 420 420" role="img" aria-labelledby="terkep-cim">
-        <g class="terkep__korok" id="terkepKorok"></g>
-        <g class="terkep__varosok" id="terkepVarosok"></g>
-      </svg>
-      <figcaption id="terkep-cim">Bugyiból indulunk, 200 km-es körzetben vállalunk munkát. A körök 50 km-enként.</figcaption>
+    <figure class="terkep">
+      <svg viewBox="0 0 420 420" role="img" aria-labelledby="terkep-cim"><g class="terkep__korok" id="terkepKorok"></g><g class="terkep__varosok" id="terkepVarosok"></g></svg>
+      <figcaption id="terkep-cim"><b>Munkaterület</b> Bugyitól 200 km-es körzetben: Pest, Bács-Kiskun, Jász-Nagykun-Szolnok és Csongrád-Csanád megye. A körök 50 km-enként.</figcaption>
     </figure>
   </div>
 </section>
 
-<!-- ============ FOLYAMAT ============ -->
-<section class="szakasz folyamat" id="folyamat" aria-labelledby="folyamat-cim">
-  <div class="tarolo">
-    <div class="szakasz__fej">
-      <h2 id="folyamat-cim">Hogyan dolgozunk</h2>
-      <p>Négy lépés a hívástól az átadásig. Mindegyiknél tudja, mi történik és mi következik.</p>
+<!-- ============ GYIK ============ -->
+<section class="szakasz gyik" id="gyik" aria-labelledby="gyik-cim">
+  <div class="tarolo gyik__racs">
+    <div class="fej">
+      <p class="fej__felso">Gyakori kérdések</p>
+      <h2 id="gyik-cim">Amit a legtöbben megkérdeznek</h2>
+      <p>Ha a válasza nincs itt, hívjon nyugodtan – telefonon gyorsabb.</p>
+      <a class="gomb gomb--sarga" href="tel:+36702656704">+36 70 265 6704</a>
     </div>
-    <ol class="lepesek">
-      <li class="lepes"><span class="lepes__sz">1</span><h3>Kapcsolatfelvétel</h3><p>Hívjon vagy írjon. Pár kérdés alapján már a telefonban megmondjuk, mire számíthat.</p></li>
-      <li class="lepes"><span class="lepes__sz">2</span><h3>Felmérés, egyeztetés</h3><p>Kimegyünk, felmérjük a tetőt, és írásos árajánlatot adunk. A felmérés ingyenes.</p></li>
-      <li class="lepes"><span class="lepes__sz">3</span><h3>Kivitelezés</h3><p>Egyeztetett kezdés, rendezett munkaterület, folyamatos tájékoztatás a munka alatt.</p></li>
-      <li class="lepes"><span class="lepes__sz">4</span><h3>Átadás</h3><p>Közös bejárás, takarítás, számla és garancia. A tető ezután évtizedekig nem kérdés.</p></li>
-    </ol>
+    <div class="gyik__lista">
+      <details open><summary>Mennyibe kerül a felmérés?</summary><p>Semennyibe. Kimegyünk, megnézzük a tetőt, és írásos árajánlatot adunk. Ez semmire nem kötelezi.</p></details>
+      <details><summary>Mennyi idő alatt készül el egy tető?</summary><p>A tető méretétől és a munka fajtájától függ. Egy átlagos családi ház átfedése általában néhány nap, egy javítás gyakran egy nap alatt megvan. A felméréskor pontos időt mondunk.</p></details>
+      <details><summary>Vállalnak kisebb javítást, beázást is?</summary><p>Igen. Beázásnál először az okát keressük meg – a kémény mellett, a vápában, a szegélynél –, és azt javítjuk, nem csak a foltot.</p></details>
+      <details><summary>Milyen messzire mennek ki?</summary><p>Bugyiból 200 km-es körzetben dolgozunk: Budapest, Kecskemét, Szolnok, Csongrád, Hódmezővásárhely, Szeged és a környező települések.</p></details>
+      <details><summary>Adnak számlát és garanciát?</summary><p>Igen, számlaképesek vagyunk magánszemélynek és cégnek is, és az elvégzett munkára garanciát adunk.</p></details>
+      <details><summary>Az anyagot is önök szerzik be?</summary><p>Igen, ha kéri. Gyári rendszerekkel dolgozunk, a hozzájuk tartozó idomokkal. Ha már van anyaga, megnézzük, és megmondjuk, beépíthető-e.</p></details>
+    </div>
   </div>
 </section>
 
-<!-- ============ AJÁNLAT / KAPCSOLAT ============ -->
-<section class="szakasz ajanlat" id="ajanlat" aria-labelledby="ajanlat-cim">
+<!-- ============ AJÁNLAT ============ -->
+<section class="ajanlat" id="ajanlat" aria-labelledby="ajanlat-cim">
   <div class="tarolo ajanlat__racs">
     <div class="ajanlat__bal">
       <h2 id="ajanlat-cim">Kérjen ajánlatot még ma</h2>
@@ -285,31 +321,21 @@
         +36 70 265 6704
       </a>
       <div class="ajanlat__gombok">
-        <a class="gomb gomb--sarga" href="tel:+36702656704">Hívjon most</a>
-        <a class="gomb gomb--vonal" href="#facebook" data-egyeztetendo="Facebook-oldal linkje">Messenger</a>
+        <a class="gomb gomb--fekete" href="tel:+36702656704">Hívjon most</a>
+        <a class="gomb gomb--vonal-sotet" href="#facebook" data-egyeztetendo="Facebook-oldal linkje">Írjon Messengeren</a>
       </div>
       <dl class="elerhetoseg">
         <div><dt>Cím</dt><dd>2347 Bugyi, Ady Endre utca 8.</dd></div>
         <div><dt>E-mail</dt><dd><a href="mailto:samujanos777@gmail.com">samujanos777@gmail.com</a></dd></div>
-        <div><dt>Munkaterület</dt><dd>Bugyi és 200 km-es körzete: Budapest, Kecskemét, Szolnok, Csongrád, Hódmezővásárhely, Szeged</dd></div>
       </dl>
     </div>
 
     <form class="urlap" id="urlap" novalidate>
       <h3>Ajánlatkérés</h3>
-      <div class="mezo">
-        <label for="u-nev">Név</label>
-        <input id="u-nev" name="nev" autocomplete="name" required>
-      </div>
+      <div class="mezo"><label for="u-nev">Név</label><input id="u-nev" name="nev" autocomplete="name"></div>
       <div class="mezopar">
-        <div class="mezo">
-          <label for="u-tel">Telefonszám</label>
-          <input id="u-tel" name="tel" type="tel" autocomplete="tel" inputmode="tel" required>
-        </div>
-        <div class="mezo">
-          <label for="u-hely">Település</label>
-          <input id="u-hely" name="hely" autocomplete="address-level2">
-        </div>
+        <div class="mezo"><label for="u-tel">Telefonszám</label><input id="u-tel" name="tel" type="tel" autocomplete="tel" inputmode="tel"></div>
+        <div class="mezo"><label for="u-hely">Település</label><input id="u-hely" name="hely" autocomplete="address-level2"></div>
       </div>
       <fieldset class="mezo">
         <legend>Milyen munkáról van szó?</legend>
@@ -323,13 +349,10 @@
           <label><input type="checkbox" name="munka" value="Egyedi munka"><span>Egyedi</span></label>
         </div>
       </fieldset>
-      <div class="mezo">
-        <label for="u-uzenet">Röviden a munkáról <span class="opc">(nem kötelező)</span></label>
-        <textarea id="u-uzenet" name="uzenet" rows="3" placeholder="Pl. kb. 120 m² cseréptető, beázik a kémény mellett"></textarea>
-      </div>
+      <div class="mezo"><label for="u-uzenet">Röviden a munkáról <span class="opc">(nem kötelező)</span></label><textarea id="u-uzenet" name="uzenet" rows="3" placeholder="Pl. kb. 120 m² cseréptető, beázik a kémény mellett"></textarea></div>
       <p class="urlap__hiba" id="urlapHiba" role="alert"></p>
       <button class="gomb gomb--sarga gomb--teli" type="submit">Ajánlatkérés küldése</button>
-      <p class="urlap__megj">A gomb előre kitöltött e-mailt nyit. 1–2 munkanapon belül visszahívjuk.</p>
+      <p class="urlap__megj">A gomb előre kitöltött e-mailt nyit.</p>
     </form>
   </div>
 </section>
@@ -339,7 +362,7 @@
 <footer class="lab">
   <div class="tarolo lab__racs">
     <div class="lab__marka">
-      <img src="logo.svg" alt="Tető.pro" width="170" height="66" loading="lazy">
+      <img src="logo-jelveny.svg" alt="Tető.pro – Tetőszakértő" width="150" height="137" loading="lazy">
       <p>Tetőfedés, lemezfedés, bádogos munkák, teraszok és egyedi kivitelezés – Bugyiból, 200 km-es körzetben.</p>
     </div>
     <div>
@@ -365,7 +388,7 @@
   </div>
   <div class="tarolo lab__also">
     <p>© <span id="ev">2026</span> Tető.pro – Tetőszakértő</p>
-    <p>Látványterv · DAEKON</p>
+    <p>Látványterv – DAEKON</p>
   </div>
 </footer>
 
@@ -374,16 +397,13 @@
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 3.5 9.4 3l1.5 4.2-2 1.4a12 12 0 0 0 6.5 6.5l1.4-2 4.2 1.5-.5 2.8c-.2.9-1 1.6-2 1.6A15.5 15.5 0 0 1 3 5.5c0-1 .7-1.8 1.6-2Z"/></svg>
     Hívás most
   </a>
-  <a class="gomb gomb--vonal" href="#ajanlat">Ajánlatkérés</a>
+  <a class="gomb gomb--feher" href="#gyors">Ingyenes felmérés</a>
 </div>
 
 <div class="nagyito" id="nagyito" role="dialog" aria-modal="true" aria-label="Képnagyító" hidden>
   <button class="nagyito__zar" id="nzZar" aria-label="Bezárás"><svg viewBox="0 0 24 24"><path d="M5 5l14 14M19 5 5 19"/></svg></button>
   <button class="nagyito__nyil nagyito__nyil--bal" id="nzElozo" aria-label="Előző kép"><svg viewBox="0 0 24 24"><path d="M15 4 7 12l8 8"/></svg></button>
-  <figure>
-    <img id="nzKep" alt="">
-    <figcaption><span id="nzFelirat"></span><span id="nzSzam"></span></figcaption>
-  </figure>
+  <figure><img id="nzKep" alt=""><figcaption><span id="nzFelirat"></span><span id="nzSzam"></span></figcaption></figure>
   <button class="nagyito__nyil nagyito__nyil--jobb" id="nzKov" aria-label="Következő kép"><svg viewBox="0 0 24 24"><path d="m9 4 8 8-8 8"/></svg></button>
 </div>
 

@@ -45,7 +45,7 @@
 
   /* ---------- Fejléc, menü ---------- */
   var fejlec = $("#fejlec"), menu = $("#menu"), mg = $("#menugomb");
-  var allapot = function () { fejlec.classList.toggle("gorgetve", window.scrollY > 24); };
+  var allapot = function () { fejlec.classList.toggle("gorgetve", window.scrollY > 40); };
   allapot();
   window.addEventListener("scroll", allapot, { passive: true });
   var menuZar = function () { menu.classList.remove("nyitva"); mg.setAttribute("aria-expanded", "false"); };
@@ -53,7 +53,6 @@
     var nyit = !menu.classList.contains("nyitva");
     menu.classList.toggle("nyitva", nyit);
     mg.setAttribute("aria-expanded", String(nyit));
-    fejlec.classList.add("gorgetve");
   });
   $$("a", menu).forEach(function (a) { a.addEventListener("click", menuZar); });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") menuZar(); });
@@ -225,6 +224,32 @@
     b.appendChild(el("circle", { cx: C, cy: C, r: 7, "class": "bel" }));
     b.appendChild(el("text", { x: C - 20, y: C + 5, "text-anchor": "end" }, "Bugyi"));
     varosok.appendChild(b);
+  }
+
+  /* ---------- Gyors felmérés-kérő (hero kártya, 2 lépés) ---------- */
+  var gy = $("#gyors");
+  if (gy) {
+    var l1 = $("#gyors1"), l2 = $("#gyors2"), hibaG = $("#gyorsHiba");
+    var valt = function (n) {
+      l1.hidden = n !== 1; l2.hidden = n !== 2;
+      $("#gyorsLepes").textContent = n; $("#gyorsSav2").classList.toggle("aktiv", n === 2);
+    };
+    var tipus = function () { var c = $('input[name="tipus"]:checked', gy); return c ? c.value : ""; };
+    $("#gyorsTovabb").addEventListener("click", function () {
+      $("#gyorsTipus").textContent = tipus() || "még nem tudom";
+      valt(2); $("#g-nev").focus();
+    });
+    $$('input[name="tipus"]', gy).forEach(function (r) { r.addEventListener("change", function () { setTimeout(function () { $("#gyorsTovabb").click(); }, 180); }); });
+    $("#gyorsVissza").addEventListener("click", function () { valt(1); });
+    gy.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var nev = gy.nev.value.trim(), tel = gy.tel.value.trim(), ok = tel.replace(/\D/g, "").length >= 8;
+      gy.nev.setAttribute("aria-invalid", String(!nev)); gy.tel.setAttribute("aria-invalid", String(!ok));
+      if (!nev || !ok) { hibaG.textContent = !nev ? "Adja meg a nevét." : "Adjon meg egy telefonszámot, amin visszahívhatjuk."; (!nev ? gy.nev : gy.tel).focus(); return; }
+      hibaG.textContent = "";
+      var torzs = "Név: " + nev + "\nTelefon: " + tel + "\nTelepülés: " + (gy.hely.value.trim() || "-") + "\nMunka: " + (tipus() || "nincs megadva");
+      location.href = "mailto:samujanos777@gmail.com?subject=" + encodeURIComponent("Felméréskérés – " + nev) + "&body=" + encodeURIComponent(torzs);
+    });
   }
 
   /* ---------- Ajánlatkérő: előre kitöltött e-mail ---------- */
