@@ -16,6 +16,9 @@ jobs:
           curl -sSL -o BigShouldersDisplay.ttf "https://raw.githubusercontent.com/google/fonts/main/ofl/bigshouldersdisplay/BigShouldersDisplay%5Bwght%5D.ttf" || true
           curl -sSL -o BigShoulders.ttf "https://raw.githubusercontent.com/google/fonts/main/ofl/bigshoulders/BigShoulders%5Bopsz,wght%5D.ttf" || true
           curl -sSL -o Onest.ttf "https://raw.githubusercontent.com/google/fonts/main/ofl/onest/Onest%5Bwght%5D.ttf" || true
+          for f in "saira/Saira%5Bwdth,wght%5D.ttf:Saira.ttf" "anybody/Anybody%5Bwdth,wght%5D.ttf:Anybody.ttf" "archivo/Archivo%5Bwdth,wght%5D.ttf:Archivo.ttf" "sairacondensed/SairaCondensed-Bold.ttf:SairaCondensed-Bold.ttf" "manrope/Manrope%5Bwght%5D.ttf:Manrope.ttf" "inter/Inter%5Bopsz,wght%5D.ttf:Inter.ttf"; do
+            curl -sSLf -o "${f##*:}" "https://raw.githubusercontent.com/google/fonts/main/ofl/${f%%:*}" || echo "miss $f"
+          done
           ls -la
       - name: Commit
         run: |
