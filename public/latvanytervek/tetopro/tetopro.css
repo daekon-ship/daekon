@@ -584,3 +584,6 @@ html.sotet .fejlec__sor{min-height:54px;padding-top:0;padding-bottom:0}
 html.sotet .logo img.logo__jel{width:60px}
 @media (min-width:1060px){html.sotet .logo img.logo__jel{width:70px}}
 @media (max-width:359px){html.sotet .logo img.logo__jel{width:48px}}
+html.sotet .logo img.logo__jel{width:46px}
+@media (min-width:1060px){html.sotet .logo img.logo__jel{width:54px}}
+@media (max-width:359px){html.sotet .logo img.logo__jel{width:40px}}
