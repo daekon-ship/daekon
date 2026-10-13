@@ -4,6 +4,13 @@
 Fájlok: `index.html`, `multicont.css`, `multicont.js`, `jel.svg` (favicon / jel), `fonts/` (Spectral + Manrope, helyben, OFL).
 A terv `noindex` — élesítéskor a `robots` meta törlendő, és a canonical URL beállítandó.
 
+## 2. kör — vizuális erősítés
+- Felső mélykék információs sáv (cím, e-mail, telefon, HU · DE); görgetésre összecsukódik, telefonon nincs (ott az alsó hívássáv van).
+- Hero: a kompozíció mögött a képernyő széléig kifutó jégkék tér finom függőleges osztással; a profilkártya fehér főkönyvi lapon ül. Asztalon a vékony keret és oszlopvonalak kikerültek (zsúfoltak lettek volna).
+- Bemutatkozás: mélykék „H / M” monogramtábla (név, végzettség, Budaörs · 2015 óta) — személyes hangsúly kitalált portré nélkül.
+- Szolgáltatások: kéthasábos fejléc rövid bevezetővel; az ikonok jégkék négyzetben, rámutatásra mélykékre váltanak.
+- Kiknek segítünk: vonalikonok és rövid címkék (e.v. / bt. · kft. / online). Lábléc: logójel.
+
 ## Koncepció
 - **„Főkönyv”**: a vizuális nyelv a könyvelés saját eszközeiből épül — vonalazott főkönyvi lap margóvonallal, oszlopvonalak, és a **kettős aláhúzás**, ami a számvitelben a lezárt összeget jelöli. Ez ismétlődik a hero profilkártyán, a szakmai út utolsó során és a végelszámolás szekció vonalgrafikáján („lezárva”).
 - **Nincs fotó.** Az ügyfélnek nincs saját irodai fotója, stockot nem használunk, portrét nem generálunk. A hero jobb oldalán valós adatokból összeállított „szakmai profil” kártya áll (végzettségek, 30 év, HU · DE), mögötte jégkék főkönyvi lap és vékony kék keret, rá úszik a mélykék „Kiemelt specialitás” fül. Ha később lesz valódi irodafotó, a `.folio-paper` helyére tehető.

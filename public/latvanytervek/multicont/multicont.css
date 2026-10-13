@@ -31,11 +31,11 @@
   --gut:clamp(20px, 5vw, 48px);
   --sec:clamp(80px, 10vw, 136px);
   --ease:cubic-bezier(.22,.7,.2,1);
-  --hdr:84px;
+  --hdr:118px;
 }
 
 *,*::before,*::after{box-sizing:border-box}
-html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;scroll-padding-top:76px}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;scroll-padding-top:80px}
 body{
   margin:0;background:var(--white);color:var(--text);
   font-family:var(--sans);font-size:16.5px;line-height:1.7;
@@ -94,7 +94,7 @@ h3{font-size:21px;line-height:1.3;font-weight:400}
 
 /* ---------- Fejléc ---------- */
 .hdr{
-  position:fixed;inset:0 0 auto 0;z-index:100;height:var(--hdr);
+  position:fixed;inset:0 0 auto 0;z-index:100;
   background:rgba(255,255,255,.96);
   transition:height .5s var(--ease), box-shadow .5s var(--ease), border-color .5s var(--ease);
   border-bottom:1px solid transparent;
@@ -102,8 +102,20 @@ h3{font-size:21px;line-height:1.3;font-weight:400}
 @supports (backdrop-filter:blur(8px)){
   .hdr{background:rgba(255,255,255,.88);backdrop-filter:saturate(1.4) blur(10px);-webkit-backdrop-filter:saturate(1.4) blur(10px)}
 }
-.hdr.is-scrolled{height:68px;border-color:var(--line);box-shadow:0 10px 30px -24px rgba(12,35,64,.45);background:#fff}
-.hdr-in{height:100%;display:flex;align-items:center;gap:32px}
+.hdr.is-scrolled{border-color:var(--line);box-shadow:0 10px 30px -24px rgba(12,35,64,.45);background:#fff}
+.hdr-in{height:84px;display:flex;align-items:center;gap:32px;transition:height .5s var(--ease)}
+.hdr.is-scrolled .hdr-in{height:68px}
+
+/* Felső információs sáv */
+.topbar{height:34px;overflow:hidden;background:var(--navy);color:#B9CBDD;font-size:12.5px;letter-spacing:.02em;transition:height .5s var(--ease)}
+.hdr.is-scrolled .topbar{height:0}
+.topbar-in{height:34px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.tb-right{display:flex;align-items:center;gap:18px}
+.topbar a{text-decoration:none;color:#DCE6F0;transition:color .3s}
+.topbar a:hover{color:#fff}
+.tb-tel{font-weight:600;color:#fff !important}
+.tb-sep{width:1px;height:12px;background:rgba(255,255,255,.22)}
+.tb-lang{letter-spacing:.14em;font-size:11.5px;font-weight:600;color:#9CC1E0}
 
 .brand{display:flex;align-items:center;gap:13px;text-decoration:none;color:var(--navy);flex:none}
 .brand-mark{width:38px;height:38px;color:var(--navy);transition:width .5s var(--ease), height .5s var(--ease)}
@@ -154,7 +166,13 @@ h3{font-size:21px;line-height:1.3;font-weight:400}
 
 /* ---------- Hero ---------- */
 .hero{padding:calc(var(--hdr) + clamp(48px, 7vw, 96px)) 0 0;position:relative}
-.hero-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(40px, 6vw, 96px);align-items:center}
+.hero-grid{position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(40px, 6vw, 96px);align-items:center}
+.hero-grid::before{ /* teljes szélességig kifutó jégkék tér a kompozíció mögött */
+  content:"";position:absolute;top:-56px;bottom:-56px;left:calc(50% + 72px);right:calc((100% - 100vw) / 2);
+  background-color:var(--ice);
+  background-image:linear-gradient(to right, rgba(23,62,104,.07) 1px, transparent 1px);
+  background-size:120px 100%;
+}
 
 .hero h1{
   font-size:clamp(36px, 4.3vw, 56px);line-height:1.08;font-weight:300;letter-spacing:-.012em;
@@ -169,12 +187,13 @@ h3{font-size:21px;line-height:1.3;font-weight:400}
 .hero-tel:hover b{border-color:var(--navy)}
 
 /* Folio-kompozíció */
-.folio{position:relative;margin:0;height:clamp(590px, 46vw, 640px)}
+.folio{position:relative;z-index:1;margin:0;height:clamp(590px, 46vw, 640px)}
+.hero-copy{position:relative;z-index:1}
 .folio-stack{position:absolute;left:11%;top:5%;width:min(380px, 72%)}
 .folio > *{will-change:transform}
 .folio-paper{
   position:absolute;top:0;right:0;width:78%;height:86%;
-  background-color:var(--ice);
+  background-color:#fff;box-shadow:0 30px 60px -50px rgba(12,35,64,.45);
   background-image:repeating-linear-gradient(to bottom, transparent 0 31px, rgba(40,102,157,.13) 31px 32px);
 }
 .folio-paper::after{ /* margó-vonal, mint a főkönyvi lapon */
@@ -269,7 +288,8 @@ h3{font-size:21px;line-height:1.3;font-weight:400}
 .card:hover{transform:translateY(-4px);border-color:#C6D7E5;box-shadow:0 26px 44px -30px rgba(12,35,64,.38)}
 .card:hover::before{transform:scaleX(1)}
 .card-no{position:absolute;top:30px;right:32px;font-family:var(--serif);font-size:15px;color:var(--muted);font-style:italic}
-.ico{width:42px;height:42px;fill:none;stroke:var(--deep);stroke-width:1.25;stroke-linecap:round;stroke-linejoin:round;margin-bottom:30px}
+.ico{width:60px;height:60px;padding:11px;background:var(--ice);fill:none;stroke:var(--deep);stroke-width:1.25;stroke-linecap:round;stroke-linejoin:round;margin-bottom:28px;transition:background .5s var(--ease), stroke .5s var(--ease)}
+.card:hover .ico{background:var(--navy);stroke:#fff}
 .card h3{margin-bottom:12px}
 .card p{font-size:15.5px;line-height:1.65;color:var(--text)}
 .card-link{
@@ -282,7 +302,7 @@ h3{font-size:21px;line-height:1.3;font-weight:400}
 
 .card-key{background:var(--ice);border-color:#BFD3E4}
 .card-key::before{transform:scaleX(1);height:3px;background:var(--navy)}
-.card-key .ico{stroke:var(--navy)}
+.card-key .ico{stroke:var(--navy);background:#fff}
 .card-badge{
   position:absolute;top:26px;right:28px;
   font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
@@ -498,7 +518,7 @@ h3{font-size:21px;line-height:1.3;font-weight:400}
 @media (max-width:640px){
   body{font-size:16px}
   :root{--sec:76px}
-  .hdr.is-scrolled{height:64px}
+
   .brand-name{font-size:19px}
   .brand-mark{width:34px;height:34px}
   .brand-sub{font-size:9px;letter-spacing:.2em}
@@ -601,3 +621,47 @@ h3{font-size:21px;line-height:1.3;font-weight:400}
   .quals li:nth-child(even){padding-left:0}
   .quals li:nth-last-child(2){border-bottom:1px solid var(--line)}
 }
+
+/* ---------- 2. kör: kiegészítések ---------- */
+.sec-head-split{max-width:none;display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:clamp(32px, 6vw, 96px);align-items:end}
+.sec-intro{font-size:16.5px;line-height:1.7;max-width:440px;padding-bottom:6px;border-left:1px solid var(--line);padding-left:28px}
+
+.plate{
+  position:relative;background:var(--navy);color:#fff;padding:34px 30px 26px;
+  background-image:repeating-linear-gradient(to bottom, transparent 0 31px, rgba(255,255,255,.04) 31px 32px);
+}
+.plate::after{content:"";position:absolute;inset:10px;border:1px solid rgba(156,193,224,.28);pointer-events:none}
+.plate-mono{display:flex;align-items:center;gap:16px;font-family:var(--serif);font-weight:300;font-size:44px;line-height:1;color:#fff}
+.plate-mono i{width:1px;height:40px;background:#7FB0DA;transform:rotate(18deg)}
+.plate-name{margin-top:26px;font-size:13px;font-weight:700;letter-spacing:.26em;text-transform:uppercase}
+.plate-role{margin-top:6px;font-family:var(--serif);font-style:italic;font-size:16px;color:#B9CBDD}
+.plate-foot{display:flex;justify-content:space-between;margin-top:24px;padding-top:12px;border-top:3px double rgba(255,255,255,.4);font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#9CC1E0}
+
+.who-ico{width:46px;height:46px;fill:none;stroke:var(--accent);stroke-width:1.3;stroke-linecap:round;stroke-linejoin:round;margin-bottom:20px}
+.who-list li{display:flex;flex-direction:column}
+.who-tag{margin-top:18px;align-self:flex-start;font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--deep);border:1px solid var(--line);padding:5px 10px;line-height:1}
+.who{background:linear-gradient(var(--white),var(--white))}
+
+.ftr-mark{width:38px;height:38px;color:#fff;margin-bottom:20px}
+
+@media (max-width:1060px){
+  :root{--hdr:72px}
+  .topbar{display:none}
+  .hdr-in{height:72px}
+  .hdr.is-scrolled .hdr-in{height:64px}
+}
+@media (max-width:960px){
+  .hero-grid::before{left:-200vw;right:calc((100% - 100vw) / 2);top:auto;bottom:-56px;height:360px;left:calc((100% - 100vw) / 2)}
+  .sec-head-split{grid-template-columns:1fr;gap:20px}
+  .sec-intro{border-left:0;padding-left:0}
+  .about-side{grid-template-columns:1fr 1fr}
+}
+@media (max-width:640px){
+  .hero-grid::before{height:260px}
+  .about-side{grid-template-columns:1fr}
+  .plate-mono{font-size:38px}
+  .ico{width:54px;height:54px;padding:10px}
+}
+/* A jégkék tér mellett a keret és az oszlopvonalak már feleslegesek */
+@media (min-width:961px){ .folio-frame,.folio-cols{display:none} }
+@media (max-width:960px){ .folio-paper{background-color:var(--ice);box-shadow:none} }
