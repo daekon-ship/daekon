@@ -98,11 +98,11 @@ h3{font-size:18.5px;line-height:1.3;font-weight:400}
 .hdr.is-scrolled .hdr-in{height:68px}
 
 .brand{display:flex;align-items:center;gap:13px;flex:none;color:var(--ink);text-decoration:none}
-.brand-mark{width:38px;height:38px;color:var(--b800)}
+.brand-mark{width:42px;height:42px}
 .brand-txt{display:flex;flex-direction:column;line-height:1}
-.brand-name{font-family:var(--serif);font-size:21px;font-weight:400}
-.brand-name em{font-style:normal;font-family:var(--sans);font-size:11px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:var(--b600);margin-left:5px;vertical-align:2px}
-.brand-sub{margin-top:6px;font-size:9.5px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:var(--muted)}
+.brand-name{font-family:var(--sans);font-size:18px;font-weight:800;letter-spacing:.06em;color:var(--b800)}
+.brand-name em{font-style:normal;font-weight:400;color:var(--b600);margin-left:2px}
+.brand-sub{margin-top:7px;font-size:9.5px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:var(--muted)}
 .brand-sub i{font-style:normal;color:var(--b600);margin:0 3px}
 
 .nav{margin-left:auto}
@@ -312,8 +312,9 @@ h3{font-size:18.5px;line-height:1.3;font-weight:400}
 /* ---------- Lábléc ---------- */
 .ftr{padding:clamp(64px, 8vw, 88px) 0 0;background:var(--b900);color:var(--b200);font-size:15px}
 .ftr-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr) minmax(0,.8fr) minmax(0,1.1fr);gap:40px;padding-bottom:52px}
-.ftr-mark{width:38px;height:38px;margin-bottom:18px;color:#fff}
-.ftr-name{font-size:14px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:#fff}
+.ftr-mark{width:42px;height:42px;margin-bottom:18px}
+.ftr-name{font-size:17px;font-weight:800;letter-spacing:.06em;color:#fff}
+.ftr-name span{font-weight:400;color:var(--b200)}
 .ftr-tag{margin-top:12px;max-width:300px;font-family:var(--serif);font-style:italic;font-size:17px;line-height:1.5;color:#E3EEFA}
 .ftr-h{margin-bottom:14px;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--b200)}
 .ftr-nav li + li{margin-top:8px}
@@ -451,8 +452,8 @@ h3{font-size:18.5px;line-height:1.3;font-weight:400}
 @media (max-width:640px){
   :root{--sec:72px;--head:36px}
   body{font-size:16px}
-  .brand-name{font-size:19px}
-  .brand-mark{width:34px;height:34px}
+  .brand-name{font-size:16px}
+  .brand-mark{width:38px;height:38px}
   .brand-sub{font-size:9px;letter-spacing:.2em}
 
   .hero{padding-top:calc(var(--hdr) + 36px);background:linear-gradient(to bottom, var(--b800) calc(100% - 100px), var(--white) calc(100% - 100px))}

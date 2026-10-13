@@ -4,6 +4,10 @@
 Fájlok: `index.html`, `multicont.css`, `multicont.js`, `jel.svg` (favicon / jel), `fonts/` (Spectral + Manrope, helyben, OFL).
 A terv `noindex` — élesítéskor a `robots` meta törlendő, és a canonical URL beállítandó.
 
+## 10. kör — új logó, erősebb szövegek
+- **Logó:** kék négyzetben fehér „M”, amelynek középső szára világoskék pipában fut ki (a könyvelő ellenőrző pipája). Mellette kétszínű szókép: **MULTICONT** (vastag) **CENTER** (vékony), alatta KÖNYVELÉS · ADÓTANÁCSADÁS. Önálló fájlok: `logo.svg` (világos alapra), `logo-feher.svg` (sötét alapra), `jel.svg` (csak a jel / favicon). Az SVG-szövegek Manrope betűt kérnek; nyomdai használathoz görbésítendők.
+- **Szövegek:** határozottabb, konkrétabb mondatok. Hero: „Rendben lévő könyvek, harminc év tapasztalattal.” Rólunk: Horváth Mária saját hangján („…nem ügyfélszolgálatot hív, hanem engem.”). Szolgáltatások: „Mit vállalunk?”, konkrét egysoros leírások. Végelszámolás: „Megszüntetné a cégét? Végigvisszük Ön helyett.” A „bt.-knek / kft.-knek” nem törik el sor végén.
+
 ## 9. kör — kisebb betűk, kevesebb szöveg
 - A 8. kör nagyobb asztali léptéke visszavéve, és az alapméretek is kisebbek: szöveg 16 px, h2 max. 34 px, hero-cím max. 44 px, szolgáltatáscímek 20 px.
 - Szöveg kb. a felére: rövidebb bemutatkozás (2 mondat), egysoros szolgáltatásleírások, a „Miért minket” és az „Ügyfeleink” csak címekkel, végelszámolás tömörebben, a nyelvek sor kikerült a kapcsolatból (a nyitótérben ott van).
