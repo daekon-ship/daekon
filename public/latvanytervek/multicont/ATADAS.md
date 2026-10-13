@@ -4,6 +4,13 @@
 Fájlok: `index.html`, `multicont.css`, `multicont.js`, `jel.svg` (favicon / jel), `fonts/` (Spectral + Manrope, helyben, OFL).
 A terv `noindex` — élesítéskor a `robots` meta törlendő, és a canonical URL beállítandó.
 
+## 8. kör — asztali nézet erősítése (az ügyfél gépen nézi)
+- Asztalon nagyobb lépték: 1240 px-es konténer, 17 px-es szöveg, nagyobb címek, kártyák és listasorok (a címek továbbra is mérsékeltek, a hero-cím max. 50 px, két sorban).
+- Nyitótér: halvány, 12 hasábos függőleges rács a kék alapon — a szöveg és a kártya pontosan erre áll.
+- Végelszámolás: a semmitmondó vonalgrafika helyett fehér kapcsolati kártya (kérdés, telefon, e-mail, „Érdeklődöm a végelszámolásról” gomb, ami előválasztja az űrlapon).
+- Miért minket: a bal oszlop üres része helyett kék „Beszéljünk” doboz telefonnal és gombbal.
+- Ügyfeleink: három egyforma kártya kék felső éllel, jégkék ikonnégyzettel.
+
 ## 7. kör — világosabb kék, rendezettebb
 - A stíluslap újraírva egyetlen egységes rendszerre (korábbi rétegzett felülírások nélkül): egy konténer, egy szekciótávolság, egy címblokk-minta, egységes vonal- és árnyékhasználat.
 - Világosabb kékek: nyitótér / végelszámolás / tábla #1E5291, lábléc és felső sáv #173F6E, gombok #2463AA, kiemelés #2E74C0, jégkék #EAF3FC.
