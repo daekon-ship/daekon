@@ -4,6 +4,11 @@
 Fájlok: `index.html`, `multicont.css`, `multicont.js`, `jel.svg` (favicon / jel), `fonts/` (Spectral + Manrope, helyben, OFL).
 A terv `noindex` — élesítéskor a `robots` meta törlendő, és a canonical URL beállítandó.
 
+## 4. kör — szövegek
+- Minden szöveg egyszerűbb, köznapi magyarra írva: rövid mondatok, szlogenek és „AI-s” hármas felsorolások nélkül. A bemutatkozás Horváth Mária saját hangján (E/1), ahogy a konyvelok.hu profilján is ír.
+- A brief kötelező címei is lecserélve: hero „Könyvelés és adótanácsadás 30 év tapasztalattal.”, „Ki könyveli a vállalkozását?”, „Amiben segítünk”, „Megszüntetné a cégét? Ebben is segítünk.”, „Kiknek dolgozunk?”, „Amire számíthat”, „Hívjon, vagy írjon nekünk.” Ha az ügyfél ragaszkodik a „Biztos számok. Nyugodt vállalkozás.” mottóhoz, visszatehető.
+- A „szakmai vezető” megnevezés kikerült (nem ellenőrzött).
+
 ## 3. kör — telefonos profilkártya
 - Telefonon a kártya mögötti lap, keret és jégkék sáv kikerült (kilógó hatás), a kártya kompakt: navy felső él, végzettségek 2×2 rácsban pipával, kisebb név- és összegző sor, tömör specialitás-fül. 360 px alatt a végzettségek egy oszlopban.
 - A 4 kiemelés telefonon 2×2 rács, kisebb ikonokkal (a kilógó bal oldali vonal javítva).
