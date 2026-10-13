@@ -4,6 +4,9 @@
 Fájlok: `index.html`, `multicont.css`, `multicont.js`, `jel.svg` (favicon / jel), `fonts/` (Spectral + Manrope, helyben, OFL).
 A terv `noindex` — élesítéskor a `robots` meta törlendő, és a canonical URL beállítandó.
 
+## 5. kör — tiszta kék–fehér
+- A szinte feketének ható tengerészkék (#0C2340) helyett egyértelműen kék paletta: sötétkék #0F3B73 (sötét sávok, címek), kék #1A56A0 (gombok), kiemelő kék #1F6BBF, jégkék #E7F0FB, halvány #F3F8FD, szegély #D2E1F2. A fő gombok világosabb kékek lettek; a végelszámolás-sáv, a felső sáv, a monogramtábla és a lábléc is látványosan kék.
+
 ## 4. kör — szövegek
 - Minden szöveg egyszerűbb, köznapi magyarra írva: rövid mondatok, szlogenek és „AI-s” hármas felsorolások nélkül. A bemutatkozás Horváth Mária saját hangján (E/1), ahogy a konyvelok.hu profilján is ír.
 - A brief kötelező címei is lecserélve: hero „Könyvelés és adótanácsadás 30 év tapasztalattal.”, „Ki könyveli a vállalkozását?”, „Amiben segítünk”, „Megszüntetné a cégét? Ebben is segítünk.”, „Kiknek dolgozunk?”, „Amire számíthat”, „Hívjon, vagy írjon nekünk.” Ha az ügyfél ragaszkodik a „Biztos számok. Nyugodt vállalkozás.” mottóhoz, visszatehető.
