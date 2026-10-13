@@ -4,6 +4,11 @@
 Fájlok: `index.html`, `multicont.css`, `multicont.js`, `jel.svg` (favicon / jel), `fonts/` (Spectral + Manrope, helyben, OFL).
 A terv `noindex` — élesítéskor a `robots` meta törlendő, és a canonical URL beállítandó.
 
+## 7. kör — világosabb kék, rendezettebb
+- A stíluslap újraírva egyetlen egységes rendszerre (korábbi rétegzett felülírások nélkül): egy konténer, egy szekciótávolság, egy címblokk-minta, egységes vonal- és árnyékhasználat.
+- Világosabb kékek: nyitótér / végelszámolás / tábla #1E5291, lábléc és felső sáv #173F6E, gombok #2463AA, kiemelés #2E74C0, jégkék #EAF3FC.
+- Nyitótér letisztítva: a kártya mögötti lap, keret és vonalazás kikerült; szöveg balra, profilkártya jobbra, a specialitás-fül a kártya aljára rögzítve, azonos szélességben. A parallax megszűnt.
+
 ## 6. kör — prémiumabb megjelenés
 - Nyitótér sötétkék alapon, finom főkönyvi vonalazással; fehér cím, világoskék dőlt sor, fehér fő gomb. A profilkártya fehéren lebeg rajta, a specialitás-fül kiemelő kék.
 - A 4 kiemelés fehér, lebegő sávként félig rálóg a sötét nyitótér aljára.
