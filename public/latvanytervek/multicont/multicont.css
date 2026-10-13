@@ -665,3 +665,40 @@ h3{font-size:21px;line-height:1.3;font-weight:400}
 /* A jégkék tér mellett a keret és az oszlopvonalak már feleslegesek */
 @media (min-width:961px){ .folio-frame,.folio-cols{display:none} }
 @media (max-width:960px){ .folio-paper{background-color:var(--ice);box-shadow:none} }
+
+/* ---------- 3. kör: telefonon letisztult, kompakt profilkártya ---------- */
+@media (max-width:640px){
+  .hero-grid{gap:40px}
+  .hero-grid::before,.folio-paper,.folio-frame,.folio-cols{display:none}
+  .folio{padding:0;height:auto}
+  .folio > *{transform:none !important}
+  .folio-card{padding:20px 18px 18px;border-top:2px solid var(--navy);box-shadow:0 18px 40px -30px rgba(12,35,64,.45)}
+  .folio-head{padding-bottom:0;margin-bottom:12px;border-bottom:0;font-size:10px}
+  .folio-name{font-size:22px}
+  .folio-role{font-size:14.5px;margin-top:2px}
+  .folio-rows{display:grid;grid-template-columns:1fr 1fr;column-gap:14px;margin-top:16px}
+  .folio-rows li{justify-content:flex-start;gap:7px;padding:9px 0;font-size:13.5px;line-height:1.3}
+  .folio-rows svg{order:-1;width:14px;height:14px}
+  .folio-sum{margin-top:14px;padding-bottom:12px}
+  .folio-sum b{font-size:19px}
+  .folio-sum span{font-size:12px}
+  .folio-sum div + div{padding-left:14px}
+  .folio-tab{padding:14px 18px;gap:2px 12px;box-shadow:none}
+  .folio-tab-k{font-size:10px}
+  .folio-tab-t{font-size:15.5px}
+  .folio-tab svg{width:20px;height:20px}
+}
+@media (max-width:360px){
+  .folio-rows{grid-template-columns:1fr}
+  .folio-sum{grid-template-columns:1fr 1fr}
+  .folio-sum div + div{border-left:1px solid var(--line);padding-left:12px;margin-top:0;padding-top:0;border-top:0}
+}
+@media (max-width:640px){
+  .marks{grid-template-columns:1fr 1fr;margin-top:44px}
+  .marks li,.marks li + li,.marks li:first-child,.marks li:nth-child(odd){
+    flex-direction:column;align-items:flex-start;gap:8px;padding:16px 12px 16px 0;border-left:0;border-top:0;font-size:13.5px
+  }
+  .marks li:nth-child(even){padding-left:14px;border-left:1px solid var(--line)}
+  .marks li:nth-child(n+3){border-top:1px solid var(--line)}
+  .marks svg{width:24px;height:24px}
+}

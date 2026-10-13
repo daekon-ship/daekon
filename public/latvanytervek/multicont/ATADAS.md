@@ -4,6 +4,10 @@
 Fájlok: `index.html`, `multicont.css`, `multicont.js`, `jel.svg` (favicon / jel), `fonts/` (Spectral + Manrope, helyben, OFL).
 A terv `noindex` — élesítéskor a `robots` meta törlendő, és a canonical URL beállítandó.
 
+## 3. kör — telefonos profilkártya
+- Telefonon a kártya mögötti lap, keret és jégkék sáv kikerült (kilógó hatás), a kártya kompakt: navy felső él, végzettségek 2×2 rácsban pipával, kisebb név- és összegző sor, tömör specialitás-fül. 360 px alatt a végzettségek egy oszlopban.
+- A 4 kiemelés telefonon 2×2 rács, kisebb ikonokkal (a kilógó bal oldali vonal javítva).
+
 ## 2. kör — vizuális erősítés
 - Felső mélykék információs sáv (cím, e-mail, telefon, HU · DE); görgetésre összecsukódik, telefonon nincs (ott az alsó hívássáv van).
 - Hero: a kompozíció mögött a képernyő széléig kifutó jégkék tér finom függőleges osztással; a profilkártya fehér főkönyvi lapon ül. Asztalon a vékony keret és oszlopvonalak kikerültek (zsúfoltak lettek volna).
