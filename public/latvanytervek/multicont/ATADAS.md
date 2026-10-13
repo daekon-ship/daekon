@@ -4,6 +4,12 @@
 Fájlok: `index.html`, `multicont.css`, `multicont.js`, `jel.svg` (favicon / jel), `fonts/` (Spectral + Manrope, helyben, OFL).
 A terv `noindex` — élesítéskor a `robots` meta törlendő, és a canonical URL beállítandó.
 
+## 6. kör — prémiumabb megjelenés
+- Nyitótér sötétkék alapon, finom főkönyvi vonalazással; fehér cím, világoskék dőlt sor, fehér fő gomb. A profilkártya fehéren lebeg rajta, a specialitás-fül kiemelő kék.
+- A 4 kiemelés fehér, lebegő sávként félig rálóg a sötét nyitótér aljára.
+- Szolgáltatások: dobozos kártyarács helyett szerkesztett lista (sorszám, cím, leírás, kerek nyíl). Az egész sor kattintható, rámutatásra kissé beljebb csúszik. A végelszámolás sor jégkék alapon, címkével.
+- Számozott szekciócímkék (01 · Rólunk … 06 · Kapcsolat). A fejléc mindig tömör fehér.
+
 ## 5. kör — tiszta kék–fehér
 - A szinte feketének ható tengerészkék (#0C2340) helyett egyértelműen kék paletta: sötétkék #0F3B73 (sötét sávok, címek), kék #1A56A0 (gombok), kiemelő kék #1F6BBF, jégkék #E7F0FB, halvány #F3F8FD, szegély #D2E1F2. A fő gombok világosabb kékek lettek; a végelszámolás-sáv, a felső sáv, a monogramtábla és a lábléc is látványosan kék.
 
