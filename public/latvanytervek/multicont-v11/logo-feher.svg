@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 330 66"><rect width="330" height="66" fill="#173F6E"/>
+<g transform="translate(10 10)"><rect width="46" height="46" fill="#fff"/><path d="M11 33V13l10 12" fill="none" stroke="#1E5291" stroke-width="3.4" stroke-linecap="square"/><path d="M21 25l12-12" fill="none" stroke="#1F9D6E" stroke-width="3.4" stroke-linecap="square"/><path d="M31 21v12" fill="none" stroke="#1E5291" stroke-width="3.4" stroke-linecap="square"/><circle cx="35.5" cy="10.5" r="3.2" fill="#F5B53D"/></g>
+<text x="70" y="34" font-family="Manrope, Arial, sans-serif" font-size="20" letter-spacing="1.2"><tspan font-weight="800" fill="#FFFFFF">MULTICONT</tspan><tspan font-weight="400" fill="#BFD9F3" dx="6">CENTER</tspan></text>
+<text x="70" y="50" font-family="Manrope, Arial, sans-serif" font-size="9.5" font-weight="600" letter-spacing="2.4" fill="#BFD9F3">KÖNYVELÉS · ADÓTANÁCSADÁS</text>
+</svg>

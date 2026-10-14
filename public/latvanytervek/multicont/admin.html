@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="hu" class="no-js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kezelőfelület (látványterv) – MultiCont Center Kft.</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="mc.css">
+<link rel="icon" href="jel.svg" type="image/svg+xml">
+<script>document.documentElement.classList.replace('no-js','js')</script>
+<style>
+body{background:var(--off)}
+.a-bar{background:var(--navy);color:#fff}
+.a-bar .wrap{height:64px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.a-bar .logo-name{color:#fff}.a-bar .logo-name span{color:#9EC3E0}.a-bar .logo-sub{color:#8FC2C4}
+.a-bar .logo svg{width:36px;height:36px}
+.a-user{font-size:15px;color:#C9D6E2}
+.a-warn{background:var(--warn-soft);border-bottom:1px solid #E9CFAE;color:var(--warn)}
+.a-warn .wrap{padding-top:12px;padding-bottom:12px;font-size:15.5px}
+.a-shell{display:grid;grid-template-columns:250px minmax(0,1fr);gap:28px;padding-top:28px;padding-bottom:60px}
+.a-nav{display:flex;flex-direction:column;gap:2px;position:sticky;top:20px;align-self:start}
+.a-nav button{display:flex;justify-content:space-between;align-items:center;min-height:46px;padding:0 14px;background:none;border:0;border-left:3px solid transparent;text-align:left;font-size:16px;font-weight:600;color:var(--text);cursor:pointer}
+.a-nav button:hover{background:#fff}
+.a-nav button[aria-current="page"]{background:#fff;border-left-color:var(--teal);color:var(--navy)}
+.a-nav small{margin-left:8px;font-weight:600;color:var(--muted)}
+.a-shell > div{min-width:0}
+.a-card{background:#fff;border:1px solid var(--line);padding:24px}
+.a-card + .a-card{margin-top:20px}
+.a-head{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:16px}
+.a-head h1{font-size:26px}
+table{width:100%;min-width:620px;border-collapse:collapse;font-size:15.5px}
+th{padding:10px 12px;text-align:left;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border-bottom:2px solid var(--navy)}
+td{padding:12px;border-bottom:1px solid var(--line);vertical-align:middle}
+td b{color:var(--navy)}
+.a-act{text-align:right;white-space:nowrap}
+.a-form{display:grid;grid-template-columns:1fr 1fr;gap:0 18px}
+.a-form .full{grid-column:1/-1}
+.drop{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:150px;border:2px dashed var(--line-2);background:var(--off);color:var(--muted);text-align:center;padding:18px}
+.drop b{color:var(--navy)}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:200;max-width:calc(100vw - 32px);padding:14px 18px;background:var(--navy);color:#fff;font-size:15.5px;box-shadow:0 20px 40px -20px rgba(0,0,0,.5)}
+.toast[hidden]{display:none}
+.tbl-wrap{overflow-x:auto}
+.mod-list li{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 0;border-top:1px solid var(--line)}
+@media (max-width:900px){.a-shell{grid-template-columns:1fr}.a-nav{position:static;flex-direction:row;overflow-x:auto}.a-nav button{flex:none;border-left:0;border-bottom:3px solid transparent}.a-nav button[aria-current="page"]{border-bottom-color:var(--teal)}.a-form{grid-template-columns:1fr}.a-user{display:none}}
+</style>
+</head>
+<body>
+<div class="a-bar"><div class="wrap">
+  <a class="logo" href="index.html" aria-label="Vissza a weboldalra"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M6 6h17v6H12v11H6z" fill="#FFFFFF"/><path d="M42 6v17h-6V12H25V6z" fill="#9EC3E0"/><path d="M6 42V25h6v11h11v6z" fill="#8FC2C4"/><rect x="20" y="20" width="8" height="8" fill="#9EC3E0"/></svg><span class="logo-txt"><span class="logo-name">Multi<span>Cont</span></span><span class="logo-sub">Kezelőfelület</span></span></a>
+  <span class="a-user">Horváth Mária · <a href="index.html" style="color:#fff">Weboldal megtekintése ↗</a></span>
+</div></div>
+<div class="a-warn"><div class="wrap"><b>Látványterv.</b> A kezelőfelület megjelenését és működési rendjét mutatja. A gombok nem mentenek: a működéshez háttérrendszer (bejelentkezés, adatbázis, fájltárolás) szükséges – a követelmények az ATADAS.md-ben.</div></div>
+
+<div class="wrap a-shell" id="admin">
+  <nav class="a-nav" aria-label="Kezelőfelület menü">
+    <button type="button" data-nav="hirek">Hírek és cikkek <small>8</small></button>
+    <button type="button" data-nav="dok">Dokumentumok</button>
+    <button type="button" data-nav="partner">Partnerek</button>
+    <button type="button" data-nav="ajanlo">Ajánlások</button>
+    <button type="button" data-nav="szolg">Szolgáltatások</button>
+    <button type="button" data-nav="szoveg">Szövegek és képek</button>
+    <button type="button" data-nav="kiemel">Főoldali kiemelések</button>
+    <button type="button" data-nav="modul">Új modul</button>
+  </nav>
+
+  <div>
+    <section data-view="hirek">
+      <div class="a-card">
+        <div class="a-head"><h1>Hírek és cikkek</h1><button class="btn btn-primary btn-sm" type="button" data-demo>+ Új cikk</button></div>
+        <div class="tbl-wrap"><table><thead><tr><th>Cím</th><th>Kategória</th><th>Dátum</th><th>Állapot</th><th></th></tr></thead><tbody id="adm-news"></tbody></table></div>
+      </div>
+      <div class="a-card">
+        <div class="a-head"><h2 class="h3">Cikk szerkesztése</h2><span class="badge badge-sample">Előnézet</span></div>
+        <form class="a-form" onsubmit="return false">
+          <div class="f full"><label for="ae-cim">Cím</label><input id="ae-cim" value="Új KATA 2027-től: társadalmi egyeztetésen a tervezet"></div>
+          <div class="f"><label for="ae-kat">Kategória</label><select id="ae-kat"><option>Adózási változások</option><option>NAV-információk</option><option>Vállalkozói tudnivalók</option><option>Bérszámfejtés</option><option>Számvitel</option><option>Határidők</option><option>Jogszabályi tájékoztatók</option></select></div>
+          <div class="f"><label for="ae-dat">Megjelenés dátuma</label><input id="ae-dat" type="date" value="2026-10-06"></div>
+          <div class="f full"><label for="ae-ossz">Rövid összefoglaló</label><textarea id="ae-ossz" style="min-height:80px">Főállásban havi 100 000, mellékállásban 50 000 Ft tételes adó…</textarea></div>
+          <div class="f"><label for="ae-fn">Forrás neve <span>*</span></label><input id="ae-fn" value="Telex"></div>
+          <div class="f"><label for="ae-fu">Forrás címe (URL) <span>*</span></label><input id="ae-fu" value="https://telex.hu/…"></div>
+          <div class="f"><label for="ae-all">Állapot</label><select id="ae-all"><option>Piszkozat</option><option>Közzétéve</option><option selected>Tervezet-jelöléssel közzétéve</option></select></div>
+          <label class="check" style="align-self:end;margin-bottom:22px"><input type="checkbox" checked> Kiemelés a főoldalon</label>
+          <div class="full" style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn btn-primary" type="button" data-demo>Mentés</button><button class="btn btn-line" type="button" data-demo>Előnézet</button><button class="btn btn-line" type="button" data-demo>Törlés</button></div>
+        </form>
+        <p class="hint" style="margin-top:12px">Szabály: forrás nélkül cikk nem tehető közzé.</p>
+      </div>
+    </section>
+
+    <section data-view="dok" hidden>
+      <div class="a-card">
+        <div class="a-head"><h1>Dokumentumok</h1></div>
+        <div class="drop"><b>PDF, Word vagy Excel fájl húzása ide</b><span>vagy kattintson a tallózáshoz · max. 20 MB</span><button class="btn btn-line btn-sm" type="button" data-demo>Tallózás</button></div>
+        <div class="a-form" style="margin-top:18px">
+          <div class="f"><label for="ad-cs">Csoport</label><select id="ad-cs"><option>Az iroda dokumentumai</option><option>Tájékoztatók</option><option>Hivatalos nyomtatványok</option><option>+ Új csoport</option></select></div>
+          <div class="f"><label for="ad-c">Megjelenő cím</label><input id="ad-c" placeholder="pl. Bizonylatleadási útmutató"></div>
+        </div>
+      </div>
+      <div class="a-card"><div class="tbl-wrap"><table><thead><tr><th>Dokumentum</th><th>Csoport</th><th>Feltöltve</th><th>Állapot</th><th></th></tr></thead><tbody id="adm-docs"></tbody></table></div></div>
+    </section>
+
+    <section data-view="partner" hidden>
+      <div class="a-card">
+        <div class="a-head"><h1>Partnerek</h1><button class="btn btn-primary btn-sm" type="button" data-demo>+ Új partner</button></div>
+        <div class="tbl-wrap"><table><thead><tr><th>Partner</th><th>Kategória</th><th>Állapot</th><th></th></tr></thead><tbody id="adm-partners"></tbody></table></div>
+      </div>
+      <div class="a-card"><h2 class="h3">Beérkezett jelentkezések</h2><p class="muted" style="margin-top:8px">Ma e-mailben érkeznek. A háttérrendszerrel itt jelennek meg, jóváhagyásra várva.</p></div>
+    </section>
+
+    <section data-view="ajanlo" hidden>
+      <div class="a-card">
+        <div class="a-head"><h1>Ajánlások</h1><button class="btn btn-primary btn-sm" type="button" data-demo>+ Ajánlói kód</button></div>
+        <div class="tbl-wrap"><table><thead><tr><th>Ajánlói kód</th><th>Partner</th><th>Kupon</th><th>Érdeklődők</th><th>Állapot</th></tr></thead>
+        <tbody><tr><td colspan="5" class="muted">Még nincs rögzített ajánlás. A nyilvántartás a háttérrendszerrel indul; addig az ajánlói kód az érdeklődő e-mailjében érkezik.</td></tr></tbody></table></div>
+      </div>
+      <div class="a-card"><h2 class="h3">Kedvezménykampányok</h2><p class="muted" style="margin-top:8px">Időszakos kampányok (kezdet, vége, kedvezmény, érintett partnerek) – tervezett modul.</p></div>
+    </section>
+
+    <section data-view="szolg" hidden>
+      <div class="a-card">
+        <div class="a-head"><h1>Szolgáltatások</h1><button class="btn btn-primary btn-sm" type="button" data-demo>+ Új szolgáltatás</button></div>
+        <ul class="mod-list">
+          <li><b>Könyvelés</b><button class="btn btn-line btn-sm" type="button" data-demo>Szerkesztés</button></li>
+          <li><b>Bérszámfejtés</b><button class="btn btn-line btn-sm" type="button" data-demo>Szerkesztés</button></li>
+          <li><b>Adótanácsadás</b><button class="btn btn-line btn-sm" type="button" data-demo>Szerkesztés</button></li>
+          <li><b>NAV- és TB-képviselet</b><button class="btn btn-line btn-sm" type="button" data-demo>Szerkesztés</button></li>
+          <li><b>Online könyvelés</b><button class="btn btn-line btn-sm" type="button" data-demo>Szerkesztés</button></li>
+          <li><b>Cégmegszűnés, végelszámolás</b> <span class="badge badge-live">Kiemelt</span><button class="btn btn-line btn-sm" type="button" data-demo>Szerkesztés</button></li>
+        </ul>
+      </div>
+    </section>
+
+    <section data-view="szoveg" hidden>
+      <div class="a-card">
+        <div class="a-head"><h1>Szövegek és képek</h1></div>
+        <form class="a-form" onsubmit="return false">
+          <div class="f full"><label for="as-c">Főoldali főcím</label><input id="as-c" value="Könyvelés, amire hosszú távon is építhet."></div>
+          <div class="f full"><label for="as-b">Főoldali bevezető</label><textarea id="as-b">A MultiCont Center Kft. egyéni vállalkozók, betéti társaságok és kft.-k könyvelését végzi…</textarea></div>
+          <div class="f full"><label>Horváth Mária fotója</label><div class="drop"><b>Fotó feltöltése</b><span>Álló kép, legalább 800 × 1000 px</span><button class="btn btn-line btn-sm" type="button" data-demo>Tallózás</button></div></div>
+          <div><button class="btn btn-primary" type="button" data-demo>Mentés</button></div>
+        </form>
+      </div>
+    </section>
+
+    <section data-view="kiemel" hidden>
+      <div class="a-card">
+        <div class="a-head"><h1>Főoldali kiemelések</h1></div>
+        <form class="a-form" onsubmit="return false">
+          <div class="f full"><label for="ak-c">Kiemelt szakmai hír</label><select id="ak-c"><option>Új KATA 2027-től: társadalmi egyeztetésen a tervezet</option><option>KATA 2026-ban: a legfontosabb szabályok</option></select></div>
+          <label class="check full"><input type="checkbox" checked> Fontos határidők modul megjelenítése</label>
+          <label class="check full"><input type="checkbox" checked> Jogszabályi változások modul megjelenítése</label>
+          <label class="check full"><input type="checkbox" checked> Végelszámolás-szalag megjelenítése</label>
+          <div><button class="btn btn-primary" type="button" data-demo>Mentés</button></div>
+        </form>
+      </div>
+    </section>
+
+    <section data-view="modul" hidden>
+      <div class="a-card">
+        <div class="a-head"><h1>Új modul</h1></div>
+        <p>A főoldal hasábjaiba új modul vehető fel. Választható minták:</p>
+        <ul class="mod-list" style="margin-top:12px">
+          <li><span><b>Hírlista</b><br><span class="muted">kiválasztott kategóriák legújabb cikkei</span></span><button class="btn btn-line btn-sm" type="button" data-demo>Hozzáadás</button></li>
+          <li><span><b>Linkgyűjtemény</b><br><span class="muted">saját címmel és hivatkozásokkal</span></span><button class="btn btn-line btn-sm" type="button" data-demo>Hozzáadás</button></li>
+          <li><span><b>Szöveges doboz</b><br><span class="muted">rövid közlemény, nyitvatartás, figyelmeztetés</span></span><button class="btn btn-line btn-sm" type="button" data-demo>Hozzáadás</button></li>
+          <li><span><b>Kalkulátor</b><br><span class="muted">csak ellenőrzött képlettel élesíthető</span></span><button class="btn btn-line btn-sm" type="button" data-demo>Hozzáadás</button></li>
+        </ul>
+      </div>
+    </section>
+  </div>
+  <div class="toast" id="adm-toast" role="status" hidden>Látványterv: a művelet a háttérrendszer elkészülte után működik.</div>
+</div>
+<script src="tartalom.js" defer></script>
+<script src="mc.js" defer></script>
+</body>
+</html>
