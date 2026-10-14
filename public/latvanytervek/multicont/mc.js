@@ -41,6 +41,9 @@
     addEventListener('resize', function () { if (innerWidth > 1100) setDrawer(false); });
   }
 
+  /* ---------- Lenyíló menü: Esc bezárja ---------- */
+  d.addEventListener('keydown', function (e) { if (e.key === 'Escape' && d.activeElement && d.activeElement.closest('.has-dd')) d.activeElement.blur(); });
+
   /* ---------- Megjelenés görgetéskor ---------- */
   var rv = $$('.rv');
   if (reduce || !('IntersectionObserver' in window)) rv.forEach(function (e) { e.classList.add('in'); });
@@ -222,8 +225,14 @@
       t.addEventListener('click', function () { sel(t); });
       t.addEventListener('keydown', function (e) { var k = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0; if (k) { e.preventDefault(); sel(tabs[(i + k + tabs.length) % tabs.length], true); } });
     });
-    var want = location.hash && $('[role="tab"][data-hash="' + location.hash.slice(1) + '"]', tl);
-    if (want) sel(want);
+    function fromHash(scroll) {
+      var want = location.hash && $('[role="tab"][data-hash="' + location.hash.slice(1) + '"]', tl);
+      if (!want) return;
+      sel(want);
+      if (scroll) { var sec = tl.closest('section'); if (sec) setTimeout(function () { sec.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' }); }, 30); }
+    }
+    fromHash(true);
+    addEventListener('hashchange', function () { fromHash(true); });
   });
 
   /* ---------- Dokumentumtár ---------- */

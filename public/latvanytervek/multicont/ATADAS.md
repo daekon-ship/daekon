@@ -16,6 +16,12 @@ A terv `noindex`.
 | `logo.svg`, `logo-feher.svg`, `jel.svg` | Logó világos és sötét alapra, önálló jel (favicon) |
 | `fonts/` | Literata + Source Sans 3 (OFL), latin + magyar ékezetek |
 
+## 13. kör — klasszikus portálmenü (rlb.hu mintájára)
+- **Lenyíló almenük** minden főmenüpontnál (Rólunk, Szolgáltatásaink, Szakmai hírek – kétoszlopos, kategóriánként –, Tudástár, Partnereink, Kapcsolat). Egérrel és billentyűzettel (Tab, Esc) is nyílik.
+- **Gyorsmenü-sor** a főmenü alatt, mint az rlb.hu második sora: Könyvelés · Bérszámfejtés · Adótanácsadás · Végelszámolás · Bérkalkulátor · KATA-kalkulátor · Dokumentumtár · Határidők. Mobilon oldalra húzható.
+- **Mobilmenü:** minden menüpont lenyitható, az almenükkel együtt.
+- Közvetlen hivatkozások működnek: pl. `tudastar.html#kata` a KATA-kalkulátort nyitja meg, `rolunk.html#cegadatok` a cégadatokhoz ugrik.
+
 ## Arculat
 - **Színek:** Deep Navy #173550 (fejléc-menüsor, címek, lábléc), Professional Blue #346B95 (információs elemek), Soft Teal #639A9C (akcentus; szövegre a sötétebb #3E7375), Off White #F7F9FB, fehér, szöveg #293541. Színátmenet nincs; a három szín együtt csak a „háromszínű vonal” motívumban jelenik meg (címkejel, aktív menüpont, lábléc teteje, fotókeret).
 - **Betűk:** Literata (címek – elegáns, jól olvasható serif) + Source Sans 3 (szöveg, 17 px alap – idősebb olvasóknak is). Mérsékelt címméretek (H1 max. 40 px).

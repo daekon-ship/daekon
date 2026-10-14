@@ -616,3 +616,53 @@ button,input,select,textarea{font:inherit;color:inherit}
   .logo-sub{letter-spacing:.22em}
   .mbar{grid-template-columns:1fr auto}
 }
+
+/* =========================================================
+   13. kör — klasszikus portálmenü: lenyíló almenük + gyorsmenü-sor
+   ========================================================= */
+.menu > li{position:relative}
+.menu > li > a{display:flex;align-items:center;justify-content:center;gap:7px}
+.caret{width:10px;height:7px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;transition:transform .25s var(--ease)}
+.has-dd:hover > a .caret,.has-dd:focus-within > a .caret{transform:rotate(180deg)}
+.ddm{position:absolute;top:100%;left:0;z-index:120;min-width:260px;padding:12px 0 10px;background:#fff;border-top:3px solid var(--teal);box-shadow:0 22px 44px -18px rgba(23,53,80,.45), 0 0 0 1px var(--line);opacity:0;visibility:hidden;transform:translateY(6px);transition:opacity .2s var(--ease), transform .2s var(--ease), visibility .2s}
+.has-dd:hover .ddm,.has-dd:focus-within .ddm{opacity:1;visibility:visible;transform:none}
+.menu > li:nth-last-child(-n+2) .ddm{left:auto;right:0}
+.ddm-t{margin:0 18px 6px;padding-bottom:8px;border-bottom:1px solid var(--line);font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal-d)}
+.ddm ul{display:block}
+.ddm-2{min-width:470px}
+.ddm-2 ul{columns:2;column-gap:0}
+.menu .ddm li{flex:none;break-inside:avoid}
+.menu .ddm a{display:block;padding:9px 18px;text-align:left;font-size:15.5px;font-weight:500;color:var(--navy);background:none;transition:background .2s, color .2s, padding .2s}
+.menu .ddm a::after{display:none}
+.menu .ddm a:hover,.menu .ddm a:focus-visible{background:var(--off);color:var(--blue-d);padding-left:24px}
+
+.quickbar{background:var(--off);border-bottom:1px solid var(--line)}
+.quickbar .wrap{display:flex;align-items:center;gap:16px;min-height:44px}
+.qb-k{flex:none;font-size:12.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal-d)}
+.quickbar ul{display:flex;flex-wrap:wrap;align-items:center}
+.quickbar li{display:flex;align-items:center}
+.quickbar li + li::before{content:"";width:4px;height:4px;margin:0 12px;border-radius:50%;background:var(--line-2)}
+.quickbar a{padding:10px 0;font-size:15px;font-weight:600;color:var(--navy);text-decoration:none;border-bottom:2px solid transparent;transition:color .2s, border-color .2s}
+.quickbar a:hover{color:var(--blue-d);border-bottom-color:var(--teal)}
+
+/* mobil: lenyitható almenük */
+.dmenu .dm-top,.dmenu summary a{font-family:var(--serif);font-size:21px;color:var(--navy);text-decoration:none}
+.dmenu .dm-top{display:flex;justify-content:space-between;align-items:center;padding:14px 2px;border-bottom:1px solid var(--line)}
+.dmenu summary{display:flex;align-items:center;border-bottom:1px solid var(--line);list-style:none;cursor:pointer}
+.dmenu summary::-webkit-details-marker{display:none}
+.drawer .dmenu summary a{flex:1;padding:14px 2px;border-bottom:0}
+.drawer .dmenu summary a::after,.drawer .dmenu .dm-sub a::after,.drawer .dmenu .dm-top::after{content:none}
+.dm-tog{display:flex;align-items:center;justify-content:center;width:48px;height:48px;color:var(--teal-d)}
+.dm-tog .caret{width:14px;height:9px}
+.dm[open] .dm-tog .caret{transform:rotate(180deg)}
+.dm-sub{padding:4px 0 8px;background:var(--off);border-bottom:1px solid var(--line)}
+.drawer .dmenu .dm-sub a{display:block;padding:11px 16px;border-bottom:0;font-family:var(--sans);font-size:16.5px;font-weight:600;color:var(--navy)}
+.dmenu [aria-current="page"]{color:var(--blue-d)}
+
+@media (max-width:1240px){ .menu > li > a{gap:5px;padding-left:4px;padding-right:4px} }
+@media (max-width:1100px){
+  .quickbar .wrap{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .quickbar .wrap::-webkit-scrollbar{display:none}
+  .quickbar ul{flex-wrap:nowrap}
+  .quickbar a{white-space:nowrap}
+}

@@ -50,10 +50,53 @@ def logo(dark=False, href="index.html"):
     return f'''<a class="logo" href="{href}" aria-label="MultiCont Center Kft. – főoldal">{MARK_D if dark else MARK}<span class="logo-txt"><span class="logo-name">Multi<span>Cont</span></span><span class="logo-sub">Center Kft.</span></span></a>'''
 
 
+SUB = {
+    "rolunk.html": [("rolunk.html#tortenet", "Történetünk"), ("rolunk.html#szakmai-ut", "Horváth Mária szakmai útja"),
+                    ("rolunk.html#nev", "A név jelentése"), ("rolunk.html#cegadatok", "Cégadatok")],
+    "szolgaltatasok.html": [("szolgaltatasok.html#konyveles", "Könyvelés"), ("szolgaltatasok.html#berszamfejtes", "Bérszámfejtés"),
+                            ("szolgaltatasok.html#adotanacsadas", "Adótanácsadás"), ("szolgaltatasok.html#nav-tb", "NAV- és TB-képviselet"),
+                            ("szolgaltatasok.html#online", "Online könyvelés"), ("szolgaltatasok.html#vegelszamolas", "Végelszámolás")],
+    "hirek.html": [("hirek.html", "Összes cikk"), ("hirek.html?kat=Ad%C3%B3z%C3%A1si%20v%C3%A1ltoz%C3%A1sok", "Adózási változások"),
+                   ("hirek.html?kat=NAV-inform%C3%A1ci%C3%B3k", "NAV-információk"), ("hirek.html?kat=V%C3%A1llalkoz%C3%B3i%20tudnival%C3%B3k", "Vállalkozói tudnivalók"),
+                   ("hirek.html?kat=B%C3%A9rsz%C3%A1mfejt%C3%A9s", "Bérszámfejtés"), ("hirek.html?kat=Sz%C3%A1mvitel", "Számvitel"),
+                   ("hirek.html?kat=Hat%C3%A1rid%C5%91k", "Határidők"), ("hirek.html?kat=Jogszab%C3%A1lyi%20t%C3%A1j%C3%A9koztat%C3%B3k", "Jogszabályi tájékoztatók")],
+    "tudastar.html": [("tudastar.html#ber", "Bérkalkulátor"), ("tudastar.html#koltseg", "Munkáltatói költség"), ("tudastar.html#kata", "KATA-kalkulátor"),
+                      ("tudastar.html#afa", "ÁFA-kalkulátor"), ("tudastar.html#dokumentumtar", "Dokumentumtár"), ("tudastar.html#linkek", "Szakmai linkek")],
+    "partnerek.html": [("partnerek.html", "Partnerlista"), ("partnerek.html#ajanlo", "Ajánlói együttműködés"), ("partnerek.html#jelentkezes", "Partnerjelentkezés")],
+    "kapcsolat.html": [("kapcsolat.html", "Elérhetőségek"), ("kapcsolat.html#urlap", "Üzenetküldés"), ("kapcsolat.html#urlap", "Visszahívás kérése")],
+}
+QUICK = [("szolgaltatasok.html#konyveles", "Könyvelés"), ("szolgaltatasok.html#berszamfejtes", "Bérszámfejtés"),
+         ("szolgaltatasok.html#adotanacsadas", "Adótanácsadás"), ("szolgaltatasok.html#vegelszamolas", "Végelszámolás"),
+         ("tudastar.html#ber", "Bérkalkulátor"), ("tudastar.html#kata", "KATA-kalkulátor"),
+         ("tudastar.html#dokumentumtar", "Dokumentumtár"), ("hirek.html?kat=Hat%C3%A1rid%C5%91k", "Határidők")]
+ICO_DOWN = '<svg class="caret" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.5l5 5 5-5"/></svg>'
+
+
 def header(active):
-    menu = "".join(f'<li><a href="{h}"{" aria-current=\"page\"" if h == active else ""}>{t}</a></li>' for h, t in MENU)
-    dmenu = "".join(f'<a href="{h}"{" aria-current=\"page\"" if h == active else ""}>{t}</a>' for h, t in MENU)
-    return f'''
+    items = []
+    for h, t in MENU:
+        cur = ' aria-current="page"' if h == active else ''
+        sub = SUB.get(h)
+        if sub:
+            cols = ' ddm-2' if len(sub) > 6 else ''
+            links = "".join(f'<li><a href="{u}">{n}</a></li>' for u, n in sub)
+            items.append(f'<li class="has-dd"><a href="{h}"{cur} aria-haspopup="true">{t}{ICO_DOWN}</a>'
+                         f'<div class="ddm{cols}"><p class="ddm-t">{t}</p><ul>{links}</ul></div></li>')
+        else:
+            items.append(f'<li><a href="{h}"{cur}>{t}</a></li>')
+    menu = "".join(items)
+    dmenu = ""
+    for h, t in MENU:
+        cur = ' aria-current="page"' if h == active else ''
+        sub = SUB.get(h)
+        if sub:
+            links = "".join(f'<a href="{u}">{n}</a>' for u, n in sub)
+            dmenu += (f'<details class="dm"{" open" if h == active else ""}><summary><a href="{h}"{cur}>{t}</a>'
+                      f'<span class="dm-tog" aria-hidden="true">{ICO_DOWN}</span></summary><div class="dm-sub">{links}</div></details>')
+        else:
+            dmenu += f'<a class="dm-top" href="{h}"{cur}>{t}</a>'
+    quick = "".join(f'<li><a href="{u}">{n}</a></li>' for u, n in QUICK)
+    return f"""
 <header class="hdr">
   <div class="topbar"><div class="wrap">
     <span><span class="tb-firm">MultiCont Center Kft.</span> · Könyvelőiroda, Budaörs</span>
@@ -76,13 +119,14 @@ def header(active):
   </div></div>
   <nav class="menubar" aria-label="Főmenü"><div class="wrap"><ul class="menu">{menu}</ul></div></nav>
 </header>
+<nav class="quickbar" aria-label="Gyorsmenü"><div class="wrap"><span class="qb-k">Gyorsan:</span><ul>{quick}</ul></div></nav>
 <div class="drawer" id="drawer" hidden>
   <form class="search" role="search" data-go="hirek.html" aria-label="Keresés a szakmai hírekben">
     <label class="vh" for="hq2">Keresés a szakmai hírekben</label>
     <input id="hq2" type="search" placeholder="Keresés a szakmai hírekben" autocomplete="off">
     <button type="submit" aria-label="Keresés">{ICO_SEARCH}</button>
   </form>
-  <nav aria-label="Mobil főmenü">{dmenu}</nav>
+  <nav class="dmenu" aria-label="Mobil főmenü">{dmenu}</nav>
   <div class="drawer-foot">
     <a class="drawer-tel" href="tel:{TEL}">{TEL_H}</a>
     <a href="mailto:{MAIL}">{MAIL}</a>
@@ -90,7 +134,7 @@ def header(active):
   </div>
 </div>
 <main id="tartalom">
-'''
+"""
 
 
 def footer():
@@ -367,13 +411,13 @@ page("index.html", "MultiCont Center Kft. – Könyvelőiroda Budaörs | Könyve
 rolunk = phead("Rólunk", "A MultiCont Center Kft. 2015 óta működő budaörsi könyvelőiroda. Szakmai vezetője Horváth Mária, mérlegképes könyvelő és adótanácsadó.", ["Rólunk"]) + f'''
 <div class="wrap about">
   <div>
-    <section class="sec-m">
+    <section class="sec-m" id="tortenet">
       <p class="kicker">Történetünk</p>
       <h2 class="h2">Harminc év tapasztalat, egy irodában</h2>
       <p>Horváth Mária harminc éve dolgozik pénzüggyel és számvitellel. Pályája során a költségvetési szférában, magyar és nemzetközi tulajdonú vállalkozásoknál is dolgozott; öt évig cafeteria-tanácsadó volt, és biztosításokkal is foglalkozott.</p>
       <p>2015. szeptember 25-én alapította meg a MultiCont Center Kft.-t. A cég eredetileg sem kizárólag könyvelésre jött létre, és ma is nyitott új tevékenységi területekre.</p>
     </section>
-    <section class="sec-m">
+    <section class="sec-m" id="szakmai-ut">
       <p class="kicker">Szakmai út</p>
       <h2 class="h2">Ahol a tapasztalat összegyűlt</h2>
       <ol class="ledger" style="margin-top:8px">
@@ -384,7 +428,7 @@ rolunk = phead("Rólunk", "A MultiCont Center Kft. 2015 óta működő budaörsi
         <li><span class="k">2015</span><span class="v">A MultiCont Center Kft. megalapítása</span></li>
       </ol>
     </section>
-    <section class="sec-m">
+    <section class="sec-m" id="nev">
       <p class="kicker">A név jelentése</p>
       <h2 class="h2">Multi · Cont · Center</h2>
       <ol class="ledger" style="margin-top:8px">
@@ -411,7 +455,7 @@ rolunk = phead("Rólunk", "A MultiCont Center Kft. 2015 óta működő budaörsi
       <p class="h3" style="font-family:var(--serif);color:var(--navy)">Horváth Mária</p>
       <p class="muted">Mérlegképes könyvelő, adótanácsadó, TB- és bérügyintéző</p>
     </div>
-    <div class="datacard">
+    <div class="datacard" id="cegadatok">
       <div class="mod-h" style="margin-bottom:0"><h2>Cégadatok</h2></div>
       <dl>
         <div><dt>Cégnév</dt><dd>MultiCont Center Kft.</dd></div>
@@ -598,7 +642,7 @@ tudas = phead("Tudástár", "Kalkulátorok, letölthető dokumentumok és hivata
   </div>
 </section>
 
-<section class="band">
+<section class="band" id="linkek">
   <div class="wrap">
     <div class="band-head"><div><p class="kicker">Szakmai linkek</p><h2 class="h2">Gyakran használt oldalak</h2></div><p class="lead">Hivatalos oldalak, amelyeket ügyfeleink a leggyakrabban keresnek.</p></div>
     <ul class="m-links" data-mod="links" style="columns:2;column-gap:48px"></ul>
