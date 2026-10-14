@@ -221,3 +221,152 @@
 
   onScroll();
 })();
+
+/* =========================================================
+   Tartalom (tartalom.js), kalkulátorok, fülek
+   ========================================================= */
+(function () {
+  'use strict';
+  var doc = document;
+  var T = window.TARTALOM || {};
+  var $ = function (s) { return doc.querySelector(s); };
+  var esc = function (t) { var d = doc.createElement('div'); d.textContent = t == null ? '' : String(t); return d.innerHTML; };
+  var safeUrl = function (u) { return /^(https?:|mailto:|tel:|dok\/|#)/.test(u || '') ? u : '#'; };
+
+  /* ---- Hírek ---- */
+  var nl = $('#news-list');
+  if (nl) {
+    nl.innerHTML = (T.hirek || []).map(function (h, i) {
+      return '<li class="news-item' + (i === 0 ? ' news-top' : '') + '">' +
+        '<p class="ni-meta"><span class="ni-tag">' + esc(h.cimke) + '</span><time>' + esc(h.datum) + '</time></p>' +
+        '<h3>' + esc(h.cim) + '</h3>' +
+        '<p>' + esc(h.szoveg) + '</p>' +
+        (h.link ? '<a class="ni-src" href="' + esc(safeUrl(h.link)) + '" target="_blank" rel="noopener">Forrás: ' + esc(h.forras) + ' ↗</a>' : '') +
+        '</li>';
+    }).join('');
+  }
+
+  /* ---- Saját dokumentumok ---- */
+  var dl = $('#doc-own');
+  if (dl) {
+    var docs = T.dokumentumok || [];
+    dl.innerHTML = docs.length ? docs.map(function (d) {
+      return '<li><a href="' + esc(safeUrl(d.fajl)) + '" target="_blank" rel="noopener"><span class="dl-ico dl-own">DOK</span><span><b>' + esc(d.cim) + '</b><small>' + esc(d.leiras) + '</small></span></a></li>';
+    }).join('') : '<li class="doc-empty"><p><b>Itt jelennek meg az iroda saját anyagai:</b> ügyfél-tájékoztatók, adatlapok, sablonok, ellenőrzőlisták.</p><p>Feltöltés után azonnal letölthetők lesznek.</p></li>';
+  }
+
+  /* ---- Partnerek ---- */
+  var pl = $('#partner-list');
+  if (pl) {
+    var ps = T.partnerek || [];
+    pl.innerHTML = ps.length ? ps.map(function (p) {
+      return '<li><a href="' + esc(safeUrl(p.link)) + '" target="_blank" rel="noopener"><b>' + esc(p.nev) + '</b><span>' + esc(p.leiras) + '</span></a></li>';
+    }).join('') : '<li class="partner-empty"><b>Partnereink hamarosan</b><span>Itt jelennek meg az együttműködő vállalkozások, linkkel az oldalukra.</span></li>';
+  }
+
+  /* ---- Kupon ---- */
+  if (T.kupon) {
+    var box = $('#kupon');
+    if (box) {
+      box.classList.add('is-live');
+      $('#kupon-szoveg').textContent = T.kupon.szoveg;
+      $('#kupon-kod').textContent = T.kupon.kod;
+    }
+  }
+
+  /* ---- Számformázás ---- */
+  var fmt = function (n) { return Math.round(n).toLocaleString('hu-HU').replace(/ /g, ' ') + ' Ft'; };
+  var num = function (el) { var v = parseInt(String(el.value).replace(/[^\d]/g, ''), 10); return isNaN(v) ? 0 : v; };
+  var pretty = function (el) {
+    el.addEventListener('blur', function () { var v = num(el); el.value = v ? v.toLocaleString('hu-HU') : ''; });
+  };
+
+  /* ---- Bér (2026: SZJA 15%, TB 18,5%, szocho 13%) ---- */
+  function ber(brutto, mentes) {
+    var szja = mentes ? 0 : brutto * 0.15;
+    var tb = brutto * 0.185;
+    var szocho = brutto * 0.13;
+    return { szja: szja, tb: tb, netto: brutto - szja - tb, szocho: szocho, koltseg: brutto + szocho };
+  }
+  var qb = $('#q-brutto');
+  function quick() {
+    var r = ber(num(qb), false);
+    $('#q-netto').textContent = fmt(r.netto);
+    $('#q-koltseg').textContent = fmt(r.koltseg);
+  }
+  if (qb) { qb.addEventListener('input', quick); pretty(qb); quick(); }
+
+  var bb = $('#b-brutto'), bm = $('#b-mentes');
+  function berCalc() {
+    var r = ber(num(bb), bm.checked);
+    $('#b-szja').textContent = fmt(r.szja);
+    $('#b-tb').textContent = fmt(r.tb);
+    $('#b-netto').textContent = fmt(r.netto);
+    $('#b-szocho').textContent = fmt(r.szocho);
+    $('#b-koltseg').textContent = fmt(r.koltseg);
+  }
+  if (bb) { bb.addEventListener('input', berCalc); bm.addEventListener('change', berCalc); pretty(bb); berCalc(); }
+
+  /* ---- ÁFA ---- */
+  var ao = $('#a-osszeg');
+  function afaCalc() {
+    var v = num(ao);
+    var k = parseInt(doc.querySelector('input[name="a-kulcs"]:checked').value, 10) / 100;
+    var bruttoIn = doc.querySelector('input[name="a-irany"]:checked').value === 'brutto';
+    var netto = bruttoIn ? v / (1 + k) : v;
+    var brutto = bruttoIn ? v : v * (1 + k);
+    $('#a-netto').textContent = fmt(netto);
+    $('#a-afa').textContent = fmt(brutto - netto);
+    $('#a-brutto').textContent = fmt(brutto);
+  }
+  if (ao) {
+    ao.addEventListener('input', afaCalc); pretty(ao);
+    Array.prototype.forEach.call(doc.querySelectorAll('input[name="a-kulcs"], input[name="a-irany"]'), function (r) { r.addEventListener('change', afaCalc); });
+    afaCalc();
+  }
+
+  /* ---- KATA 2026: 50 000 Ft/hó, 18 M Ft/év (havi 1,5 M arányosan), felette 40% ---- */
+  var kb = $('#k-bevetel'), kh = $('#k-honap');
+  function kataCalc() {
+    var h = Math.min(12, Math.max(1, parseInt(kh.value, 10) || 12));
+    var bev = num(kb);
+    var teteles = 50000 * h;
+    var keret = 1500000 * h;
+    var felett = Math.max(0, bev - keret) * 0.40;
+    $('#k-teteles').textContent = fmt(teteles);
+    $('#k-keret').textContent = fmt(keret);
+    $('#k-felett').textContent = fmt(felett);
+    $('#k-ossz').textContent = fmt(teteles + felett);
+    $('#k-felett').parentNode.classList.toggle('res-warn', felett > 0);
+  }
+  if (kb) { kb.addEventListener('input', kataCalc); kh.addEventListener('input', kataCalc); pretty(kb); kataCalc(); }
+
+  /* ---- Gyors értékgombok ---- */
+  Array.prototype.forEach.call(doc.querySelectorAll('[data-set]'), function (b) {
+    b.addEventListener('click', function () {
+      var el = doc.getElementById(b.getAttribute('data-set'));
+      el.value = parseInt(b.getAttribute('data-val'), 10).toLocaleString('hu-HU');
+      el.dispatchEvent(new Event('input'));
+    });
+  });
+
+  /* ---- Fülek (billentyűzettel is) ---- */
+  var tabs = Array.prototype.slice.call(doc.querySelectorAll('[role="tab"]'));
+  function select(t) {
+    tabs.forEach(function (x) {
+      var on = x === t;
+      x.setAttribute('aria-selected', on ? 'true' : 'false');
+      x.tabIndex = on ? 0 : -1;
+      doc.getElementById(x.getAttribute('aria-controls')).hidden = !on;
+    });
+  }
+  tabs.forEach(function (t, i) {
+    t.addEventListener('click', function () { select(t); });
+    t.addEventListener('keydown', function (e) {
+      var d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+      if (!d) return;
+      var n = tabs[(i + d + tabs.length) % tabs.length];
+      select(n); n.focus(); e.preventDefault();
+    });
+  });
+})();

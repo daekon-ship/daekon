@@ -4,6 +4,21 @@
 Fájlok: `index.html`, `multicont.css`, `multicont.js`, `jel.svg` (favicon / jel), `fonts/` (Spectral + Manrope, helyben, OFL).
 A terv `noindex` — élesítéskor a `robots` meta törlendő, és a canonical URL beállítandó.
 
+## 11. kör — az ügyfél levele alapján (2026. 10. 14.)
+Horváth Mária kérései és megvalósításuk:
+- **Klasszikus háromhasábos főoldal, felül menüsorral** (minta: rlb.hu): logósor (logó, telefon, e-mail, gomb) + kék menüsor 8 menüponttal, ami görgetéskor fent marad. Alatta világos nyitósáv, majd három hasáb: bal (szolgáltatások menü, Horváth Mária profil, elérhetőség), közép (bemutatkozás, „Mit jelent a MultiCont?”, adóhírek, ügyfélkör), jobb (gyors bérkalkulátor, kuponajánlat, ajánlói program, hasznos linkek). Táblagépen két hasáb, telefonon egy (középső tartalom elöl).
+- **Színek:** vidám, de szemnek kellemes: kék alap + zöld (#1F9D6E) + napsárga (#F5B53D).
+- **Háromszínű logó:** kék négyzet, fehér M, zöld pipa (pontos, ellenőrzött munka), napsárga pont (növekedés). `logo.svg`, `logo-feher.svg`, `jel.svg` frissítve.
+- **A név jelentése** külön blokkban, az ügyfél szavaival: MULTI = sokoldalúság, sokféleség, növekedés, nyitottság új tevékenységekre; CONT = conti (könyvelés) + contract (szerződés).
+- **Adóhírek:** 5 hír forrásmegjelöléssel — új KATA-tervezet 2027-től (Telex, 2026. 10. 06., *még nem elfogadott*), alanyi ÁFA-mentesség 20 M Ft, átalányadó 45%, minimálbér/garantált bérminimum, kétgyermekes anyák SZJA-mentessége (TaxHungary, 2026-os számok).
+- **Kalkulátorok:** bruttó–nettó bér (SZJA 15%, TB 18,5%, szocho 13%, SZJA-mentes kapcsoló; családi kedvezményt és a mentesség felső határát nem számol), ÁFA (27/18/5%, nettóból vagy bruttóból), KATA-keretfigyelő (2026: 50 000 Ft/hó, 1,5 M Ft/hó arányos keret, felette 40%; 2027-es tervezet tájékoztatásként). Gépen ellenőrizve.
+- **Dokumentumtár:** hivatalos nyomtatványok linkjei (NAV nyomtatványok, ONYA, eSZJA, e-beszámoló, Magyarország.hu) + „Az iroda anyagai” rész, ami most üres állapotot mutat.
+- **Kapcsolatépítés más cégekkel:** Partnerek szekció (üres állapot + „Partnerséget ajánlok” gomb), ajánlói program doboz („Ajánlok valakit” e-mail), kuponajánlat-doboz **MINTA** jelöléssel — valódi ajánlatot, kedvezményt, partnert nem találtunk ki.
+- **Szerkeszthetőség:** a gyakran változó tartalom (hírek, saját dokumentumok, partnerek, kupon) egyetlen fájlban van: `tartalom.js`. Az élő oldalhoz szerkesztőfelület kell (pl. WordPress vagy egyszerű admin), hogy Mária maga töltsön fel anyagokat — ez a látványtervben nem működik.
+- **Kikerült:** a „Miért minket?” szekció és a nagy profilkártya a nyitóból (a tartalmuk a bal hasábban és a nyitósávban van).
+
+Egyeztetendő: ajánlói program feltételei, kuponajánlat szövege és kódja, partnerlista, az iroda saját dokumentumai, a hivatalos linkek végigkattintása élesítés előtt (a fejlesztői környezetből nem voltak elérhetők).
+
 ## 10. kör — új logó, erősebb szövegek
 - **Logó:** kék négyzetben fehér „M”, amelynek középső szára világoskék pipában fut ki (a könyvelő ellenőrző pipája). Mellette kétszínű szókép: **MULTICONT** (vastag) **CENTER** (vékony), alatta KÖNYVELÉS · ADÓTANÁCSADÁS. Önálló fájlok: `logo.svg` (világos alapra), `logo-feher.svg` (sötét alapra), `jel.svg` (csak a jel / favicon). Az SVG-szövegek Manrope betűt kérnek; nyomdai használathoz görbésítendők.
 - **Szövegek:** határozottabb, konkrétabb mondatok. Hero: „Rendben lévő könyvek, harminc év tapasztalattal.” Rólunk: Horváth Mária saját hangján („…nem ügyfélszolgálatot hív, hanem engem.”). Szolgáltatások: „Mit vállalunk?”, konkrét egysoros leírások. Végelszámolás: „Megszüntetné a cégét? Végigvisszük Ön helyett.” A „bt.-knek / kft.-knek” nem törik el sor végén.
