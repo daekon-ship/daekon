@@ -1,14 +1,20 @@
 <!doctype html><meta charset="utf-8"><link rel="stylesheet" href="_alap.css"><style>
-body{width:1640px;height:624px;position:relative;overflow:hidden}
-.foto{position:absolute;right:0;top:0;width:58%;height:100%;object-fit:cover;object-position:50% 60%}
-.fedo{position:absolute;inset:0;background:linear-gradient(90deg,#0E1215 0%,#0E1215 44%,rgba(14,18,21,.55) 62%,rgba(14,18,21,.15) 100%)}
-.bal{position:absolute;left:250px;top:50%;transform:translateY(-50%);width:600px}
-.bal img{width:470px;display:block}
-.sor{margin-top:22px;display:flex;gap:18px;align-items:center;font-size:24px;font-weight:600;color:#C9CFD5}
+body{width:1640px;height:624px;position:relative;overflow:hidden;background:#0E1215}
+.kepek{position:absolute;inset:0;display:grid;grid-template-columns:1fr 1.25fr 1fr;gap:6px}
+.kepek img{width:100%;height:100%;object-fit:cover}
+.kepek img:nth-child(1){object-position:50% 60%}
+.kepek img:nth-child(2){object-position:50% 70%}
+.fedo{position:absolute;inset:0;background:linear-gradient(180deg,rgba(14,18,21,.92) 0%,rgba(14,18,21,.72) 34%,rgba(14,18,21,.15) 62%,rgba(14,18,21,.35) 100%)}
+.szoveg{position:absolute;left:0;right:0;top:48px;text-align:center}
+.tetovonal{display:block;margin:0 auto 18px;width:92px;height:24px;background:linear-gradient(180deg,#FFC94A,#E39E07);clip-path:polygon(0 100%,50% 0,100% 100%,84% 100%,50% 30%,16% 100%)}
+h1{font-size:86px;line-height:1;letter-spacing:.01em;background:linear-gradient(180deg,#F2F4F6,#A9B1B9);-webkit-background-clip:text;background-clip:text;color:transparent}
+h1 span{background:linear-gradient(180deg,#FFC94A,#E39E07);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sor{margin-top:20px;display:flex;justify-content:center;gap:16px;align-items:center;font-size:30px;font-weight:600;color:#E2E6E9}
 .sor i{width:7px;height:7px;background:#F5B21B;transform:rotate(45deg)}
-.tel{margin-top:20px;font-size:40px;letter-spacing:.01em}
+.sor b{font-stretch:75%;font-weight:900;font-size:38px;letter-spacing:.02em}
 </style>
-<img class="foto" src="../img/cserepfedes-vapa-1600.webp"><div class="fedo"></div>
-<div class="bal"><img src="logo-teljes.svg">
-<div class="sor"><span>Tetőfedés</span><i></i><span>Bádogozás</span><i></i><span>Lemezfedés</span></div>
-<div class="tel cond am">+36 70 265 6704</div></div>
+<div class="kepek"><img src="../img/lemezfedes-vapa-1600.webp"><img src="../img/cserepfedes-vapa-1600.webp"><img src="../img/tetoter-kesz-1600.webp"></div>
+<div class="fedo"></div>
+<div class="szoveg"><i class="tetovonal"></i>
+<h1 class="cond">Minőség a <span>tető</span> felett</h1>
+<div class="sor"><span>Tetőfedés</span><i></i><span>Lemezfedés</span><i></i><span>Bádogozás</span><i></i><b class="am">06 70 265 6704</b></div></div>
