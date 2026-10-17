@@ -4,6 +4,9 @@
 Fájlok: `index.html`, `cbtaxi.css`, `cbtaxi.js`, `js/` (GSAP 3 + ScrollTrigger, helyben), `fonts/` (Sora + Inter, helyben, OFL), `logo.svg`, `logo-jel.svg`.
 Build nincs (a Vite a `public/` mappát változatlanul másolja); a terv `noindex`.
 
+## 8. kör — több levegő
+- Nagyobb szekciótávolságok és belső térközök (nyitókép, jelenetszövegek, térkép–fülek–rajz–hívógomb, záró kártya), mobilon és asztalon is; a sorköz a hosszabb szövegeknél 1,7.
+
 ## 7. kör — csiszolás
 - **Mobil hívássáv:** nem lebeg, hanem alulra dokkolt, középre rendezett sáv (ikon + „Taxi hívása” + szám), a telefon biztonsági sávjához igazodva. Elrejtőzik, amikor a térképnél lévő vagy a záró hívógomb látszik, így nincs két hívógomb egymáson.
 - **Éjszakai út:** a jelenetek szövegei görgetés közben átúsznak egymásba (nem csúsznak egymásra félig).

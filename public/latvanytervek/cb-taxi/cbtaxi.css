@@ -324,3 +324,50 @@ body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opa
   .area-call{width:100%}
   .ride-note{display:none}
 }
+
+/* ============ 8. KÖR: több levegő ============ */
+.sec{padding:clamp(104px,12vw,176px) 0}
+.area-grid{gap:clamp(48px,7vw,112px)}
+.area .lead{margin-top:20px;line-height:1.7}
+.places{margin-top:40px;gap:10px}
+.place-panel{margin-top:36px}
+.place-panel p{margin-top:10px;line-height:1.7}
+.pv{margin-bottom:24px}
+.area-call{margin-top:32px}
+.map figcaption{margin-top:16px}
+.hero-sub{margin-top:26px;line-height:1.65}
+.hero-cta{margin-top:40px}
+.hero-route{margin-top:36px}
+.pcard p:not(.pnum){margin-top:18px;line-height:1.7}
+.pacts{margin-top:30px}
+.final{padding-top:calc(var(--nav-h) + clamp(72px,12vh,140px))}
+.final .lead{margin-top:20px;line-height:1.7}
+.final-call{margin-top:40px}
+.final-meta{margin-top:28px}
+.foot{padding-top:40px}
+@media (max-width:900px){
+  .map{margin-top:44px}
+  .places{margin-top:44px}
+}
+@media (max-width:640px){
+  .sec{padding:96px 0 112px}
+  .hero-pin{padding-top:calc(var(--nav-h) + 48px)}
+  .hero-brand{margin-bottom:28px}
+  .hero-sub{margin-top:22px}
+  .hero-cta{margin-top:34px}
+  .hero-route{margin-top:32px}
+  .hero-route li{padding:5px 0}
+  .hero-route li:not(:last-child)::after{top:20px;height:16px}
+  .pcard{top:calc(var(--nav-h) + 36px)}
+  .pnum{margin-bottom:20px}
+  .pcard p:not(.pnum){margin-top:14px}
+  .pacts{margin-top:24px}
+  .map{margin-top:40px}
+  .places{margin-top:40px}
+  .place-panel{margin-top:32px}
+  .area-call{margin-top:32px}
+  .final{padding-top:calc(var(--nav-h) + 56px)}
+  .final-in{padding:30px 22px}
+  .final-call{margin-top:32px}
+  .foot-in{gap:14px}
+}
