@@ -28,38 +28,69 @@ home = f'''
 <div class="wrap portal portal-home">
 
   <aside class="col-l" aria-label="Aktuális adóhírek és határidők">
-    <div class="col-h"><h2>Aktuális adóhírek</h2></div>
-    <section class="mod">
+    <div class="col-h o4"><h2>Aktuális adóhírek</h2><a href="tudastar.html">Tudástár</a></div>
+    <section class="mod o4">
       <a class="hot" data-mod="hot" href="tudastar.html?tema=KATA"></a>
     </section>
-    <section class="mod m-hide">
-      <div class="mod-h"><h3>További adóhírek</h3><a href="tudastar.html">Összes</a></div>
+    <section class="mod m-hide o4">
+      <div class="mod-h"><h3>További hírek</h3><a href="tudastar.html">Összes</a></div>
       <ul class="l-news" data-mod="news" data-n="3" data-skip-hot="1"></ul>
     </section>
-    <section class="mod">
+    <section class="mod o4">
       <div class="mod-h"><h3>Közelgő határidők</h3><a href="tudastar.html?tema=%C3%89ves%20ad%C3%B3z%C3%A1si%20k%C3%B6telezetts%C3%A9gek">Mind</a></div>
       <ul class="l-dead" data-mod="deadlines" data-n="3"></ul>
     </section>
-    <section class="mod m-hide">
+    <section class="mod t-hide">
       <div class="mod-h"><h3>Hivatalos oldalak</h3></div>
       <ul class="l-links" data-mod="links" data-n="4"></ul>
     </section>
-    <p class="m-only m-more"><a class="arrow" href="tudastar.html">Összes adóhír és tudnivaló</a></p>
+    <p class="m-only m-more o4"><a class="arrow" href="tudastar.html">Összes adóhír és tudnivaló</a></p>
   </aside>
 
   <div class="col-m">
-    <section class="hero-card" aria-labelledby="h-hero">
-      <p class="eyebrow">Könyvelőiroda · Budaörs</p>
-      <h1 class="h1" id="h-hero">Biztos pénzügyi háttér. Több lehetőség vállalkozásának.</h1>
-      <p class="lead">Könyvelés, pénzügyi szakértelem és üzleti együttműködések egy helyen. A MultiCont Center célja, hogy vállalkozása ne csak megfeleljen a kötelezettségeknek, hanem magabiztosan fejlődhessen.</p>
-      <div class="hero-btns">
+    <section class="intro o1" aria-labelledby="h-hero">
+      <p class="eyebrow">Könyvelőiroda · Budaörs · 2015 óta</p>
+      <h1 class="h1" id="h-hero">Könyvelés és adózási támogatás, biztos szakmai háttérrel.</h1>
+      <p class="lead">Személyre szabott könyvelési és pénzügyi támogatás vállalkozásoknak, Budaörsön és online.</p>
+      <dl class="intro-facts">
+        <div><dt>Tapasztalat</dt><dd><b>30 év</b> pénzügyi-számviteli gyakorlat</dd></div>
+        <div><dt>Kiknek</dt><dd>Egyéni vállalkozók, bt.-k és kft.-k</dd></div>
+        <div><dt>Hogyan</dt><dd>Személyesen Budaörsön vagy online, magyarul és németül</dd></div>
+      </dl>
+      <div class="intro-cta">
         <a class="btn btn-p" href="kapcsolat.html">Kapcsolatfelvétel {I_ARROW}</a>
-        <a class="btn btn-o" href="szolgaltatasok.html">Szolgáltatások megtekintése</a>
+        <a class="intro-tel" href="tel:{TEL}"><small>vagy hívjon</small>{TEL_H}</a>
       </div>
     </section>
 
-    <section class="ed rv" aria-labelledby="h-nev">
-      <p class="eyebrow"><span class="no">01</span>A nevünk</p>
+    <section class="ed rv o2" aria-labelledby="h-szolg">
+      <div class="sec-t"><div><p class="eyebrow"><span class="no">01</span>Szolgáltatások</p><h2 class="h2" id="h-szolg">Amiben segítünk</h2></div><a class="arrow" href="szolgaltatasok.html">Összes részlet</a></div>
+      <ol class="svc-idx">{svc_cards}</ol>
+    </section>
+
+    <section class="ed rv o3" aria-labelledby="h-maria">
+      <p class="eyebrow"><span class="no">02</span>A szakmai vezető</p>
+      <div class="pro">
+        <figure class="portrait" aria-label="Horváth Mária portréjának helye">
+          <div class="portrait-fr"><span class="mono">HM</span><span class="cap">Portré helye<br>Horváth Mária saját fotója</span></div>
+        </figure>
+        <div class="pro-b">
+          <h2 class="h2" id="h-maria">Horváth Mária</h2>
+          <p class="role">Alapító, szakmai vezető · mérlegképes könyvelő, adótanácsadó</p>
+          <blockquote class="pq">„Megbízható, rugalmas, magas színvonalú szolgáltatást nyújtok kisvállalkozók részére.”</blockquote>
+          <dl class="pro-facts">
+            <div><dt>Tapasztalat</dt><dd>30 év pénzügy és számvitel</dd></div>
+            <div><dt>Végzettség</dt><dd>Mérlegképes könyvelő, adótanácsadó, TB- és bérügyintéző</dd></div>
+            <div><dt>Pálya</dt><dd>Költségvetési szféra, magyar és nemzetközi cégek</dd></div>
+            <div><dt>Nyelvek</dt><dd>Magyar, német</dd></div>
+          </dl>
+          <a class="arrow" href="rolunk.html">Bővebben rólunk</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="ed rv o3" aria-labelledby="h-nev">
+      <p class="eyebrow"><span class="no">03</span>A nevünk</p>
       <h2 class="h2" id="h-nev">Multi · Cont · Center</h2>
       {NAME_SVG}
       <ul class="chips3">
@@ -70,13 +101,8 @@ home = f'''
       <p class="ed-p">A céget eredetileg sem kizárólag könyvelésre alapítottuk: nyitottak vagyunk új tevékenységekre és együttműködésekre.</p>
     </section>
 
-    <section class="ed rv" aria-labelledby="h-szolg">
-      <div class="sec-t"><div><p class="eyebrow"><span class="no">02</span>Szolgáltatások</p><h2 class="h2" id="h-szolg">Amiben segítünk</h2></div><a class="arrow" href="szolgaltatasok.html">Részletek</a></div>
-      <ol class="svc-idx">{svc_cards}</ol>
-    </section>
-
-    <section class="ed rv" aria-labelledby="h-net">
-      <p class="eyebrow t"><span class="no">03</span>Partnerközpont</p>
+    <section class="ed rv o6" aria-labelledby="h-net">
+      <p class="eyebrow"><span class="no">04</span>Partnerközpont</p>
       <h2 class="h2" id="h-net">Kapcsolat más vállalkozásokkal</h2>
       <p class="ed-p">Ügyfeleink gyakran keresnek ügyvédet, biztosítót, szoftvert. Összekötjük őket azokkal a cégekkel, akiket jó szívvel ajánlunk.</p>
       <ul class="net-l">
@@ -86,29 +112,15 @@ home = f'''
       </ul>
     </section>
 
-    <section class="ed rv" aria-labelledby="h-maria">
-      <p class="eyebrow"><span class="no">04</span>Aki mögötte áll</p>
-      <div class="person">
-        <div class="ph-slot" role="img" aria-label="Horváth Mária fotójának helye"><b>HM</b><span>Saját fotó helye</span></div>
-        <div>
-          <h2 class="h3" id="h-maria">Horváth Mária</h2>
-          <p class="muted" style="margin-top:2px">Mérlegképes könyvelő, adótanácsadó · 30 év gyakorlat</p>
-          <blockquote class="pq">„Megbízható, rugalmas, magas színvonalú szolgáltatást nyújtok kisvállalkozók részére.”</blockquote>
-          <ul class="facts-s"><li>Budaörsön és online</li><li>Magyarul és németül</li><li>Felelősségbiztosítással</li></ul>
-          <p style="margin-top:12px"><a class="arrow" href="rolunk.html">Bővebben rólunk</a></p>
-        </div>
-      </div>
-    </section>
-
-    <section class="cta" aria-labelledby="h-cta">
+    <section class="cta o7" aria-labelledby="h-cta">
       <div><h2 id="h-cta">Beszéljük át, mire van szüksége.</h2><p>Hívjon, vagy kérjen visszahívást – mi keressük.</p></div>
       <div class="btns"><a class="btn btn-w" href="tel:{TEL}">{TEL_H}</a><button class="btn btn-gh" type="button" data-dlg="visszahivas">Visszahívást kérek</button></div>
     </section>
   </div>
 
-  <aside class="col-r" aria-label="Kalkulátor, dokumentumok, partnerek">
-    <div class="col-h"><h2>Eszköztár</h2></div>
-    <section class="tool" id="mini-calc">
+  <aside class="col-r" aria-label="Kalkulátor, dokumentumok, kapcsolat">
+    <div class="col-h t-hide"><h2>Eszköztár</h2></div>
+    <section class="tool o5" id="mini-calc">
       <div class="tool-h"><h2>Bérkalkulátor</h2><span class="tag live t">2026</span></div>
       <div class="mini-tabs" role="tablist" aria-label="Bérkalkulátor">
         <button role="tab" id="mt-ber" aria-controls="mp-ber" aria-selected="true">Bruttó → nettó</button>
@@ -131,16 +143,16 @@ home = f'''
       </div>
     </section>
 
-    <section class="tool">
+    <section class="tool o6">
       <div class="tool-h"><h2>Dokumentumtár</h2><a class="arrow small" href="dokumentumtar.html">Mind</a></div>
       <div class="tool-b"><ul class="r-docs" data-mod="docs" data-n="3"></ul></div>
     </section>
 
-    <section class="r-contact m-hide">
+    <section class="r-contact t-hide">
       <h2>Kérdése van?</h2>
       <a class="tel" href="tel:{TEL}">{TEL_H}</a>
       <p><a href="mailto:{MAIL}">{MAIL}</a></p>
-      <button class="btn btn-w btn-s" type="button" data-dlg="visszahivas" style="margin-top:12px">Visszahívást kérek</button>
+      <button class="btn btn-w btn-s" type="button" data-dlg="visszahivas">Visszahívást kérek</button>
     </section>
   </aside>
 </div>

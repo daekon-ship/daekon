@@ -1002,3 +1002,190 @@ button,input,select,textarea{font:inherit;color:inherit}
   .ph .lead{font-size:16px}
   .clist{-webkit-mask-image:linear-gradient(90deg,#000 85%,transparent);mask-image:linear-gradient(90deg,#000 85%,transparent)}
 }
+
+/* =====================================================================
+   DESIGNRENDSZER v2 (21. kör) – Modern Financial Editorial
+   Egységes tokenek: tipográfia, térköz, lekerekítés, árnyék, gombok.
+   Ez a blokk felülírja a korábbi körök eltéréseit.
+   ===================================================================== */
+:root{
+  --r:10px; --r-s:8px; --r-xs:5px;
+  --sh-1:0 1px 2px rgba(22,54,95,.06);
+  --sh-2:0 10px 28px -14px rgba(22,54,95,.28);
+  --sh-3:0 24px 56px -24px rgba(22,54,95,.35);
+  --fs-h1:clamp(27px,2.35vw,36px);
+  --fs-h2:clamp(21px,1.7vw,26px);
+  --fs-h3:18.5px;
+  --fs-body:16px;
+  --fs-small:14px;
+  --fs-label:11.5px;
+  --s1:4px;--s2:8px;--s3:12px;--s4:16px;--s5:24px;--s6:32px;--s7:48px;
+}
+body{font-size:var(--fs-body);line-height:1.62}
+h1,h2,h3,h4{font-weight:750;letter-spacing:-.017em}
+.h1{font-size:var(--fs-h1);line-height:1.13;font-weight:800;letter-spacing:-.028em}
+.h2{font-size:var(--fs-h2);line-height:1.2;letter-spacing:-.022em}
+.h3{font-size:var(--fs-h3);line-height:1.3}
+.lead{font-size:17.5px;line-height:1.58;color:#3A4757}
+.eyebrow{font-size:var(--fs-label);letter-spacing:.14em;margin-bottom:10px}
+.small,.note,.hint{font-size:13px}
+p,li{text-wrap:pretty}
+h1,h2,h3{text-wrap:balance}
+
+/* gombok: két méret, egy lekerekítés, mozgás nélküli hover */
+.btn{min-height:46px;padding:0 20px;border-radius:var(--r-s);font-size:15px;font-weight:700;letter-spacing:-.005em}
+.btn-s{min-height:38px;padding:0 14px;font-size:14px}
+.btn-p{box-shadow:0 1px 0 rgba(255,255,255,.18) inset,0 6px 16px -8px rgba(39,100,189,.6)}
+.btn-p:hover{transform:none;background:var(--blue-d)}
+.btn svg{transition:transform .2s var(--ease)}
+.btn:hover svg{transform:translateX(3px)}
+.btn:active{transform:translateY(1px)}
+.presets button,.mini-tabs button,.ftabs button,.seg label,.mini-seg label{border-radius:var(--r-xs)}
+.inp,.search input,.select,.f input,.f select,.f textarea{border-radius:var(--r-s)}
+
+/* linkek: finom aláhúzás-animáció */
+.arrow{background:linear-gradient(currentColor,currentColor) 0 100%/0 1px no-repeat;padding-bottom:1px;transition:background-size .25s var(--ease)}
+.arrow:hover{background-size:calc(100% - 18px) 1px}
+.l-news a b,.l-dead .t,.r-docs b{transition:color .2s}
+
+/* kártyák: egy keret, árnyék csak hoverre */
+.card,.tool,.pcard,.form,.cpanel,.benefits li,.offer{border-radius:var(--r)}
+.pcard:hover,.svc:hover{transform:none;box-shadow:var(--sh-2)}
+.tag{border-radius:var(--r-xs);font-size:11.5px;padding:2px 8px}
+
+/* fejléc: arányok, igazítás */
+.tbar .wrap{min-height:36px}
+.nav .wrap{height:72px;gap:28px}
+.nav.stuck .wrap{height:62px}
+.logo{gap:11px}
+.logo svg{width:38px;height:38px}
+.logo-n{font-size:21px;letter-spacing:-.035em}
+.logo-s{margin-top:4px;font-size:9.5px;letter-spacing:.36em}
+.menu{gap:0}
+.menu > li > a{height:40px;padding:0 12px;font-size:14.5px;font-weight:650;background:none!important;position:relative}
+.menu > li > a::before{content:"";position:absolute;left:12px;right:12px;bottom:6px;height:2px;border-radius:2px;background:var(--blue);transform:scaleX(0);transform-origin:left;transition:transform .25s var(--ease)}
+.menu > li > a:hover::before,.menu > li:focus-within > a::before{transform:scaleX(1)}
+.menu > li > a:hover{color:var(--blue-d)}
+.menu > li > a[aria-current="page"]::after{bottom:-16px}
+.nav.stuck .menu > li > a[aria-current="page"]::after{bottom:-11px}
+.sub{border-radius:var(--r);padding:6px;box-shadow:var(--sh-3)}
+.sub a{padding:8px 12px;font-size:14.5px;border-radius:var(--r-xs)}
+.nav-cta{margin-left:4px}
+@media (max-width:1320px){.menu > li > a{padding:0 9px;font-size:14px}.menu > li > a::before{left:9px;right:9px}}
+
+/* oszlopfejek: szerkesztőségi címke + vonal a teli sáv helyett */
+.portal-home .col-h{padding:0 0 10px;background:none;border-radius:0;border-bottom:2px solid var(--navy);color:var(--navy)}
+.portal-home .col-h h2{color:var(--navy);font-size:12px;letter-spacing:.14em}
+.portal-home .col-h a{font-size:13px;font-weight:700;color:var(--blue);text-decoration:none}
+.portal-home .col-h span{color:var(--muted)}
+.portal-home > .col-l,.portal-home > .col-r{padding-top:28px}
+
+/* kiemelt hír: arany csak jelzés, nem háttér */
+.hot{background:#fff;border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:0 var(--r-s) var(--r-s) 0;padding:14px 14px 12px}
+.hot .k{color:var(--gold-d)}
+.hot:hover{border-color:var(--line-2);border-left-color:var(--gold);box-shadow:var(--sh-1)}
+
+/* nyitóblokk */
+.intro{padding:28px 0 30px;border-bottom:1px solid var(--line-2)}
+.intro .h1{max-width:600px}
+.intro .lead{margin-top:14px;max-width:560px}
+.intro-facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:24px 0 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.intro-facts div{padding:14px 16px 14px 0}
+.intro-facts div + div{padding-left:16px;border-left:1px solid var(--line)}
+.intro-facts dt{font-size:var(--fs-label);font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--teal-d)}
+.intro-facts dd{margin:4px 0 0;font-size:14.5px;line-height:1.45;color:var(--text)}
+.intro-facts b{color:var(--navy);font-weight:800}
+.intro-cta{display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px;margin-top:22px}
+.intro-tel{display:flex;flex-direction:column;line-height:1.15;text-decoration:none;color:var(--navy);font-weight:800;font-size:18px}
+.intro-tel small{font-size:12px;font-weight:600;color:var(--muted)}
+.intro-tel:hover{color:var(--blue)}
+
+/* rovatok ritmusa */
+.ed{padding:32px 0 28px}
+.portal-home > .col-m{padding-top:0}
+.sec-t{margin-bottom:14px}
+.svc-row{padding:15px 10px 15px 4px}
+.svc-row.key{background:none}
+.svc-row.key .n{color:var(--faint)}
+.svc-idx{border-top:2px solid var(--navy)}
+
+/* szakmai vezető */
+.pro{display:grid;grid-template-columns:190px minmax(0,1fr);gap:28px;margin-top:14px;align-items:start}
+.portrait{margin:0}
+.portrait-fr{position:relative;aspect-ratio:4/5;border-radius:var(--r);background:linear-gradient(160deg,var(--sky),#F7FAFF);border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;overflow:hidden}
+.portrait-fr::after{content:"";position:absolute;left:0;right:0;bottom:0;height:4px;background:linear-gradient(90deg,var(--blue) 0 33.3%,var(--gold) 33.3% 66.6%,var(--teal) 66.6%)}
+.portrait-fr .mono{display:flex;align-items:center;justify-content:center;width:76px;height:76px;border-radius:50%;background:#fff;border:1px solid var(--line);font-size:24px;font-weight:800;letter-spacing:-.02em;color:var(--blue)}
+.portrait-fr .cap{font-size:12px;line-height:1.4;text-align:center;color:var(--muted)}
+.pro-b .h2{margin:0}
+.role{margin-top:4px;font-size:14.5px;color:var(--muted)}
+.pro .pq{margin:16px 0 0;padding:2px 0 2px 16px;border-left:3px solid var(--blue);font-size:17px;font-weight:600;line-height:1.5;color:var(--navy)}
+.pro-facts{margin:18px 0 16px;border-top:1px solid var(--line)}
+.pro-facts div{display:grid;grid-template-columns:110px minmax(0,1fr);gap:12px;padding:9px 0;border-bottom:1px solid var(--line);font-size:14.5px}
+.pro-facts dt{font-size:var(--fs-label);font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding-top:2px}
+.pro-facts dd{margin:0;color:var(--text)}
+
+/* jobb oszlop: egységes eszközök */
+.portal-home .col-r .tool-h{padding:18px 0 10px}
+.portal-home .col-r .tool-h h2{font-size:15px}
+.mini-tabs{padding:3px;border-radius:var(--r-s)}
+.mini-tabs button{min-height:34px}
+.calc-more a{border-radius:var(--r-xs)}
+.r-contact{border-radius:var(--r)}
+.cta{border-radius:var(--r);background:var(--blue)}
+.net-l .ni{border-radius:var(--r-xs)}
+
+/* oldalfejlécek és aloldalak */
+.ph{background:#fff}
+.ph .h1::after{margin-top:12px}
+.so-art,.benefits li,.dgroup h2{border-radius:var(--r)}
+.dgroup h2{border-radius:0}
+.faq summary{font-size:16px}
+
+/* ---------- reszponzív: táblagép és mobil, intelligens sorrend ---------- */
+@media (max-width:1180px){
+  .intro-facts{grid-template-columns:1fr}
+  .intro-facts div,.intro-facts div + div{padding:10px 0;border-left:0}
+  .intro-facts div + div{border-top:1px solid var(--line)}
+  .portal-home .col-l .col-h{grid-column:1/-1}
+}
+@media (max-width:960px){
+  /* egy oszlop: a sorrendet a rovatok order-értéke adja */
+  .portal-home{display:flex;flex-direction:column;padding-bottom:24px}
+  .portal-home > .col-l,.portal-home > .col-m,.portal-home > .col-r{display:contents}
+  .o1{order:1}.o2{order:2}.o3{order:3}.o4{order:4}.o5{order:5}.o6{order:6}.o7{order:7}
+  .portal-home .col-h.o4{margin-top:30px}
+  .portal-home .col-l .mod{padding:14px 0}
+  .portal-home .col-r .tool{border-bottom:0;border-top:1px solid var(--line-2);margin-top:22px}
+  .portal-home .col-r .tool#mini-calc{border-top:2px solid var(--navy)}
+  .portal-home .cta{margin-top:28px}
+  .intro{padding-top:22px}
+  .pro{grid-template-columns:150px minmax(0,1fr);gap:20px}
+}
+@media (max-width:640px){
+  .intro .h1{font-size:26px}
+  .intro .lead{font-size:16px}
+  .intro-cta .btn{width:100%}
+  .intro-tel{flex-direction:row;align-items:baseline;gap:8px}
+  .pro{grid-template-columns:1fr;gap:16px}
+  .portrait{max-width:none}
+  .portrait-fr{aspect-ratio:auto;flex-direction:row;justify-content:flex-start;padding:16px;gap:14px}
+  .portrait-fr .mono{width:56px;height:56px;font-size:19px}
+  .portrait-fr .cap{text-align:left}
+  .pro-facts div{grid-template-columns:96px minmax(0,1fr)}
+  .nav .wrap,.nav.stuck .wrap{height:62px}
+  .logo svg{width:34px;height:34px}
+  .logo-n{font-size:19px}
+}
+@media (max-width:960px){
+  .t-hide{display:none!important}
+  .portal-home > .col-l > *,.portal-home > .col-m > *,.portal-home > .col-r > *{width:100%;align-self:stretch}
+  .portal-home .col-l .mod.m-hide{border-top:1px solid var(--line)}
+}
+@media (min-width:641px) and (max-width:960px){
+  .intro-facts{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .intro-facts div{padding:12px 14px 12px 0;border-top:0!important}
+  .intro-facts div + div{padding-left:14px;border-left:1px solid var(--line)}
+}
+@media (max-width:960px){ .dateline .dl-hot{display:none} }
+.quote{padding:20px 22px 20px 52px}
+.quote::before{left:16px;top:6px}

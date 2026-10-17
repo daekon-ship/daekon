@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="hu" class="no-js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Belépés – Kezelőfelület (látványterv) – MultiCont Center</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preload" href="fonts/plusjakarta.woff" as="font" type="font/woff" crossorigin>
+<link rel="stylesheet" href="mc.css">
+<link rel="stylesheet" href="admin.css">
+<link rel="icon" href="jel.svg" type="image/svg+xml">
+<script>document.documentElement.classList.replace('no-js','js');try{if(!sessionStorage.getItem('mc-admin-demo')&&!/admin-belepes/.test(location.pathname))location.replace('admin-belepes.html?vissza='+encodeURIComponent(location.pathname.split('/').pop()+location.hash))}catch(e){}</script>
+</head>
+<body class="adm-body">
+<main class="login" id="tartalom">
+  <div class="login-card">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:12px"><a class="logo" href="index.html" aria-label="MultiCont Center Kft. – kezdőlap"><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="5" y="8" width="9" height="34" rx="2" fill="#2764BD"/><rect x="34" y="8" width="9" height="34" rx="2" fill="#28B6A4"/><path d="M15.2 8h3.6L24 16.2 29.2 8h3.6v7.1L24 29.6 15.2 15.1z" fill="#F3B85B"/></svg><span class="logo-t"><span class="logo-n">Multi<span>Cont</span></span><span class="logo-s">CENTER KFT.</span></span></a><span class="tag demo">Látványterv</span></div>
+    <h1 class="h3" style="margin-top:26px">Belépés a kezelőfelületre</h1>
+    <p class="muted small" style="margin-top:6px">Csak jogosult munkatársaknak.</p>
+    <form id="login" novalidate>
+      <div id="step1">
+        <div class="f" style="margin-top:20px"><label for="l-mail">E-mail-cím</label><input id="l-mail" type="email" autocomplete="username" required><p class="msg"></p></div>
+        <div class="f"><label for="l-pw">Jelszó</label><input id="l-pw" type="password" autocomplete="current-password" required><p class="msg"></p></div>
+        <button class="btn btn-p btn-b" type="submit">Tovább</button>
+      </div>
+      <div id="step2" hidden>
+        <p class="notice" style="margin-top:20px">Kétlépcsős azonosítás: írja be a hitelesítő alkalmazásban látható 6 jegyű kódot.</p>
+        <div class="f" style="margin-top:14px"><label for="l-code">Ellenőrző kód</label><input id="l-code" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="••••••"><p class="msg"></p></div>
+        <button class="btn btn-p btn-b" type="submit">Belépés</button>
+      </div>
+    </form>
+    <div class="pend" style="margin-top:22px">Ez a képernyő csak a folyamatot mutatja: itt nincs valódi hitelesítés, és a kezelőfelület semmit nem ment el. Bármilyen e-mail-cím, 8+ karakteres jelszó és 6 jegyű kód továbbenged a látványtervbe. Élesben szerveroldali belépés, kétlépcsős azonosítás, jogosultságkezelés és naplózás kell.</div>
+    <p style="margin-top:18px"><a class="arrow" href="index.html">Vissza a weboldalra</a></p>
+  </div>
+</main>
+<script src="admin.js" defer></script>
+</body></html>

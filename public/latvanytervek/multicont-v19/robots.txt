@@ -1,0 +1,4 @@
+# Látványterv – élesítéskor: Allow: /
+User-agent: *
+Disallow: /
+Sitemap: https://daekon-ship.github.io/daekon/latvanytervek/multicont/sitemap.xml

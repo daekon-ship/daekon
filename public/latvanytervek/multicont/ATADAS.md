@@ -137,3 +137,41 @@ A mai dátum és a következő határidő a `tartalom.js` határidőlistájábó
 - Mobil lábléc tömörítve: cégadatok 2 oszlopban, kisebb telefonszám, a menüt ismétlő listák rejtve.
 - Kapcsolat oldal: címke–érték sorok kisebb betűvel; telefonon gyors gombsor (Hívás, E-mail, Útvonal).
 - 20. kör: aloldal-fejlécekben a nagy, halvány logódísz helyett háromszínű vonal a cím alatt; Rólunk: kompakt fotóhely; kezdőlapi nyitóblokk kék bal szegéllyel; mobilon a szűrők egymás alatt; a mobilmenü alján „Visszahívást kérek” gomb.
+
+## 12. 21. kör – Prémium finomítás (Modern Financial Editorial)
+
+Biztonsági mentés az előző állapotról: `../multicont-v19/` (generált oldalak) + git-történet.
+
+### Felmérés – amit javítottunk
+- 7 körön át rétegzett CSS: ötféle lekerekítés, négyféle gombmagasság (34–50 px), több árnyéktípus → **egységes tokenrendszer**.
+- A nyitóblokk nem mondta meg egyértelműen, kinek és miért → **4 kérdésre felelő nyitóblokk**.
+- Teli kék oszlopfejek nehezek → **szerkesztőségi címke + 2 px vonal**.
+- Az arany túl sok helyen háttérként → csak jelzés (kiemelt hír bal szegélye, „Kiemelt” címke).
+- Mobilon az oldalsó oszlopok egyben a középső után jöttek → **rovatonkénti sorrend**.
+
+### Designrendszer v2 (az `mc.css` végén, „DESIGNRENDSZER v2” blokk)
+| Token | Érték |
+|---|---|
+| Címsorok | H1 27–36 px / 800 / −0.028em · H2 21–26 px / 750 · H3 18,5 px |
+| Szöveg | 16 px / 1.62 · lead 17,5 px · kicsi 13–14 px · címke 11,5 px, nagybetű, +0.14em |
+| Térköz | 4 · 8 · 12 · 16 · 24 · 32 · 48 px; rovatok 32 px fent / 28 px lent |
+| Lekerekítés | 10 px (kártya, panel) · 8 px (gomb, mező) · 5 px (címke, fül) |
+| Árnyék | `--sh-1` nyugalmi (alig), `--sh-2` csak hoverre, `--sh-3` lenyíló menü/ablak |
+| Gombok | 46 px (alap), 38 px (kicsi); hoverre színváltás, a nyíl 3 px-t lép |
+| Mikrointerakciók | menüpont alatti vonal kirajzolódik, „→” linkek aláhúzása nő, rovatvonal görgetésre, szolgáltatássor sarokmotívuma; `prefers-reduced-motion` alatt mind kikapcsol |
+
+### Kezdőlap
+- Nyitóblokk: „Könyvelés és adózási támogatás, biztos szakmai háttérrel.” + „Személyre szabott könyvelési és pénzügyi támogatás vállalkozásoknak, Budaörsön és online.” Alatta három tény (Tapasztalat · Kiknek · Hogyan), majd Kapcsolatfelvétel + telefonszám.
+- Középső rovatok sorrendje: 01 Szolgáltatások → 02 A szakmai vezető → 03 A nevünk → 04 Partnerközpont → felhívás.
+- Szakmai vezető: 4:5 portréhely (monogram + „Portré helye” felirat, nincs kitalált fotó), idézet, ellenőrzött tényekből álló adatsor (tapasztalat, végzettség, pálya, nyelvek).
+- Mobil és táblagép (≤960 px) sorrend: bemutatkozás és CTA → szolgáltatások → szakmai vezető és név → adóhírek, határidők → bérkalkulátor → partnerközpont, dokumentumok → kapcsolat.
+
+### Ügyféljóváhagyást igényel
+1. **Új főcím és alcím** (a brief javaslata). Az előző: „Biztos pénzügyi háttér. Több lehetőség vállalkozásának.” – visszaállítható.
+2. **„30 év” tapasztalat** hangsúlyos megjelenítése (nyitóblokk + szakmai vezető).
+3. Horváth Mária **végzettségei** (mérlegképes könyvelő, adótanácsadó, TB- és bérügyintéző) és a „költségvetési szféra, magyar és nemzetközi cégek” pályaleírás.
+4. Az **idézet** szó szerinti szövege.
+5. **„Alapító, szakmai vezető”** megnevezés.
+6. **Logó** („M” monogram, 3 szín) – végleges jóváhagyás.
+7. **Portré**: Horváth Mária saját fotója kell (álló, 4:5 arány, világos háttér ideális).
+8. Felelősségbiztosítás, „végelszámolásban nagy tapasztalat”, mintapartnerek/kuponok cseréje valódira.
