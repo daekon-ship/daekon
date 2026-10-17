@@ -4,6 +4,13 @@
 Fájlok: `index.html`, `cbtaxi.css`, `cbtaxi.js`, `js/` (GSAP 3 + ScrollTrigger, helyben), `fonts/` (Sora + Inter, helyben, OFL), `logo.svg`, `logo-jel.svg`.
 Build nincs (a Vite a `public/` mappát változatlanul másolja); a terv `noindex`.
 
+## 6. kör — kidolgozottabb látvány (autó, jelenetek, nyitókép, térkép, zárás)
+- **Kisbusz újrarajzolva:** fémes fényezés tükröződő sávval, krómozott ablak- és övvonal, tolóajtó-sín és kilincsek, tetősín, tükör, LED-es nappali fény és hátsó lámpa, mély kerékjáratok, ötküllős felnik gumioldalfallal (forognak), fénytócsa az úton előtte, piros derengés mögötte. Továbbra is egyetlen autó.
+- **Jelenetek:** minden utcai lámpának fénykúpja és csíkos tükröződése van a nedves aszfalton, a horizonton pára, a háttérben egy lassabban mozgó távoli hegyvonulat ad mélységet (parallax).
+- **Nyitókép:** finom vignetta, pára a víz felett, éjszakára a parti fények tükröződnek a vízen; a hívógomb alatt útvonal-motívum a három kiindulóponttal (Balatonmáriafürdő – Balatonkeresztúr – Marcali), mobilon függőlegesen.
+- **Térkép:** papír hatású kártya szintvonalakkal a tó körül; minden településfülhöz saját esti rajz.
+- **Zárás:** esti tópart Szigliget–Badacsony sziluettel és fényekkel, holdfény a vízen, móló, két lámpa; a szöveg és a hívókártya üveghatású panelen.
+
 ## 5. kör — kevesebb autó, csak hívás (a 4. kör felülírva)
 - **Egyetlen jármű:** csak a szolgáltatásokon végiggördülő kisbusz maradt (asztalon és mobilon is vízszintes, görgetésre haladó út, ahogy a 2. körben). A heróból, a záró jelenetből és a mobilos jelenetekből kikerült a többi autó; a heróban újra csak a távolból közelítő fényszóró látszik.
 - **Csak hívás:** az ajánlatkérő űrlap, a „Fuvarajánlat kérése” gombok és az e-mail-cím teljesen kikerült. Minden gomb a +36 30 997 8362-t hívja; mobilon alul egyetlen „Hívás” sáv.

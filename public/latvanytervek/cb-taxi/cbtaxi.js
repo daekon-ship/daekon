@@ -43,6 +43,7 @@
     el('circle', { cx: x.toFixed(1), cy: y.toFixed(1), r: (4 + rnd() * 3).toFixed(1), fill: 'url(#g-dot)' }, g);
     el('circle', { cx: x.toFixed(1), cy: y.toFixed(1), r: '1.1', fill: '#FFE6B5' }, g);
     lightSpots.push(g);
+    if (y > 280) el('path', { d: `M${x.toFixed(1)} 303 V${(310 + rnd() * 16).toFixed(1)}`, stroke: '#F2C987', 'stroke-width': '1.4', 'stroke-linecap': 'round', opacity: (.25 + rnd() * .35).toFixed(2) }, $('#h-refl'));
   }
 
   const reeds = $('#reeds');
@@ -58,6 +59,21 @@
   // éjszakai út és záró jelenet csillagai, kifutópálya fényei
   stars($('#r-stars'), 220, 520);
   stars($('#f-stars'), 150, 480);
+
+  /* lámpák fénykúpja és tükröződése a nedves úton, horizont-pára a jelenetekben */
+  $$('.pscene, .final-scene').forEach(svg => {
+    const road = svg.querySelector('use[href="#road"]');
+    $$('.lamp', svg).forEach(l => {
+      const c = l.querySelectorAll('circle'), head = c[c.length - 1];
+      const cx = +head.getAttribute('cx'), cy = +head.getAttribute('cy');
+      const ground = +(l.querySelector('path').getAttribute('d').match(/M[\d.]+ ([\d.]+)/) || [0, 760])[1] || 760;
+      const cone = el('polygon', { points: `${cx - 5},${cy + 5} ${cx - 78},${Math.max(ground, 742)} ${cx + 78},${Math.max(ground, 742)}`, fill: 'url(#g-cone)' });
+      l.insertBefore(cone, l.firstChild);
+      if (road) road.after(el('ellipse', { cx, cy: 786, rx: 9, ry: 34, fill: 'url(#g-refl)', opacity: .8 }));
+    });
+    const haze = el('rect', { x: 0, y: 520, width: 1600, height: 200, fill: 'url(#g-haze)' });
+    svg.insertBefore(haze, svg.children[1] || null);
+  });
   const rw = $('#runway');
   for (let x = 20, i = 0; x < 1600; x += 44, i++) {
     const c = el('circle', { cx: x, cy: 687, r: 3.2 }, rw);
@@ -129,6 +145,7 @@
       .to('#h-moon', { opacity: 1, attr: { cy: 150 }, duration: .7 }, .25)
       .to('#h-moonpath', { opacity: 1, duration: .5 }, .45)
       .to(lightSpots, { opacity: 1, duration: .25, stagger: { each: .012, from: 'random' } }, .3)
+      .fromTo('#h-refl', { opacity: 0 }, { opacity: 1, duration: .5 }, .45)
       .to(hp, { t: .9, duration: 1, onUpdate: () => placeLights(hp.t) }, 0)
       .to('.hero-caption, .scroll-hint', { opacity: 0, duration: .2 }, 0)
       .to('.hero-in', { y: -30, opacity: 0, duration: .2 }, .85);
@@ -136,6 +153,7 @@
     // ÉJSZAKAI ÚT: vízszintes haladás négy jeleneten át
     const track = $('#ride-track');
     const steps = $$('.ride-steps li');
+    const rFar = $('#r-far');
     const spokes = $$('.ride-spokes').map(sp => { const b = sp.getBBox(); return [sp, b.x + b.width / 2, b.y + b.height / 2]; });
     const train = $('#train'), plane = $('#plane');
     const dist = () => track.scrollWidth - ridePin.clientWidth;
@@ -145,6 +163,7 @@
         trigger: '.ride', start: 'top top', end: () => '+=' + dist() * 1.15, scrub: .8, pin: '.ride-pin', anticipatePin: 1, invalidateOnRefresh: true,
         onUpdate(self) {
           const p = self.progress;
+          rFar.setAttribute('transform', `translate(${(-p * 1400).toFixed(1)} 0)`);
           const i = Math.min(3, Math.round(p * 3));
           steps.forEach((li, n) => { li.classList.toggle('is-on', n === i); li.classList.toggle('is-past', n < i); });
           spokes.forEach(([sp, cx, cy]) => sp.setAttribute('transform', `rotate(${(p * 360 * 16).toFixed(1)} ${cx} ${cy})`));
