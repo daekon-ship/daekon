@@ -436,6 +436,7 @@
     email: function (v) { return !v.trim() ? 'Kérjük, adja meg az e-mail-címét.' : /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()) ? '' : 'Ez nem tűnik érvényes e-mail-címnek.'; },
     telefon: function (v, req) { if (!v.trim()) return req ? 'Visszahíváshoz adja meg a telefonszámát.' : ''; var n = v.replace(/\D/g, ''); return /^[+\d\s()\/-]+$/.test(v.trim()) && n.length >= 8 && n.length <= 15 ? '' : 'Kérjük, ellenőrizze a telefonszámot.'; },
     weboldal: function (v) { return !v.trim() || /^https?:\/\/\S+\.\S+/.test(v.trim()) ? '' : 'A címet https://-sel kezdje.'; },
+    telkell: function (v) { var n = v.replace(/\D/g, ''); return !v.trim() ? 'Kérjük, adja meg a telefonszámát.' : /^[+\d\s()\/-]+$/.test(v.trim()) && n.length >= 8 && n.length <= 15 ? '' : 'Kérjük, ellenőrizze a telefonszámot.'; },
     select: function (v) { return v ? '' : 'Kérjük, válasszon.'; },
     uzenet: function (v) { return v.trim().length >= 10 ? '' : 'Kérjük, írjon néhány szót (legalább 10 karakter).'; },
     hozzajarul: function (v, r, el) { return el.checked ? '' : 'A továbbításhoz kérjük, fogadja el.'; }

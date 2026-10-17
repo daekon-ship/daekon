@@ -120,3 +120,8 @@ Mind tiszta CSS + kevés JS (IntersectionObserver). **Nem kell hozzá** GSAP, Th
 
 ### Dátumsáv
 A mai dátum és a következő határidő a `tartalom.js` határidőlistájából számolódik (hány nap van hátra); a lejárt határidők automatikusan kiesnek.
+
+## 9. 17. kör – ritkítás, mobil, visszahívás
+- Kezdőlap ritkítva: bal oszlop 4 modul (kiemelt KATA-hír, 3 adóhír, 3 határidő, 4 hivatalos link), közép 4 rovat (név, szolgáltatások, partnerközpont, szakmai vezető idézettel) + felhívás, jobb oszlop: bérkalkulátor, 3 dokumentum, partnerajánlat, kapcsolat.
+- Mobil: dátumsáv rejtve; a nyitó blokk teljes szélességű; a név rajza helyett 3 soros magyarázat; bal/jobb oszlopból csak a lényeg (KATA-hír, határidők, kalkulátor, dokumentumok); lábléc rövidítve. Hossz: ~9200 px → ~5700 px.
+- **Visszahívást kérek:** valódi ablak minden oldalon (felső sáv, mobil alsó sáv, lábléc, felhívás): név, telefon (kötelező), mikor hívjuk, téma, hozzájárulás, spamvédelem. Küldéskor e-mail-piszkozat nyílik; nem állítja, hogy elküldte. Élesben szerveroldali küldés kell (lásd 4. pont).

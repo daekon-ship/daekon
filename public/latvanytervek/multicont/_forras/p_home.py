@@ -28,115 +28,90 @@ home = f'''
 <div class="wrap portal portal-home">
 
   <aside class="col-l" aria-label="Aktuális adóhírek és határidők">
-    <div class="col-h"><h2>Aktuális adóhírek</h2><span data-mod="checked"></span></div>
+    <div class="col-h"><h2>Aktuális adóhírek</h2></div>
     <section class="mod">
       <a class="hot" data-mod="hot" href="tudastar.html?tema=KATA"></a>
     </section>
-    <section class="mod">
+    <section class="mod m-hide">
       <div class="mod-h"><h3>További adóhírek</h3><a href="tudastar.html">Összes</a></div>
-      <ul class="l-news" data-mod="news" data-n="4" data-skip-hot="1"></ul>
+      <ul class="l-news" data-mod="news" data-n="3" data-skip-hot="1"></ul>
     </section>
     <section class="mod">
       <div class="mod-h"><h3>Közelgő határidők</h3><a href="tudastar.html?tema=%C3%89ves%20ad%C3%B3z%C3%A1si%20k%C3%B6telezetts%C3%A9gek">Mind</a></div>
-      <ul class="l-dead" data-mod="deadlines" data-n="4"></ul>
-      <p class="src" data-mod="deadline-src"></p>
+      <ul class="l-dead" data-mod="deadlines" data-n="3"></ul>
     </section>
-    <section class="mod">
-      <div class="mod-h"><h3>Jogszabályi idővonal</h3></div>
-      <ol class="l-time" data-mod="timeline"></ol>
-    </section>
-    <section class="mod">
-      <div class="mod-h"><h3>Adózási témák</h3></div>
-      <div class="l-nav" data-mod="topics-mini"></div>
-    </section>
-    <section class="mod">
+    <section class="mod m-hide">
       <div class="mod-h"><h3>Hivatalos oldalak</h3></div>
-      <ul class="l-links" data-mod="links" data-n="6"></ul>
+      <ul class="l-links" data-mod="links" data-n="4"></ul>
     </section>
+    <p class="m-only m-more"><a class="arrow" href="tudastar.html">Összes adóhír és tudnivaló</a></p>
   </aside>
 
   <div class="col-m">
-    <section class="card hero-card" aria-labelledby="h-hero">
-      <p class="eyebrow">Könyvelőiroda · Budaörs · 2015 óta</p>
+    <section class="hero-card" aria-labelledby="h-hero">
+      <p class="eyebrow">Könyvelőiroda · Budaörs</p>
       <h1 class="h1" id="h-hero">Biztos pénzügyi háttér. Több lehetőség vállalkozásának.</h1>
       <p class="lead">Könyvelés, pénzügyi szakértelem és üzleti együttműködések egy helyen. A MultiCont Center célja, hogy vállalkozása ne csak megfeleljen a kötelezettségeknek, hanem magabiztosan fejlődhessen.</p>
       <div class="hero-btns">
         <a class="btn btn-p" href="kapcsolat.html">Kapcsolatfelvétel {I_ARROW}</a>
         <a class="btn btn-o" href="szolgaltatasok.html">Szolgáltatások megtekintése</a>
       </div>
-      <ul class="hero-facts"><li>30 év pénzügyi-számviteli gyakorlat</li><li>Budaörsön és online</li><li>Magyarul és németül</li></ul>
     </section>
 
     <section class="ed rv" aria-labelledby="h-nev">
       <p class="eyebrow"><span class="no">01</span>A nevünk</p>
       <h2 class="h2" id="h-nev">Multi · Cont · Center</h2>
       {NAME_SVG}
-      <ul class="triad">
-        <li><b>MULTI</b><p>Sokoldalúság és sokféleség – és a növekedés lehetősége.</p></li>
-        <li><b>CONT</b><p>Contír, vagyis könyvelés – és contract, azaz szerződés.</p></li>
-        <li><b>CENTER</b><p>Közös pont, ahol ügyfelek és partnerek kapcsolatba kerülnek.</p></li>
+      <ul class="chips3">
+        <li><b>Multi</b> sokoldalúság, sokféleség, növekedés</li>
+        <li><b>Cont</b> contír (könyvelés) és contract (szerződés)</li>
+        <li><b>Center</b> közös pont ügyfeleknek, partnereknek</li>
       </ul>
-      <p class="open-note"><b>Nyitottak vagyunk az újra.</b> A céget eredetileg sem kizárólag könyvelésre alapítottuk – szívesen hozunk be új tevékenységeket és együttműködéseket.</p>
+      <p class="ed-p">A céget eredetileg sem kizárólag könyvelésre alapítottuk: nyitottak vagyunk új tevékenységekre és együttműködésekre.</p>
     </section>
 
     <section class="ed rv" aria-labelledby="h-szolg">
-      <div class="sec-t"><div><p class="eyebrow"><span class="no">02</span>Szolgáltatások</p><h2 class="h2" id="h-szolg">Amiben segítünk</h2></div><a class="arrow" href="szolgaltatasok.html">Mind a hat</a></div>
+      <div class="sec-t"><div><p class="eyebrow"><span class="no">02</span>Szolgáltatások</p><h2 class="h2" id="h-szolg">Amiben segítünk</h2></div><a class="arrow" href="szolgaltatasok.html">Részletek</a></div>
       <ol class="svc-idx">{svc_cards}</ol>
     </section>
 
-    <section class="ed net rv" aria-labelledby="h-net">
+    <section class="ed rv" aria-labelledby="h-net">
       <p class="eyebrow t"><span class="no">03</span>Partnerközpont</p>
       <h2 class="h2" id="h-net">Kapcsolat más vállalkozásokkal</h2>
-      <p style="margin-top:8px">Ügyfeleink gyakran keresnek ügyvédet, biztosítót, szoftvert. Ezért a weboldal összeköti őket azokkal a cégekkel, akiket jó szívvel ajánlunk.</p>
-      <ul class="net-g">
-        <li><a href="partnerek.html"><span class="ni b">↗</span><b>Partnerlinkek</b><span>Átlinkelés a partnerek saját oldalára</span></a></li>
-        <li><a href="partnerek.html#ajanlo"><span class="ni t">⇄</span><b>Ajánlói rendszer</b><span>Saját ajánlói linkkel ajánljuk egymást</span></a></li>
-        <li><a href="partnerek.html#ajanlatok"><span class="ni g">%</span><b>Kuponajánlatok</b><span>Partnerkedvezmények ügyfeleinknek</span></a></li>
+      <p class="ed-p">Ügyfeleink gyakran keresnek ügyvédet, biztosítót, szoftvert. Összekötjük őket azokkal a cégekkel, akiket jó szívvel ajánlunk.</p>
+      <ul class="net-l">
+        <li><a href="partnerek.html"><span class="ni b">↗</span><span><b>Partnerlinkek</b> átlinkelés a partnerek oldalára</span></a></li>
+        <li><a href="partnerek.html#ajanlo"><span class="ni t">⇄</span><span><b>Ajánlói rendszer</b> saját linkkel ajánljuk egymást</span></a></li>
+        <li><a href="partnerek.html#ajanlatok"><span class="ni g">%</span><span><b>Kuponajánlatok</b> kedvezmények ügyfeleinknek</span></a></li>
       </ul>
-      <p style="margin-top:14px"><a class="arrow" href="partnerek.html#jelentkezes">Partnernek jelentkezem</a></p>
-    </section>
-
-    <section class="ed rv" aria-labelledby="h-mod">
-      <p class="eyebrow t"><span class="no">04</span>Szemléletünk</p>
-      <h2 class="h2" id="h-mod" style="margin-bottom:18px">Miért a MultiCont?</h2>
-      <div class="approach">
-        <blockquote class="quote"><p>Megbízható, rugalmas, magas színvonalú szolgáltatást nyújtok kisvállalkozók részére.</p><footer>Horváth Mária, alapító</footer></blockquote>
-        <ul class="why">
-          <li><span><b>Mérlegképes könyvelő és adótanácsadó</b> vezeti az irodát</span></li>
-          <li><span><b>TB- és bérügyintézői</b> végzettség</span></li>
-          <li><span><b>Személyesen</b> Budaörsön, <b>online</b> országosan</span></li>
-          <li><span><b>Német nyelven</b> is, külföldi partnereknek</span></li>
-          <li><span><b>Felelősségbiztosítás</b> mellett dolgozunk</span></li>
-          <li><span><b>Végelszámolásban</b> nagy tapasztalat</span></li>
-        </ul>
-      </div>
     </section>
 
     <section class="ed rv" aria-labelledby="h-maria">
+      <p class="eyebrow"><span class="no">04</span>Aki mögötte áll</p>
       <div class="person">
         <div class="ph-slot" role="img" aria-label="Horváth Mária fotójának helye"><b>HM</b><span>Saját fotó helye</span></div>
         <div>
-          <p class="eyebrow"><span class="no">05</span>A szakmai vezető</p>
           <h2 class="h3" id="h-maria">Horváth Mária</h2>
-          <p class="muted" style="margin-top:4px">Mérlegképes könyvelő, adótanácsadó</p>
-          <p style="margin-top:10px">Dolgozott a költségvetési szférában, magyar és nemzetközi tulajdonú cégeknél, öt évig cafeteria-tanácsadóként. Ügyfeleit magyarul és németül fogadja.</p>
+          <p class="muted" style="margin-top:2px">Mérlegképes könyvelő, adótanácsadó · 30 év gyakorlat</p>
+          <blockquote class="pq">„Megbízható, rugalmas, magas színvonalú szolgáltatást nyújtok kisvállalkozók részére.”</blockquote>
+          <ul class="facts-s"><li>Budaörsön és online</li><li>Magyarul és németül</li><li>Felelősségbiztosítással</li></ul>
           <p style="margin-top:12px"><a class="arrow" href="rolunk.html">Bővebben rólunk</a></p>
         </div>
       </div>
     </section>
 
     <section class="cta" aria-labelledby="h-cta">
-      <div><h2 id="h-cta">Beszéljük át, mire van szüksége.</h2><p>Egy rövid hívásban kiderül, mit tudunk vállalni, és mennyi munkával jár.</p></div>
-      <div class="btns"><a class="btn btn-w" href="tel:{TEL}">{TEL_H}</a><a class="btn btn-gh" href="kapcsolat.html">Üzenetet írok</a></div>
+      <div><h2 id="h-cta">Beszéljük át, mire van szüksége.</h2><p>Hívjon, vagy kérjen visszahívást – mi keressük.</p></div>
+      <div class="btns"><a class="btn btn-w" href="tel:{TEL}">{TEL_H}</a><button class="btn btn-gh" type="button" data-dlg="visszahivas">Visszahívást kérek</button></div>
     </section>
   </div>
 
-  <aside class="col-r" aria-label="Kalkulátorok, dokumentumok, partnerek">
+  <aside class="col-r" aria-label="Kalkulátor, dokumentumok, partnerek">
     <div class="col-h"><h2>Eszköztár</h2></div>
     <section class="tool" id="mini-calc">
-      <div class="tool-h"><h2>Kalkulátor</h2><a class="arrow small" href="kalkulatorok.html">Mind a 8</a></div>
+      <div class="tool-h"><h2>Bérkalkulátor</h2><a class="arrow small" href="kalkulatorok.html">Mind a 8</a></div>
       <div class="mini-tabs" role="tablist" aria-label="Gyorskalkulátor">
-        <button role="tab" id="mt-ber" aria-controls="mp-ber" aria-selected="true">Bér</button>
+        <button role="tab" id="mt-ber" aria-controls="mp-ber" aria-selected="true">Bruttó→nettó</button>
         <button role="tab" id="mt-nb" aria-controls="mp-nb" aria-selected="false" tabindex="-1">Nettó→bruttó</button>
         <button role="tab" id="mt-afa" aria-controls="mp-afa" aria-selected="false" tabindex="-1">ÁFA</button>
       </div>
@@ -157,31 +132,25 @@ home = f'''
           <div class="mini-seg" role="radiogroup" aria-label="ÁFA-kulcs"><label><input type="radio" name="q-k" value="27" checked>27%</label><label><input type="radio" name="q-k" value="18">18%</label><label><input type="radio" name="q-k" value="5">5%</label></div>
           <dl class="mini-res"><div><dt>ÁFA</dt><dd id="q-afa-v">–</dd></div><div class="big"><dt>Bruttó</dt><dd id="q-afa-b">–</dd></div></dl>
         </div>
-        <p class="note">2026-os kulcsok, kedvezmények nélkül. Tájékoztató jellegű.</p>
-        <div class="calc-more"><a href="kalkulatorok.html#kata">KATA 2026</a><a href="kalkulatorok.html#munkaltato">Munkáltatói költség</a><a href="kalkulatorok.html#eredmeny">Bevétel – kiadás</a><a href="kalkulatorok.html#koltsegterv">Költségtervező</a></div>
+        <p class="note">2026-os kulcsok, kedvezmények nélkül.</p>
       </div>
     </section>
 
     <section class="tool">
       <div class="tool-h"><h2>Dokumentumtár</h2><a class="arrow small" href="dokumentumtar.html">Mind</a></div>
-      <div class="tool-b"><p class="muted small" style="margin-bottom:4px">Formanyomtatványok és szakmai anyagok</p><ul class="r-docs" data-mod="docs" data-n="4"></ul></div>
+      <div class="tool-b"><ul class="r-docs" data-mod="docs" data-n="3"></ul></div>
     </section>
 
-    <section class="tool">
-      <div class="tool-h"><h2>Kuponajánlat</h2><span class="tag demo">Minta</span></div>
+    <section class="tool m-hide">
+      <div class="tool-h"><h2>Partnerajánlat</h2><span class="tag demo">Minta</span></div>
       <div class="tool-b" data-mod="offer"></div>
     </section>
 
-    <section class="tool">
-      <div class="tool-h"><h2>Partnereink</h2><a class="arrow small" href="partnerek.html">Lista</a></div>
-      <div class="tool-b" data-mod="partners-mini" data-n="3"></div>
-    </section>
-
-    <section class="r-contact">
+    <section class="r-contact m-hide">
       <h2>Kérdése van?</h2>
       <a class="tel" href="tel:{TEL}">{TEL_H}</a>
       <p><a href="mailto:{MAIL}">{MAIL}</a></p>
-      <p>{ADDR} · <a href="{MAPS}" target="_blank" rel="noopener">útvonal</a></p>
+      <button class="btn btn-w btn-s" type="button" data-dlg="visszahivas" style="margin-top:12px">Visszahívást kérek</button>
     </section>
   </aside>
 </div>

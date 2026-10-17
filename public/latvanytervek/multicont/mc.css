@@ -856,3 +856,78 @@ button,input,select,textarea{font:inherit;color:inherit}
   .js .ed.rv:not(.in)::before{transform:none}
 }
 .portal-home .col-h h2{white-space:nowrap}
+
+/* =========================================================
+   17. kör – ritkítás, nyugodtabb mobil, visszahívás
+   ========================================================= */
+.tbar .cta{border:0;cursor:pointer;font:inherit;font-size:13.5px;line-height:1.2;padding:5px 14px}
+.tbar .cta:hover{background:var(--sky)}
+.ftr .lnk{padding:0;border:0;background:none;font:inherit;color:var(--navy);cursor:pointer;text-align:left}
+.ftr .lnk:hover{color:var(--blue);text-decoration:underline}
+.mbar button{font:inherit;cursor:pointer;background:#fff}
+.vh-form .f input,.vh-form .f select{background:var(--off)}
+.vh-form select{-webkit-appearance:none;appearance:none}
+
+/* nyitó blokk: nincs doboz, csak finom kék háttér-sáv */
+.portal-home .hero-card{padding:34px 34px 30px;border:0;border-radius:var(--r);background:linear-gradient(135deg,#EAF2FD 0%,#F6FAFF 55%,#fff 100%);margin-bottom:6px}
+.portal-home .hero-card::after{opacity:.22}
+.portal-home .hero-card .h1{font-size:clamp(26px,2.3vw,34px)}
+.portal-home .hero-card .lead{font-size:17px;max-width:560px}
+.ed-p{margin-top:10px;color:var(--text);max-width:600px}
+.ed{padding:30px 0 26px}
+
+/* név: három sor, mobilon a rajz helyett */
+.chips3{display:none;margin-top:14px}
+.chips3 li{padding:10px 0;border-bottom:1px solid var(--line);font-size:15px;color:var(--muted)}
+.chips3 li:last-child{border-bottom:0}
+.chips3 b{display:inline-block;min-width:64px;font-weight:800;color:var(--navy)}
+.chips3 li:nth-child(1) b{color:var(--blue)}.chips3 li:nth-child(2) b{color:var(--teal-d)}.chips3 li:nth-child(3) b{color:var(--gold-d)}
+
+/* partnerközpont: lista a három doboz helyett */
+.net-l{margin-top:14px;border-top:1px solid var(--line)}
+.net-l li{border-bottom:1px solid var(--line)}
+.net-l a{display:flex;align-items:center;gap:14px;padding:12px 4px;text-decoration:none;color:var(--muted);font-size:15px}
+.net-l a:hover{background:var(--off)}
+.net-l .ni{margin:0;flex:none;width:32px;height:32px;font-size:15px}
+.net-l b{color:var(--navy);margin-right:4px}
+.net-l a::after{content:"→";margin-left:auto;color:var(--blue);font-weight:700}
+
+/* szakmai vezető: idézet + rövid tények */
+.portal-home .person{grid-template-columns:132px minmax(0,1fr);margin-top:14px}
+.pq{margin:14px 0 0;padding:0 0 0 14px;border-left:3px solid var(--blue);font-size:16.5px;font-weight:600;line-height:1.5;color:var(--navy)}
+.facts-s{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.facts-s li{padding:4px 10px;border-radius:999px;background:var(--sky);font-size:13px;font-weight:700;color:var(--blue-d)}
+
+.m-only{display:none}
+.m-more{margin-top:14px}
+
+@media (max-width:640px){
+  .m-hide{display:none!important}
+  .m-only{display:block}
+  .dateline{display:none}
+  .portal-home .hero-card{margin:0 calc(-1 * var(--gut));padding:28px var(--gut) 26px;border-radius:0}
+  .portal-home .hero-card::after{display:none}
+  .portal-home .hero-card .lead{font-size:16px}
+  .hero-btns .btn{width:100%}
+  .name-art{display:none}
+  .chips3{display:block}
+  .portal-home .person{grid-template-columns:72px minmax(0,1fr);gap:14px}
+  .portal-home .person .ph-slot{aspect-ratio:1;border-radius:50%}
+  .portal-home .person .ph-slot::after{display:none}
+  .portal-home .person .ph-slot b{font-size:20px}
+  .pq{font-size:15.5px}
+  .portal-home > .col-l,.portal-home > .col-r{padding-top:22px}
+  .portal-home .col-h{border-radius:6px}
+  .cta .btns{flex-direction:column}
+  .cta .btns .btn{width:100%}
+  .mbar{grid-template-columns:1fr 1.6fr}
+}
+@media (max-width:640px){
+  .ftr-g > nav{display:none}
+  .ftr-g{gap:26px;padding-top:34px;padding-bottom:22px}
+  .ftr .claim{display:none}
+}
+.portal-home .cta{grid-template-columns:1fr;gap:16px}
+.portal-home .cta .btns{justify-content:flex-start}
+.ftr-b ul{align-items:center}
+.ftr-b button,.ftr-b a{line-height:1.4;font-family:inherit}
