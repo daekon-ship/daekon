@@ -4,6 +4,13 @@
 Fájlok: `index.html`, `cbtaxi.css`, `cbtaxi.js`, `js/` (GSAP 3 + ScrollTrigger, helyben), `fonts/` (Sora + DM Sans, helyben, OFL), `logo.svg`, `logo-jel.svg`.
 Build nincs; a terv `noindex`.
 
+## 3. kör — prémiumabb színek
+- A kék éjszaka helyett **grafit–obszidián** alap (#090C0F, #10161D, #161E26): a kékek telítettsége kb. harmadára csökkentve, így a jelenetek „autós kampány” hatásúak, nem rajzfilmesek.
+- **Metál champagne** felületek: minden hívógomb, a menü hívógombja, a mobil sáv és a záró hívókártya finom fémes átmenetet és élfényt kapott (#EEDDB8 → #D7B67D → #BE9658).
+- Meleg elefántcsont (#F3EFE6) a világos szekcióban, meleg törtfehér szöveg a sötéten.
+- Meleg fényszennyezés-dereng a horizonton az éjszakai jeleneteken, finom filmszemcse az egész oldalon.
+- Térkép: tintasötét tó champagne kontúrral, a feliratok elefántcsont kísérővonallal olvashatók.
+
 ## 2. kör — „sokkal látványosabb, elég csak hívni”
 - **Minden űrlap kikerült** (ajánlatkérő, menetlevél, reptéri mini-űrlap). Minden gomb egyetlen dolgot csinál: hívja a +36 30 997 8362-t. Mobilon alul végig ott a „Hívás” sáv.
 - **Hero, görgetésre lejátszódó jelenet:** a nyitókép kitart egy képernyőnyit, és közben a naplemente éjszakába vált: a nap a víz mögé bukik, előjönnek a csillagok, felkel a hold, a hold fénycsíkja a vízen, kigyúlnak a fények Szigligeten, Badacsony lejtőin és a part menti falvakban, a fényszóró végigjön a part menti úton.

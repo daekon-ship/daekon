@@ -50,7 +50,7 @@
     for (let i = 0; i < n; i++) {
       const x = x0 + rnd() * (x1 - x0), h = 18 + rnd() * hMax, lean = (rnd() - .5) * 14;
       el('path', { d: `M${x.toFixed(1)} ${base} Q${(x + lean * .3).toFixed(1)} ${base - h * .6} ${(x + lean).toFixed(1)} ${(base - h).toFixed(1)}`, 'stroke-width': (1 + rnd() * 1.4).toFixed(2) }, reeds);
-      if (rnd() > .82) el('ellipse', { cx: (x + lean).toFixed(1), cy: (base - h + 5).toFixed(1), rx: '1.8', ry: '6', fill: '#040D15' }, reeds);
+      if (rnd() > .82) el('ellipse', { cx: (x + lean).toFixed(1), cy: (base - h + 5).toFixed(1), rx: '1.8', ry: '6', fill: '#080B0E' }, reeds);
     }
   };
   clump(0, 260, 452, 70, 46); clump(300, 420, 446, 22, 30); clump(1380, 1600, 486, 50, 44);
