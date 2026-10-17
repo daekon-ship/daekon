@@ -4,7 +4,12 @@
 Fájlok: `index.html`, `cbtaxi.css`, `cbtaxi.js`, `js/` (GSAP 3 + ScrollTrigger, helyben), `fonts/` (Sora + Inter, helyben, OFL), `logo.svg`, `logo-jel.svg`.
 Build nincs (a Vite a `public/` mappát változatlanul másolja); a terv `noindex`.
 
-## 4. kör — teljes átdolgozás a „Complete visual redesign” brief alapján
+## 5. kör — kevesebb autó, csak hívás (a 4. kör felülírva)
+- **Egyetlen jármű:** csak a szolgáltatásokon végiggördülő kisbusz maradt (asztalon és mobilon is vízszintes, görgetésre haladó út, ahogy a 2. körben). A heróból, a záró jelenetből és a mobilos jelenetekből kikerült a többi autó; a heróban újra csak a távolból közelítő fényszóró látszik.
+- **Csak hívás:** az ajánlatkérő űrlap, a „Fuvarajánlat kérése” gombok és az e-mail-cím teljesen kikerült. Minden gomb a +36 30 997 8362-t hívja; mobilon alul egyetlen „Hívás” sáv.
+- Megmaradt: brief-paletta (navy, champagne, lake blue), Sora + Inter, a javított térkép és a gombhiba javítása.
+
+## 4. kör (előzmény) — teljes átdolgozás a „Complete visual redesign” brief alapján
 **Újratervezve**
 - **Jármű:** a korábbi személyautó helyett elegáns, sötét **személyszállító kisbusz** (Vito / Tourneo / Caravelle kategória ihlette, márka és típus nélkül). Hosszú, többablakos utastér, tolóajtó-vonal, meleg belső fény. Mindenhol „A jármű illusztráció” felirat jelzi, hogy nem a valódi autó.
 - **Hero:** „A Balatontól bárhová.” + a brief alcíme; két gomb: **Taxi hívása** (tel:) és **Fuvarajánlat kérése** (az ajánlatkérőhöz ugrik és a első üres mezőre fókuszál). Betöltéskor a kisbusz begurul a part menti útra; görgetésre a naplemente éjszakába vált (csillagok, hold, kigyúló fények Szigligeten és Badacsonyon), a fényszóró erősödik, a végén a busz továbbhajt. A rögzítés rövidebb lett (0,8 képernyő).

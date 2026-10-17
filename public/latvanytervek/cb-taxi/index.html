@@ -23,7 +23,6 @@
   "@type": "TaxiService",
   "name": "CB TAXI – Nyakas Péter",
   "telephone": "+36309978362",
-  "email": "taxispeter@gmail.com",
   "areaServed": ["Balatonkeresztúr", "Balatonmáriafürdő", "Marcali", "Balaton"]
 }
 </script>
@@ -41,7 +40,6 @@
     </a>
     <nav class="nav-links" aria-label="Fő navigáció">
       <a href="#szolgaltatasok">Szolgáltatások</a>
-      <a href="#fuvar">Fuvarigénylés</a>
       <a href="#terulet">Működési terület</a>
       <a href="#kapcsolat">Kapcsolat</a>
     </nav>
@@ -129,9 +127,13 @@
 
       <path fill="url(#g-shore)" d="M0 440 C220 428 460 432 700 446 C960 460 1260 470 1600 470 V560 H0 Z"/>
       <g id="reeds" class="reeds"></g>
-      <rect x="0" y="506" width="1600" height="42" fill="#081A28"/>
-      <path d="M0 506 H1600" stroke="#1D3A50" stroke-width="1.5"/>
-      <path class="hero-dash" d="M0 527 H1600" stroke="#D6B279" stroke-width="2" stroke-dasharray="22 20" opacity=".6"/>
+      <path class="road-edge" d="M140 462 C460 466 820 478 1080 500 C1290 518 1440 538 1600 556" fill="none" stroke="#1B3346" stroke-width="2"/>
+      <path id="road-line" d="M120 470 C440 474 800 488 1060 512 C1260 530 1420 548 1600 566" fill="none" stroke="#D6B279" stroke-width="1.4" stroke-dasharray="10 14" opacity=".55"/>
+      <g id="headlights" opacity="0">
+        <ellipse id="h-beam" cx="0" cy="2" rx="40" ry="14" fill="url(#g-beam)"/>
+        <circle cx="-4" cy="0" r="1.8" fill="#FFF6E2"/>
+        <circle cx="4" cy=".6" r="1.8" fill="#FFF6E2"/>
+      </g>
     </svg>
 
     <div class="hero-in wrap">
@@ -143,13 +145,10 @@
           <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"/></svg>
           <span>Taxi hívása<small>+36 30 997 8362</small></span>
         </a>
-        <a class="btn btn-line" href="#fuvar" data-goto-form>Fuvarajánlat kérése</a>
       </div>
     </div>
 
-    <!-- A jármű illusztráció. Valódi fotóra cserélés: lásd ATADAS.md – „Fotók cseréje”. -->
-    <div class="hero-van" aria-hidden="true"><svg class="van" viewBox="0 0 460 190" overflow="visible"><polygon class="van-beam" points="436,110 1260,60 1260,200" fill="url(#g-carbeam)"/><use href="#van"/></svg></div>
-    <p class="hero-caption" aria-hidden="true">Szigliget és Badacsony a déli partról<span>A jármű illusztráció</span></p>
+        <p class="hero-caption" aria-hidden="true">Szigliget és Badacsony a déli partról<span>46,7° É / 17,4° K</span></p>
     <div class="scroll-hint" aria-hidden="true"><i></i><span>Görgessen, és indulunk</span></div>
   </div>
 </section>
@@ -204,7 +203,7 @@
           <p class="pnum">1 / 4</p>
           <h3 id="p1-t">Helyi taxi</h3>
           <p>Balatonmáriafürdő és Balatonkeresztúr térsége: strandra, állomásra, vacsorára és haza. Családdal, társasággal, csomagokkal is.</p>
-          <div class="pacts"><a class="pcall" href="tel:+36309978362"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"/></svg>Taxi hívása</a><button type="button" class="plink" data-type="helyi">Helyi fuvart kérek</button></div>
+          <div class="pacts"><a class="pcall" href="tel:+36309978362"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"/></svg>Taxi hívása</a></div>
         </div>
       </article>
 
@@ -233,7 +232,7 @@
           <p class="pnum">2 / 4</p>
           <h3 id="p2-t">Távolsági fuvar</h3>
           <p>Személyszállítás távolabbi úti célokra, előzetes egyeztetés szerint. Kényelmesen, több utasnak is.</p>
-          <div class="pacts"><a class="pcall" href="tel:+36309978362"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"/></svg>Taxi hívása</a><button type="button" class="plink" data-type="tavolsagi">Távolsági ajánlatot kérek</button></div>
+          <div class="pacts"><a class="pcall" href="tel:+36309978362"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"/></svg>Taxi hívása</a></div>
         </div>
       </article>
 
@@ -281,7 +280,7 @@
           <p class="pnum">3 / 4</p>
           <h3 id="p3-t">Transzfer</h3>
           <p>Előre egyeztetett utazások a Balaton és Marcali térségéből: vonathoz, rendezvényre, szállásra.</p>
-          <div class="pacts"><a class="pcall" href="tel:+36309978362"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"/></svg>Taxi hívása</a><button type="button" class="plink" data-type="transzfer">Transzfert kérek</button></div>
+          <div class="pacts"><a class="pcall" href="tel:+36309978362"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"/></svg>Taxi hívása</a></div>
         </div>
       </article>
 
@@ -311,8 +310,8 @@
         <div class="pcard">
           <p class="pnum">4 / 4</p>
           <h3 id="p4-t">Reptéri transzfer</h3>
-          <p>Tervezze meg reptéri utazását, és kérjen egyedi ajánlatot. A vállalt repülőtereket az ajánlatban egyeztetjük.</p>
-          <div class="pacts"><a class="pcall" href="tel:+36309978362"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"/></svg>Taxi hívása</a><button type="button" class="plink" data-type="repteri">Reptéri ajánlatot kérek</button></div>
+          <p>Tervezze meg reptéri utazását: hívjon, és egyeztessük az indulást, a járatot és a csomagokat.</p>
+          <div class="pacts"><a class="pcall" href="tel:+36309978362"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"/></svg>Taxi hívása</a></div>
         </div>
       </article>
     </div>
@@ -349,174 +348,12 @@
   </div>
 </section>
 
-<!-- ============ FUVARIGÉNYLÉS ============ -->
-<section class="sec booking" id="fuvar" aria-labelledby="bk-title">
-  <div class="wrap booking-grid">
-
-    <div class="booking-side">
-      <h2 id="bk-title">Hová utazna?</h2>
-      <p class="lead">Adja meg az út részleteit, és kérjen egyedi ajánlatot.</p>
-
-      <!-- élő menetlevél -->
-      <figure class="ticket" aria-label="Az ajánlatkérés összefoglalója">
-        <div class="tk-top">
-          <svg class="tk-mark" viewBox="0 0 64 40" aria-hidden="true"><use href="#cb-mark"/></svg>
-          <span class="tk-type" data-t="type">Helyi fuvar</span>
-        </div>
-        <div class="tk-route">
-          <div class="tk-pt"><small>Honnan</small><b data-t="from" data-empty="Indulási hely">Indulási hely</b></div>
-          <svg class="tk-line" viewBox="0 0 40 120" preserveAspectRatio="none" aria-hidden="true">
-            <circle cx="20" cy="8" r="5" fill="none" stroke="#D6B279" stroke-width="2"/>
-            <path d="M20 16 V104" stroke="#D6B279" stroke-width="2" stroke-dasharray="4 6"/>
-            <circle cx="20" cy="112" r="5" fill="#D6B279"/>
-          </svg>
-          <div class="tk-pt"><small>Hová</small><b data-t="to" data-empty="Úti cél">Úti cél</b></div>
-        </div>
-        <dl class="tk-meta">
-          <div><dt>Dátum</dt><dd data-t="date" data-empty="–">–</dd></div>
-          <div><dt>Időpont</dt><dd data-t="time" data-empty="–">–</dd></div>
-          <div><dt>Utasok</dt><dd data-t="pax" data-empty="–">–</dd></div>
-          <div><dt>Csomag</dt><dd data-t="bags" data-empty="–">–</dd></div>
-        </dl>
-        <p class="tk-air" data-t="air" hidden></p>
-        <figcaption>Az út részletei alapján egyedi ajánlat kérhető. Fix árat az oldal nem számol.</figcaption>
-      </figure>
-    </div>
-
-    <form class="bk-form" id="bk-form" novalidate>
-      <fieldset class="types">
-        <legend>Milyen útra?</legend>
-        <label><input type="radio" name="tipus" value="helyi" checked><span>Helyi fuvar</span></label>
-        <label><input type="radio" name="tipus" value="tavolsagi"><span>Távolsági fuvar</span></label>
-        <label><input type="radio" name="tipus" value="transzfer"><span>Transzfer</span></label>
-        <label><input type="radio" name="tipus" value="repteri"><span>Reptéri transzfer</span></label>
-      </fieldset>
-
-      <div class="f-row two">
-        <div class="f">
-          <label for="f-from">Indulási hely</label>
-          <input id="f-from" name="honnan" list="helyek" autocomplete="off" required placeholder="pl. Balatonmáriafürdő, Szent István u.">
-          <p class="err" id="e-from"></p>
-        </div>
-        <div class="f">
-          <label for="f-to">Úti cél</label>
-          <input id="f-to" name="hova" list="helyek" autocomplete="off" required placeholder="település, cím vagy állomás">
-          <p class="err" id="e-to"></p>
-        </div>
-      </div>
-      <datalist id="helyek">
-        <option value="Balatonmáriafürdő"><option value="Balatonkeresztúr"><option value="Marcali">
-        <option value="Balatonmária vasútállomás"><option value="Balatonberény"><option value="Balatonfenyves">
-        <option value="Keszthely"><option value="Hévíz"><option value="Fonyód"><option value="Kaposvár"><option value="Budapest">
-      </datalist>
-
-      <div class="airport" id="airport" hidden>
-        <div class="f-row two">
-          <div class="f">
-            <label for="f-air">Repülőtér</label>
-            <select id="f-air" name="repuloter">
-              <option value="">Válasszon…</option>
-              <option>Budapest Liszt Ferenc</option>
-              <option>Hévíz–Balaton Airport (Sármellék)</option>
-              <option>Bécs-Schwechat</option>
-              <option>Zágráb</option>
-              <option>Egyéb repülőtér</option>
-            </select>
-            <p class="err" id="e-air"></p>
-          </div>
-          <div class="f">
-            <label for="f-flight">Járatszám <em>(nem kötelező)</em></label>
-            <input id="f-flight" name="jarat" autocomplete="off" placeholder="pl. W6 2337">
-          </div>
-        </div>
-        <fieldset class="seg">
-          <legend>Érkezik vagy indul?</legend>
-          <label><input type="radio" name="irany" value="indulas" checked><span>Indulok a reptérre</span></label>
-          <label><input type="radio" name="irany" value="erkezes"><span>Érkezem, a reptérről jönnék</span></label>
-        </fieldset>
-        <p class="note">Hogy mely repülőterekre vállalható a fuvar, azt az ajánlatban egyeztetjük.</p>
-      </div>
-
-      <div class="f-row four">
-        <div class="f">
-          <label for="f-date">Dátum</label>
-          <input id="f-date" name="datum" type="date" required>
-          <p class="err" id="e-date"></p>
-        </div>
-        <div class="f">
-          <label for="f-time">Időpont</label>
-          <input id="f-time" name="ido" type="time" required>
-          <p class="err" id="e-time"></p>
-        </div>
-        <div class="f">
-          <label for="f-pax">Utasok</label>
-          <select id="f-pax" name="utasok" required>
-            <option value="">–</option>
-            <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option>
-            <option value="7+">7 vagy több</option>
-          </select>
-          <p class="err" id="e-pax"></p>
-        </div>
-        <div class="f">
-          <label for="f-bags">Csomagok</label>
-          <select id="f-bags" name="csomag">
-            <option value="0">Nincs</option><option>1</option><option>2</option><option>3</option><option>4</option>
-            <option value="5+">5 vagy több</option>
-          </select>
-        </div>
-      </div>
-      <p class="note pax-note" id="pax-note" hidden>Nagyobb létszámnál a pontos lehetőségeket telefonon egyeztetjük.</p>
-
-      <div class="f-row three">
-        <div class="f">
-          <label for="f-name">Név</label>
-          <input id="f-name" name="nev" autocomplete="name" required>
-          <p class="err" id="e-name"></p>
-        </div>
-        <div class="f">
-          <label for="f-tel">Telefonszám</label>
-          <input id="f-tel" name="telefon" type="tel" autocomplete="tel" inputmode="tel" required placeholder="+36 …">
-          <p class="err" id="e-tel"></p>
-        </div>
-        <div class="f">
-          <label for="f-mail">E-mail-cím <em>(nem kötelező)</em></label>
-          <input id="f-mail" name="email" type="email" autocomplete="email">
-          <p class="err" id="e-mail"></p>
-        </div>
-      </div>
-
-      <div class="f">
-        <label for="f-note">Megjegyzés</label>
-        <textarea id="f-note" name="megjegyzes" rows="3" placeholder="Gyerekülés, kisállat, köztes megálló, visszaút…"></textarea>
-      </div>
-
-      <div class="bk-submit">
-        <button class="btn btn-gold" type="submit">Egyedi ajánlatot kérek</button>
-        <p>Küldéskor megnyílik az e-mail-programja az előre kitöltött ajánlatkéréssel a taxispeter@gmail.com címre. A levél onnan megy el; az oldal maga nem tárol és nem küld adatot.</p>
-      </div>
-      <p class="sr-only" id="bk-status" role="status" aria-live="polite"></p>
-    </form>
-
-    <div class="bk-done" id="bk-done" hidden tabindex="-1">
-      <h3>Az ajánlatkérés elkészült.</h3>
-      <p>Megnyitottuk az e-mail-programjában, előre kitöltve. Az ajánlatkérés akkor jut el Péterhez, ha ott elküldi. Ha nem nyílt meg levelező, másolja ki a szöveget, vagy hívja közvetlenül.</p>
-      <div class="bk-done-cta">
-        <a class="btn btn-gold" id="bk-mail" href="mailto:taxispeter@gmail.com">E-mail megnyitása újra</a>
-        <button class="btn btn-ghost" type="button" id="bk-copy">Szöveg másolása</button>
-        <a class="btn btn-ghost" href="tel:+36309978362">Inkább felhívom</a>
-        <button class="link" type="button" id="bk-edit">Módosítom az adatokat</button>
-      </div>
-      <p class="sr-only" id="bk-copy-status" role="status" aria-live="polite"></p>
-    </div>
-  </div>
-</section>
-
 <!-- ============ MŰKÖDÉSI TERÜLET ============ -->
 <section class="sec area" id="terulet" aria-labelledby="ar-title">
   <div class="wrap area-grid">
     <div class="area-text">
       <h2 id="ar-title">Ismerős utak. Új úti célok.</h2>
-      <p class="lead">A déli part és Marcali térsége a kiindulópont. Az úti cél lehet bárhol: hívjon, vagy kérjen ajánlatot.</p>
+      <p class="lead">A déli part és Marcali térsége a kiindulópont. Az úti cél lehet bárhol, egy hívás az egész.</p>
 
       <div class="places" role="tablist" aria-label="Települések">
         <button role="tab" id="t-maria" aria-controls="p-maria" aria-selected="true" data-place="maria">Balatonmáriafürdő</button>
@@ -595,22 +432,17 @@
     <g class="lamp"><circle cx="912" cy="606" r="90" fill="url(#g-lamp)"/><path d="M900 770 V606 H916" stroke="#3E5568" stroke-width="6" fill="none"/><circle cx="914" cy="610" r="7" fill="#FFE2A8"/></g>
     <ellipse cx="900" cy="790" rx="260" ry="26" fill="#F2BF6E" opacity=".07"/>
     <use href="#road"/>
-    <g transform="translate(560 612)">
-      <polygon points="436,110 940,64 940,196" fill="url(#g-carbeam)" opacity=".8"/>
-      <use href="#van" width="460" height="190"/>
-    </g>
   </svg>
   <div class="final-shade" aria-hidden="true"></div>
 
   <div class="wrap final-in">
     <h2 id="fn-title">Indulhatunk?</h2>
-    <p class="lead">A CB TAXI Nyakas Péter személyszállító vállalkozása, amely a Balaton és Marcali térségében kínál taxi- és transzferszolgáltatást. Helyi vállalkozás, közvetlen kapcsolat: aki hív, vele egyeztet.</p>
+    <p class="lead">A CB TAXI Nyakas Péter személyszállító vállalkozása, amely a Balaton és Marcali térségében kínál taxi- és transzferszolgáltatást. Helyi vállalkozás, közvetlen kapcsolat: hívja bátran.</p>
     <a class="final-call" href="tel:+36309978362">
       <span class="fc-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"/></svg></span>
       <span class="fc-txt"><small>Nyakas Péter, CB TAXI</small><b>+36 30 997 8362</b></span>
     </a>
-    <a class="btn btn-line final-quote" href="#fuvar" data-goto-form>Fuvarajánlat kérése</a>
-    <p class="final-meta"><a href="mailto:taxispeter@gmail.com">taxispeter@gmail.com</a><span>Balatonkeresztúr, Balatonmáriafürdő, Marcali és a Balaton térsége</span></p>
+    <p class="final-meta"><span>Balatonkeresztúr, Balatonmáriafürdő, Marcali és a Balaton térsége</span></p>
   </div>
 </section>
 
@@ -629,15 +461,15 @@
 
 <dialog class="dlg" id="privacy">
   <h2>Adatkezelési tájékoztató</h2>
-  <p>Az éles oldalon itt lesz a vállalkozás adatkezelési tájékoztatója: milyen adatot kér az ajánlatkérő, mire használja, és meddig őrzi meg. A bemutató változat semmilyen adatot nem tárol; az ajánlatkérés az Ön e-mail-programjából megy el.</p>
+  <p>Az éles oldalon itt lesz a vállalkozás adatkezelési tájékoztatója. Az oldal nem gyűjt és nem tárol személyes adatot: a kapcsolatfelvétel telefonon történik.</p>
   <form method="dialog"><button class="btn btn-navy">Bezárás</button></form>
 </dialog>
 
-<!-- mobil kezelősáv -->
-<div class="mbar" id="mbar" aria-hidden="true">
-  <a class="mb-call" href="tel:+36309978362" tabindex="-1"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"/></svg>Hívás</a>
-  <a class="mb-quote" href="#fuvar" data-goto-form tabindex="-1"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-route"/></svg>Fuvarigénylés</a>
-</div>
+<!-- mobil hívássáv -->
+<a class="mbar" id="mbar" href="tel:+36309978362" tabindex="-1" aria-hidden="true">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"/></svg>
+  <span>Hívás</span><b>+36 30 997 8362</b>
+</a>
 
 <!-- ============ SVG KÉSZLET ============ -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
