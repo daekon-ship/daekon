@@ -94,13 +94,14 @@
   /* ---------- navigáció, mobil sáv ---------- */
   const nav = $('#nav'), route = $('.nav-route'), mbar = $('#mbar');
   const finalSec = $('#kapcsolat'), foot = $('.foot');
-  let endZone = false;
-  new IntersectionObserver(es => { endZone = es.some(e => e.isIntersecting) || false; tick(); }, { threshold: .15 }).observe(finalSec);
+  const zones = new Set();
+  const zoneIO = new IntersectionObserver(es => { es.forEach(e => e.isIntersecting ? zones.add(e.target) : zones.delete(e.target)); tick(); }, { threshold: .15 });
+  [finalSec, $('.area-call')].forEach(z => z && zoneIO.observe(z));
   function tick() {
     const y = scrollY, max = document.documentElement.scrollHeight - innerHeight;
     nav.classList.toggle('is-solid', y > 40);
     route.style.setProperty('--p', max > 0 ? (y / max).toFixed(4) : 0);
-    const show = y > innerHeight * .9 && !endZone;
+    const show = y > innerHeight * .9 && zones.size === 0;
     mbar.classList.toggle('is-on', show);
     mbar.tabIndex = show ? 0 : -1;
     mbar.setAttribute('aria-hidden', String(!show));
@@ -154,6 +155,7 @@
     const track = $('#ride-track');
     const steps = $$('.ride-steps li');
     const rFar = $('#r-far');
+    const cards = $$('.pcard');
     const spokes = $$('.ride-spokes').map(sp => { const b = sp.getBBox(); return [sp, b.x + b.width / 2, b.y + b.height / 2]; });
     const train = $('#train'), plane = $('#plane');
     const dist = () => track.scrollWidth - ridePin.clientWidth;
@@ -163,6 +165,7 @@
         trigger: '.ride', start: 'top top', end: () => '+=' + dist() * 1.15, scrub: .8, pin: '.ride-pin', anticipatePin: 1, invalidateOnRefresh: true,
         onUpdate(self) {
           const p = self.progress;
+          cards.forEach((c, n) => { const d = Math.abs(p * 3 - n); c.style.opacity = Math.max(0, 1 - Math.max(0, d - .12) * 2.6).toFixed(3); });
           rFar.setAttribute('transform', `translate(${(-p * 1400).toFixed(1)} 0)`);
           const i = Math.min(3, Math.round(p * 3));
           steps.forEach((li, n) => { li.classList.toggle('is-on', n === i); li.classList.toggle('is-past', n < i); });

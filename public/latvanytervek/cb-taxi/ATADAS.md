@@ -4,6 +4,11 @@
 Fájlok: `index.html`, `cbtaxi.css`, `cbtaxi.js`, `js/` (GSAP 3 + ScrollTrigger, helyben), `fonts/` (Sora + Inter, helyben, OFL), `logo.svg`, `logo-jel.svg`.
 Build nincs (a Vite a `public/` mappát változatlanul másolja); a terv `noindex`.
 
+## 7. kör — csiszolás
+- **Mobil hívássáv:** nem lebeg, hanem alulra dokkolt, középre rendezett sáv (ikon + „Taxi hívása” + szám), a telefon biztonsági sávjához igazodva. Elrejtőzik, amikor a térképnél lévő vagy a záró hívógomb látszik, így nincs két hívógomb egymáson.
+- **Éjszakai út:** a jelenetek szövegei görgetés közben átúsznak egymásba (nem csúsznak egymásra félig).
+- A térkép alatti hívógomb mobilon teljes szélességű; a „jármű illusztráció” jelölés mobilon csak a nyitóképnél marad.
+
 ## 6. kör — kidolgozottabb látvány (autó, jelenetek, nyitókép, térkép, zárás)
 - **Kisbusz újrarajzolva:** fémes fényezés tükröződő sávval, krómozott ablak- és övvonal, tolóajtó-sín és kilincsek, tetősín, tükör, LED-es nappali fény és hátsó lámpa, mély kerékjáratok, ötküllős felnik gumioldalfallal (forognak), fénytócsa az úton előtte, piros derengés mögötte. Továbbra is egyetlen autó.
 - **Jelenetek:** minden utcai lámpának fénykúpja és csíkos tükröződése van a nedves aszfalton, a horizonton pára, a háttérben egy lassabban mozgó távoli hegyvonulat ad mélységet (parallax).
