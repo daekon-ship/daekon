@@ -1,79 +1,79 @@
-# MultiCont Center Kft. — látványterv, átadás (12. kör: teljes újratervezés)
+# MultiCont Center Kft. – weboldal-látványterv · átadás (14. kör)
 
-Élő cím: https://daekon-ship.github.io/daekon/latvanytervek/multicont/
-Előző változat (11. kör) megtekinthető: `latvanytervek/multicont-v11/` · Git: commit `083a034` (helyi tag: `multicont-v11`).
-A terv `noindex`.
+Élő látványterv: https://daekon-ship.github.io/daekon/latvanytervek/multicont/
+Előző változat biztonsági másolata: `../multicont-v11/` (11. kör), a 12–13. kör a git-történetben.
 
-## Fájlok
-| Fájl | Mi ez |
-|---|---|
-| `index.html`, `rolunk.html`, `szolgaltatasok.html`, `hirek.html`, `cikk.html`, `tudastar.html`, `partnerek.html`, `kapcsolat.html` | Aloldalak — **generált fájlok**, ne kézzel szerkeszd |
-| `admin.html` | Kezelőfelület **látványterve** (nem ment) |
-| `_forras/build.py` | Oldalgenerátor: közös fejléc/lábléc, oldaltartalmak. Futtatás: `python3 _forras/build.py` |
-| `tartalom.js` | **Minden változó tartalom**: cikkek, határidők, jogszabályi idővonal, dokumentumok, linkek, partnerek |
-| `mc.css` / `mc.js` | Arculati rendszer / közös szkript (menü, modulok, kereső, kalkulátorok, űrlapok, admin-demó) |
-| `dok/*.pdf` | Letölthető PDF-ek (adó- és járulékkulcsok 2026; ügyféladatlap – minta) |
-| `logo.svg`, `logo-feher.svg`, `jel.svg` | Logó világos és sötét alapra, önálló jel (favicon) |
-| `fonts/` | Literata + Source Sans 3 (OFL), latin + magyar ékezetek |
+## 1. Elkészült oldalak (22 HTML)
 
-## 13. kör — klasszikus portálmenü (rlb.hu mintájára)
-- **Lenyíló almenük** minden főmenüpontnál (Rólunk, Szolgáltatásaink, Szakmai hírek – kétoszlopos, kategóriánként –, Tudástár, Partnereink, Kapcsolat). Egérrel és billentyűzettel (Tab, Esc) is nyílik.
-- **Gyorsmenü-sor** a főmenü alatt, mint az rlb.hu második sora: Könyvelés · Bérszámfejtés · Adótanácsadás · Végelszámolás · Bérkalkulátor · KATA-kalkulátor · Dokumentumtár · Határidők. Mobilon oldalra húzható.
-- **Mobilmenü:** minden menüpont lenyitható, az almenükkel együtt.
-- Közvetlen hivatkozások működnek: pl. `tudastar.html#kata` a KATA-kalkulátort nyitja meg, `rolunk.html#cegadatok` a cégadatokhoz ugrik.
+**Nyilvános oldalak (15 + 6 szolgáltatás)**
 
-## Arculat
-- **Színek:** Deep Navy #173550 (fejléc-menüsor, címek, lábléc), Professional Blue #346B95 (információs elemek), Soft Teal #639A9C (akcentus; szövegre a sötétebb #3E7375), Off White #F7F9FB, fehér, szöveg #293541. Színátmenet nincs; a három szín együtt csak a „háromszínű vonal” motívumban jelenik meg (címkejel, aktív menüpont, lábléc teteje, fotókeret).
-- **Betűk:** Literata (címek – elegáns, jól olvasható serif) + Source Sans 3 (szöveg, 17 px alap – idősebb olvasóknak is). Mérsékelt címméretek (H1 max. 40 px).
-- **Logó:** három sarokelem (sötétkék, kék, türkiz) egy közös középpont körül, az egyik sarok nyitva marad. Jelentés: *multi* = három terület, *cont* = a középpont, amit körülvesznek (számvitel, megállapodás), *center* = közös központ; a nyitott sarok a fejlődés és az új tevékenységek helye. Nincs érme, számológép vagy diagram. 24 px-en is olvasható, sötét alapon világos változattal. Szókép: **Multi**Cont (Literata) + CENTER KFT. (ritkított, türkiz). Az SVG-szövegek betűtípust kérnek – nyomdához görbésítendő.
-- **Fotó:** nincs; Horváth Mária saját fotójának jelölt helye van (monogram + háromszínű keret). Generált arc vagy stockfotó nincs.
+| Oldal | Fájl | Tartalom |
+|---|---|---|
+| Kezdőlap | `index.html` | Hero saját SVG-kompozícióval, háromoszlopos rendszer (bal: hírek, határidők, idővonal, témák, hivatalos linkek · közép: bemutatkozás, szolgáltatások, szemlélet, szakmai vezető, CTA · jobb: gyorskalkulátor, dokumentumok, partnerajánlat, kiemelt partnerek, kapcsolat) |
+| Rólunk | `rolunk.html` | Történet, Horváth Mária szakmai útja, a név és a logó jelentése, munkamód, cégadatok |
+| Szolgáltatások | `szolgaltatasok.html` | 6 szolgáltatás váltakozó elrendezésben |
+| Szolgáltatás részletező ×6 | `szolgaltatas-*.html` | Könyvelés, Bérszámfejtés, Adózási támogatás, NAV- és TB-képviselet, Online könyvelés, Végelszámolás: leírás, mit tartalmaz, kinek ajánljuk, GYIK, CTA, kapcsolódó cikk |
+| Tudástár | `tudastar.html` | 11 téma, keresés, témaszűrő, rendezés, kiemelt cikk |
+| Cikk részletező | `cikk.html?id=…` | Közzététel, ellenőrzés dátuma, hatályossági időszak, források, megosztás, olvasó mód, kapcsolódó cikkek |
+| Kalkulátorok | `kalkulatorok.html#…` | Bruttó→nettó, nettó→bruttó, munkáltatói költség, ÁFA, KATA 2026, bevétel–kiadás, költségtervező, adózási formák (demo) |
+| Dokumentumtár | `dokumentumtar.html` | Kategóriák, keresés, verziószám, dátum, archivált változatok |
+| Partnereink | `partnerek.html` | Partnerlista, ajánlatok/kuponok lejárattal, ajánlói rendszer, 3 űrlap (ajánlatkérés, partner ajánlása, jelentkezés) |
+| Partner részletező | `partner.html?id=…` | Bemutatkozás, szolgáltatások, „miért ajánljuk”, kuponok, ajánlatkérés |
+| Kapcsolat | `kapcsolat.html` | Elérhetőségek, térkép (csak hozzájárulással), űrlap |
 
-## Szerkezet
-- **Fejléc 3 rétegben:** információs sáv (cégnév, telefon, e-mail, „Visszahívást kérek”) → fő fejléc (logó, kereső, telefon, Kapcsolat gomb) → sötétkék főmenü (Főoldal, Rólunk, Szolgáltatásaink, Szakmai hírek, Tudástár, Partnereink, Kapcsolat). Görgetéskor csak a menüsor marad fent. 1100 px alatt: logó + hamburger, teljes képernyős menü keresővel.
-- **Főoldal – három hasáb** (272 px | rugalmas | 300 px, függőleges elválasztóvonalakkal):
-  - *Bal – szakmai információk:* aktuális adóhírek (lista), fontos határidők (dátumcsempék), jogszabályi változások (idővonal; a tervezet szaggatott jelöléssel), könyvelési tudnivalók (számozott), friss szakmai cikkek. Minden modul más mintát használ.
-  - *Közép – fő tartalom:* történet (2015, Horváth Mária útja, a név jelentése), szemlélet (saját idézetével), szolgáltatások szerkesztett listája, Horváth Mária bemutatása, „Kinek dolgozunk?”, konzultációs felhívás.
-  - *Jobb – hasznos eszközök:* bérkalkulátor, letölthető dokumentumok, nyomtatványok, szakmai linkek, ajánlott partnerek, kapcsolat.
-  - Alatta teljes szélességben: végelszámolás-szalag, partnerprogram-szalag. 1100 px alatt két hasáb, 900 px alatt egy (középső tartalom elöl, majd a szakmai információk, majd az eszközök).
-- **Aloldalak:** Rólunk (történet, szakmai út, a név jelentése, cégadatok), Szolgáltatásaink (ragadós tartalomjegyzék + szerkesztőségi szekciók, a végelszámolás kiemelve), Szakmai hírek (kereső, kategóriaszűrő darabszámmal, kiemelt cikk, lista) + cikkoldal (dátum, kategória, forrásdoboz, „forrás ellenőrizve” dátum, kapcsolódó cikkek), Tudástár (kalkulátorok + dokumentumtár + linkek), Partnereink (kereső, kategóriaszűrő, partnerkártyák, ajánlói rendszer, jelentkezés), Kapcsolat (adatok, térkép, űrlap).
-- **Lábléc:** ellenőrzött cégadatok (cégnév, iroda, adószám, cégjegyzékszám, alapítás), oldalak, szakmai tartalom, elérhetőség; Impresszum és Adatkezelési tájékoztató ablakban.
+**Kezelőfelület (látványterv):** `admin-belepes.html` (belépés + kétlépcsős kód), `admin.html` (áttekintés + 5 tervezett modul leírása), `admin-cikkek.html`, `admin-dokumentumok.html`, `admin-partnerek.html`.
 
-## Tartalom és hitelesség
-- Csak forrással igazolt adat szerepel. Minden cikknél: megjelenés dátuma, forrás(ok) linkkel és dátummal, „Forrás ellenőrizve: 2026. október 14.”, és jogi figyelmeztetés.
-- **Cikkek (8):** új KATA-tervezet 2027-től (*tervezet* jelöléssel; Telex, Kontroll), KATA 2026 szabályai (Financera), határidők nov–dec. (Accace Adónaptár), alanyi ÁFA-határ, átalányadó, minimálbér, adókulcsok, anyák SZJA-mentessége (TaxHungary).
-- **NAV-információk** kategória üres: a NAV oldalai a fejlesztői környezetből nem töltődtek be, ezért onnan nem vettünk át közleményt. A kategória üres állapotot mutat.
-- **Szolgáltatások:** csak az igazoltak (konyvelok.hu, konyvelokiajanlo.hu, brief): könyvelés, bérszámfejtés, adótanácsadás, NAV- és TB-képviselet, online könyvelés, végelszámolás; felelősségbiztosítás, német nyelv. A briefben javasolt „adminisztratív támogatás” és „számviteli tanácsadás” **nem került be**, mert nincs rá igazolás – az ügyféllel egyeztetendő.
+`hirek.html` → átirányít a Tudástárba (régi linkek miatt).
 
-## Mi működik ténylegesen
-- Navigáció, mobilmenü, fejléc-kereső (→ Szakmai hírek keresés), hírkereső és kategóriaszűrő (URL-ben megmarad), cikkoldal, kapcsolódó cikkek.
-- **Kalkulátorok** ellenőrzött 2026-os kulcsokkal, géppel tesztelve: bruttó–nettó bér (SZJA 15%, TB 18,5%, szocho 13%, SZJA-mentes kapcsoló), munkáltatói költség (+ „mennyi bruttó fér a keretbe”), KATA 2026 (egész évre: 600 000 Ft + 40% a 18 M Ft feletti részre), ÁFA (27/18/5%). Az **átalányadó-kalkulátor előkészítés alatt**: nem mutat eredményt.
-- **Dokumentumtár:** keresés, csoportszűrő, letöltés (2 valódi PDF), közzététel dátuma, visszavont dokumentumok kezelése (áthúzva, letöltés nélkül; „Visszavontak is” kapcsoló). Jelenleg nincs visszavont tétel.
-- **Partnerlista:** kereső + kategóriaszűrő; a 3 kártya **MINTA**, valódi partner nincs.
-- **Ajánlói alapverzió:** `kapcsolat.html?ajanlo=KÓD` (vagy bármely oldal `?ajanlo=`) → az oldal megjegyzi, és kitölti a kapcsolati űrlap „Ajánlói kód” mezőjét; a kód bekerül az e-mailbe.
-- **Űrlapok** (kapcsolat, partnerjelentkezés): valódi ellenőrzés, magyar hibaüzenetek, visszahívás kérésekor kötelező telefonszám; küldés = előre kitöltött e-mail a konyvelde@gmail.com címre (nincs szerveroldali küldés, és ezt az oldal ki is írja).
-- Impresszum / Adatkezelés ablak, ragadós mobil hívássáv.
+## 2. Designrendszer röviden
 
-## Háttérfejlesztést igényel (követelmények)
-1. **Bejelentkezés:** egy adminisztrátor (Horváth Mária), erős jelszó + kétlépcsős azonosítás, jelszó-visszaállítás e-mailben.
-2. **Adatbázis-táblák:** `cikkek` (cím, slug, dátum, kategória, összefoglaló, törzs, állapot: piszkozat/közzétett/tervezet, kiemelt, források[név, URL, dátum] – **forrás nélkül nem közzétehető**), `dokumentumok` (cím, csoport, fájl, méret, közzététel dátuma, állapot: aktív/visszavont, visszavonás dátuma), `partnerek` (név, kategória, leírás, logó, URL, település, állapot: jelentkezett/jóváhagyott/inaktív), `ajanlasok` (ajánlói kód, partner, kuponkód, érdeklődő, dátum, állapot), `kampanyok` (név, kezdet, vég, kedvezmény, érintett partnerek), `szolgaltatasok`, `oldalszovegek`, `fooldali_beallitasok`.
-3. **Fájltárolás:** PDF/Word/Excel feltöltés (max. 20 MB), képfeltöltés átméretezéssel (Mária fotója, partnerlogók).
-4. **Űrlapok szerveroldali küldése:** e-mail az irodának + automatikus visszaigazolás, spamvédelem, adatkezelési hozzájárulás naplózása; a partnerjelentkezés az admin „Jelentkezések” listájába kerül.
-5. **Ajánlói rendszer:** kódgenerálás partnerenként, kuponkód hozzárendelés, érdeklődő ↔ kód rögzítése, jóváhagyás, kampányok, statisztika.
-6. **Kezelőfelület:** az `admin.html` szerinti 8 menü (hírek, dokumentumok, partnerek, ajánlások, szolgáltatások, szövegek és képek, főoldali kiemelések, új modul), magyar nyelven.
-7. **Javasolt megvalósítás:** a mostani statikus szerkezet megtartható; a `tartalom.js` szerkezete 1:1 megfelel a fenti tábláknak. Lehetőségek: (a) WordPress egyedi sablonnal és egyedi tartalomtípusokkal; (b) headless CMS (pl. Directus, Strapi) + a mostani frontend; (c) egyszerű egyedi admin (pl. Laravel). Döntés az ügyféllel / tárhellyel.
+- **Színek:** Deep Navy `#11243A` (szöveg, sötét felületek) · Corporate Blue `#2764BD` (domináns: gombok, linkek, aktív állapot) · Soft Sky `#EAF3FC` · Mint Teal `#28B6A4` (másodlagos; szövegben `#13796D` a kontraszt miatt) · Warm Accent `#F3B85B` (csak célzottan: kiemelt szolgáltatás, kupon, logó közepe; szövegben `#8A5B12`) · Off White `#F8FAFD` · Dark Text `#202B38`. A három márkaszín együtt csak a logóban, a lábléc-sávban és a MULTI/CONT/CENTER hármasnál jelenik meg.
+- **Betű:** Plus Jakarta Sans (OFL, helyben, magyar ékezetekkel szűkítve, `fonts/plusjakarta.woff`). H1 legfeljebb 46 px, H2 legfeljebb 32 px, törzsszöveg 16,5 px.
+- **Logó:** három geometrikus sarokelem (kék, sötétkék, türkiz) + arany középpont; a jobb felső sarok nyitott = növekedés. Változatok: `logo.svg` (világos), `logo-feher.svg` (sötét háttérre), `jel.svg` (favicon, önálló jel). Szerkeszthető SVG.
+- **Rács:** 1280 px tartalomszélesség; kezdőlap 288 / rugalmas / 320 px oszlopok.
+- **Elemek:** kártyák 10 px sarokkal, vékony keret, árnyék csak hoverre; címkék állapotjelzésre: kék = téma, türkiz = működik/érvényes, narancs = minta/demo/tervezet.
+- **Mozgás:** csak CSS: hero vonalrajzolás, fejléc-háttérváltás görgetéskor, finom hover. Csökkentett mozgás beállításnál kikapcsol. Nincs parallax, 3D, üvegeffekt.
+- **Reszponzív:** 360, 390, 430, 768, 1024, 1366, 1920 px-en tesztelve, vízszintes görgetés nélkül. Mobilon a kezdőlap sorrendje: középső tartalom → hírek → eszközök/partnerek. Alsó rögzített hívás/üzenet sáv.
 
-## Egyeztetendő az ügyféllel
-- Horváth Mária fotója; a logó jóváhagyása.
-- Felelősségbiztosítás (a konyvelok.hu címkéje alapján szerepel).
-- Partnerek, ajánlói program feltételei, kuponok.
-- Székhely, nyilvántartó bíróság, tárhelyszolgáltató, adatkezelési tájékoztató.
-- Az ügyféladatlap (PDF, MINTA) mezői.
-- További szolgáltatások (adminisztratív támogatás, számviteli tanácsadás) – csak igazolás után.
-- A hivatalos linkek végigkattintása élesítés előtt.
+## 3. Megvalósított interakciók (működnek)
 
-## Ellenőrizve
-- 9 oldal × 360 / 390 / 768 / 1024 / 1440 px: nincs vízszintes kilógás, nincs JS-hiba.
-- Minden belső link és horgony él; PDF-ek letölthetők (application/pdf).
-- Funkcionális teszt: kereső, szűrők, cikkoldal, kalkulátorok (kézi ellenőrzéssel), dokumentumkereső, partnerszűrő, ajánlói kód átadása, űrlap-ellenőrzés, mobilmenü, kezelőfelület-nézetek, párbeszédablakok.
-- Kontraszt: törzsszöveg 11:1, másodlagos szöveg 6:1, türkiz szöveg 5,2:1.
-- `prefers-reduced-motion`: mozgás kikapcsol.
+- Ragadós fejléc háttérváltással, lenyíló almenük (egér, billentyűzet, Esc), mobil lenyíló menü.
+- Kalkulátorok valódi számítással és „Hogyan számoltunk?” levezetéssel (SZJA 15%, TB 18,5%, szocho 13%, ÁFA 27/18/5%, KATA havi 50 000 Ft + 18 M Ft időarányos határ felett 40%). A fülek URL-ből linkelhetők.
+- Költségtervező: sorok hozzáadása, törlése, havi/éves összeg (a böngésző munkamenetében megmarad).
+- Tudástár: keresés ékezet nélkül is, témaszűrő, rendezés, URL-ben megosztható szűrés; cikk: link másolása, e-mail/Facebook/LinkedIn megosztás, olvasó mód.
+- Dokumentumtár: keresés, kategória, archivált változatok megjelenítése.
+- Határidők: a lejártakat automatikusan elrejti; kuponok: a lejártakat és a jóváhagyatlanokat nem mutatja; kuponkód másolása.
+- Ajánlói kód: `kapcsolat.html?ajanlo=KÓD` → megjegyzi a munkamenetre és kitölti minden űrlapon. A partner oldaláról az ajánlatkérő űrlap előre kiválasztja a partnert.
+- Űrlapok: mezőszintű ellenőrzés, rejtett csapdamező és időzítés-ellenőrzés. Küldéskor a levelezőprogram nyílik meg a kész üzenettel; az oldal **nem állítja**, hogy az üzenet elment.
+- Süti-beállítások: a Google Térkép csak hozzájárulás vagy gombnyomás után töltődik be.
+- Kezelőfelület: belépési folyamat (bemutató), cikkszerkesztő élő előnézettel és kötelező forrással, dokumentumfeltöltés verzióval és „nyilvános, jóváhagyott” megerősítéssel, új verziónál a régi archiválása, partner- és kuponjóváhagyási sor, kupon létrehozása lejárat-ellenőrzéssel. Minden csak a böngészőben él, nem ment el semmit – ezt a felület végig jelzi.
+- SEO: oldalankénti cím és leírás, OG-adatok és megosztási kép (`og.png`), canonical, `sitemap.xml`, JSON-LD (AccountingService) csak ellenőrzött adatokkal. A látványterv `noindex` – élesítéskor törlendő (a `robots.txt` is).
+
+## 4. Backendfejlesztést igénylő funkciók
+
+1. **Kezelőfelület hitelesítése:** szerveroldali belépés, kétlépcsős azonosítás, szerepkörök (admin/szerkesztő), munkamenet-kezelés, naplózás. A mostani belépés csak a folyamatot mutatja.
+2. **Tartalomtárolás:** cikkek, dokumentumok, partnerek, ajánlatok adatbázisban (a `tartalom.js` szerkezete a séma alapja); piszkozat/közzététel, verziótörténet.
+3. **Fájlfeltöltés:** PDF-ellenőrzés, méretkorlát, vírusellenőrzés, biztonságos tárolás; csak nyilvános anyag. Bizalmas ügyféliratokhoz **külön** rendszer kell.
+4. **Űrlapok szerveroldali küldése:** e-mail-továbbítás, spamszűrés (sebességkorlát, szükség szerint captcha), tárolás a „Megkeresések” modulban, adatmegőrzési idő.
+5. **Ajánlói rendszer:** kódgenerálás, ajánlott érdeklődők nyilvántartása, jóváhagyás, statisztika.
+6. **Kuponok:** lejárat szerveroldali kezelése, felhasználás követése (ha kell).
+7. **Kalkulátor-kulcsok** adminból szerkeszthetően, hatálybalépési dátummal; az „adózási formák összehasonlítása” könyvelői ellenőrzés után élesíthető.
+8. **Határidő-naptár** frissítése (évente vagy hivatalos forrásból).
+
+## 5. Közzététel előtt ellenőrizendő adatok
+
+- Cégadatok: adószám (25378669-2-13), cégjegyzékszám (13-09-177232), alapítás (2015. 09. 25.), **székhely** (a 2040 Budaörs, Meredek u. 2. iroda vagy székhely is?), képviselő, nyilvántartó bíróság, tárhelyszolgáltató.
+- Horváth Mária végzettségei (mérlegképes könyvelő, adótanácsadó, TB- és bérügyintéző), a „30 év” és az „5 év cafeteria-tanácsadás”, a felelősségbiztosítás megléte.
+- A szolgáltatáslista (különösen NAV- és TB-képviselet, végelszámolás) és a részletező oldalak „Mit tartalmaz?” pontjai.
+- Az idézet szövege („Megbízható, rugalmas, magas színvonalú szolgáltatást nyújtok kisvállalkozók részére.”).
+- Saját fotó Horváth Máriáról (helye jelölve; kitalált portré nincs).
+- Valódi partnerek, ajánlatok, kuponkódok – most mind **minta**.
+- Ügyféladatlap (v0.9, minta) jóváhagyása; adatkezelési tájékoztató, impresszum, süti-tájékoztató végleges szövege.
+- Szakmai cikkek: a 2027-es KATA-tervezet státusza (elfogadták-e), a határidők frissítése; minden cikk forrása és ellenőrzési dátuma.
+
+## 6. Fájlszerkezet
+
+- `_forras/build.py` – generátor (`common.py`, `p_home.py`, `p_svc.py`, `p_content.py`, `p_admin.py`). Futtatás: `python3 _forras/build.py`.
+- `tartalom.js` – minden változó tartalom (CMS-adatszerkezet, közzétételi folyamat leírásával).
+- `mc.css`, `mc.js` – nyilvános oldalak; `admin.css`, `admin.js` – kezelőfelület.
+- `dok/` – letölthető PDF-ek (Plus Jakarta Sans, új arculat, verziószámmal).
