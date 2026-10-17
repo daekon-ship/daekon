@@ -128,6 +128,7 @@ def header(active):
     <a class="dm-tel" href="tel:{TEL}">{TEL_H}</a>
     <a href="mailto:{MAIL}">{MAIL}</a>
     <a class="btn btn-p btn-b" href="kapcsolat.html">Kapcsolatfelvétel</a>
+    <button class="btn btn-o btn-b" type="button" data-dlg="visszahivas">Visszahívást kérek</button>
   </div>
 </div>
 <main id="tartalom">

@@ -985,3 +985,20 @@ button,input,select,textarea{font:inherit;color:inherit}
 }
 .clist2 dt{letter-spacing:.06em}
 @media (max-width:640px){.clist2 div{grid-template-columns:112px minmax(0,1fr)}.clist2 dt{font-size:11px}}
+/* 20. kör – csiszolás */
+.ph-art{display:none}
+.ph .h1::after{content:"";display:block;width:64px;height:4px;margin-top:14px;border-radius:2px;background:linear-gradient(90deg,var(--blue) 0 40%,var(--gold) 40% 60%,var(--teal) 60%)}
+.ph .wrap{padding-top:34px;padding-bottom:34px}
+.portal-home .hero-card::after{display:none}
+.portal-home .hero-card{border-left:4px solid var(--blue);border-radius:0 var(--r) var(--r) 0}
+/* Rólunk: kisebb, nem üres hatású fotóhely */
+.side-box > .ph-slot{max-width:none!important;aspect-ratio:auto;height:auto;flex-direction:row;justify-content:flex-start;gap:16px;padding:18px;text-align:left}
+.side-box > .ph-slot b{display:flex;align-items:center;justify-content:center;flex:none;width:64px;height:64px;border-radius:50%;background:#fff;font-size:22px}
+.side-box > .ph-slot span{font-size:13px}
+@media (max-width:640px){
+  .dtools{grid-template-columns:1fr!important}
+  .portal-home .hero-card{border-left:0;border-radius:0}
+  .ph .wrap{padding-top:22px;padding-bottom:24px}
+  .ph .lead{font-size:16px}
+  .clist{-webkit-mask-image:linear-gradient(90deg,#000 85%,transparent);mask-image:linear-gradient(90deg,#000 85%,transparent)}
+}

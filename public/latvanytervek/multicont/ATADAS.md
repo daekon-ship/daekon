@@ -136,3 +136,4 @@ A mai dátum és a következő határidő a `tartalom.js` határidőlistájábó
 - Új „M” monogram logó (3 elem, 3 szín), a régi két sarkos jel helyett; fejlécanimáció: a két oszlop alulról, az arany ív felülről érkezik.
 - Mobil lábléc tömörítve: cégadatok 2 oszlopban, kisebb telefonszám, a menüt ismétlő listák rejtve.
 - Kapcsolat oldal: címke–érték sorok kisebb betűvel; telefonon gyors gombsor (Hívás, E-mail, Útvonal).
+- 20. kör: aloldal-fejlécekben a nagy, halvány logódísz helyett háromszínű vonal a cím alatt; Rólunk: kompakt fotóhely; kezdőlapi nyitóblokk kék bal szegéllyel; mobilon a szűrők egymás alatt; a mobilmenü alján „Visszahívást kérek” gomb.
