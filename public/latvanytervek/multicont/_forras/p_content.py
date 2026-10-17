@@ -128,7 +128,7 @@ page("kalkulatorok.html", "Kalkulátorok – MultiCont Center Kft. | Bér, ÁFA,
      "Bruttó–nettó és nettó–bruttó bérkalkulátor, munkáltatói költség, ÁFA, KATA 2026, bevétel–kiadás és költségtervező, ellenőrzött 2026-os kulcsokkal.", "kalkulatorok.html", kalk, prio="0.8")
 
 # ======================= DOKUMENTUMTÁR =======================
-dok = ph("Dokumentumtár", "Letölthető tájékoztatók, az iroda nyomtatványai és a leggyakrabban használt hivatalos felületek – verziószámmal és dátummal.", ["Dokumentumtár"]) + f'''
+dok = ph("Dokumentumtár", "Formanyomtatványok és szakmai anyagok egy helyen, verziószámmal és dátummal. Az új anyagokat az iroda maga tölti fel.", ["Dokumentumtár"]) + f'''
 <div class="wrap" style="padding-top:32px;padding-bottom:64px">
   <p class="notice" style="margin-bottom:20px">Itt csak nyilvános, közzétételre jóváhagyott dokumentumok vannak. Ügyféliratokat soha nem teszünk ide – azokhoz később külön, belépéssel védett felület készülhet.</p>
   <div class="dtools">
@@ -175,6 +175,7 @@ partner = ph("Partnereink", "Megbízható szakemberek, akiket ügyfeleinknek aj�
   <div class="wrap">
     <div class="bhead"><div><p class="eyebrow t">Ajánlói rendszer</p><h2 class="h2">Így ajánljuk egymást</h2></div><p class="lead">Az alap már most működik: a partner saját linkjével érkező érdeklődőnél az ajánlói kód automatikusan bekerül az űrlapba. A nyilvántartáshoz háttérrendszer kell.</p></div>
     <ol class="flow">
+      <li><h3>Partnerlink</h3><p>Minden partner kártyája és aloldala átlinkel a partner saját weboldalára.</p><span class="tag live t">Kész – a címet a partner adja meg</span></li>
       <li><h3>Ajánlói link</h3><p>A partner saját kódot kap: <code>kapcsolat.html?ajanlo=KÓD</code></p><span class="tag live t">Működik</span></li>
       <li><h3>Kuponkód</h3><p>Az ajánlatokhoz kód és lejárati dátum tartozik.</p><span class="tag live t">Megjelenítés működik</span></li>
       <li><h3>Érdeklődő rögzítése</h3><p>Ma: a kód bekerül az e-mailbe. Később: nyilvántartás.</p><span class="tag demo">Részben</span></li>

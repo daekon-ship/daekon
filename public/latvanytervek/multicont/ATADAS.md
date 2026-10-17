@@ -1,4 +1,4 @@
-# MultiCont Center Kft. – weboldal-látványterv · átadás (14. kör)
+# MultiCont Center Kft. – weboldal-látványterv · átadás (15. kör)
 
 Élő látványterv: https://daekon-ship.github.io/daekon/latvanytervek/multicont/
 Előző változat biztonsági másolata: `../multicont-v11/` (11. kör), a 12–13. kör a git-történetben.
@@ -9,7 +9,7 @@ Előző változat biztonsági másolata: `../multicont-v11/` (11. kör), a 12–
 
 | Oldal | Fájl | Tartalom |
 |---|---|---|
-| Kezdőlap | `index.html` | Hero saját SVG-kompozícióval, háromoszlopos rendszer (bal: hírek, határidők, idővonal, témák, hivatalos linkek · közép: bemutatkozás, szolgáltatások, szemlélet, szakmai vezető, CTA · jobb: gyorskalkulátor, dokumentumok, partnerajánlat, kiemelt partnerek, kapcsolat) |
+| Kezdőlap | `index.html` | Klasszikus háromoszlopos tagolás közvetlenül a felső menüsor alatt (Marcsi kérése, rlb.hu mintájára). Bal: aktuális adóhírek – kiemelve a KATA-változások –, határidők, jogszabályi idővonal, adózási témák, hivatalos oldalak · közép: nyitó blokk, a név jelentése (multi/cont/center), nyitottság új tevékenységekre, szolgáltatások, partnerközpont (partnerlinkek, ajánlói rendszer, kuponajánlat), szemlélet, szakmai vezető · jobb: kalkulátor, dokumentumtár, kuponajánlat, partnerek, kapcsolat |
 | Rólunk | `rolunk.html` | Történet, Horváth Mária szakmai útja, a név és a logó jelentése, munkamód, cégadatok |
 | Szolgáltatások | `szolgaltatasok.html` | 6 szolgáltatás váltakozó elrendezésben |
 | Szolgáltatás részletező ×6 | `szolgaltatas-*.html` | Könyvelés, Bérszámfejtés, Adózási támogatás, NAV- és TB-képviselet, Online könyvelés, Végelszámolás: leírás, mit tartalmaz, kinek ajánljuk, GYIK, CTA, kapcsolódó cikk |
@@ -27,9 +27,9 @@ Előző változat biztonsági másolata: `../multicont-v11/` (11. kör), a 12–
 
 ## 2. Designrendszer röviden
 
-- **Színek:** Deep Navy `#11243A` (szöveg, sötét felületek) · Corporate Blue `#2764BD` (domináns: gombok, linkek, aktív állapot) · Soft Sky `#EAF3FC` · Mint Teal `#28B6A4` (másodlagos; szövegben `#13796D` a kontraszt miatt) · Warm Accent `#F3B85B` (csak célzottan: kiemelt szolgáltatás, kupon, logó közepe; szövegben `#8A5B12`) · Off White `#F8FAFD` · Dark Text `#202B38`. A három márkaszín együtt csak a logóban, a lábléc-sávban és a MULTI/CONT/CENTER hármasnál jelenik meg.
+- **Színek (15. kör: fehérebb, kékebb):** fehér alap, kék felső sáv, kék oszlopfejlécek és kiemelések, világoskék lábléc. Mélykék `#16365F` (címek, szöveg) · Corporate Blue `#2764BD` (domináns: gombok, linkek, aktív állapot) · Soft Sky `#EAF3FC` · Mint Teal `#28B6A4` (másodlagos; szövegben `#13796D` a kontraszt miatt) · Warm Accent `#F3B85B` (csak célzottan: kiemelt szolgáltatás, kupon, logó közepe; szövegben `#8A5B12`) · Off White `#F8FAFD` · Dark Text `#202B38`. A három márkaszín együtt csak a logóban, a lábléc-sávban és a MULTI/CONT/CENTER hármasnál jelenik meg.
 - **Betű:** Plus Jakarta Sans (OFL, helyben, magyar ékezetekkel szűkítve, `fonts/plusjakarta.woff`). H1 legfeljebb 46 px, H2 legfeljebb 32 px, törzsszöveg 16,5 px.
-- **Logó:** három geometrikus sarokelem (kék, sötétkék, türkiz) + arany középpont; a jobb felső sarok nyitott = növekedés. Változatok: `logo.svg` (világos), `logo-feher.svg` (sötét háttérre), `jel.svg` (favicon, önálló jel). Szerkeszthető SVG.
+- **Logó (Marcsi kérése: 3 szín):** három elem, három szín – kék sarok = MULTI, türkiz sarok = CONT, arany középpont = CENTER. A két nyitott sarok a növekedést és az új kapcsolatokat jelzi. Változatok: `logo.svg` (világos), `logo-feher.svg` (sötét háttérre), `jel.svg` (favicon, önálló jel). Szerkeszthető SVG.
 - **Rács:** 1280 px tartalomszélesség; kezdőlap 288 / rugalmas / 320 px oszlopok.
 - **Elemek:** kártyák 10 px sarokkal, vékony keret, árnyék csak hoverre; címkék állapotjelzésre: kék = téma, türkiz = működik/érvényes, narancs = minta/demo/tervezet.
 - **Mozgás:** csak CSS: hero vonalrajzolás, fejléc-háttérváltás görgetéskor, finom hover. Csökkentett mozgás beállításnál kikapcsol. Nincs parallax, 3D, üvegeffekt.
@@ -41,7 +41,7 @@ Előző változat biztonsági másolata: `../multicont-v11/` (11. kör), a 12–
 - Kalkulátorok valódi számítással és „Hogyan számoltunk?” levezetéssel (SZJA 15%, TB 18,5%, szocho 13%, ÁFA 27/18/5%, KATA havi 50 000 Ft + 18 M Ft időarányos határ felett 40%). A fülek URL-ből linkelhetők.
 - Költségtervező: sorok hozzáadása, törlése, havi/éves összeg (a böngésző munkamenetében megmarad).
 - Tudástár: keresés ékezet nélkül is, témaszűrő, rendezés, URL-ben megosztható szűrés; cikk: link másolása, e-mail/Facebook/LinkedIn megosztás, olvasó mód.
-- Dokumentumtár: keresés, kategória, archivált változatok megjelenítése.
+- Dokumentumtár: kategóriák Marcsi szavaival (Formanyomtatványok, Szakmai anyagok, Hivatalos online felületek), keresés, archivált változatok.
 - Határidők: a lejártakat automatikusan elrejti; kuponok: a lejártakat és a jóváhagyatlanokat nem mutatja; kuponkód másolása.
 - Ajánlói kód: `kapcsolat.html?ajanlo=KÓD` → megjegyzi a munkamenetre és kitölti minden űrlapon. A partner oldaláról az ajánlatkérő űrlap előre kiválasztja a partnert.
 - Űrlapok: mezőszintű ellenőrzés, rejtett csapdamező és időzítés-ellenőrzés. Küldéskor a levelezőprogram nyílik meg a kész üzenettel; az oldal **nem állítja**, hogy az üzenet elment.
@@ -77,3 +77,19 @@ Előző változat biztonsági másolata: `../multicont-v11/` (11. kör), a 12–
 - `tartalom.js` – minden változó tartalom (CMS-adatszerkezet, közzétételi folyamat leírásával).
 - `mc.css`, `mc.js` – nyilvános oldalak; `admin.css`, `admin.js` – kezelőfelület.
 - `dok/` – letölthető PDF-ek (Plus Jakarta Sans, új arculat, verziószámmal).
+
+## 7. Marcsi levelének pontjai → hol vannak
+
+| Kérés | Megvalósítás |
+|---|---|
+| Klasszikus 3 oszlopos első oldal, felül menüsorral (rlb.hu) | Kezdőlap: menüsor, alatta azonnal 3 oszlop |
+| Vidám, de kellemes, szakmára jellemző színek, legyen kék | Fehér–kék alap, türkiz és arany kiemelés |
+| Logó 3 színnel | Kék + türkiz + arany, három elem |
+| Multi = sokoldalúság, sokféleség, növekedési potenciál | Kezdőlap „A nevünk” blokk, Rólunk |
+| Cont = contír (könyvelés) és contract (szerződés) | Ugyanott, az ő szavaival |
+| Nem kizárólag könyvelésre jött létre, nyitott új tevékenységekre | Kezdőlap „Nyitottak vagyunk az újra”, Rólunk, admin: új oldal/menüpont |
+| Kapcsolat más cégekkel: átlinkelés, ajánlói rendszer, kuponajánlat | Kezdőlap Partnerközpont, Partnereink oldal, partner-aloldalak |
+| Aktuális hírek adózási információkkal, pl. KATA-változások | Bal oszlop: kiemelt KATA-hír + további adóhírek; Tudástár |
+| Kalkulátorok | Kezdőlap jobb oszlop + Kalkulátorok oldal (8 db) |
+| Dokumentumtár formanyomtatványoknak, szakmai anyagoknak | Dokumentumtár ezekkel a kategóriákkal |
+| Nyitott a további fejlesztésre, rugalmasan szerkeszthető, ő is fel tud tenni anyagokat | Kezelőfelület: cikkek, dokumentumfeltöltés, partnerek, oldalak (látványterv; éleshez backend kell) |

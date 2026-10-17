@@ -87,7 +87,13 @@
     return '<li><a href="' + artUrl(a) + '"><span class="m"><span class="tag' + (a.tervezet ? ' demo' : '') + '">' + esc(a.tervezet ? 'Tervezet' : a.temak[0]) + '</span><span class="date">' + dShort(a.datum) + '</span></span><b>' + esc(a.cim) + '</b></a></li>';
   };
   $$('[data-mod="checked"]').forEach(function (m) { m.textContent = 'ellenőrizve: ' + dShort(MC.ellenorizve).slice(6); });
-  $$('[data-mod="news"]').forEach(function (m) { m.innerHTML = cikkek.slice(0, +m.getAttribute('data-n') || 4).map(newsLi).join(''); });
+  var hot = cikkek.filter(function (a) { return a.kiemelt; })[0];
+  $$('[data-mod="hot"]').forEach(function (m) {
+    if (!hot) { m.hidden = true; return; }
+    m.href = artUrl(hot);
+    m.innerHTML = '<span class="k"><span>' + esc(hot.temak[0]) + '-változások</span>' + (hot.tervezet ? '<span class="tag demo">Tervezet</span>' : '') + '</span><b>' + esc(hot.cim) + '</b><p>' + esc(hot.osszefoglalo) + '</p><span class="date">' + dShort(hot.datum) + '</span> <span class="go">Részletek →</span>';
+  });
+  $$('[data-mod="news"]').forEach(function (m) { m.innerHTML = cikkek.filter(function (a) { return !(m.hasAttribute('data-skip-hot') && a === hot); }).slice(0, +m.getAttribute('data-n') || 4).map(newsLi).join(''); });
   $$('[data-mod="art-one"]').forEach(function (m) { var a = byId(m.getAttribute('data-id')); if (a) m.innerHTML = newsLi(a); });
   $$('[data-mod="deadlines"]').forEach(function (m) {
     var list = hataridok.slice(0, +m.getAttribute('data-n') || 4);

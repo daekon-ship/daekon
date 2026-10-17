@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 68">
-<g transform="translate(10 10)"><path d="M6 6h17v6H12v11H6z" fill="#2764BD"/><path d="M6 42V25h6v11h11v6z" fill="#11243A"/><path d="M42 42H25v-6h11V25h6z" fill="#28B6A4"/><rect x="19" y="19" width="10" height="10" fill="#F3B85B"/></g>
-<text x="70" y="36" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="27" font-weight="800" letter-spacing="-.5"><tspan fill="#11243A">Multi</tspan><tspan fill="#2764BD">Cont</tspan></text>
+<g transform="translate(10 10)"><path d="M6 6h22v6H12v16H6z" fill="#2764BD"/><path d="M42 42H20v-6h16V20h6z" fill="#28B6A4"/><rect x="18" y="18" width="12" height="12" fill="#F3B85B"/></g>
+<text x="70" y="36" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="27" font-weight="800" letter-spacing="-.5"><tspan fill="#16365F">Multi</tspan><tspan fill="#2764BD">Cont</tspan></text>
 <text x="71" y="54" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="10.5" font-weight="700" letter-spacing="3.6" fill="#13796D">CENTER KFT.</text>
 </svg>

@@ -8,12 +8,8 @@ ADDR = "2040 Budaörs, Meredek utca 2."
 MAPS = "https://www.google.com/maps/dir/?api=1&amp;destination=2040%20Buda%C3%B6rs%2C%20Meredek%20utca%202."
 PAGES = []  # sitemaphoz
 
-MARK = ('<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M6 6h17v6H12v11H6z" fill="#2764BD"/>'
-        '<path d="M6 42V25h6v11h11v6z" fill="#11243A"/><path d="M42 42H25v-6h11V25h6z" fill="#28B6A4"/>'
-        '<rect x="19" y="19" width="10" height="10" fill="#F3B85B"/></svg>')
-MARK_D = ('<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M6 6h17v6H12v11H6z" fill="#8DB8F2"/>'
-          '<path d="M6 42V25h6v11h11v6z" fill="#FFFFFF"/><path d="M42 42H25v-6h11V25h6z" fill="#5FD3C4"/>'
-          '<rect x="19" y="19" width="10" height="10" fill="#F3B85B"/></svg>')
+MARK = ('<svg viewBox="0 0 48 48" aria-hidden="true"><path d=\"M6 6h22v6H12v16H6z\" fill=\"#2764BD\"/><path d=\"M42 42H20v-6h16V20h6z\" fill=\"#28B6A4\"/><rect x=\"18\" y=\"18\" width=\"12\" height=\"12\" fill=\"#F3B85B\"/></svg>')
+MARK_D = ('<svg viewBox="0 0 48 48" aria-hidden="true"><path d=\"M6 6h22v6H12v16H6z\" fill=\"#8DB8F2\"/><path d=\"M42 42H20v-6h16V20h6z\" fill=\"#5FD3C4\"/><rect x=\"18\" y=\"18\" width=\"12\" height=\"12\" fill=\"#F3B85B\"/></svg>')
 CARET = '<svg class="caret" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.5l5 5 5-5"/></svg>'
 I_SEARCH = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg>'
 I_PHONE = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 3.5h3l1.4 4-2 1.3a11 11 0 0 0 6.2 6.2l1.3-2 4 1.4v3a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 4.6 5.7a2 2 0 0 1 2-2.2Z"/></svg>'
@@ -48,7 +44,7 @@ MENU = [
     ("rolunk.html", "Rólunk", [("rolunk.html#tortenet", "Történetünk"), ("rolunk.html#szakmai-vezeto", "Horváth Mária"),
                                ("rolunk.html#nev", "A név jelentése"), ("rolunk.html#cegadatok", "Cégadatok")]),
     ("szolgaltatasok.html", "Szolgáltatások", [(svc_url(k), t) for k, t, _ in SVC]),
-    ("tudastar.html", "Tudástár", [("tudastar.html", "Összes cikk"), ("tudastar.html?tema=KATA", "KATA"),
+    ("tudastar.html", "Tudástár", [("index.html#tartalom", "Aktuális adóhírek"), ("tudastar.html", "Összes cikk"), ("tudastar.html?tema=KATA", "KATA-változások"),
                                    ("tudastar.html?tema=%C3%81FA", "ÁFA"), ("tudastar.html?tema=SZJA", "SZJA"),
                                    ("tudastar.html?tema=B%C3%A9rsz%C3%A1mfejt%C3%A9s", "Bérszámfejtés"),
                                    ("tudastar.html?tema=%C3%89ves%20ad%C3%B3z%C3%A1si%20k%C3%B6telezetts%C3%A9gek", "Határidők, éves kötelezettségek")]),
@@ -56,8 +52,8 @@ MENU = [
                                            ("kalkulatorok.html#munkaltato", "Munkáltatói költség"), ("kalkulatorok.html#afa", "ÁFA"),
                                            ("kalkulatorok.html#kata", "KATA 2026"), ("kalkulatorok.html#eredmeny", "Bevétel – kiadás"),
                                            ("kalkulatorok.html#koltsegterv", "Költségtervező")]),
-    ("dokumentumtar.html", "Dokumentumtár", None),
-    ("partnerek.html", "Partnereink", [("partnerek.html", "Partnerlista"), ("partnerek.html#ajanlatok", "Ajánlatok, kuponok"),
+    ("dokumentumtar.html", "Dokumentumtár", [("dokumentumtar.html?kat=Formanyomtatv%C3%A1nyok", "Formanyomtatványok"), ("dokumentumtar.html?kat=Szakmai%20anyagok", "Szakmai anyagok"), ("dokumentumtar.html?kat=Hivatalos%20online%20fel%C3%BCletek", "Hivatalos online felületek")]),
+    ("partnerek.html", "Partnereink", [("partnerek.html", "Partnerlista, partnerlinkek"), ("partnerek.html#ajanlatok", "Kuponajánlatok"),
                                        ("partnerek.html#ajanlo", "Ajánlói rendszer"), ("partnerek.html#jelentkezes", "Partnerjelentkezés")]),
     ("kapcsolat.html", "Kapcsolat", None),
 ]
@@ -75,7 +71,7 @@ def head(name, title, desc, extra=""):
 <!-- látványterv: élesítéskor törlendő -->
 <meta name="robots" content="noindex, nofollow">
 <link rel="canonical" href="{canon}">
-<meta name="theme-color" content="#11243A">
+<meta name="theme-color" content="#2764BD">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="hu_HU">
 <meta property="og:site_name" content="MultiCont Center Kft.">
@@ -145,7 +141,7 @@ def footer(scripts=""):
   <div class="ftr-band" aria-hidden="true"><i></i><i></i><i></i></div>
   <div class="wrap ftr-g">
     <div>
-      {logo(True)}
+      {logo()}
       <p class="claim">Könyvelés, adózási támogatás és üzleti kapcsolatok egy helyen – 2015 óta, Budaörsön és online.</p>
       <dl class="fdata">
         <div><dt>Cégnév</dt><dd>MultiCont Center Kft.</dd></div>

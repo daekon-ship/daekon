@@ -190,17 +190,17 @@ window.MC = {
 
   /* ---------- Dokumentumtár (csak nyilvános, jóváhagyott anyag) ----------
      tipus: 'pdf' | 'link' · statusz: 'aktiv' | 'archiv' | 'minta' */
-  dokKategoriak: ['Tájékoztatók', 'Az iroda nyomtatványai', 'Hivatalos felületek'],
+  dokKategoriak: ['Formanyomtatványok', 'Szakmai anyagok', 'Hivatalos online felületek'],
   dokumentumok: [
-    { id: 'kulcsok', cim: 'Adó- és járulékkulcsok 2026 – összefoglaló', kategoria: 'Tájékoztatók', tipus: 'pdf', fajl: 'dok/adokulcsok-2026.pdf', meret: 'PDF, 1 oldal', verzio: '1.1', datum: '2026-10-17', statusz: 'aktiv', leiras: 'Bér, járulék, KATA, átalányadó, ÁFA-határ – forrásmegjelöléssel' },
-    { id: 'kulcsok-10', cim: 'Adó- és járulékkulcsok 2026 – összefoglaló', kategoria: 'Tájékoztatók', tipus: 'pdf', fajl: '', meret: 'PDF', verzio: '1.0', datum: '2026-10-14', statusz: 'archiv', leiras: 'Előző változat – a 1.1 váltotta fel' },
-    { id: 'adatlap', cim: 'Ügyféladatlap új ügyfeleknek', kategoria: 'Az iroda nyomtatványai', tipus: 'pdf', fajl: 'dok/ugyfeladatlap.pdf', meret: 'PDF, 1 oldal', verzio: '0.9', datum: '2026-10-17', statusz: 'minta', leiras: 'Kitölthető adatlap a megbízás indulásához – jóváhagyásra vár' },
-    { id: 'nav-ny', cim: 'NAV nyomtatványok', kategoria: 'Hivatalos felületek', tipus: 'link', fajl: 'https://nav.gov.hu/nyomtatvanyok', statusz: 'aktiv', leiras: 'Nyomtatványkereső, ÁNYK' },
-    { id: 'onya', cim: 'ONYA – online nyomtatványkitöltés', kategoria: 'Hivatalos felületek', tipus: 'link', fajl: 'https://onya.nav.gov.hu', statusz: 'aktiv', leiras: 'NAV online nyomtatványkitöltő' },
-    { id: 'eszja', cim: 'eSZJA', kategoria: 'Hivatalos felületek', tipus: 'link', fajl: 'https://eszja.nav.gov.hu', statusz: 'aktiv', leiras: 'SZJA-bevallási tervezet' },
-    { id: 'eafa', cim: 'eÁFA', kategoria: 'Hivatalos felületek', tipus: 'link', fajl: 'https://eafa.nav.gov.hu', statusz: 'aktiv', leiras: 'Az ÁFA-bevallás NAV-felülete' },
-    { id: 'osz', cim: 'Online Számla', kategoria: 'Hivatalos felületek', tipus: 'link', fajl: 'https://onlineszamla.nav.gov.hu', statusz: 'aktiv', leiras: 'Számla-adatszolgáltatás' },
-    { id: 'ebesz', cim: 'e-beszámoló', kategoria: 'Hivatalos felületek', tipus: 'link', fajl: 'https://e-beszamolo.im.gov.hu', statusz: 'aktiv', leiras: 'Cégek éves beszámolói' }
+    { id: 'kulcsok', cim: 'Adó- és járulékkulcsok 2026 – összefoglaló', kategoria: 'Szakmai anyagok', tipus: 'pdf', fajl: 'dok/adokulcsok-2026.pdf', meret: 'PDF, 1 oldal', verzio: '1.1', datum: '2026-10-17', statusz: 'aktiv', leiras: 'Bér, járulék, KATA, átalányadó, ÁFA-határ – forrásmegjelöléssel' },
+    { id: 'kulcsok-10', cim: 'Adó- és járulékkulcsok 2026 – összefoglaló', kategoria: 'Szakmai anyagok', tipus: 'pdf', fajl: '', meret: 'PDF', verzio: '1.0', datum: '2026-10-14', statusz: 'archiv', leiras: 'Előző változat – a 1.1 váltotta fel' },
+    { id: 'adatlap', cim: 'Ügyféladatlap új ügyfeleknek', kategoria: 'Formanyomtatványok', tipus: 'pdf', fajl: 'dok/ugyfeladatlap.pdf', meret: 'PDF, 1 oldal', verzio: '0.9', datum: '2026-10-17', statusz: 'minta', leiras: 'Kitölthető adatlap a megbízás indulásához – jóváhagyásra vár' },
+    { id: 'nav-ny', cim: 'NAV nyomtatványok', kategoria: 'Formanyomtatványok', tipus: 'link', fajl: 'https://nav.gov.hu/nyomtatvanyok', statusz: 'aktiv', leiras: 'Nyomtatványkereső, ÁNYK' },
+    { id: 'onya', cim: 'ONYA – online nyomtatványkitöltés', kategoria: 'Formanyomtatványok', tipus: 'link', fajl: 'https://onya.nav.gov.hu', statusz: 'aktiv', leiras: 'NAV online nyomtatványkitöltő' },
+    { id: 'eszja', cim: 'eSZJA', kategoria: 'Hivatalos online felületek', tipus: 'link', fajl: 'https://eszja.nav.gov.hu', statusz: 'aktiv', leiras: 'SZJA-bevallási tervezet' },
+    { id: 'eafa', cim: 'eÁFA', kategoria: 'Hivatalos online felületek', tipus: 'link', fajl: 'https://eafa.nav.gov.hu', statusz: 'aktiv', leiras: 'Az ÁFA-bevallás NAV-felülete' },
+    { id: 'osz', cim: 'Online Számla', kategoria: 'Hivatalos online felületek', tipus: 'link', fajl: 'https://onlineszamla.nav.gov.hu', statusz: 'aktiv', leiras: 'Számla-adatszolgáltatás' },
+    { id: 'ebesz', cim: 'e-beszámoló', kategoria: 'Hivatalos online felületek', tipus: 'link', fajl: 'https://e-beszamolo.im.gov.hu', statusz: 'aktiv', leiras: 'Cégek éves beszámolói' }
   ],
 
   /* ---------- Szakmai linkek ---------- */

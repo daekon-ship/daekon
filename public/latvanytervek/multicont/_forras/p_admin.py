@@ -45,7 +45,7 @@ def admin_page(name, active, title, sub, body, actions=""):
     <header class="adm-top">
       <button class="adm-burger" id="adm-burger" type="button" aria-expanded="false" aria-controls="adm-side" aria-label="Menü"><span></span><span></span><span></span></button>
       <span class="tag demo">Látványterv · nem ment adatot</span>
-      <div class="adm-user"><span class="av" aria-hidden="true">A</span><span class="nm">Adminisztrátor<small>szerkesztő jogosultság</small></span><button class="btn btn-o btn-s" type="button" id="adm-out">Kilépés</button></div>
+      <div class="adm-user"><span class="av" aria-hidden="true">HM</span><span class="nm">Horváth Mária<small>adminisztrátor</small></span><button class="btn btn-o btn-s" type="button" id="adm-out">Kilépés</button></div>
     </header>
     <main class="adm-c" id="tartalom">
       <div class="adm-h"><div><h1 class="h2">{title}</h1><p class="muted">{sub}</p></div><div class="adm-acts">{actions}</div></div>
@@ -90,8 +90,8 @@ def admin_page(name, active, title, sub, body, actions=""):
 
 # ---------- Áttekintés ----------
 MODS = {
-    "oldalak": ("Oldalak", "Statikus oldalak (Rólunk, Kapcsolat, jogi oldalak) szövegének szerkesztése, előnézettel, piszkozat → közzététel folyamattal.",
-                ["Oldalanként: cím, bevezető, szakaszok, meta leírás", "Előnézet közzététel előtt", "Verziótörténet, visszaállítás"]),
+    "oldalak": ("Oldalak", "Minden oldal szövege szerkeszthető, és új oldal vagy menüpont is felvehető – például ha új tevékenység kerül be a cégbe. Így a weboldal nyitott marad a további fejlesztési irányokra.",
+                ["Oldalanként: cím, bevezető, szakaszok, meta leírás", "Új oldal és új menüpont felvétele (pl. új tevékenység)", "Előnézet, piszkozat → közzététel, verziótörténet"]),
     "szolgaltatasok": ("Szolgáltatások", "A hat szolgáltatásoldal tartalma: leírás, mit tartalmaz, kinek ajánljuk, GYIK, sorrend.",
                        ["Szolgáltatás be- és kikapcsolása", "GYIK-elemek hozzáadása", "Kiemelt szolgáltatás kijelölése"]),
     "kalkulatorok": ("Kalkulátorok", "Kulcsok és határok egy helyen: ha év elején változik egy adókulcs, itt kell átírni, és minden kalkulátor az újjal számol.",
@@ -104,7 +104,12 @@ MODS = {
 mods = ""
 for k, (t, d, li) in MODS.items():
     lis = "".join(f'<li>{x}</li>' for x in li)
-    mods += f'<section class="adm-card adm-mod" id="m-{k}" hidden><div class="adm-card-h"><h2>{t}</h2><span class="tag demo">Tervezett modul</span></div><p>{d}</p><ul class="adm-ul">{lis}</ul><p class="muted small" style="margin-top:12px">A látványtervben ez a modul nincs kidolgozva; a kötelező négy képernyő az Áttekintés, a Hírek, a Dokumentumok és a Partnerek.</p></section>'
+    extra = ''
+    if k == "oldalak":
+        rows = "".join(f'<tr><td><b>{n}</b></td><td>{u}</td><td><span class="tag live t">Közzétéve</span></td><td class="a-act"><button class="btn btn-o btn-s" type="button" data-demo="Oldal szerkesztése">Szerkesztés</button></td></tr>'
+                       for n, u in [("Kezdőlap", "index.html"), ("Rólunk", "rolunk.html"), ("Szolgáltatások", "szolgaltatasok.html"), ("Kapcsolat", "kapcsolat.html"), ("Impresszum, adatkezelés", "ablakban")])
+        extra = f'<div class="tbl-wrap" style="margin-top:16px"><table class="tbl"><thead><tr><th>Oldal</th><th>Cím</th><th>Állapot</th><th></th></tr></thead><tbody>{rows}</tbody></table></div><div class="ed-acts"><button class="btn btn-p btn-s" type="button" data-demo="Új oldal / menüpont felvétele">+ Új oldal vagy menüpont</button></div>'
+    mods += f'<section class="adm-card adm-mod" id="m-{k}" hidden><div class="adm-card-h"><h2>{t}</h2><span class="tag demo">Tervezett modul</span></div><p>{d}</p><ul class="adm-ul">{lis}</ul>{extra}<p class="muted small" style="margin-top:12px">A látványtervben ez a modul csak vázlat; kidolgozott képernyő az Áttekintés, a Hírek, a Dokumentumok és a Partnerek.</p></section>'
 
 admin_page("admin.html", "admin.html", "Áttekintés", "A weboldal tartalmának állapota egy pillantásra.", f'''
 <div id="m-attekintes">
@@ -114,7 +119,7 @@ admin_page("admin.html", "admin.html", "Áttekintés", "A weboldal tartalmának 
     <section class="adm-card"><div class="adm-card-h"><h2>Gyors műveletek</h2></div>
       <div class="quick">
         <a href="admin-cikkek.html#uj"><b>Új cikk</b><span>Piszkozat, forrással</span></a>
-        <a href="admin-dokumentumok.html#feltoltes"><b>Dokumentum feltöltése</b><span>PDF, verzióval</span></a>
+        <a href="admin-dokumentumok.html#feltoltes"><b>Anyag feltöltése</b><span>Formanyomtatvány, szakmai anyag</span></a>
         <a href="admin-partnerek.html#jovahagyas"><b>Jóváhagyások</b><span>Partnerek, ajánlatok</span></a>
         <a href="admin.html#kalkulatorok"><b>Adókulcsok</b><span>Kalkulátorok adatai</span></a>
       </div>

@@ -8,7 +8,7 @@ rolunk = ph("Rólunk", "Budaörsi könyvelőiroda 2015 óta. Szakmai vezetője H
       <p class="eyebrow">Történetünk</p>
       <h2 class="h2" style="margin-bottom:12px">Harminc év tapasztalat, egy irodában</h2>
       <p class="lead">Horváth Mária harminc éve dolgozik pénzüggyel és számvitellel. 2015. szeptember 25-én alapította meg a MultiCont Center Kft.-t.</p>
-      <p style="margin-top:12px">A cég eredetileg sem csak könyvelésre jött létre, és ma is nyitott új tevékenységekre. Ezért épül a weboldal köré partnerprogram is: szeretnénk, ha ügyfeleink nálunk megbízható szakembereket is találnának.</p>
+      <p style="margin-top:12px">A cég eredetileg sem kizárólag könyvelésre jött létre, és ma is nyitott új tevékenységek behozására. Ezért épül a weboldal köré partnerközpont is: átlinkelés a partnerek oldalára, ajánlói rendszer és kuponajánlatok – hogy ügyfeleink nálunk megbízható szakembereket is találjanak.</p>
     </section>
 
     <section class="sd-sec" id="szakmai-vezeto">
@@ -27,11 +27,11 @@ rolunk = ph("Rólunk", "Budaörsi könyvelőiroda 2015 óta. Szakmai vezetője H
       <p class="eyebrow g">A név és a logó</p>
       <h2 class="h2" style="margin-bottom:16px">Multi · Cont · Center</h2>
       <ul class="triad" style="margin-top:0">
-        <li><b>MULTI</b><p>Sokoldalúság, több szakterület, a fejlődés lehetősége.</p></li>
-        <li><b>CONT</b><p>A számvitel (conti) és az üzleti megállapodások (contract) világa.</p></li>
-        <li><b>CENTER</b><p>Együttműködés: szolgáltatási és partneri központ.</p></li>
+        <li><b>MULTI</b><p>Sokoldalúság és sokféleség – és a növekedési potenciál.</p></li>
+        <li><b>CONT</b><p>Contír, ami a könyvelésre utal – és contract, azaz szerződés.</p></li>
+        <li><b>CENTER</b><p>Közös pont: szolgáltatási és partneri központ.</p></li>
       </ul>
-      <p class="muted" style="margin-top:14px">A logó három eleme ezt a hármat jelöli – kék, türkiz, sötétkék –, egy arany középpont körül. A jobb felső sarok nyitva marad: helyet hagy a növekedésnek.</p>
+      <p class="muted" style="margin-top:14px">A logó három eleme ezt a hármat jelöli, három színnel: a kék sarok a MULTI, a türkiz sarok a CONT, az arany középpont a CENTER. A két nyitott sarok helyet hagy a növekedésnek és az új kapcsolatoknak.</p>
     </section>
 
     <section class="sd-sec">
