@@ -4,6 +4,9 @@
 Fájlok: `index.html`, `cbtaxi.css`, `cbtaxi.js`, `js/` (GSAP 3 + ScrollTrigger, helyben), `fonts/` (Sora + Inter, helyben, OFL), `logo.svg`, `logo-jel.svg`.
 Build nincs (a Vite a `public/` mappát változatlanul másolja); a terv `noindex`.
 
+## 9. kör — szövegek
+- Természetesebb, konkrétabb magyar szövegek a nyitóképen, a négy szolgáltatásnál, a településeknél és a zárásnál (élethelyzetek: strand, vonat, vacsora, esküvő, rokonok, reptér); meta-leírás frissítve. Ellenőrizetlen állítás (létszám, nyitvatartás, ár, „0–24”) továbbra sincs.
+
 ## 8. kör — több levegő
 - Nagyobb szekciótávolságok és belső térközök (nyitókép, jelenetszövegek, térkép–fülek–rajz–hívógomb, záró kártya), mobilon és asztalon is; a sorköz a hosszabb szövegeknél 1,7.
 
