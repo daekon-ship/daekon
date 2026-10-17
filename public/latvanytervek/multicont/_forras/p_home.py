@@ -108,17 +108,27 @@ home = f'''
 
   <aside class="col-r" aria-label="Kalkulátor, dokumentumok, partnerek">
     <div class="col-h"><h2>Eszköztár</h2></div>
-    <section class="tool">
-      <div class="tool-h"><h2>Kalkulátorok</h2><a class="arrow small" href="kalkulatorok.html">Mind</a></div>
-      <div class="tool-b"><ul class="calc-list">
-        <li><a href="kalkulatorok.html#brutto-netto"><span class="ci b">Ft</span>Bruttó → nettó bér</a></li>
-        <li><a href="kalkulatorok.html#netto-brutto"><span class="ci b">Ft</span>Nettó → bruttó bér</a></li>
-        <li><a href="kalkulatorok.html#munkaltato"><span class="ci b">Ft</span>Munkáltatói költség</a></li>
-        <li><a href="kalkulatorok.html#afa"><span class="ci t">%</span>ÁFA-kalkulátor</a></li>
-        <li><a href="kalkulatorok.html#kata"><span class="ci t">K</span>KATA 2026</a></li>
-        <li><a href="kalkulatorok.html#eredmeny"><span class="ci g">±</span>Bevétel – kiadás</a></li>
-        <li><a href="kalkulatorok.html#koltsegterv"><span class="ci g">Σ</span>Költségtervező</a></li>
-      </ul><p class="note">2026-os, ellenőrzött kulcsokkal.</p></div>
+    <section class="tool" id="mini-calc">
+      <div class="tool-h"><h2>Bérkalkulátor</h2><span class="tag live t">2026</span></div>
+      <div class="mini-tabs" role="tablist" aria-label="Bérkalkulátor">
+        <button role="tab" id="mt-ber" aria-controls="mp-ber" aria-selected="true">Bruttó → nettó</button>
+        <button role="tab" id="mt-nb" aria-controls="mp-nb" aria-selected="false" tabindex="-1">Nettó → bruttó</button>
+      </div>
+      <div class="tool-b">
+        <div role="tabpanel" id="mp-ber" aria-labelledby="mt-ber">
+          <label class="field-l" for="q-brutto">Bruttó havi bér (Ft)</label>
+          <input class="inp" id="q-brutto" type="text" inputmode="numeric" value="400 000" autocomplete="off">
+          <dl class="mini-res"><div class="big"><dt>Nettó bér</dt><dd id="q-netto">–</dd></div><div><dt>Munkáltatói költség</dt><dd id="q-koltseg">–</dd></div></dl>
+        </div>
+        <div role="tabpanel" id="mp-nb" aria-labelledby="mt-nb" hidden>
+          <label class="field-l" for="q-netto-in">Kívánt nettó bér (Ft)</label>
+          <input class="inp" id="q-netto-in" type="text" inputmode="numeric" value="266 000" autocomplete="off">
+          <dl class="mini-res"><div class="big"><dt>Szükséges bruttó</dt><dd id="q-nb-brutto">–</dd></div><div><dt>Munkáltatói költség</dt><dd id="q-nb-koltseg">–</dd></div></dl>
+        </div>
+        <p class="note">SZJA 15%, TB 18,5%, szocho 13% · kedvezmények nélkül</p>
+        <p class="calc-k">További kalkulátorok</p>
+        <div class="calc-more"><a href="kalkulatorok.html#afa">ÁFA</a><a href="kalkulatorok.html#kata">KATA 2026</a><a href="kalkulatorok.html#munkaltato">Munkáltatói költség</a><a href="kalkulatorok.html#eredmeny">Bevétel – kiadás</a><a href="kalkulatorok.html#koltsegterv">Költségtervező</a></div>
+      </div>
     </section>
 
     <section class="tool">

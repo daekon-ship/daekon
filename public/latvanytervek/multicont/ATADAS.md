@@ -130,3 +130,4 @@ A mai dátum és a következő határidő a `tartalom.js` határidőlistájábó
 - A kezdőlapon a kitölthető bérkalkulátor helyett „Kalkulátorok” lista mind a 8 számolóval (Marcsi kalkulátorokat kért; a teljes, működő kalkulátorok a Kalkulátorok oldalon vannak). Kevesebb zsúfoltság a jobb oszlopban.
 - A mintapartner-ajánlat kikerült a kezdőlapról (a Partnerközpont rovat és a Partnereink oldal mutatja).
 - „További adóhírek”: csak dátum + cím, címkék nélkül; a kiemelt KATA-hír összefoglalója 3 sorra rövidítve.
+- Javítás: a működő bérkalkulátor visszakerült a kezdőlap jobb oszlopába (bruttó → nettó, nettó → bruttó), alatta a többi kalkulátor gyorslinkként.
