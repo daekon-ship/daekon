@@ -29,7 +29,7 @@ Előző változat biztonsági másolata: `../multicont-v11/` (11. kör), a 12–
 
 - **Színek (15. kör: fehérebb, kékebb):** fehér alap, kék felső sáv, kék oszlopfejlécek és kiemelések, világoskék lábléc. Mélykék `#16365F` (címek, szöveg) · Corporate Blue `#2764BD` (domináns: gombok, linkek, aktív állapot) · Soft Sky `#EAF3FC` · Mint Teal `#28B6A4` (másodlagos; szövegben `#13796D` a kontraszt miatt) · Warm Accent `#F3B85B` (csak célzottan: kiemelt szolgáltatás, kupon, logó közepe; szövegben `#8A5B12`) · Off White `#F8FAFD` · Dark Text `#202B38`. A három márkaszín együtt csak a logóban, a lábléc-sávban és a MULTI/CONT/CENTER hármasnál jelenik meg.
 - **Betű:** Plus Jakarta Sans (OFL, helyben, magyar ékezetekkel szűkítve, `fonts/plusjakarta.woff`). H1 legfeljebb 46 px, H2 legfeljebb 32 px, törzsszöveg 16,5 px.
-- **Logó (Marcsi kérése: 3 szín):** három elem, három szín – kék sarok = MULTI, türkiz sarok = CONT, arany középpont = CENTER. A két nyitott sarok a növekedést és az új kapcsolatokat jelzi. Változatok: `logo.svg` (világos), `logo-feher.svg` (sötét háttérre), `jel.svg` (favicon, önálló jel). Szerkeszthető SVG.
+- **Logó (19. kör, Marcsi kérése: 3 szín):** „M” monogram három elemből – kék oszlop = MULTI, türkiz oszlop = CONT, a kettőt összekötő arany ív = CENTER. Kicsiben (favicon) is olvasható. Változatok: `logo.svg`, `logo-feher.svg`, `jel.svg`; a PDF-ekben és az `og.png`-ben is.
 - **Rács:** 1280 px tartalomszélesség; kezdőlap 288 / rugalmas / 320 px oszlopok.
 - **Elemek:** kártyák 10 px sarokkal, vékony keret, árnyék csak hoverre; címkék állapotjelzésre: kék = téma, türkiz = működik/érvényes, narancs = minta/demo/tervezet.
 - **Mozgás:** csak CSS: hero vonalrajzolás, fejléc-háttérváltás görgetéskor, finom hover. Csökkentett mozgás beállításnál kikapcsol. Nincs parallax, 3D, üvegeffekt.
@@ -131,3 +131,8 @@ A mai dátum és a következő határidő a `tartalom.js` határidőlistájábó
 - A mintapartner-ajánlat kikerült a kezdőlapról (a Partnerközpont rovat és a Partnereink oldal mutatja).
 - „További adóhírek”: csak dátum + cím, címkék nélkül; a kiemelt KATA-hír összefoglalója 3 sorra rövidítve.
 - Javítás: a működő bérkalkulátor visszakerült a kezdőlap jobb oszlopába (bruttó → nettó, nettó → bruttó), alatta a többi kalkulátor gyorslinkként.
+
+## 11. 19. kör – új logó, tömörebb kapcsolat
+- Új „M” monogram logó (3 elem, 3 szín), a régi két sarkos jel helyett; fejlécanimáció: a két oszlop alulról, az arany ív felülről érkezik.
+- Mobil lábléc tömörítve: cégadatok 2 oszlopban, kisebb telefonszám, a menüt ismétlő listák rejtve.
+- Kapcsolat oldal: címke–érték sorok kisebb betűvel; telefonon gyors gombsor (Hívás, E-mail, Útvonal).

@@ -10,7 +10,7 @@ NAME_SVG = '''<svg class="name-art" viewBox="0 0 560 236" role="img" aria-labell
   <path class="ha-flow" style="--len:40;--d:.9s" stroke="#F3B85B" d="M280 150V178"/>
   <g class="ha-core" style="--d:.1s">
     <rect x="220" y="30" width="120" height="120" rx="16" fill="#fff" stroke="#DCE8F7"/>
-    <g transform="translate(232 42) scale(2)"><path d="M6 6h22v6H12v16H6z" fill="#2764BD"/><path d="M42 42H20v-6h16V20h6z" fill="#28B6A4"/><rect x="18" y="18" width="12" height="12" fill="#F3B85B"/></g>
+    <g transform="translate(232 42) scale(2)"><rect x="5" y="8" width="9" height="34" rx="2" fill="#2764BD"/><rect x="34" y="8" width="9" height="34" rx="2" fill="#28B6A4"/><path d="M15.2 8h3.6L24 16.2 29.2 8h3.6v7.1L24 29.6 15.2 15.1z" fill="#F3B85B"/></g>
   </g>
   <g class="ha-node" style="--d:.35s"><rect x="0" y="62" width="180" height="56" rx="12"/><circle cx="22" cy="90" r="7" fill="#2764BD"/><text class="ha-cap" x="38" y="85" fill="#2764BD">MULTI</text><text x="38" y="104">Sokoldalúság</text></g>
   <g class="ha-node" style="--d:.5s"><rect x="380" y="62" width="180" height="56" rx="12"/><circle cx="402" cy="90" r="7" fill="#28B6A4"/><text class="ha-cap" x="418" y="85" fill="#13796D">CONT</text><text x="418" y="104">Contír · contract</text></g>

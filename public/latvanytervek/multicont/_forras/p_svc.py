@@ -31,7 +31,7 @@ rolunk = ph("Rólunk", "Budaörsi könyvelőiroda 2015 óta. Szakmai vezetője H
         <li><b>CONT</b><p>Contír, ami a könyvelésre utal – és contract, azaz szerződés.</p></li>
         <li><b>CENTER</b><p>Közös pont: szolgáltatási és partneri központ.</p></li>
       </ul>
-      <p class="muted" style="margin-top:14px">A logó három eleme ezt a hármat jelöli, három színnel: a kék sarok a MULTI, a türkiz sarok a CONT, az arany középpont a CENTER. A két nyitott sarok helyet hagy a növekedésnek és az új kapcsolatoknak.</p>
+      <p class="muted" style="margin-top:14px">A logó egy „M” betű három elemből, három színnel: a kék oszlop a MULTI, a türkiz oszlop a CONT, a kettőt összekötő arany ív a CENTER – a közös pont.</p>
     </section>
 
     <section class="sd-sec">

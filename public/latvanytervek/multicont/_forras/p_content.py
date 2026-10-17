@@ -249,6 +249,7 @@ kapcs = ph("Kapcsolat", "Hívjon, írjon, vagy keressen fel minket Budaörsön. 
 <section class="band" style="padding-top:36px">
   <div class="wrap cgrid">
     <div>
+      <div class="qact"><a class="btn btn-p btn-s" href="tel:{TEL}">Hívás</a><a class="btn btn-o btn-s" href="mailto:{MAIL}">E-mail</a><a class="btn btn-o btn-s" href="{MAPS}" target="_blank" rel="noopener">Útvonal</a></div>
       <dl class="clist2">
         <div><dt>Telefon</dt><dd><a class="big" href="tel:{TEL}">{TEL_H}</a></dd></div>
         <div><dt>E-mail</dt><dd><a href="mailto:{MAIL}">{MAIL}</a></dd></div>
