@@ -86,6 +86,18 @@
   var newsLi = function (a) {
     return '<li><a href="' + artUrl(a) + '"><span class="m"><span class="tag' + (a.tervezet ? ' demo' : '') + '">' + esc(a.tervezet ? 'Tervezet' : a.temak[0]) + '</span><span class="date">' + dShort(a.datum) + '</span></span><b>' + esc(a.cim) + '</b></a></li>';
   };
+  /* dátumsáv: mai nap + következő határidő (valós adatból) */
+  $$('[data-mod="dateline"]').forEach(function (m) {
+    var NAP = ['vasárnap', 'hétfő', 'kedd', 'szerda', 'csütörtök', 'péntek', 'szombat'];
+    var h = hataridok[0], html = '<span class="dl-day">' + now.getFullYear() + '. ' + HO[now.getMonth()] + ' ' + now.getDate() + '., ' + NAP[now.getDay()] + '</span>';
+    if (h) {
+      var x = pd(h.datum), diff = Math.round((new Date(x.y, x.m, x.d) - new Date(now.getFullYear(), now.getMonth(), now.getDate())) / 864e5);
+      html += '<span class="dl-sep" aria-hidden="true"></span><span class="dl-next">Következő adóhatáridő: <b>' + HO[x.m] + ' ' + x.d + '.</b> – ' + esc(h.cim) + ' <span class="dl-cnt">' + (diff === 0 ? 'ma' : diff + ' nap') + '</span></span>';
+    }
+    var hk = cikkek.filter(function (a) { return a.kiemelt; })[0];
+    if (hk) html += '<a class="dl-hot" href="' + artUrl(hk) + '">' + esc(hk.temak[0]) + '-változások 2027 →</a>';
+    m.innerHTML = html;
+  });
   $$('[data-mod="checked"]').forEach(function (m) { m.textContent = 'ellenőrizve: ' + dShort(MC.ellenorizve).slice(6); });
   var hot = cikkek.filter(function (a) { return a.kiemelt; })[0];
   $$('[data-mod="hot"]').forEach(function (m) {

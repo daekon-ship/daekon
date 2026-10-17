@@ -93,3 +93,30 @@ Előző változat biztonsági másolata: `../multicont-v11/` (11. kör), a 12–
 | Kalkulátorok | Kezdőlap jobb oszlop + Kalkulátorok oldal (8 db) |
 | Dokumentumtár formanyomtatványoknak, szakmai anyagoknak | Dokumentumtár ezekkel a kategóriákkal |
 | Nyitott a további fejlesztésre, rugalmasan szerkeszthető, ő is fel tud tenni anyagokat | Kezelőfelület: cikkek, dokumentumfeltöltés, partnerek, oldalak (látványterv; éleshez backend kell) |
+
+## 8. 16. kör – kreatív irányok és a választás
+
+Keret (Marcsi kérése, nem vita tárgya): klasszikus 3 oszlop felső menüsorral, fehér–kék, 3 színű logó.
+
+| Irány | Lényeg | Értékelés |
+|---|---|---|
+| **A – „Főkönyv”** (választott) | Szerkesztőségi portál: oszlopvonalak dobozok helyett, sorszámozott rovatok (01–05), dátumsáv valós dátummal és a következő határidővel, szolgáltatás-index sorokban, a logó sarokmotívuma mint vezető grafikai elem | Pont az, amit Marcsi az rlb.hu-ban szeret (rendezett, sűrű, hírportál-jellegű), de egyedi; a könyvelő munkájához (főkönyv, sorok, dátumok) kötődik |
+| B – „Kék rács” | Svájci rács: kék hálós alap, moduláris blokkok, tervrajz-hatás | Túl technikai, hűvös; a „vidám, de kellemes” kéréshez kevés |
+| C – „Három pont” | A logó három eleme interaktív hálózatként mozog végig az oldalon | Látványos, de egy könyvelőnél figyelemelterelő, és a 3 oszlopos portált szétfeszítené |
+
+A választott irányból átvettük C legjobb elemét: a név rajza (MULTI–CONT–CENTER) a 01-es rovatban marad.
+
+### Mozgásleírás
+
+| Elem | Mit csinál | Indító | Átmenet | Csökkentett mozgásnál |
+|---|---|---|---|---|
+| Logó a fejlécben | A kék sarok balról fentről, a türkiz jobbról lentről csúszik be, az arany négyzet középről nő ki | Betöltés | Utána a dátumsáv már statikusan áll | Azonnal kész állapot |
+| Rovatvonal | Minden középső rovat felső vonala balról jobbra kirajzolódik, a tartalom 10 px-ről felúszik | Görgetés (a rovat belép a képbe) | A vonal köti össze az előző rovattal | Vonal és tartalom azonnal látszik |
+| Szolgáltatássor | A sor bal felső sarkán kék, jobb alsó sarkán türkiz „L” rajzolódik ki (a logó két sarka), a nyíl jobbra lép | Egér / billentyűfókusz | Visszahúzódik, ha elhagyja | Csak a színváltás marad |
+| Név-rajz (01) | Az összekötő vonalak kirajzolódnak, a csomópontok beúsznak, a középpont mögött halk lüktetés | Betöltés | – | Statikus rajz |
+| Fejléc | Görgetéskor alacsonyabb lesz és árnyékot kap | Görgetés | – | Ugyanígy, animáció nélkül |
+
+Mind tiszta CSS + kevés JS (IntersectionObserver). **Nem kell hozzá** GSAP, Three.js/WebGL, React Bits vagy licencelt HorizonX-komponens. Ha később 3D-s fejlécjel készülne (pl. a logó térbeli forgatása), az Three.js-t igényelne – ez nincs beépítve.
+
+### Dátumsáv
+A mai dátum és a következő határidő a `tartalom.js` határidőlistájából számolódik (hány nap van hátra); a lejárt határidők automatikusan kiesnek.

@@ -20,10 +20,11 @@ NAME_SVG = '''<svg class="name-art" viewBox="0 0 560 236" role="img" aria-labell
 svc_cards = ""
 for i, (k, t, d) in enumerate(SVC):
     key = k == "vegelszamolas"
-    svc_cards += (f'<a class="svc{" key" if key else ""}" href="{svc_url(k)}"><span class="n">{i+1:02d}</span>{icon(k)}'
-                  f'<h3>{t}{" <span class=\"tag g\">Kiemelt</span>" if key else ""}</h3><p>{d}</p><span class="go">Részletek</span></a>')
+    svc_cards += (f'<li><a class="svc-row{" key" if key else ""}" href="{svc_url(k)}"><span class="n">{i+1:02d}</span>{icon(k)}'
+                  f'<span class="tx"><b>{t}{" <span class=\"tag g\">Kiemelt szakterület</span>" if key else ""}</b><span>{d}</span></span><span class="go" aria-hidden="true">→</span></a></li>')
 
 home = f'''
+<div class="dateline"><div class="wrap" data-mod="dateline"><span>Aktuális adóhírek · határidők · kalkulátorok</span></div></div>
 <div class="wrap portal portal-home">
 
   <aside class="col-l" aria-label="Aktuális adóhírek és határidők">
@@ -66,8 +67,8 @@ home = f'''
       <ul class="hero-facts"><li>30 év pénzügyi-számviteli gyakorlat</li><li>Budaörsön és online</li><li>Magyarul és németül</li></ul>
     </section>
 
-    <section class="card" aria-labelledby="h-nev">
-      <p class="eyebrow">A nevünk</p>
+    <section class="ed rv" aria-labelledby="h-nev">
+      <p class="eyebrow"><span class="no">01</span>A nevünk</p>
       <h2 class="h2" id="h-nev">Multi · Cont · Center</h2>
       {NAME_SVG}
       <ul class="triad">
@@ -78,13 +79,13 @@ home = f'''
       <p class="open-note"><b>Nyitottak vagyunk az újra.</b> A céget eredetileg sem kizárólag könyvelésre alapítottuk – szívesen hozunk be új tevékenységeket és együttműködéseket.</p>
     </section>
 
-    <section aria-labelledby="h-szolg">
-      <div class="sec-t"><div><p class="eyebrow">Szolgáltatások</p><h2 class="h2" id="h-szolg">Amiben segítünk</h2></div><a class="arrow" href="szolgaltatasok.html">Mind a hat</a></div>
-      <div class="svc-grid">{svc_cards}</div>
+    <section class="ed rv" aria-labelledby="h-szolg">
+      <div class="sec-t"><div><p class="eyebrow"><span class="no">02</span>Szolgáltatások</p><h2 class="h2" id="h-szolg">Amiben segítünk</h2></div><a class="arrow" href="szolgaltatasok.html">Mind a hat</a></div>
+      <ol class="svc-idx">{svc_cards}</ol>
     </section>
 
-    <section class="card net" aria-labelledby="h-net">
-      <p class="eyebrow t">Partnerközpont</p>
+    <section class="ed net rv" aria-labelledby="h-net">
+      <p class="eyebrow t"><span class="no">03</span>Partnerközpont</p>
       <h2 class="h2" id="h-net">Kapcsolat más vállalkozásokkal</h2>
       <p style="margin-top:8px">Ügyfeleink gyakran keresnek ügyvédet, biztosítót, szoftvert. Ezért a weboldal összeköti őket azokkal a cégekkel, akiket jó szívvel ajánlunk.</p>
       <ul class="net-g">
@@ -95,8 +96,8 @@ home = f'''
       <p style="margin-top:14px"><a class="arrow" href="partnerek.html#jelentkezes">Partnernek jelentkezem</a></p>
     </section>
 
-    <section class="card" aria-labelledby="h-mod">
-      <p class="eyebrow t">Szemléletünk</p>
+    <section class="ed rv" aria-labelledby="h-mod">
+      <p class="eyebrow t"><span class="no">04</span>Szemléletünk</p>
       <h2 class="h2" id="h-mod" style="margin-bottom:18px">Miért a MultiCont?</h2>
       <div class="approach">
         <blockquote class="quote"><p>Megbízható, rugalmas, magas színvonalú szolgáltatást nyújtok kisvállalkozók részére.</p><footer>Horváth Mária, alapító</footer></blockquote>
@@ -111,11 +112,11 @@ home = f'''
       </div>
     </section>
 
-    <section class="card" aria-labelledby="h-maria">
+    <section class="ed rv" aria-labelledby="h-maria">
       <div class="person">
         <div class="ph-slot" role="img" aria-label="Horváth Mária fotójának helye"><b>HM</b><span>Saját fotó helye</span></div>
         <div>
-          <p class="eyebrow">A szakmai vezető</p>
+          <p class="eyebrow"><span class="no">05</span>A szakmai vezető</p>
           <h2 class="h3" id="h-maria">Horváth Mária</h2>
           <p class="muted" style="margin-top:4px">Mérlegképes könyvelő, adótanácsadó</p>
           <p style="margin-top:10px">Dolgozott a költségvetési szférában, magyar és nemzetközi tulajdonú cégeknél, öt évig cafeteria-tanácsadóként. Ügyfeleit magyarul és németül fogadja.</p>
@@ -131,6 +132,7 @@ home = f'''
   </div>
 
   <aside class="col-r" aria-label="Kalkulátorok, dokumentumok, partnerek">
+    <div class="col-h"><h2>Eszköztár</h2></div>
     <section class="tool" id="mini-calc">
       <div class="tool-h"><h2>Kalkulátor</h2><a class="arrow small" href="kalkulatorok.html">Mind a 8</a></div>
       <div class="mini-tabs" role="tablist" aria-label="Gyorskalkulátor">
