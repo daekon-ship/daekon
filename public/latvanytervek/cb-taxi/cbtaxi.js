@@ -151,10 +151,26 @@
       .to('.hero-caption, .scroll-hint', { opacity: 0, duration: .2 }, 0)
       .to('.hero-in', { y: -30, opacity: 0, duration: .2 }, .85);
 
+    // HERO mélység: a rétegek az egérmozgásra eltérő mértékben mozdulnak
+    if (matchMedia('(pointer: fine)').matches) {
+      const hp2 = $('.hero-pin');
+      const layers = [[skyStars, 6], [$('.hero .layer-far'), 10], [$('.hero .layer-near'), 18], [$('#reeds'), 34]];
+      hp2.addEventListener('pointermove', e => {
+        const r = hp2.getBoundingClientRect();
+        const nx = (e.clientX - r.left) / r.width - .5, ny = (e.clientY - r.top) / r.height - .5;
+        layers.forEach(([n, d]) => n && (n.style.transform = `translate(${(-nx * d).toFixed(1)}px, ${(-ny * d * .4).toFixed(1)}px)`));
+      });
+      hp2.addEventListener('pointerleave', () => layers.forEach(([n]) => n && (n.style.transform = '')));
+    }
+
     // ÉJSZAKAI ÚT: vízszintes haladás négy jeleneten át
     const track = $('#ride-track');
     const steps = $$('.ride-steps li');
     const rFar = $('#r-far');
+    const carSvg = $('.car');
+    const tail = carSvg.querySelector('rect[fill="#FF4A3A"]'), tailGlow = carSvg.querySelector('ellipse[fill="#F0503F"]');
+    tail && tail.classList.add('tail'); tailGlow && tailGlow.classList.add('tail-glow');
+    let lean = 0;
     const cards = $$('.pcard');
     const spokes = $$('.ride-spokes').map(sp => { const b = sp.getBBox(); return [sp, b.x + b.width / 2, b.y + b.height / 2]; });
     const train = $('#train'), plane = $('#plane');
@@ -171,6 +187,12 @@
           steps.forEach((li, n) => { li.classList.toggle('is-on', n === i); li.classList.toggle('is-past', n < i); });
           spokes.forEach(([sp, cx, cy]) => sp.setAttribute('transform', `rotate(${(p * 360 * 16).toFixed(1)} ${cx} ${cy})`));
           carWrap.style.translate = `0 ${(Math.sin(p * 90) * .8).toFixed(2)}px`;
+          // rugózás: gyorsításkor hátra, fékezéskor előre billen; megálló közelében féklámpa
+          const v = gsap.utils.clamp(-1, 1, self.getVelocity() / 2400);
+          lean += (v * -1.6 - lean) * .25;
+          carSvg.style.transform = `rotate(${lean.toFixed(2)}deg)`;
+          const nearStop = Math.abs(p * 3 - Math.round(p * 3)) < .06;
+          carSvg.classList.toggle('braking', nearStop && Math.abs(v) < .35);
           const tp = gsap.utils.clamp(0, 1, (p - .45) / .4);
           train.setAttribute('transform', `translate(${(260 - tp * 900).toFixed(1)} 0)`);
           const lp = gsap.utils.clamp(0, 1, (p - .72) / .28);
@@ -185,7 +207,7 @@
     gsap.from(carWrap, { xPercent: -120, opacity: 0, ease: 'power2.out', scrollTrigger: { trigger: '.ride', start: 'top 70%', end: 'top top', scrub: .6 } });
 
     // záró jelenet: a szöveg és a hívógomb felúszik
-    gsap.from('.final-in > *', { y: 24, opacity: 0, stagger: .08, duration: .7, ease: 'power3.out', scrollTrigger: { trigger: '.final', start: 'top 65%' } });
+    gsap.from('.final-copy > *, .final-act', { y: 24, opacity: 0, stagger: .08, duration: .7, ease: 'power3.out', scrollTrigger: { trigger: '.final', start: 'top 65%' } });
 
     document.fonts && document.fonts.ready.then(() => ScrollTrigger.refresh());
   } else {

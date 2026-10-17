@@ -384,3 +384,49 @@ body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opa
 .places button[aria-selected="true"] b{color:var(--navy)}
 .place-panel h3{display:none}
 @media (max-width:640px){.places button{grid-template-columns:1fr}.places button span{font-size:13px}}
+
+/* ============ 11. KÖR: látható finomítás a skill szerint ============ */
+/* hero cím: soronkénti maszkos felfedés (a régi felúszás helyett) */
+.hero h1 .ln{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.08em;margin-bottom:-.08em}
+.hero h1 .ln > span{display:inline-block}
+.js .hero-in > h1{opacity:1;transform:none;animation:none}
+.js .hero h1 .ln > span{transform:translateY(105%);animation:lnup .9s cubic-bezier(.2,.75,.15,1) forwards}
+.js .hero h1 .ln:nth-child(2) > span{animation-delay:.12s}
+@keyframes lnup{to{transform:none}}
+.hero .layer-far,.hero .layer-near,.hero #reeds,.hero .sky-stars{transition:transform .9s cubic-bezier(.2,.7,.2,1);will-change:transform}
+
+/* éjszakai út: rugózó kisbusz, féklámpa */
+.car{transform-origin:50% 92%;transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+.car .tail,.car .tail-glow{transition:opacity .35s, fill .35s}
+.car.braking .tail{fill:#FF6A55}
+.car.braking .tail-glow{opacity:.55}
+
+/* záró: szerkesztett kompozíció a jeleneten (üvegkártya helyett) */
+.final{align-items:flex-start}
+.final-grid{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);gap:clamp(32px,6vw,96px);align-items:end}
+.final-copy .lead{max-width:30em}
+.final-act{border-top:1.5px solid rgba(214,178,121,.7);padding-top:22px}
+.final-who{display:flex;align-items:baseline;gap:12px;margin:0 0 18px}
+.final-who b{font:600 18px/1.2 var(--head)}
+.final-who span{font-size:14px;color:var(--gold);letter-spacing:.06em}
+.final-act .final-call{margin-top:0;width:100%;max-width:420px}
+.final-act .final-meta{margin-top:18px;max-width:28em}
+.final-shade{background:linear-gradient(180deg,rgba(4,13,23,.82) 0%,rgba(4,13,23,.45) 42%,transparent 64%)}
+@media (max-width:900px){
+  .final-grid{grid-template-columns:1fr;gap:36px}
+}
+@media (max-width:640px){
+  .final-act{padding-top:20px}
+  .final-shade{background:linear-gradient(180deg,rgba(4,13,23,.85) 0%,rgba(4,13,23,.55) 55%,transparent 75%)}
+}
+@media (prefers-reduced-motion:reduce){
+  .js .hero h1 .ln > span{transform:none;animation:none}
+  .car{transition:none}
+}
+@media (min-width:901px) and (max-height:820px){
+  .hero-pin{justify-content:flex-start;padding-top:calc(var(--nav-h) + 6vh);padding-bottom:0}
+  .hero-route{margin-top:26px}
+  .hero-cta{margin-top:28px}
+  .hero-sub{margin-top:18px}
+}
+@media (max-width:380px){.hero-route{display:none}}

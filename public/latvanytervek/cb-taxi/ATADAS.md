@@ -4,6 +4,18 @@
 Fájlok: `index.html`, `cbtaxi.css`, `cbtaxi.js`, `js/` (GSAP 3 + ScrollTrigger, helyben), `fonts/` (Sora + Inter, helyben, OFL), `logo.svg`, `logo-jel.svg`.
 Build nincs (a Vite a `public/` mappát változatlanul másolja); a terv `noindex`.
 
+## 11. kör — látható finomítás a creative direction skill szerint
+- **Nyitókép:** a cím soronként, maszk mögül csúszik elő (a sima felúszás helyett); egérmozgásra a táj rétegei (csillagok, tanúhegyek, Badacsony, nádas) eltérő mértékben mozdulnak – mélységérzet 3D-motor nélkül. Alacsony asztali képernyőn (pl. 1366×768) a tartalom felülre igazodik, nem csúszik a menü alá; 380 px alatt az útvonal-motívum elrejtőzik.
+- **Éjszakai út:** a kisbusz rugózik – gyorsításkor hátra, fékezéskor előre billen –, megállóknál felvillan a féklámpa.
+- **Zárás:** az üveghatású kártya (generikus „glassmorphism”) kikerült; helyette szerkesztett kétoszlopos kompozíció közvetlenül a jeleneten: cím + szöveg balra, aranyvonallal elválasztott hívóblokk („Nyakas Péter · CB TAXI”, szám, terület) jobbra; mobilon egymás alatt.
+- **QA:** 360, 390, 430, 768, 1024, 1366, 1920 px – nincs vízszintes görgetés, nincs szkripthiba, nincs 44 px-nél kisebb érintési felület. A koncepcióoldal előnézetei frissítve.
+
+| Mozgás | Kiváltó | Válasz | Átvezetés | Csökkentett mozgás |
+|---|---|---|---|---|
+| Cím-felfedés | betöltés | két sor maszk mögül, 0,9 s, 0,12 s eltolással | alcím, gomb felúszik | azonnal látszik |
+| Táj-mélység | egérmozgás (csak egeres eszköz) | 4 réteg 6–34 px eltolás, 0,9 s csillapítással | elhagyáskor visszaáll | – |
+| Rugózás, féklámpa | görgetési sebesség | ±1,6° billenés; megállóban féklámpa | következő jelenet | nincs billenés |
+
 ## 10. kör — kreatív koncepció és átadási dokumentáció
 - **Új oldal: `koncepcio.html`** (https://daekon-ship.github.io/daekon/latvanytervek/cb-taxi/koncepcio.html) – ügyfélbemutató és fejlesztői átadás egyben: kiinduló elemzés (közönség, cél, verseny, ellenőrzött / nem ellenőrzött adatok), három eltérő irány élő vázlattal (A „Éjszakai út” – kiválasztva, B „Indulási tábla” lapozó betűtáblával, C „A déli part térképe” kirajzolódó útvonallal), döntés indoklása, asztali + mobil előnézet (`koncepcio/*.jpg`), mozgás-jelenetek táblázata (kiváltó, mit csinál, átvezetés), vizuális rendszer (színek, betűskála, térközök, komponensek), technika (GSAP beépítve; WebGL opcionális; React Bits / Aceternity / HorizonX nincs beépítve), egyeztetendők.
 - **Látványterv:** a működési terület pill-fülei helyett szerkesztett településlista (név + egysoros jellemzés, arany jelölővonal), függőleges nyílbillentyűs kezeléssel.
