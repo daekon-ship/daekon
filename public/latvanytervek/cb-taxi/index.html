@@ -6,14 +6,14 @@
 <title>CB TAXI – Nyakas Péter | Taxi és transzfer a Balaton déli partján</title>
 <meta name="description" content="Taxi, személyszállítás és transzfer Balatonmáriafürdő, Balatonkeresztúr és Marcali térségéből. Hívja Nyakas Pétert: +36 30 997 8362.">
 <meta name="robots" content="noindex, nofollow">
-<meta name="theme-color" content="#10161D">
+<meta name="theme-color" content="#071A2B">
 <meta name="format-detection" content="telephone=no">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="hu_HU">
 <meta property="og:title" content="CB TAXI – A Balatontól bárhová">
 <meta property="og:description" content="Taxi és transzfer Balatonmáriafürdő, Balatonkeresztúr és Marcali térségéből. +36 30 997 8362">
 <link rel="preload" href="fonts/sora.woff" as="font" type="font/woff" crossorigin>
-<link rel="preload" href="fonts/dmsans.woff" as="font" type="font/woff" crossorigin>
+<link rel="preload" href="fonts/inter.woff" as="font" type="font/woff" crossorigin>
 <link rel="stylesheet" href="cbtaxi.css">
 <link rel="icon" href="logo-jel.svg" type="image/svg+xml">
 <script>document.documentElement.classList.replace('no-js','js')</script>
@@ -41,6 +41,7 @@
     </a>
     <nav class="nav-links" aria-label="Fő navigáció">
       <a href="#szolgaltatasok">Szolgáltatások</a>
+      <a href="#fuvar">Fuvarigénylés</a>
       <a href="#terulet">Működési terület</a>
       <a href="#kapcsolat">Kapcsolat</a>
     </nav>
@@ -65,16 +66,16 @@
     <svg class="scene" viewBox="0 0 1600 560" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
       <defs>
         <linearGradient id="g-water" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stop-color="#32383F"/><stop offset=".35" stop-color="#202832"/><stop offset="1" stop-color="#141B22"/>
+          <stop offset="0" stop-color="#2B4152"/><stop offset=".35" stop-color="#123049"/><stop offset="1" stop-color="#0A2133"/>
         </linearGradient>
         <linearGradient id="g-far" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stop-color="#323840"/><stop offset="1" stop-color="#2A3139"/>
+          <stop offset="0" stop-color="#2A4054"/><stop offset="1" stop-color="#22394C"/>
         </linearGradient>
         <linearGradient id="g-near" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stop-color="#1D232A"/><stop offset="1" stop-color="#1A2026"/>
+          <stop offset="0" stop-color="#14293B"/><stop offset="1" stop-color="#112536"/>
         </linearGradient>
         <radialGradient id="g-sun" cx=".5" cy=".5" r=".5">
-          <stop offset="0" stop-color="#F6DDAE"/><stop offset=".55" stop-color="#E2BC7E"/><stop offset="1" stop-color="#D3AE73" stop-opacity="0"/>
+          <stop offset="0" stop-color="#F6DDAE"/><stop offset=".55" stop-color="#E2BC7E"/><stop offset="1" stop-color="#D6B279" stop-opacity="0"/>
         </radialGradient>
         <radialGradient id="g-moon" cx=".5" cy=".5" r=".5">
           <stop offset="0" stop-color="#F4F3EC"/><stop offset=".6" stop-color="#E6E9E6"/><stop offset="1" stop-color="#E6E9E6" stop-opacity="0"/>
@@ -86,7 +87,7 @@
           <stop offset="0" stop-color="#FFD99A"/><stop offset=".4" stop-color="#F2BF6E" stop-opacity=".6"/><stop offset="1" stop-color="#F2BF6E" stop-opacity="0"/>
         </radialGradient>
         <linearGradient id="g-shore" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stop-color="#10141A"/><stop offset="1" stop-color="#0A0D10"/>
+          <stop offset="0" stop-color="#081826"/><stop offset="1" stop-color="#050F18"/>
         </linearGradient>
       </defs>
 
@@ -105,7 +106,7 @@
       </g>
 
       <rect x="0" y="299" width="1600" height="261" fill="url(#g-water)"/>
-      <rect id="h-water-night" x="0" y="299" width="1600" height="261" fill="#0F151C" opacity="0"/>
+      <rect id="h-water-night" x="0" y="299" width="1600" height="261" fill="#061A2A" opacity="0"/>
       <g id="h-shimmer" class="shimmer" stroke="#E8C990" stroke-linecap="round" transform="translate(-105 0)">
         <path d="M560 312 H660" stroke-width="2" opacity=".55"/>
         <path d="M574 324 H646" stroke-width="2" opacity=".45"/>
@@ -115,41 +116,40 @@
         <path d="M570 384 H628" stroke-width="1.4" opacity=".2"/>
         <path d="M528 402 H574 M596 402 H664" stroke-width="1.2" opacity=".16"/>
       </g>
-      <g id="h-moonpath" stroke="#E9EBED" stroke-linecap="round" opacity="0" transform="translate(720 0)">
+      <g id="h-moonpath" stroke="#E6EEF0" stroke-linecap="round" opacity="0" transform="translate(720 0)">
         <path d="M584 316 H636" stroke-width="1.6" opacity=".6"/>
         <path d="M570 332 H600 M612 332 H650" stroke-width="1.4" opacity=".45"/>
         <path d="M590 348 H630" stroke-width="1.3" opacity=".35"/>
         <path d="M560 366 H596 M606 366 H654" stroke-width="1.2" opacity=".25"/>
         <path d="M580 386 H640" stroke-width="1.1" opacity=".18"/>
       </g>
-      <g stroke="#7089A5" stroke-linecap="round" opacity=".18" stroke-width="1">
+      <g stroke="#57BDD0" stroke-linecap="round" opacity=".18" stroke-width="1">
         <path d="M120 330 H200 M980 326 H1080 M1260 344 H1320 M300 360 H350 M820 372 H900 M1400 380 H1480 M80 398 H160 M1120 404 H1200"/>
       </g>
 
       <path fill="url(#g-shore)" d="M0 440 C220 428 460 432 700 446 C960 460 1260 470 1600 470 V560 H0 Z"/>
       <g id="reeds" class="reeds"></g>
-      <path class="road-edge" d="M140 462 C460 466 820 478 1080 500 C1290 518 1440 538 1600 556" fill="none" stroke="#242B33" stroke-width="2"/>
-      <path id="road-line" d="M120 470 C440 474 800 488 1060 512 C1260 530 1420 548 1600 566" fill="none" stroke="#D3AE73" stroke-width="1.4" stroke-dasharray="10 14" opacity=".55"/>
-      <g id="headlights" opacity="0">
-        <ellipse id="h-beam" cx="0" cy="2" rx="40" ry="14" fill="url(#g-beam)"/>
-        <circle cx="-4" cy="0" r="1.8" fill="#FFF6E2"/>
-        <circle cx="4" cy=".6" r="1.8" fill="#FFF6E2"/>
-      </g>
+      <rect x="0" y="506" width="1600" height="42" fill="#081A28"/>
+      <path d="M0 506 H1600" stroke="#1D3A50" stroke-width="1.5"/>
+      <path class="hero-dash" d="M0 527 H1600" stroke="#D6B279" stroke-width="2" stroke-dasharray="22 20" opacity=".6"/>
     </svg>
 
     <div class="hero-in wrap">
       <p class="hero-brand">CB TAXI <span>Nyakas Péter</span></p>
       <h1 id="hero-title">A Balatontól bárhová.</h1>
-      <p class="hero-sub">Kényelmes személyszállítás és transzfer Balatonmáriafürdő, Balatonkeresztúr és Marcali térségéből.</p>
+      <p class="hero-sub">Személyszállítás és transzfer Balatonmáriafürdő, Balatonkeresztúr és Marcali térségében.</p>
       <div class="hero-cta">
         <a class="btn btn-gold btn-call" href="tel:+36309978362">
           <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"/></svg>
-          <span>Hívás most<small>+36 30 997 8362</small></span>
+          <span>Taxi hívása<small>+36 30 997 8362</small></span>
         </a>
+        <a class="btn btn-line" href="#fuvar" data-goto-form>Fuvarajánlat kérése</a>
       </div>
     </div>
 
-    <p class="hero-caption" aria-hidden="true">Szigliget és Badacsony a déli partról<span>46,7° É / 17,4° K</span></p>
+    <!-- A jármű illusztráció. Valódi fotóra cserélés: lásd ATADAS.md – „Fotók cseréje”. -->
+    <div class="hero-van" aria-hidden="true"><svg class="van" viewBox="0 0 460 190" overflow="visible"><polygon class="van-beam" points="436,110 1260,60 1260,200" fill="url(#g-carbeam)"/><use href="#van"/></svg></div>
+    <p class="hero-caption" aria-hidden="true">Szigliget és Badacsony a déli partról<span>A jármű illusztráció</span></p>
     <div class="scroll-hint" aria-hidden="true"><i></i><span>Görgessen, és indulunk</span></div>
   </div>
 </section>
@@ -169,16 +169,16 @@
       <!-- 1 · HELYI TAXI — Balatonmáriafürdő, este -->
       <article class="panel" aria-labelledby="p1-t">
         <svg class="pscene" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
-          <path fill="#192028" d="M0 600 C120 594 220 590 330 596 C420 600 470 592 520 580 C560 560 590 528 618 520 L760 520 C790 524 812 556 840 588 C880 598 1000 600 1120 596 C1240 592 1400 596 1600 600 V604 H0 Z"/>
+          <path fill="#0F2639" d="M0 600 C120 594 220 590 330 596 C420 600 470 592 520 580 C560 560 590 528 618 520 L760 520 C790 524 812 556 840 588 C880 598 1000 600 1120 596 C1240 592 1400 596 1600 600 V604 H0 Z"/>
           <g class="far-lights" fill="#F2C987"><circle cx="560" cy="584" r="1.6"/><circle cx="610" cy="560" r="1.4"/><circle cx="700" cy="530" r="1.3"/><circle cx="742" cy="548" r="1.5"/><circle cx="800" cy="574" r="1.6"/><circle cx="880" cy="594" r="1.8"/><circle cx="220" cy="594" r="1.6"/><circle cx="1260" cy="594" r="1.6"/><circle cx="1330" cy="595" r="1.4"/></g>
-          <rect y="600" width="1600" height="110" fill="#151C23"/>
-          <g stroke="#E9EBED" stroke-linecap="round" opacity=".35"><path d="M1180 612 H1260 M1166 626 H1240 M1200 642 H1280 M1150 660 H1220 M1190 680 H1270"/></g>
-          <g stroke="#7089A5" stroke-opacity=".18"><path d="M100 620 H200 M400 650 H520 M700 616 H780 M860 670 H960 M1400 640 H1500"/></g>
-          <path d="M1290 704 V690 H1520 V704" stroke="#404750" stroke-width="3" fill="none"/>
-          <path d="M1330 690 V712 M1390 690 V712 M1450 690 V712 M1510 690 V712" stroke="#333A42" stroke-width="3"/>
-          <path d="M1400 668 L1440 668 L1432 678 H1408 Z" fill="#CCCFD3" opacity=".75"/><path d="M1421 666 V610 L1446 662 Z" fill="#CCCFD3" opacity=".75"/>
-          <rect y="704" width="1600" height="196" fill="#0D1115"/>
-          <g fill="#11161B">
+          <rect y="600" width="1600" height="110" fill="#0B2234"/>
+          <g stroke="#E6EEF0" stroke-linecap="round" opacity=".35"><path d="M1180 612 H1260 M1166 626 H1240 M1200 642 H1280 M1150 660 H1220 M1190 680 H1270"/></g>
+          <g stroke="#57BDD0" stroke-opacity=".18"><path d="M100 620 H200 M400 650 H520 M700 616 H780 M860 670 H960 M1400 640 H1500"/></g>
+          <path d="M1290 704 V690 H1520 V704" stroke="#3A5266" stroke-width="3" fill="none"/>
+          <path d="M1330 690 V712 M1390 690 V712 M1450 690 V712 M1510 690 V712" stroke="#2C4356" stroke-width="3"/>
+          <path d="M1400 668 L1440 668 L1432 678 H1408 Z" fill="#C7D1D8" opacity=".75"/><path d="M1421 666 V610 L1446 662 Z" fill="#C7D1D8" opacity=".75"/>
+          <rect y="704" width="1600" height="196" fill="#07141F"/>
+          <g fill="#0A1A27">
             <path d="M120 740 V676 L176 632 L232 676 V740Z"/>
             <path d="M250 740 V690 L292 656 L334 690 V740Z"/>
             <path d="M470 740 V660 L540 606 L610 660 V740Z"/>
@@ -194,59 +194,59 @@
             <rect x="920" y="684" width="18" height="18" opacity=".9"/><rect x="954" y="684" width="18" height="18" opacity=".4"/>
             <rect x="1058" y="704" width="14" height="14" opacity=".75"/>
           </g>
-          <g class="lamp"><circle cx="412" cy="626" r="70" fill="url(#g-lamp)"/><path d="M400 760 V626 H416" stroke="#444A52" stroke-width="5" fill="none"/><circle cx="414" cy="630" r="6" fill="#FFE2A8"/></g>
-          <g class="lamp"><circle cx="812" cy="626" r="70" fill="url(#g-lamp)"/><path d="M800 760 V626 H816" stroke="#444A52" stroke-width="5" fill="none"/><circle cx="814" cy="630" r="6" fill="#FFE2A8"/></g>
-          <g class="lamp"><circle cx="1212" cy="626" r="70" fill="url(#g-lamp)"/><path d="M1200 760 V626 H1216" stroke="#444A52" stroke-width="5" fill="none"/><circle cx="1214" cy="630" r="6" fill="#FFE2A8"/></g>
+          <g class="lamp"><circle cx="412" cy="626" r="70" fill="url(#g-lamp)"/><path d="M400 760 V626 H416" stroke="#3E5568" stroke-width="5" fill="none"/><circle cx="414" cy="630" r="6" fill="#FFE2A8"/></g>
+          <g class="lamp"><circle cx="812" cy="626" r="70" fill="url(#g-lamp)"/><path d="M800 760 V626 H816" stroke="#3E5568" stroke-width="5" fill="none"/><circle cx="814" cy="630" r="6" fill="#FFE2A8"/></g>
+          <g class="lamp"><circle cx="1212" cy="626" r="70" fill="url(#g-lamp)"/><path d="M1200 760 V626 H1216" stroke="#3E5568" stroke-width="5" fill="none"/><circle cx="1214" cy="630" r="6" fill="#FFE2A8"/></g>
           <use href="#road"/>
-          <g stroke="#06080A" stroke-width="2.4" stroke-linecap="round" fill="none"><path d="M1330 900 Q1334 860 1324 820 M1346 900 Q1352 850 1350 806 M1362 900 Q1360 862 1372 826 M1380 900 Q1386 868 1384 836 M1520 900 Q1526 850 1514 808 M1540 900 Q1540 860 1552 822 M1560 900 Q1566 870 1562 836 M40 900 Q46 860 36 818 M60 900 Q60 860 72 826 M80 900 Q88 866 82 834"/></g>
+          <g stroke="#03090F" stroke-width="2.4" stroke-linecap="round" fill="none"><path d="M1330 900 Q1334 860 1324 820 M1346 900 Q1352 850 1350 806 M1362 900 Q1360 862 1372 826 M1380 900 Q1386 868 1384 836 M1520 900 Q1526 850 1514 808 M1540 900 Q1540 860 1552 822 M1560 900 Q1566 870 1562 836 M40 900 Q46 860 36 818 M60 900 Q60 860 72 826 M80 900 Q88 866 82 834"/></g>
         </svg>
         <div class="pcard">
           <p class="pnum">1 / 4</p>
           <h3 id="p1-t">Helyi taxi</h3>
-          <p>Egyszerű utazás Balatonmáriafürdőn, Balatonkeresztúron és környékükön. Strandra, állomásra, vacsorára és haza.</p>
-          <a class="pcall" href="tel:+36309978362"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"/></svg>Hívás</a>
+          <p>Balatonmáriafürdő és Balatonkeresztúr térsége: strandra, állomásra, vacsorára és haza. Családdal, társasággal, csomagokkal is.</p>
+          <div class="pacts"><a class="pcall" href="tel:+36309978362"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"/></svg>Taxi hívása</a><button type="button" class="plink" data-type="helyi">Helyi fuvart kérek</button></div>
         </div>
       </article>
 
       <!-- 2 · TÁVOLSÁGI — országút -->
       <article class="panel" aria-labelledby="p2-t">
         <svg class="pscene" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
-          <path fill="#1C232B" d="M0 610 C160 570 300 560 460 584 C600 604 700 576 860 560 C1020 546 1160 580 1300 590 C1420 598 1520 584 1600 576 V640 H0 Z"/>
+          <path fill="#112A3E" d="M0 610 C160 570 300 560 460 584 C600 604 700 576 860 560 C1020 546 1160 580 1300 590 C1420 598 1520 584 1600 576 V640 H0 Z"/>
           <g fill="#F2C987" class="far-lights"><circle cx="1380" cy="590" r="1.6"/><circle cx="1392" cy="588" r="1.3"/><circle cx="1404" cy="591" r="1.7"/><circle cx="1420" cy="589" r="1.4"/><circle cx="1436" cy="592" r="1.5"/><circle cx="1452" cy="588" r="1.2"/><circle cx="120" cy="600" r="1.5"/><circle cx="134" cy="598" r="1.3"/></g>
-          <path fill="#141A20" d="M0 640 C200 616 380 626 600 640 C820 654 1000 626 1220 624 C1400 622 1520 640 1600 646 V710 H0 Z"/>
-          <g stroke="#212A34" stroke-width="1.2" opacity=".8"><path d="M0 668 C300 650 600 664 900 676 M200 690 C500 676 800 686 1100 696 M700 664 C1000 650 1300 656 1600 668"/></g>
-          <g fill="#0C0F14"><ellipse cx="180" cy="620" rx="14" ry="62"/><ellipse cx="236" cy="626" rx="13" ry="56"/><ellipse cx="290" cy="630" rx="12" ry="52"/><ellipse cx="340" cy="634" rx="11" ry="48"/><ellipse cx="386" cy="638" rx="10" ry="44"/><ellipse cx="428" cy="641" rx="9" ry="40"/></g>
-          <rect y="704" width="1600" height="196" fill="#0D1115"/>
+          <path fill="#0B1F2F" d="M0 640 C200 616 380 626 600 640 C820 654 1000 626 1220 624 C1400 622 1520 640 1600 646 V710 H0 Z"/>
+          <g stroke="#14324A" stroke-width="1.2" opacity=".8"><path d="M0 668 C300 650 600 664 900 676 M200 690 C500 676 800 686 1100 696 M700 664 C1000 650 1300 656 1600 668"/></g>
+          <g fill="#06131D"><ellipse cx="180" cy="620" rx="14" ry="62"/><ellipse cx="236" cy="626" rx="13" ry="56"/><ellipse cx="290" cy="630" rx="12" ry="52"/><ellipse cx="340" cy="634" rx="11" ry="48"/><ellipse cx="386" cy="638" rx="10" ry="44"/><ellipse cx="428" cy="641" rx="9" ry="40"/></g>
+          <rect y="704" width="1600" height="196" fill="#07141F"/>
           <g class="sign" transform="translate(-330 0)">
-            <path d="M1090 760 V640 M1290 760 V640" stroke="#353B42" stroke-width="6"/>
-            <rect x="1060" y="570" width="260" height="112" rx="6" fill="#1D6B48" stroke="#E9EAEB" stroke-width="3"/>
-            <rect x="1080" y="590" width="58" height="34" rx="4" fill="#E9EAEB"/>
+            <path d="M1090 760 V640 M1290 760 V640" stroke="#2E4356" stroke-width="6"/>
+            <rect x="1060" y="570" width="260" height="112" rx="6" fill="#1D6B48" stroke="#E7EBED" stroke-width="3"/>
+            <rect x="1080" y="590" width="58" height="34" rx="4" fill="#E7EBED"/>
             <text x="1109" y="614" text-anchor="middle" font-family="DM Sans, sans-serif" font-weight="700" font-size="22" fill="#1D6B48">M7</text>
             <text x="1150" y="616" font-family="DM Sans, sans-serif" font-weight="600" font-size="26" fill="#F5F4EF">Budapest</text>
             <path d="M1086 652 H1132 M1118 640 L1132 652 L1118 664" stroke="#F5F4EF" stroke-width="4" fill="none" stroke-linejoin="round"/>
           </g>
-          <g><rect x="560" y="728" width="14" height="32" fill="#CED0D3"/><rect x="560" y="728" width="14" height="7" fill="#E3584A"/></g>
-          <g><rect x="1500" y="728" width="14" height="32" fill="#CED0D3"/><rect x="1500" y="728" width="14" height="7" fill="#E3584A"/></g>
+          <g><rect x="560" y="728" width="14" height="32" fill="#C9D2D8"/><rect x="560" y="728" width="14" height="7" fill="#E3584A"/></g>
+          <g><rect x="1500" y="728" width="14" height="32" fill="#C9D2D8"/><rect x="1500" y="728" width="14" height="7" fill="#E3584A"/></g>
           <use href="#road"/>
         </svg>
         <div class="pcard">
           <p class="pnum">2 / 4</p>
           <h3 id="p2-t">Távolsági fuvar</h3>
-          <p>Személyszállítás távolabbi úti célokra, előzetes egyeztetéssel. Egy telefon, és megbeszéljük az indulást.</p>
-          <a class="pcall" href="tel:+36309978362"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"/></svg>Hívás</a>
+          <p>Személyszállítás távolabbi úti célokra, előzetes egyeztetés szerint. Kényelmesen, több utasnak is.</p>
+          <div class="pacts"><a class="pcall" href="tel:+36309978362"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"/></svg>Taxi hívása</a><button type="button" class="plink" data-type="tavolsagi">Távolsági ajánlatot kérek</button></div>
         </div>
       </article>
 
       <!-- 3 · TRANSZFER — Balatonmária vasútállomás -->
       <article class="panel" aria-labelledby="p3-t">
         <svg class="pscene" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
-          <path fill="#192028" d="M0 600 C200 596 400 598 600 600 C800 602 1000 596 1300 598 C1440 599 1520 600 1600 600 V604 H0Z"/>
-          <rect y="600" width="1600" height="70" fill="#151C23"/>
-          <g stroke="#E9EBED" stroke-linecap="round" opacity=".3"><path d="M1060 612 H1140 M1050 628 H1120 M1080 644 H1160"/></g>
-          <rect y="662" width="1600" height="14" fill="#11161B"/>
-          <path d="M0 662 H1600" stroke="#404750" stroke-width="2"/>
+          <path fill="#0F2639" d="M0 600 C200 596 400 598 600 600 C800 602 1000 596 1300 598 C1440 599 1520 600 1600 600 V604 H0Z"/>
+          <rect y="600" width="1600" height="70" fill="#0B2234"/>
+          <g stroke="#E6EEF0" stroke-linecap="round" opacity=".3"><path d="M1060 612 H1140 M1050 628 H1120 M1080 644 H1160"/></g>
+          <rect y="662" width="1600" height="14" fill="#0A1A27"/>
+          <path d="M0 662 H1600" stroke="#3A5266" stroke-width="2"/>
           <g id="train" class="train">
-            <g fill="#1C2229" stroke="#343B43" stroke-width="2">
+            <g fill="#13283A" stroke="#2B4559" stroke-width="2">
               <rect x="-160" y="596" width="300" height="64" rx="8"/>
               <rect x="150" y="596" width="300" height="64" rx="4"/>
               <rect x="460" y="596" width="300" height="64" rx="4"/>
@@ -258,30 +258,30 @@
               <rect x="480" y="610" width="34" height="22" rx="2"/><rect x="526" y="610" width="34" height="22" rx="2"/><rect x="572" y="610" width="34" height="22" rx="2"/><rect x="618" y="610" width="34" height="22" rx="2"/><rect x="664" y="610" width="34" height="22" rx="2"/><rect x="710" y="610" width="34" height="22" rx="2"/>
               <rect x="790" y="610" width="34" height="22" rx="2"/><rect x="836" y="610" width="34" height="22" rx="2"/><rect x="882" y="610" width="34" height="22" rx="2"/><rect x="928" y="610" width="34" height="22" rx="2"/><rect x="974" y="610" width="34" height="22" rx="2"/><rect x="1020" y="610" width="34" height="22" rx="2"/>
             </g>
-            <path d="M-160 650 H1070" stroke="#7089A5" stroke-width="3" opacity=".7"/>
+            <path d="M-160 650 H1070" stroke="#57BDD0" stroke-width="3" opacity=".7"/>
           </g>
-          <rect y="676" width="1600" height="224" fill="#0D1115"/>
-          <rect x="300" y="690" width="1000" height="14" fill="#232931"/>
-          <g transform="translate(120 0)"><path d="M760 690 V600 L860 556 L960 600 V690 Z" fill="#11161B"/>
+          <rect y="676" width="1600" height="224" fill="#07141F"/>
+          <rect x="300" y="690" width="1000" height="14" fill="#1A3043"/>
+          <g transform="translate(120 0)"><path d="M760 690 V600 L860 556 L960 600 V690 Z" fill="#0A1A27"/>
           <rect x="792" y="620" width="30" height="40" fill="#F2BF6E" opacity=".8"/><rect x="842" y="620" width="30" height="40" fill="#F2BF6E" opacity=".45"/><rect x="892" y="620" width="30" height="40" fill="#F2BF6E" opacity=".8"/></g>
           <g class="station-sign" transform="translate(90 0)">
-            <path d="M560 690 V600 M700 690 V600" stroke="#444A52" stroke-width="4"/>
+            <path d="M560 690 V600 M700 690 V600" stroke="#3E5568" stroke-width="4"/>
             <rect x="540" y="566" width="180" height="40" rx="2" fill="#F5F4EF"/>
-            <text x="630" y="593" text-anchor="middle" font-family="DM Sans, sans-serif" font-weight="600" font-size="20" fill="#10161D">Balatonmária</text>
+            <text x="630" y="593" text-anchor="middle" font-family="DM Sans, sans-serif" font-weight="600" font-size="20" fill="#071A2B">Balatonmária</text>
           </g>
-          <g class="lamp"><circle cx="1110" cy="610" r="64" fill="url(#g-lamp)"/><path d="M1100 690 V610 H1114" stroke="#444A52" stroke-width="5" fill="none"/><circle cx="1112" cy="614" r="5" fill="#FFE2A8"/></g>
-          <g class="lamp"><circle cx="420" cy="610" r="64" fill="url(#g-lamp)"/><path d="M410 690 V610 H424" stroke="#444A52" stroke-width="5" fill="none"/><circle cx="422" cy="614" r="5" fill="#FFE2A8"/></g>
+          <g class="lamp"><circle cx="1110" cy="610" r="64" fill="url(#g-lamp)"/><path d="M1100 690 V610 H1114" stroke="#3E5568" stroke-width="5" fill="none"/><circle cx="1112" cy="614" r="5" fill="#FFE2A8"/></g>
+          <g class="lamp"><circle cx="420" cy="610" r="64" fill="url(#g-lamp)"/><path d="M410 690 V610 H424" stroke="#3E5568" stroke-width="5" fill="none"/><circle cx="422" cy="614" r="5" fill="#FFE2A8"/></g>
 <g transform="translate(-230 0)">
-          <rect x="1000" y="652" width="30" height="38" rx="4" fill="#D3AE73"/><path d="M1008 652 V644 H1022 V652" stroke="#D3AE73" stroke-width="3" fill="none"/>
-          <rect x="1036" y="664" width="22" height="26" rx="4" fill="#7089A5" opacity=".85"/>
+          <rect x="1000" y="652" width="30" height="38" rx="4" fill="#D6B279"/><path d="M1008 652 V644 H1022 V652" stroke="#D6B279" stroke-width="3" fill="none"/>
+          <rect x="1036" y="664" width="22" height="26" rx="4" fill="#57BDD0" opacity=".85"/>
           </g>
           <use href="#road"/>
         </svg>
         <div class="pcard">
           <p class="pnum">3 / 4</p>
           <h3 id="p3-t">Transzfer</h3>
-          <p>Előre egyeztethető utazások a Balaton és Marcali térségéből: vonathoz, rendezvényre, szállásra.</p>
-          <a class="pcall" href="tel:+36309978362"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"/></svg>Hívás</a>
+          <p>Előre egyeztetett utazások a Balaton és Marcali térségéből: vonathoz, rendezvényre, szállásra.</p>
+          <div class="pacts"><a class="pcall" href="tel:+36309978362"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"/></svg>Taxi hívása</a><button type="button" class="plink" data-type="transzfer">Transzfert kérek</button></div>
         </div>
       </article>
 
@@ -289,58 +289,225 @@
       <article class="panel" aria-labelledby="p4-t">
         <svg class="pscene" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
           <g id="plane" class="plane">
-            <path d="M0 0 L-90 8 L-120 -2 L-128 4 L-108 14 L-40 18 L-70 46 L-52 46 L4 18 L40 16 C52 15 58 10 58 6 C58 2 52 -1 40 -1 Z" fill="#CED1D5"/>
+            <path d="M0 0 L-90 8 L-120 -2 L-128 4 L-108 14 L-40 18 L-70 46 L-52 46 L4 18 L40 16 C52 15 58 10 58 6 C58 2 52 -1 40 -1 Z" fill="#C9D3DA"/>
             <circle class="beacon" cx="-118" cy="-2" r="4" fill="#FF5C4A"/>
             <circle cx="52" cy="6" r="3" fill="#FFF6E2"/>
           </g>
-          <rect x="180" y="586" width="680" height="84" fill="#11161B"/>
-          <path d="M160 586 H880 L860 572 H180 Z" fill="#161C23"/>
+          <rect x="180" y="586" width="680" height="84" fill="#0A1A27"/>
+          <path d="M160 586 H880 L860 572 H180 Z" fill="#0D2132"/>
           <g fill="#F2BF6E" opacity=".75"><rect x="210" y="604" width="610" height="10"/><rect x="210" y="628" width="610" height="22" opacity=".45"/></g>
-          <g stroke="#11161B" stroke-width="6"><path d="M290 600 V660 M380 600 V660 M470 600 V660 M560 600 V660 M650 600 V660 M740 600 V660"/></g>
+          <g stroke="#0A1A27" stroke-width="6"><path d="M290 600 V660 M380 600 V660 M470 600 V660 M560 600 V660 M650 600 V660 M740 600 V660"/></g>
 <g transform="translate(-230 0)">
-          <path d="M1210 670 V520 H1250 V670Z" fill="#11161B"/>
-          <path d="M1186 520 L1196 478 H1264 L1274 520 Z" fill="#161C23"/>
-          <rect x="1200" y="488" width="60" height="22" fill="#B4C0CE" opacity=".55"/>
+          <path d="M1210 670 V520 H1250 V670Z" fill="#0A1A27"/>
+          <path d="M1186 520 L1196 478 H1264 L1274 520 Z" fill="#0D2132"/>
+          <rect x="1200" y="488" width="60" height="22" fill="#9FD9E3" opacity=".55"/>
           <circle class="beacon" cx="1230" cy="470" r="4" fill="#FF5C4A"/>
           </g>
-          <rect y="670" width="1600" height="34" fill="#12171D"/>
-          <g id="runway" fill="#9DAEC2"></g>
-          <rect y="704" width="1600" height="196" fill="#0D1115"/>
+          <rect y="670" width="1600" height="34" fill="#0A1C2A"/>
+          <g id="runway" fill="#7FD3E0"></g>
+          <rect y="704" width="1600" height="196" fill="#07141F"/>
           <use href="#road"/>
         </svg>
         <div class="pcard">
           <p class="pnum">4 / 4</p>
           <h3 id="p4-t">Reptéri transzfer</h3>
-          <p>Tervezze meg reptéri utazását: hívjon, és egyeztessük az indulást, a járatot és a csomagokat.</p>
-          <a class="pcall" href="tel:+36309978362"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"/></svg>Hívás</a>
+          <p>Tervezze meg reptéri utazását, és kérjen egyedi ajánlatot. A vállalt repülőtereket az ajánlatban egyeztetjük.</p>
+          <div class="pacts"><a class="pcall" href="tel:+36309978362"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"/></svg>Taxi hívása</a><button type="button" class="plink" data-type="repteri">Reptéri ajánlatot kérek</button></div>
         </div>
       </article>
     </div>
 
     <!-- az autó: illusztráció, nem a vállalkozás valós járműve -->
     <div class="car-wrap" aria-hidden="true">
-      <svg class="car" viewBox="0 0 440 160" overflow="visible">
-        <polygon class="beam" points="414,96 1240,40 1240,170" fill="url(#g-carbeam)"/>
-      <ellipse cx="226" cy="152" rx="214" ry="8" fill="#000" opacity=".5"/>
-      <path d="M28 118 L24 70 Q24 46 44 42 L262 36 Q290 36 312 52 L346 76 Q392 82 410 92 Q421 98 421 112 L419 122 Q417 128 408 128 L382 128 A31 31 0 0 0 320 128 L132 128 A31 31 0 0 0 70 128 L36 128 Q28 128 28 118 Z" fill="url(#g-body)"/>
-      <path d="M52 54 L250 48 Q276 48 296 62 L324 82 L52 86 Z" fill="url(#g-glass)"/>
-      <path d="M178 50 V124 M272 52 L274 124" stroke="#090B0D" stroke-width="2" fill="none"/>
-      <path d="M118 50 V86 M230 49 V86" stroke="#090B0D" stroke-width="4"/>
-      <path d="M46 44 L262 38 Q290 38 312 54 L346 78 Q392 84 410 94" stroke="#9BA2AB" stroke-width="1.6" fill="none" opacity=".75"/>
-      <path d="M30 100 H418" stroke="#32383F" stroke-width="1.2" opacity=".8"/>
-      <path d="M402 92 L419 98 L418 106 L400 104 Z" fill="#FFF2D6"/>
-      <circle cx="412" cy="100" r="16" fill="#FFE7B8" opacity=".28"/>
-      <rect x="23" y="62" width="7" height="22" rx="2" fill="#F0503F"/>
-      <circle cx="27" cy="73" r="14" fill="#F0503F" opacity=".22"/>
-      <g class="wheel"><circle cx="101" cy="128" r="25" fill="#070809"/><circle cx="101" cy="128" r="14" fill="#2F3439"/><path class="spokes ride-spokes" d="M101 116 V140 M89 128 H113 M92.5 119.5 L109.5 136.5 M109.5 119.5 L92.5 136.5" stroke="#656C73" stroke-width="2.4"/><circle cx="101" cy="128" r="4" fill="#9BA2AB"/></g>
-      <g class="wheel"><circle cx="351" cy="128" r="25" fill="#070809"/><circle cx="351" cy="128" r="14" fill="#2F3439"/><path class="spokes ride-spokes" d="M351 116 V140 M339 128 H363 M342.5 119.5 L359.5 136.5 M359.5 119.5 L342.5 136.5" stroke="#656C73" stroke-width="2.4"/><circle cx="351" cy="128" r="4" fill="#9BA2AB"/></g>
-    
+      <svg class="car van" viewBox="0 0 460 190" overflow="visible">
+        <polygon class="beam" points="436,110 1260,56 1260,206" fill="url(#g-carbeam)"/>
+        <ellipse cx="232" cy="186" rx="222" ry="8" fill="#000" opacity=".5"/>
+      <path d="M24 150 L20 54 Q20 32 42 30 L322 25 Q338 25 348 35 L386 86 Q418 92 432 104 Q442 113 442 132 L440 150 Q438 159 428 159 L396 159 A36 36 0 0 0 324 159 L132 159 A36 36 0 0 0 60 159 L34 159 Q24 159 24 150 Z" fill="url(#g-body)"/>
+      <path d="M40 44 L328 39 Q340 39 347 48 L374 88 L40 92 Z" fill="url(#g-glass)"/>
+      <path d="M40 44 L328 39 Q340 39 347 48 L374 88 L40 92 Z" fill="url(#g-cabin)"/>
+      <path d="M120 42 V92 M206 41 V92 M290 40 V92" stroke="#050A10" stroke-width="7"/>
+      <path d="M140 44 V156 M290 42 V156" stroke="#050A10" stroke-width="2"/>
+      <path d="M142 98 H288" stroke="#3B5468" stroke-width="2" opacity=".7"/>
+      <path d="M40 31 L322 26 Q338 26 348 36 L386 87 Q418 93 432 105" stroke="#A9BCC9" stroke-width="1.6" fill="none" opacity=".7"/>
+      <path d="M26 112 H440" stroke="#22394C" stroke-width="1.2" opacity=".9"/>
+      <path d="M368 80 L382 78 L384 92 L372 92 Z" fill="#0A1622"/>
+      <path d="M420 104 L441 112 L440 121 L418 118 Z" fill="#FFF2D6"/>
+      <path d="M412 124 H440" stroke="#FFE7B8" stroke-width="2.4" opacity=".85"/>
+      <circle cx="432" cy="114" r="20" fill="#FFE7B8" opacity=".26"/>
+      <rect x="430" y="128" width="11" height="12" rx="2" fill="#050A10"/>
+      <rect x="19" y="58" width="8" height="46" rx="3" fill="#F0503F"/>
+      <circle cx="23" cy="80" r="18" fill="#F0503F" opacity=".2"/>
+      <g class="wheel"><circle cx="96" cy="158" r="28" fill="#05090D"/><circle cx="96" cy="158" r="16" fill="#2B3B49"/><path class="spokes ride-spokes" d="M96 144 V172 M82 158 H110 M86 148 L106 168 M106 148 L86 168" stroke="#6D8292" stroke-width="2.6"/><circle cx="96" cy="158" r="4.5" fill="#B9C8D2"/></g>
+      <g class="wheel"><circle cx="360" cy="158" r="28" fill="#05090D"/><circle cx="360" cy="158" r="16" fill="#2B3B49"/><path class="spokes ride-spokes" d="M360 144 V172 M346 158 H374 M350 148 L370 168 M370 148 L350 168" stroke="#6D8292" stroke-width="2.6"/><circle cx="360" cy="158" r="4.5" fill="#B9C8D2"/></g>
       </svg>
     </div>
 
+    <p class="ride-note" aria-hidden="true">A jármű illusztráció</p>
     <ol class="ride-steps" aria-hidden="true">
       <li class="is-on">Helyi taxi</li><li>Távolsági fuvar</li><li>Transzfer</li><li>Reptéri transzfer</li>
     </ol>
+  </div>
+</section>
+
+<!-- ============ FUVARIGÉNYLÉS ============ -->
+<section class="sec booking" id="fuvar" aria-labelledby="bk-title">
+  <div class="wrap booking-grid">
+
+    <div class="booking-side">
+      <h2 id="bk-title">Hová utazna?</h2>
+      <p class="lead">Adja meg az út részleteit, és kérjen egyedi ajánlatot.</p>
+
+      <!-- élő menetlevél -->
+      <figure class="ticket" aria-label="Az ajánlatkérés összefoglalója">
+        <div class="tk-top">
+          <svg class="tk-mark" viewBox="0 0 64 40" aria-hidden="true"><use href="#cb-mark"/></svg>
+          <span class="tk-type" data-t="type">Helyi fuvar</span>
+        </div>
+        <div class="tk-route">
+          <div class="tk-pt"><small>Honnan</small><b data-t="from" data-empty="Indulási hely">Indulási hely</b></div>
+          <svg class="tk-line" viewBox="0 0 40 120" preserveAspectRatio="none" aria-hidden="true">
+            <circle cx="20" cy="8" r="5" fill="none" stroke="#D6B279" stroke-width="2"/>
+            <path d="M20 16 V104" stroke="#D6B279" stroke-width="2" stroke-dasharray="4 6"/>
+            <circle cx="20" cy="112" r="5" fill="#D6B279"/>
+          </svg>
+          <div class="tk-pt"><small>Hová</small><b data-t="to" data-empty="Úti cél">Úti cél</b></div>
+        </div>
+        <dl class="tk-meta">
+          <div><dt>Dátum</dt><dd data-t="date" data-empty="–">–</dd></div>
+          <div><dt>Időpont</dt><dd data-t="time" data-empty="–">–</dd></div>
+          <div><dt>Utasok</dt><dd data-t="pax" data-empty="–">–</dd></div>
+          <div><dt>Csomag</dt><dd data-t="bags" data-empty="–">–</dd></div>
+        </dl>
+        <p class="tk-air" data-t="air" hidden></p>
+        <figcaption>Az út részletei alapján egyedi ajánlat kérhető. Fix árat az oldal nem számol.</figcaption>
+      </figure>
+    </div>
+
+    <form class="bk-form" id="bk-form" novalidate>
+      <fieldset class="types">
+        <legend>Milyen útra?</legend>
+        <label><input type="radio" name="tipus" value="helyi" checked><span>Helyi fuvar</span></label>
+        <label><input type="radio" name="tipus" value="tavolsagi"><span>Távolsági fuvar</span></label>
+        <label><input type="radio" name="tipus" value="transzfer"><span>Transzfer</span></label>
+        <label><input type="radio" name="tipus" value="repteri"><span>Reptéri transzfer</span></label>
+      </fieldset>
+
+      <div class="f-row two">
+        <div class="f">
+          <label for="f-from">Indulási hely</label>
+          <input id="f-from" name="honnan" list="helyek" autocomplete="off" required placeholder="pl. Balatonmáriafürdő, Szent István u.">
+          <p class="err" id="e-from"></p>
+        </div>
+        <div class="f">
+          <label for="f-to">Úti cél</label>
+          <input id="f-to" name="hova" list="helyek" autocomplete="off" required placeholder="település, cím vagy állomás">
+          <p class="err" id="e-to"></p>
+        </div>
+      </div>
+      <datalist id="helyek">
+        <option value="Balatonmáriafürdő"><option value="Balatonkeresztúr"><option value="Marcali">
+        <option value="Balatonmária vasútállomás"><option value="Balatonberény"><option value="Balatonfenyves">
+        <option value="Keszthely"><option value="Hévíz"><option value="Fonyód"><option value="Kaposvár"><option value="Budapest">
+      </datalist>
+
+      <div class="airport" id="airport" hidden>
+        <div class="f-row two">
+          <div class="f">
+            <label for="f-air">Repülőtér</label>
+            <select id="f-air" name="repuloter">
+              <option value="">Válasszon…</option>
+              <option>Budapest Liszt Ferenc</option>
+              <option>Hévíz–Balaton Airport (Sármellék)</option>
+              <option>Bécs-Schwechat</option>
+              <option>Zágráb</option>
+              <option>Egyéb repülőtér</option>
+            </select>
+            <p class="err" id="e-air"></p>
+          </div>
+          <div class="f">
+            <label for="f-flight">Járatszám <em>(nem kötelező)</em></label>
+            <input id="f-flight" name="jarat" autocomplete="off" placeholder="pl. W6 2337">
+          </div>
+        </div>
+        <fieldset class="seg">
+          <legend>Érkezik vagy indul?</legend>
+          <label><input type="radio" name="irany" value="indulas" checked><span>Indulok a reptérre</span></label>
+          <label><input type="radio" name="irany" value="erkezes"><span>Érkezem, a reptérről jönnék</span></label>
+        </fieldset>
+        <p class="note">Hogy mely repülőterekre vállalható a fuvar, azt az ajánlatban egyeztetjük.</p>
+      </div>
+
+      <div class="f-row four">
+        <div class="f">
+          <label for="f-date">Dátum</label>
+          <input id="f-date" name="datum" type="date" required>
+          <p class="err" id="e-date"></p>
+        </div>
+        <div class="f">
+          <label for="f-time">Időpont</label>
+          <input id="f-time" name="ido" type="time" required>
+          <p class="err" id="e-time"></p>
+        </div>
+        <div class="f">
+          <label for="f-pax">Utasok</label>
+          <select id="f-pax" name="utasok" required>
+            <option value="">–</option>
+            <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option>
+            <option value="7+">7 vagy több</option>
+          </select>
+          <p class="err" id="e-pax"></p>
+        </div>
+        <div class="f">
+          <label for="f-bags">Csomagok</label>
+          <select id="f-bags" name="csomag">
+            <option value="0">Nincs</option><option>1</option><option>2</option><option>3</option><option>4</option>
+            <option value="5+">5 vagy több</option>
+          </select>
+        </div>
+      </div>
+      <p class="note pax-note" id="pax-note" hidden>Nagyobb létszámnál a pontos lehetőségeket telefonon egyeztetjük.</p>
+
+      <div class="f-row three">
+        <div class="f">
+          <label for="f-name">Név</label>
+          <input id="f-name" name="nev" autocomplete="name" required>
+          <p class="err" id="e-name"></p>
+        </div>
+        <div class="f">
+          <label for="f-tel">Telefonszám</label>
+          <input id="f-tel" name="telefon" type="tel" autocomplete="tel" inputmode="tel" required placeholder="+36 …">
+          <p class="err" id="e-tel"></p>
+        </div>
+        <div class="f">
+          <label for="f-mail">E-mail-cím <em>(nem kötelező)</em></label>
+          <input id="f-mail" name="email" type="email" autocomplete="email">
+          <p class="err" id="e-mail"></p>
+        </div>
+      </div>
+
+      <div class="f">
+        <label for="f-note">Megjegyzés</label>
+        <textarea id="f-note" name="megjegyzes" rows="3" placeholder="Gyerekülés, kisállat, köztes megálló, visszaút…"></textarea>
+      </div>
+
+      <div class="bk-submit">
+        <button class="btn btn-gold" type="submit">Egyedi ajánlatot kérek</button>
+        <p>Küldéskor megnyílik az e-mail-programja az előre kitöltött ajánlatkéréssel a taxispeter@gmail.com címre. A levél onnan megy el; az oldal maga nem tárol és nem küld adatot.</p>
+      </div>
+      <p class="sr-only" id="bk-status" role="status" aria-live="polite"></p>
+    </form>
+
+    <div class="bk-done" id="bk-done" hidden tabindex="-1">
+      <h3>Az ajánlatkérés elkészült.</h3>
+      <p>Megnyitottuk az e-mail-programjában, előre kitöltve. Az ajánlatkérés akkor jut el Péterhez, ha ott elküldi. Ha nem nyílt meg levelező, másolja ki a szöveget, vagy hívja közvetlenül.</p>
+      <div class="bk-done-cta">
+        <a class="btn btn-gold" id="bk-mail" href="mailto:taxispeter@gmail.com">E-mail megnyitása újra</a>
+        <button class="btn btn-ghost" type="button" id="bk-copy">Szöveg másolása</button>
+        <a class="btn btn-ghost" href="tel:+36309978362">Inkább felhívom</a>
+        <button class="link" type="button" id="bk-edit">Módosítom az adatokat</button>
+      </div>
+      <p class="sr-only" id="bk-copy-status" role="status" aria-live="polite"></p>
+    </div>
   </div>
 </section>
 
@@ -349,7 +516,7 @@
   <div class="wrap area-grid">
     <div class="area-text">
       <h2 id="ar-title">Ismerős utak. Új úti célok.</h2>
-      <p class="lead">A déli part és Marcali térsége a kiindulópont. Az úti cél lehet bárhol, egy hívás az egész.</p>
+      <p class="lead">A déli part és Marcali térsége a kiindulópont. Az úti cél lehet bárhol: hívjon, vagy kérjen ajánlatot.</p>
 
       <div class="places" role="tablist" aria-label="Települések">
         <button role="tab" id="t-maria" aria-controls="p-maria" aria-selected="true" data-place="maria">Balatonmáriafürdő</button>
@@ -381,7 +548,9 @@
       <svg viewBox="0 20 700 520" role="img" aria-labelledby="map-t">
         <title id="map-t">A Balaton vázlatos térképe: Balatonmáriafürdő, Balatonkeresztúr és Marcali</title>
         <defs>
-          <linearGradient id="g-lake" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#121C25"/><stop offset=".6" stop-color="#1D2B37"/><stop offset="1" stop-color="#2A3B48"/></linearGradient>
+          <linearGradient id="g-lake" x1="0" y1="1" x2="1" y2="0">
+            <stop offset="0" stop-color="#2A93A8"/><stop offset="1" stop-color="#5CC6D7"/>
+          </linearGradient>
           <path id="lake-path" d="M32 363 C35 369 40 374 49 377 C58 380 70 379 84 381 C98 383 118 392 133 391 C148 390 163 381 175 377 C187 373 191 371 203 365 C215 359 232 347 245 340 C258 333 267 327 280 322 C293 317 310 313 322 309 C334 305 337 304 350 299 C363 294 384 286 399 280 C414 274 428 267 441 260 C454 253 463 245 476 237 C489 229 504 220 518 213 C532 206 547 198 560 192 C573 186 583 183 595 176 C607 169 617 158 630 148 C643 138 664 128 672 118 C680 108 677 96 675 87 C673 78 666 67 658 61 C650 55 642 51 630 49 C618 47 601 46 588 51 C575 56 565 68 553 77 C541 86 529 98 518 107 C507 116 491 124 487 133 C483 142 495 150 494 159 C493 168 488 178 483 184 C478 190 468 195 465 194 C462 193 467 182 462 179 C457 176 446 172 434 174 C422 176 406 182 392 189 C378 196 364 204 350 213 C336 222 320 236 308 244 C296 252 292 255 280 261 C268 267 252 274 238 281 C224 288 209 299 196 302 C183 305 172 294 161 297 C150 300 145 311 133 317 C121 323 105 332 91 333 C77 334 59 324 49 325 C39 326 35 334 32 340 C29 346 29 357 32 363Z"/>
         </defs>
         <use href="#lake-path" class="lake-shadow" transform="translate(6 10)"/>
@@ -394,6 +563,7 @@
           <text x="604" y="200">Siófok</text>
         </g>
         <circle class="area-halo" cx="132" cy="430" r="96"/>
+        <path class="map-route" pathLength="1" d="M147 507 C150 470 128 440 116 404 C112 396 124 392 133 388"/>
         <g class="pin" data-place="maria" transform="translate(133 388)">
           <circle r="16" class="pin-pulse"/><circle r="16" class="pin-ring"/><circle r="6" class="pin-dot"/>
           <text x="18" y="16">Balatonmáriafürdő</text>
@@ -418,27 +588,28 @@
     <rect width="1600" height="900" fill="url(#g-finalsky)"/>
     <g id="f-stars"></g>
     <circle cx="1180" cy="200" r="30" fill="url(#g-moon2)"/>
-    <path fill="#192028" d="M0 600 C120 594 220 590 330 596 C420 600 470 592 520 580 C560 560 590 528 618 520 L760 520 C790 524 812 556 840 588 C880 598 1000 600 1120 596 C1240 592 1400 596 1600 600 V604 H0 Z"/>
-    <rect y="600" width="1600" height="104" fill="#151C23"/>
-    <g stroke="#E9EBED" stroke-linecap="round" opacity=".3"><path d="M1140 614 H1220 M1124 630 H1200 M1160 646 H1240 M1110 664 H1180"/></g>
-    <rect y="704" width="1600" height="196" fill="#0D1115"/>
-    <g class="lamp"><circle cx="912" cy="606" r="90" fill="url(#g-lamp)"/><path d="M900 770 V606 H916" stroke="#444A52" stroke-width="6" fill="none"/><circle cx="914" cy="610" r="7" fill="#FFE2A8"/></g>
+    <path fill="#0F2639" d="M0 600 C120 594 220 590 330 596 C420 600 470 592 520 580 C560 560 590 528 618 520 L760 520 C790 524 812 556 840 588 C880 598 1000 600 1120 596 C1240 592 1400 596 1600 600 V604 H0 Z"/>
+    <rect y="600" width="1600" height="104" fill="#0B2234"/>
+    <g stroke="#E6EEF0" stroke-linecap="round" opacity=".3"><path d="M1140 614 H1220 M1124 630 H1200 M1160 646 H1240 M1110 664 H1180"/></g>
+    <rect y="704" width="1600" height="196" fill="#07141F"/>
+    <g class="lamp"><circle cx="912" cy="606" r="90" fill="url(#g-lamp)"/><path d="M900 770 V606 H916" stroke="#3E5568" stroke-width="6" fill="none"/><circle cx="914" cy="610" r="7" fill="#FFE2A8"/></g>
     <ellipse cx="900" cy="790" rx="260" ry="26" fill="#F2BF6E" opacity=".07"/>
     <use href="#road"/>
-    <g transform="translate(600 646)">
-      <polygon points="414,96 900,60 900,150" fill="url(#g-carbeam)" opacity=".8"/>
-      <use href="#car" width="440" height="160"/>
+    <g transform="translate(560 612)">
+      <polygon points="436,110 940,64 940,196" fill="url(#g-carbeam)" opacity=".8"/>
+      <use href="#van" width="460" height="190"/>
     </g>
   </svg>
   <div class="final-shade" aria-hidden="true"></div>
 
   <div class="wrap final-in">
     <h2 id="fn-title">Indulhatunk?</h2>
-    <p class="lead">A CB TAXI Nyakas Péter személyszállító vállalkozása, amely a Balaton és Marcali térségében kínál taxi- és transzferszolgáltatást. Hívja közvetlenül.</p>
+    <p class="lead">A CB TAXI Nyakas Péter személyszállító vállalkozása, amely a Balaton és Marcali térségében kínál taxi- és transzferszolgáltatást. Helyi vállalkozás, közvetlen kapcsolat: aki hív, vele egyeztet.</p>
     <a class="final-call" href="tel:+36309978362">
       <span class="fc-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"/></svg></span>
       <span class="fc-txt"><small>Nyakas Péter, CB TAXI</small><b>+36 30 997 8362</b></span>
     </a>
+    <a class="btn btn-line final-quote" href="#fuvar" data-goto-form>Fuvarajánlat kérése</a>
     <p class="final-meta"><a href="mailto:taxispeter@gmail.com">taxispeter@gmail.com</a><span>Balatonkeresztúr, Balatonmáriafürdő, Marcali és a Balaton térsége</span></p>
   </div>
 </section>
@@ -458,15 +629,15 @@
 
 <dialog class="dlg" id="privacy">
   <h2>Adatkezelési tájékoztató</h2>
-  <p>Az éles oldalon itt lesz a vállalkozás adatkezelési tájékoztatója. Az oldal nem gyűjt és nem tárol személyes adatot: a kapcsolatfelvétel telefonon történik.</p>
+  <p>Az éles oldalon itt lesz a vállalkozás adatkezelési tájékoztatója: milyen adatot kér az ajánlatkérő, mire használja, és meddig őrzi meg. A bemutató változat semmilyen adatot nem tárol; az ajánlatkérés az Ön e-mail-programjából megy el.</p>
   <form method="dialog"><button class="btn btn-navy">Bezárás</button></form>
 </dialog>
 
-<!-- mobil hívássáv -->
-<a class="mbar" id="mbar" href="tel:+36309978362" tabindex="-1" aria-hidden="true">
-  <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"/></svg>
-  <span>Hívás</span><b>+36 30 997 8362</b>
-</a>
+<!-- mobil kezelősáv -->
+<div class="mbar" id="mbar" aria-hidden="true">
+  <a class="mb-call" href="tel:+36309978362" tabindex="-1"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"/></svg>Hívás</a>
+  <a class="mb-quote" href="#fuvar" data-goto-form tabindex="-1"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-route"/></svg>Fuvarigénylés</a>
+</div>
 
 <!-- ============ SVG KÉSZLET ============ -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -481,42 +652,49 @@
       <stop offset="0" stop-color="#FFEBC2" stop-opacity=".55"/><stop offset=".35" stop-color="#FFEBC2" stop-opacity=".16"/><stop offset="1" stop-color="#FFEBC2" stop-opacity="0"/>
     </linearGradient>
     <linearGradient id="g-finalsky" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#090C0F"/><stop offset=".5" stop-color="#151B23"/><stop offset=".66" stop-color="#222932"/>
+      <stop offset="0" stop-color="#040D17"/><stop offset=".5" stop-color="#0A2234"/><stop offset=".66" stop-color="#173246"/>
     </linearGradient>
     <linearGradient id="g-body" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#30363D"/><stop offset=".22" stop-color="#191D22"/><stop offset="1" stop-color="#0A0C0F"/>
+      <stop offset="0" stop-color="#2A3E50"/><stop offset=".22" stop-color="#14212E"/><stop offset="1" stop-color="#070E15"/>
     </linearGradient>
     <linearGradient id="g-glass" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#171D24"/><stop offset=".55" stop-color="#28303A"/><stop offset=".62" stop-color="#5E6772"/><stop offset=".7" stop-color="#28303A"/><stop offset="1" stop-color="#171D24"/>
+      <stop offset="0" stop-color="#0E2233"/><stop offset=".55" stop-color="#1D3A50"/><stop offset=".62" stop-color="#4E6C82"/><stop offset=".7" stop-color="#1D3A50"/><stop offset="1" stop-color="#0E2233"/>
     </linearGradient>
 
     <symbol id="road" viewBox="0 0 1600 900">
-      <rect y="742" width="1600" height="72" fill="#13181D"/>
-      <path d="M0 742 H1600" stroke="#2A3139" stroke-width="2"/>
-      <path class="road-dash" d="M0 778 H1600" stroke="#D3AE73" stroke-width="4" stroke-dasharray="46 40"/>
-      <path d="M0 814 H1600" stroke="#232930" stroke-width="2"/>
+      <rect y="742" width="1600" height="72" fill="#0C1C29"/>
+      <path d="M0 742 H1600" stroke="#22394C" stroke-width="2"/>
+      <path class="road-dash" d="M0 778 H1600" stroke="#D6B279" stroke-width="4" stroke-dasharray="46 40"/>
+      <path d="M0 814 H1600" stroke="#1A3042" stroke-width="2"/>
     </symbol>
 
-    <symbol id="car" viewBox="0 0 440 160" overflow="visible">
-      <ellipse cx="226" cy="152" rx="214" ry="8" fill="#000" opacity=".5"/>
-      <path d="M28 118 L24 70 Q24 46 44 42 L262 36 Q290 36 312 52 L346 76 Q392 82 410 92 Q421 98 421 112 L419 122 Q417 128 408 128 L382 128 A31 31 0 0 0 320 128 L132 128 A31 31 0 0 0 70 128 L36 128 Q28 128 28 118 Z" fill="url(#g-body)"/>
-      <path d="M52 54 L250 48 Q276 48 296 62 L324 82 L52 86 Z" fill="url(#g-glass)"/>
-      <path d="M178 50 V124 M272 52 L274 124" stroke="#090B0D" stroke-width="2" fill="none"/>
-      <path d="M118 50 V86 M230 49 V86" stroke="#090B0D" stroke-width="4"/>
-      <path d="M46 44 L262 38 Q290 38 312 54 L346 78 Q392 84 410 94" stroke="#9BA2AB" stroke-width="1.6" fill="none" opacity=".75"/>
-      <path d="M30 100 H418" stroke="#32383F" stroke-width="1.2" opacity=".8"/>
-      <path d="M402 92 L419 98 L418 106 L400 104 Z" fill="#FFF2D6"/>
-      <circle cx="412" cy="100" r="16" fill="#FFE7B8" opacity=".28"/>
-      <rect x="23" y="62" width="7" height="22" rx="2" fill="#F0503F"/>
-      <circle cx="27" cy="73" r="14" fill="#F0503F" opacity=".22"/>
-      <g class="wheel"><circle cx="101" cy="128" r="25" fill="#070809"/><circle cx="101" cy="128" r="14" fill="#2F3439"/><path class="spokes" d="M101 116 V140 M89 128 H113 M92.5 119.5 L109.5 136.5 M109.5 119.5 L92.5 136.5" stroke="#656C73" stroke-width="2.4"/><circle cx="101" cy="128" r="4" fill="#9BA2AB"/></g>
-      <g class="wheel"><circle cx="351" cy="128" r="25" fill="#070809"/><circle cx="351" cy="128" r="14" fill="#2F3439"/><path class="spokes" d="M351 116 V140 M339 128 H363 M342.5 119.5 L359.5 136.5 M359.5 119.5 L342.5 136.5" stroke="#656C73" stroke-width="2.4"/><circle cx="351" cy="128" r="4" fill="#9BA2AB"/></g>
+    <symbol id="van" viewBox="0 0 460 190" overflow="visible">
+      <ellipse cx="232" cy="186" rx="222" ry="8" fill="#000" opacity=".5"/>
+      <path d="M24 150 L20 54 Q20 32 42 30 L322 25 Q338 25 348 35 L386 86 Q418 92 432 104 Q442 113 442 132 L440 150 Q438 159 428 159 L396 159 A36 36 0 0 0 324 159 L132 159 A36 36 0 0 0 60 159 L34 159 Q24 159 24 150 Z" fill="url(#g-body)"/>
+      <path d="M40 44 L328 39 Q340 39 347 48 L374 88 L40 92 Z" fill="url(#g-glass)"/>
+      <path d="M40 44 L328 39 Q340 39 347 48 L374 88 L40 92 Z" fill="url(#g-cabin)"/>
+      <path d="M120 42 V92 M206 41 V92 M290 40 V92" stroke="#050A10" stroke-width="7"/>
+      <path d="M140 44 V156 M290 42 V156" stroke="#050A10" stroke-width="2"/>
+      <path d="M142 98 H288" stroke="#3B5468" stroke-width="2" opacity=".7"/>
+      <path d="M40 31 L322 26 Q338 26 348 36 L386 87 Q418 93 432 105" stroke="#A9BCC9" stroke-width="1.6" fill="none" opacity=".7"/>
+      <path d="M26 112 H440" stroke="#22394C" stroke-width="1.2" opacity=".9"/>
+      <path d="M368 80 L382 78 L384 92 L372 92 Z" fill="#0A1622"/>
+      <path d="M420 104 L441 112 L440 121 L418 118 Z" fill="#FFF2D6"/>
+      <path d="M412 124 H440" stroke="#FFE7B8" stroke-width="2.4" opacity=".85"/>
+      <circle cx="432" cy="114" r="20" fill="#FFE7B8" opacity=".26"/>
+      <rect x="430" y="128" width="11" height="12" rx="2" fill="#050A10"/>
+      <rect x="19" y="58" width="8" height="46" rx="3" fill="#F0503F"/>
+      <circle cx="23" cy="80" r="18" fill="#F0503F" opacity=".2"/>
+      <g class="wheel"><circle cx="96" cy="158" r="28" fill="#05090D"/><circle cx="96" cy="158" r="16" fill="#2B3B49"/><path class="spokes" d="M96 144 V172 M82 158 H110 M86 148 L106 168 M106 148 L86 168" stroke="#6D8292" stroke-width="2.6"/><circle cx="96" cy="158" r="4.5" fill="#B9C8D2"/></g>
+      <g class="wheel"><circle cx="360" cy="158" r="28" fill="#05090D"/><circle cx="360" cy="158" r="16" fill="#2B3B49"/><path class="spokes" d="M360 144 V172 M346 158 H374 M350 148 L370 168 M370 148 L350 168" stroke="#6D8292" stroke-width="2.6"/><circle cx="360" cy="158" r="4.5" fill="#B9C8D2"/></g>
     </symbol>
+    <linearGradient id="g-cabin" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F2C987" stop-opacity="0"/><stop offset="1" stop-color="#F2C987" stop-opacity=".22"/></linearGradient>
+    <symbol id="i-route" viewBox="0 0 24 24"><circle cx="6" cy="18" r="2.4" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="18" cy="6" r="2.4" fill="currentColor"/><path d="M8.4 18H15a3 3 0 0 0 0-6H9a3 3 0 0 1 0-6h6.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-dasharray="2.6 2.4"/></symbol>
 
     <symbol id="cb-mark" viewBox="0 0 64 40">
       <path d="M26.2 9.6 A14 14 0 1 0 26.2 30.4" fill="none" stroke="currentColor" stroke-width="3.6" stroke-linecap="round"/>
       <path d="M38 6 V34 M38 6 H47 A7 7 0 0 1 47 20 H38 M38 20 H49 A7 7 0 0 1 49 34 H38" fill="none" stroke="currentColor" stroke-width="3.6" stroke-linejoin="round" stroke-linecap="round"/>
-      <path d="M17 20 H34" stroke="#D3AE73" stroke-width="3" stroke-dasharray="4 3.2" stroke-linecap="butt"/>
+      <path d="M17 20 H34" stroke="#D6B279" stroke-width="3" stroke-dasharray="4 3.2" stroke-linecap="butt"/>
     </symbol>
     <symbol id="i-phone" viewBox="0 0 24 24"><path d="M6.6 3.5h2.6l1.5 4-2 1.4a12 12 0 0 0 6.4 6.4l1.4-2 4 1.5v2.6a2 2 0 0 1-2.1 2A17 17 0 0 1 4.6 5.6a2 2 0 0 1 2-2.1Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
   </defs>
