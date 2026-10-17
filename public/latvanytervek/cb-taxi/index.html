@@ -41,7 +41,6 @@
     </a>
     <nav class="nav-links" aria-label="Fő navigáció">
       <a href="#szolgaltatasok">Szolgáltatások</a>
-      <a href="#fuvar">Fuvarigénylés</a>
       <a href="#terulet">Működési terület</a>
       <a href="#kapcsolat">Kapcsolat</a>
     </nav>
@@ -49,353 +48,299 @@
       <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"/></svg>
       <span>+36 30 997 8362</span>
     </a>
-    <button class="nav-burger" type="button" aria-expanded="false" aria-controls="menu" aria-label="Menü megnyitása">
-      <span></span><span></span>
-    </button>
   </div>
   <div class="nav-route" aria-hidden="true"><i></i></div>
 </header>
 
-<div class="menu" id="menu" hidden>
-  <nav aria-label="Mobil navigáció">
-    <a href="#szolgaltatasok">Szolgáltatások</a>
-    <a href="#fuvar">Fuvarigénylés</a>
-    <a href="#terulet">Működési terület</a>
-    <a href="#kapcsolat">Kapcsolat</a>
-  </nav>
-  <a class="btn btn-gold menu-call" href="tel:+36309978362">
-    <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"/></svg>Hívás: +36 30 997 8362
-  </a>
-  <p class="menu-mail"><a href="mailto:taxispeter@gmail.com">taxispeter@gmail.com</a></p>
-</div>
-
 <main id="tartalom">
 
-<!-- ============ HERO ============ -->
+<!-- ============ HERO: naplementétől éjszakáig ============ -->
 <section class="hero" id="top" aria-labelledby="hero-title">
-  <div class="sky" aria-hidden="true"><div class="sun-glow"></div></div>
-
-  <svg class="scene" viewBox="0 0 1600 560" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
-    <defs>
-      <linearGradient id="g-water" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#2B4152"/><stop offset=".35" stop-color="#123049"/><stop offset="1" stop-color="#0A2133"/>
-      </linearGradient>
-      <linearGradient id="g-far" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#2A4054"/><stop offset="1" stop-color="#22394C"/>
-      </linearGradient>
-      <linearGradient id="g-near" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#14293B"/><stop offset="1" stop-color="#112536"/>
-      </linearGradient>
-      <radialGradient id="g-sun" cx=".5" cy=".5" r=".5">
-        <stop offset="0" stop-color="#F3D8A6"/><stop offset=".55" stop-color="#E2BC7E"/><stop offset="1" stop-color="#D3AE73" stop-opacity="0"/>
-      </radialGradient>
-      <radialGradient id="g-beam" cx=".5" cy=".5" r=".5">
-        <stop offset="0" stop-color="#FFE7B8" stop-opacity=".55"/><stop offset="1" stop-color="#FFE7B8" stop-opacity="0"/>
-      </radialGradient>
-      <linearGradient id="g-shore" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#081826"/><stop offset="1" stop-color="#050F18"/>
-      </linearGradient>
-    </defs>
-
-    <!-- nap a nyugati part felett -->
-    <circle class="sun" cx="505" cy="294" r="30" fill="url(#g-sun)"/>
-
-    <!-- távoli tanúhegyek: Tóti-hegy, Gulács, Szent György-hegy, Csobánc -->
-    <g class="layer-far" data-depth="6">
-      <path fill="url(#g-far)" d="M640 300 C690 296 712 262 728 252 C740 246 752 262 770 280 C780 268 790 236 806 224 C818 214 828 236 842 262 C850 252 866 236 880 234 L952 233 C964 236 976 254 990 268 C1004 254 1016 240 1030 244 C1044 250 1056 270 1070 300 Z"/>
-    </g>
-
-    <!-- közeli part: Keszthelyi-hegység, Szigliget, Badacsony -->
-    <g class="layer-near" data-depth="12">
-      <path fill="url(#g-near)" d="M0 284 C80 276 160 270 240 276 C320 282 380 280 430 284 C470 287 500 288 520 284 C536 272 552 258 566 256 C578 254 584 266 592 270 C600 260 612 250 624 250 L626 245 L630 245 L632 250 C646 252 656 270 668 284 C700 292 760 296 820 297 C880 297 930 296 962 292 C980 280 996 238 1012 214 C1020 206 1034 204 1060 204 L1150 205 C1170 205 1188 206 1204 210 C1222 216 1240 248 1262 276 C1276 290 1300 294 1340 294 C1420 292 1500 290 1600 286 V300 H0 Z"/>
-    </g>
-
-    <!-- víz -->
-    <rect x="0" y="299" width="1600" height="261" fill="url(#g-water)"/>
-    <g class="shimmer" stroke="#E8C990" stroke-linecap="round" transform="translate(-105 0)">
-      <path d="M560 312 H660" stroke-width="2" opacity=".55"/>
-      <path d="M574 324 H646" stroke-width="2" opacity=".45"/>
-      <path d="M548 338 H604 M616 338 H672" stroke-width="1.6" opacity=".38"/>
-      <path d="M582 352 H640" stroke-width="1.6" opacity=".32"/>
-      <path d="M540 368 H590 M606 368 H660" stroke-width="1.4" opacity=".26"/>
-      <path d="M570 384 H628" stroke-width="1.4" opacity=".2"/>
-      <path d="M528 402 H574 M596 402 H664" stroke-width="1.2" opacity=".16"/>
-    </g>
-    <g stroke="#45BCD0" stroke-linecap="round" opacity=".18" stroke-width="1">
-      <path d="M120 330 H200 M980 326 H1080 M1260 344 H1320 M300 360 H350 M820 372 H900 M1400 380 H1480 M80 398 H160 M1120 404 H1200"/>
-    </g>
-
-    <!-- déli part, nádas, út -->
-    <path fill="url(#g-shore)" d="M0 440 C220 428 460 432 700 446 C960 460 1260 470 1600 470 V560 H0 Z"/>
-    <g id="reeds" class="reeds"></g>
-    <path class="road-edge" d="M140 462 C460 466 820 478 1080 500 C1290 518 1440 538 1600 556" fill="none" stroke="#1B3346" stroke-width="2"/>
-    <path id="road-line" class="road-line" d="M120 470 C440 474 800 488 1060 512 C1260 530 1420 548 1600 566" fill="none" stroke="#D3AE73" stroke-width="1.4" stroke-dasharray="10 14" opacity=".55"/>
-    <g id="headlights" class="headlights" opacity="0">
-      <circle r="22" fill="url(#g-beam)"/>
-      <circle cx="-4" cy="0" r="1.8" fill="#FFF6E2"/>
-      <circle cx="4" cy=".6" r="1.8" fill="#FFF6E2"/>
-    </g>
-  </svg>
-
-  <div class="hero-in wrap">
-    <p class="hero-brand">CB TAXI <span>Nyakas Péter</span></p>
-    <h1 id="hero-title">A Balatontól bárhová.</h1>
-    <p class="hero-sub">Kényelmes személyszállítás és transzfer Balatonmáriafürdő, Balatonkeresztúr és Marcali térségéből.</p>
-    <div class="hero-cta">
-      <a class="btn btn-gold" href="tel:+36309978362">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"/></svg>Taxi hívása
-      </a>
-      <a class="btn btn-line" href="#fuvar" data-goto-form>Fuvarajánlat kérése</a>
-    </div>
-    <p class="hero-phone"><a href="tel:+36309978362">+36 30 997 8362</a></p>
-  </div>
-
-  <p class="hero-caption" aria-hidden="true">Szigliget és Badacsony a déli partról<span>46,7° É / 17,4° K</span></p>
-  <a class="scroll-hint" href="#szolgaltatasok" aria-label="Tovább a szolgáltatásokhoz"><i></i></a>
-</section>
-
-<!-- ============ SZOLGÁLTATÁSOK ============ -->
-<section class="sec services" id="szolgaltatasok" aria-labelledby="srv-title">
-  <div class="wrap services-grid">
-    <div class="services-head">
-      <h2 id="srv-title">Minden út egy jó döntéssel kezdődik.</h2>
-      <p class="lead">Személyszállítás a Balaton térségében, az Ön útvonalához igazodva.</p>
+  <div class="hero-pin">
+    <div class="sky" aria-hidden="true">
+      <div class="sky-night"></div>
+      <div class="sun-glow"></div>
     </div>
 
-    <div class="srv-stage" aria-hidden="true">
-      <div class="srv-frame">
-        <svg class="vig is-on" data-v="helyi" viewBox="0 0 480 320" preserveAspectRatio="xMidYMid slice"><use href="#v-helyi"/></svg>
-        <svg class="vig" data-v="tavolsagi" viewBox="0 0 480 320" preserveAspectRatio="xMidYMid slice"><use href="#v-tavolsagi"/></svg>
-        <svg class="vig" data-v="transzfer" viewBox="0 0 480 320" preserveAspectRatio="xMidYMid slice"><use href="#v-transzfer"/></svg>
-        <svg class="vig" data-v="repteri" viewBox="0 0 480 320" preserveAspectRatio="xMidYMid slice"><use href="#v-repteri"/></svg>
+    <svg class="scene" viewBox="0 0 1600 560" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+      <defs>
+        <linearGradient id="g-water" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#2B4152"/><stop offset=".35" stop-color="#123049"/><stop offset="1" stop-color="#0A2133"/>
+        </linearGradient>
+        <linearGradient id="g-far" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#2A4054"/><stop offset="1" stop-color="#22394C"/>
+        </linearGradient>
+        <linearGradient id="g-near" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#14293B"/><stop offset="1" stop-color="#112536"/>
+        </linearGradient>
+        <radialGradient id="g-sun" cx=".5" cy=".5" r=".5">
+          <stop offset="0" stop-color="#F6DDAE"/><stop offset=".55" stop-color="#E2BC7E"/><stop offset="1" stop-color="#D3AE73" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="g-moon" cx=".5" cy=".5" r=".5">
+          <stop offset="0" stop-color="#F4F3EC"/><stop offset=".6" stop-color="#E6E9E6"/><stop offset="1" stop-color="#E6E9E6" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="g-beam" cx=".5" cy=".5" r=".5">
+          <stop offset="0" stop-color="#FFE7B8" stop-opacity=".6"/><stop offset="1" stop-color="#FFE7B8" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="g-dot" cx=".5" cy=".5" r=".5">
+          <stop offset="0" stop-color="#FFD99A"/><stop offset=".4" stop-color="#F2BF6E" stop-opacity=".6"/><stop offset="1" stop-color="#F2BF6E" stop-opacity="0"/>
+        </radialGradient>
+        <linearGradient id="g-shore" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#081826"/><stop offset="1" stop-color="#050F18"/>
+        </linearGradient>
+      </defs>
+
+      <g id="h-stars" class="h-stars" opacity="0"></g>
+      <circle id="h-moon" cx="1330" cy="250" r="26" fill="url(#g-moon)" opacity="0"/>
+      <circle id="h-sun" class="sun" cx="505" cy="294" r="30" fill="url(#g-sun)"/>
+
+      <!-- távoli tanúhegyek -->
+      <g class="layer-far">
+        <path fill="url(#g-far)" d="M640 300 C690 296 712 262 728 252 C740 246 752 262 770 280 C780 268 790 236 806 224 C818 214 828 236 842 262 C850 252 866 236 880 234 L952 233 C964 236 976 254 990 268 C1004 254 1016 240 1030 244 C1044 250 1056 270 1070 300 Z"/>
+      </g>
+      <!-- Keszthelyi-hegység, Szigliget, Badacsony -->
+      <g class="layer-near">
+        <path fill="url(#g-near)" d="M0 284 C80 276 160 270 240 276 C320 282 380 280 430 284 C470 287 500 288 520 284 C536 272 552 258 566 256 C578 254 584 266 592 270 C600 260 612 250 624 250 L626 245 L630 245 L632 250 C646 252 656 270 668 284 C700 292 760 296 820 297 C880 297 930 296 962 292 C980 280 996 238 1012 214 C1020 206 1034 204 1060 204 L1150 205 C1170 205 1188 206 1204 210 C1222 216 1240 248 1262 276 C1276 290 1300 294 1340 294 C1420 292 1500 290 1600 286 V300 H0 Z"/>
+        <g id="h-lights"></g>
+      </g>
+
+      <rect x="0" y="299" width="1600" height="261" fill="url(#g-water)"/>
+      <rect id="h-water-night" x="0" y="299" width="1600" height="261" fill="#061A2A" opacity="0"/>
+      <g id="h-shimmer" class="shimmer" stroke="#E8C990" stroke-linecap="round" transform="translate(-105 0)">
+        <path d="M560 312 H660" stroke-width="2" opacity=".55"/>
+        <path d="M574 324 H646" stroke-width="2" opacity=".45"/>
+        <path d="M548 338 H604 M616 338 H672" stroke-width="1.6" opacity=".38"/>
+        <path d="M582 352 H640" stroke-width="1.6" opacity=".32"/>
+        <path d="M540 368 H590 M606 368 H660" stroke-width="1.4" opacity=".26"/>
+        <path d="M570 384 H628" stroke-width="1.4" opacity=".2"/>
+        <path d="M528 402 H574 M596 402 H664" stroke-width="1.2" opacity=".16"/>
+      </g>
+      <g id="h-moonpath" stroke="#E6EEF0" stroke-linecap="round" opacity="0" transform="translate(720 0)">
+        <path d="M584 316 H636" stroke-width="1.6" opacity=".6"/>
+        <path d="M570 332 H600 M612 332 H650" stroke-width="1.4" opacity=".45"/>
+        <path d="M590 348 H630" stroke-width="1.3" opacity=".35"/>
+        <path d="M560 366 H596 M606 366 H654" stroke-width="1.2" opacity=".25"/>
+        <path d="M580 386 H640" stroke-width="1.1" opacity=".18"/>
+      </g>
+      <g stroke="#45BCD0" stroke-linecap="round" opacity=".18" stroke-width="1">
+        <path d="M120 330 H200 M980 326 H1080 M1260 344 H1320 M300 360 H350 M820 372 H900 M1400 380 H1480 M80 398 H160 M1120 404 H1200"/>
+      </g>
+
+      <path fill="url(#g-shore)" d="M0 440 C220 428 460 432 700 446 C960 460 1260 470 1600 470 V560 H0 Z"/>
+      <g id="reeds" class="reeds"></g>
+      <path class="road-edge" d="M140 462 C460 466 820 478 1080 500 C1290 518 1440 538 1600 556" fill="none" stroke="#1B3346" stroke-width="2"/>
+      <path id="road-line" d="M120 470 C440 474 800 488 1060 512 C1260 530 1420 548 1600 566" fill="none" stroke="#D3AE73" stroke-width="1.4" stroke-dasharray="10 14" opacity=".55"/>
+      <g id="headlights" opacity="0">
+        <ellipse id="h-beam" cx="0" cy="2" rx="40" ry="14" fill="url(#g-beam)"/>
+        <circle cx="-4" cy="0" r="1.8" fill="#FFF6E2"/>
+        <circle cx="4" cy=".6" r="1.8" fill="#FFF6E2"/>
+      </g>
+    </svg>
+
+    <div class="hero-in wrap">
+      <p class="hero-brand">CB TAXI <span>Nyakas Péter</span></p>
+      <h1 id="hero-title">A Balatontól bárhová.</h1>
+      <p class="hero-sub">Kényelmes személyszállítás és transzfer Balatonmáriafürdő, Balatonkeresztúr és Marcali térségéből.</p>
+      <div class="hero-cta">
+        <a class="btn btn-gold btn-call" href="tel:+36309978362">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"/></svg>
+          <span>Hívás most<small>+36 30 997 8362</small></span>
+        </a>
       </div>
     </div>
 
-    <ul class="srv-list">
-      <li class="srv is-on" data-v="helyi">
-        <svg class="srv-mini" viewBox="0 0 480 320" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><use href="#v-helyi"/></svg>
-        <h3>Helyi taxi</h3>
-        <p>Egyszerű utazás Balatonmáriafürdőn, Balatonkeresztúron és környékükön.</p>
-        <button type="button" class="link" data-type="helyi">Helyi fuvart kérek</button>
-      </li>
-      <li class="srv" data-v="tavolsagi">
-        <svg class="srv-mini" viewBox="0 0 480 320" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><use href="#v-tavolsagi"/></svg>
-        <h3>Távolsági fuvar</h3>
-        <p>Személyszállítás távolabbi úti célokra, előzetes egyeztetéssel.</p>
-        <button type="button" class="link" data-type="tavolsagi">Távolsági fuvart kérek</button>
-      </li>
-      <li class="srv" data-v="transzfer">
-        <svg class="srv-mini" viewBox="0 0 480 320" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><use href="#v-transzfer"/></svg>
-        <h3>Transzfer</h3>
-        <p>Előre egyeztethető utazások a Balaton és Marcali térségéből.</p>
-        <button type="button" class="link" data-type="transzfer">Transzfert kérek</button>
-      </li>
-      <li class="srv" data-v="repteri">
-        <svg class="srv-mini" viewBox="0 0 480 320" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><use href="#v-repteri"/></svg>
-        <h3>Reptéri transzfer</h3>
-        <p>Tervezze meg reptéri utazását, és kérjen személyre szabott ajánlatot.</p>
-        <button type="button" class="link" data-type="repteri">Reptéri ajánlatot kérek</button>
-      </li>
-    </ul>
+    <p class="hero-caption" aria-hidden="true">Szigliget és Badacsony a déli partról<span>46,7° É / 17,4° K</span></p>
+    <div class="scroll-hint" aria-hidden="true"><i></i><span>Görgessen, és indulunk</span></div>
   </div>
 </section>
 
-<!-- ============ AZ UTAZÁS (országúti jelenet) ============ -->
-<section class="journey" id="utazas" aria-labelledby="jr-title">
-  <svg class="road" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
-    <defs>
-      <linearGradient id="g-road" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#0E2C42"/><stop offset="1" stop-color="#06131E"/>
-      </linearGradient>
-      <linearGradient id="g-dusk" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#0B2638"/><stop offset=".8" stop-color="#1A3549"/><stop offset="1" stop-color="#3B4650"/>
-      </linearGradient>
-    </defs>
-    <rect width="1200" height="260" fill="url(#g-dusk)"/>
-    <path class="jr-hills" fill="#122C40" d="M0 250 C120 236 220 240 320 246 C420 252 500 238 560 230 C620 222 680 236 760 244 C860 254 980 240 1060 236 C1120 234 1170 240 1200 244 V262 H0 Z"/>
-    <rect y="258" width="1200" height="342" fill="#061420"/>
-    <path d="M588 260 L612 260 L1060 600 L140 600 Z" fill="url(#g-road)"/>
-    <path d="M588 260 L140 600 M612 260 L1060 600" stroke="#2A4558" stroke-width="2" fill="none"/>
-    <path id="jr-dash" d="M600 262 L600 600" stroke="#D3AE73" stroke-width="5" fill="none" stroke-dasharray="26 30"/>
-    <g class="jr-posts" stroke="#E7EBED" stroke-width="2" opacity=".35">
-      <path d="M470 352 V330 M380 420 V384 M250 518 V460 M730 352 V330 M820 420 V384 M950 518 V460"/>
-    </g>
-    <g fill="#D3AE73" opacity=".7">
-      <rect x="468" y="330" width="4" height="4"/><rect x="378" y="384" width="4" height="6"/><rect x="248" y="460" width="4" height="8"/>
-    </g>
-    <g fill="#E3584A" opacity=".75">
-      <rect x="728" y="330" width="4" height="4"/><rect x="818" y="384" width="4" height="6"/><rect x="948" y="460" width="4" height="8"/>
-    </g>
-  </svg>
-  <div class="journey-shade" aria-hidden="true"></div>
+<!-- ============ ÚTKÖZBEN: négy szolgáltatás, egy éjszakai út ============ -->
+<section class="ride" id="szolgaltatasok" aria-labelledby="ride-title">
+  <h2 id="ride-title" class="sr-only">Szolgáltatások</h2>
+  <div class="ride-pin">
+    <div class="ride-sky" aria-hidden="true">
+      <svg class="ride-stars" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMax slice"><g id="r-stars"></g>
+        <circle cx="1440" cy="300" r="30" fill="url(#g-moon2)"/>
+      </svg>
+    </div>
 
-  <div class="wrap journey-in">
-    <h2 id="jr-title">Az utazás már az indulás előtt elkezdődik.</h2>
-    <ol class="steps">
-      <li><span>1</span><h3>Hív vagy ír</h3><p>Telefonon azonnal, vagy az ajánlatkérőben az út részleteivel.</p></li>
-      <li><span>2</span><h3>Egyeztetés</h3><p>Időpont, indulási hely, úti cél, utasok és csomagok – minden előre tisztázva.</p></li>
-      <li><span>3</span><h3>Indulás</h3><p>A megbeszélt időben, a megbeszélt helyről.</p></li>
+    <div class="ride-track" id="ride-track">
+
+      <!-- 1 · HELYI TAXI — Balatonmáriafürdő, este -->
+      <article class="panel" aria-labelledby="p1-t">
+        <svg class="pscene" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+          <path fill="#0F2639" d="M0 600 C120 594 220 590 330 596 C420 600 470 592 520 580 C560 560 590 528 618 520 L760 520 C790 524 812 556 840 588 C880 598 1000 600 1120 596 C1240 592 1400 596 1600 600 V604 H0 Z"/>
+          <g class="far-lights" fill="#F2C987"><circle cx="560" cy="584" r="1.6"/><circle cx="610" cy="560" r="1.4"/><circle cx="700" cy="530" r="1.3"/><circle cx="742" cy="548" r="1.5"/><circle cx="800" cy="574" r="1.6"/><circle cx="880" cy="594" r="1.8"/><circle cx="220" cy="594" r="1.6"/><circle cx="1260" cy="594" r="1.6"/><circle cx="1330" cy="595" r="1.4"/></g>
+          <rect y="600" width="1600" height="110" fill="#0B2234"/>
+          <g stroke="#E6EEF0" stroke-linecap="round" opacity=".35"><path d="M1180 612 H1260 M1166 626 H1240 M1200 642 H1280 M1150 660 H1220 M1190 680 H1270"/></g>
+          <g stroke="#45BCD0" stroke-opacity=".18"><path d="M100 620 H200 M400 650 H520 M700 616 H780 M860 670 H960 M1400 640 H1500"/></g>
+          <path d="M1290 704 V690 H1520 V704" stroke="#3A5266" stroke-width="3" fill="none"/>
+          <path d="M1330 690 V712 M1390 690 V712 M1450 690 V712 M1510 690 V712" stroke="#2C4356" stroke-width="3"/>
+          <path d="M1400 668 L1440 668 L1432 678 H1408 Z" fill="#C7D1D8" opacity=".75"/><path d="M1421 666 V610 L1446 662 Z" fill="#C7D1D8" opacity=".75"/>
+          <rect y="704" width="1600" height="196" fill="#07141F"/>
+          <g fill="#0A1A27">
+            <path d="M120 740 V676 L176 632 L232 676 V740Z"/>
+            <path d="M250 740 V690 L292 656 L334 690 V740Z"/>
+            <path d="M470 740 V660 L540 606 L610 660 V740Z"/>
+            <path d="M630 740 V684 L674 650 L718 684 V740Z"/>
+            <path d="M880 740 V670 L944 620 L1008 670 V740Z"/>
+            <path d="M1030 740 V692 L1066 664 L1102 692 V740Z"/>
+          </g>
+          <g class="win" fill="#F2BF6E">
+            <rect x="160" y="690" width="16" height="16"/><rect x="190" y="690" width="16" height="16" opacity=".5"/>
+            <rect x="282" y="700" width="14" height="14" opacity=".7"/>
+            <rect x="506" y="672" width="18" height="18"/><rect x="556" y="672" width="18" height="18" opacity=".55"/><rect x="532" y="638" width="14" height="12" opacity=".8"/>
+            <rect x="662" y="698" width="14" height="14" opacity=".45"/>
+            <rect x="920" y="684" width="18" height="18" opacity=".9"/><rect x="954" y="684" width="18" height="18" opacity=".4"/>
+            <rect x="1058" y="704" width="14" height="14" opacity=".75"/>
+          </g>
+          <g class="lamp"><circle cx="412" cy="626" r="70" fill="url(#g-lamp)"/><path d="M400 760 V626 H416" stroke="#3E5568" stroke-width="5" fill="none"/><circle cx="414" cy="630" r="6" fill="#FFE2A8"/></g>
+          <g class="lamp"><circle cx="812" cy="626" r="70" fill="url(#g-lamp)"/><path d="M800 760 V626 H816" stroke="#3E5568" stroke-width="5" fill="none"/><circle cx="814" cy="630" r="6" fill="#FFE2A8"/></g>
+          <g class="lamp"><circle cx="1212" cy="626" r="70" fill="url(#g-lamp)"/><path d="M1200 760 V626 H1216" stroke="#3E5568" stroke-width="5" fill="none"/><circle cx="1214" cy="630" r="6" fill="#FFE2A8"/></g>
+          <use href="#road"/>
+          <g stroke="#03090F" stroke-width="2.4" stroke-linecap="round" fill="none"><path d="M1330 900 Q1334 860 1324 820 M1346 900 Q1352 850 1350 806 M1362 900 Q1360 862 1372 826 M1380 900 Q1386 868 1384 836 M1520 900 Q1526 850 1514 808 M1540 900 Q1540 860 1552 822 M1560 900 Q1566 870 1562 836 M40 900 Q46 860 36 818 M60 900 Q60 860 72 826 M80 900 Q88 866 82 834"/></g>
+        </svg>
+        <div class="pcard">
+          <p class="pnum">1 / 4</p>
+          <h3 id="p1-t">Helyi taxi</h3>
+          <p>Egyszerű utazás Balatonmáriafürdőn, Balatonkeresztúron és környékükön. Strandra, állomásra, vacsorára és haza.</p>
+          <a class="pcall" href="tel:+36309978362"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"/></svg>Hívás</a>
+        </div>
+      </article>
+
+      <!-- 2 · TÁVOLSÁGI — országút -->
+      <article class="panel" aria-labelledby="p2-t">
+        <svg class="pscene" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+          <path fill="#112A3E" d="M0 610 C160 570 300 560 460 584 C600 604 700 576 860 560 C1020 546 1160 580 1300 590 C1420 598 1520 584 1600 576 V640 H0 Z"/>
+          <g fill="#F2C987" class="far-lights"><circle cx="1380" cy="590" r="1.6"/><circle cx="1392" cy="588" r="1.3"/><circle cx="1404" cy="591" r="1.7"/><circle cx="1420" cy="589" r="1.4"/><circle cx="1436" cy="592" r="1.5"/><circle cx="1452" cy="588" r="1.2"/><circle cx="120" cy="600" r="1.5"/><circle cx="134" cy="598" r="1.3"/></g>
+          <path fill="#0B1F2F" d="M0 640 C200 616 380 626 600 640 C820 654 1000 626 1220 624 C1400 622 1520 640 1600 646 V710 H0 Z"/>
+          <g stroke="#14324A" stroke-width="1.2" opacity=".8"><path d="M0 668 C300 650 600 664 900 676 M200 690 C500 676 800 686 1100 696 M700 664 C1000 650 1300 656 1600 668"/></g>
+          <g fill="#06131D"><ellipse cx="180" cy="620" rx="14" ry="62"/><ellipse cx="236" cy="626" rx="13" ry="56"/><ellipse cx="290" cy="630" rx="12" ry="52"/><ellipse cx="340" cy="634" rx="11" ry="48"/><ellipse cx="386" cy="638" rx="10" ry="44"/><ellipse cx="428" cy="641" rx="9" ry="40"/></g>
+          <rect y="704" width="1600" height="196" fill="#07141F"/>
+          <g class="sign" transform="translate(-330 0)">
+            <path d="M1090 760 V640 M1290 760 V640" stroke="#2E4356" stroke-width="6"/>
+            <rect x="1060" y="570" width="260" height="112" rx="6" fill="#1D6B48" stroke="#E7EBED" stroke-width="3"/>
+            <rect x="1080" y="590" width="58" height="34" rx="4" fill="#E7EBED"/>
+            <text x="1109" y="614" text-anchor="middle" font-family="DM Sans, sans-serif" font-weight="700" font-size="22" fill="#1D6B48">M7</text>
+            <text x="1150" y="616" font-family="DM Sans, sans-serif" font-weight="600" font-size="26" fill="#F5F4EF">Budapest</text>
+            <path d="M1086 652 H1132 M1118 640 L1132 652 L1118 664" stroke="#F5F4EF" stroke-width="4" fill="none" stroke-linejoin="round"/>
+          </g>
+          <g><rect x="560" y="728" width="14" height="32" fill="#C9D2D8"/><rect x="560" y="728" width="14" height="7" fill="#E3584A"/></g>
+          <g><rect x="1500" y="728" width="14" height="32" fill="#C9D2D8"/><rect x="1500" y="728" width="14" height="7" fill="#E3584A"/></g>
+          <use href="#road"/>
+        </svg>
+        <div class="pcard">
+          <p class="pnum">2 / 4</p>
+          <h3 id="p2-t">Távolsági fuvar</h3>
+          <p>Személyszállítás távolabbi úti célokra, előzetes egyeztetéssel. Egy telefon, és megbeszéljük az indulást.</p>
+          <a class="pcall" href="tel:+36309978362"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"/></svg>Hívás</a>
+        </div>
+      </article>
+
+      <!-- 3 · TRANSZFER — Balatonmária vasútállomás -->
+      <article class="panel" aria-labelledby="p3-t">
+        <svg class="pscene" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+          <path fill="#0F2639" d="M0 600 C200 596 400 598 600 600 C800 602 1000 596 1300 598 C1440 599 1520 600 1600 600 V604 H0Z"/>
+          <rect y="600" width="1600" height="70" fill="#0B2234"/>
+          <g stroke="#E6EEF0" stroke-linecap="round" opacity=".3"><path d="M1060 612 H1140 M1050 628 H1120 M1080 644 H1160"/></g>
+          <rect y="662" width="1600" height="14" fill="#0A1A27"/>
+          <path d="M0 662 H1600" stroke="#3A5266" stroke-width="2"/>
+          <g id="train" class="train">
+            <g fill="#13283A" stroke="#2B4559" stroke-width="2">
+              <rect x="-160" y="596" width="300" height="64" rx="8"/>
+              <rect x="150" y="596" width="300" height="64" rx="4"/>
+              <rect x="460" y="596" width="300" height="64" rx="4"/>
+              <rect x="770" y="596" width="300" height="64" rx="4"/>
+            </g>
+            <g fill="#F4D49A" opacity=".85">
+              <rect x="-130" y="610" width="34" height="22" rx="2"/><rect x="-84" y="610" width="34" height="22" rx="2"/><rect x="-38" y="610" width="34" height="22" rx="2"/><rect x="8" y="610" width="34" height="22" rx="2"/><rect x="54" y="610" width="34" height="22" rx="2"/>
+              <rect x="170" y="610" width="34" height="22" rx="2"/><rect x="216" y="610" width="34" height="22" rx="2"/><rect x="262" y="610" width="34" height="22" rx="2"/><rect x="308" y="610" width="34" height="22" rx="2"/><rect x="354" y="610" width="34" height="22" rx="2"/><rect x="400" y="610" width="34" height="22" rx="2"/>
+              <rect x="480" y="610" width="34" height="22" rx="2"/><rect x="526" y="610" width="34" height="22" rx="2"/><rect x="572" y="610" width="34" height="22" rx="2"/><rect x="618" y="610" width="34" height="22" rx="2"/><rect x="664" y="610" width="34" height="22" rx="2"/><rect x="710" y="610" width="34" height="22" rx="2"/>
+              <rect x="790" y="610" width="34" height="22" rx="2"/><rect x="836" y="610" width="34" height="22" rx="2"/><rect x="882" y="610" width="34" height="22" rx="2"/><rect x="928" y="610" width="34" height="22" rx="2"/><rect x="974" y="610" width="34" height="22" rx="2"/><rect x="1020" y="610" width="34" height="22" rx="2"/>
+            </g>
+            <path d="M-160 650 H1070" stroke="#45BCD0" stroke-width="3" opacity=".7"/>
+          </g>
+          <rect y="676" width="1600" height="224" fill="#07141F"/>
+          <rect x="300" y="690" width="1000" height="14" fill="#1A3043"/>
+          <g transform="translate(120 0)"><path d="M760 690 V600 L860 556 L960 600 V690 Z" fill="#0A1A27"/>
+          <rect x="792" y="620" width="30" height="40" fill="#F2BF6E" opacity=".8"/><rect x="842" y="620" width="30" height="40" fill="#F2BF6E" opacity=".45"/><rect x="892" y="620" width="30" height="40" fill="#F2BF6E" opacity=".8"/></g>
+          <g class="station-sign" transform="translate(90 0)">
+            <path d="M560 690 V600 M700 690 V600" stroke="#3E5568" stroke-width="4"/>
+            <rect x="540" y="566" width="180" height="40" rx="2" fill="#F5F4EF"/>
+            <text x="630" y="593" text-anchor="middle" font-family="DM Sans, sans-serif" font-weight="600" font-size="20" fill="#071A2B">Balatonmária</text>
+          </g>
+          <g class="lamp"><circle cx="1110" cy="610" r="64" fill="url(#g-lamp)"/><path d="M1100 690 V610 H1114" stroke="#3E5568" stroke-width="5" fill="none"/><circle cx="1112" cy="614" r="5" fill="#FFE2A8"/></g>
+          <g class="lamp"><circle cx="420" cy="610" r="64" fill="url(#g-lamp)"/><path d="M410 690 V610 H424" stroke="#3E5568" stroke-width="5" fill="none"/><circle cx="422" cy="614" r="5" fill="#FFE2A8"/></g>
+<g transform="translate(-230 0)">
+          <rect x="1000" y="652" width="30" height="38" rx="4" fill="#D3AE73"/><path d="M1008 652 V644 H1022 V652" stroke="#D3AE73" stroke-width="3" fill="none"/>
+          <rect x="1036" y="664" width="22" height="26" rx="4" fill="#45BCD0" opacity=".85"/>
+          </g>
+          <use href="#road"/>
+        </svg>
+        <div class="pcard">
+          <p class="pnum">3 / 4</p>
+          <h3 id="p3-t">Transzfer</h3>
+          <p>Előre egyeztethető utazások a Balaton és Marcali térségéből: vonathoz, rendezvényre, szállásra.</p>
+          <a class="pcall" href="tel:+36309978362"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"/></svg>Hívás</a>
+        </div>
+      </article>
+
+      <!-- 4 · REPTÉRI — repülőtér -->
+      <article class="panel" aria-labelledby="p4-t">
+        <svg class="pscene" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+          <g id="plane" class="plane">
+            <path d="M0 0 L-90 8 L-120 -2 L-128 4 L-108 14 L-40 18 L-70 46 L-52 46 L4 18 L40 16 C52 15 58 10 58 6 C58 2 52 -1 40 -1 Z" fill="#C9D3DA"/>
+            <circle class="beacon" cx="-118" cy="-2" r="4" fill="#FF5C4A"/>
+            <circle cx="52" cy="6" r="3" fill="#FFF6E2"/>
+          </g>
+          <rect x="180" y="586" width="680" height="84" fill="#0A1A27"/>
+          <path d="M160 586 H880 L860 572 H180 Z" fill="#0D2132"/>
+          <g fill="#F2BF6E" opacity=".75"><rect x="210" y="604" width="610" height="10"/><rect x="210" y="628" width="610" height="22" opacity=".45"/></g>
+          <g stroke="#0A1A27" stroke-width="6"><path d="M290 600 V660 M380 600 V660 M470 600 V660 M560 600 V660 M650 600 V660 M740 600 V660"/></g>
+<g transform="translate(-230 0)">
+          <path d="M1210 670 V520 H1250 V670Z" fill="#0A1A27"/>
+          <path d="M1186 520 L1196 478 H1264 L1274 520 Z" fill="#0D2132"/>
+          <rect x="1200" y="488" width="60" height="22" fill="#9FD9E3" opacity=".55"/>
+          <circle class="beacon" cx="1230" cy="470" r="4" fill="#FF5C4A"/>
+          </g>
+          <rect y="670" width="1600" height="34" fill="#0A1C2A"/>
+          <g id="runway" fill="#7FD3E0"></g>
+          <rect y="704" width="1600" height="196" fill="#07141F"/>
+          <use href="#road"/>
+        </svg>
+        <div class="pcard">
+          <p class="pnum">4 / 4</p>
+          <h3 id="p4-t">Reptéri transzfer</h3>
+          <p>Tervezze meg reptéri utazását: hívjon, és egyeztessük az indulást, a járatot és a csomagokat.</p>
+          <a class="pcall" href="tel:+36309978362"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"/></svg>Hívás</a>
+        </div>
+      </article>
+    </div>
+
+    <!-- az autó: illusztráció, nem a vállalkozás valós járműve -->
+    <div class="car-wrap" aria-hidden="true">
+      <svg class="car" viewBox="0 0 440 160" overflow="visible">
+        <polygon class="beam" points="414,96 1240,40 1240,170" fill="url(#g-carbeam)"/>
+      <ellipse cx="226" cy="152" rx="214" ry="8" fill="#000" opacity=".5"/>
+      <path d="M28 118 L24 70 Q24 46 44 42 L262 36 Q290 36 312 52 L346 76 Q392 82 410 92 Q421 98 421 112 L419 122 Q417 128 408 128 L382 128 A31 31 0 0 0 320 128 L132 128 A31 31 0 0 0 70 128 L36 128 Q28 128 28 118 Z" fill="url(#g-body)"/>
+      <path d="M52 54 L250 48 Q276 48 296 62 L324 82 L52 86 Z" fill="url(#g-glass)"/>
+      <path d="M178 50 V124 M272 52 L274 124" stroke="#060C12" stroke-width="2" fill="none"/>
+      <path d="M118 50 V86 M230 49 V86" stroke="#060C12" stroke-width="4"/>
+      <path d="M46 44 L262 38 Q290 38 312 54 L346 78 Q392 84 410 94" stroke="#8FA6B7" stroke-width="1.6" fill="none" opacity=".75"/>
+      <path d="M30 100 H418" stroke="#2C4152" stroke-width="1.2" opacity=".8"/>
+      <path d="M402 92 L419 98 L418 106 L400 104 Z" fill="#FFF2D6"/>
+      <circle cx="412" cy="100" r="16" fill="#FFE7B8" opacity=".28"/>
+      <rect x="23" y="62" width="7" height="22" rx="2" fill="#F0503F"/>
+      <circle cx="27" cy="73" r="14" fill="#F0503F" opacity=".22"/>
+      <g class="wheel"><circle cx="101" cy="128" r="25" fill="#05090D"/><circle cx="101" cy="128" r="14" fill="#2B3B49"/><path class="spokes ride-spokes" d="M101 116 V140 M89 128 H113 M92.5 119.5 L109.5 136.5 M109.5 119.5 L92.5 136.5" stroke="#5A6E7E" stroke-width="2.4"/><circle cx="101" cy="128" r="4" fill="#8FA6B7"/></g>
+      <g class="wheel"><circle cx="351" cy="128" r="25" fill="#05090D"/><circle cx="351" cy="128" r="14" fill="#2B3B49"/><path class="spokes ride-spokes" d="M351 116 V140 M339 128 H363 M342.5 119.5 L359.5 136.5 M359.5 119.5 L342.5 136.5" stroke="#5A6E7E" stroke-width="2.4"/><circle cx="351" cy="128" r="4" fill="#8FA6B7"/></g>
+    
+      </svg>
+    </div>
+
+    <ol class="ride-steps" aria-hidden="true">
+      <li class="is-on">Helyi taxi</li><li>Távolsági fuvar</li><li>Transzfer</li><li>Reptéri transzfer</li>
     </ol>
-  </div>
-</section>
-
-<!-- ============ FUVARIGÉNYLÉS ============ -->
-<section class="sec booking" id="fuvar" aria-labelledby="bk-title">
-  <div class="wrap booking-grid">
-
-    <div class="booking-side">
-      <h2 id="bk-title">Hová utazna?</h2>
-      <p class="lead">Adja meg az út részleteit, és kérjen egyedi ajánlatot.</p>
-
-      <!-- élő menetlevél -->
-      <figure class="ticket" aria-label="Az ajánlatkérés összefoglalója">
-        <div class="tk-top">
-          <svg class="tk-mark" viewBox="0 0 64 40" aria-hidden="true"><use href="#cb-mark"/></svg>
-          <span class="tk-type" data-t="type">Helyi fuvar</span>
-        </div>
-        <div class="tk-route">
-          <div class="tk-pt"><small>Honnan</small><b data-t="from" data-empty="Indulási hely">Indulási hely</b></div>
-          <svg class="tk-line" viewBox="0 0 40 120" preserveAspectRatio="none" aria-hidden="true">
-            <circle cx="20" cy="8" r="5" fill="none" stroke="#D3AE73" stroke-width="2"/>
-            <path d="M20 16 V104" stroke="#D3AE73" stroke-width="2" stroke-dasharray="4 6"/>
-            <circle cx="20" cy="112" r="5" fill="#D3AE73"/>
-          </svg>
-          <div class="tk-pt"><small>Hová</small><b data-t="to" data-empty="Úti cél">Úti cél</b></div>
-        </div>
-        <dl class="tk-meta">
-          <div><dt>Dátum</dt><dd data-t="date" data-empty="–">–</dd></div>
-          <div><dt>Időpont</dt><dd data-t="time" data-empty="–">–</dd></div>
-          <div><dt>Utasok</dt><dd data-t="pax" data-empty="–">–</dd></div>
-          <div><dt>Csomag</dt><dd data-t="bags" data-empty="–">–</dd></div>
-        </dl>
-        <p class="tk-air" data-t="air" hidden></p>
-        <figcaption>Az út részletei alapján egyedi ajánlat kérhető. Fix árat az oldal nem számol.</figcaption>
-      </figure>
-    </div>
-
-    <form class="bk-form" id="bk-form" novalidate>
-      <fieldset class="types">
-        <legend>Milyen útra?</legend>
-        <label><input type="radio" name="tipus" value="helyi" checked><span>Helyi fuvar</span></label>
-        <label><input type="radio" name="tipus" value="tavolsagi"><span>Távolsági fuvar</span></label>
-        <label><input type="radio" name="tipus" value="transzfer"><span>Transzfer</span></label>
-        <label><input type="radio" name="tipus" value="repteri"><span>Reptéri transzfer</span></label>
-      </fieldset>
-
-      <div class="f-row two">
-        <div class="f">
-          <label for="f-from">Indulási hely</label>
-          <input id="f-from" name="honnan" list="helyek" autocomplete="off" required placeholder="pl. Balatonmáriafürdő, Szent István u.">
-          <p class="err" id="e-from"></p>
-        </div>
-        <div class="f">
-          <label for="f-to">Úti cél</label>
-          <input id="f-to" name="hova" list="helyek" autocomplete="off" required placeholder="település, cím vagy állomás">
-          <p class="err" id="e-to"></p>
-        </div>
-      </div>
-      <datalist id="helyek">
-        <option value="Balatonmáriafürdő"><option value="Balatonkeresztúr"><option value="Marcali">
-        <option value="Balatonmária vasútállomás"><option value="Balatonberény"><option value="Balatonfenyves">
-        <option value="Keszthely"><option value="Hévíz"><option value="Fonyód"><option value="Kaposvár"><option value="Budapest">
-      </datalist>
-
-      <div class="airport" id="airport" hidden>
-        <div class="f-row two">
-          <div class="f">
-            <label for="f-air">Repülőtér</label>
-            <select id="f-air" name="repuloter">
-              <option value="">Válasszon…</option>
-              <option>Budapest Liszt Ferenc</option>
-              <option>Hévíz–Balaton Airport (Sármellék)</option>
-              <option>Bécs-Schwechat</option>
-              <option>Zágráb</option>
-              <option>Egyéb repülőtér</option>
-            </select>
-            <p class="err" id="e-air"></p>
-          </div>
-          <div class="f">
-            <label for="f-flight">Járatszám <em>(nem kötelező)</em></label>
-            <input id="f-flight" name="jarat" autocomplete="off" placeholder="pl. W6 2337">
-          </div>
-        </div>
-        <fieldset class="seg">
-          <legend>Érkezik vagy indul?</legend>
-          <label><input type="radio" name="irany" value="indulas" checked><span>Indulok a reptérre</span></label>
-          <label><input type="radio" name="irany" value="erkezes"><span>Érkezem, a reptérről jönnék</span></label>
-        </fieldset>
-        <p class="note">Hogy mely repülőterekre vállalható a fuvar, azt az ajánlatban egyeztetjük.</p>
-      </div>
-
-      <div class="f-row four">
-        <div class="f">
-          <label for="f-date">Dátum</label>
-          <input id="f-date" name="datum" type="date" required>
-          <p class="err" id="e-date"></p>
-        </div>
-        <div class="f">
-          <label for="f-time">Időpont</label>
-          <input id="f-time" name="ido" type="time" required>
-          <p class="err" id="e-time"></p>
-        </div>
-        <div class="f">
-          <label for="f-pax">Utasok</label>
-          <select id="f-pax" name="utasok" required>
-            <option value="">–</option>
-            <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option>
-            <option value="7+">7 vagy több</option>
-          </select>
-          <p class="err" id="e-pax"></p>
-        </div>
-        <div class="f">
-          <label for="f-bags">Csomagok</label>
-          <select id="f-bags" name="csomag">
-            <option value="0">Nincs</option><option>1</option><option>2</option><option>3</option><option>4</option>
-            <option value="5+">5 vagy több</option>
-          </select>
-        </div>
-      </div>
-      <p class="note pax-note" id="pax-note" hidden>Nagyobb létszámnál a pontos lehetőségeket telefonon egyeztetjük.</p>
-
-      <div class="f-row three">
-        <div class="f">
-          <label for="f-name">Név</label>
-          <input id="f-name" name="nev" autocomplete="name" required>
-          <p class="err" id="e-name"></p>
-        </div>
-        <div class="f">
-          <label for="f-tel">Telefonszám</label>
-          <input id="f-tel" name="telefon" type="tel" autocomplete="tel" inputmode="tel" required placeholder="+36 …">
-          <p class="err" id="e-tel"></p>
-        </div>
-        <div class="f">
-          <label for="f-mail">E-mail-cím <em>(nem kötelező)</em></label>
-          <input id="f-mail" name="email" type="email" autocomplete="email">
-          <p class="err" id="e-mail"></p>
-        </div>
-      </div>
-
-      <div class="f">
-        <label for="f-note">Megjegyzés</label>
-        <textarea id="f-note" name="megjegyzes" rows="3" placeholder="Gyerekülés, kisállat, köztes megálló, visszaút…"></textarea>
-      </div>
-
-      <div class="bk-submit">
-        <button class="btn btn-navy" type="submit">Ajánlatot kérek</button>
-        <p>Ez bemutató űrlap: adatot nem küld el, nem foglal.</p>
-      </div>
-      <p class="sr-only" id="bk-status" role="status" aria-live="polite"></p>
-    </form>
-
-    <div class="bk-done" id="bk-done" hidden tabindex="-1">
-      <h3>Az ajánlatkérés összeállt.</h3>
-      <p>Ez a látványterv bemutató változata, ezért semmi nem lett elküldve, és foglalás sem történt. Az éles oldalon az ajánlatkérés Nyakas Péterhez érkezik, aki a részletek alapján jelentkezik.</p>
-      <div class="bk-done-cta">
-        <a class="btn btn-navy" id="bk-mail" href="mailto:taxispeter@gmail.com">Elküldöm e-mailben</a>
-        <a class="btn btn-ghost" href="tel:+36309978362">Inkább felhívom</a>
-        <button class="link" type="button" id="bk-edit">Módosítom az adatokat</button>
-      </div>
-    </div>
   </div>
 </section>
 
@@ -404,7 +349,7 @@
   <div class="wrap area-grid">
     <div class="area-text">
       <h2 id="ar-title">Ismerős utak. Új úti célok.</h2>
-      <p class="lead">A déli part és Marcali térsége a kiindulópont. Az úti cél lehet bárhol, egyeztetés kérdése.</p>
+      <p class="lead">A déli part és Marcali térsége a kiindulópont. Az úti cél lehet bárhol, egy hívás az egész.</p>
 
       <div class="places" role="tablist" aria-label="Települések">
         <button role="tab" id="t-maria" aria-controls="p-maria" aria-selected="true" data-place="maria">Balatonmáriafürdő</button>
@@ -414,34 +359,36 @@
       </div>
 
       <div class="place-panel" id="p-maria" role="tabpanel" aria-labelledby="t-maria">
-        <svg viewBox="0 0 320 150" aria-hidden="true"><use href="#p-v-maria"/></svg>
         <h3>Balatonmáriafürdő</h3>
         <p>Strand, móló, vasút a part mentén. Személyesen a Balatonmária vasútállomásnál is elérhető.</p>
       </div>
       <div class="place-panel" id="p-kereszt" role="tabpanel" aria-labelledby="t-kereszt" hidden>
-        <svg viewBox="0 0 320 150" aria-hidden="true"><use href="#p-v-kereszt"/></svg>
         <h3>Balatonkeresztúr</h3>
         <p>A szomszédos település a déli parton. Helyi fuvar a faluból a strandra, az állomásra vagy tovább.</p>
       </div>
       <div class="place-panel" id="p-marcali" role="tabpanel" aria-labelledby="t-marcali" hidden>
-        <svg viewBox="0 0 320 150" aria-hidden="true"><use href="#p-v-marcali"/></svg>
         <h3>Marcali és térsége</h3>
         <p>A part mögötti város és a környező falvak. Út a Balatonra, vasútállomásra vagy távolabbi úti célra.</p>
       </div>
       <div class="place-panel" id="p-balaton" role="tabpanel" aria-labelledby="t-balaton" hidden>
-        <svg viewBox="0 0 320 150" aria-hidden="true"><use href="#p-v-balaton"/></svg>
         <h3>A Balaton térsége</h3>
-        <p>A part többi települése is elérhető, előzetes egyeztetéssel. Írja meg, hová utazna.</p>
+        <p>A part többi települése is elérhető, előzetes egyeztetéssel. Hívjon, és megbeszéljük.</p>
       </div>
+      <a class="btn btn-navy area-call" href="tel:+36309978362"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"/></svg>+36 30 997 8362</a>
     </div>
 
     <figure class="map" aria-label="Vázlatos térkép a Balatonról, a három kiemelt településsel">
       <svg viewBox="0 20 700 520" role="img" aria-labelledby="map-t">
         <title id="map-t">A Balaton vázlatos térképe: Balatonmáriafürdő, Balatonkeresztúr és Marcali</title>
-        <g class="map-grid" stroke="#173A52" stroke-width="1">
-          <path d="M0 120 H700 M0 240 H700 M0 360 H700 M0 480 H700 M140 20 V540 M280 20 V540 M420 20 V540 M560 20 V540"/>
-        </g>
-        <path class="lake" d="M32 363 C35 369 40 374 49 377 C58 380 70 379 84 381 C98 383 118 392 133 391 C148 390 163 381 175 377 C187 373 191 371 203 365 C215 359 232 347 245 340 C258 333 267 327 280 322 C293 317 310 313 322 309 C334 305 337 304 350 299 C363 294 384 286 399 280 C414 274 428 267 441 260 C454 253 463 245 476 237 C489 229 504 220 518 213 C532 206 547 198 560 192 C573 186 583 183 595 176 C607 169 617 158 630 148 C643 138 664 128 672 118 C680 108 677 96 675 87 C673 78 666 67 658 61 C650 55 642 51 630 49 C618 47 601 46 588 51 C575 56 565 68 553 77 C541 86 529 98 518 107 C507 116 491 124 487 133 C483 142 495 150 494 159 C493 168 488 178 483 184 C478 190 468 195 465 194 C462 193 467 182 462 179 C457 176 446 172 434 174 C422 176 406 182 392 189 C378 196 364 204 350 213 C336 222 320 236 308 244 C296 252 292 255 280 261 C268 267 252 274 238 281 C224 288 209 299 196 302 C183 305 172 294 161 297 C150 300 145 311 133 317 C121 323 105 332 91 333 C77 334 59 324 49 325 C39 326 35 334 32 340 C29 346 29 357 32 363Z"/>
+        <defs>
+          <linearGradient id="g-lake" x1="0" y1="1" x2="1" y2="0">
+            <stop offset="0" stop-color="#2A93A8"/><stop offset="1" stop-color="#5CC6D7"/>
+          </linearGradient>
+          <path id="lake-path" d="M32 363 C35 369 40 374 49 377 C58 380 70 379 84 381 C98 383 118 392 133 391 C148 390 163 381 175 377 C187 373 191 371 203 365 C215 359 232 347 245 340 C258 333 267 327 280 322 C293 317 310 313 322 309 C334 305 337 304 350 299 C363 294 384 286 399 280 C414 274 428 267 441 260 C454 253 463 245 476 237 C489 229 504 220 518 213 C532 206 547 198 560 192 C573 186 583 183 595 176 C607 169 617 158 630 148 C643 138 664 128 672 118 C680 108 677 96 675 87 C673 78 666 67 658 61 C650 55 642 51 630 49 C618 47 601 46 588 51 C575 56 565 68 553 77 C541 86 529 98 518 107 C507 116 491 124 487 133 C483 142 495 150 494 159 C493 168 488 178 483 184 C478 190 468 195 465 194 C462 193 467 182 462 179 C457 176 446 172 434 174 C422 176 406 182 392 189 C378 196 364 204 350 213 C336 222 320 236 308 244 C296 252 292 255 280 261 C268 267 252 274 238 281 C224 288 209 299 196 302 C183 305 172 294 161 297 C150 300 145 311 133 317 C121 323 105 332 91 333 C77 334 59 324 49 325 C39 326 35 334 32 340 C29 346 29 357 32 363Z"/>
+        </defs>
+        <use href="#lake-path" class="lake-shadow" transform="translate(6 10)"/>
+        <use href="#lake-path" class="lake"/>
+        <use href="#lake-path" class="lake-draw" pathLength="1"/>
         <g class="map-ref" font-size="13">
           <text x="40" y="306">Keszthely</text>
           <text x="196" y="280" text-anchor="middle">Badacsony</text>
@@ -450,15 +397,15 @@
         </g>
         <circle class="area-halo" cx="132" cy="430" r="96"/>
         <g class="pin" data-place="maria" transform="translate(133 388)">
-          <circle r="16" class="pin-ring"/><circle r="6" class="pin-dot"/>
+          <circle r="16" class="pin-pulse"/><circle r="16" class="pin-ring"/><circle r="6" class="pin-dot"/>
           <text x="16" y="-10">Balatonmáriafürdő</text>
         </g>
         <g class="pin" data-place="kereszt" transform="translate(116 404)">
-          <circle r="16" class="pin-ring"/><circle r="6" class="pin-dot"/>
+          <circle r="16" class="pin-pulse"/><circle r="16" class="pin-ring"/><circle r="6" class="pin-dot"/>
           <text x="12" y="34">Balatonkeresztúr</text>
         </g>
         <g class="pin" data-place="marcali" transform="translate(147 507)">
-          <circle r="16" class="pin-ring"/><circle r="6" class="pin-dot"/>
+          <circle r="16" class="pin-pulse"/><circle r="16" class="pin-ring"/><circle r="6" class="pin-dot"/>
           <text x="16" y="5">Marcali</text>
         </g>
       </svg>
@@ -467,258 +414,118 @@
   </div>
 </section>
 
-<!-- ============ REPTÉRI TRANSZFER ============ -->
-<section class="sec airport-sec" id="repter" aria-labelledby="ap-title">
-  <div class="wrap airport-grid">
-    <div class="ap-text">
-      <h2 id="ap-title">Az utazás nem a repülőtéren kezdődik.</h2>
-      <p class="lead">Kérjen egyedi ajánlatot előre egyeztetett transzferre. Adja meg, melyik repülőtérre és mikor utazna, a részleteket egyeztetjük.</p>
-      <svg class="ap-route" viewBox="0 0 520 120" aria-hidden="true">
-        <path class="ap-path" d="M16 92 C120 92 150 40 250 46 C340 52 380 96 470 60" fill="none" stroke="#0B2638" stroke-width="2" stroke-dasharray="3 7" stroke-linecap="round"/>
-        <circle cx="16" cy="92" r="7" fill="#F5F4EF" stroke="#0B2638" stroke-width="2"/>
-        <text x="16" y="116" class="ap-lbl">Balaton</text>
-        <g transform="translate(478 56) rotate(-24)"><use href="#i-plane" width="34" height="34" x="-17" y="-17"/></g>
-        <text x="470" y="100" class="ap-lbl" text-anchor="middle">Repülőtér</text>
-      </svg>
-    </div>
-
-    <form class="ap-form" id="ap-form" novalidate>
-      <div class="f">
-        <label for="a-from">Indulás</label>
-        <input id="a-from" list="helyek" value="Balatonkeresztúr" autocomplete="off">
-      </div>
-      <div class="f">
-        <label for="a-air">Úti cél</label>
-        <select id="a-air">
-          <option value="">Repülőtér kiválasztása</option>
-          <option>Budapest Liszt Ferenc</option>
-          <option>Hévíz–Balaton Airport (Sármellék)</option>
-          <option>Bécs-Schwechat</option>
-          <option>Zágráb</option>
-          <option>Egyéb repülőtér</option>
-        </select>
-      </div>
-      <div class="f-row two">
-        <div class="f">
-          <label for="a-date">Utazás dátuma</label>
-          <input id="a-date" type="date">
-        </div>
-        <div class="f">
-          <label for="a-pax">Utasok</label>
-          <select id="a-pax">
-            <option value="">–</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option value="7+">7 vagy több</option>
-          </select>
-        </div>
-      </div>
-      <button class="btn btn-navy" type="submit">Egyedi ajánlatot kérek</button>
-      <p class="note">A gomb kitölti a fenti adatokkal a teljes ajánlatkérőt.</p>
-    </form>
-  </div>
-</section>
-
-<!-- ============ BIZALOM, SZEMÉLYESSÉG ============ -->
-<section class="sec person" id="kapcsolat" aria-labelledby="ps-title">
-  <div class="wrap person-grid">
-    <div class="ps-text">
-      <h2 id="ps-title">CB TAXI – közvetlen kapcsolat, egyszerű utazás.</h2>
-      <p class="lead">A CB TAXI Nyakas Péter személyszállító vállalkozása, amely a Balaton és Marcali térségében kínál taxi- és transzferszolgáltatást.</p>
-      <p>Hívja közvetlenül, vagy írjon e-mailt: az út részleteit személyesen egyeztetjük.</p>
-    </div>
-
-    <div class="card" aria-label="Névjegy">
-      <div class="card-top">
-        <svg class="card-mark" viewBox="0 0 64 40" aria-hidden="true"><use href="#cb-mark"/></svg>
-        <div><b>Nyakas Péter</b><span>CB TAXI</span></div>
-      </div>
-      <a class="card-row" href="tel:+36309978362">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"/></svg>
-        <span><small>Telefon</small>+36 30 997 8362</span>
-      </a>
-      <a class="card-row" href="mailto:taxispeter@gmail.com">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-mail"/></svg>
-        <span><small>E-mail</small>taxispeter@gmail.com</span>
-      </a>
-      <div class="card-row">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pin"/></svg>
-        <span><small>Működési terület</small>Balatonkeresztúr, Balatonmáriafürdő, Marcali és a Balaton térsége</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ ZÁRÓ CTA ============ -->
-<section class="final" id="indulas" aria-labelledby="fn-title">
-  <svg class="final-line" viewBox="0 0 1200 120" preserveAspectRatio="none" aria-hidden="true">
-    <path d="M0 90 C200 90 300 30 520 34 C760 38 860 96 1200 70" fill="none" stroke="#D3AE73" stroke-width="1.4" stroke-dasharray="10 14" opacity=".5"/>
+<!-- ============ KAPCSOLAT: Indulhatunk? ============ -->
+<section class="final" id="kapcsolat" aria-labelledby="fn-title">
+  <svg class="final-scene" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+    <rect width="1600" height="900" fill="url(#g-finalsky)"/>
+    <g id="f-stars"></g>
+    <circle cx="1180" cy="200" r="30" fill="url(#g-moon2)"/>
+    <path fill="#0F2639" d="M0 600 C120 594 220 590 330 596 C420 600 470 592 520 580 C560 560 590 528 618 520 L760 520 C790 524 812 556 840 588 C880 598 1000 600 1120 596 C1240 592 1400 596 1600 600 V604 H0 Z"/>
+    <rect y="600" width="1600" height="104" fill="#0B2234"/>
+    <g stroke="#E6EEF0" stroke-linecap="round" opacity=".3"><path d="M1140 614 H1220 M1124 630 H1200 M1160 646 H1240 M1110 664 H1180"/></g>
+    <rect y="704" width="1600" height="196" fill="#07141F"/>
+    <g class="lamp"><circle cx="912" cy="606" r="90" fill="url(#g-lamp)"/><path d="M900 770 V606 H916" stroke="#3E5568" stroke-width="6" fill="none"/><circle cx="914" cy="610" r="7" fill="#FFE2A8"/></g>
+    <ellipse cx="900" cy="790" rx="260" ry="26" fill="#F2BF6E" opacity=".07"/>
+    <use href="#road"/>
+    <g transform="translate(600 646)">
+      <polygon points="414,96 900,60 900,150" fill="url(#g-carbeam)" opacity=".8"/>
+      <use href="#car" width="440" height="160"/>
+    </g>
   </svg>
+  <div class="final-shade" aria-hidden="true"></div>
+
   <div class="wrap final-in">
     <h2 id="fn-title">Indulhatunk?</h2>
-    <p class="lead">Vegye fel közvetlenül a kapcsolatot, vagy kérjen ajánlatot következő útjára.</p>
-    <div class="final-cta">
-      <a class="btn btn-gold" href="tel:+36309978362">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"/></svg>+36 30 997 8362
-      </a>
-      <a class="btn btn-line" href="#fuvar" data-goto-form>Ajánlatkérés</a>
-    </div>
+    <p class="lead">A CB TAXI Nyakas Péter személyszállító vállalkozása, amely a Balaton és Marcali térségében kínál taxi- és transzferszolgáltatást. Hívja közvetlenül.</p>
+    <a class="final-call" href="tel:+36309978362">
+      <span class="fc-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"/></svg></span>
+      <span class="fc-txt"><small>Nyakas Péter, CB TAXI</small><b>+36 30 997 8362</b></span>
+    </a>
+    <p class="final-meta"><a href="mailto:taxispeter@gmail.com">taxispeter@gmail.com</a><span>Balatonkeresztúr, Balatonmáriafürdő, Marcali és a Balaton térsége</span></p>
   </div>
 </section>
 
 </main>
 
-<!-- ============ LÁBLÉC ============ -->
 <footer class="foot">
-  <div class="wrap foot-grid">
+  <div class="wrap foot-in">
     <div class="foot-brand">
       <svg class="mark" viewBox="0 0 64 40" aria-hidden="true"><use href="#cb-mark"/></svg>
-      <p><b>CB TAXI</b><br>Nyakas Péter, személyszállítás</p>
+      <p><b>CB TAXI</b> Nyakas Péter, személyszállítás</p>
     </div>
-    <nav class="foot-nav" aria-label="Lábléc">
-      <a href="#szolgaltatasok">Szolgáltatások</a>
-      <a href="#fuvar">Fuvarigénylés</a>
-      <a href="#terulet">Működési terület</a>
-      <a href="#kapcsolat">Kapcsolat</a>
-    </nav>
-    <address class="foot-contact">
-      <a href="tel:+36309978362">+36 30 997 8362</a><br>
-      <a href="mailto:taxispeter@gmail.com">taxispeter@gmail.com</a><br>
-      Balatonkeresztúr, Balatonmáriafürdő, Marcali és a Balaton térsége
-    </address>
-  </div>
-  <div class="wrap foot-bottom">
     <button type="button" class="link" id="privacy-open">Adatkezelési tájékoztató</button>
-    <p>Előzetes látványterv – <a href="https://daekon.hu/">DAEKON</a></p>
+    <p class="foot-demo">Előzetes látványterv – <a href="https://daekon.hu/">DAEKON</a></p>
   </div>
 </footer>
 
 <dialog class="dlg" id="privacy">
   <h2>Adatkezelési tájékoztató</h2>
-  <p>Az éles oldalon itt lesz a vállalkozás adatkezelési tájékoztatója: milyen adatot kér az ajánlatkérő, mire használja, és meddig őrzi meg. A bemutató változat semmilyen adatot nem küld és nem tárol.</p>
+  <p>Az éles oldalon itt lesz a vállalkozás adatkezelési tájékoztatója. Az oldal nem gyűjt és nem tárol személyes adatot: a kapcsolatfelvétel telefonon történik.</p>
   <form method="dialog"><button class="btn btn-navy">Bezárás</button></form>
 </dialog>
 
-<!-- mobil kezelősáv -->
-<div class="mbar" id="mbar" aria-hidden="true">
-  <a href="tel:+36309978362" tabindex="-1"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"/></svg>Hívás</a>
-  <a href="#fuvar" data-goto-form tabindex="-1"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-route"/></svg>Ajánlatkérés</a>
-</div>
+<!-- mobil hívássáv -->
+<a class="mbar" id="mbar" href="tel:+36309978362" tabindex="-1" aria-hidden="true">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"/></svg>
+  <span>Hívás</span><b>+36 30 997 8362</b>
+</a>
 
 <!-- ============ SVG KÉSZLET ============ -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
-    <!-- CB jel: a C nyílásán át az útfelfestés fut be a B-be -->
+    <radialGradient id="g-lamp" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#FFD99A" stop-opacity=".45"/><stop offset=".5" stop-color="#F2BF6E" stop-opacity=".12"/><stop offset="1" stop-color="#F2BF6E" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="g-moon2" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#F7F6F0"/><stop offset=".7" stop-color="#E9ECE8"/><stop offset="1" stop-color="#E9ECE8" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="g-carbeam" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#FFEBC2" stop-opacity=".55"/><stop offset=".35" stop-color="#FFEBC2" stop-opacity=".16"/><stop offset="1" stop-color="#FFEBC2" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="g-finalsky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#040D17"/><stop offset=".5" stop-color="#0A2234"/><stop offset=".66" stop-color="#173246"/>
+    </linearGradient>
+    <linearGradient id="g-body" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2A3E50"/><stop offset=".22" stop-color="#14212E"/><stop offset="1" stop-color="#070E15"/>
+    </linearGradient>
+    <linearGradient id="g-glass" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#0E2233"/><stop offset=".55" stop-color="#1D3A50"/><stop offset=".62" stop-color="#4E6C82"/><stop offset=".7" stop-color="#1D3A50"/><stop offset="1" stop-color="#0E2233"/>
+    </linearGradient>
+
+    <symbol id="road" viewBox="0 0 1600 900">
+      <rect y="742" width="1600" height="72" fill="#0C1C29"/>
+      <path d="M0 742 H1600" stroke="#22394C" stroke-width="2"/>
+      <path class="road-dash" d="M0 778 H1600" stroke="#D3AE73" stroke-width="4" stroke-dasharray="46 40"/>
+      <path d="M0 814 H1600" stroke="#1A3042" stroke-width="2"/>
+    </symbol>
+
+    <symbol id="car" viewBox="0 0 440 160" overflow="visible">
+      <ellipse cx="226" cy="152" rx="214" ry="8" fill="#000" opacity=".5"/>
+      <path d="M28 118 L24 70 Q24 46 44 42 L262 36 Q290 36 312 52 L346 76 Q392 82 410 92 Q421 98 421 112 L419 122 Q417 128 408 128 L382 128 A31 31 0 0 0 320 128 L132 128 A31 31 0 0 0 70 128 L36 128 Q28 128 28 118 Z" fill="url(#g-body)"/>
+      <path d="M52 54 L250 48 Q276 48 296 62 L324 82 L52 86 Z" fill="url(#g-glass)"/>
+      <path d="M178 50 V124 M272 52 L274 124" stroke="#060C12" stroke-width="2" fill="none"/>
+      <path d="M118 50 V86 M230 49 V86" stroke="#060C12" stroke-width="4"/>
+      <path d="M46 44 L262 38 Q290 38 312 54 L346 78 Q392 84 410 94" stroke="#8FA6B7" stroke-width="1.6" fill="none" opacity=".75"/>
+      <path d="M30 100 H418" stroke="#2C4152" stroke-width="1.2" opacity=".8"/>
+      <path d="M402 92 L419 98 L418 106 L400 104 Z" fill="#FFF2D6"/>
+      <circle cx="412" cy="100" r="16" fill="#FFE7B8" opacity=".28"/>
+      <rect x="23" y="62" width="7" height="22" rx="2" fill="#F0503F"/>
+      <circle cx="27" cy="73" r="14" fill="#F0503F" opacity=".22"/>
+      <g class="wheel"><circle cx="101" cy="128" r="25" fill="#05090D"/><circle cx="101" cy="128" r="14" fill="#2B3B49"/><path class="spokes" d="M101 116 V140 M89 128 H113 M92.5 119.5 L109.5 136.5 M109.5 119.5 L92.5 136.5" stroke="#5A6E7E" stroke-width="2.4"/><circle cx="101" cy="128" r="4" fill="#8FA6B7"/></g>
+      <g class="wheel"><circle cx="351" cy="128" r="25" fill="#05090D"/><circle cx="351" cy="128" r="14" fill="#2B3B49"/><path class="spokes" d="M351 116 V140 M339 128 H363 M342.5 119.5 L359.5 136.5 M359.5 119.5 L342.5 136.5" stroke="#5A6E7E" stroke-width="2.4"/><circle cx="351" cy="128" r="4" fill="#8FA6B7"/></g>
+    </symbol>
+
     <symbol id="cb-mark" viewBox="0 0 64 40">
       <path d="M26.2 9.6 A14 14 0 1 0 26.2 30.4" fill="none" stroke="currentColor" stroke-width="3.6" stroke-linecap="round"/>
       <path d="M38 6 V34 M38 6 H47 A7 7 0 0 1 47 20 H38 M38 20 H49 A7 7 0 0 1 49 34 H38" fill="none" stroke="currentColor" stroke-width="3.6" stroke-linejoin="round" stroke-linecap="round"/>
       <path d="M17 20 H34" stroke="#D3AE73" stroke-width="3" stroke-dasharray="4 3.2" stroke-linecap="butt"/>
     </symbol>
-
     <symbol id="i-phone" viewBox="0 0 24 24"><path d="M6.6 3.5h2.6l1.5 4-2 1.4a12 12 0 0 0 6.4 6.4l1.4-2 4 1.5v2.6a2 2 0 0 1-2.1 2A17 17 0 0 1 4.6 5.6a2 2 0 0 1 2-2.1Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
-    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="13" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m3.8 6.5 8.2 6.5 8.2-6.5" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
-    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-6.5-6-6.5-11a6.5 6.5 0 0 1 13 0c0 5-6.5 11-6.5 11Z" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="10" r="2.3" fill="currentColor"/></symbol>
-    <symbol id="i-route" viewBox="0 0 24 24"><circle cx="6" cy="18" r="2.4" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="18" cy="6" r="2.4" fill="currentColor"/><path d="M8.4 18H15a3 3 0 0 0 0-6H9a3 3 0 0 1 0-6h6.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-dasharray="2.6 2.4"/></symbol>
-    <symbol id="i-plane" viewBox="0 0 24 24"><path d="M21 12.5c0-.9-.7-1.5-1.6-1.5H14L9.6 3.5H7.5l2.2 7.5H5.3L3.6 8.5H2l1.1 4L2 16.5h1.6L5.3 14h4.4l-2.2 7.5h2.1L14 14h5.4c.9 0 1.6-.6 1.6-1.5Z" fill="#0B2638"/></symbol>
-
-    <!-- Szolgáltatás-rajzok (közös vonalstílus) -->
-    <symbol id="v-helyi" viewBox="0 0 480 320">
-      <rect width="480" height="320" fill="#0B2638"/>
-      <rect width="480" height="150" fill="#13324A"/>
-      <path d="M0 150 H480" stroke="#45BCD0" stroke-opacity=".35"/>
-      <path d="M0 162 H120 M180 170 H300 M360 160 H460" stroke="#45BCD0" stroke-opacity=".18"/>
-      <g fill="#081A28">
-        <path d="M24 210 V168 L58 140 L92 168 V210 Z"/>
-        <path d="M100 210 V176 L128 154 L156 176 V210 Z"/>
-        <path d="M330 210 V172 L364 146 L398 172 V210 Z"/>
-        <path d="M404 210 V180 L430 160 L456 180 V210 Z"/>
-      </g>
-      <g fill="#D3AE73"><rect x="50" y="178" width="12" height="12" opacity=".85"/><rect x="122" y="184" width="10" height="10" opacity=".5"/><rect x="356" y="180" width="12" height="12" opacity=".7"/></g>
-      <rect y="208" width="480" height="112" fill="#071725"/>
-      <path d="M150 320 C190 270 220 238 232 210 M330 320 C296 272 268 238 254 210" stroke="#2E4A5E" stroke-width="2" fill="none"/>
-      <path d="M240 320 C238 280 240 240 243 210" stroke="#D3AE73" stroke-width="3" stroke-dasharray="14 12" fill="none"/>
-      <path d="M298 214 V112 H320" stroke="#9FB0BE" stroke-width="3" fill="none"/>
-      <circle cx="322" cy="118" r="30" fill="#D3AE73" opacity=".16"/>
-      <circle cx="322" cy="116" r="5" fill="#F3D8A6"/>
-    </symbol>
-
-    <symbol id="v-tavolsagi" viewBox="0 0 480 320">
-      <rect width="480" height="320" fill="#0B2638"/>
-      <rect width="480" height="140" fill="#1A3549"/>
-      <circle cx="360" cy="112" r="20" fill="#D3AE73" opacity=".9"/>
-      <path d="M0 132 C70 112 130 116 190 126 C250 136 300 118 360 120 C420 122 450 128 480 130 V142 H0 Z" fill="#102A3E"/>
-      <rect y="140" width="480" height="180" fill="#071725"/>
-      <path d="M236 140 L244 140 L440 320 L40 320 Z" fill="#0E2436"/>
-      <path d="M236 140 L40 320 M244 140 L440 320" stroke="#2E4A5E" stroke-width="2"/>
-      <g fill="#D3AE73"><rect x="239" y="150" width="2" height="6"/><rect x="238.5" y="166" width="3" height="10"/><rect x="238" y="190" width="4" height="16"/><rect x="237" y="226" width="6" height="24"/><rect x="236" y="276" width="8" height="40"/></g>
-      <g stroke="#E7EBED" stroke-width="3"><path d="M396 300 V250"/></g>
-      <rect x="390" y="244" width="12" height="16" fill="#E7EBED"/><rect x="390" y="244" width="12" height="5" fill="#E3584A"/>
-    </symbol>
-
-    <symbol id="v-transzfer" viewBox="0 0 480 320">
-      <rect width="480" height="320" fill="#0B2638"/>
-      <rect width="480" height="150" fill="#13324A"/>
-      <path d="M0 150 H480" stroke="#45BCD0" stroke-opacity=".35"/>
-      <rect y="150" width="480" height="170" fill="#071725"/>
-      <path d="M40 320 L210 156 M150 320 L222 156 M330 320 L258 156 M440 320 L270 156" stroke="#2E4A5E" stroke-width="2"/>
-      <g stroke="#2E4A5E" stroke-width="2"><path d="M168 260 H312 M188 222 H292 M202 196 H278 M212 178 H268"/></g>
-      <path d="M300 98 H468 L452 118 H316 Z" fill="#081A28"/>
-      <path d="M326 118 V230 M444 118 V230" stroke="#081A28" stroke-width="5"/>
-      <rect x="340" y="132" width="90" height="22" fill="#F5F4EF"/>
-      <text x="385" y="148" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="12" font-weight="600" fill="#071A2B">Balatonmária</text>
-      <path d="M326 230 H460" stroke="#9FB0BE" stroke-width="3"/>
-      <rect x="360" y="196" width="22" height="30" rx="3" fill="#D3AE73"/><path d="M366 196 V190 H376 V196" stroke="#D3AE73" stroke-width="2.5" fill="none"/>
-      <rect x="388" y="206" width="18" height="20" rx="3" fill="#45BCD0" opacity=".8"/>
-    </symbol>
-
-    <symbol id="v-repteri" viewBox="0 0 480 320">
-      <rect width="480" height="320" fill="#0B2638"/>
-      <rect width="480" height="200" fill="#163248"/>
-      <path d="M60 196 C140 160 220 120 320 72" stroke="#D3AE73" stroke-width="2" stroke-dasharray="3 8" fill="none" stroke-linecap="round"/>
-      <g transform="translate(340 62) rotate(-28) scale(2.4)"><path d="M21 12.5c0-.9-.7-1.5-1.6-1.5H14L9.6 3.5H7.5l2.2 7.5H5.3L3.6 8.5H2l1.1 4L2 16.5h1.6L5.3 14h4.4l-2.2 7.5h2.1L14 14h5.4c.9 0 1.6-.6 1.6-1.5Z" transform="translate(-12 -12)" fill="#F5F4EF"/></g>
-      <rect y="198" width="480" height="122" fill="#071725"/>
-      <path d="M0 214 H480" stroke="#2E4A5E" stroke-width="2"/>
-      <g fill="#45BCD0"><circle cx="30" cy="214" r="3"/><circle cx="90" cy="214" r="3"/><circle cx="150" cy="214" r="3"/><circle cx="210" cy="214" r="3"/><circle cx="270" cy="214" r="3"/><circle cx="330" cy="214" r="3"/><circle cx="390" cy="214" r="3"/><circle cx="450" cy="214" r="3"/></g>
-      <path d="M0 280 C140 270 300 266 480 268" stroke="#D3AE73" stroke-width="3" stroke-dasharray="14 12" fill="none"/>
-    </symbol>
-
-    <!-- Települési rajzok -->
-    <symbol id="p-v-maria" viewBox="0 0 320 150">
-      <rect width="320" height="150" fill="#0B2638"/>
-      <path d="M0 86 C40 80 70 84 100 82 C130 70 150 62 172 62 L210 62 C222 64 234 76 250 84 C280 86 300 86 320 85 V90 H0 Z" fill="#163248"/>
-      <rect y="88" width="320" height="62" fill="#123049"/>
-      <g stroke="#45BCD0" stroke-opacity=".35"><path d="M20 104 H70 M110 116 H190 M230 108 H300 M60 132 H120"/></g>
-      <path d="M40 150 V118 H170" stroke="#D3AE73" stroke-width="3" fill="none"/>
-      <path d="M60 118 V150 M100 118 V150 M140 118 V150" stroke="#D3AE73" stroke-width="2" opacity=".6"/>
-      <path d="M232 112 L262 112 L256 120 H238 Z" fill="#F5F4EF"/><path d="M247 110 V72 L266 108 Z" fill="#F5F4EF"/>
-    </symbol>
-    <symbol id="p-v-kereszt" viewBox="0 0 320 150">
-      <rect width="320" height="150" fill="#0B2638"/>
-      <rect width="320" height="92" fill="#13324A"/>
-      <g fill="#081A28"><path d="M20 120 V88 L48 66 L76 88 V120Z"/><path d="M90 120 V92 L112 74 L134 92 V120Z"/><path d="M200 120 V86 L232 62 L264 86 V120Z"/><path d="M272 120 V94 L292 78 L312 94 V120Z"/></g>
-      <g fill="#D3AE73"><rect x="42" y="96" width="10" height="10"/><rect x="226" y="94" width="10" height="10" opacity=".6"/></g>
-      <rect y="118" width="320" height="32" fill="#071725"/>
-      <path d="M0 136 H320" stroke="#D3AE73" stroke-width="2.5" stroke-dasharray="12 10"/>
-      <path d="M160 120 V52" stroke="#9FB0BE" stroke-width="2"/><circle cx="160" cy="52" r="16" fill="#D3AE73" opacity=".18"/><circle cx="160" cy="52" r="3.5" fill="#F3D8A6"/>
-    </symbol>
-    <symbol id="p-v-marcali" viewBox="0 0 320 150">
-      <rect width="320" height="150" fill="#0B2638"/>
-      <rect width="320" height="100" fill="#163248"/>
-      <path d="M0 100 C60 90 120 94 180 96 C240 98 280 92 320 94 V104 H0Z" fill="#102A3E"/>
-      <g fill="#081A28"><rect x="30" y="76" width="44" height="28"/><rect x="80" y="64" width="36" height="40"/><path d="M150 104 V58 L160 30 L170 58 V104Z"/><rect x="176" y="70" width="52" height="34"/><rect x="236" y="80" width="40" height="24"/></g>
-      <g fill="#D3AE73" opacity=".7"><rect x="88" y="72" width="6" height="6"/><rect x="100" y="84" width="6" height="6"/><rect x="186" y="78" width="6" height="6"/><rect x="206" y="88" width="6" height="6"/></g>
-      <rect y="104" width="320" height="46" fill="#071725"/>
-      <path d="M40 150 C100 130 200 120 320 118" stroke="#D3AE73" stroke-width="2.5" stroke-dasharray="12 10" fill="none"/>
-    </symbol>
-    <symbol id="p-v-balaton" viewBox="0 0 320 150">
-      <rect width="320" height="150" fill="#0B2638"/>
-      <rect width="320" height="84" fill="#1A3549"/>
-      <circle cx="90" cy="84" r="16" fill="#D3AE73"/>
-      <path d="M150 84 C160 70 168 52 180 46 L220 46 C232 52 242 72 250 84 Z" fill="#102A3E"/>
-      <rect y="84" width="320" height="66" fill="#123049"/>
-      <g stroke="#E8C990" stroke-linecap="round"><path d="M70 94 H110" opacity=".6"/><path d="M78 104 H102" opacity=".4"/><path d="M66 116 H114" opacity=".25"/></g>
-      <g stroke="#45BCD0" stroke-opacity=".3"><path d="M160 100 H230 M200 122 H290 M10 130 H50"/></g>
-    </symbol>
   </defs>
 </svg>
 
+<script src="js/gsap.min.js" defer></script>
+<script src="js/ScrollTrigger.min.js" defer></script>
 <script src="cbtaxi.js" defer></script>
 </body>
 </html>
