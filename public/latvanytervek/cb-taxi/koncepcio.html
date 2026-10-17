@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CB TAXI – kreatív koncepció | DAEKON</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#F3EFE6">
+<link rel="preload" href="fonts/sora.woff" as="font" type="font/woff" crossorigin>
+<link rel="preload" href="fonts/inter.woff" as="font" type="font/woff" crossorigin>
+<link rel="icon" href="logo-jel.svg" type="image/svg+xml">
+<style>
+@font-face{font-family:"Sora";src:url(fonts/sora.woff) format("woff");font-weight:100 800;font-display:swap}
+@font-face{font-family:"Inter";src:url(fonts/inter.woff) format("woff");font-weight:100 900;font-display:swap}
+:root{
+  --paper:#F3EFE6; --paper-2:#EAE4D7; --ink:#101A24; --ink-2:#4E5862; --rule:#D9D1C1;
+  --navy:#071A2B; --deep:#102A40; --gold:#D6B279; --gold-ink:#7E602C; --lake:#57BDD0; --off:#F5F4EF;
+  --head:"Sora",system-ui,sans-serif; --body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --gut:clamp(20px,4vw,56px); --max:1180px;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.7 var(--body);-webkit-font-smoothing:antialiased}
+img,svg{display:block;max-width:100%}
+a{color:inherit}
+h1,h2,h3{font-family:var(--head);font-weight:600;letter-spacing:-.015em;margin:0;text-wrap:balance}
+h1{font-size:clamp(28px,3.4vw,40px);line-height:1.12}
+h2{font-size:clamp(22px,2.4vw,30px);line-height:1.2}
+h3{font-size:18px;line-height:1.3}
+p{margin:0}
+.wrap{max-width:calc(var(--max) + 2*var(--gut));margin:0 auto;padding:0 var(--gut)}
+:focus-visible{outline:2px solid var(--deep);outline-offset:3px}
+
+/* fejléc */
+.top{border-bottom:1px solid var(--rule)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:72px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+.brand svg{width:44px;height:28px;color:var(--ink)}
+.brand b{font:600 15px/1.1 var(--head);letter-spacing:.06em}
+.brand small{display:block;font-size:12px;color:var(--ink-2)}
+.top a.live{font-size:14px;font-weight:600;text-decoration:none;padding:10px 16px;border:1.5px solid var(--ink);border-radius:3px}
+.top a.live:hover{background:var(--ink);color:var(--paper)}
+
+.intro{padding-top:clamp(56px,8vw,104px);padding-bottom:clamp(40px,6vw,72px)}
+.intro .kick{font-size:14px;color:var(--gold-ink);font-weight:600;margin-bottom:16px}
+.intro p.lead{font-size:clamp(17px,1.4vw,19px);color:var(--ink-2);max-width:40em;margin-top:18px}
+
+section.blk{padding:clamp(48px,7vw,96px) 0;border-top:1px solid var(--rule)}
+.blk-head{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:clamp(24px,5vw,72px);align-items:start}
+.blk-head p{color:var(--ink-2);max-width:38em}
+
+/* elemzés */
+.facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 clamp(24px,4vw,56px);margin-top:8px}
+.facts div{padding:18px 0;border-bottom:1px solid var(--rule)}
+.facts dt{font-weight:600;font-size:14px;margin-bottom:4px}
+.facts dd{margin:0;color:var(--ink-2);font-size:15px}
+.known{display:grid;grid-template-columns:1fr 1fr;gap:clamp(16px,3vw,32px);margin-top:36px}
+.known > div{background:var(--paper-2);border-radius:4px;padding:22px 24px}
+.known h3{font-size:15px;margin-bottom:10px}
+.known ul{margin:0;padding-left:18px;color:var(--ink-2);font-size:15px}
+.known li+li{margin-top:4px}
+
+/* irányok */
+.dirs{display:flex;flex-direction:column;gap:clamp(56px,8vw,96px);margin-top:clamp(36px,5vw,56px)}
+.dir{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(24px,4vw,56px);align-items:start}
+.dir:nth-child(even) .frame{order:2}
+.frame{position:relative;aspect-ratio:16/10;border-radius:6px;overflow:hidden;background:var(--navy);box-shadow:0 40px 70px -46px rgba(7,26,43,.7)}
+.frame img{width:100%;height:100%;object-fit:cover;object-position:top}
+.dir-txt .tag{display:inline-block;font-size:13px;font-weight:600;padding:4px 10px;border-radius:2px;background:var(--paper-2);color:var(--ink-2);margin-bottom:14px}
+.dir-txt .tag.win{background:var(--navy);color:var(--gold)}
+.dir-txt h3{font-size:clamp(20px,2vw,24px)}
+.dir-txt > p{color:var(--ink-2);margin-top:12px}
+.dir-txt dl{margin:20px 0 0;font-size:15px}
+.dir-txt dl div{display:grid;grid-template-columns:118px 1fr;gap:12px;padding:10px 0;border-top:1px solid var(--rule)}
+.dir-txt dt{font-weight:600}
+.dir-txt dd{margin:0;color:var(--ink-2)}
+.sw{display:flex;gap:6px;margin-top:2px}
+.sw i{width:22px;height:22px;border-radius:3px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+
+/* B: indulási tábla */
+.fb{background:#ECE6D8;display:flex;flex-direction:column;justify-content:center;padding:6% 7%;gap:4%}
+.fb-head{display:flex;justify-content:space-between;align-items:baseline;font:600 clamp(9px,1.1vw,13px)/1 var(--body);color:#5A5348;border-bottom:2px solid #1B1A17;padding-bottom:3%}
+.fb-head b{font-family:var(--head);color:#1B1A17;font-size:clamp(12px,1.5vw,18px)}
+.fb-row{display:flex;gap:3%;align-items:center}
+.fb-row .lbl{flex:0 0 22%;font:600 clamp(8px,.95vw,11px)/1.2 var(--body);color:#5A5348}
+.flap{display:flex;gap:2px;flex-wrap:nowrap}
+.flap span{display:grid;place-items:center;width:clamp(11px,1.65vw,22px);aspect-ratio:3/4.2;background:#1B1A17;color:#F4EFE3;font:600 clamp(8px,1.15vw,15px)/1 var(--head);border-radius:2px;position:relative;overflow:hidden}
+.flap span::after{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:rgba(255,255,255,.18)}
+.flap.red span{background:#B8322A}
+.fb-note{font:500 clamp(8px,.9vw,11px)/1.4 var(--body);color:#5A5348;margin-top:2%}
+@keyframes flip{0%{transform:rotateX(90deg)}100%{transform:none}}
+.fb.go .flap span{animation:flip .38s cubic-bezier(.2,.7,.2,1) both}
+
+/* C: térkép */
+.mp{background:#E9E3D3}
+.mp svg{width:100%;height:100%}
+.mp .route{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 2.6s cubic-bezier(.2,.7,.2,1)}
+.mp.go .route{stroke-dashoffset:0}
+
+/* döntés */
+.verdict{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;margin-top:36px;border-top:1.5px solid var(--ink)}
+.verdict > div{padding:20px 20px 22px 0;border-bottom:1px solid var(--rule)}
+.verdict > div + div{padding-left:20px;border-left:1px solid var(--rule)}
+.verdict h3{font-size:16px}
+.verdict p{font-size:15px;color:var(--ink-2);margin-top:8px}
+.verdict .pick h3::after{content:"kiválasztva";margin-left:10px;font:600 12px/1 var(--body);color:var(--gold-ink);vertical-align:middle}
+
+/* előnézet */
+.prev{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,1fr);gap:clamp(16px,2.6vw,32px);margin-top:36px;align-items:start}
+.prev-d{display:grid;grid-template-columns:1fr 1fr;gap:clamp(12px,1.8vw,22px)}
+.prev-m{display:grid;grid-template-columns:1fr 1fr;gap:clamp(10px,1.4vw,16px)}
+.prev figure{margin:0}
+.prev img{border-radius:4px;box-shadow:0 24px 50px -34px rgba(7,26,43,.8);width:100%}
+.prev figcaption{font-size:13px;color:var(--ink-2);margin-top:8px}
+
+/* táblák */
+.tbl{width:100%;border-collapse:collapse;margin-top:28px;font-size:15px}
+.tbl th,.tbl td{text-align:left;vertical-align:top;padding:14px 16px 14px 0;border-bottom:1px solid var(--rule)}
+.tbl th{font-weight:600;font-size:13px;color:var(--ink-2);border-bottom:1.5px solid var(--ink)}
+.tbl td:first-child{font-weight:600;white-space:nowrap}
+.tbl td{color:var(--ink-2)}
+.tbl td:first-child{color:var(--ink)}
+.tbl-wrap{overflow-x:auto}
+
+.tokens{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(20px,3vw,40px);margin-top:32px}
+.tokens h3{font-size:15px;margin-bottom:12px}
+.chip{display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid var(--rule);font-size:14px}
+.chip i{width:30px;height:30px;border-radius:4px;flex:none;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+.chip code{margin-left:auto;font:500 13px/1 var(--body);color:var(--ink-2)}
+.ts div{padding:8px 0;border-bottom:1px solid var(--rule);display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.ts span{color:var(--ink-2);font-size:13px;white-space:nowrap}
+.list{margin:0;padding-left:18px;color:var(--ink-2);font-size:15px}
+.list li+li{margin-top:6px}
+.list b{color:var(--ink)}
+
+.tech{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(16px,3vw,32px);margin-top:32px}
+.tech > div{border:1px solid var(--rule);border-radius:4px;padding:22px 24px;background:#F7F4EC}
+.tech h3{font-size:15px;margin-bottom:8px}
+.tech p{font-size:15px;color:var(--ink-2)}
+.tech .st{display:inline-block;font-size:12px;font-weight:600;padding:3px 8px;border-radius:2px;margin-bottom:10px}
+.st.in{background:#DDEBDD;color:#26572B}.st.no{background:#EEE3D0;color:#6B5223}.st.opt{background:#DDE7EE;color:#264B66}
+
+.foot{border-top:1px solid var(--rule);padding:28px 0 48px;font-size:14px;color:var(--ink-2)}
+.foot .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+@media (max-width:900px){
+  .blk-head,.dir,.prev{grid-template-columns:1fr}
+  .dir:nth-child(even) .frame{order:0}
+  .verdict,.tokens{grid-template-columns:1fr}
+  .verdict > div + div{padding-left:0;border-left:0}
+  .prev-m{grid-template-columns:repeat(4,1fr)}
+}
+@media (max-width:640px){
+  .facts,.known,.tech{grid-template-columns:1fr}
+  .prev-d{grid-template-columns:1fr}
+  .prev-m{grid-template-columns:1fr 1fr}
+  .dir-txt dl div{grid-template-columns:96px 1fr}
+  .top a.live{padding:9px 12px;font-size:13px}
+  .brand small{display:none}
+}
+@media (max-width:700px){
+  .tbl thead{display:none}
+  .tbl,.tbl tbody,.tbl tr,.tbl td{display:block;width:100%}
+  .tbl tr{padding:16px 0;border-bottom:1px solid var(--rule)}
+  .tbl td{border:0;padding:3px 0}
+  .tbl td:first-child{font-family:var(--head);font-size:16px;margin-bottom:4px;white-space:normal}
+  .tbl td:nth-child(2)::before{content:"Kiváltó: ";font-weight:600;color:var(--ink)}
+  .tbl td:nth-child(4)::before{content:"Tovább: ";font-weight:600;color:var(--ink)}
+}
+@media (prefers-reduced-motion:reduce){.fb.go .flap span{animation:none}.mp .route{transition:none;stroke-dashoffset:0}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="./"><svg viewBox="0 0 64 40" aria-hidden="true"><path d="M26.2 9.6 A14 14 0 1 0 26.2 30.4" fill="none" stroke="currentColor" stroke-width="3.6" stroke-linecap="round"/><path d="M38 6 V34 M38 6 H47 A7 7 0 0 1 47 20 H38 M38 20 H49 A7 7 0 0 1 49 34 H38" fill="none" stroke="currentColor" stroke-width="3.6" stroke-linejoin="round" stroke-linecap="round"/><path d="M17 20 H34" stroke="#D6B279" stroke-width="3" stroke-dasharray="4 3.2"/></svg><span><b>CB TAXI</b><small>Kreatív koncepció – DAEKON</small></span></a>
+    <a class="live" href="./">Megnézem a látványtervet</a>
+  </div>
+</header>
+
+<main>
+<div class="wrap intro">
+  <p class="kick">Előzetes látványterv · 2026. október</p>
+  <h1>CB TAXI – Nyakas Péter: hogyan jutottunk el a végleges irányig</h1>
+  <p class="lead">Ez az oldal azt mutatja be, milyen elemzésből indultunk, milyen három, egymástól nagyon eltérő irányt vizsgáltunk meg, melyiket választottuk és miért, valamint azt, hogy a kész látványterv hogyan épül fel – a fejlesztői átadáshoz szükséges részletekkel.</p>
+</div>
+
+<!-- 1. ELEMZÉS -->
+<section class="blk" id="elemzes">
+  <div class="wrap">
+    <div class="blk-head">
+      <h2>Kiindulás</h2>
+      <dl class="facts">
+        <div><dt>Ügyfél</dt><dd>CB TAXI – Nyakas Péter: egyszemélyes, helyi személyszállító vállalkozás a Balaton déli partján.</dd></div>
+        <div><dt>Terület</dt><dd>Balatonmáriafürdő, Balatonkeresztúr, Marcali és térsége; személyes pont: Balatonmária vasútállomás.</dd></div>
+        <div><dt>Kiknek szól</dt><dd>Nyaralók és szálláshelyek vendégei (strand, vonat, vacsora), helyiek (orvos, rokonok, rendezvény), reptérre vagy távolabbra utazók – sokan telefonról, útközben.</dd></div>
+        <div><dt>Üzleti cél</dt><dd>Egyetlen dolog: hívás. Nincs foglalómotor, nincs űrlap – az ügyfél kifejezett kérése.</dd></div>
+        <div><dt>Személyiség</dt><dd>Közvetlen, megbízható, helyismerettel bíró – nem flotta, hanem egy ember, akit fel lehet hívni.</dd></div>
+        <div><dt>Verseny online</dt><dd>A keresőben főleg nemzetközi transzfer-aggregátorok sablonos foglalóoldalai jelennek meg; erős, helyi taxis márkaoldalt nem találtunk. Ez a rés: személyes, helyi, egyszerű.</dd></div>
+      </dl>
+    </div>
+    <div class="known">
+      <div>
+        <h3>Ellenőrzött, használható</h3>
+        <ul>
+          <li>Név: CB TAXI – Nyakas Péter</li>
+          <li>Telefon: +36 30 997 8362</li>
+          <li>Működési terület és a vasútállomás mint személyes pont</li>
+          <li>Szolgáltatások: helyi taxi, távolsági fuvar, transzfer</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Nem ellenőrzött – ezért nem szerepel állításként</h3>
+        <ul>
+          <li>Járműtípus és utaskapacitás (7 vagy 9 fő)</li>
+          <li>Reptéri transzfer köre, árak, nyitvatartás</li>
+          <li>Ügyfélvélemények – valódiak nélkül nincs „social proof” blokk</li>
+          <li>Saját fotók – ezért rajzolt, cserélhető képi világ</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 2. HÁROM IRÁNY -->
+<section class="blk" id="iranyok">
+  <div class="wrap">
+    <div class="blk-head">
+      <h2>Három irány</h2>
+      <p>Mindhárom ugyanarra a briefre felel: prémium, helyi, egyetlen fő művelettel (hívás). Szándékosan nagyon eltérő megoldásokat vizsgáltunk, hogy a választás valódi döntés legyen, ne az első ötlet finomítása.</p>
+    </div>
+
+    <div class="dirs">
+      <!-- A -->
+      <article class="dir">
+        <div class="frame"><img src="koncepcio/d-hero.jpg" alt="Az A irány: esti Balaton Szigliget és Badacsony sziluettjével, a címmel és a hívógombbal" loading="lazy"></div>
+        <div class="dir-txt">
+          <span class="tag win">A · kiválasztva</span>
+          <h3>Éjszakai út</h3>
+          <p>Az oldal egy utazás. A nyitókép naplementéből éjszakába vált a déli partról nézve, majd egyetlen kisbusz végiggördül négy jeleneten – falu, országút, vasútállomás, repülőtér –, és minden megállónál ott a hívógomb.</p>
+          <dl>
+            <div><dt>Paletta</dt><dd><span class="sw"><i style="background:#071A2B"></i><i style="background:#102A40"></i><i style="background:#D6B279"></i><i style="background:#57BDD0"></i><i style="background:#F5F4EF"></i></span></dd></div>
+            <div><dt>Betűk</dt><dd>Sora (címek) + Inter (szöveg)</dd></div>
+            <div><dt>Jellegzetes</dt><dd>Görgetésre haladó, rögzített vízszintes út egy főszereplő járművel</dd></div>
+            <div><dt>Erősség</dt><dd>Filmszerű, emlékezetes, helyi táj; a szolgáltatások történetként jönnek</dd></div>
+            <div><dt>Kockázat</dt><dd>Rajzolt (nem fotó); hosszabb görgetés – rövid rögzítéssel kezelve</dd></div>
+          </dl>
+        </div>
+      </article>
+
+      <!-- B -->
+      <article class="dir">
+        <div class="frame fb" id="fb" aria-label="A B irány vázlata: indulási tábla stílusú nyitókép">
+          <div class="fb-head"><b>CB TAXI</b><span>Indulás: Balatonmáriafürdő</span></div>
+          <div class="fb-row"><span class="lbl">Honnan</span><span class="flap" data-t="BALATONMÁRIA"></span></div>
+          <div class="fb-row"><span class="lbl">Hová</span><span class="flap" data-t="BÁRHOVÁ"></span></div>
+          <div class="fb-row"><span class="lbl">Hívás</span><span class="flap red" data-t="+36309978362"></span></div>
+          <p class="fb-note">Vázlat · a betűk lapozó táblaként peregnek be</p>
+        </div>
+        <div class="dir-txt">
+          <span class="tag">B</span>
+          <h3>Indulási tábla</h3>
+          <p>Tipográfiai irány a part menti vasút hangulatából: világos papír, fekete lapozó betűk, jelzőpiros. A szolgáltatások indulási sorok, az úti cél a táblán pereg.</p>
+          <dl>
+            <div><dt>Paletta</dt><dd><span class="sw"><i style="background:#ECE6D8"></i><i style="background:#1B1A17"></i><i style="background:#B8322A"></i><i style="background:#5A5348"></i></span></dd></div>
+            <div><dt>Betűk</dt><dd>Sora táblabetűként + Inter</dd></div>
+            <div><dt>Jellegzetes</dt><dd>Lapozó (split-flap) betűtábla mikroanimáció</dd></div>
+            <div><dt>Erősség</dt><dd>Nagyon egyedi, kép nélkül is működik, gyors</dd></div>
+            <div><dt>Kockázat</dt><dd>Vasúttársaságnak olvasható; kevésbé érzéki, kevésbé „Balaton”</dd></div>
+          </dl>
+        </div>
+      </article>
+
+      <!-- C -->
+      <article class="dir">
+        <div class="frame mp" id="mp" aria-label="A C irány vázlata: a déli part szintvonalas térképe kirajzolódó útvonallal">
+          <svg viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+            <defs><path id="lk" d="M90 330 C120 340 170 352 220 344 C300 330 380 300 460 262 C540 224 610 190 670 150 C700 130 712 104 690 90 C664 74 630 92 600 118 C560 150 520 170 470 196 C410 226 340 250 270 270 C210 288 150 296 110 300 C86 304 74 322 90 330Z"/></defs>
+            <rect width="800" height="500" fill="#E9E3D3"/>
+            <g fill="none" stroke="#9C8763" stroke-width="1">
+              <use href="#lk" transform="translate(400 220) scale(1.12) translate(-400 -220)" opacity=".5"/>
+              <use href="#lk" transform="translate(400 220) scale(1.26) translate(-400 -220)" opacity=".38"/>
+              <use href="#lk" transform="translate(400 220) scale(1.42) translate(-400 -220)" opacity=".28"/>
+              <use href="#lk" transform="translate(400 220) scale(1.6) translate(-400 -220)" opacity=".2"/>
+              <use href="#lk" transform="translate(400 220) scale(1.8) translate(-400 -220)" opacity=".13"/>
+            </g>
+            <use href="#lk" fill="#2F6E7E"/>
+            <path class="route" pathLength="1" d="M168 360 C190 410 230 440 300 452 C420 470 560 440 700 400" fill="none" stroke="#B8322A" stroke-width="3" stroke-linecap="round"/>
+            <circle cx="168" cy="360" r="7" fill="#1B1A17"/><circle cx="168" cy="360" r="14" fill="none" stroke="#1B1A17" opacity=".35"/>
+            <text x="186" y="356" font-family="Sora,sans-serif" font-size="16" font-weight="600" fill="#1B1A17">Balatonmáriafürdő</text>
+            <text x="560" y="470" font-family="Inter,sans-serif" font-size="13" fill="#5A5348">bárhová</text>
+            <text x="40" y="44" font-family="Sora,sans-serif" font-size="20" font-weight="600" fill="#1B1A17">A déli part, egy hívásra</text>
+          </svg>
+        </div>
+        <div class="dir-txt">
+          <span class="tag">C</span>
+          <h3>A déli part térképe</h3>
+          <p>Kartográfiai irány: az egész oldal egy élő, szintvonalas térkép. Görgetésre a nézet közelít és pásztáz, az útvonal kirajzolódik Balatonmáriafürdőről, a szolgáltatások a térképen jelennek meg.</p>
+          <dl>
+            <div><dt>Paletta</dt><dd><span class="sw"><i style="background:#E9E3D3"></i><i style="background:#2F6E7E"></i><i style="background:#9C8763"></i><i style="background:#B8322A"></i></span></dd></div>
+            <div><dt>Betűk</dt><dd>Sora + Inter, térképfeliratokkal</dd></div>
+            <div><dt>Jellegzetes</dt><dd>Görgetésre zoomoló térkép, kirajzolódó útvonal</dd></div>
+            <div><dt>Erősség</dt><dd>Erős helyi identitás, informatív</dd></div>
+            <div><dt>Kockázat</dt><dd>Útvonalat, menetidőt sugallhat (nem ellenőrzött); mobilon nehéz; kevésbé érzelmes</dd></div>
+          </dl>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- 3. DÖNTÉS -->
+<section class="blk" id="dontes">
+  <div class="wrap">
+    <div class="blk-head">
+      <h2>Döntés</h2>
+      <p>Az A irány nyert, mert egyszerre filmszerű és egyszerű: egyetlen főszereplő (a kisbusz), egyetlen művelet (hívás), és a táj azonnal elmondja, hol vagyunk. A C irányból a térkép került át – visszafogottan, útvonal- és menetidő-állítás nélkül –, a B irány a vasútállomás-jelenetben él tovább.</p>
+    </div>
+    <div class="verdict">
+      <div class="pick"><h3>A · Éjszakai út</h3><p>Legerősebb első benyomás; mobilon is működik; a hívás minden jelenetben kézre esik. Az ügyfél visszajelzései (egy autó, csak hívás, több levegő) erre az irányra épültek.</p></div>
+      <div><h3>B · Indulási tábla</h3><p>Tipográfiailag a legegyedibb, de rossz asszociációt kelthet (vasút), és kevésbé idézi a Balatont.</p></div>
+      <div><h3>C · A déli part térképe</h3><p>Hasznos helyismeret, de könnyen ígér nem ellenőrzött útvonalakat és időket; mobilon a térképes görgetés nehézkes.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. ELŐNÉZET -->
+<section class="blk" id="elonezet">
+  <div class="wrap">
+    <div class="blk-head">
+      <h2>Előnézet</h2>
+      <p>Asztali (1440 px) és mobil (390 px) nézet a kész látványtervből. Tableten (768 px) és kis telefonon (360 px) is ellenőrizve: nincs vízszintes túlcsordulás, nincs konzolhiba, minden hívógomb a <a href="tel:+36309978362">+36 30 997 8362</a>-t hívja.</p>
+    </div>
+    <div class="prev">
+      <div class="prev-d">
+        <figure><img src="koncepcio/d-hero.jpg" alt="Asztali nézet: nyitókép" loading="lazy"><figcaption>Nyitókép – naplemente, hívás, útvonal-motívum</figcaption></figure>
+        <figure><img src="koncepcio/d-ut.jpg" alt="Asztali nézet: éjszakai út, távolsági fuvar jelenet" loading="lazy"><figcaption>Éjszakai út – a kisbusz a második megállónál</figcaption></figure>
+        <figure><img src="koncepcio/d-terulet.jpg" alt="Asztali nézet: működési terület térképpel" loading="lazy"><figcaption>Működési terület – településlista és térkép</figcaption></figure>
+        <figure><img src="koncepcio/d-zaras.jpg" alt="Asztali nézet: Indulhatunk? zárórész" loading="lazy"><figcaption>„Indulhatunk?” – esti tópart, hívókártya</figcaption></figure>
+      </div>
+      <div class="prev-m">
+        <figure><img src="koncepcio/m-hero.jpg" alt="Mobil nézet: nyitókép" loading="lazy"><figcaption>Mobil nyitókép</figcaption></figure>
+        <figure><img src="koncepcio/m-ut.jpg" alt="Mobil nézet: éjszakai út" loading="lazy"><figcaption>Mobil út</figcaption></figure>
+        <figure><img src="koncepcio/m-terulet.jpg" alt="Mobil nézet: terület" loading="lazy"><figcaption>Mobil terület</figcaption></figure>
+        <figure><img src="koncepcio/m-zaras.jpg" alt="Mobil nézet: zárás" loading="lazy"><figcaption>Mobil zárás</figcaption></figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5. MOZGÁS -->
+<section class="blk" id="mozgas">
+  <div class="wrap">
+    <div class="blk-head">
+      <h2>Mozgás, jelenetről jelenetre</h2>
+      <p>Egy összefüggő mozgásnyelv: minden mozgás az utazást szolgálja. Csökkentett mozgás beállításnál minden statikus, a tartalom és a hívás azonnal elérhető; betöltőképernyő nincs.</p>
+    </div>
+    <div class="tbl-wrap">
+    <table class="tbl">
+      <thead><tr><th>Jelenet</th><th>Kiváltó</th><th>Mit csinál</th><th>Átvezetés a következőbe</th></tr></thead>
+      <tbody>
+        <tr><td>Nyitás</td><td>Betöltés</td><td>Cím, alcím, hívógomb egymás után felúszik (0,7 s); az útvonal-motívum szaggatott vonala kirajzolódik; távolban egy fényszóró tűnik fel.</td><td>„Görgessen – indul az út” jelzés.</td></tr>
+        <tr><td>Naplemente → éjszaka</td><td>Görgetés, rögzített nyitókép (0,8 képernyő)</td><td>A nap a víz mögé bukik, ég és víz besötétedik, csillagok és hold jelennek meg, Szigligeten és Badacsonyon kigyúlnak a fények, tükröződnek a vízen; a fényszóró a part menti úton közelít.</td><td>A szöveg kiúszik, az éjszakai ég folytatódik a következő szekcióban.</td></tr>
+        <tr><td>Éjszakai út</td><td>Görgetés, rögzített sáv (asztal és mobil)</td><td>A négy jelenet vízszintesen halad, a kisbusz középen marad, kerekei forognak, a háttér-hegyek lassabban mozognak (parallax), vonat elhúz, repülő felszáll; a jelenetszövegek áttűnnek; alul haladásjelző.</td><td>A negyedik megálló után a rögzítés felenged, világos szekció következik.</td></tr>
+        <tr><td>Működési terület</td><td>Láthatóvá válás, kattintás</td><td>A tó körvonala kirajzolódik, majd egy díszítő útvonal Marcalitól a partig; a kiválasztott település jelölője háromszor pulzál, a listában arany vonal jelzi.</td><td>Sötét éjszakai zárás.</td></tr>
+        <tr><td>Indulhatunk?</td><td>Láthatóvá válás</td><td>A panel tartalma felúszik; a lámpák fénykúpja a nedves úton tükröződik.</td><td>Lábléc.</td></tr>
+        <tr><td>Mobil hívássáv</td><td>Görgetés a nyitókép után</td><td>Alulról becsúszik; eltűnik, amikor a térkép alatti vagy a záró hívógomb látszik.</td><td>–</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+</section>
+
+<!-- 6. RENDSZER -->
+<section class="blk" id="rendszer">
+  <div class="wrap">
+    <div class="blk-head">
+      <h2>Vizuális rendszer</h2>
+      <p>A CB TAXI saját arculati javaslata – nem a DAEKON színei. A logó (CB monogram, a C nyílásán befutó útfelfestéssel) javaslat, nem meglévő hivatalos elem.</p>
+    </div>
+    <div class="tokens">
+      <div>
+        <h3>Színek</h3>
+        <div class="chip"><i style="background:#071A2B"></i>Midnight Navy<code>#071A2B</code></div>
+        <div class="chip"><i style="background:#102A40"></i>Deep Blue<code>#102A40</code></div>
+        <div class="chip"><i style="background:#D6B279"></i>Champagne – csak fő gomb, jelölő<code>#D6B279</code></div>
+        <div class="chip"><i style="background:#57BDD0"></i>Lake Blue – víz, fókusz<code>#57BDD0</code></div>
+        <div class="chip"><i style="background:#F5F4EF"></i>Off White<code>#F5F4EF</code></div>
+      </div>
+      <div class="ts">
+        <h3>Betűskála (asztal / mobil)</h3>
+        <div><b style="font-family:var(--head)">Főcím – Sora 600</b><span>58 / 34 px</span></div>
+        <div><b style="font-family:var(--head)">Szekciócím</b><span>38 / 26 px</span></div>
+        <div><b style="font-family:var(--head)">Jelenetcím</b><span>42 / 28 px</span></div>
+        <div><span style="color:var(--ink)">Bevezető – Inter</span><span>19 / 17 px</span></div>
+        <div><span style="color:var(--ink)">Szöveg – Inter, sorköz 1,7</span><span>17 / 16 px</span></div>
+        <div><span style="color:var(--ink)">Apró – Inter</span><span>13–14 px</span></div>
+      </div>
+      <div>
+        <h3>Térközök és komponensek</h3>
+        <ul class="list">
+          <li><b>Rács:</b> 1200 px tartalom, oldalmargó 20–48 px</li>
+          <li><b>Szekció:</b> 104–176 px függőleges tér (mobilon 96–112)</li>
+          <li><b>Gombok:</b> fő (champagne), körvonalas; min. 44 px érintési felület</li>
+          <li><b>Komponensek:</b> nav + hívógomb, jelenetkártya, haladásjelző, településlista + térkép, hívókártya, mobil hívássáv, kisbusz (<code>#van</code> szimbólum)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 7. TECHNIKA -->
+<section class="blk" id="technika">
+  <div class="wrap">
+    <div class="blk-head">
+      <h2>Technika és átadás</h2>
+      <p>Build nélküli HTML / CSS / JS, saját betűk és könyvtárak helyben, a GitHub Pages-en. A részletes fejlesztői jegyzet az <code>ATADAS.md</code> fájlban van.</p>
+    </div>
+    <div class="tech">
+      <div><span class="st in">Beépítve</span><h3>GSAP 3 + ScrollTrigger</h3><p>A nyitókép éjszakába váltása, a rögzített vízszintes út, a parallax és a felúszások. Helyben, a <code>js/</code> mappában.</p></div>
+      <div><span class="st in">Beépítve</span><h3>SVG-illusztrációk</h3><p>Minden jelenet és a kisbusz kódból rajzolt, élesen skálázódik; a jármű egy helyen cserélhető valódi fotóra.</p></div>
+      <div><span class="st opt">Opcionális bővítés</span><h3>WebGL / Three.js</h3><p>Nem szükséges. Ha az éles oldalon kell: élő vízfelület-tükröződés a nyitóképen (shader), mobilon kikapcsolva.</p></div>
+      <div><span class="st no">Nincs beépítve</span><h3>React Bits, Aceternity UI, HorizonX</h3><p>Ezekből egyetlen komponens sem került a tervbe, és licencelt elem sincs benne. Csak szemléleti inspirációként szolgáltak.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 8. EGYEZTETENDŐ -->
+<section class="blk" id="egyeztetendo">
+  <div class="wrap">
+    <div class="blk-head">
+      <h2>Péterrel egyeztetendő</h2>
+      <ul class="list">
+        <li><b>Jármű:</b> pontos típus és fotó – a rajzolt kisbusz helyére kerülhet; utaskapacitás (7 vagy 9 fő).</li>
+        <li><b>Reptéri transzfer:</b> vállalja-e, és mely repülőterekre.</li>
+        <li><b>Elérhetőség:</b> a vezetékes számok (+36 85 575 175 / 176) élnek-e; a székhelycím megjelenhet-e.</li>
+        <li><b>Személyes pont:</b> a Balatonmária vasútállomás így szerepeljen-e.</li>
+        <li><b>Vélemények:</b> ha vannak valódi, ellenőrizhető ajánlások (pl. Google, Facebook), egy visszafogott blokk tehető a zárás elé.</li>
+        <li><b>Adatkezelési tájékoztató</b> szövege.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="foot">
+  <div class="wrap"><span>CB TAXI – Nyakas Péter · kreatív koncepció</span><span>Előzetes látványterv – <a href="https://daekon.hu/">DAEKON</a></span></div>
+</footer>
+
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.querySelectorAll('.flap').forEach(f => {
+    [...f.dataset.t].forEach((ch, i) => { const s = document.createElement('span'); s.textContent = ch; s.style.animationDelay = (i * 0.045) + 's'; f.appendChild(s); });
+  });
+  const io = new IntersectionObserver((es, o) => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('go'); o.unobserve(e.target); } }), { threshold: .4 });
+  ['#fb', '#mp'].forEach(q => { const n = document.querySelector(q); reduce ? n.classList.add('go') : io.observe(n); });
+})();
+</script>
+</body>
+</html>

@@ -214,7 +214,7 @@
   tabs.forEach((t, i) => {
     t.addEventListener('click', () => selectPlace(t.dataset.place));
     t.addEventListener('keydown', e => {
-      const d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+      const d = (e.key === 'ArrowRight' || e.key === 'ArrowDown') ? 1 : (e.key === 'ArrowLeft' || e.key === 'ArrowUp') ? -1 : 0;
       if (!d) return;
       e.preventDefault();
       selectPlace(tabs[(i + d + tabs.length) % tabs.length].dataset.place, true);

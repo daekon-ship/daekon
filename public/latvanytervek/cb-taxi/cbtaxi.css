@@ -371,3 +371,16 @@ body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opa
   .final-call{margin-top:32px}
   .foot-in{gap:14px}
 }
+
+/* ============ 10. KÖR: szerkesztett településlista a fülek helyett ============ */
+.places{display:flex;flex-direction:column;gap:0;margin-top:40px;border-top:1px solid #DCD4C4}
+.places button{display:grid;grid-template-columns:1fr auto;align-items:baseline;gap:4px 16px;width:100%;min-height:64px;padding:16px 4px 16px 18px;text-align:left;border:0;border-bottom:1px solid #DCD4C4;border-radius:0;background:transparent;color:var(--ink);position:relative;transition:background .25s,padding .3s var(--ease)}
+.places button::before{content:"";position:absolute;left:0;top:14px;bottom:14px;width:2px;background:var(--gold-ink);transform:scaleY(0);transition:transform .35s var(--ease)}
+.places button b{font:600 18px/1.2 var(--head);letter-spacing:-.01em}
+.places button span{font-size:14px;color:var(--ink-2)}
+.places button:hover{background:rgba(214,178,121,.08);border-color:#DCD4C4}
+.places button[aria-selected="true"]{background:transparent;color:var(--ink);border-color:#DCD4C4;padding-left:26px}
+.places button[aria-selected="true"]::before{transform:scaleY(1)}
+.places button[aria-selected="true"] b{color:var(--navy)}
+.place-panel h3{display:none}
+@media (max-width:640px){.places button{grid-template-columns:1fr}.places button span{font-size:13px}}

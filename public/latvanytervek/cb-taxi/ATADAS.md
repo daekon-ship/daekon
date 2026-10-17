@@ -4,6 +4,10 @@
 Fájlok: `index.html`, `cbtaxi.css`, `cbtaxi.js`, `js/` (GSAP 3 + ScrollTrigger, helyben), `fonts/` (Sora + Inter, helyben, OFL), `logo.svg`, `logo-jel.svg`.
 Build nincs (a Vite a `public/` mappát változatlanul másolja); a terv `noindex`.
 
+## 10. kör — kreatív koncepció és átadási dokumentáció
+- **Új oldal: `koncepcio.html`** (https://daekon-ship.github.io/daekon/latvanytervek/cb-taxi/koncepcio.html) – ügyfélbemutató és fejlesztői átadás egyben: kiinduló elemzés (közönség, cél, verseny, ellenőrzött / nem ellenőrzött adatok), három eltérő irány élő vázlattal (A „Éjszakai út” – kiválasztva, B „Indulási tábla” lapozó betűtáblával, C „A déli part térképe” kirajzolódó útvonallal), döntés indoklása, asztali + mobil előnézet (`koncepcio/*.jpg`), mozgás-jelenetek táblázata (kiváltó, mit csinál, átvezetés), vizuális rendszer (színek, betűskála, térközök, komponensek), technika (GSAP beépítve; WebGL opcionális; React Bits / Aceternity / HorizonX nincs beépítve), egyeztetendők.
+- **Látványterv:** a működési terület pill-fülei helyett szerkesztett településlista (név + egysoros jellemzés, arany jelölővonal), függőleges nyílbillentyűs kezeléssel.
+
 ## 9. kör — szövegek
 - Természetesebb, konkrétabb magyar szövegek a nyitóképen, a négy szolgáltatásnál, a településeknél és a zárásnál (élethelyzetek: strand, vonat, vacsora, esküvő, rokonok, reptér); meta-leírás frissítve. Ellenőrizetlen állítás (létszám, nyitvatartás, ár, „0–24”) továbbra sincs.
 
