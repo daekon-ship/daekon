@@ -42,7 +42,7 @@
     var sio = new IntersectionObserver(function (es) {
       es.forEach(function (e) { if (e.isIntersecting) navLinks.forEach(function (a) { a.classList.toggle('is-active', a.getAttribute('href') === '#' + e.target.id); }); });
     }, { rootMargin: '-45% 0px -50% 0px' });
-    ['szolgaltatasok', 'arak', 'munkaink', 'flottaknak', 'kapcsolat'].forEach(function (id) { var el = d.getElementById(id); if (el) sio.observe(el); });
+    ['szolgaltatasok', 'arak', 'munkaink', 'flottaknak', 'tudastar', 'kapcsolat'].forEach(function (id) { var el = d.getElementById(id); if (el) sio.observe(el); });
   }
 
   /* finom érkezés */
@@ -237,3 +237,7 @@
     requestAnimationFrame(loop);
   }
 })();
+
+/* Tudástár fülek */
+(function(){var t=[].slice.call(document.querySelectorAll('.ktabs [role=tab]'));function s(b,f){t.forEach(function(x){var on=x===b;x.setAttribute('aria-selected',on);x.tabIndex=on?0:-1;document.getElementById(x.getAttribute('aria-controls')).hidden=!on;});if(f)b.focus();}
+t.forEach(function(b,i){b.addEventListener('click',function(){s(b)});b.addEventListener('keydown',function(e){var n=e.key==='ArrowRight'?t[(i+1)%t.length]:e.key==='ArrowLeft'?t[(i-1+t.length)%t.length]:null;if(n){e.preventDefault();s(n,true);}});});})();

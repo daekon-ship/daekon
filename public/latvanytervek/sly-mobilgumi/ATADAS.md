@@ -21,6 +21,13 @@ A korábbi körök effektjei (rajzolt gumi, rajzfilmes szervizautó, 3D út, met
 - Hero alatt teljes szélességű, színes 7 képes fotósáv (mobilon húzható), nagyítóval.
 - **Egyeztetendő:** a nyilvános posztok barna Transitot említenek – ha a sárga autó már nem aktuális, friss autós fotó kell a herohoz.
 
+## 11. kör – minden tartalom a jelenlegi honlapról
+- Új **Tudástár** szekció (sötét, 4 fül: Gumicsere / Centrírozás / Defektjavítás / Csapdák kerékcserénél) a honlap hosszú szakmai cikkeiből tömörítve: 1,6 mm / 3 mm profilmélység, kopásjelző és kétszeres fékút, 4 egyforma gumi, forgatás 5–10 ezer km-enként, 7 °C, négyévszakos gumi jelölése, centrírozás minden szezonban, felnis garnitúrával 8–10 ezer Ft megtakarítás/szezon, defektjavító spray, a jó javítás menete, pótkerék és defekttűrő 80 km/h, ZP/SSR/ROF/EMT/RF/BSR jelölések, defekttűrő↔normál csere szabályai, egy gumi cseréje.
+- Felszereltséghez: „képzett szerelő, számos mentéssel és szervizeléssel” (a honlap állítása).
+- Minimum kiszállási díj magyarázata a honlapról; lábléc: „Balesetmentes közlekedést kívánunk! – a SLY Mobilgumi csapata”.
+- **Szándékosan kihagyva:** a honlap „defektnél ne állj le azonnal, enyhén gyorsíts” tanácsa (közlekedésbiztonsági szempontból ellenőrizetlen).
+- A honlapon a „Partnerek” között a DesignBySchmidt (a mostani honlapkészítő) is szerepel.
+
 ## Mi van ellenőrizve
 - Árak: a brief árlistája tételesen (2025. 02. 01-től visszavonásig). Bruttó = nettó × 1,27, kerekítve.
 - Kalkulátor: csak közzétett árak; felárak csak gumiszerelésnél; +50% a szolgáltatásdíjra munkaidőn túl; körzeten kívüli kiszállást nem számol.

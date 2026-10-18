@@ -518,3 +518,23 @@ img.is-missing{opacity:0}
 .way--plan .way__k{color:#111;opacity:.75}
 .way--plan .ticks li{border-color:rgba(0,0,0,.16)}
 .way--plan .ticks li::before{background:#111}
+/* Tudástár */
+.know{background:#111;color:#C9CDD1}
+.know .sh h2{color:#fff}
+.know .sh p{color:#9AA0A5}
+.ktabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:32px}
+.ktabs button{min-height:44px;padding:0 18px;border:1px solid rgba(255,255,255,.2);border-radius:999px;background:none;color:#DDE0E3;font-size:15px;font-weight:600;cursor:pointer;transition:background .2s,color .2s,border-color .2s}
+.ktabs button:hover{border-color:#fff}
+.ktabs button[aria-selected="true"]{background:var(--y);border-color:var(--y);color:#111}
+.kpanel{display:grid;gap:32px}
+.kpanel:not([hidden]){animation:fadeUp .4s var(--ease) both}
+.kfacts{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.12);border-radius:6px;overflow:hidden;align-self:start}
+.kfacts div{padding:20px 18px;background:#161616}
+.kfacts b{display:block;font-size:clamp(20px,.8vw + 16px,26px);font-weight:700;letter-spacing:-.02em;color:var(--y);margin-bottom:4px}
+.kfacts span{font-size:13.5px;color:#9AA0A5}
+.klist{display:grid;gap:0;border-top:1px solid rgba(255,255,255,.18)}
+.klist li{padding:14px 0;border-bottom:1px solid rgba(255,255,255,.1);font-size:15.5px;line-height:1.55}
+.klist b{color:#fff}
+@media (min-width:960px){.kpanel{grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:56px}.klist--wide{grid-column:1/-1}}
+.ftr__sign{margin-top:10px;font-size:14px;color:var(--y)}
+@media (max-width:1240px){.nav{gap:20px}}
