@@ -428,3 +428,63 @@ img.is-missing{opacity:0}
   .keyband .keys{margin-top:8px}
 }
 @media (prefers-reduced-motion:reduce){.js .hx{height:auto}.js .hx__pin{position:relative;top:auto}.hx__say,.hx__cue{display:none}}
+
+/* =====================================================================
+   10. kör — a saját szervizautó a főszereplő; a márka valódi színei
+   (sárga Transit-fóliázás, piros SLY-logó, fekete)
+   ===================================================================== */
+:root{--y:#F5B700;--y-h:#FFC61A;--red:#D7141A;--red-h:#B90F14;--bg:#F6F4EE}
+.vh{position:relative;min-height:min(92svh,860px);display:flex;align-items:flex-end;overflow:hidden;background:#111;color:#fff;isolation:isolate}
+.vh__img{position:absolute;inset:0;z-index:-2;width:100%;height:100%;object-fit:cover;object-position:62% 45%;transform:scale(1.04);animation:vhIn 1.6s var(--ease) both}
+@keyframes vhIn{from{transform:scale(1.12);opacity:.4}to{transform:scale(1.04);opacity:1}}
+.vh::before{content:"";position:absolute;inset:0;z-index:-1;background:
+  linear-gradient(90deg,rgba(10,10,10,.86) 0%,rgba(10,10,10,.62) 38%,rgba(10,10,10,.08) 70%),
+  linear-gradient(0deg,rgba(10,10,10,.75) 0%,rgba(10,10,10,0) 45%)}
+.vh__in{padding-top:120px;padding-bottom:clamp(40px,7vh,88px)}
+.vh__k{display:inline-flex;align-items:center;gap:10px;font-size:14px;font-weight:600;color:rgba(255,255,255,.85);margin-bottom:20px}
+.vh__k span{display:inline-block;padding:4px 10px;background:var(--y);color:#111;border-radius:3px;font-weight:700}
+.vh h1{max-width:15ch;font-size:clamp(34px,2.6vw + 18px,58px);line-height:1.04;letter-spacing:-.035em;font-weight:700;color:#fff;margin-bottom:20px;text-wrap:balance}
+.vh h1 em{font-style:normal;color:var(--y)}
+.vh__lead{max-width:44ch;font-size:clamp(16.5px,.3vw + 15.5px,18.5px);color:rgba(255,255,255,.88);margin-bottom:28px}
+.vh__ctas{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px}
+.vh__note{font-size:13.5px;color:rgba(255,255,255,.7);max-width:52ch}
+.btn--y{background:var(--y);color:#111}
+.btn--y:hover{background:var(--y-h)}
+.btn--sos{background:var(--red)}
+.btn--sos:hover{background:var(--red-h)}
+@media (max-width:899px){
+  .vh{min-height:auto;flex-direction:column;align-items:stretch;background:#111}
+  .vh__img{position:relative;inset:auto;height:clamp(240px,62vw,420px);object-position:68% 50%;transform:none;animation:none}
+  .vh::before{background:linear-gradient(180deg,rgba(17,17,17,0) 30%,rgba(17,17,17,.0) calc(clamp(240px,62vw,420px) - 90px),#111 clamp(240px,62vw,420px))}
+  .vh__in{padding-top:8px;padding-bottom:36px;margin-top:-40px;position:relative}
+  .vh h1{font-size:clamp(29px,7.4vw,36px)}
+}
+
+/* fejléc a sötét fotó fölött is olvasható */
+.hdr{background:rgba(255,255,255,.94)}
+.brand img{mix-blend-mode:normal}
+
+/* színes fotók – élet, nem szürkeség */
+.hero__ph img,.kit__ph img,.g img,.peek img,.say2__ph img{filter:none !important}
+
+/* sárga és piros a márkából, mértékkel */
+.keyband{background:#111;color:#fff}
+.keyband .keys{border:0}
+.keyband .keys>div{border-color:rgba(255,255,255,.14) !important}
+.keyband .keys dt{color:rgba(255,255,255,.6)}
+.keyband .keys dd{color:#fff}
+.keyband .keys dd.is-red{color:var(--y)}
+.steps span{color:var(--red)}
+.way__k{color:var(--red)}
+.way--sos{background:#111;border-color:#111}
+.way--sos .btn--sos{background:var(--red)}
+.ticks li::before{background:var(--y)}
+.way--sos .ticks li::before{background:var(--red)}
+.idx__g{border-bottom-color:#111}
+.idx .is-sos a>span{color:var(--red)}
+.sos{border-top:6px solid var(--y)}
+.sos__tel{background:var(--red)}
+.ptabs button[aria-selected="true"]{border-color:var(--red)}
+.chip input:checked+span{background:#111}
+.terms li::before{background:var(--y)}
+.ftr{border-top:6px solid var(--y)}
