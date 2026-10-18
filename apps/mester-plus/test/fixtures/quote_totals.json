@@ -1,0 +1,6615 @@
+{
+ "_doc": "Közös tesztesetek: a Flutter QuoteCalculator és a szerver (PHP) QuoteCalculator ugyanezt kell adja, forintra. Generálta: független Python-implementáció (half-up, egész aritmetika).",
+ "cases": [
+  {
+   "name": "egy sor, 27% ÁFA",
+   "input": {
+    "lines": [
+     {
+      "quantity_milli": 12500,
+      "labor_unit_price_huf": 6500,
+      "material_unit_price_huf": 3200
+     }
+    ],
+    "adjustment_type": "none",
+    "adjustment_percent_bp": 0,
+    "vat_rate_bp": 2700
+   },
+   "expected": {
+    "lines": [
+     {
+      "labor_huf": 81250,
+      "material_huf": 40000,
+      "total_huf": 121250
+     }
+    ],
+    "labor_subtotal_huf": 81250,
+    "material_subtotal_huf": 40000,
+    "adjustment_huf": 0,
+    "net_total_huf": 121250,
+    "vat_huf": 32738,
+    "gross_total_huf": 153988
+   }
+  },
+  {
+   "name": "fél forint felfelé (1,5 × (1+1))",
+   "input": {
+    "lines": [
+     {
+      "quantity_milli": 1500,
+      "labor_unit_price_huf": 1,
+      "material_unit_price_huf": 1
+     }
+    ],
+    "adjustment_type": "none",
+    "adjustment_percent_bp": 0,
+    "vat_rate_bp": 2700
+   },
+   "expected": {
+    "lines": [
+     {
+      "labor_huf": 2,
+      "material_huf": 1,
+      "total_huf": 3
+     }
+    ],
+    "labor_subtotal_huf": 2,
+    "material_subtotal_huf": 1,
+    "adjustment_huf": 0,
+    "net_total_huf": 3,
+    "vat_huf": 1,
+    "gross_total_huf": 4
+   }
+  },
+  {
+   "name": "kedvezmény 10%",
+   "input": {
+    "lines": [
+     {
+      "quantity_milli": 10000,
+      "labor_unit_price_huf": 5000,
+      "material_unit_price_huf": 2000
+     },
+     {
+      "quantity_milli": 3500,
+      "labor_unit_price_huf": 12000,
+      "material_unit_price_huf": 0
+     }
+    ],
+    "adjustment_type": "discount",
+    "adjustment_percent_bp": 1000,
+    "vat_rate_bp": 2700
+   },
+   "expected": {
+    "lines": [
+     {
+      "labor_huf": 50000,
+      "material_huf": 20000,
+      "total_huf": 70000
+     },
+     {
+      "labor_huf": 42000,
+      "material_huf": 0,
+      "total_huf": 42000
+     }
+    ],
+    "labor_subtotal_huf": 92000,
+    "material_subtotal_huf": 20000,
+    "adjustment_huf": -11200,
+    "net_total_huf": 100800,
+    "vat_huf": 27216,
+    "gross_total_huf": 128016
+   }
+  },
+  {
+   "name": "felár 7,5%",
+   "input": {
+    "lines": [
+     {
+      "quantity_milli": 2750,
+      "labor_unit_price_huf": 8800,
+      "material_unit_price_huf": 4400
+     }
+    ],
+    "adjustment_type": "surcharge",
+    "adjustment_percent_bp": 750,
+    "vat_rate_bp": 2700
+   },
+   "expected": {
+    "lines": [
+     {
+      "labor_huf": 24200,
+      "material_huf": 12100,
+      "total_huf": 36300
+     }
+    ],
+    "labor_subtotal_huf": 24200,
+    "material_subtotal_huf": 12100,
+    "adjustment_huf": 2723,
+    "net_total_huf": 39023,
+    "vat_huf": 10536,
+    "gross_total_huf": 49559
+   }
+  },
+  {
+   "name": "'Nincs' típus: a tárolt % nem érvényesül",
+   "input": {
+    "lines": [
+     {
+      "quantity_milli": 1000,
+      "labor_unit_price_huf": 1000,
+      "material_unit_price_huf": 0
+     }
+    ],
+    "adjustment_type": "none",
+    "adjustment_percent_bp": 2500,
+    "vat_rate_bp": 2700
+   },
+   "expected": {
+    "lines": [
+     {
+      "labor_huf": 1000,
+      "material_huf": 0,
+      "total_huf": 1000
+     }
+    ],
+    "labor_subtotal_huf": 1000,
+    "material_subtotal_huf": 0,
+    "adjustment_huf": 0,
+    "net_total_huf": 1000,
+    "vat_huf": 270,
+    "gross_total_huf": 1270
+   }
+  },
+  {
+   "name": "5% ÁFA",
+   "input": {
+    "lines": [
+     {
+      "quantity_milli": 33333,
+      "labor_unit_price_huf": 999,
+      "material_unit_price_huf": 111
+     }
+    ],
+    "adjustment_type": "none",
+    "adjustment_percent_bp": 0,
+    "vat_rate_bp": 500
+   },
+   "expected": {
+    "lines": [
+     {
+      "labor_huf": 33300,
+      "material_huf": 3700,
+      "total_huf": 37000
+     }
+    ],
+    "labor_subtotal_huf": 33300,
+    "material_subtotal_huf": 3700,
+    "adjustment_huf": 0,
+    "net_total_huf": 37000,
+    "vat_huf": 1850,
+    "gross_total_huf": 38850
+   }
+  },
+  {
+   "name": "0% ÁFA (AAM)",
+   "input": {
+    "lines": [
+     {
+      "quantity_milli": 1000,
+      "labor_unit_price_huf": 15000,
+      "material_unit_price_huf": 0
+     }
+    ],
+    "adjustment_type": "none",
+    "adjustment_percent_bp": 0,
+    "vat_rate_bp": 0
+   },
+   "expected": {
+    "lines": [
+     {
+      "labor_huf": 15000,
+      "material_huf": 0,
+      "total_huf": 15000
+     }
+    ],
+    "labor_subtotal_huf": 15000,
+    "material_subtotal_huf": 0,
+    "adjustment_huf": 0,
+    "net_total_huf": 15000,
+    "vat_huf": 0,
+    "gross_total_huf": 15000
+   }
+  },
+  {
+   "name": "kerekítés határon: x,5 Ft ÁFA",
+   "input": {
+    "lines": [
+     {
+      "quantity_milli": 1000,
+      "labor_unit_price_huf": 5,
+      "material_unit_price_huf": 0
+     }
+    ],
+    "adjustment_type": "none",
+    "adjustment_percent_bp": 0,
+    "vat_rate_bp": 1000
+   },
+   "expected": {
+    "lines": [
+     {
+      "labor_huf": 5,
+      "material_huf": 0,
+      "total_huf": 5
+     }
+    ],
+    "labor_subtotal_huf": 5,
+    "material_subtotal_huf": 0,
+    "adjustment_huf": 0,
+    "net_total_huf": 5,
+    "vat_huf": 1,
+    "gross_total_huf": 6
+   }
+  },
+  {
+   "name": "100% kedvezmény",
+   "input": {
+    "lines": [
+     {
+      "quantity_milli": 1000,
+      "labor_unit_price_huf": 7777,
+      "material_unit_price_huf": 0
+     }
+    ],
+    "adjustment_type": "discount",
+    "adjustment_percent_bp": 10000,
+    "vat_rate_bp": 2700
+   },
+   "expected": {
+    "lines": [
+     {
+      "labor_huf": 7777,
+      "material_huf": 0,
+      "total_huf": 7777
+     }
+    ],
+    "labor_subtotal_huf": 7777,
+    "material_subtotal_huf": 0,
+    "adjustment_huf": -7777,
+    "net_total_huf": 0,
+    "vat_huf": 0,
+    "gross_total_huf": 0
+   }
+  },
+  {
+   "name": "nagy összeg, sok tétel",
+   "input": {
+    "lines": [
+     {
+      "quantity_milli": 999999000,
+      "labor_unit_price_huf": 99999999,
+      "material_unit_price_huf": 99999999
+     },
+     {
+      "quantity_milli": 999999000,
+      "labor_unit_price_huf": 99999999,
+      "material_unit_price_huf": 99999999
+     },
+     {
+      "quantity_milli": 999999000,
+      "labor_unit_price_huf": 99999999,
+      "material_unit_price_huf": 99999999
+     }
+    ],
+    "adjustment_type": "surcharge",
+    "adjustment_percent_bp": 10000,
+    "vat_rate_bp": 2700
+   },
+   "expected": {
+    "lines": [
+     {
+      "labor_huf": 99999899000001,
+      "material_huf": 99999899000001,
+      "total_huf": 199999798000002
+     },
+     {
+      "labor_huf": 99999899000001,
+      "material_huf": 99999899000001,
+      "total_huf": 199999798000002
+     },
+     {
+      "labor_huf": 99999899000001,
+      "material_huf": 99999899000001,
+      "total_huf": 199999798000002
+     }
+    ],
+    "labor_subtotal_huf": 299999697000003,
+    "material_subtotal_huf": 299999697000003,
+    "adjustment_huf": 599999394000006,
+    "net_total_huf": 1199998788000012,
+    "vat_huf": 323999672760003,
+    "gross_total_huf": 1523998460760015
+   }
+  },
+  {
+   "name": "csak anyag",
+   "input": {
+    "lines": [
+     {
+      "quantity_milli": 4200,
+      "labor_unit_price_huf": 0,
+      "material_unit_price_huf": 3150
+     }
+    ],
+    "adjustment_type": "none",
+    "adjustment_percent_bp": 0,
+    "vat_rate_bp": 2700
+   },
+   "expected": {
+    "lines": [
+     {
+      "labor_huf": 0,
+      "material_huf": 13230,
+      "total_huf": 13230
+     }
+    ],
+    "labor_subtotal_huf": 0,
+    "material_subtotal_huf": 13230,
+    "adjustment_huf": 0,
+    "net_total_huf": 13230,
+    "vat_huf": 3572,
+    "gross_total_huf": 16802
+   }
+  },
+  {
+   "name": "tört mennyiség, ezredrész",
+   "input": {
+    "lines": [
+     {
+      "quantity_milli": 1,
+      "labor_unit_price_huf": 1000,
+      "material_unit_price_huf": 0
+     },
+     {
+      "quantity_milli": 1,
+      "labor_unit_price_huf": 499,
+      "material_unit_price_huf": 0
+     },
+     {
+      "quantity_milli": 1,
+      "labor_unit_price_huf": 500,
+      "material_unit_price_huf": 0
+     },
+     {
+      "quantity_milli": 3,
+      "labor_unit_price_huf": 333,
+      "material_unit_price_huf": 333
+     }
+    ],
+    "adjustment_type": "none",
+    "adjustment_percent_bp": 0,
+    "vat_rate_bp": 2700
+   },
+   "expected": {
+    "lines": [
+     {
+      "labor_huf": 1,
+      "material_huf": 0,
+      "total_huf": 1
+     },
+     {
+      "labor_huf": 0,
+      "material_huf": 0,
+      "total_huf": 0
+     },
+     {
+      "labor_huf": 1,
+      "material_huf": 0,
+      "total_huf": 1
+     },
+     {
+      "labor_huf": 1,
+      "material_huf": 1,
+      "total_huf": 2
+     }
+    ],
+    "labor_subtotal_huf": 3,
+    "material_subtotal_huf": 1,
+    "adjustment_huf": 0,
+    "net_total_huf": 4,
+    "vat_huf": 1,
+    "gross_total_huf": 5
+   }
+  },
+  {
+   "name": "kedvezmény páratlan centi",
+   "input": {
+    "lines": [
+     {
+      "quantity_milli": 1234,
+      "labor_unit_price_huf": 5678,
+      "material_unit_price_huf": 910
+     }
+    ],
+    "adjustment_type": "discount",
+    "adjustment_percent_bp": 333,
+    "vat_rate_bp": 2700
+   },
+   "expected": {
+    "lines": [
+     {
+      "labor_huf": 7007,
+      "material_huf": 1123,
+      "total_huf": 8130
+     }
+    ],
+    "labor_subtotal_huf": 7007,
+    "material_subtotal_huf": 1123,
+    "adjustment_huf": -271,
+    "net_total_huf": 7859,
+    "vat_huf": 2122,
+    "gross_total_huf": 9981
+   }
+  },
+  {
+   "name": "véletlen #1",
+   "input": {
+    "lines": [
+     {
+      "quantity_milli": 172735,
+      "labor_unit_price_huf": 16716,
+      "material_unit_price_huf": 119886
+     },
+     {
+      "quantity_milli": 263364,
+      "labor_unit_price_huf": 142872,
+      "material_unit_price_huf": 30298
+     },
+     {
+      "quantity_milli": 436708,
+      "labor_unit_price_huf": 57882,
+      "material_unit_price_huf": 14683
+     },
+     {
+      "quantity_milli": 323724,
+      "labor_unit_price_huf": 71471,
+      "material_unit_price_huf": 67136
+     },
+     {
+      "quantity_milli": 301866,
+      "labor_unit_price_huf": 48678,
+      "material_unit_price_huf": 141473
+     },
+     {
+      "quantity_milli": 266357,
+      "labor_unit_price_huf": 12871,
+      "material_unit_price_huf": 62804
+     },
+     {
+      "quantity_milli": 453297,
+      "labor_unit_price_huf": 33109,
+      "material_unit_price_huf": 29077
+     }
+    ],
+    "adjustment_type": "none",
+    "adjustment_percent_bp": 2411,
+    "vat_rate_bp": 500
+   },
+   "expected": {
+    "lines": [
+     {
+      "labor_huf": 2887438,
+      "material_huf": 20708508,
+      "total_huf": 23595946
+     },
+     {
+      "labor_huf": 37627341,
+      "material_huf": 7979403,
+      "total_huf": 45606744
+     },
+     {
+      "labor_huf": 25277532,
+      "material_huf": 6412184,
+      "total_huf": 31689716
+     },
+     {
+      "labor_huf": 23136878,
+      "material_huf": 21733534,
+      "total_huf": 44870412
+     },
+     {
+      "labor_huf": 14694233,
+      "material_huf": 42705889,
+      "total_huf": 57400122
+     },
+     {
+      "labor_huf": 3428281,
+      "material_huf": 16728285,
+      "total_huf": 20156566
+     },
+     {
+      "labor_huf": 15008210,
+      "material_huf": 13180517,
+      "total_huf": 28188727
+     }
+    ],
+    "labor_subtotal_huf": 122059913,
+    "material_subtotal_huf": 129448320,
+    "adjustment_huf": 0,
+    "net_total_huf": 251508233,
+    "vat_huf": 12575412,
+    "gross_total_huf": 264083645
+   }
+  },
+  {
+   "name": "véletlen #2",
+   "input": {
+    "lines": [
+     {
+      "quantity_milli": 394648,
+      "labor_unit_price_huf": 55596,
+      "material_unit_price_huf": 143524
+     },
+     {
+      "quantity_milli": 262857,
+      "labor_unit_price_huf": 16487,
+      "material_unit_price_huf": 25279
+     },
+     {
+      "quantity_milli": 357371,
+      "labor_unit_price_huf": 180073,
+      "material_unit_price_huf": 127187
+     },
+     {
+      "quantity_milli": 182,
+      "labor_unit_price_huf": 20258,
+      "material_unit_price_huf": 145847
+     },
+     {
+      "quantity_milli": 53653,
+      "labor_unit_price_huf": 180610,
+      "material_unit_price_huf": 44818
+     },
+     {
+      "quantity_milli": 411865,
+      "labor_unit_price_huf": 23766,
+      "material_unit_price_huf": 11203
+     },
+     {
+      "quantity_milli": 297847,
+      "labor_unit_price_huf": 8443,
+      "material_unit_price_huf": 88396
+     },
+     {
+      "quantity_milli": 287152,
+      "labor_unit_price_huf": 186846,
+      "material_unit_price_huf": 30190
+     },
+     {
+      "quantity_milli": 473057,
+      "labor_unit_price_huf": 77183,
+      "material_unit_price_huf": 25509
+     },
+     {
+      "quantity_milli": 296005,
+      "labor_unit_price_huf": 15180,
+      "material_unit_price_huf": 20738
+     },
+     {
+      "quantity_milli": 371430,
+      "labor_unit_price_huf": 120503,
+      "material_unit_price_huf": 135795
+     },
+     {
+      "quantity_milli": 119720,
+      "labor_unit_price_huf": 196295,
+      "material_unit_price_huf": 124138
+     },
+     {
+      "quantity_milli": 257466,
+      "labor_unit_price_huf": 134348,
+      "material_unit_price_huf": 112896
+     },
+     {
+      "quantity_milli": 272177,
+      "labor_unit_price_huf": 51800,
+      "material_unit_price_huf": 7849
+     },
+     {
+      "quantity_milli": 392579,
+      "labor_unit_price_huf": 187995,
+      "material_unit_price_huf": 130176
+     },
+     {
+      "quantity_milli": 299952,
+      "labor_unit_price_huf": 177547,
+      "material_unit_price_huf": 52371
+     },
+     {
+      "quantity_milli": 103559,
+      "labor_unit_price_huf": 192134,
+      "material_unit_price_huf": 5745
+     },
+     {
+      "quantity_milli": 70137,
+      "labor_unit_price_huf": 137299,
+      "material_unit_price_huf": 30941
+     },
+     {
+      "quantity_milli": 160316,
+      "labor_unit_price_huf": 106049,
+      "material_unit_price_huf": 52658
+     },
+     {
+      "quantity_milli": 19769,
+      "labor_unit_price_huf": 2067,
+      "material_unit_price_huf": 98109
+     }
+    ],
+    "adjustment_type": "discount",
+    "adjustment_percent_bp": 2881,
+    "vat_rate_bp": 1800
+   },
+   "expected": {
+    "lines": [
+     {
+      "labor_huf": 21940850,
+      "material_huf": 56641460,
+      "total_huf": 78582310
+     },
+     {
+      "labor_huf": 4333723,
+      "material_huf": 6644762,
+      "total_huf": 10978485
+     },
+     {
+      "labor_huf": 64352868,
+      "material_huf": 45452945,
+      "total_huf": 109805813
+     },
+     {
+      "labor_huf": 3687,
+      "material_huf": 26544,
+      "total_huf": 30231
+     },
+     {
+      "labor_huf": 9690268,
+      "material_huf": 2404620,
+      "total_huf": 12094888
+     },
+     {
+      "labor_huf": 9788384,
+      "material_huf": 4614123,
+      "total_huf": 14402507
+     },
+     {
+      "labor_huf": 2514722,
+      "material_huf": 26328484,
+      "total_huf": 28843206
+     },
+     {
+      "labor_huf": 53653203,
+      "material_huf": 8669118,
+      "total_huf": 62322321
+     },
+     {
+      "labor_huf": 36511958,
+      "material_huf": 12067211,
+      "total_huf": 48579169
+     },
+     {
+      "labor_huf": 4493356,
+      "material_huf": 6138552,
+      "total_huf": 10631908
+     },
+     {
+      "labor_huf": 44758429,
+      "material_huf": 50438337,
+      "total_huf": 95196766
+     },
+     {
+      "labor_huf": 23500437,
+      "material_huf": 14861802,
+      "total_huf": 38362239
+     },
+     {
+      "labor_huf": 34590042,
+      "material_huf": 29066882,
+      "total_huf": 63656924
+     },
+     {
+      "labor_huf": 14098769,
+      "material_huf": 2136317,
+      "total_huf": 16235086
+     },
+     {
+      "labor_huf": 73802889,
+      "material_huf": 51104364,
+      "total_huf": 124907253
+     },
+     {
+      "labor_huf": 53255578,
+      "material_huf": 15708786,
+      "total_huf": 68964364
+     },
+     {
+      "labor_huf": 19897205,
+      "material_huf": 594946,
+      "total_huf": 20492151
+     },
+     {
+      "labor_huf": 9629740,
+      "material_huf": 2170109,
+      "total_huf": 11799849
+     },
+     {
+      "labor_huf": 17001351,
+      "material_huf": 8441920,
+      "total_huf": 25443271
+     },
+     {
+      "labor_huf": 40863,
+      "material_huf": 1939516,
+      "total_huf": 1980379
+     }
+    ],
+    "labor_subtotal_huf": 497858322,
+    "material_subtotal_huf": 345450798,
+    "adjustment_huf": -242957357,
+    "net_total_huf": 600351763,
+    "vat_huf": 108063317,
+    "gross_total_huf": 708415080
+   }
+  },
+  {
+   "name": "véletlen #3",
+   "input": {
+    "lines": [
+     {
+      "quantity_milli": 404655,
+      "labor_unit_price_huf": 30347,
+      "material_unit_price_huf": 19968
+     },
+     {
+      "quantity_milli": 326090,
+      "labor_unit_price_huf": 60746,
+      "material_unit_price_huf": 39472
+     },
+     {
+      "quantity_milli": 98899,
+      "labor_unit_price_huf": 132652,
+      "material_unit_price_huf": 20946
+     },
+     {
+      "quantity_milli": 274518,
+      "labor_unit_price_huf": 179606,
+      "material_unit_price_huf": 94116
+     },
+     {
+      "quantity_milli": 298307,
+      "labor_unit_price_huf": 180170,
+      "material_unit_price_huf": 57074
+     },
+     {
+      "quantity_milli": 215023,
+      "labor_unit_price_huf": 133569,
+      "material_unit_price_huf": 104725
+     },
+     {
+      "quantity_milli": 92391,
+      "labor_unit_price_huf": 156429,
+      "material_unit_price_huf": 119392
+     }
+    ],
+    "adjustment_type": "discount",
+    "adjustment_percent_bp": 769,
+    "vat_rate_bp": 0
+   },
+   "expected": {
+    "lines": [
+     {
+      "labor_huf": 12280065,
+      "material_huf": 8080151,
+      "total_huf": 20360216
+     },
+     {
+      "labor_huf": 19808663,
+      "material_huf": 12871425,
+      "total_huf": 32680088
+     },
+     {
+      "labor_huf": 13119150,
+      "material_huf": 2071539,
+      "total_huf": 15190689
+     },
+     {
+      "labor_huf": 49305080,
+      "material_huf": 25836536,
+      "total_huf": 75141616
+     },
+     {
+      "labor_huf": 53745972,
+      "material_huf": 17025574,
+      "total_huf": 70771546
+     },
+     {
+      "labor_huf": 28720407,
+      "material_huf": 22518284,
+      "total_huf": 51238691
+     },
+     {
+      "labor_huf": 14452632,
+      "material_huf": 11030746,
+      "total_huf": 25483378
+     }
+    ],
+    "labor_subtotal_huf": 191431969,
+    "material_subtotal_huf": 99434255,
+    "adjustment_huf": -22367613,
+    "net_total_huf": 268498611,
+    "vat_huf": 0,
+    "gross_total_huf": 268498611
+   }
+  },
+  {
+   "name": "véletlen #4",
+   "input": {
+    "lines": [
+     {
+      "quantity_milli": 199282,
+      "labor_unit_price_huf": 123074,
+      "material_unit_price_huf": 83948
+     },
+     {
+      "quantity_milli": 40770,
+      "labor_unit_price_huf": 5687,
+      "material_unit_price_huf": 60496
+     },
+     {
+      "quantity_milli": 476410,
+      "labor_unit_price_huf": 62033,
+      "material_unit_price_huf": 11064
+     },
+     {
+      "quantity_milli": 269282,
+      "labor_unit_price_huf": 150425,
+      "material_unit_price_huf": 145234
+     },
+     {
+      "quantity_milli": 168092,
+      "labor_unit_price_huf": 190460,
+      "material_unit_price_huf": 35096
+     },
+     {
+      "quantity_milli": 498874,
+      "labor_unit_price_huf": 70897,
+      "material_unit_price_huf": 100417
+     },
+     {
+      "quantity_milli": 23664,
+      "labor_unit_price_huf": 131008,
+      "material_unit_price_huf": 140533
+     },
+     {
+      "quantity_milli": 207679,
+      "labor_unit_price_huf": 139997,
+      "material_unit_price_huf": 106755
+     },
+     {
+      "quantity_milli": 198138,
+      "labor_unit_price_huf": 132301,
+      "material_unit_price_huf": 61362
+     },
+     {
+      "quantity_milli": 415498,
+      "labor_unit_price_huf": 91172,
+      "material_unit_price_huf": 28007
+     },
+     {
+      "quantity_milli": 287111,
+      "labor_unit_price_huf": 116996,
+      "material_unit_price_huf": 58736
+     },
+     {
+      "quantity_milli": 81199,
+      "labor_unit_price_huf": 36268,
+      "material_unit_price_huf": 26951
+     },
+     {
+      "quantity_milli": 223606,
+      "labor_unit_price_huf": 53115,
+      "material_unit_price_huf": 37910
+     },
+     {
+      "quantity_milli": 87923,
+      "labor_unit_price_huf": 160630,
+      "material_unit_price_huf": 8216
+     },
+     {
+      "quantity_milli": 428920,
+      "labor_unit_price_huf": 155617,
+      "material_unit_price_huf": 12733
+     },
+     {
+      "quantity_milli": 315425,
+      "labor_unit_price_huf": 187814,
+      "material_unit_price_huf": 103968
+     },
+     {
+      "quantity_milli": 86644,
+      "labor_unit_price_huf": 72521,
+      "material_unit_price_huf": 65930
+     },
+     {
+      "quantity_milli": 324469,
+      "labor_unit_price_huf": 100117,
+      "material_unit_price_huf": 73296
+     },
+     {
+      "quantity_milli": 200577,
+      "labor_unit_price_huf": 89511,
+      "material_unit_price_huf": 145814
+     },
+     {
+      "quantity_milli": 302605,
+      "labor_unit_price_huf": 100472,
+      "material_unit_price_huf": 52861
+     },
+     {
+      "quantity_milli": 29543,
+      "labor_unit_price_huf": 150866,
+      "material_unit_price_huf": 46180
+     }
+    ],
+    "adjustment_type": "surcharge",
+    "adjustment_percent_bp": 2795,
+    "vat_rate_bp": 0
+   },
+   "expected": {
+    "lines": [
+     {
+      "labor_huf": 24526433,
+      "material_huf": 16729325,
+      "total_huf": 41255758
+     },
+     {
+      "labor_huf": 231859,
+      "material_huf": 2466422,
+      "total_huf": 2698281
+     },
+     {
+      "labor_huf": 29553142,
+      "material_huf": 5271000,
+      "total_huf": 34824142
+     },
+     {
+      "labor_huf": 40506745,
+      "material_huf": 39108902,
+      "total_huf": 79615647
+     },
+     {
+      "labor_huf": 32014802,
+      "material_huf": 5899357,
+      "total_huf": 37914159
+     },
+     {
+      "labor_huf": 35368670,
+      "material_huf": 50095430,
+      "total_huf": 85464100
+     },
+     {
+      "labor_huf": 3100173,
+      "material_huf": 3325573,
+      "total_huf": 6425746
+     },
+     {
+      "labor_huf": 29074437,
+      "material_huf": 22170772,
+      "total_huf": 51245209
+     },
+     {
+      "labor_huf": 26213856,
+      "material_huf": 12158143,
+      "total_huf": 38371999
+     },
+     {
+      "labor_huf": 37881784,
+      "material_huf": 11636852,
+      "total_huf": 49518636
+     },
+     {
+      "labor_huf": 33590839,
+      "material_huf": 16863751,
+      "total_huf": 50454590
+     },
+     {
+      "labor_huf": 2944925,
+      "material_huf": 2188395,
+      "total_huf": 5133320
+     },
+     {
+      "labor_huf": 11876833,
+      "material_huf": 8476903,
+      "total_huf": 20353736
+     },
+     {
+      "labor_huf": 14123071,
+      "material_huf": 722376,
+      "total_huf": 14845447
+     },
+     {
+      "labor_huf": 66747244,
+      "material_huf": 5461438,
+      "total_huf": 72208682
+     },
+     {
+      "labor_huf": 59241231,
+      "material_huf": 32794106,
+      "total_huf": 92035337
+     },
+     {
+      "labor_huf": 6283510,
+      "material_huf": 5712438,
+      "total_huf": 11995948
+     },
+     {
+      "labor_huf": 32484863,
+      "material_huf": 23782280,
+      "total_huf": 56267143
+     },
+     {
+      "labor_huf": 17953848,
+      "material_huf": 29246935,
+      "total_huf": 47200783
+     },
+     {
+      "labor_huf": 30403330,
+      "material_huf": 15996002,
+      "total_huf": 46399332
+     },
+     {
+      "labor_huf": 4457034,
+      "material_huf": 1364296,
+      "total_huf": 5821330
+     }
+    ],
+    "labor_subtotal_huf": 538578629,
+    "material_subtotal_huf": 311470696,
+    "adjustment_huf": 237588786,
+    "net_total_huf": 1087638111,
+    "vat_huf": 0,
+    "gross_total_huf": 1087638111
+   }
+  },
+  {
+   "name": "véletlen #5",
+   "input": {
+    "lines": [
+     {
+      "quantity_milli": 409145,
+      "labor_unit_price_huf": 76819,
+      "material_unit_price_huf": 10269
+     },
+     {
+      "quantity_milli": 357245,
+      "labor_unit_price_huf": 137362,
+      "material_unit_price_huf": 84184
+     },
+     {
+      "quantity_milli": 382147,
+      "labor_unit_price_huf": 13507,
+      "material_unit_price_huf": 119516
+     },
+     {
+      "quantity_milli": 361174,
+      "labor_unit_price_huf": 53226,
+      "material_unit_price_huf": 54913
+     },
+     {
+      "quantity_milli": 437702,
+      "labor_unit_price_huf": 33062,
+      "material_unit_price_huf": 61093
+     },
+     {
+      "quantity_milli": 375131,
+      "labor_unit_price_huf": 170718,
+      "material_unit_price_huf": 93501
+     },
+     {
+      "quantity_milli": 337171,
+      "labor_unit_price_huf": 103567,
+      "material_unit_price_huf": 14160
+     },
+     {
+      "quantity_milli": 78595,
+      "labor_unit_price_huf": 67529,
+      "material_unit_price_huf": 71110
+     },
+     {
+      "quantity_milli": 164787,
+      "labor_unit_price_huf": 79998,
+      "material_unit_price_huf": 117636
+     },
+     {
+      "quantity_milli": 32445,
+      "labor_unit_price_huf": 67410,
+      "material_unit_price_huf": 144518
+     },
+     {
+      "quantity_milli": 283951,
+      "labor_unit_price_huf": 7647,
+      "material_unit_price_huf": 58323
+     },
+     {
+      "quantity_milli": 76716,
+      "labor_unit_price_huf": 190544,
+      "material_unit_price_huf": 134549
+     },
+     {
+      "quantity_milli": 435032,
+      "labor_unit_price_huf": 163043,
+      "material_unit_price_huf": 14351
+     },
+     {
+      "quantity_milli": 497807,
+      "labor_unit_price_huf": 8838,
+      "material_unit_price_huf": 22828
+     },
+     {
+      "quantity_milli": 2149,
+      "labor_unit_price_huf": 173230,
+      "material_unit_price_huf": 137169
+     },
+     {
+      "quantity_milli": 387099,
+      "labor_unit_price_huf": 199489,
+      "material_unit_price_huf": 71390
+     },
+     {
+      "quantity_milli": 380678,
+      "labor_unit_price_huf": 67009,
+      "material_unit_price_huf": 34393
+     },
+     {
+      "quantity_milli": 50627,
+      "labor_unit_price_huf": 99536,
+      "material_unit_price_huf": 103496
+     },
+     {
+      "quantity_milli": 210014,
+      "labor_unit_price_huf": 162961,
+      "material_unit_price_huf": 45110
+     },
+     {
+      "quantity_milli": 493450,
+      "labor_unit_price_huf": 193968,
+      "material_unit_price_huf": 40300
+     }
+    ],
+    "adjustment_type": "none",
+    "adjustment_percent_bp": 2179,
+    "vat_rate_bp": 1800
+   },
+   "expected": {
+    "lines": [
+     {
+      "labor_huf": 31430110,
+      "material_huf": 4201510,
+      "total_huf": 35631620
+     },
+     {
+      "labor_huf": 49071888,
+      "material_huf": 30074313,
+      "total_huf": 79146201
+     },
+     {
+      "labor_huf": 5161660,
+      "material_huf": 45672680,
+      "total_huf": 50834340
+     },
+     {
+      "labor_huf": 19223847,
+      "material_huf": 19833148,
+      "total_huf": 39056995
+     },
+     {
+      "labor_huf": 14471304,
+      "material_huf": 26740528,
+      "total_huf": 41211832
+     },
+     {
+      "labor_huf": 64041614,
+      "material_huf": 35075124,
+      "total_huf": 99116738
+     },
+     {
+      "labor_huf": 34919789,
+      "material_huf": 4774341,
+      "total_huf": 39694130
+     },
+     {
+      "labor_huf": 5307442,
+      "material_huf": 5588890,
+      "total_huf": 10896332
+     },
+     {
+      "labor_huf": 13182630,
+      "material_huf": 19384884,
+      "total_huf": 32567514
+     },
+     {
+      "labor_huf": 2187117,
+      "material_huf": 4688887,
+      "total_huf": 6876004
+     },
+     {
+      "labor_huf": 2171373,
+      "material_huf": 16560874,
+      "total_huf": 18732247
+     },
+     {
+      "labor_huf": 14617774,
+      "material_huf": 10322061,
+      "total_huf": 24939835
+     },
+     {
+      "labor_huf": 70928922,
+      "material_huf": 6243145,
+      "total_huf": 77172067
+     },
+     {
+      "labor_huf": 4399618,
+      "material_huf": 11363938,
+      "total_huf": 15763556
+     },
+     {
+      "labor_huf": 372271,
+      "material_huf": 294776,
+      "total_huf": 667047
+     },
+     {
+      "labor_huf": 77221992,
+      "material_huf": 27634998,
+      "total_huf": 104856990
+     },
+     {
+      "labor_huf": 25508852,
+      "material_huf": 13092659,
+      "total_huf": 38601511
+     },
+     {
+      "labor_huf": 5039209,
+      "material_huf": 5239692,
+      "total_huf": 10278901
+     },
+     {
+      "labor_huf": 34224091,
+      "material_huf": 9473732,
+      "total_huf": 43697823
+     },
+     {
+      "labor_huf": 95713510,
+      "material_huf": 19886035,
+      "total_huf": 115599545
+     }
+    ],
+    "labor_subtotal_huf": 569195013,
+    "material_subtotal_huf": 316146215,
+    "adjustment_huf": 0,
+    "net_total_huf": 885341228,
+    "vat_huf": 159361421,
+    "gross_total_huf": 1044702649
+   }
+  },
+  {
+   "name": "véletlen #6",
+   "input": {
+    "lines": [
+     {
+      "quantity_milli": 443421,
+      "labor_unit_price_huf": 48613,
+      "material_unit_price_huf": 144706
+     },
+     {
+      "quantity_milli": 414122,
+      "labor_unit_price_huf": 164101,
+      "material_unit_price_huf": 34990
+     },
+     {
+      "quantity_milli": 318839,
+      "labor_unit_price_huf": 35260,
+      "material_unit_price_huf": 5372
+     },
+     {
+      "quantity_milli": 233650,
+      "labor_unit_price_huf": 27393,
+      "material_unit_price_huf": 127874
+     },
+     {
+      "quantity_milli": 21319,
+      "labor_unit_price_huf": 31754,
+      "material_unit_price_huf": 95065
+     },
+     {
+      "quantity_milli": 458269,
+      "labor_unit_price_huf": 131369,
+      "material_unit_price_huf": 45428
+     },
+     {
+      "quantity_milli": 57850,
+      "labor_unit_price_huf": 93818,
+      "material_unit_price_huf": 81134
+     },
+     {
+      "quantity_milli": 391569,
+      "labor_unit_price_huf": 60695,
+      "material_unit_price_huf": 29173
+     },
+     {
+      "quantity_milli": 266254,
+      "labor_unit_price_huf": 97008,
+      "material_unit_price_huf": 25997
+     },
+     {
+      "quantity_milli": 342923,
+      "labor_unit_price_huf": 115500,
+      "material_unit_price_huf": 113240
+     },
+     {
+      "quantity_milli": 471773,
+      "labor_unit_price_huf": 4198,
+      "material_unit_price_huf": 127849
+     },
+     {
+      "quantity_milli": 377215,
+      "labor_unit_price_huf": 150891,
+      "material_unit_price_huf": 50763
+     },
+     {
+      "quantity_milli": 360024,
+      "labor_unit_price_huf": 198619,
+      "material_unit_price_huf": 43353
+     },
+     {
+      "quantity_milli": 131292,
+      "labor_unit_price_huf": 26091,
+      "material_unit_price_huf": 37346
+     },
+     {
+      "quantity_milli": 151842,
+      "labor_unit_price_huf": 84699,
+      "material_unit_price_huf": 15152
+     },
+     {
+      "quantity_milli": 84227,
+      "labor_unit_price_huf": 48484,
+      "material_unit_price_huf": 1520
+     },
+     {
+      "quantity_milli": 50200,
+      "labor_unit_price_huf": 101142,
+      "material_unit_price_huf": 10556
+     },
+     {
+      "quantity_milli": 85913,
+      "labor_unit_price_huf": 70272,
+      "material_unit_price_huf": 39922
+     },
+     {
+      "quantity_milli": 278997,
+      "labor_unit_price_huf": 183511,
+      "material_unit_price_huf": 116297
+     },
+     {
+      "quantity_milli": 49535,
+      "labor_unit_price_huf": 185293,
+      "material_unit_price_huf": 48745
+     },
+     {
+      "quantity_milli": 122348,
+      "labor_unit_price_huf": 105057,
+      "material_unit_price_huf": 28592
+     },
+     {
+      "quantity_milli": 10591,
+      "labor_unit_price_huf": 136633,
+      "material_unit_price_huf": 96497
+     },
+     {
+      "quantity_milli": 410075,
+      "labor_unit_price_huf": 56244,
+      "material_unit_price_huf": 3230
+     },
+     {
+      "quantity_milli": 389934,
+      "labor_unit_price_huf": 7855,
+      "material_unit_price_huf": 78061
+     }
+    ],
+    "adjustment_type": "discount",
+    "adjustment_percent_bp": 115,
+    "vat_rate_bp": 1800
+   },
+   "expected": {
+    "lines": [
+     {
+      "labor_huf": 21556025,
+      "material_huf": 64165679,
+      "total_huf": 85721704
+     },
+     {
+      "labor_huf": 67957834,
+      "material_huf": 14490129,
+      "total_huf": 82447963
+     },
+     {
+      "labor_huf": 11242263,
+      "material_huf": 1712803,
+      "total_huf": 12955066
+     },
+     {
+      "labor_huf": 6400374,
+      "material_huf": 29877761,
+      "total_huf": 36278135
+     },
+     {
+      "labor_huf": 676964,
+      "material_huf": 2026690,
+      "total_huf": 2703654
+     },
+     {
+      "labor_huf": 60202340,
+      "material_huf": 20818244,
+      "total_huf": 81020584
+     },
+     {
+      "labor_huf": 5427371,
+      "material_huf": 4693602,
+      "total_huf": 10120973
+     },
+     {
+      "labor_huf": 23766280,
+      "material_huf": 11423243,
+      "total_huf": 35189523
+     },
+     {
+      "labor_huf": 25828768,
+      "material_huf": 6921805,
+      "total_huf": 32750573
+     },
+     {
+      "labor_huf": 39607607,
+      "material_huf": 38832600,
+      "total_huf": 78440207
+     },
+     {
+      "labor_huf": 1980503,
+      "material_huf": 60315706,
+      "total_huf": 62296209
+     },
+     {
+      "labor_huf": 56918349,
+      "material_huf": 19148565,
+      "total_huf": 76066914
+     },
+     {
+      "labor_huf": 71507607,
+      "material_huf": 15608120,
+      "total_huf": 87115727
+     },
+     {
+      "labor_huf": 3425540,
+      "material_huf": 4903231,
+      "total_huf": 8328771
+     },
+     {
+      "labor_huf": 12860866,
+      "material_huf": 2300710,
+      "total_huf": 15161576
+     },
+     {
+      "labor_huf": 4083662,
+      "material_huf": 128025,
+      "total_huf": 4211687
+     },
+     {
+      "labor_huf": 5077328,
+      "material_huf": 529912,
+      "total_huf": 5607240
+     },
+     {
+      "labor_huf": 6037278,
+      "material_huf": 3429819,
+      "total_huf": 9467097
+     },
+     {
+      "labor_huf": 51199018,
+      "material_huf": 32446515,
+      "total_huf": 83645533
+     },
+     {
+      "labor_huf": 9178489,
+      "material_huf": 2414583,
+      "total_huf": 11593072
+     },
+     {
+      "labor_huf": 12853514,
+      "material_huf": 3498174,
+      "total_huf": 16351688
+     },
+     {
+      "labor_huf": 1447080,
+      "material_huf": 1022000,
+      "total_huf": 2469080
+     },
+     {
+      "labor_huf": 23064258,
+      "material_huf": 1324543,
+      "total_huf": 24388801
+     },
+     {
+      "labor_huf": 3062932,
+      "material_huf": 30438638,
+      "total_huf": 33501570
+     }
+    ],
+    "labor_subtotal_huf": 525362250,
+    "material_subtotal_huf": 372471097,
+    "adjustment_huf": -10325083,
+    "net_total_huf": 887508264,
+    "vat_huf": 159751488,
+    "gross_total_huf": 1047259752
+   }
+  },
+  {
+   "name": "véletlen #7",
+   "input": {
+    "lines": [
+     {
+      "quantity_milli": 338886,
+      "labor_unit_price_huf": 2842,
+      "material_unit_price_huf": 37704
+     },
+     {
+      "quantity_milli": 385205,
+      "labor_unit_price_huf": 141167,
+      "material_unit_price_huf": 119466
+     },
+     {
+      "quantity_milli": 180998,
+      "labor_unit_price_huf": 41617,
+      "material_unit_price_huf": 106189
+     },
+     {
+      "quantity_milli": 451561,
+      "labor_unit_price_huf": 4155,
+      "material_unit_price_huf": 41755
+     },
+     {
+      "quantity_milli": 427154,
+      "labor_unit_price_huf": 75303,
+      "material_unit_price_huf": 10253
+     },
+     {
+      "quantity_milli": 236673,
+      "labor_unit_price_huf": 72506,
+      "material_unit_price_huf": 100566
+     },
+     {
+      "quantity_milli": 32207,
+      "labor_unit_price_huf": 181587,
+      "material_unit_price_huf": 100063
+     },
+     {
+      "quantity_milli": 160127,
+      "labor_unit_price_huf": 24491,
+      "material_unit_price_huf": 107517
+     },
+     {
+      "quantity_milli": 161732,
+      "labor_unit_price_huf": 70502,
+      "material_unit_price_huf": 123299
+     },
+     {
+      "quantity_milli": 323151,
+      "labor_unit_price_huf": 665,
+      "material_unit_price_huf": 77456
+     },
+     {
+      "quantity_milli": 486281,
+      "labor_unit_price_huf": 39572,
+      "material_unit_price_huf": 142824
+     },
+     {
+      "quantity_milli": 415043,
+      "labor_unit_price_huf": 69102,
+      "material_unit_price_huf": 88826
+     },
+     {
+      "quantity_milli": 75399,
+      "labor_unit_price_huf": 53256,
+      "material_unit_price_huf": 107167
+     },
+     {
+      "quantity_milli": 478398,
+      "labor_unit_price_huf": 163953,
+      "material_unit_price_huf": 139591
+     },
+     {
+      "quantity_milli": 434688,
+      "labor_unit_price_huf": 58473,
+      "material_unit_price_huf": 99625
+     },
+     {
+      "quantity_milli": 497869,
+      "labor_unit_price_huf": 149637,
+      "material_unit_price_huf": 39357
+     },
+     {
+      "quantity_milli": 317847,
+      "labor_unit_price_huf": 114765,
+      "material_unit_price_huf": 54893
+     },
+     {
+      "quantity_milli": 37402,
+      "labor_unit_price_huf": 130611,
+      "material_unit_price_huf": 147040
+     },
+     {
+      "quantity_milli": 199533,
+      "labor_unit_price_huf": 160018,
+      "material_unit_price_huf": 59023
+     },
+     {
+      "quantity_milli": 248464,
+      "labor_unit_price_huf": 110135,
+      "material_unit_price_huf": 74808
+     },
+     {
+      "quantity_milli": 76753,
+      "labor_unit_price_huf": 114658,
+      "material_unit_price_huf": 131422
+     },
+     {
+      "quantity_milli": 97919,
+      "labor_unit_price_huf": 61324,
+      "material_unit_price_huf": 117020
+     }
+    ],
+    "adjustment_type": "discount",
+    "adjustment_percent_bp": 1493,
+    "vat_rate_bp": 0
+   },
+   "expected": {
+    "lines": [
+     {
+      "labor_huf": 963114,
+      "material_huf": 12777358,
+      "total_huf": 13740472
+     },
+     {
+      "labor_huf": 54378234,
+      "material_huf": 46018901,
+      "total_huf": 100397135
+     },
+     {
+      "labor_huf": 7532594,
+      "material_huf": 19219996,
+      "total_huf": 26752590
+     },
+     {
+      "labor_huf": 1876236,
+      "material_huf": 18854930,
+      "total_huf": 20731166
+     },
+     {
+      "labor_huf": 32165978,
+      "material_huf": 4379610,
+      "total_huf": 36545588
+     },
+     {
+      "labor_huf": 17160213,
+      "material_huf": 23801256,
+      "total_huf": 40961469
+     },
+     {
+      "labor_huf": 5848373,
+      "material_huf": 3222729,
+      "total_huf": 9071102
+     },
+     {
+      "labor_huf": 3921670,
+      "material_huf": 17216375,
+      "total_huf": 21138045
+     },
+     {
+      "labor_huf": 11402429,
+      "material_huf": 19941394,
+      "total_huf": 31343823
+     },
+     {
+      "labor_huf": 214895,
+      "material_huf": 25029984,
+      "total_huf": 25244879
+     },
+     {
+      "labor_huf": 19243112,
+      "material_huf": 69452597,
+      "total_huf": 88695709
+     },
+     {
+      "labor_huf": 28680301,
+      "material_huf": 36866610,
+      "total_huf": 65546911
+     },
+     {
+      "labor_huf": 4015449,
+      "material_huf": 8080285,
+      "total_huf": 12095734
+     },
+     {
+      "labor_huf": 78434787,
+      "material_huf": 66780056,
+      "total_huf": 145214843
+     },
+     {
+      "labor_huf": 25417511,
+      "material_huf": 43305792,
+      "total_huf": 68723303
+     },
+     {
+      "labor_huf": 74499624,
+      "material_huf": 19594630,
+      "total_huf": 94094254
+     },
+     {
+      "labor_huf": 36477711,
+      "material_huf": 17447575,
+      "total_huf": 53925286
+     },
+     {
+      "labor_huf": 4885113,
+      "material_huf": 5499590,
+      "total_huf": 10384703
+     },
+     {
+      "labor_huf": 31928872,
+      "material_huf": 11777036,
+      "total_huf": 43705908
+     },
+     {
+      "labor_huf": 27364583,
+      "material_huf": 18587095,
+      "total_huf": 45951678
+     },
+     {
+      "labor_huf": 8800345,
+      "material_huf": 10087033,
+      "total_huf": 18887378
+     },
+     {
+      "labor_huf": 6004785,
+      "material_huf": 11458481,
+      "total_huf": 17463266
+     }
+    ],
+    "labor_subtotal_huf": 481215929,
+    "material_subtotal_huf": 509399313,
+    "adjustment_huf": -147898856,
+    "net_total_huf": 842716386,
+    "vat_huf": 0,
+    "gross_total_huf": 842716386
+   }
+  },
+  {
+   "name": "véletlen #8",
+   "input": {
+    "lines": [
+     {
+      "quantity_milli": 21476,
+      "labor_unit_price_huf": 4732,
+      "material_unit_price_huf": 108243
+     },
+     {
+      "quantity_milli": 451787,
+      "labor_unit_price_huf": 100797,
+      "material_unit_price_huf": 33910
+     },
+     {
+      "quantity_milli": 206769,
+      "labor_unit_price_huf": 122567,
+      "material_unit_price_huf": 48997
+     },
+     {
+      "quantity_milli": 141221,
+      "labor_unit_price_huf": 94043,
+      "material_unit_price_huf": 133586
+     },
+     {
+      "quantity_milli": 276819,
+      "labor_unit_price_huf": 604,
+      "material_unit_price_huf": 130710
+     },
+     {
+      "quantity_milli": 455115,
+      "labor_unit_price_huf": 54639,
+      "material_unit_price_huf": 56250
+     },
+     {
+      "quantity_milli": 76194,
+      "labor_unit_price_huf": 64173,
+      "material_unit_price_huf": 66577
+     },
+     {
+      "quantity_milli": 6345,
+      "labor_unit_price_huf": 198644,
+      "material_unit_price_huf": 17817
+     }
+    ],
+    "adjustment_type": "none",
+    "adjustment_percent_bp": 1531,
+    "vat_rate_bp": 2700
+   },
+   "expected": {
+    "lines": [
+     {
+      "labor_huf": 101624,
+      "material_huf": 2324627,
+      "total_huf": 2426251
+     },
+     {
+      "labor_huf": 45538774,
+      "material_huf": 15320097,
+      "total_huf": 60858871
+     },
+     {
+      "labor_huf": 25343056,
+      "material_huf": 10131061,
+      "total_huf": 35474117
+     },
+     {
+      "labor_huf": 13280847,
+      "material_huf": 18865148,
+      "total_huf": 32145995
+     },
+     {
+      "labor_huf": 167199,
+      "material_huf": 36183011,
+      "total_huf": 36350210
+     },
+     {
+      "labor_huf": 24867028,
+      "material_huf": 25600219,
+      "total_huf": 50467247
+     },
+     {
+      "labor_huf": 4889598,
+      "material_huf": 5072768,
+      "total_huf": 9962366
+     },
+     {
+      "labor_huf": 1260396,
+      "material_huf": 113049,
+      "total_huf": 1373445
+     }
+    ],
+    "labor_subtotal_huf": 115448522,
+    "material_subtotal_huf": 113609980,
+    "adjustment_huf": 0,
+    "net_total_huf": 229058502,
+    "vat_huf": 61845796,
+    "gross_total_huf": 290904298
+   }
+  },
+  {
+   "name": "véletlen #9",
+   "input": {
+    "lines": [
+     {
+      "quantity_milli": 165384,
+      "labor_unit_price_huf": 86519,
+      "material_unit_price_huf": 140240
+     },
+     {
+      "quantity_milli": 168680,
+      "labor_unit_price_huf": 57746,
+      "material_unit_price_huf": 102892
+     },
+     {
+      "quantity_milli": 13523,
+      "labor_unit_price_huf": 2761,
+      "material_unit_price_huf": 878
+     },
+     {
+      "quantity_milli": 59228,
+      "labor_unit_price_huf": 63094,
+      "material_unit_price_huf": 5382
+     },
+     {
+      "quantity_milli": 37990,
+      "labor_unit_price_huf": 35179,
+      "material_unit_price_huf": 149574
+     },
+     {
+      "quantity_milli": 464714,
+      "labor_unit_price_huf": 69247,
+      "material_unit_price_huf": 105910
+     }
+    ],
+    "adjustment_type": "surcharge",
+    "adjustment_percent_bp": 1327,
+    "vat_rate_bp": 0
+   },
+   "expected": {
+    "lines": [
+     {
+      "labor_huf": 14308858,
+      "material_huf": 23193452,
+      "total_huf": 37502310
+     },
+     {
+      "labor_huf": 9740595,
+      "material_huf": 17355823,
+      "total_huf": 27096418
+     },
+     {
+      "labor_huf": 37337,
+      "material_huf": 11873,
+      "total_huf": 49210
+     },
+     {
+      "labor_huf": 3736931,
+      "material_huf": 318766,
+      "total_huf": 4055697
+     },
+     {
+      "labor_huf": 1336450,
+      "material_huf": 5682316,
+      "total_huf": 7018766
+     },
+     {
+      "labor_huf": 32180050,
+      "material_huf": 49217860,
+      "total_huf": 81397910
+     }
+    ],
+    "labor_subtotal_huf": 61340221,
+    "material_subtotal_huf": 95780090,
+    "adjustment_huf": 20849865,
+    "net_total_huf": 177970176,
+    "vat_huf": 0,
+    "gross_total_huf": 177970176
+   }
+  },
+  {
+   "name": "véletlen #10",
+   "input": {
+    "lines": [
+     {
+      "quantity_milli": 303495,
+      "labor_unit_price_huf": 114944,
+      "material_unit_price_huf": 80227
+     },
+     {
+      "quantity_milli": 431512,
+      "labor_unit_price_huf": 41433,
+      "material_unit_price_huf": 137118
+     },
+     {
+      "quantity_milli": 101880,
+      "labor_unit_price_huf": 2549,
+      "material_unit_price_huf": 53020
+     },
+     {
+      "quantity_milli": 449312,
+      "labor_unit_price_huf": 147305,
+      "material_unit_price_huf": 117416
+     },
+     {
+      "quantity_milli": 303332,
+      "labor_unit_price_huf": 130840,
+      "material_unit_price_huf": 98323
+     },
+     {
+      "quantity_milli": 164045,
+      "labor_unit_price_huf": 132847,
+      "material_unit_price_huf": 81111
+     },
+     {
+      "quantity_milli": 103632,
+      "labor_unit_price_huf": 132399,
+      "material_unit_price_huf": 35317
+     },
+     {
+      "quantity_milli": 302958,
+      "labor_unit_price_huf": 56318,
+      "material_unit_price_huf": 128514
+     }
+    ],
+    "adjustment_type": "surcharge",
+    "adjustment_percent_bp": 2540,
+    "vat_rate_bp": 500
+   },
+   "expected": {
+    "lines": [
+     {
+      "labor_huf": 34884929,
+      "material_huf": 24348494,
+      "total_huf": 59233423
+     },
+     {
+      "labor_huf": 17878837,
+      "material_huf": 59168062,
+      "total_huf": 77046899
+     },
+     {
+      "labor_huf": 259692,
+      "material_huf": 5401678,
+      "total_huf": 5661370
+     },
+     {
+      "labor_huf": 66185904,
+      "material_huf": 52756418,
+      "total_huf": 118942322
+     },
+     {
+      "labor_huf": 39687959,
+      "material_huf": 29824512,
+      "total_huf": 69512471
+     },
+     {
+      "labor_huf": 21792886,
+      "material_huf": 13305854,
+      "total_huf": 35098740
+     },
+     {
+      "labor_huf": 13720773,
+      "material_huf": 3659972,
+      "total_huf": 17380745
+     },
+     {
+      "labor_huf": 17061989,
+      "material_huf": 38934344,
+      "total_huf": 55996333
+     }
+    ],
+    "labor_subtotal_huf": 211472969,
+    "material_subtotal_huf": 227399334,
+    "adjustment_huf": 111473565,
+    "net_total_huf": 550345868,
+    "vat_huf": 27517293,
+    "gross_total_huf": 577863161
+   }
+  },
+  {
+   "name": "véletlen #11",
+   "input": {
+    "lines": [
+     {
+      "quantity_milli": 85895,
+      "labor_unit_price_huf": 1180,
+      "material_unit_price_huf": 2667
+     },
+     {
+      "quantity_milli": 54022,
+      "labor_unit_price_huf": 63994,
+      "material_unit_price_huf": 21474
+     }
+    ],
+    "adjustment_type": "discount",
+    "adjustment_percent_bp": 1377,
+    "vat_rate_bp": 2700
+   },
+   "expected": {
+    "lines": [
+     {
+      "labor_huf": 101356,
+      "material_huf": 229082,
+      "total_huf": 330438
+     },
+     {
+      "labor_huf": 3457084,
+      "material_huf": 1160068,
+      "total_huf": 4617152
+     }
+    ],
+    "labor_subtotal_huf": 3558440,
+    "material_subtotal_huf": 1389150,
+    "adjustment_huf": -681283,
+    "net_total_huf": 4266307,
+    "vat_huf": 1151903,
+    "gross_total_huf": 5418210
+   }
+  },
+  {
+   "name": "véletlen #12",
+   "input": {
+    "lines": [
+     {
+      "quantity_milli": 328682,
+      "labor_unit_price_huf": 9209,
+      "material_unit_price_huf": 137073
+     },
+     {
+      "quantity_milli": 460664,
+      "labor_unit_price_huf": 169459,
+      "material_unit_price_huf": 19324
+     },
+     {
+      "quantity_milli": 330900,
+      "labor_unit_price_huf": 159565,
+      "material_unit_price_huf": 92168
+     },
+     {
+      "quantity_milli": 85203,
+      "labor_unit_price_huf": 85764,
+      "material_unit_price_huf": 116643
+     },
+     {
+      "quantity_milli": 80065,
+      "labor_unit_price_huf": 116245,
+      "material_unit_price_huf": 20523
+     },
+     {
+      "quantity_milli": 47567,
+      "labor_unit_price_huf": 8959,
+      "material_unit_price_huf": 3929
+     },
+     {
+      "quantity_milli": 405638,
+      "labor_unit_price_huf": 58118,
+      "material_unit_price_huf": 57758
+     },
+     {
+      "quantity_milli": 477667,
+      "labor_unit_price_huf": 8135,
+      "material_unit_price_huf": 54734
+     },
+     {
+      "quantity_milli": 242766,
+      "labor_unit_price_huf": 71404,
+      "material_unit_price_huf": 121555
+     },
+     {
+      "quantity_milli": 168747,
+      "labor_unit_price_huf": 84479,
+      "material_unit_price_huf": 10477
+     },
+     {
+      "quantity_milli": 167806,
+      "labor_unit_price_huf": 24894,
+      "material_unit_price_huf": 28176
+     },
+     {
+      "quantity_milli": 129665,
+      "labor_unit_price_huf": 148104,
+      "material_unit_price_huf": 105305
+     }
+    ],
+    "adjustment_type": "surcharge",
+    "adjustment_percent_bp": 2854,
+    "vat_rate_bp": 1800
+   },
+   "expected": {
+    "lines": [
+     {
+      "labor_huf": 3026833,
+      "material_huf": 45053427,
+      "total_huf": 48080260
+     },
+     {
+      "labor_huf": 78063661,
+      "material_huf": 8901871,
+      "total_huf": 86965532
+     },
+     {
+      "labor_huf": 52800059,
+      "material_huf": 30498391,
+      "total_huf": 83298450
+     },
+     {
+      "labor_huf": 7307350,
+      "material_huf": 9938334,
+      "total_huf": 17245684
+     },
+     {
+      "labor_huf": 9307156,
+      "material_huf": 1643174,
+      "total_huf": 10950330
+     },
+     {
+      "labor_huf": 426153,
+      "material_huf": 186890,
+      "total_huf": 613043
+     },
+     {
+      "labor_huf": 23574869,
+      "material_huf": 23428840,
+      "total_huf": 47003709
+     },
+     {
+      "labor_huf": 3885821,
+      "material_huf": 26144626,
+      "total_huf": 30030447
+     },
+     {
+      "labor_huf": 17334463,
+      "material_huf": 29509422,
+      "total_huf": 46843885
+     },
+     {
+      "labor_huf": 14255578,
+      "material_huf": 1767962,
+      "total_huf": 16023540
+     },
+     {
+      "labor_huf": 4177363,
+      "material_huf": 4728101,
+      "total_huf": 8905464
+     },
+     {
+      "labor_huf": 19203905,
+      "material_huf": 13654373,
+      "total_huf": 32858278
+     }
+    ],
+    "labor_subtotal_huf": 233363211,
+    "material_subtotal_huf": 195455411,
+    "adjustment_huf": 122384835,
+    "net_total_huf": 551203457,
+    "vat_huf": 99216622,
+    "gross_total_huf": 650420079
+   }
+  },
+  {
+   "name": "véletlen #13",
+   "input": {
+    "lines": [
+     {
+      "quantity_milli": 396348,
+      "labor_unit_price_huf": 173321,
+      "material_unit_price_huf": 139045
+     },
+     {
+      "quantity_milli": 493524,
+      "labor_unit_price_huf": 168468,
+      "material_unit_price_huf": 119524
+     },
+     {
+      "quantity_milli": 201339,
+      "labor_unit_price_huf": 36010,
+      "material_unit_price_huf": 125734
+     },
+     {
+      "quantity_milli": 353196,
+      "labor_unit_price_huf": 184701,
+      "material_unit_price_huf": 98064
+     },
+     {
+      "quantity_milli": 5055,
+      "labor_unit_price_huf": 28576,
+      "material_unit_price_huf": 79211
+     },
+     {
+      "quantity_milli": 480542,
+      "labor_unit_price_huf": 191224,
+      "material_unit_price_huf": 30481
+     },
+     {
+      "quantity_milli": 9864,
+      "labor_unit_price_huf": 43520,
+      "material_unit_price_huf": 59050
+     },
+     {
+      "quantity_milli": 419114,
+      "labor_unit_price_huf": 31174,
+      "material_unit_price_huf": 40161
+     },
+     {
+      "quantity_milli": 103981,
+      "labor_unit_price_huf": 189430,
+      "material_unit_price_huf": 120131
+     }
+    ],
+    "adjustment_type": "discount",
+    "adjustment_percent_bp": 1197,
+    "vat_rate_bp": 1800
+   },
+   "expected": {
+    "lines": [
+     {
+      "labor_huf": 68695432,
+      "material_huf": 55110207,
+      "total_huf": 123805639
+     },
+     {
+      "labor_huf": 83143001,
+      "material_huf": 58987963,
+      "total_huf": 142130964
+     },
+     {
+      "labor_huf": 7250217,
+      "material_huf": 25315158,
+      "total_huf": 32565375
+     },
+     {
+      "labor_huf": 65235654,
+      "material_huf": 34635813,
+      "total_huf": 99871467
+     },
+     {
+      "labor_huf": 144452,
+      "material_huf": 400411,
+      "total_huf": 544863
+     },
+     {
+      "labor_huf": 91891163,
+      "material_huf": 14647401,
+      "total_huf": 106538564
+     },
+     {
+      "labor_huf": 429281,
+      "material_huf": 582469,
+      "total_huf": 1011750
+     },
+     {
+      "labor_huf": 13065460,
+      "material_huf": 16832037,
+      "total_huf": 29897497
+     },
+     {
+      "labor_huf": 19697121,
+      "material_huf": 12491341,
+      "total_huf": 32188462
+     }
+    ],
+    "labor_subtotal_huf": 349551781,
+    "material_subtotal_huf": 219002800,
+    "adjustment_huf": -68055983,
+    "net_total_huf": 500498598,
+    "vat_huf": 90089748,
+    "gross_total_huf": 590588346
+   }
+  },
+  {
+   "name": "véletlen #14",
+   "input": {
+    "lines": [
+     {
+      "quantity_milli": 153935,
+      "labor_unit_price_huf": 158317,
+      "material_unit_price_huf": 51821
+     },
+     {
+      "quantity_milli": 433585,
+      "labor_unit_price_huf": 127347,
+      "material_unit_price_huf": 118702
+     },
+     {
+      "quantity_milli": 40180,
+      "labor_unit_price_huf": 147155,
+      "material_unit_price_huf": 105319
+     },
+     {
+      "quantity_milli": 414738,
+      "labor_unit_price_huf": 51281,
+      "material_unit_price_huf": 3290
+     },
+     {
+      "quantity_milli": 365693,
+      "labor_unit_price_huf": 21329,
+      "material_unit_price_huf": 31733
+     },
+     {
+      "quantity_milli": 235122,
+      "labor_unit_price_huf": 86029,
+      "material_unit_price_huf": 133344
+     },
+     {
+      "quantity_milli": 328472,
+      "labor_unit_price_huf": 120416,
+      "material_unit_price_huf": 1907
+     },
+     {
+      "quantity_milli": 41693,
+      "labor_unit_price_huf": 171576,
+      "material_unit_price_huf": 15063
+     },
+     {
+      "quantity_milli": 43138,
+      "labor_unit_price_huf": 152137,
+      "material_unit_price_huf": 33964
+     },
+     {
+      "quantity_milli": 418195,
+      "labor_unit_price_huf": 66613,
+      "material_unit_price_huf": 137237
+     },
+     {
+      "quantity_milli": 405814,
+      "labor_unit_price_huf": 55040,
+      "material_unit_price_huf": 110692
+     },
+     {
+      "quantity_milli": 30503,
+      "labor_unit_price_huf": 121229,
+      "material_unit_price_huf": 99814
+     },
+     {
+      "quantity_milli": 364235,
+      "labor_unit_price_huf": 123713,
+      "material_unit_price_huf": 58815
+     },
+     {
+      "quantity_milli": 293219,
+      "labor_unit_price_huf": 162684,
+      "material_unit_price_huf": 120526
+     },
+     {
+      "quantity_milli": 311546,
+      "labor_unit_price_huf": 139744,
+      "material_unit_price_huf": 27764
+     },
+     {
+      "quantity_milli": 364422,
+      "labor_unit_price_huf": 49051,
+      "material_unit_price_huf": 66875
+     },
+     {
+      "quantity_milli": 200593,
+      "labor_unit_price_huf": 177538,
+      "material_unit_price_huf": 104520
+     },
+     {
+      "quantity_milli": 188172,
+      "labor_unit_price_huf": 187798,
+      "material_unit_price_huf": 42877
+     },
+     {
+      "quantity_milli": 190271,
+      "labor_unit_price_huf": 166963,
+      "material_unit_price_huf": 47121
+     },
+     {
+      "quantity_milli": 167845,
+      "labor_unit_price_huf": 54627,
+      "material_unit_price_huf": 11796
+     },
+     {
+      "quantity_milli": 421253,
+      "labor_unit_price_huf": 169557,
+      "material_unit_price_huf": 10452
+     },
+     {
+      "quantity_milli": 460524,
+      "labor_unit_price_huf": 22710,
+      "material_unit_price_huf": 57201
+     }
+    ],
+    "adjustment_type": "none",
+    "adjustment_percent_bp": 629,
+    "vat_rate_bp": 0
+   },
+   "expected": {
+    "lines": [
+     {
+      "labor_huf": 24370527,
+      "material_huf": 7977066,
+      "total_huf": 32347593
+     },
+     {
+      "labor_huf": 55215749,
+      "material_huf": 51467407,
+      "total_huf": 106683156
+     },
+     {
+      "labor_huf": 5912688,
+      "material_huf": 4231717,
+      "total_huf": 10144405
+     },
+     {
+      "labor_huf": 21268179,
+      "material_huf": 1364488,
+      "total_huf": 22632667
+     },
+     {
+      "labor_huf": 7799866,
+      "material_huf": 11604536,
+      "total_huf": 19404402
+     },
+     {
+      "labor_huf": 20227311,
+      "material_huf": 31352108,
+      "total_huf": 51579419
+     },
+     {
+      "labor_huf": 39553284,
+      "material_huf": 626396,
+      "total_huf": 40179680
+     },
+     {
+      "labor_huf": 7153518,
+      "material_huf": 628022,
+      "total_huf": 7781540
+     },
+     {
+      "labor_huf": 6562886,
+      "material_huf": 1465139,
+      "total_huf": 8028025
+     },
+     {
+      "labor_huf": 27857224,
+      "material_huf": 57391827,
+      "total_huf": 85249051
+     },
+     {
+      "labor_huf": 22336003,
+      "material_huf": 44920363,
+      "total_huf": 67256366
+     },
+     {
+      "labor_huf": 3697848,
+      "material_huf": 3044627,
+      "total_huf": 6742475
+     },
+     {
+      "labor_huf": 45060605,
+      "material_huf": 21422481,
+      "total_huf": 66483086
+     },
+     {
+      "labor_huf": 47702040,
+      "material_huf": 35340513,
+      "total_huf": 83042553
+     },
+     {
+      "labor_huf": 43536684,
+      "material_huf": 8649763,
+      "total_huf": 52186447
+     },
+     {
+      "labor_huf": 17875264,
+      "material_huf": 24370721,
+      "total_huf": 42245985
+     },
+     {
+      "labor_huf": 35612880,
+      "material_huf": 20965980,
+      "total_huf": 56578860
+     },
+     {
+      "labor_huf": 35338325,
+      "material_huf": 8068251,
+      "total_huf": 43406576
+     },
+     {
+      "labor_huf": 31768217,
+      "material_huf": 8965760,
+      "total_huf": 40733977
+     },
+     {
+      "labor_huf": 9168869,
+      "material_huf": 1979899,
+      "total_huf": 11148768
+     },
+     {
+      "labor_huf": 71426395,
+      "material_huf": 4402936,
+      "total_huf": 75829331
+     },
+     {
+      "labor_huf": 10458500,
+      "material_huf": 26342433,
+      "total_huf": 36800933
+     }
+    ],
+    "labor_subtotal_huf": 589902862,
+    "material_subtotal_huf": 376582433,
+    "adjustment_huf": 0,
+    "net_total_huf": 966485295,
+    "vat_huf": 0,
+    "gross_total_huf": 966485295
+   }
+  },
+  {
+   "name": "véletlen #15",
+   "input": {
+    "lines": [
+     {
+      "quantity_milli": 32208,
+      "labor_unit_price_huf": 94426,
+      "material_unit_price_huf": 98297
+     },
+     {
+      "quantity_milli": 7236,
+      "labor_unit_price_huf": 110328,
+      "material_unit_price_huf": 94149
+     },
+     {
+      "quantity_milli": 238901,
+      "labor_unit_price_huf": 102958,
+      "material_unit_price_huf": 671
+     },
+     {
+      "quantity_milli": 431601,
+      "labor_unit_price_huf": 24111,
+      "material_unit_price_huf": 135297
+     },
+     {
+      "quantity_milli": 361618,
+      "labor_unit_price_huf": 45452,
+      "material_unit_price_huf": 146607
+     },
+     {
+      "quantity_milli": 114732,
+      "labor_unit_price_huf": 28899,
+      "material_unit_price_huf": 81295
+     },
+     {
+      "quantity_milli": 405377,
+      "labor_unit_price_huf": 124209,
+      "material_unit_price_huf": 9268
+     },
+     {
+      "quantity_milli": 234450,
+      "labor_unit_price_huf": 158647,
+      "material_unit_price_huf": 115550
+     },
+     {
+      "quantity_milli": 361726,
+      "labor_unit_price_huf": 128425,
+      "material_unit_price_huf": 85998
+     },
+     {
+      "quantity_milli": 195222,
+      "labor_unit_price_huf": 196939,
+      "material_unit_price_huf": 78571
+     },
+     {
+      "quantity_milli": 318337,
+      "labor_unit_price_huf": 43265,
+      "material_unit_price_huf": 16415
+     },
+     {
+      "quantity_milli": 483200,
+      "labor_unit_price_huf": 179365,
+      "material_unit_price_huf": 95779
+     },
+     {
+      "quantity_milli": 59940,
+      "labor_unit_price_huf": 2932,
+      "material_unit_price_huf": 79604
+     },
+     {
+      "quantity_milli": 29712,
+      "labor_unit_price_huf": 54464,
+      "material_unit_price_huf": 111069
+     },
+     {
+      "quantity_milli": 290102,
+      "labor_unit_price_huf": 158361,
+      "material_unit_price_huf": 149577
+     },
+     {
+      "quantity_milli": 218952,
+      "labor_unit_price_huf": 113504,
+      "material_unit_price_huf": 69736
+     },
+     {
+      "quantity_milli": 198961,
+      "labor_unit_price_huf": 183969,
+      "material_unit_price_huf": 46789
+     },
+     {
+      "quantity_milli": 80855,
+      "labor_unit_price_huf": 39231,
+      "material_unit_price_huf": 32371
+     },
+     {
+      "quantity_milli": 203135,
+      "labor_unit_price_huf": 107188,
+      "material_unit_price_huf": 147625
+     },
+     {
+      "quantity_milli": 124737,
+      "labor_unit_price_huf": 20533,
+      "material_unit_price_huf": 88786
+     },
+     {
+      "quantity_milli": 159082,
+      "labor_unit_price_huf": 20823,
+      "material_unit_price_huf": 46590
+     },
+     {
+      "quantity_milli": 173401,
+      "labor_unit_price_huf": 162605,
+      "material_unit_price_huf": 4283
+     },
+     {
+      "quantity_milli": 153334,
+      "labor_unit_price_huf": 161641,
+      "material_unit_price_huf": 67429
+     },
+     {
+      "quantity_milli": 288394,
+      "labor_unit_price_huf": 430,
+      "material_unit_price_huf": 125854
+     },
+     {
+      "quantity_milli": 258377,
+      "labor_unit_price_huf": 17398,
+      "material_unit_price_huf": 366
+     }
+    ],
+    "adjustment_type": "surcharge",
+    "adjustment_percent_bp": 2710,
+    "vat_rate_bp": 0
+   },
+   "expected": {
+    "lines": [
+     {
+      "labor_huf": 3041273,
+      "material_huf": 3165949,
+      "total_huf": 6207222
+     },
+     {
+      "labor_huf": 798333,
+      "material_huf": 681263,
+      "total_huf": 1479596
+     },
+     {
+      "labor_huf": 24596769,
+      "material_huf": 160303,
+      "total_huf": 24757072
+     },
+     {
+      "labor_huf": 10406332,
+      "material_huf": 58394320,
+      "total_huf": 68800652
+     },
+     {
+      "labor_huf": 16436261,
+      "material_huf": 53015730,
+      "total_huf": 69451991
+     },
+     {
+      "labor_huf": 3315640,
+      "material_huf": 9327138,
+      "total_huf": 12642778
+     },
+     {
+      "labor_huf": 50351472,
+      "material_huf": 3757034,
+      "total_huf": 54108506
+     },
+     {
+      "labor_huf": 37194789,
+      "material_huf": 27090698,
+      "total_huf": 64285487
+     },
+     {
+      "labor_huf": 46454662,
+      "material_huf": 31107712,
+      "total_huf": 77562374
+     },
+     {
+      "labor_huf": 38446825,
+      "material_huf": 15338788,
+      "total_huf": 53785613
+     },
+     {
+      "labor_huf": 13772850,
+      "material_huf": 5225502,
+      "total_huf": 18998352
+     },
+     {
+      "labor_huf": 86669168,
+      "material_huf": 46280413,
+      "total_huf": 132949581
+     },
+     {
+      "labor_huf": 175744,
+      "material_huf": 4771464,
+      "total_huf": 4947208
+     },
+     {
+      "labor_huf": 1618234,
+      "material_huf": 3300082,
+      "total_huf": 4918316
+     },
+     {
+      "labor_huf": 45940843,
+      "material_huf": 43392587,
+      "total_huf": 89333430
+     },
+     {
+      "labor_huf": 24851928,
+      "material_huf": 15268836,
+      "total_huf": 40120764
+     },
+     {
+      "labor_huf": 36602656,
+      "material_huf": 9309186,
+      "total_huf": 45911842
+     },
+     {
+      "labor_huf": 3172023,
+      "material_huf": 2617357,
+      "total_huf": 5789380
+     },
+     {
+      "labor_huf": 21773634,
+      "material_huf": 29987805,
+      "total_huf": 51761439
+     },
+     {
+      "labor_huf": 2561225,
+      "material_huf": 11074899,
+      "total_huf": 13636124
+     },
+     {
+      "labor_huf": 3312564,
+      "material_huf": 7411631,
+      "total_huf": 10724195
+     },
+     {
+      "labor_huf": 28195870,
+      "material_huf": 742676,
+      "total_huf": 28938546
+     },
+     {
+      "labor_huf": 24785061,
+      "material_huf": 10339158,
+      "total_huf": 35124219
+     },
+     {
+      "labor_huf": 124009,
+      "material_huf": 36295539,
+      "total_huf": 36419548
+     },
+     {
+      "labor_huf": 4495243,
+      "material_huf": 94566,
+      "total_huf": 4589809
+     }
+    ],
+    "labor_subtotal_huf": 529093408,
+    "material_subtotal_huf": 428150636,
+    "adjustment_huf": 259413136,
+    "net_total_huf": 1216657180,
+    "vat_huf": 0,
+    "gross_total_huf": 1216657180
+   }
+  },
+  {
+   "name": "véletlen #16",
+   "input": {
+    "lines": [
+     {
+      "quantity_milli": 296167,
+      "labor_unit_price_huf": 192469,
+      "material_unit_price_huf": 121699
+     },
+     {
+      "quantity_milli": 369958,
+      "labor_unit_price_huf": 154086,
+      "material_unit_price_huf": 16155
+     },
+     {
+      "quantity_milli": 34320,
+      "labor_unit_price_huf": 152246,
+      "material_unit_price_huf": 61808
+     },
+     {
+      "quantity_milli": 227049,
+      "labor_unit_price_huf": 198690,
+      "material_unit_price_huf": 43836
+     },
+     {
+      "quantity_milli": 208422,
+      "labor_unit_price_huf": 149155,
+      "material_unit_price_huf": 35715
+     },
+     {
+      "quantity_milli": 177795,
+      "labor_unit_price_huf": 177193,
+      "material_unit_price_huf": 135423
+     },
+     {
+      "quantity_milli": 315485,
+      "labor_unit_price_huf": 10720,
+      "material_unit_price_huf": 103886
+     },
+     {
+      "quantity_milli": 389357,
+      "labor_unit_price_huf": 11180,
+      "material_unit_price_huf": 2168
+     },
+     {
+      "quantity_milli": 37098,
+      "labor_unit_price_huf": 124211,
+      "material_unit_price_huf": 130324
+     },
+     {
+      "quantity_milli": 241581,
+      "labor_unit_price_huf": 83685,
+      "material_unit_price_huf": 125589
+     },
+     {
+      "quantity_milli": 236251,
+      "labor_unit_price_huf": 162170,
+      "material_unit_price_huf": 130780
+     },
+     {
+      "quantity_milli": 114923,
+      "labor_unit_price_huf": 71883,
+      "material_unit_price_huf": 73916
+     },
+     {
+      "quantity_milli": 50133,
+      "labor_unit_price_huf": 158912,
+      "material_unit_price_huf": 90988
+     },
+     {
+      "quantity_milli": 47027,
+      "labor_unit_price_huf": 46551,
+      "material_unit_price_huf": 26581
+     },
+     {
+      "quantity_milli": 453076,
+      "labor_unit_price_huf": 195764,
+      "material_unit_price_huf": 33214
+     },
+     {
+      "quantity_milli": 50375,
+      "labor_unit_price_huf": 170375,
+      "material_unit_price_huf": 115466
+     },
+     {
+      "quantity_milli": 211165,
+      "labor_unit_price_huf": 122744,
+      "material_unit_price_huf": 19711
+     },
+     {
+      "quantity_milli": 350111,
+      "labor_unit_price_huf": 141246,
+      "material_unit_price_huf": 83726
+     }
+    ],
+    "adjustment_type": "none",
+    "adjustment_percent_bp": 1845,
+    "vat_rate_bp": 500
+   },
+   "expected": {
+    "lines": [
+     {
+      "labor_huf": 57002966,
+      "material_huf": 36043228,
+      "total_huf": 93046194
+     },
+     {
+      "labor_huf": 57005348,
+      "material_huf": 5976672,
+      "total_huf": 62982020
+     },
+     {
+      "labor_huf": 5225083,
+      "material_huf": 2121250,
+      "total_huf": 7346333
+     },
+     {
+      "labor_huf": 45112366,
+      "material_huf": 9952920,
+      "total_huf": 55065286
+     },
+     {
+      "labor_huf": 31087183,
+      "material_huf": 7443792,
+      "total_huf": 38530975
+     },
+     {
+      "labor_huf": 31504029,
+      "material_huf": 24077533,
+      "total_huf": 55581562
+     },
+     {
+      "labor_huf": 3381999,
+      "material_huf": 32774475,
+      "total_huf": 36156474
+     },
+     {
+      "labor_huf": 4353011,
+      "material_huf": 844126,
+      "total_huf": 5197137
+     },
+     {
+      "labor_huf": 4607980,
+      "material_huf": 4834759,
+      "total_huf": 9442739
+     },
+     {
+      "labor_huf": 20216706,
+      "material_huf": 30339916,
+      "total_huf": 50556622
+     },
+     {
+      "labor_huf": 38312825,
+      "material_huf": 30896905,
+      "total_huf": 69209730
+     },
+     {
+      "labor_huf": 8261010,
+      "material_huf": 8494648,
+      "total_huf": 16755658
+     },
+     {
+      "labor_huf": 7966735,
+      "material_huf": 4561502,
+      "total_huf": 12528237
+     },
+     {
+      "labor_huf": 2189154,
+      "material_huf": 1250025,
+      "total_huf": 3439179
+     },
+     {
+      "labor_huf": 88695970,
+      "material_huf": 15048466,
+      "total_huf": 103744436
+     },
+     {
+      "labor_huf": 8582641,
+      "material_huf": 5816599,
+      "total_huf": 14399240
+     },
+     {
+      "labor_huf": 25919237,
+      "material_huf": 4162273,
+      "total_huf": 30081510
+     },
+     {
+      "labor_huf": 49451778,
+      "material_huf": 29313394,
+      "total_huf": 78765172
+     }
+    ],
+    "labor_subtotal_huf": 488876021,
+    "material_subtotal_huf": 253952483,
+    "adjustment_huf": 0,
+    "net_total_huf": 742828504,
+    "vat_huf": 37141425,
+    "gross_total_huf": 779969929
+   }
+  },
+  {
+   "name": "véletlen #17",
+   "input": {
+    "lines": [
+     {
+      "quantity_milli": 13162,
+      "labor_unit_price_huf": 52057,
+      "material_unit_price_huf": 76185
+     },
+     {
+      "quantity_milli": 46061,
+      "labor_unit_price_huf": 86306,
+      "material_unit_price_huf": 112790
+     },
+     {
+      "quantity_milli": 181461,
+      "labor_unit_price_huf": 38888,
+      "material_unit_price_huf": 43528
+     },
+     {
+      "quantity_milli": 459464,
+      "labor_unit_price_huf": 191337,
+      "material_unit_price_huf": 65772
+     },
+     {
+      "quantity_milli": 495022,
+      "labor_unit_price_huf": 192461,
+      "material_unit_price_huf": 48964
+     },
+     {
+      "quantity_milli": 474068,
+      "labor_unit_price_huf": 94517,
+      "material_unit_price_huf": 37196
+     },
+     {
+      "quantity_milli": 231206,
+      "labor_unit_price_huf": 23843,
+      "material_unit_price_huf": 109483
+     },
+     {
+      "quantity_milli": 238158,
+      "labor_unit_price_huf": 32183,
+      "material_unit_price_huf": 141036
+     },
+     {
+      "quantity_milli": 94341,
+      "labor_unit_price_huf": 135300,
+      "material_unit_price_huf": 124923
+     },
+     {
+      "quantity_milli": 42059,
+      "labor_unit_price_huf": 3605,
+      "material_unit_price_huf": 39193
+     },
+     {
+      "quantity_milli": 395767,
+      "labor_unit_price_huf": 95597,
+      "material_unit_price_huf": 32287
+     },
+     {
+      "quantity_milli": 347340,
+      "labor_unit_price_huf": 21610,
+      "material_unit_price_huf": 80395
+     },
+     {
+      "quantity_milli": 81554,
+      "labor_unit_price_huf": 121561,
+      "material_unit_price_huf": 3028
+     },
+     {
+      "quantity_milli": 324882,
+      "labor_unit_price_huf": 156481,
+      "material_unit_price_huf": 51947
+     },
+     {
+      "quantity_milli": 61949,
+      "labor_unit_price_huf": 42327,
+      "material_unit_price_huf": 48429
+     },
+     {
+      "quantity_milli": 21583,
+      "labor_unit_price_huf": 181170,
+      "material_unit_price_huf": 65465
+     },
+     {
+      "quantity_milli": 344177,
+      "labor_unit_price_huf": 180746,
+      "material_unit_price_huf": 37798
+     },
+     {
+      "quantity_milli": 129494,
+      "labor_unit_price_huf": 125892,
+      "material_unit_price_huf": 3403
+     },
+     {
+      "quantity_milli": 481687,
+      "labor_unit_price_huf": 63014,
+      "material_unit_price_huf": 21776
+     },
+     {
+      "quantity_milli": 444424,
+      "labor_unit_price_huf": 54118,
+      "material_unit_price_huf": 55534
+     },
+     {
+      "quantity_milli": 439789,
+      "labor_unit_price_huf": 141820,
+      "material_unit_price_huf": 57844
+     },
+     {
+      "quantity_milli": 22888,
+      "labor_unit_price_huf": 179724,
+      "material_unit_price_huf": 131697
+     }
+    ],
+    "adjustment_type": "surcharge",
+    "adjustment_percent_bp": 1365,
+    "vat_rate_bp": 1800
+   },
+   "expected": {
+    "lines": [
+     {
+      "labor_huf": 685174,
+      "material_huf": 1002747,
+      "total_huf": 1687921
+     },
+     {
+      "labor_huf": 3975341,
+      "material_huf": 5195220,
+      "total_huf": 9170561
+     },
+     {
+      "labor_huf": 7056655,
+      "material_huf": 7898635,
+      "total_huf": 14955290
+     },
+     {
+      "labor_huf": 87912463,
+      "material_huf": 30219867,
+      "total_huf": 118132330
+     },
+     {
+      "labor_huf": 95272429,
+      "material_huf": 24238257,
+      "total_huf": 119510686
+     },
+     {
+      "labor_huf": 44807485,
+      "material_huf": 17633433,
+      "total_huf": 62440918
+     },
+     {
+      "labor_huf": 5512645,
+      "material_huf": 25313126,
+      "total_huf": 30825771
+     },
+     {
+      "labor_huf": 7664639,
+      "material_huf": 33588852,
+      "total_huf": 41253491
+     },
+     {
+      "labor_huf": 12764337,
+      "material_huf": 11785361,
+      "total_huf": 24549698
+     },
+     {
+      "labor_huf": 151623,
+      "material_huf": 1648418,
+      "total_huf": 1800041
+     },
+     {
+      "labor_huf": 37834138,
+      "material_huf": 12778129,
+      "total_huf": 50612267
+     },
+     {
+      "labor_huf": 7506017,
+      "material_huf": 27924400,
+      "total_huf": 35430417
+     },
+     {
+      "labor_huf": 9913786,
+      "material_huf": 246945,
+      "total_huf": 10160731
+     },
+     {
+      "labor_huf": 50837860,
+      "material_huf": 16876645,
+      "total_huf": 67714505
+     },
+     {
+      "labor_huf": 2622115,
+      "material_huf": 3000128,
+      "total_huf": 5622243
+     },
+     {
+      "labor_huf": 3910192,
+      "material_huf": 1412931,
+      "total_huf": 5323123
+     },
+     {
+      "labor_huf": 62208616,
+      "material_huf": 13009202,
+      "total_huf": 75217818
+     },
+     {
+      "labor_huf": 16302259,
+      "material_huf": 440668,
+      "total_huf": 16742927
+     },
+     {
+      "labor_huf": 30353025,
+      "material_huf": 10489216,
+      "total_huf": 40842241
+     },
+     {
+      "labor_huf": 24051338,
+      "material_huf": 24680642,
+      "total_huf": 48731980
+     },
+     {
+      "labor_huf": 62370876,
+      "material_huf": 25439155,
+      "total_huf": 87810031
+     },
+     {
+      "labor_huf": 4113523,
+      "material_huf": 3014281,
+      "total_huf": 7127804
+     }
+    ],
+    "labor_subtotal_huf": 577826536,
+    "material_subtotal_huf": 297836258,
+    "adjustment_huf": 119527971,
+    "net_total_huf": 995190765,
+    "vat_huf": 179134338,
+    "gross_total_huf": 1174325103
+   }
+  },
+  {
+   "name": "véletlen #18",
+   "input": {
+    "lines": [
+     {
+      "quantity_milli": 316519,
+      "labor_unit_price_huf": 126763,
+      "material_unit_price_huf": 85584
+     },
+     {
+      "quantity_milli": 260460,
+      "labor_unit_price_huf": 193276,
+      "material_unit_price_huf": 135591
+     },
+     {
+      "quantity_milli": 371899,
+      "labor_unit_price_huf": 45401,
+      "material_unit_price_huf": 146005
+     },
+     {
+      "quantity_milli": 154241,
+      "labor_unit_price_huf": 92358,
+      "material_unit_price_huf": 13507
+     },
+     {
+      "quantity_milli": 255077,
+      "labor_unit_price_huf": 123731,
+      "material_unit_price_huf": 49896
+     },
+     {
+      "quantity_milli": 120309,
+      "labor_unit_price_huf": 43778,
+      "material_unit_price_huf": 102825
+     }
+    ],
+    "adjustment_type": "discount",
+    "adjustment_percent_bp": 2988,
+    "vat_rate_bp": 0
+   },
+   "expected": {
+    "lines": [
+     {
+      "labor_huf": 40122898,
+      "material_huf": 27088962,
+      "total_huf": 67211860
+     },
+     {
+      "labor_huf": 50340667,
+      "material_huf": 35316032,
+      "total_huf": 85656699
+     },
+     {
+      "labor_huf": 16884586,
+      "material_huf": 54299114,
+      "total_huf": 71183700
+     },
+     {
+      "labor_huf": 14245390,
+      "material_huf": 2083333,
+      "total_huf": 16328723
+     },
+     {
+      "labor_huf": 31560932,
+      "material_huf": 12727322,
+      "total_huf": 44288254
+     },
+     {
+      "labor_huf": 5266887,
+      "material_huf": 12370773,
+      "total_huf": 17637660
+     }
+    ],
+    "labor_subtotal_huf": 158421360,
+    "material_subtotal_huf": 143885536,
+    "adjustment_huf": -90329301,
+    "net_total_huf": 211977595,
+    "vat_huf": 0,
+    "gross_total_huf": 211977595
+   }
+  },
+  {
+   "name": "véletlen #19",
+   "input": {
+    "lines": [
+     {
+      "quantity_milli": 210505,
+      "labor_unit_price_huf": 33312,
+      "material_unit_price_huf": 143443
+     },
+     {
+      "quantity_milli": 259477,
+      "labor_unit_price_huf": 133018,
+      "material_unit_price_huf": 59027
+     },
+     {
+      "quantity_milli": 282860,
+      "labor_unit_price_huf": 102421,
+      "material_unit_price_huf": 80028
+     },
+     {
+      "quantity_milli": 105890,
+      "labor_unit_price_huf": 139721,
+      "material_unit_price_huf": 99668
+     },
+     {
+      "quantity_milli": 214297,
+      "labor_unit_price_huf": 36204,
+      "material_unit_price_huf": 63404
+     },
+     {
+      "quantity_milli": 216098,
+      "labor_unit_price_huf": 190136,
+      "material_unit_price_huf": 15753
+     },
+     {
+      "quantity_milli": 29528,
+      "labor_unit_price_huf": 116098,
+      "material_unit_price_huf": 88792
+     },
+     {
+      "quantity_milli": 88190,
+      "labor_unit_price_huf": 107575,
+      "material_unit_price_huf": 109621
+     },
+     {
+      "quantity_milli": 73976,
+      "labor_unit_price_huf": 174181,
+      "material_unit_price_huf": 118782
+     },
+     {
+      "quantity_milli": 113594,
+      "labor_unit_price_huf": 157729,
+      "material_unit_price_huf": 50294
+     },
+     {
+      "quantity_milli": 49119,
+      "labor_unit_price_huf": 7835,
+      "material_unit_price_huf": 7393
+     },
+     {
+      "quantity_milli": 21082,
+      "labor_unit_price_huf": 30034,
+      "material_unit_price_huf": 32147
+     },
+     {
+      "quantity_milli": 322257,
+      "labor_unit_price_huf": 154847,
+      "material_unit_price_huf": 109111
+     },
+     {
+      "quantity_milli": 214292,
+      "labor_unit_price_huf": 143890,
+      "material_unit_price_huf": 117777
+     },
+     {
+      "quantity_milli": 39175,
+      "labor_unit_price_huf": 56049,
+      "material_unit_price_huf": 99390
+     },
+     {
+      "quantity_milli": 438451,
+      "labor_unit_price_huf": 144451,
+      "material_unit_price_huf": 132890
+     },
+     {
+      "quantity_milli": 34434,
+      "labor_unit_price_huf": 198918,
+      "material_unit_price_huf": 71391
+     }
+    ],
+    "adjustment_type": "discount",
+    "adjustment_percent_bp": 194,
+    "vat_rate_bp": 1800
+   },
+   "expected": {
+    "lines": [
+     {
+      "labor_huf": 7012343,
+      "material_huf": 30195468,
+      "total_huf": 37207811
+     },
+     {
+      "labor_huf": 34515112,
+      "material_huf": 15316148,
+      "total_huf": 49831260
+     },
+     {
+      "labor_huf": 28970804,
+      "material_huf": 22636720,
+      "total_huf": 51607524
+     },
+     {
+      "labor_huf": 14795057,
+      "material_huf": 10553844,
+      "total_huf": 25348901
+     },
+     {
+      "labor_huf": 7758409,
+      "material_huf": 13587287,
+      "total_huf": 21345696
+     },
+     {
+      "labor_huf": 41088009,
+      "material_huf": 3404192,
+      "total_huf": 44492201
+     },
+     {
+      "labor_huf": 3428142,
+      "material_huf": 2621850,
+      "total_huf": 6049992
+     },
+     {
+      "labor_huf": 9487039,
+      "material_huf": 9667476,
+      "total_huf": 19154515
+     },
+     {
+      "labor_huf": 12885214,
+      "material_huf": 8787017,
+      "total_huf": 21672231
+     },
+     {
+      "labor_huf": 17917068,
+      "material_huf": 5713097,
+      "total_huf": 23630165
+     },
+     {
+      "labor_huf": 384847,
+      "material_huf": 363137,
+      "total_huf": 747984
+     },
+     {
+      "labor_huf": 633177,
+      "material_huf": 677723,
+      "total_huf": 1310900
+     },
+     {
+      "labor_huf": 49900530,
+      "material_huf": 35161783,
+      "total_huf": 85062313
+     },
+     {
+      "labor_huf": 30834476,
+      "material_huf": 25238669,
+      "total_huf": 56073145
+     },
+     {
+      "labor_huf": 2195720,
+      "material_huf": 3893603,
+      "total_huf": 6089323
+     },
+     {
+      "labor_huf": 63334685,
+      "material_huf": 58265754,
+      "total_huf": 121600439
+     },
+     {
+      "labor_huf": 6849542,
+      "material_huf": 2458278,
+      "total_huf": 9307820
+     }
+    ],
+    "labor_subtotal_huf": 331990174,
+    "material_subtotal_huf": 248542046,
+    "adjustment_huf": -11262325,
+    "net_total_huf": 569269895,
+    "vat_huf": 102468581,
+    "gross_total_huf": 671738476
+   }
+  },
+  {
+   "name": "véletlen #20",
+   "input": {
+    "lines": [
+     {
+      "quantity_milli": 258944,
+      "labor_unit_price_huf": 181505,
+      "material_unit_price_huf": 43783
+     },
+     {
+      "quantity_milli": 140609,
+      "labor_unit_price_huf": 143014,
+      "material_unit_price_huf": 123496
+     },
+     {
+      "quantity_milli": 299637,
+      "labor_unit_price_huf": 109201,
+      "material_unit_price_huf": 128286
+     },
+     {
+      "quantity_milli": 432246,
+      "labor_unit_price_huf": 66088,
+      "material_unit_price_huf": 77255
+     },
+     {
+      "quantity_milli": 137317,
+      "labor_unit_price_huf": 82795,
+      "material_unit_price_huf": 118938
+     },
+     {
+      "quantity_milli": 197949,
+      "labor_unit_price_huf": 27855,
+      "material_unit_price_huf": 76054
+     },
+     {
+      "quantity_milli": 112054,
+      "labor_unit_price_huf": 175948,
+      "material_unit_price_huf": 66163
+     },
+     {
+      "quantity_milli": 6531,
+      "labor_unit_price_huf": 104934,
+      "material_unit_price_huf": 37750
+     },
+     {
+      "quantity_milli": 64621,
+      "labor_unit_price_huf": 197626,
+      "material_unit_price_huf": 89253
+     },
+     {
+      "quantity_milli": 76681,
+      "labor_unit_price_huf": 179854,
+      "material_unit_price_huf": 74287
+     },
+     {
+      "quantity_milli": 295850,
+      "labor_unit_price_huf": 192842,
+      "material_unit_price_huf": 15505
+     },
+     {
+      "quantity_milli": 14254,
+      "labor_unit_price_huf": 177172,
+      "material_unit_price_huf": 32224
+     },
+     {
+      "quantity_milli": 87333,
+      "labor_unit_price_huf": 199789,
+      "material_unit_price_huf": 132809
+     },
+     {
+      "quantity_milli": 149215,
+      "labor_unit_price_huf": 175924,
+      "material_unit_price_huf": 117104
+     },
+     {
+      "quantity_milli": 67293,
+      "labor_unit_price_huf": 188625,
+      "material_unit_price_huf": 135738
+     },
+     {
+      "quantity_milli": 220033,
+      "labor_unit_price_huf": 41467,
+      "material_unit_price_huf": 4009
+     },
+     {
+      "quantity_milli": 463001,
+      "labor_unit_price_huf": 53721,
+      "material_unit_price_huf": 104829
+     },
+     {
+      "quantity_milli": 148987,
+      "labor_unit_price_huf": 179029,
+      "material_unit_price_huf": 106034
+     }
+    ],
+    "adjustment_type": "surcharge",
+    "adjustment_percent_bp": 227,
+    "vat_rate_bp": 1800
+   },
+   "expected": {
+    "lines": [
+     {
+      "labor_huf": 46999631,
+      "material_huf": 11337345,
+      "total_huf": 58336976
+     },
+     {
+      "labor_huf": 20109056,
+      "material_huf": 17364649,
+      "total_huf": 37473705
+     },
+     {
+      "labor_huf": 32720660,
+      "material_huf": 38439232,
+      "total_huf": 71159892
+     },
+     {
+      "labor_huf": 28566274,
+      "material_huf": 33393164,
+      "total_huf": 61959438
+     },
+     {
+      "labor_huf": 11369161,
+      "material_huf": 16332209,
+      "total_huf": 27701370
+     },
+     {
+      "labor_huf": 5513869,
+      "material_huf": 15054814,
+      "total_huf": 20568683
+     },
+     {
+      "labor_huf": 19715677,
+      "material_huf": 7413829,
+      "total_huf": 27129506
+     },
+     {
+      "labor_huf": 685324,
+      "material_huf": 246545,
+      "total_huf": 931869
+     },
+     {
+      "labor_huf": 12770790,
+      "material_huf": 5767618,
+      "total_huf": 18538408
+     },
+     {
+      "labor_huf": 13791385,
+      "material_huf": 5696401,
+      "total_huf": 19487786
+     },
+     {
+      "labor_huf": 57052306,
+      "material_huf": 4587154,
+      "total_huf": 61639460
+     },
+     {
+      "labor_huf": 2525410,
+      "material_huf": 459321,
+      "total_huf": 2984731
+     },
+     {
+      "labor_huf": 17448173,
+      "material_huf": 11598608,
+      "total_huf": 29046781
+     },
+     {
+      "labor_huf": 26250500,
+      "material_huf": 17473673,
+      "total_huf": 43724173
+     },
+     {
+      "labor_huf": 12693142,
+      "material_huf": 9134217,
+      "total_huf": 21827359
+     },
+     {
+      "labor_huf": 9124108,
+      "material_huf": 882113,
+      "total_huf": 10006221
+     },
+     {
+      "labor_huf": 24872877,
+      "material_huf": 48535932,
+      "total_huf": 73408809
+     },
+     {
+      "labor_huf": 26672994,
+      "material_huf": 15797687,
+      "total_huf": 42470681
+     }
+    ],
+    "labor_subtotal_huf": 368881337,
+    "material_subtotal_huf": 259514511,
+    "adjustment_huf": 14264586,
+    "net_total_huf": 642660434,
+    "vat_huf": 115678878,
+    "gross_total_huf": 758339312
+   }
+  },
+  {
+   "name": "véletlen #21",
+   "input": {
+    "lines": [
+     {
+      "quantity_milli": 139179,
+      "labor_unit_price_huf": 90548,
+      "material_unit_price_huf": 141232
+     },
+     {
+      "quantity_milli": 214495,
+      "labor_unit_price_huf": 66658,
+      "material_unit_price_huf": 13972
+     },
+     {
+      "quantity_milli": 426905,
+      "labor_unit_price_huf": 94576,
+      "material_unit_price_huf": 824
+     },
+     {
+      "quantity_milli": 439587,
+      "labor_unit_price_huf": 36527,
+      "material_unit_price_huf": 136256
+     },
+     {
+      "quantity_milli": 304458,
+      "labor_unit_price_huf": 110032,
+      "material_unit_price_huf": 109458
+     },
+     {
+      "quantity_milli": 87780,
+      "labor_unit_price_huf": 14235,
+      "material_unit_price_huf": 95817
+     },
+     {
+      "quantity_milli": 278714,
+      "labor_unit_price_huf": 26437,
+      "material_unit_price_huf": 83219
+     },
+     {
+      "quantity_milli": 187296,
+      "labor_unit_price_huf": 173440,
+      "material_unit_price_huf": 140313
+     },
+     {
+      "quantity_milli": 157850,
+      "labor_unit_price_huf": 13980,
+      "material_unit_price_huf": 100989
+     },
+     {
+      "quantity_milli": 499944,
+      "labor_unit_price_huf": 44089,
+      "material_unit_price_huf": 12180
+     },
+     {
+      "quantity_milli": 452940,
+      "labor_unit_price_huf": 84487,
+      "material_unit_price_huf": 105526
+     },
+     {
+      "quantity_milli": 156467,
+      "labor_unit_price_huf": 179215,
+      "material_unit_price_huf": 4212
+     },
+     {
+      "quantity_milli": 255130,
+      "labor_unit_price_huf": 130739,
+      "material_unit_price_huf": 138347
+     },
+     {
+      "quantity_milli": 23816,
+      "labor_unit_price_huf": 807,
+      "material_unit_price_huf": 131081
+     },
+     {
+      "quantity_milli": 141375,
+      "labor_unit_price_huf": 22187,
+      "material_unit_price_huf": 53241
+     },
+     {
+      "quantity_milli": 473980,
+      "labor_unit_price_huf": 108429,
+      "material_unit_price_huf": 126206
+     },
+     {
+      "quantity_milli": 227467,
+      "labor_unit_price_huf": 158337,
+      "material_unit_price_huf": 67533
+     },
+     {
+      "quantity_milli": 197324,
+      "labor_unit_price_huf": 44681,
+      "material_unit_price_huf": 147953
+     },
+     {
+      "quantity_milli": 477936,
+      "labor_unit_price_huf": 37459,
+      "material_unit_price_huf": 52767
+     }
+    ],
+    "adjustment_type": "discount",
+    "adjustment_percent_bp": 2575,
+    "vat_rate_bp": 2700
+   },
+   "expected": {
+    "lines": [
+     {
+      "labor_huf": 12602380,
+      "material_huf": 19656529,
+      "total_huf": 32258909
+     },
+     {
+      "labor_huf": 14297808,
+      "material_huf": 2996924,
+      "total_huf": 17294732
+     },
+     {
+      "labor_huf": 40374967,
+      "material_huf": 351770,
+      "total_huf": 40726737
+     },
+     {
+      "labor_huf": 16056794,
+      "material_huf": 59896367,
+      "total_huf": 75953161
+     },
+     {
+      "labor_huf": 33500123,
+      "material_huf": 33325363,
+      "total_huf": 66825486
+     },
+     {
+      "labor_huf": 1249548,
+      "material_huf": 8410817,
+      "total_huf": 9660365
+     },
+     {
+      "labor_huf": 7368362,
+      "material_huf": 23194300,
+      "total_huf": 30562662
+     },
+     {
+      "labor_huf": 32484618,
+      "material_huf": 26280064,
+      "total_huf": 58764682
+     },
+     {
+      "labor_huf": 2206743,
+      "material_huf": 15941114,
+      "total_huf": 18147857
+     },
+     {
+      "labor_huf": 22042031,
+      "material_huf": 6089318,
+      "total_huf": 28131349
+     },
+     {
+      "labor_huf": 38267542,
+      "material_huf": 47796946,
+      "total_huf": 86064488
+     },
+     {
+      "labor_huf": 28041233,
+      "material_huf": 659039,
+      "total_huf": 28700272
+     },
+     {
+      "labor_huf": 33355441,
+      "material_huf": 35296470,
+      "total_huf": 68651911
+     },
+     {
+      "labor_huf": 19220,
+      "material_huf": 3121825,
+      "total_huf": 3141045
+     },
+     {
+      "labor_huf": 3136687,
+      "material_huf": 7526947,
+      "total_huf": 10663634
+     },
+     {
+      "labor_huf": 51393177,
+      "material_huf": 59819120,
+      "total_huf": 111212297
+     },
+     {
+      "labor_huf": 36016442,
+      "material_huf": 15361529,
+      "total_huf": 51377971
+     },
+     {
+      "labor_huf": 8816634,
+      "material_huf": 29194677,
+      "total_huf": 38011311
+     },
+     {
+      "labor_huf": 17903005,
+      "material_huf": 25219249,
+      "total_huf": 43122254
+     }
+    ],
+    "labor_subtotal_huf": 399132755,
+    "material_subtotal_huf": 420138368,
+    "adjustment_huf": -210962314,
+    "net_total_huf": 608308809,
+    "vat_huf": 164243378,
+    "gross_total_huf": 772552187
+   }
+  },
+  {
+   "name": "véletlen #22",
+   "input": {
+    "lines": [
+     {
+      "quantity_milli": 139796,
+      "labor_unit_price_huf": 131332,
+      "material_unit_price_huf": 41441
+     },
+     {
+      "quantity_milli": 192159,
+      "labor_unit_price_huf": 16852,
+      "material_unit_price_huf": 93925
+     },
+     {
+      "quantity_milli": 441746,
+      "labor_unit_price_huf": 105443,
+      "material_unit_price_huf": 102682
+     },
+     {
+      "quantity_milli": 211687,
+      "labor_unit_price_huf": 167219,
+      "material_unit_price_huf": 148519
+     },
+     {
+      "quantity_milli": 135405,
+      "labor_unit_price_huf": 34602,
+      "material_unit_price_huf": 56886
+     },
+     {
+      "quantity_milli": 19964,
+      "labor_unit_price_huf": 50170,
+      "material_unit_price_huf": 50759
+     },
+     {
+      "quantity_milli": 417004,
+      "labor_unit_price_huf": 28132,
+      "material_unit_price_huf": 28230
+     },
+     {
+      "quantity_milli": 66526,
+      "labor_unit_price_huf": 86901,
+      "material_unit_price_huf": 4035
+     },
+     {
+      "quantity_milli": 13831,
+      "labor_unit_price_huf": 49819,
+      "material_unit_price_huf": 47259
+     },
+     {
+      "quantity_milli": 201973,
+      "labor_unit_price_huf": 73985,
+      "material_unit_price_huf": 130612
+     },
+     {
+      "quantity_milli": 431615,
+      "labor_unit_price_huf": 142764,
+      "material_unit_price_huf": 132433
+     },
+     {
+      "quantity_milli": 28400,
+      "labor_unit_price_huf": 140682,
+      "material_unit_price_huf": 113640
+     },
+     {
+      "quantity_milli": 13231,
+      "labor_unit_price_huf": 94306,
+      "material_unit_price_huf": 138403
+     },
+     {
+      "quantity_milli": 262704,
+      "labor_unit_price_huf": 175440,
+      "material_unit_price_huf": 118453
+     },
+     {
+      "quantity_milli": 254843,
+      "labor_unit_price_huf": 18014,
+      "material_unit_price_huf": 81793
+     },
+     {
+      "quantity_milli": 83546,
+      "labor_unit_price_huf": 110223,
+      "material_unit_price_huf": 34905
+     },
+     {
+      "quantity_milli": 296613,
+      "labor_unit_price_huf": 142202,
+      "material_unit_price_huf": 68569
+     },
+     {
+      "quantity_milli": 105481,
+      "labor_unit_price_huf": 22128,
+      "material_unit_price_huf": 23799
+     },
+     {
+      "quantity_milli": 342823,
+      "labor_unit_price_huf": 70165,
+      "material_unit_price_huf": 18426
+     }
+    ],
+    "adjustment_type": "surcharge",
+    "adjustment_percent_bp": 13,
+    "vat_rate_bp": 0
+   },
+   "expected": {
+    "lines": [
+     {
+      "labor_huf": 18359688,
+      "material_huf": 5793286,
+      "total_huf": 24152974
+     },
+     {
+      "labor_huf": 3238263,
+      "material_huf": 18048535,
+      "total_huf": 21286798
+     },
+     {
+      "labor_huf": 46579023,
+      "material_huf": 45359363,
+      "total_huf": 91938386
+     },
+     {
+      "labor_huf": 35398088,
+      "material_huf": 31439542,
+      "total_huf": 66837630
+     },
+     {
+      "labor_huf": 4685284,
+      "material_huf": 7702649,
+      "total_huf": 12387933
+     },
+     {
+      "labor_huf": 1001594,
+      "material_huf": 1013353,
+      "total_huf": 2014947
+     },
+     {
+      "labor_huf": 11731157,
+      "material_huf": 11772022,
+      "total_huf": 23503179
+     },
+     {
+      "labor_huf": 5781176,
+      "material_huf": 268432,
+      "total_huf": 6049608
+     },
+     {
+      "labor_huf": 689047,
+      "material_huf": 653639,
+      "total_huf": 1342686
+     },
+     {
+      "labor_huf": 14942972,
+      "material_huf": 26380098,
+      "total_huf": 41323070
+     },
+     {
+      "labor_huf": 61619084,
+      "material_huf": 57160069,
+      "total_huf": 118779153
+     },
+     {
+      "labor_huf": 3995369,
+      "material_huf": 3227376,
+      "total_huf": 7222745
+     },
+     {
+      "labor_huf": 1247763,
+      "material_huf": 1831210,
+      "total_huf": 3078973
+     },
+     {
+      "labor_huf": 46088790,
+      "material_huf": 31118077,
+      "total_huf": 77206867
+     },
+     {
+      "labor_huf": 4590742,
+      "material_huf": 20844373,
+      "total_huf": 25435115
+     },
+     {
+      "labor_huf": 9208691,
+      "material_huf": 2916173,
+      "total_huf": 12124864
+     },
+     {
+      "labor_huf": 42178962,
+      "material_huf": 20338457,
+      "total_huf": 62517419
+     },
+     {
+      "labor_huf": 2334084,
+      "material_huf": 2510342,
+      "total_huf": 4844426
+     },
+     {
+      "labor_huf": 24054176,
+      "material_huf": 6316856,
+      "total_huf": 30371032
+     }
+    ],
+    "labor_subtotal_huf": 337723953,
+    "material_subtotal_huf": 294693852,
+    "adjustment_huf": 822143,
+    "net_total_huf": 633239948,
+    "vat_huf": 0,
+    "gross_total_huf": 633239948
+   }
+  },
+  {
+   "name": "véletlen #23",
+   "input": {
+    "lines": [
+     {
+      "quantity_milli": 112083,
+      "labor_unit_price_huf": 6658,
+      "material_unit_price_huf": 71742
+     },
+     {
+      "quantity_milli": 435718,
+      "labor_unit_price_huf": 173124,
+      "material_unit_price_huf": 30822
+     },
+     {
+      "quantity_milli": 29330,
+      "labor_unit_price_huf": 119231,
+      "material_unit_price_huf": 4605
+     },
+     {
+      "quantity_milli": 71013,
+      "labor_unit_price_huf": 13589,
+      "material_unit_price_huf": 26987
+     },
+     {
+      "quantity_milli": 281258,
+      "labor_unit_price_huf": 36088,
+      "material_unit_price_huf": 146048
+     },
+     {
+      "quantity_milli": 160944,
+      "labor_unit_price_huf": 158178,
+      "material_unit_price_huf": 52522
+     },
+     {
+      "quantity_milli": 36978,
+      "labor_unit_price_huf": 105430,
+      "material_unit_price_huf": 57764
+     },
+     {
+      "quantity_milli": 10267,
+      "labor_unit_price_huf": 40466,
+      "material_unit_price_huf": 85223
+     },
+     {
+      "quantity_milli": 214345,
+      "labor_unit_price_huf": 46925,
+      "material_unit_price_huf": 69369
+     },
+     {
+      "quantity_milli": 113054,
+      "labor_unit_price_huf": 145708,
+      "material_unit_price_huf": 134989
+     },
+     {
+      "quantity_milli": 120115,
+      "labor_unit_price_huf": 45052,
+      "material_unit_price_huf": 102477
+     },
+     {
+      "quantity_milli": 193624,
+      "labor_unit_price_huf": 12274,
+      "material_unit_price_huf": 106056
+     },
+     {
+      "quantity_milli": 411292,
+      "labor_unit_price_huf": 44504,
+      "material_unit_price_huf": 451
+     },
+     {
+      "quantity_milli": 276823,
+      "labor_unit_price_huf": 178136,
+      "material_unit_price_huf": 87028
+     },
+     {
+      "quantity_milli": 494855,
+      "labor_unit_price_huf": 100470,
+      "material_unit_price_huf": 136900
+     },
+     {
+      "quantity_milli": 19991,
+      "labor_unit_price_huf": 140857,
+      "material_unit_price_huf": 84966
+     }
+    ],
+    "adjustment_type": "none",
+    "adjustment_percent_bp": 1510,
+    "vat_rate_bp": 0
+   },
+   "expected": {
+    "lines": [
+     {
+      "labor_huf": 746249,
+      "material_huf": 8041058,
+      "total_huf": 8787307
+     },
+     {
+      "labor_huf": 75433243,
+      "material_huf": 13429700,
+      "total_huf": 88862943
+     },
+     {
+      "labor_huf": 3497045,
+      "material_huf": 135065,
+      "total_huf": 3632110
+     },
+     {
+      "labor_huf": 964996,
+      "material_huf": 1916427,
+      "total_huf": 2881423
+     },
+     {
+      "labor_huf": 10150039,
+      "material_huf": 41077168,
+      "total_huf": 51227207
+     },
+     {
+      "labor_huf": 25457800,
+      "material_huf": 8453101,
+      "total_huf": 33910901
+     },
+     {
+      "labor_huf": 3898591,
+      "material_huf": 2135997,
+      "total_huf": 6034588
+     },
+     {
+      "labor_huf": 415464,
+      "material_huf": 874985,
+      "total_huf": 1290449
+     },
+     {
+      "labor_huf": 10058139,
+      "material_huf": 14868898,
+      "total_huf": 24927037
+     },
+     {
+      "labor_huf": 16472872,
+      "material_huf": 15261047,
+      "total_huf": 31733919
+     },
+     {
+      "labor_huf": 5411421,
+      "material_huf": 12309025,
+      "total_huf": 17720446
+     },
+     {
+      "labor_huf": 2376541,
+      "material_huf": 20534987,
+      "total_huf": 22911528
+     },
+     {
+      "labor_huf": 18304139,
+      "material_huf": 185493,
+      "total_huf": 18489632
+     },
+     {
+      "labor_huf": 49312142,
+      "material_huf": 24091352,
+      "total_huf": 73403494
+     },
+     {
+      "labor_huf": 49718082,
+      "material_huf": 67745649,
+      "total_huf": 117463731
+     },
+     {
+      "labor_huf": 2815872,
+      "material_huf": 1698556,
+      "total_huf": 4514428
+     }
+    ],
+    "labor_subtotal_huf": 275032635,
+    "material_subtotal_huf": 232758508,
+    "adjustment_huf": 0,
+    "net_total_huf": 507791143,
+    "vat_huf": 0,
+    "gross_total_huf": 507791143
+   }
+  },
+  {
+   "name": "véletlen #24",
+   "input": {
+    "lines": [
+     {
+      "quantity_milli": 418828,
+      "labor_unit_price_huf": 192208,
+      "material_unit_price_huf": 41461
+     },
+     {
+      "quantity_milli": 128882,
+      "labor_unit_price_huf": 25850,
+      "material_unit_price_huf": 84241
+     },
+     {
+      "quantity_milli": 18010,
+      "labor_unit_price_huf": 136454,
+      "material_unit_price_huf": 87144
+     },
+     {
+      "quantity_milli": 480175,
+      "labor_unit_price_huf": 81540,
+      "material_unit_price_huf": 141356
+     },
+     {
+      "quantity_milli": 87935,
+      "labor_unit_price_huf": 16275,
+      "material_unit_price_huf": 76765
+     }
+    ],
+    "adjustment_type": "none",
+    "adjustment_percent_bp": 1944,
+    "vat_rate_bp": 0
+   },
+   "expected": {
+    "lines": [
+     {
+      "labor_huf": 80502092,
+      "material_huf": 17365028,
+      "total_huf": 97867120
+     },
+     {
+      "labor_huf": 3331600,
+      "material_huf": 10857148,
+      "total_huf": 14188748
+     },
+     {
+      "labor_huf": 2457537,
+      "material_huf": 1569463,
+      "total_huf": 4027000
+     },
+     {
+      "labor_huf": 39153470,
+      "material_huf": 67875617,
+      "total_huf": 107029087
+     },
+     {
+      "labor_huf": 1431142,
+      "material_huf": 6750330,
+      "total_huf": 8181472
+     }
+    ],
+    "labor_subtotal_huf": 126875841,
+    "material_subtotal_huf": 104417586,
+    "adjustment_huf": 0,
+    "net_total_huf": 231293427,
+    "vat_huf": 0,
+    "gross_total_huf": 231293427
+   }
+  },
+  {
+   "name": "véletlen #25",
+   "input": {
+    "lines": [
+     {
+      "quantity_milli": 265780,
+      "labor_unit_price_huf": 147757,
+      "material_unit_price_huf": 4754
+     },
+     {
+      "quantity_milli": 450971,
+      "labor_unit_price_huf": 160003,
+      "material_unit_price_huf": 100844
+     },
+     {
+      "quantity_milli": 431434,
+      "labor_unit_price_huf": 101661,
+      "material_unit_price_huf": 60980
+     },
+     {
+      "quantity_milli": 50341,
+      "labor_unit_price_huf": 192317,
+      "material_unit_price_huf": 90199
+     },
+     {
+      "quantity_milli": 337326,
+      "labor_unit_price_huf": 22570,
+      "material_unit_price_huf": 106807
+     },
+     {
+      "quantity_milli": 455250,
+      "labor_unit_price_huf": 26257,
+      "material_unit_price_huf": 62916
+     },
+     {
+      "quantity_milli": 452496,
+      "labor_unit_price_huf": 114940,
+      "material_unit_price_huf": 16652
+     },
+     {
+      "quantity_milli": 308268,
+      "labor_unit_price_huf": 147011,
+      "material_unit_price_huf": 124835
+     },
+     {
+      "quantity_milli": 440781,
+      "labor_unit_price_huf": 15468,
+      "material_unit_price_huf": 79829
+     },
+     {
+      "quantity_milli": 201391,
+      "labor_unit_price_huf": 188157,
+      "material_unit_price_huf": 82802
+     },
+     {
+      "quantity_milli": 287228,
+      "labor_unit_price_huf": 176128,
+      "material_unit_price_huf": 35474
+     },
+     {
+      "quantity_milli": 487406,
+      "labor_unit_price_huf": 192339,
+      "material_unit_price_huf": 11997
+     },
+     {
+      "quantity_milli": 371153,
+      "labor_unit_price_huf": 127478,
+      "material_unit_price_huf": 47223
+     },
+     {
+      "quantity_milli": 393891,
+      "labor_unit_price_huf": 158088,
+      "material_unit_price_huf": 48030
+     },
+     {
+      "quantity_milli": 248749,
+      "labor_unit_price_huf": 136332,
+      "material_unit_price_huf": 42862
+     },
+     {
+      "quantity_milli": 271899,
+      "labor_unit_price_huf": 73106,
+      "material_unit_price_huf": 84508
+     },
+     {
+      "quantity_milli": 51811,
+      "labor_unit_price_huf": 183986,
+      "material_unit_price_huf": 9873
+     }
+    ],
+    "adjustment_type": "discount",
+    "adjustment_percent_bp": 2582,
+    "vat_rate_bp": 0
+   },
+   "expected": {
+    "lines": [
+     {
+      "labor_huf": 39270855,
+      "material_huf": 1263519,
+      "total_huf": 40534374
+     },
+     {
+      "labor_huf": 72156713,
+      "material_huf": 45477719,
+      "total_huf": 117634432
+     },
+     {
+      "labor_huf": 43860012,
+      "material_huf": 26308845,
+      "total_huf": 70168857
+     },
+     {
+      "labor_huf": 9681430,
+      "material_huf": 4540708,
+      "total_huf": 14222138
+     },
+     {
+      "labor_huf": 7613448,
+      "material_huf": 36028778,
+      "total_huf": 43642226
+     },
+     {
+      "labor_huf": 11953499,
+      "material_huf": 28642509,
+      "total_huf": 40596008
+     },
+     {
+      "labor_huf": 52009890,
+      "material_huf": 7534964,
+      "total_huf": 59544854
+     },
+     {
+      "labor_huf": 45318787,
+      "material_huf": 38482636,
+      "total_huf": 83801423
+     },
+     {
+      "labor_huf": 6818001,
+      "material_huf": 35187106,
+      "total_huf": 42005107
+     },
+     {
+      "labor_huf": 37893126,
+      "material_huf": 16675578,
+      "total_huf": 54568704
+     },
+     {
+      "labor_huf": 50588893,
+      "material_huf": 10189126,
+      "total_huf": 60778019
+     },
+     {
+      "labor_huf": 93747183,
+      "material_huf": 5847409,
+      "total_huf": 99594592
+     },
+     {
+      "labor_huf": 47313842,
+      "material_huf": 17526958,
+      "total_huf": 64840800
+     },
+     {
+      "labor_huf": 62269440,
+      "material_huf": 18918585,
+      "total_huf": 81188025
+     },
+     {
+      "labor_huf": 33912449,
+      "material_huf": 10661879,
+      "total_huf": 44574328
+     },
+     {
+      "labor_huf": 19877448,
+      "material_huf": 22977641,
+      "total_huf": 42855089
+     },
+     {
+      "labor_huf": 9532499,
+      "material_huf": 511530,
+      "total_huf": 10044029
+     }
+    ],
+    "labor_subtotal_huf": 643817515,
+    "material_subtotal_huf": 326775490,
+    "adjustment_huf": -250607114,
+    "net_total_huf": 719985891,
+    "vat_huf": 0,
+    "gross_total_huf": 719985891
+   }
+  },
+  {
+   "name": "véletlen #26",
+   "input": {
+    "lines": [
+     {
+      "quantity_milli": 133048,
+      "labor_unit_price_huf": 18214,
+      "material_unit_price_huf": 127701
+     },
+     {
+      "quantity_milli": 216059,
+      "labor_unit_price_huf": 148782,
+      "material_unit_price_huf": 45307
+     },
+     {
+      "quantity_milli": 342182,
+      "labor_unit_price_huf": 152750,
+      "material_unit_price_huf": 110659
+     },
+     {
+      "quantity_milli": 54401,
+      "labor_unit_price_huf": 44279,
+      "material_unit_price_huf": 122033
+     },
+     {
+      "quantity_milli": 250712,
+      "labor_unit_price_huf": 184857,
+      "material_unit_price_huf": 73166
+     },
+     {
+      "quantity_milli": 155047,
+      "labor_unit_price_huf": 149581,
+      "material_unit_price_huf": 63255
+     },
+     {
+      "quantity_milli": 104902,
+      "labor_unit_price_huf": 66472,
+      "material_unit_price_huf": 100891
+     },
+     {
+      "quantity_milli": 84113,
+      "labor_unit_price_huf": 40378,
+      "material_unit_price_huf": 12717
+     },
+     {
+      "quantity_milli": 233572,
+      "labor_unit_price_huf": 149818,
+      "material_unit_price_huf": 96349
+     },
+     {
+      "quantity_milli": 376447,
+      "labor_unit_price_huf": 41892,
+      "material_unit_price_huf": 141969
+     }
+    ],
+    "adjustment_type": "none",
+    "adjustment_percent_bp": 2371,
+    "vat_rate_bp": 2700
+   },
+   "expected": {
+    "lines": [
+     {
+      "labor_huf": 2423336,
+      "material_huf": 16990363,
+      "total_huf": 19413699
+     },
+     {
+      "labor_huf": 32145690,
+      "material_huf": 9788985,
+      "total_huf": 41934675
+     },
+     {
+      "labor_huf": 52268301,
+      "material_huf": 37865517,
+      "total_huf": 90133818
+     },
+     {
+      "labor_huf": 2408822,
+      "material_huf": 6638717,
+      "total_huf": 9047539
+     },
+     {
+      "labor_huf": 46345868,
+      "material_huf": 18343594,
+      "total_huf": 64689462
+     },
+     {
+      "labor_huf": 23192085,
+      "material_huf": 9807498,
+      "total_huf": 32999583
+     },
+     {
+      "labor_huf": 6973046,
+      "material_huf": 10583667,
+      "total_huf": 17556713
+     },
+     {
+      "labor_huf": 3396315,
+      "material_huf": 1069665,
+      "total_huf": 4465980
+     },
+     {
+      "labor_huf": 34993290,
+      "material_huf": 22504429,
+      "total_huf": 57497719
+     },
+     {
+      "labor_huf": 15770118,
+      "material_huf": 53443804,
+      "total_huf": 69213922
+     }
+    ],
+    "labor_subtotal_huf": 219916871,
+    "material_subtotal_huf": 187036239,
+    "adjustment_huf": 0,
+    "net_total_huf": 406953110,
+    "vat_huf": 109877340,
+    "gross_total_huf": 516830450
+   }
+  },
+  {
+   "name": "véletlen #27",
+   "input": {
+    "lines": [
+     {
+      "quantity_milli": 121193,
+      "labor_unit_price_huf": 181080,
+      "material_unit_price_huf": 17635
+     },
+     {
+      "quantity_milli": 480680,
+      "labor_unit_price_huf": 98006,
+      "material_unit_price_huf": 10084
+     },
+     {
+      "quantity_milli": 465900,
+      "labor_unit_price_huf": 156446,
+      "material_unit_price_huf": 13778
+     },
+     {
+      "quantity_milli": 344101,
+      "labor_unit_price_huf": 35914,
+      "material_unit_price_huf": 122572
+     },
+     {
+      "quantity_milli": 150328,
+      "labor_unit_price_huf": 180764,
+      "material_unit_price_huf": 76612
+     },
+     {
+      "quantity_milli": 196823,
+      "labor_unit_price_huf": 94131,
+      "material_unit_price_huf": 133586
+     }
+    ],
+    "adjustment_type": "surcharge",
+    "adjustment_percent_bp": 708,
+    "vat_rate_bp": 0
+   },
+   "expected": {
+    "lines": [
+     {
+      "labor_huf": 21945628,
+      "material_huf": 2137239,
+      "total_huf": 24082867
+     },
+     {
+      "labor_huf": 47109524,
+      "material_huf": 4847177,
+      "total_huf": 51956701
+     },
+     {
+      "labor_huf": 72888191,
+      "material_huf": 6419171,
+      "total_huf": 79307362
+     },
+     {
+      "labor_huf": 12358043,
+      "material_huf": 42177148,
+      "total_huf": 54535191
+     },
+     {
+      "labor_huf": 27173891,
+      "material_huf": 11516928,
+      "total_huf": 38690819
+     },
+     {
+      "labor_huf": 18527146,
+      "material_huf": 26292797,
+      "total_huf": 44819943
+     }
+    ],
+    "labor_subtotal_huf": 200002423,
+    "material_subtotal_huf": 93390460,
+    "adjustment_huf": 20772216,
+    "net_total_huf": 314165099,
+    "vat_huf": 0,
+    "gross_total_huf": 314165099
+   }
+  },
+  {
+   "name": "véletlen #28",
+   "input": {
+    "lines": [
+     {
+      "quantity_milli": 210099,
+      "labor_unit_price_huf": 88762,
+      "material_unit_price_huf": 141751
+     },
+     {
+      "quantity_milli": 370318,
+      "labor_unit_price_huf": 148504,
+      "material_unit_price_huf": 125074
+     },
+     {
+      "quantity_milli": 319868,
+      "labor_unit_price_huf": 111622,
+      "material_unit_price_huf": 126979
+     },
+     {
+      "quantity_milli": 329651,
+      "labor_unit_price_huf": 67399,
+      "material_unit_price_huf": 44677
+     },
+     {
+      "quantity_milli": 40634,
+      "labor_unit_price_huf": 177662,
+      "material_unit_price_huf": 924
+     },
+     {
+      "quantity_milli": 27130,
+      "labor_unit_price_huf": 110140,
+      "material_unit_price_huf": 38434
+     },
+     {
+      "quantity_milli": 315390,
+      "labor_unit_price_huf": 192588,
+      "material_unit_price_huf": 114396
+     },
+     {
+      "quantity_milli": 242814,
+      "labor_unit_price_huf": 93757,
+      "material_unit_price_huf": 106076
+     },
+     {
+      "quantity_milli": 101739,
+      "labor_unit_price_huf": 114890,
+      "material_unit_price_huf": 42678
+     },
+     {
+      "quantity_milli": 59762,
+      "labor_unit_price_huf": 90500,
+      "material_unit_price_huf": 5778
+     },
+     {
+      "quantity_milli": 479789,
+      "labor_unit_price_huf": 198074,
+      "material_unit_price_huf": 47798
+     },
+     {
+      "quantity_milli": 145922,
+      "labor_unit_price_huf": 81407,
+      "material_unit_price_huf": 87122
+     },
+     {
+      "quantity_milli": 47789,
+      "labor_unit_price_huf": 23276,
+      "material_unit_price_huf": 129648
+     },
+     {
+      "quantity_milli": 494627,
+      "labor_unit_price_huf": 28547,
+      "material_unit_price_huf": 91177
+     },
+     {
+      "quantity_milli": 108680,
+      "labor_unit_price_huf": 49916,
+      "material_unit_price_huf": 33967
+     }
+    ],
+    "adjustment_type": "discount",
+    "adjustment_percent_bp": 1401,
+    "vat_rate_bp": 0
+   },
+   "expected": {
+    "lines": [
+     {
+      "labor_huf": 18648807,
+      "material_huf": 29781744,
+      "total_huf": 48430551
+     },
+     {
+      "labor_huf": 54993704,
+      "material_huf": 46317154,
+      "total_huf": 101310858
+     },
+     {
+      "labor_huf": 35704306,
+      "material_huf": 40616519,
+      "total_huf": 76320825
+     },
+     {
+      "labor_huf": 22218148,
+      "material_huf": 14727817,
+      "total_huf": 36945965
+     },
+     {
+      "labor_huf": 7219118,
+      "material_huf": 37546,
+      "total_huf": 7256664
+     },
+     {
+      "labor_huf": 2988098,
+      "material_huf": 1042715,
+      "total_huf": 4030813
+     },
+     {
+      "labor_huf": 60740329,
+      "material_huf": 36079355,
+      "total_huf": 96819684
+     },
+     {
+      "labor_huf": 22765512,
+      "material_huf": 25756738,
+      "total_huf": 48522250
+     },
+     {
+      "labor_huf": 11688794,
+      "material_huf": 4342017,
+      "total_huf": 16030811
+     },
+     {
+      "labor_huf": 5408461,
+      "material_huf": 345305,
+      "total_huf": 5753766
+     },
+     {
+      "labor_huf": 95033726,
+      "material_huf": 22932955,
+      "total_huf": 117966681
+     },
+     {
+      "labor_huf": 11879072,
+      "material_huf": 12713017,
+      "total_huf": 24592089
+     },
+     {
+      "labor_huf": 1112337,
+      "material_huf": 6195748,
+      "total_huf": 7308085
+     },
+     {
+      "labor_huf": 14120117,
+      "material_huf": 45098606,
+      "total_huf": 59218723
+     },
+     {
+      "labor_huf": 5424871,
+      "material_huf": 3691533,
+      "total_huf": 9116404
+     }
+    ],
+    "labor_subtotal_huf": 369945400,
+    "material_subtotal_huf": 289678769,
+    "adjustment_huf": -92413346,
+    "net_total_huf": 567210823,
+    "vat_huf": 0,
+    "gross_total_huf": 567210823
+   }
+  },
+  {
+   "name": "véletlen #29",
+   "input": {
+    "lines": [
+     {
+      "quantity_milli": 120141,
+      "labor_unit_price_huf": 118494,
+      "material_unit_price_huf": 44191
+     },
+     {
+      "quantity_milli": 39426,
+      "labor_unit_price_huf": 173772,
+      "material_unit_price_huf": 44540
+     },
+     {
+      "quantity_milli": 491442,
+      "labor_unit_price_huf": 191114,
+      "material_unit_price_huf": 27551
+     },
+     {
+      "quantity_milli": 488536,
+      "labor_unit_price_huf": 155112,
+      "material_unit_price_huf": 49875
+     },
+     {
+      "quantity_milli": 231559,
+      "labor_unit_price_huf": 145764,
+      "material_unit_price_huf": 129968
+     },
+     {
+      "quantity_milli": 38298,
+      "labor_unit_price_huf": 72439,
+      "material_unit_price_huf": 100620
+     },
+     {
+      "quantity_milli": 57585,
+      "labor_unit_price_huf": 165727,
+      "material_unit_price_huf": 137522
+     },
+     {
+      "quantity_milli": 300300,
+      "labor_unit_price_huf": 51008,
+      "material_unit_price_huf": 43284
+     },
+     {
+      "quantity_milli": 57981,
+      "labor_unit_price_huf": 143786,
+      "material_unit_price_huf": 129674
+     },
+     {
+      "quantity_milli": 494367,
+      "labor_unit_price_huf": 122776,
+      "material_unit_price_huf": 6115
+     },
+     {
+      "quantity_milli": 328157,
+      "labor_unit_price_huf": 75686,
+      "material_unit_price_huf": 48918
+     },
+     {
+      "quantity_milli": 251447,
+      "labor_unit_price_huf": 150576,
+      "material_unit_price_huf": 93864
+     },
+     {
+      "quantity_milli": 375512,
+      "labor_unit_price_huf": 100635,
+      "material_unit_price_huf": 66716
+     },
+     {
+      "quantity_milli": 158361,
+      "labor_unit_price_huf": 100628,
+      "material_unit_price_huf": 133763
+     },
+     {
+      "quantity_milli": 482801,
+      "labor_unit_price_huf": 36072,
+      "material_unit_price_huf": 39921
+     },
+     {
+      "quantity_milli": 495199,
+      "labor_unit_price_huf": 61883,
+      "material_unit_price_huf": 59965
+     },
+     {
+      "quantity_milli": 368244,
+      "labor_unit_price_huf": 54113,
+      "material_unit_price_huf": 13899
+     },
+     {
+      "quantity_milli": 353692,
+      "labor_unit_price_huf": 55403,
+      "material_unit_price_huf": 112339
+     }
+    ],
+    "adjustment_type": "discount",
+    "adjustment_percent_bp": 2646,
+    "vat_rate_bp": 500
+   },
+   "expected": {
+    "lines": [
+     {
+      "labor_huf": 14235988,
+      "material_huf": 5309151,
+      "total_huf": 19545139
+     },
+     {
+      "labor_huf": 6851135,
+      "material_huf": 1756034,
+      "total_huf": 8607169
+     },
+     {
+      "labor_huf": 93921446,
+      "material_huf": 13539719,
+      "total_huf": 107461165
+     },
+     {
+      "labor_huf": 75777796,
+      "material_huf": 24365733,
+      "total_huf": 100143529
+     },
+     {
+      "labor_huf": 33752966,
+      "material_huf": 30095260,
+      "total_huf": 63848226
+     },
+     {
+      "labor_huf": 2774269,
+      "material_huf": 3853545,
+      "total_huf": 6627814
+     },
+     {
+      "labor_huf": 9543389,
+      "material_huf": 7919205,
+      "total_huf": 17462594
+     },
+     {
+      "labor_huf": 15317702,
+      "material_huf": 12998186,
+      "total_huf": 28315888
+     },
+     {
+      "labor_huf": 8336856,
+      "material_huf": 7518628,
+      "total_huf": 15855484
+     },
+     {
+      "labor_huf": 60696403,
+      "material_huf": 3023054,
+      "total_huf": 63719457
+     },
+     {
+      "labor_huf": 24836891,
+      "material_huf": 16052784,
+      "total_huf": 40889675
+     },
+     {
+      "labor_huf": 37861883,
+      "material_huf": 23601822,
+      "total_huf": 61463705
+     },
+     {
+      "labor_huf": 37789650,
+      "material_huf": 25052659,
+      "total_huf": 62842309
+     },
+     {
+      "labor_huf": 15935551,
+      "material_huf": 21182842,
+      "total_huf": 37118393
+     },
+     {
+      "labor_huf": 17415598,
+      "material_huf": 19273898,
+      "total_huf": 36689496
+     },
+     {
+      "labor_huf": 30644400,
+      "material_huf": 29694608,
+      "total_huf": 60339008
+     },
+     {
+      "labor_huf": 19926788,
+      "material_huf": 5118223,
+      "total_huf": 25045011
+     },
+     {
+      "labor_huf": 19595598,
+      "material_huf": 39733405,
+      "total_huf": 59329003
+     }
+    ],
+    "labor_subtotal_huf": 525214309,
+    "material_subtotal_huf": 290088756,
+    "adjustment_huf": -215729191,
+    "net_total_huf": 599573874,
+    "vat_huf": 29978694,
+    "gross_total_huf": 629552568
+   }
+  },
+  {
+   "name": "véletlen #30",
+   "input": {
+    "lines": [
+     {
+      "quantity_milli": 461810,
+      "labor_unit_price_huf": 96824,
+      "material_unit_price_huf": 34963
+     },
+     {
+      "quantity_milli": 375892,
+      "labor_unit_price_huf": 38360,
+      "material_unit_price_huf": 91789
+     },
+     {
+      "quantity_milli": 253433,
+      "labor_unit_price_huf": 3690,
+      "material_unit_price_huf": 31963
+     },
+     {
+      "quantity_milli": 310990,
+      "labor_unit_price_huf": 94770,
+      "material_unit_price_huf": 35131
+     },
+     {
+      "quantity_milli": 250378,
+      "labor_unit_price_huf": 36799,
+      "material_unit_price_huf": 89999
+     },
+     {
+      "quantity_milli": 260460,
+      "labor_unit_price_huf": 19085,
+      "material_unit_price_huf": 130831
+     },
+     {
+      "quantity_milli": 491829,
+      "labor_unit_price_huf": 1917,
+      "material_unit_price_huf": 18607
+     },
+     {
+      "quantity_milli": 497073,
+      "labor_unit_price_huf": 113548,
+      "material_unit_price_huf": 57496
+     },
+     {
+      "quantity_milli": 139369,
+      "labor_unit_price_huf": 161680,
+      "material_unit_price_huf": 128062
+     },
+     {
+      "quantity_milli": 40556,
+      "labor_unit_price_huf": 87086,
+      "material_unit_price_huf": 35906
+     },
+     {
+      "quantity_milli": 403879,
+      "labor_unit_price_huf": 51321,
+      "material_unit_price_huf": 71224
+     },
+     {
+      "quantity_milli": 343619,
+      "labor_unit_price_huf": 185939,
+      "material_unit_price_huf": 50508
+     },
+     {
+      "quantity_milli": 340521,
+      "labor_unit_price_huf": 167292,
+      "material_unit_price_huf": 53364
+     },
+     {
+      "quantity_milli": 382123,
+      "labor_unit_price_huf": 30880,
+      "material_unit_price_huf": 9298
+     },
+     {
+      "quantity_milli": 383314,
+      "labor_unit_price_huf": 4529,
+      "material_unit_price_huf": 140649
+     },
+     {
+      "quantity_milli": 440148,
+      "labor_unit_price_huf": 108101,
+      "material_unit_price_huf": 144923
+     }
+    ],
+    "adjustment_type": "surcharge",
+    "adjustment_percent_bp": 1335,
+    "vat_rate_bp": 1800
+   },
+   "expected": {
+    "lines": [
+     {
+      "labor_huf": 44714291,
+      "material_huf": 16146263,
+      "total_huf": 60860554
+     },
+     {
+      "labor_huf": 14419217,
+      "material_huf": 34502751,
+      "total_huf": 48921968
+     },
+     {
+      "labor_huf": 935168,
+      "material_huf": 8100479,
+      "total_huf": 9035647
+     },
+     {
+      "labor_huf": 29472522,
+      "material_huf": 10925390,
+      "total_huf": 40397912
+     },
+     {
+      "labor_huf": 9213660,
+      "material_huf": 22533770,
+      "total_huf": 31747430
+     },
+     {
+      "labor_huf": 4970879,
+      "material_huf": 34076242,
+      "total_huf": 39047121
+     },
+     {
+      "labor_huf": 942836,
+      "material_huf": 9151462,
+      "total_huf": 10094298
+     },
+     {
+      "labor_huf": 56441645,
+      "material_huf": 28579709,
+      "total_huf": 85021354
+     },
+     {
+      "labor_huf": 22533180,
+      "material_huf": 17847873,
+      "total_huf": 40381053
+     },
+     {
+      "labor_huf": 3531860,
+      "material_huf": 1456204,
+      "total_huf": 4988064
+     },
+     {
+      "labor_huf": 20727474,
+      "material_huf": 28765878,
+      "total_huf": 49493352
+     },
+     {
+      "labor_huf": 63892173,
+      "material_huf": 17355509,
+      "total_huf": 81247682
+     },
+     {
+      "labor_huf": 56966439,
+      "material_huf": 18171563,
+      "total_huf": 75138002
+     },
+     {
+      "labor_huf": 11799958,
+      "material_huf": 3552980,
+      "total_huf": 15352938
+     },
+     {
+      "labor_huf": 1736029,
+      "material_huf": 53912731,
+      "total_huf": 55648760
+     },
+     {
+      "labor_huf": 47580439,
+      "material_huf": 63787569,
+      "total_huf": 111368008
+     }
+    ],
+    "labor_subtotal_huf": 389877770,
+    "material_subtotal_huf": 368866373,
+    "adjustment_huf": 101292343,
+    "net_total_huf": 860036486,
+    "vat_huf": 154806567,
+    "gross_total_huf": 1014843053
+   }
+  },
+  {
+   "name": "véletlen #31",
+   "input": {
+    "lines": [
+     {
+      "quantity_milli": 49786,
+      "labor_unit_price_huf": 30165,
+      "material_unit_price_huf": 67699
+     },
+     {
+      "quantity_milli": 142509,
+      "labor_unit_price_huf": 6228,
+      "material_unit_price_huf": 147751
+     },
+     {
+      "quantity_milli": 729,
+      "labor_unit_price_huf": 32189,
+      "material_unit_price_huf": 146688
+     },
+     {
+      "quantity_milli": 158671,
+      "labor_unit_price_huf": 112163,
+      "material_unit_price_huf": 53718
+     },
+     {
+      "quantity_milli": 397467,
+      "labor_unit_price_huf": 135627,
+      "material_unit_price_huf": 97467
+     },
+     {
+      "quantity_milli": 109394,
+      "labor_unit_price_huf": 142400,
+      "material_unit_price_huf": 63928
+     },
+     {
+      "quantity_milli": 257772,
+      "labor_unit_price_huf": 114835,
+      "material_unit_price_huf": 40596
+     },
+     {
+      "quantity_milli": 164649,
+      "labor_unit_price_huf": 83866,
+      "material_unit_price_huf": 73505
+     },
+     {
+      "quantity_milli": 468350,
+      "labor_unit_price_huf": 52302,
+      "material_unit_price_huf": 29250
+     }
+    ],
+    "adjustment_type": "surcharge",
+    "adjustment_percent_bp": 2413,
+    "vat_rate_bp": 0
+   },
+   "expected": {
+    "lines": [
+     {
+      "labor_huf": 1501795,
+      "material_huf": 3370462,
+      "total_huf": 4872257
+     },
+     {
+      "labor_huf": 887546,
+      "material_huf": 21055847,
+      "total_huf": 21943393
+     },
+     {
+      "labor_huf": 23466,
+      "material_huf": 106935,
+      "total_huf": 130401
+     },
+     {
+      "labor_huf": 17797015,
+      "material_huf": 8523489,
+      "total_huf": 26320504
+     },
+     {
+      "labor_huf": 53907257,
+      "material_huf": 38739916,
+      "total_huf": 92647173
+     },
+     {
+      "labor_huf": 15577706,
+      "material_huf": 6993339,
+      "total_huf": 22571045
+     },
+     {
+      "labor_huf": 29601248,
+      "material_huf": 10464512,
+      "total_huf": 40065760
+     },
+     {
+      "labor_huf": 13808453,
+      "material_huf": 12102525,
+      "total_huf": 25910978
+     },
+     {
+      "labor_huf": 24495642,
+      "material_huf": 13699237,
+      "total_huf": 38194879
+     }
+    ],
+    "labor_subtotal_huf": 157600128,
+    "material_subtotal_huf": 115056262,
+    "adjustment_huf": 65791987,
+    "net_total_huf": 338448377,
+    "vat_huf": 0,
+    "gross_total_huf": 338448377
+   }
+  },
+  {
+   "name": "véletlen #32",
+   "input": {
+    "lines": [
+     {
+      "quantity_milli": 271526,
+      "labor_unit_price_huf": 10192,
+      "material_unit_price_huf": 116607
+     },
+     {
+      "quantity_milli": 153749,
+      "labor_unit_price_huf": 180029,
+      "material_unit_price_huf": 72335
+     },
+     {
+      "quantity_milli": 328204,
+      "labor_unit_price_huf": 119340,
+      "material_unit_price_huf": 1147
+     },
+     {
+      "quantity_milli": 444026,
+      "labor_unit_price_huf": 48440,
+      "material_unit_price_huf": 22759
+     },
+     {
+      "quantity_milli": 45902,
+      "labor_unit_price_huf": 162182,
+      "material_unit_price_huf": 8027
+     },
+     {
+      "quantity_milli": 97238,
+      "labor_unit_price_huf": 75580,
+      "material_unit_price_huf": 37093
+     }
+    ],
+    "adjustment_type": "discount",
+    "adjustment_percent_bp": 2564,
+    "vat_rate_bp": 2700
+   },
+   "expected": {
+    "lines": [
+     {
+      "labor_huf": 2767393,
+      "material_huf": 31661832,
+      "total_huf": 34429225
+     },
+     {
+      "labor_huf": 27679279,
+      "material_huf": 11121434,
+      "total_huf": 38800713
+     },
+     {
+      "labor_huf": 39167865,
+      "material_huf": 376450,
+      "total_huf": 39544315
+     },
+     {
+      "labor_huf": 21508619,
+      "material_huf": 10105588,
+      "total_huf": 31614207
+     },
+     {
+      "labor_huf": 7444478,
+      "material_huf": 368456,
+      "total_huf": 7812934
+     },
+     {
+      "labor_huf": 7349248,
+      "material_huf": 3606849,
+      "total_huf": 10956097
+     }
+    ],
+    "labor_subtotal_huf": 105916882,
+    "material_subtotal_huf": 57240609,
+    "adjustment_huf": -41833581,
+    "net_total_huf": 121323910,
+    "vat_huf": 32757456,
+    "gross_total_huf": 154081366
+   }
+  },
+  {
+   "name": "véletlen #33",
+   "input": {
+    "lines": [
+     {
+      "quantity_milli": 379392,
+      "labor_unit_price_huf": 142231,
+      "material_unit_price_huf": 88528
+     }
+    ],
+    "adjustment_type": "none",
+    "adjustment_percent_bp": 1550,
+    "vat_rate_bp": 0
+   },
+   "expected": {
+    "lines": [
+     {
+      "labor_huf": 53961304,
+      "material_huf": 33586815,
+      "total_huf": 87548119
+     }
+    ],
+    "labor_subtotal_huf": 53961304,
+    "material_subtotal_huf": 33586815,
+    "adjustment_huf": 0,
+    "net_total_huf": 87548119,
+    "vat_huf": 0,
+    "gross_total_huf": 87548119
+   }
+  },
+  {
+   "name": "véletlen #34",
+   "input": {
+    "lines": [
+     {
+      "quantity_milli": 285315,
+      "labor_unit_price_huf": 170693,
+      "material_unit_price_huf": 8011
+     },
+     {
+      "quantity_milli": 288745,
+      "labor_unit_price_huf": 127701,
+      "material_unit_price_huf": 58604
+     },
+     {
+      "quantity_milli": 5808,
+      "labor_unit_price_huf": 131881,
+      "material_unit_price_huf": 10876
+     }
+    ],
+    "adjustment_type": "discount",
+    "adjustment_percent_bp": 408,
+    "vat_rate_bp": 0
+   },
+   "expected": {
+    "lines": [
+     {
+      "labor_huf": 48701273,
+      "material_huf": 2285659,
+      "total_huf": 50986932
+     },
+     {
+      "labor_huf": 36873025,
+      "material_huf": 16921612,
+      "total_huf": 53794637
+     },
+     {
+      "labor_huf": 765965,
+      "material_huf": 63168,
+      "total_huf": 829133
+     }
+    ],
+    "labor_subtotal_huf": 86340263,
+    "material_subtotal_huf": 19270439,
+    "adjustment_huf": -4308917,
+    "net_total_huf": 101301785,
+    "vat_huf": 0,
+    "gross_total_huf": 101301785
+   }
+  },
+  {
+   "name": "véletlen #35",
+   "input": {
+    "lines": [
+     {
+      "quantity_milli": 78387,
+      "labor_unit_price_huf": 198521,
+      "material_unit_price_huf": 34126
+     },
+     {
+      "quantity_milli": 283249,
+      "labor_unit_price_huf": 32651,
+      "material_unit_price_huf": 100506
+     },
+     {
+      "quantity_milli": 268905,
+      "labor_unit_price_huf": 173078,
+      "material_unit_price_huf": 120859
+     },
+     {
+      "quantity_milli": 183247,
+      "labor_unit_price_huf": 52703,
+      "material_unit_price_huf": 127959
+     },
+     {
+      "quantity_milli": 415063,
+      "labor_unit_price_huf": 178174,
+      "material_unit_price_huf": 70684
+     },
+     {
+      "quantity_milli": 246133,
+      "labor_unit_price_huf": 197634,
+      "material_unit_price_huf": 99833
+     },
+     {
+      "quantity_milli": 450488,
+      "labor_unit_price_huf": 38287,
+      "material_unit_price_huf": 64701
+     },
+     {
+      "quantity_milli": 114359,
+      "labor_unit_price_huf": 157747,
+      "material_unit_price_huf": 128456
+     },
+     {
+      "quantity_milli": 408907,
+      "labor_unit_price_huf": 120070,
+      "material_unit_price_huf": 27225
+     },
+     {
+      "quantity_milli": 331501,
+      "labor_unit_price_huf": 59578,
+      "material_unit_price_huf": 28822
+     },
+     {
+      "quantity_milli": 448314,
+      "labor_unit_price_huf": 9768,
+      "material_unit_price_huf": 124509
+     },
+     {
+      "quantity_milli": 28676,
+      "labor_unit_price_huf": 169632,
+      "material_unit_price_huf": 78777
+     },
+     {
+      "quantity_milli": 177693,
+      "labor_unit_price_huf": 137321,
+      "material_unit_price_huf": 88403
+     },
+     {
+      "quantity_milli": 150447,
+      "labor_unit_price_huf": 193635,
+      "material_unit_price_huf": 102019
+     },
+     {
+      "quantity_milli": 247850,
+      "labor_unit_price_huf": 55472,
+      "material_unit_price_huf": 111296
+     },
+     {
+      "quantity_milli": 315355,
+      "labor_unit_price_huf": 153121,
+      "material_unit_price_huf": 26018
+     },
+     {
+      "quantity_milli": 264243,
+      "labor_unit_price_huf": 11362,
+      "material_unit_price_huf": 80623
+     },
+     {
+      "quantity_milli": 187309,
+      "labor_unit_price_huf": 106267,
+      "material_unit_price_huf": 106207
+     },
+     {
+      "quantity_milli": 381147,
+      "labor_unit_price_huf": 126747,
+      "material_unit_price_huf": 70776
+     }
+    ],
+    "adjustment_type": "discount",
+    "adjustment_percent_bp": 1162,
+    "vat_rate_bp": 0
+   },
+   "expected": {
+    "lines": [
+     {
+      "labor_huf": 15561466,
+      "material_huf": 2675034,
+      "total_huf": 18236500
+     },
+     {
+      "labor_huf": 9248363,
+      "material_huf": 28468224,
+      "total_huf": 37716587
+     },
+     {
+      "labor_huf": 46541540,
+      "material_huf": 32499589,
+      "total_huf": 79041129
+     },
+     {
+      "labor_huf": 9657667,
+      "material_huf": 23448103,
+      "total_huf": 33105770
+     },
+     {
+      "labor_huf": 73953435,
+      "material_huf": 29338313,
+      "total_huf": 103291748
+     },
+     {
+      "labor_huf": 48644249,
+      "material_huf": 24572196,
+      "total_huf": 73216445
+     },
+     {
+      "labor_huf": 17247834,
+      "material_huf": 29147024,
+      "total_huf": 46394858
+     },
+     {
+      "labor_huf": 18039789,
+      "material_huf": 14690100,
+      "total_huf": 32729889
+     },
+     {
+      "labor_huf": 49097463,
+      "material_huf": 11132494,
+      "total_huf": 60229957
+     },
+     {
+      "labor_huf": 19750167,
+      "material_huf": 9554521,
+      "total_huf": 29304688
+     },
+     {
+      "labor_huf": 4379131,
+      "material_huf": 55819128,
+      "total_huf": 60198259
+     },
+     {
+      "labor_huf": 4864367,
+      "material_huf": 2259009,
+      "total_huf": 7123376
+     },
+     {
+      "labor_huf": 24400980,
+      "material_huf": 15708595,
+      "total_huf": 40109575
+     },
+     {
+      "labor_huf": 29131805,
+      "material_huf": 15348452,
+      "total_huf": 44480257
+     },
+     {
+      "labor_huf": 13748735,
+      "material_huf": 27584714,
+      "total_huf": 41333449
+     },
+     {
+      "labor_huf": 48287473,
+      "material_huf": 8204906,
+      "total_huf": 56492379
+     },
+     {
+      "labor_huf": 3002329,
+      "material_huf": 21304063,
+      "total_huf": 24306392
+     },
+     {
+      "labor_huf": 19904766,
+      "material_huf": 19893526,
+      "total_huf": 39798292
+     },
+     {
+      "labor_huf": 48309239,
+      "material_huf": 26976060,
+      "total_huf": 75285299
+     }
+    ],
+    "labor_subtotal_huf": 503770798,
+    "material_subtotal_huf": 398624051,
+    "adjustment_huf": -104858281,
+    "net_total_huf": 797536568,
+    "vat_huf": 0,
+    "gross_total_huf": 797536568
+   }
+  },
+  {
+   "name": "véletlen #36",
+   "input": {
+    "lines": [
+     {
+      "quantity_milli": 108961,
+      "labor_unit_price_huf": 30085,
+      "material_unit_price_huf": 123252
+     },
+     {
+      "quantity_milli": 31261,
+      "labor_unit_price_huf": 165052,
+      "material_unit_price_huf": 39654
+     },
+     {
+      "quantity_milli": 84907,
+      "labor_unit_price_huf": 178112,
+      "material_unit_price_huf": 20544
+     },
+     {
+      "quantity_milli": 5416,
+      "labor_unit_price_huf": 62715,
+      "material_unit_price_huf": 49513
+     },
+     {
+      "quantity_milli": 335537,
+      "labor_unit_price_huf": 149411,
+      "material_unit_price_huf": 129964
+     },
+     {
+      "quantity_milli": 301524,
+      "labor_unit_price_huf": 15456,
+      "material_unit_price_huf": 15728
+     },
+     {
+      "quantity_milli": 26563,
+      "labor_unit_price_huf": 161081,
+      "material_unit_price_huf": 15974
+     },
+     {
+      "quantity_milli": 198648,
+      "labor_unit_price_huf": 143075,
+      "material_unit_price_huf": 23747
+     },
+     {
+      "quantity_milli": 265496,
+      "labor_unit_price_huf": 174833,
+      "material_unit_price_huf": 117636
+     },
+     {
+      "quantity_milli": 295896,
+      "labor_unit_price_huf": 53902,
+      "material_unit_price_huf": 93118
+     },
+     {
+      "quantity_milli": 169226,
+      "labor_unit_price_huf": 36167,
+      "material_unit_price_huf": 78448
+     },
+     {
+      "quantity_milli": 213814,
+      "labor_unit_price_huf": 159334,
+      "material_unit_price_huf": 84729
+     },
+     {
+      "quantity_milli": 248749,
+      "labor_unit_price_huf": 68653,
+      "material_unit_price_huf": 15707
+     },
+     {
+      "quantity_milli": 23440,
+      "labor_unit_price_huf": 51680,
+      "material_unit_price_huf": 136610
+     },
+     {
+      "quantity_milli": 207993,
+      "labor_unit_price_huf": 35486,
+      "material_unit_price_huf": 11605
+     },
+     {
+      "quantity_milli": 396773,
+      "labor_unit_price_huf": 10672,
+      "material_unit_price_huf": 76395
+     },
+     {
+      "quantity_milli": 291419,
+      "labor_unit_price_huf": 64905,
+      "material_unit_price_huf": 76756
+     },
+     {
+      "quantity_milli": 436432,
+      "labor_unit_price_huf": 28366,
+      "material_unit_price_huf": 103998
+     },
+     {
+      "quantity_milli": 34788,
+      "labor_unit_price_huf": 25451,
+      "material_unit_price_huf": 22640
+     },
+     {
+      "quantity_milli": 325023,
+      "labor_unit_price_huf": 160453,
+      "material_unit_price_huf": 50999
+     },
+     {
+      "quantity_milli": 377157,
+      "labor_unit_price_huf": 141682,
+      "material_unit_price_huf": 132774
+     },
+     {
+      "quantity_milli": 62605,
+      "labor_unit_price_huf": 53700,
+      "material_unit_price_huf": 66111
+     },
+     {
+      "quantity_milli": 221812,
+      "labor_unit_price_huf": 132759,
+      "material_unit_price_huf": 30314
+     }
+    ],
+    "adjustment_type": "discount",
+    "adjustment_percent_bp": 2442,
+    "vat_rate_bp": 1800
+   },
+   "expected": {
+    "lines": [
+     {
+      "labor_huf": 3278092,
+      "material_huf": 13429661,
+      "total_huf": 16707753
+     },
+     {
+      "labor_huf": 5159691,
+      "material_huf": 1239623,
+      "total_huf": 6399314
+     },
+     {
+      "labor_huf": 15122956,
+      "material_huf": 1744329,
+      "total_huf": 16867285
+     },
+     {
+      "labor_huf": 339664,
+      "material_huf": 268163,
+      "total_huf": 607827
+     },
+     {
+      "labor_huf": 50132919,
+      "material_huf": 43607730,
+      "total_huf": 93740649
+     },
+     {
+      "labor_huf": 4660355,
+      "material_huf": 4742369,
+      "total_huf": 9402724
+     },
+     {
+      "labor_huf": 4278795,
+      "material_huf": 424317,
+      "total_huf": 4703112
+     },
+     {
+      "labor_huf": 28421563,
+      "material_huf": 4717294,
+      "total_huf": 33138857
+     },
+     {
+      "labor_huf": 46417462,
+      "material_huf": 31231888,
+      "total_huf": 77649350
+     },
+     {
+      "labor_huf": 15949386,
+      "material_huf": 27553244,
+      "total_huf": 43502630
+     },
+     {
+      "labor_huf": 6120397,
+      "material_huf": 13275441,
+      "total_huf": 19395838
+     },
+     {
+      "labor_huf": 34067840,
+      "material_huf": 18116246,
+      "total_huf": 52184086
+     },
+     {
+      "labor_huf": 17077365,
+      "material_huf": 3907101,
+      "total_huf": 20984466
+     },
+     {
+      "labor_huf": 1211379,
+      "material_huf": 3202139,
+      "total_huf": 4413518
+     },
+     {
+      "labor_huf": 7380840,
+      "material_huf": 2413758,
+      "total_huf": 9794598
+     },
+     {
+      "labor_huf": 4234361,
+      "material_huf": 30311474,
+      "total_huf": 34545835
+     },
+     {
+      "labor_huf": 18914550,
+      "material_huf": 22368157,
+      "total_huf": 41282707
+     },
+     {
+      "labor_huf": 12379830,
+      "material_huf": 45388055,
+      "total_huf": 57767885
+     },
+     {
+      "labor_huf": 885389,
+      "material_huf": 787601,
+      "total_huf": 1672990
+     },
+     {
+      "labor_huf": 52150915,
+      "material_huf": 16575848,
+      "total_huf": 68726763
+     },
+     {
+      "labor_huf": 53436358,
+      "material_huf": 50076644,
+      "total_huf": 103513002
+     },
+     {
+      "labor_huf": 3361889,
+      "material_huf": 4138879,
+      "total_huf": 7500768
+     },
+     {
+      "labor_huf": 29447539,
+      "material_huf": 6724009,
+      "total_huf": 36171548
+     }
+    ],
+    "labor_subtotal_huf": 414429535,
+    "material_subtotal_huf": 346243970,
+    "adjustment_huf": -185756470,
+    "net_total_huf": 574917035,
+    "vat_huf": 103485066,
+    "gross_total_huf": 678402101
+   }
+  },
+  {
+   "name": "véletlen #37",
+   "input": {
+    "lines": [
+     {
+      "quantity_milli": 83755,
+      "labor_unit_price_huf": 90923,
+      "material_unit_price_huf": 118236
+     },
+     {
+      "quantity_milli": 264432,
+      "labor_unit_price_huf": 44300,
+      "material_unit_price_huf": 15437
+     },
+     {
+      "quantity_milli": 260190,
+      "labor_unit_price_huf": 55621,
+      "material_unit_price_huf": 43415
+     },
+     {
+      "quantity_milli": 19455,
+      "labor_unit_price_huf": 153236,
+      "material_unit_price_huf": 129685
+     },
+     {
+      "quantity_milli": 237407,
+      "labor_unit_price_huf": 141031,
+      "material_unit_price_huf": 116195
+     }
+    ],
+    "adjustment_type": "none",
+    "adjustment_percent_bp": 319,
+    "vat_rate_bp": 1800
+   },
+   "expected": {
+    "lines": [
+     {
+      "labor_huf": 7615256,
+      "material_huf": 9902856,
+      "total_huf": 17518112
+     },
+     {
+      "labor_huf": 11714338,
+      "material_huf": 4082036,
+      "total_huf": 15796374
+     },
+     {
+      "labor_huf": 14472028,
+      "material_huf": 11296149,
+      "total_huf": 25768177
+     },
+     {
+      "labor_huf": 2981206,
+      "material_huf": 2523022,
+      "total_huf": 5504228
+     },
+     {
+      "labor_huf": 33481747,
+      "material_huf": 27585506,
+      "total_huf": 61067253
+     }
+    ],
+    "labor_subtotal_huf": 70264575,
+    "material_subtotal_huf": 55389569,
+    "adjustment_huf": 0,
+    "net_total_huf": 125654144,
+    "vat_huf": 22617746,
+    "gross_total_huf": 148271890
+   }
+  },
+  {
+   "name": "véletlen #38",
+   "input": {
+    "lines": [
+     {
+      "quantity_milli": 116201,
+      "labor_unit_price_huf": 121583,
+      "material_unit_price_huf": 133443
+     },
+     {
+      "quantity_milli": 81727,
+      "labor_unit_price_huf": 63441,
+      "material_unit_price_huf": 109465
+     },
+     {
+      "quantity_milli": 127590,
+      "labor_unit_price_huf": 124824,
+      "material_unit_price_huf": 59938
+     },
+     {
+      "quantity_milli": 351184,
+      "labor_unit_price_huf": 44197,
+      "material_unit_price_huf": 112703
+     },
+     {
+      "quantity_milli": 377778,
+      "labor_unit_price_huf": 89265,
+      "material_unit_price_huf": 97183
+     },
+     {
+      "quantity_milli": 390113,
+      "labor_unit_price_huf": 39899,
+      "material_unit_price_huf": 76535
+     },
+     {
+      "quantity_milli": 425307,
+      "labor_unit_price_huf": 158724,
+      "material_unit_price_huf": 104553
+     },
+     {
+      "quantity_milli": 254470,
+      "labor_unit_price_huf": 13036,
+      "material_unit_price_huf": 132934
+     },
+     {
+      "quantity_milli": 305938,
+      "labor_unit_price_huf": 199399,
+      "material_unit_price_huf": 120861
+     },
+     {
+      "quantity_milli": 305470,
+      "labor_unit_price_huf": 82566,
+      "material_unit_price_huf": 83402
+     },
+     {
+      "quantity_milli": 495169,
+      "labor_unit_price_huf": 10767,
+      "material_unit_price_huf": 26777
+     },
+     {
+      "quantity_milli": 146478,
+      "labor_unit_price_huf": 175992,
+      "material_unit_price_huf": 115535
+     },
+     {
+      "quantity_milli": 335843,
+      "labor_unit_price_huf": 60600,
+      "material_unit_price_huf": 28503
+     },
+     {
+      "quantity_milli": 436735,
+      "labor_unit_price_huf": 34909,
+      "material_unit_price_huf": 97072
+     },
+     {
+      "quantity_milli": 400714,
+      "labor_unit_price_huf": 61628,
+      "material_unit_price_huf": 16392
+     },
+     {
+      "quantity_milli": 378517,
+      "labor_unit_price_huf": 11836,
+      "material_unit_price_huf": 14189
+     },
+     {
+      "quantity_milli": 64405,
+      "labor_unit_price_huf": 124254,
+      "material_unit_price_huf": 64103
+     },
+     {
+      "quantity_milli": 26354,
+      "labor_unit_price_huf": 154728,
+      "material_unit_price_huf": 38698
+     },
+     {
+      "quantity_milli": 96029,
+      "labor_unit_price_huf": 105531,
+      "material_unit_price_huf": 39735
+     },
+     {
+      "quantity_milli": 375112,
+      "labor_unit_price_huf": 97817,
+      "material_unit_price_huf": 7338
+     }
+    ],
+    "adjustment_type": "discount",
+    "adjustment_percent_bp": 1098,
+    "vat_rate_bp": 0
+   },
+   "expected": {
+    "lines": [
+     {
+      "labor_huf": 14128066,
+      "material_huf": 15506210,
+      "total_huf": 29634276
+     },
+     {
+      "labor_huf": 5184843,
+      "material_huf": 8946246,
+      "total_huf": 14131089
+     },
+     {
+      "labor_huf": 15926294,
+      "material_huf": 7647490,
+      "total_huf": 23573784
+     },
+     {
+      "labor_huf": 15521279,
+      "material_huf": 39579491,
+      "total_huf": 55100770
+     },
+     {
+      "labor_huf": 33722353,
+      "material_huf": 36713600,
+      "total_huf": 70435953
+     },
+     {
+      "labor_huf": 15565119,
+      "material_huf": 29857298,
+      "total_huf": 45422417
+     },
+     {
+      "labor_huf": 67506428,
+      "material_huf": 44467123,
+      "total_huf": 111973551
+     },
+     {
+      "labor_huf": 3317271,
+      "material_huf": 33827715,
+      "total_huf": 37144986
+     },
+     {
+      "labor_huf": 61003731,
+      "material_huf": 36975973,
+      "total_huf": 97979704
+     },
+     {
+      "labor_huf": 25221436,
+      "material_huf": 25476809,
+      "total_huf": 50698245
+     },
+     {
+      "labor_huf": 5331485,
+      "material_huf": 13259140,
+      "total_huf": 18590625
+     },
+     {
+      "labor_huf": 25778956,
+      "material_huf": 16923336,
+      "total_huf": 42702292
+     },
+     {
+      "labor_huf": 20352086,
+      "material_huf": 9572533,
+      "total_huf": 29924619
+     },
+     {
+      "labor_huf": 15245982,
+      "material_huf": 42394740,
+      "total_huf": 57640722
+     },
+     {
+      "labor_huf": 24695202,
+      "material_huf": 6568504,
+      "total_huf": 31263706
+     },
+     {
+      "labor_huf": 4480127,
+      "material_huf": 5370778,
+      "total_huf": 9850905
+     },
+     {
+      "labor_huf": 8002579,
+      "material_huf": 4128554,
+      "total_huf": 12131133
+     },
+     {
+      "labor_huf": 4077702,
+      "material_huf": 1019847,
+      "total_huf": 5097549
+     },
+     {
+      "labor_huf": 10134036,
+      "material_huf": 3815713,
+      "total_huf": 13949749
+     },
+     {
+      "labor_huf": 36692331,
+      "material_huf": 2752571,
+      "total_huf": 39444902
+     }
+    ],
+    "labor_subtotal_huf": 411887306,
+    "material_subtotal_huf": 384803671,
+    "adjustment_huf": -87476669,
+    "net_total_huf": 709214308,
+    "vat_huf": 0,
+    "gross_total_huf": 709214308
+   }
+  },
+  {
+   "name": "véletlen #39",
+   "input": {
+    "lines": [
+     {
+      "quantity_milli": 160237,
+      "labor_unit_price_huf": 139693,
+      "material_unit_price_huf": 30030
+     },
+     {
+      "quantity_milli": 37004,
+      "labor_unit_price_huf": 153359,
+      "material_unit_price_huf": 127985
+     },
+     {
+      "quantity_milli": 125150,
+      "labor_unit_price_huf": 87623,
+      "material_unit_price_huf": 86191
+     },
+     {
+      "quantity_milli": 279132,
+      "labor_unit_price_huf": 106715,
+      "material_unit_price_huf": 53359
+     },
+     {
+      "quantity_milli": 310504,
+      "labor_unit_price_huf": 172262,
+      "material_unit_price_huf": 3519
+     },
+     {
+      "quantity_milli": 253104,
+      "labor_unit_price_huf": 199714,
+      "material_unit_price_huf": 72300
+     },
+     {
+      "quantity_milli": 109102,
+      "labor_unit_price_huf": 193678,
+      "material_unit_price_huf": 123877
+     },
+     {
+      "quantity_milli": 269748,
+      "labor_unit_price_huf": 154444,
+      "material_unit_price_huf": 82124
+     },
+     {
+      "quantity_milli": 203191,
+      "labor_unit_price_huf": 124625,
+      "material_unit_price_huf": 54562
+     },
+     {
+      "quantity_milli": 107804,
+      "labor_unit_price_huf": 15465,
+      "material_unit_price_huf": 27402
+     }
+    ],
+    "adjustment_type": "surcharge",
+    "adjustment_percent_bp": 2321,
+    "vat_rate_bp": 1800
+   },
+   "expected": {
+    "lines": [
+     {
+      "labor_huf": 22383987,
+      "material_huf": 4811917,
+      "total_huf": 27195904
+     },
+     {
+      "labor_huf": 5674896,
+      "material_huf": 4735957,
+      "total_huf": 10410853
+     },
+     {
+      "labor_huf": 10966018,
+      "material_huf": 10786804,
+      "total_huf": 21752822
+     },
+     {
+      "labor_huf": 29787571,
+      "material_huf": 14894205,
+      "total_huf": 44681776
+     },
+     {
+      "labor_huf": 53488040,
+      "material_huf": 1092664,
+      "total_huf": 54580704
+     },
+     {
+      "labor_huf": 50548412,
+      "material_huf": 18299419,
+      "total_huf": 68847831
+     },
+     {
+      "labor_huf": 21130657,
+      "material_huf": 13515229,
+      "total_huf": 34645886
+     },
+     {
+      "labor_huf": 41660960,
+      "material_huf": 22152785,
+      "total_huf": 63813745
+     },
+     {
+      "labor_huf": 25322678,
+      "material_huf": 11086508,
+      "total_huf": 36409186
+     },
+     {
+      "labor_huf": 1667189,
+      "material_huf": 2954045,
+      "total_huf": 4621234
+     }
+    ],
+    "labor_subtotal_huf": 262630408,
+    "material_subtotal_huf": 104329533,
+    "adjustment_huf": 85171402,
+    "net_total_huf": 452131343,
+    "vat_huf": 81383642,
+    "gross_total_huf": 533514985
+   }
+  },
+  {
+   "name": "véletlen #40",
+   "input": {
+    "lines": [
+     {
+      "quantity_milli": 67329,
+      "labor_unit_price_huf": 28422,
+      "material_unit_price_huf": 122136
+     },
+     {
+      "quantity_milli": 374640,
+      "labor_unit_price_huf": 20968,
+      "material_unit_price_huf": 114034
+     },
+     {
+      "quantity_milli": 470522,
+      "labor_unit_price_huf": 91738,
+      "material_unit_price_huf": 6837
+     },
+     {
+      "quantity_milli": 357186,
+      "labor_unit_price_huf": 19280,
+      "material_unit_price_huf": 55193
+     },
+     {
+      "quantity_milli": 420706,
+      "labor_unit_price_huf": 23178,
+      "material_unit_price_huf": 145011
+     }
+    ],
+    "adjustment_type": "none",
+    "adjustment_percent_bp": 1028,
+    "vat_rate_bp": 0
+   },
+   "expected": {
+    "lines": [
+     {
+      "labor_huf": 1913625,
+      "material_huf": 8223295,
+      "total_huf": 10136920
+     },
+     {
+      "labor_huf": 7855452,
+      "material_huf": 42721697,
+      "total_huf": 50577149
+     },
+     {
+      "labor_huf": 43164747,
+      "material_huf": 3216959,
+      "total_huf": 46381706
+     },
+     {
+      "labor_huf": 6886546,
+      "material_huf": 19714167,
+      "total_huf": 26600713
+     },
+     {
+      "labor_huf": 9751124,
+      "material_huf": 61006997,
+      "total_huf": 70758121
+     }
+    ],
+    "labor_subtotal_huf": 69571494,
+    "material_subtotal_huf": 134883115,
+    "adjustment_huf": 0,
+    "net_total_huf": 204454609,
+    "vat_huf": 0,
+    "gross_total_huf": 204454609
+   }
+  }
+ ]
+}

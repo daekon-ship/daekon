@@ -15,6 +15,7 @@ import '../../core/widgets/widgets.dart';
 import '../../data/backup.dart';
 import '../../data/db/app_database.dart';
 import '../../data/providers.dart';
+import '../cloud/cloud_settings.dart';
 import '../../security/lock_gate.dart';
 import '../../security/pin_lock.dart';
 import '../../domain/enums.dart';
@@ -182,10 +183,14 @@ class _CompanyFormState extends ConsumerState<_CompanyForm> {
                 MpButton(label: 'Mentés', onPressed: _dirty ? _save : null, loading: _saving, expand: true),
                 const SectionLabel('Biztonság'),
                 const _SecuritySection(),
-                const SectionLabel('Adatmentés'),
+                const SectionLabel('Mester+ fiók'),
+                const CloudAccountSection(),
+                const SectionLabel('Felhőmentés'),
+                const CloudBackupSection(),
+                const SectionLabel('Helyi adatmentés'),
                 const _BackupSection(),
                 const SizedBox(height: MpSpace.x8),
-                const Center(child: Text('Mester+ $appVersion · minden adat ezen a telefonon van', style: MpText.small)),
+                const Center(child: Text('Mester+ $appVersion · a projekt-adatok ezen a telefonon vannak', style: MpText.small)),
               ],
             ),
           ),
@@ -290,8 +295,8 @@ class _BackupSectionState extends ConsumerState<_BackupSection> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const Text(
-            'Minden adatod csak ezen a telefonon van. Ha elveszik vagy lecseréled, a mentésből tudod visszahozni. '
-            'Készíts mentést rendszeresen, és tedd el máshová: Google Drive, e-mail vagy pendrive.',
+            'Az ügyfelek, projektek és ajánlatok ezen a telefonon vannak. Ha elveszik vagy lecseréled, a mentésből tudod visszahozni. '
+            'Készíts mentést rendszeresen, és tedd el máshová: Google Drive, e-mail vagy pendrive. Ez a mentés fiók nélkül is működik.',
             style: MpText.small,
           ),
           const SizedBox(height: MpSpace.x4),

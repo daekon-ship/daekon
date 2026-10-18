@@ -1,18 +1,26 @@
 name: Mester+ app (Flutter) ellenőrzés
 
 # Valódi fordítás és tesztek minden változásnál: kódgenerálás, statikus elemzés,
-# unit + adatbázis-tesztek, majd egy Android App Bundle build (debug-aláírással,
-# csak ellenőrzéshez — a Play-be feltöltendő, aláírt AAB-t a release.bat készíti).
+# unit + adatbázis- + felhő-kliens- + mobil-widget-tesztek, majd egy Android App Bundle build
+# (debug-aláírással, csak ellenőrzéshez — a Play-be feltöltendő, aláírt AAB-t a release.bat készíti).
+# Mester+ Cloud (v0.8+): backend-tesztek valódi MariaDB-vel, titokkeresés (a repó NYILVÁNOS),
+# és a hálózati szabályzat ellenőrzése a kész csomagon.
 on:
   push:
     branches: [master]
     paths:
       - "apps/mester-plus/**"
+      - "services/mester-plus-api/**"
+      - "public/mester-plus/**"
       - ".github/workflows/mester-plus.yml"
+      - ".github/mester-plus-gitleaks.toml"
   pull_request:
     paths:
       - "apps/mester-plus/**"
+      - "services/mester-plus-api/**"
+      - "public/mester-plus/**"
       - ".github/workflows/mester-plus.yml"
+      - ".github/mester-plus-gitleaks.toml"
   workflow_dispatch:
 
 permissions:
@@ -89,15 +97,34 @@ jobs:
       - name: Biztonsági ellenőrzések a kész csomagon
         run: |
           set -e
+          M=android/app/src/main/AndroidManifest.xml
+          NSC=android/app/src/main/res/xml/network_security_config.xml
           grep -q 'maxOf(flutter.targetSdkVersion, 36)' android/app/build.gradle.kts
-          grep -q 'android:label="Mester+"' android/app/src/main/AndroidManifest.xml
-          grep -q 'android:allowBackup="false"' android/app/src/main/AndroidManifest.xml
-          ! grep -q 'android.permission.INTERNET' android/app/src/main/AndroidManifest.xml
-          # A kész AAB-ban: nincs INTERNET engedély a release manifestben, és SQLCipher van a natív libek közt.
+          grep -q 'android:label="Mester+"' $M
+          grep -q 'android:allowBackup="false"' $M
+          # HÁLÓZATI SZABÁLYZAT (v0.8+, Mester+ Cloud) – a korábbi „nincs INTERNET” ellenőrzés tudatos utódja:
+          # az INTERNET csak a felhőhöz kell, és csak titkosítva, egyetlen éles API-címre mehet.
+          grep -q 'android.permission.INTERNET' $M
+          grep -q 'android:usesCleartextTraffic="false"' $M
+          grep -q 'android:networkSecurityConfig="@xml/network_security_config"' $M
+          grep -q 'cleartextTrafficPermitted="false"' $NSC
+          ! grep -q 'cleartextTrafficPermitted="true"' $NSC
+          ! grep -q 'src="user"' $NSC
+          # A hálózatot KIZÁRÓLAG a központi ApiClient használja (nincs szétszórt HTTP-hívás).
+          test "$(grep -rl "package:http/" lib | sort | tr '\n' ' ')" = "lib/cloud/api_client.dart lib/cloud/cloud_providers.dart "
+          ! grep -rn "HttpClient()" lib
+          # A forrásban nincs fejlesztői / teszt-szerver címe.
+          ! grep -rnE "localhost|127\.0\.0\.1|10\.0\.2\.2|http://api|api-staging" lib
+          # A kész AAB: SQLCipher a natív libek közt, INTERNET + hálózati szabályzat a release manifestben.
           unzip -o -q build/app/outputs/bundle/release/app-release.aab -d /tmp/aab
           ls /tmp/aab/base/lib/arm64-v8a/ | tee /tmp/libs.txt
           grep -q 'libsqlite3.so\|libsqlcipher' /tmp/libs.txt
-          ! (strings /tmp/aab/base/manifest/AndroidManifest.xml | grep -q 'android.permission.INTERNET') || (echo 'INTERNET engedély a release manifestben!' && exit 1)
+          strings /tmp/aab/base/manifest/AndroidManifest.xml | grep -q 'android.permission.INTERNET'
+          strings /tmp/aab/base/manifest/AndroidManifest.xml | grep -q 'networkSecurityConfig'
+          test -s /tmp/aab/base/res/xml/network_security_config.xml
+          # A release Dart-kódban az éles API-cím van; fejlesztői / teszt-cím vagy titkosítatlan API-cím nincs.
+          strings -a /tmp/aab/base/lib/arm64-v8a/libapp.so | grep -q 'api.mesterplus.daekon.hu'
+          ! strings -a /tmp/aab/base/lib/arm64-v8a/libapp.so | grep -qE 'api-staging|10\.0\.2\.2|http://api\.mesterplus'
           # 16 KB oldalméret: minden natív .so 16 KB-ra igazított LOAD szegmenssel
           for so in /tmp/aab/base/lib/arm64-v8a/*.so; do
             align=$(readelf -lW "$so" | awk '/LOAD/{print $NF}' | sort -u | head -1)
@@ -134,3 +161,69 @@ jobs:
           curl -sSL -o /tmp/osv-scanner https://github.com/google/osv-scanner/releases/latest/download/osv-scanner_linux_amd64
           chmod +x /tmp/osv-scanner
           /tmp/osv-scanner --lockfile=pubspec.lock
+
+  # Mester+ Cloud backend (services/mester-plus-api): PHP 8.4 + MariaDB 10.11 – ugyanaz, mint a VPS-en.
+  backend:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    services:
+      mariadb:
+        image: mariadb:10.11
+        env:
+          MARIADB_ROOT_PASSWORD: ci-only-throwaway
+          MARIADB_DATABASE: mp_test_ci
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=5s --health-timeout=5s --health-retries=24
+    defaults:
+      run:
+        working-directory: services/mester-plus-api
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.4"
+          extensions: sodium, pdo_mysql, mbstring
+          coverage: none
+      - name: PHP szintaxis
+        run: find . -name '*.php' -print0 | xargs -0 -n1 php -l
+      - name: Belső fájlok webről nem futtathatók
+        run: |
+          for f in src/*.php migrations/*.php; do grep -q "if (!defined('MP_API'))" "$f" || { echo "védelem nélkül: $f"; exit 1; }; done
+          grep -q "PHP_SAPI !== 'cli'" bin/cli.php
+          grep -q "PHP_SAPI !== 'cli'" tests/run.php
+      - name: Backend tesztek (migráció, auth, munkamenet, tenant-izoláció, rate limit, idempotencia, mentés, ajánlat, előfizetés, webhook, biztonság)
+        env:
+          MP_TEST_DB_NAME: mp_test_ci
+          MP_TEST_DB_USER: root
+          MP_TEST_DB_PASS: ci-only-throwaway
+          MP_TEST_DB_HOST: 127.0.0.1
+        run: php tests/run.php
+      - name: Kiadási csomag (próba-build)
+        run: bash tool/build_release.sh "ci-${GITHUB_RUN_NUMBER}" /tmp/rel && unzip -l /tmp/rel/*.zip | tail -3
+
+  # A repó NYILVÁNOS: titok (API-kulcs, privát kulcs, DB-jelszó, B2, Play, JWT…) nem kerülhet bele. Találat = BUILD BLOCK.
+  secret-scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: gitleaks (rögzített verzió, SHA-256-tal ellenőrizve)
+        run: |
+          curl -sSL -o /tmp/gl.tgz https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz
+          echo "551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb  /tmp/gl.tgz" | sha256sum -c -
+          tar -xzf /tmp/gl.tgz -C /tmp gitleaks
+          /tmp/gitleaks version
+      - name: Önteszt – a szabályok valóban megfognak titkot (futás közben generált minták, nem a repóban)
+        run: bash .github/scripts/mester-plus-secret-selftest.sh /tmp/gitleaks .github/mester-plus-gitleaks.toml
+      - name: Titokkeresés – munkakönyvtár (app, backend, landing, CI)
+        run: |
+          for d in apps/mester-plus services/mester-plus-api public/mester-plus .github; do
+            /tmp/gitleaks dir "$d" --config .github/mester-plus-gitleaks.toml --no-banner --redact --exit-code 1 || { echo "TITOK-GYANÚ: $d – BUILD BLOCK"; exit 1; }
+          done
+      - name: Titokkeresés – git-előzmény (ugyanezek az útvonalak)
+        run: /tmp/gitleaks git . --config .github/mester-plus-gitleaks.toml --no-banner --redact --exit-code 1 --log-opts="--all -- apps/mester-plus services/mester-plus-api public/mester-plus .github"

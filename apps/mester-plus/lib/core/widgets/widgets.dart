@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../cloud/cloud_errors.dart';
 import '../../data/backup.dart';
 import '../../domain/enums.dart';
 import '../../domain/errors.dart';
@@ -437,6 +438,7 @@ void showInfo(BuildContext context, String message) {
 /// részletek pedig a naplóba kerülnek — a felhasználó sosem lát nyers kivételt.
 String friendlyError(Object e, [StackTrace? st]) {
   if (e is UserInputError) return e.message;
+  if (e is CloudException) return e.message;
   if (e is BackupFormatException) return e.message;
   debugPrint('Mester+ hiba: $e');
   if (st != null) debugPrintStack(stackTrace: st);

@@ -14,6 +14,7 @@ import '../../domain/format.dart';
 import '../../domain/quote_calculator.dart';
 import 'project_hub_screen.dart';
 import 'quote_pdf.dart';
+import '../cloud/online_quote_card.dart';
 
 class QuotePreviewScreen extends ConsumerWidget {
   const QuotePreviewScreen({super.key, required this.projectId});
@@ -73,6 +74,7 @@ class QuotePreviewScreen extends ConsumerWidget {
             padding: const EdgeInsets.all(MpSpace.x4),
             children: [
               _Paper(pc: pc, lines: lines, totals: totals, company: company),
+              OnlineQuoteCard(pc: pc, lines: lines, company: company),
             ],
           ),
         );

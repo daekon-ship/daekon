@@ -9,6 +9,7 @@ import 'package:go_router/go_router.dart';
 import 'core/router/app_router.dart';
 import 'core/theme/app_theme.dart';
 import 'core/theme/tokens.dart';
+import 'features/cloud/cloud_lifecycle.dart';
 import 'security/lock_gate.dart';
 
 void main() {
@@ -55,7 +56,7 @@ class _MesterAppState extends State<MesterApp> {
       locale: const Locale('hu', 'HU'),
       supportedLocales: const [Locale('hu', 'HU')],
       localizationsDelegates: GlobalMaterialLocalizations.delegates,
-      builder: (context, child) => LockGate(child: _ResponsiveFrame(child: child ?? const SizedBox.shrink())),
+      builder: (context, child) => LockGate(child: CloudLifecycle(child: _ResponsiveFrame(child: child ?? const SizedBox.shrink()))),
     );
   }
 }

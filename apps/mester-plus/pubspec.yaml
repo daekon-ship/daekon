@@ -31,6 +31,10 @@ dependencies:
   # Biztonsági mentés: mentési fájl helyének kiválasztása és visszaállításhoz fájl megnyitása
   # 8.1.7 – 10.x: a feloldó a gépeden lévő Flutterrel kompatibilis legújabbat választja
   file_picker: '>=8.1.7 <11.0.0'
+  # Mester+ Cloud (opcionális, Pro): HTTPS API-kliens és a felhőmentés titkosítása (AES-256-GCM, tiszta Dart).
+  # A helyi (offline) működés egyikre sem épül.
+  http: ^1.6.0
+  cryptography: ^2.9.0
 
 dev_dependencies:
   flutter_test:
@@ -41,6 +45,9 @@ dev_dependencies:
   # App-ikon és indítóképernyő generálása (Android adaptív + monokróm ikon, Android 12+ splash)
   flutter_launcher_icons: ^0.14.3
   flutter_native_splash: ^2.4.4
+  # Az image 4.11.0 hibásan van kiadva: archive ^4.0.9-et deklarál, de újabb archive API-t hív
+  # (decodeLazy), a pdf viszont archive <4.1.0-ra szorít. 4.11 alatt a lánc fordítható (CI-hiba 2026-10-18).
+  image: '>=4.3.0 <4.11.0'
 
 # Az adatbázis titkosítása: a sqlite3 csomag a SQLCipher-változatot tölti be.
 hooks:

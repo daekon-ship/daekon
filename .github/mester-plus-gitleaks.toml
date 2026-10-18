@@ -1,0 +1,53 @@
+# Mester+ – titokkereső szabályok (gitleaks). A repó NYILVÁNOS: titok soha nem kerülhet bele.
+# Az alap gitleaks-szabályok (AWS, GCP szolgáltatásfiók, privát kulcsok, JWT, Stripe, GitHub-token, …)
+# mellé a Mester+ Cloud saját titkai.
+title = "mester-plus"
+
+[extend]
+useDefault = true
+
+[[rules]]
+id = "mester-plus-cloud-secret"
+description = "Mester+ Cloud titok (mesterkulcs / bors / webhook-titok / DB-jelszó) konkrét értékkel"
+regex = '''(?i)\b(MP_KEK_[0-9]+|MP_TOKEN_PEPPER|MP_WEBHOOK_[A-Z_]*SECRET|DB_PASS(?:WORD)?)[ \t]*[=:][ \t]*['"]?([A-Za-z0-9+/_=-]{12,})'''
+secretGroup = 2
+keywords = ["mp_kek_", "mp_token_pepper", "mp_webhook_", "db_pass"]
+
+[[rules]]
+id = "backblaze-b2-application-key"
+description = "Backblaze B2 alkalmazáskulcs"
+regex = '''\b(K00[0-9A-Za-z+/]{27,40})\b'''
+secretGroup = 1
+keywords = ["k00"]
+
+[[rules]]
+id = "backblaze-b2-key-id"
+description = "Backblaze B2 kulcsazonosító konfigurációban"
+regex = '''(?i)(?:b2|backblaze|restic)[^\n]{0,30}(?:key_?id|account_?id)[ \t]*[=:][ \t]*['"]?([0-9a-f]{25})\b'''
+secretGroup = 1
+keywords = ["b2", "backblaze", "restic"]
+
+[[rules]]
+id = "google-service-account-key-id"
+description = "Google (Play Console) szolgáltatásfiók kulcsfájl"
+regex = '''"private_key_id"\s*:\s*"([0-9a-f]{40})"'''
+secretGroup = 1
+keywords = ["private_key_id"]
+
+[[rules]]
+id = "jwt-signing-secret"
+description = "JWT aláíró titok"
+regex = '''(?i)\bjwt[_-]?(?:secret|signing[_-]?key)\b[ \t]*[=:][ \t]*['"]?([^\s'"]{16,})'''
+secretGroup = 1
+keywords = ["jwt"]
+
+[[rules]]
+id = "android-keystore-password"
+description = "Android kiadási kulcs jelszava (key.properties)"
+regex = '''(?im)^[ \t]*(?:storePassword|keyPassword)[ \t]*=[ \t]*([A-Za-z0-9!@#$^&*._+-]{6,})[ \t]*$'''
+secretGroup = 1
+keywords = ["storepassword", "keypassword"]
+
+[allowlist]
+description = "Dokumentációs helykitöltők és a biztonságos tároló KULCSNEVEI (pl. mester_plus.db_key.v1 – név, nem titok)"
+regexes = ['''<[a-z_-]+>''', '''\$\{\{\s*secrets\.''', '''CHANGE_ME''', '''^mester_plus\.[a-z_]+(\.[a-z_]+)*\.v[0-9]+$''']

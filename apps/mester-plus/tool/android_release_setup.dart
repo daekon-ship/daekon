@@ -4,7 +4,8 @@
 //   dart run tool/android_release_setup.dart
 //
 // Mit csinál (idempotens – többször is futtatható):
-//  1. AndroidManifest: az app neve „Mester+”.
+//  1. AndroidManifest: az app neve „Mester+”; INTERNET (csak a Mester+ Cloudhoz), cleartext tiltva,
+//     Network Security Config (csak HTTPS, csak rendszer-tanúsítvány).
 //  2. app/build.gradle(.kts):
 //     - compileSdk / targetSdk legalább 36 (Google Play követelmény 2026. 08. 31. óta),
 //     - minSdk legalább 24 (Android 7.0),
@@ -54,9 +55,37 @@ void _patchManifest(File f) {
   } else {
     s = s.replaceFirst(RegExp(r'android:allowBackup="[^"]*"'), 'android:allowBackup="false"');
   }
-  if (s.contains('android.permission.INTERNET')) {
-    _fail('Az AndroidManifest INTERNET engedélyt tartalmaz — az app offline, ezt nem kérheti.');
+  // HÁLÓZAT (Mester+ Cloud, v0.8+): TUDATOS döntés. Az INTERNET engedély CSAK a felhős (Pro)
+  // funkciókhoz kell (fiók, felhőmentés, online ajánlat) – a helyi app enélkül is teljes értékű.
+  // Védelem: titkosítatlan (http) forgalom tiltva, csak rendszer-tanúsítvány, és a felhő a kódban
+  // csak https://api.mesterplus.daekon.hu-ra mehet (lib/cloud/cloud_config.dart). A CI mindezt ellenőrzi.
+  if (!s.contains('android.permission.INTERNET')) {
+    s = s.replaceFirst('<application', '<uses-permission android:name="android.permission.INTERNET" />\n    <application');
   }
+  if (!s.contains('android:usesCleartextTraffic=')) {
+    s = s.replaceFirst('<application', '<application\n        android:usesCleartextTraffic="false"');
+  } else {
+    s = s.replaceFirst(RegExp(r'android:usesCleartextTraffic="[^"]*"'), 'android:usesCleartextTraffic="false"');
+  }
+  if (!s.contains('android:networkSecurityConfig=')) {
+    s = s.replaceFirst('<application', '<application\n        android:networkSecurityConfig="@xml/network_security_config"');
+  }
+  final nsc = File('android/app/src/main/res/xml/network_security_config.xml');
+  nsc.parent.createSync(recursive: true);
+  nsc.writeAsStringSync('''<?xml version="1.0" encoding="utf-8"?>
+<!-- Mester+ – hálózatbiztonság (tool/android_release_setup.dart generálja).
+     Titkosítatlan HTTP tiltva mindenhol; csak a rendszer tanúsítványtára (felhasználói CA nem). -->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="false">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+    <domain-config cleartextTrafficPermitted="false">
+        <domain includeSubdomains="false">api.mesterplus.daekon.hu</domain>
+    </domain-config>
+</network-security-config>
+''');
   // Android 11+ csomag-láthatóság: a hívás és az e-mail indításához.
   if (!s.contains('android:scheme="tel"')) {
     if (!s.contains('</manifest>')) _fail('Hibás AndroidManifest: nincs </manifest>.');
@@ -73,7 +102,7 @@ void _patchManifest(File f) {
 </manifest>''');
   }
   f.writeAsStringSync(s);
-  stdout.writeln('  ✓ App neve: Mester+, felhős mentés kikapcsolva, hívás/e-mail engedélyezve');
+  stdout.writeln('  ✓ App neve: Mester+, Google-mentés kikapcsolva, hívás/e-mail engedélyezve, HTTPS-only hálózat (Mester+ Cloud)');
 }
 
 /// Első egyezés cseréje; a cseretextben a `$1` az első csoportra hivatkozik.
