@@ -83,7 +83,11 @@
 
 <!-- ============ 01 HERO ============ -->
 <section class="hero" id="fooldal" aria-labelledby="hero-cim">
-  <div class="hero__tex" aria-hidden="true"></div>
+  <div class="hero__film" aria-hidden="true">
+    <img class="slide is-on" src="img/foto/hero-1600.webp" srcset="img/foto/hero-900.webp 900w, img/foto/hero-1600.webp 1600w, img/foto/hero-2400.webp 2400w" sizes="100vw" alt="" fetchpriority="high">
+    <img class="slide" data-src="img/foto/about-1600.webp" data-srcset="img/foto/about-900.webp 900w, img/foto/about-1600.webp 1600w, img/foto/about-2400.webp 2400w" sizes="100vw" alt="">
+    <img class="slide" data-src="img/foto/service3-1600.webp" data-srcset="img/foto/service3-900.webp 900w, img/foto/service3-1600.webp 1600w" sizes="100vw" alt="">
+  </div>
   <div class="hero__grid wrap">
     <div class="hero__copy">
       <p class="eyebrow eyebrow--light"><span class="dot"></span>Vályog · vert fal · vegyes falazat</p>
@@ -95,96 +99,13 @@
       </div>
     </div>
 
-    <figure class="hero__art" aria-label="Rajz: felújított alföldi parasztház oromfala, a jobb alsó sarokban metszettel, amely a fal rétegeit mutatja">
-      <svg class="house" viewBox="0 0 820 600" role="img" aria-hidden="true" focusable="false">
-        <defs>
-          <pattern id="p-valyog" width="52" height="26" patternUnits="userSpaceOnUse">
-            <image href="img/tx-valyog.webp" width="128" height="128" preserveAspectRatio="none"/>
-            <path d="M0 .5H52M0 13.5H52M.5 0V13M26.5 13V26M52 0V13" stroke="#6e4026" stroke-opacity=".55" stroke-width="1.6" fill="none"/>
-          </pattern>
-          <pattern id="p-tegla" width="30" height="11" patternUnits="userSpaceOnUse">
-            <rect width="30" height="11" fill="#9E5639"/>
-            <path d="M0 .5H30M0 6H30M.5 0V5.5M15.5 5.5V11" stroke="#E9DDCC" stroke-opacity=".75" stroke-width="1.1" fill="none"/>
-          </pattern>
-          <pattern id="p-beton" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-            <rect width="10" height="10" fill="#cfc6b6"/><path d="M0 5H10" stroke="#8d8576" stroke-width="1.2"/>
-          </pattern>
-          <pattern id="p-mesz" width="256" height="256" patternUnits="userSpaceOnUse">
-            <image href="img/tx-mesz.webp" width="256" height="256"/>
-          </pattern>
-          <clipPath id="c-fal"><path d="M150 290 L360 112 L570 290 L570 540 L150 540Z"/></clipPath>
-          <mask id="m-vakolat" maskUnits="userSpaceOnUse" x="0" y="0" width="820" height="600">
-            <rect class="sweep" x="140" y="90" width="440" height="460" fill="#fff"/>
-            <path class="cut" d="M538 300 L570 300 L570 541 L468 541 L476 506 L506 478 L534 452 L530 404 L541 352Z" fill="#000"/>
-          </mask>
-        </defs>
-
-        <!-- talaj -->
-        <g class="ground">
-          <path d="M40 540H790" stroke="var(--sand)" stroke-width="2"/>
-          <path d="M60 552h40M130 556h70M250 552h30M610 554h60M700 550h40M90 566h20M660 568h40" stroke="var(--sand)" stroke-opacity=".35" stroke-width="1.5"/>
-        </g>
-
-        <!-- kémény a gerinc mögött -->
-        <rect class="fill-in" x="404" y="64" width="28" height="84" fill="url(#p-mesz)"/>
-        <path class="draw" d="M404 148V64h28v84M398 64h40" fill="none" stroke="var(--ink-line)" stroke-width="2"/>
-
-        <!-- alap (metszetben) -->
-        <path class="fill-in" d="M446 541 L578 541 L578 578 L446 578Z" fill="url(#p-beton)"/>
-        <!-- fal: alul a vályog, rajta a vakolat -->
-        <g clip-path="url(#c-fal)">
-          <rect class="fill-in" x="150" y="100" width="420" height="440" fill="url(#p-valyog)"/>
-          <rect class="fill-in" x="150" y="488" width="420" height="52" fill="url(#p-tegla)"/>
-          <g mask="url(#m-vakolat)">
-            <rect x="150" y="100" width="420" height="440" fill="url(#p-mesz)"/>
-            <rect x="150" y="490" width="420" height="50" fill="#56604f"/>
-          </g>
-          <!-- vakolatréteg vastagsága a metszet szélén -->
-          <path class="cutedge" d="M538 300 L541 352 L530 404 L534 452 L506 478 L476 506 L468 541" fill="none" stroke="#E9DDCC" stroke-width="9" stroke-linejoin="round"/>
-          <path class="cutedge" d="M538 300 L541 352 L530 404 L534 452 L506 478 L476 506 L468 541" fill="none" stroke="#fbfaf6" stroke-width="3" stroke-linejoin="round" transform="translate(-5 0)"/>
-          <!-- repedés: felújítás előtt látszik -->
-          <path class="crack" d="M281 437 l6 9 -3 8 8 7 -2 10 7 6 -1 11" fill="none" stroke="#3a2a1f" stroke-width="2.2" stroke-linecap="round"/>
-        </g>
-
-        <!-- tetőél, oromdeszka -->
-        <path class="fill-in" d="M122 297 L360 88 L598 297 L578 291 L360 104 L142 291Z" fill="#9E5639"/>
-        <path class="draw" d="M122 297 L360 88 L598 297" fill="none" stroke="var(--ink-line)" stroke-width="3"/>
-        <path class="draw" d="M142 291 L360 104 L578 291" fill="none" stroke="var(--ink-line)" stroke-width="1.5"/>
-        <path class="draw" d="M150 290 H570 M150 540 V290 M570 540 V290" fill="none" stroke="var(--ink-line)" stroke-width="2"/>
-        <path class="draw" d="M146 296 H574" stroke="var(--ink-line)" stroke-width="5"/>
-
-        <!-- padlásszellőzők -->
-        <g class="fill-in">
-          <path d="M342 196 h14 v26 h-14z M364 196 h14 v26 h-14z" fill="#242521"/>
-          <path d="M342 196 h14 v26 h-14z M364 196 h14 v26 h-14z" fill="none" stroke="var(--ink-line)" stroke-width="2"/>
-          <path d="M335 228h50" stroke="var(--ink-line)" stroke-width="2"/>
-        </g>
-
-        <!-- ablakok -->
-        <g class="win fill-in">
-          <rect x="198" y="340" width="84" height="98" fill="#25352C"/>
-          <rect x="206" y="348" width="68" height="82" fill="#1c2420"/>
-          <path d="M240 348v82M206 389h68" stroke="#25352C" stroke-width="6"/>
-          <path d="M212 356l18 26M248 356l14 20" stroke="#E9DDCC" stroke-opacity=".18" stroke-width="2"/>
-          <rect x="192" y="438" width="96" height="7" fill="#E9DDCC"/>
-          <rect x="438" y="340" width="84" height="98" fill="#25352C"/>
-          <rect x="446" y="348" width="68" height="82" fill="#1c2420"/>
-          <path d="M480 348v82M446 389h68" stroke="#25352C" stroke-width="6"/>
-          <path d="M452 356l18 26M488 356l14 20" stroke="#E9DDCC" stroke-opacity=".18" stroke-width="2"/>
-          <rect x="432" y="438" width="96" height="7" fill="#E9DDCC"/>
-        </g>
-
-        <!-- metszet-feliratok -->
-        <g class="notes">
-          <g class="note"><circle cx="560" cy="318" r="3.5"/><path d="M560 318 H640 L652 300 H790"/><text x="652" y="292">Meszelés</text></g>
-          <g class="note"><circle cx="541" cy="340" r="3.5"/><path d="M541 340 L560 362 H790"/><text x="652" y="354">Vakolat</text></g>
-          <g class="note"><circle cx="553" cy="420" r="3.5"/><path d="M553 420 H790"/><text x="652" y="412">Vályogtégla</text></g>
-          <g class="note"><circle cx="530" cy="515" r="3.5"/><path d="M530 515 L566 476 H790"/><text x="652" y="468">Aláfalazás</text></g>
-          <g class="note"><circle cx="520" cy="562" r="3.5"/><path d="M520 562 L600 530 H790"/><text x="652" y="522">Alap</text></g>
-        </g>
-      </svg>
-      <figcaption class="sr-only">Illusztráció, nem fénykép.</figcaption>
-    </figure>
+    <aside class="hero__reel" aria-label="Túró István bemutatkozó videója">
+      <a class="reel" href="#mester" data-play-video>
+        <span class="reel__img"><img src="img/foto/kocka-istvan.webp" alt="" width="720" height="760"></span>
+        <span class="reel__txt"><small>Videó · 34 mp</small>Túró István mutatja be, min dolgoznak éppen</span>
+        <span class="reel__play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+      </a>
+    </aside>
   </div>
 
   <div class="hero__bar wrap">
@@ -201,6 +122,9 @@
       <p class="eyebrow">Bemutatkozás</p>
       <h2 id="intro-cim" class="split">Egy vályogfalat nem lehet úgy kezelni, mint egy téglafalat.</h2>
       <p class="intro__text reveal">Más az anyaga, másképp dolgozik, és másképp kell javítani. Túró István több mint húsz éve foglalkozik vályog, vert falú és vegyes falazatú házak javításával: aláfalazással, betonozással, vakolással, glettel – mindazzal, ami egy régi ház falainak rendbetételéhez kell.</p>
+      <figure class="photo photo--intro reveal-img">
+        <img src="img/foto/service1-900.webp" srcset="img/foto/service1-900.webp 900w, img/foto/service1-1600.webp 1600w" sizes="(max-width: 900px) 92vw, 34vw" alt="Meszelt falú, nádtetős parasztház" loading="lazy" width="900" height="1350">
+      </figure>
     </div>
     <ol class="ledger" aria-label="Amit a munkánkról tudni érdemes">
       <li class="reveal"><span class="ledger__no">01</span><div><h3>Több mint 20 év szakmai tapasztalat</h3><p>Két évtized régi falazatokkal – a tapasztalat a mester saját pályájára vonatkozik, a TURPA BUILD Kft. 2018 óta működik.</p></div></li>
@@ -303,7 +227,7 @@
     <aside class="extra reveal" aria-labelledby="extra-cim">
       <h3 id="extra-cim">Kiegészítő munkák</h3>
       <ul>
-        <li>Bontási munkák</li><li>Alapozás, betonozás</li><li>Kőművesmunkák, átalakítás</li><li>Glettelés</li><li>Térkövezés</li><li>Kerítésépítés</li>
+        <li>Bontási munkák</li><li>Alapozás, betonozás</li><li>Kőművesmunkák, átalakítás</li><li>Glettelés</li><li>Nyílászárók beépítése</li><li>Tetőjavítás</li><li>Térkövezés</li><li>Kerítésépítés</li>
       </ul>
     </aside>
   </div>
@@ -317,6 +241,9 @@
       <h2 id="prob-cim" class="split">Amit a falon lát, <em>az még csak a tünet.</em></h2>
       <p class="sec-head__text reveal">Ezek a jelek okkal jelennek meg. Hogy mi az ok, és mi lesz a megoldás, azt látatlanban nem mondjuk meg – helyszíni felmérés után igen.</p>
       <a class="btn btn--forest reveal" href="#ajanlat">Felmérést kérek</a>
+      <figure class="photo photo--prob reveal-img">
+        <img src="img/foto/service2-900.webp" srcset="img/foto/service2-900.webp 900w, img/foto/service2-1600.webp 1600w" sizes="(max-width: 900px) 92vw, 30vw" alt="Régi, kopott vakolatú kis ház cseréptetővel" loading="lazy" width="900" height="1165">
+      </figure>
     </header>
     <ul class="symptoms">
       <li class="symptom reveal">
@@ -349,10 +276,28 @@
     <header class="sec-head sec-head--light">
       <p class="eyebrow eyebrow--light">Munkáink</p>
       <h2 id="munka-cim" class="split">Munkanapló <em>a felújított falakról.</em></h2>
-      <p class="sec-head__text reveal">A galéria szerkezete kész: szűrés, nagyítás, előtte–utána összevetés. A helyekre Túró István saját munkafotói kerülnek.</p>
+      <p class="sec-head__text reveal">Egy valódi munka közelről, alatta a galéria szerkezete: szűrés, nagyítás, előtte–utána összevetés.</p>
     </header>
 
-    <p class="notice reveal" role="note"><b>Látványterv-jelölés:</b> az alábbi képek rajzolt helyőrzők, nem valódi referenciák. A valódi munkafotók ügyféllel egyeztetendők.</p>
+    <article class="case reveal" aria-labelledby="case-cim">
+      <div class="case__imgs">
+        <figure><img src="img/foto/kocka-fal.webp" alt="Hosszú, frissen vakolt utcai fal kőlábazattal, a háttérben a csapat dolgozik" loading="lazy" width="720" height="900"><figcaption>A fal a lábazat leverése után</figcaption></figure>
+        <figure><img src="img/foto/kocka-munka.webp" alt="Munkatárs viszi ki a levert, salétromos vakolatdarabokat, előtérben talicska törmelékkel" loading="lazy" width="720" height="900"><figcaption>A salétromos rész elszállítása</figcaption></figure>
+      </div>
+      <div class="case__txt">
+        <p class="case__tag">Valódi munka · képkockák a bemutatkozó videóból</p>
+        <h3 id="case-cim">Salétromos lábazat, lélegző fal</h3>
+        <ol class="case__steps">
+          <li><b>Leverés</b>A régi ház alapját, lábazatát le kellett verni, mert salétromos volt.</li>
+          <li><b>Szellőztetés</b>A sérült részt eltávolították, a fal egy ideig kiszellőzik.</li>
+          <li><b>Könnyű vakolat</b>Utána egy könnyű vakolatréteget kap.</li>
+          <li><b>Mészhabarcs</b>Végül mészhabarcs kerül rá, hogy a fal tudjon levegőzni.</li>
+        </ol>
+        <a class="case__link" href="#mester" data-play-video>Nézze meg a videót <svg aria-hidden="true" viewBox="0 0 24 24"><use href="#i-nyil"/></svg></a>
+      </div>
+    </article>
+
+    <p class="notice reveal" role="note"><b>Látványterv-jelölés:</b> a lenti rács elemei rajzolt helyőrzők, nem valódi referenciák. További saját munkafotók ügyféllel egyeztetendők.</p>
 
     <div class="filters reveal" role="group" aria-label="Szűrés munkatípus szerint">
       <button type="button" class="chip is-on" data-f="mind" aria-pressed="true">Mind</button>
@@ -403,11 +348,14 @@
 <section class="master" id="mester" aria-labelledby="mester-cim">
   <div class="wrap master__grid">
     <figure class="master__frame reveal-img">
-      <div class="master__ph">
-        <svg viewBox="0 0 100 100" aria-hidden="true"><path d="M50 3.5 L97.5 39.5 L86 39.5 L50 13 L14 39.5 L2.5 39.5Z" fill="currentColor"/><g fill="#B76E45"><rect x="7" y="45.5" width="23" height="10.5"/><rect x="70" y="45.5" width="23" height="10.5"/><rect x="15.5" y="58.5" width="23" height="10.5"/><rect x="61.5" y="58.5" width="23" height="10.5"/><rect x="24" y="71.5" width="22.5" height="10.5"/><rect x="53.5" y="71.5" width="22.5" height="10.5"/><rect x="33" y="84.5" width="34" height="10.5"/></g></svg>
-        <span>Fotóhely: Túró István munka közben</span>
+      <div class="vid" id="vid">
+        <video id="mester-video" playsinline muted loop preload="none" poster="img/foto/video-1-poszter.webp" aria-label="Túró István bemutatkozó videója, beégetett felirattal">
+          <source src="img/foto/video-1-720.mp4" type="video/mp4">
+        </video>
+        <button type="button" class="vid__btn" id="vid-btn" aria-label="Videó lejátszása hanggal"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg><span>Lejátszás hanggal</span></button>
+        <button type="button" class="vid__mute" id="vid-mute" aria-label="Hang be/ki" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z"/><path class="w" d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/></svg></button>
       </div>
-      <figcaption>Valódi portré kerül ide – mesterséges arcképet szándékosan nem használunk.</figcaption>
+      <figcaption>A Vályog-Mester Facebook-oldalán megjelent bemutatkozó videó (2026. március).</figcaption>
     </figure>
     <div class="master__copy">
       <p class="eyebrow eyebrow--light">A mester</p>
@@ -416,7 +364,8 @@
       <blockquote class="quote reveal">
         <p>„Több mint húsz éve vályog, vegyes falazatú és vert falú házak teljes körű javításával foglalkozom. Aláfalazás, betonozás, vakolás, glettelés – bármi, ami ehhez kapcsolódik.”</p>
       </blockquote>
-      <p class="master__text reveal">Öröm ezt a munkát végezni – mondja –, mert egy rendbe tett régi ház a tulajdonosának sokkal többet jelent egy felújított épületnél. Az egyeztetés vele történik: ő jön ki felmérni, és ő felel a kivitelezésért.</p>
+      <p class="master__text reveal">A videóban egy folyamatban lévő munkát mutat be: egy régi ház salétromos lábazatát leverték, a falat hagyják kiszellőzni, utána könnyű vakolatot, majd mészhabarcsot kap, hogy a fal tudjon „levegőzni”. Közben a csapat nyílászárókat állít, vakol, falaz, betonoz, térkövez és tetőt javít.</p>
+      <p class="master__text reveal">Az egyeztetés vele történik: ő jön ki felmérni a bajokat, és ő felel a kivitelezésért.</p>
       <a class="btn btn--light reveal" href="tel:+36309669528"><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#i-tel"/></svg>+36 30 966 9528</a>
     </div>
   </div>
@@ -445,6 +394,96 @@
     <header class="sec-head sec-head--light">
       <p class="eyebrow eyebrow--light">Miért vályoghoz értő szakember?</p>
       <h2 id="miert-cim" class="split">A jó szándékú javítás <em>is árthat egy régi falnak.</em></h2>
+      <figure class="why__art" aria-label="Rajz: felújított alföldi parasztház oromfala, a jobb alsó sarokban metszettel, amely a fal rétegeit mutatja">
+      <svg class="house" viewBox="0 0 820 600" role="img" aria-hidden="true" focusable="false">
+        <defs>
+          <pattern id="p-valyog" width="52" height="26" patternUnits="userSpaceOnUse">
+            <image href="img/tx-valyog.webp" width="128" height="128" preserveAspectRatio="none"/>
+            <path d="M0 .5H52M0 13.5H52M.5 0V13M26.5 13V26M52 0V13" stroke="#6e4026" stroke-opacity=".55" stroke-width="1.6" fill="none"/>
+          </pattern>
+          <pattern id="p-tegla" width="30" height="11" patternUnits="userSpaceOnUse">
+            <rect width="30" height="11" fill="#9E5639"/>
+            <path d="M0 .5H30M0 6H30M.5 0V5.5M15.5 5.5V11" stroke="#E9DDCC" stroke-opacity=".75" stroke-width="1.1" fill="none"/>
+          </pattern>
+          <pattern id="p-beton" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+            <rect width="10" height="10" fill="#cfc6b6"/><path d="M0 5H10" stroke="#8d8576" stroke-width="1.2"/>
+          </pattern>
+          <pattern id="p-mesz" width="256" height="256" patternUnits="userSpaceOnUse">
+            <image href="img/tx-mesz.webp" width="256" height="256"/>
+          </pattern>
+          <clipPath id="c-fal"><path d="M150 290 L360 112 L570 290 L570 540 L150 540Z"/></clipPath>
+          <mask id="m-vakolat" maskUnits="userSpaceOnUse" x="0" y="0" width="820" height="600">
+            <rect class="sweep" x="140" y="90" width="440" height="460" fill="#fff"/>
+            <path class="cut" d="M538 300 L570 300 L570 541 L468 541 L476 506 L506 478 L534 452 L530 404 L541 352Z" fill="#000"/>
+          </mask>
+        </defs>
+
+        <!-- talaj -->
+        <g class="ground">
+          <path d="M40 540H790" stroke="var(--sand)" stroke-width="2"/>
+          <path d="M60 552h40M130 556h70M250 552h30M610 554h60M700 550h40M90 566h20M660 568h40" stroke="var(--sand)" stroke-opacity=".35" stroke-width="1.5"/>
+        </g>
+
+        <!-- kémény a gerinc mögött -->
+        <rect class="fill-in" x="404" y="64" width="28" height="84" fill="url(#p-mesz)"/>
+        <path class="draw" d="M404 148V64h28v84M398 64h40" fill="none" stroke="var(--ink-line)" stroke-width="2"/>
+
+        <!-- alap (metszetben) -->
+        <path class="fill-in" d="M446 541 L578 541 L578 578 L446 578Z" fill="url(#p-beton)"/>
+        <!-- fal: alul a vályog, rajta a vakolat -->
+        <g clip-path="url(#c-fal)">
+          <rect class="fill-in" x="150" y="100" width="420" height="440" fill="url(#p-valyog)"/>
+          <rect class="fill-in" x="150" y="488" width="420" height="52" fill="url(#p-tegla)"/>
+          <g mask="url(#m-vakolat)">
+            <rect x="150" y="100" width="420" height="440" fill="url(#p-mesz)"/>
+            <rect x="150" y="490" width="420" height="50" fill="#56604f"/>
+          </g>
+          <!-- vakolatréteg vastagsága a metszet szélén -->
+          <path class="cutedge" d="M538 300 L541 352 L530 404 L534 452 L506 478 L476 506 L468 541" fill="none" stroke="#E9DDCC" stroke-width="9" stroke-linejoin="round"/>
+          <path class="cutedge" d="M538 300 L541 352 L530 404 L534 452 L506 478 L476 506 L468 541" fill="none" stroke="#fbfaf6" stroke-width="3" stroke-linejoin="round" transform="translate(-5 0)"/>
+          <!-- repedés: felújítás előtt látszik -->
+          <path class="crack" d="M281 437 l6 9 -3 8 8 7 -2 10 7 6 -1 11" fill="none" stroke="#3a2a1f" stroke-width="2.2" stroke-linecap="round"/>
+        </g>
+
+        <!-- tetőél, oromdeszka -->
+        <path class="fill-in" d="M122 297 L360 88 L598 297 L578 291 L360 104 L142 291Z" fill="#9E5639"/>
+        <path class="draw" d="M122 297 L360 88 L598 297" fill="none" stroke="var(--ink-line)" stroke-width="3"/>
+        <path class="draw" d="M142 291 L360 104 L578 291" fill="none" stroke="var(--ink-line)" stroke-width="1.5"/>
+        <path class="draw" d="M150 290 H570 M150 540 V290 M570 540 V290" fill="none" stroke="var(--ink-line)" stroke-width="2"/>
+        <path class="draw" d="M146 296 H574" stroke="var(--ink-line)" stroke-width="5"/>
+
+        <!-- padlásszellőzők -->
+        <g class="fill-in">
+          <path d="M342 196 h14 v26 h-14z M364 196 h14 v26 h-14z" fill="#242521"/>
+          <path d="M342 196 h14 v26 h-14z M364 196 h14 v26 h-14z" fill="none" stroke="var(--ink-line)" stroke-width="2"/>
+          <path d="M335 228h50" stroke="var(--ink-line)" stroke-width="2"/>
+        </g>
+
+        <!-- ablakok -->
+        <g class="win fill-in">
+          <rect x="198" y="340" width="84" height="98" fill="#25352C"/>
+          <rect x="206" y="348" width="68" height="82" fill="#1c2420"/>
+          <path d="M240 348v82M206 389h68" stroke="#25352C" stroke-width="6"/>
+          <path d="M212 356l18 26M248 356l14 20" stroke="#E9DDCC" stroke-opacity=".18" stroke-width="2"/>
+          <rect x="192" y="438" width="96" height="7" fill="#E9DDCC"/>
+          <rect x="438" y="340" width="84" height="98" fill="#25352C"/>
+          <rect x="446" y="348" width="68" height="82" fill="#1c2420"/>
+          <path d="M480 348v82M446 389h68" stroke="#25352C" stroke-width="6"/>
+          <path d="M452 356l18 26M488 356l14 20" stroke="#E9DDCC" stroke-opacity=".18" stroke-width="2"/>
+          <rect x="432" y="438" width="96" height="7" fill="#E9DDCC"/>
+        </g>
+
+        <!-- metszet-feliratok -->
+        <g class="notes">
+          <g class="note"><circle cx="560" cy="318" r="3.5"/><path d="M560 318 H640 L652 300 H790"/><text x="652" y="292">Meszelés</text></g>
+          <g class="note"><circle cx="541" cy="340" r="3.5"/><path d="M541 340 L560 362 H790"/><text x="652" y="354">Vakolat</text></g>
+          <g class="note"><circle cx="553" cy="420" r="3.5"/><path d="M553 420 H790"/><text x="652" y="412">Vályogtégla</text></g>
+          <g class="note"><circle cx="530" cy="515" r="3.5"/><path d="M530 515 L566 476 H790"/><text x="652" y="468">Aláfalazás</text></g>
+          <g class="note"><circle cx="520" cy="562" r="3.5"/><path d="M520 562 L600 530 H790"/><text x="652" y="522">Alap</text></g>
+        </g>
+      </svg>
+      <figcaption class="sr-only">Illusztráció, nem fénykép.</figcaption>
+      </figure>
     </header>
     <dl class="why__list">
       <div class="reveal"><dt>Az anyagok összeférnek – vagy nem.</dt><dd>Egy régi földfalra nem mindegy, milyen vakolat, festék vagy szigetelés kerül. A rosszul megválasztott réteg bezárhatja a nedvességet, és a fal emiatt mállhat tovább.</dd></div>

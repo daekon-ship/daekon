@@ -94,6 +94,8 @@
   /* ================= MUNKANAPLÓ (helyőrzők) =================
      Valódi fotókhoz: adjon meg minden elemhez `src`-t (és `alt`-ot) – akkor kép jelenik meg rajz helyett. */
   const WORKS = [
+    { cat: 'teljes', t: 'Utcai fal a lábazat leverése után', ar: '4/5', k: 'haz', src: 'img/foto/kocka-fal.webp', alt: 'Hosszú, frissen vakolt utcai fal kőlábazattal', valodi: true },
+    { cat: 'vakolas', t: 'Salétromos vakolat elszállítása', ar: '4/5', k: 'vakolat', src: 'img/foto/kocka-munka.webp', alt: 'Munkatárs viszi a levert vakolatdarabokat', valodi: true },
     { cat: 'valyog', t: 'Vályogfal javítása, újravakolás', ar: '4/5', k: 'valyog' },
     { cat: 'teljes', t: 'Parasztház utcafront felújítás után', ar: '4/3', k: 'haz' },
     { cat: 'alafalazas', t: 'Szakaszos aláfalazás', ar: '3/2', k: 'alap' },
@@ -123,12 +125,12 @@
   const artHTML = w => {
     const [tex, svg] = ART[w.k];
     return `<div class="tile__art" style="--ar:${w.ar};background-image:url(img/${TEX[tex]})">` +
-      (w.src ? `<img src="${w.src}" alt="${w.alt || w.t}" loading="lazy" style="width:100%;height:100%;object-fit:cover">`
+      (w.src ? `<img src="${w.src}" alt="${w.alt || w.t}" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"><span class="tile__ph tile__ph--real">Valódi munka</span>`
              : `<svg viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${svg}</svg><span class="tile__ph">Fotóhely</span>`) + '</div>';
   };
   const CATN = { valyog: 'Vályogház', vert: 'Vert fal', alafalazas: 'Aláfalazás', vakolas: 'Vakolás', teljes: 'Teljes felújítás' };
   const mas = $('#masonry');
-  mas.innerHTML = WORKS.map((w, i) => `<li class="tile reveal" data-cat="${w.cat}"><button type="button" data-i="${i}" aria-label="Nagyítás: ${w.t} (helyőrző)">${artHTML(w)}<span class="tile__cap"><span>${CATN[w.cat]}</span><b>${w.t}</b></span></button></li>`).join('');
+  mas.innerHTML = WORKS.map((w, i) => `<li class="tile reveal" data-cat="${w.cat}"><button type="button" data-i="${i}" aria-label="Nagyítás: ${w.t}${w.valodi ? '' : ' (helyőrző)'}">${artHTML(w)}<span class="tile__cap"><span>${CATN[w.cat]}</span><b>${w.t}</b></span></button></li>`).join('');
   $$('.tile', mas).forEach(t => motion ? io.observe(t) : t.classList.add('is-in'));
 
   $$('.chip').forEach(c => c.addEventListener('click', () => {
@@ -146,7 +148,7 @@
     nb.style.backgroundImage = `url(img/${TEX[ART[w.k][0]]})`;
     nb.innerHTML = w.src ? `<img src="${w.src}" alt="${w.alt || w.t}" style="width:100%;height:100%;object-fit:cover">`
       : `<svg viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${ART[w.k][1]}</svg>`;
-    $('#lb-cap').textContent = `${w.t} · ${CATN[w.cat]} – helyőrző rajz, a valódi fotó egyeztetendő`;
+    $('#lb-cap').textContent = w.valodi ? `${w.t} · képkocka a bemutatkozó videóból` : `${w.t} · ${CATN[w.cat]} – helyőrző rajz, a valódi fotó egyeztetendő`;
   };
   mas.addEventListener('click', e => { const b = e.target.closest('button[data-i]'); if (!b) return; show(+b.dataset.i); lb.showModal(); });
   const step = d => { const v = visible(); show(v[(v.indexOf(cur) + d + v.length) % v.length]); };
@@ -275,9 +277,49 @@
   });
   go(0, false);
 
-  /* ================= GSAP: HERO + PARALLAX + FOLYAMATVONAL ================= */
+  /* ================= HERO FOTÓFILM =================
+     A valyog-mester.hu képei lassú áttűnéssel, „kameramozgással” – videószerű nyitókép. */
+  const slides = $$('.hero__film .slide');
+  const loadSlide = s => { if (s.dataset.src) { s.srcset = s.dataset.srcset || ''; s.src = s.dataset.src; delete s.dataset.src; } };
+  let si = 0;
+  const nextSlide = () => {
+    const cur = slides[si], nx = slides[(si + 1) % slides.length];
+    loadSlide(nx);
+    const go = () => { nx.classList.remove('is-on'); void nx.offsetWidth; nx.classList.add('is-on'); cur.classList.remove('is-on'); si = (si + 1) % slides.length; };
+    nx.complete && nx.naturalWidth ? go() : nx.addEventListener('load', go, { once: true });
+  };
+  if (motion && slides.length > 1) {
+    addEventListener('load', () => slides.slice(1).forEach(loadSlide), { once: true });
+    let timer = setInterval(nextSlide, 7000);
+    document.addEventListener('visibilitychange', () => { clearInterval(timer); if (!document.hidden) timer = setInterval(nextSlide, 7000); });
+  }
+
+  /* ================= BEMUTATKOZÓ VIDEÓ =================
+     Látótérben némítva, hurokban fut (a felirat be van égetve); gombra elölről, hanggal. */
+  const vidBox = $('#vid'), video = $('#mester-video'), vBtn = $('#vid-btn'), vMute = $('#vid-mute');
+  const playWithSound = () => {
+    video.muted = false; video.loop = false; video.currentTime = 0; video.controls = true;
+    video.play().catch(() => {});
+    vBtn.hidden = true; vMute.hidden = false; vidBox.classList.remove('is-muted');
+  };
+  vBtn.addEventListener('click', playWithSound);
+  vMute.addEventListener('click', () => { video.muted = !video.muted; vidBox.classList.toggle('is-muted', video.muted); });
+  video.addEventListener('ended', () => { video.controls = false; vBtn.hidden = false; vMute.hidden = true; });
+  if (motion) {
+    new IntersectionObserver(([e]) => {
+      if (e.isIntersecting && video.muted && vBtn.hidden === false) { video.preload = 'auto'; video.play().catch(() => {}); }
+      else if (!e.isIntersecting) video.pause();
+    }, { threshold: .4 }).observe(vidBox);
+  }
+  $$('[data-play-video]').forEach(a => a.addEventListener('click', e => {
+    e.preventDefault();
+    $('#mester').scrollIntoView({ behavior: motion ? 'smooth' : 'auto', block: 'center' });
+    playWithSound();
+  }));
+
+  /* ================= GSAP: HERO + RAJZ + PARALLAX + FOLYAMATVONAL ================= */
   const start = () => {
-    const hTitle = $('.hero__title'), hFade = $$('.hero .eyebrow, .hero__lead, .hero__ctas, .hero__bar');
+    const hTitle = $('.hero__title'), hFade = $$('.hero .eyebrow, .hero__lead, .hero__ctas, .hero__reel, .hero__bar');
     if (!motion || !window.gsap) {
       hTitle.classList.add('is-in');
       return;
@@ -285,24 +327,28 @@
     const g = window.gsap;
     if (window.ScrollTrigger) g.registerPlugin(window.ScrollTrigger);
     g.set(hFade, { autoAlpha: 0, y: 18 });
-    const tl = g.timeline({ defaults: { ease: 'power3.out' } });
-    tl.to('.hero .eyebrow', { autoAlpha: 1, y: 0, duration: .7 }, .15)
+    g.timeline({ defaults: { ease: 'power3.out' } })
+      .to('.hero .eyebrow', { autoAlpha: 1, y: 0, duration: .7 }, .15)
       .add(() => hTitle.classList.add('is-in'), .25)
-      .to('.house .draw', { strokeDashoffset: 0, duration: 1.6, ease: 'power2.inOut', stagger: .08 }, .2)
       .to('.hero__lead, .hero__ctas', { autoAlpha: 1, y: 0, duration: .8, stagger: .1 }, .75)
-      .to('.house .fill-in', { opacity: 1, duration: .8, stagger: .05 }, 1.0)
-      .fromTo('.house .crack', { opacity: 0 }, { opacity: 1, duration: .4 }, 1.5)
-      .fromTo('.house .sweep', { attr: { width: 0 } }, { attr: { width: 440 }, duration: 1.5, ease: 'power2.inOut' }, 1.9)
-      .to('.house .crack', { opacity: 0, duration: .5 }, 2.6)
-      .to('.house .cutedge', { opacity: 1, duration: .5 }, 3.1)
-      .to('.house .note', { opacity: 1, duration: .5, stagger: .12 }, 3.2)
-      .to('.hero__bar', { autoAlpha: 1, y: 0, duration: .8 }, 1.4);
+      .to('.hero__reel', { autoAlpha: 1, y: 0, duration: .8 }, 1.1)
+      .to('.hero__bar', { autoAlpha: 1, y: 0, duration: .8 }, 1.25);
 
-    if (!window.ScrollTrigger) return;
+    // a „falmetszet” rajz a Miért-szekcióban, belépéskor rajzolódik ki
+    const house = g.timeline({ paused: true, defaults: { ease: 'power3.out' } })
+      .to('.house .draw', { strokeDashoffset: 0, duration: 1.6, ease: 'power2.inOut', stagger: .08 }, 0)
+      .to('.house .fill-in', { opacity: 1, duration: .8, stagger: .05 }, .8)
+      .fromTo('.house .crack', { opacity: 0 }, { opacity: 1, duration: .4 }, 1.3)
+      .fromTo('.house .sweep', { attr: { width: 0 } }, { attr: { width: 440 }, duration: 1.5, ease: 'power2.inOut' }, 1.7)
+      .to('.house .crack', { opacity: 0, duration: .5 }, 2.4)
+      .to('.house .cutedge', { opacity: 1, duration: .5 }, 2.9)
+      .to('.house .note', { opacity: 1, duration: .5, stagger: .12 }, 3.0);
+
+    if (!window.ScrollTrigger) { house.play(); return; }
+    window.ScrollTrigger.create({ trigger: '.why__art', start: 'top 80%', once: true, onEnter: () => house.play() });
     const mm = g.matchMedia();
     mm.add('(min-width: 901px)', () => {
-      g.to('.hero__art', { yPercent: 9, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
-      g.to('.hero__copy', { yPercent: -6, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
+      g.to('.hero__copy', { yPercent: -8, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
     });
     const stepsEl = $('.steps');
     g.fromTo(stepsEl, { '--line-p': 0 }, { '--line-p': 1, ease: 'none', scrollTrigger: { trigger: stepsEl, start: 'top 75%', end: 'bottom 55%', scrub: true } });

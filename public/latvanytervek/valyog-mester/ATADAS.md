@@ -2,7 +2,7 @@
 
 **Élő terv:** https://daekon-ship.github.io/daekon/latvanytervek/valyog-mester/
 **Koncepció + arculat:** https://daekon-ship.github.io/daekon/latvanytervek/valyog-mester/koncepcio.html
-**Állapot:** 1. kör, előzetes látványterv (noindex). A valyog-mester.hu élő oldal érintetlen.
+**Állapot:** 2. kör (a jelenlegi oldal képeivel és Túró István bemutatkozó videójával), előzetes látványterv (noindex). A valyog-mester.hu élő oldal érintetlen.
 **Felépítés:** build nélküli statikus oldal a DAEKON-látványtervek házszabálya szerint (`index.html` + `valyog.css` + `valyog.js`), relatív útvonalakkal – bármilyen almappában működik. A briefben javasolt React + Vite + TS stacket szándékosan nem vezettem be: a repó összes látványterve build nélküli, és a Vite a `public/` tartalmát változatlanul másolja. Éles oldalhoz a komponensek 1:1 átvihetők React/Vite-ba (lásd „Komponensek”).
 
 ## Valós adatok (ellenőrizve)
@@ -18,22 +18,30 @@
 
 **Szándékosan kihagyva** (nem igazolható): 145+ projekt, 98% elégedettség, 100% garancia, „az ország egyik legmegbecsültebb” – ezek a régi oldalon szerepeltek.
 
-## Képek – felmérés
-| Kép | Forrás-URL | Méret | Besorolás | Felhasználva |
-|---|---|---|---|---|
-| logo.png | https://valyog-mester.hu/images/logo.png | 940×788 | régi logó (kék clipart-építő) | nem – új logó készült |
-| hero.jpg | https://valyog-mester.hu/images/hero.jpg | 6048×4024 | nádtetős skanzenház – stock jellegű, ismeretlen eredet | nem |
-| about.jpg | https://valyog-mester.hu/images/about.jpg | 5100×3400 | nádtetős ház – stock jellegű | nem |
-| service1.jpg | https://valyog-mester.hu/images/service1.jpg | 4160×6240 | külföldi stílusú cottage – stock jellegű | nem |
-| service2.jpg | https://valyog-mester.hu/images/service2.jpg | 3990×5164 | cseréptetős kis ház – stock jellegű | nem |
-| service3.jpg | https://valyog-mester.hu/images/service3.jpg | 4160×6240 | nádtetős fehér cottage – stock jellegű | nem |
-| Daibau „Építkezés” | https://www.daibau.hu/showfile.php?id=87480 | 1900×790 | drónfotó mellényes csapatról födémen; „© TURPA BUILD KFT” jelöléssel, de nem vályogmunka, és stock jellegű | nem – egyeztetendő |
+## Képek és videó (2. kör)
+A médiát egy egyszeri GitHub Actions futás töltötte le az élő oldalról (`_forras/media.py`, jelentés: `_forras/media-jelentes.json`), webp-re alakítva 900/1600/2400 px-ben (`img/foto/`).
 
-Egyik kép sem bizonyíthatóan a cég saját munkája, ezért (házszabály: nincs stock/„AI kép”) **minden látvány programból rajzolt**: `_forras/texturak.py` (anyagtextúrák: vályog szalmával, vert fal, mész, homok, erdőzöld, papírszemcse – `img/tx-*.webp`), a hero és a falrajz inline SVG. Törött kép nincs (ellenőrizve 1440/768/390/360 px-en).
+| Fájl | Forrás | Hol látszik | Megjegyzés |
+|---|---|---|---|
+| `hero-*.webp` | https://valyog-mester.hu/images/hero.jpg (6048×4024) | hero, 1. kocka | ismeretlen eredetű, stock jellegű |
+| `about-*.webp` | https://valyog-mester.hu/images/about.jpg (5100×3400) | hero, 2. kocka | ismeretlen eredetű |
+| `service3-*.webp` | https://valyog-mester.hu/images/service3.jpg | hero, 3. kocka | ismeretlen eredetű |
+| `service1-*.webp` | https://valyog-mester.hu/images/service1.jpg | Bemutatkozás | ismeretlen eredetű |
+| `service2-*.webp` | https://valyog-mester.hu/images/service2.jpg | Problémák | ismeretlen eredetű |
+| `video-1-720.mp4` (34 mp, 720×1280, hanggal, 6,8 MB), `video-1-poszter.webp` | a valyog-mester.hu-ba ágyazott Facebook-reel: https://www.facebook.com/reel/3101964210191311/ – feltöltő: Vályog-Mester, 2026.03.12. | A mester szekció | **a cég saját anyaga**, beégetett felirattal |
+| `kocka-istvan/fal/munka.webp` | képkockák a videóból | hero videókártya, „Valódi munka” blokk, galéria első 2 eleme | **valódi munka** |
+
+A régi logó (logo.png) nincs használva – új logó készült.
+
+**Fontos:** az 5 állókép eredete ismeretlen (stock jellegű, a cég munkájaként sehol nem szerepelnek, csak hangulatképként). Éles publikálás előtt a jogosultságot az ügyféllel tisztázni kell, vagy saját fotóra cserélni. A videó és a képkockák a cég saját Facebook-oldaláról származnak.
+
+**Videó viselkedése:** `preload="none"`; látótérben némítva, hurokban indul (a felirat be van égetve, hang nélkül is érthető), elhagyva megáll. „Lejátszás hanggal” gomb: elölről, hanggal, vezérlőkkel; jobb felül némítás. A hero videókártyája és a „Nézze meg a videót” link odagörget és hanggal indítja. `prefers-reduced-motion` esetén nincs automatikus lejátszás és nincs fotóáttűnés.
+
+**A videó tartalma (a beégetett feliratokból):** Túró István, a TURPA BUILD Kft. ügyvezető igazgatója, vályogházakkal foglalkozik. Egy régi ház alapját, lábazatát le kellett verni, mert salétromos volt; eltávolították, szellőztetik, utána könnyű vakolatot, majd mészhabarcsot kap, hogy tudjon levegőzni. Nyílászárókat állítanak, térköveznek, vakolnak, falaznak, betonoznak, tetőt javítanak. Az ajánlatkérő kitöltését kéri, hogy minél hamarabb felmérhesse a bajokat. Ebből készült a „Salétromos lábazat, lélegző fal” blokk, és a kiegészítő munkák közé bekerült a nyílászáró-beépítés és a tetőjavítás.
 
 ## Egyeztetendő az ügyféllel
-1. **Saját munkafotók** – a „Munkanapló” 9 helye rajzolt helyőrző (jelölve). Csere: `valyog.js` → `WORKS` tömb, elemenként `src` + `alt`; ha van `src`, fotó jelenik meg rajz helyett. Előtte–utána párokhoz ugyanarról a falról két fotó kell.
-2. **Túró István portréja** (valódi fotó; mesterségeset nem használtam).
+1. **Saját munkafotók** – a galéria 2 valódi képkockán kívül 9 rajzolt helyőrzőt tartalmaz (jelölve). A hero és a szekciók 5 állóképének jogosultsága tisztázandó. Csere: `valyog.js` → `WORKS` tömb, elemenként `src` + `alt`; ha van `src`, fotó jelenik meg rajz helyett. Előtte–utána párokhoz ugyanarról a falról két fotó kell.
+2. **Túró István portréja** – most a videó képkockája áll a helyén; egy jobb minőségű fotó jól jönne.
 3. **Cégjegyzékszám, adószám** – a láblécben „egyeztetendő”. Az onlinecegbazis.hu oldalán nem szerepeltek.
 4. **Munkaterület** – a régi oldal „országos kiszállást” ír, a Daibau Fegyvernek + környék, más országrészek. A GYIK-ban Fegyvernek és Jász-Nagykun-Szolnok vármegye áll, távolabbra egyeztetéssel.
 5. **Hívható időszak** (kapcsolat blokk).
@@ -53,7 +61,7 @@ Egyik kép sem bizonyíthatóan a cég saját munkája, ezért (házszabály: ni
 | Mobil hívássáv | működik; elrejtődik a heróban, a kapcsolat résznél és a láblécben |
 
 ## Art direction — „Falmetszet”
-A tudás a falban van: építészeti homlokzatrajz egy alföldi parasztház oromfaláról, a jobb alsó sarkában metszettel. Fotó helyett az anyag maga a látvány: meszelt vakolat, szalmás vályogtégla, döngölt vert fal, égetett tégla, beton.
+Nyitókép: a jelenlegi oldal fotóiból lassú áttűnésű, kameramozgásos „fotófilm” (CSS Ken Burns, 7 mp-enként váltás), mellette Túró István videókártyája. A „falmetszet” homlokzatrajz a Miért-szekcióba költözött: belépéskor kirajzolódik, a mész ráhúzódik a repedt vályogfalra, majd megjelennek a rétegfeliratok.
 
 ## Új logó (`arculat/`)
 A V betű befelé lépcsőző vályogtéglákból épül, fölötte a parasztház tetővonala: monogram + falazat + tető egy jelben. A szöveg görbére alakítva (`_forras/logo.py`), betűtípus nélkül is pontos.
@@ -92,9 +100,11 @@ Sávok: erdőzöld hero → elefántcsont bemutatkozás → homok szolgáltatás
 ## Mozgás
 | Elem | Mit csinál | Kiváltó |
 |---|---|---|
-| Hero | 1) ház vonalai kirajzolódnak (stroke), 2) anyagok beúsznak, megjelenik a repedt vályogfal, 3) a mész balról jobbra ráhúzódik (maszk), a repedés eltűnik, 4) a metszet széle és a feliratok sorban megjelennek – kb. 3,7 s | betöltés (GSAP idővonal) |
+| Hero | fotók lassú áttűnése és nagyítása; cím szavanként, szöveg, gombok, videókártya beúszik | betöltés |
+| Falmetszet-rajz (Miért) | 1) vonalak kirajzolódnak, 2) anyagok, repedt vályogfal, 3) mész ráhúzódik, repedés eltűnik, 4) metszet és feliratok – kb. 3,5 s | belépés a nézetbe (egyszer) |
+| Videó | némított hurok látótérben, megáll elhagyva | görgetés |
 | Cím-felfedés | szavanként alulról | belépés a nézetbe |
-| Hero parallax | rajz lassabban, szöveg gyorsabban mozog (csak desktop) | görgetés, scrub |
+| Hero parallax | a szöveg gyorsabban mozog a háttérnél (csak desktop) | görgetés, scrub |
 | Falrajz | az aktív szolgáltatás zónája kiemelődik, a többi halványul | görgetés (képernyő közepe) / egér |
 | Folyamatvonal | agyagszínű vonal kitöltődik a 4 lépésen | görgetés, scrub |
 | Képek, kártyák | felúszás, a portréhely clip-path nyitással | belépés |
