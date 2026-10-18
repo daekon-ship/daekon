@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vályog-Mester – koncepció és arculat</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<style>
+@font-face { font-family: "Cormorant Garamond"; src: url("fonts/cormorant-var.woff") format("woff"); font-weight: 300 700; font-display: swap; }
+@font-face { font-family: "Cormorant Garamond"; src: url("fonts/cormorant-italic-var.woff") format("woff"); font-weight: 300 700; font-style: italic; font-display: swap; }
+@font-face { font-family: "Manrope"; src: url("fonts/manrope-var.woff") format("woff"); font-weight: 200 800; font-display: swap; }
+:root { --forest:#25352C; --clay:#B76E45; --clay-ink:#8E4F2C; --sand:#E9DDCC; --ivory:#F8F5EF; --char:#242521; --terra:#9E5639; --soft:#4F524A; --line:rgba(36,37,33,.14); }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--ivory); color: var(--char); font: 450 1.0625rem/1.65 Manrope, system-ui, sans-serif; overflow-x: clip; }
+img, svg { display: block; max-width: 100%; }
+.wrap { width: min(100% - 2.5rem, 1180px); margin-inline: auto; }
+h1, h2, h3 { font-family: "Cormorant Garamond", serif; font-weight: 500; margin: 0; line-height: 1.1; }
+h1 { font-size: clamp(2.2rem, 1.6rem + 2vw, 3.2rem); }
+h2 { font-size: clamp(1.8rem, 1.4rem + 1.4vw, 2.5rem); margin-bottom: 1rem; }
+h3 { font-size: 1.55rem; }
+em { color: var(--clay-ink); }
+.eyebrow { font: 700 .72rem/1 Manrope, sans-serif; letter-spacing: .2em; text-transform: uppercase; color: var(--clay-ink); margin: 0 0 1rem; }
+header.top { background: var(--forest) url("img/tx-erdo.webp"); background-size: 420px; color: var(--ivory); padding: 2rem 0 4rem; }
+header.top img { width: 220px; margin-bottom: 3.5rem; }
+header.top p { max-width: 40rem; color: rgba(248,245,239,.8); margin-top: 1rem; }
+header.top em { color: #E3A27B; }
+header.top a { color: var(--ivory); }
+section { padding: 4.5rem 0; border-bottom: 1px solid var(--line); }
+.dirs { display: grid; gap: 1.5rem; }
+.dir { display: grid; grid-template-columns: 1fr 1.25fr; gap: 2rem; padding: 2rem; border: 1px solid var(--line); border-radius: 4px; background: #fff; }
+.dir.win { border: 2px solid var(--forest); }
+.dir__tag { display: inline-block; margin-bottom: .8rem; padding: .25rem .6rem; border-radius: 3px; font: 700 .66rem/1.4 Manrope; letter-spacing: .14em; text-transform: uppercase; background: var(--sand); }
+.dir.win .dir__tag { background: var(--forest); color: var(--ivory); }
+.dir p { margin: .6rem 0 0; color: var(--soft); font-size: .97rem; }
+.dir dl { margin: 0; display: grid; gap: .55rem; font-size: .93rem; }
+.dir dt { font: 700 .68rem/1.6 Manrope; letter-spacing: .12em; text-transform: uppercase; color: var(--clay-ink); }
+.dir dd { margin: 0 0 .4rem; }
+.sw { display: flex; gap: .35rem; margin-top: 1rem; }
+.sw i { width: 2.2rem; height: 2.2rem; border-radius: 3px; border: 1px solid var(--line); }
+.verdict { margin-top: 1rem; padding: .8rem 1rem; border-left: 3px solid var(--clay); background: var(--ivory); font-size: .93rem; }
+.logos { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.lp { display: grid; place-items: center; min-height: 15rem; padding: 2rem; border-radius: 4px; }
+.lp--l { background: #fff; border: 1px solid var(--line); }
+.lp--d { background: var(--forest); }
+.lp--s { background: var(--sand); }
+.lp small { align-self: end; font: 700 .64rem/1 Manrope; letter-spacing: .14em; text-transform: uppercase; opacity: .6; }
+.lp--d small { color: var(--ivory); }
+.lp img { max-height: 9rem; }
+.apps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1rem; }
+.app { border-radius: 4px; overflow: hidden; background: var(--sand); padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
+.app small { font: 700 .64rem/1 Manrope; letter-spacing: .14em; text-transform: uppercase; color: var(--soft); }
+.card { aspect-ratio: 85/55; background: var(--forest); border-radius: 3px; padding: 7%; display: flex; flex-direction: column; justify-content: space-between; color: var(--ivory); box-shadow: 0 14px 30px -14px rgba(0,0,0,.4); }
+.card img { width: 58%; }
+.card p { margin: 0; font-size: .7rem; line-height: 1.5; }
+.card b { font: 600 1rem/1.2 "Cormorant Garamond"; display: block; }
+.shirt, .van { width: 100%; height: auto; }
+.specs { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 1.5rem 2rem; }
+.specs h3 { margin-bottom: .5rem; }
+.specs p, .specs li { color: var(--soft); font-size: .95rem; }
+.specs ul { padding-left: 1.1rem; margin: 0; }
+.chips { display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem; }
+.chip { padding: 2.6rem .8rem .7rem; border-radius: 3px; font: 600 .78rem/1.3 Manrope; }
+.files code { font-size: .86rem; }
+footer { padding: 2.5rem 0 4rem; font-size: .88rem; color: var(--soft); }
+@media (max-width: 800px) {
+  .dir, .logos, .apps { grid-template-columns: 1fr; }
+  .dir { padding: 1.4rem; }
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <img src="arculat/logo-vizszintes-sotet.svg" alt="Vályog-Mester">
+    <p class="eyebrow" style="color:var(--sand)">Látványterv · 1. kör · DAEKON</p>
+    <h1>Koncepció és <em>új arculat</em></h1>
+    <p>Három kreatív irányt vizsgáltam meg, ebből a „Falmetszet” lett kidolgozva. Lent az új logócsalád és a használati példák. <a href="./">→ A kész látványterv</a></p>
+  </div>
+</header>
+
+<main>
+<section>
+  <div class="wrap">
+    <p class="eyebrow">Kiindulás</p>
+    <h2>Mit tud a mostani oldal, és mi hiányzik?</h2>
+    <div class="specs">
+      <div><h3>Ami jó</h3><ul><li>Valódi telefonszám és e-mail, működő tel: és mailto: linkek</li><li>Hatlépéses ajánlatkérő</li><li>Túró István saját szavai a munkájáról</li></ul></div>
+      <div><h3>Ami gond</h3><ul><li>Az 5 fotó stockkép jellegű (nádtetős skanzenház, külföldi cottage-ok) – nem a cég munkái</li><li>Ellenőrizhetetlen számok: 145+ projekt, 98%, 100% garancia</li><li>Sablonos, kék „építőipari” clipart logó</li><li>Általános reklámszöveg („mozgalom”, „mi diktálunk”)</li></ul></div>
+      <div><h3>Amit a látogatónak azonnal érteni kell</h3><ul><li>Mit csinál: régi vályog-, vert- és vegyes falak felújítását</li><li>Miért őt hívja: 20+ év, a falazathoz illő javítás</li><li>Hogyan kér ajánlatot: telefon vagy rövid ajánlatkérő</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">Három irány</p>
+    <h2>Kreatív irányok</h2>
+    <div class="dirs">
+      <article class="dir win">
+        <div>
+          <span class="dir__tag">Kiválasztva · A</span>
+          <h3>Falmetszet</h3>
+          <p>A vállalkozás tudása a falban van – ezt mutatjuk meg. Építészeti homlokzatrajz egy alföldi parasztházról, amelynek sarkán metszet nyílik: meszelés, vakolat, vályogtégla, aláfalazás, alap.</p>
+          <div class="sw"><i style="background:#25352C"></i><i style="background:#B76E45"></i><i style="background:#E9DDCC"></i><i style="background:#F8F5EF"></i><i style="background:#9E5639"></i></div>
+        </div>
+        <div>
+          <dl>
+            <dt>Hero</dt><dd>A ház vonalai kirajzolódnak, megjelenik a repedt vályogfal, majd a friss mész „ráhúzódik” – a repedés eltűnik, a metszet megmarad.</dd>
+            <dt>Szignatúra</dt><dd>Szolgáltatásoknál egy ragadós falrajz: görgetésre kiemelődik a fal azon része (vályog, vert fal, vegyes, aláfalazás, vakolat), amelyről épp szó van.</dd>
+            <dt>Típus</dt><dd>Cormorant Garamond (címek, dőlt kiemelés) + Manrope (szöveg)</dd>
+          </dl>
+          <p class="verdict"><b>Miért ez?</b> Egyszerre szakmai és látványos, nem igényel fotót, mégsem „AI-hangulatú”: minden elem a mesterségből jön. Valódi fotók érkezése után is működik.</p>
+        </div>
+      </article>
+      <article class="dir">
+        <div>
+          <span class="dir__tag">B</span>
+          <h3>Mesterkönyv</h3>
+          <p>Munkanapló-esztétika: milliméterpapír, kézírásos jegyzetek, mérőszalag, felmérési lapok. Az oldal egy felmérés menetét követi végig.</p>
+          <div class="sw"><i style="background:#F3EEE3"></i><i style="background:#2F3B44"></i><i style="background:#B76E45"></i><i style="background:#C9B48F"></i></div>
+        </div>
+        <div>
+          <dl><dt>Hero</dt><dd>Felmérési lap a ház vázlatával, rajta jegyzetek, ahogy a mester körbejárja.</dd><dt>Szignatúra</dt><dd>Lapozható „felmérési jegyzőkönyv” a problémáknál.</dd></dl>
+          <p class="verdict"><b>Miért nem?</b> Hiteles, de a kézírásos elemek könnyen játékossá, kevésbé prémiummá teszik; mobilon nehezen olvasható.</p>
+        </div>
+      </article>
+      <article class="dir">
+        <div>
+          <span class="dir__tag">C</span>
+          <h3>Föld és mész</h3>
+          <p>Tisztán tipográfiai, nagy színmezős irány: erdőzöld és agyag felületek, anyagtextúra-szalagok, minimális rajz.</p>
+          <div class="sw"><i style="background:#25352C"></i><i style="background:#9E5639"></i><i style="background:#F8F5EF"></i></div>
+        </div>
+        <div>
+          <dl><dt>Hero</dt><dd>Vízszintes anyagrétegek (föld, vályog, vakolat, mész) tolódnak egymásra görgetésre.</dd><dt>Szignatúra</dt><dd>Rétegcsúszka a szolgáltatásoknál.</dd></dl>
+          <p class="verdict"><b>Miért nem?</b> Elegáns, de túl elvont: nem látszik azonnal, hogy régi házakról van szó – a látogatónak magyarázni kellene.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">Arculat</p>
+    <h2>Új logó: V, tető és falazat egy jelben</h2>
+    <p style="max-width:44rem;color:var(--soft);margin-bottom:2rem">A V betű egymásra rakott, befelé lépcsőző vályogtéglákból épül, fölötte a parasztház oromzatának tetővonala. Nem házikó-clipart: a jel egyszerre monogram, falazati motívum és tető. Egy színben is működik (hímzés, fóliavágás, pecsét).</p>
+    <div class="logos">
+      <div class="lp lp--l"><img src="arculat/logo-vizszintes-vilagos.svg" alt="Vízszintes logó, világos háttéren"><small>Elsődleges · vízszintes · világos</small></div>
+      <div class="lp lp--d"><img src="arculat/logo-vizszintes-sotet.svg" alt="Vízszintes logó, sötét háttéren"><small>Elsődleges · vízszintes · sötét</small></div>
+      <div class="lp lp--s"><img src="arculat/logo-allo-vilagos.svg" alt="Álló logó"><small>Álló változat</small></div>
+      <div class="lp lp--l" style="grid-template-columns:repeat(3,auto);gap:2rem;align-items:center">
+        <img src="arculat/emblema-vilagos.svg" alt="Embléma" style="width:110px">
+        <img src="arculat/emblema-egyszinu.svg" alt="Egyszínű embléma" style="width:80px">
+        <img src="favicon.svg" alt="Favicon" style="width:48px">
+        <small style="grid-column:1/-1;justify-self:center">Embléma · egyszínű · favicon</small>
+      </div>
+    </div>
+
+    <div class="apps">
+      <div class="app"><small>Névjegykártya</small>
+        <div class="card"><img src="arculat/logo-vizszintes-sotet.svg" alt=""><p><b>Túró István</b>ügyvezető · TURPA BUILD Kft.<br>+36 30 966 9528 · valyog.mester@gmail.com</p></div>
+      </div>
+      <div class="app"><small>Munkaruha (hímzett embléma)</small>
+        <svg class="shirt" viewBox="0 0 300 220" aria-label="Póló rajza hímzett emblémával" role="img">
+          <path d="M95 20l-60 30 18 45 25-10v125h144V85l25 10 18-45-60-30c-8 18-26 28-55 28s-47-10-55-28z" fill="#25352C"/>
+          <path d="M95 20c8 18 26 28 55 28s47-10 55-28" fill="none" stroke="#1b2721" stroke-width="5"/>
+          <g transform="translate(176 72) scale(.3)"><path d="M50 3.5 L97.5 39.5 L86 39.5 L50 13 L14 39.5 L2.5 39.5Z" fill="#E9DDCC"/><g fill="#B76E45"><rect x="7" y="45.5" width="23" height="10.5"/><rect x="70" y="45.5" width="23" height="10.5"/><rect x="15.5" y="58.5" width="23" height="10.5"/><rect x="61.5" y="58.5" width="23" height="10.5"/><rect x="24" y="71.5" width="22.5" height="10.5"/><rect x="53.5" y="71.5" width="22.5" height="10.5"/><rect x="33" y="84.5" width="34" height="10.5"/></g></g>
+        </svg>
+      </div>
+      <div class="app"><small>Autódekoráció (ajtó)</small>
+        <svg class="van" viewBox="0 0 300 180" aria-label="Kisteherautó-ajtó rajza logóval" role="img">
+          <rect x="10" y="20" width="280" height="130" rx="10" fill="#F8F5EF" stroke="#c9bfae"/>
+          <rect x="10" y="118" width="280" height="32" fill="#25352C"/>
+          <path d="M10 118h280" stroke="#B76E45" stroke-width="4"/>
+          <image href="arculat/logo-vizszintes-vilagos.svg" x="30" y="45" width="200" height="40"/>
+          <text x="30" y="140" fill="#F8F5EF" font-family="Manrope" font-weight="700" font-size="13" letter-spacing="1">+36 30 966 9528</text>
+          <circle cx="70" cy="160" r="16" fill="#242521"/><circle cx="230" cy="160" r="16" fill="#242521"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">Színek és betűk</p>
+    <h2>Rendszer</h2>
+    <div class="chips">
+      <div class="chip" style="background:#25352C;color:#F8F5EF">Deep Forest #25352C</div>
+      <div class="chip" style="background:#B76E45">Warm Clay #B76E45</div>
+      <div class="chip" style="background:#9E5639;color:#F8F5EF">Terracotta #9E5639</div>
+      <div class="chip" style="background:#E9DDCC">Natural Sand #E9DDCC</div>
+      <div class="chip" style="background:#F8F5EF;border:1px solid var(--line)">Ivory #F8F5EF</div>
+      <div class="chip" style="background:#242521;color:#F8F5EF">Charcoal #242521</div>
+    </div>
+    <div class="specs" style="margin-top:2rem">
+      <div><h3>Cormorant Garamond</h3><p>Címek 500, kiemelés dőlt 450. Mérsékelt méretek: H1 legfeljebb 3,75rem, H2 3rem.</p></div>
+      <div><h3 style="font-family:Manrope;font-weight:700;font-size:1.2rem">Manrope</h3><p>Törzsszöveg 450 / 17px, címkék 700 nagybetűvel, széles betűközzel.</p></div>
+      <div class="files"><h3>Fájlok</h3><p><code>arculat/</code> – vízszintes és álló logó világos/sötét/egyszínű, embléma (3 változat), favicon SVG + PNG (32, 180, 512). Minden SVG görbére alakított szöveggel, betűtípus nélkül is pontos.</p></div>
+    </div>
+  </div>
+</section>
+</main>
+<footer><div class="wrap">Vályog-Mester · látványterv, DAEKON 2026 · nem éles oldal</div></footer>
+</body>
+</html>
