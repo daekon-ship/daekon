@@ -52,7 +52,7 @@ void main() {
 
     // 1. REGISTER + DEVICE
     final email = 'live-${DateTime.now().millisecondsSinceEpoch}@example.test';
-    const password = 'Elo-Teszt-Jelszo-2026';
+    const password = 'Elo-Teszt-Jelszo-2026'; // gitleaks:allow (eldobható teszt-fiók jelszava)
     final kv1 = MemoryKeyValueStore();
     final phone1 = newSession(kv1);
     await phone1.register(email: email, password: password);

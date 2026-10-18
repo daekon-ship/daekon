@@ -69,7 +69,7 @@ function dev(): array
 function account(): array
 {
     $email = 'live-' . bin2hex(random_bytes(5)) . '@example.test';
-    [$s, $j] = req('POST', '/api/v1/auth/register', ['email' => $email, 'password' => 'Elo-Teszt-Jelszo-2026', 'device' => dev()]);
+    [$s, $j] = req('POST', '/api/v1/auth/register', ['email' => $email, 'password' => 'Elo-Teszt-Jelszo-2026', 'device' => dev()]); // gitleaks:allow (eldobható teszt-fiók)
     if ($s !== 201) {
         throw new RuntimeException("register $s");
     }
@@ -92,7 +92,7 @@ function quotePayload(string $valid = '+30 days'): array
 }
 function cleanup(array $u): void
 {
-    req('POST', '/api/v1/account/delete', ['password' => 'Elo-Teszt-Jelszo-2026'], $u['auth']);
+    req('POST', '/api/v1/account/delete', ['password' => 'Elo-Teszt-Jelszo-2026'], $u['auth']); // gitleaks:allow (eldobható teszt-fiók)
 }
 
 switch ($phase) {
@@ -160,7 +160,7 @@ switch ($phase) {
         ok(str_contains($html, 'Az ajánlat lejárt') && !str_contains($html, 'ELFOGADOM'), 'lejárt ajánlat: „Az ajánlat lejárt”, nincs elfogadás-gomb');
         [, $st] = req('GET', "/api/v1/quotes/$id", null, ['Authorization' => $authz]);
         ok($st['status'] === 'EXPIRED', 'az app státusza: EXPIRED (Lejárt)');
-        req('POST', '/api/v1/account/delete', ['password' => 'Elo-Teszt-Jelszo-2026'], ['Authorization' => $authz]);
+        req('POST', '/api/v1/account/delete', ['password' => 'Elo-Teszt-Jelszo-2026'], ['Authorization' => $authz]); // gitleaks:allow (eldobható teszt-fiók)
         break;
     case 'db-down':
         [$s, $j] = req('GET', '/api/v1/health');
