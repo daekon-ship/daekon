@@ -497,3 +497,24 @@ img.is-missing{opacity:0}
   .vh h1{font-size:clamp(34px,1.9vw + 18px,52px)}
 }
 @media (min-width:900px){.vh__in>*{max-width:min(440px,30vw)}.vh__img{left:32%;width:68%}}
+/* színes fotósáv a hero alatt */
+.reel{background:#111;padding:0 0 1px}
+.reel ul{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px}
+.reel li{margin:0}
+.reel button{position:relative;display:block;width:100%;padding:0;border:0;background:#222;cursor:zoom-in;overflow:hidden}
+.reel img{width:100%;aspect-ratio:1;object-fit:cover;transition:transform .8s var(--ease),filter .4s}
+.reel span{position:absolute;left:0;right:0;bottom:0;padding:22px 10px 8px;font-size:12.5px;font-weight:600;color:#fff;text-align:left;background:linear-gradient(transparent,rgba(0,0,0,.7));opacity:0;transform:translateY(6px);transition:opacity .3s,transform .4s var(--ease)}
+.reel button:hover img{transform:scale(1.06)}
+.reel button:hover span,.reel button:focus-visible span{opacity:1;transform:none}
+@media (max-width:899px){
+  .reel ul{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
+  .reel ul::-webkit-scrollbar{display:none}
+  .reel li{flex:0 0 44vw;scroll-snap-align:start}
+  .reel span{opacity:1;transform:none}
+}
+/* tervezett kártya a márka sárgájában */
+.way--plan{background:var(--y);border-color:var(--y);color:#2A2200}
+.way--plan h3{color:#111}
+.way--plan .way__k{color:#111;opacity:.75}
+.way--plan .ticks li{border-color:rgba(0,0,0,.16)}
+.way--plan .ticks li::before{background:#111}
