@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 200" width="560" height="200" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<g transform="translate(280 100)"><g transform="translate(0 0)"><defs><linearGradient id="lensTint" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFFFFF" stop-opacity=".55"/><stop offset="1" stop-color="#9CB9C6" stop-opacity=".28"/></linearGradient></defs>
+<path transform="translate(-122 0) scale(-1 1)" d="M-96 -46 L96 -46 C104 -46 106 -40 104 -30 C98 20 84 52 40 56 L-40 56 C-84 52 -98 20 -104 -30 C-106 -40 -104 -46 -96 -46Z" fill="url(#lensTint)"/>
+<path transform="translate(-122 0) scale(-1 1)" d="M-60 -30 L-20 -42 M-70 -10 L-40 -20" stroke="#FFFFFF" stroke-width="5" opacity=".75"/>
+<path transform="translate(-122 0) scale(-1 1)" d="M-96 -46 L96 -46 C104 -46 106 -40 104 -30 C98 20 84 52 40 56 L-40 56 C-84 52 -98 20 -104 -30 C-106 -40 -104 -46 -96 -46Z" stroke="#263432" stroke-width="3.4"/>
+<path transform="translate(-122 0) scale(-1 1)" d="M-104 -30 C-106 -40 -104 -48 -96 -48 L96 -48 C104 -48 106 -40 104 -30 C100 -18 94 -16 84 -20 C40 -30 -40 -30 -84 -20 C-94 -16 -100 -18 -104 -30Z" fill="#263432" stroke="#263432" stroke-width="2"/>
+<path transform="translate(122 0) scale(1 1)" d="M-96 -46 L96 -46 C104 -46 106 -40 104 -30 C98 20 84 52 40 56 L-40 56 C-84 52 -98 20 -104 -30 C-106 -40 -104 -46 -96 -46Z" fill="url(#lensTint)"/>
+<path transform="translate(122 0) scale(1 1)" d="M-60 -30 L-20 -42 M-70 -10 L-40 -20" stroke="#FFFFFF" stroke-width="5" opacity=".75"/>
+<path transform="translate(122 0) scale(1 1)" d="M-96 -46 L96 -46 C104 -46 106 -40 104 -30 C98 20 84 52 40 56 L-40 56 C-84 52 -98 20 -104 -30 C-106 -40 -104 -46 -96 -46Z" stroke="#263432" stroke-width="3.4"/>
+<path transform="translate(122 0) scale(1 1)" d="M-104 -30 C-106 -40 -104 -48 -96 -48 L96 -48 C104 -48 106 -40 104 -30 C100 -18 94 -16 84 -20 C40 -30 -40 -30 -84 -20 C-94 -16 -100 -18 -104 -30Z" fill="#263432" stroke="#263432" stroke-width="2"/>
+<path d="M-20 -40 C-10 -54 10 -54 20 -40" stroke="#263432" stroke-width="7"/>
+<path d="M-220 -48 L-248 -64" stroke="#263432" stroke-width="2.55"/>
+<path d="M220 -48 L248 -64" stroke="#263432" stroke-width="2.55"/></g></g>
+</svg>

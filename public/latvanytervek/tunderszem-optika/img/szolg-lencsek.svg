@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 220" width="320" height="220" fill="none" stroke-linecap="round" stroke-linejoin="round">
+
+<defs><linearGradient id="zones" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#9CB9C6" stop-opacity=".45"/><stop offset=".55" stop-color="#B8A3D8" stop-opacity=".35"/>
+<stop offset="1" stop-color="#E9C5D9" stop-opacity=".6"/></linearGradient></defs>
+<path transform="translate(118 112) scale(.9)" d="M-95 -40 C-60 -62 40 -68 100 -62 C112 -60 118 -52 112 -36 C100 10 70 62 10 66 C-50 70 -96 40 -104 0 C-108 -20 -104 -34 -95 -40Z" fill="url(#zones)" stroke="#263432" stroke-width="1.8"/>
+<path d="M44 92 C80 100 156 100 196 88" stroke="#263432" stroke-width="1" stroke-dasharray="3 4" opacity=".6"/>
+<path d="M60 128 C90 136 146 136 176 124" stroke="#263432" stroke-width="1" stroke-dasharray="3 4" opacity=".6"/>
+<g fill="#263432" font-family="Helvetica, Arial, sans-serif" font-size="11" letter-spacing="1.5">
+<text x="230" y="76">TÁVOL</text><text x="230" y="114">KÖZTES</text><text x="230" y="152">KÖZEL</text></g>
+<path d="M190 72 H224 M196 110 H224 M168 148 H224" stroke="#C98FB0" stroke-width="1"/>
+
+</svg>

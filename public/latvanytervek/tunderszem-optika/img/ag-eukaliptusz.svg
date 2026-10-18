@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 300" width="340" height="300" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<path d="M20 285 C90 200 180 120 320 40" stroke="#263432" stroke-width="1.6"/>
+<g transform="translate(41.6 259.6) rotate(-0.5)"><path d="M0 0 C16.9 -26.2 42.3 -23.6 56.4 0 C42.3 21 16.9 23.6 0 0Z" fill="#A9BFB4" stroke="#263432" stroke-width="1.2"/><path d="M2 0 Q28.2 -3.1 50.8 0" stroke="#263432" stroke-width="0.72" opacity=".55"/></g>
+<g transform="translate(64.6 234.6) rotate(-94.4)"><path d="M0 0 C16.4 -25.4 41.1 -22.9 54.8 0 C41.1 20.3 16.4 22.9 0 0Z" fill="#9CB9C6" stroke="#263432" stroke-width="1.2"/><path d="M2 0 Q27.4 -3 49.3 0" stroke="#263432" stroke-width="0.72" opacity=".55"/></g>
+<g transform="translate(94.3 204.8) rotate(4.2)"><path d="M0 0 C15.9 -24.4 39.7 -22 52.9 0 C39.7 19.6 15.9 22 0 0Z" fill="#A9BFB4" stroke="#263432" stroke-width="1.2"/><path d="M2 0 Q26.4 -2.9 47.6 0" stroke="#263432" stroke-width="0.72" opacity=".55"/></g>
+<g transform="translate(126.6 175.3) rotate(-89.1)"><path d="M0 0 C15.3 -23.5 38.2 -21.1 51 0 C38.2 18.8 15.3 21.1 0 0Z" fill="#9CB9C6" stroke="#263432" stroke-width="1.2"/><path d="M2 0 Q25.5 -2.8 45.9 0" stroke="#263432" stroke-width="0.72" opacity=".55"/></g>
+<g transform="translate(161.7 146) rotate(9.5)"><path d="M0 0 C14.7 -22.5 36.8 -20.3 49 0 C36.8 18 14.7 20.3 0 0Z" fill="#A9BFB4" stroke="#263432" stroke-width="1.2"/><path d="M2 0 Q24.5 -2.7 44.1 0" stroke="#263432" stroke-width="0.72" opacity=".55"/></g>
+<g transform="translate(200 117) rotate(-83.9)"><path d="M0 0 C14.1 -21.6 35.3 -19.4 47.1 0 C35.3 17.2 14.1 19.4 0 0Z" fill="#9CB9C6" stroke="#263432" stroke-width="1.2"/><path d="M2 0 Q23.6 -2.6 42.4 0" stroke="#263432" stroke-width="0.72" opacity=".55"/></g>
+<g transform="translate(241.8 88) rotate(14.5)"><path d="M0 0 C13.6 -20.6 33.9 -18.5 45.2 0 C33.9 16.5 13.6 18.5 0 0Z" fill="#A9BFB4" stroke="#263432" stroke-width="1.2"/><path d="M2 0 Q22.6 -2.5 40.7 0" stroke="#263432" stroke-width="0.72" opacity=".55"/></g>
+<g transform="translate(279.5 64) rotate(-79.6)"><path d="M0 0 C13.1 -19.8 32.7 -17.8 43.6 0 C32.7 15.8 13.1 17.8 0 0Z" fill="#9CB9C6" stroke="#263432" stroke-width="1.2"/><path d="M2 0 Q21.8 -2.4 39.2 0" stroke="#263432" stroke-width="0.72" opacity=".55"/></g>
+<g transform="translate(320 40) rotate(60.3)"><path d="M0 0 C9 -6 9 -20 0 -28 C-9 -20 -9 -6 0 0Z" fill="#9CB9C6" stroke="#263432" stroke-width="1.1"/><path d="M0 -2 L0 -22" stroke="#6F93A3" stroke-width=".8"/></g>
+</svg>

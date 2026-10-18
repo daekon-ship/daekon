@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 200" width="560" height="200" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<g transform="translate(280 100)"><g transform="translate(0 0)"><defs><linearGradient id="lensTint" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFFFFF" stop-opacity=".55"/><stop offset="1" stop-color="#9CB9C6" stop-opacity=".28"/></linearGradient></defs>
+<path transform="translate(-118 0) scale(-1 1)" d="M-88 -44 C-40 -64 40 -64 88 -44 C108 -34 110 0 96 26 C78 58 40 66 0 66 C-40 66 -78 58 -96 26 C-110 0 -108 -34 -88 -44Z" fill="url(#lensTint)"/>
+<path transform="translate(-118 0) scale(-1 1)" d="M-60 -30 L-20 -42 M-70 -10 L-40 -20" stroke="#FFFFFF" stroke-width="5" opacity=".75"/>
+<path transform="translate(-118 0) scale(-1 1)" d="M-88 -44 C-40 -64 40 -64 88 -44 C108 -34 110 0 96 26 C78 58 40 66 0 66 C-40 66 -78 58 -96 26 C-110 0 -108 -34 -88 -44Z" stroke="#6F93A3" stroke-width="10"/>
+<path transform="translate(-118 0) scale(-1 1)" d="M-88 -44 C-40 -64 40 -64 88 -44 C108 -34 110 0 96 26 C78 58 40 66 0 66 C-40 66 -78 58 -96 26 C-110 0 -108 -34 -88 -44Z" stroke="#FFFFFF" stroke-width="1.2" opacity=".35"/>
+<path transform="translate(118 0) scale(1 1)" d="M-88 -44 C-40 -64 40 -64 88 -44 C108 -34 110 0 96 26 C78 58 40 66 0 66 C-40 66 -78 58 -96 26 C-110 0 -108 -34 -88 -44Z" fill="url(#lensTint)"/>
+<path transform="translate(118 0) scale(1 1)" d="M-60 -30 L-20 -42 M-70 -10 L-40 -20" stroke="#FFFFFF" stroke-width="5" opacity=".75"/>
+<path transform="translate(118 0) scale(1 1)" d="M-88 -44 C-40 -64 40 -64 88 -44 C108 -34 110 0 96 26 C78 58 40 66 0 66 C-40 66 -78 58 -96 26 C-110 0 -108 -34 -88 -44Z" stroke="#6F93A3" stroke-width="10"/>
+<path transform="translate(118 0) scale(1 1)" d="M-88 -44 C-40 -64 40 -64 88 -44 C108 -34 110 0 96 26 C78 58 40 66 0 66 C-40 66 -78 58 -96 26 C-110 0 -108 -34 -88 -44Z" stroke="#FFFFFF" stroke-width="1.2" opacity=".35"/>
+<path d="M-22 -36 C-12 -52 12 -52 22 -36" stroke="#6F93A3" stroke-width="10"/>
+<path d="M-216 -48 L-244 -64" stroke="#6F93A3" stroke-width="7.5"/>
+<path d="M216 -48 L244 -64" stroke="#6F93A3" stroke-width="7.5"/></g></g>
+</svg>

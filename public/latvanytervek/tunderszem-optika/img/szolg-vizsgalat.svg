@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 220" width="320" height="220" fill="none" stroke-linecap="round" stroke-linejoin="round">
+
+<rect x="150" y="26" width="128" height="168" rx="4" fill="#FFFFFF" stroke="#263432" stroke-width="1.4"/>
+<g fill="#263432" font-family="Georgia, serif" text-anchor="middle">
+<text x="214" y="78" font-size="38">T</text>
+<text x="214" y="110" font-size="24" letter-spacing="6">Ü N</text>
+<text x="214" y="134" font-size="16" letter-spacing="5">D É R</text>
+<text x="214" y="152" font-size="11" letter-spacing="4">S Z E M</text>
+<text x="214" y="167" font-size="7" letter-spacing="3">O P T I K A</text></g>
+<path d="M164 178 H264" stroke="#C98FB0" stroke-width="1.2"/>
+<path d="M22 112 C52 70 102 70 132 112 C102 154 52 154 22 112Z" fill="#F7F1F7" stroke="#263432" stroke-width="1.6"/>
+<circle cx="77" cy="112" r="24" fill="#9CB9C6" stroke="#263432" stroke-width="1.4"/>
+<circle cx="77" cy="112" r="10" fill="#263432"/>
+<circle cx="70" cy="105" r="4" fill="#FFFFFF"/>
+<path d="M30 92 L22 82 M48 80 L44 68 M70 76 L70 63 M92 78 L96 66 M114 88 L122 78" stroke="#263432" stroke-width="1.2"/>
+
+</svg>

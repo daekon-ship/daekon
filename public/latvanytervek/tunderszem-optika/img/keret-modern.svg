@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 200" width="560" height="200" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<g transform="translate(280 100)"><g transform="translate(0 0)"><defs><linearGradient id="lensTint" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFFFFF" stop-opacity=".55"/><stop offset="1" stop-color="#9CB9C6" stop-opacity=".28"/></linearGradient></defs>
+<path transform="translate(-124 0) scale(-1 1)" d="M-56 -56 L56 -56 L98 -8 L74 50 L-74 50 L-98 -8Z" fill="url(#lensTint)"/>
+<path transform="translate(-124 0) scale(-1 1)" d="M-60 -30 L-20 -42 M-70 -10 L-40 -20" stroke="#FFFFFF" stroke-width="5" opacity=".75"/>
+<path transform="translate(-124 0) scale(-1 1)" d="M-56 -56 L56 -56 L98 -8 L74 50 L-74 50 L-98 -8Z" stroke="#8F7DB8" stroke-width="9"/>
+<path transform="translate(-124 0) scale(-1 1)" d="M-56 -56 L56 -56 L98 -8 L74 50 L-74 50 L-98 -8Z" stroke="#FFFFFF" stroke-width="1.2" opacity=".35"/>
+<path transform="translate(124 0) scale(1 1)" d="M-56 -56 L56 -56 L98 -8 L74 50 L-74 50 L-98 -8Z" fill="url(#lensTint)"/>
+<path transform="translate(124 0) scale(1 1)" d="M-60 -30 L-20 -42 M-70 -10 L-40 -20" stroke="#FFFFFF" stroke-width="5" opacity=".75"/>
+<path transform="translate(124 0) scale(1 1)" d="M-56 -56 L56 -56 L98 -8 L74 50 L-74 50 L-98 -8Z" stroke="#8F7DB8" stroke-width="9"/>
+<path transform="translate(124 0) scale(1 1)" d="M-56 -56 L56 -56 L98 -8 L74 50 L-74 50 L-98 -8Z" stroke="#FFFFFF" stroke-width="1.2" opacity=".35"/>
+<path d="M-22 -36 C-12 -52 12 -52 22 -36" stroke="#8F7DB8" stroke-width="9"/>
+<path d="M-222 -48 L-250 -64" stroke="#8F7DB8" stroke-width="6.75"/>
+<path d="M222 -48 L250 -64" stroke="#8F7DB8" stroke-width="6.75"/></g></g>
+</svg>
