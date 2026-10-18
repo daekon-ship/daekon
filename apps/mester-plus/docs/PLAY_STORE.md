@@ -63,7 +63,7 @@ A `+` utáni szám (versionCode) minden feltöltésnél nagyobb kell legyen.
 |---|---|
 | Adatvédelmi irányelvek | Nyilvános URL kell. A szöveg kész: `store/adatvedelem.html`. Tedd fel egy nyilvános oldalra, pl. GitHub Pages, és add meg a címét. |
 | Hirdetések | Nem tartalmaz hirdetést. |
-| Alkalmazás-hozzáférés | Minden funkció korlátozás nélkül elérhető (nincs bejelentkezés). |
+| Alkalmazás-hozzáférés | v0.7: minden funkció bejelentkezés nélkül. v0.8+: a helyi funkciók bejelentkezés nélkül; a felhős (Pro) funkciókhoz teszt-fiók kell (lásd lent). |
 | Tartalom besorolása | Kérdőív: Segédprogram / Üzleti. Erőszak, szexuális tartalom, szerencsejáték, felhasználók közötti kommunikáció: mind **nem**. Várható eredmény: PEGI 3 / Mindenki. |
 | Célközönség | **18 év felett.** Így nem vonatkoznak rá a Families-szabályok. |
 | Hírek alkalmazás | Nem. |
@@ -73,11 +73,29 @@ A `+` utáni szám (versionCode) minden feltöltésnél nagyobb kell legyen.
 
 ### Adatbiztonság (Data safety)
 
-Az app nem gyűjt és nem oszt meg adatot: nincs hálózati forgalom, minden adat helyben marad.
-- **Gyűjt vagy oszt meg a felhasználói adattípusok közül bármit?** Nem.
-  Az, hogy a felhasználó maga oszt meg egy PDF-et a rendszer megosztás-ablakával, a Play definíciója szerint nem számít az app általi adatgyűjtésnek vagy -megosztásnak.
-- Titkosítás továbbítás közben: nem releváns, mert nincs továbbítás.
-- Adattörlési kérelem: az adatok a készüléken vannak, és az app eltávolításával törlődnek.
+> **OWNER ACTION – újra kell értékelni (v0.8, Mester+ Cloud).** Amíg a kiadott verzióban a felhő nem érhető el (nincs DNS /
+> Play-előfizetés), a v0.7-es válasz igaz. A felhős verzió kiadásakor az alábbi a javaslat – a végleges válaszokat a tulajdonos
+> és jogi tanácsadó hagyja jóvá (OWNER LEGAL REVIEW REQUIRED).
+
+**v0.7 (offline):** nem gyűjt és nem oszt meg adatot; nincs hálózati forgalom.
+
+**v0.8+ Mester+ Cloud (csak ha a felhasználó fiókot hoz létre) – javaslat:**
+
+| Play kategória | Adat | Gyűjtött? | Cél | Kötelező? |
+|---|---|---|---|---|
+| Személyes adat → E-mail cím | a fiók e-mail címe | igen | fiókkezelés | nem (a fiók opcionális) |
+| Pénzügyi adat → Vásárlási előzmény | előfizetés állapota | igen (Pro-nál) | app-funkciók | nem |
+| Fájlok és dokumentumok | a felhőmentés (a telefonon titkosítva) | igen | app-funkciók (mentés) | nem |
+| Egyéb (ügyféladat az online ajánlatban) | ügyfél neve, ajánlat-tételek | igen | app-funkciók | nem |
+| App-tevékenység / eszközazonosító | véletlen eszköz-azonosító, app-verzió | igen | fiókkezelés, biztonság | nem |
+
+- Titkosítás továbbítás közben: **igen** (csak HTTPS).
+- Megosztás harmadik féllel: nem (a szerver a DAEKON-é; a fizetést a Google kezeli).
+- Törlési kérelem: **igen** – az appban (Beállítások → Mester+ fiók → Fiók törlése) és weben:
+  `https://daekon-ship.github.io/daekon/mester-plus/fioktorles.html` (a Play kötelezően kér webes törlési URL-t).
+- Adatvédelmi tájékoztató: `https://daekon-ship.github.io/daekon/mester-plus/adatvedelem.html`.
+- **Alkalmazás-hozzáférés** űrlap: a felhős funkciókhoz belépés kell → teszt-fiókot kell megadni a Google-nak (a Pro jogosultság
+  kézzel adható: `bin/cli.php grant`).
 
 ## 5. Tesztelés – új személyes fiókoknál kötelező
 
@@ -104,7 +122,8 @@ Ezeket a valódi telefonon próbáld ki a belső tesztelési buildből:
 - [ ] Gesztusnavigáció és 3 gombos navigáció: az alsó sáv nem takar ki gombot.
 - [ ] Sötét mód: az app szándékosan világos, olvasható marad.
 - [ ] Tablet vagy fekvő mód (ha van): a tartalom középen, legfeljebb 640 dp széles.
-- [ ] Repülőgép üzemmód: minden funkció működik.
+- [ ] Repülőgép üzemmód: minden helyi funkció működik; a felhős részek érthető „Nincs internetkapcsolat” üzenetet adnak, összeomlás nélkül.
+- [ ] (v0.8+) Fiók nélkül: „Folytatás fiók nélkül”, minden helyi funkció elérhető.
 
 ## Források
 

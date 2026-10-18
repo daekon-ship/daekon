@@ -48,7 +48,7 @@ Pincében, tetőtérben, új építésű házban is működik, ahol nincs térer
 
 AZ ADATAID A TIEID
 
-Minden a telefonodon marad, titkosított adatbázisban, és ha akarod, PIN-kóddal is lezárhatod az appot. Nincs regisztráció, nincs reklám, és senki nem látja az ügyfeleidet. Telefoncserénél a beépített mentéssel viszed át az adataidat: egy fájl, amit Drive-ra, e-mailbe vagy pendrive-ra teszel.
+Minden a telefonodon marad, titkosított adatbázisban, és ha akarod, PIN-kóddal is lezárhatod az appot. Nincs kötelező regisztráció, nincs reklám, és senki nem látja az ügyfeleidet. Telefoncserénél a beépített mentéssel viszed át az adataidat: egy fájl, amit Drive-ra, e-mailbe vagy pendrive-ra teszel.
 
 ## Kategória
 
@@ -63,3 +63,14 @@ Minden a telefonodon marad, titkosított adatbázisban, és ha akarod, PIN-kódd
 | Telefon-képernyőképek | `screenshots/01–05_*.png` | 2–8 db, 1080×2103 |
 
 A képernyőképek az app tervéből készültek, mintaadatokkal. Az első futtatás után cseréld le őket a telefonodon készült képekre. Ehhez készíts egy mintaprojektet, valódi ügyféladatok nélkül.
+
+
+## (v0.8+) Mester+ Pro – CSAK akkor kerüljön a leírásba, ha a Pro élesben elérhető
+
+> Ne reklámozzunk kész funkcióként olyat, ami még nem működik élesben. A szöveg akkor élesíthető, ha: a DNS + tanúsítvány él,
+> a Play-előfizetés be van állítva, és a tulajdonos jóváhagyta az árat.
+
+MESTER+ PRO (opcionális előfizetés)
+Felhőmentés: naponta automatikusan, a telefonon titkosítva – telefoncsere után belépéssel visszaállítható.
+Online ajánlat: az ügyfél linken megnézi és egy gombbal elfogadja; az appban látod, megnyitotta-e, elfogadta-e.
+A helyi funkciók előfizetés nélkül is korlátlanul ingyenesek.

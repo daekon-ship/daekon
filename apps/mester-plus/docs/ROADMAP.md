@@ -51,6 +51,8 @@ A szaki legnagyobb időnyelője, és az ajánlat pontosságának kulcsa.
 
 ## M6 – Felhő-szinkron és automatikus mentés
 
+> **2026-10-18: első rész kész (Mester+ Cloud, v0.8).** Döntés: saját backend a DAEKON VPS-en (PHP 8.4 + MariaDB, nem Supabase / NestJS). Elkészült: fiók, eszközök, titkosított felhőmentés automatikus napi mentéssel, online ajánlat, előfizetés-alap. A teljes szinkron terve: `CLOUD_SYNC_DESIGN.md`.
+
 - **Döntés kell:** Supabase vagy saját NestJS backend.
   Szempontok: üzemeltetési teher, költség, GDPR (EU-s adattárolás), offline-ütközéskezelés.
 - Automatikus, titkosított mentés. Több eszköz (telefon + tablet) szinkronban.

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../features/cloud/account_screen.dart';
+import '../../features/cloud/cloud_backups_screen.dart';
+import '../../features/cloud/devices_screen.dart';
 import '../../features/customers/customer_detail_screen.dart';
 import '../../features/customers/customer_form_screen.dart';
 import '../../features/customers/customers_screen.dart';
@@ -51,6 +54,11 @@ abstract final class Routes {
   static String editCustomer(int id) => '/customer/$id/edit';
 
   static const newPriceItem = '/price/new';
+
+  // Mester+ Cloud (opcionális fiók, Pro-funkciók)
+  static const cloudAccount = '/cloud/account';
+  static const cloudDevices = '/cloud/devices';
+  static const cloudBackups = '/cloud/backups';
   static String priceItem(int id) => '/price/$id';
 }
 
@@ -115,6 +123,9 @@ GoRouter buildRouter() => GoRouter(
             GoRoute(path: 'edit', builder: (_, s) => CustomerFormScreen(customerId: _id(s))),
           ],
         ),
+        GoRoute(path: Routes.cloudAccount, parentNavigatorKey: _rootKey, builder: (_, _) => const AccountScreen()),
+        GoRoute(path: Routes.cloudDevices, parentNavigatorKey: _rootKey, builder: (_, _) => const DevicesScreen()),
+        GoRoute(path: Routes.cloudBackups, parentNavigatorKey: _rootKey, builder: (_, _) => const CloudBackupsScreen()),
         GoRoute(
           path: '/price/new',
           parentNavigatorKey: _rootKey,

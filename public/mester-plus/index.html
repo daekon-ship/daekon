@@ -55,6 +55,10 @@
   @media (max-width: 760px) { .points { grid-template-columns: 1fr; } }
 
   .num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+  .plans { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  @media (max-width: 760px) { .plans { grid-template-columns: 1fr; } }
+  .tag { display: inline-block; margin-left: 6px; padding: 2px 9px; border-radius: 999px; font-size: .78rem; font-weight: 600; background: var(--line); color: var(--ink); vertical-align: 1px; }
+  .soon-tag { background: var(--accent); color: var(--on-accent); }
   footer { border-top: 1px solid var(--line); padding-block: 28px 40px; color: var(--muted); font-size: .92rem; }
   footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; }
   a { color: inherit; }
@@ -66,7 +70,7 @@
   <div class="wrap">
     <div class="brand"><img src="img/icon-180.png" alt="" width="56" height="56"><span>Mester+</span></div>
     <h1>Felméred, beárazod, elküldöd. Kész az árajánlat még a helyszínen.</h1>
-    <p class="lead">Árajánlat-készítő app burkolóknak, kőműveseknek és más szakiknak. A saját áraiddal számol, PDF-ben küldi az ügyfélnek, és térerő nélkül is működik.</p>
+    <p class="lead">Árajánlat-készítő app burkolóknak, kőműveseknek és más szakiknak. A saját áraiddal számol, PDF-ben küldi az ügyfélnek, és térerő nélkül, fiók nélkül is működik.</p>
     <span class="soon">Hamarosan a Google Play Áruházban</span>
   </div>
 </header>
@@ -90,7 +94,19 @@
       <div class="points">
         <div class="point"><b>Felmérés centire</b><p>Helyiségenként beírod a méreteket. A padlót, a falat és a kerületet az app számolja, az ajtókat és ablakokat levonja.</p></div>
         <div class="point"><b>A te áraid</b><p>Munkadíj és anyag külön, a saját árlistádból. Az app nem talál ki árat. Forintra pontos számolás, ÁFA <span class="num">27%</span>, <span class="num">5%</span> vagy <span class="num">0%</span>.</p></div>
-        <div class="point"><b>Adatok csak nálad</b><p>Nincs regisztráció, nincs reklám, minden a telefonodon marad. Telefoncserénél egy mentési fájllal viszed át.</p></div>
+        <div class="point"><b>Pénz és munka</b><p>Előleg, részletek, kiadások: látod, mennyi van még kint, és mennyit hoz egy ledolgozott óra. Munkanapló és ütemezés.</p></div>
+        <div class="point"><b>Anyaglista</b><p>Bevásárlólista a projekthez és csempekalkulátor: hány doboz kell a hulladékkal együtt.</p></div>
+        <div class="point"><b>Fiók nélkül is</b><p>Nincs kötelező regisztráció, nincs reklám. Titkosított adatbázis, PIN-zár, helyi mentés egy fájlba.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-top:0">
+    <div class="wrap">
+      <h2>Két változat</h2>
+      <div class="points plans">
+        <div class="point"><b>Mester+ Offline <span class="tag">ingyenes</span></b><p>Minden fenti funkció, internet és fiók nélkül. Az adatok a telefonodon maradnak.</p></div>
+        <div class="point"><b>Mester+ Pro <span class="tag soon-tag">Hamarosan</span></b><p>Napi titkosított felhőmentés (telefoncsere után belépéssel visszaállítható), online ajánlat elfogadás-követéssel, több eszköz. Az árat a megjelenéskor tesszük közzé.</p></div>
       </div>
     </div>
   </section>
@@ -99,7 +115,7 @@
 <footer>
   <div class="wrap">
     <span>Mester+ · fejlesztő: Daekon</span>
-    <span><a href="adatvedelem.html">Adatvédelmi tájékoztató</a> · daekonxaxa@gmail.com</span>
+    <span><a href="adatvedelem.html">Adatvédelem</a> · <a href="feltetelek.html">Feltételek</a> · <a href="fioktorles.html">Fióktörlés</a> · <a href="elofizetes.html">Előfizetés</a> · <a href="kapcsolat.html">Kapcsolat</a></span>
   </div>
 </footer>
 </body>
