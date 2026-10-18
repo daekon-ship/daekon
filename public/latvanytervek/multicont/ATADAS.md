@@ -180,3 +180,30 @@ Biztonsági mentés az előző állapotról: `../multicont-v19/` (generált olda
 - A kezdőlapon ~25 különböző betűméret volt (9,5–34 px); most arányos skála: **30 · 22 · 17 · 16 · 15 · 14 · 13 · 12 px** (mobilon H1 25, H2 20). A túl apró címkék (10–11,5 px) 12 px-re nőttek, a túl nagy elemek (telefonszám, dátumcsempe, nyilak, H1) csökkentek.
 - Az aloldalakon ugyanez a skála: cikkcím max. 32, oldalcím 30, rovatcím 20–22 px.
 - A logó visszaállt a kétsarkos változatra (fejléc, lábléc, admin, favicon, PDF-ek, megosztási kép).
+
+## 14. 23. kör – Végső minőségellenőrzés és CSS-takarítás
+
+### Talált hibák → javítás
+| # | Hiba | Javítás |
+|---|---|---|
+| 1 | Az `mc.css` 9 fejlesztési kör rétegeiből állt (1252 sor), sok egymást felülíró szabállyal | **Egyetlen rendezett fájlba összevonva**: tokenek → alap → komponensek → oldalak → mozgás → reszponzív (csökkenő szélesség). Minden komponens egyszer van megadva. |
+| 2 | 26 már nem használt osztály (régi hero, svc-grid, card, person, net-g, open-note, mini-seg stb.) | Törölve. |
+| 3 | 1180 px alatt (táblagép) a fejléc egy későbbi felülírás miatt 72 px maradt a tervezett 64 helyett | Javítva: 64 px. |
+| 4 | Egymásnak ellentmondó mobil betűméretek (pl. a nyitóblokk alcíme mobilon is 17 px maradt) | Egységes skála, mobilon 16 px. |
+| 5 | A „30 év” beleolvadt a szövegbe | Kiemelt, kék, 22 px-es szám a nyitóblokk első tényében (nem túlméretezve). |
+| 6 | A főcím 30 px-en kevés hangsúlyt kapott széles kijelzőn | 26–32 px (1366 px-en 30, 1920 px-en 32). |
+| 7 | A szakmai vezető portréhelyén fejlesztői szöveg állt („Portré helye…”) | Elegáns monogramos névjegykártya (név, cég); fotócsere egy `<img>` beszúrásával (megjegyzés a forrásban). Mobilon a kártya a cím, a név nem ismétlődik. |
+| 8 | A Rólunk oldalsávjában ugyanez a „fotó helye” szöveg | Ugyanaz a névjegykártya-komponens („Alapító, szakmai vezető”). |
+| 9 | 1366 px-en a bal oszlopban a „KATA-változások” felirat két sorba tört | Oszlopszélességek: 300 / rugalmas / 312 px; a címke nem törik. |
+| 10 | Gombok, lekerekítések, árnyékok eltérései | 2 gombméret (46 / 38 px), 3 lekerekítés (10 / 8 / 5 px), 3 árnyékszint. |
+
+### Tesztek (Playwright, Chromium, helyi szerver)
+- 17 oldal × 8 szélesség (360, 390, 430, 768, 960, 1024, 1366, 1920): **nincs vízszintes túlcsordulás, nincs konzolhiba.**
+- Előtte–utána képpont-összevetés mind a 136 nézetben (az eltérések átnézve, csak szándékos változások).
+- Funkciók: bérkalkulátor (500 000 → 332 500 Ft; nettó 266 000 → bruttó 400 000 Ft), KATA (20 M Ft → 1 400 000 Ft), Tudástár-szűrő és -kereső, olvasó mód, dokumentumtár (archivált változatok), partnerek (csak jóváhagyott és érvényes ajánlat), visszahívás-ablak (gépen és mobilon, hibaüzenetek + „levelezőprogram nyílik meg” visszajelzés), mobilmenü, lenyíló menü, kezelőfelület (belépés-védelem, kötelező forrás, jóváhagyás, feltöltés-ellenőrzés, „Látványterv” jelölés), PDF- és képlinkek (HTTP 200).
+
+### Ügyféljóváhagyást igényel (változatlanul)
+Főcím és alcím · „30 év” · végzettségek és pálya · idézet · „Alapító, szakmai vezető” · logó · saját portré · felelősségbiztosítás, végelszámolási tapasztalat · valódi partnerek és kuponok.
+
+### Fotócsere
+`_forras/p_home.py` és `_forras/p_svc.py`: a `.portrait-fr` elejére `<img src="foto/horvath-maria.jpg" alt="Horváth Mária">` (álló, 4:5); a CSS automatikusan kitölti a keretet. Utána `python3 _forras/build.py`.
