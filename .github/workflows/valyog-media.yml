@@ -1,0 +1,33 @@
+name: Vályog-Mester média letöltése (egyszeri)
+
+# Ideiglenes munkafolyamat: a valyog-mester.hu képeit/videóit letölti,
+# webp méretekre alakítja és a látványterv mappájába commitolja.
+# A futás után törölhető.
+on:
+  push:
+    branches: [master]
+    paths: ['.github/workflows/valyog-media.yml', 'public/latvanytervek/valyog-mester/_forras/media.py']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  media:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install pillow playwright && python -m playwright install --with-deps chromium
+      - run: python public/latvanytervek/valyog-mester/_forras/media.py
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git add public/latvanytervek/valyog-mester/img/foto public/latvanytervek/valyog-mester/_forras/media-jelentes.json
+          git commit -m "latvanyterv(valyog-mester): eredeti oldal médiái (automatikus letöltés)" || echo "nincs változás"
+          git pull --rebase origin master
+          git push origin HEAD:master
