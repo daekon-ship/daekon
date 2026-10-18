@@ -1,16 +1,41 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 200" width="560" height="200" fill="none" stroke-linecap="round" stroke-linejoin="round">
-<g transform="translate(280 100)"><g transform="translate(0 0)"><defs><linearGradient id="lensTint" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFFFFF" stop-opacity=".55"/><stop offset="1" stop-color="#9CB9C6" stop-opacity=".28"/></linearGradient></defs>
-<path transform="translate(-124 0) scale(-1 1)" d="M-95 -40 C-60 -62 40 -68 100 -62 C112 -60 118 -52 112 -36 C100 10 70 62 10 66 C-50 70 -96 40 -104 0 C-108 -20 -104 -34 -95 -40Z" fill="url(#lensTint)"/>
-<path transform="translate(-124 0) scale(-1 1)" d="M-60 -30 L-20 -42 M-70 -10 L-40 -20" stroke="#FFFFFF" stroke-width="5" opacity=".75"/>
-<path transform="translate(-124 0) scale(-1 1)" d="M-95 -40 C-60 -62 40 -68 100 -62 C112 -60 118 -52 112 -36 C100 10 70 62 10 66 C-50 70 -96 40 -104 0 C-108 -20 -104 -34 -95 -40Z" stroke="#263432" stroke-width="9"/>
-<path transform="translate(-124 0) scale(-1 1)" d="M-95 -40 C-60 -62 40 -68 100 -62 C112 -60 118 -52 112 -36 C100 10 70 62 10 66 C-50 70 -96 40 -104 0 C-108 -20 -104 -34 -95 -40Z" stroke="#FFFFFF" stroke-width="1.2" opacity=".35"/>
-<path transform="translate(124 0) scale(1 1)" d="M-95 -40 C-60 -62 40 -68 100 -62 C112 -60 118 -52 112 -36 C100 10 70 62 10 66 C-50 70 -96 40 -104 0 C-108 -20 -104 -34 -95 -40Z" fill="url(#lensTint)"/>
-<path transform="translate(124 0) scale(1 1)" d="M-60 -30 L-20 -42 M-70 -10 L-40 -20" stroke="#FFFFFF" stroke-width="5" opacity=".75"/>
-<path transform="translate(124 0) scale(1 1)" d="M-95 -40 C-60 -62 40 -68 100 -62 C112 -60 118 -52 112 -36 C100 10 70 62 10 66 C-50 70 -96 40 -104 0 C-108 -20 -104 -34 -95 -40Z" stroke="#263432" stroke-width="9"/>
-<path transform="translate(124 0) scale(1 1)" d="M-95 -40 C-60 -62 40 -68 100 -62 C112 -60 118 -52 112 -36 C100 10 70 62 10 66 C-50 70 -96 40 -104 0 C-108 -20 -104 -34 -95 -40Z" stroke="#FFFFFF" stroke-width="1.2" opacity=".35"/>
-<path d="M-22 -36 C-12 -52 12 -52 22 -36" stroke="#263432" stroke-width="9"/>
-<path d="M-222 -48 L-250 -64" stroke="#263432" stroke-width="6.75"/>
-<path d="M222 -48 L250 -64" stroke="#263432" stroke-width="6.75"/>
-<circle cx="-228" cy="-52" r="4" fill="#C98FB0" stroke="#263432" stroke-width="1.2"/>
-<circle cx="228" cy="-52" r="4" fill="#C98FB0" stroke="#263432" stroke-width="1.2"/></g></g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-300 -110 600 250" width="600" height="250" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<defs><linearGradient id="keretnoiac" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#25302E" stop-opacity="1"/><stop offset="0.42" stop-color="#45405C" stop-opacity="0.97"/><stop offset="0.78" stop-color="#8C79B5" stop-opacity="0.86"/><stop offset="1" stop-color="#CDBBE3" stop-opacity="0.78"/></linearGradient>
+<linearGradient id="keretnoiacd" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#1B2322"/><stop offset="1" stop-color="#1B2322" stop-opacity=".55"/></linearGradient>
+<linearGradient id="keretnoispec" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".8"/><stop offset=".22" stop-color="#fff" stop-opacity=".12"/><stop offset=".6" stop-color="#fff" stop-opacity="0"/></linearGradient>
+<linearGradient id="keretnoilens" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".16"/><stop offset=".55" stop-color="#9CB9C6" stop-opacity=".06"/><stop offset="1" stop-color="#B8A3D8" stop-opacity=".16"/></linearGradient>
+<linearGradient id="keretnoirefl" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".5"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+<linearGradient id="keretnoigold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F0DCC8"/><stop offset=".45" stop-color="#B8937A"/><stop offset=".7" stop-color="#F6E6D6"/><stop offset="1" stop-color="#8C6B58"/></linearGradient><filter id="keretnoish" x="-20%" y="-200%" width="140%" height="500%"><feGaussianBlur stdDeviation="9"/></filter></defs>
+<ellipse cx="0" cy="118" rx="230" ry="11" fill="#263432" opacity=".16" filter="url(#keretnoish)"/>
+<path transform="scale(-1 1)" d="M248 -70 L286 -91 L288 -85 L250 -58Z" fill="url(#keretnoiacd)"/>
+<path transform="scale(1 1)" d="M248 -70 L286 -91 L288 -85 L250 -58Z" fill="url(#keretnoiacd)"/>
+<g transform="scale(-1 1) translate(124 0)">
+<clipPath id="keretnoilc0"><path d="M-95 -40 C-60 -62 40 -68 100 -62 C112 -60 118 -52 112 -36 C100 10 70 62 10 66 C-50 70 -96 40 -104 0 C-108 -20 -104 -34 -95 -40Z"/></clipPath>
+<path d="M-95 -40 C-60 -62 40 -68 100 -62 C112 -60 118 -52 112 -36 C100 10 70 62 10 66 C-50 70 -96 40 -104 0 C-108 -20 -104 -34 -95 -40Z" fill="url(#keretnoilens)"/>
+<g clip-path="url(#keretnoilc0)"><path d="M-70 -90 L-30 -90 L40 90 L0 90Z" fill="url(#keretnoirefl)" opacity=".55"/><path d="M-6 -90 L6 -90 L76 90 L64 90Z" fill="url(#keretnoirefl)" opacity=".35"/></g>
+<path d="M -99.45 -51 C -60.6 -77.4 50.4 -84.6 117 -77.4 C 130.32 -75 136.98 -65.4 130.32 -46.2 C 117 9 83.7 71.4 17.1 76.2 C -49.5 81 -100.56 45 -109.44 -3 C -113.88 -27 -109.44 -43.8 -99.45 -51 Z M-95 -40 C-60 -62 40 -68 100 -62 C112 -60 118 -52 112 -36 C100 10 70 62 10 66 C-50 70 -96 40 -104 0 C-108 -20 -104 -34 -95 -40Z" fill-rule="evenodd" fill="url(#keretnoiac)"/>
+<path d="M -99.45 -51 C -60.6 -77.4 50.4 -84.6 117 -77.4 C 130.32 -75 136.98 -65.4 130.32 -46.2 C 117 9 83.7 71.4 17.1 76.2 C -49.5 81 -100.56 45 -109.44 -3 C -113.88 -27 -109.44 -43.8 -99.45 -51 Z" stroke="#1B2322" stroke-width=".9" opacity=".55"/>
+<path d="M-95 -40 C-60 -62 40 -68 100 -62 C112 -60 118 -52 112 -36 C100 10 70 62 10 66 C-50 70 -96 40 -104 0 C-108 -20 -104 -34 -95 -40Z" stroke="#1B2322" stroke-width="1" opacity=".6"/>
+<path d="M -96.14 -41.4 C -60.72 -63.84 40.48 -69.96 101.2 -63.84 C 113.34 -61.8 119.42 -53.64 113.34 -37.32 C 101.2 9.6 70.84 62.64 10.12 66.72 C -50.6 70.8 -97.15 40.2 -105.25 -0.6 C -109.3 -21 -105.25 -35.28 -96.14 -41.4 Z" stroke="#fff" stroke-width="1.1" opacity=".38"/>
+<path d="M -97.23 -46.1 C -60.3 -70.3 45.2 -76.9 108.5 -70.3 C 121.16 -68.1 127.49 -59.3 121.16 -41.7 C 108.5 8.9 76.85 66.1 13.55 70.5 C -49.75 74.9 -98.28 41.9 -106.72 -2.1 C -110.94 -24.1 -106.72 -39.5 -97.23 -46.1 Z" stroke="url(#keretnoispec)" stroke-width="1.5" opacity=".75"/>
+</g>
+<g transform="scale(1 1) translate(124 0)">
+<clipPath id="keretnoilc2"><path d="M-95 -40 C-60 -62 40 -68 100 -62 C112 -60 118 -52 112 -36 C100 10 70 62 10 66 C-50 70 -96 40 -104 0 C-108 -20 -104 -34 -95 -40Z"/></clipPath>
+<path d="M-95 -40 C-60 -62 40 -68 100 -62 C112 -60 118 -52 112 -36 C100 10 70 62 10 66 C-50 70 -96 40 -104 0 C-108 -20 -104 -34 -95 -40Z" fill="url(#keretnoilens)"/>
+<g clip-path="url(#keretnoilc2)"><path d="M-70 -90 L-30 -90 L40 90 L0 90Z" fill="url(#keretnoirefl)" opacity=".55"/><path d="M-6 -90 L6 -90 L76 90 L64 90Z" fill="url(#keretnoirefl)" opacity=".35"/></g>
+<path d="M -99.45 -51 C -60.6 -77.4 50.4 -84.6 117 -77.4 C 130.32 -75 136.98 -65.4 130.32 -46.2 C 117 9 83.7 71.4 17.1 76.2 C -49.5 81 -100.56 45 -109.44 -3 C -113.88 -27 -109.44 -43.8 -99.45 -51 Z M-95 -40 C-60 -62 40 -68 100 -62 C112 -60 118 -52 112 -36 C100 10 70 62 10 66 C-50 70 -96 40 -104 0 C-108 -20 -104 -34 -95 -40Z" fill-rule="evenodd" fill="url(#keretnoiac)"/>
+<path d="M -99.45 -51 C -60.6 -77.4 50.4 -84.6 117 -77.4 C 130.32 -75 136.98 -65.4 130.32 -46.2 C 117 9 83.7 71.4 17.1 76.2 C -49.5 81 -100.56 45 -109.44 -3 C -113.88 -27 -109.44 -43.8 -99.45 -51 Z" stroke="#1B2322" stroke-width=".9" opacity=".55"/>
+<path d="M-95 -40 C-60 -62 40 -68 100 -62 C112 -60 118 -52 112 -36 C100 10 70 62 10 66 C-50 70 -96 40 -104 0 C-108 -20 -104 -34 -95 -40Z" stroke="#1B2322" stroke-width="1" opacity=".6"/>
+<path d="M -96.14 -41.4 C -60.72 -63.84 40.48 -69.96 101.2 -63.84 C 113.34 -61.8 119.42 -53.64 113.34 -37.32 C 101.2 9.6 70.84 62.64 10.12 66.72 C -50.6 70.8 -97.15 40.2 -105.25 -0.6 C -109.3 -21 -105.25 -35.28 -96.14 -41.4 Z" stroke="#fff" stroke-width="1.1" opacity=".38"/>
+<path d="M -97.23 -46.1 C -60.3 -70.3 45.2 -76.9 108.5 -70.3 C 121.16 -68.1 127.49 -59.3 121.16 -41.7 C 108.5 8.9 76.85 66.1 13.55 70.5 C -49.75 74.9 -98.28 41.9 -106.72 -2.1 C -110.94 -24.1 -106.72 -39.5 -97.23 -46.1 Z" stroke="url(#keretnoispec)" stroke-width="1.5" opacity=".75"/>
+</g>
+<path d="M-20 -52 C-8 -59 8 -59 20 -52 L20 -37 C8 -44 -8 -44 -20 -37Z" fill="url(#keretnoiac)" stroke="#1B2322" stroke-width=".8" stroke-opacity=".5"/>
+<path d="M -20 -50.8 C -8 -57.8 8 -57.8 20 -50.8" stroke="#fff" stroke-width="1.2" opacity=".5"/>
+<g transform="scale(-1 1)"><rect x="250" y="-70" width="12" height="11" rx="2" fill="url(#keretnoigold)" transform="rotate(-24 252 -64)"/>
+<circle cx="222" cy="-61" r="2.6" fill="url(#keretnoigold)" stroke="#8C6B58" stroke-width=".5"/><circle cx="221.2" cy="-61.9" r=".8" fill="#fff" opacity=".85"/>
+<circle cx="232" cy="-63" r="2.6" fill="url(#keretnoigold)" stroke="#8C6B58" stroke-width=".5"/><circle cx="231.2" cy="-63.9" r=".8" fill="#fff" opacity=".85"/>
+</g>
+<g transform="scale(1 1)"><rect x="250" y="-70" width="12" height="11" rx="2" fill="url(#keretnoigold)" transform="rotate(-24 252 -64)"/>
+<circle cx="222" cy="-61" r="2.6" fill="url(#keretnoigold)" stroke="#8C6B58" stroke-width=".5"/><circle cx="221.2" cy="-61.9" r=".8" fill="#fff" opacity=".85"/>
+<circle cx="232" cy="-63" r="2.6" fill="url(#keretnoigold)" stroke="#8C6B58" stroke-width=".5"/><circle cx="231.2" cy="-63.9" r=".8" fill="#fff" opacity=".85"/>
+</g>
 </svg>

@@ -2,7 +2,7 @@
 
 **Élő terv:** https://daekon-ship.github.io/daekon/latvanytervek/tunderszem-optika/
 **Koncepció (3 irány):** https://daekon-ship.github.io/daekon/latvanytervek/tunderszem-optika/koncepcio.html
-**Állapot:** 1. kör, előzetes látványterv (noindex). Build nélküli statikus oldal: `index.html` + `tunderszem.css` + `tunderszem.js`.
+**Állapot:** 2. kör – prémium újratervezés (az 1. kör visszajelzése: „nem elég prémium”), előzetes látványterv (noindex). Build nélküli statikus oldal: `index.html` + `tunderszem.css` + `tunderszem.js`.
 
 ## Valós adatok (ellenőrizve)
 - Tündérszem Optika, 5052 Újszász, Damjanich út 14. · +36 30 146 4644 · tunderszemoptika@gmail.com
@@ -18,56 +18,64 @@
 4. **Díjak** — az optikaturul.eu „Turul” jelöléseit szándékosan nem tettem ki (nem ellenőrzött elismerés). Csak az ügyfél kérésére.
 5. Időpontkérés jelenleg csak telefon + e-mail (mailto). Online foglalás opcionális későbbi fejlesztés, **nincs bekötve**.
 
-## Art direction — „Herbárium a lencse mögött”
-A meglévő virágos, madaras, pasztell arculat érett újraolvasása: botanikai tábla / herbáriumlap esztétika, vékony vonalas rajzok, papírlapok, címkék („No. 01”). Nincs gyerekes, mesekönyves rajzstílus: tiszta tónusok, sok levegő, finom vonalak.
+## Art direction — 2. kör: „Maison”
+Az 1. kör rajzos, pasztell kártyás világa túl „bájos” volt. A 2. körben butik-optika hangulat:
+- **Renderelt keretek** (`_forras/rajzok.py`): acetát színátmenet, csúcsfény, belső él, lencse-tükröződés, rozéarany zsanér és szegecsek, vetett árnyék. A hero kerete füstös levendula acetát.
+- **Rézmetszet-botanika**: körvonal + vonalkázás, kitöltés nélkül; a márka kék madara elegáns fecskeként (logójel is).
+- **Nyomdai keretezés**: a hero kettős hajszálvonalas „lemezen” ül, sarokfeliratokkal (valós adatok: 2020, Damjanich út 14.).
+- **Középre tett logó**, felső elérhetőségi sáv, szögletes gombok nagybetűs, ritkított felirattal, rozéarany hajszálvonalak.
+- **Szolgáltatások „index”**: hat sor, bal oldalt ragadós metszet-előnézet, ami a sorra mutatva cserélődik.
+- **Sötét vitrin** a kereteknek: reflektorfény, tükröződő padló, 3D-billenés, lapozó (01 / 05).
+- **Utcakép**: építészeti vonalrajz a csúszkához. **Vélemények**: egyetlen nagy, dőlt idézetes lapozó. **Kapcsolat**: sötét/világos osztott blokk.
+- Finom papírszemcse az egész oldalon.
 
-**Szignatúra:** a hero szemüvege valódi lencseként működik — a háttér (látásvizsgáló tábla „T / Ü N / D É R / S Z E M / O P T I K A”, virágok) elmosódott, a két lencse mögött élesen és enyhén nagyítva látszik. Egérre követi a mutatót, érintőn lassan „körbenéz”, görgetésre kicsit felemelkedik.
+**Szignatúra (maradt):** a hero szemüvege valódi lencseként élesít — mögötte a „TÜNDÉRSZEM” látásvizsgáló tábla és a metszett virág elmosódott, a lencsén át éles és nagyított. Egérre követ, érintőn lassan pásztáz, a vetett árnyék a lebegéssel együtt halványul.
 
 ## Tipográfia
 | Szerep | Betű | Méret (clamp) |
 |---|---|---|
-| H1 | Cormorant Garamond 500, harmadik sor dőlt 450 | 2.6rem → 3.6rem |
-| H2 | Cormorant Garamond 500 (+ dőlt kiemelés) | 2.05rem → 3rem |
+| H1 | Cormorant Garamond 400, harmadik sor dőlt | 2.7rem → 3.75rem |
+| H2 | Cormorant Garamond 400 (+ dőlt kiemelés) | 2.15rem → 3.15rem |
 | H3 / kártyacím | Cormorant Garamond 500 | 1.6–1.75rem |
 | Törzs | Manrope 450 | 1.0625rem / 1.65 |
-| Szemöldök, címkék | Manrope 650–700, nagybetű, .18–.22em | .66–.72rem |
+| Szemöldök, címkék, gombok | Manrope 650–700, nagybetű, .2–.28em | .6–.74rem |
 
 Mérsékelt méretek (házszabály: nincs óriás tipó, a lábléc-felirat is 2.9rem max). Fraunces sehol. Betűk helyben: `fonts/` (Cormorant Garamond változó, latin + latin-ext subset; Manrope változó), OFL-licencek mellékelve.
 
 ## Színek (tokenek a `:root`-ban)
 `--pearl #F7F1F7` alap · `--powder #E9C5D9` · `--lavender #B8A3D8` · `--mist #9CB9C6` · `--ink #263432` · `--white`
-Származtatott: `--lav-deep #6C5A97` (dőlt kiemelések, AA), `--mist-deep #46707F` (szemöldök), `--rose #C98FB0` (címkék), `--ink-soft #4C5957` (törzsszöveg).
-Szekciósávok: gyöngyház → fehér (szolgáltatások) → gyöngyház–ködkék (vitrin) → gyöngyház → fehér → levendula-tint (vélemények) → gyöngyház → grafit lábléc.
+Származtatott: `--ink-deep #1C2625` (vitrin, lábléc, felső sáv), `--lav-deep #6C5A97` / `--lav-light #CDBBE3` (dőlt kiemelés világos/sötét alapon), `--gold #B8937A` (rozéarany hajszálvonalak), `--gold-text #8C6B58` / `--gold-light #D9C2AE` (címkék), `--ink-soft #4C5957` (törzsszöveg).
+Sávok: felső sáv (grafit) → hero lemez (papír + púder fény) → szolgáltatás-sor → rólunk (gyöngyház) → index (papír) → vitrin (mély grafit) → utcakép (gyöngyház) → miért (fehér) → vélemények (levendula-tint) → kapcsolat (grafit | papír) → lábléc (mély grafit).
 
 ## Térköz, rács
-- Konténer 1240 px, oldalsáv `clamp(20px, 5vw, 56px)`, szekció `clamp(96px, 11vw, 168px)`.
-- Szolgáltatások: 12 oszlopos aszimmetrikus „herbárium” (7/5, 5/6 eltolva, 5/7), széles kártyák vízszintesek; ≤980 px két oszlop eltolással, ≤640 px egy oszlop.
+- Konténer 1240 px, oldalsáv `clamp(20px, 5vw, 64px)`, szekció `clamp(104px, 12vw, 184px)`.
+- Fejléc: 1 fr | logó | 1 fr rács; 1180 px alatt hamburger.
 
 ## Reszponzív
-- ≤980 px: hamburger menü (teljes képernyős lap), hero sorrend: cím → szemüveg (kivágott viewBox) → szöveg → gombok.
-- ≤759 px: alsó hívássáv (Hívás / Útvonal), a `body` alsó paddingje pontosan akkora, nem takar tartalmat; kategóriák vízszintes chipekként.
+- ≤1180 px: hamburger menü. ≤980 px: hero sorrend cím → szemüveg (kivágott viewBox) → szöveg → gombok; az index sorai saját metszetet kapnak.
+- ≤759 px: felső sáv rejtve, alsó hívássáv (Hívás / Útvonal), a `body` alsó paddingje pontosan akkora; a vitrin fülei vízszintesen görgethetők.
 - Ellenőrizve: 360, 390, 430, 768, 1024, 1440, 1920 px — nincs vízszintes görgetés, nincs konzolhiba.
 
 ## Mozgás (GSAP 3 + ScrollTrigger, helyben: `js/`)
 | Elem | Mit csinál | Indító | Átadás / reduced-motion |
 |---|---|---|---|
-| Hero keret | A keret körvonala megrajzolódik (stroke-dashoffset, 1,5 s), utána csillanás, karok | betöltés (CSS) | rögtön kész állapot |
-| Hero cím | Soronként maszkból felcsúszik | betöltés | statikus |
-| Lencse-élesség | Keret + clipPath + nagyított éles réteg követi az egeret / érintőn lassú pásztázás / görgetésre emelkedés | pointer, idő, scroll | statikus középen; rAF megáll, ha a hero nem látszik |
-| Pasztell fényfoltok | 26–38 s-os lassú sodródás | folyamatos | nincs mozgás |
+| Hero keret + háttér | Elmosódott réteg, éles réteg, árnyék és keret lágyan beúszik | betöltés (CSS) | rögtön kész állapot |
+| Hero cím | Soronként maszkból felcsúszik; sarokfeliratok utána | betöltés | statikus |
+| Lencse-élesség | Keret + clipPath + nagyított éles réteg követi az egeret / érintőn pásztáz / görgetésre emelkedik; árnyék szélesedik-halványul | pointer, idő, scroll | statikus középen; rAF megáll, ha a hero nem látszik |
 | Szekciócímek | Szavanként maszkból | scroll (86%) | statikus |
-| Történet lapok | Alulról nyíló clip-path + kép kicsinyedés; levendulaág és fotólap parallax | scroll | statikus |
-| Szolgáltatáskártyák | Csoportos felúszás; hoverre a rajz billen | scroll / hover | statikus |
-| Vitrin | Kategóriaváltáskor a keret Y-tengely körül átfordul; egérre 3D-billenés | kattintás, nyilak / pointer | azonnali csere |
-| Összehasonlító | Belépéskor egyszer „megmutatja” a csúszkát (50→28→66→50) | scroll | nincs bemutató |
+| Rólunk metszet | Alulról nyíló clip-path + kép kicsinyedés | scroll | statikus |
+| Szolgáltatás-index | Sorok csoportos belépője; rámutatásra/fókuszra a sor kiemelődik, az előnézet áttűnik | scroll / hover / fókusz | azonnali csere |
+| Vitrin | Belépéskor a keret felúszik; váltáskor ki- és becsúszik tükörképpel; egérre 3D-billenés | scroll / kattintás, nyilak / pointer | azonnali csere |
+| Összehasonlító | Belépéskor egyszer megmutatja a csúszkát | scroll | nincs bemutató |
+| Vélemények | Áttűnő lapozó (gombok, húzás) | kattintás / érintés | azonnali csere |
 
 Nincs blokkoló intro, nincs scrolljacking.
 
 ## Komponensek
-`btn` (ink/line/small/wide) · `sheet` (herbáriumlap + címke) · `card` (+`--wide`) · `tabs`/`stage` (vitrin) · `compare` (csúszka: pointer + rejtett range a billentyűzethez) · `values` · `review` (+`--slot`) · `hours` (mai nap kiemelés, „Most nyitva” Europe/Budapest szerint) · `callbar`.
+`btn` (ink/ghost/pearl/ghostlight/small/wide) · `hero__plate` + `corner` · `ribbon` · `engraving` · `photoslot` · `index`/`row` · `tabs`/`stage` (sötét vitrin) · `compare` (pointer + rejtett range a billentyűzethez) · `values` · `quote` lapozó · `hours` (mai nap, „Most nyitva” Europe/Budapest szerint) · `callbar`.
 
 ## Mi kell élesítéshez (és mi nincs benne)
 - GSAP + ScrollTrigger: benne (ingyenes licenc). Three.js/WebGL, React Bits, HorizonX: **nincs használva**, nem is szükséges.
 - React + TypeScript + Tailwind átírás opcionális; a mostani statikus felépítés komponensenként átvihető.
-- Rajzok forrása: `_forras/rajzok.py` → `img/*.svg` (újragenerálható). Valódi fotó cseréje: az `img` `src`-je a `sheet`, `card__plate` és `stage__frame` elemekben.
+- Rajzok forrása: `_forras/rajzok.py` → `img/*.svg` (újragenerálható). Valódi fotó helye: `.photoslot__box` (rólunk), illetve az `engraving`, `index__frame` és `stage__frame` képei cserélhetők saját fotóra.
 - Adatkezelési tájékoztató, süti-sáv: még nincs.

@@ -11,9 +11,10 @@
 <meta property="og:locale" content="hu_HU">
 <meta property="og:title" content="Tündérszem Optika – Láss tisztán.">
 <meta property="og:description" content="Személyre szabott látásvizsgálat, stílusos szemüvegek és figyelmes kiszolgálás Újszász szívében.">
-<link rel="icon" href="img/madar.svg" type="image/svg+xml">
+<link rel="icon" href="img/fecske.svg" type="image/svg+xml">
 <link rel="preload" href="fonts/cormorant-var.woff" as="font" type="font/woff" crossorigin>
 <link rel="preload" href="fonts/manrope-var.woff" as="font" type="font/woff" crossorigin>
+<link rel="preload" href="img/hero-keret.svg" as="image">
 <link rel="stylesheet" href="tunderszem.css">
 <script>(function(d){d.classList.replace('no-js','js');if(!matchMedia('(prefers-reduced-motion: reduce)').matches)d.classList.add('motion');})(document.documentElement);</script>
 <script type="application/ld+json">
@@ -26,22 +27,32 @@
 <body>
 <a class="skip" href="#tartalom">Ugrás a tartalomra</a>
 
-<!-- ============ FEJLÉC ============ -->
+<!-- ============ FELSŐ SÁV + FEJLÉC ============ -->
+<div class="topbar" aria-label="Elérhetőség">
+  <div class="wrap topbar__inner">
+    <span>5052 Újszász, Damjanich út 14.</span>
+    <span class="topbar__mid">Hétfő–péntek 9:00–17:00</span>
+    <a href="tel:+36301464644">+36 30 146 4644</a>
+  </div>
+</div>
+
 <header class="nav" id="nav">
   <div class="nav__inner wrap">
-    <a class="brand" href="#fooldal" aria-label="Tündérszem Optika – főoldal">
-      <svg class="brand__bird" viewBox="0 0 120 90" aria-hidden="true"><use href="#bird"/></svg>
-      <span class="brand__text"><span class="brand__name">Tündérszem</span><span class="brand__sub">Optika</span></span>
-    </a>
-    <nav class="nav__links" aria-label="Fő navigáció">
+    <nav class="nav__side nav__side--left" aria-label="Fő navigáció – bal">
       <a href="#fooldal">Főoldal</a>
       <a href="#rolunk">Rólunk</a>
       <a href="#szolgaltatasok">Szolgáltatások</a>
+    </nav>
+    <a class="brand" href="#fooldal" aria-label="Tündérszem Optika – főoldal">
+      <svg class="brand__bird" viewBox="0 0 124 80" aria-hidden="true"><use href="#swallow"/></svg>
+      <span class="brand__text"><span class="brand__name">Tündérszem</span><span class="brand__sub">Optika · Újszász</span></span>
+    </a>
+    <nav class="nav__side nav__side--right" aria-label="Fő navigáció – jobb">
       <a href="#szemuvegek">Szemüvegek</a>
       <a href="#velemenyek">Vélemények</a>
       <a href="#kapcsolat">Kapcsolat</a>
+      <a class="btn btn--ink btn--small" href="tel:+36301464644">Időpontkérés</a>
     </nav>
-    <a class="btn btn--small btn--ink nav__cta" href="tel:+36301464644">Időpontkérés</a>
     <button class="nav__burger" type="button" aria-expanded="false" aria-controls="menu" aria-label="Menü megnyitása">
       <span></span><span></span>
     </button>
@@ -58,8 +69,8 @@
     <a href="#kapcsolat"><i>06</i>Kapcsolat</a>
   </nav>
   <div class="menu__foot">
-    <a class="btn btn--ink" href="tel:+36301464644">Hívás: +36 30 146 4644</a>
-    <p>Hétfő–péntek 9:00–17:00 · Újszász, Damjanich út 14.</p>
+    <a class="btn btn--ink" href="tel:+36301464644">Időpontkérés: +36 30 146 4644</a>
+    <p>Hétfő–péntek 9:00–17:00 · 5052 Újszász, Damjanich út 14.</p>
   </div>
 </div>
 
@@ -67,220 +78,245 @@
 
 <!-- ============ HERO ============ -->
 <section class="hero" id="fooldal" aria-labelledby="hero-title">
-  <div class="hero__glow" aria-hidden="true"><span></span><span></span><span></span></div>
-  <div class="hero__inner wrap">
-    <div class="hero__copy">
-      <p class="eyebrow hero__eyebrow" data-hero>Tündérszem Optika — Újszász</p>
-      <h1 id="hero-title" class="hero__title">
-        <span class="line"><span>Láss tisztán.</span></span>
-        <span class="line"><span>Érezd magad</span></span>
-        <span class="line line--accent"><span><em>ragyogóan.</em></span></span>
-      </h1>
-      <p class="hero__lead" data-hero>Személyre szabott látásvizsgálat, stílusos szemüvegek és figyelmes kiszolgálás Újszász szívében.</p>
-      <div class="hero__actions" data-hero>
-        <a class="btn btn--ink" href="tel:+36301464644">Időpontot kérek</a>
-        <a class="btn btn--line" href="#szemuvegek">Felfedezem a kínálatot</a>
+  <div class="hero__plate">
+    <span class="corner corner--tl" aria-hidden="true">Alapítva 2020</span>
+    <span class="corner corner--tr" aria-hidden="true">N° 14 · Damjanich út</span>
+    <span class="corner corner--bl" aria-hidden="true">Szemvizsgálat · Szemüvegkészítés</span>
+
+    <div class="hero__inner">
+      <div class="hero__copy">
+        <p class="eyebrow hero__eyebrow" data-hero>Tündérszem Optika — Újszász</p>
+        <h1 id="hero-title" class="hero__title">
+          <span class="line"><span>Láss tisztán.</span></span>
+          <span class="line"><span>Érezd magad</span></span>
+          <span class="line line--accent"><span><em>ragyogóan.</em></span></span>
+        </h1>
+        <p class="hero__lead" data-hero>Személyre szabott látásvizsgálat, stílusos szemüvegek és figyelmes kiszolgálás Újszász szívében.</p>
+        <div class="hero__actions" data-hero>
+          <a class="btn btn--ink" href="tel:+36301464644">Időpontot kérek</a>
+          <a class="btn btn--ghost" href="#szemuvegek">Felfedezem a kínálatot <span class="arrow" aria-hidden="true"></span></a>
+        </div>
       </div>
-      <p class="hero__meta" data-hero>Időpont telefonon: <a href="tel:+36301464644">+36 30 146 4644</a> · <span class="nw">hétfő–péntek 9–17</span></p>
+
+      <figure class="hero__visual" aria-hidden="true">
+        <svg class="specimen" viewBox="0 0 640 600" role="presentation">
+          <defs>
+            <filter id="soft" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="4.2"/></filter>
+            <filter id="shadowBlur" x="-30%" y="-300%" width="160%" height="700%"><feGaussianBlur stdDeviation="12"/></filter>
+            <radialGradient id="caustic" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#B8A3D8" stop-opacity=".32"/><stop offset="1" stop-color="#B8A3D8" stop-opacity="0"/></radialGradient>
+            <path id="lens" d="M-95 -40 C-60 -62 40 -68 100 -62 C112 -60 118 -52 112 -36 C100 10 70 62 10 66 C-50 70 -96 40 -104 0 C-108 -20 -104 -34 -95 -40Z"/>
+            <g id="art">
+              <image href="img/gravir-ag.svg" x="318" y="-18" width="330" height="292"/>
+              <image href="img/gravir-levendula.svg" x="24" y="132" width="140" height="411"/>
+              <image href="img/fecske.svg" x="478" y="300" width="96" height="62"/>
+              <g transform="rotate(-2.5 445 300)">
+                <rect x="352" y="150" width="186" height="290" fill="#FBF8FB" stroke="#263432" stroke-width=".9"/>
+                <rect x="358" y="156" width="174" height="278" fill="none" stroke="#263432" stroke-width=".35"/>
+                <g class="chart" fill="#263432" text-anchor="middle">
+                  <text x="445" y="226" font-size="56">T</text>
+                  <text x="445" y="268" font-size="32" letter-spacing="10">Ü N</text>
+                  <text x="445" y="303" font-size="23" letter-spacing="8">D É R</text>
+                  <text x="445" y="332" font-size="17" letter-spacing="7">S Z E M</text>
+                  <text x="445" y="355" font-size="12.5" letter-spacing="6">O P T I K A</text>
+                  <text x="445" y="374" font-size="9.5" letter-spacing="5">Ú J S Z Á S Z</text>
+                  <text x="445" y="390" font-size="7.5" letter-spacing="4">2 0 2 0</text>
+                </g>
+                <path d="M384 410 H506" stroke="#B8937A" stroke-width=".8"/>
+                <text x="445" y="424" text-anchor="middle" font-size="6" letter-spacing="3" fill="#263432" class="chart-meta">N° 01 · LÁTÁSPRÓBA</text>
+              </g>
+              <image href="img/gravir-virag.svg" x="88" y="252" width="207" height="369"/>
+            </g>
+            <clipPath id="lensClip">
+              <use id="clipR" href="#lens" transform="translate(320 300) translate(124 0)"/>
+              <use id="clipL" href="#lens" transform="translate(320 300) translate(-124 0) scale(-1 1)"/>
+            </clipPath>
+          </defs>
+
+          <use href="#art" filter="url(#soft)" class="specimen__blur"/>
+          <g clip-path="url(#lensClip)" class="specimen__sharp">
+            <rect width="640" height="600" fill="#FDFBFD"/>
+            <use href="#art" id="artSharp" transform="translate(320 300) scale(1.07) translate(-320 -300)"/>
+          </g>
+          <ellipse id="shadow" class="specimen__shadow" cx="320" cy="470" rx="230" ry="12" fill="#263432" opacity=".16" filter="url(#shadowBlur)"/>
+          <ellipse id="caustic1" cx="200" cy="472" rx="90" ry="10" fill="url(#caustic)"/>
+          <ellipse id="caustic2" cx="444" cy="472" rx="90" ry="10" fill="url(#caustic)"/>
+          <g id="frame" class="frame" transform="translate(320 300)">
+            <image href="img/hero-keret.svg" x="-300" y="-160" width="600" height="320"/>
+          </g>
+        </svg>
+        <figcaption class="hero__hint"><span class="hint-desk">Mozgasd az egeret — a lencse mögött minden élesebb.</span><span class="hint-touch">A lencse mögött minden élesebb.</span></figcaption>
+      </figure>
     </div>
 
-    <figure class="hero__visual" aria-hidden="true">
-      <svg class="specimen" viewBox="0 0 640 600" role="presentation">
-        <defs>
-          <filter id="soft" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="5"/></filter>
-          <linearGradient id="glassTint" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stop-color="#ffffff" stop-opacity=".25"/>
-            <stop offset=".6" stop-color="#9CB9C6" stop-opacity=".08"/>
-            <stop offset="1" stop-color="#B8A3D8" stop-opacity=".22"/>
-          </linearGradient>
-          <path id="lens" pathLength="100" d="M-95 -40 C-60 -62 40 -68 100 -62 C112 -60 118 -52 112 -36 C100 10 70 62 10 66 C-50 70 -96 40 -104 0 C-108 -20 -104 -34 -95 -40Z"/>
-          <g id="art">
-            <image href="img/ag-eukaliptusz.svg" x="300" y="-10" width="340" height="300"/>
-            <image href="img/ag-levendula.svg" x="12" y="150" width="150" height="400"/>
-            <g transform="rotate(-3 440 290)">
-              <rect x="350" y="148" width="190" height="290" rx="3" fill="#FFFFFF" stroke="#263432" stroke-width="1.3"/>
-              <g class="chart" fill="#263432" text-anchor="middle">
-                <text x="445" y="222" font-size="58">T</text>
-                <text x="445" y="266" font-size="34" letter-spacing="10">Ü N</text>
-                <text x="445" y="302" font-size="24" letter-spacing="8">D É R</text>
-                <text x="445" y="332" font-size="18" letter-spacing="7">S Z E M</text>
-                <text x="445" y="356" font-size="13" letter-spacing="6">O P T I K A</text>
-                <text x="445" y="376" font-size="10" letter-spacing="5">Ú J S Z Á S Z</text>
-                <text x="445" y="393" font-size="8" letter-spacing="4">2 0 2 0  ó t a</text>
-              </g>
-              <path d="M372 410 H518" stroke="#C98FB0" stroke-width="1.2"/>
-            </g>
-            <image href="img/ag-virag.svg" x="104" y="262" width="190" height="361"/>
-            <image href="img/virag-lila.svg" x="455" y="430" width="80" height="80"/>
-          </g>
-          <clipPath id="lensClip">
-            <use id="clipR" href="#lens" transform="translate(320 330) translate(124 0)"/>
-            <use id="clipL" href="#lens" transform="translate(320 330) translate(-124 0) scale(-1 1)"/>
-          </clipPath>
-        </defs>
-
-        <use href="#art" filter="url(#soft)" class="specimen__blur"/>
-        <g clip-path="url(#lensClip)" class="specimen__sharp">
-          <rect width="640" height="600" fill="#FCFAFC"/>
-          <use href="#art" id="artSharp" transform="translate(320 330) scale(1.06) translate(-320 -330)"/>
-        </g>
-
-        <g id="frame" class="frame" transform="translate(320 330)">
-          <use href="#lens" transform="translate(124 0)" fill="url(#glassTint)"/>
-          <use href="#lens" transform="translate(-124 0) scale(-1 1)" fill="url(#glassTint)"/>
-          <path class="frame__glint" d="M60 -36 L100 -48 M50 -16 L76 -26" transform="translate(4 0)"/>
-          <path class="frame__glint" d="M-188 -36 L-148 -48 M-198 -16 L-172 -26"/>
-          <use class="frame__rim" href="#lens" transform="translate(124 0)"/>
-          <use class="frame__rim" href="#lens" transform="translate(-124 0) scale(-1 1)"/>
-          <use class="frame__inner" href="#lens" transform="translate(124 0)"/>
-          <use class="frame__inner" href="#lens" transform="translate(-124 0) scale(-1 1)"/>
-          <path class="frame__rim" pathLength="100" d="M-22 -36 C-12 -52 12 -52 22 -36"/>
-          <path class="frame__arm" d="M232 -52 L262 -70 M-232 -52 L-262 -70"/>
-          <circle cx="230" cy="-52" r="4.5" fill="#C98FB0" stroke="#263432" stroke-width="1.3"/>
-          <circle cx="-230" cy="-52" r="4.5" fill="#C98FB0" stroke="#263432" stroke-width="1.3"/>
-        </g>
-      </svg>
-      <figcaption class="hero__hint"><span class="hint-desk">Mozgasd az egeret — a lencse mögött minden élesebb.</span><span class="hint-touch">A lencse mögött minden élesebb.</span></figcaption>
-    </figure>
+    <a class="scrollcue" href="#rolunk"><span class="scrollcue__line" aria-hidden="true"></span>Görgess</a>
   </div>
-  <a class="scrollcue" href="#rolunk" aria-label="Görgetés a következő részhez"><span></span></a>
 </section>
+
+<!-- ============ SZOLGÁLTATÁS-SOR ============ -->
+<div class="ribbon" aria-hidden="true">
+  <div class="wrap ribbon__inner">
+    <span>Szemvizsgálat</span><i></i><span>Szemüvegkészítés</span><i></i><span>Szemüvegkeretek</span><i></i><span>Javítás</span><i></i><span>Lencsék</span><i></i><span>Kontaktlencsék</span>
+  </div>
+</div>
 
 <!-- ============ RÓLUNK ============ -->
 <section class="story section" id="rolunk" aria-labelledby="story-title">
-  <div class="wrap story__grid">
-    <div class="story__plates">
-      <figure class="sheet sheet--tall" data-plate>
-        <img src="img/probakeret.svg" alt="Rajz: próbakeret, a látásvizsgálat egyik eszköze" width="400" height="270" loading="lazy">
-        <figcaption><span>No. 01</span> Próbakeret — rajz <em>helyére az üzlet saját fotója kerülhet</em></figcaption>
-      </figure>
-      <figure class="sheet sheet--photo" data-plate>
-        <img src="img/portal.svg" alt="Rajz: a Tündérszem Optika üzletportálja" width="400" height="300" loading="lazy">
-        <figcaption><span>Fotóhely</span> Az üzlet portálja és a keretfal — saját fotó ide</figcaption>
-      </figure>
-      <img class="story__sprig" src="img/ag-levendula.svg" alt="" width="160" height="420" loading="lazy">
-    </div>
-    <div class="story__copy">
+  <div class="wrap">
+    <div class="story__head">
       <p class="eyebrow" data-reveal>Rólunk · 2020 óta Újszászon</p>
-      <h2 id="story-title" class="h2" data-split>Több mint szemüveg. <em>Egy új nézőpont.</em></h2>
-      <div class="story__text" data-reveal>
-        <p>Hiszünk abban, hogy a megfelelő szemüveg nemcsak az éles látásról szól, hanem a kényelmes mindennapokról és a magabiztos megjelenésről is.</p>
-        <p>Újszászi optikánkban figyelmes kiszolgálással segítünk megtalálni a hozzád illő megoldást — a vizsgálattól a keret kiválasztásán át a kész szemüveg beállításáig.</p>
+      <h2 id="story-title" class="h2 h2--center" data-split>Több mint szemüveg. <em>Egy új nézőpont.</em></h2>
+    </div>
+    <div class="story__grid">
+      <figure class="engraving" data-plate>
+        <div class="engraving__frame"><img src="img/probakeret.svg" alt="Rézmetszet-stílusú rajz: próbakeret, a látásvizsgálat eszköze" width="400" height="270" loading="lazy"></div>
+        <figcaption><span>Pl. I.</span> Próbakeret — rajz. A végleges oldalon az üzlet saját fotója is állhat itt.</figcaption>
+      </figure>
+      <div class="story__copy">
+        <p class="story__lead" data-reveal>Hiszünk abban, hogy a megfelelő szemüveg nemcsak az éles látásról szól, hanem a kényelmes mindennapokról és a magabiztos megjelenésről is.</p>
+        <p data-reveal>Újszászi optikánkban figyelmes kiszolgálással segítünk megtalálni a hozzád illő megoldást — a vizsgálattól a keret kiválasztásán át a kész szemüveg beállításáig.</p>
+        <dl class="facts" data-reveal>
+          <div><dt>Alapítva</dt><dd>2020</dd></div>
+          <div><dt>Cím</dt><dd>Damjanich út 14.</dd></div>
+          <div><dt>Nyitva</dt><dd>H–P 9–17</dd></div>
+        </dl>
+        <figure class="photoslot" data-reveal>
+          <div class="photoslot__box"><span>Fotóhely</span><small>az üzlet portálja vagy a keretfal — saját fotó</small></div>
+        </figure>
       </div>
-      <dl class="facts" data-reveal>
-        <div><dt>Mióta</dt><dd>2020 óta</dd></div>
-        <div><dt>Hol</dt><dd>Damjanich út 14.</dd></div>
-        <div><dt>Mikor</dt><dd>H–P 9:00–17:00</dd></div>
-      </dl>
     </div>
   </div>
 </section>
 
-<!-- ============ SZOLGÁLTATÁSOK ============ -->
+<!-- ============ SZOLGÁLTATÁSOK – INDEX ============ -->
 <section class="services section" id="szolgaltatasok" aria-labelledby="services-title">
   <div class="wrap">
-    <header class="section__head">
-      <p class="eyebrow" data-reveal>Szolgáltatások</p>
-      <h2 id="services-title" class="h2" data-split>Amiben <em>segítünk</em></h2>
+    <header class="section__head section__head--split">
+      <div>
+        <p class="eyebrow" data-reveal>Szolgáltatások</p>
+        <h2 id="services-title" class="h2" data-split>Amiben <em>segítünk</em></h2>
+      </div>
       <p class="section__intro" data-reveal>Hat dolog, amivel bejöhetsz hozzánk. Ha nem tudod, melyik kell, hívj fel nyugodtan, és együtt kitaláljuk.</p>
     </header>
 
-    <div class="herbarium">
-      <article class="card card--a card--wide" data-card>
-        <div class="card__plate"><img src="img/szolg-vizsgalat.svg" alt="" width="320" height="220" loading="lazy"></div>
-        <div class="card__body">
-          <p class="card__no">No. 01</p>
-          <h3>Szemvizsgálat</h3>
-          <p>Megnézzük, hogyan látsz távolra és közelre, és hogy a mostani szemüveged megfelel-e még. Az eredményt érthetően elmondjuk.</p>
-          <details><summary>Részletek</summary><p>Időpontot telefonon tudsz kérni. Ha van régi szemüveged, hozd magaddal — sokat segít az összehasonlításban.</p></details>
+    <div class="index">
+      <div class="index__preview" aria-hidden="true">
+        <div class="index__frame">
+          <img class="is-on" src="img/szolg-vizsgalat.svg" alt="" width="320" height="220">
+          <img src="img/szolg-keszites.svg" alt="" width="320" height="220" loading="lazy">
+          <img src="img/szolg-keretek.svg" alt="" width="320" height="220" loading="lazy">
+          <img src="img/szolg-javitas.svg" alt="" width="320" height="220" loading="lazy">
+          <img src="img/szolg-kontakt.svg" alt="" width="320" height="220" loading="lazy">
+          <img src="img/szolg-lencsek.svg" alt="" width="320" height="220" loading="lazy">
         </div>
-      </article>
-      <article class="card card--b" data-card>
-        <div class="card__plate"><img src="img/szolg-keszites.svg" alt="" width="320" height="220" loading="lazy"></div>
-        <div class="card__body">
-          <p class="card__no">No. 02</p>
-          <h3>Szemüvegkészítés</h3>
-          <p>A kiválasztott keretbe a látásodhoz illő lencse kerül, a kész szemüveget pedig úgy állítjuk be, hogy kényelmesen üljön.</p>
-          <details><summary>Részletek</summary><p>Távoli, közeli és multifokális szemüveg is készül; a lencse típusát a vizsgálat és a mindennapjaid alapján együtt választjuk ki.</p></details>
-        </div>
-      </article>
-      <article class="card card--c" data-card>
-        <div class="card__plate"><img src="img/szolg-keretek.svg" alt="" width="320" height="220" loading="lazy"></div>
-        <div class="card__body">
-          <p class="card__no">No. 03</p>
-          <h3>Szemüvegkeretek</h3>
-          <p>Női, férfi és gyermek keretek, klasszikus és modern formák. Próbálj fel nyugodtan többet is — megmondjuk, melyik áll jól.</p>
-          <details><summary>Részletek</summary><p>A keretválasztásnál az arcforma mellett a lencse erőssége is számít: erősebb dioptriához más keret ideális, mint gyengébbhez.</p></details>
-        </div>
-      </article>
-      <article class="card card--d card--wide" data-card>
-        <div class="card__plate"><img src="img/szolg-javitas.svg" alt="" width="320" height="220" loading="lazy"></div>
-        <div class="card__body">
-          <p class="card__no">No. 04</p>
-          <h3>Szemüvegjavítás</h3>
-          <p>Kilazult csavar, elferdült szár, kopott orrpárna — sok apró hiba megjavítható, mielőtt új szemüveg kellene. Hozd be, megnézzük.</p>
-          <details><summary>Részletek</summary><p>Hogy egy javítás megoldható-e, és mennyi időbe telik, a szemüveg megtekintése után tudjuk megmondani.</p></details>
-        </div>
-      </article>
-      <article class="card card--e" data-card>
-        <div class="card__plate"><img src="img/szolg-kontakt.svg" alt="" width="320" height="220" loading="lazy"></div>
-        <div class="card__body">
-          <p class="card__no">No. 05</p>
-          <h3>Kontaktlencsék</h3>
-          <p>Kontaktlencsék és a hozzájuk való ápolószerek. Kérdezz bátran, melyik illik a te mindennapjaidhoz.</p>
-          <details><summary>Részletek</summary><p>Ápolófolyadékot, tárolótokot és a használt lencsédet érdemes telefonon előre egyeztetni, hogy biztosan legyen raktáron.</p></details>
-        </div>
-      </article>
-      <article class="card card--f card--wide" data-card>
-        <div class="card__plate"><img src="img/szolg-lencsek.svg" alt="" width="320" height="220" loading="lazy"></div>
-        <div class="card__body">
-          <p class="card__no">No. 06</p>
-          <h3>Szemüveglencsék</h3>
-          <p>Multifokális, bifokális, fényre sötétedő és vékonyított lencsék. Elmondjuk, melyik mire jó.</p>
-          <details><summary>Részletek</summary>
-            <ul class="lenslist">
-              <li><b>Multifokális</b> — távol, köztes és közel egyetlen lencsében, látható választóvonal nélkül.</li>
-              <li><b>Bifokális</b> — két látótávolság egy lencsében, a közeli rész elkülönül.</li>
-              <li><b>Fényre sötétedő</b> — napfényben besötétedik, bent újra világos.</li>
-              <li><b>Vékonyított</b> — erősebb dioptriánál vékonyabb, könnyebb lencse.</li>
-            </ul>
-          </details>
-        </div>
-      </article>
+        <p class="index__cap" id="indexCap">Pl. 01 — Szemvizsgálat</p>
+      </div>
+
+      <ol class="index__list">
+        <li class="row is-on" data-row="0" data-name="Szemvizsgálat">
+          <span class="row__no">01</span>
+          <div class="row__body">
+            <h3>Szemvizsgálat</h3>
+            <img class="row__plate" src="img/szolg-vizsgalat.svg" alt="" width="320" height="220" loading="lazy">
+            <p>Megnézzük, hogyan látsz távolra és közelre, és hogy a mostani szemüveged megfelel-e még. Az eredményt érthetően elmondjuk.</p>
+            <details><summary>Részletek</summary><p>Időpontot telefonon tudsz kérni. Ha van régi szemüveged, hozd magaddal — sokat segít az összehasonlításban.</p></details>
+          </div>
+        </li>
+        <li class="row" data-row="1" data-name="Szemüvegkészítés">
+          <span class="row__no">02</span>
+          <div class="row__body">
+            <h3>Szemüvegkészítés</h3>
+            <img class="row__plate" src="img/szolg-keszites.svg" alt="" width="320" height="220" loading="lazy">
+            <p>A kiválasztott keretbe a látásodhoz illő lencse kerül, a kész szemüveget pedig úgy állítjuk be, hogy kényelmesen üljön.</p>
+            <details><summary>Részletek</summary><p>Távoli, közeli és multifokális szemüveg is készül; a lencse típusát a vizsgálat és a mindennapjaid alapján együtt választjuk ki.</p></details>
+          </div>
+        </li>
+        <li class="row" data-row="2" data-name="Szemüvegkeretek">
+          <span class="row__no">03</span>
+          <div class="row__body">
+            <h3>Szemüvegkeretek</h3>
+            <img class="row__plate" src="img/szolg-keretek.svg" alt="" width="320" height="220" loading="lazy">
+            <p>Női, férfi és gyermek keretek, klasszikus és modern formák. Próbálj fel nyugodtan többet is — megmondjuk, melyik áll jól.</p>
+            <details><summary>Részletek</summary><p>A keretválasztásnál az arcforma mellett a lencse erőssége is számít: erősebb dioptriához más keret ideális, mint gyengébbhez.</p></details>
+          </div>
+        </li>
+        <li class="row" data-row="3" data-name="Szemüvegjavítás">
+          <span class="row__no">04</span>
+          <div class="row__body">
+            <h3>Szemüvegjavítás</h3>
+            <img class="row__plate" src="img/szolg-javitas.svg" alt="" width="320" height="220" loading="lazy">
+            <p>Kilazult csavar, elferdült szár, kopott orrpárna — sok apró hiba megjavítható, mielőtt új szemüveg kellene. Hozd be, megnézzük.</p>
+            <details><summary>Részletek</summary><p>Hogy egy javítás megoldható-e, és mennyi időbe telik, a szemüveg megtekintése után tudjuk megmondani.</p></details>
+          </div>
+        </li>
+        <li class="row" data-row="4" data-name="Kontaktlencsék">
+          <span class="row__no">05</span>
+          <div class="row__body">
+            <h3>Kontaktlencsék</h3>
+            <img class="row__plate" src="img/szolg-kontakt.svg" alt="" width="320" height="220" loading="lazy">
+            <p>Kontaktlencsék és a hozzájuk való ápolószerek. Kérdezz bátran, melyik illik a te mindennapjaidhoz.</p>
+            <details><summary>Részletek</summary><p>A használt lencsédet és ápolószeredet érdemes telefonon előre egyeztetni.</p></details>
+          </div>
+        </li>
+        <li class="row" data-row="5" data-name="Szemüveglencsék">
+          <span class="row__no">06</span>
+          <div class="row__body">
+            <h3>Szemüveglencsék</h3>
+            <img class="row__plate" src="img/szolg-lencsek.svg" alt="" width="320" height="220" loading="lazy">
+            <p>Multifokális, bifokális, fényre sötétedő és vékonyított lencsék. Elmondjuk, melyik mire jó.</p>
+            <details><summary>Részletek</summary>
+              <ul class="lenslist">
+                <li><b>Multifokális</b> — távol, köztes és közel egyetlen lencsében, látható választóvonal nélkül.</li>
+                <li><b>Bifokális</b> — két látótávolság egy lencsében, a közeli rész elkülönül.</li>
+                <li><b>Fényre sötétedő</b> — napfényben besötétedik, bent újra világos.</li>
+                <li><b>Vékonyított</b> — erősebb dioptriánál vékonyabb, könnyebb lencse.</li>
+              </ul>
+            </details>
+          </div>
+        </li>
+      </ol>
     </div>
   </div>
 </section>
 
-<!-- ============ SZEMÜVEGEK / VITRIN ============ -->
+<!-- ============ SZEMÜVEGEK – SÖTÉT VITRIN ============ -->
 <section class="vitrin section" id="szemuvegek" aria-labelledby="vitrin-title">
-  <div class="wrap vitrin__grid">
-    <div class="vitrin__copy">
-      <p class="eyebrow" data-reveal>Szemüvegek</p>
-      <h2 id="vitrin-title" class="h2" data-split>A stílus, <em>ami rád talál.</em></h2>
-      <p class="section__intro" data-reveal>A klasszikus eleganciától a karakteres, modern formákig — fedezd fel a hozzád illő szemüvegkeretet.</p>
-      <div class="tabs" role="tablist" aria-label="Keretkategóriák" data-reveal>
-        <button role="tab" id="tab-noi" aria-controls="stage" aria-selected="true" data-frame="noi"><i>01</i>Női szemüvegek</button>
-        <button role="tab" id="tab-ferfi" aria-controls="stage" aria-selected="false" tabindex="-1" data-frame="ferfi"><i>02</i>Férfi szemüvegek</button>
-        <button role="tab" id="tab-gyermek" aria-controls="stage" aria-selected="false" tabindex="-1" data-frame="gyermek"><i>03</i>Gyermek szemüvegek</button>
-        <button role="tab" id="tab-klasszikus" aria-controls="stage" aria-selected="false" tabindex="-1" data-frame="klasszikus"><i>04</i>Klasszikus keretek</button>
-        <button role="tab" id="tab-modern" aria-controls="stage" aria-selected="false" tabindex="-1" data-frame="modern"><i>05</i>Modern keretek</button>
+  <div class="wrap">
+    <header class="section__head section__head--split">
+      <div>
+        <p class="eyebrow eyebrow--light" data-reveal>Szemüvegek</p>
+        <h2 id="vitrin-title" class="h2" data-split>A stílus, <em>ami rád talál.</em></h2>
       </div>
+      <p class="section__intro" data-reveal>A klasszikus eleganciától a karakteres, modern formákig — fedezd fel a hozzád illő szemüvegkeretet.</p>
+    </header>
+
+    <div class="tabs" role="tablist" aria-label="Keretkategóriák" data-reveal>
+      <button role="tab" id="tab-noi" aria-controls="stage" aria-selected="true" data-frame="noi"><i>01</i>Női</button>
+      <button role="tab" id="tab-ferfi" aria-controls="stage" aria-selected="false" tabindex="-1" data-frame="ferfi"><i>02</i>Férfi</button>
+      <button role="tab" id="tab-gyermek" aria-controls="stage" aria-selected="false" tabindex="-1" data-frame="gyermek"><i>03</i>Gyermek</button>
+      <button role="tab" id="tab-klasszikus" aria-controls="stage" aria-selected="false" tabindex="-1" data-frame="klasszikus"><i>04</i>Klasszikus</button>
+      <button role="tab" id="tab-modern" aria-controls="stage" aria-selected="false" tabindex="-1" data-frame="modern"><i>05</i>Modern</button>
     </div>
 
-    <div class="stage" id="stage" role="tabpanel" aria-labelledby="tab-noi" aria-live="polite">
-      <div class="stage__glass" data-reveal>
-        <img class="stage__sprig" src="img/ag-eukaliptusz.svg" alt="" width="340" height="300" loading="lazy">
-        <div class="stage__tilt">
-          <img class="stage__frame" id="stageFrame" src="img/keret-noi.svg" alt="Rajzolt női szemüvegkeret: macskaszem-forma" width="560" height="200">
-        </div>
-        <div class="stage__shelf" aria-hidden="true"></div>
+    <div class="stage" id="stage" role="tabpanel" aria-labelledby="tab-noi">
+      <div class="stage__light" aria-hidden="true"></div>
+      <img class="stage__sprig" src="img/gravir-ag.svg" alt="" width="350" height="310" loading="lazy">
+      <div class="stage__tilt">
+        <img class="stage__frame" id="stageFrame" src="img/keret-noi.svg" alt="Rajzolt női szemüvegkeret: füstös levendula acetát, macskaszem-forma" width="600" height="250">
+        <img class="stage__reflect" id="stageReflect" src="img/keret-noi.svg" alt="" width="600" height="250" aria-hidden="true">
       </div>
-      <div class="stage__caption">
-        <p class="stage__kicker" id="stageKicker">01 · Női szemüvegek</p>
+      <div class="stage__count" aria-hidden="true"><span id="stageNo">01</span> / 05</div>
+    </div>
+    <div class="stage__foot">
+      <div class="stage__caption" aria-live="polite">
+        <p class="stage__kicker" id="stageKicker">Női szemüvegek</p>
         <p class="stage__text" id="stageText">Felfelé ívelő külső sarkok, finom színek és vékonyabb vonalak — a macskaszem-forma kiemeli a tekintetet.</p>
-        <p class="stage__note">Rajzolt keretformák. A valódi kínálat fotói az üzletből kerülnek ide — árak és készlet nélkül.</p>
+      </div>
+      <div class="stage__nav">
+        <button class="roundbtn roundbtn--light" type="button" data-step="-1" aria-label="Előző kategória"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+        <button class="roundbtn roundbtn--light" type="button" data-step="1" aria-label="Következő kategória"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
       </div>
     </div>
+    <p class="stage__note">Rajzolt keretformák. A valódi kínálat fotói az üzletből kerülnek ide — árak és készlet nélkül.</p>
   </div>
 </section>
 
@@ -288,17 +324,19 @@
 <section class="compare section" id="kulonbseg" aria-labelledby="compare-title">
   <div class="wrap">
     <header class="section__head section__head--center">
-      <p class="eyebrow" data-reveal>Egy kis kísérlet</p>
+      <p class="eyebrow eyebrow--center" data-reveal>Egy kis kísérlet</p>
       <h2 id="compare-title" class="h2" data-split>Lásd a <em>különbséget.</em></h2>
       <p class="section__intro" data-reveal>Húzd el a lencsét: balra elmosódott, jobbra éles a Damjanich út.</p>
     </header>
-    <div class="compare__stage" id="compare" style="--pos:50%" data-reveal>
-      <img class="compare__img" src="img/varoskep.svg" alt="Rajzolt utcakép: Damjanich út a Tündérszem Optika üzletével, templomtoronnyal és fákkal" width="1200" height="556" loading="lazy">
-      <div class="compare__blur" aria-hidden="true"><img src="img/varoskep.svg" alt="" width="1200" height="556" loading="lazy"></div>
-      <div class="compare__labels" aria-hidden="true"><span>Szemüveg nélkül</span><span>Szemüveggel</span></div>
-      <div class="compare__handle" aria-hidden="true"><span class="compare__knob"></span></div>
-      <label class="sr-only" for="compareRange">A lencse helyzete</label>
-      <input class="compare__range" id="compareRange" type="range" min="0" max="100" value="50">
+    <div class="compare__wrap" data-reveal>
+      <div class="compare__stage" id="compare" style="--pos:50%">
+        <img class="compare__img" src="img/varoskep.svg" alt="Vonalrajz: Damjanich út a Tündérszem Optika üzletével, templomtoronnyal és fákkal" width="1200" height="556" loading="lazy">
+        <div class="compare__blur" aria-hidden="true"><img src="img/varoskep.svg" alt="" width="1200" height="556" loading="lazy"></div>
+        <div class="compare__labels" aria-hidden="true"><span>Szemüveg nélkül</span><span>Szemüveggel</span></div>
+        <div class="compare__handle" aria-hidden="true"><span class="compare__knob"></span></div>
+        <label class="sr-only" for="compareRange">A lencse helyzete</label>
+        <input class="compare__range" id="compareRange" type="range" min="0" max="100" value="50">
+      </div>
     </div>
     <p class="compare__note">Csak illusztráció — nem mutatja meg a látásodat, és nem ígér egy adott lencsével elérhető eredményt. Erről a szemvizsgálat mond biztosat.</p>
   </div>
@@ -306,78 +344,74 @@
 
 <!-- ============ MIÉRT MI ============ -->
 <section class="why section" aria-labelledby="why-title">
-  <div class="wrap why__grid">
-    <div class="why__head">
-      <p class="eyebrow" data-reveal>Miért hozzánk</p>
-      <h2 id="why-title" class="h2" data-split>Jó kezekben <em>a látásod.</em></h2>
-      <div class="why__art" aria-hidden="true"><img src="img/ag-eukaliptusz.svg" alt="" width="340" height="300" loading="lazy"><img class="why__bird" src="img/madar.svg" alt="" width="120" height="90" loading="lazy"></div>
-    </div>
+  <div class="wrap">
+    <header class="section__head section__head--split">
+      <div>
+        <p class="eyebrow" data-reveal>Miért hozzánk</p>
+        <h2 id="why-title" class="h2" data-split>Jó kezekben <em>a látásod.</em></h2>
+      </div>
+      <img class="why__bird" src="img/fecske.svg" alt="" width="124" height="80" loading="lazy">
+    </header>
     <ol class="values">
-      <li data-value><span class="values__no">i.</span><div><h3>Személyes figyelem</h3><p>Nem sietünk. Annyi időt szánunk rád, amennyi egy jó döntéshez kell, és mindent érthetően elmondunk.</p></div></li>
-      <li data-value><span class="values__no">ii.</span><div><h3>Széles keretválaszték</h3><p>Női, férfi és gyermek keretek, a klasszikus formáktól a bátrabb, modern darabokig.</p></div></li>
-      <li data-value><span class="values__no">iii.</span><div><h3>Gondos szemüvegkészítés</h3><p>A szemüveg akkor jó, ha a lencse pontos és a keret kényelmes. Mindkettőre ugyanúgy figyelünk.</p></div></li>
-      <li data-value><span class="values__no">iv.</span><div><h3>Helyi, könnyen elérhető</h3><p>Újszász központjában, a Damjanich úton — hétköznap 9 és 17 óra között várunk.</p></div></li>
+      <li data-value><span class="values__no">I.</span><h3>Személyes figyelem</h3><p>Nem sietünk. Annyi időt szánunk rád, amennyi egy jó döntéshez kell, és mindent érthetően elmondunk.</p></li>
+      <li data-value><span class="values__no">II.</span><h3>Széles keretválaszték</h3><p>Női, férfi és gyermek keretek, a klasszikus formáktól a bátrabb, modern darabokig.</p></li>
+      <li data-value><span class="values__no">III.</span><h3>Gondos szemüvegkészítés</h3><p>A szemüveg akkor jó, ha a lencse pontos és a keret kényelmes. Mindkettőre ugyanúgy figyelünk.</p></li>
+      <li data-value><span class="values__no">IV.</span><h3>Helyi, könnyen elérhető</h3><p>Újszász központjában, a Damjanich úton — hétköznap 9 és 17 óra között várunk.</p></li>
     </ol>
   </div>
 </section>
 
 <!-- ============ VÉLEMÉNYEK ============ -->
 <section class="reviews section" id="velemenyek" aria-labelledby="reviews-title">
-  <div class="wrap">
-    <header class="section__head reviews__head">
-      <div>
-        <p class="eyebrow" data-reveal>Vélemények</p>
-        <h2 id="reviews-title" class="h2" data-split>Akik már <em>minket választottak.</em></h2>
-      </div>
-      <div class="reviews__nav">
-        <button class="roundbtn" type="button" data-dir="-1" aria-label="Előző vélemény"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
-        <button class="roundbtn" type="button" data-dir="1" aria-label="Következő vélemény"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
-      </div>
-    </header>
-    <p class="section__intro reviews__intro" data-reveal>Két nyilvános vélemény lényege, saját szavainkkal összefoglalva. A végleges oldalra az ügyféllel egyeztetve a Google- és Facebook-értékelések kerülnek, szó szerint.</p>
+  <div class="wrap reviews__inner">
+    <p class="eyebrow eyebrow--center" data-reveal>Vélemények</p>
+    <h2 id="reviews-title" class="h2" data-split>Akik már <em>minket választottak.</em></h2>
 
-    <div class="carousel" id="carousel" tabindex="0" aria-label="Vélemények">
-      <figure class="review">
-        <svg class="review__mark" viewBox="0 0 40 30" aria-hidden="true"><path d="M2 28 C2 14 8 4 18 2 M22 28 C22 14 28 4 38 2"/></svg>
+    <div class="quotes" id="quotes" aria-roledescription="lapozó" aria-label="Vélemények">
+      <figure class="quote is-on" aria-roledescription="dia" aria-label="1 / 3">
         <blockquote><p>Barátságos, segítőkész kiszolgálás, szakszerű és korrekt tanácsadás. Tiszta, jól felszerelt üzlet, széles választék és megfizethető árak.</p></blockquote>
-        <figcaption><b>Z. B.</b><span>a vélemény lényege · <a href="https://magyarvelemeny.com/optikus/ujszasz/tunderszem-optika-kft/" target="_blank" rel="noopener">magyarvelemeny.com</a></span></figcaption>
+        <figcaption><b>Z. B.</b> · a vélemény lényege · <a href="https://magyarvelemeny.com/optikus/ujszasz/tunderszem-optika-kft/" target="_blank" rel="noopener">magyarvelemeny.com</a></figcaption>
       </figure>
-      <figure class="review">
-        <svg class="review__mark" viewBox="0 0 40 30" aria-hidden="true"><path d="M2 28 C2 14 8 4 18 2 M22 28 C22 14 28 4 38 2"/></svg>
+      <figure class="quote" aria-roledescription="dia" aria-label="2 / 3">
         <blockquote><p>Udvarias kiszolgálás, modern és jól felszerelt üzlet, gyors, szakszerű munka. Minőségi szemüvegek, nagyon jó ár-érték arány.</p></blockquote>
-        <figcaption><b>Z. O.</b><span>a vélemény lényege · <a href="https://magyarvelemeny.com/optikus/ujszasz/tunderszem-optika-kft/" target="_blank" rel="noopener">magyarvelemeny.com</a></span></figcaption>
+        <figcaption><b>Z. O.</b> · a vélemény lényege · <a href="https://magyarvelemeny.com/optikus/ujszasz/tunderszem-optika-kft/" target="_blank" rel="noopener">magyarvelemeny.com</a></figcaption>
       </figure>
-      <figure class="review review--slot">
-        <p class="review__slot">Ide kerül a következő valódi vélemény — Google vagy Facebook, a szerző nevével, ha nyilvános.</p>
-        <figcaption><b>Minta-hely</b><span>ügyféllel egyeztetendő</span></figcaption>
-      </figure>
-      <figure class="review review--slot">
-        <p class="review__slot">Kedves, türelmes kiszolgálás · alapos vizsgálat · széles keretválaszték · korrekt árak — ezek a visszatérő témák.</p>
-        <figcaption><b>Visszatérő témák</b><span>a nyilvános visszajelzések alapján</span></figcaption>
+      <figure class="quote" aria-roledescription="dia" aria-label="3 / 3">
+        <blockquote><p>Kedves, türelmes kiszolgálás · alapos vizsgálat · széles keretválaszték · korrekt árak.</p></blockquote>
+        <figcaption><b>Visszatérő témák</b> · a nyilvános visszajelzések alapján</figcaption>
       </figure>
     </div>
+    <div class="quotes__nav">
+      <button class="roundbtn" type="button" data-q="-1" aria-label="Előző vélemény"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <span class="quotes__count" aria-hidden="true"><span id="quoteNo">01</span> / 03</span>
+      <button class="roundbtn" type="button" data-q="1" aria-label="Következő vélemény"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+    </div>
+    <p class="reviews__note">A két vélemény lényegét saját szavainkkal foglaltuk össze. A végleges oldalra az ügyféllel egyeztetve a Google- és Facebook-értékelések kerülnek, szó szerint.</p>
   </div>
 </section>
 
 <!-- ============ KAPCSOLAT ============ -->
-<section class="contact section" id="kapcsolat" aria-labelledby="contact-title">
-  <div class="wrap contact__grid">
-    <div class="contact__copy">
-      <p class="eyebrow" data-reveal>Kapcsolat</p>
-      <h2 id="contact-title" class="h2" data-split>Az éles látás <em>itt kezdődik.</em></h2>
-      <p class="section__intro" data-reveal>Időpontot telefonon tudsz kérni, hétköznap 9 és 17 óra között. Ha épp nem tudsz telefonálni, írj e-mailt.</p>
-      <div class="contact__actions" data-reveal>
-        <a class="btn btn--ink btn--wide" href="tel:+36301464644">Telefonos időpontkérés</a>
-        <a class="btn btn--line btn--wide" href="mailto:tunderszemoptika@gmail.com?subject=Id%C5%91pontk%C3%A9r%C3%A9s">E-mailt írok</a>
+<section class="contact" id="kapcsolat" aria-labelledby="contact-title">
+  <div class="contact__grid">
+    <div class="contact__dark">
+      <div class="contact__darkin">
+        <p class="eyebrow eyebrow--light" data-reveal>Kapcsolat</p>
+        <h2 id="contact-title" class="h2" data-split>Az éles látás <em>itt kezdődik.</em></h2>
+        <p class="contact__text" data-reveal>Időpontot telefonon tudsz kérni, hétköznap 9 és 17 óra között. Ha épp nem tudsz telefonálni, írj e-mailt.</p>
+        <div class="contact__actions" data-reveal>
+          <a class="btn btn--pearl btn--wide" href="tel:+36301464644">Telefonos időpontkérés</a>
+          <a class="btn btn--ghostlight btn--wide" href="mailto:tunderszemoptika@gmail.com?subject=Id%C5%91pontk%C3%A9r%C3%A9s">E-mailt írok</a>
+        </div>
+        <img class="contact__sprig" src="img/gravir-levendula.svg" alt="" width="150" height="440" loading="lazy">
       </div>
     </div>
-    <div class="contact__card" data-reveal>
-      <dl class="contact__list">
+    <div class="contact__light">
+      <dl class="contact__list" data-reveal>
         <div><dt>Telefon</dt><dd><a href="tel:+36301464644">+36 30 146 4644</a></dd></div>
         <div><dt>E-mail</dt><dd><a href="mailto:tunderszemoptika@gmail.com">tunderszemoptika@gmail.com</a></dd></div>
         <div><dt>Cím</dt><dd>5052 Újszász, Damjanich út 14.<br><a class="link" href="https://www.google.com/maps/search/?api=1&amp;query=T%C3%BCnd%C3%A9rszem%20Optika%2C%205052%20%C3%9Ajsz%C3%A1sz%2C%20Damjanich%20%C3%BAt%2014." target="_blank" rel="noopener">Megnyitás a Google Térképen</a></dd></div>
       </dl>
-      <table class="hours" aria-label="Nyitvatartás">
+      <table class="hours" aria-label="Nyitvatartás" data-reveal>
         <tbody>
           <tr data-day="1"><th scope="row">Hétfő</th><td>9:00–17:00</td></tr>
           <tr data-day="2"><th scope="row">Kedd</th><td>9:00–17:00</td></tr>
@@ -397,11 +431,13 @@
 
 <!-- ============ LÁBLÉC ============ -->
 <footer class="footer">
-  <svg class="footer__sprig" viewBox="0 0 340 300" aria-hidden="true"><use href="#sprigLine"/></svg>
   <div class="wrap">
     <div class="footer__top">
-      <p class="footer__mark"><span>Tündérszem</span><span>Optika</span></p>
-      <p class="footer__claim">Láss tisztán. Érezd magad ragyogóan.</p>
+      <a class="footer__mark" href="#fooldal" aria-label="Tündérszem Optika – vissza az oldal tetejére">
+        <svg viewBox="0 0 124 80" aria-hidden="true"><use href="#swallow"/></svg>
+        <span><span>Tündérszem</span><small>Optika · Újszász</small></span>
+      </a>
+      <p class="footer__claim">Láss tisztán. <em>Érezd magad ragyogóan.</em></p>
     </div>
     <div class="footer__cols">
       <div><h3>Elérhetőség</h3><p><a href="tel:+36301464644">+36 30 146 4644</a><br><a href="mailto:tunderszemoptika@gmail.com">tunderszemoptika@gmail.com</a><br>5052 Újszász, Damjanich út 14.</p></div>
@@ -421,20 +457,14 @@
   <a href="https://www.google.com/maps/search/?api=1&amp;query=T%C3%BCnd%C3%A9rszem%20Optika%2C%205052%20%C3%9Ajsz%C3%A1sz%2C%20Damjanich%20%C3%BAt%2014." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Útvonal</a>
 </div>
 
-<!-- közös rajzelemek -->
+<!-- közös rajzelem: fecske (logójel) -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
-    <g id="bird" stroke="currentColor" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M28 56 C30 40 50 30 70 32 C78 26 88 24 94 28 C104 32 106 44 98 50 C92 66 72 74 52 72 C40 71 30 66 28 56Z" fill="#9CB9C6"/>
-      <path d="M14 34 L40 50 L33 60 Z" fill="#6F93A3"/>
-      <path d="M40 52 C50 42 68 44 76 53 C66 62 50 62 40 52Z" fill="#6F93A3"/>
-      <path d="M101 36 L113 40 L101 44" fill="#C98FB0"/>
-      <circle cx="92" cy="36" r="3" fill="currentColor" stroke="none"/>
-    </g>
-    <g id="sprigLine" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round">
-      <path d="M20 285 C90 200 180 120 320 40"/>
-      <path d="M60 236 C70 210 96 200 110 206 C100 224 80 236 60 236Z M92 204 C80 182 88 160 100 154 C108 172 104 192 92 204Z M140 168 C150 144 176 136 190 142 C180 160 160 170 140 168Z M170 140 C160 118 168 96 180 90 C188 108 184 128 170 140Z M220 112 C230 90 254 84 266 90 C256 106 238 114 220 112Z M250 92 C242 72 250 54 262 48 C268 64 264 82 250 92Z"/>
-      <path d="M320 40 C328 30 330 18 322 12 C314 18 312 30 320 40Z"/>
+    <g id="swallow" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M58 41 C46 27 27 17 5 15 C22 23 37 34 49 45Z" fill="#9CB9C6"/>
+      <path d="M68 38 C80 22 98 11 118 8 C100 19 86 31 74 45Z" fill="#9CB9C6"/>
+      <path d="M48 45 C55 36 70 34 81 37 C88 39 91 43 86 46 C78 51 60 51 48 45Z"/>
+      <path d="M53 46 C45 53 36 59 24 66 M56 48 C50 57 45 64 38 73"/>
     </g>
   </defs>
 </svg>

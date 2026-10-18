@@ -1,14 +1,41 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 200" width="560" height="200" fill="none" stroke-linecap="round" stroke-linejoin="round">
-<g transform="translate(280 100)"><g transform="translate(0 0)"><defs><linearGradient id="lensTint" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFFFFF" stop-opacity=".55"/><stop offset="1" stop-color="#9CB9C6" stop-opacity=".28"/></linearGradient></defs>
-<path transform="translate(-122 0) scale(-1 1)" d="M-96 -46 L96 -46 C104 -46 106 -40 104 -30 C98 20 84 52 40 56 L-40 56 C-84 52 -98 20 -104 -30 C-106 -40 -104 -46 -96 -46Z" fill="url(#lensTint)"/>
-<path transform="translate(-122 0) scale(-1 1)" d="M-60 -30 L-20 -42 M-70 -10 L-40 -20" stroke="#FFFFFF" stroke-width="5" opacity=".75"/>
-<path transform="translate(-122 0) scale(-1 1)" d="M-96 -46 L96 -46 C104 -46 106 -40 104 -30 C98 20 84 52 40 56 L-40 56 C-84 52 -98 20 -104 -30 C-106 -40 -104 -46 -96 -46Z" stroke="#263432" stroke-width="3.4"/>
-<path transform="translate(-122 0) scale(-1 1)" d="M-104 -30 C-106 -40 -104 -48 -96 -48 L96 -48 C104 -48 106 -40 104 -30 C100 -18 94 -16 84 -20 C40 -30 -40 -30 -84 -20 C-94 -16 -100 -18 -104 -30Z" fill="#263432" stroke="#263432" stroke-width="2"/>
-<path transform="translate(122 0) scale(1 1)" d="M-96 -46 L96 -46 C104 -46 106 -40 104 -30 C98 20 84 52 40 56 L-40 56 C-84 52 -98 20 -104 -30 C-106 -40 -104 -46 -96 -46Z" fill="url(#lensTint)"/>
-<path transform="translate(122 0) scale(1 1)" d="M-60 -30 L-20 -42 M-70 -10 L-40 -20" stroke="#FFFFFF" stroke-width="5" opacity=".75"/>
-<path transform="translate(122 0) scale(1 1)" d="M-96 -46 L96 -46 C104 -46 106 -40 104 -30 C98 20 84 52 40 56 L-40 56 C-84 52 -98 20 -104 -30 C-106 -40 -104 -46 -96 -46Z" stroke="#263432" stroke-width="3.4"/>
-<path transform="translate(122 0) scale(1 1)" d="M-104 -30 C-106 -40 -104 -48 -96 -48 L96 -48 C104 -48 106 -40 104 -30 C100 -18 94 -16 84 -20 C40 -30 -40 -30 -84 -20 C-94 -16 -100 -18 -104 -30Z" fill="#263432" stroke="#263432" stroke-width="2"/>
-<path d="M-20 -40 C-10 -54 10 -54 20 -40" stroke="#263432" stroke-width="7"/>
-<path d="M-220 -48 L-248 -64" stroke="#263432" stroke-width="2.55"/>
-<path d="M220 -48 L248 -64" stroke="#263432" stroke-width="2.55"/></g></g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-300 -110 600 250" width="600" height="250" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<defs><linearGradient id="keretferfiac" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3E4946" stop-opacity="1"/><stop offset="0.5" stop-color="#283230" stop-opacity="1"/><stop offset="1" stop-color="#1B2322" stop-opacity="1"/></linearGradient>
+<linearGradient id="keretferfiacd" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#111816"/><stop offset="1" stop-color="#111816" stop-opacity=".55"/></linearGradient>
+<linearGradient id="keretferfispec" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".8"/><stop offset=".22" stop-color="#fff" stop-opacity=".12"/><stop offset=".6" stop-color="#fff" stop-opacity="0"/></linearGradient>
+<linearGradient id="keretferfilens" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".16"/><stop offset=".55" stop-color="#9CB9C6" stop-opacity=".06"/><stop offset="1" stop-color="#B8A3D8" stop-opacity=".16"/></linearGradient>
+<linearGradient id="keretferfirefl" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".5"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+<linearGradient id="keretferfigold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F0DCC8"/><stop offset=".45" stop-color="#B8937A"/><stop offset=".7" stop-color="#F6E6D6"/><stop offset="1" stop-color="#8C6B58"/></linearGradient><filter id="keretferfish" x="-20%" y="-200%" width="140%" height="500%"><feGaussianBlur stdDeviation="9"/></filter></defs>
+<ellipse cx="0" cy="118" rx="230" ry="11" fill="#263432" opacity=".16" filter="url(#keretferfish)"/>
+<path transform="scale(-1 1)" d="M228 -50 L266 -71 L268 -65 L230 -38Z" fill="url(#keretferfiacd)"/>
+<path transform="scale(1 1)" d="M228 -50 L266 -71 L268 -65 L230 -38Z" fill="url(#keretferfiacd)"/>
+<g transform="scale(-1 1) translate(122 0)">
+<clipPath id="keretferfilc0"><path d="M-96 -46 L96 -46 C104 -46 106 -40 104 -30 C98 20 84 52 40 56 L-40 56 C-84 52 -98 20 -104 -30 C-106 -40 -104 -46 -96 -46Z"/></clipPath>
+<path d="M-96 -46 L96 -46 C104 -46 106 -40 104 -30 C98 20 84 52 40 56 L-40 56 C-84 52 -98 20 -104 -30 C-106 -40 -104 -46 -96 -46Z" fill="url(#keretferfilens)"/>
+<g clip-path="url(#keretferfilc0)"><path d="M-70 -90 L-30 -90 L40 90 L0 90Z" fill="url(#keretferfirefl)" opacity=".55"/><path d="M-6 -90 L6 -90 L76 90 L64 90Z" fill="url(#keretferfirefl)" opacity=".35"/></g>
+<path d="M -99.36 -48.3 L 99.36 -48.3 C 107.64 -48.3 109.71 -42 107.64 -31.5 C 101.43 21 86.94 54.6 41.4 58.8 L -41.4 58.8 C -86.94 54.6 -101.43 21 -107.64 -31.5 C -109.71 -42 -107.64 -48.3 -99.36 -48.3 Z M-96 -46 L96 -46 C104 -46 106 -40 104 -30 C98 20 84 52 40 56 L-40 56 C-84 52 -98 20 -104 -30 C-106 -40 -104 -46 -96 -46Z" fill-rule="evenodd" fill="url(#keretferfiac)"/>
+<path d="M -99.36 -48.3 L 99.36 -48.3 C 107.64 -48.3 109.71 -42 107.64 -31.5 C 101.43 21 86.94 54.6 41.4 58.8 L -41.4 58.8 C -86.94 54.6 -101.43 21 -107.64 -31.5 C -109.71 -42 -107.64 -48.3 -99.36 -48.3 Z" stroke="#111816" stroke-width=".9" opacity=".55"/>
+<path d="M-96 -46 L96 -46 C104 -46 106 -40 104 -30 C98 20 84 52 40 56 L-40 56 C-84 52 -98 20 -104 -30 C-106 -40 -104 -46 -96 -46Z" stroke="#111816" stroke-width="1" opacity=".6"/>
+<path d="M -97.15 -47.52 L 97.15 -47.52 C 105.25 -47.52 107.27 -41.4 105.25 -31.2 C 99.18 19.8 85.01 52.44 40.48 56.52 L -40.48 56.52 C -85.01 52.44 -99.18 19.8 -105.25 -31.2 C -107.27 -41.4 -105.25 -47.52 -97.15 -47.52 Z" stroke="#fff" stroke-width="1.1" opacity=".38"/>
+<path d="M -97.68 -47.75 L 97.68 -47.75 C 105.82 -47.75 107.86 -41.6 105.82 -31.35 C 99.72 19.9 85.47 52.7 40.7 56.8 L -40.7 56.8 C -85.47 52.7 -99.72 19.9 -105.82 -31.35 C -107.86 -41.6 -105.82 -47.75 -97.68 -47.75 Z" stroke="url(#keretferfispec)" stroke-width="1.5" opacity=".75"/>
+</g>
+<g transform="scale(1 1) translate(122 0)">
+<clipPath id="keretferfilc2"><path d="M-96 -46 L96 -46 C104 -46 106 -40 104 -30 C98 20 84 52 40 56 L-40 56 C-84 52 -98 20 -104 -30 C-106 -40 -104 -46 -96 -46Z"/></clipPath>
+<path d="M-96 -46 L96 -46 C104 -46 106 -40 104 -30 C98 20 84 52 40 56 L-40 56 C-84 52 -98 20 -104 -30 C-106 -40 -104 -46 -96 -46Z" fill="url(#keretferfilens)"/>
+<g clip-path="url(#keretferfilc2)"><path d="M-70 -90 L-30 -90 L40 90 L0 90Z" fill="url(#keretferfirefl)" opacity=".55"/><path d="M-6 -90 L6 -90 L76 90 L64 90Z" fill="url(#keretferfirefl)" opacity=".35"/></g>
+<path d="M -99.36 -48.3 L 99.36 -48.3 C 107.64 -48.3 109.71 -42 107.64 -31.5 C 101.43 21 86.94 54.6 41.4 58.8 L -41.4 58.8 C -86.94 54.6 -101.43 21 -107.64 -31.5 C -109.71 -42 -107.64 -48.3 -99.36 -48.3 Z M-96 -46 L96 -46 C104 -46 106 -40 104 -30 C98 20 84 52 40 56 L-40 56 C-84 52 -98 20 -104 -30 C-106 -40 -104 -46 -96 -46Z" fill-rule="evenodd" fill="url(#keretferfiac)"/>
+<path d="M -99.36 -48.3 L 99.36 -48.3 C 107.64 -48.3 109.71 -42 107.64 -31.5 C 101.43 21 86.94 54.6 41.4 58.8 L -41.4 58.8 C -86.94 54.6 -101.43 21 -107.64 -31.5 C -109.71 -42 -107.64 -48.3 -99.36 -48.3 Z" stroke="#111816" stroke-width=".9" opacity=".55"/>
+<path d="M-96 -46 L96 -46 C104 -46 106 -40 104 -30 C98 20 84 52 40 56 L-40 56 C-84 52 -98 20 -104 -30 C-106 -40 -104 -46 -96 -46Z" stroke="#111816" stroke-width="1" opacity=".6"/>
+<path d="M -97.15 -47.52 L 97.15 -47.52 C 105.25 -47.52 107.27 -41.4 105.25 -31.2 C 99.18 19.8 85.01 52.44 40.48 56.52 L -40.48 56.52 C -85.01 52.44 -99.18 19.8 -105.25 -31.2 C -107.27 -41.4 -105.25 -47.52 -97.15 -47.52 Z" stroke="#fff" stroke-width="1.1" opacity=".38"/>
+<path d="M -97.68 -47.75 L 97.68 -47.75 C 105.82 -47.75 107.86 -41.6 105.82 -31.35 C 99.72 19.9 85.47 52.7 40.7 56.8 L -40.7 56.8 C -85.47 52.7 -99.72 19.9 -105.82 -31.35 C -107.86 -41.6 -105.82 -47.75 -97.68 -47.75 Z" stroke="url(#keretferfispec)" stroke-width="1.5" opacity=".75"/>
+</g>
+<path d="M-28 -50 C-12 -62 12 -62 28 -50 L28 -38 C12 -49 -12 -49 -28 -38Z" fill="url(#keretferfiac)" stroke="#111816" stroke-width=".8" stroke-opacity=".5"/>
+<path d="M -28 -48.8 C -12 -60.8 12 -60.8 28 -48.8" stroke="#fff" stroke-width="1.2" opacity=".5"/>
+<g transform="scale(-1 1) translate(122 0)"><path d="M -97.92 -47.38 L 97.92 -47.38 C 106.08 -47.38 108.12 -41.2 106.08 -30.9 C 99.96 20.6 85.68 53.56 40.8 57.68 L -40.8 57.68 C -85.68 53.56 -99.96 20.6 -106.08 -30.9 C -108.12 -41.2 -106.08 -47.38 -97.92 -47.38 Z" stroke="url(#keretferfigold)" stroke-width="2.4"/><path d="M-104 -30 C-106 -40 -104 -50 -96 -50 L96 -50 C104 -50 107 -40 104 -30 C100 -16 92 -14 82 -19 C40 -28 -40 -28 -82 -19 C-92 -14 -100 -16 -104 -30Z" fill="url(#keretferfiac)" stroke="#111816" stroke-width=".8"/><path d="M-98 -44 C-60 -47 60 -47 98 -44" stroke="#fff" stroke-width="1.6" opacity=".35"/></g>
+<g transform="scale(1 1) translate(122 0)"><path d="M -97.92 -47.38 L 97.92 -47.38 C 106.08 -47.38 108.12 -41.2 106.08 -30.9 C 99.96 20.6 85.68 53.56 40.8 57.68 L -40.8 57.68 C -85.68 53.56 -99.96 20.6 -106.08 -30.9 C -108.12 -41.2 -106.08 -47.38 -97.92 -47.38 Z" stroke="url(#keretferfigold)" stroke-width="2.4"/><path d="M-104 -30 C-106 -40 -104 -50 -96 -50 L96 -50 C104 -50 107 -40 104 -30 C100 -16 92 -14 82 -19 C40 -28 -40 -28 -82 -19 C-92 -14 -100 -16 -104 -30Z" fill="url(#keretferfiac)" stroke="#111816" stroke-width=".8"/><path d="M-98 -44 C-60 -47 60 -47 98 -44" stroke="#fff" stroke-width="1.6" opacity=".35"/></g>
+<ellipse cx="-28" cy="14" rx="3.4" ry="6" fill="#fff" fill-opacity=".25" stroke="url(#keretferfigold)" stroke-width=".7" opacity=".8"/>
+<ellipse cx="28" cy="14" rx="3.4" ry="6" fill="#fff" fill-opacity=".25" stroke="url(#keretferfigold)" stroke-width=".7" opacity=".8"/>
+<g transform="scale(-1 1)"><rect x="230" y="-50" width="12" height="11" rx="2" fill="url(#keretferfigold)" transform="rotate(-24 232 -44)"/>
+</g>
+<g transform="scale(1 1)"><rect x="230" y="-50" width="12" height="11" rx="2" fill="url(#keretferfigold)" transform="rotate(-24 232 -44)"/>
+</g>
 </svg>
