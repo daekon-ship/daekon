@@ -813,9 +813,9 @@ button,input,select,textarea{font:inherit;color:inherit}
 
 /* logó-jel rajzolódása betöltéskor (fejléc) */
 .js .nav .logo svg > *{animation:mk-in .7s var(--ease) both}
-.js .nav .logo svg > :nth-child(1){animation-delay:.05s;--from:translateY(10px)}
-.js .nav .logo svg > :nth-child(2){animation-delay:.18s;--from:translateY(10px)}
-.js .nav .logo svg > :nth-child(3){animation-delay:.36s;--from:translateY(-8px)}
+.js .nav .logo svg > :nth-child(1){animation-delay:.05s;--from:translate(-6px,-6px)}
+.js .nav .logo svg > :nth-child(2){animation-delay:.18s;--from:translate(6px,6px)}
+.js .nav .logo svg > :nth-child(3){animation-delay:.36s;--from:scale(.3)}
 @keyframes mk-in{from{opacity:0;transform:var(--from)}to{opacity:1;transform:none}}
 
 @media (max-width:1320px){
@@ -1189,3 +1189,63 @@ h1,h2,h3{text-wrap:balance}
 @media (max-width:960px){ .dateline .dl-hot{display:none} }
 .quote{padding:20px 22px 20px 52px}
 .quote::before{left:16px;top:6px}
+
+/* =====================================================================
+   22. kör – arányos betűméret-skála
+   30 · 22 · 17 · 16 · 15 · 14 · 13 · 12 px (desktop) – kevesebb, arányosabb lépcső
+   ===================================================================== */
+:root{--fs-h1:clamp(25px,2.1vw,30px);--fs-h2:clamp(20px,1.55vw,22px);--fs-h3:17px;--fs-label:12px}
+.lead,.intro .lead{font-size:17px}
+.eyebrow{font-size:12px;letter-spacing:.12em}
+.intro-facts dt,.pro-facts dt{font-size:12px;letter-spacing:.1em}
+.intro-facts dd,.pro-facts div{font-size:15px}
+.intro-tel{font-size:17px}
+.intro-tel small{font-size:13px}
+.svc-row b{font-size:16.5px}
+.svc-row .tx > span{font-size:14.5px}
+.svc-row .n{font-size:13px}
+.svc-row .go{font-size:16px}
+.pro .pq{font-size:16px}
+.role{font-size:15px}
+.portrait-fr .mono{font-size:21px}
+.portrait-fr .cap{font-size:13px}
+.cta h2{font-size:20px}
+.r-contact .tel,.ftr .tel{font-size:18px}
+.r-contact h2{font-size:15px}
+.dtile b{font-size:17px}
+.dtile small{font-size:11px}
+.l-dead .t{font-size:14.5px}
+.l-dead .s{font-size:13px}
+.l-news b{font-size:14.5px}
+.hot b{font-size:15.5px}
+.hot p{font-size:14px}
+.mini-res .big dd{font-size:18px}
+.mini-res div{font-size:14px}
+.ft{font-size:11px}
+.tag{font-size:12px}
+.chips3 b{font-size:15px}
+.net-l a{font-size:14.5px}
+.net-l .ni{font-size:14px}
+.col-h h2,.portal-home .col-h h2{font-size:12.5px}
+.mod-h h3,.portal-home .col-r .tool-h h2{font-size:15px}
+.ha-cap{font-size:11px}
+.logo-n{font-size:21px}
+.logo-s{font-size:10px;letter-spacing:.32em}
+.ph .h1{font-size:var(--fs-h1)}
+.article h1{font-size:clamp(25px,2.3vw,32px)}
+.abody p{font-size:17px}
+.abody p:first-child{font-size:18px}
+.cpanel-h h2{font-size:20px}
+.so h2{font-size:22px}
+.feat h2{font-size:22px}
+.arow h3{font-size:17px}
+.sd-sec h2{font-size:20px}
+.clist2 .big{font-size:18px}
+.res .main dd{font-size:21px}
+@media (max-width:640px){
+  .intro .h1{font-size:25px}
+  .h2{font-size:20px}
+  .cta h2{font-size:19px}
+  .logo-n{font-size:19px}
+  .intro-tel{font-size:16px}
+}

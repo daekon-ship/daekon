@@ -29,7 +29,7 @@ Előző változat biztonsági másolata: `../multicont-v11/` (11. kör), a 12–
 
 - **Színek (15. kör: fehérebb, kékebb):** fehér alap, kék felső sáv, kék oszlopfejlécek és kiemelések, világoskék lábléc. Mélykék `#16365F` (címek, szöveg) · Corporate Blue `#2764BD` (domináns: gombok, linkek, aktív állapot) · Soft Sky `#EAF3FC` · Mint Teal `#28B6A4` (másodlagos; szövegben `#13796D` a kontraszt miatt) · Warm Accent `#F3B85B` (csak célzottan: kiemelt szolgáltatás, kupon, logó közepe; szövegben `#8A5B12`) · Off White `#F8FAFD` · Dark Text `#202B38`. A három márkaszín együtt csak a logóban, a lábléc-sávban és a MULTI/CONT/CENTER hármasnál jelenik meg.
 - **Betű:** Plus Jakarta Sans (OFL, helyben, magyar ékezetekkel szűkítve, `fonts/plusjakarta.woff`). H1 legfeljebb 46 px, H2 legfeljebb 32 px, törzsszöveg 16,5 px.
-- **Logó (19. kör, Marcsi kérése: 3 szín):** „M” monogram három elemből – kék oszlop = MULTI, türkiz oszlop = CONT, a kettőt összekötő arany ív = CENTER. Kicsiben (favicon) is olvasható. Változatok: `logo.svg`, `logo-feher.svg`, `jel.svg`; a PDF-ekben és az `og.png`-ben is.
+- **Logó (22. kör: visszaállítva):** három elem, három szín – kék sarok = MULTI, türkiz sarok = CONT, arany középső négyzet = CENTER; a két nyitott sarok a növekedést jelzi. Az „M” monogram (19–21. kör) visszavonva. Fájlok: `logo.svg`, `logo-feher.svg`, `jel.svg`; PDF-ek és `og.png` is.
 - **Rács:** 1280 px tartalomszélesség; kezdőlap 288 / rugalmas / 320 px oszlopok.
 - **Elemek:** kártyák 10 px sarokkal, vékony keret, árnyék csak hoverre; címkék állapotjelzésre: kék = téma, türkiz = működik/érvényes, narancs = minta/demo/tervezet.
 - **Mozgás:** csak CSS: hero vonalrajzolás, fejléc-háttérváltás görgetéskor, finom hover. Csökkentett mozgás beállításnál kikapcsol. Nincs parallax, 3D, üvegeffekt.
@@ -172,6 +172,11 @@ Biztonsági mentés az előző állapotról: `../multicont-v19/` (generált olda
 3. Horváth Mária **végzettségei** (mérlegképes könyvelő, adótanácsadó, TB- és bérügyintéző) és a „költségvetési szféra, magyar és nemzetközi cégek” pályaleírás.
 4. Az **idézet** szó szerinti szövege.
 5. **„Alapító, szakmai vezető”** megnevezés.
-6. **Logó** („M” monogram, 3 szín) – végleges jóváhagyás.
+6. **Logó** (két sarok + arany középpont, 3 szín) – végleges jóváhagyás.
 7. **Portré**: Horváth Mária saját fotója kell (álló, 4:5 arány, világos háttér ideális).
 8. Felelősségbiztosítás, „végelszámolásban nagy tapasztalat”, mintapartnerek/kuponok cseréje valódira.
+
+## 13. 22. kör – arányos betűméretek, régi logó vissza
+- A kezdőlapon ~25 különböző betűméret volt (9,5–34 px); most arányos skála: **30 · 22 · 17 · 16 · 15 · 14 · 13 · 12 px** (mobilon H1 25, H2 20). A túl apró címkék (10–11,5 px) 12 px-re nőttek, a túl nagy elemek (telefonszám, dátumcsempe, nyilak, H1) csökkentek.
+- Az aloldalakon ugyanez a skála: cikkcím max. 32, oldalcím 30, rovatcím 20–22 px.
+- A logó visszaállt a kétsarkos változatra (fejléc, lábléc, admin, favicon, PDF-ek, megosztási kép).

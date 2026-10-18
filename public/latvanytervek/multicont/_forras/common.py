@@ -8,8 +8,8 @@ ADDR = "2040 Budaörs, Meredek utca 2."
 MAPS = "https://www.google.com/maps/dir/?api=1&amp;destination=2040%20Buda%C3%B6rs%2C%20Meredek%20utca%202."
 PAGES = []  # sitemaphoz
 
-MARK = ('<svg viewBox="0 0 48 48" aria-hidden="true"><rect x=\"5\" y=\"8\" width=\"9\" height=\"34\" rx=\"2\" fill=\"#2764BD\"/><rect x=\"34\" y=\"8\" width=\"9\" height=\"34\" rx=\"2\" fill=\"#28B6A4\"/><path d=\"M15.2 8h3.6L24 16.2 29.2 8h3.6v7.1L24 29.6 15.2 15.1z\" fill=\"#F3B85B\"/></svg>')
-MARK_D = ('<svg viewBox="0 0 48 48" aria-hidden="true"><rect x=\"5\" y=\"8\" width=\"9\" height=\"34\" rx=\"2\" fill=\"#8DB8F2\"/><rect x=\"34\" y=\"8\" width=\"9\" height=\"34\" rx=\"2\" fill=\"#5FD3C4\"/><path d=\"M15.2 8h3.6L24 16.2 29.2 8h3.6v7.1L24 29.6 15.2 15.1z\" fill=\"#F3B85B\"/></svg>')
+MARK = ('<svg viewBox="0 0 48 48" aria-hidden="true"><path d=\"M6 6h22v6H12v16H6z\" fill=\"#2764BD\"/><path d=\"M42 42H20v-6h16V20h6z\" fill=\"#28B6A4\"/><rect x=\"18\" y=\"18\" width=\"12\" height=\"12\" fill=\"#F3B85B\"/></svg>')
+MARK_D = ('<svg viewBox="0 0 48 48" aria-hidden="true"><path d=\"M6 6h22v6H12v16H6z\" fill=\"#8DB8F2\"/><path d=\"M42 42H20v-6h16V20h6z\" fill=\"#5FD3C4\"/><rect x=\"18\" y=\"18\" width=\"12\" height=\"12\" fill=\"#F3B85B\"/></svg>')
 CARET = '<svg class="caret" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.5l5 5 5-5"/></svg>'
 I_SEARCH = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg>'
 I_PHONE = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 3.5h3l1.4 4-2 1.3a11 11 0 0 0 6.2 6.2l1.3-2 4 1.4v3a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 4.6 5.7a2 2 0 0 1 2-2.2Z"/></svg>'
@@ -226,7 +226,7 @@ def footer(scripts=""):
 def ph(title, lead, crumbs, art=True):
     cr = '<li><a href="index.html">Kezdőlap</a></li>' + "".join(
         f'<li><a href="{c[0]}">{c[1]}</a></li>' if isinstance(c, tuple) else f'<li aria-current="page">{c}</li>' for c in crumbs)
-    deco = '<svg class="ph-art" viewBox="0 0 200 120" aria-hidden="true"><g transform="translate(64 4) scale(2.3)" opacity=".22"><rect x="5" y="8" width="9" height="34" rx="2" fill="#2764BD"/><rect x="34" y="8" width="9" height="34" rx="2" fill="#28B6A4"/><path d="M15.2 8h3.6L24 16.2 29.2 8h3.6v7.1L24 29.6 15.2 15.1z" fill="#F3B85B"/></g></svg>' if art else ''
+    deco = ''
     return f'''<section class="ph"><div class="wrap">
   <nav aria-label="Morzsamenü"><ol class="crumbs">{cr}</ol></nav>
   <h1 class="h1">{title}</h1>
