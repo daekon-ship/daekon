@@ -41,7 +41,7 @@
   /* ---------------- hero: a lencse mögött minden éles ---------------- */
   var specimen = $('.specimen');
   var fitSpecimen = function () {
-    if (specimen) specimen.setAttribute('viewBox', window.innerWidth <= 980 ? '20 146 600 346' : '0 0 640 600');
+    if (specimen) specimen.setAttribute('viewBox', window.innerWidth <= 980 ? '20 86 600 406' : '0 0 640 600');
   };
   fitSpecimen();
   window.addEventListener('resize', fitSpecimen);

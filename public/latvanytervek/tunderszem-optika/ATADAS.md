@@ -29,6 +29,8 @@ Az 1. kör rajzos, pasztell kártyás világa túl „bájos” volt. A 2. körb
 - **Utcakép**: építészeti vonalrajz a csúszkához. **Vélemények**: egyetlen nagy, dőlt idézetes lapozó. **Kapcsolat**: sötét/világos osztott blokk.
 - Finom papírszemcse az egész oldalon.
 
+**Tündér (2. kör kiegészítés):** a névből hiányzott a lényeg, ezért bekerült egy Rackham-hangulatú sziluett-tündér irizáló, erezett szárnyakkal és csillogó „tündérporral” (`_forras/tunder.py`). Hol: a hero szemüvegkeretén ül, és tündérport szór a lencsébe (a kerettel együtt mozog); a logójel és a favicon repülő tündér; repül a „Miért hozzánk” fejlécben, a Damjanich úti utcaképen és a sötét kapcsolat-blokkban; a díszítő csillagok is tündérpor-csillámok. A por finoman csillog (SVG-n belüli CSS, `prefers-reduced-motion` alatt áll).
+
 **Szignatúra (maradt):** a hero szemüvege valódi lencseként élesít — mögötte a „TÜNDÉRSZEM” látásvizsgáló tábla és a metszett virág elmosódott, a lencsén át éles és nagyított. Egérre követ, érintőn lassan pásztáz, a vetett árnyék a lebegéssel együtt halványul.
 
 ## Tipográfia

@@ -9,7 +9,9 @@ Minden kép programból rajzolt, nem fotó és nem stock.
 
 Futtatás (a tunderszem-optika mappából):  python3 _forras/rajzok.py
 """
-import math, os, random, re
+import math, os, random, re, sys
+sys.path.insert(0, os.path.dirname(__file__))
+import tunder
 
 OUT = os.path.join(os.path.dirname(__file__), "..", "img")
 os.makedirs(OUT, exist_ok=True)
@@ -521,7 +523,7 @@ def town():
     # távoli dombvonal + madarak
     g.append(ln("M0 400 C200 388 360 396 520 390 C700 384 900 396 1200 386", .6, .6))
     g.append(ln("M0 186 Q600 250 1200 176", .5, .6))
-    g.append(f'<g transform="translate(860 150) scale(.42)">{swallow(INK, 2.2, True)}</g>')
+    g.append(f'<defs>{tunder.iri_defs("tw")}</defs><g transform="translate(925 228) scale(.5)">{tunder.fairy_fly("tw", INK, False, True, True)}</g>')
     g.append(f'<g transform="translate(220 128) scale(.28) rotate(-8)">{swallow(INK, 3, False)}</g>')
     # templom
     g.append(f'''<g stroke="{INK}" stroke-width="1" fill="{PAPER}">
@@ -593,4 +595,5 @@ for old in ["ag-eukaliptusz.svg", "ag-levendula.svg", "ag-virag.svg", "virag.svg
     if os.path.exists(p):
         os.remove(p)
 
+tunder.write_all(OUT)
 print("kész:", sorted(os.listdir(OUT)))

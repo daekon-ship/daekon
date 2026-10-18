@@ -125,7 +125,7 @@ button { font: inherit; color: inherit; }
 .nav__side a:not(.btn):hover, .nav__side a.is-active { color: var(--ink); }
 .nav__side a:not(.btn):hover::after, .nav__side a.is-active::after { transform: scaleX(1); transform-origin: left; }
 .brand { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; color: var(--ink); }
-.brand__bird { width: 38px; height: 25px; color: var(--ink); }
+.brand__bird { width: 46px; height: 30px; color: var(--ink); }
 .brand__text { display: flex; flex-direction: column; align-items: flex-start; line-height: 1; }
 .brand__name { font-family: var(--serif); font-size: 1.3rem; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; }
 .brand__sub { font-size: .52rem; font-weight: 700; letter-spacing: .42em; text-transform: uppercase; margin-top: 6px; color: var(--gold-text); }
@@ -196,7 +196,7 @@ button { font: inherit; color: inherit; }
 .ribbon { border-bottom: 1px solid var(--line); }
 .ribbon__inner { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 10px 28px; padding-block: 26px;
   font-family: var(--serif); font-style: italic; font-size: 1.18rem; color: var(--ink-soft); }
-.ribbon i { width: 5px; height: 5px; transform: rotate(45deg); border: 1px solid var(--gold); }
+.ribbon i { width: 9px; height: 9px; background: var(--gold); clip-path: polygon(50% 0, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0 50%, 39% 39%); }
 
 /* ---------- rólunk ---------- */
 .story__head { max-width: 760px; margin: 0 auto clamp(56px, 7vw, 96px); text-align: center; }
@@ -316,7 +316,7 @@ details p, details ul { margin: 6px 0 4px; font-size: .97rem; color: var(--ink-s
 /* ---------- miért ---------- */
 .why { background: var(--white); border-top: 1px solid var(--line); }
 .why .section__head--split { align-items: end; }
-.why__bird { width: 112px; justify-self: end; opacity: .95; }
+.why__bird { width: 200px; justify-self: end; }
 .values { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0 36px; }
 .values li { border-top: 1px solid var(--ink); padding-top: 26px; }
 .values__no { display: block; font-family: var(--serif); font-style: italic; font-size: 1.6rem; line-height: 1; color: var(--gold-text); margin-bottom: 26px; }
@@ -331,7 +331,7 @@ details p, details ul { margin: 6px 0 4px; font-size: .97rem; color: var(--ink-s
   transition: opacity .8s var(--ease), transform .8s var(--ease), visibility 0s .8s; }
 .quote.is-on { opacity: 1; visibility: visible; transform: none; transition: opacity .8s var(--ease), transform .8s var(--ease), visibility 0s; }
 .quote blockquote { margin: 0; }
-.quote blockquote::before { content: ""; display: block; width: 7px; height: 7px; margin: 0 auto 30px; transform: rotate(45deg); border: 1px solid var(--gold); }
+.quote blockquote::before { content: ""; display: block; width: 14px; height: 14px; margin: 0 auto 30px; background: var(--gold); clip-path: polygon(50% 0, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0 50%, 39% 39%); }
 .quote blockquote p { font-family: var(--serif); font-style: italic; font-size: clamp(1.5rem, 1.2rem + 1.05vw, 2.1rem); line-height: 1.38; margin: 0; }
 .quote figcaption { margin-top: 28px; font-size: .68rem; font-weight: 650; letter-spacing: .2em; text-transform: uppercase; color: var(--ink-mute); }
 .quote figcaption b { color: var(--ink); }
@@ -349,6 +349,7 @@ details p, details ul { margin: 6px 0 4px; font-size: .97rem; color: var(--ink-s
 .contact__dark .h2 em { color: var(--lav-light); }
 .contact__text { color: rgba(247,241,247,.75); max-width: 30rem; }
 .contact__actions { display: grid; grid-template-columns: minmax(0, 300px); gap: 12px; margin-top: 40px; }
+.contact__fairy { position: absolute; top: 34px; right: 28px; width: 150px; opacity: .9; z-index: -1; }
 .contact__sprig { position: absolute; right: -10px; bottom: -40px; width: 120px; filter: invert(1); opacity: .14; z-index: -1; }
 .contact__light { background: var(--paper); padding: clamp(80px, 9vw, 140px) clamp(28px, 6vw, 96px); }
 .contact__light > * { max-width: 520px; }
@@ -375,7 +376,7 @@ details p, details ul { margin: 6px 0 4px; font-size: .97rem; color: var(--ink-s
 .footer a:hover { border-bottom-color: var(--gold-light); }
 .footer__top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 24px 40px; padding-bottom: 44px; border-bottom: 1px solid var(--line-light); }
 .footer__mark { display: inline-flex; align-items: center; gap: 16px; border: 0 !important; color: var(--pearl); }
-.footer__mark svg { width: 52px; height: 34px; }
+.footer__mark svg { width: 60px; height: 40px; color: var(--pearl); }
 .footer__mark > span { display: flex; flex-direction: column; line-height: 1; }
 .footer__mark > span > span { font-family: var(--serif); font-size: 1.85rem; letter-spacing: .2em; text-transform: uppercase; }
 .footer__mark small { font-size: .58rem; font-weight: 700; letter-spacing: .42em; text-transform: uppercase; margin-top: 10px; color: var(--gold-light); }
@@ -419,7 +420,7 @@ details p, details ul { margin: 6px 0 4px; font-size: .97rem; color: var(--ink-s
   .stage { aspect-ratio: 16 / 10; }
   .contact__darkin { margin-left: 0; max-width: none; }
   .footer__cols { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .why__bird { justify-self: start; width: 90px; }
+  .why__bird { justify-self: start; width: 160px; }
 }
 @media (max-width: 759px) {
   :root { --nav-h: 66px; --callbar-h: calc(60px + env(safe-area-inset-bottom)); }
@@ -478,3 +479,9 @@ details p, details ul { margin: 6px 0 4px; font-size: .97rem; color: var(--ink-s
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
 }
+
+/* tündérpor: finom csillogás (csak ha a mozgás engedélyezett) */
+.motion .dust { animation: twinkle 3.2s ease-in-out infinite; }
+.motion .dust1 { animation-delay: .8s; } .motion .dust2 { animation-delay: 1.6s; } .motion .dust3 { animation-delay: 2.4s; }
+@keyframes twinkle { 0%, 100% { opacity: 1; } 50% { opacity: .25; } }
+@media (max-width: 759px) { .contact__fairy { width: 120px; top: 36px; right: 16px; opacity: .6; } }
