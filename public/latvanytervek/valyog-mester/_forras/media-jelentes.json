@@ -1,268 +1,146 @@
-[
-  {
-    "url": "https://valyog-mester.hu/images/about.jpg",
-    "file": [
-      "img/foto/about-900.webp",
-      "img/foto/about-1600.webp",
-      "img/foto/about-2400.webp"
-    ],
-    "bytes": 5717146,
-    "size": [
-      5100,
-      3400
-    ]
-  },
-  {
-    "url": "https://valyog-mester.hu/images/hero.jpg",
-    "file": [
-      "img/foto/hero-900.webp",
-      "img/foto/hero-1600.webp",
-      "img/foto/hero-2400.webp"
-    ],
-    "bytes": 3569729,
-    "size": [
-      6048,
-      4024
-    ]
-  },
-  {
-    "url": "https://valyog-mester.hu/images/logo.png",
-    "file": [
-      "img/foto/logo-900.webp"
-    ],
-    "bytes": 247107,
-    "size": [
-      940,
-      788
-    ]
-  },
-  {
-    "url": "https://valyog-mester.hu/images/service1.jpg",
-    "file": [
-      "img/foto/service1-900.webp",
-      "img/foto/service1-1600.webp",
-      "img/foto/service1-2400.webp"
-    ],
-    "bytes": 3021644,
-    "size": [
-      4160,
-      6240
-    ]
-  },
-  {
-    "url": "https://valyog-mester.hu/images/service2.jpg",
-    "file": [
-      "img/foto/service2-900.webp",
-      "img/foto/service2-1600.webp",
-      "img/foto/service2-2400.webp"
-    ],
-    "bytes": 5006665,
-    "size": [
-      3990,
-      5164
-    ]
-  },
-  {
-    "url": "https://valyog-mester.hu/images/service3.jpg",
-    "file": [
-      "img/foto/service3-900.webp",
-      "img/foto/service3-1600.webp",
-      "img/foto/service3-2400.webp"
-    ],
-    "bytes": 2650233,
-    "size": [
-      4160,
-      6240
-    ]
-  },
-  {
-    "url": "https://video-iad3-1.xx.fbcdn.net/o1/v/t2/f2/m366/AQMG07L1bwI4rCXNmWUCr13myjWT8pZo61i5xWXtPIDtLEQEC4R6gVb6FkcMAXxz6SY28Zo01TDMOJDOaZaLI14L2yqcAOOXerZabng.mp4?_nc_cat=110&_nc_sid=9ca052&_nc_ht=video-iad3-1.xx.fbcdn.net&_nc_ohc=LNcRSDgptOQQ7kNvwFU4bxc&efg=eyJ2ZW5jb2RlX3RhZyI6ImRhc2hfcjJhdjEtcjFnZW4ydnA5X3E5MCIsInZpZGVvX2lkIjozMTAxOTY0MjEwMTkxMzExLCJvaWxfdXJsZ2VuX2FwcF9pZCI6MCwiY2xpZW50X25hbWUiOiJ1bmtub3duIiwieHB2X2Fzc2V0X2lkIjo5MDQ5NjU2NDU2NTgyOTgsImFzc2V0X2FnZV9kYXlzIjoyMjAsInZpX3VzZWNhc2VfaWQiOjEwMTIyLCJkdXJhdGlvbl9zIjozNCwiYml0cmF0ZSI6NjIwMzIyMSwidXJsZ2VuX3NvdXJjZSI6Ind3dyJ9&ccb=17-1&_nc_gid=6rN_pWR-Pkl2ugo3Bkaa8g&edm=AGo2L-IEAAAA&_nc_zt=28&oh=00_AQMyeVGAa5YGRKTo7Lh0QrkDORgBAjonRyFmcGEAtg-h-w&oe=6ADA4C73&bytestart=827&byteend=942",
-    "file": "img/foto/AQMG07L1bwI4rCXNmWUCr13myjWT8pZo61i5xWXtPIDtLEQEC4R6gVb6FkcMAXxz6SY28Zo01TDMOJDOaZaLI14L2yqcAOOXerZabng.mp4",
-    "bytes": 116
-  },
-  {
-    "url": "https://video-iad3-1.xx.fbcdn.net/o1/v/t2/f2/m366/AQMG07L1bwI4rCXNmWUCr13myjWT8pZo61i5xWXtPIDtLEQEC4R6gVb6FkcMAXxz6SY28Zo01TDMOJDOaZaLI14L2yqcAOOXerZabng.mp4?_nc_cat=110&_nc_sid=9ca052&_nc_ht=video-iad3-1.xx.fbcdn.net&_nc_ohc=LNcRSDgptOQQ7kNvwFU4bxc&efg=eyJ2ZW5jb2RlX3RhZyI6ImRhc2hfcjJhdjEtcjFnZW4ydnA5X3E5MCIsInZpZGVvX2lkIjozMTAxOTY0MjEwMTkxMzExLCJvaWxfdXJsZ2VuX2FwcF9pZCI6MCwiY2xpZW50X25hbWUiOiJ1bmtub3duIiwieHB2X2Fzc2V0X2lkIjo5MDQ5NjU2NDU2NTgyOTgsImFzc2V0X2FnZV9kYXlzIjoyMjAsInZpX3VzZWNhc2VfaWQiOjEwMTIyLCJkdXJhdGlvbl9zIjozNCwiYml0cmF0ZSI6NjIwMzIyMSwidXJsZ2VuX3NvdXJjZSI6Ind3dyJ9&ccb=17-1&_nc_gid=rITD_O4HvxNJLASzFkYmDw&edm=AGo2L-IEAAAA&_nc_zt=28&oh=00_AQPnp536CZSAXCZ32Vjdrp2Hny2zipimaeTi6AH3l7_PlA&oe=6ADA4C73&bytestart=827&byteend=942",
-    "file": "img/foto/AQMG07L1bwI4rCXNmWUCr13myjWT8pZo61i5xWXtPIDtLEQEC4R6gVb6FkcMAXxz6SY28Zo01TDMOJDOaZaLI14L2yqcAOOXerZabng.mp4",
-    "bytes": 116
-  },
-  {
-    "url": "https://video-iad3-1.xx.fbcdn.net/o1/v/t2/f2/m366/AQNtasSHuV6lBUSt_SsGGhuXkAfBpbW6EIcevvxVEOsW9WuvyjRJIvwuYVOdS82-nc-A23OklKmpvfStflDgMFK4wZsBYHBmn-MbPzs.mp4?_nc_cat=108&_nc_sid=9ca052&_nc_ht=video-iad3-1.xx.fbcdn.net&_nc_ohc=5Y1mohK3qPIQ7kNvwEX7ApT&efg=eyJ2ZW5jb2RlX3RhZyI6ImRhc2hfcjJhdjEtcjFnZW4ydnA5X3E3MCIsInZpZGVvX2lkIjozMTAxOTY0MjEwMTkxMzExLCJvaWxfdXJsZ2VuX2FwcF9pZCI6MCwiY2xpZW50X25hbWUiOiJ1bmtub3duIiwieHB2X2Fzc2V0X2lkIjo5MDQ5NjU2NDU2NTgyOTgsImFzc2V0X2FnZV9kYXlzIjoyMjAsInZpX3VzZWNhc2VfaWQiOjEwMTIyLCJkdXJhdGlvbl9zIjozNCwiYml0cmF0ZSI6MzI2OTY2MiwidXJsZ2VuX3NvdXJjZSI6Ind3dyJ9&ccb=17-1&_nc_gid=6rN_pWR-Pkl2ugo3Bkaa8g&edm=AGo2L-IEAAAA&_nc_zt=28&oh=00_AQPgG5Ho2ZUzgnXZPxOaUUy-qDpaC9AMLYwNnf8GFpYWvg&oe=6ADA4809&bytestart=826&byteend=941",
-    "file": "img/foto/AQNtasSHuV6lBUSt_SsGGhuXkAfBpbW6EIcevvxVEOsW9WuvyjRJIvwuYVOdS82-nc-A23OklKmpvfStflDgMFK4wZsBYHBmn-MbPzs.mp4",
-    "bytes": 116
-  },
-  {
-    "url": "https://video-iad3-1.xx.fbcdn.net/o1/v/t2/f2/m366/AQNtasSHuV6lBUSt_SsGGhuXkAfBpbW6EIcevvxVEOsW9WuvyjRJIvwuYVOdS82-nc-A23OklKmpvfStflDgMFK4wZsBYHBmn-MbPzs.mp4?_nc_cat=108&_nc_sid=9ca052&_nc_ht=video-iad3-1.xx.fbcdn.net&_nc_ohc=5Y1mohK3qPIQ7kNvwEX7ApT&efg=eyJ2ZW5jb2RlX3RhZyI6ImRhc2hfcjJhdjEtcjFnZW4ydnA5X3E3MCIsInZpZGVvX2lkIjozMTAxOTY0MjEwMTkxMzExLCJvaWxfdXJsZ2VuX2FwcF9pZCI6MCwiY2xpZW50X25hbWUiOiJ1bmtub3duIiwieHB2X2Fzc2V0X2lkIjo5MDQ5NjU2NDU2NTgyOTgsImFzc2V0X2FnZV9kYXlzIjoyMjAsInZpX3VzZWNhc2VfaWQiOjEwMTIyLCJkdXJhdGlvbl9zIjozNCwiYml0cmF0ZSI6MzI2OTY2MiwidXJsZ2VuX3NvdXJjZSI6Ind3dyJ9&ccb=17-1&_nc_gid=rITD_O4HvxNJLASzFkYmDw&edm=AGo2L-IEAAAA&_nc_zt=28&oh=00_AQMtNQL9awlhoIZJ6MpJcmqjLEwNRIMZc--TgvJ5ahb_UA&oe=6ADA4809&bytestart=826&byteend=941",
-    "file": "img/foto/AQNtasSHuV6lBUSt_SsGGhuXkAfBpbW6EIcevvxVEOsW9WuvyjRJIvwuYVOdS82-nc-A23OklKmpvfStflDgMFK4wZsBYHBmn-MbPzs.mp4",
-    "bytes": 116
-  },
-  {
-    "url": "https://video-iad3-1.xx.fbcdn.net/o1/v/t2/f2/m366/AQOEIrlryUzFnpnQqtBAMgm8Siz7MCTO2YUpaAWeOtc2MBPFOv_mRSXoA65fV1Emz_FDk9Evkc1fgrT4jy7YWHNQn9j2iDDTneewWzE.mp4?_nc_cat=104&_nc_sid=9ca052&_nc_ht=video-iad3-1.xx.fbcdn.net&_nc_ohc=R_oPABynpGsQ7kNvwFIO9OR&efg=eyJ2ZW5jb2RlX3RhZyI6ImRhc2hfcjJhdjEtcjFnZW4ydnA5X3E1MCIsInZpZGVvX2lkIjozMTAxOTY0MjEwMTkxMzExLCJvaWxfdXJsZ2VuX2FwcF9pZCI6MCwiY2xpZW50X25hbWUiOiJ1bmtub3duIiwieHB2X2Fzc2V0X2lkIjo5MDQ5NjU2NDU2NTgyOTgsImFzc2V0X2FnZV9kYXlzIjoyMjAsInZpX3VzZWNhc2VfaWQiOjEwMTIyLCJkdXJhdGlvbl9zIjozNCwiYml0cmF0ZSI6MTkzMDg3MywidXJsZ2VuX3NvdXJjZSI6Ind3dyJ9&ccb=17-1&_nc_gid=6rN_pWR-Pkl2ugo3Bkaa8g&edm=AGo2L-IEAAAA&_nc_zt=28&oh=00_AQNLYxOmkyO-3IPQueEs6E4jUy39c0aaI9q3oDOyirlunA&oe=6ADA3F91&bytestart=826&byteend=941",
-    "file": "img/foto/AQOEIrlryUzFnpnQqtBAMgm8Siz7MCTO2YUpaAWeOtc2MBPFOv_mRSXoA65fV1Emz_FDk9Evkc1fgrT4jy7YWHNQn9j2iDDTneewWzE.mp4",
-    "bytes": 116
-  },
-  {
-    "url": "https://video-iad3-1.xx.fbcdn.net/o1/v/t2/f2/m366/AQOEIrlryUzFnpnQqtBAMgm8Siz7MCTO2YUpaAWeOtc2MBPFOv_mRSXoA65fV1Emz_FDk9Evkc1fgrT4jy7YWHNQn9j2iDDTneewWzE.mp4?_nc_cat=104&_nc_sid=9ca052&_nc_ht=video-iad3-1.xx.fbcdn.net&_nc_ohc=R_oPABynpGsQ7kNvwFIO9OR&efg=eyJ2ZW5jb2RlX3RhZyI6ImRhc2hfcjJhdjEtcjFnZW4ydnA5X3E1MCIsInZpZGVvX2lkIjozMTAxOTY0MjEwMTkxMzExLCJvaWxfdXJsZ2VuX2FwcF9pZCI6MCwiY2xpZW50X25hbWUiOiJ1bmtub3duIiwieHB2X2Fzc2V0X2lkIjo5MDQ5NjU2NDU2NTgyOTgsImFzc2V0X2FnZV9kYXlzIjoyMjAsInZpX3VzZWNhc2VfaWQiOjEwMTIyLCJkdXJhdGlvbl9zIjozNCwiYml0cmF0ZSI6MTkzMDg3MywidXJsZ2VuX3NvdXJjZSI6Ind3dyJ9&ccb=17-1&_nc_gid=rITD_O4HvxNJLASzFkYmDw&edm=AGo2L-IEAAAA&_nc_zt=28&oh=00_AQNv7aa87cv3rH-ozk-MwoUxQK7eTcpUJIMJB17a-MabAA&oe=6ADA3F91&bytestart=826&byteend=941",
-    "file": "img/foto/AQOEIrlryUzFnpnQqtBAMgm8Siz7MCTO2YUpaAWeOtc2MBPFOv_mRSXoA65fV1Emz_FDk9Evkc1fgrT4jy7YWHNQn9j2iDDTneewWzE.mp4",
-    "bytes": 116
-  },
-  {
-    "url": "https://video-iad3-1.xx.fbcdn.net/o1/v/t2/f2/m366/AQPz4-X6V78K28IW2sGy0Kq3V0IQDg2luCKsIpqdL1w-hFkBrdxrbyFqbCHJVMrrulsyo5d4iE85g_SGUJdC_ExhJjDWQ-4kZSod_5A.mp4?_nc_cat=110&_nc_sid=9ca052&_nc_ht=video-iad3-1.xx.fbcdn.net&_nc_ohc=MTBKDH93HBYQ7kNvwFdzOKc&efg=eyJ2ZW5jb2RlX3RhZyI6ImRhc2hfcjJhdjEtcjFnZW4ydnA5X3E0MCIsInZpZGVvX2lkIjozMTAxOTY0MjEwMTkxMzExLCJvaWxfdXJsZ2VuX2FwcF9pZCI6MCwiY2xpZW50X25hbWUiOiJ1bmtub3duIiwieHB2X2Fzc2V0X2lkIjo5MDQ5NjU2NDU2NTgyOTgsImFzc2V0X2FnZV9kYXlzIjoyMjAsInZpX3VzZWNhc2VfaWQiOjEwMTIyLCJkdXJhdGlvbl9zIjozNCwiYml0cmF0ZSI6MTQ4MjMyOCwidXJsZ2VuX3NvdXJjZSI6Ind3dyJ9&ccb=17-1&_nc_gid=6rN_pWR-Pkl2ugo3Bkaa8g&edm=AGo2L-IEAAAA&_nc_zt=28&oh=00_AQOdbiT08J2U_ti12f4zRA-wlxpHeLhQ_aK6sI4MCKQwUQ&oe=6ADA5C9B&bytestart=826&byteend=941",
-    "file": "img/foto/AQPz4-X6V78K28IW2sGy0Kq3V0IQDg2luCKsIpqdL1w-hFkBrdxrbyFqbCHJVMrrulsyo5d4iE85g_SGUJdC_ExhJjDWQ-4kZSod_5A.mp4",
-    "bytes": 116
-  },
-  {
-    "url": "https://video-iad3-1.xx.fbcdn.net/o1/v/t2/f2/m366/AQPz4-X6V78K28IW2sGy0Kq3V0IQDg2luCKsIpqdL1w-hFkBrdxrbyFqbCHJVMrrulsyo5d4iE85g_SGUJdC_ExhJjDWQ-4kZSod_5A.mp4?_nc_cat=110&_nc_sid=9ca052&_nc_ht=video-iad3-1.xx.fbcdn.net&_nc_ohc=MTBKDH93HBYQ7kNvwFdzOKc&efg=eyJ2ZW5jb2RlX3RhZyI6ImRhc2hfcjJhdjEtcjFnZW4ydnA5X3E0MCIsInZpZGVvX2lkIjozMTAxOTY0MjEwMTkxMzExLCJvaWxfdXJsZ2VuX2FwcF9pZCI6MCwiY2xpZW50X25hbWUiOiJ1bmtub3duIiwieHB2X2Fzc2V0X2lkIjo5MDQ5NjU2NDU2NTgyOTgsImFzc2V0X2FnZV9kYXlzIjoyMjAsInZpX3VzZWNhc2VfaWQiOjEwMTIyLCJkdXJhdGlvbl9zIjozNCwiYml0cmF0ZSI6MTQ4MjMyOCwidXJsZ2VuX3NvdXJjZSI6Ind3dyJ9&ccb=17-1&_nc_gid=rITD_O4HvxNJLASzFkYmDw&edm=AGo2L-IEAAAA&_nc_zt=28&oh=00_AQNI6Bl1KvkN4804U2ktILZCQ7Y1_oct_bQhIjFrPjPfsA&oe=6ADA5C9B&bytestart=826&byteend=941",
-    "file": "img/foto/AQPz4-X6V78K28IW2sGy0Kq3V0IQDg2luCKsIpqdL1w-hFkBrdxrbyFqbCHJVMrrulsyo5d4iE85g_SGUJdC_ExhJjDWQ-4kZSod_5A.mp4",
-    "bytes": 116
-  },
-  {
-    "url": "https://video-iad6-1.xx.fbcdn.net/o1/v/t2/f2/m366/AQMApg5UHfB9BYr2K0B8tp4el_Ol4pMMd0207QJSyKo_KkLpLxJkD047608vJC6OniQ3ighmTWjmhsTxuPWun3Mg0LAiQW-mpsRr2gY.mp4?_nc_cat=109&_nc_sid=9ca052&_nc_ht=video-iad6-1.xx.fbcdn.net&_nc_ohc=J11Xen-2gF0Q7kNvwFhneN3&efg=eyJ2ZW5jb2RlX3RhZyI6ImRhc2hfcjJhdjEtcjFnZW4ydnA5X3EzMCIsInZpZGVvX2lkIjozMTAxOTY0MjEwMTkxMzExLCJvaWxfdXJsZ2VuX2FwcF9pZCI6MCwiY2xpZW50X25hbWUiOiJ1bmtub3duIiwieHB2X2Fzc2V0X2lkIjo5MDQ5NjU2NDU2NTgyOTgsImFzc2V0X2FnZV9kYXlzIjoyMjAsInZpX3VzZWNhc2VfaWQiOjEwMTIyLCJkdXJhdGlvbl9zIjozNCwiYml0cmF0ZSI6MTA0NTY4NSwidXJsZ2VuX3NvdXJjZSI6Ind3dyJ9&ccb=17-1&_nc_gid=6rN_pWR-Pkl2ugo3Bkaa8g&edm=AGo2L-IEAAAA&_nc_zt=28&oh=00_AQPNxEOs-B0Chpy-VQ2VIRWEod-pq-X04oeljA15hCwwow&oe=6ADA3C3E&bytestart=826&byteend=941",
-    "file": "img/foto/AQMApg5UHfB9BYr2K0B8tp4el_Ol4pMMd0207QJSyKo_KkLpLxJkD047608vJC6OniQ3ighmTWjmhsTxuPWun3Mg0LAiQW-mpsRr2gY.mp4",
-    "bytes": 116
-  },
-  {
-    "url": "https://video-iad6-1.xx.fbcdn.net/o1/v/t2/f2/m366/AQMApg5UHfB9BYr2K0B8tp4el_Ol4pMMd0207QJSyKo_KkLpLxJkD047608vJC6OniQ3ighmTWjmhsTxuPWun3Mg0LAiQW-mpsRr2gY.mp4?_nc_cat=109&_nc_sid=9ca052&_nc_ht=video-iad6-1.xx.fbcdn.net&_nc_ohc=J11Xen-2gF0Q7kNvwFhneN3&efg=eyJ2ZW5jb2RlX3RhZyI6ImRhc2hfcjJhdjEtcjFnZW4ydnA5X3EzMCIsInZpZGVvX2lkIjozMTAxOTY0MjEwMTkxMzExLCJvaWxfdXJsZ2VuX2FwcF9pZCI6MCwiY2xpZW50X25hbWUiOiJ1bmtub3duIiwieHB2X2Fzc2V0X2lkIjo5MDQ5NjU2NDU2NTgyOTgsImFzc2V0X2FnZV9kYXlzIjoyMjAsInZpX3VzZWNhc2VfaWQiOjEwMTIyLCJkdXJhdGlvbl9zIjozNCwiYml0cmF0ZSI6MTA0NTY4NSwidXJsZ2VuX3NvdXJjZSI6Ind3dyJ9&ccb=17-1&_nc_gid=rITD_O4HvxNJLASzFkYmDw&edm=AGo2L-IEAAAA&_nc_zt=28&oh=00_AQPAvwJImIBL7s2aC54nt-M4ba1FhX9M5s6S_v0RI_a7QA&oe=6ADA3C3E&bytestart=826&byteend=941",
-    "file": "img/foto/AQMApg5UHfB9BYr2K0B8tp4el_Ol4pMMd0207QJSyKo_KkLpLxJkD047608vJC6OniQ3ighmTWjmhsTxuPWun3Mg0LAiQW-mpsRr2gY.mp4",
-    "bytes": 116
-  },
-  {
-    "url": "https://video-iad6-1.xx.fbcdn.net/o1/v/t2/f2/m366/AQMR6vA3grTnyVxVT7NH_fEj_4yDVyC13BTWop5A8kt5l70WaPIjJNLuGhJahqNeFZfqiK7QSPbt5_fD5gsYWTUXbKVTh-mausy_WHg.mp4?_nc_cat=109&_nc_sid=9ca052&_nc_ht=video-iad6-1.xx.fbcdn.net&_nc_ohc=deZPKfM4FDgQ7kNvwG2zIrd&efg=eyJ2ZW5jb2RlX3RhZyI6ImRhc2hfcjJhdjEtcjFnZW4ydnA5X3E2MCIsInZpZGVvX2lkIjozMTAxOTY0MjEwMTkxMzExLCJvaWxfdXJsZ2VuX2FwcF9pZCI6MCwiY2xpZW50X25hbWUiOiJ1bmtub3duIiwieHB2X2Fzc2V0X2lkIjo5MDQ5NjU2NDU2NTgyOTgsImFzc2V0X2FnZV9kYXlzIjoyMjAsInZpX3VzZWNhc2VfaWQiOjEwMTIyLCJkdXJhdGlvbl9zIjozNCwiYml0cmF0ZSI6MjY0OTU3OSwidXJsZ2VuX3NvdXJjZSI6Ind3dyJ9&ccb=17-1&_nc_gid=6rN_pWR-Pkl2ugo3Bkaa8g&edm=AGo2L-IEAAAA&_nc_zt=28&oh=00_AQN9vK_697FRI0fuoozOh9keyzexItrg3WYbZSDtETNeaA&oe=6ADA3076&bytestart=826&byteend=941",
-    "file": "img/foto/AQMR6vA3grTnyVxVT7NH_fEj_4yDVyC13BTWop5A8kt5l70WaPIjJNLuGhJahqNeFZfqiK7QSPbt5_fD5gsYWTUXbKVTh-mausy_WHg.mp4",
-    "bytes": 116
-  },
-  {
-    "url": "https://video-iad6-1.xx.fbcdn.net/o1/v/t2/f2/m366/AQMR6vA3grTnyVxVT7NH_fEj_4yDVyC13BTWop5A8kt5l70WaPIjJNLuGhJahqNeFZfqiK7QSPbt5_fD5gsYWTUXbKVTh-mausy_WHg.mp4?_nc_cat=109&_nc_sid=9ca052&_nc_ht=video-iad6-1.xx.fbcdn.net&_nc_ohc=deZPKfM4FDgQ7kNvwG2zIrd&efg=eyJ2ZW5jb2RlX3RhZyI6ImRhc2hfcjJhdjEtcjFnZW4ydnA5X3E2MCIsInZpZGVvX2lkIjozMTAxOTY0MjEwMTkxMzExLCJvaWxfdXJsZ2VuX2FwcF9pZCI6MCwiY2xpZW50X25hbWUiOiJ1bmtub3duIiwieHB2X2Fzc2V0X2lkIjo5MDQ5NjU2NDU2NTgyOTgsImFzc2V0X2FnZV9kYXlzIjoyMjAsInZpX3VzZWNhc2VfaWQiOjEwMTIyLCJkdXJhdGlvbl9zIjozNCwiYml0cmF0ZSI6MjY0OTU3OSwidXJsZ2VuX3NvdXJjZSI6Ind3dyJ9&ccb=17-1&_nc_gid=rITD_O4HvxNJLASzFkYmDw&edm=AGo2L-IEAAAA&_nc_zt=28&oh=00_AQPEdLgI8okUiXsLWcKeR4Jqoiv1O5ocewswsVnWdGdlIQ&oe=6ADA3076&bytestart=826&byteend=941",
-    "file": "img/foto/AQMR6vA3grTnyVxVT7NH_fEj_4yDVyC13BTWop5A8kt5l70WaPIjJNLuGhJahqNeFZfqiK7QSPbt5_fD5gsYWTUXbKVTh-mausy_WHg.mp4",
-    "bytes": 116
-  },
-  {
-    "url": "https://video-iad6-1.xx.fbcdn.net/o1/v/t2/f2/m366/AQO0lurzg-bC48NAzsGwRQy8Vx8f6hOqpjp8s1fJAVS49GUixvU2nJyjnOKEmButPd4L3GHC5q7HUO8Qw2kPL5vPcx4O_1BW8Fh0oE4.mp4?_nc_cat=109&_nc_sid=9ca052&_nc_ht=video-iad6-1.xx.fbcdn.net&_nc_ohc=rbIUIKprijUQ7kNvwHaZA2F&efg=eyJ2ZW5jb2RlX3RhZyI6ImRhc2hfcjJhdjEtcjFnZW4ydnA5X3E4MCIsInZpZGVvX2lkIjozMTAxOTY0MjEwMTkxMzExLCJvaWxfdXJsZ2VuX2FwcF9pZCI6MCwiY2xpZW50X25hbWUiOiJ1bmtub3duIiwieHB2X2Fzc2V0X2lkIjo5MDQ5NjU2NDU2NTgyOTgsImFzc2V0X2FnZV9kYXlzIjoyMjAsInZpX3VzZWNhc2VfaWQiOjEwMTIyLCJkdXJhdGlvbl9zIjozNCwiYml0cmF0ZSI6NTE0OTg5MCwidXJsZ2VuX3NvdXJjZSI6Ind3dyJ9&ccb=17-1&_nc_gid=6rN_pWR-Pkl2ugo3Bkaa8g&edm=AGo2L-IEAAAA&_nc_zt=28&oh=00_AQPWw2zIyiWQANOHhd0JRR767mtPvhUyMwm2T-E3BWEvZw&oe=6ADA2A92&bytestart=826&byteend=941",
-    "file": "img/foto/AQO0lurzg-bC48NAzsGwRQy8Vx8f6hOqpjp8s1fJAVS49GUixvU2nJyjnOKEmButPd4L3GHC5q7HUO8Qw2kPL5vPcx4O_1BW8Fh0oE4.mp4",
-    "bytes": 116
-  },
-  {
-    "url": "https://video-iad6-1.xx.fbcdn.net/o1/v/t2/f2/m366/AQO0lurzg-bC48NAzsGwRQy8Vx8f6hOqpjp8s1fJAVS49GUixvU2nJyjnOKEmButPd4L3GHC5q7HUO8Qw2kPL5vPcx4O_1BW8Fh0oE4.mp4?_nc_cat=109&_nc_sid=9ca052&_nc_ht=video-iad6-1.xx.fbcdn.net&_nc_ohc=rbIUIKprijUQ7kNvwHaZA2F&efg=eyJ2ZW5jb2RlX3RhZyI6ImRhc2hfcjJhdjEtcjFnZW4ydnA5X3E4MCIsInZpZGVvX2lkIjozMTAxOTY0MjEwMTkxMzExLCJvaWxfdXJsZ2VuX2FwcF9pZCI6MCwiY2xpZW50X25hbWUiOiJ1bmtub3duIiwieHB2X2Fzc2V0X2lkIjo5MDQ5NjU2NDU2NTgyOTgsImFzc2V0X2FnZV9kYXlzIjoyMjAsInZpX3VzZWNhc2VfaWQiOjEwMTIyLCJkdXJhdGlvbl9zIjozNCwiYml0cmF0ZSI6NTE0OTg5MCwidXJsZ2VuX3NvdXJjZSI6Ind3dyJ9&ccb=17-1&_nc_gid=rITD_O4HvxNJLASzFkYmDw&edm=AGo2L-IEAAAA&_nc_zt=28&oh=00_AQN7fKkOeP13eAFKWdPwP3KWcDG0I1yxB63d_AOqbeGVhQ&oe=6ADA2A92&bytestart=826&byteend=941",
-    "file": "img/foto/AQO0lurzg-bC48NAzsGwRQy8Vx8f6hOqpjp8s1fJAVS49GUixvU2nJyjnOKEmButPd4L3GHC5q7HUO8Qw2kPL5vPcx4O_1BW8Fh0oE4.mp4",
-    "bytes": 116
-  },
-  {
-    "url": "https://video-iad6-1.xx.fbcdn.net/o1/v/t2/f2/m366/AQOx_RZovX2HbI6yswirka4Yz32qpU8gD_RGlYZUFwLOeK9VFeO41UvaqanZwgdkiBfYHh_XO8XWDR30N0MGDZkh-vDm3Y5grmBYyKA.mp4?_nc_cat=106&_nc_sid=9ca052&_nc_ht=video-iad6-1.xx.fbcdn.net&_nc_ohc=5yQsl3YQttwQ7kNvwFNUstI&efg=eyJ2ZW5jb2RlX3RhZyI6ImRhc2hfcjJhdjEtcjFnZW4ydnA5X3EyMCIsInZpZGVvX2lkIjozMTAxOTY0MjEwMTkxMzExLCJvaWxfdXJsZ2VuX2FwcF9pZCI6MCwiY2xpZW50X25hbWUiOiJ1bmtub3duIiwieHB2X2Fzc2V0X2lkIjo5MDQ5NjU2NDU2NTgyOTgsImFzc2V0X2FnZV9kYXlzIjoyMjAsInZpX3VzZWNhc2VfaWQiOjEwMTIyLCJkdXJhdGlvbl9zIjozNCwiYml0cmF0ZSI6NjU4OTAyLCJ1cmxnZW5fc291cmNlIjoid3d3In0%3D&ccb=17-1&_nc_gid=6rN_pWR-Pkl2ugo3Bkaa8g&edm=AGo2L-IEAAAA&_nc_zt=28&oh=00_AQN940Q9VJ_mvfCL17FIjbphpVCU-cwxrxwpK98Hj5a1-Q&oe=6ADA5C77&bytestart=0&byteend=825",
-    "file": "img/foto/AQOx_RZovX2HbI6yswirka4Yz32qpU8gD_RGlYZUFwLOeK9VFeO41UvaqanZwgdkiBfYHh_XO8XWDR30N0MGDZkh-vDm3Y5grmBYyKA.mp4",
-    "bytes": 826
-  },
-  {
-    "url": "https://video-iad6-1.xx.fbcdn.net/o1/v/t2/f2/m366/AQOx_RZovX2HbI6yswirka4Yz32qpU8gD_RGlYZUFwLOeK9VFeO41UvaqanZwgdkiBfYHh_XO8XWDR30N0MGDZkh-vDm3Y5grmBYyKA.mp4?_nc_cat=106&_nc_sid=9ca052&_nc_ht=video-iad6-1.xx.fbcdn.net&_nc_ohc=5yQsl3YQttwQ7kNvwFNUstI&efg=eyJ2ZW5jb2RlX3RhZyI6ImRhc2hfcjJhdjEtcjFnZW4ydnA5X3EyMCIsInZpZGVvX2lkIjozMTAxOTY0MjEwMTkxMzExLCJvaWxfdXJsZ2VuX2FwcF9pZCI6MCwiY2xpZW50X25hbWUiOiJ1bmtub3duIiwieHB2X2Fzc2V0X2lkIjo5MDQ5NjU2NDU2NTgyOTgsImFzc2V0X2FnZV9kYXlzIjoyMjAsInZpX3VzZWNhc2VfaWQiOjEwMTIyLCJkdXJhdGlvbl9zIjozNCwiYml0cmF0ZSI6NjU4OTAyLCJ1cmxnZW5fc291cmNlIjoid3d3In0%3D&ccb=17-1&_nc_gid=6rN_pWR-Pkl2ugo3Bkaa8g&edm=AGo2L-IEAAAA&_nc_zt=28&oh=00_AQN940Q9VJ_mvfCL17FIjbphpVCU-cwxrxwpK98Hj5a1-Q&oe=6ADA5C77&bytestart=1746040&byteend=2413515",
-    "file": "img/foto/AQOx_RZovX2HbI6yswirka4Yz32qpU8gD_RGlYZUFwLOeK9VFeO41UvaqanZwgdkiBfYHh_XO8XWDR30N0MGDZkh-vDm3Y5grmBYyKA.mp4",
-    "bytes": 667476
-  },
-  {
-    "url": "https://video-iad6-1.xx.fbcdn.net/o1/v/t2/f2/m366/AQOx_RZovX2HbI6yswirka4Yz32qpU8gD_RGlYZUFwLOeK9VFeO41UvaqanZwgdkiBfYHh_XO8XWDR30N0MGDZkh-vDm3Y5grmBYyKA.mp4?_nc_cat=106&_nc_sid=9ca052&_nc_ht=video-iad6-1.xx.fbcdn.net&_nc_ohc=5yQsl3YQttwQ7kNvwFNUstI&efg=eyJ2ZW5jb2RlX3RhZyI6ImRhc2hfcjJhdjEtcjFnZW4ydnA5X3EyMCIsInZpZGVvX2lkIjozMTAxOTY0MjEwMTkxMzExLCJvaWxfdXJsZ2VuX2FwcF9pZCI6MCwiY2xpZW50X25hbWUiOiJ1bmtub3duIiwieHB2X2Fzc2V0X2lkIjo5MDQ5NjU2NDU2NTgyOTgsImFzc2V0X2FnZV9kYXlzIjoyMjAsInZpX3VzZWNhc2VfaWQiOjEwMTIyLCJkdXJhdGlvbl9zIjozNCwiYml0cmF0ZSI6NjU4OTAyLCJ1cmxnZW5fc291cmNlIjoid3d3In0%3D&ccb=17-1&_nc_gid=6rN_pWR-Pkl2ugo3Bkaa8g&edm=AGo2L-IEAAAA&_nc_zt=28&oh=00_AQN940Q9VJ_mvfCL17FIjbphpVCU-cwxrxwpK98Hj5a1-Q&oe=6ADA5C77&bytestart=261348&byteend=1746039",
-    "file": "img/foto/AQOx_RZovX2HbI6yswirka4Yz32qpU8gD_RGlYZUFwLOeK9VFeO41UvaqanZwgdkiBfYHh_XO8XWDR30N0MGDZkh-vDm3Y5grmBYyKA.mp4",
-    "bytes": 1484692
-  },
-  {
-    "url": "https://video-iad6-1.xx.fbcdn.net/o1/v/t2/f2/m366/AQOx_RZovX2HbI6yswirka4Yz32qpU8gD_RGlYZUFwLOeK9VFeO41UvaqanZwgdkiBfYHh_XO8XWDR30N0MGDZkh-vDm3Y5grmBYyKA.mp4?_nc_cat=106&_nc_sid=9ca052&_nc_ht=video-iad6-1.xx.fbcdn.net&_nc_ohc=5yQsl3YQttwQ7kNvwFNUstI&efg=eyJ2ZW5jb2RlX3RhZyI6ImRhc2hfcjJhdjEtcjFnZW4ydnA5X3EyMCIsInZpZGVvX2lkIjozMTAxOTY0MjEwMTkxMzExLCJvaWxfdXJsZ2VuX2FwcF9pZCI6MCwiY2xpZW50X25hbWUiOiJ1bmtub3duIiwieHB2X2Fzc2V0X2lkIjo5MDQ5NjU2NDU2NTgyOTgsImFzc2V0X2FnZV9kYXlzIjoyMjAsInZpX3VzZWNhc2VfaWQiOjEwMTIyLCJkdXJhdGlvbl9zIjozNCwiYml0cmF0ZSI6NjU4OTAyLCJ1cmxnZW5fc291cmNlIjoid3d3In0%3D&ccb=17-1&_nc_gid=6rN_pWR-Pkl2ugo3Bkaa8g&edm=AGo2L-IEAAAA&_nc_zt=28&oh=00_AQN940Q9VJ_mvfCL17FIjbphpVCU-cwxrxwpK98Hj5a1-Q&oe=6ADA5C77&bytestart=826&byteend=941",
-    "file": "img/foto/AQOx_RZovX2HbI6yswirka4Yz32qpU8gD_RGlYZUFwLOeK9VFeO41UvaqanZwgdkiBfYHh_XO8XWDR30N0MGDZkh-vDm3Y5grmBYyKA.mp4",
-    "bytes": 116
-  },
-  {
-    "url": "https://video-iad6-1.xx.fbcdn.net/o1/v/t2/f2/m366/AQOx_RZovX2HbI6yswirka4Yz32qpU8gD_RGlYZUFwLOeK9VFeO41UvaqanZwgdkiBfYHh_XO8XWDR30N0MGDZkh-vDm3Y5grmBYyKA.mp4?_nc_cat=106&_nc_sid=9ca052&_nc_ht=video-iad6-1.xx.fbcdn.net&_nc_ohc=5yQsl3YQttwQ7kNvwFNUstI&efg=eyJ2ZW5jb2RlX3RhZyI6ImRhc2hfcjJhdjEtcjFnZW4ydnA5X3EyMCIsInZpZGVvX2lkIjozMTAxOTY0MjEwMTkxMzExLCJvaWxfdXJsZ2VuX2FwcF9pZCI6MCwiY2xpZW50X25hbWUiOiJ1bmtub3duIiwieHB2X2Fzc2V0X2lkIjo5MDQ5NjU2NDU2NTgyOTgsImFzc2V0X2FnZV9kYXlzIjoyMjAsInZpX3VzZWNhc2VfaWQiOjEwMTIyLCJkdXJhdGlvbl9zIjozNCwiYml0cmF0ZSI6NjU4OTAyLCJ1cmxnZW5fc291cmNlIjoid3d3In0%3D&ccb=17-1&_nc_gid=6rN_pWR-Pkl2ugo3Bkaa8g&edm=AGo2L-IEAAAA&_nc_zt=28&oh=00_AQN940Q9VJ_mvfCL17FIjbphpVCU-cwxrxwpK98Hj5a1-Q&oe=6ADA5C77&bytestart=942&byteend=261347",
-    "file": "img/foto/AQOx_RZovX2HbI6yswirka4Yz32qpU8gD_RGlYZUFwLOeK9VFeO41UvaqanZwgdkiBfYHh_XO8XWDR30N0MGDZkh-vDm3Y5grmBYyKA.mp4",
-    "bytes": 260406
-  },
-  {
-    "url": "https://video-iad6-1.xx.fbcdn.net/o1/v/t2/f2/m366/AQOx_RZovX2HbI6yswirka4Yz32qpU8gD_RGlYZUFwLOeK9VFeO41UvaqanZwgdkiBfYHh_XO8XWDR30N0MGDZkh-vDm3Y5grmBYyKA.mp4?_nc_cat=106&_nc_sid=9ca052&_nc_ht=video-iad6-1.xx.fbcdn.net&_nc_ohc=5yQsl3YQttwQ7kNvwFNUstI&efg=eyJ2ZW5jb2RlX3RhZyI6ImRhc2hfcjJhdjEtcjFnZW4ydnA5X3EyMCIsInZpZGVvX2lkIjozMTAxOTY0MjEwMTkxMzExLCJvaWxfdXJsZ2VuX2FwcF9pZCI6MCwiY2xpZW50X25hbWUiOiJ1bmtub3duIiwieHB2X2Fzc2V0X2lkIjo5MDQ5NjU2NDU2NTgyOTgsImFzc2V0X2FnZV9kYXlzIjoyMjAsInZpX3VzZWNhc2VfaWQiOjEwMTIyLCJkdXJhdGlvbl9zIjozNCwiYml0cmF0ZSI6NjU4OTAyLCJ1cmxnZW5fc291cmNlIjoid3d3In0%3D&ccb=17-1&_nc_gid=rITD_O4HvxNJLASzFkYmDw&edm=AGo2L-IEAAAA&_nc_zt=28&oh=00_AQNmiqaxSVzUDSriiMMonZE-A57MpypDs8F-ZVo_Gzjuxg&oe=6ADA5C77&bytestart=0&byteend=825",
-    "file": "img/foto/AQOx_RZovX2HbI6yswirka4Yz32qpU8gD_RGlYZUFwLOeK9VFeO41UvaqanZwgdkiBfYHh_XO8XWDR30N0MGDZkh-vDm3Y5grmBYyKA.mp4",
-    "bytes": 826
-  },
-  {
-    "url": "https://video-iad6-1.xx.fbcdn.net/o1/v/t2/f2/m366/AQOx_RZovX2HbI6yswirka4Yz32qpU8gD_RGlYZUFwLOeK9VFeO41UvaqanZwgdkiBfYHh_XO8XWDR30N0MGDZkh-vDm3Y5grmBYyKA.mp4?_nc_cat=106&_nc_sid=9ca052&_nc_ht=video-iad6-1.xx.fbcdn.net&_nc_ohc=5yQsl3YQttwQ7kNvwFNUstI&efg=eyJ2ZW5jb2RlX3RhZyI6ImRhc2hfcjJhdjEtcjFnZW4ydnA5X3EyMCIsInZpZGVvX2lkIjozMTAxOTY0MjEwMTkxMzExLCJvaWxfdXJsZ2VuX2FwcF9pZCI6MCwiY2xpZW50X25hbWUiOiJ1bmtub3duIiwieHB2X2Fzc2V0X2lkIjo5MDQ5NjU2NDU2NTgyOTgsImFzc2V0X2FnZV9kYXlzIjoyMjAsInZpX3VzZWNhc2VfaWQiOjEwMTIyLCJkdXJhdGlvbl9zIjozNCwiYml0cmF0ZSI6NjU4OTAyLCJ1cmxnZW5fc291cmNlIjoid3d3In0%3D&ccb=17-1&_nc_gid=rITD_O4HvxNJLASzFkYmDw&edm=AGo2L-IEAAAA&_nc_zt=28&oh=00_AQNmiqaxSVzUDSriiMMonZE-A57MpypDs8F-ZVo_Gzjuxg&oe=6ADA5C77&bytestart=1746040&byteend=2413515",
-    "file": "img/foto/AQOx_RZovX2HbI6yswirka4Yz32qpU8gD_RGlYZUFwLOeK9VFeO41UvaqanZwgdkiBfYHh_XO8XWDR30N0MGDZkh-vDm3Y5grmBYyKA.mp4",
-    "bytes": 667476
-  },
-  {
-    "url": "https://video-iad6-1.xx.fbcdn.net/o1/v/t2/f2/m366/AQOx_RZovX2HbI6yswirka4Yz32qpU8gD_RGlYZUFwLOeK9VFeO41UvaqanZwgdkiBfYHh_XO8XWDR30N0MGDZkh-vDm3Y5grmBYyKA.mp4?_nc_cat=106&_nc_sid=9ca052&_nc_ht=video-iad6-1.xx.fbcdn.net&_nc_ohc=5yQsl3YQttwQ7kNvwFNUstI&efg=eyJ2ZW5jb2RlX3RhZyI6ImRhc2hfcjJhdjEtcjFnZW4ydnA5X3EyMCIsInZpZGVvX2lkIjozMTAxOTY0MjEwMTkxMzExLCJvaWxfdXJsZ2VuX2FwcF9pZCI6MCwiY2xpZW50X25hbWUiOiJ1bmtub3duIiwieHB2X2Fzc2V0X2lkIjo5MDQ5NjU2NDU2NTgyOTgsImFzc2V0X2FnZV9kYXlzIjoyMjAsInZpX3VzZWNhc2VfaWQiOjEwMTIyLCJkdXJhdGlvbl9zIjozNCwiYml0cmF0ZSI6NjU4OTAyLCJ1cmxnZW5fc291cmNlIjoid3d3In0%3D&ccb=17-1&_nc_gid=rITD_O4HvxNJLASzFkYmDw&edm=AGo2L-IEAAAA&_nc_zt=28&oh=00_AQNmiqaxSVzUDSriiMMonZE-A57MpypDs8F-ZVo_Gzjuxg&oe=6ADA5C77&bytestart=261348&byteend=1746039",
-    "file": "img/foto/AQOx_RZovX2HbI6yswirka4Yz32qpU8gD_RGlYZUFwLOeK9VFeO41UvaqanZwgdkiBfYHh_XO8XWDR30N0MGDZkh-vDm3Y5grmBYyKA.mp4",
-    "bytes": 1484692
-  },
-  {
-    "url": "https://video-iad6-1.xx.fbcdn.net/o1/v/t2/f2/m366/AQOx_RZovX2HbI6yswirka4Yz32qpU8gD_RGlYZUFwLOeK9VFeO41UvaqanZwgdkiBfYHh_XO8XWDR30N0MGDZkh-vDm3Y5grmBYyKA.mp4?_nc_cat=106&_nc_sid=9ca052&_nc_ht=video-iad6-1.xx.fbcdn.net&_nc_ohc=5yQsl3YQttwQ7kNvwFNUstI&efg=eyJ2ZW5jb2RlX3RhZyI6ImRhc2hfcjJhdjEtcjFnZW4ydnA5X3EyMCIsInZpZGVvX2lkIjozMTAxOTY0MjEwMTkxMzExLCJvaWxfdXJsZ2VuX2FwcF9pZCI6MCwiY2xpZW50X25hbWUiOiJ1bmtub3duIiwieHB2X2Fzc2V0X2lkIjo5MDQ5NjU2NDU2NTgyOTgsImFzc2V0X2FnZV9kYXlzIjoyMjAsInZpX3VzZWNhc2VfaWQiOjEwMTIyLCJkdXJhdGlvbl9zIjozNCwiYml0cmF0ZSI6NjU4OTAyLCJ1cmxnZW5fc291cmNlIjoid3d3In0%3D&ccb=17-1&_nc_gid=rITD_O4HvxNJLASzFkYmDw&edm=AGo2L-IEAAAA&_nc_zt=28&oh=00_AQNmiqaxSVzUDSriiMMonZE-A57MpypDs8F-ZVo_Gzjuxg&oe=6ADA5C77&bytestart=826&byteend=941",
-    "file": "img/foto/AQOx_RZovX2HbI6yswirka4Yz32qpU8gD_RGlYZUFwLOeK9VFeO41UvaqanZwgdkiBfYHh_XO8XWDR30N0MGDZkh-vDm3Y5grmBYyKA.mp4",
-    "bytes": 116
-  },
-  {
-    "url": "https://video-iad6-1.xx.fbcdn.net/o1/v/t2/f2/m366/AQOx_RZovX2HbI6yswirka4Yz32qpU8gD_RGlYZUFwLOeK9VFeO41UvaqanZwgdkiBfYHh_XO8XWDR30N0MGDZkh-vDm3Y5grmBYyKA.mp4?_nc_cat=106&_nc_sid=9ca052&_nc_ht=video-iad6-1.xx.fbcdn.net&_nc_ohc=5yQsl3YQttwQ7kNvwFNUstI&efg=eyJ2ZW5jb2RlX3RhZyI6ImRhc2hfcjJhdjEtcjFnZW4ydnA5X3EyMCIsInZpZGVvX2lkIjozMTAxOTY0MjEwMTkxMzExLCJvaWxfdXJsZ2VuX2FwcF9pZCI6MCwiY2xpZW50X25hbWUiOiJ1bmtub3duIiwieHB2X2Fzc2V0X2lkIjo5MDQ5NjU2NDU2NTgyOTgsImFzc2V0X2FnZV9kYXlzIjoyMjAsInZpX3VzZWNhc2VfaWQiOjEwMTIyLCJkdXJhdGlvbl9zIjozNCwiYml0cmF0ZSI6NjU4OTAyLCJ1cmxnZW5fc291cmNlIjoid3d3In0%3D&ccb=17-1&_nc_gid=rITD_O4HvxNJLASzFkYmDw&edm=AGo2L-IEAAAA&_nc_zt=28&oh=00_AQNmiqaxSVzUDSriiMMonZE-A57MpypDs8F-ZVo_Gzjuxg&oe=6ADA5C77&bytestart=942&byteend=261347",
-    "file": "img/foto/AQOx_RZovX2HbI6yswirka4Yz32qpU8gD_RGlYZUFwLOeK9VFeO41UvaqanZwgdkiBfYHh_XO8XWDR30N0MGDZkh-vDm3Y5grmBYyKA.mp4",
-    "bytes": 260406
-  },
-  {
-    "url": "https://video-iad6-1.xx.fbcdn.net/o1/v/t2/f2/m412/AQMgaXcB_dt32X3OERxeaU97AMvifGoQaqeQ-smWZNzYbCPM1aAyX0svA6ZErrgx0ZyR82edTkE-nsuiBluZiN5U-OrrFFyyhCcx4jQ.mp4?_nc_cat=102&_nc_sid=9ca052&_nc_ht=video-iad6-1.xx.fbcdn.net&_nc_ohc=jYacmVX-NnUQ7kNvwFhVOhZ&efg=eyJ2ZW5jb2RlX3RhZyI6ImRhc2hfbG5faGVhYWNfdmJyM19hdWRpbyIsInZpZGVvX2lkIjozMTAxOTY0MjEwMTkxMzExLCJvaWxfdXJsZ2VuX2FwcF9pZCI6MCwiY2xpZW50X25hbWUiOiJ1bmtub3duIiwieHB2X2Fzc2V0X2lkIjo5MDQ5NjU2NDU2NTgyOTgsImFzc2V0X2FnZV9kYXlzIjoyMjAsInZpX3VzZWNhc2VfaWQiOjEwMTIyLCJkdXJhdGlvbl9zIjozNCwiYml0cmF0ZSI6NzQwOTMsInVybGdlbl9zb3VyY2UiOiJ3d3cifQ%3D%3D&ccb=17-1&_nc_gid=6rN_pWR-Pkl2ugo3Bkaa8g&edm=AGo2L-IEAAAA&_nc_zt=28&oh=00_AQMVAU3cz80tTJ2Li-PLLh0uqWHkA1YKdZeOPD_hKV-yUQ&oe=6ADA3F23&bytestart=0&byteend=823",
-    "file": "img/foto/AQMgaXcB_dt32X3OERxeaU97AMvifGoQaqeQ-smWZNzYbCPM1aAyX0svA6ZErrgx0ZyR82edTkE-nsuiBluZiN5U-OrrFFyyhCcx4jQ.mp4",
-    "bytes": 824
-  },
-  {
-    "url": "https://video-iad6-1.xx.fbcdn.net/o1/v/t2/f2/m412/AQMgaXcB_dt32X3OERxeaU97AMvifGoQaqeQ-smWZNzYbCPM1aAyX0svA6ZErrgx0ZyR82edTkE-nsuiBluZiN5U-OrrFFyyhCcx4jQ.mp4?_nc_cat=102&_nc_sid=9ca052&_nc_ht=video-iad6-1.xx.fbcdn.net&_nc_ohc=jYacmVX-NnUQ7kNvwFhVOhZ&efg=eyJ2ZW5jb2RlX3RhZyI6ImRhc2hfbG5faGVhYWNfdmJyM19hdWRpbyIsInZpZGVvX2lkIjozMTAxOTY0MjEwMTkxMzExLCJvaWxfdXJsZ2VuX2FwcF9pZCI6MCwiY2xpZW50X25hbWUiOiJ1bmtub3duIiwieHB2X2Fzc2V0X2lkIjo5MDQ5NjU2NDU2NTgyOTgsImFzc2V0X2FnZV9kYXlzIjoyMjAsInZpX3VzZWNhc2VfaWQiOjEwMTIyLCJkdXJhdGlvbl9zIjozNCwiYml0cmF0ZSI6NzQwOTMsInVybGdlbl9zb3VyY2UiOiJ3d3cifQ%3D%3D&ccb=17-1&_nc_gid=6rN_pWR-Pkl2ugo3Bkaa8g&edm=AGo2L-IEAAAA&_nc_zt=28&oh=00_AQMVAU3cz80tTJ2Li-PLLh0uqWHkA1YKdZeOPD_hKV-yUQ&oe=6ADA3F23&bytestart=1072&byteend=22034",
-    "file": "img/foto/AQMgaXcB_dt32X3OERxeaU97AMvifGoQaqeQ-smWZNzYbCPM1aAyX0svA6ZErrgx0ZyR82edTkE-nsuiBluZiN5U-OrrFFyyhCcx4jQ.mp4",
-    "bytes": 20963
-  },
-  {
-    "url": "https://video-iad6-1.xx.fbcdn.net/o1/v/t2/f2/m412/AQMgaXcB_dt32X3OERxeaU97AMvifGoQaqeQ-smWZNzYbCPM1aAyX0svA6ZErrgx0ZyR82edTkE-nsuiBluZiN5U-OrrFFyyhCcx4jQ.mp4?_nc_cat=102&_nc_sid=9ca052&_nc_ht=video-iad6-1.xx.fbcdn.net&_nc_ohc=jYacmVX-NnUQ7kNvwFhVOhZ&efg=eyJ2ZW5jb2RlX3RhZyI6ImRhc2hfbG5faGVhYWNfdmJyM19hdWRpbyIsInZpZGVvX2lkIjozMTAxOTY0MjEwMTkxMzExLCJvaWxfdXJsZ2VuX2FwcF9pZCI6MCwiY2xpZW50X25hbWUiOiJ1bmtub3duIiwieHB2X2Fzc2V0X2lkIjo5MDQ5NjU2NDU2NTgyOTgsImFzc2V0X2FnZV9kYXlzIjoyMjAsInZpX3VzZWNhc2VfaWQiOjEwMTIyLCJkdXJhdGlvbl9zIjozNCwiYml0cmF0ZSI6NzQwOTMsInVybGdlbl9zb3VyY2UiOiJ3d3cifQ%3D%3D&ccb=17-1&_nc_gid=6rN_pWR-Pkl2ugo3Bkaa8g&edm=AGo2L-IEAAAA&_nc_zt=28&oh=00_AQMVAU3cz80tTJ2Li-PLLh0uqWHkA1YKdZeOPD_hKV-yUQ&oe=6ADA3F23&bytestart=119871&byteend=157450",
-    "file": "img/foto/AQMgaXcB_dt32X3OERxeaU97AMvifGoQaqeQ-smWZNzYbCPM1aAyX0svA6ZErrgx0ZyR82edTkE-nsuiBluZiN5U-OrrFFyyhCcx4jQ.mp4",
-    "bytes": 37580
-  },
-  {
-    "url": "https://video-iad6-1.xx.fbcdn.net/o1/v/t2/f2/m412/AQMgaXcB_dt32X3OERxeaU97AMvifGoQaqeQ-smWZNzYbCPM1aAyX0svA6ZErrgx0ZyR82edTkE-nsuiBluZiN5U-OrrFFyyhCcx4jQ.mp4?_nc_cat=102&_nc_sid=9ca052&_nc_ht=video-iad6-1.xx.fbcdn.net&_nc_ohc=jYacmVX-NnUQ7kNvwFhVOhZ&efg=eyJ2ZW5jb2RlX3RhZyI6ImRhc2hfbG5faGVhYWNfdmJyM19hdWRpbyIsInZpZGVvX2lkIjozMTAxOTY0MjEwMTkxMzExLCJvaWxfdXJsZ2VuX2FwcF9pZCI6MCwiY2xpZW50X25hbWUiOiJ1bmtub3duIiwieHB2X2Fzc2V0X2lkIjo5MDQ5NjU2NDU2NTgyOTgsImFzc2V0X2FnZV9kYXlzIjoyMjAsInZpX3VzZWNhc2VfaWQiOjEwMTIyLCJkdXJhdGlvbl9zIjozNCwiYml0cmF0ZSI6NzQwOTMsInVybGdlbl9zb3VyY2UiOiJ3d3cifQ%3D%3D&ccb=17-1&_nc_gid=6rN_pWR-Pkl2ugo3Bkaa8g&edm=AGo2L-IEAAAA&_nc_zt=28&oh=00_AQMVAU3cz80tTJ2Li-PLLh0uqWHkA1YKdZeOPD_hKV-yUQ&oe=6ADA3F23&bytestart=22035&byteend=53874",
-    "file": "img/foto/AQMgaXcB_dt32X3OERxeaU97AMvifGoQaqeQ-smWZNzYbCPM1aAyX0svA6ZErrgx0ZyR82edTkE-nsuiBluZiN5U-OrrFFyyhCcx4jQ.mp4",
-    "bytes": 31840
-  },
-  {
-    "url": "https://video-iad6-1.xx.fbcdn.net/o1/v/t2/f2/m412/AQMgaXcB_dt32X3OERxeaU97AMvifGoQaqeQ-smWZNzYbCPM1aAyX0svA6ZErrgx0ZyR82edTkE-nsuiBluZiN5U-OrrFFyyhCcx4jQ.mp4?_nc_cat=102&_nc_sid=9ca052&_nc_ht=video-iad6-1.xx.fbcdn.net&_nc_ohc=jYacmVX-NnUQ7kNvwFhVOhZ&efg=eyJ2ZW5jb2RlX3RhZyI6ImRhc2hfbG5faGVhYWNfdmJyM19hdWRpbyIsInZpZGVvX2lkIjozMTAxOTY0MjEwMTkxMzExLCJvaWxfdXJsZ2VuX2FwcF9pZCI6MCwiY2xpZW50X25hbWUiOiJ1bmtub3duIiwieHB2X2Fzc2V0X2lkIjo5MDQ5NjU2NDU2NTgyOTgsImFzc2V0X2FnZV9kYXlzIjoyMjAsInZpX3VzZWNhc2VfaWQiOjEwMTIyLCJkdXJhdGlvbl9zIjozNCwiYml0cmF0ZSI6NzQwOTMsInVybGdlbl9zb3VyY2UiOiJ3d3cifQ%3D%3D&ccb=17-1&_nc_gid=6rN_pWR-Pkl2ugo3Bkaa8g&edm=AGo2L-IEAAAA&_nc_zt=28&oh=00_AQMVAU3cz80tTJ2Li-PLLh0uqWHkA1YKdZeOPD_hKV-yUQ&oe=6ADA3F23&bytestart=53875&byteend=85604",
-    "file": "img/foto/AQMgaXcB_dt32X3OERxeaU97AMvifGoQaqeQ-smWZNzYbCPM1aAyX0svA6ZErrgx0ZyR82edTkE-nsuiBluZiN5U-OrrFFyyhCcx4jQ.mp4",
-    "bytes": 31730
-  },
-  {
-    "url": "https://video-iad6-1.xx.fbcdn.net/o1/v/t2/f2/m412/AQMgaXcB_dt32X3OERxeaU97AMvifGoQaqeQ-smWZNzYbCPM1aAyX0svA6ZErrgx0ZyR82edTkE-nsuiBluZiN5U-OrrFFyyhCcx4jQ.mp4?_nc_cat=102&_nc_sid=9ca052&_nc_ht=video-iad6-1.xx.fbcdn.net&_nc_ohc=jYacmVX-NnUQ7kNvwFhVOhZ&efg=eyJ2ZW5jb2RlX3RhZyI6ImRhc2hfbG5faGVhYWNfdmJyM19hdWRpbyIsInZpZGVvX2lkIjozMTAxOTY0MjEwMTkxMzExLCJvaWxfdXJsZ2VuX2FwcF9pZCI6MCwiY2xpZW50X25hbWUiOiJ1bmtub3duIiwieHB2X2Fzc2V0X2lkIjo5MDQ5NjU2NDU2NTgyOTgsImFzc2V0X2FnZV9kYXlzIjoyMjAsInZpX3VzZWNhc2VfaWQiOjEwMTIyLCJkdXJhdGlvbl9zIjozNCwiYml0cmF0ZSI6NzQwOTMsInVybGdlbl9zb3VyY2UiOiJ3d3cifQ%3D%3D&ccb=17-1&_nc_gid=6rN_pWR-Pkl2ugo3Bkaa8g&edm=AGo2L-IEAAAA&_nc_zt=28&oh=00_AQMVAU3cz80tTJ2Li-PLLh0uqWHkA1YKdZeOPD_hKV-yUQ&oe=6ADA3F23&bytestart=824&byteend=1071",
-    "file": "img/foto/AQMgaXcB_dt32X3OERxeaU97AMvifGoQaqeQ-smWZNzYbCPM1aAyX0svA6ZErrgx0ZyR82edTkE-nsuiBluZiN5U-OrrFFyyhCcx4jQ.mp4",
-    "bytes": 248
-  },
-  {
-    "url": "https://video-iad6-1.xx.fbcdn.net/o1/v/t2/f2/m412/AQMgaXcB_dt32X3OERxeaU97AMvifGoQaqeQ-smWZNzYbCPM1aAyX0svA6ZErrgx0ZyR82edTkE-nsuiBluZiN5U-OrrFFyyhCcx4jQ.mp4?_nc_cat=102&_nc_sid=9ca052&_nc_ht=video-iad6-1.xx.fbcdn.net&_nc_ohc=jYacmVX-NnUQ7kNvwFhVOhZ&efg=eyJ2ZW5jb2RlX3RhZyI6ImRhc2hfbG5faGVhYWNfdmJyM19hdWRpbyIsInZpZGVvX2lkIjozMTAxOTY0MjEwMTkxMzExLCJvaWxfdXJsZ2VuX2FwcF9pZCI6MCwiY2xpZW50X25hbWUiOiJ1bmtub3duIiwieHB2X2Fzc2V0X2lkIjo5MDQ5NjU2NDU2NTgyOTgsImFzc2V0X2FnZV9kYXlzIjoyMjAsInZpX3VzZWNhc2VfaWQiOjEwMTIyLCJkdXJhdGlvbl9zIjozNCwiYml0cmF0ZSI6NzQwOTMsInVybGdlbl9zb3VyY2UiOiJ3d3cifQ%3D%3D&ccb=17-1&_nc_gid=6rN_pWR-Pkl2ugo3Bkaa8g&edm=AGo2L-IEAAAA&_nc_zt=28&oh=00_AQMVAU3cz80tTJ2Li-PLLh0uqWHkA1YKdZeOPD_hKV-yUQ&oe=6ADA3F23&bytestart=85605&byteend=119870",
-    "file": "img/foto/AQMgaXcB_dt32X3OERxeaU97AMvifGoQaqeQ-smWZNzYbCPM1aAyX0svA6ZErrgx0ZyR82edTkE-nsuiBluZiN5U-OrrFFyyhCcx4jQ.mp4",
-    "bytes": 34266
-  },
-  {
-    "url": "https://video-iad6-1.xx.fbcdn.net/o1/v/t2/f2/m412/AQMgaXcB_dt32X3OERxeaU97AMvifGoQaqeQ-smWZNzYbCPM1aAyX0svA6ZErrgx0ZyR82edTkE-nsuiBluZiN5U-OrrFFyyhCcx4jQ.mp4?_nc_cat=102&_nc_sid=9ca052&_nc_ht=video-iad6-1.xx.fbcdn.net&_nc_ohc=jYacmVX-NnUQ7kNvwFhVOhZ&efg=eyJ2ZW5jb2RlX3RhZyI6ImRhc2hfbG5faGVhYWNfdmJyM19hdWRpbyIsInZpZGVvX2lkIjozMTAxOTY0MjEwMTkxMzExLCJvaWxfdXJsZ2VuX2FwcF9pZCI6MCwiY2xpZW50X25hbWUiOiJ1bmtub3duIiwieHB2X2Fzc2V0X2lkIjo5MDQ5NjU2NDU2NTgyOTgsImFzc2V0X2FnZV9kYXlzIjoyMjAsInZpX3VzZWNhc2VfaWQiOjEwMTIyLCJkdXJhdGlvbl9zIjozNCwiYml0cmF0ZSI6NzQwOTMsInVybGdlbl9zb3VyY2UiOiJ3d3cifQ%3D%3D&ccb=17-1&_nc_gid=rITD_O4HvxNJLASzFkYmDw&edm=AGo2L-IEAAAA&_nc_zt=28&oh=00_AQPne37LqlVF48wO0IahjcG0xDzW2RPenm_9mbtQYOVY4Q&oe=6ADA3F23&bytestart=0&byteend=823",
-    "file": "img/foto/AQMgaXcB_dt32X3OERxeaU97AMvifGoQaqeQ-smWZNzYbCPM1aAyX0svA6ZErrgx0ZyR82edTkE-nsuiBluZiN5U-OrrFFyyhCcx4jQ.mp4",
-    "bytes": 824
-  },
-  {
-    "url": "https://video-iad6-1.xx.fbcdn.net/o1/v/t2/f2/m412/AQMgaXcB_dt32X3OERxeaU97AMvifGoQaqeQ-smWZNzYbCPM1aAyX0svA6ZErrgx0ZyR82edTkE-nsuiBluZiN5U-OrrFFyyhCcx4jQ.mp4?_nc_cat=102&_nc_sid=9ca052&_nc_ht=video-iad6-1.xx.fbcdn.net&_nc_ohc=jYacmVX-NnUQ7kNvwFhVOhZ&efg=eyJ2ZW5jb2RlX3RhZyI6ImRhc2hfbG5faGVhYWNfdmJyM19hdWRpbyIsInZpZGVvX2lkIjozMTAxOTY0MjEwMTkxMzExLCJvaWxfdXJsZ2VuX2FwcF9pZCI6MCwiY2xpZW50X25hbWUiOiJ1bmtub3duIiwieHB2X2Fzc2V0X2lkIjo5MDQ5NjU2NDU2NTgyOTgsImFzc2V0X2FnZV9kYXlzIjoyMjAsInZpX3VzZWNhc2VfaWQiOjEwMTIyLCJkdXJhdGlvbl9zIjozNCwiYml0cmF0ZSI6NzQwOTMsInVybGdlbl9zb3VyY2UiOiJ3d3cifQ%3D%3D&ccb=17-1&_nc_gid=rITD_O4HvxNJLASzFkYmDw&edm=AGo2L-IEAAAA&_nc_zt=28&oh=00_AQPne37LqlVF48wO0IahjcG0xDzW2RPenm_9mbtQYOVY4Q&oe=6ADA3F23&bytestart=1072&byteend=22034",
-    "file": "img/foto/AQMgaXcB_dt32X3OERxeaU97AMvifGoQaqeQ-smWZNzYbCPM1aAyX0svA6ZErrgx0ZyR82edTkE-nsuiBluZiN5U-OrrFFyyhCcx4jQ.mp4",
-    "bytes": 20963
-  },
-  {
-    "url": "https://video-iad6-1.xx.fbcdn.net/o1/v/t2/f2/m412/AQMgaXcB_dt32X3OERxeaU97AMvifGoQaqeQ-smWZNzYbCPM1aAyX0svA6ZErrgx0ZyR82edTkE-nsuiBluZiN5U-OrrFFyyhCcx4jQ.mp4?_nc_cat=102&_nc_sid=9ca052&_nc_ht=video-iad6-1.xx.fbcdn.net&_nc_ohc=jYacmVX-NnUQ7kNvwFhVOhZ&efg=eyJ2ZW5jb2RlX3RhZyI6ImRhc2hfbG5faGVhYWNfdmJyM19hdWRpbyIsInZpZGVvX2lkIjozMTAxOTY0MjEwMTkxMzExLCJvaWxfdXJsZ2VuX2FwcF9pZCI6MCwiY2xpZW50X25hbWUiOiJ1bmtub3duIiwieHB2X2Fzc2V0X2lkIjo5MDQ5NjU2NDU2NTgyOTgsImFzc2V0X2FnZV9kYXlzIjoyMjAsInZpX3VzZWNhc2VfaWQiOjEwMTIyLCJkdXJhdGlvbl9zIjozNCwiYml0cmF0ZSI6NzQwOTMsInVybGdlbl9zb3VyY2UiOiJ3d3cifQ%3D%3D&ccb=17-1&_nc_gid=rITD_O4HvxNJLASzFkYmDw&edm=AGo2L-IEAAAA&_nc_zt=28&oh=00_AQPne37LqlVF48wO0IahjcG0xDzW2RPenm_9mbtQYOVY4Q&oe=6ADA3F23&bytestart=119871&byteend=157450",
-    "file": "img/foto/AQMgaXcB_dt32X3OERxeaU97AMvifGoQaqeQ-smWZNzYbCPM1aAyX0svA6ZErrgx0ZyR82edTkE-nsuiBluZiN5U-OrrFFyyhCcx4jQ.mp4",
-    "bytes": 37580
-  },
-  {
-    "url": "https://video-iad6-1.xx.fbcdn.net/o1/v/t2/f2/m412/AQMgaXcB_dt32X3OERxeaU97AMvifGoQaqeQ-smWZNzYbCPM1aAyX0svA6ZErrgx0ZyR82edTkE-nsuiBluZiN5U-OrrFFyyhCcx4jQ.mp4?_nc_cat=102&_nc_sid=9ca052&_nc_ht=video-iad6-1.xx.fbcdn.net&_nc_ohc=jYacmVX-NnUQ7kNvwFhVOhZ&efg=eyJ2ZW5jb2RlX3RhZyI6ImRhc2hfbG5faGVhYWNfdmJyM19hdWRpbyIsInZpZGVvX2lkIjozMTAxOTY0MjEwMTkxMzExLCJvaWxfdXJsZ2VuX2FwcF9pZCI6MCwiY2xpZW50X25hbWUiOiJ1bmtub3duIiwieHB2X2Fzc2V0X2lkIjo5MDQ5NjU2NDU2NTgyOTgsImFzc2V0X2FnZV9kYXlzIjoyMjAsInZpX3VzZWNhc2VfaWQiOjEwMTIyLCJkdXJhdGlvbl9zIjozNCwiYml0cmF0ZSI6NzQwOTMsInVybGdlbl9zb3VyY2UiOiJ3d3cifQ%3D%3D&ccb=17-1&_nc_gid=rITD_O4HvxNJLASzFkYmDw&edm=AGo2L-IEAAAA&_nc_zt=28&oh=00_AQPne37LqlVF48wO0IahjcG0xDzW2RPenm_9mbtQYOVY4Q&oe=6ADA3F23&bytestart=22035&byteend=53874",
-    "file": "img/foto/AQMgaXcB_dt32X3OERxeaU97AMvifGoQaqeQ-smWZNzYbCPM1aAyX0svA6ZErrgx0ZyR82edTkE-nsuiBluZiN5U-OrrFFyyhCcx4jQ.mp4",
-    "bytes": 31840
-  },
-  {
-    "url": "https://video-iad6-1.xx.fbcdn.net/o1/v/t2/f2/m412/AQMgaXcB_dt32X3OERxeaU97AMvifGoQaqeQ-smWZNzYbCPM1aAyX0svA6ZErrgx0ZyR82edTkE-nsuiBluZiN5U-OrrFFyyhCcx4jQ.mp4?_nc_cat=102&_nc_sid=9ca052&_nc_ht=video-iad6-1.xx.fbcdn.net&_nc_ohc=jYacmVX-NnUQ7kNvwFhVOhZ&efg=eyJ2ZW5jb2RlX3RhZyI6ImRhc2hfbG5faGVhYWNfdmJyM19hdWRpbyIsInZpZGVvX2lkIjozMTAxOTY0MjEwMTkxMzExLCJvaWxfdXJsZ2VuX2FwcF9pZCI6MCwiY2xpZW50X25hbWUiOiJ1bmtub3duIiwieHB2X2Fzc2V0X2lkIjo5MDQ5NjU2NDU2NTgyOTgsImFzc2V0X2FnZV9kYXlzIjoyMjAsInZpX3VzZWNhc2VfaWQiOjEwMTIyLCJkdXJhdGlvbl9zIjozNCwiYml0cmF0ZSI6NzQwOTMsInVybGdlbl9zb3VyY2UiOiJ3d3cifQ%3D%3D&ccb=17-1&_nc_gid=rITD_O4HvxNJLASzFkYmDw&edm=AGo2L-IEAAAA&_nc_zt=28&oh=00_AQPne37LqlVF48wO0IahjcG0xDzW2RPenm_9mbtQYOVY4Q&oe=6ADA3F23&bytestart=53875&byteend=85604",
-    "file": "img/foto/AQMgaXcB_dt32X3OERxeaU97AMvifGoQaqeQ-smWZNzYbCPM1aAyX0svA6ZErrgx0ZyR82edTkE-nsuiBluZiN5U-OrrFFyyhCcx4jQ.mp4",
-    "bytes": 31730
-  },
-  {
-    "url": "https://video-iad6-1.xx.fbcdn.net/o1/v/t2/f2/m412/AQMgaXcB_dt32X3OERxeaU97AMvifGoQaqeQ-smWZNzYbCPM1aAyX0svA6ZErrgx0ZyR82edTkE-nsuiBluZiN5U-OrrFFyyhCcx4jQ.mp4?_nc_cat=102&_nc_sid=9ca052&_nc_ht=video-iad6-1.xx.fbcdn.net&_nc_ohc=jYacmVX-NnUQ7kNvwFhVOhZ&efg=eyJ2ZW5jb2RlX3RhZyI6ImRhc2hfbG5faGVhYWNfdmJyM19hdWRpbyIsInZpZGVvX2lkIjozMTAxOTY0MjEwMTkxMzExLCJvaWxfdXJsZ2VuX2FwcF9pZCI6MCwiY2xpZW50X25hbWUiOiJ1bmtub3duIiwieHB2X2Fzc2V0X2lkIjo5MDQ5NjU2NDU2NTgyOTgsImFzc2V0X2FnZV9kYXlzIjoyMjAsInZpX3VzZWNhc2VfaWQiOjEwMTIyLCJkdXJhdGlvbl9zIjozNCwiYml0cmF0ZSI6NzQwOTMsInVybGdlbl9zb3VyY2UiOiJ3d3cifQ%3D%3D&ccb=17-1&_nc_gid=rITD_O4HvxNJLASzFkYmDw&edm=AGo2L-IEAAAA&_nc_zt=28&oh=00_AQPne37LqlVF48wO0IahjcG0xDzW2RPenm_9mbtQYOVY4Q&oe=6ADA3F23&bytestart=824&byteend=1071",
-    "file": "img/foto/AQMgaXcB_dt32X3OERxeaU97AMvifGoQaqeQ-smWZNzYbCPM1aAyX0svA6ZErrgx0ZyR82edTkE-nsuiBluZiN5U-OrrFFyyhCcx4jQ.mp4",
-    "bytes": 248
-  },
-  {
-    "url": "https://video-iad6-1.xx.fbcdn.net/o1/v/t2/f2/m412/AQMgaXcB_dt32X3OERxeaU97AMvifGoQaqeQ-smWZNzYbCPM1aAyX0svA6ZErrgx0ZyR82edTkE-nsuiBluZiN5U-OrrFFyyhCcx4jQ.mp4?_nc_cat=102&_nc_sid=9ca052&_nc_ht=video-iad6-1.xx.fbcdn.net&_nc_ohc=jYacmVX-NnUQ7kNvwFhVOhZ&efg=eyJ2ZW5jb2RlX3RhZyI6ImRhc2hfbG5faGVhYWNfdmJyM19hdWRpbyIsInZpZGVvX2lkIjozMTAxOTY0MjEwMTkxMzExLCJvaWxfdXJsZ2VuX2FwcF9pZCI6MCwiY2xpZW50X25hbWUiOiJ1bmtub3duIiwieHB2X2Fzc2V0X2lkIjo5MDQ5NjU2NDU2NTgyOTgsImFzc2V0X2FnZV9kYXlzIjoyMjAsInZpX3VzZWNhc2VfaWQiOjEwMTIyLCJkdXJhdGlvbl9zIjozNCwiYml0cmF0ZSI6NzQwOTMsInVybGdlbl9zb3VyY2UiOiJ3d3cifQ%3D%3D&ccb=17-1&_nc_gid=rITD_O4HvxNJLASzFkYmDw&edm=AGo2L-IEAAAA&_nc_zt=28&oh=00_AQPne37LqlVF48wO0IahjcG0xDzW2RPenm_9mbtQYOVY4Q&oe=6ADA3F23&bytestart=85605&byteend=119870",
-    "file": "img/foto/AQMgaXcB_dt32X3OERxeaU97AMvifGoQaqeQ-smWZNzYbCPM1aAyX0svA6ZErrgx0ZyR82edTkE-nsuiBluZiN5U-OrrFFyyhCcx4jQ.mp4",
-    "bytes": 34266
-  }
-]
+{
+  "kepek": [
+    {
+      "url": "https://valyog-mester.hu/images/about.jpg",
+      "file": [
+        "img/foto/about-900.webp",
+        "img/foto/about-1600.webp",
+        "img/foto/about-2400.webp"
+      ],
+      "bytes": 5717146,
+      "size": [
+        5100,
+        3400
+      ]
+    },
+    {
+      "url": "https://valyog-mester.hu/images/hero.jpg",
+      "file": [
+        "img/foto/hero-900.webp",
+        "img/foto/hero-1600.webp",
+        "img/foto/hero-2400.webp"
+      ],
+      "bytes": 3569729,
+      "size": [
+        6048,
+        4024
+      ]
+    },
+    {
+      "url": "https://valyog-mester.hu/images/logo.png",
+      "file": [
+        "img/foto/logo-900.webp"
+      ],
+      "bytes": 247107,
+      "size": [
+        940,
+        788
+      ]
+    },
+    {
+      "url": "https://valyog-mester.hu/images/service1.jpg",
+      "file": [
+        "img/foto/service1-900.webp",
+        "img/foto/service1-1600.webp",
+        "img/foto/service1-2400.webp"
+      ],
+      "bytes": 3021644,
+      "size": [
+        4160,
+        6240
+      ]
+    },
+    {
+      "url": "https://valyog-mester.hu/images/service2.jpg",
+      "file": [
+        "img/foto/service2-900.webp",
+        "img/foto/service2-1600.webp",
+        "img/foto/service2-2400.webp"
+      ],
+      "bytes": 5006665,
+      "size": [
+        3990,
+        5164
+      ]
+    },
+    {
+      "url": "https://valyog-mester.hu/images/service3.jpg",
+      "file": [
+        "img/foto/service3-900.webp",
+        "img/foto/service3-1600.webp",
+        "img/foto/service3-2400.webp"
+      ],
+      "bytes": 2650233,
+      "size": [
+        4160,
+        6240
+      ]
+    }
+  ],
+  "beagyazasok": [
+    {
+      "tag": "IFRAME",
+      "src": "https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F3101964210191311%2F&show_text=false&width=267&t=0",
+      "poster": "",
+      "title": "Túró István bemutatkozó videó",
+      "w": 267,
+      "h": 476,
+      "section": "Túró István"
+    },
+    {
+      "tag": "A",
+      "src": "https://www.facebook.com/help/cookies/",
+      "poster": "",
+      "title": "",
+      "w": 392,
+      "h": 52,
+      "section": "4. A sütik típusai"
+    },
+    {
+      "tag": "A",
+      "src": "https://help.instagram.com/402411646841720",
+      "poster": "",
+      "title": "",
+      "w": 392,
+      "h": 52,
+      "section": "4. A sütik típusai"
+    },
+    {
+      "tag": "A",
+      "src": "https://www.facebook.com/help/cookies/",
+      "poster": "",
+      "title": "",
+      "w": 340,
+      "h": 52,
+      "section": "4. A sütik típusai"
+    },
+    {
+      "tag": "A",
+      "src": "https://help.instagram.com/402411646841720",
+      "poster": "",
+      "title": "",
+      "w": 340,
+      "h": 52,
+      "section": "4. A sütik típusai"
+    }
+  ],
+  "videok": [
+    {
+      "url": "https://www.facebook.com/reel/3101964210191311/",
+      "ok": true,
+      "log": "[facebook:reel] Extracting URL: https://www.facebook.com/reel/3101964210191311/\n[facebook] Extracting URL: https://m.facebook.com/watch/?v=3101964210191311&_rdr\n[facebook] 3101964210191311: Downloading webpage\n[info] 3101964210191311: Downloading 1 format(s): hd\n[info] Writing video metadata as JSON to: /home/runner/work/daekon/daekon/public/latvanytervek/valyog-mester/img/foto/video-1-eredeti.info.json\n[download] Destination: /home/runner/work/daekon/daekon/public/latvanytervek/valyog-mester/img/foto/video-1-eredeti.mp4\n\n[download]   0.0% of    9.16MiB at  Unknown B/s ETA Unknown\n[download]   0.0% of    9.16MiB at  Unknown B/s ETA Unknown\n[download]   0.1% of    9.16MiB at    6.65MiB/s ETA 00:01  \n[download]   0.2% of    9.16MiB at 1022.19KiB/s ETA 00:09\n[download]   0.3% of    9.16MiB at    1.21MiB/s ETA 00:07\n[download]   0.7% of    9.16MiB at    1.89MiB/s ETA 00:04\n[download]   1.4% of    9.16MiB at    2.61MiB/s ETA 00:03\n[download]   2.7% of    9.16MiB at    3.73MiB/s ETA 00:02\n[download]   5.4% of    9.16MiB at    5.34MiB/s ETA 00:01\n[download]  10.9% of    9.16MiB at    8.18MiB/s ETA 00:00\n[download]  21.8% of    9.16MiB at   11.08MiB/s ETA 00:00\n[download]  43.7% of    9.16MiB at   13.71MiB/s ETA 00:00\n[download]  87.3% of    9.16MiB at   17.83MiB/s ETA 00:00\n[download] 100.0% of    9.16MiB at   20.28MiB/s ETA 00:00\n[download] 100% of    9.16MiB in 00:00:01 at 8.36MiB/s   \n",
+      "title": "64K views · 318 reactions | Rövid kis interjúnkban közelebbről megismerhettek engem illetve csapatomat! Vegyétek fel velünk a kapcsolatot még ma! 📩 Email: valyog.mester@gmail.com 📞 Telefon: +36 30 966 9528 🌐 Weboldal: valyog-mester.hu | Vályog-Mester",
+      "description": "Rövid kis interjúnkban közelebbről megismerhettek engem illetve csapatomat!\n\nVegyétek fel velünk a kapcsolatot még ma!\n📩 Email: valyog.mester@gmail.com\n📞 Telefon: +36 30 966 9528\n🌐 Weboldal: valyog-mester.hu",
+      "uploader": "Vályog-Mester",
+      "upload_date": "20260312",
+      "duration": 34.11,
+      "width": null,
+      "height": null,
+      "files": [
+        "img/foto/video-1-1280.mp4",
+        "img/foto/video-1-720.mp4",
+        "img/foto/video-1-poszter.webp"
+      ]
+    }
+  ]
+}
