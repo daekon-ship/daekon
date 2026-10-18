@@ -1,0 +1,7 @@
+# Átnézett gitleaks-találatok (téves riasztás) – CSAK ujjlenyomat szerint, nem útvonal szerint.
+# 2026-10-18: az élő integrációs tesztek eldobható teszt-fiókjának jelszava ('Elo-Teszt-…') – nem valódi titok;
+# a későbbi commitokban a sorok `gitleaks:allow` jelölést kaptak, ez a lista csak az előzményben maradt példányokra vonatkozik.
+10c1d829c4595cf3877223b64bc6eba58b87699e:apps/mester-plus/test/integration/cloud_live_test.dart:generic-api-key:55
+10c1d829c4595cf3877223b64bc6eba58b87699e:services/mester-plus-api/tests/live_http.php:generic-api-key:69
+10c1d829c4595cf3877223b64bc6eba58b87699e:services/mester-plus-api/tests/live_http.php:generic-api-key:92
+10c1d829c4595cf3877223b64bc6eba58b87699e:services/mester-plus-api/tests/live_http.php:generic-api-key:160

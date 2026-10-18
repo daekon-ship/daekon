@@ -14,6 +14,7 @@ on:
       - "public/mester-plus/**"
       - ".github/workflows/mester-plus.yml"
       - ".github/mester-plus-gitleaks.toml"
+      - ".github/mester-plus.gitleaksignore"
   pull_request:
     paths:
       - "apps/mester-plus/**"
@@ -21,6 +22,7 @@ on:
       - "public/mester-plus/**"
       - ".github/workflows/mester-plus.yml"
       - ".github/mester-plus-gitleaks.toml"
+      - ".github/mester-plus.gitleaksignore"
   workflow_dispatch:
 
 permissions:
@@ -223,7 +225,7 @@ jobs:
       - name: Titokkeresés – munkakönyvtár (app, backend, landing, CI)
         run: |
           for d in apps/mester-plus services/mester-plus-api public/mester-plus .github; do
-            /tmp/gitleaks dir "$d" --config .github/mester-plus-gitleaks.toml --no-banner --redact --exit-code 1 || { echo "TITOK-GYANÚ: $d – BUILD BLOCK"; exit 1; }
+            /tmp/gitleaks dir "$d" --config .github/mester-plus-gitleaks.toml --gitleaks-ignore-path .github/mester-plus.gitleaksignore --no-banner --redact --exit-code 1 || { echo "TITOK-GYANÚ: $d – BUILD BLOCK"; exit 1; }
           done
       - name: Titokkeresés – git-előzmény (ugyanezek az útvonalak)
-        run: /tmp/gitleaks git . --config .github/mester-plus-gitleaks.toml --no-banner --redact --exit-code 1 --log-opts="--all -- apps/mester-plus services/mester-plus-api public/mester-plus .github"
+        run: /tmp/gitleaks git . --config .github/mester-plus-gitleaks.toml --gitleaks-ignore-path .github/mester-plus.gitleaksignore --no-banner --redact --exit-code 1 --log-opts="--all -- apps/mester-plus services/mester-plus-api public/mester-plus .github"
