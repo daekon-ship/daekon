@@ -2,7 +2,7 @@
 
 **Élő terv:** https://daekon-ship.github.io/daekon/latvanytervek/valyog-mester/
 **Koncepció + arculat:** https://daekon-ship.github.io/daekon/latvanytervek/valyog-mester/koncepcio.html
-**Állapot:** 2. kör (a jelenlegi oldal képeivel és Túró István bemutatkozó videójával), előzetes látványterv (noindex). A valyog-mester.hu élő oldal érintetlen.
+**Állapot:** 3. kör – üres helyőrzők nélkül; 2. kör (a jelenlegi oldal képeivel és Túró István bemutatkozó videójával), előzetes látványterv (noindex). A valyog-mester.hu élő oldal érintetlen.
 **Felépítés:** build nélküli statikus oldal a DAEKON-látványtervek házszabálya szerint (`index.html` + `valyog.css` + `valyog.js`), relatív útvonalakkal – bármilyen almappában működik. A briefben javasolt React + Vite + TS stacket szándékosan nem vezettem be: a repó összes látványterve build nélküli, és a Vite a `public/` tartalmát változatlanul másolja. Éles oldalhoz a komponensek 1:1 átvihetők React/Vite-ba (lásd „Komponensek”).
 
 ## Valós adatok (ellenőrizve)
@@ -40,7 +40,7 @@ A régi logó (logo.png) nincs használva – új logó készült.
 **A videó tartalma (a beégetett feliratokból):** Túró István, a TURPA BUILD Kft. ügyvezető igazgatója, vályogházakkal foglalkozik. Egy régi ház alapját, lábazatát le kellett verni, mert salétromos volt; eltávolították, szellőztetik, utána könnyű vakolatot, majd mészhabarcsot kap, hogy tudjon levegőzni. Nyílászárókat állítanak, térköveznek, vakolnak, falaznak, betonoznak, tetőt javítanak. Az ajánlatkérő kitöltését kéri, hogy minél hamarabb felmérhesse a bajokat. Ebből készült a „Salétromos lábazat, lélegző fal” blokk, és a kiegészítő munkák közé bekerült a nyílászáró-beépítés és a tetőjavítás.
 
 ## Egyeztetendő az ügyféllel
-1. **Saját munkafotók** – a galéria 2 valódi képkockán kívül 9 rajzolt helyőrzőt tartalmaz (jelölve). A hero és a szekciók 5 állóképének jogosultsága tisztázandó. Csere: `valyog.js` → `WORKS` tömb, elemenként `src` + `alt`; ha van `src`, fotó jelenik meg rajz helyett. Előtte–utána párokhoz ugyanarról a falról két fotó kell.
+1. **Képek** – a galériában már csak valódi kép van: 3 képkocka a bemutatkozó videóból („Valódi munka”) és a jelenlegi oldal 5 fotója („A jelenlegi oldalról”). Rajzolt helyőrző és illusztrált előtte–utána csúszka nincs (3. kör). Az 5 fotó jogosultsága tisztázandó; további saját munkafotókkal a galéria bővíthető (`valyog.js` → `WORKS`). Csere: `valyog.js` → `WORKS` tömb, elemenként `src` + `alt`; ha van `src`, fotó jelenik meg rajz helyett. Előtte–utána párokhoz ugyanarról a falról két fotó kell.
 2. **Túró István portréja** – most a videó képkockája áll a helyén; egy jobb minőségű fotó jól jönne.
 3. **Cégjegyzékszám, adószám** – a láblécben „egyeztetendő”. Az onlinecegbazis.hu oldalán nem szerepeltek.
 4. **Munkaterület** – a régi oldal „országos kiszállást” ír, a Daibau Fegyvernek + környék, más országrészek. A GYIK-ban Fegyvernek és Jász-Nagykun-Szolnok vármegye áll, távolabbra egyeztetéssel.

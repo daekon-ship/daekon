@@ -86,7 +86,7 @@
   <div class="hero__film" aria-hidden="true">
     <img class="slide is-on" src="img/foto/hero-1600.webp" srcset="img/foto/hero-900.webp 900w, img/foto/hero-1600.webp 1600w, img/foto/hero-2400.webp 2400w" sizes="100vw" alt="" fetchpriority="high">
     <img class="slide" data-src="img/foto/about-1600.webp" data-srcset="img/foto/about-900.webp 900w, img/foto/about-1600.webp 1600w, img/foto/about-2400.webp 2400w" sizes="100vw" alt="">
-    <img class="slide" data-src="img/foto/service3-1600.webp" data-srcset="img/foto/service3-900.webp 900w, img/foto/service3-1600.webp 1600w" sizes="100vw" alt="">
+    <img class="slide" style="object-position:50% 85%" data-src="img/foto/service3-1600.webp" data-srcset="img/foto/service3-900.webp 900w, img/foto/service3-1600.webp 1600w" sizes="100vw" alt="">
   </div>
   <div class="hero__grid wrap">
     <div class="hero__copy">
@@ -276,7 +276,7 @@
     <header class="sec-head sec-head--light">
       <p class="eyebrow eyebrow--light">Munkáink</p>
       <h2 id="munka-cim" class="split">Munkanapló <em>a felújított falakról.</em></h2>
-      <p class="sec-head__text reveal">Egy valódi munka közelről, alatta a galéria szerkezete: szűrés, nagyítás, előtte–utána összevetés.</p>
+      <p class="sec-head__text reveal">Egy folyamatban lévő felújítás közelről, Túró István bemutatkozó videójából – alatta a képgaléria.</p>
     </header>
 
     <article class="case reveal" aria-labelledby="case-cim">
@@ -297,50 +297,16 @@
       </div>
     </article>
 
-    <p class="notice reveal" role="note"><b>Látványterv-jelölés:</b> a lenti rács elemei rajzolt helyőrzők, nem valódi referenciák. További saját munkafotók ügyféllel egyeztetendők.</p>
+    <h3 class="works__sub reveal">Képek</h3>
 
-    <div class="filters reveal" role="group" aria-label="Szűrés munkatípus szerint">
+    <div class="filters reveal" role="group" aria-label="Szűrés">
       <button type="button" class="chip is-on" data-f="mind" aria-pressed="true">Mind</button>
-      <button type="button" class="chip" data-f="valyog" aria-pressed="false">Vályogház</button>
-      <button type="button" class="chip" data-f="vert" aria-pressed="false">Vert fal</button>
-      <button type="button" class="chip" data-f="alafalazas" aria-pressed="false">Aláfalazás</button>
-      <button type="button" class="chip" data-f="vakolas" aria-pressed="false">Vakolás</button>
-      <button type="button" class="chip" data-f="teljes" aria-pressed="false">Teljes felújítás</button>
+      <button type="button" class="chip" data-f="munka" aria-pressed="false">A munkából</button>
+      <button type="button" class="chip" data-f="haz" aria-pressed="false">Házak</button>
     </div>
 
     <ul class="masonry" id="masonry"></ul>
 
-    <div class="ba reveal" aria-labelledby="ba-cim">
-      <div class="ba__text">
-        <h3 id="ba-cim">Előtte – utána</h3>
-        <p>Húzza a csúszkát. Itt a valódi fotópárok fognak állni ugyanarról a falról, felújítás előtt és után.</p>
-        <p class="ba__tag">Illusztráció – nem valódi munka</p>
-      </div>
-      <div class="ba__stage" id="ba">
-        <svg class="ba__img ba__after" viewBox="0 0 640 400" aria-hidden="true">
-          <rect width="640" height="400" fill="url(#ba-mesz)"/>
-          <rect y="330" width="640" height="70" fill="#56604f"/>
-          <rect x="250" y="90" width="140" height="160" fill="#25352C"/><rect x="262" y="102" width="116" height="136" fill="#1c2420"/><path d="M320 102v136M262 170h116" stroke="#25352C" stroke-width="7"/>
-          <rect x="242" y="250" width="156" height="9" fill="#E9DDCC"/>
-          <defs><pattern id="ba-mesz" width="256" height="256" patternUnits="userSpaceOnUse"><image href="img/tx-mesz.webp" width="256" height="256"/></pattern>
-          <pattern id="ba-valyog" width="52" height="26" patternUnits="userSpaceOnUse"><image href="img/tx-valyog.webp" width="128" height="128" preserveAspectRatio="none"/><path d="M0 .5H52M0 13.5H52M.5 0V13M26.5 13V26" stroke="#6e4026" stroke-opacity=".6" stroke-width="1.6" fill="none"/></pattern></defs>
-        </svg>
-        <div class="ba__before" aria-hidden="true">
-          <svg class="ba__img" viewBox="0 0 640 400">
-            <rect width="640" height="400" fill="url(#ba-valyog)"/>
-            <path d="M0 0H640V120C560 140 520 90 440 118S300 170 230 128 90 150 0 112Z" fill="url(#ba-mesz)" opacity=".92"/>
-            <path d="M0 330H640V400H0Z" fill="#6b5a48"/>
-            <path d="M0 330c90 -20 140 -60 220 -40s160 -10 230 -50 130 10 190 0V400H0Z" fill="#7d6a55" opacity=".7"/>
-            <rect x="250" y="90" width="140" height="160" fill="#3a3f37"/><rect x="262" y="102" width="116" height="136" fill="#1c2420"/><path d="M320 102v136M262 170h116" stroke="#3a3f37" stroke-width="7"/>
-            <path d="M392 252 l14 22 -8 18 18 16 -6 22" fill="none" stroke="#2a1d14" stroke-width="3.5" stroke-linecap="round"/>
-            <path d="M248 252 l-10 26 10 14 -14 30" fill="none" stroke="#2a1d14" stroke-width="3" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <span class="ba__lbl ba__lbl--l">Előtte</span><span class="ba__lbl ba__lbl--r">Utána</span>
-        <span class="ba__handle" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 6l-6 6 6 6M15 6l6 6-6 6"/></svg></span>
-        <input class="ba__range" type="range" min="0" max="100" value="50" aria-label="Előtte–utána összevetés csúszkája">
-      </div>
-    </div>
   </div>
 </section>
 

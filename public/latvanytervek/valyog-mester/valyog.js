@@ -91,46 +91,23 @@
   items.forEach(i => { svcIO.observe(i); i.addEventListener('mouseenter', () => activate(i)); });
   activate(items[0]);
 
-  /* ================= MUNKANAPLÓ (helyőrzők) =================
-     Valódi fotókhoz: adjon meg minden elemhez `src`-t (és `alt`-ot) – akkor kép jelenik meg rajz helyett. */
+  /* ================= KÉPGALÉRIA =================
+     Csak valódi képek: a bemutatkozó videó képkockái és a jelenlegi valyog-mester.hu fotói. */
+  const SET = (n, ws) => ({ src: `img/foto/${n}-900.webp`, srcset: ws.map(w => `img/foto/${n}-${w}.webp ${w}w`).join(', '), big: `img/foto/${n}-${ws[ws.length - 1]}.webp` });
   const WORKS = [
-    { cat: 'teljes', t: 'Utcai fal a lábazat leverése után', ar: '4/5', k: 'haz', src: 'img/foto/kocka-fal.webp', alt: 'Hosszú, frissen vakolt utcai fal kőlábazattal', valodi: true },
-    { cat: 'vakolas', t: 'Salétromos vakolat elszállítása', ar: '4/5', k: 'vakolat', src: 'img/foto/kocka-munka.webp', alt: 'Munkatárs viszi a levert vakolatdarabokat', valodi: true },
-    { cat: 'valyog', t: 'Vályogfal javítása, újravakolás', ar: '4/5', k: 'valyog' },
-    { cat: 'teljes', t: 'Parasztház utcafront felújítás után', ar: '4/3', k: 'haz' },
-    { cat: 'alafalazas', t: 'Szakaszos aláfalazás', ar: '3/2', k: 'alap' },
-    { cat: 'vert', t: 'Vert fal sarokpótlása', ar: '1/1', k: 'vert' },
-    { cat: 'vakolas', t: 'Belső vakolás, glettelés', ar: '4/5', k: 'vakolat' },
-    { cat: 'valyog', t: 'Repedt vályogfal összefogása', ar: '4/3', k: 'repedes' },
-    { cat: 'teljes', t: 'Udvari homlokzat, lábazattal', ar: '3/2', k: 'haz2' },
-    { cat: 'alafalazas', t: 'Lábazat és alap betonozása', ar: '4/5', k: 'alap2' },
-    { cat: 'vakolas', t: 'Homlokzat meszelése', ar: '4/3', k: 'mesz' },
+    { cat: 'munka', t: 'Kőlábazat a salétromos rész leverése után', ar: '4/5', src: 'img/foto/kocka-labazat.webp', alt: 'Hosszú sárga utcai fal, alul szabaddá tett kőlábazattal', tag: 'Valódi munka' },
+    { cat: 'haz', t: 'Nádtetős parasztház', ar: '3/2', ...SET('hero', [900, 1600, 2400]), alt: 'Meszelt falú, nádtetős parasztház vesszőkerítéssel', tag: 'A jelenlegi oldalról' },
+    { cat: 'munka', t: 'Törmelék a talicskában, kezdődik a szellőztetés', ar: '4/5', src: 'img/foto/kocka-talicska.webp', alt: 'Talicska törmelékkel az utcán, munkatárs hozza a levert vakolatot', tag: 'Valódi munka' },
+    { cat: 'haz', t: 'Fehérre meszelt nádtetős ház', ar: '2/3', ...SET('service1', [900, 1600, 2400]), alt: 'Fehér falú, nádtetős ház kék ajtóval', tag: 'A jelenlegi oldalról' },
+    { cat: 'munka', t: 'Túró István a helyszínen', ar: '4/5', src: 'img/foto/kocka-magyaraz.webp', alt: 'Túró István magyaráz a felújítás alatt álló fal előtt', tag: 'Valódi munka' },
+    { cat: 'haz', t: 'Felújításra váró kis ház', ar: '3/4', ...SET('service2', [900, 1600, 2400]), alt: 'Régi, kopott vakolatú kis ház cseréptetővel', tag: 'A jelenlegi oldalról' },
+    { cat: 'haz', t: 'Nádtetős ház a kertben', ar: '3/2', ...SET('about', [900, 1600, 2400]), alt: 'Nádtetős, fehér falú ház kertben, kék égbolt alatt', tag: 'A jelenlegi oldalról' },
+    { cat: 'haz', t: 'Meszelt ház a falu szélén', ar: '3/4', ...SET('service3', [900, 1600, 2400]), alt: 'Fehér falú, nádtetős ház út mellett', tag: 'A jelenlegi oldalról', pos: '50% 88%' },
   ];
-  const TEX = { valyog: 'tx-valyog.webp', vert: 'tx-vertfal.webp', mesz: 'tx-mesz.webp', homok: 'tx-homok.webp', erdo: 'tx-erdo.webp' };
-  const block = (w, h, c = 'rgba(80,45,25,.55)') => {
-    let p = ''; for (let y = 0, r = 0; y < 400; y += h, r++) { p += `M0 ${y}H400`; for (let x = (r % 2) * w / 2; x < 400; x += w) p += `M${x} ${y}V${y + h}`; }
-    return `<path d="${p}" stroke="${c}" stroke-width="2" fill="none"/>`;
-  };
-  const ART = {
-    valyog: ['valyog', `${block(70, 34)}<path d="M0 0H400V150C330 175 290 120 220 160S90 190 0 150Z" fill="#F4EFE6" opacity=".93"/>`],
-    repedes: ['mesz', `<path d="M0 300H400V400H0Z" fill="#56604f"/><path d="M210 0l-14 60 18 40-22 52 14 48-10 50 20 48" fill="none" stroke="#B76E45" stroke-width="5" stroke-dasharray="2 10" stroke-linecap="round"/><path d="M188 120h44M184 200h46M190 260h40" stroke="#25352C" stroke-width="4"/>`],
-    vert: ['vert', `<path d="M0 0H130V400H0Z" fill="#F4EFE6" opacity=".9"/><path d="M130 0V400" stroke="#E9DDCC" stroke-width="8"/>`],
-    alap: ['homok', `<path d="M0 0H400V190H0Z" fill="#F4EFE6"/><rect y="190" width="400" height="140" fill="#9E5639"/><g transform="translate(0 190)">${block(48, 20, 'rgba(233,221,204,.85)').replace('V400', 'V140')}</g><path d="M0 330H400V400H0Z" fill="#a49b8b"/><path d="M0 330H400" stroke="#242521" stroke-width="3"/>`],
-    alap2: ['homok', `<path d="M0 0H400V200H0Z" fill="#F4EFE6"/><rect y="200" width="400" height="60" fill="#9E5639"/><g transform="translate(0 200)">${block(40, 15, 'rgba(233,221,204,.85)').replace('V400', 'V60')}</g><path d="M0 260H400V400H0Z" fill="#b5ab9b"/><path d="M0 260H400" stroke="#242521" stroke-width="3"/><path d="M20 290l30 30M70 290l30 30M120 290l30 30M170 290l30 30M220 290l30 30M270 290l30 30M320 290l30 30" stroke="#7f7768" stroke-width="3"/>`],
-    vakolat: ['mesz', `<path d="M40 60c80-20 160 20 240-10s80 30 120 10M20 140c90-30 170 25 260-5s90 30 120 5M30 220c80-25 170 20 250-10s100 30 120 10" fill="none" stroke="#d9cdb8" stroke-width="18" stroke-linecap="round"/><path d="M250 290l60-40 40 30-60 40z" fill="#25352C"/><path d="M290 300l50 70" stroke="#9E5639" stroke-width="10" stroke-linecap="round"/>`],
-    mesz: ['mesz', `<path d="M0 320H400V400H0Z" fill="#56604f"/><rect x="140" y="80" width="120" height="150" fill="#25352C"/><rect x="152" y="92" width="96" height="126" fill="#1c2420"/><path d="M200 92v126M152 155h96" stroke="#25352C" stroke-width="7"/>`],
-    haz: ['erdo', `<path d="M60 360V200L200 90 340 200V360Z" fill="#F4EFE6"/><path d="M40 210L200 80 360 210" fill="none" stroke="#E9DDCC" stroke-width="10"/><rect x="60" y="330" width="280" height="30" fill="#56604f"/><rect x="100" y="230" width="56" height="66" fill="#25352C"/><rect x="244" y="230" width="56" height="66" fill="#25352C"/><path d="M188 150h10v20h-10zM202 150h10v20h-10z" fill="#242521"/><path d="M0 360H400" stroke="#E9DDCC" stroke-width="2"/>`],
-    haz2: ['erdo', `<path d="M20 360V200H380V360Z" fill="#F4EFE6"/><path d="M0 205L60 120H340L400 205Z" fill="#9E5639"/><rect x="20" y="330" width="360" height="30" fill="#56604f"/><rect x="60" y="230" width="50" height="60" fill="#25352C"/><rect x="180" y="220" width="46" height="110" fill="#25352C"/><rect x="290" y="230" width="50" height="60" fill="#25352C"/><path d="M0 360H400" stroke="#E9DDCC" stroke-width="2"/>`],
-  };
-  const artHTML = w => {
-    const [tex, svg] = ART[w.k];
-    return `<div class="tile__art" style="--ar:${w.ar};background-image:url(img/${TEX[tex]})">` +
-      (w.src ? `<img src="${w.src}" alt="${w.alt || w.t}" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"><span class="tile__ph tile__ph--real">Valódi munka</span>`
-             : `<svg viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${svg}</svg><span class="tile__ph">Fotóhely</span>`) + '</div>';
-  };
-  const CATN = { valyog: 'Vályogház', vert: 'Vert fal', alafalazas: 'Aláfalazás', vakolas: 'Vakolás', teljes: 'Teljes felújítás' };
+  const CATN = { munka: 'A munkából', haz: 'Házak' };
+  const imgTag = (w, sizes) => `<img src="${w.src}"${w.srcset ? ` srcset="${w.srcset}" sizes="${sizes}"` : ''} alt="${w.alt}" loading="lazy"${w.pos ? ` style="object-position:${w.pos}"` : ''}>`;
   const mas = $('#masonry');
-  mas.innerHTML = WORKS.map((w, i) => `<li class="tile reveal" data-cat="${w.cat}"><button type="button" data-i="${i}" aria-label="Nagyítás: ${w.t}${w.valodi ? '' : ' (helyőrző)'}">${artHTML(w)}<span class="tile__cap"><span>${CATN[w.cat]}</span><b>${w.t}</b></span></button></li>`).join('');
+  mas.innerHTML = WORKS.map((w, i) => `<li class="tile reveal" data-cat="${w.cat}"><button type="button" data-i="${i}" aria-label="Nagyítás: ${w.t}"><div class="tile__art" style="--ar:${w.ar}">${imgTag(w, '(max-width: 900px) 50vw, 33vw')}<span class="tile__ph${w.tag === 'Valódi munka' ? ' tile__ph--real' : ''}">${w.tag}</span></div><span class="tile__cap"><span>${CATN[w.cat]}</span><b>${w.t}</b></span></button></li>`).join('');
   $$('.tile', mas).forEach(t => motion ? io.observe(t) : t.classList.add('is-in'));
 
   $$('.chip').forEach(c => c.addEventListener('click', () => {
@@ -145,10 +122,8 @@
     cur = i; const w = WORKS[i], nb = $('#lb-img'), [a, b] = w.ar.split('/');
     nb.style.setProperty('--ar', w.ar);
     nb.style.maxWidth = `calc(76svh * ${a} / ${b})`;
-    nb.style.backgroundImage = `url(img/${TEX[ART[w.k][0]]})`;
-    nb.innerHTML = w.src ? `<img src="${w.src}" alt="${w.alt || w.t}" style="width:100%;height:100%;object-fit:cover">`
-      : `<svg viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${ART[w.k][1]}</svg>`;
-    $('#lb-cap').textContent = w.valodi ? `${w.t} · képkocka a bemutatkozó videóból` : `${w.t} · ${CATN[w.cat]} – helyőrző rajz, a valódi fotó egyeztetendő`;
+    nb.innerHTML = `<img src="${w.big || w.src}" alt="${w.alt}">`;
+    $('#lb-cap').textContent = `${w.t} · ${w.tag === 'Valódi munka' ? 'képkocka Túró István bemutatkozó videójából' : 'fotó a jelenlegi valyog-mester.hu oldalról'}`;
   };
   mas.addEventListener('click', e => { const b = e.target.closest('button[data-i]'); if (!b) return; show(+b.dataset.i); lb.showModal(); });
   const step = d => { const v = visible(); show(v[(v.indexOf(cur) + d + v.length) % v.length]); };
@@ -157,11 +132,6 @@
   $('.lb__close').addEventListener('click', () => lb.close());
   lb.addEventListener('click', e => { if (e.target === lb) lb.close(); });
   lb.addEventListener('keydown', e => { if (e.key === 'ArrowLeft') step(-1); if (e.key === 'ArrowRight') step(1); });
-
-  /* ================= ELŐTTE–UTÁNA ================= */
-  const ba = $('#ba'), range = $('.ba__range', ba);
-  const setBA = () => ba.style.setProperty('--p', range.value + '%');
-  range.addEventListener('input', setBA); setBA();
 
   /* ================= MODALOK ================= */
   $$('[data-open]').forEach(b => b.addEventListener('click', () => $('#' + b.dataset.open).showModal()));
