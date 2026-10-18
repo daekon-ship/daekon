@@ -180,7 +180,7 @@
     bar.classList.toggle('is-on', on); bar.setAttribute('aria-hidden', !on); $('a', bar).tabIndex = on ? 0 : -1;
   }
   if ('IntersectionObserver' in window && bar) {
-    var m = { hero: $('.hero__ctas'), contact: $('#kapcsolat'), foot: $('.ftr') };
+    var m = { hero: $('.vh__ctas'), contact: $('#kapcsolat'), foot: $('.ftr') };
     new IntersectionObserver(function (es) {
       es.forEach(function (e) {
         if (e.target === m.hero) st.hero = e.isIntersecting || e.boundingClientRect.top > 0;
