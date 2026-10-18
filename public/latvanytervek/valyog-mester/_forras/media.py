@@ -28,7 +28,13 @@ JS = """() => {
   return [...s];
 }"""
 
-found, media_req = set(), set()
+CTX = """() => [...document.querySelectorAll('iframe, video, a[href*="facebook.com"], a[href*="fb.watch"], a[href*="youtube"], a[href*="instagram"]')].map(e => {
+  const sec = e.closest('section, footer, div[id]');
+  return { tag: e.tagName, src: e.src || e.currentSrc || e.href || '', poster: e.poster || '',
+           title: e.title || e.getAttribute('aria-label') || '', w: e.clientWidth, h: e.clientHeight,
+           section: sec ? (sec.querySelector('h1,h2,h3')?.innerText || sec.id || '').slice(0, 120) : '' };
+})"""
+found, media_req, ctx = set(), set(), []
 with sync_playwright() as p:
     b = p.chromium.launch()
     for url in PAGES:
@@ -41,10 +47,12 @@ with sync_playwright() as p:
                 pg.evaluate(f"scrollTo(0,{y})"); pg.wait_for_timeout(150)
             pg.wait_for_timeout(1500)
             found.update(pg.evaluate(JS))
+            for c in pg.evaluate(CTX):
+                if c not in ctx: ctx.append(c)
             pg.close()
     b.close()
 
-allm = sorted(u for u in (found | media_req) if "valyog-mester.hu" in u or re.search(r"\.(mp4|webm|mov)", u, re.I))
+allm = sorted(u for u in found if "valyog-mester.hu" in u)
 report = []
 for u in allm:
     name = re.sub(r"[^a-zA-Z0-9._-]", "_", u.split("/")[-1].split("?")[0]) or "fajl"
@@ -78,3 +86,40 @@ for u in allm:
     print(item)
 
 (ROOT / "_forras" / "media-jelentes.json").write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
+
+# ---- videók: a beágyazott Facebook/YouTube videók letöltése yt-dlp-vel ----
+import subprocess, html
+from urllib.parse import urlparse, parse_qs, unquote
+vids = []
+for c in ctx:
+    u = c["src"]
+    if "facebook.com/plugins/video" in u:
+        q = parse_qs(urlparse(u).query); u = unquote(q.get("href", [u])[0])
+    if re.search(r"facebook\.com/.+/videos/|facebook\.com/watch|fb\.watch|facebook\.com/reel|youtube\.com/(watch|embed)|youtu\.be", u):
+        if u not in vids: vids.append(u)
+vreport = []
+for i, u in enumerate(vids, 1):
+    base = OUT / f"video-{i}"
+    r = subprocess.run(["yt-dlp", "-f", "bv*[height<=1080][ext=mp4]+ba[ext=m4a]/b[ext=mp4]/b", "--merge-output-format", "mp4",
+                        "--write-info-json", "-o", str(base) + "-eredeti.%(ext)s", u], capture_output=True, text=True)
+    item = {"url": u, "ok": r.returncode == 0, "log": (r.stdout + r.stderr)[-1500:]}
+    src = OUT / f"video-{i}-eredeti.mp4"
+    info = OUT / f"video-{i}-eredeti.info.json"
+    if info.exists():
+        d = json.loads(info.read_text())
+        item.update({k: d.get(k) for k in ("title", "description", "uploader", "upload_date", "duration", "width", "height")})
+        info.unlink()
+    if src.exists():
+        # web-barát változatok: 1280 és 720 px, hang nélkül, faststart; plusz poszterkép
+        for w, crf in ((1280, 26), (720, 28)):
+            subprocess.run(["ffmpeg", "-y", "-i", str(src), "-an", "-vf", f"scale='min({w},iw)':-2", "-c:v", "libx264", "-preset", "slow",
+                            "-crf", str(crf), "-pix_fmt", "yuv420p", "-movflags", "+faststart", str(OUT / f"video-{i}-{w}.mp4")], capture_output=True)
+        subprocess.run(["ffmpeg", "-y", "-ss", "1", "-i", str(src), "-frames:v", "1", str(OUT / f"video-{i}-poszter.png")], capture_output=True)
+        pp = OUT / f"video-{i}-poszter.png"
+        if pp.exists():
+            Image.open(pp).convert("RGB").save(OUT / f"video-{i}-poszter.webp", "WEBP", quality=78); pp.unlink()
+        item["files"] = sorted(str(x.relative_to(ROOT)) for x in OUT.glob(f"video-{i}-*") if "eredeti" not in x.name)
+        src.unlink()
+    vreport.append(item); print(item)
+
+(ROOT / "_forras" / "media-jelentes.json").write_text(json.dumps({"kepek": report, "beagyazasok": ctx, "videok": vreport}, ensure_ascii=False, indent=2), encoding="utf-8")

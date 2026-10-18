@@ -21,7 +21,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: pip install pillow playwright && python -m playwright install --with-deps chromium
+      - run: pip install pillow playwright yt-dlp && sudo apt-get install -y ffmpeg && python -m playwright install --with-deps chromium
       - run: python public/latvanytervek/valyog-mester/_forras/media.py
       - name: Commit
         run: |
