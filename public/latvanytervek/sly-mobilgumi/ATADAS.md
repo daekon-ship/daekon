@@ -15,6 +15,12 @@ A korábbi körök effektjei (rajzolt gumi, rajzfilmes szervizautó, 3D út, met
 - A hero sötét: a saját munkafotó egy lassan forgó abroncs ablakán át látszik (ezüst oldalfal-felirat, monokróm). Asztalon görgetésre az ablak kitágul, a fotó kitölti a képernyőt, majd: „A műhely jön. Te maradsz.” Mobilon statikus kerék-ablak, alatta a szöveg és a gombok. GSAP nélkül, saját könnyű kóddal; `prefers-reduced-motion` esetén statikus.
 - Alatta a 8. kör tiszta, rendezett oldala (kulcsadatok sora, két út, lépések, szolgáltatások, árak, munkák, flotta, GYIK, kapcsolat).
 
+## 10. kör – a saját szervizautó a főszereplő
+- Hero: a jelenlegi honlap saját, 2560 px-es fotója (`2021/11/IMG_3709-scaled.jpg`) – sárga SLY Ford Transit (SLY-220) a soproni Tűztorony előtt. Asztalon a szöveg sötét sávban balra, az autó szabadon jobbra; mobilon felül a kép, alatta szöveg és gombok.
+- A márka valódi színei: Transit-sárga (#F5B700), logópiros (#D7141A), fekete. A fotók színesek (nincs szürkítés).
+- Hero alatt teljes szélességű, színes 7 képes fotósáv (mobilon húzható), nagyítóval.
+- **Egyeztetendő:** a nyilvános posztok barna Transitot említenek – ha a sárga autó már nem aktuális, friss autós fotó kell a herohoz.
+
 ## Mi van ellenőrizve
 - Árak: a brief árlistája tételesen (2025. 02. 01-től visszavonásig). Bruttó = nettó × 1,27, kerekítve.
 - Kalkulátor: csak közzétett árak; felárak csak gumiszerelésnél; +50% a szolgáltatásdíjra munkaidőn túl; körzeten kívüli kiszállást nem számol.
