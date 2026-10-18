@@ -496,3 +496,4 @@ img.is-missing{opacity:0}
   .vh__in>*{max-width:min(500px,36vw)}
   .vh h1{font-size:clamp(34px,1.9vw + 18px,52px)}
 }
+@media (min-width:900px){.vh__in>*{max-width:min(440px,30vw)}.vh__img{left:32%;width:68%}}
