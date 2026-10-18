@@ -73,7 +73,7 @@ footer{max-width:720px;margin:0 auto;padding:0 16px 32px;color:var(--muted);font
 <main>
 $body
 </main>
-<footer>Az oldalt a Mester+ árajánlat-készítő generálta a vállalkozó kérésére. <a href="https://daekon.hu/mester-plus/adatvedelem.html">Adatvédelem</a></footer>
+<footer>Az oldalt a Mester+ árajánlat-készítő generálta a vállalkozó kérésére. <a href="https://daekon-ship.github.io/daekon/mester-plus/adatvedelem.html">Adatvédelem</a></footer>
 </body>
 </html>
 HTML;
@@ -181,7 +181,7 @@ HTML;
             $b .= '<dt>Helyszín</dt><dd>' . $h($snap['project']['site_address']) . '</dd>';
         }
         $b .= '<dt>Ajánlat dátuma</dt><dd>' . $h(self::dateHu($snap['quoted_at'])) . '</dd>';
-        $b .= '<dt>Érvényes</dt><dd>' . $h(self::dateHu($snap['valid_until'])) . '-ig</dd>';
+        $b .= '<dt>Érvényes</dt><dd>' . $h(rtrim(self::dateHu($snap['valid_until']), '.')) . '-ig</dd>';
         if ($s['tax_number'] !== '') {
             $b .= '<dt>Adószám</dt><dd>' . $h($s['tax_number']) . '</dd>';
         }
@@ -287,7 +287,7 @@ HTML;
     {
         $b = '<div class="card"><h1>Mester+ Cloud</h1><p>A Mester+ árajánlat-készítő app felhős szolgáltatása (fiók, felhőmentés, online ajánlat).</p>'
             . '<p class="muted">Ez a cím az appnak szól; böngészőből nincs itt teendőd.</p>'
-            . '<div class="actions"><a class="btn btn-secondary" href="https://daekon.hu/mester-plus/">A Mester+ appról</a></div></div>';
+            . '<div class="actions"><a class="btn btn-secondary" href="https://daekon-ship.github.io/daekon/mester-plus/">A Mester+ appról</a></div></div>';
         return $this->respond('Mester+ Cloud', $b);
     }
 }

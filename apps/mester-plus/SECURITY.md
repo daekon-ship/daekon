@@ -1,6 +1,6 @@
 # Mester+ – biztonság
 
-Az app offline, minden adat a készüléken van. Ez a fájl leírja, mi védi az adatokat, és mit ellenőriz a gép minden változásnál.
+Az app offline-first: minden adat a készüléken van. A v0.8-tól opcionális Mester+ Cloud is van (fiók, titkosított felhőmentés, online ajánlat) – annak biztonsága: `docs/CLOUD_SECURITY.md`. Ez a fájl leírja, mi védi az adatokat, és mit ellenőriz a gép minden változásnál.
 
 ## Mi védi az adatokat
 
@@ -10,7 +10,7 @@ Az app offline, minden adat a készüléken van. Ez a fájl leírja, mi védi az
 | A titkosító kulcs | 32 bájt kriptográfiai véletlen, az első indításkor készül. Az **Android Keystore** által védett biztonságos tárolóban van (`flutter_secure_storage`), az app aláírásához kötve. Nem kerül mentésbe, naplóba, képernyőre. |
 | Hozzáférés az apphoz | Opcionális **PIN-zár** (4–8 számjegy). Csak sózott PBKDF2-HMAC-SHA256 kivonat tárolódik (60 000 kör). 5 hibás próba után növekvő várakozás (10 s → 5 perc). Indításkor és 2 perc háttér után kér PIN-t. |
 | Felhős mentés | `android:allowBackup="false"`: a Google automatikus mentése és az eszközátvitel **nem** viszi az app adatait. A kézi, beépített mentés a hivatalos út. |
-| Hálózat | Nincs `INTERNET` engedély. A kész csomagot a CI ellenőrzi. |
+| Hálózat | `INTERNET` csak a Mester+ Cloudhoz (tudatos, v0.8). Titkosítatlan HTTP tiltva (`usesCleartextTraffic=false`, Network Security Config, csak rendszer-CA), a felhő csak `https://api.mesterplus.daekon.hu`-ra mehet, minden hívás a központi `ApiClient`-en át. A kész csomagot a CI ellenőrzi. |
 | Biztonsági mentés fájl | Visszaállítás előtt teljes ellenőrzés: formátum, verzió, hivatkozások, azonosítók, összeghatárok, dátumsorrend. Egy tranzakció: hibánál a meglévő adat marad. 50 MB-os méretkorlát. A fájl **titkosítatlan** (hogy telefoncserénél kulcs nélkül is használható legyen), ezért a felhasználót figyelmeztetjük, hol tárolja. |
 | Bevitel | Minden szám tartományhatáros (max. 99 999 999 Ft/egység, 999 999 mennyiség, 999 999 999 Ft befizetés), a szorzatok BigInt-ben. Szövegmezők hosszkorláttal az adatbázis-oszlopokhoz igazítva. Minden lekérdezés paraméterezett (Drift). |
 | Fájlnevek | A PDF fájlneve csak `[A-Za-z0-9-_]`, max. 70 karakter: nincs útvonal-beszúrás. |
@@ -19,7 +19,8 @@ Az app offline, minden adat a készüléken van. Ez a fájl leírja, mi védi az
 ## Mit ellenőriz a CI minden változásnál
 
 - `flutter analyze`, `flutter test` (benne: PIN-kivonat ismert tesztvektorral, kulcs-formátum, 500 fuzz-rongált mentési fájl, fájlnév-szűrés, pénzügyi határok).
-- A kész AAB-ban: nincs `INTERNET` engedély, `allowBackup="false"`, SQLCipher natív könyvtár jelen van, minden `.so` 16 KB-igazított.
+- A kész AAB-ban: `allowBackup="false"`, az INTERNET mellett a hálózati szabályzat (cleartext tiltva, Network Security Config), a release Dart-kódban csak az éles API-cím (teszt-/fejlesztői cím nincs), HTTP-hívás csak az `ApiClient`-ben; SQLCipher natív könyvtár jelen van, minden `.so` 16 KB-igazított.
+- Backend: 1752 ellenőrzés valódi MariaDB-vel; titokkeresés (gitleaks, önteszttel) – találat esetén a build piros.
 - `osv-scanner` a `pubspec.lock`-on: ismert sérülékenységű csomag esetén a futás piros.
 
 ## Tudatos korlátok

@@ -1,7 +1,7 @@
 # Mester+
 
 Árajánlat- és projektkezelő magyar szakiknak (burkoló, kőműves és rokon szakmák).
-Offline-first: minden adat a készüléken, SQLite-ban tárolódik.
+Offline-first: minden adat a készüléken, titkosított SQLite-ban tárolódik. Opcionális Mester+ Cloud (fiók, felhőmentés, online ajánlat) – lásd lent.
 
 ## Előfeltételek
 
@@ -119,13 +119,26 @@ A `flutter analyze` futtatását nem helyettesíti.
 
 ## Biztonsági mentés
 
-Minden adat csak a készüléken van, ezért rendszeresen készíts mentést: **Beállítások → Adatmentés → Mentés készítése**.
+Fiók nélkül minden adat csak a készüléken van, ezért rendszeresen készíts mentést: **Beállítások → Adatmentés → Mentés készítése**.
 - A visszaállítás előbb az egész fájlt ellenőrzi: formátumot, verziót, hivatkozásokat, ismétlődő azonosítókat és ajánlatszámokat.
 - A cserét egyetlen tranzakcióban végzi. Hibás fájlnál a meglévő adat érintetlen marad.
 - A visszaállítás a készüléken lévő adatokat **teljesen lecseréli**, erre az app előtte rákérdez.
+
+## Mester+ Cloud (v0.8, opcionális)
+
+Az app fiók és internet nélkül is teljes értékű. A **Mester+ fiók** (Beállítások → Mester+ fiók) csak a felhős Pro-funkciókhoz kell:
+- **Felhőmentés:** a telefon titkosítja (AES-256-GCM), napi automatikus mentés, ha változott valami; telefoncsere után belépéssel visszaállítható.
+- **Online ajánlat:** az ügyfél linken megnézi és elfogadja; az app mutatja az állapotot (Elérhető / Megnyitva / Elfogadva …).
+- **Eszközeim**, kijelentkezés mindenhonnan, adatexport, fióktörlés.
+
+Szerver: `services/mester-plus-api/` (PHP 8.4 + MariaDB, a DAEKON VPS-en). Dokumentáció: `docs/CLOUD_ARCHITECTURE.md`,
+`CLOUD_SECURITY.md`, `CLOUD_BACKUP.md`, `ONLINE_QUOTES.md`, `SUBSCRIPTIONS.md`, `CLOUD_SYNC_DESIGN.md`, `OPERATIONS.md`.
+A Pro előfizetés (Google Play) még nem indult el; a felhő a kiadott appban csak `https://api.mesterplus.daekon.hu`-ra mehet.
+
+Fejlesztői build staging ellen: `flutter run --dart-define=MP_API_BASE=https://api-staging.mesterplus.daekon.hu --dart-define=MP_ENV=staging`.
 
 ## Ismert korlátok
 
 - A web platform nem támogatott (a Drift webes beállítása külön lépés).
 - Az adatbázis a készüléken SQLCipherrel titkosított, a kulcs az Android Keystore-ban van (részletek: `SECURITY.md`). A mentési fájl viszont szándékosan titkosítatlan, hogy telefoncserénél kulcs nélkül is visszatölthető legyen – tartsd olyan helyen, ahova csak te férsz hozzá.
-- Felhős szinkron nincs; a mentés kézi.
+- Teljes, több eszközös szinkron nincs (terv: `docs/CLOUD_SYNC_DESIGN.md`); a felhőmentés teljes pillanatkép.

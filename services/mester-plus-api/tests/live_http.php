@@ -50,6 +50,9 @@ function req(string $m, string $path, mixed $body = null, array $h = []): array
     if ($resolve !== '') {
         curl_setopt($c, CURLOPT_RESOLVE, ["$host:$port:$resolve"]);
     }
+    if (getenv('MP_LIVE_SRC')) {
+        curl_setopt($c, CURLOPT_INTERFACE, (string) getenv('MP_LIVE_SRC')); // másik forrás-IP (az IP-nkénti korlát miatt)
+    }
     if ($body !== null) {
         curl_setopt($c, CURLOPT_POSTFIELDS, $body);
     }

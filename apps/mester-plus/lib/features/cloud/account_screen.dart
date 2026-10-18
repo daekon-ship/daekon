@@ -166,7 +166,7 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
               const SizedBox(height: MpSpace.x4),
               const Text(
                 'A regisztrációval elfogadod a Mester+ felhős szolgáltatás feltételeit és adatkezelési tájékoztatóját '
-                '(daekon.hu/mester-plus/adatvedelem.html).',
+                '(daekon-ship.github.io/daekon/mester-plus/adatvedelem.html).',
                 style: MpText.small,
               ),
             ],
