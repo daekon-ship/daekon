@@ -31,12 +31,24 @@ A cégadataiddal, ajánlatszámmal, dátummal és érvényességgel. Elküldhete
 Ügyfelek és munkák
 Látod, melyik ajánlat ment ki, melyiket fogadták el, mi van folyamatban. Egy régi munkát le tudsz másolni a következő hasonlóhoz, így nem kell elölről kezdeni.
 
+Pénzügy
+Előleg, részletek, végszámla: beírod, mi jött be, és látod, mennyi van még kint. A kiadásokat (anyag, bérlés, útiköltség) is ide írod, így kiderül, mennyi marad a munkán, és mennyit hoz egy ledolgozott óra.
+
+Munkanapló és ütemezés
+Kezdés és tervezett befejezés dátuma, naponta egy sor arról, mennyit dolgoztál és mi készült el.
+
+Anyaglista és csempekalkulátor
+Felírod, mit kell venni, és a listát egy koppintással kimásolod a boltba. A csempekalkulátor a felmért területből és a dobozméretből kiszámolja, hány doboz kell a hulladékkal együtt.
+
+Áttekintés
+Egy helyen a kintlévőség, a hónapban befolyt pénz, a lejáró ajánlatok és a hamarosan induló munkák.
+
 Internet nélkül
 Pincében, tetőtérben, új építésű házban is működik, ahol nincs térerő.
 
 AZ ADATAID A TIEID
 
-Minden a telefonodon marad. Nincs regisztráció, nincs reklám, és senki nem látja az ügyfeleidet. Telefoncserénél a beépített mentéssel viszed át az adataidat: egy fájl, amit Drive-ra, e-mailbe vagy pendrive-ra teszel.
+Minden a telefonodon marad, titkosított adatbázisban, és ha akarod, PIN-kóddal is lezárhatod az appot. Nincs regisztráció, nincs reklám, és senki nem látja az ügyfeleidet. Telefoncserénél a beépített mentéssel viszed át az adataidat: egy fájl, amit Drive-ra, e-mailbe vagy pendrive-ra teszel.
 
 ## Kategória
 

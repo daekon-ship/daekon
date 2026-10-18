@@ -127,4 +127,5 @@ Minden adat csak a készüléken van, ezért rendszeresen készíts mentést: **
 ## Ismert korlátok
 
 - A web platform nem támogatott (a Drift webes beállítása külön lépés).
-- Az adatbázis titkosítatlan a készüléken. A mentés és a szinkron egy későbbi mérföldkő témája.
+- Az adatbázis a készüléken SQLCipherrel titkosított, a kulcs az Android Keystore-ban van (részletek: `SECURITY.md`). A mentési fájl viszont szándékosan titkosítatlan, hogy telefoncserénél kulcs nélkül is visszatölthető legyen – tartsd olyan helyen, ahova csak te férsz hozzá.
+- Felhős szinkron nincs; a mentés kézi.

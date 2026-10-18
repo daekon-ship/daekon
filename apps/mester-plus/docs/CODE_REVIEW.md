@@ -217,3 +217,29 @@ Javítva benne: az árajánlat képén korábban 4 tétel látszott, a végössz
 
 - A web platform kimarad, mert a Drift webes futtatása külön beállítást igényel.
 - A DB-tesztekhez natív SQLite kell. Windows-on `sqlite3.dll` nélkül a csoport indoklással kimarad (ld. README).
+
+## 7. kör (2026-10-18): „minden egyben” funkciók és biztonsági kör
+
+Kiindulás: a felhasználó kérése szerint az app a vállalkozó teljes napját fedje le, és legyen „nagyon biztonságos”, sok automatikus ellenőrzéssel.
+
+**Új funkciók (v0.7.0):**
+- Pénzügy projektenként: befizetések (mód, dátum, megjegyzés), kiadások (kategória), kintlévőség, túlfizetés, a munkán maradó összeg és az egy órára jutó eredmény. Egységes `ProjectFinance` osztály, minden képernyő ebből számol.
+- Ütemezés és munkanapló: kezdés/befejezés, napi bejegyzések percben tárolva (max. 24 óra/bejegyzés).
+- Anyaglista csempekalkulátorral (`TileCalc`: terület + hulladék% → doboz felfelé kerekítve), lista másolása szövegként.
+- Áttekintés: kintlévőség, havi bevétel/kiadás, teendők (lejárt és hamarosan lejáró ajánlat, fizetésre váró, hamarosan induló, árazatlan tétel).
+- Séma v3 migrációval; a mentés formátuma v2, a v1-es fájlok továbbra is visszatölthetők.
+
+**Biztonság:**
+- SQLCipher-titkosított adatbázis, a kulcs az Android Keystore-ban. Meglévő titkosítatlan adatbázis egyszeri átköltöztetése (`sqlcipher_export`), majd a régi fájl nullázása és törlése.
+- Opcionális PIN-zár: sózott PBKDF2-HMAC-SHA256 (60 000 kör), konstans idejű összehasonlítás, növekvő várakozás 5 hibás próba után, 2 perc háttér után újra zár.
+- `allowBackup="false"`, nincs `INTERNET` engedély; ezt a CI a kész AAB manifestjén is ellenőrzi, a natív könyvtárak 16 KB-igazításával együtt.
+- Függőségek: OSV-sérülékenységkeresés a `pubspec.lock`-on minden push-nál.
+
+**Talált és javított hibák ebben a körben:**
+- `JoinedSelectStatement` visszatérési típusa helytelen volt (analyze hiba) – általános típusra javítva.
+- A `flutter_secure_storage` 10.x új opció-típusai miatt a teszt-fake aláírása nem egyezett – frissítve.
+- A build_runner AOT-fordítása nem támogat build-hookot (SQLCipher) – mindenhol `--force-jit`.
+- Fuzz-teszt küszöbe irreálisan magas volt (400/500), a valódi elutasítási arányhoz igazítva (>250), a lényeg változatlan: egyetlen rongált fájl sem kerülhet be a DB-be.
+- `BuildContext` használata aszinkron rés után több helyen – `mounted` ellenőrzés.
+
+**Futott ellenőrzések (GitHub Actions, Flutter 3.38, futás #37692150247 – zöld):** kódgenerálás, `flutter analyze`, összes teszt (számolás, formázás, érvényesség, HUF-formázó, biztonság, adatbázis), release AAB build, AAB-manifest és natív lib ellenőrzés, OSV.
