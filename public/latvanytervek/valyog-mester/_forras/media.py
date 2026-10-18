@@ -111,9 +111,10 @@ for i, u in enumerate(vids, 1):
         info.unlink()
     if src.exists():
         # web-barát változatok: 1280 és 720 px, hang nélkül, faststart; plusz poszterkép
-        for w, crf in ((1280, 26), (720, 28)):
-            subprocess.run(["ffmpeg", "-y", "-i", str(src), "-an", "-vf", f"scale='min({w},iw)':-2", "-c:v", "libx264", "-preset", "slow",
-                            "-crf", str(crf), "-pix_fmt", "yuv420p", "-movflags", "+faststart", str(OUT / f"video-{i}-{w}.mp4")], capture_output=True)
+        # 720 px, hanggal (az interjúhoz kell a hang); némítva is lejátszható, mert a felirat be van égetve
+        subprocess.run(["ffmpeg", "-y", "-i", str(src), "-vf", "scale='min(720,iw)':-2", "-c:v", "libx264", "-preset", "slow",
+                        "-crf", "27", "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "96k", "-movflags", "+faststart",
+                        str(OUT / f"video-{i}-720.mp4")], capture_output=True)
         subprocess.run(["ffmpeg", "-y", "-ss", "1", "-i", str(src), "-frames:v", "1", str(OUT / f"video-{i}-poszter.png")], capture_output=True)
         pp = OUT / f"video-{i}-poszter.png"
         if pp.exists():
