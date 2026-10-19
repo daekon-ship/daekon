@@ -9,7 +9,7 @@
 <meta name="theme-color" content="#EADBB8">
 <link rel="icon" href="logo-jel.svg" type="image/svg+xml">
 <link rel="preload" href="fonts/archivo-var.woff" as="font" type="font/woff" crossorigin>
-<link rel="stylesheet" href="kalocsa.css?v=6">
+<link rel="stylesheet" href="kalocsa.css?v=7">
 <script>if(!matchMedia("(prefers-reduced-motion: reduce)").matches){document.documentElement.classList.add("anim");setTimeout(function(){if(!window.gsap)document.documentElement.classList.remove("anim")},3000)}</script>
 </head>
 <body>
@@ -27,7 +27,7 @@
       <a href="#rolam">Rólam</a>
       <a href="#kapcsolat">Kapcsolat</a>
     </nav>
-    <a class="btn btn--sm hdr__cta" href="tel:+36704204170">Hívás most</a>
+    <a class="btn btn--sm hdr__cta" href="tel:+36704204170" aria-label="Hívás: +36 70 420 4170"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 3h3l1.5 4.2-2 1.4a12 12 0 0 0 6.3 6.3l1.4-2 4.2 1.5v3A2 2 0 0 1 19 20 16 16 0 0 1 4 5a2 2 0 0 1 2.6-2Z"/></svg><span>Hívás most</span></a>
     <button class="burger" id="burger" aria-expanded="false" aria-controls="nav" aria-label="Menü megnyitása"><span></span><span></span></button>
   </div>
 </header>
@@ -64,10 +64,9 @@
           <g clip-path="url(#cFrame)">
             <path d="M190 360Q280 318 380 340T600 322V440H190Z" fill="#A88B60"/>
             <path d="M190 392Q300 360 420 382T600 372V440H190Z" fill="#94774E"/>
-            <g stroke="#9C8762" stroke-width="1" opacity=".5"><path d="M230 330V270M236 330V282M528 318V250M534 318V262"/></g>
           </g>
         </g>
-        <path class="ex__pile" d="M10 440Q56 392 104 404Q150 386 196 424L204 440Z" fill="#7E6242"/>
+        <path class="ex__pile" d="M18 440Q50 404 92 408Q128 396 160 420Q176 430 182 440Z" fill="#5E4630"/>
         <path d="M10 440H600" stroke="#94774E" stroke-width="4"/>
 
         <g class="ex__machine">
@@ -76,8 +75,6 @@
             <rect class="ex__chain" x="262" y="388" width="268" height="52" rx="26" fill="none" stroke="#2E2217" stroke-width="6" stroke-dasharray="9 6"/>
             <rect x="274" y="398" width="244" height="32" rx="16" fill="#5A4532"/>
             <g fill="#36281B" stroke="#7A6046" stroke-width="3"><circle cx="296" cy="414" r="13"/><circle cx="496" cy="414" r="13"/><circle cx="346" cy="418" r="7"/><circle cx="396" cy="418" r="7"/><circle cx="446" cy="418" r="7"/></g>
-            <path d="M240 392L264 398V438H234Q228 414 240 392Z" fill="url(#gOr)"/>
-            <path d="M234 438H264" stroke="#8E6535" stroke-width="3"/>
             <rect x="290" y="376" width="212" height="14" fill="#4A3828"/>
             <path d="M284 378V322Q284 306 300 306H470Q514 306 518 348L520 378Z" fill="url(#gOr)"/>
             <path d="M284 364H520V378H284Z" fill="#8E6535" opacity=".9"/>
@@ -281,6 +278,6 @@
 
 <script src="js/gsap.min.js" defer></script>
 <script src="js/ScrollTrigger.min.js" defer></script>
-<script src="kalocsa.js?v=6" defer></script>
+<script src="kalocsa.js?v=7" defer></script>
 </body>
 </html>
