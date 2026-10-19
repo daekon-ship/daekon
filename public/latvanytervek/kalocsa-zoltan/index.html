@@ -6,34 +6,27 @@
 <title>Kalocsa Zoltán | Gépi földmunka Kecskeméten és 60 km-es körzetében</title>
 <meta name="description" content="Gépi földmunka Kecskeméten és környékén: alapásás, közműárok ásás, nyomvonalásás, tuskóeltávolítás, tereprendezés – kis géppel, szűk helyeken is. Hívás: +36 70 420 4170.">
 <meta name="robots" content="noindex, nofollow">
-<meta name="theme-color" content="#111315">
+<meta name="theme-color" content="#2A2A2A">
 <link rel="icon" href="logo-jel.svg" type="image/svg+xml">
 <link rel="preload" href="fonts/archivo-var.woff" as="font" type="font/woff" crossorigin>
-<link rel="preload" href="img/kozmuarok-1200.webp" as="image" type="image/webp" imagesrcset="img/kozmuarok-720.webp 720w, img/kozmuarok-1200.webp 1069w" imagesizes="(max-width: 860px) 100vw, 40vw">
-<link rel="stylesheet" href="kalocsa.css?v=3">
+<link rel="stylesheet" href="kalocsa.css?v=4">
 <script>if(!matchMedia("(prefers-reduced-motion: reduce)").matches){document.documentElement.classList.add("anim");setTimeout(function(){if(!window.gsap)document.documentElement.classList.remove("anim")},3000)}</script>
 </head>
 <body>
 <a class="skip" href="#tartalom">Ugrás a tartalomhoz</a>
 
-<!-- Nyomvonal: a bal margón futó narancs „kitűzési” vonal, görgetésre halad (csak asztali nézet) -->
-<div class="route" aria-hidden="true"><span class="route__fill"></span></div>
-
 <header class="hdr" id="fejlec">
-  <div class="hdr__in">
+  <div class="hdr__in wrap">
     <a class="brand" href="#top" aria-label="Kalocsa Zoltán – gépi földmunka, kezdőlap">
-      <img src="logo-jel.svg" width="36" height="36" alt="">
-      <span class="brand__txt"><b>KALOCSA</b><small>GÉPI FÖLDMUNKA</small></span>
+      <span class="brand__txt"><b>Kalocsa Zoltán</b><b>Gépi földmunka</b></span>
     </a>
     <nav class="nav" id="nav" aria-label="Fő navigáció">
       <a href="#szolgaltatasok">Szolgáltatások</a>
       <a href="#munkak">Munkák</a>
       <a href="#rolam">Rólam</a>
       <a href="#kapcsolat">Kapcsolat</a>
-      <a class="nav__tel" href="tel:+36704204170">+36 70 420 4170</a>
     </nav>
-    <a class="btn btn--sm btn--orange hdr__cta" href="tel:+36704204170"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 3h3l1.5 4.2-2 1.4a12 12 0 0 0 6.3 6.3l1.4-2 4.2 1.5v3A2 2 0 0 1 19 20 16 16 0 0 1 4 5a2 2 0 0 1 2.6-2Z"/></svg>Hívás most</a>
-    <a class="hdr__call" href="tel:+36704204170" aria-label="Hívás: +36 70 420 4170"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 3h3l1.5 4.2-2 1.4a12 12 0 0 0 6.3 6.3l1.4-2 4.2 1.5v3A2 2 0 0 1 19 20 16 16 0 0 1 4 5a2 2 0 0 1 2.6-2Z"/></svg></a>
+    <a class="btn btn--sm hdr__cta" href="tel:+36704204170">Hívás most</a>
     <button class="burger" id="burger" aria-expanded="false" aria-controls="nav" aria-label="Menü megnyitása"><span></span><span></span></button>
   </div>
 </header>
@@ -42,176 +35,155 @@
 
 <!-- ============ HERO ============ -->
 <section class="hero" id="top" aria-labelledby="hero-cim">
-  <svg class="topo" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-    <g fill="none" stroke="currentColor" stroke-width="1">
-      <path d="M-40 640C180 560 300 700 520 620s380-210 600-140 300 60 380 20"/>
-      <path d="M-40 600C170 520 310 660 520 580s380-210 600-140 300 50 380 10"/>
-      <path d="M-40 560C160 480 320 620 530 540s370-200 590-130 300 40 380 0"/>
-      <path d="M-40 520C150 440 330 580 540 500s360-190 580-120 300 30 380-10"/>
-      <path d="M-40 470C150 400 340 530 550 455s350-175 570-110 300 20 380-20"/>
-      <path d="M-40 420C140 360 350 480 560 410s340-160 560-100 300 10 380-30"/>
-      <path d="M-40 360C140 310 360 420 570 360s330-140 550-90 300 0 380-40"/>
-      <path d="M-40 300C140 260 370 360 580 310s320-120 540-80 300-10 380-50"/>
-      <path d="M-40 230C150 200 380 290 590 250s310-100 530-70 300-20 380-60"/>
-      <path d="M-40 160C160 140 390 220 600 190s300-80 520-60 300-30 380-70"/>
-    </g>
-  </svg>
-
-  <div class="hero__grid wrap">
+  <div class="wrap hero__grid">
     <div class="hero__copy">
-      <p class="label hero__kicker"><span class="dot"></span>Gépi földmunka • Kecskemét és 60 km-es körzete</p>
       <h1 class="hero__h1" id="hero-cim">
         <span class="ln"><span>Nagy feladatok.</span></span>
-        <span class="ln ln--o"><span>Kis helyeken is.</span></span>
+        <span class="ln"><span>Kis helyeken is.</span></span>
       </h1>
-      <p class="hero__lead">Alapásás, közműárok, nyomvonalásás és tereprendezés – kisebb munkagéppel, szűkebb helyeken is.</p>
+      <p class="hero__lead">Gépi földmunka Kecskeméten és 60 km-es körzetében: alapásás, közműárok, nyomvonalásás, tuskóeltávolítás és tereprendezés – kis géppel, szűk helyeken is.</p>
       <div class="hero__cta">
-        <a class="btn btn--orange" href="tel:+36704204170"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 3h3l1.5 4.2-2 1.4a12 12 0 0 0 6.3 6.3l1.4-2 4.2 1.5v3A2 2 0 0 1 19 20 16 16 0 0 1 4 5a2 2 0 0 1 2.6-2Z"/></svg>Hívás most</a>
-        <a class="btn btn--ghost" href="#munkak">Munkák <i class="arr" aria-hidden="true"></i></a>
+        <a class="btn" href="tel:+36704204170">Hívás most</a>
+        <a class="hero__tel" href="tel:+36704204170">+36 70 420 4170</a>
       </div>
-      <a class="hero__more" href="tel:+36704204170">+36 70 420 4170</a>
     </div>
 
-    <figure class="hero__shot">
-      <div class="shot">
-        <img src="img/kozmuarok-1200.webp" srcset="img/kozmuarok-720.webp 720w, img/kozmuarok-1200.webp 1069w" sizes="(max-width: 860px) 100vw, 40vw" width="1069" height="1900" alt="Kiásott, egyenes falú közműárok homokos talajban, a háttérben sárga kotró-rakodó gép" fetchpriority="high">
-        <span class="shot__laser" aria-hidden="true"><i>SZINT</i></span>
-        <span class="crop crop--tl"></span><span class="crop crop--tr"></span><span class="crop crop--bl"></span><span class="crop crop--br"></span>
-      </div>
-      <svg class="shot__dim" viewBox="0 0 40 400" preserveAspectRatio="none" aria-hidden="true">
-          <path d="M20 4V396M10 4h20M10 396h20" stroke="#FF6B2B" stroke-width="2" vector-effect="non-scaling-stroke" fill="none"/>
-        </svg>
-      <span class="shot__dimlbl">nyomvonal</span>
-      <figcaption class="shot__cap"><span class="label">Valódi munka · 01</span>Közműárok, kiásva</figcaption>
-    </figure>
+    <div class="hero__art">
+      <figure class="frame">
+        <img src="img/kozmuarok-1200.webp" srcset="img/kozmuarok-720.webp 720w, img/kozmuarok-1200.webp 1069w" sizes="(max-width: 860px) 90vw, 36vw" width="1069" height="1900" alt="Kiásott közműárok homokos talajban – Kalocsa Zoltán munkája" fetchpriority="high">
+        <figcaption>Valódi munka · közműárok</figcaption>
+      </figure>
 
-    <div class="hero__coord label" aria-hidden="true">
-      <span>KECSKEMÉT</span><span>46,91° É · 19,69° K</span><span>R = 60 km</span>
+      <!-- Rajzolt kisgép (illusztráció, nem a vállalkozó gépének fotója) -->
+      <svg class="ex" viewBox="0 0 620 520" aria-hidden="true">
+        <defs>
+          <linearGradient id="gBody" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b9b9b9"/><stop offset="1" stop-color="#7b7b7b"/></linearGradient>
+          <linearGradient id="gArm" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c4c4c4"/><stop offset="1" stop-color="#7f7f7f"/></linearGradient>
+          <linearGradient id="gGlass" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8b959a"/><stop offset=".55" stop-color="#4c5458"/><stop offset="1" stop-color="#363c3f"/></linearGradient>
+          <linearGradient id="gDirt" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a4541"/><stop offset="1" stop-color="#2e2b29"/></linearGradient>
+        </defs>
+        <path d="M0 500 Q90 452 170 470 T330 486 T620 478 V520 H0Z" fill="url(#gDirt)"/>
+        <path class="ex__pile" d="M20 500 Q60 440 110 452 Q150 430 190 470 Q220 488 230 500Z" fill="#3e3a37"/>
+        <g class="ex__tracks">
+          <rect x="250" y="428" width="336" height="64" rx="32" fill="#353535"/>
+          <rect class="ex__chain" x="250" y="428" width="336" height="64" rx="32" fill="none" stroke="#262626" stroke-width="7" stroke-dasharray="11 7"/>
+          <rect x="264" y="440" width="308" height="40" rx="20" fill="#4d4d4d"/>
+          <g fill="#2f2f2f" stroke="#6d6d6d" stroke-width="3">
+            <circle cx="286" cy="460" r="17"/><circle cx="550" cy="460" r="17"/>
+            <circle cx="340" cy="466" r="10"/><circle cx="390" cy="466" r="10"/><circle cx="440" cy="466" r="10"/><circle cx="490" cy="466" r="10"/>
+          </g>
+        </g>
+        <rect x="300" y="408" width="236" height="24" fill="#474747"/>
+        <path d="M288 410V334Q288 316 306 316H562Q588 316 588 346V410Z" fill="url(#gBody)"/>
+        <path d="M562 328Q604 330 604 372V404L566 410Z" fill="#6b6b6b"/>
+        <g stroke="#666" stroke-width="3"><path d="M502 340v50M516 340v50M530 340v50M544 340v50"/></g>
+        <path d="M288 366H588" stroke="#F26B1D" stroke-width="5"/>
+        <path d="M416 318V188Q416 172 432 172H518L548 248V318Z" fill="#8d8d8d"/>
+        <path d="M428 306V186H512L536 252V306Z" fill="url(#gGlass)"/>
+        <path d="M474 186V306" stroke="#8d8d8d" stroke-width="6"/>
+        <path d="M436 200l24 0l-18 40z" fill="#fff" opacity=".12"/>
+        <g class="ex__boom">
+          <path d="M346 386L282 222" stroke="#575757" stroke-width="16" stroke-linecap="round"/>
+          <path d="M318 312L290 240" stroke="#d6d6d6" stroke-width="8" stroke-linecap="round"/>
+          <path d="M314 356L352 336Q304 206 236 98L202 116Q266 214 314 356Z" fill="url(#gArm)"/>
+          <circle cx="332" cy="346" r="11" fill="#444" stroke="#9a9a9a" stroke-width="3"/>
+          <g class="ex__arm">
+            <path d="M256 124L196 196" stroke="#575757" stroke-width="12" stroke-linecap="round"/>
+            <path d="M232 152L206 184" stroke="#d6d6d6" stroke-width="6" stroke-linecap="round"/>
+            <path d="M204 96L238 118L140 336L110 322Z" fill="url(#gArm)"/>
+            <circle cx="220" cy="108" r="10" fill="#444" stroke="#9a9a9a" stroke-width="3"/>
+            <g class="ex__bucket">
+              <path d="M110 316L150 334Q164 384 122 414L62 410Q54 366 110 316Z" fill="#7a7a7a"/>
+              <path d="M62 410L122 414Q150 392 150 334" fill="none" stroke="#5c5c5c" stroke-width="5"/>
+              <g fill="#565656"><path d="M62 408l-12 14 18-4z"/><path d="M82 411l-10 14 18-4z"/><path d="M102 413l-8 14 16-5z"/></g>
+              <circle cx="126" cy="328" r="9" fill="#444" stroke="#9a9a9a" stroke-width="3"/>
+            </g>
+          </g>
+        </g>
+        <g class="ex__dust" fill="#6a615a"><circle cx="70" cy="470" r="5"/><circle cx="96" cy="476" r="4"/><circle cx="56" cy="480" r="3"/><circle cx="120" cy="472" r="3"/></g>
+      </svg>
+      <p class="hero__note">Illusztráció · a keretben valódi munkafotó</p>
     </div>
   </div>
-
-  <a class="scrollcue" href="#szolgaltatasok" aria-label="Tovább a szolgáltatásokhoz"><span class="scrollcue__bar"></span><span class="label">Görgess</span></a>
 </section>
 
 <!-- ============ SZOLGÁLTATÁSOK ============ -->
 <section class="sec services" id="szolgaltatasok" aria-labelledby="szolg-cim">
-  <div class="wrap services__grid">
-    <header class="services__head">
-      <p class="sec__no"><b>01</b> / Amiben segítek</p>
-      <h2 id="szolg-cim">Gépi földmunka Kecskeméten és környékén</h2>
-      <blockquote class="quote">
-        <p>„Építkezel? Kertet újítasz? Nem akarsz ásni napokig?”</p>
-      </blockquote>
-      <p class="muted">Kisebb munkagéppel dolgozom, kertben, udvaron, telken. Mondd el telefonon, mit kell kiásni – a részleteket a helyszín alapján egyeztetjük.</p>
-      <a class="btn btn--line" href="tel:+36704204170">Hívj, egyeztessünk <i class="arr" aria-hidden="true"></i></a>
-    </header>
-
-    <ol class="svc">
+  <div class="wrap">
+    <h2 id="szolg-cim">Szolgáltatások</h2>
+    <p class="sec__lead">„Építkezel? Kertet újítasz? Nem akarsz ásni napokig?” Kisebb munkagéppel dolgozom kertben, udvaron, telken – Kecskeméten és 60 km-es körzetében.</p>
+    <ul class="svc">
       <li class="svc__item">
-        <a href="#kapcsolat">
-          <span class="svc__no">01</span>
-          <svg class="ico" viewBox="0 0 48 48" aria-hidden="true"><path d="M2 16h10v22h24V16h10"/><path d="M16 30h16v8H16z"/><path d="M12 16v-4M36 16v-4" stroke-dasharray="2 2"/></svg>
-          <span class="svc__t"><b>Alapásás</b><small>Megfelelő indulás építkezés előtt.</small></span>
-          <i class="arr" aria-hidden="true"></i>
-        </a>
+        <svg class="ico" viewBox="0 0 64 64" aria-hidden="true"><path class="f" d="M8 44h26v-9a4 4 0 0 0-4-4H20l-3-7h-6a3 3 0 0 0-3 3z"/><path d="M30 31l10-17 13 5 2 12"/><path class="f" d="M50 30h10l-4 10a6 6 0 0 1-6-4z"/><rect x="6" y="46" width="30" height="8" rx="4"/></svg>
+        <h3>Alapásás</h3>
+        <p>Megfelelő indulás építkezés előtt: sávalap, pontalap kiásása.</p>
       </li>
       <li class="svc__item">
-        <a href="#kapcsolat">
-          <span class="svc__no">02</span>
-          <svg class="ico" viewBox="0 0 48 48" aria-hidden="true"><path d="M2 14h14l4 26h8l4-26h14"/><circle cx="24" cy="34" r="3.5"/><path d="M6 22h6M36 22h6" stroke-dasharray="2 2"/></svg>
-          <span class="svc__t"><b>Közműárok ásása</b><small>Nyomvonalak és közművek előkészítése.</small></span>
-          <i class="arr" aria-hidden="true"></i>
-        </a>
+        <svg class="ico" viewBox="0 0 64 64" aria-hidden="true"><path d="M4 20h18l5 34h10l5-34h18"/><circle class="f" cx="32" cy="45" r="5"/><path d="M8 28h8M48 28h8"/></svg>
+        <h3>Közműárok ásása</h3>
+        <p>Nyomvonalak és közművek előkészítése: víz, csatorna, villany.</p>
       </li>
       <li class="svc__item">
-        <a href="#kapcsolat">
-          <span class="svc__no">03</span>
-          <svg class="ico" viewBox="0 0 48 48" aria-hidden="true"><path d="M4 36C14 36 16 14 26 14s10 18 18 18" stroke-dasharray="3 3"/><path d="M4 42V30M26 20V8M44 38V26"/><path d="M4 30l4 2-4 2M26 8l4 2-4 2M44 26l4 2-4 2"/></svg>
-          <span class="svc__t"><b>Nyomvonalásás</b><small>Célzott ásási munkák tervezett nyomvonalon.</small></span>
-          <i class="arr" aria-hidden="true"></i>
-        </a>
+        <svg class="ico" viewBox="0 0 64 64" aria-hidden="true"><path d="M6 50C18 50 20 24 32 24s14 20 26 20" stroke-dasharray="4 5"/><path d="M6 56V36M32 30V8M58 50V30"/><path class="f" d="M6 36l9 4-9 4zM32 8l9 4-9 4zM58 30l-9 4 9 4z"/></svg>
+        <h3>Nyomvonalásás</h3>
+        <p>Célzott ásási munkák tervezett nyomvonalon, kertben is.</p>
       </li>
       <li class="svc__item">
-        <a href="#kapcsolat">
-          <span class="svc__no">04</span>
-          <svg class="ico" viewBox="0 0 48 48" aria-hidden="true"><path d="M16 10h16v14H16z"/><path d="M16 10c2-2 14-2 16 0"/><path d="M2 26h44"/><path d="M18 24l-8 14M22 24l-2 18M26 24l3 16M30 24l10 12"/></svg>
-          <span class="svc__t"><b>Tuskóeltávolítás</b><small>Helyfelszabadítás kertben és telken.</small></span>
-          <i class="arr" aria-hidden="true"></i>
-        </a>
+        <svg class="ico" viewBox="0 0 64 64" aria-hidden="true"><path class="f" d="M22 12h20v20H22z"/><path d="M4 34h56"/><path d="M24 33l-12 18M29 33l-4 22M35 33l4 21M40 33l13 17"/></svg>
+        <h3>Tuskóeltávolítás</h3>
+        <p>Tuskók és gyökérzet kiemelése, helyfelszabadítás kertben és telken.</p>
       </li>
       <li class="svc__item">
-        <a href="#kapcsolat">
-          <span class="svc__no">05</span>
-          <svg class="ico" viewBox="0 0 48 48" aria-hidden="true"><path d="M2 34c6-8 10 4 16-4s10 6 16-2 8 2 12 0" stroke-dasharray="3 3"/><path d="M2 26h44"/><path d="M8 26v-6M40 26v-6"/><path d="M20 16h8M24 12v8"/></svg>
-          <span class="svc__t"><b>Tereprendezés és egyéb földmunka</b><small>Udvar, kert, telek előkészítése.</small></span>
-          <i class="arr" aria-hidden="true"></i>
-        </a>
+        <svg class="ico" viewBox="0 0 64 64" aria-hidden="true"><path d="M4 46c8-10 14 4 22-5s12 7 20-3 10 3 14 1" stroke-dasharray="4 4"/><path d="M4 36h56"/><path class="f" d="M24 18h16v8H24z"/><path d="M32 26v10M10 36v-8M54 36v-8"/></svg>
+        <h3>Tereprendezés</h3>
+        <p>Udvar, kert, telek előkészítése és egyéb gépi földmunka.</p>
       </li>
-    </ol>
+    </ul>
   </div>
 </section>
 
-<!-- ============ SZŰK HELY (papír szekció) ============ -->
-<section class="sec paper" id="szuk-hely" aria-labelledby="szuk-cim">
-  <div class="wrap paper__grid">
-    <div class="paper__copy">
-      <p class="sec__no"><b>02</b> / A különbség</p>
-      <h2 id="szuk-cim">Szűk hely?<br><span class="o">Nem akadály.</span></h2>
-      <p class="paper__lead">„Kis géppel dolgozom, így szűk helyekre is bejutok.”</p>
-      <p>Nem minden munka egy nyitott építési telken van. Sokszor a kapun, a ház mellett, a kert végébe kell bejutni – ott, ahová egy nagy gép nem fér oda, és kézzel napokig tartana az ásás.</p>
+<!-- ============ SZŰK HELY ============ -->
+<section class="sec narrow" id="szuk-hely" aria-labelledby="szuk-cim">
+  <div class="wrap narrow__grid">
+    <div class="narrow__copy">
+      <h2 id="szuk-cim">Szűk hely? Nem akadály.</h2>
+      <p class="quote">„Kis géppel dolgozom, így szűk helyekre is bejutok.”</p>
+      <p>Nem minden munka egy nyitott építési telken van. Sokszor a kapun, a ház mellett, a kert végébe kell bejutni – oda, ahová nagy gép nem fér be, és kézzel napokig tartana az ásás.</p>
       <ul class="ticks">
         <li>Kertben, udvaron, telken</li>
         <li>Ház mellett, kerítés mentén</li>
         <li>Fás, beépült területen</li>
       </ul>
-      <p class="note">A bejutás a helyszíntől függ – hívj, írd le, és megmondom, megoldható-e.</p>
+      <a class="btn btn--line" href="tel:+36704204170">Megkérdezem, befér-e</a>
     </div>
 
     <figure class="plan">
       <svg viewBox="0 0 560 440" role="img" aria-labelledby="plan-t">
         <title id="plan-t">Vázlatos alaprajz: kisgép bejut a kapun, a ház mellett a kert végébe, ahol árkot ás</title>
-        <defs>
-          <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0H0V20" fill="none" stroke="#111315" stroke-opacity=".07"/></pattern>
-          <marker id="ah" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0l10 5-10 5z" fill="#E2531A"/></marker>
-        </defs>
+        <defs><pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0H0V20" fill="none" stroke="#fff" stroke-opacity=".05"/></pattern></defs>
         <rect width="560" height="440" fill="url(#grid)"/>
-        <!-- telekhatár -->
-        <path d="M30 30H530V410H210M150 410H30V30" fill="none" stroke="#111315" stroke-width="2"/>
-        <!-- kapu -->
-        <path d="M150 410l18-26M210 410l-18-26" stroke="#111315" stroke-width="1.2" stroke-dasharray="3 3" fill="none"/>
-        <!-- ház -->
-        <rect x="60" y="210" width="120" height="170" fill="#111315" fill-opacity=".06" stroke="#111315" stroke-width="2"/>
-        <path d="M60 210l120 170M180 210L60 380" stroke="#111315" stroke-opacity=".25"/>
-        <!-- fák -->
-        <g fill="none" stroke="#111315" stroke-opacity=".55"><circle cx="420" cy="320" r="26"/><circle cx="470" cy="250" r="20"/><circle cx="300" cy="350" r="18"/></g>
-        <!-- árok -->
-        <rect x="250" y="62" width="250" height="18" fill="none" stroke="#E2531A" stroke-opacity=".4" stroke-dasharray="4 4"/><rect class="plan__trench" x="250" y="62" width="250" height="18" fill="#E2531A" fill-opacity=".22" stroke="#E2531A" stroke-width="2"/>
-        <!-- útvonal -->
-        <path class="plan__ghost" d="M180 428V330C180 300 210 280 225 250V110C225 90 240 80 260 76" fill="none" stroke="#E2531A" stroke-opacity=".35" stroke-width="1.4" stroke-dasharray="3 5"/>
-        <path class="plan__path" d="M180 428V330C180 300 210 280 225 250V110C225 90 240 80 260 76" fill="none" stroke="#E2531A" stroke-width="2.4"/>
-        <!-- kisgép (felülnézet) -->
+        <path d="M30 30H530V410H210M150 410H30V30" fill="none" stroke="#9a9a9a" stroke-width="2"/>
+        <path d="M150 410l18-26M210 410l-18-26" stroke="#9a9a9a" stroke-width="1.2" stroke-dasharray="3 3" fill="none"/>
+        <rect x="60" y="210" width="120" height="170" fill="#ffffff" fill-opacity=".04" stroke="#9a9a9a" stroke-width="2"/>
+        <path d="M60 210l120 170M180 210L60 380" stroke="#9a9a9a" stroke-opacity=".3"/>
+        <g fill="none" stroke="#7a7a7a"><circle cx="420" cy="320" r="26"/><circle cx="470" cy="250" r="20"/><circle cx="300" cy="350" r="18"/></g>
+        <rect x="250" y="62" width="250" height="18" fill="none" stroke="#F26B1D" stroke-opacity=".45" stroke-dasharray="4 4"/>
+        <rect class="plan__trench" x="250" y="62" width="250" height="18" fill="#F26B1D" fill-opacity=".3" stroke="#F26B1D" stroke-width="2"/>
+        <path class="plan__ghost" d="M180 428V330C180 300 210 280 225 250V110C225 90 240 80 260 76" fill="none" stroke="#F26B1D" stroke-opacity=".35" stroke-width="1.4" stroke-dasharray="3 5"/>
+        <path class="plan__path" d="M180 428V330C180 300 210 280 225 250V110C225 90 240 80 260 76" fill="none" stroke="#F26B1D" stroke-width="2.4"/>
         <g class="plan__machine" transform="translate(180 428)"><g transform="translate(-7 -2)">
-          <rect x="-10" y="-14" width="6" height="30" fill="#111315"/><rect x="18" y="-14" width="6" height="30" fill="#111315"/>
-          <rect x="-4" y="-8" width="22" height="20" fill="#E2531A"/>
-          <g class="plan__arm"><path d="M7 -8V-30" stroke="#111315" stroke-width="3"/><rect x="1" y="-38" width="12" height="8" fill="#111315"/></g>
+          <rect x="-10" y="-14" width="6" height="30" fill="#d0d0d0"/><rect x="18" y="-14" width="6" height="30" fill="#d0d0d0"/>
+          <rect x="-4" y="-8" width="22" height="20" fill="#F26B1D"/>
+          <g class="plan__arm"><path d="M7 -8V-30" stroke="#d0d0d0" stroke-width="3"/><rect x="1" y="-38" width="12" height="8" fill="#d0d0d0"/></g>
         </g></g>
-        <!-- címkék -->
-        <g font-family="Manrope, sans-serif" font-size="11" letter-spacing="1.6" fill="#111315">
+        <g font-family="Manrope, sans-serif" font-size="11" letter-spacing="1.6" fill="#bdbdbd">
           <text x="92" y="300">HÁZ</text>
           <text x="160" y="400" text-anchor="middle">KAPU</text>
-          <text x="375" y="102" text-anchor="middle" fill="#B5400F">ÁROK</text>
+          <text x="375" y="102" text-anchor="middle" fill="#F26B1D">ÁROK</text>
           <text x="300" y="220">KERT</text>
-          <text x="530" y="24" text-anchor="end" fill-opacity=".6">TELEKHATÁR</text>
         </g>
-        <!-- szélesség-jelölés szám nélkül -->
-        <g stroke="#E2531A" stroke-width="1.4"><path d="M150 422h60"/><path d="M150 416v12M210 416v12"/></g>
       </svg>
-      <figcaption>Vázlat – nem méretarányos. A tényleges bejutást a helyszín alapján egyeztetjük.</figcaption>
-    </figure>
-
-    <figure class="paper__photo">
-      <img src="img/fas-terulet-2-720.webp" srcset="img/fas-terulet-2-720.webp 720w, img/fas-terulet-2-1200.webp 1200w" sizes="(max-width: 860px) 100vw, 26vw" width="720" height="960" loading="lazy" alt="Kisebb munkagép fás területen, előtte kiforgatott földdel és gyökerekkel teli talaj">
-      <figcaption><span class="label">Valódi munka · 06</span>Kisgép fás területen</figcaption>
+      <figcaption>Vázlat, nem méretarányos – a bejutást a helyszín alapján egyeztetjük.</figcaption>
     </figure>
   </div>
 </section>
@@ -219,165 +191,77 @@
 <!-- ============ MUNKÁK ============ -->
 <section class="sec works" id="munkak" aria-labelledby="munkak-cim">
   <div class="wrap">
-    <header class="works__head">
-      <p class="sec__no"><b>03</b> / Munkák</p>
-      <h2 id="munkak-cim">Valódi helyszínek, valódi föld</h2>
-      <p class="muted">Saját munkafotók, retusálás nélkül. Kattints a képre a nagyobb nézetért.</p>
-    </header>
-
+    <h2 id="munkak-cim">Munkák</h2>
+    <p class="sec__lead">Saját munkafotók, retusálás nélkül. Kattints a képre a nagyobb nézetért.</p>
     <div class="gal">
-      <button class="gal__item g1" data-i="0">
-        <img src="img/kozmuarok-720.webp" srcset="img/kozmuarok-720.webp 720w, img/kozmuarok-1200.webp 1069w" sizes="(max-width: 860px) 100vw, 40vw" width="720" height="1280" loading="lazy" alt="Hosszú, egyenes közműárok homokos talajban, mellette kitermelt föld, háttérben sárga kotró-rakodó">
-        <span class="gal__cap"><b>01</b><span>Árokásás<small>Közműárok, nyomvonal</small></span></span>
-      </button>
-      <button class="gal__item g2" data-i="1">
-        <img src="img/tusko-720.webp" srcset="img/tusko-720.webp 720w, img/tusko-1200.webp 1069w" sizes="(max-width: 860px) 100vw, 30vw" width="720" height="1280" loading="lazy" alt="Kiemelt, nagy tuskó gyökérzettel egy gép kanalában, mellette munkás">
-        <span class="gal__cap"><b>02</b><span>Tuskó és gyökérzet<small>Tuskóeltávolítás</small></span></span>
-      </button>
-      <button class="gal__item g3" data-i="2">
-        <img src="img/fas-terulet-1-720.webp" srcset="img/fas-terulet-1-720.webp 720w, img/fas-terulet-1-1200.webp 1200w" sizes="(max-width: 860px) 100vw, 30vw" width="720" height="960" loading="lazy" alt="Fás területen felforgatott talaj, gyökércsonkok és ágak, háttérben fák">
-        <span class="gal__cap"><b>03</b><span>Földmunka fás területen<small>Terület-előkészítés</small></span></span>
-      </button>
-      <button class="gal__item g4" data-i="3">
-        <img src="img/talajrendezes-1-720.webp" srcset="img/talajrendezes-1-720.webp 720w, img/talajrendezes-1-1200.webp 1200w" sizes="(max-width: 860px) 100vw, 30vw" width="720" height="960" loading="lazy" alt="Géppel elegyengetett nagy földfelület, keréknyomokkal, a háttérben erdő">
-        <span class="gal__cap"><b>04</b><span>Terület-előkészítés<small>Gépi talajrendezés</small></span></span>
-      </button>
-      <button class="gal__item g5" data-i="4">
-        <img src="img/talajrendezes-2-720.webp" srcset="img/talajrendezes-2-720.webp 720w, img/talajrendezes-2-1200.webp 1200w" sizes="(max-width: 860px) 100vw, 30vw" width="720" height="960" loading="lazy" alt="Elegyengetett földterület más szögből, a háttérben fasor">
-        <span class="gal__cap"><b>05</b><span>Terület-előkészítés<small>Ugyanaz a terület, más nézet</small></span></span>
-      </button>
-      <button class="gal__item g6" data-i="5">
-        <img src="img/fas-terulet-2-720.webp" srcset="img/fas-terulet-2-720.webp 720w, img/fas-terulet-2-1200.webp 1200w" sizes="(max-width: 860px) 100vw, 30vw" width="720" height="960" loading="lazy" alt="Kisebb munkagép fás területen, előtte kiforgatott földdel teli talaj">
-        <span class="gal__cap"><b>06</b><span>Kisgép munka közben<small>Földmunka fás területen</small></span></span>
-      </button>
+      <button class="gal__item"><span class="gal__img"><img src="img/kozmuarok-720.webp" width="720" height="1280" loading="lazy" alt="Hosszú, egyenes közműárok homokos talajban, háttérben sárga kotró-rakodó"></span><span class="gal__cap"><b>Árokásás</b>Közműárok, nyomvonal</span></button>
+      <button class="gal__item"><span class="gal__img"><img src="img/tusko-720.webp" width="720" height="1280" loading="lazy" alt="Kiemelt nagy tuskó gyökérzettel egy gép kanalában"></span><span class="gal__cap"><b>Tuskó és gyökérzet</b>Tuskóeltávolítás</span></button>
+      <button class="gal__item"><span class="gal__img"><img src="img/fas-terulet-2-720.webp" width="720" height="960" loading="lazy" alt="Kisebb munkagép fás területen, előtte kiforgatott föld"></span><span class="gal__cap"><b>Kisgép munka közben</b>Fás terület</span></button>
+      <button class="gal__item"><span class="gal__img"><img src="img/fas-terulet-1-720.webp" width="720" height="960" loading="lazy" alt="Fás területen felforgatott talaj, gyökércsonkok és ágak"></span><span class="gal__cap"><b>Földmunka fás területen</b>Terület-előkészítés</span></button>
+      <button class="gal__item"><span class="gal__img"><img src="img/talajrendezes-1-720.webp" width="720" height="960" loading="lazy" alt="Géppel elegyengetett nagy földfelület keréknyomokkal"></span><span class="gal__cap"><b>Terület-előkészítés</b>Gépi talajrendezés</span></button>
+      <button class="gal__item"><span class="gal__img"><img src="img/talajrendezes-2-720.webp" width="720" height="960" loading="lazy" alt="Elegyengetett földterület más szögből, háttérben fasor"></span><span class="gal__cap"><b>Terület-előkészítés</b>Ugyanaz a terület, más nézet</span></button>
     </div>
   </div>
 </section>
 
-<!-- ============ RÓLAM + FOLYAMAT ============ -->
+<!-- ============ RÓLAM ============ -->
 <section class="sec about" id="rolam" aria-labelledby="rolam-cim">
   <div class="wrap">
-    <div class="about__top">
-      <p class="sec__no"><b>04</b> / Rólam</p>
-      <div>
-        <h2 id="rolam-cim">Kalocsa Zoltán vagyok, gépi földmunkát vállalok.</h2>
-        <p class="about__lead">Gyorsan és korrekt áron – így dolgozom. Közvetlenül velem beszélsz: nincs diszpécser, nincs ügyintéző, a telefont én veszem fel.</p>
-      </div>
-    </div>
-
-    <h3 class="about__h3 label">Hogyan dolgozom</h3>
-    <div class="steps-wrap"><span class="steps__line" aria-hidden="true"></span>
+    <h2 id="rolam-cim">Rólam</h2>
+    <p class="sec__lead">Kalocsa Zoltán vagyok, gépi földmunkát vállalok – gyorsan és korrekt áron. Közvetlenül velem beszélsz, a telefont én veszem fel.</p>
     <ol class="steps">
-      <li class="step">
-        <span class="step__stake" aria-hidden="true"></span>
-        <span class="step__no">01</span>
-        <h4>Kapcsolatfelvétel</h4>
-        <p>Hívj fel, és mondd el, hol és milyen földmunkára van szükség.</p>
-      </li>
-      <li class="step">
-        <span class="step__stake" aria-hidden="true"></span>
-        <span class="step__no">02</span>
-        <h4>Igények egyeztetése</h4>
-        <p>Átbeszéljük a helyszínt, a bejutást és a feladatot.</p>
-      </li>
-      <li class="step">
-        <span class="step__stake" aria-hidden="true"></span>
-        <span class="step__no">03</span>
-        <h4>Helyszíni földmunka</h4>
-        <p>A megbeszélt időpontban érkezem a géppel, és elvégzem a munkát.</p>
-      </li>
-    </ol></div>
+      <li class="step"><span class="step__no">01</span><h3>Hívás</h3><p>Hívj fel, és mondd el, hol és milyen földmunkára van szükség.</p></li>
+      <li class="step"><span class="step__no">02</span><h3>Egyeztetés</h3><p>Átbeszéljük a helyszínt, a bejutást és a feladatot.</p></li>
+      <li class="step"><span class="step__no">03</span><h3>Földmunka</h3><p>A megbeszélt időpontban érkezem a géppel, és elvégzem a munkát.</p></li>
+    </ol>
   </div>
 </section>
 
 <!-- ============ KISZÁLLÁS ============ -->
 <section class="sec area" id="terulet" aria-labelledby="terulet-cim">
   <div class="wrap area__grid">
-    <div class="area__copy">
-      <p class="sec__no"><b>05</b> / Kiszállás</p>
-      <h2 id="terulet-cim">Kecskemét <span class="o">+ <span class="count" data-to="60">60</span> km</span></h2>
-      <p>Gépi földmunkát Kecskeméten és a környező településeken vállalok. Pontos helyszín alapján egyeztessünk.</p>
-      <a class="btn btn--line" href="tel:+36704204170">Megkérdezem, kijön-e <i class="arr" aria-hidden="true"></i></a>
+    <div>
+      <h2 id="terulet-cim">Kecskemét + <span class="count" data-to="60">60</span> km</h2>
+      <p class="sec__lead">Gépi földmunkát Kecskeméten és a környező településeken vállalok. Pontos helyszín alapján egyeztessünk.</p>
     </div>
     <figure class="radar" aria-hidden="true">
       <svg viewBox="0 0 400 400">
-        <g fill="none" stroke="#383B3D">
-          <circle cx="200" cy="200" r="60"/><circle cx="200" cy="200" r="120"/>
-          <path d="M200 10V390M10 200H390"/>
-        </g>
-        <circle class="radar__ring" cx="200" cy="200" r="180" fill="rgba(255,107,43,.05)" stroke="#FF6B2B" stroke-width="1.6" stroke-dasharray="6 6"/>
-        <g stroke="#AFB0AD" stroke-width="1">
-          <path d="M200 14v10M200 376v10M14 200h10M376 200h10"/>
-        </g>
-        <defs><linearGradient id="sw" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#FF6B2B" stop-opacity="0"/><stop offset="1" stop-color="#FF6B2B" stop-opacity=".35"/></linearGradient></defs>
-        <g class="radar__sweep"><path d="M200 200L380 200A180 180 0 0 0 355.9 110Z" fill="url(#sw)"/><path d="M200 200H380" stroke="#FF6B2B" stroke-width="1.4"/></g>
-        <path class="radar__r" d="M200 200L327 73" stroke="#FF6B2B" stroke-width="1.4"/>
-        <circle cx="200" cy="200" r="6" fill="#FF6B2B"/>
-        <circle cx="200" cy="200" r="14" fill="none" stroke="#FF6B2B" class="radar__pulse"/>
-        <g font-family="Manrope, sans-serif" font-size="12" letter-spacing="2" fill="#F6F5F2">
-          <text x="214" y="222">KECSKEMÉT</text>
-          <text x="270" y="118" fill="#FF6B2B" transform="rotate(-45 270 118)">60 KM</text>
-          <text x="200" y="8" text-anchor="middle" fill="#AFB0AD" font-size="10">É</text>
-        </g>
+        <defs><linearGradient id="sw" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#F26B1D" stop-opacity="0"/><stop offset="1" stop-color="#F26B1D" stop-opacity=".35"/></linearGradient></defs>
+        <g fill="none" stroke="#444"><circle cx="200" cy="200" r="60"/><circle cx="200" cy="200" r="120"/><path d="M200 10V390M10 200H390"/></g>
+        <circle class="radar__ring" cx="200" cy="200" r="180" fill="rgba(242,107,29,.05)" stroke="#F26B1D" stroke-width="1.6" stroke-dasharray="6 6"/>
+        <g class="radar__sweep"><path d="M200 200L380 200A180 180 0 0 0 355.9 110Z" fill="url(#sw)"/><path d="M200 200H380" stroke="#F26B1D" stroke-width="1.4"/></g>
+        <circle cx="200" cy="200" r="6" fill="#F26B1D"/>
+        <circle cx="200" cy="200" r="14" fill="none" stroke="#F26B1D" class="radar__pulse"/>
+        <text x="214" y="222" font-family="Manrope, sans-serif" font-size="12" letter-spacing="2" fill="#e6e6e6">KECSKEMÉT</text>
       </svg>
-      <figcaption class="label">Sematikus ábra, nem térkép</figcaption>
     </figure>
   </div>
 </section>
 
 <!-- ============ KAPCSOLAT ============ -->
-<section class="cta" id="kapcsolat" aria-labelledby="kapcs-cim">
+<section class="sec cta" id="kapcsolat" aria-labelledby="kapcs-cim">
   <div class="wrap cta__grid">
-    <div class="cta__copy">
-      <p class="sec__no sec__no--dark"><b>06</b> / Kapcsolat</p>
+    <div>
       <h2 id="kapcs-cim">Mozdítsuk meg a terved!</h2>
-      <p class="cta__sub">Hívj közvetlenül, és mondd el, milyen földmunkára van szükséged. A telefont én veszem fel.</p>
+      <p class="sec__lead">Hívj közvetlenül, és mondd el, milyen földmunkára van szükséged.</p>
+      <p class="cta__meta"><a href="tel:+36704204170">+36 70 420 4170</a><span>·</span><a href="mailto:zkalocsa8@gmail.com">zkalocsa8@gmail.com</a></p>
     </div>
-    <div class="callcard">
-      <p class="label">Hívás</p>
-      <a class="cta__tel" href="tel:+36704204170">+36 70 420 4170</a>
-      <a class="btn btn--orange callcard__btn" href="tel:+36704204170"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 3h3l1.5 4.2-2 1.4a12 12 0 0 0 6.3 6.3l1.4-2 4.2 1.5v3A2 2 0 0 1 19 20 16 16 0 0 1 4 5a2 2 0 0 1 2.6-2Z"/></svg>Hívás most</a>
-      <dl class="callcard__meta">
-        <div><dt>Terület</dt><dd>Kecskemét és 60 km-es körzete</dd></div>
-        <div><dt>E-mail</dt><dd><a href="mailto:zkalocsa8@gmail.com">zkalocsa8@gmail.com</a></dd></div>
-      </dl>
-    </div>
+    <a class="btn btn--lg" href="tel:+36704204170">Hívás most</a>
   </div>
 </section>
 
 </main>
 
 <footer class="ftr">
-  <div class="wrap ftr__grid">
-    <div class="ftr__brand">
-      <img src="logo-jel.svg" width="40" height="40" alt="">
-      <p><b>KALOCSA ZOLTÁN</b><br>Gépi földmunka</p>
-    </div>
-    <div>
-      <p class="label">Elérhetőség</p>
-      <p><a href="tel:+36704204170">+36 70 420 4170</a><br><a href="mailto:zkalocsa8@gmail.com">zkalocsa8@gmail.com</a></p>
-    </div>
-    <div>
-      <p class="label">Terület</p>
-      <p>Kecskemét és 60 km-es körzete</p>
-    </div>
-    <nav aria-label="Lábléc navigáció">
-      <p class="label">Oldal</p>
-      <p><a href="#szolgaltatasok">Szolgáltatások</a><br><a href="#munkak">Munkák</a><br><a href="#rolam">Rólam</a><br><a href="#kapcsolat">Kapcsolat</a></p>
-    </nav>
-  </div>
-  <div class="wrap ftr__base">
-    <span>© <span id="ev">2026</span> Kalocsa Zoltán · Adatkezelés, impresszum: [feltöltendő]</span>
-    <span>Látványterv · készítette: <a href="https://daekon.hu" rel="noopener">DAEKON</a></span>
+  <div class="wrap ftr__in">
+    <span class="brand__txt"><b>Kalocsa Zoltán</b><b>Gépi földmunka</b></span>
+    <p>Kecskemét és 60 km-es körzete<br><a href="tel:+36704204170">+36 70 420 4170</a> · <a href="mailto:zkalocsa8@gmail.com">zkalocsa8@gmail.com</a></p>
+    <p class="ftr__small">© <span id="ev">2026</span> Kalocsa Zoltán · Adatkezelés, impresszum: [feltöltendő] · Látványterv: <a href="https://daekon.hu" rel="noopener">DAEKON</a></p>
   </div>
 </footer>
 
-<!-- Mobil: alsó sáv -->
-<div class="dock" id="dock">
-  <a class="dock__call" href="tel:+36704204170"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 3h3l1.5 4.2-2 1.4a12 12 0 0 0 6.3 6.3l1.4-2 4.2 1.5v3A2 2 0 0 1 19 20 16 16 0 0 1 4 5a2 2 0 0 1 2.6-2Z"/></svg>Hívás · +36 70 420 4170</a>
-</div>
+<div class="dock" id="dock"><a href="tel:+36704204170">Hívás · +36 70 420 4170</a></div>
 
-<!-- Lightbox -->
 <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Munkafotó nagyban" hidden>
   <button class="lb__x" aria-label="Bezárás">×</button>
   <button class="lb__nav lb__prev" aria-label="Előző kép">←</button>
@@ -387,6 +271,6 @@
 
 <script src="js/gsap.min.js" defer></script>
 <script src="js/ScrollTrigger.min.js" defer></script>
-<script src="kalocsa.js?v=3" defer></script>
+<script src="kalocsa.js?v=4" defer></script>
 </body>
 </html>

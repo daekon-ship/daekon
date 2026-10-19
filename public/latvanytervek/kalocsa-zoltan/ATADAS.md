@@ -2,7 +2,7 @@
 
 **Élő terv:** https://daekon-ship.github.io/daekon/latvanytervek/kalocsa-zoltan/
 **Arculat + koncepció:** https://daekon-ship.github.io/daekon/latvanytervek/kalocsa-zoltan/koncepcio.html
-**Állapot:** 2. kör – csak hívás (űrlap kivéve), kompaktabb, kisebb tipográfia, gazdagabb mozgás (GSAP), a hero alsó talajszelvény-sávja törölve. Előzetes látványterv (noindex).
+**Állapot:** 3. kör – teljes átrajzolás az ügyfél által küldött sötét–narancs minta szerint (lapos grafit #2A2A2A, narancs nagybetűs címek, lekerekített narancs gombok, középre igazított narancs ikonok, szürke kotrógép a nyitóképen). Csak hívás, kompakt tipográfia, GSAP-mozgás. Előzetes látványterv (noindex).
 **Felépítés:** build nélküli statikus oldal (`index.html` + `kalocsa.css` + `kalocsa.js`), relatív útvonalak; GSAP 3 + ScrollTrigger helyben (`js/`).
 
 ## Koncepció
@@ -38,6 +38,9 @@ Előtte–utána párosítás nincs. A szolgáltatássorokhoz nem rendeltünk fo
 - **Betűméret:** a brief „óriás” címeket és kontúros „FÖLDMUNKA” háttérszöveget kért – az ügyfél kérésére kompakt méret (H1 max. 48 px), a kontúrszöveg helyett szintvonal-textúra.
 - **Szám:** a joszaki-profil egyes szám első személyben, tegezve ír, ezért a szöveg is így szól („vállalok”, „Rólam”, „Munkák”). Ha többes számot szeretne („Munkáink”, „Rólunk”), 1 perces csere.
 - **Betűk:** Archivo (keskeny 72%, 800) + Manrope, helyben (a repó meglévő OFL-fájljai).
+
+## 3. kör – „Nem hasonlít rá, küldtem milyennek kéne lennie”
+A minta (01_STYLE_REFERENCE_SOTET_NARANCS) szerkezete és stílusa 1:1 irány: bal oldalt narancs nagybetűs főcím + szürke szöveg + lekerekített narancs gomb, jobb oldalt szürke kotrógép, amely kilóg a fotókeretből; „SZOLGÁLTATÁSOK” narancs cím alatt középre igazított narancs ikonok (3 + 2), narancs alcímek, szürke szöveg; a végén nagy, jobbra igazított „HÍVÁS MOST” gomb. A minta stock-kotrógépe helyett **rajzolt (SVG) kisgép** – animálva ás –, a keretben Zoltán saját közműárok-fotója szürkeárnyalatosan, „Illusztráció · a keretben valódi munkafotó” jelöléssel. Az előző kör ornamentikája (szintvonalak, margóvonal, lézer, papírszekció, árokszelvény-logó a fejlécben) kikerült; a fejléc a mintához hasonlóan kétsoros szöveges név.
 
 ## 2. kör – ügyfél-visszajelzés
 - „Az a csík nem kell” → a hero alján lévő talajszelvény-sáv (narancs árokprofil) és az alatta futó szolgáltatás-szalag (ticker) is törölve; CSS/JS verziózva (`?v=3`), hogy a böngésző ne a régit mutassa.
