@@ -39,6 +39,9 @@ Előtte–utána párosítás nincs. A szolgáltatássorokhoz nem rendeltünk fo
 - **Szám:** a joszaki-profil egyes szám első személyben, tegezve ír, ezért a szöveg is így szól („vállalok”, „Rólam”, „Munkák”). Ha többes számot szeretne („Munkáink”, „Rólunk”), 1 perces csere.
 - **Betűk:** Archivo (keskeny 72%, 800) + Manrope, helyben (a repó meglévő OFL-fájljai).
 
+## Főcím
+A nyitókép főcíme Zoltán saját mondata a joszaki.hu-profiljáról: „Építkezel? Kertet újítasz? Nem akarsz ásni napokig?” (a harmadik sor homokszínnel kiemelve). A brief által javasolt „Nagy feladatok. Kis helyeken is.” kikerült.
+
 ## 4. kör – „Valami jó logót találj ki felülre”, „hogy néz az úgy egybe ki?”, „ez a színvilág jobb”
 - **Logó:** `logo-jel.svg` (jel) és `logo.svg` (jel + név): lekerekített homokszínű négyzet, benne sötétbarna kotrókar és kanál az árok-szelvény fölött. A fejlécben és a láblécben; hoverre a kar „ás” egyet.
 - **Nyitókép:** a fotó + ráhelyezett rajz keveréke helyett egyetlen rajzolt jelenet: keretben homokszínű ég és dombok, a kisgép (lánctalp, tolólap, fülke, gém, kar, kanál) a minta szerint kilóg a keretből, a kanál a földkupacba ás. A valódi fotók a Munkák galériában.

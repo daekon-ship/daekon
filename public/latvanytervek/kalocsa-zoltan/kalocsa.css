@@ -85,6 +85,7 @@ p{margin:0 0 1em}
 .hero__h1{font-size:clamp(32px,3.9vw,52px);line-height:1.06;margin-bottom:22px}
 .ln{display:block;overflow:hidden;padding-bottom:.05em}
 .ln>span{display:block}
+.ln--acc{color:#A8743A}
 .hero__lead{font-size:17px;line-height:1.65;max-width:28em;margin-bottom:32px}
 .hero__cta{display:flex;align-items:center;gap:22px;flex-wrap:wrap}
 .hero__tel{font:600 17px/1 var(--disp);font-stretch:88%;letter-spacing:.04em;color:var(--ink);text-decoration:none;font-variant-numeric:tabular-nums;border-bottom:1px solid #A88E68;padding-bottom:4px}
