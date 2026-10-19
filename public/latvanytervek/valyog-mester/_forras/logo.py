@@ -16,7 +16,7 @@ ROOT = Path(__file__).resolve().parent.parent
 ART = ROOT / "arculat"
 ART.mkdir(exist_ok=True)
 
-C = dict(forest="#1F3B5C", clay="#B4532A", sand="#ECE2D0", ivory="#F6F1E8",
+C = dict(forest="#17191B", clay="#B4532A", sand="#FFFFFF", ivory="#FFFFFF",
          char="#242521", terra="#A8481F")
 
 # ---------- embléma geometria (100 × 100 egység) ----------
@@ -36,10 +36,13 @@ def emblem(roof, block, x=0, y=0, s=1.0):
 
 
 # ---------- szöveg görbére ----------
-def load(path, wght):
+def load(path, wght, wdth=None):
     f = TTFont(path)
     if "fvar" in f:
-        f = instantiateVariableFont(f, {"wght": wght})
+        axes = {"wght": wght}
+        if wdth and any(a.axisTag == "wdth" for a in f["fvar"].axes):
+            axes["wdth"] = wdth
+        f = instantiateVariableFont(f, axes)
     return f
 
 
@@ -60,11 +63,11 @@ def text_path(font, text, size, tracking=0.0):
     return pen.getCommands(), x - tracking * size
 
 
-CORM = load(ROOT / "fonts/cormorant-var.woff", 650)
-MANR = load(ROOT / "fonts/manrope-var.woff", 700)
+CORM = load(ROOT / "fonts/archivo-var.woff", 700, 88)
+MANR = load(ROOT / "fonts/archivo-var.woff", 500, 100)
 
-WORD, WW = text_path(CORM, "VÁLYOG-MESTER", 40, 0.045)
-SUB, SW = text_path(MANR, "VÁLYOGHÁZAK · RÉGI FALAK FELÚJÍTÁSA", 8.6, 0.16)
+WORD, WW = text_path(CORM, "VÁLYOG-MESTER", 36, 0.02)
+SUB, SW = text_path(MANR, "VÁLYOGHÁZAK · RÉGI FALAK FELÚJÍTÁSA", 8.4, 0.12)
 
 
 def svg(w, h, body, title):
@@ -84,7 +87,6 @@ def horizontal(roof, block, word, sub, bg=None):
         body += f'<rect width="{w+24:.1f}" height="{h+24:.1f}" x="-12" y="-12" fill="{bg}"/>'
     body += emblem(roof, block, 0, 1, es)
     body += f'<path transform="translate({tx} 40)" d="{WORD}" fill="{word}"/>'
-    body += f'<rect x="{tx}" y="48.5" width="{WW:.1f}" height=".9" fill="{block}" opacity=".85"/>'
     body += f'<path transform="translate({tx} 64)" d="{SUB}" fill="{sub}"/>'
     if bg:
         return svg(w + 24, h + 24, f'<g transform="translate(12 12)">{body.replace(f"x=\"-12\" y=\"-12\"", "x=\"-12\" y=\"-12\"")}</g>', "Vályog-Mester")
@@ -102,10 +104,10 @@ def stacked(roof, block, word, sub):
 
 
 files = {
-    "logo-vizszintes-vilagos.svg": horizontal(C["forest"], C["clay"], C["forest"], C["terra"]),
-    "logo-vizszintes-sotet.svg": horizontal(C["sand"], C["clay"], C["ivory"], C["sand"]),
-    "logo-allo-vilagos.svg": stacked(C["forest"], C["clay"], C["forest"], C["terra"]),
-    "logo-allo-sotet.svg": stacked(C["sand"], C["clay"], C["ivory"], C["sand"]),
+    "logo-vizszintes-vilagos.svg": horizontal(C["forest"], C["clay"], C["forest"], "#6B6E72"),
+    "logo-vizszintes-sotet.svg": horizontal("#FFFFFF", C["clay"], "#FFFFFF", "#B9BBBE"),
+    "logo-allo-vilagos.svg": stacked(C["forest"], C["clay"], C["forest"], "#6B6E72"),
+    "logo-allo-sotet.svg": stacked("#FFFFFF", C["clay"], "#FFFFFF", "#B9BBBE"),
     "logo-egyszinu.svg": horizontal(C["char"], C["char"], C["char"], C["char"]),
     "embléma-vilagos.svg": svg(100, 100, emblem(C["forest"], C["clay"]), "Vályog-Mester embléma"),
     "embléma-sotet.svg": svg(100, 100, emblem(C["sand"], C["clay"]), "Vályog-Mester embléma"),

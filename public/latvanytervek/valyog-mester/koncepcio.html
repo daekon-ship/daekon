@@ -7,20 +7,18 @@
 <meta name="robots" content="noindex, nofollow">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <style>
-@font-face { font-family: "Cormorant Garamond"; src: url("fonts/cormorant-var.woff") format("woff"); font-weight: 300 700; font-display: swap; }
-@font-face { font-family: "Cormorant Garamond"; src: url("fonts/cormorant-italic-var.woff") format("woff"); font-weight: 300 700; font-style: italic; font-display: swap; }
-@font-face { font-family: "Manrope"; src: url("fonts/manrope-var.woff") format("woff"); font-weight: 200 800; font-display: swap; }
+@font-face { font-family: "Archivo"; src: url("fonts/archivo-var.woff") format("woff"); font-weight: 400 900; font-stretch: 75% 125%; font-display: swap; }
 :root { --forest:#1F3B5C; --clay:#B4532A; --clay-ink:#9A421D; --sand:#ECE2D0; --ivory:#F6F1E8; --char:#242521; --terra:#A8481F; --soft:#4F524A; --line:rgba(36,37,33,.14); }
 * { box-sizing: border-box; }
-body { margin: 0; background: var(--ivory); color: var(--char); font: 450 1.0625rem/1.65 Manrope, system-ui, sans-serif; overflow-x: clip; }
+body { margin: 0; background: var(--ivory); color: var(--char); font: 450 1.0625rem/1.65 Archivo, system-ui, sans-serif; overflow-x: clip; }
 img, svg { display: block; max-width: 100%; }
 .wrap { width: min(100% - 2.5rem, 1180px); margin-inline: auto; }
-h1, h2, h3 { font-family: "Cormorant Garamond", serif; font-weight: 500; margin: 0; line-height: 1.1; }
+h1, h2, h3 { font-family: Archivo, sans-serif; font-weight: 500; margin: 0; line-height: 1.1; }
 h1 { font-size: clamp(2.2rem, 1.6rem + 2vw, 3.2rem); }
 h2 { font-size: clamp(1.8rem, 1.4rem + 1.4vw, 2.5rem); margin-bottom: 1rem; }
 h3 { font-size: 1.55rem; }
 em { color: var(--clay-ink); }
-.eyebrow { font: 700 .72rem/1 Manrope, sans-serif; letter-spacing: .2em; text-transform: uppercase; color: var(--clay-ink); margin: 0 0 1rem; }
+.eyebrow { font: 700 .72rem/1 Archivo, sans-serif; letter-spacing: .2em; text-transform: uppercase; color: var(--clay-ink); margin: 0 0 1rem; }
 header.top { background: var(--forest) url("img/tx-kek.webp"); background-size: 420px; color: var(--ivory); padding: 2rem 0 4rem; }
 header.top img { width: 220px; margin-bottom: 3.5rem; }
 header.top p { max-width: 40rem; color: rgba(248,245,239,.8); margin-top: 1rem; }
@@ -30,11 +28,11 @@ section { padding: 4.5rem 0; border-bottom: 1px solid var(--line); }
 .dirs { display: grid; gap: 1.5rem; }
 .dir { display: grid; grid-template-columns: 1fr 1.25fr; gap: 2rem; padding: 2rem; border: 1px solid var(--line); border-radius: 4px; background: #fff; }
 .dir.win { border: 2px solid var(--forest); }
-.dir__tag { display: inline-block; margin-bottom: .8rem; padding: .25rem .6rem; border-radius: 3px; font: 700 .66rem/1.4 Manrope; letter-spacing: .14em; text-transform: uppercase; background: var(--sand); }
+.dir__tag { display: inline-block; margin-bottom: .8rem; padding: .25rem .6rem; border-radius: 3px; font: 700 .66rem/1.4 Archivo; letter-spacing: .14em; text-transform: uppercase; background: var(--sand); }
 .dir.win .dir__tag { background: var(--forest); color: var(--ivory); }
 .dir p { margin: .6rem 0 0; color: var(--soft); font-size: .97rem; }
 .dir dl { margin: 0; display: grid; gap: .55rem; font-size: .93rem; }
-.dir dt { font: 700 .68rem/1.6 Manrope; letter-spacing: .12em; text-transform: uppercase; color: var(--clay-ink); }
+.dir dt { font: 700 .68rem/1.6 Archivo; letter-spacing: .12em; text-transform: uppercase; color: var(--clay-ink); }
 .dir dd { margin: 0 0 .4rem; }
 .sw { display: flex; gap: .35rem; margin-top: 1rem; }
 .sw i { width: 2.2rem; height: 2.2rem; border-radius: 3px; border: 1px solid var(--line); }
@@ -44,23 +42,23 @@ section { padding: 4.5rem 0; border-bottom: 1px solid var(--line); }
 .lp--l { background: #fff; border: 1px solid var(--line); }
 .lp--d { background: var(--forest); }
 .lp--s { background: var(--sand); }
-.lp small { align-self: end; font: 700 .64rem/1 Manrope; letter-spacing: .14em; text-transform: uppercase; opacity: .6; }
+.lp small { align-self: end; font: 700 .64rem/1 Archivo; letter-spacing: .14em; text-transform: uppercase; opacity: .6; }
 .lp--d small { color: var(--ivory); }
 .lp img { max-height: 9rem; }
 .apps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1rem; }
 .app { border-radius: 4px; overflow: hidden; background: var(--sand); padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
-.app small { font: 700 .64rem/1 Manrope; letter-spacing: .14em; text-transform: uppercase; color: var(--soft); }
+.app small { font: 700 .64rem/1 Archivo; letter-spacing: .14em; text-transform: uppercase; color: var(--soft); }
 .card { aspect-ratio: 85/55; background: var(--forest); border-radius: 3px; padding: 7%; display: flex; flex-direction: column; justify-content: space-between; color: var(--ivory); box-shadow: 0 14px 30px -14px rgba(0,0,0,.4); }
 .card img { width: 58%; }
 .card p { margin: 0; font-size: .7rem; line-height: 1.5; }
-.card b { font: 600 1rem/1.2 "Cormorant Garamond"; display: block; }
+.card b { font: 600 1rem/1.2 Archivo; display: block; }
 .shirt, .van { width: 100%; height: auto; }
 .specs { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 1.5rem 2rem; }
 .specs h3 { margin-bottom: .5rem; }
 .specs p, .specs li { color: var(--soft); font-size: .95rem; }
 .specs ul { padding-left: 1.1rem; margin: 0; }
 .chips { display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem; }
-.chip { padding: 2.6rem .8rem .7rem; border-radius: 3px; font: 600 .78rem/1.3 Manrope; }
+.chip { padding: 2.6rem .8rem .7rem; border-radius: 3px; font: 600 .78rem/1.3 Archivo; }
 .files code { font-size: .86rem; }
 footer { padding: 2.5rem 0 4rem; font-size: .88rem; color: var(--soft); }
 @media (max-width: 800px) {
@@ -108,7 +106,7 @@ footer { padding: 2.5rem 0 4rem; font-size: .88rem; color: var(--soft); }
           <dl>
             <dt>Hero</dt><dd>A ház vonalai kirajzolódnak, megjelenik a repedt vályogfal, majd a friss mész „ráhúzódik” – a repedés eltűnik, a metszet megmarad.</dd>
             <dt>Szignatúra</dt><dd>Szolgáltatásoknál egy ragadós falrajz: görgetésre kiemelődik a fal azon része (vályog, vert fal, vegyes, aláfalazás, vakolat), amelyről épp szó van.</dd>
-            <dt>Típus</dt><dd>Cormorant Garamond (címek, dőlt kiemelés) + Manrope (szöveg)</dd>
+            <dt>Típus</dt><dd>Cormorant Garamond (címek, dőlt kiemelés) + Archivo (szöveg)</dd>
           </dl>
           <p class="verdict"><b>Miért ez?</b> Egyszerre szakmai és látványos, nem igényel fotót, mégsem „AI-hangulatú”: minden elem a mesterségből jön. Valódi fotók érkezése után is működik.</p>
         </div>
@@ -175,7 +173,7 @@ footer { padding: 2.5rem 0 4rem; font-size: .88rem; color: var(--soft); }
           <rect x="10" y="118" width="280" height="32" fill="#1F3B5C"/>
           <path d="M10 118h280" stroke="#B4532A" stroke-width="4"/>
           <image href="arculat/logo-vizszintes-vilagos.svg" x="30" y="45" width="200" height="40"/>
-          <text x="30" y="140" fill="#F6F1E8" font-family="Manrope" font-weight="700" font-size="13" letter-spacing="1">+36 30 966 9528</text>
+          <text x="30" y="140" fill="#F6F1E8" font-family="Archivo" font-weight="700" font-size="13" letter-spacing="1">+36 30 966 9528</text>
           <circle cx="70" cy="160" r="16" fill="#242521"/><circle cx="230" cy="160" r="16" fill="#242521"/>
         </svg>
       </div>
@@ -197,7 +195,7 @@ footer { padding: 2.5rem 0 4rem; font-size: .88rem; color: var(--soft); }
     </div>
     <div class="specs" style="margin-top:2rem">
       <div><h3>Cormorant Garamond</h3><p>Címek 500, kiemelés dőlt 450. Mérsékelt méretek: H1 legfeljebb 3,75rem, H2 3rem.</p></div>
-      <div><h3 style="font-family:Manrope;font-weight:700;font-size:1.2rem">Manrope</h3><p>Törzsszöveg 450 / 17px, címkék 700 nagybetűvel, széles betűközzel.</p></div>
+      <div><h3 style="font-family:Archivo;font-weight:700;font-size:1.2rem">Archivo</h3><p>Törzsszöveg 450 / 17px, címkék 700 nagybetűvel, széles betűközzel.</p></div>
       <div class="files"><h3>Fájlok</h3><p><code>arculat/</code> – vízszintes és álló logó világos/sötét/egyszínű, embléma (3 változat), favicon SVG + PNG (32, 180, 512). Minden SVG görbére alakított szöveggel, betűtípus nélkül is pontos.</p></div>
     </div>
   </div>

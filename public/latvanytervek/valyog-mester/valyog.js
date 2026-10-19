@@ -51,7 +51,7 @@
     bar.style.transform = `scaleX(${h > 0 ? y / h : 0})`;
     const past = y > hero.offsetHeight - 90;
     nav.classList.add('is-solid');            // világos nyitókép: a fejléc végig sötét szövegű
-    nav.classList.toggle('is-top', y < 40);
+    nav.classList.remove('is-top');
     nav.classList.toggle('is-hidden', past && y > lastY + 4 && y > 900 && !document.body.classList.contains('menu-open'));
     if (y < lastY - 4) nav.classList.remove('is-hidden');
     lastY = y;
@@ -256,7 +256,7 @@
   const nextSlide = () => {
     const cur = slides[si], nx = slides[(si + 1) % slides.length];
     loadSlide(nx);
-    const go = () => { nx.classList.add('is-on'); cur.classList.remove('is-on'); si = (si + 1) % slides.length; };
+    const go = () => { nx.classList.add('is-on'); cur.classList.remove('is-on'); si = (si + 1) % slides.length; $$('.hero__dots span').forEach((d, k) => d.classList.toggle('is-on', k === si)); };
     nx.complete && nx.naturalWidth ? go() : nx.addEventListener('load', go, { once: true });
   };
   if (motion && slides.length > 1) {
@@ -288,45 +288,20 @@
     playWithSound();
   }));
 
-  /* ================= GSAP: HERO + RAJZ + PARALLAX + FOLYAMATVONAL ================= */
+  /* ================= GSAP: HERO + FOLYAMAT ================= */
   const start = () => {
-    const hTitle = $('.hero__title'), hFade = $$('.hero .eyebrow, .hero__lead, .hero__ctas, .hero__tel, .hero__bar');
-    if (!motion || !window.gsap) {
-      hTitle.classList.add('is-in');
-      return;
-    }
+    const hTitle = $('.hero__title');
+    if (!motion || !window.gsap) { hTitle.classList.add('is-in'); return; }
     const g = window.gsap;
     if (window.ScrollTrigger) g.registerPlugin(window.ScrollTrigger);
-    g.set(hFade, { autoAlpha: 0, y: 18 });
+    g.set('.hero .eyebrow, .hero__lead, .hero__ctas, .hero__tel, .hero__bar li', { autoAlpha: 0, y: 16 });
     g.timeline({ defaults: { ease: 'power3.out' } })
-      .to('.hero .eyebrow', { autoAlpha: 1, y: 0, duration: .7 }, .15)
-      .add(() => hTitle.classList.add('is-in'), .25)
-      .to('.hero__lead, .hero__ctas', { autoAlpha: 1, y: 0, duration: .8, stagger: .1 }, .75)
-      .to('.hero__tel', { autoAlpha: 1, y: 0, duration: .8 }, 1.0)
-      .fromTo('.hero__gable', { clipPath: 'inset(100% 0 0 0)' }, { clipPath: 'inset(0% 0 0 0)', duration: 1.3, ease: 'power3.inOut' }, .1)
-      .fromTo('.hero__pediment .ped-fill', { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: .8 }, 1.0)
-      .fromTo('.hero__pediment polyline', { strokeDasharray: 140, strokeDashoffset: 140 }, { strokeDashoffset: 0, duration: 1.1, ease: 'power2.inOut', stagger: .12 }, 1.0)
-      .fromTo('.reel', { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: .8 }, 1.4)
-      .to('.hero__bar', { autoAlpha: 1, y: 0, duration: .8 }, 1.25);
-
-    // a „falmetszet” rajz a Miért-szekcióban, belépéskor rajzolódik ki
-    const house = g.timeline({ paused: true, defaults: { ease: 'power3.out' } })
-      .to('.house .draw', { strokeDashoffset: 0, duration: 1.6, ease: 'power2.inOut', stagger: .08 }, 0)
-      .to('.house .fill-in', { opacity: 1, duration: .8, stagger: .05 }, .8)
-      .fromTo('.house .crack', { opacity: 0 }, { opacity: 1, duration: .4 }, 1.3)
-      .fromTo('.house .sweep', { attr: { width: 0 } }, { attr: { width: 440 }, duration: 1.5, ease: 'power2.inOut' }, 1.7)
-      .to('.house .crack', { opacity: 0, duration: .5 }, 2.4)
-      .to('.house .cutedge', { opacity: 1, duration: .5 }, 2.9)
-      .to('.house .note', { opacity: 1, duration: .5, stagger: .12 }, 3.0);
-
-    if (!window.ScrollTrigger) { house.play(); return; }
-    window.ScrollTrigger.create({ trigger: '.why__art', start: 'top 80%', once: true, onEnter: () => house.play() });
-    const mm = g.matchMedia();
-    mm.add('(min-width: 901px)', () => {
-      g.to('.hero__copy', { yPercent: -8, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
-    });
-    const stepsEl = $('.steps');
-    g.fromTo(stepsEl, { '--line-p': 0 }, { '--line-p': 1, ease: 'none', scrollTrigger: { trigger: stepsEl, start: 'top 75%', end: 'bottom 55%', scrub: true } });
+      .fromTo('.hero__media', { clipPath: 'inset(0 0 0 100%)' }, { clipPath: 'inset(0 0 0 0%)', duration: 1.2, ease: 'power3.inOut' }, 0)
+      .to('.hero .eyebrow', { autoAlpha: 1, y: 0, duration: .6 }, .25)
+      .add(() => hTitle.classList.add('is-in'), .3)
+      .to('.hero__lead, .hero__ctas, .hero__tel', { autoAlpha: 1, y: 0, duration: .7, stagger: .08 }, .7)
+      .fromTo('.reel', { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0, duration: .7 }, 1.1)
+      .to('.hero__bar li', { autoAlpha: 1, y: 0, duration: .6, stagger: .07 }, 1.0);
   };
   if (document.readyState === 'complete') start(); else addEventListener('load', start);
 })();
