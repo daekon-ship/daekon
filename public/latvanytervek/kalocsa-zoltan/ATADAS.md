@@ -2,7 +2,7 @@
 
 **Élő terv:** https://daekon-ship.github.io/daekon/latvanytervek/kalocsa-zoltan/
 **Arculat + koncepció:** https://daekon-ship.github.io/daekon/latvanytervek/kalocsa-zoltan/koncepcio.html
-**Állapot:** 3. kör – teljes átrajzolás az ügyfél által küldött sötét–narancs minta szerint (lapos grafit #2A2A2A, narancs nagybetűs címek, lekerekített narancs gombok, középre igazított narancs ikonok, szürke kotrógép a nyitóképen). Csak hívás, kompakt tipográfia, GSAP-mozgás. Előzetes látványterv (noindex).
+**Állapot:** 4. kör – bézs–barna színvilág (az ügyfél második mintája, 02_STYLE_REFERENCE_BEZS szerint), új logó (narancsbarna négyzetben kotrókar az árok fölött + KALOCSA ZOLTÁN / GÉPI FÖLDMUNKA), a nyitóképen egységes rajzolt jelenet (kisgép kilóg a keretből, folyamatosan ás). Csak hívás, kompakt tipográfia, GSAP-mozgás. Előzetes látványterv (noindex).
 **Felépítés:** build nélküli statikus oldal (`index.html` + `kalocsa.css` + `kalocsa.js`), relatív útvonalak; GSAP 3 + ScrollTrigger helyben (`js/`).
 
 ## Koncepció
@@ -38,6 +38,11 @@ Előtte–utána párosítás nincs. A szolgáltatássorokhoz nem rendeltünk fo
 - **Betűméret:** a brief „óriás” címeket és kontúros „FÖLDMUNKA” háttérszöveget kért – az ügyfél kérésére kompakt méret (H1 max. 48 px), a kontúrszöveg helyett szintvonal-textúra.
 - **Szám:** a joszaki-profil egyes szám első személyben, tegezve ír, ezért a szöveg is így szól („vállalok”, „Rólam”, „Munkák”). Ha többes számot szeretne („Munkáink”, „Rólunk”), 1 perces csere.
 - **Betűk:** Archivo (keskeny 72%, 800) + Manrope, helyben (a repó meglévő OFL-fájljai).
+
+## 4. kör – „Valami jó logót találj ki felülre”, „hogy néz az úgy egybe ki?”, „ez a színvilág jobb”
+- **Logó:** `logo-jel.svg` (jel) és `logo.svg` (jel + név): lekerekített homokszínű négyzet, benne sötétbarna kotrókar és kanál az árok-szelvény fölött. A fejlécben és a láblécben; hoverre a kar „ás” egyet.
+- **Nyitókép:** a fotó + ráhelyezett rajz keveréke helyett egyetlen rajzolt jelenet: keretben homokszínű ég és dombok, a kisgép (lánctalp, tolólap, fülke, gém, kar, kanál) a minta szerint kilóg a keretből, a kanál a földkupacba ás. A valódi fotók a Munkák galériában.
+- **Színvilág:** bézs #EADBB8 alap, sötétbarna #3A2A1B címek és ikonok, homok/karamell #C9A066–#B98547 gombok sötétbarna felirattal, sötétbarna lábléc.
 
 ## 3. kör – „Nem hasonlít rá, küldtem milyennek kéne lennie”
 A minta (01_STYLE_REFERENCE_SOTET_NARANCS) szerkezete és stílusa 1:1 irány: bal oldalt narancs nagybetűs főcím + szürke szöveg + lekerekített narancs gomb, jobb oldalt szürke kotrógép, amely kilóg a fotókeretből; „SZOLGÁLTATÁSOK” narancs cím alatt középre igazított narancs ikonok (3 + 2), narancs alcímek, szürke szöveg; a végén nagy, jobbra igazított „HÍVÁS MOST” gomb. A minta stock-kotrógépe helyett **rajzolt (SVG) kisgép** – animálva ás –, a keretben Zoltán saját közműárok-fotója szürkeárnyalatosan, „Illusztráció · a keretben valódi munkafotó” jelöléssel. Az előző kör ornamentikája (szintvonalak, margóvonal, lézer, papírszekció, árokszelvény-logó a fejlécben) kikerült; a fejléc a mintához hasonlóan kétsoros szöveges név.

@@ -84,31 +84,30 @@
   tl.to('.ln>span', { y: 0, duration: 1.1, stagger: .14 }, .1)
     .from('.hero__lead', { y: 24, autoAlpha: 0, duration: .9 }, .45)
     .from('.hero__cta > *', { y: 20, autoAlpha: 0, duration: .8, stagger: .1 }, .6)
-    .from('.frame', { clipPath: 'inset(0% 0% 0% 100%)', duration: 1.3, ease: 'expo.inOut' }, .15)
-    .from('.frame img', { scale: 1.3, duration: 1.8 }, .15)
-    .from('.ex__tracks, .ex > rect, .ex > path:not(:first-of-type):not(.ex__pile), .ex > g:not(.ex__boom):not(.ex__tracks):not(.ex__dust)', { x: 260, autoAlpha: 0, duration: 1.3, ease: 'power3.out' }, .3)
-    .from('.ex__chain', { strokeDashoffset: 72, duration: 1.3, ease: 'power3.out' }, .3)
-    .from('.ex__boom', { x: 260, autoAlpha: 0, rotation: 12, svgOrigin: '332 346', duration: 1.4, ease: 'power3.out' }, .3)
-    .from('.ex > path:first-of-type, .ex__pile', { y: 40, autoAlpha: 0, duration: 1 }, .2)
-    .from('.hero__note', { autoAlpha: 0, duration: .6 }, 1.2);
+    .from('.ex__frame', { clipPath: 'inset(0% 0% 0% 100%)', duration: 1.3, ease: 'expo.inOut' }, .1)
+    .from('.ex__pile', { y: 40, autoAlpha: 0, duration: 1 }, .3)
+    .from('.ex__machine', { x: 300, duration: 1.6, ease: 'power3.out' }, .35)
+    .from('.ex__chain', { strokeDashoffset: 90, duration: 1.6, ease: 'power3.out' }, .35)
+    .from('.ex__boom', { rotation: 10, svgOrigin: '296 330', duration: 1.2, ease: 'power2.out' }, 1)
+    .from('.brand', { y: -20, autoAlpha: 0, duration: .8 }, 0)
+;
 
   // kotrógép ás: gém, kar, kanál ciklikusan; a kanálból föld hull
   const dig = g.timeline({ repeat: -1, delay: 1.8, defaults: { ease: 'sine.inOut' } });
-  dig.to('.ex__boom', { rotation: 5, svgOrigin: '332 346', duration: 1.1 })
-     .to('.ex__arm', { rotation: 14, svgOrigin: '220 108', duration: 1.1 }, '<')
-     .to('.ex__bucket', { rotation: -28, svgOrigin: '126 328', duration: .9 }, '-=.5')
-     .to('.ex__boom', { rotation: -4, svgOrigin: '332 346', duration: 1.2 })
-     .to('.ex__arm', { rotation: -6, svgOrigin: '220 108', duration: 1.2 }, '<')
-     .to('.ex__bucket', { rotation: 12, svgOrigin: '126 328', duration: .7 }, '-=.4')
+  dig.to('.ex__boom', { rotation: 4, svgOrigin: '296 330', duration: 1.1 })
+     .to('.ex__arm', { rotation: 9, svgOrigin: '200 160', duration: 1.1 }, '<')
+     .to('.ex__bucket', { rotation: -24, svgOrigin: '112 322', duration: .9 }, '-=.5')
+     .to('.ex__boom', { rotation: -4, svgOrigin: '296 330', duration: 1.2 })
+     .to('.ex__arm', { rotation: -6, svgOrigin: '200 160', duration: 1.2 }, '<')
+     .to('.ex__bucket', { rotation: 12, svgOrigin: '112 322', duration: .7 }, '-=.4')
      .fromTo('.ex__dust circle', { y: -60, autoAlpha: 1 }, { y: 0, autoAlpha: 0, duration: .8, stagger: .06, ease: 'power2.in' }, '<')
      .to(['.ex__boom', '.ex__arm', '.ex__bucket'], { rotation: 0, duration: 1 });
 
   // görgetés: a gép előrébb, a fotó lassabban mozog
   g.to('.ex', { y: -40, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
-  g.to('.frame img', { yPercent: 10, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
   if (fine && desk) {
-    const ex = g.quickTo('.ex', 'x', { duration: 1, ease: 'power3' }), fx = g.quickTo('.frame', 'x', { duration: 1.2, ease: 'power3' });
-    d.querySelector('.hero').addEventListener('mousemove', e => { const n = e.clientX / innerWidth - .5; ex(n * 18); fx(n * -10); });
+    const ex = g.quickTo('.ex__machine', 'x', { duration: 1, ease: 'power3' }), fx = g.quickTo('.ex__frame', 'x', { duration: 1.2, ease: 'power3' });
+    d.querySelector('.hero').addEventListener('mousemove', e => { const n = e.clientX / innerWidth - .5; ex(n * 14); fx(n * -8); });
   }
 
   // --- címek szavanként, bevezetők ---
@@ -180,7 +179,7 @@
 
   // --- kapcsolat: a nagy gomb beúszik, majd finoman „lélegzik” ---
   g.from('.btn--lg', { scale: .85, autoAlpha: 0, duration: 1, ease: 'back.out(1.8)', scrollTrigger: { trigger: '.cta', start: 'top 80%' } });
-  g.to('.btn--lg', { boxShadow: '0 1px 0 rgba(255,255,255,.18) inset, 0 0 0 10px rgba(242,107,29,.12), 0 14px 34px rgba(242,107,29,.35)', duration: 1.4, repeat: -1, yoyo: true, ease: 'sine.inOut', delay: 1.5 });
+  g.to('.btn--lg', { boxShadow: '0 1px 0 rgba(255,255,255,.18) inset, 0 0 0 10px rgba(150,105,50,.14), 0 14px 34px rgba(150,105,50,.30)', duration: 1.4, repeat: -1, yoyo: true, ease: 'sine.inOut', delay: 1.5 });
 
   // --- mágneses gombok (asztali) ---
   if (fine) d.querySelectorAll('.btn').forEach(b => {

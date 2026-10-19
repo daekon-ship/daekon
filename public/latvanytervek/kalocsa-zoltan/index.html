@@ -6,10 +6,10 @@
 <title>Kalocsa Zoltán | Gépi földmunka Kecskeméten és 60 km-es körzetében</title>
 <meta name="description" content="Gépi földmunka Kecskeméten és környékén: alapásás, közműárok ásás, nyomvonalásás, tuskóeltávolítás, tereprendezés – kis géppel, szűk helyeken is. Hívás: +36 70 420 4170.">
 <meta name="robots" content="noindex, nofollow">
-<meta name="theme-color" content="#2A2A2A">
+<meta name="theme-color" content="#EADBB8">
 <link rel="icon" href="logo-jel.svg" type="image/svg+xml">
 <link rel="preload" href="fonts/archivo-var.woff" as="font" type="font/woff" crossorigin>
-<link rel="stylesheet" href="kalocsa.css?v=4">
+<link rel="stylesheet" href="kalocsa.css?v=6">
 <script>if(!matchMedia("(prefers-reduced-motion: reduce)").matches){document.documentElement.classList.add("anim");setTimeout(function(){if(!window.gsap)document.documentElement.classList.remove("anim")},3000)}</script>
 </head>
 <body>
@@ -18,7 +18,8 @@
 <header class="hdr" id="fejlec">
   <div class="hdr__in wrap">
     <a class="brand" href="#top" aria-label="Kalocsa Zoltán – gépi földmunka, kezdőlap">
-      <span class="brand__txt"><b>Kalocsa Zoltán</b><b>Gépi földmunka</b></span>
+      <svg class="brand__mark" viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="10" fill="#C9A066"/><path d="M6 38h11l3 5h8l3-5h11" fill="none" stroke="#3A2A1B" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/><path class="bm-arm" d="M12.5 33L20.5 11.5L31.5 22.5" fill="none" stroke="#3A2A1B" stroke-width="4.2" stroke-linejoin="round" stroke-linecap="round"/><path class="bm-bucket" d="M29.6 20.8L37.4 23.2L36.6 31.4Q31.6 33 28.8 27.6Z" fill="#3A2A1B"/><circle cx="12.5" cy="33" r="3.4" fill="#3A2A1B"/></svg>
+      <span class="brand__txt"><b>Kalocsa Zoltán</b><small>Gépi földmunka</small></span>
     </a>
     <nav class="nav" id="nav" aria-label="Fő navigáció">
       <a href="#szolgaltatasok">Szolgáltatások</a>
@@ -49,60 +50,69 @@
     </div>
 
     <div class="hero__art">
-      <figure class="frame">
-        <img src="img/kozmuarok-1200.webp" srcset="img/kozmuarok-720.webp 720w, img/kozmuarok-1200.webp 1069w" sizes="(max-width: 860px) 90vw, 36vw" width="1069" height="1900" alt="Kiásott közműárok homokos talajban – Kalocsa Zoltán munkája" fetchpriority="high">
-        <figcaption>Valódi munka · közműárok</figcaption>
-      </figure>
-
-      <!-- Rajzolt kisgép (illusztráció, nem a vállalkozó gépének fotója) -->
-      <svg class="ex" viewBox="0 0 620 520" aria-hidden="true">
+      <!-- Rajzolt jelenet: kisgép, amely kilóg a keretből (illusztráció) -->
+      <svg class="ex" viewBox="10 110 590 340" role="img" aria-label="Rajzolt kisgép munka közben">
         <defs>
-          <linearGradient id="gBody" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b9b9b9"/><stop offset="1" stop-color="#7b7b7b"/></linearGradient>
-          <linearGradient id="gArm" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c4c4c4"/><stop offset="1" stop-color="#7f7f7f"/></linearGradient>
-          <linearGradient id="gGlass" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8b959a"/><stop offset=".55" stop-color="#4c5458"/><stop offset="1" stop-color="#363c3f"/></linearGradient>
-          <linearGradient id="gDirt" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a4541"/><stop offset="1" stop-color="#2e2b29"/></linearGradient>
+          <linearGradient id="gSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#D8CAA9"/><stop offset="1" stop-color="#BCA47A"/></linearGradient>
+          <linearGradient id="gOr" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#DDBA80"/><stop offset="1" stop-color="#B4874C"/></linearGradient>
+          <linearGradient id="gOr2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#DDBA80"/><stop offset="1" stop-color="#A97C42"/></linearGradient>
+          <linearGradient id="gGlass" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8C8573"/><stop offset=".5" stop-color="#4F483C"/><stop offset="1" stop-color="#37302A"/></linearGradient>
+          <clipPath id="cFrame"><rect x="190" y="150" width="410" height="290"/></clipPath>
         </defs>
-        <path d="M0 500 Q90 452 170 470 T330 486 T620 478 V520 H0Z" fill="url(#gDirt)"/>
-        <path class="ex__pile" d="M20 500 Q60 440 110 452 Q150 430 190 470 Q220 488 230 500Z" fill="#3e3a37"/>
-        <g class="ex__tracks">
-          <rect x="250" y="428" width="336" height="64" rx="32" fill="#353535"/>
-          <rect class="ex__chain" x="250" y="428" width="336" height="64" rx="32" fill="none" stroke="#262626" stroke-width="7" stroke-dasharray="11 7"/>
-          <rect x="264" y="440" width="308" height="40" rx="20" fill="#4d4d4d"/>
-          <g fill="#2f2f2f" stroke="#6d6d6d" stroke-width="3">
-            <circle cx="286" cy="460" r="17"/><circle cx="550" cy="460" r="17"/>
-            <circle cx="340" cy="466" r="10"/><circle cx="390" cy="466" r="10"/><circle cx="440" cy="466" r="10"/><circle cx="490" cy="466" r="10"/>
+        <g class="ex__frame">
+          <rect x="190" y="150" width="410" height="290" fill="url(#gSky)"/>
+          <g clip-path="url(#cFrame)">
+            <path d="M190 360Q280 318 380 340T600 322V440H190Z" fill="#A88B60"/>
+            <path d="M190 392Q300 360 420 382T600 372V440H190Z" fill="#94774E"/>
+            <g stroke="#9C8762" stroke-width="1" opacity=".5"><path d="M230 330V270M236 330V282M528 318V250M534 318V262"/></g>
           </g>
         </g>
-        <rect x="300" y="408" width="236" height="24" fill="#474747"/>
-        <path d="M288 410V334Q288 316 306 316H562Q588 316 588 346V410Z" fill="url(#gBody)"/>
-        <path d="M562 328Q604 330 604 372V404L566 410Z" fill="#6b6b6b"/>
-        <g stroke="#666" stroke-width="3"><path d="M502 340v50M516 340v50M530 340v50M544 340v50"/></g>
-        <path d="M288 366H588" stroke="#F26B1D" stroke-width="5"/>
-        <path d="M416 318V188Q416 172 432 172H518L548 248V318Z" fill="#8d8d8d"/>
-        <path d="M428 306V186H512L536 252V306Z" fill="url(#gGlass)"/>
-        <path d="M474 186V306" stroke="#8d8d8d" stroke-width="6"/>
-        <path d="M436 200l24 0l-18 40z" fill="#fff" opacity=".12"/>
-        <g class="ex__boom">
-          <path d="M346 386L282 222" stroke="#575757" stroke-width="16" stroke-linecap="round"/>
-          <path d="M318 312L290 240" stroke="#d6d6d6" stroke-width="8" stroke-linecap="round"/>
-          <path d="M314 356L352 336Q304 206 236 98L202 116Q266 214 314 356Z" fill="url(#gArm)"/>
-          <circle cx="332" cy="346" r="11" fill="#444" stroke="#9a9a9a" stroke-width="3"/>
-          <g class="ex__arm">
-            <path d="M256 124L196 196" stroke="#575757" stroke-width="12" stroke-linecap="round"/>
-            <path d="M232 152L206 184" stroke="#d6d6d6" stroke-width="6" stroke-linecap="round"/>
-            <path d="M204 96L238 118L140 336L110 322Z" fill="url(#gArm)"/>
-            <circle cx="220" cy="108" r="10" fill="#444" stroke="#9a9a9a" stroke-width="3"/>
-            <g class="ex__bucket">
-              <path d="M110 316L150 334Q164 384 122 414L62 410Q54 366 110 316Z" fill="#7a7a7a"/>
-              <path d="M62 410L122 414Q150 392 150 334" fill="none" stroke="#5c5c5c" stroke-width="5"/>
-              <g fill="#565656"><path d="M62 408l-12 14 18-4z"/><path d="M82 411l-10 14 18-4z"/><path d="M102 413l-8 14 16-5z"/></g>
-              <circle cx="126" cy="328" r="9" fill="#444" stroke="#9a9a9a" stroke-width="3"/>
+        <path class="ex__pile" d="M10 440Q56 392 104 404Q150 386 196 424L204 440Z" fill="#7E6242"/>
+        <path d="M10 440H600" stroke="#94774E" stroke-width="4"/>
+
+        <g class="ex__machine">
+          <g class="ex__base">
+            <rect x="262" y="388" width="268" height="52" rx="26" fill="#3F2F20"/>
+            <rect class="ex__chain" x="262" y="388" width="268" height="52" rx="26" fill="none" stroke="#2E2217" stroke-width="6" stroke-dasharray="9 6"/>
+            <rect x="274" y="398" width="244" height="32" rx="16" fill="#5A4532"/>
+            <g fill="#36281B" stroke="#7A6046" stroke-width="3"><circle cx="296" cy="414" r="13"/><circle cx="496" cy="414" r="13"/><circle cx="346" cy="418" r="7"/><circle cx="396" cy="418" r="7"/><circle cx="446" cy="418" r="7"/></g>
+            <path d="M240 392L264 398V438H234Q228 414 240 392Z" fill="url(#gOr)"/>
+            <path d="M234 438H264" stroke="#8E6535" stroke-width="3"/>
+            <rect x="290" y="376" width="212" height="14" fill="#4A3828"/>
+            <path d="M284 378V322Q284 306 300 306H470Q514 306 518 348L520 378Z" fill="url(#gOr)"/>
+            <path d="M284 364H520V378H284Z" fill="#8E6535" opacity=".9"/>
+            <g stroke="#8E6535" stroke-width="3"><path d="M484 320v34M494 320v34M504 324v30"/></g>
+            <path d="M372 306V196Q372 180 388 180H452Q466 180 470 196L484 306Z" fill="#47362A"/>
+            <path d="M384 296V194H452L468 296Z" fill="url(#gGlass)"/>
+            <path d="M420 194V296" stroke="#47362A" stroke-width="5"/>
+            <path d="M390 202h20l-14 34z" fill="#fff" opacity=".14"/>
+            <rect x="364" y="172" width="114" height="12" rx="4" fill="url(#gOr)"/>
+            <rect x="274" y="314" width="26" height="42" rx="6" fill="#8E6535"/>
+          </g>
+          <g class="ex__boom">
+            <path d="M314 362L250 236" stroke="#4F3D2C" stroke-width="13" stroke-linecap="round"/>
+            <path d="M272 280L252 240" stroke="#EAD9B6" stroke-width="6" stroke-linecap="round"/>
+            <path d="M284 338L310 324Q298 236 214 148L188 170Q262 242 284 338Z" fill="url(#gOr2)"/>
+            <path d="M310 324Q298 236 214 148" fill="none" stroke="#F2D9A8" stroke-width="2" opacity=".6"/>
+            <circle cx="296" cy="330" r="9" fill="#3F2F20" stroke="#A08562" stroke-width="3"/>
+            <g class="ex__arm">
+              <path d="M240 200L214 140" stroke="#4F3D2C" stroke-width="10" stroke-linecap="round"/>
+              <path d="M232 182L218 150" stroke="#EAD9B6" stroke-width="5" stroke-linecap="round"/>
+              <path d="M192 134L222 148L126 330L100 318Z" fill="url(#gOr2)"/>
+              <path d="M190 192L134 286" stroke="#4F3D2C" stroke-width="8" stroke-linecap="round"/>
+              <path d="M150 260L134 288" stroke="#EAD9B6" stroke-width="4" stroke-linecap="round"/>
+              <circle cx="200" cy="160" r="8" fill="#3F2F20" stroke="#A08562" stroke-width="3"/>
+              <g class="ex__bucket">
+                <path d="M100 312L136 326Q148 372 114 400L58 396Q50 352 100 312Z" fill="#47362A"/>
+                <path d="M58 396L114 400Q144 376 136 326" fill="none" stroke="#5A4532" stroke-width="4"/>
+                <g fill="#2E2217"><path d="M58 394l-12 13 17-3z"/><path d="M76 397l-10 13 17-3z"/><path d="M95 399l-8 13 15-4z"/></g>
+                <circle cx="112" cy="322" r="8" fill="#3F2F20" stroke="#A08562" stroke-width="3"/>
+              </g>
             </g>
           </g>
         </g>
-        <g class="ex__dust" fill="#6a615a"><circle cx="70" cy="470" r="5"/><circle cx="96" cy="476" r="4"/><circle cx="56" cy="480" r="3"/><circle cx="120" cy="472" r="3"/></g>
+        <g class="ex__dust" fill="#8A6C48"><circle cx="66" cy="420" r="5"/><circle cx="90" cy="424" r="4"/><circle cx="52" cy="428" r="3"/><circle cx="112" cy="420" r="3"/></g>
       </svg>
-      <p class="hero__note">Illusztráció · a keretben valódi munkafotó</p>
     </div>
   </div>
 </section>
@@ -162,24 +172,24 @@
         <title id="plan-t">Vázlatos alaprajz: kisgép bejut a kapun, a ház mellett a kert végébe, ahol árkot ás</title>
         <defs><pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0H0V20" fill="none" stroke="#fff" stroke-opacity=".05"/></pattern></defs>
         <rect width="560" height="440" fill="url(#grid)"/>
-        <path d="M30 30H530V410H210M150 410H30V30" fill="none" stroke="#9a9a9a" stroke-width="2"/>
-        <path d="M150 410l18-26M210 410l-18-26" stroke="#9a9a9a" stroke-width="1.2" stroke-dasharray="3 3" fill="none"/>
-        <rect x="60" y="210" width="120" height="170" fill="#ffffff" fill-opacity=".04" stroke="#9a9a9a" stroke-width="2"/>
-        <path d="M60 210l120 170M180 210L60 380" stroke="#9a9a9a" stroke-opacity=".3"/>
-        <g fill="none" stroke="#7a7a7a"><circle cx="420" cy="320" r="26"/><circle cx="470" cy="250" r="20"/><circle cx="300" cy="350" r="18"/></g>
-        <rect x="250" y="62" width="250" height="18" fill="none" stroke="#F26B1D" stroke-opacity=".45" stroke-dasharray="4 4"/>
-        <rect class="plan__trench" x="250" y="62" width="250" height="18" fill="#F26B1D" fill-opacity=".3" stroke="#F26B1D" stroke-width="2"/>
-        <path class="plan__ghost" d="M180 428V330C180 300 210 280 225 250V110C225 90 240 80 260 76" fill="none" stroke="#F26B1D" stroke-opacity=".35" stroke-width="1.4" stroke-dasharray="3 5"/>
-        <path class="plan__path" d="M180 428V330C180 300 210 280 225 250V110C225 90 240 80 260 76" fill="none" stroke="#F26B1D" stroke-width="2.4"/>
+        <path d="M30 30H530V410H210M150 410H30V30" fill="none" stroke="#7A6146" stroke-width="2"/>
+        <path d="M150 410l18-26M210 410l-18-26" stroke="#7A6146" stroke-width="1.2" stroke-dasharray="3 3" fill="none"/>
+        <rect x="60" y="210" width="120" height="170" fill="#ffffff" fill-opacity=".04" stroke="#7A6146" stroke-width="2"/>
+        <path d="M60 210l120 170M180 210L60 380" stroke="#7A6146" stroke-opacity=".3"/>
+        <g fill="none" stroke="#6E5638"><circle cx="420" cy="320" r="26"/><circle cx="470" cy="250" r="20"/><circle cx="300" cy="350" r="18"/></g>
+        <rect x="250" y="62" width="250" height="18" fill="none" stroke="#A8743A" stroke-opacity=".45" stroke-dasharray="4 4"/>
+        <rect class="plan__trench" x="250" y="62" width="250" height="18" fill="#A8743A" fill-opacity=".3" stroke="#A8743A" stroke-width="2"/>
+        <path class="plan__ghost" d="M180 428V330C180 300 210 280 225 250V110C225 90 240 80 260 76" fill="none" stroke="#A8743A" stroke-opacity=".35" stroke-width="1.4" stroke-dasharray="3 5"/>
+        <path class="plan__path" d="M180 428V330C180 300 210 280 225 250V110C225 90 240 80 260 76" fill="none" stroke="#A8743A" stroke-width="2.4"/>
         <g class="plan__machine" transform="translate(180 428)"><g transform="translate(-7 -2)">
-          <rect x="-10" y="-14" width="6" height="30" fill="#d0d0d0"/><rect x="18" y="-14" width="6" height="30" fill="#d0d0d0"/>
-          <rect x="-4" y="-8" width="22" height="20" fill="#F26B1D"/>
-          <g class="plan__arm"><path d="M7 -8V-30" stroke="#d0d0d0" stroke-width="3"/><rect x="1" y="-38" width="12" height="8" fill="#d0d0d0"/></g>
+          <rect x="-10" y="-14" width="6" height="30" fill="#4F3D2C"/><rect x="18" y="-14" width="6" height="30" fill="#4F3D2C"/>
+          <rect x="-4" y="-8" width="22" height="20" fill="#A8743A"/>
+          <g class="plan__arm"><path d="M7 -8V-30" stroke="#4F3D2C" stroke-width="3"/><rect x="1" y="-38" width="12" height="8" fill="#4F3D2C"/></g>
         </g></g>
-        <g font-family="Manrope, sans-serif" font-size="11" letter-spacing="1.6" fill="#bdbdbd">
+        <g font-family="Manrope, sans-serif" font-size="11" letter-spacing="1.6" fill="#5B4733">
           <text x="92" y="300">HÁZ</text>
           <text x="160" y="400" text-anchor="middle">KAPU</text>
-          <text x="375" y="102" text-anchor="middle" fill="#F26B1D">ÁROK</text>
+          <text x="375" y="102" text-anchor="middle" fill="#A8743A">ÁROK</text>
           <text x="300" y="220">KERT</text>
         </g>
       </svg>
@@ -226,13 +236,13 @@
     </div>
     <figure class="radar" aria-hidden="true">
       <svg viewBox="0 0 400 400">
-        <defs><linearGradient id="sw" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#F26B1D" stop-opacity="0"/><stop offset="1" stop-color="#F26B1D" stop-opacity=".35"/></linearGradient></defs>
-        <g fill="none" stroke="#444"><circle cx="200" cy="200" r="60"/><circle cx="200" cy="200" r="120"/><path d="M200 10V390M10 200H390"/></g>
-        <circle class="radar__ring" cx="200" cy="200" r="180" fill="rgba(242,107,29,.05)" stroke="#F26B1D" stroke-width="1.6" stroke-dasharray="6 6"/>
-        <g class="radar__sweep"><path d="M200 200L380 200A180 180 0 0 0 355.9 110Z" fill="url(#sw)"/><path d="M200 200H380" stroke="#F26B1D" stroke-width="1.4"/></g>
-        <circle cx="200" cy="200" r="6" fill="#F26B1D"/>
-        <circle cx="200" cy="200" r="14" fill="none" stroke="#F26B1D" class="radar__pulse"/>
-        <text x="214" y="222" font-family="Manrope, sans-serif" font-size="12" letter-spacing="2" fill="#e6e6e6">KECSKEMÉT</text>
+        <defs><linearGradient id="sw" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#A8743A" stop-opacity="0"/><stop offset="1" stop-color="#A8743A" stop-opacity=".35"/></linearGradient></defs>
+        <g fill="none" stroke="#C4AC80"><circle cx="200" cy="200" r="60"/><circle cx="200" cy="200" r="120"/><path d="M200 10V390M10 200H390"/></g>
+        <circle class="radar__ring" cx="200" cy="200" r="180" fill="rgba(168,116,58,.07)" stroke="#A8743A" stroke-width="1.6" stroke-dasharray="6 6"/>
+        <g class="radar__sweep"><path d="M200 200L380 200A180 180 0 0 0 355.9 110Z" fill="url(#sw)"/><path d="M200 200H380" stroke="#A8743A" stroke-width="1.4"/></g>
+        <circle cx="200" cy="200" r="6" fill="#A8743A"/>
+        <circle cx="200" cy="200" r="14" fill="none" stroke="#A8743A" class="radar__pulse"/>
+        <text x="214" y="222" font-family="Manrope, sans-serif" font-size="12" letter-spacing="2" fill="#3A2A1B">KECSKEMÉT</text>
       </svg>
     </figure>
   </div>
@@ -254,7 +264,7 @@
 
 <footer class="ftr">
   <div class="wrap ftr__in">
-    <span class="brand__txt"><b>Kalocsa Zoltán</b><b>Gépi földmunka</b></span>
+    <span class="brand"><svg class="brand__mark" viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="10" fill="#C9A066"/><path d="M6 38h11l3 5h8l3-5h11" fill="none" stroke="#3A2A1B" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/><path class="bm-arm" d="M12.5 33L20.5 11.5L31.5 22.5" fill="none" stroke="#3A2A1B" stroke-width="4.2" stroke-linejoin="round" stroke-linecap="round"/><path class="bm-bucket" d="M29.6 20.8L37.4 23.2L36.6 31.4Q31.6 33 28.8 27.6Z" fill="#3A2A1B"/><circle cx="12.5" cy="33" r="3.4" fill="#3A2A1B"/></svg><span class="brand__txt"><b>Kalocsa Zoltán</b><small>Gépi földmunka</small></span></span>
     <p>Kecskemét és 60 km-es körzete<br><a href="tel:+36704204170">+36 70 420 4170</a> · <a href="mailto:zkalocsa8@gmail.com">zkalocsa8@gmail.com</a></p>
     <p class="ftr__small">© <span id="ev">2026</span> Kalocsa Zoltán · Adatkezelés, impresszum: [feltöltendő] · Látványterv: <a href="https://daekon.hu" rel="noopener">DAEKON</a></p>
   </div>
@@ -271,6 +281,6 @@
 
 <script src="js/gsap.min.js" defer></script>
 <script src="js/ScrollTrigger.min.js" defer></script>
-<script src="kalocsa.js?v=4" defer></script>
+<script src="kalocsa.js?v=6" defer></script>
 </body>
 </html>

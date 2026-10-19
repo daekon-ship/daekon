@@ -1,6 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-label="Kalocsa Zoltán – gépi földmunka">
-  <rect width="48" height="48" fill="#FF6B2B"/>
-  <path d="M0 18h15l5 17h8l5-17h15" fill="none" stroke="#111315" stroke-width="3.2" stroke-linejoin="miter"/>
-  <path d="M20 35h8" stroke="#111315" stroke-width="3.2"/>
-  <path d="M6 42h36" stroke="#111315" stroke-width="1.6" stroke-dasharray="3 3"/>
+  <rect width="48" height="48" rx="10" fill="#C9A066"/>
+  <path d="M6 38h11l3 5h8l3-5h11" fill="none" stroke="#3A2A1B" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M12.5 33L20.5 11.5L31.5 22.5" fill="none" stroke="#3A2A1B" stroke-width="4.2" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M29.6 20.8L37.4 23.2L36.6 31.4Q31.6 33 28.8 27.6Z" fill="#3A2A1B"/>
+  <circle cx="12.5" cy="33" r="3.4" fill="#3A2A1B"/>
 </svg>
