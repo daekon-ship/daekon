@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-label="Kalocsa Zoltán – gépi földmunka">
+  <rect width="48" height="48" fill="#FF6B2B"/>
+  <path d="M0 18h15l5 17h8l5-17h15" fill="none" stroke="#111315" stroke-width="3.2" stroke-linejoin="miter"/>
+  <path d="M20 35h8" stroke="#111315" stroke-width="3.2"/>
+  <path d="M6 42h36" stroke="#111315" stroke-width="1.6" stroke-dasharray="3 3"/>
+</svg>
