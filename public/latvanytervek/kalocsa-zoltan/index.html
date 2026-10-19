@@ -9,7 +9,7 @@
 <meta name="theme-color" content="#EADBB8">
 <link rel="icon" href="logo-jel.svg" type="image/svg+xml">
 <link rel="preload" href="fonts/archivo-var.woff" as="font" type="font/woff" crossorigin>
-<link rel="stylesheet" href="kalocsa.css?v=8">
+<link rel="stylesheet" href="kalocsa.css?v=9">
 <script>if(!matchMedia("(prefers-reduced-motion: reduce)").matches){document.documentElement.classList.add("anim");setTimeout(function(){if(!window.gsap)document.documentElement.classList.remove("anim")},3000)}</script>
 </head>
 <body>
@@ -52,7 +52,7 @@
 
     <div class="hero__art">
       <!-- Rajzolt jelenet: kisgép, amely kilóg a keretből (illusztráció) -->
-      <svg class="ex" viewBox="10 110 590 340" role="img" aria-label="Rajzolt kisgép munka közben">
+      <svg class="ex" viewBox="10 110 590 344" role="img" aria-label="Rajzolt kisgép munka közben">
         <defs>
           <linearGradient id="gSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#D8CAA9"/><stop offset="1" stop-color="#BCA47A"/></linearGradient>
           <linearGradient id="gOr" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#DDBA80"/><stop offset="1" stop-color="#B4874C"/></linearGradient>
@@ -67,8 +67,8 @@
             <path d="M190 392Q300 360 420 382T600 372V440H190Z" fill="#94774E"/>
           </g>
         </g>
-        <path class="ex__pile" d="M18 440Q50 404 92 408Q128 396 160 420Q176 430 182 440Z" fill="#5E4630"/>
-        <path d="M10 440H600" stroke="#94774E" stroke-width="4"/>
+        <path class="ex__ground" d="M10 438H44Q52 438 56 446Q60 450 70 450H112Q122 450 126 446Q130 438 138 438H600V452H10Z" fill="#6B5034"/>
+        <path d="M10 438H44Q52 438 56 446Q60 450 70 450H112Q122 450 126 446Q130 438 138 438H600" fill="none" stroke="#4E3A26" stroke-width="2.5"/>
 
         <g class="ex__machine">
           <g class="ex__base">
@@ -109,7 +109,6 @@
             </g>
           </g>
         </g>
-        <g class="ex__dust" fill="#8A6C48"><circle cx="66" cy="420" r="5"/><circle cx="90" cy="424" r="4"/><circle cx="52" cy="428" r="3"/><circle cx="112" cy="420" r="3"/></g>
       </svg>
     </div>
   </div>
@@ -279,6 +278,6 @@
 
 <script src="js/gsap.min.js" defer></script>
 <script src="js/ScrollTrigger.min.js" defer></script>
-<script src="kalocsa.js?v=7" defer></script>
+<script src="kalocsa.js?v=9" defer></script>
 </body>
 </html>

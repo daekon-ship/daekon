@@ -85,7 +85,7 @@
     .from('.hero__lead', { y: 24, autoAlpha: 0, duration: .9 }, .45)
     .from('.hero__cta > *', { y: 20, autoAlpha: 0, duration: .8, stagger: .1 }, .6)
     .from('.ex__frame', { clipPath: 'inset(0% 0% 0% 100%)', duration: 1.3, ease: 'expo.inOut' }, .1)
-    .from('.ex__pile', { y: 40, autoAlpha: 0, duration: 1 }, .3)
+    .from('.ex__ground', { scaleX: 0, transformOrigin: '100% 50%', duration: 1.2, ease: 'expo.inOut' }, .1)
     .from('.ex__machine', { x: 300, duration: 1.6, ease: 'power3.out' }, .35)
     .from('.ex__chain', { strokeDashoffset: 90, duration: 1.6, ease: 'power3.out' }, .35)
     .from('.ex__boom', { rotation: 10, svgOrigin: '296 330', duration: 1.2, ease: 'power2.out' }, 1)
@@ -100,7 +100,6 @@
      .to('.ex__boom', { rotation: -4, svgOrigin: '296 330', duration: 1.2 })
      .to('.ex__arm', { rotation: -6, svgOrigin: '200 160', duration: 1.2 }, '<')
      .to('.ex__bucket', { rotation: 12, svgOrigin: '112 322', duration: .7 }, '-=.4')
-     .fromTo('.ex__dust circle', { y: -60, autoAlpha: 1 }, { y: 0, autoAlpha: 0, duration: .8, stagger: .06, ease: 'power2.in' }, '<')
      .to(['.ex__boom', '.ex__arm', '.ex__bucket'], { rotation: 0, duration: 1 });
 
   // görgetés: a gép előrébb, a fotó lassabban mozog
