@@ -131,19 +131,6 @@
       });
     }
 
-    // --- szalag: görgetési sebességre gyorsul, irányt vált ---
-    const track = d.querySelector('.rail__track');
-    const loop = g.to(track, { xPercent: -50, duration: 30, ease: 'none', repeat: -1 });
-    let dir = 1;
-    ST.create({
-      onUpdate: self => {
-        const v = self.getVelocity();
-        if (v) dir = v > 0 ? 1 : -1;
-        g.to(loop, { timeScale: dir * (1 + Math.min(Math.abs(v) / 250, 6)), duration: .25, overwrite: true });
-        g.to(loop, { timeScale: dir, duration: 1.2, delay: .25, ease: 'power2.out' });
-      }
-    });
-
     // --- szekciócímek szavanként ---
     d.querySelectorAll('.sec h2, .cta h2').forEach(h => {
       const ws = split(h);

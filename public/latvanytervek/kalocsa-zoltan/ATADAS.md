@@ -40,7 +40,7 @@ Előtte–utána párosítás nincs. A szolgáltatássorokhoz nem rendeltünk fo
 - **Betűk:** Archivo (keskeny 72%, 800) + Manrope, helyben (a repó meglévő OFL-fájljai).
 
 ## 2. kör – ügyfél-visszajelzés
-- „Az a csík nem kell” → a hero alján lévő talajszelvény-sáv (narancs árokprofil) törölve.
+- „Az a csík nem kell” → a hero alján lévő talajszelvény-sáv (narancs árokprofil) és az alatta futó szolgáltatás-szalag (ticker) is törölve; CSS/JS verziózva (`?v=3`), hogy a böngésző ne a régit mutassa.
 - „Kevés az animáció” → GSAP-alapú mozgásrendszer (lásd lent és `koncepcio.html`).
 - „Ajánlatkérő se kell, elég hívni” → űrlap törölve; minden gomb `tel:` link (fejléc, hero, szolgáltatások, kiszállás, kapcsolat, mobil alsó sáv). Az e-mail csak kis betűvel a kapcsolat-kártyán és a láblécben maradt.
 - „Minden túl nagy, főleg a betűk” → teljes léptékcsökkentés: H1 32–48 px (volt 40–66), H2 23–32 px, szöveg 15,5 px, gombok 46 px, fejléc 72/58 px, szekciótávolság 64–116 px, mobilon H1 28–36 px.
@@ -55,7 +55,7 @@ Előtte–utána párosítás nincs. A szolgáltatássorokhoz nem rendeltünk fo
 | Adatkezelés, impresszum | [feltöltendő] |
 
 ## Mozgás (GSAP + ScrollTrigger, helyben)
-Betöltés ≈1,5 mp (fotó feltárul, cím soronként, vágójelek, méretvonal) · lézer-szintvonal a fotón · hero parallaxis + egérre mozduló szintvonalak · görgetési sebességre gyorsuló szalag · szavanként beemelkedő címek · kirajzolódó szolgáltatás-ikonok · görgetésre végigguruló kisgép a vázlaton, ásó karral és kitelő árokkal · galéria maszk + belső parallaxis · húzódó kitűzési vonal karókkal · radarnyaláb, 0→60 km számláló · mágneses gombok. `prefers-reduced-motion` mellett minden statikus; ha a GSAP nem töltődik be, a tartalom akkor is látszik.
+Betöltés ≈1,5 mp (fotó feltárul, cím soronként, vágójelek, méretvonal) · lézer-szintvonal a fotón · hero parallaxis + egérre mozduló szintvonalak · szavanként beemelkedő címek · kirajzolódó szolgáltatás-ikonok · görgetésre végigguruló kisgép a vázlaton, ásó karral és kitelő árokkal · galéria maszk + belső parallaxis · húzódó kitűzési vonal karókkal · radarnyaláb, 0→60 km számláló · mágneses gombok. `prefers-reduced-motion` mellett minden statikus; ha a GSAP nem töltődik be, a tartalom akkor is látszik.
 
 ## Ellenőrzés
 Playwright: 1440 / 768 / 390 / 360 px – nincs vízszintes túlcsordulás, nincs konzolhiba.

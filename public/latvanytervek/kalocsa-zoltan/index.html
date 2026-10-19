@@ -10,7 +10,7 @@
 <link rel="icon" href="logo-jel.svg" type="image/svg+xml">
 <link rel="preload" href="fonts/archivo-var.woff" as="font" type="font/woff" crossorigin>
 <link rel="preload" href="img/kozmuarok-1200.webp" as="image" type="image/webp" imagesrcset="img/kozmuarok-720.webp 720w, img/kozmuarok-1200.webp 1069w" imagesizes="(max-width: 860px) 100vw, 40vw">
-<link rel="stylesheet" href="kalocsa.css">
+<link rel="stylesheet" href="kalocsa.css?v=3">
 <script>if(!matchMedia("(prefers-reduced-motion: reduce)").matches){document.documentElement.classList.add("anim");setTimeout(function(){if(!window.gsap)document.documentElement.classList.remove("anim")},3000)}</script>
 </head>
 <body>
@@ -92,18 +92,6 @@
 
   <a class="scrollcue" href="#szolgaltatasok" aria-label="Tovább a szolgáltatásokhoz"><span class="scrollcue__bar"></span><span class="label">Görgess</span></a>
 </section>
-
-<!-- ============ TICKER ============ -->
-<div class="rail" aria-label="Szolgáltatások röviden">
-  <div class="rail__track">
-    <ul>
-      <li>Alapásás</li><li>Közműárok</li><li>Nyomvonalásás</li><li>Tuskóeltávolítás</li><li>Tereprendezés</li><li>Kert · udvar · telek</li>
-    </ul>
-    <ul aria-hidden="true">
-      <li>Alapásás</li><li>Közműárok</li><li>Nyomvonalásás</li><li>Tuskóeltávolítás</li><li>Tereprendezés</li><li>Kert · udvar · telek</li>
-    </ul>
-  </div>
-</div>
 
 <!-- ============ SZOLGÁLTATÁSOK ============ -->
 <section class="sec services" id="szolgaltatasok" aria-labelledby="szolg-cim">
@@ -399,6 +387,6 @@
 
 <script src="js/gsap.min.js" defer></script>
 <script src="js/ScrollTrigger.min.js" defer></script>
-<script src="kalocsa.js" defer></script>
+<script src="kalocsa.js?v=3" defer></script>
 </body>
 </html>
