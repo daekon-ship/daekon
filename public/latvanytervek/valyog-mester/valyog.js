@@ -79,13 +79,13 @@
   addEventListener('keydown', e => { if (e.key === 'Escape' && burger.getAttribute('aria-expanded') === 'true') { setMenu(false); burger.focus(); } });
   mqMobile.addEventListener?.('change', () => setMenu(false));
 
-  /* ================= SZOLGÁLTATÁSOK ↔ FALRAJZ ================= */
-  const wall = $('.wall'), items = $$('.svc__item');
+  /* ================= SZOLGÁLTATÁSOK ↔ FOTÓ =================
+     Desktopon a bal oldali keretben mindig az épp olvasott szolgáltatás fotója áll. */
+  const items = $$('.svc__item'), shots = $$('.svc-photo figure'), svcNo = $('#svc-no');
   const activate = item => {
     items.forEach(i => i.classList.toggle('is-active', i === item));
-    wall.classList.add('has-active');
-    wall.classList.toggle('is-all', item.dataset.zone === 'teljes');
-    $$('.zone', wall).forEach(z => z.classList.toggle('is-active', z.dataset.zone === item.dataset.zone));
+    shots.forEach(f => f.classList.toggle('is-on', f.dataset.zone === item.dataset.zone));
+    svcNo.textContent = $('.svc__no', item).textContent;
   };
   const svcIO = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) activate(e.target); }),
     { rootMargin: '-45% 0px -45% 0px' });

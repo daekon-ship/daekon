@@ -2,7 +2,7 @@
 
 **Élő terv:** https://daekon-ship.github.io/daekon/latvanytervek/valyog-mester/
 **Koncepció + arculat:** https://daekon-ship.github.io/daekon/latvanytervek/valyog-mester/koncepcio.html
-**Állapot:** 4. kör – új nyitókép és paletta; 3. kör – üres helyőrzők nélkül; 2. kör (a jelenlegi oldal képeivel és Túró István bemutatkozó videójával), előzetes látványterv (noindex). A valyog-mester.hu élő oldal érintetlen.
+**Állapot:** 6. kör – szolgáltatások valódi fotókkal kék sávon, okker „problémák”, tiszta világos szekciók; 4. kör – új nyitókép és paletta; 3. kör – üres helyőrzők nélkül; 2. kör (a jelenlegi oldal képeivel és Túró István bemutatkozó videójával), előzetes látványterv (noindex). A valyog-mester.hu élő oldal érintetlen.
 **Felépítés:** build nélküli statikus oldal a DAEKON-látványtervek házszabálya szerint (`index.html` + `valyog.css` + `valyog.js`), relatív útvonalakkal – bármilyen almappában működik. A briefben javasolt React + Vite + TS stacket szándékosan nem vezettem be: a repó összes látványterve build nélküli, és a Vite a `public/` tartalmát változatlanul másolja. Éles oldalhoz a komponensek 1:1 átvihetők React/Vite-ba (lásd „Komponensek”).
 
 ## Valós adatok (ellenőrizve)
@@ -106,7 +106,7 @@ Sávok: mész nyitókép + kék lábazat → elefántcsont → homok (szolgálta
 | Videó | némított hurok látótérben, megáll elhagyva | görgetés |
 | Cím-felfedés | szavanként alulról | belépés a nézetbe |
 | Hero parallax | a szöveg gyorsabban mozog a háttérnél (csak desktop) | görgetés, scrub |
-| Falrajz | az aktív szolgáltatás zónája kiemelődik, a többi halványul | görgetés (képernyő közepe) / egér |
+| Szolgáltatás-fotó | desktopon a ragadós keretben az épp olvasott szolgáltatás fotója úszik be (6 kép: 4 a jelenlegi oldalról, 2 videós képkocka), a sorszám okker címkén; mobilon minden szolgáltatás saját fotót kap | görgetés (képernyő közepe) / egér |
 | Folyamatvonal | agyagszínű vonal kitöltődik a 4 lépésen | görgetés, scrub |
 | Képek, kártyák | felúszás, a portréhely clip-path nyitással | belépés |
 | Menü | erdőzöld felület alulról felhúzódik, menüpontok lépcsőzve | kattintás |
@@ -126,3 +126,8 @@ Sávok: mész nyitókép + kék lábazat → elefántcsont → homok (szolgálta
 
 ## Forrásfájlok
 `_forras/texturak.py` (textúrák), `_forras/logo.py` (logócsalád + favicon), `_forras/og.html` (OG-kép forrása), `_forras/logo-symbols.svg` (inline szimbólumok).
+
+## 6. kör – változások
+- A szolgáltatásoknál a halványuló falrajz-animáció kikerült; helyette parasztkék sáv, bal oldalon ragadós, agyag-árnyékos fotókeret, amelyben az aktív szolgáltatás valódi fotója áll.
+- „Mikor hívjon szakembert?” – teljes okker háttér kék szöveggel (6:1 felett).
+- A koszos homok-textúrák törölve a világos szekciókról: tiszta meszelt fehér (`--paper #FBF8F2`) és mész (`--ivory`). A „Munkáink” és a lábléc sötét kék-fekete (#14263D) a szén helyett.

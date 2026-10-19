@@ -159,78 +159,53 @@
     <header class="sec-head">
       <p class="eyebrow">Szolgáltatások</p>
       <h2 id="szolg-cim" class="split">Amihez értünk: <em>a régi falak.</em></h2>
-      <p class="sec-head__text reveal">Görgetés közben a rajzon kiemelődik, hogy az adott munka a fal melyik részét érinti.</p>
+      <p class="sec-head__text reveal">Vályog, vert fal, vegyes falazat – mindegyiknél más a jó javítási mód. Ezekkel foglalkozunk nap mint nap.</p>
     </header>
 
     <div class="services__grid">
-      <div class="wall-wrap" aria-hidden="true">
-        <svg class="wall" viewBox="0 0 480 520" focusable="false">
-          <defs>
-            <pattern id="w-valyog" width="44" height="22" patternUnits="userSpaceOnUse">
-              <image href="img/tx-valyog.webp" width="120" height="120" preserveAspectRatio="none"/>
-              <path d="M0 .5H44M0 11.5H44M.5 0V11M22.5 11V22" stroke="#6e4026" stroke-opacity=".5" stroke-width="1.4" fill="none"/>
-            </pattern>
-            <pattern id="w-vert" width="160" height="160" patternUnits="userSpaceOnUse"><image href="img/tx-vertfal.webp" width="160" height="160"/></pattern>
-            <pattern id="w-vegyes" width="44" height="22" patternUnits="userSpaceOnUse">
-              <rect width="44" height="22" fill="url(#w-valyog)"/>
-              <rect x="1" y="1" width="21" height="9.5" fill="#A8481F"/><rect x="23" y="12" width="20" height="9.5" fill="#A8481F"/>
-            </pattern>
-            <pattern id="w-mesz" width="200" height="200" patternUnits="userSpaceOnUse"><image href="img/tx-mesz.webp" width="200" height="200"/></pattern>
-          </defs>
-          <!-- tető -->
-          <g class="zone" data-zone="teljes">
-            <path d="M20 132 L240 20 L460 132" fill="none" stroke="var(--forest)" stroke-width="10" stroke-linejoin="miter"/>
-            <path class="zone__outline" d="M30 132 H450 V470 H30Z" fill="none" stroke="var(--clay)" stroke-width="3" stroke-dasharray="8 7"/>
-          </g>
-          <!-- három falfajta, sávokban -->
-          <rect class="zone" data-zone="valyog" x="40" y="140" width="128" height="262" fill="url(#w-valyog)"/>
-          <rect class="zone" data-zone="vert" x="176" y="140" width="128" height="262" fill="url(#w-vert)"/>
-          <rect class="zone" data-zone="vegyes" x="312" y="140" width="128" height="262" fill="url(#w-vegyes)"/>
-          <!-- vakolat a homlokzaton (bal szélső sáv felülete) -->
-          <path class="zone" data-zone="vakolas" d="M40 140 H440 V176 H40Z" fill="url(#w-mesz)"/>
-          <!-- aláfalazás + alap -->
-          <g class="zone" data-zone="alafalazas">
-            <rect x="40" y="402" width="400" height="44" fill="#A8481F"/>
-            <path d="M40 413H440M40 424H440M40 435H440" stroke="#ECE2D0" stroke-opacity=".6"/>
-            <rect x="32" y="446" width="416" height="34" fill="#cfc6b6"/>
-            <path d="M32 446H448" stroke="#242521" stroke-width="2"/>
-          </g>
-          <path d="M10 480H470" stroke="#242521" stroke-width="2"/>
-          <g class="wall__labels">
-            <text x="104" y="500" text-anchor="middle">vályog</text>
-            <text x="240" y="500" text-anchor="middle">vert fal</text>
-            <text x="376" y="500" text-anchor="middle">vegyes</text>
-          </g>
-        </svg>
+      <div class="svc-photo" aria-hidden="true">
+        <figure data-zone="valyog" class="is-on"><img src="img/foto/hero-900.webp" srcset="img/foto/hero-900.webp 900w, img/foto/hero-1600.webp 1600w" sizes="(max-width: 900px) 92vw, 42vw" alt="" loading="lazy"></figure>
+        <figure data-zone="vert"><img src="img/foto/about-900.webp" srcset="img/foto/about-900.webp 900w, img/foto/about-1600.webp 1600w" sizes="(max-width: 900px) 92vw, 42vw" alt="" loading="lazy"></figure>
+        <figure data-zone="vegyes"><img src="img/foto/service2-900.webp" srcset="img/foto/service2-900.webp 900w, img/foto/service2-1600.webp 1600w" sizes="(max-width: 900px) 92vw, 42vw" alt="" loading="lazy"></figure>
+        <figure data-zone="alafalazas"><img src="img/foto/kocka-labazat.webp" alt="" loading="lazy"><figcaption>Valódi munka · képkocka a videóból</figcaption></figure>
+        <figure data-zone="vakolas"><img src="img/foto/kocka-fal.webp" alt="" loading="lazy"><figcaption>Valódi munka · képkocka a videóból</figcaption></figure>
+        <figure data-zone="teljes"><img src="img/foto/service1-900.webp" srcset="img/foto/service1-900.webp 900w, img/foto/service1-1600.webp 1600w" sizes="(max-width: 900px) 92vw, 42vw" alt="" loading="lazy"></figure>
+        <span class="svc-photo__no" id="svc-no">01</span>
       </div>
 
       <ol class="svc">
         <li class="svc__item" data-zone="valyog">
+          <img class="svc__img" src="img/foto/hero-900.webp" srcset="img/foto/hero-900.webp 900w, img/foto/hero-1600.webp 1600w" sizes="(max-width: 900px) 92vw, 42vw" alt="Meszelt falú, nádtetős vályogház" loading="lazy">
           <span class="svc__no">01</span>
           <h3>Vályogházak felújítása</h3>
           <p>Kimállott, megroggyant vagy átnedvesedett vályogfalak javítása, pótlása és újravakolása – a vályoghoz illő anyagokkal, hogy a fal ne kapjon olyan réteget, ami árt neki.</p>
         </li>
         <li class="svc__item" data-zone="vert">
+          <img class="svc__img" src="img/foto/about-900.webp" srcset="img/foto/about-900.webp 900w, img/foto/about-1600.webp 1600w" sizes="(max-width: 900px) 92vw, 42vw" alt="Nádtetős régi ház kertben" loading="lazy">
           <span class="svc__no">02</span>
           <h3>Vert falú házak javítása</h3>
           <p>A döngölt földfal hibáinak feltárása, a sérült részek helyreállítása és a lábazat rendbetétele. A vert fal nem téglafal: másképp kell bontani, pótolni és lezárni.</p>
         </li>
         <li class="svc__item" data-zone="vegyes">
+          <img class="svc__img" src="img/foto/service2-900.webp" srcset="img/foto/service2-900.webp 900w, img/foto/service2-1600.webp 1600w" sizes="(max-width: 900px) 92vw, 42vw" alt="Régi kis ház kopott vakolattal, cseréptetővel" loading="lazy">
           <span class="svc__no">03</span>
           <h3>Vegyes falazatú házak felújítása</h3>
           <p>Ahol vályog, tégla és kő találkozik egy falon belül, ott a csatlakozásoknál szokott gond lenni. Ezeket a pontokat kell okosan összedolgozni.</p>
         </li>
         <li class="svc__item" data-zone="alafalazas">
+          <img class="svc__img" src="img/foto/kocka-labazat.webp" alt="Szabaddá tett kőlábazat egy felújítás alatt álló háznál" loading="lazy">
           <span class="svc__no">04</span>
           <h3>Aláfalazás és falmegerősítés</h3>
           <p>Alapozási és betonozási munkák, aláfalazás szakaszosan, falrepedések javítása. Hogy szükség van-e rá, azt a felmérésen nézzük meg – nem minden repedés jelent alapozási hibát.</p>
         </li>
         <li class="svc__item" data-zone="vakolas">
+          <img class="svc__img" src="img/foto/kocka-fal.webp" alt="Frissen vakolt hosszú utcai fal" loading="lazy">
           <span class="svc__no">05</span>
           <h3>Vakolás és felületképzés</h3>
           <p>Leváló, málló vakolat leverése, falazás, újravakolás, glettelés – a falszerkezethez választott vakolattal, belül és kívül.</p>
         </li>
         <li class="svc__item" data-zone="teljes">
+          <img class="svc__img" src="img/foto/service1-900.webp" srcset="img/foto/service1-900.webp 900w, img/foto/service1-1600.webp 1600w" sizes="(max-width: 900px) 92vw, 42vw" alt="Felújított, fehérre meszelt nádtetős ház" loading="lazy">
           <span class="svc__no">06</span>
           <h3>Régi házak teljes felújítása</h3>
           <p>Amikor nem egy falszakasz, hanem az egész ház szorul rendbetételre: átalakítás és kőművesmunkák, lépésről lépésre egyeztetve.</p>
