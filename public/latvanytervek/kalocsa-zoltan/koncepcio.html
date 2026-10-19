@@ -97,11 +97,11 @@ ul.plain{margin:0;padding-left:18px;color:#d4d4d0}ul.plain li{margin-bottom:8px}
   <section class="blk">
     <p class="label">Tipográfia</p>
     <div class="scale">
-      <p><code>H1 · 40–66 px</code><span style="font:800 44px/1 var(--disp);font-stretch:72%;text-transform:uppercase">Nagy feladatok.</span></p>
-      <p><code>H2 · 30–46 px</code><span style="font:800 32px/1 var(--disp);font-stretch:72%;text-transform:uppercase">Szűk hely? Nem akadály.</span></p>
-      <p><code>H3/H4 · 22–28 px</code><span style="font:800 24px/1 var(--disp);font-stretch:72%;text-transform:uppercase">Közműárok ásása</span></p>
-      <p><code>Szöveg · 17 px / 1,65</code><span>Kisebb munkagéppel dolgozom, kertben, udvaron, telken. (Manrope)</span></p>
-      <p><code>Felirat · 12 px · 0,2em</code><span class="label">Gépi földmunka • Kecskemét</span></p>
+      <p><code>H1 · 32–48 px</code><span style="font:800 40px/1 var(--disp);font-stretch:72%;text-transform:uppercase">Nagy feladatok.</span></p>
+      <p><code>H2 · 23–32 px</code><span style="font:800 28px/1 var(--disp);font-stretch:72%;text-transform:uppercase">Szűk hely? Nem akadály.</span></p>
+      <p><code>H3/H4 · 17–20 px</code><span style="font:800 19px/1 var(--disp);font-stretch:72%;text-transform:uppercase">Közműárok ásása</span></p>
+      <p><code>Szöveg · 15,5 px / 1,65</code><span>Kisebb munkagéppel dolgozom, kertben, udvaron, telken. (Manrope)</span></p>
+      <p><code>Felirat · 10,5 px · 0,2em</code><span class="label">Gépi földmunka • Kecskemét</span></p>
       <p class="muted" style="border:0">Archivo (változó, 72%-os szélesség, 800) + Manrope. Mindkettő helyben tárolva, OFL-licenc. A címek szándékosan mérsékelt méretűek – a karaktert a keskeny, tömör betű adja, nem a méret.</p>
     </div>
   </section>
@@ -110,9 +110,9 @@ ul.plain{margin:0;padding-left:18px;color:#d4d4d0}ul.plain li{margin-bottom:8px}
     <p class="label">Gombok, ikonok</p>
     <div>
       <div class="row" style="margin-bottom:32px">
-        <a class="btn btn--orange" href="#">Ajánlatot kérek <i class="arr"></i></a>
-        <a class="btn btn--ghost" href="#">Hívás most</a>
-        <a class="btn btn--line" href="#">Munkát egyeztetek <i class="arr"></i></a>
+        <a class="btn btn--orange" href="#">Hívás most</a>
+        <a class="btn btn--ghost" href="#">Munkák <i class="arr"></i></a>
+        <a class="btn btn--line" href="#">Hívj, egyeztessünk <i class="arr"></i></a>
       </div>
       <div class="icons">
         <svg viewBox="0 0 48 48"><path d="M2 16h10v22h24V16h10"/><path d="M16 30h16v8H16z"/></svg>
@@ -121,19 +121,25 @@ ul.plain{margin:0;padding-left:18px;color:#d4d4d0}ul.plain li{margin-bottom:8px}
         <svg viewBox="0 0 48 48"><path d="M16 10h16v14H16z"/><path d="M2 26h44"/><path d="M18 24l-8 14M22 24l-2 18M26 24l3 16M30 24l10 12"/></svg>
         <svg viewBox="0 0 48 48"><path d="M2 34c6-8 10 4 16-4s10 6 16-2 8 2 12 0" stroke-dasharray="3 3"/><path d="M2 26h44"/></svg>
       </div>
-      <p class="muted" style="margin-top:18px">Szögletes gombok (nincs lekerekítés), 54 px magas – mobilon nagy érintési felület. Ikonok: 1,6 px vonal, szögletes végek, keresztmetszet-logika (mind talajszelvény).</p>
+      <p class="muted" style="margin-top:18px">Szögletes gombok (nincs lekerekítés), 46 px magas – mobilon nagy érintési felület. Ikonok: 1,6 px vonal, szögletes végek, keresztmetszet-logika (mind talajszelvény).</p>
     </div>
   </section>
 
   <section class="blk">
     <p class="label">Mozgás</p>
     <ul class="plain">
-      <li><b>Betöltés (≈1 mp):</b> a cím soronként felcsúszik, a fotó alulról „feltárul”, a talajszelvény narancs árokprofilja kirajzolódik.</li>
-      <li><b>Görgetés:</b> a bal margón a narancs kitűzési vonal halad a görgetéssel (asztali nézet), a szekciók finoman beúsznak, a galéria képei maszkkal tárulnak fel.</li>
-      <li><b>Szűk hely vázlat:</b> a kisgép a kaputól a ház mellett a kert végébe gurul, az útvonal szaggatottan „menetel”.</li>
-      <li><b>Hover:</b> szolgáltatássoron narancs alsó vonal húzódik, az ikon narancs lesz; nyilak 4 px-t lépnek.</li>
-      <li><b>Mobil:</b> a hero után alsó sáv jelenik meg (Hívás / Ajánlatkérés), a kapcsolat blokknál eltűnik.</li>
-      <li>Minden animáció kikapcsol <code>prefers-reduced-motion</code> esetén. Nincs külső animációs könyvtár.</li>
+      <li><b>Betöltés (≈1,5 mp):</b> a fotó alulról feltárul és kiélesedik, a cím soronként felcsúszik, a vágójelek a sarkokba repülnek, a méretvonal kirajzolódik.</li>
+      <li><b>Lézer-szintvonal:</b> narancs, izzó vonal pásztáz fel-le a nyitófotón („SZINT”).</li>
+      <li><b>Görgetés a nyitóképen:</b> a fotó lassabban mozog (parallaxis), a szöveg felcsúszik és halványul; asztali gépen az egér mozgására a szintvonalak és a fotó finoman elmozdulnak, a szintvonalak lassan áramlanak.</li>
+      <li><b>Szalag:</b> a szolgáltatás-szalag a görgetés sebességével gyorsul és irányt vált.</li>
+      <li><b>Címek:</b> minden szekciócím szavanként, maszkból emelkedik be.</li>
+      <li><b>Szolgáltatások:</b> a sorok jobbról becsúsznak, az ikonok vonalról vonalra kirajzolódnak; hoverre az ikon „ás” egyet.</li>
+      <li><b>Szűk hely vázlat:</b> görgetésre a kisgép a kaputól a ház mellett végigmegy, maga mögött húzza a narancs nyomot, a végén a kar ás, és kitelik az árok.</li>
+      <li><b>Munkák:</b> a képek alulról tárulnak fel, és görgetésre a kereten belül elcsúsznak (parallaxis).</li>
+      <li><b>Lépések:</b> a kitűzési vonal görgetésre húzódik, a karók forgással beugranak.</li>
+      <li><b>Kiszállás:</b> a 60 km-es kör kinyílik, radarnyaláb kering, a szám 0-tól 60-ig számol.</li>
+      <li><b>Gombok:</b> asztali gépen mágneses narancs gombok. Mobilon alsó hívássáv a nyitókép után.</li>
+      <li>GSAP + ScrollTrigger, helyben. <code>prefers-reduced-motion</code> esetén minden statikus.</li>
     </ul>
   </section>
 </main>

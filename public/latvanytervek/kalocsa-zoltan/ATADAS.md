@@ -2,13 +2,13 @@
 
 **Élő terv:** https://daekon-ship.github.io/daekon/latvanytervek/kalocsa-zoltan/
 **Arculat + koncepció:** https://daekon-ship.github.io/daekon/latvanytervek/kalocsa-zoltan/koncepcio.html
-**Állapot:** 1. kör, előzetes látványterv (noindex).
-**Felépítés:** build nélküli statikus oldal (`index.html` + `kalocsa.css` + `kalocsa.js`), relatív útvonalak, külső könyvtár nélkül.
+**Állapot:** 2. kör – csak hívás (űrlap kivéve), kompaktabb, kisebb tipográfia, gazdagabb mozgás (GSAP), a hero alsó talajszelvény-sávja törölve. Előzetes látványterv (noindex).
+**Felépítés:** build nélküli statikus oldal (`index.html` + `kalocsa.css` + `kalocsa.js`), relatív útvonalak; GSAP 3 + ScrollTrigger helyben (`js/`).
 
 ## Koncepció
 „EARTH / ENGINEERED” – grafit (#111315) + munkavédelmi narancs (#FF6B2B), egyetlen papír szekció (#E9E5DE). Az ügyfél saját sötét–narancs mintája az alap; a bézs minta csak ellenpont. Három irányból választva (lásd `koncepcio.html`): A) Earth/Engineered – kiválasztva; B) világos kitűzőszalag – elvetve (az ügyfél sötétet kért); C) talajszelvény-oldal – a gondolat a hero alsó sávjába olvadt.
 
-Jellegzetes elemek: árokszelvény-logójel (`logo-jel.svg`), kitűzési „nyomvonal” a bal margón (görgetésre halad, ≥1100 px), talajszelvény a nyitókép alján kirajzolódó árokprofillal, topografikus szintvonalak, műszaki vágójelek a fotón, felülnézeti vázlat a „Szűk hely? Nem akadály.” blokkban (kisgép a kaputól a kert végébe).
+Jellegzetes elemek: árokszelvény-logójel (`logo-jel.svg`), kitűzési „nyomvonal” a bal margón (görgetésre halad, ≥1100 px), lézer-szintvonal a nyitófotón, topografikus szintvonalak, műszaki vágójelek a fotón, felülnézeti vázlat a „Szűk hely? Nem akadály.” blokkban (kisgép a kaputól a kert végébe).
 
 ## Valós adatok
 | Adat | Forrás |
@@ -35,23 +35,27 @@ Csak az ügyfél 6 saját munkafotója, a csomagban kapott forgatott változatb�
 Előtte–utána párosítás nincs. A szolgáltatássorokhoz nem rendeltünk fotót, hogy ne állítsunk konkrét munka–kép kapcsolatot. Hero-illusztráció helyett valódi fotó áll (a briefben megengedett gépillusztráció nem kellett).
 
 ## Eltérések a brieftől (szándékosan)
-- **Betűméret:** a brief „óriás” címeket és kontúros „FÖLDMUNKA” háttérszöveget kért – DAEKON-házszabály szerint mérsékelt méret (H1 max. 66 px), a kontúrszöveg helyett szintvonal-textúra.
+- **Betűméret:** a brief „óriás” címeket és kontúros „FÖLDMUNKA” háttérszöveget kért – az ügyfél kérésére kompakt méret (H1 max. 48 px), a kontúrszöveg helyett szintvonal-textúra.
 - **Szám:** a joszaki-profil egyes szám első személyben, tegezve ír, ezért a szöveg is így szól („vállalok”, „Rólam”, „Munkák”). Ha többes számot szeretne („Munkáink”, „Rólunk”), 1 perces csere.
 - **Betűk:** Archivo (keskeny 72%, 800) + Manrope, helyben (a repó meglévő OFL-fájljai).
 
-## Működik / bekötendő
+## 2. kör – ügyfél-visszajelzés
+- „Az a csík nem kell” → a hero alján lévő talajszelvény-sáv (narancs árokprofil) törölve.
+- „Kevés az animáció” → GSAP-alapú mozgásrendszer (lásd lent és `koncepcio.html`).
+- „Ajánlatkérő se kell, elég hívni” → űrlap törölve; minden gomb `tel:` link (fejléc, hero, szolgáltatások, kiszállás, kapcsolat, mobil alsó sáv). Az e-mail csak kis betűvel a kapcsolat-kártyán és a láblécben maradt.
+- „Minden túl nagy, főleg a betűk” → teljes léptékcsökkentés: H1 32–48 px (volt 40–66), H2 23–32 px, szöveg 15,5 px, gombok 46 px, fejléc 72/58 px, szekciótávolság 64–116 px, mobilon H1 28–36 px.
+
+## Működik
 | Funkció | Állapot |
 |---|---|
 | Ragadós, görgetésre vékonyodó fejléc, mobilmenü (Esc) | működik |
 | tel: / mailto: linkek | működik |
 | Galéria lightbox (nyilak, Esc, fókuszcsapda) | működik |
-| Szolgáltatássorra kattintva az űrlap munkatípusa előválasztódik | működik |
-| Mobil alsó sáv (Hívás / Ajánlatkérés), a kapcsolat blokknál elrejtve | működik |
-| **Ajánlatkérő űrlap** | **látványterv-mód** (`KULDES.endpoint = null` a `kalocsa.js`-ben): nem küld adatot, ezt ki is írja, és előre kitöltött e-mailt vagy hívást kínál. |
-| Adatkezelési tájékoztató, impresszum | [feltöltendő] |
+| Mobil alsó hívássáv a hero után, a kapcsolat blokknál elrejtve | működik |
+| Adatkezelés, impresszum | [feltöltendő] |
 
-## Mozgás
-Betöltés ≈1 mp (cím soronként, fotó maszkkal, árokprofil kirajzolódik) · görgetés: nyomvonal, beúszások, galéria-maszk, kisgép végiggurul a vázlaton, kiszállási kör kinyílik · hover: narancs alsó vonal, nyíl. `prefers-reduced-motion` mellett minden statikus. GSAP/WebGL nem kell.
+## Mozgás (GSAP + ScrollTrigger, helyben)
+Betöltés ≈1,5 mp (fotó feltárul, cím soronként, vágójelek, méretvonal) · lézer-szintvonal a fotón · hero parallaxis + egérre mozduló szintvonalak · görgetési sebességre gyorsuló szalag · szavanként beemelkedő címek · kirajzolódó szolgáltatás-ikonok · görgetésre végigguruló kisgép a vázlaton, ásó karral és kitelő árokkal · galéria maszk + belső parallaxis · húzódó kitűzési vonal karókkal · radarnyaláb, 0→60 km számláló · mágneses gombok. `prefers-reduced-motion` mellett minden statikus; ha a GSAP nem töltődik be, a tartalom akkor is látszik.
 
 ## Ellenőrzés
 Playwright: 1440 / 768 / 390 / 360 px – nincs vízszintes túlcsordulás, nincs konzolhiba.
@@ -60,6 +64,5 @@ Playwright: 1440 / 768 / 390 / 360 px – nincs vízszintes túlcsordulás, ninc
 1. Végleges névalak: „Kalocsa Zoltán” vagy „Kalocsa Zoltán Kevin”; van-e cégforma.
 2. Egyes vagy többes szám a szövegben.
 3. A képek mind saját munkák-e; ha van fotó a kisgépről közelről, a „Szűk hely” blokkba jó lenne.
-4. Kért-e űrlapot, vagy elég a hívás + e-mail.
-5. Adatkezelési tájékoztató, impresszum adatai.
-6. Hívható időszak (ha ki szeretné írni).
+4. Adatkezelési tájékoztató, impresszum adatai.
+5. Hívható időszak (ha ki szeretné írni).
