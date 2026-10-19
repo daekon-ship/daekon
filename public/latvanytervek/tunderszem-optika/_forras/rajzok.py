@@ -346,7 +346,7 @@ def ln(d, w=1.0, op=1, col=INK):
 plate("szolg-vizsgalat.svg", f'''
 <rect x="164" y="28" width="120" height="166" fill="{PAPER}" stroke="{INK}" stroke-width="1"/>
 <rect x="169" y="33" width="110" height="156" stroke="{INK}" stroke-width=".4"/>
-<g fill="{INK}" font-family="Cormorant Garamond, Georgia, serif" text-anchor="middle">
+<g fill="{INK}" font-family="Bodoni Moda, Didot, Georgia, serif" text-anchor="middle">
 <text x="224" y="80" font-size="36">T</text><text x="224" y="108" font-size="21" letter-spacing="6">Ü N</text>
 <text x="224" y="130" font-size="14" letter-spacing="5">D É R</text><text x="224" y="147" font-size="10" letter-spacing="4">S Z E M</text>
 <text x="224" y="161" font-size="7" letter-spacing="3">O P T I K A</text></g>
@@ -412,7 +412,7 @@ plate("szolg-kontakt.svg", f'''
 {ln("M226 72 C226 80 230 84 238 84", .5)}
 <rect x="56" y="134" width="208" height="52" rx="26" fill="{PAPER}" stroke="{INK}" stroke-width="1"/>
 <circle cx="104" cy="160" r="20" fill="#fff" stroke="{INK}" stroke-width="1"/><circle cx="216" cy="160" r="20" fill="#fff" stroke="{INK}" stroke-width="1"/>
-<g fill="{INK}" font-family="Cormorant Garamond, Georgia, serif" font-size="16" text-anchor="middle"><text x="104" y="166">L</text><text x="216" y="166">R</text></g>
+<g fill="{INK}" font-family="Bodoni Moda, Didot, Georgia, serif" font-size="16" text-anchor="middle"><text x="104" y="166">L</text><text x="216" y="166">R</text></g>
 ''')
 
 plate("szolg-lencsek.svg", f'''
@@ -420,7 +420,7 @@ plate("szolg-lencsek.svg", f'''
 <stop offset=".55" stop-color="{LAV}" stop-opacity=".18"/><stop offset="1" stop-color="{POWDER}" stop-opacity=".35"/></linearGradient></defs>
 <path transform="translate(118 112) scale(.9)" d="{LENS["cateye"]}" fill="url(#z)" stroke="{INK}" stroke-width="1.1"/>
 {ln("M44 92 C80 100 156 100 196 88 M60 128 C90 136 146 136 176 124", .6, .7)}
-<g fill="{INK}" font-family="Manrope, Helvetica, Arial, sans-serif" font-size="9" letter-spacing="2.4">
+<g fill="{INK}" font-family="Jost, Futura, Helvetica, Arial, sans-serif" font-size="9" letter-spacing="2.4">
 <text x="232" y="75">TÁVOL</text><text x="232" y="113">KÖZTES</text><text x="232" y="151">KÖZEL</text></g>
 {ln("M186 72 H226 M196 110 H226 M166 148 H226", .5, 1, GOLD)}
 ''')
@@ -447,7 +447,7 @@ def trial_frame():
     g.append(ln("M30 140 L4 118 M370 140 L396 118", 2))
     g.append(ln("M200 42 V98", 1))
     g.append(f'<circle cx="200" cy="36" r="6" fill="{PAPER}" stroke="{INK}" stroke-width="1"/>')
-    g.append(f'<g fill="{INK}" font-family="Manrope, Helvetica, Arial, sans-serif" font-size="7" letter-spacing="1.5" text-anchor="middle">'
+    g.append(f'<g fill="{INK}" font-family="Jost, Futura, Helvetica, Arial, sans-serif" font-size="7" letter-spacing="1.5" text-anchor="middle">'
              f'<text x="110" y="252">0 · 90 · 180</text><text x="290" y="252">0 · 90 · 180</text></g>')
     return "\n".join(g)
 
@@ -562,8 +562,8 @@ def town():
 </g>''')
     g.append(roof_hatch(640, 930, 785, 214, 262, 6))
     g.append(ln(" ".join(f"M{x} 348 L{x-4 if x < 785 else x+4} 384" for x in range(684, 900, 24)), .6))
-    g.append(f'''<g fill="{INK}" text-anchor="middle"><text x="785" y="321" font-family="Cormorant Garamond, Georgia, serif" font-size="19" letter-spacing="5">TÜNDÉRSZEM</text>
-<text x="785" y="331" font-family="Manrope, Helvetica, Arial, sans-serif" font-size="6" letter-spacing="4">O P T I K A</text></g>''')
+    g.append(f'''<g fill="{INK}" text-anchor="middle"><text x="785" y="321" font-family="Bodoni Moda, Didot, Georgia, serif" font-size="19" letter-spacing="5">TÜNDÉRSZEM</text>
+<text x="785" y="331" font-family="Jost, Futura, Helvetica, Arial, sans-serif" font-size="6" letter-spacing="4">O P T I K A</text></g>''')
     g.append(f'<g transform="translate(736 424) scale(.2)">' + "".join(
         f'<path transform="translate({k*124} 0) scale({k} 1)" d="{LENS["cateye"]}" stroke="{INK}" stroke-width="6"/>' for k in (-1, 1)) + '</g>')
     g.append(ln(" ".join(f"M{x} 400 L{x+30} 470" for x in range(684, 790, 18)), .3, .35))
@@ -580,7 +580,7 @@ def town():
     g.append(f'''<g stroke="{INK}" stroke-width="1"><path d="M560 470 V328 M564 470 V328"/>
 <rect x="480" y="298" width="164" height="32" rx="2" fill="#2F5D8A" fill-opacity=".9"/>
 <rect x="485" y="303" width="154" height="22" rx="1" stroke="#fff" stroke-width=".8"/></g>
-<text x="562" y="319" fill="#fff" text-anchor="middle" font-family="Manrope, Helvetica, Arial, sans-serif" font-size="12.5" font-weight="600" letter-spacing=".6">Damjanich út</text>''')
+<text x="562" y="319" fill="#fff" text-anchor="middle" font-family="Jost, Futura, Helvetica, Arial, sans-serif" font-size="12.5" font-weight="600" letter-spacing=".6">Damjanich út</text>''')
     # pad
     g.append(ln("M396 450 H462 M398 440 H460 M404 450 V470 M454 450 V470", 1.4))
     return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 84 {W} 556" width="{W}" height="556" fill="none" '

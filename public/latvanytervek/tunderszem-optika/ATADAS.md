@@ -33,16 +33,18 @@ Az 1. kör rajzos, pasztell kártyás világa túl „bájos” volt. A 2. körb
 
 **Szignatúra (maradt):** a hero szemüvege valódi lencseként élesít — mögötte a „TÜNDÉRSZEM” látásvizsgáló tábla és a metszett virág elmosódott, a lencsén át éles és nagyított. Egérre követ, érintőn lassan pásztáz, a vetett árnyék a lebegéssel együtt halványul.
 
-## Tipográfia
+## Tipográfia (3. kör: betűcsere)
+Visszajelzés: a betűtípus nem tetszett (a Cormorant Garamond túl vékony, „ernyedt” volt). Új páros: **Bodoni Moda** (divat- és optikai márkák didóni antikvája) + **Jost** (Futura-szerű geometrikus groteszk). A Bodoni nagyobb méreten is mérsékelt optikai mérettel fut (`font-variation-settings: "opsz" 22`), hogy a hajszálvonalak ne vesszenek el; az ékezetes nagybetűk (É, Ő, Ű) nem vágódnak le.
+
 | Szerep | Betű | Méret (clamp) |
 |---|---|---|
-| H1 | Cormorant Garamond 400, harmadik sor dőlt | 2.7rem → 3.75rem |
-| H2 | Cormorant Garamond 400 (+ dőlt kiemelés) | 2.15rem → 3.15rem |
-| H3 / kártyacím | Cormorant Garamond 500 | 1.6–1.75rem |
-| Törzs | Manrope 450 | 1.0625rem / 1.65 |
-| Szemöldök, címkék, gombok | Manrope 650–700, nagybetű, .2–.28em | .6–.74rem |
+| H1 | Bodoni Moda 450, harmadik sor dőlt | 2.35rem → 3.3rem |
+| H2 | Bodoni Moda 440 (+ dőlt kiemelés) | 1.9rem → 2.75rem |
+| H3 / sorcím | Bodoni Moda 420–440 | 1.34–1.95rem |
+| Törzs | Jost 400 | 1.1rem / 1.68 |
+| Szemöldök, címkék, gombok | Jost 500, nagybetű, .16–.3em | .62–.76rem |
 
-Mérsékelt méretek (házszabály: nincs óriás tipó, a lábléc-felirat is 2.9rem max). Fraunces sehol. Betűk helyben: `fonts/` (Cormorant Garamond változó, latin + latin-ext subset; Manrope változó), OFL-licencek mellékelve.
+Mérsékelt méretek (házszabály), Fraunces sehol. Betűk helyben: `fonts/` (Bodoni Moda + dőlt, Jost; változó, latin + latin-ext subset), OFL-licencek mellékelve.
 
 ## Színek (tokenek a `:root`-ban)
 `--pearl #F7F1F7` alap · `--powder #E9C5D9` · `--lavender #B8A3D8` · `--mist #9CB9C6` · `--ink #263432` · `--white`

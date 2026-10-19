@@ -96,5 +96,5 @@
 <path d="M30 140 L4 118 M370 140 L396 118" stroke="#263432" stroke-width="2" opacity="1"/>
 <path d="M200 42 V98" stroke="#263432" stroke-width="1" opacity="1"/>
 <circle cx="200" cy="36" r="6" fill="#FAF6FA" stroke="#263432" stroke-width="1"/>
-<g fill="#263432" font-family="Manrope, Helvetica, Arial, sans-serif" font-size="7" letter-spacing="1.5" text-anchor="middle"><text x="110" y="252">0 · 90 · 180</text><text x="290" y="252">0 · 90 · 180</text></g>
+<g fill="#263432" font-family="Jost, Futura, Helvetica, Arial, sans-serif" font-size="7" letter-spacing="1.5" text-anchor="middle"><text x="110" y="252">0 · 90 · 180</text><text x="290" y="252">0 · 90 · 180</text></g>
 </svg>

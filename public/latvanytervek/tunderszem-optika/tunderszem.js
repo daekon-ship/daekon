@@ -295,7 +295,7 @@
             if (!w) return;
             if (/^\s+$/.test(w)) { frag.appendChild(document.createTextNode(' ')); return; }
             var o = document.createElement('span'); o.className = 'w';
-            o.style.cssText = 'display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.1em;margin-bottom:-.1em';
+            o.style.cssText = 'display:inline-block;overflow:hidden;vertical-align:top;padding:.18em 0 .1em;margin:-.18em 0 -.1em';
             var i = document.createElement('span'); i.style.display = 'inline-block'; i.textContent = w;
             o.appendChild(i); frag.appendChild(o);
           });

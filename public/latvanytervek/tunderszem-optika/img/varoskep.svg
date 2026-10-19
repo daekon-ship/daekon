@@ -61,8 +61,8 @@
 </g>
 <path d="M768.38 220 L801.62 220 M750.25 226 L819.75 226 M732.12 232 L837.88 232 M714 238 L856 238 M695.88 244 L874.12 244 M677.75 250 L892.25 250 M659.62 256 L910.38 256" stroke="#263432" stroke-width="0.45" opacity="0.75"/>
 <path d="M684 348 L680 384 M708 348 L704 384 M732 348 L728 384 M756 348 L752 384 M780 348 L776 384 M804 348 L808 384 M828 348 L832 384 M852 348 L856 384 M876 348 L880 384" stroke="#263432" stroke-width="0.6" opacity="1"/>
-<g fill="#263432" text-anchor="middle"><text x="785" y="321" font-family="Cormorant Garamond, Georgia, serif" font-size="19" letter-spacing="5">TÜNDÉRSZEM</text>
-<text x="785" y="331" font-family="Manrope, Helvetica, Arial, sans-serif" font-size="6" letter-spacing="4">O P T I K A</text></g>
+<g fill="#263432" text-anchor="middle"><text x="785" y="321" font-family="Bodoni Moda, Didot, Georgia, serif" font-size="19" letter-spacing="5">TÜNDÉRSZEM</text>
+<text x="785" y="331" font-family="Jost, Futura, Helvetica, Arial, sans-serif" font-size="6" letter-spacing="4">O P T I K A</text></g>
 <g transform="translate(736 424) scale(.2)"><path transform="translate(-124 0) scale(-1 1)" d="M-95 -40 C-60 -62 40 -68 100 -62 C112 -60 118 -52 112 -36 C100 10 70 62 10 66 C-50 70 -96 40 -104 0 C-108 -20 -104 -34 -95 -40Z" stroke="#263432" stroke-width="6"/><path transform="translate(124 0) scale(1 1)" d="M-95 -40 C-60 -62 40 -68 100 -62 C112 -60 118 -52 112 -36 C100 10 70 62 10 66 C-50 70 -96 40 -104 0 C-108 -20 -104 -34 -95 -40Z" stroke="#263432" stroke-width="6"/></g>
 <path d="M684 400 L714 470 M702 400 L732 470 M720 400 L750 470 M738 400 L768 470 M756 400 L786 470 M774 400 L804 470" stroke="#263432" stroke-width="0.3" opacity="0.35"/>
 <path d="M0 470 H1200 M0 494 H1200" stroke="#263432" stroke-width="1" opacity="1"/>
@@ -75,6 +75,6 @@
 <g stroke="#263432" stroke-width="1"><path d="M560 470 V328 M564 470 V328"/>
 <rect x="480" y="298" width="164" height="32" rx="2" fill="#2F5D8A" fill-opacity=".9"/>
 <rect x="485" y="303" width="154" height="22" rx="1" stroke="#fff" stroke-width=".8"/></g>
-<text x="562" y="319" fill="#fff" text-anchor="middle" font-family="Manrope, Helvetica, Arial, sans-serif" font-size="12.5" font-weight="600" letter-spacing=".6">Damjanich út</text>
+<text x="562" y="319" fill="#fff" text-anchor="middle" font-family="Jost, Futura, Helvetica, Arial, sans-serif" font-size="12.5" font-weight="600" letter-spacing=".6">Damjanich út</text>
 <path d="M396 450 H462 M398 440 H460 M404 450 V470 M454 450 V470" stroke="#263432" stroke-width="1.4" opacity="1"/>
 </svg>
