@@ -50,7 +50,8 @@
     const y = scrollY, h = document.documentElement.scrollHeight - innerHeight;
     bar.style.transform = `scaleX(${h > 0 ? y / h : 0})`;
     const past = y > hero.offsetHeight - 90;
-    nav.classList.toggle('is-solid', past);
+    nav.classList.add('is-solid');            // világos nyitókép: a fejléc végig sötét szövegű
+    nav.classList.toggle('is-top', y < 40);
     nav.classList.toggle('is-hidden', past && y > lastY + 4 && y > 900 && !document.body.classList.contains('menu-open'));
     if (y < lastY - 4) nav.classList.remove('is-hidden');
     lastY = y;
@@ -289,7 +290,7 @@
 
   /* ================= GSAP: HERO + RAJZ + PARALLAX + FOLYAMATVONAL ================= */
   const start = () => {
-    const hTitle = $('.hero__title'), hFade = $$('.hero .eyebrow, .hero__lead, .hero__ctas, .hero__reel, .hero__bar');
+    const hTitle = $('.hero__title'), hFade = $$('.hero .eyebrow, .hero__lead, .hero__ctas, .hero__tel, .hero__bar');
     if (!motion || !window.gsap) {
       hTitle.classList.add('is-in');
       return;
@@ -301,7 +302,10 @@
       .to('.hero .eyebrow', { autoAlpha: 1, y: 0, duration: .7 }, .15)
       .add(() => hTitle.classList.add('is-in'), .25)
       .to('.hero__lead, .hero__ctas', { autoAlpha: 1, y: 0, duration: .8, stagger: .1 }, .75)
-      .to('.hero__reel', { autoAlpha: 1, y: 0, duration: .8 }, 1.1)
+      .to('.hero__tel', { autoAlpha: 1, y: 0, duration: .8 }, 1.0)
+      .fromTo('.hero__gable', { clipPath: 'polygon(50% 100%, 100% 100%, 100% 100%, 0 100%, 0 100%)' }, { clipPath: 'polygon(50% 0%, 100% 30%, 100% 100%, 0 100%, 0 30%)', duration: 1.4, ease: 'power3.inOut' }, .1)
+      .fromTo('.hero__roof polyline', { strokeDasharray: 2000, strokeDashoffset: 2000 }, { strokeDashoffset: 0, duration: 1.2, ease: 'power2.inOut', stagger: .15 }, .9)
+      .fromTo('.reel', { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: .8 }, 1.4)
       .to('.hero__bar', { autoAlpha: 1, y: 0, duration: .8 }, 1.25);
 
     // a „falmetszet” rajz a Miért-szekcióban, belépéskor rajzolódik ki

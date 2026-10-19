@@ -16,8 +16,8 @@ ROOT = Path(__file__).resolve().parent.parent
 ART = ROOT / "arculat"
 ART.mkdir(exist_ok=True)
 
-C = dict(forest="#25352C", clay="#B76E45", sand="#E9DDCC", ivory="#F8F5EF",
-         char="#242521", terra="#9E5639")
+C = dict(forest="#1F3B5C", clay="#B4532A", sand="#ECE2D0", ivory="#F6F1E8",
+         char="#242521", terra="#A8481F")
 
 # ---------- embléma geometria (100 × 100 egység) ----------
 ROOF = "M50 3.5 L97.5 39.5 L86 39.5 L50 13 L14 39.5 L2.5 39.5Z"

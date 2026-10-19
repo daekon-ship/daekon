@@ -99,6 +99,12 @@ arr = colorize(n, (30, 44, 36), (44, 61, 51))
 arr += (rng.random((S, S, 1)) - .5) * 6
 save(arr, "tx-erdo.webp", 72)
 
+# 5b) Parasztkék – a lábazatok kékje, sötét felületekhez
+n = fbm(S, 7, 4, 0.6, 9)
+arr = colorize(n, (26, 50, 79), (40, 70, 106))
+arr += (rng.random((S, S, 1)) - .5) * 6
+save(arr, "tx-kek.webp", 74)
+
 # 6) Homok – égetett agyag hatású meleg felület
 n = fbm(S, 7, 5, 0.58, 8)
 arr = colorize(n, (222, 207, 186), (238, 228, 212))

@@ -2,7 +2,7 @@
 
 **Élő terv:** https://daekon-ship.github.io/daekon/latvanytervek/valyog-mester/
 **Koncepció + arculat:** https://daekon-ship.github.io/daekon/latvanytervek/valyog-mester/koncepcio.html
-**Állapot:** 3. kör – üres helyőrzők nélkül; 2. kör (a jelenlegi oldal képeivel és Túró István bemutatkozó videójával), előzetes látványterv (noindex). A valyog-mester.hu élő oldal érintetlen.
+**Állapot:** 4. kör – új nyitókép és paletta; 3. kör – üres helyőrzők nélkül; 2. kör (a jelenlegi oldal képeivel és Túró István bemutatkozó videójával), előzetes látványterv (noindex). A valyog-mester.hu élő oldal érintetlen.
 **Felépítés:** build nélküli statikus oldal a DAEKON-látványtervek házszabálya szerint (`index.html` + `valyog.css` + `valyog.js`), relatív útvonalakkal – bármilyen almappában működik. A briefben javasolt React + Vite + TS stacket szándékosan nem vezettem be: a repó összes látványterve build nélküli, és a Vite a `public/` tartalmát változatlanul másolja. Éles oldalhoz a komponensek 1:1 átvihetők React/Vite-ba (lásd „Komponensek”).
 
 ## Valós adatok (ellenőrizve)
@@ -61,7 +61,7 @@ A régi logó (logo.png) nincs használva – új logó készült.
 | Mobil hívássáv | működik; elrejtődik a heróban, a kapcsolat résznél és a láblécben |
 
 ## Art direction — „Falmetszet”
-Nyitókép: a jelenlegi oldal fotóiból lassú áttűnésű, kameramozgásos „fotófilm” (CSS Ken Burns, 7 mp-enként váltás), mellette Túró István videókártyája. A „falmetszet” homlokzatrajz a Miért-szekcióba költözött: belépéskor kirajzolódik, a mész ráhúzódik a repedt vályogfalra, majd megjelennek a rétegfeliratok.
+Nyitókép (4. kör): maga a hero egy parasztház-homlokzat – meszelt fal háttér, a jelenlegi oldal fotói egy oromzat alakú „ablakban” váltakoznak (lassú áttűnés + kameramozgás, 7 mp), fölötte kék és agyag tetővonal, alul végigfutó kék „lábazat” sáv (20+ év, fő munkák, cégnév). Az oromzat betöltéskor alulról „felépül”, a tetővonal kirajzolódik. Túró István videókártyája az oromzat sarkára fut fel (mobilon a fotó alá). A „falmetszet” homlokzatrajz a Miért-szekcióba költözött: belépéskor kirajzolódik, a mész ráhúzódik a repedt vályogfalra, majd megjelennek a rétegfeliratok.
 
 ## Új logó (`arculat/`)
 A V betű befelé lépcsőző vályogtéglákból épül, fölötte a parasztház tetővonala: monogram + falazat + tető egy jelben. A szöveg görbére alakítva (`_forras/logo.py`), betűtípus nélkül is pontos.
@@ -83,10 +83,11 @@ A V betű befelé lépcsőző vályogtéglákból épül, fölötte a paraszthá
 
 Mérsékelt méretek (nincs óriás tipó). Fraunces sehol. Betűk helyben (`fonts/`, OFL-licencek mellékelve).
 
-## Színek
-`--forest #25352C` · `--clay #B76E45` · `--terra #9E5639` · `--sand #E9DDCC` · `--ivory #F8F5EF` · `--char #242521`
-Származtatott: `--clay-ink #8E4F2C` (agyag szöveg világos alapon, AA), `#E3A27B` (agyag kiemelés sötét alapon), `--ink-soft #4F524A`.
-Sávok: erdőzöld hero → elefántcsont bemutatkozás → homok szolgáltatások → elefántcsont problémák → szén munkanapló → terrakotta mester → elefántcsont folyamat → erdőzöld „miért” → elefántcsont GYIK → homok kapcsolat → szén lábléc.
+## Színek (4. kör – „meszelt ház”)
+A zöld–agyag paletta helyett a magyar parasztház színei: meszelt fal, kék lábazat, égetett agyag, okker.
+`--forest #1F3B5C` (parasztkék – sötét felületek, címek) · `--clay #B4532A` (agyag – fő gomb, fehér szöveggel 5:1) · `--clay-ink #9A421D` (agyag szöveg világoson) · `--okker #E2A93B` / `#EDB95A` (kiemelés kéken, 6,4:1) · `--terra #A8481F` · `--mesz #F3EDE2` (nyitókép) · `--ivory #F6F1E8` · `--sand #ECE2D0` · `--char #242521`.
+Textúrák: `tx-kek.webp` (kék), `tx-mesz`, `tx-homok`, `tx-valyog`, `tx-vertfal`.
+Sávok: mész nyitókép + kék lábazat → elefántcsont → homok (szolgáltatások) → elefántcsont → szén (munkáink) → homok (mester) → elefántcsont → kék (miért) → elefántcsont → homok (kapcsolat) → szén lábléc.
 
 ## Térköz, rács
 `--sec: clamp(5rem, 3.2rem + 6vw, 9rem)` szekciótávolság; konténer 1240 px, oldalmargó `clamp(1.25rem, … , 3rem)`; skála `.5 / 1 / 1.5 / 2 / 3 / 4.5 / 7rem`. Aszimmetrikus 5:7, 4:6, 6:5 oszlopok, 900 px alatt egy oszlop.
