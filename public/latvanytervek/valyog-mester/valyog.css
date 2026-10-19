@@ -203,20 +203,20 @@ h3 { font-family: var(--serif); font-weight: 600; font-size: 1.5rem; line-height
 .hero__tel:hover svg { transform: rotate(-12deg) scale(1.06); }
 .hero__tel small { display: block; font: 600 .74rem/1.4 var(--sans); letter-spacing: .04em; color: var(--ink-soft); }
 
-.hero__house { position: relative; align-self: end; height: min(74svh, 720px); min-height: 460px; }
-.hero__gable {
-  position: absolute; inset: 0; overflow: hidden;
-  clip-path: polygon(50% 0, 100% 30%, 100% 100%, 0 100%, 0 30%);
-  background: var(--sand);
-}
-.hero__roof { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; z-index: 2; pointer-events: none; }
-.hero__roof polyline { fill: none; stroke: var(--forest); stroke-width: 10px; stroke-linejoin: miter; }
-.hero__roof .hero__roof-2 { stroke: var(--clay); stroke-width: 4px; }
+.hero__house { position: relative; align-self: end; display: flex; flex-direction: column; height: min(76svh, 740px); min-height: 480px; }
+.hero__pediment { display: block; width: 100%; height: auto; flex: none; overflow: visible; margin-bottom: -1px; }
+.hero__pediment .ped-roof { fill: none; stroke: var(--forest); stroke-width: 2.6; stroke-linejoin: miter; }
+.hero__pediment .ped-clay { fill: none; stroke: var(--clay); stroke-width: 1; }
+.hero__pediment .ped-vents rect { fill: var(--forest); }
+.hero__gable { position: relative; flex: 1; min-height: 0; overflow: hidden; background: var(--sand); border-top: 4px solid var(--forest); }
 .hero__film { position: absolute; inset: 0; background: var(--sand); }
-.hero__film .slide { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1.8s ease; }
+.hero__film .slide {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 50%;
+  opacity: 0; transform: scale(1.01); transform-origin: 50% 55%;
+  transition: opacity 1.6s ease, transform 9s linear;
+}
 .hero__film .slide.is-on { opacity: 1; }
-.motion .hero__film .slide.is-on { animation: kenburns 9s linear forwards; }
-@keyframes kenburns { from { transform: scale(1.03); } to { transform: scale(1.12) translate3d(-1.5%, -1%, 0); } }
+.motion .hero__film .slide.is-on { transform: scale(1.08); }
 
 .reel { position: absolute; left: -2.5rem; bottom: 2rem; z-index: 3; display: grid; grid-template-columns: 4.6rem 1fr; gap: 1rem; align-items: center; width: 18.5rem;
   padding: .55rem 1rem .55rem .55rem; border-radius: 6px; background: var(--ivory); color: var(--forest); text-decoration: none;
@@ -591,9 +591,7 @@ dialog::backdrop { background: rgba(20, 22, 19, .88); }
   .hero { min-height: auto; }
   .hero__grid { grid-template-columns: minmax(0, 1fr); padding-top: 92px; gap: 2rem; }
   .hero__house { order: -1; height: auto; min-height: 0; margin-top: 1rem; }
-  .hero__gable { position: relative; inset: auto; aspect-ratio: 1 / .92; }
-  .hero__roof { bottom: auto; height: auto; aspect-ratio: 1 / .92; }
-  .hero__roof polyline { stroke-width: 7px; }
+  .hero__gable { flex: none; aspect-ratio: 4 / 3; }
   .hero__copy { padding-bottom: 2.5rem; }
   .reel { position: relative; left: auto; bottom: auto; margin: -2.4rem .8rem 0; width: auto; max-width: 22rem; grid-template-columns: 3.6rem 1fr; }
   .reel__play { left: 1.6rem; width: 1.9rem; height: 1.9rem; margin-top: -.95rem; }
@@ -681,7 +679,7 @@ dialog::backdrop { background: rgba(20, 22, 19, .88); }
 }
 @media (min-width: 601px) and (max-width: 900px) {
   .why__art { max-width: 600px; margin-inline: auto; }
-  .hero__gable, .hero__roof { aspect-ratio: 4 / 3.1; }
+  .hero__gable { aspect-ratio: 16 / 10; }
   .hero__ctas { flex-direction: row; }
   .reel { max-width: 24rem; }
 }

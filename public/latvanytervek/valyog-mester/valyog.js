@@ -256,7 +256,7 @@
   const nextSlide = () => {
     const cur = slides[si], nx = slides[(si + 1) % slides.length];
     loadSlide(nx);
-    const go = () => { nx.classList.remove('is-on'); void nx.offsetWidth; nx.classList.add('is-on'); cur.classList.remove('is-on'); si = (si + 1) % slides.length; };
+    const go = () => { nx.classList.add('is-on'); cur.classList.remove('is-on'); si = (si + 1) % slides.length; };
     nx.complete && nx.naturalWidth ? go() : nx.addEventListener('load', go, { once: true });
   };
   if (motion && slides.length > 1) {
@@ -303,8 +303,9 @@
       .add(() => hTitle.classList.add('is-in'), .25)
       .to('.hero__lead, .hero__ctas', { autoAlpha: 1, y: 0, duration: .8, stagger: .1 }, .75)
       .to('.hero__tel', { autoAlpha: 1, y: 0, duration: .8 }, 1.0)
-      .fromTo('.hero__gable', { clipPath: 'polygon(50% 100%, 100% 100%, 100% 100%, 0 100%, 0 100%)' }, { clipPath: 'polygon(50% 0%, 100% 30%, 100% 100%, 0 100%, 0 30%)', duration: 1.4, ease: 'power3.inOut' }, .1)
-      .fromTo('.hero__roof polyline', { strokeDasharray: 2000, strokeDashoffset: 2000 }, { strokeDashoffset: 0, duration: 1.2, ease: 'power2.inOut', stagger: .15 }, .9)
+      .fromTo('.hero__gable', { clipPath: 'inset(100% 0 0 0)' }, { clipPath: 'inset(0% 0 0 0)', duration: 1.3, ease: 'power3.inOut' }, .1)
+      .fromTo('.hero__pediment .ped-fill', { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: .8 }, 1.0)
+      .fromTo('.hero__pediment polyline', { strokeDasharray: 140, strokeDashoffset: 140 }, { strokeDashoffset: 0, duration: 1.1, ease: 'power2.inOut', stagger: .12 }, 1.0)
       .fromTo('.reel', { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: .8 }, 1.4)
       .to('.hero__bar', { autoAlpha: 1, y: 0, duration: .8 }, 1.25);
 

@@ -97,15 +97,17 @@
     </div>
 
     <div class="hero__house">
-      <svg class="hero__roof" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-        <polyline points="-3.5,32.1 50,-2.2 103.5,32.1" vector-effect="non-scaling-stroke"/>
-        <polyline class="hero__roof-2" points="0,30 50,0 100,30" vector-effect="non-scaling-stroke"/>
+      <svg class="hero__pediment" viewBox="0 0 100 26" aria-hidden="true">
+        <defs><pattern id="ped-mesz" width="40" height="40" patternUnits="userSpaceOnUse"><image href="img/tx-mesz.webp" width="40" height="40"/></pattern></defs>
+        <polygon class="ped-fill" points="2,26 50,2 98,26" fill="url(#ped-mesz)"/>
+        <polyline class="ped-clay" points="2,25.6 50,2.6 98,25.6"/>
+        <polyline class="ped-roof" points="-2,26 50,0.6 102,26"/>
       </svg>
       <div class="hero__gable">
         <div class="hero__film" aria-hidden="true">
           <img class="slide is-on" src="img/foto/hero-1600.webp" srcset="img/foto/hero-900.webp 900w, img/foto/hero-1600.webp 1600w, img/foto/hero-2400.webp 2400w" sizes="(max-width: 900px) 100vw, 55vw" alt="" fetchpriority="high">
           <img class="slide" data-src="img/foto/about-1600.webp" data-srcset="img/foto/about-900.webp 900w, img/foto/about-1600.webp 1600w, img/foto/about-2400.webp 2400w" sizes="(max-width: 900px) 100vw, 55vw" alt="">
-          <img class="slide" style="object-position:50% 85%" data-src="img/foto/service3-1600.webp" data-srcset="img/foto/service3-900.webp 900w, img/foto/service3-1600.webp 1600w" sizes="(max-width: 900px) 100vw, 55vw" alt="">
+          <img class="slide" style="object-position:50% 72%" data-src="img/foto/service3-1600.webp" data-srcset="img/foto/service3-900.webp 900w, img/foto/service3-1600.webp 1600w" sizes="(max-width: 900px) 100vw, 55vw" alt="">
         </div>
       </div>
       <a class="reel" href="#mester" data-play-video aria-label="Túró István bemutatkozó videója (34 mp) – lejátszás">

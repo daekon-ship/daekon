@@ -61,7 +61,7 @@ A régi logó (logo.png) nincs használva – új logó készült.
 | Mobil hívássáv | működik; elrejtődik a heróban, a kapcsolat résznél és a láblécben |
 
 ## Art direction — „Falmetszet”
-Nyitókép (4. kör): maga a hero egy parasztház-homlokzat – meszelt fal háttér, a jelenlegi oldal fotói egy oromzat alakú „ablakban” váltakoznak (lassú áttűnés + kameramozgás, 7 mp), fölötte kék és agyag tetővonal, alul végigfutó kék „lábazat” sáv (20+ év, fő munkák, cégnév). Az oromzat betöltéskor alulról „felépül”, a tetővonal kirajzolódik. Túró István videókártyája az oromzat sarkára fut fel (mobilon a fotó alá). A „falmetszet” homlokzatrajz a Miért-szekcióba költözött: belépéskor kirajzolódik, a mész ráhúzódik a repedt vályogfalra, majd megjelennek a rétegfeliratok.
+Nyitókép (4. kör): maga a hero egy parasztház-homlokzat – meszelt fal háttér, a jelenlegi oldal fotói egy oromzat alakú „ablakban” váltakoznak (lassú áttűnés + kameramozgás, 7 mp), fölötte kék és agyag tetővonal, alul végigfutó kék „lábazat” sáv (20+ év, fő munkák, cégnév). Az oromzat betöltéskor alulról „felépül”, a tetővonal kirajzolódik. Túró István videókártyája az oromzat sarkára fut fel (mobilon a fotó alá). 5. kör: a fotó téglalap keretben, teljes egészében látszik (nincs levágott tető), fölötte külön rajzolt oromzat; a nagyítás csak középről, váltáskor ugrás nélkül. A „falmetszet” homlokzatrajz a Miért-szekcióba költözött: belépéskor kirajzolódik, a mész ráhúzódik a repedt vályogfalra, majd megjelennek a rétegfeliratok.
 
 ## Új logó (`arculat/`)
 A V betű befelé lépcsőző vályogtéglákból épül, fölötte a parasztház tetővonala: monogram + falazat + tető egy jelben. A szöveg görbére alakítva (`_forras/logo.py`), betűtípus nélkül is pontos.
