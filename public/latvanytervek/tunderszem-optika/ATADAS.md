@@ -2,7 +2,7 @@
 
 **Élő terv:** https://daekon-ship.github.io/daekon/latvanytervek/tunderszem-optika/
 **Koncepció (3 irány):** https://daekon-ship.github.io/daekon/latvanytervek/tunderszem-optika/koncepcio.html
-**Állapot:** 2. kör – prémium újratervezés (az 1. kör visszajelzése: „nem elég prémium”), előzetes látványterv (noindex). Build nélküli statikus oldal: `index.html` + `tunderszem.css` + `tunderszem.js`.
+**Állapot:** 4. kör – végső finomítás, ügyfélnek küldhető. Korábban: 2. kör – prémium újratervezés (az 1. kör visszajelzése: „nem elég prémium”), előzetes látványterv (noindex). Build nélküli statikus oldal: `index.html` + `tunderszem.css` + `tunderszem.js`.
 
 ## Valós adatok (ellenőrizve)
 - Tündérszem Optika, 5052 Újszász, Damjanich út 14. · +36 30 146 4644 · tunderszemoptika@gmail.com
@@ -12,11 +12,20 @@
 - Vélemények: két nyilvános vélemény (Z. B., Z. O. — magyarvelemeny.com) **saját szavakkal összefoglalva**, nem idézve.
 
 ## Egyeztetendő az ügyféllel
-1. **Fotók** — nem fértem hozzá az üzlet saját képeihez (Facebook, logós JPG). Stockot nem használtam, ezért minden kép programból rajzolt illusztráció. Cserélendő/kiegészítendő: üzletportál, keretfal, vizsgálóhelyiség, keretek közelről.
-2. **Logó** — a meglévő logó nem volt letölthető; a fejlécben tipográfiai változat (dőlt Cormorant „Tündérszem” + OPTIKA + kék madár) áll. Vektoros logó kell.
-3. **Vélemények** — a végleges oldalra a Google/Facebook értékelések szó szerint, a szerzők hozzájárulásával. A két „Minta-hely” kártya kicserélendő.
-4. **Díjak** — az optikaturul.eu „Turul” jelöléseit szándékosan nem tettem ki (nem ellenőrzött elismerés). Csak az ügyfél kérésére.
-5. Időpontkérés jelenleg csak telefon + e-mail (mailto). Online foglalás opcionális későbbi fejlesztés, **nincs bekötve**.
+1. **Fotók** — az üzlet saját képeihez nem fértünk hozzá, stockot nem használtunk; minden kép programból rajzolt illusztráció. Saját fotó (portál, keretfal, vizsgáló, keretek) bármikor beköthető az illusztrációk helyére.
+2. **Logó** — a fejlécben a tündéres tipográfiai változat áll; ha van vektoros eredeti, egyeztetendő, melyik maradjon.
+3. **Vélemények** — két nyilvános (magyarvelemeny.com) vélemény és a visszatérő témák rövid **összefoglalása**, egyértelműen jelölve („Összefoglalás · … értékelése alapján”). Szó szerinti Google/Facebook idézet csak a szerzők és a tulajdonos jóváhagyásával.
+4. **Díjak** — az optikaturul.eu jelöléseit szándékosan nem tettük ki (nem ellenőrzött elismerés).
+5. **Időpontkérés** — telefon + e-mail (mailto). Online foglalás nincs és nincs is ígérve; később opcionálisan fejleszthető.
+6. Adatkezelési tájékoztató, süti-sáv: éles oldal előtt kell.
+
+## 4. kör – végső finomítás (napló)
+- Félkésznek ható feliratok eltávolítva: „Fotóhely” doboz (helyette időpontkérő gomb + telefonszám), fejlesztői megjegyzések a próbakeret-képaláírásban, a vitrinben és a véleményeknél; az illusztráció-figyelmeztetés rövidebb.
+- Vélemények: `blockquote` helyett összefoglaló doboz, egyértelmű „Összefoglalás” jelölés, forráslink megmaradt.
+- Mobil hero: a „Időpontot kérek” gomb 360/390/430 px-en is a fix hívássáv fölé esik; a szemüveg nem vágódik le (szélesebb kivágás); a szemöldökfelirat nem törik.
+- Menü 980–1180 px között: a lenyíló lap eddig a fejléc alá csúszott a felső sáv miatt — javítva (a fejléc aljához igazodik).
+- Olvashatóság: elérhetőségek groteszkkel (a Bodoni számjegyei kis méreten vékonyak), „H–P” helyett „Hétköznap”, túl apró (9 px alatti) feliratok növelve, kis érintési felületek bővítve, Facebook a kapcsolat-blokkban is.
+- Ellenőrizve (Playwright, Chromium): 360–1440 px, nincs vízszintes kilógás, nincs konzolhiba, nincs 404, minden kép és betű betölt (~510 KB összesen); keretválasztó (fül, nyilak, billentyűzet), csúszka (egér + érintés), véleménylapozó, részletek, hamburger menü (Esc, fókusz), nyitvatartás-jelzés öt időpontra, reduced-motion.
 
 ## Art direction — 2. kör: „Maison”
 Az 1. kör rajzos, pasztell kártyás világa túl „bájos” volt. A 2. körben butik-optika hangulat:

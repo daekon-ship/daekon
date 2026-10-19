@@ -87,7 +87,7 @@ button { font: inherit; color: inherit; }
 .section__head--center .section__intro { margin-inline: auto; }
 
 /* Bodoni Moda: nagyobb méreten is mérsékelt optikai méret, hogy a hajszálvonalak ne vesszenek el */
-.h2, .hero__title, .row h3, .values h3, .brand__name, .footer__mark > span > span, .menu__links a, .tabs button, .quote blockquote p {
+.h2, .hero__title, .row h3, .values h3, .brand__name, .footer__mark > span > span, .menu__links a, .tabs button, .quote__text p {
   font-optical-sizing: none; font-variation-settings: "opsz" 22; }
 .hero__title { font-weight: 450; }
 .facts dd, .contact__list dd, .stage__text, .story__lead, .footer__claim { font-weight: 470; }
@@ -131,11 +131,11 @@ button { font: inherit; color: inherit; }
   transform: scaleX(0); transform-origin: right; transition: transform .5s var(--ease); }
 .nav__side a:not(.btn):hover, .nav__side a.is-active { color: var(--ink); }
 .nav__side a:not(.btn):hover::after, .nav__side a.is-active::after { transform: scaleX(1); transform-origin: left; }
-.brand { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; color: var(--ink); }
+.brand { display: inline-flex; align-items: center; gap: 12px; padding-block: 6px; text-decoration: none; color: var(--ink); }
 .brand__bird { width: 46px; height: 30px; color: var(--ink); }
 .brand__text { display: flex; flex-direction: column; align-items: flex-start; line-height: 1; }
 .brand__name { font-family: var(--serif); font-size: 1.12rem; font-weight: 500; letter-spacing: .24em; text-transform: uppercase; }
-.brand__sub { font-size: .56rem; font-weight: 500; letter-spacing: .46em; text-transform: uppercase; margin-top: 6px; color: var(--gold-text); }
+.brand__sub { font-size: .64rem; font-weight: 500; letter-spacing: .46em; text-transform: uppercase; margin-top: 6px; color: var(--gold-text); }
 .nav__burger { display: none; justify-self: end; width: 48px; height: 48px; border: 1px solid var(--line-strong); background: transparent; cursor: pointer; position: relative; }
 .nav__burger span { position: absolute; left: 13px; right: 13px; height: 1px; background: var(--ink); transition: transform .4s var(--ease), top .4s var(--ease); }
 .nav__burger span:first-child { top: 19px; }
@@ -175,7 +175,7 @@ button { font: inherit; color: inherit; }
 .hero__title .line { display: block; overflow: hidden; padding: .16em 0 .1em; margin: -.16em 0 -.1em; }
 .hero__title .line > span { display: inline-block; }
 .hero__lead { font-size: 1.12rem; color: var(--ink-soft); max-width: 29rem; margin-bottom: 40px; }
-.hero__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 20px 32px; }
+.hero__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 18px 26px; }
 .hero__visual { margin: 0; position: relative; }
 .specimen { width: 100%; height: auto; max-width: 780px; margin-left: auto; overflow: visible; }
 .specimen .chart text { font-family: var(--serif); font-weight: 400; }
@@ -222,11 +222,9 @@ button { font: inherit; color: inherit; }
 .facts div + div { padding-left: 20px; border-left: 1px solid var(--line); }
 .facts dt { font-size: .64rem; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; color: var(--gold-text); margin-bottom: 6px; }
 .facts dd { margin: 0; font-variant-numeric: lining-nums; font-family: var(--serif); font-size: 1.14rem; line-height: 1.25; }
-.photoslot { margin: 48px 0 0; }
-.photoslot__box { aspect-ratio: 16 / 9; border: 1px solid var(--line-strong); display: grid; place-content: center; text-align: center; gap: 4px;
-  background: repeating-linear-gradient(135deg, transparent 0 9px, rgba(38,52,50,.05) 9px 10px), var(--paper); }
-.photoslot__box span { font-size: .66rem; font-weight: 500; letter-spacing: .26em; text-transform: uppercase; color: var(--gold-text); }
-.photoslot__box small { font-family: var(--serif); font-style: italic; font-size: .94rem; color: var(--ink-soft); }
+.story__cta { margin-top: 44px; display: flex; flex-wrap: wrap; align-items: center; gap: 18px 28px; }
+.story__cta p { margin: 0; font-size: .95rem; line-height: 1.5; color: var(--ink-soft); }
+.story__cta p a { display: inline-block; padding: 8px 0 4px; color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--line-strong); font-weight: 500; }
 
 /* ---------- szolgáltatások: index ---------- */
 .services { background: var(--paper); border-block: 1px solid var(--line); }
@@ -337,9 +335,9 @@ details p, details ul { margin: 6px 0 4px; font-size: .97rem; color: var(--ink-s
 .quote { grid-area: 1 / 1; margin: 0; opacity: 0; visibility: hidden; transform: translateY(10px);
   transition: opacity .8s var(--ease), transform .8s var(--ease), visibility 0s .8s; }
 .quote.is-on { opacity: 1; visibility: visible; transform: none; transition: opacity .8s var(--ease), transform .8s var(--ease), visibility 0s; }
-.quote blockquote { margin: 0; }
-.quote blockquote::before { content: ""; display: block; width: 14px; height: 14px; margin: 0 auto 30px; background: var(--gold); clip-path: polygon(50% 0, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0 50%, 39% 39%); }
-.quote blockquote p { font-family: var(--serif); font-style: italic; font-size: clamp(1.3rem, 1.06rem + .85vw, 1.8rem); line-height: 1.45; margin: 0; }
+.quote__text { margin: 0; }
+.quote__text::before { content: ""; display: block; width: 14px; height: 14px; margin: 0 auto 30px; background: var(--gold); clip-path: polygon(50% 0, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0 50%, 39% 39%); }
+.quote__text p { font-family: var(--serif); font-style: italic; font-size: clamp(1.3rem, 1.06rem + .85vw, 1.8rem); line-height: 1.45; margin: 0; }
 .quote figcaption { margin-top: 28px; font-size: .7rem; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; color: var(--ink-mute); }
 .quote figcaption b { color: var(--ink); }
 .quote figcaption a { color: var(--lav-deep); }
@@ -407,7 +405,7 @@ details p, details ul { margin: 6px 0 4px; font-size: .97rem; color: var(--ink-s
   .values { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 44px 36px; }
 }
 @media (max-width: 980px) {
-  .hero__inner { display: flex; flex-direction: column; align-items: stretch; gap: 0; padding: 72px clamp(24px, 6vw, 56px) 76px; }
+  .hero__inner { display: flex; flex-direction: column; align-items: stretch; gap: 0; padding: 64px clamp(24px, 6vw, 56px) 64px; }
   .hero__copy { display: contents; }
   .hero__eyebrow { order: 1; align-self: flex-start; }
   .hero__title { order: 2; }
@@ -433,7 +431,7 @@ details p, details ul { margin: 6px 0 4px; font-size: .97rem; color: var(--ink-s
   :root { --nav-h: 66px; --callbar-h: calc(60px + env(safe-area-inset-bottom)); }
   .topbar { display: none; }
   .hero__plate { min-height: 0; }
-  .corner { font-size: .56rem; letter-spacing: .2em; top: 22px; }
+  .corner { font-size: .62rem; letter-spacing: .18em; top: 22px; }
   .corner--tl { left: 22px; } .corner--tr { right: 22px; }
   .scrollcue { display: none; }
   .ribbon__inner { font-size: 1.02rem; gap: 6px 16px; padding-block: 20px; }
@@ -456,7 +454,7 @@ details p, details ul { margin: 6px 0 4px; font-size: .97rem; color: var(--ink-s
   .compare__knob { width: 68px; height: 68px; margin: -34px 0 0 -34px; }
   .compare__knob::before { left: 14px; } .compare__knob::after { right: 14px; }
   .compare__labels { inset: 12px 12px auto; }
-  .compare__labels span { font-size: .54rem; padding: 6px 9px; letter-spacing: .16em; }
+  .compare__labels span { font-size: .6rem; padding: 6px 9px; letter-spacing: .14em; }
 }
 @media (max-width: 600px) {
   .brand__name { font-size: 1.12rem; letter-spacing: .16em; }
@@ -492,3 +490,18 @@ details p, details ul { margin: 6px 0 4px; font-size: .97rem; color: var(--ink-s
 .motion .dust1 { animation-delay: .8s; } .motion .dust2 { animation-delay: 1.6s; } .motion .dust3 { animation-delay: 2.4s; }
 @keyframes twinkle { 0%, 100% { opacity: 1; } 50% { opacity: .25; } }
 @media (max-width: 759px) { .contact__fairy { width: 120px; top: 36px; right: 16px; opacity: .6; } }
+
+@media (max-width: 759px) {
+  .hero__inner { padding-top: 52px; }
+  .hero__eyebrow { margin-bottom: 16px; }
+  .hero__title { margin-bottom: 14px; }
+  .hero__visual { margin: -4px 0 14px; }
+  .hero__hint { display: none; }
+  .hero__lead { margin-bottom: 24px; font-size: 1.04rem; line-height: 1.6; }
+  .story__cta .btn { width: 100%; }
+}
+@media (max-width: 380px) { .hero__lead { font-size: 1rem; } .hero__title { font-size: 2.2rem; } }
+@media (max-width: 400px) { .hero__eyebrow { letter-spacing: .18em; gap: 10px; } .hero__eyebrow::before { width: 22px; } }
+
+/* elérhetőségek: számok és címek jól olvasható groteszkkel */
+.contact__list dd { font-family: var(--sans); font-weight: 400; font-size: 1.12rem; letter-spacing: .01em; }

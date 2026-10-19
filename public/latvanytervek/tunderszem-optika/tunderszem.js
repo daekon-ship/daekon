@@ -13,6 +13,7 @@
   function setMenu(open) {
     burger.setAttribute('aria-expanded', String(open));
     burger.setAttribute('aria-label', open ? 'Menü bezárása' : 'Menü megnyitása');
+    if (open) menu.style.top = Math.max(0, $('#nav').getBoundingClientRect().bottom) + 'px';
     menu.hidden = !open;
     document.body.style.overflow = open ? 'hidden' : '';
     if (open) { var first = $('a', menu); if (first) first.focus(); }
@@ -41,7 +42,7 @@
   /* ---------------- hero: a lencse mögött minden éles ---------------- */
   var specimen = $('.specimen');
   var fitSpecimen = function () {
-    if (specimen) specimen.setAttribute('viewBox', window.innerWidth <= 980 ? '20 86 600 406' : '0 0 640 600');
+    if (specimen) specimen.setAttribute('viewBox', window.innerWidth <= 980 ? '-18 80 676 420' : '0 0 640 600');
   };
   fitSpecimen();
   window.addEventListener('resize', fitSpecimen);
