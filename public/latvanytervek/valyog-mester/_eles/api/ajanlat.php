@@ -116,8 +116,7 @@ if (is_file($tokenFile)) {
 const EPULET = ['Vályogház', 'Vert falú ház', 'Vegyes falazatú ház', 'Tégla vagy egyéb', 'Nem tudom'];
 const EPITES = ['', '1950 előtt', '1950–1970', '1970 után', 'Nem tudom'];
 const MUNKA  = ['Repedések a falon', 'Nedvesedő falszakasz', 'Leváló, sérült vakolat', 'Alapozási probléma gyanúja',
-                'Teljes felújítás', 'Átalakítás, kőművesmunka', 'Alapozás, betonozás, bontás',
-                'Tetőjavítás, nyílászárók', 'Térkövezés, kerítés', 'Egyéb'];
+                'Teljes felújítás', 'Lakás-, fürdőszoba-felújítás', 'Kőművesmunka, átalakítás', 'Alapozás, betonozás, bontás', 'Szigetelés', 'Tető, nyílászárók', 'Térkövezés, udvar, kert', 'Kerítés, kocsibeálló, terasz', 'Egyéb'];
 const KEZDES = ['', 'Azonnal / 1–2 héten belül', '2–4 héten belül', '1–2 hónapon belül', 'Később / csak tájékozódom'];
 const HIVAS  = ['', 'Délelőtt', 'Délután', 'Este 6 előtt'];
 

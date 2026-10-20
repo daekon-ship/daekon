@@ -10,7 +10,7 @@
 |---|---|
 | Design (Archivo, fehér–grafit–terrakotta, valódi fotók) | kész |
 | Cégadatok (adószám, cégjegyzékszám, bejegyzés) | kész – formailag ellenőrizve |
-| Szolgáltatások (fő + igazolt másodlagos, belső ellenőrzési lista) | kész – a lista ügyféllel megerősítendő |
+| Szolgáltatások (fő szakterület + minden felújítás és kőművesmunka, 37 tétel) | kész – a lista ügyféllel átnézendő |
 | Ajánlatkérő frontend (6 lépés, validáció, képkicsinyítés, állapotok) | kész, tesztelve |
 | Ajánlatkérő backend (`_eles/api/ajanlat.php`) | kész, tesztelve helyi SMTP-vel – élesben a fogadó cím és az SMTP-fiók hiányzik |
 | SEO (canonical, OG, strukturált adat, sitemap, robots) | kész – az éles build aktiválja |
@@ -32,30 +32,21 @@
 
 A cégadatokat online, független nyilvántartásban (e-cegjegyzek.hu) érdemes még egyszer megnézni – innen nem volt elérhető.
 
-## Szolgáltatások – mi látszik és mi nem
-**Fő szakterület (Szolgáltatások, 6 tétel):** vályogházak felújítása · vert falú házak javítása · vegyes falazatú házak felújítása · aláfalazás és falmegerősítés · vakolás és felületképzés · régi házak teljes felújítása.
+## Szolgáltatások
+**A DAEKON kérésére (2026-10-20) az oldal mindenfajta felújítást és kőművesmunkát mutat** – már a nyitóképen is („Mindenfajta felújítás és kőművesmunka egy kézből”, munkacímkék, tényszalag), és a „Minden munka” blokkban (`#egyeb-munkak`, 6 csoport, 37 tétel).
 
-**Egyéb munkák (látható, igazolt):**
-| Tétel | Forrás |
-|---|---|
-| Kőművesmunkák, falazás; kézi vakolás, glettelés; falrepedések javítása; átalakítás; teljes felújítás | régi oldal + videó |
-| Alapozás, betonozás | régi oldal + videó |
-| Salétromos lábazat cseréje | videó |
-| Bontási munkák | onlinecegbazis + Daibau |
-| Tetőjavítás; nyílászárók beépítése | videó (Túró István saját szavai) |
-| Térkövezés | videó + onlinecegbazis + Daibau |
-| Kerítésépítés betonból vagy vasból | onlinecegbazis |
+- **Fő szakterület (Szolgáltatások, 6 tétel):** vályogházak felújítása · vert falú házak javítása · vegyes falazatú házak felújítása · aláfalazás és falmegerősítés · vakolás és felületképzés · régi házak teljes felújítása.
+- **Minden munka:**
+  - Kőművesmunkák: kisebb és nagyobb kőművesmunkák, falazás, átalakítás, aláfalazás, falmegerősítés, falrepedések, kézi vakolás, glettelés, lábazat, támfal, terasz és erkély
+  - Felújítás: teljes ház, lakás, fürdőszoba, vályog-, vert falú és vegyes falazatú házak, tetőtér-beépítés, új ház
+  - Alap, beton, szigetelés: alapozás, betonozás, zsaluzás, vízszigetelés és injektálás, talajszigetelés, földmunka, bontás
+  - Tető és nyílászárók: ácsmunka, tetőfedés, tetőjavítás, előtető, ablak, ajtó
+  - Térkövezés, udvar, kert: térkövezés, udvarrendezés, kertépítés, fa terasz, pergola
+  - Kerítés és fémszerkezet: kerítés betonból vagy vasból, fém kerítés, rozsdamentes korlát, fémszerkezetes terasz, kocsibeálló
 
-**Belső ellenőrzési lista – NEM látszik az oldalon, ügyféllel megerősítendő** (csak a Daibau-profil említi):
-- [ ] Új építésű ház kivitelezése
-- [ ] Fémszerkezetes munkák: fém kerítés, rozsdamentes korlát, fémszerkezetes terasz, kocsibeálló, pergola
-- [ ] Speciális szigetelés: alap vízszigetelése, injektálás, talajszigetelés
-- [ ] Ács- és tetőépítés, tetőfedés, fa előtető, tetőtér-beépítés
-- [ ] Lakás- és fürdőszoba-felújítás, terasz- és erkélyfelújítás
-- [ ] Földmunkák, zsaluzás
-- [ ] Kertépítés, udvarrendezés, támfal, fa terasz
+**Források:** a cég saját Daibau-profilja (30 tétel, a vállalkozás maga adta meg), a régi valyog-mester.hu oldal, az onlinecegbazis és a bemutatkozó videó. Kitalált tétel nincs.
 
-Ha az ügyfél megerősíti, a tétel az `index.html` „Egyéb munkák” blokkjába (és az ajánlatkérő 2. lépésébe, valamint az `api/ajanlat.php` `MUNKA` listájába) felvehető.
+**Átadás előtt Túró Istvánnal érdemes egyszer végignézni** – főleg azokat, amelyek csak a Daibau-profilon szerepelnek: új építésű ház, fémszerkezetes munkák, injektálás és talajszigetelés, ácsmunka és tetőfedés, kertépítés és pergola. Ha valamit nem vállal, törölni kell: `index.html` (catalog), az ajánlatkérő 2. lépése és az `api/ajanlat.php` `MUNKA` listája.
 
 ## Képek és videó – hitelesség
 | Anyag | Eredet | Hol látszik | Jelölés |
@@ -111,7 +102,7 @@ Ha az ügyfél megerősíti, a tétel az `index.html` „Egyéb munkák” blokk
 1. **Ajánlatfogadó e-mail-cím** – valyog.mester@gmail.com, istvanturo06@gmail.com vagy turpabuildkft@gmail.com? Az oldalon látható cím is ehhez igazodjon.
 2. **Munkaterület és kiszállás:** a régi oldal „országos kiszállást” írt, az új oldalon „Fegyvernek és Jász-Nagykun-Szolnok vármegye, távolabb egyeztetéssel” szerepel. Az **ingyenes felmérés** feltételei (van-e kiszállási díj távolabb?) – addig az „ingyenes” szó a régi oldal saját állítása alapján marad.
 3. **Képek és videó felhasználási engedélye**, illetve saját munkafotók (előtte–utána párok is).
-4. **Szolgáltatáslista** megerősítése (lásd a belső ellenőrzési listát).
+4. **Szolgáltatáslista** átnézése (különösen a csak Daibau-profilon szereplő tételek).
 5. **Adatkezelési adatok:** adatvédelmi kapcsolattartó, megőrzési idő, tárhely- és e-mail-szolgáltató, hatályba lépés dátuma.
 6. **Hozzáférések:** tárhely, DNS, SMTP-fiók (vagy a DAEKON biztosítja).
 7. Hozzájárulás a lábléc diszkrét „Weboldal: DAEKON” hivatkozásához.
