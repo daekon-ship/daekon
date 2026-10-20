@@ -124,7 +124,7 @@ class _PriceEditorState extends ConsumerState<_PriceEditor> {
     // Elhagyáskor a függő módosítást azonnal mentjük — nincs adatvesztés.
     if (_debounce?.isActive ?? false) {
       _debounce!.cancel();
-      _flush().catchError((Object e) => debugPrint('Mester+ mentés: $e'));
+      _flush().catchError((Object e) => devLog('Mester+ mentés: $e'));
     }
     _labor.dispose();
     _material.dispose();

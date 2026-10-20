@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -440,9 +441,16 @@ String friendlyError(Object e, [StackTrace? st]) {
   if (e is UserInputError) return e.message;
   if (e is CloudException) return e.message;
   if (e is BackupFormatException) return e.message;
-  debugPrint('Mester+ hiba: $e');
-  if (st != null) debugPrintStack(stackTrace: st);
+  devLog('Mester+ hiba: $e', st);
   return 'Váratlan hiba történt. Próbáld újra. Ha ismét előfordul, indítsd újra az appot.';
+}
+
+/// Fejlesztői napló – CSAK debug buildben. Release-ben (pilot / Play) semmi nem kerül a rendszernaplóba:
+/// se hibaüzenet, se stack trace (ügyféladat-részlet sem szivároghat így).
+void devLog(String message, [StackTrace? st]) {
+  if (!kDebugMode) return;
+  debugPrint(message);
+  if (st != null) debugPrintStack(stackTrace: st);
 }
 
 /// Hiba közös kezelése mentési műveleteknél.

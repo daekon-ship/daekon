@@ -29,7 +29,7 @@ set /p "KSPASS=Adj meg egy jelszot a kulcshoz (legalabb 6 karakter, csak betu es
 if "!KSPASS!"=="" goto :askpass
 if "!KSPASS:~5,1!"=="" (echo Tul rovid. & goto :askpass)
 
-"!KEYTOOL!" -genkeypair -v -keystore "%USERPROFILE%\mester_plus_upload.jks" -storetype JKS -keyalg RSA -keysize 2048 -validity 10000 -alias upload -storepass "!KSPASS!" -keypass "!KSPASS!" -dname "CN=Mester+, C=HU"
+"!KEYTOOL!" -genkeypair -v -keystore "%USERPROFILE%\mester_plus_upload.jks" -storetype JKS -keyalg RSA -keysize 2048 -validity 10000 -alias upload -storepass "!KSPASS!" -keypass "!KSPASS!" -dname "CN=Mester Plus, O=DAEKON, C=HU"
 if errorlevel 1 (echo HIBA: a kulcs letrehozasa nem sikerult. & pause & exit /b 1)
 
 set "STOREPATH=%USERPROFILE:\=/%/mester_plus_upload.jks"
