@@ -168,4 +168,5 @@ Playwright: 1440 / 768 / 390 / 360 px – nincs vízszintes túlcsordulás, ninc
 ### Javítás – 2026-10-20 (térkép, asztali animáció)
 - Térkép: a CARTO csempék „API KEY REQUIRED” feliratot adtak → kulcs nélküli OpenStreetMap-csempék, CSS-szűrővel sötétítve. A bemutató buborék nem nyílik ki magától.
 - Asztali gép: a lap tetején a videó magától, hurokban ás; görgetéskor a görgetés vezérli.
+- Ha az oldal lejjebb görgetve nyílik meg (pl. #munkaterulet), a videó már nem vált tévesen fotókra.
 - Csökkentett mozgás (pl. Windows „Animációs effektusok: ki”): korábban csak állókép volt → most a videó hurokban megy rögzítés nélkül, megállító gombbal (mobilon is).

@@ -469,8 +469,14 @@
     video.src = (!desk && HERO_VIDEO.mobileMp4) || HERO_VIDEO.mp4;
     media.appendChild(video);
     // ha 10 mp alatt sem tölt be, a valódi fotókra váltunk
-    const guard = setTimeout(() => { if (video.readyState < 2) fail('video-timeout'); }, 10000);
-    video.addEventListener('loadeddata', () => clearTimeout(guard), { once: true });
+    // (csak ha a nyitókép látszik – ha az oldal lejjebb nyílik meg, a szüneteltetett videó nem töltődik, az nem hiba)
+    const heroVisible = () => { const r = heroEl.getBoundingClientRect(); return r.bottom > 0 && r.top < innerHeight; };
+    let seen = 0;
+    const guard = setInterval(() => {
+      if (failed || video.readyState >= 2) { clearInterval(guard); return; }
+      if (heroVisible() && ++seen >= 10) { clearInterval(guard); fail('video-timeout'); }
+    }, 1000);
+    video.addEventListener('loadeddata', () => clearInterval(guard), { once: true });
 
     if (scrub) {
       // görgetésre pörgetett videó (a referencia mechanikája)
@@ -495,7 +501,7 @@
     } else {
       // mobil / csökkentett mozgás: némítva, hurokban; ha az automatikus lejátszás tiltott → valódi fotók
       let userPaused = false;
-      const p = video.play(); if (p) p.catch(() => fail('autoplay-blocked'));
+      const p = video.play(); if (p) p.catch(e => { if (e && e.name === 'NotAllowedError') fail('autoplay-blocked'); });
       video.addEventListener('timeupdate', () => setStage(video.currentTime / (video.duration || 8) * stages.length));
       // megállító gomb (akadálymentesség: mozgó tartalom leállítható)
       const btn = d.createElement('button');
