@@ -159,7 +159,7 @@ final class App
                     continue;
                 }
                 $matched = true;
-                if ($method !== $req->method) {
+                if ($method !== $req->method && !($method === 'GET' && $req->method === 'HEAD')) {
                     continue;
                 }
                 $req->routeName = $name;
@@ -195,6 +195,13 @@ final class App
             $resp = $this->isPage($req) ? $this->pages()->message('Átmeneti hiba', $err->getMessage(), $err->status) : Response::error($err, $req->requestId);
         }
         $this->finish($req, $resp);
+        if ($req->method === 'HEAD') {
+            $resp->body = ''; // HEAD = GET törzs nélkül (monitorozó eszközök)
+            if ($resp->stream !== null) {
+                fclose($resp->stream);
+                $resp->stream = null;
+            }
+        }
         return $resp;
     }
 

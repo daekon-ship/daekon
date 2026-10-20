@@ -91,6 +91,14 @@ return [
         $audit = json_encode($GLOBALS['T_DB']->all('SELECT * FROM audit_logs ORDER BY id DESC LIMIT 200'), JSON_INVALID_UTF8_SUBSTITUTE);
         ok(!str_contains($audit, $u['password']) && !str_contains($audit, $u['email']), 'audit: nincs jelszó / e-mail');
     },
+    'HEAD = GET törzs nélkül (monitorozó eszközök); nem létező metódus 405' => function () {
+        [$s, , $r] = call('HEAD', '/api/v1/health');
+        eq([$s, $r->body], [200, ''], 'HEAD /api/v1/health: 200, üres törzs');
+        [$s, , $r] = call('HEAD', '/');
+        eq($s, 200, 'HEAD /: 200');
+        [$s] = call('PATCH', '/api/v1/health');
+        eq($s, 405, 'PATCH: 405');
+    },
     'health: nincs titok, verzió és ellenőrzések' => function () {
         [$s, $j, $r] = call('GET', '/api/v1/health');
         eq([$s, $j['status']], [200, 'ok'], 'ok');

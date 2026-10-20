@@ -58,12 +58,19 @@ void main() {
     await phone1.register(email: email, password: password);
     expect(phone1.isSignedIn, isTrue);
     ok('REGISTER (+ eszköz regisztrálva, tokenek a biztonságos tárolóban)');
-    // Pro jogosultság a sandbox-előfizetéssel (a teszt-szerveren; production-ben ez a végpont nincs)
-    await phone1.api.postJson('/api/v1/billing/sandbox/verify', {'purchase_token': 'sandbox:mester_plus_pro_monthly:ok:${DateTime.now().microsecondsSinceEpoch}'},
-        idempotencyKey: phone1.api.newIdempotencyKey());
+    // Pro jogosultság: teszt-szerveren sandbox-vásárlással; PRODUCTIONBEN (ahol sandbox nincs és valódi fizetés nem lehet)
+    // a tulajdonosi CLI kézi, 1 napos jogosultságával (MP_LIVE_GRANT_SSH + MP_LIVE_GRANT_REMOTE).
+    final grantSsh = Platform.environment['MP_LIVE_GRANT_SSH'] ?? '';
+    if (grantSsh.isNotEmpty) {
+      final r = await Process.run('C:/Windows/System32/OpenSSH/ssh.exe', ['-n', grantSsh, '${Platform.environment['MP_LIVE_GRANT_REMOTE']} $email']);
+      expect(r.exitCode, 0, reason: 'kézi Pro-jogosultság (CLI)');
+    } else {
+      await phone1.api.postJson('/api/v1/billing/sandbox/verify', {'purchase_token': 'sandbox:mester_plus_pro_monthly:ok:${DateTime.now().microsecondsSinceEpoch}'},
+          idempotencyKey: phone1.api.newIdempotencyKey());
+    }
     await phone1.refreshAccount();
     expect(phone1.entitlements.canUseCloudBackup(), isTrue);
-    ok('PRO jogosultság a szervertől (sandbox-vásárlás) → canUseCloudBackup()');
+    ok('PRO jogosultság a szervertől (${grantSsh.isEmpty ? 'sandbox-vásárlás' : 'kézi tulajdonosi jogosultság, fizetés nélkül'}) → canUseCloudBackup()');
 
     // 2. LOCAL DATA
     final src = AppDatabase(NativeDatabase.memory());
