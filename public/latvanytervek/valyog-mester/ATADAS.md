@@ -106,10 +106,12 @@ A cégadatokat online, független nyilvántartásban (e-cegjegyzek.hu) érdemes 
 `index.html`, `valyog.css`, `valyog.js`, `adatkezeles.html` – az oldal · `fonts/` · `img/foto/` · `arculat/` (logócsalád, favicon, `logo-allo-vilagos.png`) · `_eles/` (htaccess, robots, 404 – csak az éles csomagba kerülnek) · `_forras/` (`build_eles.py`, `logo.py`, `media.py`, `og.html`, forrásbetű) · `koncepcio.html` (az 1. kör irányai + a végleges rendszer).
 
 ## Élesítés (2026-10-20)
-- **Adatkezelési tájékoztató:** a TURPA BUILD Kft. mind a 6 pontot jóváhagyta (adatvédelmi e-mail: valyog.mester@gmail.com; szerződés 5 év,
-  számviteli bizonylat 8 év; megkeresés legfeljebb 1 év; aláírt adatfeldolgozói megállapodás a DAEKON-nal; Google Ireland Ltd.; hatály: 2026. október 20.) –
-  a DAEKON 2026-10-20-i közlése alapján.
-- **Képek / videó:** az ügyfél felhasználási jóváhagyása a DAEKON közlése szerint rendelkezésre áll (saját anyag: bemutatkozó videó és képkockái). Az
+- **Adatkezelési tájékoztató – JAVÍTÁS (2026-10-20 este):** a korábbi „mind a 6 pont jóváhagyva, aláírt adatfeldolgozói megállapodás” bejegyzés
+  egyetlen forrása a DAEKON chates válasza volt; **írásos ügyféljóváhagyás vagy aláírt megállapodás NEM áll rendelkezésre** – ezért nem tekinthető
+  teljesítettnek. Az élő tájékoztatóból kikerült az „adatfeldolgozói megállapodás van érvényben” állítás. Hiányzik: a TURPA BUILD Kft. írásos jóváhagyása
+  (adatvédelmi e-mail, megőrzési idők: szerződés 5 év, bizonylat 8 év, megkeresés 1 év; postafiók-szolgáltató; hatály) és az aláírt GDPR 28. cikk szerinti
+  adatfeldolgozói megállapodás (TURPA BUILD Kft. – DAEKON).
+- **Képek / videó:** az ügyfél felhasználási jóváhagyása a DAEKON közlése szerint rendelkezésre áll (írásos példány nincs a dokumentációban) (saját anyag: bemutatkozó videó és képkockái). Az
   **ismeretlen eredetű „Hangulatkép” fotók (`service1`, `hero`, `about`, `service2`) a DAEKON döntésére lekerültek** – a jóváhagyás harmadik fél anyagára nem
   terjedhetett ki igazoltan. Helyettük kizárólag saját képkockák szerepelnek (nyitókép, szolgáltatások, tünetek).
 
