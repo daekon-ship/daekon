@@ -33,7 +33,7 @@
     v.className = 'hero__video'; v.setAttribute('aria-hidden', 'true');
     if (HERO_VIDEO.webm && !mobile) v.innerHTML += `<source src="${HERO_VIDEO.webm}" type="video/webm">`;
     v.innerHTML += `<source src="${(mobile && HERO_VIDEO.mobileMp4) || HERO_VIDEO.mp4}" type="video/mp4">`;
-    v.addEventListener('playing', () => $('.hero__img').style.opacity = 0, { once: true });
+    v.addEventListener('playing', () => { $$('.scene').forEach(s => s.style.visibility = 'hidden'); $('.stages').hidden = true; }, { once: true });
     $('#hero-media').appendChild(v);
   }
 
@@ -303,10 +303,48 @@
     .from('.hero__lead', { y: 22, autoAlpha: 0, duration: .9 }, .85)
     .from('.hero__cta .btn', { y: 20, autoAlpha: 0, duration: .8, stagger: .08 }, 1)
     .from('.hero__facts', { scaleX: 0, transformOrigin: 'left', duration: 1.2, ease: 'expo.inOut' }, 1.05)
-    .from('.hero__facts li, .scrollcue', { y: 12, autoAlpha: 0, duration: .6, stagger: .08 }, 1.4);
+    .from('.hero__facts li, .scrollcue, .stages li, .hero__tag', { y: 12, autoAlpha: 0, duration: .6, stagger: .08 }, 1.4);
   // görgetés: a kép lassabban, a szöveg felcsúszik
-  g.to('.hero__media', { yPercent: desk ? 12 : 6, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
-  if (desk) g.to('.hero__in', { y: -80, autoAlpha: .25, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
+  // FILMSZERŰ NYITÓKÉP: valódi munkafotókból álló jelenetsor (a végleges videóig)
+  const scenes = $$('.scene'), stages = $$('.stages li');
+  const setStage = (seg) => stages.forEach((li, i) => {
+    li.style.setProperty('--p', Math.min(1, Math.max(0, seg - i)));
+    li.classList.toggle('is-on', i === Math.min(stages.length - 1, Math.floor(seg)));
+    li.classList.toggle('is-done', i < Math.floor(seg));
+  });
+  if (!$('.hero__video')) {
+    g.set(scenes, { scale: 1.14, transformOrigin: '60% 50%' });
+    g.set(scenes.slice(1), { opacity: 0 });
+    if (desk) {
+      // asztali gép: görgetésre „lepörög” (rögzített nyitókép, mint a referenciavideóban)
+      const tl = g.timeline({ scrollTrigger: { trigger: '.hero', start: 'top top', end: '+=' + (scenes.length * 70) + '%', pin: true, scrub: .8, anticipatePin: 1,
+        onUpdate: s => setStage(s.progress * scenes.length) } });
+      scenes.forEach((s, i) => {
+        tl.to(s, { scale: 1, duration: 1, ease: 'none' }, i);
+        if (scenes[i + 1]) tl.to(scenes[i + 1], { opacity: 1, duration: .32, ease: 'none' }, i + .68);
+      });
+      tl.to('.hero__copy', { y: -30, duration: .5, ease: 'none' }, scenes.length - .5);
+      // amíg nem görget: lassú „lélegzés” az első képen
+      g.to(scenes[0], { scale: 1.08, duration: 6, ease: 'sine.inOut', yoyo: true, repeat: -1, overwrite: false, paused: false, id: 'idle' });
+      ST.create({ trigger: '.hero', start: 'top top-=4', onEnter: () => g.getById('idle')?.kill() });
+    } else {
+      // mobil: magától vált, rögzítés nélkül
+      let i = 0;
+      const step = () => {
+        const cur = scenes[i], nx = (i + 1) % scenes.length;
+        stages.forEach((li, k) => { li.classList.toggle('is-on', k === i); li.classList.toggle('is-done', k < i); if (k !== i) li.style.setProperty('--p', k < i ? 1 : 0); });
+        g.fromTo(cur, { scale: 1.14 }, { scale: 1, duration: 4.2, ease: 'none' });
+        g.fromTo(stages[i], { '--p': 0 }, { '--p': 1, duration: 4.2, ease: 'none' });
+        g.delayedCall(3.6, () => {
+          g.set(scenes[nx], { scale: 1.14 });
+          g.to(scenes[nx], { opacity: 1, duration: .8, ease: 'power1.inOut' });
+          g.to(cur, { opacity: 0, duration: .8, delay: .1, ease: 'power1.inOut' });
+          i = nx; g.delayedCall(.6, step);
+        });
+      };
+      step();
+    }
+  }
 
   // címek szavanként
   $$('.sec h2, .final h2').forEach(h => g.from(split(h), { yPercent: 115, duration: 1, ease: 'expo.out', stagger: .05, scrollTrigger: { trigger: h, start: 'top 87%' } }));

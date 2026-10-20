@@ -30,7 +30,8 @@
 | `prefers-reduced-motion` | minden animáció és a Ken Burns kikapcsol |
 
 ## 3. Hero videó – specifikáció (a végleges videó ügyféljóváhagyás után készül)
-**Most:** Zoltán saját fotója (kisgép fás területen, `img/hero-kisgep-*.webp`, a 04-es munkafotó kivágása) lassú „Ken Burns” kameramozgással. Nem rajzolt, nem CSS-sel mozgatott gép.
+**Most (6. kör, „filmszerű nyitókép” átmeneti megoldás):** a referenciavideó mechanikája Zoltán **valódi** fotóiból. Asztali gépen a nyitókép rögzül, és görgetésre „lepörög” 4 jeleneten (kisgép szűk helyen → tuskóeltávolítás → tereprendezés → közműárok-ásás): lassú ráközelítés, áttűnés, narancs fázisjelző (01–04) a kép alján, „Valódi munkafotók” címke. Mobilon nincs rögzítés, a jelenetek ~4 mp-enként maguktól váltanak. Képek: `img/hero-{kisgep,tusko,rendezes,arok}-{900,1425}.webp` (4:3 kivágások, retusálás nélkül). Csökkentett mozgásnál csak az első kép áll.
+**Videó érkezésekor:** a `HERO_VIDEO` beállítással a videó a jelenetek fölé kerül (a jelenetek és a fázisjelző elrejtve). Görgetésre pörgetett változathoz (mint a referencián) a videót sűrű kulcskockákkal kell kódolni (`ffmpeg -g 1` vagy `-g 5`), hogy a `currentTime` léptetése akadásmentes legyen – ezt a videó megérkezése után kötöm be.
 
 **Bekötés:** `kalocsa.js` eleje → `HERO_VIDEO = { mp4: 'video/hero-1920.mp4', webm: 'video/hero-1920.webm', mobileMp4: 'video/hero-720x900.mp4', poster: 'img/hero-poster.webp' }`. A kód automatikusan beteszi (muted, loop, autoplay, playsinline), a poszter alatta marad, `saveData` és csökkentett mozgás esetén nem tölt be videót.
 

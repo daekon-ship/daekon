@@ -9,8 +9,8 @@
 <meta name="theme-color" content="#21262B">
 <link rel="icon" href="logo-jel.svg" type="image/svg+xml">
 <link rel="preload" href="fonts/archivo-var.woff" as="font" type="font/woff" crossorigin>
-<link rel="preload" href="img/hero-kisgep-1425.webp" as="image" type="image/webp" imagesrcset="img/hero-kisgep-900.webp 900w, img/hero-kisgep-1425.webp 1425w" imagesizes="(max-width: 860px) 100vw, 62vw">
-<link rel="stylesheet" href="kalocsa.css?v=13">
+<link rel="preload" href="img/hero-kisgep-1425.webp" as="image" type="image/webp" imagesrcset="img/hero-kisgep-900.webp 900w, img/hero-kisgep-1425.webp 1425w" imagesizes="(max-width: 860px) 100vw, 66vw">
+<link rel="stylesheet" href="kalocsa.css?v=14">
 <script>if(!matchMedia("(prefers-reduced-motion: reduce)").matches){document.documentElement.classList.add("anim");setTimeout(function(){if(!window.gsap)document.documentElement.classList.remove("anim")},3000)}</script>
 </head>
 <body>
@@ -46,9 +46,13 @@
   <!-- Videóhely: a végleges munkagépes videó a kalocsa.js HERO_VIDEO beállításával kapcsolható be.
        Addig Zoltán saját munkafotója áll itt (poszter), lassú kameramozgással. -->
   <div class="hero__media" id="hero-media">
-    <img class="hero__img" src="img/hero-kisgep-1425.webp" srcset="img/hero-kisgep-900.webp 900w, img/hero-kisgep-1425.webp 1425w" sizes="(max-width: 860px) 100vw, 62vw" width="1425" height="1068" alt="Kisebb munkagép dolgozik egy fás területen, előtérben frissen kiforgatott föld és gyökerek" fetchpriority="high">
+    <img class="scene is-on" src="img/hero-kisgep-1425.webp" srcset="img/hero-kisgep-900.webp 900w, img/hero-kisgep-1425.webp 1425w" sizes="(max-width: 860px) 100vw, 66vw" width="1425" height="1068" alt="Kisebb munkagép dolgozik egy fás területen, előtérben kiforgatott föld" fetchpriority="high">
+    <img class="scene" src="img/hero-tusko-1425.webp" srcset="img/hero-tusko-900.webp 900w, img/hero-tusko-1425.webp 1425w" sizes="(max-width: 860px) 100vw, 66vw" width="1425" height="1068" alt="Gép kanalában kiemelt nagy tuskó gyökérzettel" loading="lazy" decoding="async">
+    <img class="scene" src="img/hero-rendezes-1425.webp" srcset="img/hero-rendezes-900.webp 900w, img/hero-rendezes-1425.webp 1425w" sizes="(max-width: 860px) 100vw, 66vw" width="1425" height="1068" alt="Géppel elegyengetett földterület fák előtt" loading="lazy" decoding="async">
+    <img class="scene" src="img/hero-arok-1425.webp" srcset="img/hero-arok-900.webp 900w, img/hero-arok-1425.webp 1425w" sizes="(max-width: 860px) 100vw, 66vw" width="1425" height="1068" alt="Kiásott közműárok homokos talajban, háttérben kotró-rakodó" loading="lazy" decoding="async">
   </div>
   <div class="hero__shade" aria-hidden="true"></div>
+  <p class="hero__tag" aria-hidden="true">Valódi munkafotók</p>
 
   <div class="wrap hero__in">
     <div class="hero__copy">
@@ -71,6 +75,12 @@
       <li>Precíz gépi földmunka</li>
       <li>Közvetlen kapcsolat a kivitelezővel</li>
     </ul>
+    <ol class="stages" aria-label="A nyitókép jelenetei – valódi munkafotók">
+      <li class="is-on"><b>01</b><span>Kisgép, szűk helyen</span><i></i></li>
+      <li><b>02</b><span>Tuskóeltávolítás</span><i></i></li>
+      <li><b>03</b><span>Tereprendezés</span><i></i></li>
+      <li><b>04</b><span>Közműárok-ásás</span><i></i></li>
+    </ol>
     <a class="scrollcue" href="#szolgaltatasok" aria-label="Görgess tovább"><span></span></a>
   </div>
 </section>
@@ -481,6 +491,6 @@
 
 <script src="js/gsap.min.js" defer></script>
 <script src="js/ScrollTrigger.min.js" defer></script>
-<script src="kalocsa.js?v=13" defer></script>
+<script src="kalocsa.js?v=14" defer></script>
 </body>
 </html>
