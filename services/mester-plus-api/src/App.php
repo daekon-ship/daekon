@@ -159,7 +159,9 @@ final class App
                     continue;
                 }
                 $matched = true;
-                if ($method !== $req->method && !($method === 'GET' && $req->method === 'HEAD')) {
+                // HEAD csak mellékhatás nélküli útvonalon (monitorozás); az ajánlat-oldal HEAD-je NEM jelölhet „megnyitva”-t.
+                $headOk = $req->method === 'HEAD' && $method === 'GET' && in_array($name, ['home', 'health', 'plans'], true);
+                if ($method !== $req->method && !$headOk) {
                     continue;
                 }
                 $req->routeName = $name;

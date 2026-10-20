@@ -98,6 +98,13 @@ return [
         eq($s, 200, 'HEAD /: 200');
         [$s] = call('PATCH', '/api/v1/health');
         eq($s, 405, 'PATCH: 405');
+        $u = user(true);
+        $q = createQuote($u);
+        [$s] = call('HEAD', '/a/' . $q['token'], null, ['User-Agent' => 'Mozilla/5.0']);
+        eq($s, 405, 'HEAD a publikus ajánlaton: 405');
+        eq($GLOBALS['T_DB']->val('SELECT first_opened_at FROM quote_shares WHERE public_id = ?', [$q['id']]), null, 'HEAD nem jelöli „megnyitva”-nak');
+        [$s] = call('HEAD', '/api/v1/backups', null, $u['auth']);
+        eq($s, 405, 'HEAD egy hitelesített API-n: 405');
     },
     'health: nincs titok, verzió és ellenőrzések' => function () {
         [$s, $j, $r] = call('GET', '/api/v1/health');
