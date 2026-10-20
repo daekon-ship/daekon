@@ -8,10 +8,10 @@
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#2B3137">
 <link rel="icon" href="logo-jel.svg" type="image/svg+xml">
-<link rel="preload" href="fonts/archivo-var.woff" as="font" type="font/woff" crossorigin>
+<link rel="preload" href="fonts/archivo-kgw.woff" as="font" type="font/woff" crossorigin>
 <link rel="preload" href="video/hero-poster.webp" as="image" type="image/webp" media="(min-width: 861px)">
 <link rel="preload" href="video/hero-poster-mobil.webp" as="image" type="image/webp" media="(max-width: 860px)">
-<link rel="stylesheet" href="kalocsa.css?v=18">
+<link rel="stylesheet" href="kalocsa.css?v=19">
 <script>if(!matchMedia("(prefers-reduced-motion: reduce)").matches){document.documentElement.classList.add("anim");setTimeout(function(){if(!window.gsap)document.documentElement.classList.remove("anim")},3000)}</script>
 </head>
 <body>
@@ -43,17 +43,21 @@
 <main id="tartalom">
 
 <!-- ================= HERO ================= -->
-<section class="hero" id="fooldal" aria-labelledby="hero-cim">
-  <!-- Videóhely: a végleges munkagépes videó a kalocsa.js HERO_VIDEO beállításával kapcsolható be.
-       Addig Zoltán saját munkafotója áll itt (poszter), lassú kameramozgással. -->
+<section class="hero has-video" id="fooldal" aria-labelledby="hero-cim">
+  <!-- Nyitókép: 1) szemléltető munkagépes videó (asztali: görgetésre pörög, mobil: hurok) → 2) poszter (csökkentett mozgás) →
+       3) tartalék: valódi munkafotós jelenetsor (lassú net, adatkímélés, videóhiba). Vezérlés: kalocsa.js → HERO -->
   <div class="hero__media" id="hero-media">
-    <img class="scene is-on" src="img/hero-kisgep-1425.webp" srcset="img/hero-kisgep-900.webp 900w, img/hero-kisgep-1425.webp 1425w" sizes="(max-width: 860px) 100vw, 66vw" width="1425" height="1068" alt="Kisebb munkagép dolgozik egy fás területen, előtérben kiforgatott föld" fetchpriority="high">
-    <img class="scene" src="img/hero-tusko-1425.webp" srcset="img/hero-tusko-900.webp 900w, img/hero-tusko-1425.webp 1425w" sizes="(max-width: 860px) 100vw, 66vw" width="1425" height="1068" alt="Gép kanalában kiemelt nagy tuskó gyökérzettel" loading="lazy" decoding="async">
-    <img class="scene" src="img/hero-rendezes-1425.webp" srcset="img/hero-rendezes-900.webp 900w, img/hero-rendezes-1425.webp 1425w" sizes="(max-width: 860px) 100vw, 66vw" width="1425" height="1068" alt="Géppel elegyengetett földterület fák előtt" loading="lazy" decoding="async">
-    <img class="scene" src="img/hero-arok-1425.webp" srcset="img/hero-arok-900.webp 900w, img/hero-arok-1425.webp 1425w" sizes="(max-width: 860px) 100vw, 66vw" width="1425" height="1068" alt="Kiásott közműárok homokos talajban, háttérben kotró-rakodó" loading="lazy" decoding="async">
+    <picture class="hero__poster">
+      <source media="(max-width: 860px)" srcset="video/hero-poster-mobil.webp" width="768" height="640">
+      <img src="video/hero-poster.webp" width="1280" height="720" alt="Szemléltető kép: kisebb kotrógép árkot ás, mellette kitermelt földkupac" fetchpriority="high" decoding="async">
+    </picture>
+    <img class="scene" data-src="img/hero-kisgep-1425.webp" data-srcset="img/hero-kisgep-900.webp 900w, img/hero-kisgep-1425.webp 1425w" sizes="(max-width: 860px) 100vw, 66vw" width="1425" height="1068" alt="Kisebb munkagép dolgozik egy fás területen, előtérben kiforgatott föld" decoding="async">
+    <img class="scene" data-src="img/hero-tusko-1425.webp" data-srcset="img/hero-tusko-900.webp 900w, img/hero-tusko-1425.webp 1425w" sizes="(max-width: 860px) 100vw, 66vw" width="1425" height="1068" alt="Gép kanalában kiemelt nagy tuskó gyökérzettel" decoding="async">
+    <img class="scene" data-src="img/hero-rendezes-1425.webp" data-srcset="img/hero-rendezes-900.webp 900w, img/hero-rendezes-1425.webp 1425w" sizes="(max-width: 860px) 100vw, 66vw" width="1425" height="1068" alt="Géppel elegyengetett földterület fák előtt" decoding="async">
+    <img class="scene" data-src="img/hero-arok-1425.webp" data-srcset="img/hero-arok-900.webp 900w, img/hero-arok-1425.webp 1425w" sizes="(max-width: 860px) 100vw, 66vw" width="1425" height="1068" alt="Kiásott közműárok homokos talajban, háttérben kotró-rakodó" decoding="async">
   </div>
   <div class="hero__shade" aria-hidden="true"></div>
-  <p class="hero__tag" aria-hidden="true">Valódi munkafotók</p>
+  <p class="hero__tag" aria-hidden="true">Szemléltető animáció</p>
 
   <div class="wrap hero__in">
     <div class="hero__copy">
@@ -76,11 +80,11 @@
       <li>Precíz gépi földmunka</li>
       <li>Közvetlen kapcsolat a kivitelezővel</li>
     </ul>
-    <ol class="stages" aria-label="A nyitókép jelenetei – valódi munkafotók">
-      <li class="is-on"><b>01</b><span>Kisgép, szűk helyen</span><i></i></li>
-      <li><b>02</b><span>Tuskóeltávolítás</span><i></i></li>
-      <li><b>03</b><span>Tereprendezés</span><i></i></li>
-      <li><b>04</b><span>Közműárok-ásás</span><i></i></li>
+    <ol class="stages" aria-hidden="true">
+      <li class="is-on"><b>01</b><span data-scene="Kisgép, szűk helyen">Ásás</span><i></i></li>
+      <li><b>02</b><span data-scene="Tuskóeltávolítás">Kanál tele</span><i></i></li>
+      <li><b>03</b><span data-scene="Tereprendezés">Kiemelés</span><i></i></li>
+      <li><b>04</b><span data-scene="Közműárok-ásás">Föld a kupacra</span><i></i></li>
     </ol>
     <a class="scrollcue" href="#szolgaltatasok" aria-label="Görgess tovább"><span></span></a>
   </div>
@@ -297,8 +301,7 @@
     <figure class="portrait">
       <div class="portrait__slot" role="img" aria-label="Kalocsa Zoltán portréjának helye">
         <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M6 38h11l3 5h8l3-5h11" fill="none" stroke="#F27A21" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/><path d="M12.5 33L20.5 11.5L31.5 22.5" fill="none" stroke="#F27A21" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/><path d="M29.6 20.8L37.4 23.2L36.6 31.4Q31.6 33 28.8 27.6Z" fill="#F27A21"/><circle cx="12.5" cy="33" r="2.4" fill="#F27A21"/></svg>
-        <span>Kalocsa Zoltán portréja</span>
-        <small>A fotót Zoltántól kérjük – ide kerül</small>
+        <span>Portré</span>
       </div>
     </figure>
     <div class="about__copy">
@@ -369,11 +372,15 @@
         <circle cx="200" cy="200" r="180" fill="rgba(242,122,33,.07)" stroke="#F27A21" stroke-width="1.6" stroke-dasharray="6 6"/>
         <circle cx="200" cy="200" r="7" fill="#E4E7EA"/>
         <circle cx="236" cy="120" r="9" fill="#F27A21"/><circle cx="236" cy="120" r="16" fill="none" stroke="#F27A21" stroke-opacity=".5"/>
-        <text x="252" y="116" font-family="Manrope, sans-serif" font-size="11" fill="#F27A21">MUNKA (PÉLDA)</text>
+        <text x="252" y="116" font-family="Manrope, sans-serif" font-size="11" fill="#F27A21">BEMUTATÓ JELÖLŐ</text>
         <text x="214" y="222" font-family="Manrope, sans-serif" font-size="12" letter-spacing="2" fill="#E4E7EA">KECSKEMÉT</text>
         <text x="200" y="36" text-anchor="middle" font-family="Manrope, sans-serif" font-size="11" letter-spacing="2" fill="#F27A21">45 KM</text>
       </svg>
-      <p class="map__note"><span class="dotk"></span> Narancs pont: folyamatban lévő munka (most példa – a valódi helyszín Zoltán jóváhagyásával kerül fel). Szürke: Kecskemét, a körzet közepe.</p>
+      <ul class="map__legend" aria-label="Jelmagyarázat">
+        <li><span class="lg lg--job"></span>Munkajelölő <em>(bemutató – nem valós helyszín)</em></li>
+        <li><span class="lg lg--center"></span>Kecskemét, a körzet közepe</li>
+        <li><span class="lg lg--area"></span>45 km-es munkaterület</li>
+      </ul>
     </div>
   </div>
 </section>
@@ -427,10 +434,11 @@
 
       <label class="hp" aria-hidden="true">Ne töltsd ki<input name="weboldal" tabindex="-1" autocomplete="off"></label>
 
-      <label class="consent"><input type="checkbox" name="adatkezeles" required><span>Elolvastam és elfogadom az <a href="#" data-later>adatkezelési tájékoztatót</a> <em>[feltöltendő]</em>. <em>*</em></span></label>
+      <label class="consent"><input type="checkbox" name="adatkezeles" required><span>Elolvastam és elfogadom az <a href="adatkezeles.html" target="_blank" rel="noopener">adatkezelési tájékoztatót</a>. <em>*</em></span></label>
 
       <button class="btn btn--full" type="submit">Ajánlatkérés elküldése</button>
       <p class="form__err" id="form-err" role="alert"></p>
+      <p class="form__demo" id="form-demo"><span class="dotk"></span> Bemutató változat: az elküldés az élesítéskor kerül bekötésre. Addig a gomb nem továbbít adatot – hívj, vagy küldd el e-mailben.</p>
     </form>
 
     <div class="done" id="form-done" hidden tabindex="-1">
@@ -474,7 +482,7 @@
     </nav>
     <div>
       <p class="ftr__h">Jogi információk</p>
-      <p>Adatkezelési tájékoztató <em>[feltöltendő]</em><br>Impresszum <em>[feltöltendő]</em><br>Cégforma, adószám <em>[egyeztetendő]</em></p>
+      <p><a href="adatkezeles.html">Adatkezelési tájékoztató</a> <em>(vázlat)</em><br><a href="impresszum.html">Impresszum</a> <em>(vázlat)</em><br>Cégforma, adószám <em>[egyeztetendő]</em></p>
     </div>
   </div>
   <div class="wrap ftr__base">
@@ -496,6 +504,6 @@
 
 <script src="js/gsap.min.js" defer></script>
 <script src="js/ScrollTrigger.min.js" defer></script>
-<script src="kalocsa.js?v=17" defer></script>
+<script src="kalocsa.js?v=19" defer></script>
 </body>
 </html>

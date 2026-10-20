@@ -21,38 +21,41 @@
   // Térkép
   const MAP = { center: [46.9062, 19.6913], radiusM: 45000 };
 
-  /* ---------- ANALITIKA (GA4 / dataLayer – hozzájárulás után kapcsolandó) ---------- */
+  /* ---------- MÉRÉS ----------
+     Események (mindig a window.dataLayer-be kerülnek; hálózatra csak beállított szolgáltatónál mennek):
+     - phone_click: bármely tel: link kattintása (NEM bizonyított hívás, csak a gomb használata)
+     - quote_submit_success: csak valódi, sikeres szerverválasz után (bemutató módban soha)
+     - portfolio_view: a Munkáim szekció első, legalább 25%-os láthatósága, illetve képnagyítás megnyitása
+     - featured_project_open: a Kiemelt munkáim fül első megnyitása / nézetváltás
+     Szolgáltató (élesítéskor): GA4 → csak hozzájárulás után tölt be (süti); GoatCounter → süti nélküli, hozzájárulás nem kell. */
+  const ANALYTICS = { ga4: null /* pl. 'G-XXXXXXX' */, goatcounter: null /* pl. 'https://kalocsageoworks.goatcounter.com/count' */ };
   window.dataLayer = window.dataLayer || [];
   const track = (event, params = {}) => {
     window.dataLayer.push({ event, ...params });
     if (typeof window.gtag === 'function') window.gtag('event', event, params);
+    if (window.goatcounter && window.goatcounter.count) window.goatcounter.count({ path: 'esemeny/' + event, title: event, event: true });
   };
+  const loadScript = (src, attrs = {}) => { const s = d.createElement('script'); s.async = true; s.src = src; Object.entries(attrs).forEach(([k, v]) => s.setAttribute(k, v)); d.head.appendChild(s); };
+  if (ANALYTICS.goatcounter) loadScript('https://gc.zgo.at/count.js', { 'data-goatcounter': ANALYTICS.goatcounter });
+  if (ANALYTICS.ga4) {
+    const KEY = 'kgw-consent';
+    const startGA = () => { loadScript('https://www.googletagmanager.com/gtag/js?id=' + ANALYTICS.ga4); window.gtag = function () { window.dataLayer.push(arguments); }; gtag('js', new Date()); gtag('config', ANALYTICS.ga4, { anonymize_ip: true }); };
+    let c = null; try { c = localStorage.getItem(KEY); } catch (x) {}
+    if (c === 'igen') startGA();
+    else if (c === null) {
+      const bar = d.createElement('div'); bar.className = 'consent-bar'; bar.setAttribute('role', 'dialog'); bar.setAttribute('aria-label', 'Sütik');
+      bar.innerHTML = '<p>Statisztikához (hányan nézik a munkákat, hányan hívnak) sütit használnánk. <a href="adatkezeles.html">Részletek</a></p><div><button class="btn btn--sm" data-c="igen">Elfogadom</button><button class="btn btn--sm btn--ghost" data-c="nem">Elutasítom</button></div>';
+      bar.addEventListener('click', e => { const b = e.target.closest('[data-c]'); if (!b) return; try { localStorage.setItem(KEY, b.dataset.c); } catch (x) {} if (b.dataset.c === 'igen') startGA(); bar.remove(); });
+      d.body.appendChild(bar);
+    }
+  }
   d.addEventListener('click', e => {
     const a = e.target.closest('a[href^="tel:"]');
     if (a) track('phone_click', { location: a.closest('section,header,footer,.fab')?.id || a.className || 'page' });
   });
 
-  /* ---------- HERO VIDEÓ ---------- */
   const conn = navigator.connection;
   const isMobile = matchMedia('(max-width: 860px)').matches;
-  let heroVideo = null;
-  if (!reduce && !(conn && conn.saveData) && HERO_VIDEO.mp4) {
-    const v = d.createElement('video');
-    v.muted = true; v.playsInline = true; v.setAttribute('playsinline', ''); v.setAttribute('muted', '');
-    v.preload = 'auto'; v.poster = (isMobile && HERO_VIDEO.posterMobile) || HERO_VIDEO.poster;
-    v.className = 'hero__video'; v.setAttribute('aria-hidden', 'true');
-    if (isMobile) { v.loop = true; v.autoplay = true; v.setAttribute('autoplay', ''); }
-    v.src = (isMobile && HERO_VIDEO.mobileMp4) || HERO_VIDEO.mp4;
-    // a poszter azonnal látszik, a fotós jelenetek ilyenkor nem kellenek
-    $$('.scene').forEach(s => { s.style.visibility = 'hidden'; s.removeAttribute('fetchpriority'); s.loading = 'lazy'; });
-    $('#hero-media').appendChild(v);
-    if (isMobile) { const p = v.play(); if (p) p.catch(() => { /* autoplay tiltva: marad a fotós jelenetsor */ }); }
-    // fázisjelző feliratai a videó szakaszaihoz
-    $$('.stages li span').forEach((s, i) => { if (HERO_VIDEO.stages[i]) s.textContent = HERO_VIDEO.stages[i]; });
-    heroVideo = v;
-    $('.hero').classList.add('has-video');
-    const tag = $('.hero__tag'); if (tag && HERO_VIDEO.tag) tag.textContent = HERO_VIDEO.tag;
-  }
 
   /* ---------- FEJLÉC, HÍVÓGOMB, AKTÍV MENÜ ---------- */
   const hdr = $('#fejlec'), fab = $('#fab'), hero = $('.hero');
@@ -166,6 +169,8 @@
 
   /* ---------- AJÁNLATKÉRŐ ---------- */
   const form = $('#ajanlat-form'), err = $('#form-err'), done = $('#form-done');
+  if (AJANLAT.endpoint) { const dn = $('#form-demo'); if (dn) dn.hidden = true; }
+  const formStart = Date.now();
   const goForm = (focusSel) => {
     $('#ajanlat').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
     setTimeout(() => { const el = $(focusSel, form); el && el.focus({ preventScroll: true }); }, reduce ? 0 : 700);
@@ -181,8 +186,7 @@
     if (!t.value.trim()) t.value = 'Befér-e a gép a kapubejárón? Fotót csatolok a bejáratról és a munkaterületről.';
     goForm('#fotok');
   });
-  $$('[data-later]', form).forEach(a => a.addEventListener('click', e => { e.preventDefault(); err.style.color = 'var(--mute)'; err.textContent = 'Az adatkezelési tájékoztató szövege az ügyféllel egyeztetés után kerül ide.'; }));
-
+  
   // fotók
   let files = [];
   const fileIn = $('#fotok'), list = $('#upload-list');
@@ -232,6 +236,7 @@
     if (bad) { err.textContent = 'Kérlek, töltsd ki a jelölt mezőket (név, telefonszám, helyszín, munkatípus, leírás, adatkezelés).'; bad.focus(); return; }
     const fd = new FormData(form);
     fd.delete('fotok'); files.forEach(f => fd.append('fotok[]', f, f.name));
+    fd.append('kitoltesi_ido_ms', String(Date.now() - formStart)); // spam-szűréshez (a szerver ellenőrzi)
     const munka = fd.getAll('munka').join(', ');
     const btn = $('button[type=submit]', form);
 
@@ -246,7 +251,8 @@
     btn.disabled = true; btn.textContent = 'Küldés…';
     try {
       const r = await fetch(AJANLAT.endpoint, { method: 'POST', body: fd, headers: { Accept: 'application/json' } });
-      if (!r.ok) throw new Error(r.status);
+      const res = await r.json().catch(() => ({}));
+      if (!r.ok || !res.ok) throw new Error(res.error || r.status);
       track('quote_submit_success', { munka });
       showDone('Köszönöm, megkaptam!', 'Hamarosan visszahívlak a megadott telefonszámon.', `<a class="btn btn--ghost" href="#fooldal">Vissza a főoldalra</a>`);
     } catch (x) {
@@ -283,8 +289,8 @@
     const icon = (job) => L.divIcon({ className: '', html: `${job ? '<span class="mk-pulse"></span>' : ''}<span class="mk${job ? '' : ' mk--center'}"></span>`, iconSize: [22, 22], iconAnchor: [11, 22], popupAnchor: [0, -22] });
     L.marker(MAP.center, { icon: icon(false), title: 'Kecskemét – központ' }).addTo(map)
       .bindPopup('<b>Kecskemét</b>A munkaterület központja.<br>Körzet: 45 km.<br><a href="tel:+36704204170" style="color:#F27A21">+36 70 420 4170</a>');
-    const job = L.marker([47.034, 19.776], { icon: icon(true), title: 'Folyamatban lévő munka (példa)' }).addTo(map)
-      .bindPopup('<b>Itt épp munka folyik</b>Közműárok-ásás · folyamatban<br><small style="color:#A9B0B7">Példa jelölő – a valódi helyszín Zoltán jóváhagyásával kerül fel.</small><img src="img/kozmuarok-720.webp" alt="Közműárok – munkafotó">');
+    const job = L.marker([47.034, 19.776], { icon: icon(true), title: 'Munkajelölő (bemutató)' }).addTo(map)
+      .bindPopup('<b>Munkajelölő – bemutató</b>Így jelenik majd meg egy aktuális munka helye.<br><small style="color:#A9B0B7">Ez nem valós munkahelyszín. Élesítéskor csak Zoltán által jóváhagyott, nem pontos lakcímre mutató helyszín kerül fel.</small>');
     setTimeout(() => job.openPopup(), 900);
     map.on('click', () => map.scrollWheelZoom.enable());
     // a rögzített nyitókép miatt az elrendezés később változhat → méret újraszámolása
@@ -302,7 +308,7 @@
 
   /* ================= MOZGÁS (GSAP + ScrollTrigger) ================= */
   const g = window.gsap, ST = window.ScrollTrigger;
-  if (reduce || !g || !ST) { root.classList.remove('anim'); return; }
+  if (reduce || !g || !ST) { root.classList.remove('anim'); heroInit(null, null, !isMobile); return; }
   g.registerPlugin(ST);
   const desk = matchMedia('(min-width: 861px)').matches;
 
@@ -334,60 +340,7 @@
     .from('.hero__facts', { scaleX: 0, transformOrigin: 'left', duration: 1.2, ease: 'expo.inOut' }, 1.05)
     .from('.hero__facts li, .scrollcue, .stages li, .hero__tag', { y: 12, autoAlpha: 0, duration: .6, stagger: .08 }, 1.4);
   // görgetés: a kép lassabban, a szöveg felcsúszik
-  // FILMSZERŰ NYITÓKÉP: valódi munkafotókból álló jelenetsor (a végleges videóig)
-  const scenes = $$('.scene'), stages = $$('.stages li');
-  const setStage = (seg) => stages.forEach((li, i) => {
-    li.style.setProperty('--p', Math.min(1, Math.max(0, seg - i)));
-    li.classList.toggle('is-on', i === Math.min(stages.length - 1, Math.floor(seg)));
-    li.classList.toggle('is-done', i < Math.floor(seg));
-  });
-  if (heroVideo && desk) {
-    // görgetésre pörgetett videó (a referencia mechanikája)
-    const v = heroVideo; let target = 0, raf = 0;
-    const tick = () => { raf = 0; if (v.readyState >= 1 && Math.abs(v.currentTime - target) > .01) v.currentTime = target; };
-    const setup = () => {
-      const dur = v.duration || 8;
-      ST.create({ trigger: '.hero', start: 'top top', end: '+=260%', pin: true, scrub: true, anticipatePin: 1,
-        onUpdate: s => { target = s.progress * (dur - .05); setStage(s.progress * stages.length); if (!raf) raf = requestAnimationFrame(tick); } });
-      ST.refresh();
-    };
-    v.readyState >= 1 ? setup() : v.addEventListener('loadedmetadata', setup, { once: true });
-  } else if (heroVideo) {
-    // mobil: a videó magától megy, a fázisjelző a lejátszást követi
-    heroVideo.addEventListener('timeupdate', () => setStage(heroVideo.currentTime / (heroVideo.duration || 8) * stages.length));
-  } else if (!$('.hero__video')) {
-    g.set(scenes, { scale: 1.14, transformOrigin: '60% 50%' });
-    g.set(scenes.slice(1), { opacity: 0 });
-    if (desk) {
-      // asztali gép: görgetésre „lepörög” (rögzített nyitókép, mint a referenciavideóban)
-      const tl = g.timeline({ scrollTrigger: { trigger: '.hero', start: 'top top', end: '+=' + (scenes.length * 70) + '%', pin: true, scrub: .8, anticipatePin: 1,
-        onUpdate: s => setStage(s.progress * scenes.length) } });
-      scenes.forEach((s, i) => {
-        tl.to(s, { scale: 1, duration: 1, ease: 'none' }, i);
-        if (scenes[i + 1]) tl.to(scenes[i + 1], { opacity: 1, duration: .32, ease: 'none' }, i + .68);
-      });
-      tl.to('.hero__copy', { y: -30, duration: .5, ease: 'none' }, scenes.length - .5);
-      // amíg nem görget: lassú „lélegzés” az első képen
-      g.to(scenes[0], { scale: 1.08, duration: 6, ease: 'sine.inOut', yoyo: true, repeat: -1, overwrite: false, paused: false, id: 'idle' });
-      ST.create({ trigger: '.hero', start: 'top top-=4', onEnter: () => g.getById('idle')?.kill() });
-    } else {
-      // mobil: magától vált, rögzítés nélkül
-      let i = 0;
-      const step = () => {
-        const cur = scenes[i], nx = (i + 1) % scenes.length;
-        stages.forEach((li, k) => { li.classList.toggle('is-on', k === i); li.classList.toggle('is-done', k < i); if (k !== i) li.style.setProperty('--p', k < i ? 1 : 0); });
-        g.fromTo(cur, { scale: 1.14 }, { scale: 1, duration: 4.2, ease: 'none' });
-        g.fromTo(stages[i], { '--p': 0 }, { '--p': 1, duration: 4.2, ease: 'none' });
-        g.delayedCall(3.6, () => {
-          g.set(scenes[nx], { scale: 1.14 });
-          g.to(scenes[nx], { opacity: 1, duration: .8, ease: 'power1.inOut' });
-          g.to(cur, { opacity: 0, duration: .8, delay: .1, ease: 'power1.inOut' });
-          i = nx; g.delayedCall(.6, step);
-        });
-      };
-      step();
-    }
-  }
+  heroInit(g, ST, desk);
 
   // címek szavanként
   $$('.sec h2, .final h2').forEach(h => g.from(split(h), { yPercent: 115, duration: 1, ease: 'expo.out', stagger: .05, scrollTrigger: { trigger: h, start: 'top 87%' } }));
@@ -445,4 +398,97 @@
   g.from('.ftr__grid > *', { y: 20, autoAlpha: 0, duration: .8, stagger: .08, ease: 'expo.out', scrollTrigger: { trigger: '.ftr', start: 'top 95%' } });
 
   addEventListener('load', () => ST.refresh());
+
+  /* ================= NYITÓKÉP (videó → poszter → valódi fotós tartalék) ================= */
+  function heroInit(g, ST, desk) {
+    const heroEl = $('.hero'), media = $('#hero-media'), scenes = $$('.scene'), stages = $$('.stages li'), stageBox = $('.stages'), tag = $('.hero__tag');
+    const slowNet = conn && (conn.saveData || /(^|-)2g$/.test(conn.effectiveType || ''));
+    let vidTrigger = null, sceneTl = null, sceneTimer = null, video = null;
+    const setStage = (seg) => stages.forEach((li, i) => {
+      li.style.setProperty('--p', Math.min(1, Math.max(0, seg - i)));
+      li.classList.toggle('is-on', i === Math.min(stages.length - 1, Math.floor(seg)));
+      li.classList.toggle('is-done', i < Math.floor(seg));
+    });
+
+    // --- tartalék: valódi munkafotós jelenetsor ---
+    const startScenes = (why) => {
+      heroEl.classList.remove('has-video'); heroEl.classList.add('is-scenes');
+      if (tag) tag.textContent = 'Valódi munkafotók';
+      $$('.stages li span').forEach(s => { if (s.dataset.scene) s.textContent = s.dataset.scene; });
+      stageBox.hidden = false;
+      scenes.forEach((s, i) => { if (s.dataset.src) { s.srcset = s.dataset.srcset; s.src = s.dataset.src; s.removeAttribute('data-src'); } if (!i) s.classList.add('is-on'); });
+      if (!g || reduce) { setStage(0); return; }
+      g.set(scenes, { scale: 1.14, transformOrigin: '60% 50%' });
+      g.set(scenes.slice(1), { opacity: 0 });
+      if (desk) {
+        sceneTl = g.timeline({ scrollTrigger: { trigger: '.hero', start: 'top top', end: '+=' + (scenes.length * 70) + '%', pin: true, scrub: .8, anticipatePin: 1, onUpdate: s => setStage(s.progress * scenes.length) } });
+        scenes.forEach((s, i) => {
+          sceneTl.to(s, { scale: 1, duration: 1, ease: 'none' }, i);
+          if (scenes[i + 1]) sceneTl.to(scenes[i + 1], { opacity: 1, duration: .32, ease: 'none' }, i + .68);
+        });
+        ST.refresh();
+      } else {
+        let i = 0;
+        const step = () => {
+          const cur = scenes[i], nx = (i + 1) % scenes.length;
+          stages.forEach((li, k) => { li.classList.toggle('is-on', k === i); li.classList.toggle('is-done', k < i); if (k !== i) li.style.setProperty('--p', k < i ? 1 : 0); });
+          g.fromTo(cur, { scale: 1.14 }, { scale: 1, duration: 4.2, ease: 'none' });
+          g.fromTo(stages[i], { '--p': 0 }, { '--p': 1, duration: 4.2, ease: 'none' });
+          sceneTimer = g.delayedCall(3.6, () => {
+            g.set(scenes[nx], { scale: 1.14 });
+            g.to(scenes[nx], { opacity: 1, duration: .8, ease: 'power1.inOut' });
+            g.to(cur, { opacity: 0, duration: .8, delay: .1, ease: 'power1.inOut' });
+            i = nx; sceneTimer = g.delayedCall(.6, step);
+          });
+        };
+        step();
+      }
+      track('hero_fallback', { reason: why });
+    };
+
+    // --- csökkentett mozgás: csak a poszter (állókép) ---
+    if (reduce) { stageBox.hidden = true; if (tag) tag.textContent = 'Szemléltető kép'; return; }
+    // --- lassú kapcsolat / adatkímélés / nincs videó: valódi fotók ---
+    if (!HERO_VIDEO.mp4 || slowNet) { startScenes(slowNet ? 'slow-network' : 'no-video'); return; }
+
+    // --- videó ---
+    video = d.createElement('video');
+    video.muted = true; video.playsInline = true; video.setAttribute('playsinline', ''); video.setAttribute('muted', '');
+    video.preload = desk ? 'auto' : 'metadata';
+    video.poster = (isMobile && HERO_VIDEO.posterMobile) || HERO_VIDEO.poster;
+    video.className = 'hero__video'; video.setAttribute('aria-hidden', 'true'); video.disablePictureInPicture = true;
+    if (!desk) { video.loop = true; video.autoplay = true; video.setAttribute('autoplay', ''); }
+    let failed = false;
+    const fail = (why) => {
+      if (failed) return; failed = true;
+      if (vidTrigger) { vidTrigger.kill(true); vidTrigger = null; }
+      video.remove(); startScenes(why);
+    };
+    video.addEventListener('error', () => fail('video-error'), { once: true });
+    video.src = (!desk && HERO_VIDEO.mobileMp4) || HERO_VIDEO.mp4;
+    media.appendChild(video);
+    // ha 10 mp alatt sem tölt be, a valódi fotókra váltunk
+    const guard = setTimeout(() => { if (video.readyState < 2) fail('video-timeout'); }, 10000);
+    video.addEventListener('loadeddata', () => clearTimeout(guard), { once: true });
+
+    if (desk) {
+      // görgetésre pörgetett videó (a referencia mechanikája)
+      let target = 0, raf = 0;
+      const tick = () => { raf = 0; if (video.readyState >= 1 && Math.abs(video.currentTime - target) > .01) video.currentTime = target; };
+      const setup = () => {
+        if (failed || !g) return;
+        const dur = video.duration || 8;
+        vidTrigger = ST.create({ trigger: '.hero', start: 'top top', end: '+=260%', pin: true, scrub: true, anticipatePin: 1,
+          onUpdate: s => { target = s.progress * (dur - .05); setStage(s.progress * stages.length); if (!raf) raf = requestAnimationFrame(tick); } });
+        ST.refresh();
+      };
+      video.readyState >= 1 ? setup() : video.addEventListener('loadedmetadata', setup, { once: true });
+    } else {
+      // mobil: némítva, hurokban; ha az automatikus lejátszás tiltott → valódi fotók
+      const p = video.play(); if (p) p.catch(() => fail('autoplay-blocked'));
+      video.addEventListener('timeupdate', () => setStage(video.currentTime / (video.duration || 8) * stages.length));
+      // ha kigörgetünk a hero-ból, megáll (akkumulátor)
+      if ('IntersectionObserver' in window) new IntersectionObserver(es => es.forEach(e => { if (failed) return; e.isIntersecting ? video.play().catch(() => {}) : video.pause(); })).observe(heroEl);
+    }
+  }
 })();

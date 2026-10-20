@@ -11,7 +11,7 @@ mkdir -p video
 DUR=$(ffprobe -v error -show_entries format=duration -of csv=p=0 "$IN")
 # 1) asztali scrub: eredeti felbontás (max. 1920), hang nélkül, 4 kockánként kulcskocka, B-kocka nélkül
 ffmpeg -y -v error -i "$IN" -an -vf "scale='min(1920,iw)':-2:flags=lanczos,format=yuv420p" \
-  -c:v libx264 -preset slow -crf 25 -g 4 -keyint_min 4 -bf 0 -sc_threshold 0 -movflags +faststart video/hero-scrub.mp4
+  -c:v libx264 -preset slow -crf 27 -g 4 -keyint_min 4 -bf 0 -sc_threshold 0 -movflags +faststart video/hero-scrub.mp4
 # 2) mobil hurok: 1,2:1 kivágás (kanál + fülke), a végén 0,6 mp áttűnés az első kockába
 OFF=$(python3 -c "print(max(0,$DUR-0.7))")
 ffmpeg -y -v error -i "$IN" -i "$IN" -filter_complex \
