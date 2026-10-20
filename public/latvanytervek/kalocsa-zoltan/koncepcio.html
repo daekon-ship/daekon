@@ -3,58 +3,46 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Arculat — Kalocsa GeoWorks gépi földmunka</title>
+<title>Arculat — Kalocsa GeoWorks</title>
 <meta name="robots" content="noindex, nofollow">
 <link rel="icon" href="logo-jel.svg" type="image/svg+xml">
-<link rel="stylesheet" href="kalocsa.css?v=4">
+<link rel="stylesheet" href="kalocsa.css?v=13">
 <style>
-.k{padding:110px 0 80px}
-.blk{border-top:1px solid #3d3d3d;padding:40px 0;display:grid;grid-template-columns:200px 1fr;gap:28px}
-.blk>h3{font-size:14px;color:#8d8d8d;letter-spacing:.1em}
+.k{padding:120px 0 80px}
+.blk{border-top:1px solid var(--line);padding:40px 0;display:grid;grid-template-columns:200px 1fr;gap:28px}
+.blk>h3{font-size:13px;color:var(--mute);letter-spacing:.14em;text-transform:uppercase}
 .sw{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px}
-.sw div{border-radius:7px;overflow:hidden;box-shadow:0 0 0 1px #3a3a3a}
-.sw i{display:block;height:72px}.sw span{display:block;padding:9px 12px;font-size:13px;color:#ececec}
+.sw div{border-radius:8px;overflow:hidden;box-shadow:0 0 0 1px var(--line)}
+.sw i{display:block;height:72px}.sw span{display:block;padding:9px 12px;font-size:13px;color:#fff}
 .row{display:flex;gap:16px;flex-wrap:wrap;align-items:center}
-ul.plain{margin:0;padding-left:18px}ul.plain li{margin-bottom:8px}
 @media (max-width:760px){.blk{grid-template-columns:1fr;gap:14px}}
 </style>
 </head>
 <body>
 <header class="hdr is-scrolled"><div class="hdr__in wrap">
-  <a class="brand" href="./"><span class="brand__txt"><b>Kalocsa GeoWorks</b><b>Gépi földmunka</b></span></a>
+  <a class="brand" href="./"><img src="logo-jel.svg" width="40" height="40" alt=""><span class="brand__txt"><b>Kalocsa GeoWorks</b><small>Arculat</small></span></a>
   <a class="btn btn--sm" href="./">Vissza a tervhez</a>
 </div></header>
 <main class="k wrap">
-  <h1 style="font-size:clamp(28px,3vw,40px);margin-bottom:14px">Arculat · 3. kör</h1>
-  <p style="max-width:42em;margin-bottom:40px">Az ügyfél által küldött sötét–narancs minta alapján: lapos grafitszürke felület, narancs nagybetűs címek, lekerekített narancs gombok, középre igazított narancs ikonok, szürke kisgép a nyitóképen. A minta angol helyőrzőszövegei helyett valós magyar tartalom, a stock-kotrógép helyett rajzolt kisgép és Zoltán saját munkafotói.</p>
-
-  <section class="blk"><h3>SZÍNEK</h3><div class="sw">
-    <div><i style="background:#EADBB8"></i><span>Grafit #2A2A2A</span></div>
-    <div><i style="background:#242424"></i><span>Sötétebb #242424</span></div>
-    <div><i style="background:#303030"></i><span>Kártya #303030</span></div>
-    <div><i style="background:linear-gradient(180deg,#FF7F33,#E35B12)"></i><span>Narancs #B98547</span></div>
-    <div><i style="background:#ECECEC"></i><span>Szöveg #ECECEC</span></div>
-    <div><i style="background:#B8B8B8"></i><span>Szürke #B8B8B8</span></div>
+  <h2>Arculat · 5. kör</h2>
+  <p class="sec__lead" style="margin-bottom:36px">Narancs–grafit, ahogy a megrendelő kérte: minden fontos elem narancs, a szöveg fehér, a felületek grafit árnyalatok. Részletek, videó-specifikáció, élesítés: ATADAS.md.</p>
+  <section class="blk"><h3>Logó</h3><div class="row"><img src="logo.svg" width="330" height="64" alt="Kalocsa GeoWorks logó"><img src="logo-jel.svg" width="64" height="64" alt="Logójel"></div></section>
+  <section class="blk"><h3>Színek</h3><div class="sw">
+    <div><i style="background:#F27A21"></i><span>Narancs #F27A21</span></div>
+    <div><i style="background:linear-gradient(180deg,#E46E16,#B34C06)"></i><span>Gomb (fehér felirat)</span></div>
+    <div><i style="background:#A84400"></i><span>Sötét narancs #A84400</span></div>
+    <div><i style="background:#21262B"></i><span>Grafit #21262B</span></div>
+    <div><i style="background:#1B1F23"></i><span>Mély grafit #1B1F23</span></div>
+    <div><i style="background:#2A3036"></i><span>Panel #2A3036</span></div>
+    <div><i style="background:#30363D"></i><span>Kártya #30363D</span></div>
+    <div><i style="background:#E4E7EA"></i><span>Szöveg #E4E7EA</span></div>
   </div></section>
-
-  <section class="blk"><h3>BETŰK</h3><div>
-    <p style="font:700 40px/1 var(--disp);font-stretch:86%;text-transform:uppercase;color:#B98547;margin-bottom:12px">Nagy feladatok.</p>
-    <p style="font:700 26px/1 var(--disp);font-stretch:86%;text-transform:uppercase;color:#B98547;margin-bottom:12px">Szolgáltatások</p>
-    <p>Címek: Archivo 700, 86%-os szélesség, nagybetű (H1 32–52 px, H2 24–34 px). Szöveg: Manrope 300, 16 px, világosszürke. Mindkettő helyben, OFL.</p>
+  <section class="blk"><h3>Betűk</h3><div>
+    <p style="font:750 46px/1 var(--disp);font-stretch:84%;text-transform:uppercase;color:#fff;margin-bottom:8px">A nehéz munkát</p>
+    <p style="font:750 46px/1 var(--disp);font-stretch:84%;text-transform:uppercase;color:#F27A21;margin-bottom:16px">ránk bízhatod.</p>
+    <p class="muted">Címek: Archivo 750, 84% szélesség, nagybetű (H1 38–62 px, H2 28–42 px). Szöveg: Manrope 400, 16–17,5 px. Helyben, OFL.</p>
   </div></section>
-
-  <section class="blk"><h3>GOMBOK</h3><div class="row">
-    <a class="btn btn--sm" href="#">Hívás most</a><a class="btn" href="#">Hívás most</a><a class="btn btn--lg" href="#">Hívás most</a><a class="btn btn--line" href="#">Megkérdezem</a>
-  </div></section>
-
-  <section class="blk"><h3>MOZGÁS</h3><ul class="plain">
-    <li>Nyitókép: a cím soronként felcsúszik, a fotókeret oldalról feltárul, a kisgép begurul (forognak a lánctalpak), majd folyamatosan ás – gém, kar, kanál, hulló föld.</li>
-    <li>Görgetés: a gép és a fotó eltérő sebességgel mozog; asztali gépen az egérre is.</li>
-    <li>Címek szavanként emelkednek be; szolgáltatás-ikonok vonalanként rajzolódnak ki, a kitöltött részek „bepattannak”.</li>
-    <li>Szűk hely vázlat: a kisgép görgetésre a kaputól a kert végébe gurul, ás, kitelik az árok.</li>
-    <li>Munkák: alulról feltáruló képek, belső parallaxis. Lépések: beúsznak, számláló. Radar: kering, 0→60 km.</li>
-    <li>Nagy „Hívás most” gomb finoman lüktet; asztali gépen mágneses gombok. <code>prefers-reduced-motion</code> esetén minden áll.</li>
-  </ul></section>
+  <section class="blk"><h3>Gombok</h3><div class="row"><a class="btn" href="#">Ajánlatot kérek</a><a class="btn btn--ghost" href="#">Munkáim megtekintése</a><a class="btn btn--sm" href="#">Hívás most</a></div></section>
 </main>
 </body>
 </html>

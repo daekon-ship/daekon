@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-label="Kalocsa GeoWorks – gépi földmunka">
-  <rect width="48" height="48" rx="10" fill="#C9A066"/>
-  <path d="M6 38h11l3 5h8l3-5h11" fill="none" stroke="#3A2A1B" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>
-  <path d="M12.5 33L20.5 11.5L31.5 22.5" fill="none" stroke="#3A2A1B" stroke-width="4.2" stroke-linejoin="round" stroke-linecap="round"/>
-  <path d="M29.6 20.8L37.4 23.2L36.6 31.4Q31.6 33 28.8 27.6Z" fill="#3A2A1B"/>
-  <circle cx="12.5" cy="33" r="3.4" fill="#3A2A1B"/>
+  <rect width="48" height="48" rx="10" fill="#F27A21"/>
+  <path d="M6 38h11l3 5h8l3-5h11" fill="none" stroke="#21262B" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M12.5 33L20.5 11.5L31.5 22.5" fill="none" stroke="#21262B" stroke-width="4.2" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M29.6 20.8L37.4 23.2L36.6 31.4Q31.6 33 28.8 27.6Z" fill="#21262B"/>
+  <circle cx="12.5" cy="33" r="3.4" fill="#21262B"/>
 </svg>

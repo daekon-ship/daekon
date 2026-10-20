@@ -1,0 +1,735 @@
+DAEKON – KALOCSA ZOLTÁN
+
+ULTIMATE CINEMATIC REDESIGN – CLAUDE DESIGN MASTER PROMPT
+
+1. FELADAT ÉS CÉL
+
+Egy meglévő, már elkészített építőipari weboldal látványtervét kell továbbfejlesztened prémium, nemzetközi színvonalú, modern és filmszerű weboldallá.
+
+Meglévő weboldal:
+https://daekon-ship.github.io/daekon/latvanytervek/kalocsa-zoltan/
+
+Vállalkozás: Kalocsa Zoltán – Gépi földmunka
+
+Munkavégzési terület: Kecskemét és 45 km-es körzete.
+
+Telefonszám: +36 70 420 4170
+
+E-mail: zkalocsa8@gmail.com
+
+Először vizsgáld meg a jelenlegi weboldalt, annak szerkezetét, képeit, szövegeit, interakcióit és már meglévő funkcióit.
+
+Ez NEM egy teljesen új projekt. A jelenlegi weboldal értékes részeit meg kell tartani, de a vizuális minőséget jelentősen emelni kell.
+
+A cél egy olyan weboldal, amely:
+
+- Már az első másodpercben professzionális benyomást kelt.
+- Látványos, valósághű munkagépes animációval indul.
+- Erős, felismerhető narancssárga–sötétszürke arculatot használ.
+- Kiváló mobilos élményt nyújt.
+- Ügyfeleket és konkrét ajánlatkéréseket generál.
+- Bemutatja a valódi munkákat és kiemelt referenciákat.
+- Közvetlenül telefonálásra vagy ajánlatkérésre ösztönöz.
+
+A vizuális színvonal olyan legyen, mintha egy díjnyertes digitális ügynökség készítette volna.
+
+Kerüld az átlagos WordPress-sablonok, általános építőipari stockoldalak és túldíszített AI-weboldalak megjelenését.
+
+---
+
+2. A FŐOLDAL LEGFONTOSABB ELEME: CINEMATIC MUNKAGÉPES ANIMÁCIÓ
+
+Az ügyfél egy referencia-videót is küldött. Annak legfontosabb vizuális ötlete a filmszerű, folyamatosan változó építési jelenet.
+
+Ezt az ötletet a gépi földmunka témájára kell adaptálni.
+
+Nem modern ház felépülését akarjuk bemutatni, hanem egy valódi földmunkát végző munkagépet.
+
+A főoldal tetején teljes képernyős, professzionális animáció legyen.
+
+A kívánt jelenet
+
+Egy élethű, sárga-narancssárga földmunkagép vagy kompakt kotrógép dolgozik egy valódi építési területen.
+
+A munkagép:
+
+1. A kanalát természetes hidraulikus mozgással leengedi.
+2. A talajba mélyeszti.
+3. Láthatóan földet és homokos talajt emel ki.
+4. A kanalat megtöltve kiemeli az árokból.
+5. A földet oldalra helyezi.
+6. A jelenetben egy jól látható, mélyebb munkagödör vagy árok marad.
+
+Az animációban kiemelt figyelmet kell fordítani a fizikai realizmusra.
+
+A munkagép ne lebegjen, ne deformálódjon, a kanál ne változtasson alakot, és a talaj mozgása legyen életszerű.
+
+Az árok mélysége az árnyékokon, a föld metszetén, a perspektíván és a kiemelt földhalmon keresztül egyértelműen érzékelhető legyen.
+
+Fontos: a vállalkozás kisebb munkagépekkel, akár szűkebb területeken is dolgozik. Ne egy óriási bányagépet ábrázoljunk.
+
+Kompozíció
+
+- A munkagép lehetőleg a kép jobb oldalán helyezkedjen el.
+- Bal oldalon maradjon megfelelő negatív tér a főcímnek.
+- Természetes földszínek, homok, barna talaj.
+- A gép sárga-narancssárga árnyalatai harmonizáljanak a weboldal arculatával.
+- Filmszerű, természetes megvilágítás.
+- Életszerű talajtextúrák.
+- Finom porszemcsék, valódi árnyékok.
+- Stabil kamera, elegáns, visszafogott kameramozgás.
+- Semmi rajzfilmszerű hatás.
+
+Az animáció lehet egy jól optimalizált 6–10 másodperces, ismételhető videó.
+
+AI-videógenerálási prompt
+
+Ha rendelkezésre áll AI-videógeneráló eszköz, ezt a kreatív irányt használd:
+
+VIDEO GENERATION PROMPT (ENGLISH):
+
+Create a photorealistic cinematic shot of a compact yellow-orange hydraulic excavator performing real earthmoving work on a small construction site in Hungary.
+
+The excavator slowly lowers its bucket into sandy soil, digs a clearly visible deep trench, lifts a realistic bucket of earth and smoothly deposits the soil beside the excavation.
+
+Show believable hydraulic arm motion, accurate mechanical joints, realistic bucket-to-ground contact, natural soil displacement, and physically accurate falling dirt.
+
+The trench should look noticeably deep, with visible soil layers, realistic edge shadows and a strong sense of depth.
+
+The excavator remains predominantly on the right side of the frame, leaving clean visual space on the left for website headlines.
+
+Cinematic architectural commercial photography, natural golden sunlight, sophisticated charcoal and warm-orange color grading, hyperrealistic textures, subtle dust, realistic depth of field, premium industrial advertising aesthetic.
+
+Stable camera, subtle slow cinematic movement, continuous natural action, high visual consistency, 16:9 widescreen composition, seamless loop potential, no dramatic camera jumps.
+
+No text, no logos, no watermarks, no cartoon style, no unrealistic morphing, no deformed machinery, no floating materials, no artificial-looking movement.
+
+Kritikus technikai elvárások
+
+Az animáció:
+
+- Ne lassítsa jelentősen a weboldalt.
+- Legyen optimalizálva desktopra és mobilra.
+- Automatikusan induljon, hang nélkül.
+- Legyen lehetőség MP4 és szükség esetén WebM használatára.
+- Tartalmazzon statikus poster/fallback képet.
+- Mobilon szükség esetén külön, optimalizált videót használjon.
+- Csökkentett mozgást kérő felhasználónak statikus képet mutasson.
+- Ne okozzon vizuális ugrálást vagy betöltési villanást.
+- A főcím és a CTA minden pillanatban maradjon olvasható.
+- Az árok, a kanál és a gép mobilos kivágásban is felismerhető legyen.
+
+Ne helyettesítsd a valódi videót rossz minőségű CSS-mozgatással.
+
+Ha nem tudsz professzionális videót generálni, készíts kiváló videófogadásra előkészített hero szekciót, részletes animációs specifikációval és megfelelő helyettesítő képpel.
+
+A referencia-videót vizuális inspirációként használd, ne másold le szó szerint.
+
+A végleges videó elkészítését csak az ügyféllel történő telefonos egyeztetés és jóváhagyás után tekintsd megrendelt feladatnak.
+
+---
+
+3. PRÉMIUM HERO DESIGN
+
+A teljes első képernyő filmszerű és monumentális legyen.
+
+A fejléc elegáns, letisztult, lehetőleg átlátszó vagy enyhén áttetsző.
+
+Javasolt főcím
+
+„A nehéz munkát ránk bízhatod.”
+
+Alternatív címként vizsgálhatod:
+
+„Precíz földmunka. Biztos alapok.”
+
+A cím tipográfiája legyen nagy, karakteres, modern és jól olvasható.
+
+Alcím:
+
+„Gépi földmunka Kecskeméten és 45 km-es körzetében. Alapásás, közműárok, tereprendezés és tuskóeltávolítás – kis géppel, szűk helyeken is.”
+
+Két erőteljes CTA gomb:
+
+- Ajánlatot kérek – narancssárga.
+- Munkáim megtekintése – elegáns másodlagos gomb.
+
+Legyen egy visszafogott scroll indicator.
+
+A hero alján finoman megjelenhet:
+
+„Kecskemét + 45 km” / „Precíz gépi földmunka” / „Közvetlen kapcsolat a kivitelezővel”.
+
+Ne legyen zsúfolt.
+
+---
+
+4. TELJES VIZUÁLIS ARCULAT
+
+A megrendelő kifejezetten kéri a narancssárga és sötétszürke színvilágot.
+
+Színpaletta
+
+- Elsődleges narancs: #F27A21
+- Sötétebb narancs CTA-hoz: #A84400
+- Sötét grafit: #21262B
+- Másodlagos szürke: #30363D
+- Világos szöveg: #FFFFFF
+- Kiegészítő szöveg: #E4E7EA
+
+A színértékek finomíthatók a vizuális minőség és az olvashatóság érdekében.
+
+Az ügyfél azt szeretné, hogy minden fontos elem narancssárga legyen.
+
+Használj narancssárgát:
+
+- Elsődleges gombokon.
+- Aktív menüpontokon.
+- Kiemelt ikonokon.
+- Aktív galériafüleken.
+- Űrlapjelöléseken.
+- Telefongombon.
+- Fontos vizuális elválasztókon.
+- Térkép jelölőjén.
+- Finom animációs kiemeléseken.
+
+A szövegek fehérek legyenek, magas kontrasztú grafitfelületeken és megfelelő képi árnyékolással.
+
+Narancssárga gombon fehér felirat esetén olyan sötét narancsárnyalatot alkalmazz, amely biztosítja a megfelelő kontrasztot.
+
+Az oldal ne legyen teljesen fekete vagy nyomasztó.
+
+Legyen benne elegendő tér, világosabb grafitszürke panel, meleg tónusú fotó, elegáns elválasztás és gondosan megtervezett vizuális ritmus.
+
+A prémium hatást a tipográfia, a térközök, a kompozíció és a kiváló fotók teremtsék meg, ne felesleges effektek.
+
+---
+
+5. MENÜ ÉS NAVIGÁCIÓ
+
+A menü legyen modern, sticky és reszponzív.
+
+Menüpontok:
+
+- Főoldal
+- Szolgáltatások
+- Munkáim
+- Kiemelt munkák
+- Rólam
+- Munkaterület
+- Kapcsolat
+
+A „Munkaterület” menüpontra kattintva az oldal közvetlenül, finoman görgessen a térképhez.
+
+A „Kiemelt munkák” menüpont nyissa meg a munkák szekció kiemelt nézetét, vagy vezessen közvetlenül egy külön kiemelt referenciablokkhoz.
+
+Aktív menüpont narancssárga jelölést kapjon.
+
+Mobilon legyen igényes hamburger menü, megfelelő animációval és jól működő navigációval.
+
+A fejléc ne takarja ki a szekciócímeket anchor navigation esetén.
+
+---
+
+6. SZOLGÁLTATÁSOK – TELJES ÚJRATERVEZÉS
+
+A jelenlegi szolgáltatásokat őrizd meg, de tervezz hozzájuk sokkal igényesebb, modernebb megjelenést.
+
+Szolgáltatások:
+
+1. Alapásás
+2. Közműárok-ásás
+3. Nyomvonalásás
+4. Tuskóeltávolítás
+5. Tereprendezés
+6. Egyéb gépi földmunka
+
+Minden szolgáltatáshoz legyen:
+
+- Jól megválasztott ikon.
+- Rövid és pontos leírás.
+- Következetes tipográfia.
+- Visszafogott hover animáció.
+- Kapcsolódó ajánlatkérési lehetőség.
+
+A kártyák lehetnek sötétszürke panelek, nagyon finom narancssárga kiemeléssel.
+
+Ne legyenek sablonosak.
+
+A szolgáltatások bármelyikére kattintva az ajánlatkérő űrlapban automatikusan legyen előválasztva az adott munkatípus.
+
+---
+
+7. MUNKÁIM ÉS KIEMELT MUNKÁIM
+
+Ez az egyik legfontosabb új fejlesztés.
+
+Az ügyfél a meglévő munkafotóit továbbra is szeretné használni, de a jelenlegi galériamegjelenés nem megfelelő számára.
+
+Ne töröld a képeket, hanem tervezz teljesen új galériát.
+
+Legyen nagy, prémium, képközpontú referenciarész.
+
+Külön galériafülek
+
+- Összes munka
+- Kiemelt munkáim
+
+Az aktív fül legyen narancssárga.
+
+Az „Összes munka” a rendelkezésre álló munkafotókat mutassa.
+
+A „Kiemelt munkáim” egy külön válogatott, hangsúlyos megjelenésű referenciafelület legyen.
+
+A kiemelt munkákhoz használj:
+
+- Nagyméretű fotókat.
+- Kiemelt projektcímeket.
+- Munkatípus megnevezést.
+- Helyszínt, ha ismert és publikálható.
+- Rövid projektleírást.
+- Opcionálisan többfotós projektnézetet.
+
+A képek kattintással nagyíthatók legyenek.
+
+Desktopon lehet elegáns, aszimmetrikus masonry vagy magazinszerű galéria.
+
+Mobilon jól átlátható, érintésre optimalizált elrendezés készüljön.
+
+Ha még nem jelöltünk ki tényleges kiemelt munkákat, a felületet készítsd elő, de ne találj ki nem létező projekteket.
+
+A mélyebb árok képi megjelenítése
+
+Az ügyfél szeretné, hogy egy árok a látványtervben kissé mélyebbnek tűnjön.
+
+Ehhez készíts igényes vizuális koncepciót, megfelelő perspektívával és árnyékokkal.
+
+Az eredeti, valódi munkafotókat változatlanul őrizd meg. A módosított kép külön, szemléltető látványtervként szerepelhet, ne hamisítsa meg a valóban elvégzett munka mélységét vagy méretét.
+
+---
+
+8. AJÁNLATKÉRŐ ŰRLAP – TELJES ÚJ FUNKCIÓ
+
+Hozz létre egy modern, egyszerűen használható ajánlatkérési lehetőséget.
+
+Az ügyfél szeretne olyan űrlapot, ahol az érdeklődő kiválaszthatja, milyen földmunkára van szüksége, és kényelmesen elküldheti az igényét.
+
+Az űrlap legyen vizuálisan kiemelt, narancssárga fókuszelemekkel.
+
+Kötelező mezők
+
+- Név
+- Telefonszám
+- Munka helyszíne / település
+- Milyen munkára van szükség?
+- A munka rövid leírása
+
+Opcionális mezők
+
+- E-mail-cím
+- Fényképfeltöltés
+- Mikor szeretné elvégeztetni a munkát?
+
+Választható munkatípusok
+
+- Alapásás
+- Közműárok-ásás
+- Nyomvonalásás
+- Tuskóeltávolítás
+- Tereprendezés
+- Egyéb földmunka
+
+Az ügyfél akár több munkatípust is kiválaszthasson.
+
+A választást egyértelmű, narancssárga jelölésű checkboxokkal vagy modern kiválasztóelemekkel oldd meg.
+
+A fényképfeltöltés támogasson szokásos képformátumokat, fájlméret-korláttal, biztonságos validációval.
+
+A beküldés végén jelenjen meg egy igényes megerősítő üzenet.
+
+Beküldőgomb: „Ajánlatkérés elküldése”
+
+Működő weboldal esetén az ajánlatkérés ténylegesen érkezzen meg a vállalkozóhoz, a szükséges szerveroldali feldolgozással és e-mail-integrációval.
+
+Cél e-mail: zkalocsa8@gmail.com
+
+Ne készíts kizárólag látványra működő, valójában üzenetet nem továbbító űrlapot.
+
+Ha Claude Design környezetben még nem implementálható a szerveroldali továbbítás, készítsd el a teljes interakciós tervét, és egyértelműen jelezd a hiányzó integrációt.
+
+Legyen adatvédelmi tájékoztatás, megfelelő űrlapvédelem, szerveroldali ellenőrzés és biztonságos fájlkezelés.
+
+---
+
+9. RÖGZÍTETT TELEFONOS GOMB
+
+Az ügyfél ezt külön kiemelte, ezért kötelező.
+
+A képernyő alján legyen egy visszafogott, mindig elérhető telefonos CTA.
+
+Mobilon például:
+
+[ Telefon ikon ] Hívás most
+
+A gomb:
+
+- Görgetés közben is látható maradjon.
+- Ne takarja ki a tartalmat.
+- Ne zavarja a böngészést.
+- Ne foglaljon el túl nagy helyet.
+- Igényesen illeszkedjen a narancssárga–grafit arculathoz.
+- Egy érintéssel indítsa a telefonhívást.
+
+Telefonhívási link:
+
+tel:+36704204170
+
+Mobilon alkalmazz safe-area támogatást és megfelelő alsó tartalmi térközt.
+
+A gomb ne takarja ki az ajánlatkérő űrlap mezőit vagy a cookie- és adatvédelmi felületeket.
+
+Desktopon is legyen kényelmes, de ne dominálja túlzottan a felületet.
+
+---
+
+10. TÉRKÉP ÉS MUNKAVÉGZÉSI TERÜLET
+
+A jelenlegi térképes szekciót meg kell tartani, de vizuálisan tovább kell fejleszteni.
+
+Munkavégzési terület: Kecskemét és 45 km-es körzete.
+
+A korábbi 60 km-es értéket mindenhol javítsd 45 km-re.
+
+Készíts modern, beágyazott, reszponzív térképet.
+
+Követelmények:
+
+- Kecskemét legyen a központ.
+- Ábrázolható legyen a 45 km-es munkavégzési körzet.
+- A térképen jelenjen meg egy igényes, narancssárga marker.
+- A marker kapcsolódhasson egy munkához.
+- A markerre kattintva megjelenhessen rövid információ.
+- A térképre lehessen ugrani a menüből.
+- Mobilon is legyen használható.
+
+A marker vizuális megjelenése legyen egységes a márkaarculattal.
+
+A pontos ügyfélhelyszíneket csak megfelelő engedéllyel publikáld. Ha még nincs valódi közzétehető munkapont, használj egyértelműen példaként jelölt bemutató markert.
+
+A térképet ne csak dekorációnak használd, legyen ténylegesen interaktív.
+
+---
+
+11. A HÁROM LÉPÉSES MUNKAFOLYAMAT MARADJON
+
+A meglévő folyamatot feltétlenül tartsd meg.
+
+01 – Hívás
+
+Az ügyfél telefonál vagy ajánlatot kér.
+
+02 – Egyeztetés
+
+Átbeszéljük a munkát, a pontos helyszínt és a gép bejutását.
+
+03 – Földmunka
+
+A megbeszélt időpontban megtörténik a kivitelezés.
+
+A három lépéshez készíts prémium, letisztult vizuális folyamatábrát.
+
+Lehetnek nagyméretű számok, finom összekötő vonalak, narancssárga aktív elemek, elegáns ikonok és visszafogott scrollanimációk.
+
+Mobilon függőlegesen rendeződjenek el.
+
+---
+
+12. A „MEGKÉRDEZEM, BEFÉR-E” RÉSZ MARADJON
+
+Ez a jelenlegi weboldal egyik fontos megkülönböztető eleme.
+
+Az ügyfél külön jelezte, hogy szereti.
+
+A szekció mondanivalója:
+
+A kisebb munkagép olyan helyekre is beférhet, ahol nagyobb munkagép nem használható.
+
+Jelenítsd meg modern, informatív, prémium vizuális formában.
+
+Lehetséges megoldás:
+
+- Letisztult ábra, amely egy keskeny kapubejárót és egy kisebb munkagépet szemléltet.
+- Finom animált méretvonalak.
+- Narancssárga kiemelések.
+- Rövid, jól érthető szövegek.
+- Erős CTA.
+
+Gomb: „Megkérdezem, befér-e”
+
+A gomb nyissa meg az ajánlatkérő űrlapot, ahol az érdeklődő csatolhat fotót a kapubejáróról vagy a munkaterületről.
+
+Az ábra maradjon szemléltető, és ne közöljön ellenőrizetlen gépméreteket.
+
+---
+
+13. RÓLAM – SZEMÉLYES BIZALOMÉPÍTÉS
+
+A „Rólam” szekció mindenképpen maradjon.
+
+Legyen külön, igényes portréhely Kalocsa Zoltán tényleges, később megadott fényképének.
+
+A képet elegánsan szerkeszd az oldalba.
+
+A szöveg legyen személyes, közvetlen, hiteles.
+
+Javasolt alap:
+
+„Kalocsa Zoltán vagyok. Gépi földmunkát vállalok Kecskeméten és környékén. Fontos számomra a pontos egyeztetés, a korrekt munkavégzés és az, hogy ügyfeleim közvetlenül velem tudjanak kapcsolatba lépni.”
+
+Ne találj ki szakmai éveket, minősítéseket vagy nem igazolt referenciákat.
+
+A portré mellett legyen telefonos CTA.
+
+Ha nincs rendelkezésre álló valódi portré, készíts professzionális képhelyet. Ne generálj valótlan arcképet a vállalkozóról.
+
+---
+
+14. MÉRHETŐ EREDMÉNYEK – ANALITIKA
+
+Az ügyfél szeretné látni, hogy a weboldalon hány érdeklődő végez fontos műveleteket.
+
+Tervezd meg és a technikai megvalósítás során készítsd elő a következő eseményméréseket:
+
+Telefonkattintások
+
+Esemény: "phone_click"
+
+Minden telefonhívást indító gomb mérhető legyen.
+
+Sikeresen elküldött ajánlatkérések
+
+Esemény: "quote_submit_success"
+
+Csak akkor számítson konverziónak, ha az üzenet ténylegesen sikeresen elküldésre került.
+
+Referenciák megtekintése
+
+Esemény: "portfolio_view"
+
+Mérhető legyen, ha az érdeklődő megnyitja a munkákat vagy a kiemelt munkákat.
+
+Opcionálisan:
+
+"featured_project_open"
+
+A mérés legyen összehangolható GA4-gyel vagy más megfelelő analitikai megoldással, a szükséges adatvédelmi és hozzájárulás-kezelési feltételek mellett.
+
+A kialakítás legyen előkészítve egyszerű eredménykimutatásra:
+
+- Telefonkattintások száma.
+- Sikeres ajánlatkérések száma.
+- Galériamegtekintések száma.
+- Kiemelt munkák iránti érdeklődés.
+
+A telefonkattintást ne nevezd bizonyított telefonhívásnak, mert csak a gomb használata mérhető közvetlenül.
+
+Ne mutass fiktív eredményadatokat valódi statisztikaként.
+
+---
+
+15. MOBILOS FELHASZNÁLÓI ÉLMÉNY
+
+A weboldal látogatóinak jelentős része várhatóan telefonról érkezik, ezért a mobilos változat ne pusztán a desktopoldal összezsugorítása legyen.
+
+Készíts külön átgondolt mobilos kompozíciót.
+
+Kiemelt szempontok:
+
+- A munkagépes hero mobilon is látványos marad.
+- A főcím nem kerül a munkagép vagy az árok legfontosabb részleteire.
+- A videó ne terhelje túl a gyengébb telefonokat.
+- A szolgáltatások könnyen áttekinthetők.
+- A galéria kényelmesen lapozható.
+- Az űrlap egyszerűen kitölthető.
+- A telefonos CTA mindig könnyen megtalálható.
+- A navigáció jól használható.
+- Ne legyen vízszintes túlcsordulás.
+- Ne jelenjen meg apró vagy rosszul olvasható szöveg.
+
+A mobilos verzió ugyanolyan prémium érzést adjon, mint a desktop.
+
+---
+
+16. ANIMÁCIÓK ÉS INTERAKCIÓK
+
+A teljes weboldalon legyenek gondosan megtervezett mikroanimációk.
+
+Használhatsz:
+
+- Finom scroll reveal animációkat.
+- Elegáns hover effektusokat.
+- Enyhén animált narancssárga vonalakat.
+- Képek finom zoomhatását.
+- Galériafülek gördülékeny váltását.
+- Finom gombinterakciókat.
+- Visszafogott szekcióátmeneteket.
+
+A látvány legyen kifinomult, ne túlmozgásos.
+
+Minden animáció támogassa a tartalom megértését.
+
+Ne vezessen rossz teljesítményhez, ne akadályozza a navigációt és a kapcsolatfelvételt.
+
+---
+
+17. JAVASOLT TELJES OLDALSORREND
+
+1. Prémium cinematic munkagépes hero.
+2. Szolgáltatások.
+3. Szűk hely? Nem akadály – „Megkérdezem, befér-e”.
+4. Munkáim / Kiemelt munkáim.
+5. Rólam – valódi portré.
+6. Háromlépéses folyamat.
+7. Munkavégzési terület és térkép.
+8. Ajánlatkérő űrlap.
+9. Erős záró kapcsolatfelvételi CTA.
+10. Professzionális footer.
+
+A szekciók között legyen tudatos vizuális ritmus.
+
+A főoldal ne váljon végeláthatatlan, ismétlődő kártyák gyűjteményévé.
+
+---
+
+18. TECHNIKAI ELVÁRÁSOK
+
+Ha a projekt kódja elérhető, a meglévő technológiákhoz igazodj.
+
+Ne építsd át szükségtelenül az egész projekt infrastruktúráját.
+
+Elvárások:
+
+- Reszponzív működés minden kijelzőn.
+- Gyors betöltés.
+- Képek optimalizálása.
+- Videó optimalizálása.
+- SEO-barát struktúra.
+- Helyes címsorhierarchia.
+- Akadálymentes interakciók.
+- Megfelelő szövegkontraszt.
+- Működő telefonhivatkozások.
+- Billentyűzettel kezelhető galéria és menü.
+- Megfelelő űrlapvalidáció.
+- Biztonságos, működő ajánlatkérési folyamat.
+- Adatvédelmi megfelelőséghez szükséges elemek.
+- Jó Core Web Vitals értékekre optimalizált megoldás.
+
+A működő korábbi funkciókat ne töröld.
+
+A meglévő ügyfélfotók és vállalkozási adatok maradjanak meg.
+
+A jogi oldalakhoz hiányzó adatokat jelöld, ne találj ki céges vagy személyes információkat.
+
+---
+
+19. KÖTELEZŐ MUNKAFOLYAMAT
+
+1. FÁZIS – ELEMZÉS
+
+Vizsgáld meg a jelenlegi weboldalt.
+
+Határozd meg:
+
+- Mely elemek működnek jól.
+- Melyek szorulnak újratervezésre.
+- Milyen képek állnak rendelkezésre.
+- Hogyan illeszthető be a cinematic animáció.
+- Mely ügyfélkérések igényelnek tényleges backendmunkát.
+- Mely további anyagok hiányoznak az ügyféltől.
+
+2. FÁZIS – PRÉMIUM REDESIGN
+
+Készítsd el az új látványtervet.
+
+A fő hangsúly a cinematic hero, az erős narancssárga arculat, a látványos munkagaléria és az ajánlatkérési folyamat legyen.
+
+Használj valódi, működő navigációt és interakciókat, amennyiben a környezet támogatja.
+
+3. FÁZIS – ANIMÁCIÓ ELŐKÉSZÍTÉSE
+
+Tervezd meg a valósághű munkagépes animáció végleges beépítését.
+
+Készíts pontos vizuális specifikációt, jelenettervet és technikai követelményeket.
+
+Ha a videó még nem áll rendelkezésre, használj megfelelő placeholdert vagy statikus fallback képet.
+
+Ne állítsd, hogy egy végleges AI-videó elkészült, ha valójában nem.
+
+4. FÁZIS – ELLENŐRZÉS
+
+Ellenőrizd:
+
+- Desktop megjelenés.
+- Mobilos megjelenés.
+- CTA gombok.
+- Menü és térképre ugrás.
+- Galériafülek.
+- Űrlap.
+- Telefongomb.
+- Betöltési teljesítmény.
+- Kontraszt és olvashatóság.
+
+Ha rendelkezésre áll böngészős tesztelés és kódhozzáférés, futtasd le a szükséges ellenőrzéseket, és javítsd a talált hibákat.
+
+5. FÁZIS – ÁTADÁS
+
+A végén világosan sorold fel:
+
+- Mi készült el.
+- Mi működik ténylegesen.
+- Mi csak látványterv.
+- Milyen képek vagy videók hiányoznak.
+- Mihez kell még ügyféljóváhagyás.
+- Mi szükséges az éles publikáláshoz.
+
+---
+
+20. FONTOS KORLÁTOZÁS
+
+Ez jelenleg ügyfélnek bemutatandó látványterv-fejlesztés.
+
+Ne publikáld automatikusan az éles domainre.
+
+Ne változtasd meg a meglévő éles weboldalt jóváhagyás nélkül.
+
+Az ügyfél kifejezetten telefonos egyeztetést kér a végleges, valósághű animáció elkészítése előtt.
+
+Ezért a videós megoldást első körben professzionális tervként és technikai előkészítésként kezeld.
+
+A végleges, esetleg külön díjas AI-videó elkészítését csak a jóváhagyás után kezdd el.
+
+---
+
+VÉGSŐ MINŐSÉGI ELVÁRÁS
+
+Nem egy átlagos gépi földmunkás weboldalt szeretnék.
+
+Egy olyan prémium, látványos és megbízható vállalkozói weboldalt szeretnék, amely már az első néhány másodpercben megmutatja, hogy itt komoly, professzionális szolgáltatásról van szó.
+
+A filmszerű munkagépes animáció ragadja meg a figyelmet.
+
+Az arculat legyen erős, következetes, narancssárga és grafitszürke.
+
+A tényleges munkafotók építsenek bizalmat.
+
+A kapcsolatfelvétel legyen rendkívül egyszerű.
+
+A megoldás legyen technikailag átgondolt és hosszú távon is könnyen karbantartható.
+
+Minden vizuális és funkcionális döntésnél azt keresd, hogyan lehetne az adott megoldást még igényesebbé, modernebbé, gyorsabbá és felhasználóbarátabbá tenni.
+
+Ne állj meg egy közepes minőségű látványtervnél.
+
+A cél egy kiemelkedő DAEKON referenciaoldal, amelyet az ügyfél büszkén tud majd használni.
+
+Kezdd a jelenlegi weboldal elemzésével, majd készítsd el a továbbfejlesztett prémium látványtervet.

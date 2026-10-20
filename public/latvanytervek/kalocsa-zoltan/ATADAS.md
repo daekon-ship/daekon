@@ -1,50 +1,75 @@
 # Kalocsa GeoWorks (Kalocsa Zoltán) – gépi földmunka · látványterv, átadás
 
 **Élő terv:** https://daekon-ship.github.io/daekon/latvanytervek/kalocsa-zoltan/
-**Arculat + koncepció:** https://daekon-ship.github.io/daekon/latvanytervek/kalocsa-zoltan/koncepcio.html
-**Állapot:** 4. kör – bézs–barna színvilág (az ügyfél második mintája, 02_STYLE_REFERENCE_BEZS szerint), új logó (narancsbarna négyzetben kotrókar az árok fölött + KALOCSA ZOLTÁN / GÉPI FÖLDMUNKA), a nyitóképen egységes rajzolt jelenet (kisgép kilóg a keretből, folyamatosan ás). Csak hívás, kompakt tipográfia, GSAP-mozgás. Előzetes látványterv (noindex).
-**Felépítés:** build nélküli statikus oldal (`index.html` + `kalocsa.css` + `kalocsa.js`), relatív útvonalak; GSAP 3 + ScrollTrigger helyben (`js/`).
+**Állapot:** 5. kör – „Ultimate cinematic redesign” brief (`_forras/brief-5-kor-cinematic.txt`) alapján: narancs–grafit arculat, filmszerű hero videóhellyel, 6 szolgáltatáskártya, Munkáim / Kiemelt munkáim fülek, interaktív térkép (45 km), ajánlatkérő űrlap, rögzített hívógomb, eseménymérés előkészítve. Előzetes látványterv (noindex), az éles domain érintetlen.
+**Felépítés:** build nélküli statikus oldal (`index.html` + `kalocsa.css` + `kalocsa.js`), GSAP 3 + ScrollTrigger helyben (`js/`), Leaflet 1.9.4 cdnjs-ről igény szerint (görgetéskor) töltve.
 
-## Koncepció
-„EARTH / ENGINEERED” – grafit (#111315) + munkavédelmi narancs (#FF6B2B), egyetlen papír szekció (#E9E5DE). Az ügyfél saját sötét–narancs mintája az alap; a bézs minta csak ellenpont. Három irányból választva (lásd `koncepcio.html`): A) Earth/Engineered – kiválasztva; B) világos kitűzőszalag – elvetve (az ügyfél sötétet kért); C) talajszelvény-oldal – a gondolat a hero alsó sávjába olvadt.
+## 1. Elemzés (a 4. körhöz képest)
+- **Megtartva:** valódi munkafotók (6 db), 3 lépéses folyamat, „Szűk hely? Nem akadály” + „Megkérdezem, befér-e”, felülnézeti vázlat görgetésre guruló kisgéppel, logójel (kotrókar az árok fölött), Kalocsa GeoWorks név, tel:-linkek.
+- **Újratervezve:** színvilág (bézs → narancs–grafit a brief szerint), hero (rajzolt kotró → valódi fotó / videóhely, filmszerű kompozíció), szolgáltatások (6 sötét kártya, „Ajánlatot kérek erre” → előválasztás), galéria (fülek + kiemelt nézet), Rólam (portréhely), térkép (Leaflet), lábléc.
+- **Új:** ajánlatkérő, rögzített hívógomb, aktív menüjelölés, eseménymérés.
+- **Javítva:** 60 km → **45 km** mindenhol.
 
-Jellegzetes elemek: árokszelvény-logójel (`logo-jel.svg`), kitűzési „nyomvonal” a bal margón (görgetésre halad, ≥1100 px), lézer-szintvonal a nyitófotón, topografikus szintvonalak, műszaki vágójelek a fotón, felülnézeti vázlat a „Szűk hely? Nem akadály.” blokkban (kisgép a kaputól a kert végébe).
-
-## Valós adatok
-| Adat | Forrás |
+## 2. Mi működik ténylegesen
+| Funkció | Állapot |
 |---|---|
-| Kalocsa Zoltán (a joszaki.hu-n „Kalocsa Zoltán Kevin” aláírással) | brief, joszaki.hu |
-| +36 70 420 4170 · zkalocsa8@gmail.com | brief, joszaki.hu (telefon) |
-| Kecskemét és 60 km-es körzete | joszaki.hu |
-| Alapásás, közműárok, nyomvonalásás, tuskóeltávolítás, egyéb földmunka kertben/udvaron/telken; tereprendezés | joszaki.hu, brief |
-| „Kis géppel dolgozom, így szűk helyekre is bejutok!” · „gyorsan és korrekt áron” · „Építkezel? Kertet újítasz? Nem akarsz ásni napokig?” | joszaki.hu – saját szövege, idézetként használva |
+| Sticky, áttetsző → tömör fejléc; aktív menüpont narancs (görgetés szerint) | működik |
+| Mobil hamburger menü (animált, Esc, görgetészár) | működik |
+| „Munkáim” / „Kiemelt munkák” menüpont a megfelelő fülre vált | működik |
+| Galériafülek (egér, ←/→ billentyű, ARIA tablist) | működik |
+| Lightbox (nyilak, Esc, fókuszcsapda) – galéria + kiemelt képek | működik |
+| Kiemelt munka nézetváltó (valódi fotó ↔ szemléltető árokmetszet; 2 nézet a tereprendezésnél) | működik |
+| Szolgáltatáskártya / „Ilyen munkát kérek” → űrlap, munkatípus előválasztva | működik |
+| „Megkérdezem, befér-e” → űrlap, leírás előtöltve, fókusz a fotófeltöltésen | működik |
+| Űrlap-validáció (kötelező mezők, telefonszám-formátum, e-mail, ≥1 munkatípus, adatkezelés), honeypot | működik |
+| Fotófeltöltés kliensoldali ellenőrzése: JPG/PNG/WEBP/HEIC, max. 5 db, egyenként max. 8 MB, előnézet, törlés | működik |
+| **Ajánlatkérés továbbítása e-mailben** | **NINCS bekötve** – `AJANLAT.endpoint = null` → „Bemutató mód” üzenet: hívás vagy előre kitöltött e-mail-piszkozat. Hamis „elküldve” üzenet nincs. |
+| Rögzített hívógomb (desktop: jobb alsó pirula a heró után; mobil: középen „Hívás most”, safe-area, gépelés közben elrejtve) | működik |
+| Interaktív térkép: Kecskemét központ, 45 km-es kör, narancs jelölő + felugró info, **szürke „Bemutató jelölő”** (nem valós munkahely) | működik élőben (cdnjs + CARTO csempék); ha nem tölt be, sematikus tartalékábra |
+| Eseménymérés (`dataLayer`) | előkészítve – lásd 5. pont |
+| `prefers-reduced-motion` | minden animáció és a Ken Burns kikapcsol |
 
-**Nem szerepel (nincs igazolva):** cégforma, telephely, adószám, géptípus/márka, gépszélesség, évek, projektszám, értékelés, ár, garancia, ingyenes felmérés. A hero koordinátái Kecskemét városé (46,91° É, 19,69° K), nem telephely. Kalocsa városra nincs utalás.
+## 3. Hero videó – specifikáció (a végleges videó ügyféljóváhagyás után készül)
+**Most:** Zoltán saját fotója (kisgép fás területen, `img/hero-kisgep-*.webp`, a 04-es munkafotó kivágása) lassú „Ken Burns” kameramozgással. Nem rajzolt, nem CSS-sel mozgatott gép.
 
-## Képek
-Csak az ügyfél 6 saját munkafotója, a csomagban kapott forgatott változatból, 720/1200 px webp-re méretezve (`img/`), retusálás nélkül. A két stílusreferencia nincs az oldalon.
+**Bekötés:** `kalocsa.js` eleje → `HERO_VIDEO = { mp4: 'video/hero-1920.mp4', webm: 'video/hero-1920.webm', mobileMp4: 'video/hero-720x900.mp4', poster: 'img/hero-poster.webp' }`. A kód automatikusan beteszi (muted, loop, autoplay, playsinline), a poszter alatta marad, `saveData` és csökkentett mozgás esetén nem tölt be videót.
 
-| Fájl | Hol | Felirat |
+**Jelenet (6–10 mp, varratmentes hurok):** kompakt sárga–narancs kotró a kép jobb oldalán, bal oldalon üres tér a címnek. 1) kanál hidraulikusan leereszkedik → 2) homokos talajba hatol → 3) teli kanállal emel → 4) kiemeli az árokból → 5) oldalra üríti a kupacra → 6) visszatér; az árok végig jól láthatóan mély (talajrétegek, árnyékos fal, kupac). Stabil kamera, nagyon lassú oldalirányú csúszás; meleg, alacsony napfény; grafit–narancs színkorrekció; finom por. Tilos: rajzfilmszerűség, deformálódó gép/kanál, lebegő föld, szöveg, logó, vízjel.
+**Technika:** desktop 1920×1080, H.264 MP4 ≤ 4 MB + WebM (VP9) ≤ 3 MB; mobil 720×900 (4:5, gép + árok középen-jobbra) ≤ 2 MB; 24–30 fps, hang nélkül; poszter = első képkocka (WebP, ≤ 150 KB). A brief angol videógeneráló promptja: `_forras/brief-5-kor-cinematic.txt` 2. pont.
+**Fontos:** AI-videó nem készült. A végleges videó csak a telefonos egyeztetés és jóváhagyás után kezdhető (esetleg külön díjas).
+
+## 4. Ajánlatkérő – élesítés
+- Végpont: `AJANLAT.endpoint` (pl. saját PHP mailer a tárhelyen, vagy űrlapszolgáltatás). A kód `FormData`-t küld POST-tal: `nev, telefon, helyszin, munka[] (több), leiras, email, mikor, fotok[] (fájlok), adatkezeles, weboldal (honeypot – üresnek kell lennie)`.
+- Szerveroldalon kötelező: mezőellenőrzés, honeypot + rate limit / reCAPTCHA vagy Turnstile, fájltípus- és méretellenőrzés (MIME sniffing), fájlok nem nyilvános helyen / csak e-mail-mellékletként, címzett: **zkalocsa8@gmail.com**, válasz 2xx esetén a kliens kiírja a „Köszönöm, megkaptam!” üzenetet és csak ekkor méri a `quote_submit_success` eseményt.
+- Adatkezelési tájékoztató szövege és linkje [feltöltendő].
+
+## 5. Eseménymérés (GA4-kompatibilis, `window.dataLayer` + `gtag`, ha jelen van)
+| Esemény | Mikor | Paraméter |
 |---|---|---|
-| `kozmuarok` | hero + galéria 01 (kiemelt) | Árokásás – közműárok, nyomvonal |
-| `tusko` | galéria 02 (kiemelt) | Tuskó és gyökérzet |
-| `fas-terulet-1` | galéria 03 | Földmunka fás területen |
-| `talajrendezes-1`, `-2` | galéria 04, 05 | Terület-előkészítés (ugyanaz a terület, két nézet) |
-| `fas-terulet-2` | „Szűk hely” blokk + galéria 06 | Kisgép munka közben |
+| `phone_click` | bármely `tel:` link kattintása (nem bizonyított hívás!) | `location` |
+| `quote_submit_success` | csak valódi, sikeres szerverválasz után (bemutató módban nem fut) | `munka` |
+| `portfolio_view` | a Munkáim szekció első megtekintése / lightbox nyitás | `via`, `image` |
+| `featured_project_open` | a Kiemelt munkáim fül első megnyitása, nézetváltás | `project`, `view` |
+GA4 és süti-hozzájárulás kezelő (pl. Consent Mode v2) még nincs beépítve – élesítéskor együtt kell bekötni.
 
-Előtte–utána párosítás nincs. A szolgáltatássorokhoz nem rendeltünk fotót, hogy ne állítsunk konkrét munka–kép kapcsolatot. Hero-illusztráció helyett valódi fotó áll (a briefben megengedett gépillusztráció nem kellett).
+## 6. Hiányzó anyagok, jóváhagyandó
+1. **Hero videó** – telefonos egyeztetés, jóváhagyás (3. pont).
+2. **Zoltán portréja** (Rólam) – most elegáns, jelölt képhely; arcot nem generáltunk.
+3. **Kiemelt munkák** – mely munkák, helyszín (publikálható-e), rövid leírás. Most 3 előkészített kártya a meglévő fotókkal, helyszín „egyeztetendő”.
+4. **Térképes munkapontok** – csak engedéllyel; most egy egyértelműen jelölt bemutató jelölő.
+5. **Árok mélyebbnek mutatása** – a valódi fotó változatlan; mellette külön „Szemléltető metszet” ábra (jelölve: „nem a valós munka mérete”).
+6. **Főcím** – a brief javaslata áll: „A nehéz munkát ránk bízhatod.” A korábban választott „Építkezel? Kertet újítasz? Nem akarsz ásni napokig?” a Szolgáltatások bevezetőjébe került. Alternatíva: „Precíz földmunka. Biztos alapok.”
+7. Cégforma, adószám, impresszum, adatkezelési tájékoztató.
+8. Ajánlatkérő végpont + e-mail-integráció, GA4 + hozzájárulás.
 
-## Eltérések a brieftől (szándékosan)
-- **Betűméret:** a brief „óriás” címeket és kontúros „FÖLDMUNKA” háttérszöveget kért – az ügyfél kérésére kompakt méret (H1 max. 48 px), a kontúrszöveg helyett szintvonal-textúra.
-- **Szám:** a joszaki-profil egyes szám első személyben, tegezve ír, ezért a szöveg is így szól („vállalok”, „Rólam”, „Munkák”). Ha többes számot szeretne („Munkáink”, „Rólunk”), 1 perces csere.
-- **Betűk:** Archivo (keskeny 72%, 800) + Manrope, helyben (a repó meglévő OFL-fájljai).
+## 7. Élesítéshez szükséges
+Saját domain + tárhely (PHP vagy szerverless függvény az űrlaphoz), SSL, adatkezelési tájékoztató, GA4 + consent, videó elkészítése és tömörítése, portré, `noindex` levétele, sitemap/robots, Search Console, Google Cégprofil.
 
-## Cégnév
-A cég neve **Kalocsa GeoWorks** (a megrendelő közlése, 2026.10.20.); tulajdonos: Kalocsa Zoltán. A fejléc, lábléc, logó (`logo.svg`, `logo-jel.svg`), oldalcím és meta erre módosult; a Rólam blokk: „A Kalocsa GeoWorks mögött én állok, Kalocsa Zoltán.” Cégforma (E.V., Kft.) továbbra sem ismert.
+## Ellenőrzés (Playwright)
+1440 / 768 / 390 / 360 px: nincs vízszintes túlcsordulás, nincs JS-hiba (a sandboxból a cdnjs/CARTO nem érhető el, ott a tartalék ábra látszik). Tesztelve: menü (mobil is), fülváltás menüből, kiemelt nézetváltó, szolgáltatás → űrlap előválasztás, validációs hibák, bemutató-mód visszajelzés, `dataLayer` események, hívógomb.
 
-## Főcím
-A nyitókép főcíme Zoltán saját mondata a joszaki.hu-profiljáról: „Építkezel? Kertet újítasz? Nem akarsz ásni napokig?” (a harmadik sor homokszínnel kiemelve). A brief által javasolt „Nagy feladatok. Kis helyeken is.” kikerült.
-
+---
+# Korábbi körök
 ## 4. kör – „Valami jó logót találj ki felülre”, „hogy néz az úgy egybe ki?”, „ez a színvilág jobb”
 - **Logó:** `logo-jel.svg` (jel) és `logo.svg` (jel + név): lekerekített homokszínű négyzet, benne sötétbarna kotrókar és kanál az árok-szelvény fölött. A fejlécben és a láblécben; hoverre a kar „ás” egyet.
 - **Nyitókép:** a fotó + ráhelyezett rajz keveréke helyett egyetlen rajzolt jelenet: keretben homokszínű ég és dombok, a kisgép (lánctalp, tolólap, fülke, gém, kar, kanál) a minta szerint kilóg a keretből, a kanál a földkupacba ás. A valódi fotók a Munkák galériában.
