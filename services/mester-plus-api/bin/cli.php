@@ -5,6 +5,8 @@
 //   php bin/cli.php status-file      (csak az állapotfájl)
 //   php bin/cli.php stats            (tulajdonosi összesítő, JSON, személyes adat nélkül)
 //   php bin/cli.php grant --email E --plan pro|team --days N   (kézi / béta jogosultság)
+//   php bin/cli.php pilot --email E --days N   (PILOT béta-tesztelő: Pro-funkciók lejárattal, NEM előfizetés; max. 180 nap)
+//   php bin/cli.php pilot-revoke --email E      ·   php bin/cli.php pilot-list
 //   php bin/cli.php rewrap-keys      (mesterkulcs-csere után a mentési kulcsok újraburkolása)
 //   php bin/cli.php health
 declare(strict_types=1);
@@ -72,6 +74,37 @@ try {
             }
             $out(['subscription_id' => $app->billing()->grantManual((int) $ws, $plan, $days), 'until' => gmdate('Y-m-d', Clock::now() + $days * 86400)]);
             break;
+        case 'pilot':
+        case 'pilot-revoke':
+            $email = strtolower((string) $opt('email'));
+            $ws = $app->db()->val("SELECT m.workspace_id FROM accounts a JOIN workspace_members m ON m.account_id = a.id AND m.role = 'owner' WHERE a.email = ? AND a.status = 'ACTIVE'", [$email]);
+            if ($ws === null) {
+                throw new RuntimeException('Nincs ilyen aktív fiók (a tesztelő előbb regisztráljon az appban).');
+            }
+            if ($cmd === 'pilot-revoke') {
+                // Nem törlünk: lejártra állítjuk, így a felhőmentések a türelmi időben még visszaállíthatók.
+                $app->db()->run("UPDATE entitlements SET valid_until = ? WHERE workspace_id = ? AND source = 'pilot' AND (valid_until IS NULL OR valid_until > ?)", [Clock::sql(), $ws, Clock::sql()]);
+                $app->guard()->audit('ENTITLEMENT_CHANGED', null, null, (int) $ws, null, ['source' => 'pilot', 'action' => 'revoke']);
+                $out(['revoked' => true]);
+                break;
+            }
+            $days = (int) ($opt('days') ?? 0);
+            if ($days < 1 || $days > 180) {
+                throw new RuntimeException('Használat: pilot --email E --days N (1–180)');
+            }
+            $until = Clock::sql(Clock::now() + $days * 86400);
+            $feats = ['cloud_backup', 'cloud_restore', 'online_quotes', 'multiple_devices'];
+            foreach ($feats as $f) {
+                $app->db()->run("INSERT INTO entitlements (workspace_id, feature, source, valid_until, created_at) VALUES (?, ?, 'pilot', ?, ?)
+                                 ON DUPLICATE KEY UPDATE source = 'pilot', valid_until = VALUES(valid_until)", [$ws, $f, $until, Clock::sql()]);
+            }
+            $app->guard()->audit('ENTITLEMENT_CHANGED', null, null, (int) $ws, null, ['source' => 'pilot', 'days' => $days]);
+            $out(['pilot_until' => gmdate('Y-m-d', Clock::now() + $days * 86400), 'features' => $feats]);
+            break;
+        case 'pilot-list':
+            $out($app->db()->all("SELECT w.public_id AS workspace, MAX(e.valid_until) AS valid_until FROM entitlements e JOIN workspaces w ON w.id = e.workspace_id
+                                  WHERE e.source = 'pilot' GROUP BY w.public_id"));
+            break;
         case 'rewrap-keys':
             $cur = $app->kekVersion();
             $n = 0;
@@ -88,7 +121,7 @@ try {
             $out(['db' => 'ok', 'storage' => is_writable($app->storageDir()) ? 'ok' : 'fail', 'release' => $app->release()]);
             break;
         default:
-            fwrite(STDERR, "parancsok: migrate | maint | status-file | stats | grant | rewrap-keys | health\n");
+            fwrite(STDERR, "parancsok: migrate | maint | status-file | stats | grant | pilot | pilot-revoke | pilot-list | rewrap-keys | health\n");
             exit(2);
     }
 } catch (Throwable $e) {

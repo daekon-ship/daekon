@@ -140,7 +140,7 @@ class CloudAccountSection extends ConsumerWidget {
           ]),
           const SizedBox(height: MpSpace.x2),
           Wrap(spacing: MpSpace.x2, runSpacing: MpSpace.x2, children: [
-            _Tag(snap.planName, bg: snap.isPro ? MpColors.accentSoft : MpColors.surfaceSunken, fg: snap.isPro ? MpColors.onAccent : MpColors.inkSoft),
+            _Tag(snap.isPilot && snap.pilotUntil != null ? '${snap.planName} · ${Fmt.date(snap.pilotUntil!.toLocal())}-ig' : snap.planName, bg: snap.isPro ? MpColors.accentSoft : MpColors.surfaceSunken, fg: snap.isPro ? MpColors.onAccent : MpColors.inkSoft),
             if (!acc.emailVerified) const _Tag('E-mail megerősítésre vár', bg: MpColors.warningSoft, fg: MpColors.warning),
             if (ent.needsRefresh) const _Tag('Csatlakozz az internethez a frissítéshez'),
           ]),

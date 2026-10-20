@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../core/app_info.dart';
 import '../../core/router/app_router.dart';
 import '../../core/theme/tokens.dart';
 import '../../core/theme/typography.dart';
@@ -37,7 +38,7 @@ class DashboardScreen extends ConsumerWidget {
           children: [
             PageHeader(
               title: name == null ? '${_greeting()}!' : '${_greeting()}, $name!',
-              subtitle: Fmt.date(DateTime.now()),
+              subtitle: isPilotBuild ? '${Fmt.date(DateTime.now())} · Béta tesztverzió' : Fmt.date(DateTime.now()),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: MpSpace.gutter),

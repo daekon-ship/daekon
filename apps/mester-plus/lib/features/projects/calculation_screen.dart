@@ -97,7 +97,7 @@ class _AdjustmentEditorState extends ConsumerState<_AdjustmentEditor> {
       // Dispose-ból nem tudunk üzenetet mutatni: a hibát elnyeljük és naplózzuk,
       // hogy ne legyen kezeletlen aszinkron kivétel.
       if (bp != null) {
-        _repo.setAdjustment(widget.project.id, _type, bp).catchError((Object e) => debugPrint('Mester+ mentés: $e'));
+        _repo.setAdjustment(widget.project.id, _type, bp).catchError((Object e) => devLog('Mester+ mentés: $e'));
       }
     }
     _percent.dispose();

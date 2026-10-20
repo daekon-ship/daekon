@@ -17,6 +17,7 @@ class EntitlementSnapshot {
     this.subscriptionStatus,
     this.periodEnd,
     this.quotaBytes = 0,
+    this.pilotUntil,
   });
 
   final String planCode;
@@ -27,6 +28,9 @@ class EntitlementSnapshot {
   final String? subscriptionStatus;
   final DateTime? periodEnd;
   final int quotaBytes;
+
+  /// PILOT (béta-tesztelő) jogosultság lejárata – a szerver adja; nem előfizetés.
+  final DateTime? pilotUntil;
 
   static final EntitlementSnapshot none = EntitlementSnapshot(
     planCode: 'free',
@@ -41,7 +45,9 @@ class EntitlementSnapshot {
 
   bool has(String feature, DateTime now) => isFresh(now) && features.contains(feature);
 
-  bool get isPro => planCode == 'pro' || planCode == 'team';
+  bool get isPro => planCode == 'pro' || planCode == 'team' || planCode == 'pilot';
+
+  bool get isPilot => planCode == 'pilot';
 
   factory EntitlementSnapshot.fromServer(Map<String, dynamic> j, DateTime now) {
     final plan = (j['plan'] as Map?) ?? const {};
@@ -60,6 +66,7 @@ class EntitlementSnapshot {
       subscriptionStatus: sub?['status'] as String?,
       periodEnd: DateTime.tryParse('${sub?['current_period_end']}'),
       quotaBytes: (policy['quota'] as num?)?.toInt() ?? 0,
+      pilotUntil: DateTime.tryParse('${j['pilot_until']}')?.toUtc(),
     );
   }
 
@@ -72,6 +79,7 @@ class EntitlementSnapshot {
         'status': subscriptionStatus,
         'period_end': periodEnd?.toIso8601String(),
         'quota': quotaBytes,
+        'pilot_until': pilotUntil?.toIso8601String(),
       });
 
   static EntitlementSnapshot? fromJsonString(String? s) {
@@ -87,6 +95,7 @@ class EntitlementSnapshot {
         subscriptionStatus: j['status'] as String?,
         periodEnd: j['period_end'] == null ? null : DateTime.tryParse(j['period_end'] as String),
         quotaBytes: (j['quota'] as num?)?.toInt() ?? 0,
+        pilotUntil: j['pilot_until'] == null ? null : DateTime.tryParse(j['pilot_until'] as String),
       );
     } catch (_) {
       return null;

@@ -71,6 +71,17 @@ küldött `https://ajanlat.mesterplus.daekon.hu/a/<token>` link így `https://ap
 Megjegyzés: a factory egy meglévő tanúsítványt magától nem bővít új aliasra – új alias után egyszer:
 `sudo daekon-site ssl <domain> issue`.
 
+## PILOT (béta-tesztelő) hozzáférés és pilot APK
+
+- Szerveroldali, lejáró Pro-funkciók (felhőmentés, visszaállítás, online ajánlat, több eszköz) – **nem előfizetés, nem bevétel**,
+  a kliensben nincs beégetett jogosultság. A tesztelő előbb regisztrál az appban, utána:
+  `sudo runuser -u <site_user> -- env MP_CONFIG_DIR=/srv/sites/api.mesterplus.daekon.hu/config php …/current/bin/cli.php pilot --email <e-mail> --days <1–180>`
+  · visszavonás: `pilot-revoke --email <e-mail>` (lejártra állít, nem töröl) · lista: `pilot-list`.
+- Lejárat / visszavonás után a fiók FREE; a meglévő felhőmentések még 30 napig visszaállíthatók.
+- Pilot APK: `flutter build apk --release --dart-define=MP_CHANNEL=pilot` (diszkrét „béta tesztverzió” felirat; a csatorna jogosultságot nem ad).
+  Aláírás: a kiadási (feltöltési) kulcs – **tulajdonosi titok, nincs a repóban**; a frissítés csak ugyanezzel a kulccsal és nagyobb
+  versionCode-dal települ rá adatvesztés nélkül. Tesztelői útmutató: `docs/PILOT_TEST_GUIDE.md`.
+
 ## Production smoke test (élesítés után, valódi DNS + HTTPS, levél és fizetés nélkül)
 
 ```

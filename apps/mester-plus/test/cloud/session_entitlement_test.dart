@@ -106,5 +106,22 @@ void main() {
       }, now);
       expect(fake.cacheUntil.difference(now).inDays, 7, reason: 'irreális (> 30 nap) gyorstár-hossz helyett 7 nap');
     });
+    test('PILOT: a szerver adja, lejárattal; a gyorstár megőrzi; a Pro-funkciók a jogosultság-listából jönnek', () {
+      final p = EntitlementSnapshot.fromServer({
+        'plan': {'code': 'pilot', 'name': 'Mester+ Pilot'},
+        'entitlements': ['cloud_backup', 'cloud_restore', 'online_quotes', 'multiple_devices'],
+        'pilot_until': '2026-12-31T00:00:00Z',
+        'server_time': now.toIso8601String(),
+        'cache_until': now.add(const Duration(days: 7)).toIso8601String(),
+      }, now);
+      expect(p.isPilot && p.isPro, isTrue);
+      expect(p.pilotUntil, DateTime.utc(2026, 12, 31));
+      final back = EntitlementSnapshot.fromJsonString(p.toJsonString())!;
+      expect(back.pilotUntil, p.pilotUntil);
+      final e = Entitlements(back, true, clock: () => now.add(const Duration(days: 1)));
+      expect(e.canUseCloudBackup() && e.canUseCloudRestore() && e.canUseOnlineQuotes(), isTrue);
+      expect(Entitlements(back, true, clock: () => now.add(const Duration(days: 8))).canUseCloudBackup(), isFalse,
+          reason: 'offline sem örök: a gyorstár lejárata után a szervertől újra kell kérni');
+    });
   });
 }
