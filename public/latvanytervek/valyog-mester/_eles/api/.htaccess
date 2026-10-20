@@ -1,8 +1,0 @@
-# Vályog-Mester – api/ mappa: csak az ajánlatkérő végpont érhető el
-Options -Indexes
-<FilesMatch ".*">
-  Require all denied
-</FilesMatch>
-<Files "ajanlat.php">
-  Require all granted
-</Files>
