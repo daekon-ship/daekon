@@ -70,6 +70,11 @@ Saját domain + tárhely (PHP vagy szerverless függvény az űrlaphoz), SSL, ad
 1440 / 768 / 390 / 360 px: nincs vízszintes túlcsordulás, nincs JS-hiba (a sandboxból a cdnjs/CARTO nem érhető el, ott a tartalék ábra látszik). Tesztelve: menü (mobil is), fülváltás menüből, kiemelt nézetváltó, szolgáltatás → űrlap előválasztás, validációs hibák, bemutató-mód visszajelzés, `dataLayer` események, hívógomb.
 
 ---
+# 7. kör – munkagépes videó beépítve (2026.10.20.)
+- Forrás: Higgsfield (Starter csomag; állókép Soul Cinema modellel, videó Seedance 2.0 Fast, 8 mp, 1280×720, vízjel nélkül), prompt: `_forras/brief-5-kor-cinematic.txt` + a beszélgetésben használt két prompt. AI-illusztráció, nem Zoltán gépe → a heróban „Szemléltető animáció” címke (törölhető `HERO_VIDEO.tag`).
+- Feldolgozás: `bash _forras/video.sh <nyers.mp4>` → `video/hero-scrub.mp4` (3,8 MB, 4 kockánként kulcskocka, asztali görgetéshez), `video/hero-loop-mobil.mp4` (≈0,5 MB, 768×640 kivágás, a végén 0,6 mp áttűnés az első kockába = varrat nélküli hurok), `video/hero-poster*.webp`.
+- Működés: asztali gépen a nyitókép rögzül, a videó görgetésre pörög (ásás → kanál tele → kiemelés → föld a kupacra, a fázisjelző követi); mobilon némítva hurokban játszik. Adatkímélő mód / csökkentett mozgás esetén a fotós jelenetsor marad. A nyers Higgsfield-fájl nincs a repóban.
+
 # 6. kör – Zoltán saját kéréslistája alapján (2026.10.20.)
 - **Árok mélyebbnek:** `img/kozmuarok-melyebb-*.webp` – ugyanaz a fénykép, a talpa és a falai árnyékolással mélyítve (nem retusált tárgy, nem hozzáadott földréteg). A Kiemelt munkáimban alapnézet, „Szerkesztett fénykép – mélyebb hatás” jelöléssel; az eredeti és a szemléltető metszet is választható. A hero és az „Összes munka” az eredetit mutatja.
 - **Ne legyen túl sötét:** világosabb grafit tónusok (#2B3137 / #323940 / #3C444C).
