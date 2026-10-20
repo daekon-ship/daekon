@@ -90,6 +90,25 @@ def build(out: Path, vazlat: bool) -> int:
     if vazlat:
         (out / "robots.txt").write_text("User-agent: *\nDisallow: /\n", encoding="utf-8")
 
+    # szöveges fájlok LF sorvéggel (Windows-checkoutból is bájtra azonos, reprodukálható csomag)
+    for f in out.rglob("*"):
+        if f.is_file() and f.suffix in {".html", ".css", ".js", ".svg", ".xml", ".txt"}:
+            b = f.read_bytes()
+            if b"\r\n" in b:
+                f.write_bytes(b.replace(b"\r\n", b"\n"))
+
+    # gyorsítótár-ürítés: a CSS/JS tartalomhash-sel verziózva (valyog.css?v=…) – a statikus fájlok 30 napig
+    # cache-elhetők, a HTML no-cache, így egy módosítás után a böngésző biztosan az új CSS/JS-t kéri le
+    for asset in ("valyog.css", "valyog.js"):
+        ver = hashlib.sha256((out / asset).read_bytes()).hexdigest()[:10]
+        for page in ("index.html", "adatkezeles.html", "404.html"):
+            f = out / page
+            t = f.read_text(encoding="utf-8")
+            t2 = re.sub(r'((?:href|src)="/?)' + re.escape(asset) + r'"', r'\g<1>' + asset + '?v=' + ver + '"', t)
+            if t2 != t:
+                f.write_text(t2, encoding="utf-8")
+    index = (out / "index.html").read_text(encoding="utf-8")
+
     # ellenőrzés: tiltott maradványok
     for f in out.rglob("*"):
         if f.suffix not in {".html", ".js", ".css", ".xml", ".txt"} or f.name.startswith("OFL"):
