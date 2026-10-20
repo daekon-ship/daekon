@@ -1,6 +1,6 @@
 # Mester+ Cloud – architektúra
 
-Állapot: 2026-10-18, backend `20261018-mp2` (git `10c1d829c459`). Kapcsolódó: `CLOUD_SECURITY.md`, `CLOUD_BACKUP.md`,
+Állapot: 2026-10-20, backend `20261020-mp5` (git `e1e8640f7ac4`), production élő (DNS + HTTPS + smoke test PASS). Kapcsolódó: `CLOUD_SECURITY.md`, `CLOUD_BACKUP.md`,
 `ONLINE_QUOTES.md`, `SUBSCRIPTIONS.md`, `CLOUD_SYNC_DESIGN.md`, `OPERATIONS.md`.
 
 ## Alapelv
@@ -79,8 +79,8 @@ Minden válasz: `X-Request-ID`; a kliens `X-Request-ID`-je `X-Correlation-ID`-k�
 | development | csak `--dart-define=MP_API_BASE=…` nem-release buildben | – | – |
 
 A kiadott (release) app kizárólag a production címet használhatja (`CloudConfig`; a CI a kész AAB-n is ellenőrzi).
-**DNS:** a `mesterplus.daekon.hu` alnevek még nem léteznek (tulajdonosi teendő, lásd OPERATIONS) – a tanúsítvány a DNS beállta
-után automatikusan érkezik (Hosting Factory, 5 percenként ellenőrzi).
+**Élő (2026-10-20):** DNS (A, AAAA nélkül) és Let's Encrypt-tanúsítvány mindhárom hoston; az `ajanlat.` alias 301-gyel az `api.`
+hostra irányít, így a publikus ajánlat-oldal ténylegesen az `api.` hoston fut. Backend-kiadás: `20261020-mp5`.
 
 ## Multi-tenant
 

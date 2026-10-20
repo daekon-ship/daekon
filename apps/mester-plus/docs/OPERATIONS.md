@@ -33,6 +33,8 @@ egy offline másolat a tulajdonos jelszókezelőjében (OWNER ACTION).
 
 ## Monitoring és incidensek
 
+- `HEAD` csak a mellékhatás nélküli `/`, `/api/v1/health`, `/api/v1/plans` útvonalon (200); minden máshol 405 – egy előnézet-robot
+  HEAD-kérése így nem jelölhet „megnyitott”-nak egy ajánlatot.
 - DAEKON Site Health: 5 perces mérés a `/api/v1/health`-en (`health_path` a nyilvántartásban) – app, DB, tároló; 3 egymás utáni
   hiba → SITE DOWN (= API DOWN). Óránként: SSL, DNS, mentés, tárhely, napló + **az API állapotfájlja** (`logs/app-status.json`,
   a karbantartó írja, személyes adat nélkül): MP_DB_DOWN, MP_STORAGE_DOWN (kritikus), MP_BACKUP_FAILURE_SPIKE, MP_AUTH_FAILURE_SPIKE,
@@ -57,11 +59,28 @@ nincs MTA, a DAEKON OS levelezési kapcsolóihoz nem nyúltunk). Amíg nincs ké
 e-mail megerősítése és az elfelejtett jelszó e-mailben nem. **OWNER ACTION:** kézbesítő kiválasztása (pl. a DAEKON saját SMTP-je
 vagy egy tranzakciós levélszolgáltató – fizetős lehet), SPF/DKIM a küldő domainhez; utána az `smtp` meghajtó bekötése.
 
-## DNS (OWNER ACTION – a production kívülről ennek hiányában nem érhető el)
+## DNS és TLS (ÉLES 2026-10-20 óta)
 
-A `daekon.hu` zónában (tarhely.com): `api.mesterplus`, `ajanlat.mesterplus`, `api-staging.mesterplus` → `A 57.129.181.55`
-(vagy egy `*.mesterplus  A  57.129.181.55`). AAAA ne legyen (vagy `2001:41d0:801:2000::57c4`). A tanúsítványt a Hosting Factory a
-DNS beállta után automatikusan kéri (5 percenként ellenőrzi); kézi lépés nincs.
+`daekon.hu` zóna (tarhely.com, ns1/ns2): `api.mesterplus`, `ajanlat.mesterplus`, `api-staging.mesterplus` → `A 57.129.181.55`,
+TTL 300, **AAAA nincs** (szándékosan: a vhostok IPv6-on nem lettek külön ellenőrizve). Igazolva authoritative-ból és
+1.1.1.1 / 8.8.8.8 / 9.9.9.9-ről (a publikus resolverek a korábbi NXDOMAIN negatív cache-e miatt ~1 óra alatt álltak be).
+Tanúsítványok (Let's Encrypt, YE1 → ISRG Root X2, lejárat 2027-01-18, automatikus megújítás; `certbot renew --dry-run` PASS):
+`api.mesterplus.daekon.hu` (SAN: `api` + `ajanlat`) · `api-staging.mesterplus.daekon.hu`. HTTP → 301 HTTPS, HSTS 1 év.
+**Az `ajanlat.` alias** a Hosting Factory alias-szabálya szerint 301-gyel az `api.` hostra irányít (az útvonal megmarad): az ügyfélnek
+küldött `https://ajanlat.mesterplus.daekon.hu/a/<token>` link így `https://api.mesterplus.daekon.hu/a/<token>`-en nyílik meg.
+Megjegyzés: a factory egy meglévő tanúsítványt magától nem bővít új aliasra – új alias után egyszer:
+`sudo daekon-site ssl <domain> issue`.
+
+## Production smoke test (élesítés után, valódi DNS + HTTPS, levél és fizetés nélkül)
+
+```
+# a fejlesztői gépről – a valódi Flutter-kódúttal; a Pro a tulajdonosi CLI kézi, 1 napos jogosultsága; a teszt-fiók a végén törlődik
+MP_LIVE_BASE=https://api.mesterplus.daekon.hu MP_LIVE_GRANT_SSH=ubuntu@57.129.181.55 MP_LIVE_GRANT_REMOTE="sudo runuser -u <user> -- php /srv/sites/api.mesterplus.daekon.hu/current/bin/cli.php grant --plan pro --days 1 --email"   flutter test test/integration/cloud_live_test.dart
+# a VPS-ről: tenant-izoláció / auth / idempotencia / rate limit (production), teljes flow (staging, sandbox-billing)
+MP_LIVE_GRANT_SHELL="sudo runuser -u <user> -- php …/bin/cli.php grant --plan pro --days 1 --email" php tests/live_http.php tenant https://api.mesterplus.daekon.hu 57.129.181.55
+php tests/live_http.php flow https://api-staging.mesterplus.daekon.hu
+```
+A tesztek után a teszt-fiókok anonimizált maradványai és audit-sorai a DB-ből törölhetők (csak `@example.test` / DELETED sorok).
 
 ## Hasznos parancsok
 

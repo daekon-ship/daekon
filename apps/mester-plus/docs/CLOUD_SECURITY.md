@@ -34,7 +34,8 @@ kulcs kellene, ami jelszócserénél adatvesztést okozna). Később opcionális
 | Fájl-ellenőrzés | méretkorlát (50 MB), Content-Length = bejelentett méret, SHA-256, `MPCB` v1 fejléc + kulcsverzió; a kliens 100 MB-os kicsomagolási korláttal (zip-bomba) |
 | Kliens-IP | csak `REMOTE_ADDR` – proxy nincs a VPS előtt, `X-Forwarded-For` soha nem számít |
 | Fejlécek | API: `nosniff`, `no-store`, CSP, `Referrer-Policy: no-referrer`, HSTS; oldal: + `frame-ancestors 'none'`, `noindex` |
-| HTTPS | productionben minden adatforgalom HTTPS (HTTP-n csak a titok nélküli `/` és `/api/v1/health`, a tanúsítvány előtti mérésekhez) |
+| HTTPS | nginx: HTTP → 301 HTTPS, HSTS 1 év; Let's Encrypt (YE1 / ISRG Root X2), automatikus megújítás. Az app maga is elutasít minden nem-HTTPS adatforgalmat (kivétel csak a titok nélküli `/` és `/api/v1/health`). |
+| HEAD | csak `/`, `/api/v1/health`, `/api/v1/plans` (mellékhatás nélkül); a publikus ajánlaton és minden hitelesített végponton 405 – link-előnézet / monitor nem jelölhet „megnyitott”-nak |
 | Admin | nincs webes admin-API; a tulajdonosi nézet a WebPanelben (Webmin-hitelesítés), csak összesítő számokkal |
 
 ## Rate limit (végpontonként külön)
