@@ -190,7 +190,7 @@ class _CompanyFormState extends ConsumerState<_CompanyForm> {
                 const SectionLabel('Helyi adatmentés'),
                 const _BackupSection(),
                 const SizedBox(height: MpSpace.x8),
-                const Center(child: Text('Mester+ $appVersion · a projekt-adatok ezen a telefonon vannak', style: MpText.small)),
+                const Center(child: Text('$appVersionLabel · a projekt-adatok ezen a telefonon vannak', style: MpText.small, textAlign: TextAlign.center)),
               ],
             ),
           ),
