@@ -9,8 +9,8 @@ Mit csinál:
   1. Csak a ténylegesen használt fájlokat másolja ki (HTML, CSS, JS, betű, képek, logók, videó).
   2. Átírja az előnézeti URL-eket https://valyogmester.hu/-ra (canonical, og:url, og:image, strukturált adat).
   3. noindex → index, follow (kivéve --vazlat), láblécben „Látványterv” → „Weboldal: DAEKON”.
-  4. Bekapcsolja az ajánlatkérőt: <form data-endpoint="api/ajanlat.php">, kiveszi az előnézeti blokkot.
-  5. Kimásolja a szerveroldalt (api/), .htaccess (CSP-hash-sel), .user.ini, robots.txt, sitemap.xml, 404.html.
+  4. Kiveszi az előnézeti blokkokat (<!--elonezet-->). Az oldal telefonos: nincs űrlap, nincs szerveroldali kód.
+  5. Kimásolja: .htaccess (CSP-hash-sel, Apache-tárhelyhez), robots.txt, sitemap.xml, 404.html.
   6. Ellenőrzi: nem maradt-e előnézeti URL, régi domain, „Látványterv”, „egyeztetendő”, „JÓVÁHAGYANDÓ”,
      tesztmód-szöveg, és minden helyi hivatkozás létező fájlra mutat-e. Hiba esetén nem ad ki csomagot.
 """
@@ -29,6 +29,7 @@ FORBIDDEN = [
     (r"JÓVÁHAGYANDÓ|jovahagyando|data-tervezet", "jóváhagyásra váró adatkezelési rész"),
     (r'class="tbd', "egyeztetendő jelölés"),
     (r"Előnézeti mód|testmode", "előnézeti/tesztmód blokk"),
+    (r"#ajanlat|api/ajanlat|data-endpoint|<form[\s>]|type=\"file\"", "ajánlatkérő-maradvány (az oldal telefonos)"),
 ]
 
 
@@ -55,7 +56,6 @@ def build(out: Path, vazlat: bool) -> int:
                       lambda m: "<p>" + m.group(1).replace("&lt;", "<").replace("&gt;", ">").replace("&quot;", '"') + "</p>",
                       html, flags=re.S)
         html = re.sub(r"\s*<!--elonezet-->.*?<!--/elonezet-->", "", html, flags=re.S)
-        html = html.replace('<form id="wiz" novalidate>', '<form id="wiz" novalidate data-endpoint="api/ajanlat.php" method="post" action="api/ajanlat.php" enctype="multipart/form-data">')
         return html
 
     # oldalak
@@ -76,13 +76,11 @@ def build(out: Path, vazlat: bool) -> int:
     for rel in sorted(refs):
         copy(rel)
 
-    # szerveroldal és konfiguráció
-    shutil.copytree(SRC / "_eles/api", out / "api")
+    # konfiguráció (az oldal tisztán statikus: nincs PHP)
     inline = re.findall(r"<script>(.*?)</script>", index, flags=re.S)
     hashes = " ".join(f"'sha256-{base64.b64encode(hashlib.sha256(s.encode()).digest()).decode()}'" for s in inline)
     ht = (SRC / "_eles/htaccess.txt").read_text(encoding="utf-8").replace("__CSP_SCRIPT_HASH__", hashes)
     (out / ".htaccess").write_text(ht, encoding="utf-8")
-    copy("_eles/user.ini", ".user.ini")
     copy("_eles/robots.txt", "robots.txt")
     today = datetime.date.today().isoformat()
     (out / "sitemap.xml").write_text(
@@ -99,7 +97,7 @@ def build(out: Path, vazlat: bool) -> int:
         text = f.read_text(encoding="utf-8")
         code = f.suffix in {".js", ".css"}
         for pat, what in FORBIDDEN:
-            if code and what not in ("előnézeti (GitHub Pages) URL", "régi domain"):
+            if code and what not in ("előnézeti (GitHub Pages) URL", "régi domain", "ajánlatkérő-maradvány (az oldal telefonos)"):
                 continue   # a JS/CSS osztálynevei és kommentjei nem látható szövegek
             for m in re.finditer(pat, text):
                 line = text.count("\n", 0, m.start()) + 1
@@ -114,6 +112,8 @@ def build(out: Path, vazlat: bool) -> int:
                 continue
             if not (out / ref.split("?")[0]).exists():
                 problems.append(f"{page}: hiányzó fájlra mutat: {ref}")
+    if any(out.rglob("*.php")):
+        problems.append("PHP-fájl került a csomagba – a telefonos oldal tisztán statikus")
     if "index, follow" not in index and not vazlat:
         problems.append("index.html: robots nincs átállítva")
 
@@ -131,6 +131,7 @@ def build(out: Path, vazlat: bool) -> int:
 
 
 if __name__ == "__main__":
+    sys.stdout.reconfigure(encoding="utf-8")   # Windows-konzolon is kiírható a hibalista (✗)
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--out", required=True, type=Path)
     ap.add_argument("--vazlat", action="store_true", help="tesztcsomag: noindex marad, a jóváhagyandó részek csak figyelmeztetnek")

@@ -1,7 +1,7 @@
-# Vályog-Mester – átadás (9. kör: véglegesítés, élesítés előkészítése)
+# Vályog-Mester – átadás (10. kör: telefonos véglegesítés)
 
 **Előnézet:** https://daekon-ship.github.io/daekon/latvanytervek/valyog-mester/ (noindex)
-**Tervezett éles domain:** https://valyogmester.hu/
+**Éles domain:** https://valyogmester.hu/ (DAEKON VPS, HTTPS kész – jelenleg „hamarosan” helyőrző) · **VPS-előnézet:** https://valyogmester.preview.daekon.hu/ (jelszavas, noindex)
 **Telepítés:** lásd `TELEPITES.md` · **Éles csomag:** `python3 _forras/build_eles.py --out …`
 **A régi valyog-mester.hu oldal nincs módosítva és nincs átirányítva.**
 
@@ -11,8 +11,7 @@
 | Design (Archivo, fehér–grafit–terrakotta, valódi fotók) | kész |
 | Cégadatok (adószám, cégjegyzékszám, bejegyzés) | kész – formailag ellenőrizve |
 | Szolgáltatások (fő szakterület + minden felújítás és kőművesmunka, 37 tétel) | kész – a lista ügyféllel átnézendő |
-| Ajánlatkérő frontend (6 lépés, validáció, képkicsinyítés, állapotok) | kész, tesztelve |
-| Ajánlatkérő backend (`_eles/api/ajanlat.php`) | kész, tesztelve helyi SMTP-vel – élesben a fogadó cím és az SMTP-fiók hiányzik |
+| Kapcsolatfelvétel | **telefonos** (10. kör, a megrendelő döntése): ajánlatkérő űrlap, PHP-végpont, SMTP és fotófeltöltés eltávolítva; minden fő gomb `tel:+36309669528` |
 | SEO (canonical, OG, strukturált adat, sitemap, robots) | kész – az éles build aktiválja |
 | Adatkezelési tájékoztató + impresszum (`adatkezeles.html`) | tervezet – a jelölt részeket az ügyfélnek kell jóváhagynia |
 | Éles build + telepítési terv | kész – a build szándékosan megáll, amíg a tájékoztató nincs jóváhagyva |
@@ -59,18 +58,14 @@ A cégadatokat online, független nyilvántartásban (e-cegjegyzek.hu) érdemes 
 - Hamis előtte–utána, kitalált referencia vagy AI-kép nincs.
 - **Felhasználási engedély szükséges:** a videóra és a képkockákra (Túró István hozzájárulása; a felvételen szereplő munkatársaké), valamint a hangulatképekre – ezeket ajánlott saját munkafotókra cserélni. Csere: `index.html` (nyitókép `slide`-ok, `svc-photo`), `valyog.js` → `WORKS` tömb.
 
-## Ajánlatkérő
-- **Előnézet:** nincs `data-endpoint`, ezért előnézeti módban fut: semmit nem küld, ezt egyértelműen kiírja, és hívást vagy e-mail-piszkozatot kínál.
-- **Éles:** a build beállítja a `data-endpoint="api/ajanlat.php"` attribútumot, és kiveszi az előnézeti blokkot.
-- **Kliens:** 6 lépés, lépésenkénti validáció, visszalépés, összegzés módosítás-linkekkel. Fotó: JPG/PNG/WEBP/HEIC, max. 6 db, egyenként 10 MB; a nagy fotókat feltöltés előtt 2000 px-es JPEG-re kicsinyíti (3,5 MB → 0,84 MB). Dupla kattintás ellen védett, 60 mp-es időkorlát van. Siker csak valódi `200 {ok:true}` válaszra jelenik meg; hibánál az adatok megmaradnak, és újrapróbálható.
-- **Szerver** (`_eles/api/ajanlat.php`, függőség nélkül):
-  - fehérlistás mezővalidáció;
-  - csapdamező, 4 mp-es időcsapda, 5 kérés / IP / óra (az IP-ből csak sózott kivonat készül);
-  - egyszeri token: ugyanaz a kérés nem megy ki kétszer;
-  - fájlok valódi típusellenőrzéssel (finfo + képfejléc), 10 MB / db, 40 MB összesen, anonimizált mellékletnévvel (`foto-1.jpg`);
-  - **nincs tárolás**: a képek csak e-mail-mellékletként mennek tovább;
-  - SMTP (STARTTLS/SSL) vagy `mail()`, a hitelesítő adatok környezeti változóból vagy webgyökéren kívüli ini-fájlból jönnek;
-  - beállítás nélkül 503-at ad, SMTP-hibánál 502-t – hamis sikert soha nem jelez.
+## Telefonos kapcsolatfelvétel (10. kör)
+- **Döntés:** az ügyfél telefonon fogadja az érdeklődőket – nincs űrlap, nincs SMTP, nincs fotófeltöltés. Eltávolítva: a 6 lépéses varázsló (HTML, JS ~160 sor, CSS),
+  az `_eles/api/` (PHP), `user.ini`, `valyog-ajanlat.ini.minta`; a VPS-ről a régi `config/valyog-ajanlat.ini` (mentés: a webhely `backups/` mappájában).
+- **Gombok:** fejléc „Hívjon most”, nyitókép „Hívjon most” + „Mit vállalunk?”, Minden munka „Beszéljünk a felújításról”, Tünetek „Kérjen telefonos
+  egyeztetést”, kapcsolat-kártya „Hívjon most: +36 30 966 9528”, mobilmenü, lábléc. Mind a 14 hívólink ugyanaz: `tel:+36309669528`.
+- **Mobil hívássáv:** egy terrakotta gomb („Hívjon most | +36 30 966 9528”); a nyitóképen, a kapcsolat-szekciónál, a láblécnél és nyitott menünél elrejtőzik.
+- **„Ingyenes felmérés”:** a feltételei nem igazoltak, ezért mindenhol „helyszíni felmérés – egyeztetés telefonon” / „a felmérés feltételeit telefonon
+  egyeztetjük” szerepel helyette. Ha Túró István megerősíti, hogy a felmérés ingyenes (és milyen távolságig), visszaírható.
 
 ## SEO
 - **Előnézet:** `noindex, nofollow`; a canonical már az új domainre (`https://valyogmester.hu/`) mutat.
@@ -85,30 +80,30 @@ A cégadatokat online, független nyilvántartásban (e-cegjegyzek.hu) érdemes 
 - **Videó:** csak kattintásra töltődik be (`preload="none"`), automatikus lejátszás nincs.
 - **Animációk nélkül is működik:** `prefers-reduced-motion` esetén minden elem azonnal látszik, minden vezérlő billentyűzetről is elérhető.
 
-## Ellenőrzés (9. kör)
+## Ellenőrzés (10. kör, 2026-10-20)
 | Teszt | Eredmény |
 |---|---|
-| Viewportok 320 / 360 / 390 / 430 / 768 / 1024 / 1440 | nincs vízszintes görgetés, nincs törött kép, nincs konzolhiba vagy 404-es erőforrás; a 320 px-es túlcsordulás (hosszú e-mail-cím) javítva |
-| Képkeretek | minden kép a keretében marad, nincs nagyítás vagy eltolás (géppel mérve, 3 méreten) |
-| Mobil | a dokk az űrlapnál és gépelés közben elrejtőzik; a menü bezárható gombbal, Esc-kel és linkre kattintással; a címkék betűmérete legalább 11 px |
-| Ajánlatkérő, böngészőben (1440 és 390) | sikeres küldés 2 fotóval → 1 levél, 2 melléklet (3,5 MB-os fotó → 0,84 MB); dupla kattintás → 1 levél; túl nagy fájl → kliensoldali hiba; hálózati hiba → hibaüzenet, az adatok megmaradnak, az újrapróbálás sikeres; 503 és 502 → hibaüzenet, hamis siker nincs |
-| Ajánlatkérő, szerveren (curl) | hibás telefon → 422; rossz épület, hiányzó elfogadás → 422; 11 MB-os kép → 413; álcázott nem-kép → 422; csapdamező → csendes elnyelés; túl gyors kitöltés → 422; ugyanaz a token → nincs második levél; 6. kérés egy órán belül → 429 |
-| Kiküldött levél | UTF-8 tárgy és törzs, Reply-To az ügyfél e-mailje, magyar idő, anonimizált mellékletnév; az adatmappában nincs személyes adat |
-| CSP (éles fejléc) | nincs letiltott erőforrás, az inline szkript a hash alapján fut |
-| Animációk nélkül, billentyűzettel | minden tartalom látszik; a fókuszsorrend helyes, a lépésváltáskor a fókusz a kérdésre ugrik |
-| Teljesítmény | Chrome, mobilemuláció, 4× CPU, lassú 4G (150 ms / 1,6 Mbit/s), tömörítés nélkül, 3 futás mediánja: **FCP 1,5 s · LCP 2,1 s · CLS 0 · TBT 0 ms · 639 KB**. Lighthouse nem futtatható ebből a környezetből (npm nem érhető el) – élesítés után a valyogmester.hu címen mérendő. |
+| Viewportok 320 / 360 / 390 / 430 / 768 / 1024 / 1440 / 1920 (Chromium) | nincs vízszintes túlcsordulás, levágott cím/gomb, törött kép, konzolhiba, 4xx erőforrás; 0 űrlap, 0 fájlmező |
+| Hívásgombok | 14 db, mind `tel:+36309669528`; mobilon a gombok ≥ 44 px (a lábléc linkjei is) |
+| Mobil | menü nyit / Esc-re zár, a menüben hívásgomb; a hívássáv görgetés közben látszik, nem takar tartalmat |
+| Videó | csak kattintásra tölt (`preload="none"`), nincs automatikus lejátszás, vezérlőkkel játszik |
+| Reduced motion | minden tartalom azonnal látszik (0 rejtett blokk) |
+| Teljesítmény (mobil, 4× CPU, 150 ms / 1,6 Mbit/s, tömörítés nélkül, 3 futás) | FCP 1,9 s · LCP 1,9 s · CLS 0 · interakció ~55 ms · 613 KB; a VPS-en gzip (CSS 8,8 KB) |
+| VPS-előnézet (HTTPS) | jelszó nélkül 401, jelszóval 200; noindex fejléc + robots; `/api/`, `_forras/`, `*.md`, `koncepcio.html`, `.htaccess` → 404; saját 404-oldal |
+| Éles build | a csomag kész, egyetlen akadálya a 8 jóváhagyandó adatkezelési pont (szándékos védelem) |
 
-## Ügyféltől még szükséges
-1. **Ajánlatfogadó e-mail-cím** – valyog.mester@gmail.com, istvanturo06@gmail.com vagy turpabuildkft@gmail.com? Az oldalon látható cím is ehhez igazodjon.
-2. **Munkaterület és kiszállás:** a régi oldal „országos kiszállást” írt, az új oldalon „Fegyvernek és Jász-Nagykun-Szolnok vármegye, távolabb egyeztetéssel” szerepel. Az **ingyenes felmérés** feltételei (van-e kiszállási díj távolabb?) – addig az „ingyenes” szó a régi oldal saját állítása alapján marad.
-3. **Képek és videó felhasználási engedélye**, illetve saját munkafotók (előtte–utána párok is).
-4. **Szolgáltatáslista** átnézése (különösen a csak Daibau-profilon szereplő tételek).
-5. **Adatkezelési adatok:** adatvédelmi kapcsolattartó, megőrzési idő, tárhely- és e-mail-szolgáltató, hatályba lépés dátuma.
-6. **Hozzáférések:** tárhely, DNS, SMTP-fiók (vagy a DAEKON biztosítja).
-7. Hozzájárulás a lábléc diszkrét „Weboldal: DAEKON” hivatkozásához.
+## Ügyféltől még szükséges (a nyilvános indulás feltétele)
+1. **Adatkezelési tájékoztató jóváhagyása** – a 8 jelölt pont: adatvédelmi kapcsolattartó e-mail, szerződéses/számlázási adatkezelés, megőrzési idő,
+   adatfeldolgozói megállapodás a DAEKON-nal, a postafiók szolgáltatója, hatálybalépés.
+2. **Képek és videó felhasználási engedélye** – a videó és a képkockák (Túró István és a felvételen szereplő munkatársak); a „Hangulatkép” jelölésű
+   képek eredete ismeretlen (a régi oldalról) – megerősítés, hogy használhatók, vagy saját munkafotó helyettük.
+3. **Szolgáltatáslista** – főleg a csak a Daibau-profilon szereplő tételek (új ház, fémszerkezet, injektálás, talajszigetelés, ács, tetőfedés, kertépítés, pergola).
+4. **Ügyfél által megerősítendő állítások:** „5 fős csapat, saját járművel, saját eszközökkel” (Daibau-profil), munkaterület (Fegyvernek és környéke,
+   távolabb egyeztetéssel), a felmérés feltételei (ingyenes-e).
+5. Hozzájárulás a lábléc „Weboldal: DAEKON” hivatkozásához.
 
 ## Fájlok
-`index.html`, `valyog.css`, `valyog.js`, `adatkezeles.html` – az oldal · `fonts/` · `img/foto/` · `arculat/` (logócsalád, favicon, `logo-allo-vilagos.png`) · `_eles/` (api, htaccess, user.ini, robots, 404, ini-minta – csak az éles csomagba kerülnek) · `_forras/` (`build_eles.py`, `logo.py`, `media.py`, `og.html`, forrásbetű) · `koncepcio.html` (az 1. kör irányai + a végleges rendszer).
+`index.html`, `valyog.css`, `valyog.js`, `adatkezeles.html` – az oldal · `fonts/` · `img/foto/` · `arculat/` (logócsalád, favicon, `logo-allo-vilagos.png`) · `_eles/` (htaccess, robots, 404 – csak az éles csomagba kerülnek) · `_forras/` (`build_eles.py`, `logo.py`, `media.py`, `og.html`, forrásbetű) · `koncepcio.html` (az 1. kör irányai + a végleges rendszer).
 
 ## Előzmények
-1. kör: rajzolt „Falmetszet” · 2–3.: a régi oldal képei és a videó, a helyőrzők törölve · 4–6.: paletták · 7.: letisztult Archivo-irány · 8.: képkeretek, teljes munkalista · **9.: véglegesítés** – hitelesített adatok, igazolt szolgáltatások, működő backend, SEO, éles build.
+**10.: telefonos véglegesítés** – űrlap, PHP, SMTP eltávolítva; hívásgombok, mobil hívássáv, egyszerűsített adatkezelés; VPS-előnézet. 1. kör: rajzolt „Falmetszet” · 2–3.: a régi oldal képei és a videó, a helyőrzők törölve · 4–6.: paletták · 7.: letisztult Archivo-irány · 8.: képkeretek, teljes munkalista · **9.: véglegesítés** – hitelesített adatok, igazolt szolgáltatások, működő backend, SEO, éles build.
