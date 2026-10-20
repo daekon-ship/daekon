@@ -159,7 +159,9 @@ final class App
                     continue;
                 }
                 $matched = true;
-                if ($method !== $req->method) {
+                // HEAD csak mellékhatás nélküli útvonalon (monitorozás); az ajánlat-oldal HEAD-je NEM jelölhet „megnyitva”-t.
+                $headOk = $req->method === 'HEAD' && $method === 'GET' && in_array($name, ['home', 'health', 'plans'], true);
+                if ($method !== $req->method && !$headOk) {
                     continue;
                 }
                 $req->routeName = $name;
@@ -195,6 +197,13 @@ final class App
             $resp = $this->isPage($req) ? $this->pages()->message('Átmeneti hiba', $err->getMessage(), $err->status) : Response::error($err, $req->requestId);
         }
         $this->finish($req, $resp);
+        if ($req->method === 'HEAD') {
+            $resp->body = ''; // HEAD = GET törzs nélkül (monitorozó eszközök)
+            if ($resp->stream !== null) {
+                fclose($resp->stream);
+                $resp->stream = null;
+            }
+        }
         return $resp;
     }
 

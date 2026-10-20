@@ -74,6 +74,13 @@ function account(): array
         throw new RuntimeException("register $s");
     }
     $a = ['Authorization' => 'Bearer ' . $j['access_token']];
+    if (getenv('MP_LIVE_GRANT_SHELL')) { // production: kézi tulajdonosi jogosultság (nincs sandbox, nincs fizetés)
+        exec(getenv('MP_LIVE_GRANT_SHELL') . ' ' . escapeshellarg($email) . ' >/dev/null 2>&1', $o, $rc);
+        if ($rc !== 0) {
+            throw new RuntimeException('grant');
+        }
+        return ['email' => $email, 'auth' => $a, 'refresh' => $j['refresh_token']];
+    }
     req('POST', '/api/v1/billing/sandbox/verify', ['purchase_token' => 'sandbox:mester_plus_pro_monthly:ok:' . bin2hex(random_bytes(8))], $a + ['Idempotency-Key' => 'k' . bin2hex(random_bytes(10))]);
     return ['email' => $email, 'auth' => $a, 'refresh' => $j['refresh_token']];
 }
@@ -148,6 +155,45 @@ switch ($phase) {
             ok($s1 === 200 && ($j1['status'] ?? '') === 'processed' && ($j2['status'] ?? '') === 'duplicate' && $s3 === 401, 'webhook: feldolgozva → duplikált kézbesítés: nem újra → hamis aláírás: 401');
         }
         cleanup($u);
+        break;
+    case 'tenant':
+        $a = account();
+        $b = account();
+        [, $k] = req('GET', '/api/v1/backups/key', null, $b['auth']);
+        [, $bk] = req('POST', '/api/v1/backups', ['size_bytes' => 2000, 'sha256' => str_repeat('a', 64), 'app_version' => '0.8.0', 'backup_format_version' => 2, 'encryption_version' => 1, 'key_version' => $k['key_version']], $b['auth'] + idk());
+        [, $bq] = req('POST', '/api/v1/quotes', quotePayload(), $b['auth'] + idk());
+        [, $bd] = req('GET', '/api/v1/devices', null, $b['auth']);
+        $probes = [['GET', '/api/v1/backups/' . $bk['id'] . '/content'], ['DELETE', '/api/v1/backups/' . $bk['id']], ['GET', '/api/v1/quotes/' . $bq['id']],
+                   ['POST', '/api/v1/quotes/' . $bq['id'] . '/revoke'], ['DELETE', '/api/v1/devices/' . $bd['devices'][0]['id']]];
+        $bad = 0;
+        foreach ($probes as [$m, $p]) {
+            [$s, , $raw] = req($m, $p, null, $a['auth']);
+            if (!in_array($s, [403, 404], true) || str_contains($raw, $b['email'])) {
+                $bad++;
+            }
+        }
+        [, $st] = req('GET', '/api/v1/quotes/' . $bq['id'], null, $b['auth']);
+        ok($bad === 0 && $st['status'] === 'ACTIVE', 'TENANT ISOLATION: A tokenje B mentésére / ajánlatára / eszközére 403-404, B adata érintetlen');
+        [$s] = req('GET', '/api/v1/me');
+        ok($s === 401, 'AUTH: token nélkül 401');
+        [$s] = req('GET', '/api/v1/me', null, ['Authorization' => 'Bearer mpa_' . str_repeat('Z', 43)]);
+        ok($s === 401, 'AUTH: hamis token 401');
+        [$s, $j1] = req('POST', '/api/v1/auth/login', ['email' => $a['email'], 'password' => 'rossz-jelszo-123', 'device' => dev()]);
+        ok($s === 401 && !str_contains(json_encode($j1), 'SQL'), 'AUTH: rossz jelszó 401, magyar üzenet');
+        $h = idk();
+        $body = ['size_bytes' => 3000, 'sha256' => str_repeat('b', 64), 'app_version' => '0.8.0', 'backup_format_version' => 2, 'encryption_version' => 1, 'key_version' => $k['key_version']];
+        [, $x] = req('POST', '/api/v1/backups', $body, $b['auth'] + $h);
+        [, $y, , $rh] = req('POST', '/api/v1/backups', $body, $b['auth'] + $h);
+        ok($x['id'] === $y['id'] && ($rh['idempotent-replayed'] ?? '') === 'true', 'IDEMPOTENCY: ugyanaz a kulcs → ugyanaz a mentés');
+        $last = 0;
+        for ($i = 0; $i < 62; $i++) {
+            [$last] = req('POST', '/api/v1/auth/refresh', ['refresh_token' => 'mpr_' . str_repeat('Q', 43)]);
+        }
+        ok($last === 429, 'RATE LIMIT: refresh-végpont IP-nként 60 / 15 perc → 429');
+        [$s] = req('GET', '/api/v1/health');
+        ok($s === 200, 'RATE LIMIT végpontonként külön: a health közben is 200');
+        cleanup($a);
+        cleanup($b);
         break;
     case 'expired-make':
         $u = account();
