@@ -6,8 +6,15 @@
   const $ = (s, c = d) => c.querySelector(s), $$ = (s, c = d) => [...c.querySelectorAll(s)];
 
   /* ---------- BEÁLLÍTÁSOK ---------- */
-  // A végleges munkagépes videó (jóváhagyás után). Amíg null, a poszterkép (saját munkafotó) látszik.
-  const HERO_VIDEO = { mp4: null, webm: null, mobileMp4: null, poster: 'img/hero-kisgep-1425.webp' };
+  // A végleges munkagépes videó (Higgsfield, jóváhagyás után). Amíg mp4 = null, a valódi munkafotókból álló jelenetsor fut.
+  // Asztali gépen görgetésre pörög (scrub, mint a referenciavideón), mobilon némítva, hurokban játszik.
+  // A fájlokat a _forras/video.sh állítja elő a nyers Higgsfield-exportból.
+  const HERO_VIDEO = {
+    mp4: null,                       // pl. 'video/hero-scrub-1920.mp4' (sűrű kulcskockás, görgetéshez)
+    mobileMp4: null,                 // pl. 'video/hero-loop-720.mp4'
+    poster: 'img/hero-kisgep-1425.webp', // pl. 'video/hero-poster.webp'
+    stages: ['Kanál le', 'Ásás', 'Kiemelés', 'Föld oldalra'] // a fázisjelző feliratai videó esetén
+  };
   // Ajánlatkérő végpont (pl. saját PHP/Node végpont vagy űrlapszolgáltatás). null = bemutató mód, NEM küld adatot.
   const AJANLAT = { endpoint: null, maxFiles: 5, maxBytes: 8 * 1024 * 1024 };
   // Térkép
@@ -26,15 +33,23 @@
 
   /* ---------- HERO VIDEÓ ---------- */
   const conn = navigator.connection;
-  if (!reduce && !(conn && conn.saveData) && (HERO_VIDEO.mp4 || HERO_VIDEO.webm)) {
-    const mobile = matchMedia('(max-width: 860px)').matches;
+  const isMobile = matchMedia('(max-width: 860px)').matches;
+  let heroVideo = null;
+  if (!reduce && !(conn && conn.saveData) && HERO_VIDEO.mp4) {
     const v = d.createElement('video');
-    Object.assign(v, { muted: true, loop: true, autoplay: true, playsInline: true, preload: 'auto', poster: HERO_VIDEO.poster });
+    v.muted = true; v.playsInline = true; v.setAttribute('playsinline', ''); v.setAttribute('muted', '');
+    v.preload = 'auto'; v.poster = HERO_VIDEO.poster;
     v.className = 'hero__video'; v.setAttribute('aria-hidden', 'true');
-    if (HERO_VIDEO.webm && !mobile) v.innerHTML += `<source src="${HERO_VIDEO.webm}" type="video/webm">`;
-    v.innerHTML += `<source src="${(mobile && HERO_VIDEO.mobileMp4) || HERO_VIDEO.mp4}" type="video/mp4">`;
-    v.addEventListener('playing', () => { $$('.scene').forEach(s => s.style.visibility = 'hidden'); $('.stages').hidden = true; }, { once: true });
+    if (isMobile) { v.loop = true; v.autoplay = true; v.setAttribute('autoplay', ''); }
+    v.src = (isMobile && HERO_VIDEO.mobileMp4) || HERO_VIDEO.mp4;
+    v.style.opacity = 0;
+    const ready = () => { v.style.transition = 'opacity .8s'; v.style.opacity = 1; setTimeout(() => $$('.scene').forEach(s => s.style.visibility = 'hidden'), 900); };
+    v.addEventListener(isMobile ? 'playing' : 'loadeddata', ready, { once: true });
     $('#hero-media').appendChild(v);
+    if (isMobile) { const p = v.play(); if (p) p.catch(() => { /* autoplay tiltva: marad a fotós jelenetsor */ }); }
+    // fázisjelző feliratai a videó szakaszaihoz
+    $$('.stages li span').forEach((s, i) => { if (HERO_VIDEO.stages[i]) s.textContent = HERO_VIDEO.stages[i]; });
+    heroVideo = v;
   }
 
   /* ---------- FEJLÉC, HÍVÓGOMB, AKTÍV MENÜ ---------- */
@@ -320,7 +335,21 @@
     li.classList.toggle('is-on', i === Math.min(stages.length - 1, Math.floor(seg)));
     li.classList.toggle('is-done', i < Math.floor(seg));
   });
-  if (!$('.hero__video')) {
+  if (heroVideo && desk) {
+    // görgetésre pörgetett videó (a referencia mechanikája)
+    const v = heroVideo; let target = 0, raf = 0;
+    const tick = () => { raf = 0; if (v.readyState >= 1 && Math.abs(v.currentTime - target) > .01) v.currentTime = target; };
+    const setup = () => {
+      const dur = v.duration || 8;
+      ST.create({ trigger: '.hero', start: 'top top', end: '+=260%', pin: true, scrub: true, anticipatePin: 1,
+        onUpdate: s => { target = s.progress * (dur - .05); setStage(s.progress * stages.length); if (!raf) raf = requestAnimationFrame(tick); } });
+      ST.refresh();
+    };
+    v.readyState >= 1 ? setup() : v.addEventListener('loadedmetadata', setup, { once: true });
+  } else if (heroVideo) {
+    // mobil: a videó magától megy, a fázisjelző a lejátszást követi
+    heroVideo.addEventListener('timeupdate', () => setStage(heroVideo.currentTime / (heroVideo.duration || 8) * stages.length));
+  } else if (!$('.hero__video')) {
     g.set(scenes, { scale: 1.14, transformOrigin: '60% 50%' });
     g.set(scenes.slice(1), { opacity: 0 });
     if (desk) {
