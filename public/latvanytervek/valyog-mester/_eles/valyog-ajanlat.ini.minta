@@ -1,0 +1,21 @@
+; Vályog-Mester – ajánlatkérő beállításai
+; Helye: a webgyökéren KÍVÜL, pl. /home/<felhasznalo>/private/valyog-ajanlat.ini
+; (alapértelmezés: a webgyökér szülőmappájában private/valyog-ajanlat.ini),
+; vagy a VALYOG_CONFIG környezeti változóban megadott útvonal.
+; Bármelyik kulcs környezeti változóként is megadható – az elsőbbséget élvez.
+; Jogosultság: chmod 600, a PHP-t futtató felhasználó tulajdonában.
+
+MAIL_TO = "ÜGYFÉLLEL MEGERŐSÍTENDŐ@pelda.hu"
+MAIL_FROM = "ajanlat@valyogmester.hu"
+MAIL_FROM_NAME = "Vályog-Mester weboldal"
+
+MAIL_TRANSPORT = "smtp"      ; smtp | mail
+SMTP_HOST = "smtp.szolgaltato.hu"
+SMTP_PORT = 587
+SMTP_SECURE = "tls"          ; tls (587) | ssl (465) | none (csak helyi teszthez)
+SMTP_USER = "ajanlat@valyogmester.hu"
+SMTP_PASS = "…"
+
+DATA_DIR = "/home/<felhasznalo>/private/valyog-ajanlat-adat"   ; csak token-/korlátfájlok, személyes adat nincs benne
+HASH_SALT = "hosszú-véletlen-karaktersor"
+ALLOWED_ORIGIN = "https://valyogmester.hu"

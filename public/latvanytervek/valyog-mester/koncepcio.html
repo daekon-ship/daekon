@@ -7,8 +7,8 @@
 <meta name="robots" content="noindex, nofollow">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <style>
-@font-face { font-family: "Archivo"; src: url("fonts/archivo-var.woff") format("woff"); font-weight: 400 900; font-stretch: 75% 125%; font-display: swap; }
-:root { --forest:#1F3B5C; --clay:#B4532A; --clay-ink:#9A421D; --sand:#ECE2D0; --ivory:#F6F1E8; --char:#242521; --terra:#A8481F; --soft:#4F524A; --line:rgba(36,37,33,.14); }
+@font-face { font-family: "Archivo"; src: url("fonts/archivo-var.woff2") format("woff2"); font-weight: 400 700; font-stretch: 86% 100%; font-display: swap; }
+:root { --forest:#17191B; --clay:#B4532A; --clay-ink:#9A421D; --sand:#ECE2D0; --ivory:#F6F1E8; --char:#242521; --terra:#A8481F; --soft:#4F524A; --line:rgba(36,37,33,.14); }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--ivory); color: var(--char); font: 450 1.0625rem/1.65 Archivo, system-ui, sans-serif; overflow-x: clip; }
 img, svg { display: block; max-width: 100%; }
@@ -19,7 +19,7 @@ h2 { font-size: clamp(1.8rem, 1.4rem + 1.4vw, 2.5rem); margin-bottom: 1rem; }
 h3 { font-size: 1.55rem; }
 em { color: var(--clay-ink); }
 .eyebrow { font: 700 .72rem/1 Archivo, sans-serif; letter-spacing: .2em; text-transform: uppercase; color: var(--clay-ink); margin: 0 0 1rem; }
-header.top { background: var(--forest) url("img/tx-kek.webp"); background-size: 420px; color: var(--ivory); padding: 2rem 0 4rem; }
+header.top { background: #17191B; color: var(--ivory); padding: 2rem 0 4rem; }
 header.top img { width: 220px; margin-bottom: 3.5rem; }
 header.top p { max-width: 40rem; color: rgba(248,245,239,.8); margin-top: 1rem; }
 header.top em { color: #EDB95A; }
@@ -185,18 +185,18 @@ footer { padding: 2.5rem 0 4rem; font-size: .88rem; color: var(--soft); }
   <div class="wrap">
     <p class="eyebrow">Színek és betűk</p>
     <h2>Rendszer</h2>
+    <p style="max-width:44rem;color:var(--soft);margin-bottom:1.5rem">A végleges (9. kör) rendszer: egy betűcsalád, három fő szín, díszítés és textúra nélkül. A fenti három irány az 1. kör kiindulópontja volt.</p>
     <div class="chips">
-      <div class="chip" style="background:#1F3B5C;color:#F6F1E8">Parasztkék #1F3B5C</div>
-      <div class="chip" style="background:#B4532A">Agyag #B4532A</div>
-      <div class="chip" style="background:#A8481F;color:#F6F1E8">Terrakotta #A8481F</div>
-      <div class="chip" style="background:#ECE2D0">Homok #ECE2D0</div>
-      <div class="chip" style="background:#F6F1E8;border:1px solid var(--line)">Mész #F6F1E8</div>
-      <div class="chip" style="background:#242521;color:#F6F1E8">Charcoal #242521</div>
+      <div class="chip" style="background:#FFFFFF;border:1px solid var(--line)">Fehér #FFFFFF</div>
+      <div class="chip" style="background:#F5F2ED">Váltósáv #F5F2ED</div>
+      <div class="chip" style="background:#17191B;color:#fff">Grafit #17191B</div>
+      <div class="chip" style="background:#55595E;color:#fff">Másodlagos szöveg #55595E</div>
+      <div class="chip" style="background:#B4532A;color:#fff">Terrakotta #B4532A</div>
+      <div class="chip" style="background:#9A421D;color:#fff">Terrakotta szöveg #9A421D</div>
     </div>
     <div class="specs" style="margin-top:2rem">
-      <div><h3>Cormorant Garamond</h3><p>Címek 500, kiemelés dőlt 450. Mérsékelt méretek: H1 legfeljebb 3,75rem, H2 3rem.</p></div>
-      <div><h3 style="font-family:Archivo;font-weight:700;font-size:1.2rem">Archivo</h3><p>Törzsszöveg 450 / 17px, címkék 700 nagybetűvel, széles betűközzel.</p></div>
-      <div class="files"><h3>Fájlok</h3><p><code>arculat/</code> – vízszintes és álló logó világos/sötét/egyszínű, embléma (3 változat), favicon SVG + PNG (32, 180, 512). Minden SVG görbére alakított szöveggel, betűtípus nélkül is pontos.</p></div>
+      <div><h3 style="font-family:Archivo;font-weight:700;font-size:1.3rem;letter-spacing:-.02em">Archivo</h3><p>Egyetlen változó betűcsalád, helyben (woff2, latin + magyar ékezetek, 42 KB). Címek 650–700, 86–92% szélesség; szöveg 400 / 17px. H1 legfeljebb 3,6rem.</p></div>
+      <div class="files"><h3 style="font-family:Archivo;font-size:1.3rem">Fájlok</h3><p><code>arculat/</code> – vízszintes és álló logó világos/sötét/egyszínű, embléma (3 változat), favicon SVG + PNG (32, 180, 512). Minden SVG görbére alakított szöveggel.</p></div>
     </div>
   </div>
 </section>

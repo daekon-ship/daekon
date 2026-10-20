@@ -1,4 +1,4 @@
-/* Vályog-Mester – látványterv · DAEKON 2026 */
+/* Vályog-Mester · DAEKON 2026 */
 (() => {
   'use strict';
   const $ = (s, r = document) => r.querySelector(s);
@@ -8,10 +8,13 @@
   const mqMobile = matchMedia('(max-width: 900px)');
 
   /* ================= KONFIGURÁCIÓ =================
-     Éles beküldéshez ide kell az űrlapfogadó végpont (pl. saját PHP, Formspree, Netlify Forms).
-     Amíg null, az ajánlatkérő TESZTMÓDBAN fut: nem küld adatot, és ezt meg is mondja. */
-  const KULDES = { endpoint: null, method: 'POST' };
+     Az ajánlatkérő végpontja a <form data-endpoint="…"> attribútumból jön.
+     Az előnézetben nincs beállítva → ELŐNÉZETI MÓD: semmit nem küld, és ezt ki is írja.
+     Az éles build (_forras/build_eles.py) állítja be: data-endpoint="api/ajanlat.php". */
+  const formEl = document.getElementById('wiz');
+  const KULDES = { endpoint: (formEl && formEl.dataset.endpoint) || null, timeout: 60000 };
   const EMAIL = 'valyog.mester@gmail.com';
+  const TEL = '+36 30 966 9528', TEL_HREF = 'tel:+36309669528';
 
   /* ================= SZÉTBONTOTT CÍMEK ================= */
   $$('.split').forEach(el => {
@@ -93,38 +96,29 @@
   activate(items[0]);
 
   /* ================= KÉPGALÉRIA =================
-     Csak valódi képek: a bemutatkozó videó képkockái és a jelenlegi valyog-mester.hu fotói. */
-  const SET = (n, ws) => ({ src: `img/foto/${n}-900.webp`, srcset: ws.map(w => `img/foto/${n}-${w}.webp ${w}w`).join(', '), big: `img/foto/${n}-${ws[ws.length - 1]}.webp` });
+     Kizárólag ellenőrzött saját anyag: képkockák Túró István 2026. márciusi bemutatkozó videójából.
+     A régi weboldal állóképei ismeretlen eredetűek – ide NEM kerülhetnek (csak „Hangulatkép” jelöléssel máshol). */
   const WORKS = [
-    { cat: 'munka', t: 'Kőlábazat a salétromos rész leverése után', ar: '4/5', src: 'img/foto/kocka-labazat.webp', alt: 'Hosszú sárga utcai fal, alul szabaddá tett kőlábazattal', tag: 'Valódi munka' },
-    { cat: 'haz', t: 'Nádtetős parasztház', ar: '3/2', ...SET('hero', [900, 1600, 2400]), alt: 'Meszelt falú, nádtetős parasztház vesszőkerítéssel', tag: 'A jelenlegi oldalról' },
-    { cat: 'munka', t: 'Törmelék a talicskában, kezdődik a szellőztetés', ar: '4/5', src: 'img/foto/kocka-talicska.webp', alt: 'Talicska törmelékkel az utcán, munkatárs hozza a levert vakolatot', tag: 'Valódi munka' },
-    { cat: 'haz', t: 'Fehérre meszelt nádtetős ház', ar: '2/3', ...SET('service1', [900, 1600, 2400]), alt: 'Fehér falú, nádtetős ház kék ajtóval', tag: 'A jelenlegi oldalról' },
-    { cat: 'munka', t: 'Túró István a helyszínen', ar: '4/5', src: 'img/foto/kocka-magyaraz.webp', alt: 'Túró István magyaráz a felújítás alatt álló fal előtt', tag: 'Valódi munka' },
-    { cat: 'haz', t: 'Felújításra váró kis ház', ar: '3/4', ...SET('service2', [900, 1600, 2400]), alt: 'Régi, kopott vakolatú kis ház cseréptetővel', tag: 'A jelenlegi oldalról' },
-    { cat: 'haz', t: 'Nádtetős ház a kertben', ar: '3/2', ...SET('about', [900, 1600, 2400]), alt: 'Nádtetős, fehér falú ház kertben, kék égbolt alatt', tag: 'A jelenlegi oldalról' },
-    { cat: 'haz', t: 'Meszelt ház a falu szélén', ar: '3/4', ...SET('service3', [900, 1600, 2400]), alt: 'Fehér falú, nádtetős ház út mellett', tag: 'A jelenlegi oldalról', pos: '50% 88%' },
+    { t: 'Kőlábazat a salétromos rész leverése után', src: 'img/foto/kocka-labazat.webp', alt: 'Hosszú sárga utcai fal, alul szabaddá tett kőlábazattal' },
+    { t: 'A fal a lábazat leverése után', src: 'img/foto/kocka-fal.webp', alt: 'Hosszú vakolt utcai fal kőlábazattal, a háttérben a csapat dolgozik' },
+    { t: 'A levert vakolat elszállítása', src: 'img/foto/kocka-munka.webp', alt: 'Munkatárs viszi a levert vakolatdarabokat az utcán' },
+    { t: 'Törmelék a talicskában', src: 'img/foto/kocka-talicska.webp', alt: 'Talicska törmelékkel az utcán, munkatárs hozza a levert vakolatot' },
+    { t: 'Túró István a helyszínen', src: 'img/foto/kocka-magyaraz.webp', alt: 'Túró István magyaráz a felújítás alatt álló fal előtt' },
+    { t: 'Egyeztetés a munkáról', src: 'img/foto/kocka-istvan.webp', alt: 'Túró István a felújítás alatt álló ház mellett' },
   ];
-  const CATN = { munka: 'A munkából', haz: 'Házak' };
-  const imgTag = (w, sizes) => `<img src="${w.src}"${w.srcset ? ` srcset="${w.srcset}" sizes="${sizes}"` : ''} alt="${w.alt}" loading="lazy"${w.pos ? ` style="object-position:${w.pos}"` : ''}>`;
   const mas = $('#masonry');
-  mas.innerHTML = WORKS.map((w, i) => `<li class="tile reveal" data-cat="${w.cat}"><button type="button" data-i="${i}" aria-label="Nagyítás: ${w.t}"><div class="tile__art" style="--ar:${w.ar}">${imgTag(w, '(max-width: 900px) 50vw, 33vw')}<span class="tile__ph${w.tag === 'Valódi munka' ? ' tile__ph--real' : ''}">${w.tag}</span></div><span class="tile__cap"><span>${CATN[w.cat]}</span><b>${w.t}</b></span></button></li>`).join('');
+  mas.innerHTML = WORKS.map((w, i) => `<li class="tile reveal"><button type="button" data-i="${i}" aria-label="Nagyítás: ${w.t}"><div class="tile__art"><img src="${w.src}" alt="${w.alt}" loading="lazy" width="720" height="900"><span class="tile__ph tile__ph--real">Saját munka</span></div><span class="tile__cap"><b>${w.t}</b></span></button></li>`).join('');
   $$('.tile', mas).forEach(t => motion ? io.observe(t) : t.classList.add('is-in'));
-
-  $$('.chip').forEach(c => c.addEventListener('click', () => {
-    $$('.chip').forEach(x => { x.classList.toggle('is-on', x === c); x.setAttribute('aria-pressed', x === c); });
-    $$('.tile', mas).forEach(t => { t.hidden = !(c.dataset.f === 'mind' || t.dataset.cat === c.dataset.f); if (!t.hidden) t.classList.add('is-in'); });
-  }));
 
   /* lightbox */
   const lb = $('#lb'); let cur = 0;
-  const visible = () => $$('.tile:not([hidden]) button', mas).map(b => +b.dataset.i);
+  const visible = () => WORKS.map((_, i) => i);
   const show = i => {
-    cur = i; const w = WORKS[i], nb = $('#lb-img'), [a, b] = w.ar.split('/');
-    nb.style.setProperty('--ar', w.ar);
-    nb.style.maxWidth = `calc(76svh * ${a} / ${b})`;
-    nb.innerHTML = `<img src="${w.big || w.src}" alt="${w.alt}">`;
-    $('#lb-cap').textContent = `${w.t} · ${w.tag === 'Valódi munka' ? 'képkocka Túró István bemutatkozó videójából' : 'fotó a jelenlegi valyog-mester.hu oldalról'}`;
+    cur = i; const w = WORKS[i], nb = $('#lb-img');
+    nb.style.setProperty('--ar', '4/5');
+    nb.style.maxWidth = 'calc(76svh * 4 / 5)';
+    nb.innerHTML = `<img src="${w.src}" alt="${w.alt}">`;
+    $('#lb-cap').textContent = `${w.t} · képkocka Túró István bemutatkozó videójából (${i + 1}/${WORKS.length})`;
   };
   mas.addEventListener('click', e => { const b = e.target.closest('button[data-i]'); if (!b) return; show(+b.dataset.i); lb.showModal(); });
   const step = d => { const v = visible(); show(v[(v.indexOf(cur) + d + v.length) % v.length]); };
@@ -134,11 +128,6 @@
   lb.addEventListener('click', e => { if (e.target === lb) lb.close(); });
   lb.addEventListener('keydown', e => { if (e.key === 'ArrowLeft') step(-1); if (e.key === 'ArrowRight') step(1); });
 
-  /* ================= MODALOK ================= */
-  $$('[data-open]').forEach(b => b.addEventListener('click', () => $('#' + b.dataset.open).showModal()));
-  $$('dialog [data-close]').forEach(b => b.addEventListener('click', () => b.closest('dialog').close()));
-  $$('dialog.modal').forEach(d => d.addEventListener('click', e => { if (e.target === d) d.close(); }));
-
   /* ================= MOBIL DOKK ================= */
   const dock = $('#dock'), dockState = new Map();
   const dockIO = new IntersectionObserver(es => {
@@ -146,6 +135,9 @@
     dock.classList.toggle('is-hidden', [...dockState.values()].some(Boolean));
   }, { threshold: [0, .05, .35, .5] });
   [hero, $('#kapcsolat'), $('.foot')].forEach(el => dockIO.observe(el));
+  // űrlapkitöltés közben (mobil billentyűzet) a sáv ne takarjon
+  document.addEventListener('focusin', e => { if (e.target.matches('input, textarea, select')) dock.classList.add('is-typing'); });
+  document.addEventListener('focusout', () => dock.classList.remove('is-typing'));
 
   /* ================= AJÁNLATKÉRŐ ================= */
   const form = $('#wiz'), steps = $$('.wstep', form), labels = $$('.wizard__labels li');
@@ -160,7 +152,7 @@
     $$('.err', steps[i]).forEach(e => e.textContent = '');
     $$('[aria-invalid]', steps[i]).forEach(e => e.removeAttribute('aria-invalid'));
     if (i === 0 && !val('epulet')) { err('epulet', 'Kérjük, válassza ki az épület típusát.'); return false; }
-    if (i === 1 && !val('problema').length) { err('problema', 'Jelöljön meg legalább egy problémát.'); return false; }
+    if (i === 1 && !val('problema').length) { err('problema', 'Jelöljön meg legalább egy munkát vagy problémát.'); return false; }
     if (i === 2 && !val('telepules')) { err('telepules', 'Adja meg, melyik településen van az ingatlan.'); form.elements.telepules.setAttribute('aria-invalid', 'true'); return false; }
     if (i === 2 && val('irsz') && !/^\d{4}$/.test(val('irsz'))) { err('telepules', 'Az irányítószám 4 számjegy.'); form.elements.irsz.setAttribute('aria-invalid', 'true'); return false; }
     if (i === 4) {
@@ -170,13 +162,13 @@
       if (!mailOk(val('email'))) bad.push(['email', 'érvényes e-mail címet (vagy hagyja üresen)']);
       if (bad.length) { bad.forEach(([n]) => form.elements[n].setAttribute('aria-invalid', 'true')); err('kontakt', 'Kérjük, adja meg ' + bad.map(b => b[1]).join(', ') + '.'); form.elements[bad[0][0]].focus(); return false; }
     }
-    if (i === 5 && !form.elements.hozzajarulas.checked) { err('hozzajarulas', 'Az elküldéshez el kell fogadnia az adatkezelési tájékoztatót.'); return false; }
+    if (i === 5 && !form.elements.hozzajarulas.checked) { err('hozzajarulas', 'Az elküldéshez jelölje be, hogy elolvasta az adatkezelési tájékoztatót.'); return false; }
     return true;
   };
 
   const ROWS = () => [
     ['Épület', [val('epulet'), val('epites') && `épült: ${val('epites')}`].filter(Boolean).join(', '), 0],
-    ['Probléma', val('problema').join(', '), 1],
+    ['Munka', val('problema').join(', '), 1],
     ['Helyszín', [val('irsz'), val('telepules')].filter(Boolean).join(' ') + (val('kezdes') ? ` · kezdés: ${val('kezdes')}` : ''), 2],
     ['Leírás', (val('leiras') || '–') + (files.length ? ` (${files.length} fotó)` : ''), 3],
     ['Név', val('nev'), 4], ['Telefon', val('telefon'), 4], ['E-mail', val('email') || '–', 4], ['Hívható', val('hivas') || 'mindegy', 4],
@@ -196,7 +188,7 @@
     back.disabled = i === 0;
     next.hidden = i === steps.length - 1; send.hidden = i !== steps.length - 1;
     if (i === steps.length - 1) fillSummary();
-    $('#testmode').hidden = true;
+    if ($('#testmode')) $('#testmode').hidden = true;
     const legend = $('legend', steps[i]); legend.setAttribute('tabindex', '-1');
     if (!focus) return;
     legend.focus({ preventScroll: true });
@@ -207,49 +199,96 @@
   back.addEventListener('click', () => go(Math.max(0, at - 1)));
   form.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.tagName === 'INPUT' && at < steps.length - 1) { e.preventDefault(); next.click(); } });
 
-  /* fotók – csak helyben, előnézettel */
+  /* fotók – előnézet, ellenőrzés, feltöltés előtti kicsinyítés */
+  const MAX_FILES = 6, MAX_BYTES = 10 * 1024 * 1024;
+  const OK_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/heif'];
+  const okType = f => OK_TYPES.includes(f.type) || (!f.type && /\.(heic|heif)$/i.test(f.name));
   const thumbs = $('#thumbs');
   const drawThumbs = () => {
     thumbs.innerHTML = files.map((f, i) => `<li><img src="${f.url}" alt="${esc(f.file.name)}"><button type="button" data-rm="${i}" aria-label="Fotó törlése: ${esc(f.file.name)}">×</button></li>`).join('');
   };
   form.elements.fotok.addEventListener('change', e => {
     err('fotok');
+    const msgs = [];
     [...e.target.files].forEach(f => {
-      if (!f.type.startsWith('image/')) return err('fotok', 'Csak képfájl tölthető fel.');
-      if (f.size > 10 * 1024 * 1024) return err('fotok', `A(z) ${f.name} nagyobb 10 MB-nál.`);
-      if (files.length >= 6) return err('fotok', 'Legfeljebb 6 fotót adhat hozzá.');
+      if (!okType(f)) return msgs.push(`A(z) „${f.name}” nem JPG, PNG, WEBP vagy HEIC kép.`);
+      if (f.size > MAX_BYTES) return msgs.push(`A(z) „${f.name}” nagyobb 10 MB-nál.`);
+      if (files.length >= MAX_FILES) return msgs.push('Legfeljebb 6 fotót adhat hozzá.');
       files.push({ file: f, url: URL.createObjectURL(f) });
     });
+    if (msgs.length) err('fotok', [...new Set(msgs)].join(' '));
     e.target.value = ''; drawThumbs();
   });
   thumbs.addEventListener('click', e => { const b = e.target.closest('[data-rm]'); if (!b) return; URL.revokeObjectURL(files[+b.dataset.rm].url); files.splice(+b.dataset.rm, 1); drawThumbs(); });
 
+  // nagy telefonos fotók kicsinyítése (max. 2000 px, JPEG) – gyorsabb mobilnetes feltöltés
+  const shrink = async f => {
+    if (!/^image\/(jpeg|png|webp)$/.test(f.type) || f.size < 1.2 * 1024 * 1024 || !window.createImageBitmap) return f;
+    try {
+      const bmp = await createImageBitmap(f, { imageOrientation: 'from-image' });
+      const k = Math.min(1, 2000 / Math.max(bmp.width, bmp.height));
+      const c = document.createElement('canvas'); c.width = Math.round(bmp.width * k); c.height = Math.round(bmp.height * k);
+      c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height);
+      const blob = await new Promise(r => c.toBlob(r, 'image/jpeg', .85));
+      return blob && blob.size < f.size ? new File([blob], f.name.replace(/\.\w+$/, '') + '.jpg', { type: 'image/jpeg' }) : f;
+    } catch (_) { return f; }
+  };
+
+  /* beküldés */
+  form.elements.t.value = Date.now();
+  form.elements.token.value = (crypto.randomUUID && crypto.randomUUID()) || (Date.now().toString(36) + Math.random().toString(36).slice(2));
+  const status = $('#sendstate');
+  const showStatus = (kind, html) => { status.hidden = !html; status.className = 'sendstate' + (kind ? ' sendstate--' + kind : ''); status.innerHTML = html || ''; };
+  let sending = false, sent = false;
+  const FIELDS = ['epulet', 'epites', 'telepules', 'irsz', 'kezdes', 'leiras', 'nev', 'telefon', 'email', 'hivas', 'weboldal', 't', 'token'];
+  const failMsg = (ex) => {
+    if (ex.name === 'AbortError') return 'A küldés túl sokáig tartott (lassú vagy megszakadt kapcsolat).';
+    if (ex instanceof TypeError) return 'Nem sikerült kapcsolódni a szerverhez – ellenőrizze az internetkapcsolatot.';
+    const d = ex.data || {};
+    if (ex.status === 422 && d.message) return d.message;
+    if (ex.status === 413) return 'A csatolt fotók együtt túl nagyok. Kérjük, csatoljon kevesebb vagy kisebb képet.';
+    if (ex.status === 429) return 'Rövid időn belül túl sok kérés érkezett erről a kapcsolatról. Kérjük, próbálja újra később.';
+    return 'A küldés most nem sikerült.';
+  };
+
   form.addEventListener('submit', async e => {
     e.preventDefault();
+    if (sending || sent) return;               // dupla kattintás / ismételt beküldés ellen
     if (!validate(at)) return;
     if (!KULDES.endpoint) {
-      const body = ROWS().map(([k, v]) => `${k}: ${v}`).join('\n') + '\n\n(Az ajánlatkérés a vályog-mester látványtervből készült.)';
+      const body = ROWS().map(([k, v]) => `${k}: ${v}`).join('\n');
       $('#mailto').href = `mailto:${EMAIL}?subject=${encodeURIComponent('Felmérés kérése – ' + val('telepules'))}&body=${encodeURIComponent(body)}`;
       $('#testmode').hidden = false; $('#testmode').scrollIntoView({ behavior: motion ? 'smooth' : 'auto', block: 'nearest' });
       return;
     }
-    // éles mód: valódi beküldés, valódi visszajelzéssel
-    const fd = new FormData(form); fd.delete('fotok'); files.forEach(f => fd.append('fotok', f.file));
-    send.disabled = true; send.textContent = 'Küldés…';
+    sending = true; send.disabled = true; back.disabled = true; send.textContent = 'Küldés folyamatban…';
+    showStatus('', 'Küldés folyamatban – a fotók feltöltése mobilneten pár másodpercig tarthat.');
     try {
-      const r = await fetch(KULDES.endpoint, { method: KULDES.method, body: fd, headers: { Accept: 'application/json' } });
-      if (!r.ok) throw new Error(r.status);
-      steps[at].innerHTML = '<legend>Köszönjük, megkaptuk.</legend><p>Hamarosan visszahívjuk a megadott számon.</p>';
-      $('.wizard__nav').hidden = true;
-    } catch (_) {
-      err('hozzajarulas', 'A küldés nem sikerült. Kérjük, hívjon minket: +36 30 966 9528.');
-      send.disabled = false; send.textContent = 'Ajánlatkérés elküldése';
+      const fd = new FormData();
+      FIELDS.forEach(n => fd.append(n, form.elements[n] ? form.elements[n].value.trim() : ''));
+      ['epulet', 'epites', 'kezdes'].forEach(n => fd.set(n, val(n)));
+      val('problema').forEach(v => fd.append('problema[]', v));
+      if (form.elements.hozzajarulas.checked) fd.append('hozzajarulas', 'igen');
+      for (const f of files) { const s = await shrink(f.file); fd.append('fotok[]', s, s.name); }
+      const ctrl = new AbortController(); const timer = setTimeout(() => ctrl.abort(), KULDES.timeout);
+      let r;
+      try { r = await fetch(KULDES.endpoint, { method: 'POST', body: fd, headers: { Accept: 'application/json' }, signal: ctrl.signal, credentials: 'same-origin' }); }
+      finally { clearTimeout(timer); }
+      let data = {}; try { data = await r.json(); } catch (_) {}
+      if (!(r.ok && data.ok)) throw Object.assign(new Error('http ' + r.status), { status: r.status, data });
+      sent = true;
+      $('.wizard').classList.add('is-sent');
+      $('.wizard').innerHTML = `<div class="sent" role="status" tabindex="-1"><h3>Köszönjük, megkaptuk.</h3><p>Az ajánlatkérését elküldtük Túró Istvánnak. Hamarosan visszahívja a megadott számon: <b>${esc(val('telefon'))}</b>.</p><p>Ha sürgős, hívja most: <a href="${TEL_HREF}">${TEL}</a></p></div>`;
+      $('.sent').focus();
+    } catch (ex) {
+      showStatus('err', `${esc(failMsg(ex))} Az adatai nem vesztek el, próbálja újra – vagy hívjon: <a href="${TEL_HREF}">${TEL}</a>.`);
+      sending = false; send.disabled = false; back.disabled = false; send.textContent = 'Ajánlatkérés elküldése';
     }
   });
   go(0, false);
 
   /* ================= HERO FOTÓFILM =================
-     A valyog-mester.hu képei lassú áttűnéssel, „kameramozgással” – videószerű nyitókép. */
+     A régi weboldal képei lassú áttűnéssel, „kameramozgással” – videószerű nyitókép. */
   const slides = $$('.hero__film .slide');
   const loadSlide = s => { if (s.dataset.src) { s.srcset = s.dataset.srcset || ''; s.src = s.dataset.src; delete s.dataset.src; } };
   let si = 0;
@@ -266,42 +305,17 @@
   }
 
   /* ================= BEMUTATKOZÓ VIDEÓ =================
-     Látótérben némítva, hurokban fut (a felirat be van égetve); gombra elölről, hanggal. */
-  const vidBox = $('#vid'), video = $('#mester-video'), vBtn = $('#vid-btn'), vMute = $('#vid-mute');
-  const playWithSound = () => {
-    video.muted = false; video.loop = false; video.currentTime = 0; video.controls = true;
-    video.play().catch(() => {});
-    vBtn.hidden = true; vMute.hidden = false; vidBox.classList.remove('is-muted');
-  };
-  vBtn.addEventListener('click', playWithSound);
-  vMute.addEventListener('click', () => { video.muted = !video.muted; vidBox.classList.toggle('is-muted', video.muted); });
-  video.addEventListener('ended', () => { video.controls = false; vBtn.hidden = false; vMute.hidden = true; });
-  if (motion) {
-    new IntersectionObserver(([e]) => {
-      if (e.isIntersecting && video.muted && vBtn.hidden === false) { video.preload = 'auto'; video.play().catch(() => {}); }
-      else if (!e.isIntersecting) video.pause();
-    }, { threshold: .4 }).observe(vidBox);
-  }
+     Csak kattintásra töltődik be (preload="none") – nem fogyaszt mobiladatot magától. */
+  const video = $('#mester-video'), vBtn = $('#vid-btn');
+  const playVideo = () => { video.controls = true; vBtn.hidden = true; video.play().catch(() => { vBtn.hidden = false; }); };
+  vBtn.addEventListener('click', playVideo);
+  video.addEventListener('ended', () => { video.controls = false; vBtn.hidden = false; });
   $$('[data-play-video]').forEach(a => a.addEventListener('click', e => {
     e.preventDefault();
     $('#mester').scrollIntoView({ behavior: motion ? 'smooth' : 'auto', block: 'center' });
-    playWithSound();
+    playVideo();
   }));
 
-  /* ================= GSAP: HERO + FOLYAMAT ================= */
-  const start = () => {
-    const hTitle = $('.hero__title');
-    if (!motion || !window.gsap) { hTitle.classList.add('is-in'); return; }
-    const g = window.gsap;
-    if (window.ScrollTrigger) g.registerPlugin(window.ScrollTrigger);
-    g.set('.hero .eyebrow, .hero__lead, .hero__ctas, .hero__tel, .hero__bar li', { autoAlpha: 0, y: 16 });
-    g.timeline({ defaults: { ease: 'power3.out' } })
-      .fromTo('.hero__film', { autoAlpha: 0 }, { autoAlpha: 1, duration: 1, ease: 'power1.out' }, 0)
-      .to('.hero .eyebrow', { autoAlpha: 1, y: 0, duration: .6 }, .25)
-      .add(() => hTitle.classList.add('is-in'), .3)
-      .to('.hero__lead, .hero__ctas, .hero__tel', { autoAlpha: 1, y: 0, duration: .7, stagger: .08 }, .7)
-      .fromTo('.reel', { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0, duration: .7 }, 1.1)
-      .to('.hero__bar li', { autoAlpha: 1, y: 0, duration: .6, stagger: .07 }, 1.0);
-  };
-  if (document.readyState === 'complete') start(); else addEventListener('load', start);
+  /* ================= NYITÓKÉP ================= (CSS-animáció, GSAP nélkül) */
+  requestAnimationFrame(() => $('.hero__title').classList.add('is-in'));
 })();

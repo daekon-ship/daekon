@@ -1,146 +1,123 @@
-# Vályog-Mester — látványterv, átadás
+# Vályog-Mester – átadás (9. kör: véglegesítés, élesítés előkészítése)
 
-**Élő terv:** https://daekon-ship.github.io/daekon/latvanytervek/valyog-mester/
-**Koncepció + arculat:** https://daekon-ship.github.io/daekon/latvanytervek/valyog-mester/koncepcio.html
-**Állapot:** 7. kör – letisztult újratervezés (Archivo, fehér–grafit–terrakotta); 6. kör – szolgáltatások valódi fotókkal kék sávon, okker „problémák”, tiszta világos szekciók; 4. kör – új nyitókép és paletta; 3. kör – üres helyőrzők nélkül; 2. kör (a jelenlegi oldal képeivel és Túró István bemutatkozó videójával), előzetes látványterv (noindex). A valyog-mester.hu élő oldal érintetlen.
-**Felépítés:** build nélküli statikus oldal a DAEKON-látványtervek házszabálya szerint (`index.html` + `valyog.css` + `valyog.js`), relatív útvonalakkal – bármilyen almappában működik. A briefben javasolt React + Vite + TS stacket szándékosan nem vezettem be: a repó összes látványterve build nélküli, és a Vite a `public/` tartalmát változatlanul másolja. Éles oldalhoz a komponensek 1:1 átvihetők React/Vite-ba (lásd „Komponensek”).
+**Előnézet:** https://daekon-ship.github.io/daekon/latvanytervek/valyog-mester/ (noindex)
+**Tervezett éles domain:** https://valyogmester.hu/
+**Telepítés:** lásd `TELEPITES.md` · **Éles csomag:** `python3 _forras/build_eles.py --out …`
+**A régi valyog-mester.hu oldal nincs módosítva és nincs átirányítva.**
 
-## Valós adatok (ellenőrizve)
-| Adat | Forrás |
+## Állapot röviden
+| Terület | Állapot |
 |---|---|
-| TURPA BUILD Kft., ügyvezető: Túró István | megrendelői brief, valyog-mester.hu, Daibau |
-| +36 30 966 9528 · valyog.mester@gmail.com | valyog-mester.hu (tel: és mailto: linkek) |
-| 5231 Fegyvernek, Lelovich György út 8/A | onlinecegbazis.hu (címként), brief |
-| 20+ év szakmai tapasztalat (a mesteré, nem a Kft.-é) | valyog-mester.hu, Túró István saját szövege |
-| Kft. alapítása: 2018 | megrendelői brief (az onlinecegbazis.hu oldalán nem szerepelt) |
-| 5 fős csapat, saját jármű és eszközök | Daibau-profil |
-| Szolgáltatások (vályog, vert fal, vegyes falazat, aláfalazás, betonozás, vakolás, glettelés) | valyog-mester.hu; kiegészítők (bontás, térkövezés, kerítés): Daibau, onlinecegbazis |
+| Design (Archivo, fehér–grafit–terrakotta, valódi fotók) | kész |
+| Cégadatok (adószám, cégjegyzékszám, bejegyzés) | kész – formailag ellenőrizve |
+| Szolgáltatások (fő + igazolt másodlagos, belső ellenőrzési lista) | kész – a lista ügyféllel megerősítendő |
+| Ajánlatkérő frontend (6 lépés, validáció, képkicsinyítés, állapotok) | kész, tesztelve |
+| Ajánlatkérő backend (`_eles/api/ajanlat.php`) | kész, tesztelve helyi SMTP-vel – élesben a fogadó cím és az SMTP-fiók hiányzik |
+| SEO (canonical, OG, strukturált adat, sitemap, robots) | kész – az éles build aktiválja |
+| Adatkezelési tájékoztató + impresszum (`adatkezeles.html`) | tervezet – a jelölt részeket az ügyfélnek kell jóváhagynia |
+| Éles build + telepítési terv | kész – a build szándékosan megáll, amíg a tájékoztató nincs jóváhagyva |
 
-**Szándékosan kihagyva** (nem igazolható): 145+ projekt, 98% elégedettség, 100% garancia, „az ország egyik legmegbecsültebb” – ezek a régi oldalon szerepeltek.
+## Valós cégadatok
+| Adat | Érték | Ellenőrzés |
+|---|---|---|
+| Vállalkozás | TURPA BUILD Kft. | régi oldal, Daibau, onlinecegbazis |
+| Ügyvezető | Túró István | régi oldal, Daibau |
+| Székhely | 5231 Fegyvernek, Lelovich György út 8/A | onlinecegbazis |
+| Cégjegyzékszám | 16-09-018294 | megrendelő; a 16-os kód = Szolnoki Törvényszék Cégbírósága, egyezik a székhellyel |
+| Adószám | 26584094-2-16 | megrendelő; az ellenőrző számjegy helyes, a 16-os megyekód egyezik |
+| Bejegyzés | 2018. november 23. | megrendelő |
+| Tapasztalat | 20+ év – **Túró István személyes szakmai tapasztalata**, nem a cégé | régi oldal, a mester saját szövege |
+| Telefon | +36 30 966 9528 | régi oldal |
+| E-mail a weboldalon | valyog.mester@gmail.com (változatlan) | régi oldal |
 
-## Képek és videó (2. kör)
-A médiát egy egyszeri GitHub Actions futás töltötte le az élő oldalról (`_forras/media.py`, jelentés: `_forras/media-jelentes.json`), webp-re alakítva 900/1600/2400 px-ben (`img/foto/`).
+A cégadatokat online, független nyilvántartásban (e-cegjegyzek.hu) érdemes még egyszer megnézni – innen nem volt elérhető.
 
-| Fájl | Forrás | Hol látszik | Megjegyzés |
+## Szolgáltatások – mi látszik és mi nem
+**Fő szakterület (Szolgáltatások, 6 tétel):** vályogházak felújítása · vert falú házak javítása · vegyes falazatú házak felújítása · aláfalazás és falmegerősítés · vakolás és felületképzés · régi házak teljes felújítása.
+
+**Egyéb munkák (látható, igazolt):**
+| Tétel | Forrás |
+|---|---|
+| Kőművesmunkák, falazás; kézi vakolás, glettelés; falrepedések javítása; átalakítás; teljes felújítás | régi oldal + videó |
+| Alapozás, betonozás | régi oldal + videó |
+| Salétromos lábazat cseréje | videó |
+| Bontási munkák | onlinecegbazis + Daibau |
+| Tetőjavítás; nyílászárók beépítése | videó (Túró István saját szavai) |
+| Térkövezés | videó + onlinecegbazis + Daibau |
+| Kerítésépítés betonból vagy vasból | onlinecegbazis |
+
+**Belső ellenőrzési lista – NEM látszik az oldalon, ügyféllel megerősítendő** (csak a Daibau-profil említi):
+- [ ] Új építésű ház kivitelezése
+- [ ] Fémszerkezetes munkák: fém kerítés, rozsdamentes korlát, fémszerkezetes terasz, kocsibeálló, pergola
+- [ ] Speciális szigetelés: alap vízszigetelése, injektálás, talajszigetelés
+- [ ] Ács- és tetőépítés, tetőfedés, fa előtető, tetőtér-beépítés
+- [ ] Lakás- és fürdőszoba-felújítás, terasz- és erkélyfelújítás
+- [ ] Földmunkák, zsaluzás
+- [ ] Kertépítés, udvarrendezés, támfal, fa terasz
+
+Ha az ügyfél megerősíti, a tétel az `index.html` „Egyéb munkák” blokkjába (és az ajánlatkérő 2. lépésébe, valamint az `api/ajanlat.php` `MUNKA` listájába) felvehető.
+
+## Képek és videó – hitelesség
+| Anyag | Eredet | Hol látszik | Jelölés |
 |---|---|---|---|
-| `hero-*.webp` | https://valyog-mester.hu/images/hero.jpg (6048×4024) | hero, 1. kocka | ismeretlen eredetű, stock jellegű |
-| `about-*.webp` | https://valyog-mester.hu/images/about.jpg (5100×3400) | hero, 2. kocka | ismeretlen eredetű |
-| `service3-*.webp` | https://valyog-mester.hu/images/service3.jpg | hero, 3. kocka | ismeretlen eredetű |
-| `service1-*.webp` | https://valyog-mester.hu/images/service1.jpg | Bemutatkozás | ismeretlen eredetű |
-| `service2-*.webp` | https://valyog-mester.hu/images/service2.jpg | Problémák | ismeretlen eredetű |
-| `video-1-720.mp4` (34 mp, 720×1280, hanggal, 6,8 MB), `video-1-poszter.webp` | a valyog-mester.hu-ba ágyazott Facebook-reel: https://www.facebook.com/reel/3101964210191311/ – feltöltő: Vályog-Mester, 2026.03.12. | A mester szekció | **a cég saját anyaga**, beégetett felirattal |
-| `kocka-istvan/fal/munka.webp` | képkockák a videóból | hero videókártya, „Valódi munka” blokk, galéria első 2 eleme | **valódi munka** |
+| `kocka-*.webp` (6 képkocka) | Túró István bemutatkozó videója (Facebook, 2026. március) | galéria, „Salétromos lábazat” blokk, bemutatkozás, két szolgáltatás (a „Miért” szekcióban kérésre nincs kép) | **Saját munka** |
+| `video-1-720.mp4` + poszter | ugyanez a videó | A mester szekció | forrásmegjelöléssel |
+| `service1`, `hero`, `about`, `service2` | a régi valyog-mester.hu oldal állóképei – **eredetük ismeretlen** | nyitókép, négy szolgáltatás, problémák | **Hangulatkép** |
 
-A régi logó (logo.png) nincs használva – új logó készült.
+- A galéria kizárólag saját anyagot tartalmaz. A hangulatképek nem szerepelnek referenciaként, és mindenhol jelölve vannak.
+- Hamis előtte–utána, kitalált referencia vagy AI-kép nincs.
+- **Felhasználási engedély szükséges:** a videóra és a képkockákra (Túró István hozzájárulása; a felvételen szereplő munkatársaké), valamint a hangulatképekre – ezeket ajánlott saját munkafotókra cserélni. Csere: `index.html` (nyitókép `slide`-ok, `svc-photo`), `valyog.js` → `WORKS` tömb.
 
-**Fontos:** az 5 állókép eredete ismeretlen (stock jellegű, a cég munkájaként sehol nem szerepelnek, csak hangulatképként). Éles publikálás előtt a jogosultságot az ügyféllel tisztázni kell, vagy saját fotóra cserélni. A videó és a képkockák a cég saját Facebook-oldaláról származnak.
+## Ajánlatkérő
+- **Előnézet:** nincs `data-endpoint`, ezért előnézeti módban fut: semmit nem küld, ezt egyértelműen kiírja, és hívást vagy e-mail-piszkozatot kínál.
+- **Éles:** a build beállítja a `data-endpoint="api/ajanlat.php"` attribútumot, és kiveszi az előnézeti blokkot.
+- **Kliens:** 6 lépés, lépésenkénti validáció, visszalépés, összegzés módosítás-linkekkel. Fotó: JPG/PNG/WEBP/HEIC, max. 6 db, egyenként 10 MB; a nagy fotókat feltöltés előtt 2000 px-es JPEG-re kicsinyíti (3,5 MB → 0,84 MB). Dupla kattintás ellen védett, 60 mp-es időkorlát van. Siker csak valódi `200 {ok:true}` válaszra jelenik meg; hibánál az adatok megmaradnak, és újrapróbálható.
+- **Szerver** (`_eles/api/ajanlat.php`, függőség nélkül):
+  - fehérlistás mezővalidáció;
+  - csapdamező, 4 mp-es időcsapda, 5 kérés / IP / óra (az IP-ből csak sózott kivonat készül);
+  - egyszeri token: ugyanaz a kérés nem megy ki kétszer;
+  - fájlok valódi típusellenőrzéssel (finfo + képfejléc), 10 MB / db, 40 MB összesen, anonimizált mellékletnévvel (`foto-1.jpg`);
+  - **nincs tárolás**: a képek csak e-mail-mellékletként mennek tovább;
+  - SMTP (STARTTLS/SSL) vagy `mail()`, a hitelesítő adatok környezeti változóból vagy webgyökéren kívüli ini-fájlból jönnek;
+  - beállítás nélkül 503-at ad, SMTP-hibánál 502-t – hamis sikert soha nem jelez.
 
-**Videó viselkedése:** `preload="none"`; látótérben némítva, hurokban indul (a felirat be van égetve, hang nélkül is érthető), elhagyva megáll. „Lejátszás hanggal” gomb: elölről, hanggal, vezérlőkkel; jobb felül némítás. A hero videókártyája és a „Nézze meg a videót” link odagörget és hanggal indítja. `prefers-reduced-motion` esetén nincs automatikus lejátszás és nincs fotóáttűnés.
+## SEO
+- **Előnézet:** `noindex, nofollow`; a canonical már az új domainre (`https://valyogmester.hu/`) mutat.
+- **Az éles build állítja be:** `index, follow`; az og:url, az og:image és a strukturált adat URL-jei az új domainre kerülnek; elkészül a `robots.txt` (Disallow: /api/) és a `sitemap.xml`.
+- **Strukturált adat:** `HomeAndConstructionBusiness` – cégnév, adószám, cégjegyzékszám, bejegyzés dátuma, cím, terület, szakterületek; a logó PNG-ben.
+- **Cím és leírás:** a helyi kulcsszavak természetes szövegben szerepelnek: vályogház felújítás, vert fal javítás, Fegyvernek, Jász-Nagykun-Szolnok vármegye.
 
-**A videó tartalma (a beégetett feliratokból):** Túró István, a TURPA BUILD Kft. ügyvezető igazgatója, vályogházakkal foglalkozik. Egy régi ház alapját, lábazatát le kellett verni, mert salétromos volt; eltávolították, szellőztetik, utána könnyű vakolatot, majd mészhabarcsot kap, hogy tudjon levegőzni. Nyílászárókat állítanak, térköveznek, vakolnak, falaznak, betonoznak, tetőt javítanak. Az ajánlatkérő kitöltését kéri, hogy minél hamarabb felmérhesse a bajokat. Ebből készült a „Salétromos lábazat, lélegző fal” blokk, és a kiegészítő munkák közé bekerült a nyílászáró-beépítés és a tetőjavítás.
+## Teljesítmény és technika
+- GSAP és ScrollTrigger kikerült (−~110 KB JS), a nyitóanimáció CSS-ből megy.
+- Betű: egy fájl, woff2, latin + magyar ékezetek, a használt tengelyekre szűkítve – 85 KB → 42 KB.
+- **Képek:** a nyitókép előtöltve, a többi lusta betöltésű; a nem használt képek, textúrák és régi betűk törölve.
+- **Videó:** csak kattintásra töltődik be (`preload="none"`), automatikus lejátszás nincs.
+- **Animációk nélkül is működik:** `prefers-reduced-motion` esetén minden elem azonnal látszik, minden vezérlő billentyűzetről is elérhető.
 
-## Egyeztetendő az ügyféllel
-1. **Képek** – a galériában már csak valódi kép van: 3 képkocka a bemutatkozó videóból („Valódi munka”) és a jelenlegi oldal 5 fotója („A jelenlegi oldalról”). Rajzolt helyőrző és illusztrált előtte–utána csúszka nincs (3. kör). Az 5 fotó jogosultsága tisztázandó; további saját munkafotókkal a galéria bővíthető (`valyog.js` → `WORKS`). Csere: `valyog.js` → `WORKS` tömb, elemenként `src` + `alt`; ha van `src`, fotó jelenik meg rajz helyett. Előtte–utána párokhoz ugyanarról a falról két fotó kell.
-2. **Túró István portréja** – most a videó képkockája áll a helyén; egy jobb minőségű fotó jól jönne.
-3. **Cégjegyzékszám, adószám** – a láblécben „egyeztetendő”. Az onlinecegbazis.hu oldalán nem szerepeltek.
-4. **Munkaterület** – a régi oldal „országos kiszállást” ír, a Daibau Fegyvernek + környék, más országrészek. A GYIK-ban Fegyvernek és Jász-Nagykun-Szolnok vármegye áll, távolabbra egyeztetéssel.
-5. **Hívható időszak** (kapcsolat blokk).
-6. **Adatkezelési tájékoztató** végleges szövege (a modálban vázlat).
-7. A Daibau „Építkezés” fotó valóban a cég munkája-e.
-
-## Működik / bekötendő
-| Funkció | Állapot |
+## Ellenőrzés (9. kör)
+| Teszt | Eredmény |
 |---|---|
-| Navigáció, mobilmenü (Esc, fókusz), horgonyok | működik |
-| tel: és mailto: linkek | működik |
-| Galéria: szűrés, lightbox (nyilak, Esc) | működik (helyőrzőkkel) |
-| Előtte–utána csúszka (egér, érintés, billentyűzet) | működik (illusztráció) |
-| GYIK (natív details) | működik |
-| Ajánlatkérő: 6 lépés, haladásjelző, validáció, vissza, összegzés módosítás-linkekkel, fotó-előnézet (max. 6, 10 MB), hozzájárulás | működik |
-| **Ajánlatkérő beküldése** | **tesztmód** – `KULDES.endpoint = null`. Nem küld adatot, ezt kiírja; hívást vagy előre kitöltött e-mail-piszkozatot kínál. Hamis „sikeresen elküldve” nincs. Éleshez: végpont megadása (`FormData` POST, fotókkal együtt, valódi siker/hiba visszajelzéssel – a kód kész). |
-| Mobil hívássáv | működik; elrejtődik a heróban, a kapcsolat résznél és a láblécben |
+| Viewportok 320 / 360 / 390 / 430 / 768 / 1024 / 1440 | nincs vízszintes görgetés, nincs törött kép, nincs konzolhiba vagy 404-es erőforrás; a 320 px-es túlcsordulás (hosszú e-mail-cím) javítva |
+| Képkeretek | minden kép a keretében marad, nincs nagyítás vagy eltolás (géppel mérve, 3 méreten) |
+| Mobil | a dokk az űrlapnál és gépelés közben elrejtőzik; a menü bezárható gombbal, Esc-kel és linkre kattintással; a címkék betűmérete legalább 11 px |
+| Ajánlatkérő, böngészőben (1440 és 390) | sikeres küldés 2 fotóval → 1 levél, 2 melléklet (3,5 MB-os fotó → 0,84 MB); dupla kattintás → 1 levél; túl nagy fájl → kliensoldali hiba; hálózati hiba → hibaüzenet, az adatok megmaradnak, az újrapróbálás sikeres; 503 és 502 → hibaüzenet, hamis siker nincs |
+| Ajánlatkérő, szerveren (curl) | hibás telefon → 422; rossz épület, hiányzó elfogadás → 422; 11 MB-os kép → 413; álcázott nem-kép → 422; csapdamező → csendes elnyelés; túl gyors kitöltés → 422; ugyanaz a token → nincs második levél; 6. kérés egy órán belül → 429 |
+| Kiküldött levél | UTF-8 tárgy és törzs, Reply-To az ügyfél e-mailje, magyar idő, anonimizált mellékletnév; az adatmappában nincs személyes adat |
+| CSP (éles fejléc) | nincs letiltott erőforrás, az inline szkript a hash alapján fut |
+| Animációk nélkül, billentyűzettel | minden tartalom látszik; a fókuszsorrend helyes, a lépésváltáskor a fókusz a kérdésre ugrik |
+| Teljesítmény | Chrome, mobilemuláció, 4× CPU, lassú 4G (150 ms / 1,6 Mbit/s), tömörítés nélkül, 3 futás mediánja: **FCP 1,5 s · LCP 2,1 s · CLS 0 · TBT 0 ms · 639 KB**. Lighthouse nem futtatható ebből a környezetből (npm nem érhető el) – élesítés után a valyogmester.hu címen mérendő. |
 
-## Art direction — „Falmetszet”
-Nyitókép (4. kör): maga a hero egy parasztház-homlokzat – meszelt fal háttér, a jelenlegi oldal fotói egy oromzat alakú „ablakban” váltakoznak (lassú áttűnés + kameramozgás, 7 mp), fölötte kék és agyag tetővonal, alul végigfutó kék „lábazat” sáv (20+ év, fő munkák, cégnév). Az oromzat betöltéskor alulról „felépül”, a tetővonal kirajzolódik. Túró István videókártyája az oromzat sarkára fut fel (mobilon a fotó alá). 5. kör: a fotó téglalap keretben, teljes egészében látszik (nincs levágott tető), fölötte külön rajzolt oromzat; a nagyítás csak középről, váltáskor ugrás nélkül. A „falmetszet” homlokzatrajz a Miért-szekcióba költözött: belépéskor kirajzolódik, a mész ráhúzódik a repedt vályogfalra, majd megjelennek a rétegfeliratok.
+## Ügyféltől még szükséges
+1. **Ajánlatfogadó e-mail-cím** – valyog.mester@gmail.com, istvanturo06@gmail.com vagy turpabuildkft@gmail.com? Az oldalon látható cím is ehhez igazodjon.
+2. **Munkaterület és kiszállás:** a régi oldal „országos kiszállást” írt, az új oldalon „Fegyvernek és Jász-Nagykun-Szolnok vármegye, távolabb egyeztetéssel” szerepel. Az **ingyenes felmérés** feltételei (van-e kiszállási díj távolabb?) – addig az „ingyenes” szó a régi oldal saját állítása alapján marad.
+3. **Képek és videó felhasználási engedélye**, illetve saját munkafotók (előtte–utána párok is).
+4. **Szolgáltatáslista** megerősítése (lásd a belső ellenőrzési listát).
+5. **Adatkezelési adatok:** adatvédelmi kapcsolattartó, megőrzési idő, tárhely- és e-mail-szolgáltató, hatályba lépés dátuma.
+6. **Hozzáférések:** tárhely, DNS, SMTP-fiók (vagy a DAEKON biztosítja).
+7. Hozzájárulás a lábléc diszkrét „Weboldal: DAEKON” hivatkozásához.
 
-## Új logó (`arculat/`)
-A V betű befelé lépcsőző vályogtéglákból épül, fölötte a parasztház tetővonala: monogram + falazat + tető egy jelben. A szöveg görbére alakítva (`_forras/logo.py`), betűtípus nélkül is pontos.
-- `logo-vizszintes-vilagos.svg`, `logo-vizszintes-sotet.svg` – elsődleges
-- `logo-allo-vilagos.svg`, `logo-allo-sotet.svg` – álló
-- `logo-egyszinu.svg`, `emblema-egyszinu.svg` – hímzés, fóliavágás, pecsét
-- `emblema-vilagos.svg`, `emblema-sotet.svg`
-- `favicon.svg` (gyökérben is), `favicon-32.png`, `apple-touch-icon.png` (180), `favicon-512.png`
-- OG-kép: `img/og.png` (1200×630)
+## Fájlok
+`index.html`, `valyog.css`, `valyog.js`, `adatkezeles.html` – az oldal · `fonts/` · `img/foto/` · `arculat/` (logócsalád, favicon, `logo-allo-vilagos.png`) · `_eles/` (api, htaccess, user.ini, robots, 404, ini-minta – csak az éles csomagba kerülnek) · `_forras/` (`build_eles.py`, `logo.py`, `media.py`, `og.html`, forrásbetű) · `koncepcio.html` (az 1. kör irányai + a végleges rendszer).
 
-## Tipográfia
-| Szerep | Betű | Méret |
-|---|---|---|
-| H1 | Cormorant Garamond 500, második sor dőlt 450 | 2.25rem → 3.75rem |
-| H2 | Cormorant Garamond 500 + dőlt kiemelés | 2rem → 3rem |
-| H3 | Cormorant Garamond 600 | 1.4–1.85rem |
-| Törzs | Manrope 450 | 1.0625rem / 1.68 |
-| Címkék, gombok | Manrope 700, nagybetű, .12–.2em | .66–.8rem |
-
-Mérsékelt méretek (nincs óriás tipó). Fraunces sehol. Betűk helyben (`fonts/`, OFL-licencek mellékelve).
-
-## Színek (4. kör – „meszelt ház”)
-A zöld–agyag paletta helyett a magyar parasztház színei: meszelt fal, kék lábazat, égetett agyag, okker.
-`--forest #1F3B5C` (parasztkék – sötét felületek, címek) · `--clay #B4532A` (agyag – fő gomb, fehér szöveggel 5:1) · `--clay-ink #9A421D` (agyag szöveg világoson) · `--okker #E2A93B` / `#EDB95A` (kiemelés kéken, 6,4:1) · `--terra #A8481F` · `--mesz #F3EDE2` (nyitókép) · `--ivory #F6F1E8` · `--sand #ECE2D0` · `--char #242521`.
-Textúrák: `tx-kek.webp` (kék), `tx-mesz`, `tx-homok`, `tx-valyog`, `tx-vertfal`.
-Sávok: mész nyitókép + kék lábazat → elefántcsont → homok (szolgáltatások) → elefántcsont → szén (munkáink) → homok (mester) → elefántcsont → kék (miért) → elefántcsont → homok (kapcsolat) → szén lábléc.
-
-## Térköz, rács
-`--sec: clamp(5rem, 3.2rem + 6vw, 9rem)` szekciótávolság; konténer 1240 px, oldalmargó `clamp(1.25rem, … , 3rem)`; skála `.5 / 1 / 1.5 / 2 / 3 / 4.5 / 7rem`. Aszimmetrikus 5:7, 4:6, 6:5 oszlopok, 900 px alatt egy oszlop.
-
-## Reszponzív
-- **1100 px alatt:** menü burgerbe, telefon a fejlécben marad.
-- **900 px alatt:** hero újrakomponálva (rajz felül, a metszet 3 felirattal; szöveg alatta; gombok teljes szélességben); a falrajz ragadós sávként a lista fölött; folyamat függőleges idővonal; mobil hívássáv.
-- **601–900 px:** hero-rajz 600 px-ben középen.
-- Ellenőrizve: 1440, 768, 390, 360 – nincs vízszintes túlcsordulás, nincs konzolhiba.
-
-## Mozgás
-| Elem | Mit csinál | Kiváltó |
-|---|---|---|
-| Hero | fotók lassú áttűnése és nagyítása; cím szavanként, szöveg, gombok, videókártya beúszik | betöltés |
-| Falmetszet-rajz (Miért) | 1) vonalak kirajzolódnak, 2) anyagok, repedt vályogfal, 3) mész ráhúzódik, repedés eltűnik, 4) metszet és feliratok – kb. 3,5 s | belépés a nézetbe (egyszer) |
-| Videó | némított hurok látótérben, megáll elhagyva | görgetés |
-| Cím-felfedés | szavanként alulról | belépés a nézetbe |
-| Hero parallax | a szöveg gyorsabban mozog a háttérnél (csak desktop) | görgetés, scrub |
-| Szolgáltatás-fotó | desktopon a ragadós keretben az épp olvasott szolgáltatás fotója úszik be (6 kép: 4 a jelenlegi oldalról, 2 videós képkocka), a sorszám okker címkén; mobilon minden szolgáltatás saját fotót kap | görgetés (képernyő közepe) / egér |
-| Folyamatvonal | agyagszínű vonal kitöltődik a 4 lépésen | görgetés, scrub |
-| Képek, kártyák | felúszás, a portréhely clip-path nyitással | belépés |
-| Menü | erdőzöld felület alulról felhúzódik, menüpontok lépcsőzve | kattintás |
-| Gombok | sötét/világos kitöltés alulról, nyíl elcsúszik | hover |
-| Haladásjelző | felső agyag csík | görgetés |
-
-`prefers-reduced-motion`: minden végállapotban jelenik meg, animáció nélkül. Nincs blokkoló betöltő, nincs scrolljacking.
-
-## Komponensek (React-átültetéshez)
-`Header` (2 logóállapot), `MobileMenu`, `HeroElevation` (SVG + idővonal), `Ledger`, `FactsBar`, `WallSection` + `ServiceList` (zóna-kapcsolat `data-zone`), `SymptomList`, `WorkGallery` (szűrő + lightbox, `WORKS` adat), `BeforeAfter`, `MasterQuote`, `ProcessSteps`, `WhyList`, `FaqAccordion`, `QuoteWizard` (`KULDES` konfig), `Footer`, `MobileDock`, `Modal`.
-
-## Technika
-- GSAP + ScrollTrigger helyben (`js/`), csak hero-idővonal, parallax és folyamatvonal. Three.js/WebGL nem kell és nincs benne; React Bits / HorizonX komponens nincs benne.
-- SEO: meta title/description, canonical (élő domainre), Open Graph, `HomeAndConstructionBusiness` strukturált adat. A terv maga `noindex`.
-- Akadálymentesség: skip-link, szemantikus szekciók, aria-címkék, fókuszkezelés a varázslóban és a menüben, látható fókusz, AA kontraszt.
-- Textúrák összesen ~60 KB webp; minden rajz vektoros.
-
-## Forrásfájlok
-`_forras/texturak.py` (textúrák), `_forras/logo.py` (logócsalád + favicon), `_forras/og.html` (OG-kép forrása), `_forras/logo-symbols.svg` (inline szimbólumok).
-
-## 6. kör – változások
-- A szolgáltatásoknál a halványuló falrajz-animáció kikerült; helyette parasztkék sáv, bal oldalon ragadós, agyag-árnyékos fotókeret, amelyben az aktív szolgáltatás valódi fotója áll.
-- „Mikor hívjon szakembert?” – teljes okker háttér kék szöveggel (6:1 felett).
-- A koszos homok-textúrák törölve a világos szekciókról: tiszta meszelt fehér (`--paper #FBF8F2`) és mész (`--ivory`). A „Munkáink” és a lábléc sötét kék-fekete (#14263D) a szén helyett.
-
-## 7. kör – letisztult irány (ez az érvényes)
-- **Betű:** egyetlen család, **Archivo** változó (wght 400–900, wdth 75–125), helyben (`fonts/archivo-var.woff`, OFL). Címek 650–700, 86–92% szélesség, −0,02em betűköz; szöveg 400. A Cormorant/Manrope páros és minden dőlt serif kikerült. Méretek mérsékeltek: H1 max 3,6rem, H2 max 2,75rem.
-- **Színek:** fehér `#FFFFFF`, váltósáv `#F5F2ED`, grafit `#17191B`, másodlagos szöveg `#55595E`, egyetlen kiemelő: terrakotta `#B4532A` (fehér szöveggel 5:1). A kék, okker, textúrák, papírszemcse megszűnt.
-- **Nyitókép:** bal oldalt fehér szövegblokk, jobbra a képernyő széléig futó fotó (3 kép, csak áttűnés – nincs nagyítás, csúszás), a fotó alján fehér videókártya; alatta 4 oszlopos tényszalag.
-- **Képek mozdulatlanok:** sehol nincs nagyítás, eltolás vagy vágásos felfedés – minden fotó fix keretben, `object-fit: cover`, csak áttűnéssel jelenik meg. Galéria: egyenletes 4×2 rács (4:3), a munkafotók egy vonalban.
-- **Díszítés nélkül:** nincs oromzat-rajz, falrajz, házrajz; a „Miért” szekcióban rajz helyett valódi képkocka. Kártyák helyett vonalas rácsok, sarkos (2px) formák.
-- **Logó:** a jel maradt (tető + téglákból rakott V), a felirat Archivo Bold, grafit + terrakotta; sötét változat fehér.
-
-## 8. kör – minden munka + új nyitókép
-- **Nyitókép:** az első kép a fehérre meszelt, kék ajtós nádtetős ház (service1) – tisztább, világosabb; utána az about és a hero kép váltakozik (csak áttűnés). Előtöltve.
-- **„Minden munka egy kézből” blokk** a szolgáltatások alatt (`#minden-munka`, menüben is): 6 csoport, 37 tétel – falazat és szerkezet; alap, beton, szigetelés; felújítás és bővítés; tető és nyílászárók; udvar és kert; kerítés és fémszerkezet. Forrás: a cég Daibau-profiljának 30 szolgáltatása + valyog-mester.hu + onlinecegbazis (térkövezés, kerítés betonból vagy vasból, bontás) + a bemutatkozó videó (nyílászárók, tetőjavítás). **Egyeztetendő:** hogy az „Új építésű ház” és a fémszerkezetes tételek kerüljenek-e ki az oldalra.
-- Hero alcím, eyebrow és tényszalag („Teljes körű – az alaptól a térkövezésig”) a teljes körű kínálatot mondja; ajánlatkérő 2. lépésébe 5 új munkatípus; GYIK: „Csak vályogházakkal foglalkoznak?”; lábléc és meta description bővítve; LocalBusiness `knowsAbout` bővítve.
+## Előzmények
+1. kör: rajzolt „Falmetszet” · 2–3.: a régi oldal képei és a videó, a helyőrzők törölve · 4–6.: paletták · 7.: letisztult Archivo-irány · 8.: képkeretek, teljes munkalista · **9.: véglegesítés** – hitelesített adatok, igazolt szolgáltatások, működő backend, SEO, éles build.

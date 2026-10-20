@@ -63,8 +63,8 @@ def text_path(font, text, size, tracking=0.0):
     return pen.getCommands(), x - tracking * size
 
 
-CORM = load(ROOT / "fonts/archivo-var.woff", 700, 88)
-MANR = load(ROOT / "fonts/archivo-var.woff", 500, 100)
+CORM = load(ROOT / "_forras/betu/archivo-var-teljes.woff", 700, 88)
+MANR = load(ROOT / "_forras/betu/archivo-var-teljes.woff", 500, 100)
 
 WORD, WW = text_path(CORM, "VÁLYOG-MESTER", 36, 0.02)
 SUB, SW = text_path(MANR, "VÁLYOGHÁZAK · RÉGI FALAK FELÚJÍTÁSA", 8.4, 0.12)
