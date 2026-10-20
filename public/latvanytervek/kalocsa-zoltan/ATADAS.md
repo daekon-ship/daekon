@@ -70,6 +70,12 @@ Saját domain + tárhely (PHP vagy szerverless függvény az űrlaphoz), SSL, ad
 1440 / 768 / 390 / 360 px: nincs vízszintes túlcsordulás, nincs JS-hiba (a sandboxból a cdnjs/CARTO nem érhető el, ott a tartalék ábra látszik). Tesztelve: menü (mobil is), fülváltás menüből, kiemelt nézetváltó, szolgáltatás → űrlap előválasztás, validációs hibák, bemutató-mód visszajelzés, `dataLayer` események, hívógomb.
 
 ---
+# 6. kör – Zoltán saját kéréslistája alapján (2026.10.20.)
+- **Árok mélyebbnek:** `img/kozmuarok-melyebb-*.webp` – ugyanaz a fénykép, a talpa és a falai árnyékolással mélyítve (nem retusált tárgy, nem hozzáadott földréteg). A Kiemelt munkáimban alapnézet, „Szerkesztett fénykép – mélyebb hatás” jelöléssel; az eredeti és a szemléltető metszet is választható. A hero és az „Összes munka” az eredetit mutatja.
+- **Ne legyen túl sötét:** világosabb grafit tónusok (#2B3137 / #323940 / #3C444C).
+- **Narancs pont a térképen („épp ott van egy munka”):** narancs, pulzáló jelölő „Itt épp munka folyik” felugró ablakkal (példa – valódi helyszín jóváhagyással); Kecskemét középpont világosszürke. Leaflet cdnjs → unpkg tartalékkal.
+- **Még nyitott, ügyféltől/döntéstől függ:** valódi animáció (videó), űrlap tényleges küldése, mérés megjelenítése (fiók kell), portré.
+
 # Korábbi körök
 ## 4. kör – „Valami jó logót találj ki felülre”, „hogy néz az úgy egybe ki?”, „ez a színvilág jobb”
 - **Logó:** `logo-jel.svg` (jel) és `logo.svg` (jel + név): lekerekített homokszínű négyzet, benne sötétbarna kotrókar és kanál az árok-szelvény fölött. A fejlécben és a láblécben; hoverre a kar „ás” egyet.

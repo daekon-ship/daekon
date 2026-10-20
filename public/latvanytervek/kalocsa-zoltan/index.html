@@ -6,11 +6,11 @@
 <title>Kalocsa GeoWorks | Gépi földmunka Kecskeméten és 45 km-es körzetében</title>
 <meta name="description" content="Kalocsa GeoWorks – gépi földmunka Kecskeméten és 45 km-es körzetében: alapásás, közműárok-ásás, nyomvonalásás, tuskóeltávolítás, tereprendezés. Kis géppel, szűk helyeken is. Hívás: +36 70 420 4170.">
 <meta name="robots" content="noindex, nofollow">
-<meta name="theme-color" content="#21262B">
+<meta name="theme-color" content="#2B3137">
 <link rel="icon" href="logo-jel.svg" type="image/svg+xml">
 <link rel="preload" href="fonts/archivo-var.woff" as="font" type="font/woff" crossorigin>
 <link rel="preload" href="img/hero-kisgep-1425.webp" as="image" type="image/webp" imagesrcset="img/hero-kisgep-900.webp 900w, img/hero-kisgep-1425.webp 1425w" imagesizes="(max-width: 860px) 100vw, 66vw">
-<link rel="stylesheet" href="kalocsa.css?v=14">
+<link rel="stylesheet" href="kalocsa.css?v=15">
 <script>if(!matchMedia("(prefers-reduced-motion: reduce)").matches){document.documentElement.classList.add("anim");setTimeout(function(){if(!window.gsap)document.documentElement.classList.remove("anim")},3000)}</script>
 </head>
 <body>
@@ -216,7 +216,8 @@
       <article class="feat" data-feat="kozmuarok">
         <div class="feat__media">
           <div class="feat__main">
-            <img src="img/kozmuarok-1200.webp" width="1069" height="1900" loading="lazy" alt="Kiásott közműárok homokos talajban" data-lb="0">
+            <img src="img/kozmuarok-melyebb-1200.webp" width="1069" height="1900" loading="lazy" alt="Kiásott közműárok homokos talajban – szerkesztett fénykép, árnyékolással mélyebb hatás" data-lb="6">
+            <span class="feat__badge" id="arok-badge">Szerkesztett fénykép – mélyebb hatás</span>
             <svg class="feat__svg" viewBox="0 0 600 440" role="img" aria-label="Szemléltető árokmetszet: rétegzett talaj, mély árok, alján csővezeték, mellette kitermelt föld" hidden>
               <rect width="600" height="440" fill="#2A3036"/>
               <path d="M0 150H170L188 380H262L280 150H600V440H0Z" fill="#5A4632"/>
@@ -233,7 +234,8 @@
             </svg>
           </div>
           <div class="feat__thumbs">
-            <button class="is-on" data-view="photo" aria-label="Valódi fotó"><img src="img/kozmuarok-720.webp" alt="" loading="lazy"><span>Valódi fotó</span></button>
+            <button class="is-on" data-view="photo" data-src="img/kozmuarok-melyebb-1200.webp" aria-label="Szerkesztett fotó, mélyebb árokhatás"><img src="img/kozmuarok-melyebb-720.webp" alt="" loading="lazy"><span>Mélyebb hatás</span></button>
+            <button data-view="photo" data-src="img/kozmuarok-1200.webp" aria-label="Eredeti fotó"><img src="img/kozmuarok-720.webp" alt="" loading="lazy"><span>Eredeti fotó</span></button>
             <button data-view="svg" aria-label="Szemléltető árokmetszet"><span class="feat__thumbsvg"></span><span>Szemléltető metszet</span></button>
           </div>
         </div>
@@ -244,7 +246,7 @@
             <div><dt>Munkatípus</dt><dd>Közműárok-ásás, nyomvonal</dd></div>
             <div><dt>Helyszín</dt><dd class="tbd">egyeztetendő</dd></div>
           </dl>
-          <p>Egyenes falú árok homokos talajban, a kitermelt föld az árok mellett. A szemléltető metszet az árok felépítését mutatja be – a valódi fotó változatlan.</p>
+          <p>Egyenes falú árok homokos talajban, a kitermelt föld az árok mellett. A „Mélyebb hatás” nézet ugyanaz a fénykép árnyékolással kiemelve; az eredeti és egy szemléltető metszet is megnézhető.</p>
           <button class="btn btn--sm" data-munka="Közműárok-ásás">Ilyen munkát kérek</button>
         </div>
       </article>
@@ -364,11 +366,13 @@
       <svg class="map__fallback" viewBox="0 0 400 400" aria-hidden="true">
         <g fill="none" stroke="#3B424A"><circle cx="200" cy="200" r="60"/><circle cx="200" cy="200" r="120"/><path d="M200 10V390M10 200H390"/></g>
         <circle cx="200" cy="200" r="180" fill="rgba(242,122,33,.07)" stroke="#F27A21" stroke-width="1.6" stroke-dasharray="6 6"/>
-        <circle cx="200" cy="200" r="7" fill="#F27A21"/>
+        <circle cx="200" cy="200" r="7" fill="#E4E7EA"/>
+        <circle cx="236" cy="120" r="9" fill="#F27A21"/><circle cx="236" cy="120" r="16" fill="none" stroke="#F27A21" stroke-opacity=".5"/>
+        <text x="252" y="116" font-family="Manrope, sans-serif" font-size="11" fill="#F27A21">MUNKA (PÉLDA)</text>
         <text x="214" y="222" font-family="Manrope, sans-serif" font-size="12" letter-spacing="2" fill="#E4E7EA">KECSKEMÉT</text>
         <text x="200" y="36" text-anchor="middle" font-family="Manrope, sans-serif" font-size="11" letter-spacing="2" fill="#F27A21">45 KM</text>
       </svg>
-      <p class="map__note">A térképen bemutató jelölő is szerepel – valódi munkapontok csak Zoltán és az ügyfél engedélyével kerülnek fel.</p>
+      <p class="map__note"><span class="dotk"></span> Narancs pont: folyamatban lévő munka (most példa – a valódi helyszín Zoltán jóváhagyásával kerül fel). Szürke: Kecskemét, a körzet közepe.</p>
     </div>
   </div>
 </section>
@@ -491,6 +495,6 @@
 
 <script src="js/gsap.min.js" defer></script>
 <script src="js/ScrollTrigger.min.js" defer></script>
-<script src="kalocsa.js?v=14" defer></script>
+<script src="kalocsa.js?v=15" defer></script>
 </body>
 </html>

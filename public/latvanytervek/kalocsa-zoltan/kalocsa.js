@@ -115,8 +115,9 @@
     const main = $('.feat__main img', f), svg = $('.feat__svg', f);
     $$('.feat__thumbs button', f).forEach(b => b.addEventListener('click', () => {
       $$('.feat__thumbs button', f).forEach(x => x.classList.toggle('is-on', x === b));
-      if (b.dataset.view) { const s = b.dataset.view === 'svg'; svg.toggleAttribute('hidden', !s); main.style.opacity = s ? 0 : 1; }
-      if (b.dataset.src) { main.src = b.dataset.src; main.dataset.lb = b.dataset.i; }
+      if (b.dataset.view) { const s = b.dataset.view === 'svg'; svg && svg.toggleAttribute('hidden', !s); main.style.opacity = s ? 0 : 1; }
+      if (b.dataset.src) { main.src = b.dataset.src; main.dataset.lb = b.dataset.i || (/melyebb/.test(b.dataset.src) ? 6 : 0); }
+      const badge = $('.feat__badge', f); if (badge) badge.hidden = !(b.dataset.src && /melyebb/.test(b.dataset.src));
       track('featured_project_open', { project: f.dataset.feat, view: b.dataset.view || b.dataset.i });
     }));
   });
@@ -125,7 +126,8 @@
   const LB = [
     ['img/kozmuarok-1200.webp', 'Közműárok-ásás'], ['img/tusko-1200.webp', 'Tuskóeltávolítás'],
     ['img/fas-terulet-2-1200.webp', 'Kisgép munka közben'], ['img/fas-terulet-1-1200.webp', 'Terület-előkészítés'],
-    ['img/talajrendezes-1-1200.webp', 'Tereprendezés'], ['img/talajrendezes-2-1200.webp', 'Tereprendezés – más nézet']
+    ['img/talajrendezes-1-1200.webp', 'Tereprendezés'], ['img/talajrendezes-2-1200.webp', 'Tereprendezés – más nézet'],
+    ['img/kozmuarok-melyebb-1200.webp', 'Közműárok-ásás – szerkesztett fénykép, mélyebb hatás']
   ];
   const lb = $('#lb'), lbImg = $('img', lb), lbCap = $('figcaption', lb);
   let cur = 0, last = null;
@@ -243,8 +245,13 @@
   /* ---------- TÉRKÉP (Leaflet, igény szerint betöltve) ---------- */
   const mapEl = $('#map');
   const loadMap = () => {
-    const css = d.createElement('link'); css.rel = 'stylesheet'; css.href = 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css'; d.head.appendChild(css);
-    const s = d.createElement('script'); s.src = 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js'; s.onload = initMap; d.head.appendChild(s);
+    const CDN = ['https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/', 'https://unpkg.com/leaflet@1.9.4/dist/'];
+    const load = (k) => {
+      if (k >= CDN.length) return;
+      const css = d.createElement('link'); css.rel = 'stylesheet'; css.href = CDN[k] + 'leaflet.css'; d.head.appendChild(css);
+      const s = d.createElement('script'); s.src = CDN[k] + 'leaflet.js'; s.onload = initMap; s.onerror = () => load(k + 1); d.head.appendChild(s);
+    };
+    load(0);
   };
   function initMap() {
     const L = window.L; if (!L) return;
@@ -256,11 +263,12 @@
     }).addTo(map);
     const circle = L.circle(MAP.center, { radius: MAP.radiusM, color: '#F27A21', weight: 2, dashArray: '6 6', fillColor: '#F27A21', fillOpacity: .08 }).addTo(map);
     map.fitBounds(circle.getBounds(), { padding: [16, 16] });
-    const icon = (demo) => L.divIcon({ className: '', html: `${demo ? '' : '<span class="mk-pulse"></span>'}<span class="mk${demo ? ' mk--demo' : ''}"></span>`, iconSize: [22, 22], iconAnchor: [11, 22], popupAnchor: [0, -22] });
+    const icon = (job) => L.divIcon({ className: '', html: `${job ? '<span class="mk-pulse"></span>' : ''}<span class="mk${job ? '' : ' mk--center'}"></span>`, iconSize: [22, 22], iconAnchor: [11, 22], popupAnchor: [0, -22] });
     L.marker(MAP.center, { icon: icon(false), title: 'Kecskemét – központ' }).addTo(map)
       .bindPopup('<b>Kecskemét</b>A munkaterület központja.<br>Körzet: 45 km.<br><a href="tel:+36704204170" style="color:#F27A21">+36 70 420 4170</a>');
-    L.marker([47.034, 19.776], { icon: icon(true), title: 'Bemutató jelölő' }).addTo(map)
-      .bindPopup('<b>Bemutató jelölő</b>Így jelenik meg majd egy elvégzett munka. Ez <u>nem valós</u> munkahelyszín – valódi pont csak engedéllyel kerül fel.<img src="img/kozmuarok-720.webp" alt="Közműárok – valódi munkafotó">');
+    const job = L.marker([47.034, 19.776], { icon: icon(true), title: 'Folyamatban lévő munka (példa)' }).addTo(map)
+      .bindPopup('<b>Itt épp munka folyik</b>Közműárok-ásás · folyamatban<br><small style="color:#A9B0B7">Példa jelölő – a valódi helyszín Zoltán jóváhagyásával kerül fel.</small><img src="img/kozmuarok-720.webp" alt="Közműárok – munkafotó">');
+    setTimeout(() => job.openPopup(), 900);
     map.on('click', () => map.scrollWheelZoom.enable());
   }
   if ('IntersectionObserver' in window) {
