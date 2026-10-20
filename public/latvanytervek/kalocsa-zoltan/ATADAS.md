@@ -1,4 +1,4 @@
-# Kalocsa Zoltán – gépi földmunka · látványterv, átadás
+# Kalocsa GeoWorks (Kalocsa Zoltán) – gépi földmunka · látványterv, átadás
 
 **Élő terv:** https://daekon-ship.github.io/daekon/latvanytervek/kalocsa-zoltan/
 **Arculat + koncepció:** https://daekon-ship.github.io/daekon/latvanytervek/kalocsa-zoltan/koncepcio.html
@@ -38,6 +38,9 @@ Előtte–utána párosítás nincs. A szolgáltatássorokhoz nem rendeltünk fo
 - **Betűméret:** a brief „óriás” címeket és kontúros „FÖLDMUNKA” háttérszöveget kért – az ügyfél kérésére kompakt méret (H1 max. 48 px), a kontúrszöveg helyett szintvonal-textúra.
 - **Szám:** a joszaki-profil egyes szám első személyben, tegezve ír, ezért a szöveg is így szól („vállalok”, „Rólam”, „Munkák”). Ha többes számot szeretne („Munkáink”, „Rólunk”), 1 perces csere.
 - **Betűk:** Archivo (keskeny 72%, 800) + Manrope, helyben (a repó meglévő OFL-fájljai).
+
+## Cégnév
+A cég neve **Kalocsa GeoWorks** (a megrendelő közlése, 2026.10.20.); tulajdonos: Kalocsa Zoltán. A fejléc, lábléc, logó (`logo.svg`, `logo-jel.svg`), oldalcím és meta erre módosult; a Rólam blokk: „A Kalocsa GeoWorks mögött én állok, Kalocsa Zoltán.” Cégforma (E.V., Kft.) továbbra sem ismert.
 
 ## Főcím
 A nyitókép főcíme Zoltán saját mondata a joszaki.hu-profiljáról: „Építkezel? Kertet újítasz? Nem akarsz ásni napokig?” (a harmadik sor homokszínnel kiemelve). A brief által javasolt „Nagy feladatok. Kis helyeken is.” kikerült.
