@@ -433,6 +433,16 @@ p{margin:0 0 1em}
   html{scroll-behavior:auto}
 }
 
+/* nyitókép: animáció megállító gomb (hurkos módban) */
+.hero__pause{position:absolute;z-index:4;right:var(--gut);bottom:56px;width:36px;height:36px;display:grid;place-items:center;border:0;border-radius:50%;background:rgba(37,42,48,.6);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);color:#fff;cursor:pointer;box-shadow:inset 0 0 0 1px rgba(255,255,255,.14)}
+.hero__pause svg{width:14px;height:14px;fill:currentColor}
+.hero__pause:hover{background:rgba(242,122,33,.85)}
+.hero__pause:focus-visible{outline:2px solid var(--o);outline-offset:3px}
+@media (max-width:860px){.hero__pause{left:12px;right:auto;top:calc(var(--hdr) + 12px);bottom:auto;width:34px;height:34px}}
+
+/* térkép: kulcs nélküli OSM-csempék sötétítve, hogy illeszkedjen a grafit arculathoz */
+.leaflet-tile-pane{filter:invert(1) hue-rotate(180deg) brightness(.82) contrast(.92) saturate(.35)}
+
 /* süti-hozzájárulás (csak ha GA4 be van állítva) */
 .consent-bar{position:fixed;left:12px;right:12px;bottom:calc(76px + env(safe-area-inset-bottom));z-index:90;max-width:560px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;gap:12px 16px;padding:14px 16px;border-radius:12px;background:rgba(37,42,48,.97);box-shadow:0 12px 40px rgba(0,0,0,.4),inset 0 0 0 1px rgba(255,255,255,.08);font-size:14px}
 .consent-bar p{margin:0;flex:1 1 260px}.consent-bar a{color:var(--o)}

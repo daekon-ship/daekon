@@ -280,9 +280,10 @@
     const L = window.L; if (!L) return;
     $('#map-wrap').classList.add('is-live');
     const map = L.map(mapEl, { scrollWheelZoom: false, zoomControl: true, attributionControl: true }).setView(MAP.center, 9);
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-      maxZoom: 18, subdomains: 'abcd',
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
+    // kulcs nélküli OpenStreetMap-csempék; a sötét hatást CSS-szűrő adja (.leaflet-tile-pane)
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 18,
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
     const circle = L.circle(MAP.center, { radius: MAP.radiusM, color: '#F27A21', weight: 2, dashArray: '6 6', fillColor: '#F27A21', fillOpacity: .08 }).addTo(map);
     map.fitBounds(circle.getBounds(), { padding: [16, 16] });
@@ -291,7 +292,6 @@
       .bindPopup('<b>Kecskemét</b>A munkaterület központja.<br>Körzet: 45 km.<br><a href="tel:+36704204170" style="color:#F27A21">+36 70 420 4170</a>');
     const job = L.marker([47.034, 19.776], { icon: icon(true), title: 'Munkajelölő (bemutató)' }).addTo(map)
       .bindPopup('<b>Munkajelölő – bemutató</b>Így jelenik majd meg egy aktuális munka helye.<br><small style="color:#A9B0B7">Ez nem valós munkahelyszín. Élesítéskor csak Zoltán által jóváhagyott, nem pontos lakcímre mutató helyszín kerül fel.</small>');
-    setTimeout(() => job.openPopup(), 900);
     map.on('click', () => map.scrollWheelZoom.enable());
     // a rögzített nyitókép miatt az elrendezés később változhat → méret újraszámolása
     const fix = () => { map.invalidateSize(); };
@@ -446,18 +446,19 @@
       track('hero_fallback', { reason: why });
     };
 
-    // --- csökkentett mozgás: csak a poszter (állókép) ---
-    if (reduce) { stageBox.hidden = true; if (tag) tag.textContent = 'Szemléltető kép'; return; }
     // --- lassú kapcsolat / adatkímélés / nincs videó: valódi fotók ---
     if (!HERO_VIDEO.mp4 || slowNet) { startScenes(slowNet ? 'slow-network' : 'no-video'); return; }
+    // csökkentett mozgásnál (pl. Windows „Animációs effektusok: ki”) nincs görgetéses rögzítés,
+    // a videó csendben ismétlődik, és egy gombbal megállítható
+    const scrub = desk && !reduce && !!g && !!ST;
 
     // --- videó ---
     video = d.createElement('video');
     video.muted = true; video.playsInline = true; video.setAttribute('playsinline', ''); video.setAttribute('muted', '');
-    video.preload = desk ? 'auto' : 'metadata';
+    video.preload = scrub ? 'auto' : 'metadata';
     video.poster = (isMobile && HERO_VIDEO.posterMobile) || HERO_VIDEO.poster;
     video.className = 'hero__video'; video.setAttribute('aria-hidden', 'true'); video.disablePictureInPicture = true;
-    if (!desk) { video.loop = true; video.autoplay = true; video.setAttribute('autoplay', ''); }
+    if (!scrub) { video.loop = true; video.autoplay = true; video.setAttribute('autoplay', ''); }
     let failed = false;
     const fail = (why) => {
       if (failed) return; failed = true;
@@ -471,24 +472,47 @@
     const guard = setTimeout(() => { if (video.readyState < 2) fail('video-timeout'); }, 10000);
     video.addEventListener('loadeddata', () => clearTimeout(guard), { once: true });
 
-    if (desk) {
+    if (scrub) {
       // görgetésre pörgetett videó (a referencia mechanikája)
-      let target = 0, raf = 0;
-      const tick = () => { raf = 0; if (video.readyState >= 1 && Math.abs(video.currentTime - target) > .01) video.currentTime = target; };
+      // a lap tetején magától, hurokban ás; görgetéskor a görgetés vezérli
+      let target = 0, raf = 0, idle = true;
+      const tick = () => { raf = 0; if (!idle && video.readyState >= 1 && Math.abs(video.currentTime - target) > .01) video.currentTime = target; };
+      const idlePlay = () => { idle = true; video.loop = true; video.play().catch(() => {}); };
+      video.addEventListener('timeupdate', () => { if (idle) setStage(video.currentTime / (video.duration || 8) * stages.length); });
       const setup = () => {
         if (failed || !g) return;
         const dur = video.duration || 8;
         vidTrigger = ST.create({ trigger: '.hero', start: 'top top', end: '+=260%', pin: true, scrub: true, anticipatePin: 1,
-          onUpdate: s => { target = s.progress * (dur - .05); setStage(s.progress * stages.length); if (!raf) raf = requestAnimationFrame(tick); } });
+          onUpdate: s => {
+            if (s.progress < .003) { if (!idle) idlePlay(); return; }
+            if (idle) { idle = false; video.loop = false; video.pause(); }
+            target = s.progress * (dur - .05); setStage(s.progress * stages.length); if (!raf) raf = requestAnimationFrame(tick);
+          } });
         ST.refresh();
+        if (scrollY < 10) idlePlay(); else idle = false;
       };
       video.readyState >= 1 ? setup() : video.addEventListener('loadedmetadata', setup, { once: true });
     } else {
-      // mobil: némítva, hurokban; ha az automatikus lejátszás tiltott → valódi fotók
+      // mobil / csökkentett mozgás: némítva, hurokban; ha az automatikus lejátszás tiltott → valódi fotók
+      let userPaused = false;
       const p = video.play(); if (p) p.catch(() => fail('autoplay-blocked'));
       video.addEventListener('timeupdate', () => setStage(video.currentTime / (video.duration || 8) * stages.length));
+      // megállító gomb (akadálymentesség: mozgó tartalom leállítható)
+      const btn = d.createElement('button');
+      btn.type = 'button'; btn.className = 'hero__pause'; btn.setAttribute('aria-label', 'Animáció megállítása');
+      btn.innerHTML = '<svg viewBox="0 0 16 16" aria-hidden="true"><rect x="3.5" y="3" width="3" height="10" rx="1"/><rect x="9.5" y="3" width="3" height="10" rx="1"/></svg>';
+      btn.addEventListener('click', () => {
+        userPaused = !video.paused;
+        if (userPaused) video.pause(); else video.play().catch(() => {});
+        btn.classList.toggle('is-paused', userPaused);
+        btn.setAttribute('aria-label', userPaused ? 'Animáció indítása' : 'Animáció megállítása');
+        btn.innerHTML = userPaused ? '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.2v9.6a.6.6 0 0 0 .9.5l7.6-4.8a.6.6 0 0 0 0-1L5.9 2.7a.6.6 0 0 0-.9.5z"/></svg>' : '<svg viewBox="0 0 16 16" aria-hidden="true"><rect x="3.5" y="3" width="3" height="10" rx="1"/><rect x="9.5" y="3" width="3" height="10" rx="1"/></svg>';
+      });
+      heroEl.appendChild(btn);
+      const killBtn = () => btn.remove();
+      video.addEventListener('error', killBtn, { once: true });
       // ha kigörgetünk a hero-ból, megáll (akkumulátor)
-      if ('IntersectionObserver' in window) new IntersectionObserver(es => es.forEach(e => { if (failed) return; e.isIntersecting ? video.play().catch(() => {}) : video.pause(); })).observe(heroEl);
+      if ('IntersectionObserver' in window) new IntersectionObserver(es => es.forEach(e => { if (failed) { killBtn(); return; } e.isIntersecting ? (userPaused || video.play().catch(() => {})) : video.pause(); })).observe(heroEl);
     }
   }
 })();

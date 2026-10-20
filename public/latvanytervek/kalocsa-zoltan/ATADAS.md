@@ -164,3 +164,8 @@ Playwright: 1440 / 768 / 390 / 360 px – nincs vízszintes túlcsordulás, ninc
 3. A képek mind saját munkák-e; ha van fotó a kisgépről közelről, a „Szűk hely” blokkba jó lenne.
 4. Adatkezelési tájékoztató, impresszum adatai.
 5. Hívható időszak (ha ki szeretné írni).
+
+### Javítás – 2026-10-20 (térkép, asztali animáció)
+- Térkép: a CARTO csempék „API KEY REQUIRED” feliratot adtak → kulcs nélküli OpenStreetMap-csempék, CSS-szűrővel sötétítve. A bemutató buborék nem nyílik ki magától.
+- Asztali gép: a lap tetején a videó magától, hurokban ás; görgetéskor a görgetés vezérli.
+- Csökkentett mozgás (pl. Windows „Animációs effektusok: ki”): korábban csak állókép volt → most a videó hurokban megy rögzítés nélkül, megállító gombbal (mobilon is).
