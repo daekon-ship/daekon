@@ -74,11 +74,11 @@
   mqMobile.addEventListener?.('change', () => setMenu(false));
 
   /* ================= SZOLGÁLTATÁSOK ↔ FOTÓ =================
-     Desktopon a bal oldali keretben mindig az épp olvasott szolgáltatás fotója áll. */
+     Desktopon az épp olvasott szolgáltatás sorszáma (és ha több kép van, a fotója) áll a bal oldali keretben. */
   const items = $$('.svc__item'), shots = $$('.svc-photo figure'), svcNo = $('#svc-no');
   const activate = item => {
     items.forEach(i => i.classList.toggle('is-active', i === item));
-    shots.forEach(f => f.classList.toggle('is-on', f.dataset.zone === item.dataset.zone));
+    if (shots.length > 1) shots.forEach(f => f.classList.toggle('is-on', f.dataset.zone === item.dataset.zone));
     svcNo.textContent = $('.svc__no', item).textContent;
   };
   const svcIO = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) activate(e.target); }),
