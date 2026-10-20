@@ -139,3 +139,8 @@ Sávok: mész nyitókép + kék lábazat → elefántcsont → homok (szolgálta
 - **Képek mozdulatlanok:** sehol nincs nagyítás, eltolás vagy vágásos felfedés – minden fotó fix keretben, `object-fit: cover`, csak áttűnéssel jelenik meg. Galéria: egyenletes 4×2 rács (4:3), a munkafotók egy vonalban.
 - **Díszítés nélkül:** nincs oromzat-rajz, falrajz, házrajz; a „Miért” szekcióban rajz helyett valódi képkocka. Kártyák helyett vonalas rácsok, sarkos (2px) formák.
 - **Logó:** a jel maradt (tető + téglákból rakott V), a felirat Archivo Bold, grafit + terrakotta; sötét változat fehér.
+
+## 8. kör – minden munka + új nyitókép
+- **Nyitókép:** az első kép a fehérre meszelt, kék ajtós nádtetős ház (service1) – tisztább, világosabb; utána az about és a hero kép váltakozik (csak áttűnés). Előtöltve.
+- **„Minden munka egy kézből” blokk** a szolgáltatások alatt (`#minden-munka`, menüben is): 6 csoport, 37 tétel – falazat és szerkezet; alap, beton, szigetelés; felújítás és bővítés; tető és nyílászárók; udvar és kert; kerítés és fémszerkezet. Forrás: a cég Daibau-profiljának 30 szolgáltatása + valyog-mester.hu + onlinecegbazis (térkövezés, kerítés betonból vagy vasból, bontás) + a bemutatkozó videó (nyílászárók, tetőjavítás). **Egyeztetendő:** hogy az „Új építésű ház” és a fémszerkezetes tételek kerüljenek-e ki az oldalra.
+- Hero alcím, eyebrow és tényszalag („Teljes körű – az alaptól a térkövezésig”) a teljes körű kínálatot mondja; ajánlatkérő 2. lépésébe 5 új munkatípus; GYIK: „Csak vályogházakkal foglalkoznak?”; lábléc és meta description bővítve; LocalBusiness `knowsAbout` bővítve.
