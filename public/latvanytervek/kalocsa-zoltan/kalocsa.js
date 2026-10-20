@@ -287,6 +287,10 @@
       .bindPopup('<b>Itt épp munka folyik</b>Közműárok-ásás · folyamatban<br><small style="color:#A9B0B7">Példa jelölő – a valódi helyszín Zoltán jóváhagyásával kerül fel.</small><img src="img/kozmuarok-720.webp" alt="Közműárok – munkafotó">');
     setTimeout(() => job.openPopup(), 900);
     map.on('click', () => map.scrollWheelZoom.enable());
+    // a rögzített nyitókép miatt az elrendezés később változhat → méret újraszámolása
+    const fix = () => { map.invalidateSize(); };
+    setTimeout(fix, 300); setTimeout(fix, 1500); addEventListener('resize', fix);
+    if (window.ScrollTrigger) ScrollTrigger.addEventListener('refresh', fix);
   }
   if ('IntersectionObserver' in window) {
     const mo = new IntersectionObserver(es => { if (es[0].isIntersecting) { loadMap(); mo.disconnect(); } }, { rootMargin: '400px' });
