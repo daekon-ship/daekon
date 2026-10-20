@@ -54,6 +54,11 @@ final class Entitlements
         }
         if (!in_array('cloud_restore', $features, true)) {
             $lastEnd = $db->val("SELECT MAX(COALESCE(grace_until, current_period_end, updated_at)) FROM subscriptions WHERE workspace_id = ? AND status IN ('EXPIRED','CANCELLED','PAST_DUE')", [$wsId]);
+            // Lejárt PILOT után ugyanaz a türelmi idő jár: a tesztelő a felhőmentéseit még visszaállíthatja.
+            $pilotEnd = $db->val("SELECT MAX(valid_until) FROM entitlements WHERE workspace_id = ? AND source = 'pilot' AND valid_until IS NOT NULL", [$wsId]);
+            if ($pilotEnd !== null && ($lastEnd === null || (Clock::ts((string) $pilotEnd) ?? 0) > (Clock::ts((string) $lastEnd) ?? 0))) {
+                $lastEnd = $pilotEnd;
+            }
             if ($lastEnd !== null && (Clock::ts((string) $lastEnd) ?? 0) > $now - self::RESTORE_AFTER_EXPIRY_DAYS * 86400) {
                 $features[] = 'cloud_restore';
             }

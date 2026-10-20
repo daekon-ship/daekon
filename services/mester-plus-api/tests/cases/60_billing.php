@@ -113,6 +113,11 @@ return [
         [, $t] = call('POST', '/api/v1/auth/login', ['email' => $u['email'], 'password' => $u['password'], 'device' => $u['device']]);
         [, $me] = call('GET', '/api/v1/me', null, ['Authorization' => 'Bearer ' . $t['access_token']]);
         eq([$me['plan']['code'], in_array('cloud_backup', $me['entitlements'], true)], ['free', false], 'lejárat után FREE (nincs örök Pro)');
+        ok(in_array('cloud_restore', $me['entitlements'], true), 'lejárt pilot után a mentések még visszaállíthatók (türelmi idő)');
+        Clock::travel(31 * 86400);
+        [, $t] = call('POST', '/api/v1/auth/login', ['email' => $u['email'], 'password' => $u['password'], 'device' => $u['device']]);
+        [, $me] = call('GET', '/api/v1/me', null, ['Authorization' => 'Bearer ' . $t['access_token']]);
+        ok(!in_array('cloud_restore', $me['entitlements'], true), 'a türelmi idő után a visszaállítás sem örök');
     },
     'árlista: tervezet-árak DRAFT jelöléssel' => function () {
         [$s, $j] = call('GET', '/api/v1/plans');

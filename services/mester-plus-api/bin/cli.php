@@ -82,7 +82,8 @@ try {
                 throw new RuntimeException('Nincs ilyen aktív fiók (a tesztelő előbb regisztráljon az appban).');
             }
             if ($cmd === 'pilot-revoke') {
-                $app->db()->run("DELETE FROM entitlements WHERE workspace_id = ? AND source = 'pilot'", [$ws]);
+                // Nem törlünk: lejártra állítjuk, így a felhőmentések a türelmi időben még visszaállíthatók.
+                $app->db()->run("UPDATE entitlements SET valid_until = ? WHERE workspace_id = ? AND source = 'pilot' AND (valid_until IS NULL OR valid_until > ?)", [Clock::sql(), $ws, Clock::sql()]);
                 $app->guard()->audit('ENTITLEMENT_CHANGED', null, null, (int) $ws, null, ['source' => 'pilot', 'action' => 'revoke']);
                 $out(['revoked' => true]);
                 break;
