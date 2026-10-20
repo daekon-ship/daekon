@@ -296,7 +296,7 @@
     if (window.ScrollTrigger) g.registerPlugin(window.ScrollTrigger);
     g.set('.hero .eyebrow, .hero__lead, .hero__ctas, .hero__tel, .hero__bar li', { autoAlpha: 0, y: 16 });
     g.timeline({ defaults: { ease: 'power3.out' } })
-      .fromTo('.hero__media', { clipPath: 'inset(0 0 0 100%)' }, { clipPath: 'inset(0 0 0 0%)', duration: 1.2, ease: 'power3.inOut' }, 0)
+      .fromTo('.hero__film', { autoAlpha: 0 }, { autoAlpha: 1, duration: 1, ease: 'power1.out' }, 0)
       .to('.hero .eyebrow', { autoAlpha: 1, y: 0, duration: .6 }, .25)
       .add(() => hTitle.classList.add('is-in'), .3)
       .to('.hero__lead, .hero__ctas, .hero__tel', { autoAlpha: 1, y: 0, duration: .7, stagger: .08 }, .7)

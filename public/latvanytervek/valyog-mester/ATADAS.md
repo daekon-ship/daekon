@@ -135,6 +135,7 @@ Sávok: mész nyitókép + kék lábazat → elefántcsont → homok (szolgálta
 ## 7. kör – letisztult irány (ez az érvényes)
 - **Betű:** egyetlen család, **Archivo** változó (wght 400–900, wdth 75–125), helyben (`fonts/archivo-var.woff`, OFL). Címek 650–700, 86–92% szélesség, −0,02em betűköz; szöveg 400. A Cormorant/Manrope páros és minden dőlt serif kikerült. Méretek mérsékeltek: H1 max 3,6rem, H2 max 2,75rem.
 - **Színek:** fehér `#FFFFFF`, váltósáv `#F5F2ED`, grafit `#17191B`, másodlagos szöveg `#55595E`, egyetlen kiemelő: terrakotta `#B4532A` (fehér szöveggel 5:1). A kék, okker, textúrák, papírszemcse megszűnt.
-- **Nyitókép:** bal oldalt fehér szövegblokk, jobbra a képernyő széléig futó fotó (3 kép, lassú áttűnés + finom nagyítás, oldalsó jelzővonalak), a fotó alján fehér videókártya; alatta 4 oszlopos tényszalag. Belépéskor a fotó balról nyílik ki.
+- **Nyitókép:** bal oldalt fehér szövegblokk, jobbra a képernyő széléig futó fotó (3 kép, csak áttűnés – nincs nagyítás, csúszás), a fotó alján fehér videókártya; alatta 4 oszlopos tényszalag.
+- **Képek mozdulatlanok:** sehol nincs nagyítás, eltolás vagy vágásos felfedés – minden fotó fix keretben, `object-fit: cover`, csak áttűnéssel jelenik meg. Galéria: egyenletes 4×2 rács (4:3), a munkafotók egy vonalban.
 - **Díszítés nélkül:** nincs oromzat-rajz, falrajz, házrajz; a „Miért” szekcióban rajz helyett valódi képkocka. Kártyák helyett vonalas rácsok, sarkos (2px) formák.
 - **Logó:** a jel maradt (tető + téglákból rakott V), a felirat Archivo Bold, grafit + terrakotta; sötét változat fehér.
