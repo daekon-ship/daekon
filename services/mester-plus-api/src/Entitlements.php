@@ -43,9 +43,13 @@ final class Entitlements
         }
         $plan = $db->one('SELECT * FROM plans WHERE code = ?', [$sub['plan_code'] ?? 'free']);
         $features = array_values(array_filter(explode(',', (string) $plan['features'])));
-        foreach ($db->all('SELECT feature, valid_until FROM entitlements WHERE workspace_id = ?', [$wsId]) as $g) {
+        $pilotUntil = null;
+        foreach ($db->all('SELECT feature, source, valid_until FROM entitlements WHERE workspace_id = ?', [$wsId]) as $g) {
             if ($g['valid_until'] === null || (Clock::ts($g['valid_until']) ?? 0) > $now) {
                 $features[] = $g['feature'];
+                if ($g['source'] === 'pilot') {
+                    $pilotUntil = $g['valid_until'];
+                }
             }
         }
         if (!in_array('cloud_restore', $features, true)) {
@@ -56,7 +60,7 @@ final class Entitlements
         }
         $features = array_values(array_unique(array_intersect($features, self::FEATURES)));
         sort($features);
-        return $this->cache[$wsId] = ['sub' => $sub, 'plan' => $plan, 'features' => $features];
+        return $this->cache[$wsId] = ['sub' => $sub, 'plan' => $plan, 'features' => $features, 'pilot_until' => $pilotUntil];
     }
 
     public function can(int $wsId, string $feature): bool
@@ -100,7 +104,11 @@ final class Entitlements
         $s = $r['sub'];
         $graceDays = $this->app->config()->int('MP_ENTITLEMENT_CACHE_DAYS', 7);
         return [
-            'plan' => ['code' => $r['plan']['code'], 'name' => $r['plan']['name']],
+            // PILOT (béta-tesztelő): szerveroldali, lejáró jogosultság – nem előfizetés, nem bevétel; az app „Mester+ Pilot”-ként mutatja.
+            'plan' => $r['sub'] === null && $r['pilot_until'] !== null
+                ? ['code' => 'pilot', 'name' => 'Mester+ Pilot']
+                : ['code' => $r['plan']['code'], 'name' => $r['plan']['name']],
+            'pilot_until' => Clock::iso($r['pilot_until']),
             'subscription' => $s === null ? null : [
                 'status' => $s['status'], 'provider' => $s['provider'], 'current_period_end' => Clock::iso($s['current_period_end']),
                 'grace_until' => Clock::iso($s['grace_until']), 'auto_renewing' => (bool) $s['auto_renewing'],

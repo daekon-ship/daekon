@@ -96,6 +96,24 @@ return [
         [$s] = call('POST', '/api/v1/subscription/trial', null, $u['auth'] + idem(), ['app' => $on]);
         eq($s, 409, 'másodszor nem');
     },
+    'PILOT jogosultság: lejáró Pro-funkciók előfizetés nélkül, „Mester+ Pilot” néven; lejárat után FREE' => function () {
+        $u = user(false);
+        $ws = (int) $GLOBALS['T_DB']->val('SELECT m.workspace_id FROM accounts a JOIN workspace_members m ON m.account_id = a.id WHERE a.email = ?', [$u['email']]);
+        foreach (['cloud_backup', 'cloud_restore', 'online_quotes', 'multiple_devices'] as $f) {
+            $GLOBALS['T_DB']->run("INSERT INTO entitlements (workspace_id, feature, source, valid_until, created_at) VALUES (?, ?, 'pilot', ?, ?)", [$ws, $f, Clock::sql(Clock::now() + 30 * 86400), Clock::sql()]);
+        }
+        [, $me] = call('GET', '/api/v1/me', null, $u['auth']);
+        eq($me['plan'], ['code' => 'pilot', 'name' => 'Mester+ Pilot'], 'Mester+ Pilot');
+        ok(in_array('cloud_backup', $me['entitlements'], true) && in_array('online_quotes', $me['entitlements'], true), 'felhőmentés + online ajánlat');
+        ok($me['pilot_until'] !== null && $me['subscription'] === null, 'lejárattal, előfizetés nélkül');
+        [$s] = uploadBackup($u);
+        eq($s, 200, 'pilot: felhőmentés működik (a Pro mentési szabályával)');
+        eq((int) $GLOBALS['T_DB']->val('SELECT COUNT(*) FROM subscriptions WHERE workspace_id = ?', [$ws]), 0, 'nem jön létre előfizetés (nem bevétel)');
+        Clock::travel(31 * 86400);
+        [, $t] = call('POST', '/api/v1/auth/login', ['email' => $u['email'], 'password' => $u['password'], 'device' => $u['device']]);
+        [, $me] = call('GET', '/api/v1/me', null, ['Authorization' => 'Bearer ' . $t['access_token']]);
+        eq([$me['plan']['code'], in_array('cloud_backup', $me['entitlements'], true)], ['free', false], 'lejárat után FREE (nincs örök Pro)');
+    },
     'árlista: tervezet-árak DRAFT jelöléssel' => function () {
         [$s, $j] = call('GET', '/api/v1/plans');
         eq($s, 200, 'plans');
