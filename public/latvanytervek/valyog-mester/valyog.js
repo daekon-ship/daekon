@@ -95,39 +95,6 @@
   items.forEach(i => { svcIO.observe(i); i.addEventListener('mouseenter', () => activate(i)); });
   activate(items[0]);
 
-  /* ================= KÉPGALÉRIA =================
-     Kizárólag ellenőrzött saját anyag: képkockák Túró István 2026. márciusi bemutatkozó videójából.
-     A régi weboldal állóképei ismeretlen eredetűek – ide NEM kerülhetnek (csak „Hangulatkép” jelöléssel máshol). */
-  const WORKS = [
-    { t: 'Kőlábazat a salétromos rész leverése után', src: 'img/foto/kocka-labazat.webp', alt: 'Hosszú sárga utcai fal, alul szabaddá tett kőlábazattal' },
-    { t: 'A fal a lábazat leverése után', src: 'img/foto/kocka-fal.webp', alt: 'Hosszú vakolt utcai fal kőlábazattal, a háttérben a csapat dolgozik' },
-    { t: 'A levert vakolat elszállítása', src: 'img/foto/kocka-munka.webp', alt: 'Munkatárs viszi a levert vakolatdarabokat az utcán' },
-    { t: 'Törmelék a talicskában', src: 'img/foto/kocka-talicska.webp', alt: 'Talicska törmelékkel az utcán, munkatárs hozza a levert vakolatot' },
-    { t: 'Túró István a helyszínen', src: 'img/foto/kocka-magyaraz.webp', alt: 'Túró István magyaráz a felújítás alatt álló fal előtt' },
-    { t: 'Egyeztetés a munkáról', src: 'img/foto/kocka-istvan.webp', alt: 'Túró István a felújítás alatt álló ház mellett' },
-  ];
-  const mas = $('#masonry');
-  mas.innerHTML = WORKS.map((w, i) => `<li class="tile reveal"><button type="button" data-i="${i}" aria-label="Nagyítás: ${w.t}"><div class="tile__art"><img src="${w.src}" alt="${w.alt}" loading="lazy" width="720" height="900"><span class="tile__ph tile__ph--real">Saját munka</span></div><span class="tile__cap"><b>${w.t}</b></span></button></li>`).join('');
-  $$('.tile', mas).forEach(t => motion ? io.observe(t) : t.classList.add('is-in'));
-
-  /* lightbox */
-  const lb = $('#lb'); let cur = 0;
-  const visible = () => WORKS.map((_, i) => i);
-  const show = i => {
-    cur = i; const w = WORKS[i], nb = $('#lb-img');
-    nb.style.setProperty('--ar', '4/5');
-    nb.style.maxWidth = 'calc(76svh * 4 / 5)';
-    nb.innerHTML = `<img src="${w.src}" alt="${w.alt}">`;
-    $('#lb-cap').textContent = `${w.t} · képkocka Túró István bemutatkozó videójából (${i + 1}/${WORKS.length})`;
-  };
-  mas.addEventListener('click', e => { const b = e.target.closest('button[data-i]'); if (!b) return; show(+b.dataset.i); lb.showModal(); });
-  const step = d => { const v = visible(); show(v[(v.indexOf(cur) + d + v.length) % v.length]); };
-  $('.lb__prev').addEventListener('click', () => step(-1));
-  $('.lb__next').addEventListener('click', () => step(1));
-  $('.lb__close').addEventListener('click', () => lb.close());
-  lb.addEventListener('click', e => { if (e.target === lb) lb.close(); });
-  lb.addEventListener('keydown', e => { if (e.key === 'ArrowLeft') step(-1); if (e.key === 'ArrowRight') step(1); });
-
   /* ================= MOBIL DOKK ================= */
   const dock = $('#dock'), dockState = new Map();
   const dockIO = new IntersectionObserver(es => {

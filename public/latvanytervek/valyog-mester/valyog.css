@@ -250,7 +250,7 @@ body.menu-open .brand img { filter: brightness(0) invert(1); }
 
 /* ---------- 05 MUNKÁINK ---------- */
 .works { padding-block: var(--sec); background: var(--ink); color: #fff; }
-.case { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(1.5rem, 4vw, 4.5rem); align-items: center; margin: 0 0 clamp(4rem, 7vw, 6rem); }
+.case { margin-bottom: 0 !important; display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(1.5rem, 4vw, 4.5rem); align-items: center; margin: 0 0 clamp(4rem, 7vw, 6rem); }
 .case__imgs { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
 .case__imgs figure { margin: 0; min-width: 0; }
 .case__imgs figure > img { display: block; }

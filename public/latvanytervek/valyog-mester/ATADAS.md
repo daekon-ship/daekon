@@ -51,7 +51,7 @@ A cégadatokat online, független nyilvántartásban (e-cegjegyzek.hu) érdemes 
 ## Képek és videó – hitelesség
 | Anyag | Eredet | Hol látszik | Jelölés |
 |---|---|---|---|
-| `kocka-*.webp` (6 képkocka) | Túró István bemutatkozó videója (Facebook, 2026. március) | galéria, „Salétromos lábazat” blokk, bemutatkozás, két szolgáltatás (a „Miért” szekcióban kérésre nincs kép) | **Saját munka** |
+| `kocka-*.webp` (5 képkocka) | Túró István bemutatkozó videója (Facebook, 2026. március) | „Salétromos lábazat” blokk, bemutatkozás, két szolgáltatás (a képkocka-galéria kérésre törölve) (a „Miért” szekcióban kérésre nincs kép) | **Saját munka** |
 | `video-1-720.mp4` + poszter | ugyanez a videó | A mester szekció | forrásmegjelöléssel |
 | `service1`, `hero`, `about`, `service2` | a régi valyog-mester.hu oldal állóképei – **eredetük ismeretlen** | nyitókép, négy szolgáltatás, problémák | **Hangulatkép** |
 
