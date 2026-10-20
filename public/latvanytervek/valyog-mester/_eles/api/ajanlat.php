@@ -42,6 +42,10 @@ function config(): array {
              'SMTP_SECURE', 'MAIL_TRANSPORT', 'DATA_DIR', 'HASH_SALT', 'ALLOWED_ORIGIN'];
     $cfg = [];
     $iniPath = getenv('VALYOG_CONFIG') ?: dirname(__DIR__, 2) . '/private/valyog-ajanlat.ini';
+    if (!getenv('VALYOG_CONFIG') && !is_readable($iniPath)) {
+        // DAEKON Site Factory: /srv/sites/<domain>/config/ (a kiadás: /srv/sites/<domain>/releases/<ts>/api/)
+        $iniPath = dirname(__DIR__, 3) . '/config/valyog-ajanlat.ini';
+    }
     $ini = is_readable($iniPath) ? (parse_ini_file($iniPath, false, INI_SCANNER_RAW) ?: []) : [];
     foreach ($keys as $k) {
         $v = getenv($k);

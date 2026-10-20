@@ -78,3 +78,31 @@ server { listen 80; listen 443 ssl; server_name www.valyogmester.hu valyogmester
 
 - A régi `valyog-mester.hu` oldalt nem módosítja és nem irányítja át. Átirányítás (301 → valyogmester.hu) csak az ügyfél kifejezett kérésére, a régi tárhely (Emergent) beállításaiban.
 - Nem használ sütit, analitikát, külső betűtípust vagy beágyazott videót, ezért sütibanner nem kell. Ha később analitika kerül rá, előbb hozzájáruláskezelés és a tájékoztató frissítése szükséges.
+
+## 7. DAEKON VPS (Site Factory) – a tényleges telepítési út (2026-10-20)
+
+A valyogmester.hu a DAEKON saját VPS-én fut (OVH, nginx + PHP-FPM 8.4), a **DAEKON Site Factory** kezeli – nem FTP-vel, nem kézi másolással.
+A fenti Apache-/nginx-minta (3. pont) általános tárhelyre szól; a VPS-en a Factory generálja a vhostot.
+
+| Mi | Hol |
+|---|---|
+| Webhely | `/srv/sites/valyogmester.hu/` (saját Linux-felhasználó és PHP-pool, `open_basedir`, kiadások: `releases/<ts>`, `current` → atomikus váltás) |
+| Ajánlatkérő beállítása | `/srv/sites/valyogmester.hu/config/valyog-ajanlat.ini` (root:<site> 0640, webgyökéren kívül) – az `ajanlat.php` innen olvas, ha nincs `VALYOG_CONFIG` / `private/` |
+| Ajánlatkérő adatmappa | `/srv/sites/valyogmester.hu/shared/ajanlat-adat` (csak token-/korlátfájlok) |
+| Előnézet | `https://valyogmester.preview.daekon.hu/` – jelszavas, noindex; a preview kiadás **nem** olvassa a production konfigot (más könyvtárszint), ezért onnan levél soha nem megy ki |
+
+Csomag a VPS-re (a repó gyökeréből; az Apache-fájlok nginx alatt hatástalanok, ezért kimaradnak):
+
+```bash
+python3 public/latvanytervek/valyog-mester/_forras/build_eles.py --out /tmp/vm [--vazlat]
+rm -f /tmp/vm/.htaccess /tmp/vm/.user.ini /tmp/vm/api/.htaccess
+tar --owner=0 --group=0 -czf /tmp/vm.tgz -C /tmp/vm .
+# a VPS-en:
+sudo daekon-site deploy valyogmester.hu /tmp/vm.tgz --preview   # előnézet
+sudo daekon-site promote valyogmester.hu                       # a preview-n QA-zott kiadás élesítése (jóváhagyás után)
+sudo daekon-site rollback valyogmester.hu                      # visszaállítás az előző kiadásra
+```
+
+A nginx-vhost a biztonsági fejléceket (nosniff, X-Frame-Options, Referrer-Policy, Permissions-Policy, HSTS a tanúsítvány után) maga adja;
+a `.htaccess` CSP-je nginx alatt nem érvényes. Cloudflare-proxy esetén a valós látogatói IP-t a szerver `CF-Connecting-IP`-ből veszi
+(`/etc/nginx/conf.d/daekon-cloudflare-realip.conf`), így az 5 kérés / IP / óra korlát látogatónként működik.
