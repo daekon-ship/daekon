@@ -105,5 +105,13 @@ A cégadatokat online, független nyilvántartásban (e-cegjegyzek.hu) érdemes 
 ## Fájlok
 `index.html`, `valyog.css`, `valyog.js`, `adatkezeles.html` – az oldal · `fonts/` · `img/foto/` · `arculat/` (logócsalád, favicon, `logo-allo-vilagos.png`) · `_eles/` (htaccess, robots, 404 – csak az éles csomagba kerülnek) · `_forras/` (`build_eles.py`, `logo.py`, `media.py`, `og.html`, forrásbetű) · `koncepcio.html` (az 1. kör irányai + a végleges rendszer).
 
+## Élesítés (2026-10-20)
+- **Adatkezelési tájékoztató:** a TURPA BUILD Kft. mind a 6 pontot jóváhagyta (adatvédelmi e-mail: valyog.mester@gmail.com; szerződés 5 év,
+  számviteli bizonylat 8 év; megkeresés legfeljebb 1 év; aláírt adatfeldolgozói megállapodás a DAEKON-nal; Google Ireland Ltd.; hatály: 2026. október 20.) –
+  a DAEKON 2026-10-20-i közlése alapján.
+- **Képek / videó:** az ügyfél felhasználási jóváhagyása a DAEKON közlése szerint rendelkezésre áll (saját anyag: bemutatkozó videó és képkockái). Az
+  **ismeretlen eredetű „Hangulatkép” fotók (`service1`, `hero`, `about`, `service2`) a DAEKON döntésére lekerültek** – a jóváhagyás harmadik fél anyagára nem
+  terjedhetett ki igazoltan. Helyettük kizárólag saját képkockák szerepelnek (nyitókép, szolgáltatások, tünetek).
+
 ## Előzmények
 **10.: telefonos véglegesítés** – űrlap, PHP, SMTP eltávolítva; hívásgombok, mobil hívássáv, egyszerűsített adatkezelés; VPS-előnézet. 1. kör: rajzolt „Falmetszet” · 2–3.: a régi oldal képei és a videó, a helyőrzők törölve · 4–6.: paletták · 7.: letisztult Archivo-irány · 8.: képkeretek, teljes munkalista · **9.: véglegesítés** – hitelesített adatok, igazolt szolgáltatások, működő backend, SEO, éles build.
