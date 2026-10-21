@@ -69,7 +69,7 @@ home = f'''
     </section>
 
     <section class="ed rv o3" aria-labelledby="h-maria">
-      <p class="eyebrow"><span class="no">02</span>A szakmai vezető</p>
+      <p class="eyebrow t"><span class="no">02</span>A szakmai vezető</p>
       <div class="pro">
         <figure class="portrait" aria-label="Horváth Mária">
           <!-- FOTÓCSERE: a .portrait-fr elejére: <img src="foto/horvath-maria.jpg" alt="Horváth Mária" width="400" height="500"> -->
@@ -91,7 +91,7 @@ home = f'''
     </section>
 
     <section class="ed rv o3" aria-labelledby="h-nev">
-      <p class="eyebrow"><span class="no">03</span>A nevünk</p>
+      <p class="eyebrow g"><span class="no">03</span>A nevünk</p>
       <h2 class="h2" id="h-nev">Multi · Cont · Center</h2>
       {NAME_SVG}
       <ul class="chips3">
@@ -103,7 +103,7 @@ home = f'''
     </section>
 
     <section class="ed rv o6" aria-labelledby="h-net">
-      <p class="eyebrow"><span class="no">04</span>Partnerközpont</p>
+      <p class="eyebrow t"><span class="no">04</span>Partnerközpont</p>
       <h2 class="h2" id="h-net">Kapcsolat más vállalkozásokkal</h2>
       <p class="ed-p">Ügyfeleink gyakran keresnek ügyvédet, biztosítót, szoftvert. Összekötjük őket azokkal a cégekkel, akiket jó szívvel ajánlunk.</p>
       <ul class="net-l">
@@ -111,6 +111,7 @@ home = f'''
         <li><a href="partnerek.html#ajanlo"><span class="ni t">⇄</span><span><b>Ajánlói rendszer</b> saját linkkel ajánljuk egymást</span></a></li>
         <li><a href="partnerek.html#ajanlatok"><span class="ni g">%</span><span><b>Kuponajánlatok</b> kedvezmények ügyfeleinknek</span></a></li>
       </ul>
+      <div class="p-strip"><span class="p-strip-k">Partnereink <span class="tag demo">Minta</span></span><div data-mod="partner-chips"></div></div>
     </section>
 
     <section class="cta o7" aria-labelledby="h-cta">

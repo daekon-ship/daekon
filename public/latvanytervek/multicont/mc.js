@@ -147,6 +147,11 @@
       return '<a class="pmini" href="partner.html?id=' + encodeURIComponent(p.id) + '" style="text-decoration:none;color:inherit"><span class="plogo">' + esc(p.rov) + '</span><span><b>' + esc(p.nev) + '</b><small>' + esc(p.kategoria) + (p.minta ? ' · minta' : '') + '</small></span></a>';
     }).join('') + '<p class="note"><a href="partnerek.html#jelentkezes">Legyen Ön is partnerünk →</a></p>';
   });
+  $$('[data-mod="partner-chips"]').forEach(function (m) {
+    m.innerHTML = partnerek.map(function (p) {
+      return '<a class="pchip" href="' + (p.url ? esc(url(p.url)) + '" target="_blank" rel="noopener' : 'partner.html?id=' + encodeURIComponent(p.id)) + '"><span class="plogo">' + esc(p.rov) + '</span><span><b>' + esc(p.nev) + '</b><small>' + esc(p.kategoria) + '</small></span></a>';
+    }).join('');
+  });
   d.addEventListener('click', function (e) {
     var b = e.target.closest('[data-code]'); if (!b) return;
     var c = b.getAttribute('data-code');

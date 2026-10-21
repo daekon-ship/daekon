@@ -22,12 +22,13 @@ window.MC = {
      statusz: 'kozzeteve' | 'piszkozat' · tervezet: true = még nem elfogadott szabály */
   cikkek: [
     {
-      id: 'uj-kata-2027-tervezet', datum: '2026-10-13', frissitve: '2026-10-14', statusz: 'kozzeteve',
+      id: 'uj-kata-2027-tervezet', datum: '2026-10-13', frissitve: '2026-10-21', statusz: 'kozzeteve',
       temak: ['KATA', 'Vállalkozásindítás'], kiemelt: true, tervezet: true,
       hataly: 'Tervezet: 2027. január 1-jétől lépne hatályba. Még nem elfogadott jogszabály.',
       cim: 'Új KATA 2027-től: társadalmi egyeztetésen a tervezet',
       osszefoglalo: 'Főállásban havi 100 000, mellékállásban 50 000 Ft tételes adó, 22 millió Ft-os bevételi határ, és újra lehetne cégeknek számlázni. A mostani katások a régi rendszerben maradhatnak.',
       torzs: [
+        'Friss állapot (2026. október 21.): a javaslat továbbra is tervezet, az Országgyűlés elé még nem került. Ha a törvényt elfogadják, ezt az összefoglalót frissítjük.',
         'A Pénzügyminisztérium 2026. október 6-án társadalmi egyeztetésre bocsátotta a kisadózó vállalkozások tételes adójának (KATA) új szabályait. A tervezet még nem elfogadott törvény, a részletek változhatnak.',
         'A tervezet szerint 2027-től a főállású vállalkozók havi 100 000 Ft, a mellékállásúak havi 50 000 Ft tételes adót fizetnének. Újra választhatnák a KATA-t a nyugdíjasok, az egyetemi hallgatók és a mellékállású vállalkozók is.',
         'Az éves bevételi határ 18 millió forintról 22 millió forintra emelkedne, és ismét lehetne cégeknek is számlázni. A cégektől származó bevétel 15%-kal adózna, amelybe a megfizetett tételes adó beszámít. Egész évben havi 100 000 Ft-ot fizető főállású vállalkozónál 8 millió Ft éves céges bevétel felett keletkezne többletadó.',
@@ -37,7 +38,9 @@ window.MC = {
       ],
       forrasok: [
         { nev: 'Telex: Így változik a kata', url: 'https://telex.hu/gazdasag/2026/10/06/kata-adozas-valtozas-ekho-kiknek-hogyan-magyar-peter-bejelentes-reszletek', datum: '2026. 10. 06.' },
-        { nev: 'Kontroll: Így változik a kata', url: 'https://kontroll.hu/cikk/belfold/2026/10/13/igy-valtozik-a-kata-megduplazodhat-a-foallasu-vallalkozok-adoja', datum: '2026. 10. 13.' }
+        { nev: 'Kontroll: Így változik a kata', url: 'https://kontroll.hu/cikk/belfold/2026/10/13/igy-valtozik-a-kata-megduplazodhat-a-foallasu-vallalkozok-adoja', datum: '2026. 10. 13.' },
+        { nev: 'KATA 2027 – minden, amit eddig tudni lehet (kata2027.hu)', url: 'https://kata2027.hu/tudastar/kata-2027', datum: 'megtekintve 2026. 10. 21.' },
+        { nev: 'KATA adózás 2027 – hírek (xprojekt.hu)', url: 'https://xprojekt.hu/kata-hirek', datum: 'megtekintve 2026. 10. 21.' }
       ],
       kapcsolodo: ['kata-2026-szabalyai']
     },

@@ -207,3 +207,9 @@ Főcím és alcím · „30 év” · végzettségek és pálya · idézet · �
 
 ### Fotócsere
 `_forras/p_home.py` és `_forras/p_svc.py`: a `.portrait-fr` elejére `<img src="foto/horvath-maria.jpg" alt="Horváth Mária">` (álló, 4:5); a CSS automatikusan kitölti a keretet. Utána `python3 _forras/build.py`.
+
+## 15. 24. kör – Marcsi kéréseinek újbóli átnézése, csiszolás (2026. 10. 21.)
+- **„Aktuális hírek, pl. KATA-változások”:** a KATA 2027-cikk frissítve (október 21-i állapot: még tervezet, az Országgyűlés elé nem került); két új forrással. Elfogadás után frissítendő.
+- **„Lehet vidám, de a szemnek kellemes”:** a kezdőlapi rovatszámok a logó három színét kapták (01 kék, 02 türkiz, 03 arany, 04 türkiz) – visszafogottan.
+- **„Átlinkelés más partnerek oldalára”:** a Partnerközpont rovatban partnersor (jelenleg minta), kattintásra a partner oldalára visz; valódi partnernél közvetlenül a partner weboldalára.
+- Tesztek: 17 oldal × 8 szélesség – nincs túlcsordulás, nincs konzolhiba; kalkulátorok, visszahívás, Tudástár, dokumentumtár, partnerek, kezelőfelület működik.
