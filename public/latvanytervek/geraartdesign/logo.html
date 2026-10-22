@@ -26,7 +26,7 @@
 .kartya .kep{aspect-ratio:4/5;display:grid;place-items:center;background:var(--krem);padding:14%}
 .kartya img{max-height:100%;width:auto;max-width:100%}
 .kartya .sz{font:450 12px/1 var(--sans);letter-spacing:.14em;color:var(--taupe)}
-.kartya h3{font-size:19px}
+.kartya h3{font-size:16px}
 .kartya p{margin:0;font-size:13.5px;color:var(--halk);line-height:1.5}
 .valasztva{display:none;font:500 10.5px/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--papir);background:var(--mely);padding:7px 9px;align-self:flex-start}
 .kartya.kedvenc .valasztva{display:inline-block}
@@ -67,9 +67,9 @@
 .nj-elo img{width:30%;height:auto}
 .nj-hat{right:0;bottom:0;background:var(--dio);color:#E2D3BF;transform:rotate(4deg);padding:7% 8%;display:flex;flex-direction:column;justify-content:space-between;font-size:clamp(9px,.8vw,12px);line-height:1.5}
 .nj-hat img{width:17%;height:auto;align-self:flex-start}
-.nj-hat b{display:block;font:400 clamp(12px,1.1vw,16px)/1.2 var(--serif);color:#F1E7DA;margin-bottom:2px}
-.m-tabla{grid-column:span 5;aspect-ratio:5/5;background-size:300px;display:grid;place-items:center}
-.m-tabla img{width:46%;mix-blend-mode:multiply;opacity:.78;filter:contrast(1.05)}
+.nj-hat b{display:block;font:300 clamp(11px,1vw,15px)/1.2 var(--cim);color:#F1E7DA;margin-bottom:2px}
+.m-tabla{grid-column:span 5;aspect-ratio:5/5;display:grid;place-items:center;background:#D9C6AE}
+.m-tabla img{width:44%;mix-blend-mode:multiply;opacity:.55}
 .m-fejlec{grid-column:span 7;aspect-ratio:7/4;padding:9% 6% 0;display:flex;flex-direction:column;background:#E3D3C1}
 .bongeszo{background:var(--krem);flex:1;box-shadow:0 30px 50px -30px rgba(59,50,43,.5);display:flex;flex-direction:column;overflow:hidden}
 .bongeszo-sav{height:26px;background:#E9DFD2;display:flex;align-items:center;gap:6px;padding:0 10px}
@@ -80,14 +80,15 @@
 .mini-fej nav{display:flex;gap:clamp(8px,1.4vw,20px);font-size:clamp(9px,.85vw,12px);color:var(--mely)}
 .mini-fej nav b{background:var(--mely);color:var(--papir);padding:5px 9px;font-weight:500}
 .mini-hero{padding:2% 6%;display:grid;grid-template-columns:1.1fr 1fr;gap:6%;align-items:center;flex:1}
-.mini-hero h4{margin:0;font:400 clamp(12px,1.5vw,22px)/1.15 var(--serif);color:var(--mely)}
-.mini-hero div{height:100%;min-height:60px;background-size:160px}
+.mini-hero h4{margin:0;font:300 clamp(11px,1.2vw,18px)/1.2 var(--cim);color:var(--mely);letter-spacing:-.01em}
+.mini-kep{height:100%;min-height:60px;background:radial-gradient(circle at 60% 38%,#F6EFE5 0 22%,transparent 22.5%),linear-gradient(#EADFD1 0 0) 0 0/100% 70% no-repeat,#E0D2C0;position:relative}
+.mini-kep::after{content:"";position:absolute;left:24%;right:14%;bottom:22%;height:26%;background:#BE9670;border-top:3px solid #4F4136}
 .m-social{grid-column:span 5;aspect-ratio:5/4;display:grid;place-items:center;background:#EFE5D8}
 .profil{width:78%;background:var(--papir);box-shadow:0 30px 50px -30px rgba(59,50,43,.5)}
-.profil-borito{aspect-ratio:3/1;background-size:220px}
+.profil-borito{aspect-ratio:3/1;background:radial-gradient(circle at 72% 120%,#BE9670 0 30%,transparent 30.5%),radial-gradient(circle at 30% -10%,#F6EFE5 0 34%,transparent 34.5%),#4F4136}
 .profil-test{padding:0 7% 7%;display:flex;flex-direction:column;align-items:flex-start}
 .profil-test img{width:30%;border-radius:50%;margin-top:-15%;border:4px solid var(--papir);background:var(--papir)}
-.profil-test b{font:400 clamp(15px,1.4vw,20px)/1.2 var(--serif);color:var(--mely);margin-top:10px}
+.profil-test b{font:400 clamp(14px,1.2vw,18px)/1.2 var(--cim);color:var(--mely);margin-top:10px}
 .profil-test span{font-size:12px;color:var(--halk)}
 .profil-test i{display:flex;gap:8px;margin-top:12px;font-style:normal}
 .profil-test i em{font:500 11px/1 var(--sans);font-style:normal;padding:8px 12px;background:var(--mely);color:var(--papir)}
@@ -106,7 +107,7 @@
 .dontes h2{color:#F1E7DA}
 .dontes p{color:#CDBFAE}
 .dontes-sor{display:flex;flex-wrap:wrap;gap:10px;margin:30px 0}
-.dontes-sor button{min-width:56px;height:56px;border:1px solid rgba(230,218,203,.3);background:transparent;color:#F1E7DA;font:400 22px/1 var(--serif);cursor:pointer;transition:background .3s}
+.dontes-sor button{min-width:56px;height:56px;border:1px solid rgba(230,218,203,.3);background:transparent;color:#F1E7DA;font:300 20px/1 var(--cim);cursor:pointer;transition:background .3s}
 .dontes-sor button[aria-pressed=true]{background:#EADDCB;color:var(--dio)}
 .dontes .btn--vonal{color:#F1E7DA;border-color:rgba(230,218,203,.5)}
 .dontes .btn--vonal::after{background:#EADDCB}
@@ -144,12 +145,12 @@
   <section class="lv-intro">
     <div>
       <p class="cimke">geraartdesign · logóválasztó</p>
-      <h1>Öt változat, <em>egy közös alapgondolat.</em></h1>
+      <h1>Öt geometrikus G, <span class="hang">egy közös alap.</span></h1>
     </div>
     <div>
       <p class="halk">Mindegyik ugyanarra épül, mégis máshogy hat. Nézze meg őket egymás mellett, nagyban, sötét és világos háttéren, névjegyen és fejlécként — és válassza ki a legerősebbet.</p>
       <ul class="alap">
-        <li><b>Központ</b>nagy, nyomtatott G</li>
+        <li><b>Központ</b>nagy, szerkesztett G — nem betűtípusból</li>
         <li><b>Alatta</b>a geraartdesign név</li>
         <li><b>Körben</b>vékony, szögletes keret</li>
         <li><b>Színek</b>bézs, homok, taupe, karamell</li>
@@ -184,7 +185,7 @@
 <section class="szakasz">
   <div class="wrap">
     <div class="szakasz-fej">
-      <div><p class="cimke">Változatok</p><h2>Ugyanaz a logó, <em>minden felületre</em></h2></div>
+      <div><p class="cimke">Változatok</p><h2>Ugyanaz a logó, <span class="hang">minden felületre</span></h2></div>
       <p>Fő logó, világos és sötét háttérre, egyszínű (pecséthez, gravírozáshoz), kompakt jel (kis méretre, kedvencikonnak) és közösségi profilkép. Minden fájl SVG — bármekkorára nagyítható.</p>
     </div>
     <div class="valtozatok" id="valtozatok"></div>
@@ -194,7 +195,7 @@
 <section class="szakasz" style="padding-top:0">
   <div class="wrap">
     <div class="szakasz-fej">
-      <div><p class="cimke">Használatban</p><h2>Névjegyen, fejlécben, <em>a fán</em></h2></div>
+      <div><p class="cimke">Használatban</p><h2>Névjegyen, fejlécben, <span class="hang">pecsétként</span></h2></div>
       <p>Így mutat a kiválasztott változat a gyakorlatban. A névjegy hátoldalán a telefonszám valós, a többi adat egyeztetés után kerül rá.</p>
     </div>
     <div class="mock-racs">
@@ -204,17 +205,17 @@
           <div class="nj nj-hat"><img data-v="kompakt-sotet" alt=""><div><b>Gera Péter</b>bútorasztalos · intarziakészítő<br>+36 20 276 7939</div></div>
         </div>
       </figure>
-      <figure class="mock m-tabla" style="background-image:url(img/furner-juhar.jpg)"><figcaption>Beégetett jelölés fán</figcaption><img data-v="mono" alt=""></figure>
+      <figure class="mock m-tabla"><figcaption>Pecsét, gravírozás</figcaption><img data-v="mono" alt=""></figure>
       <figure class="mock m-fejlec"><figcaption>Weboldal fejléce</figcaption>
         <div class="bongeszo">
           <div class="bongeszo-sav"><i></i><i></i><i></i><span></span></div>
           <div class="mini-fej"><img data-v="fejlec" alt=""><nav><span>Műhely</span><span>Munkák</span><span>Anyagok</span><b>Ajánlatkérés</b></nav></div>
-          <div class="mini-hero"><h4>Egyedi bútorok, amelyeken a fa rajzolata <em>maga a díszítés.</em></h4><div style="background-image:url(img/furner-korte.jpg)"></div></div>
+          <div class="mini-hero"><h4>Méretre tervezett bútorok, <span class="hang">tiszta arányokkal.</span></h4><div class="mini-kep"></div></div>
         </div>
       </figure>
       <figure class="mock m-social"><figcaption>Közösségi profil</figcaption>
         <div class="profil">
-          <div class="profil-borito" style="background-image:url(img/furner-dio.jpg)"></div>
+          <div class="profil-borito"></div>
           <div class="profil-test"><img data-v="social" alt=""><b>Gera Art Design</b><span>Bútorasztalos · intarzia</span><i><em>Üzenet</em><em>Követés</em></i></div>
         </div>
       </figure>
@@ -225,7 +226,7 @@
 <section class="szakasz" style="padding-top:0">
   <div class="wrap">
     <div class="szakasz-fej">
-      <div><p class="cimke">Egymás mellett</p><h2>Mind az öt, <em>három háttéren</em></h2></div>
+      <div><p class="cimke">Egymás mellett</p><h2>Mind az öt, <span class="hang">három háttéren</span></h2></div>
       <p>Törtfehér, púderes bézs és sötét dió alapon — így a legkönnyebb látni, melyik bírja jól a környezetváltást.</p>
     </div>
     <div class="osszevet" id="osszevet"></div>
@@ -235,7 +236,7 @@
 <section class="dontes">
   <div class="wrap">
     <p class="cimke" style="color:var(--taupe-v)">Választás</p>
-    <h2>Melyik legyen <em>a geraartdesign arca?</em></h2>
+    <h2>Melyik legyen <span style="color:#D9B48E">a geraartdesign arca?</span></h2>
     <div class="dontes-sor" id="dontesSor"></div>
     <p id="dontesSzoveg">Még nincs kiválasztva változat. Kattintson egy számra, majd jelezze vissza a választását — a végleges logót a kiválasztott irányban finomítom.</p>
     <a class="btn btn--vonal" href="index.html" id="dontesLink">Vissza a weboldalhoz</a>
@@ -246,16 +247,16 @@
 (function () {
   const $ = s => document.querySelector(s);
   const L = [
-    { nev: 'Klasszikus prémium', egy: 'Caslon-G, dupla hajszálkeret, ritkított név.',
-      g: 'Klasszikus Caslon-talpas, erős, nyugodt forma', t: 'Ritkított, vékony groteszk kisbetűk', k: 'Kettős hajszálvonal, mint egy berakott szegély', h: 'Időtálló, megbízható, „régi műhely, mai szemmel”' },
-    { nev: 'Finom elegáns', egy: 'Bodoni-G, kurzív név, a keretet a név nyitja meg.',
-      g: 'Magas kontrasztú Bodoni, hajszálvékony vonásokkal', t: 'Kurzív Cormorant — kézírásos melegség', k: 'Egyetlen hajszálvonal, alul a név szakítja meg', h: 'Nőies, kifinomult, divatházas hangulat' },
-    { nev: 'Modern minimál', egy: 'Geometrikus, rajzolt G, egyvonalas keret.',
-      g: 'Saját rajzolású, körívből épített G', t: 'Geometrikus Jost, nyugodt ritmus', k: 'A G vonalvastagságával rokon, egységes keret', h: 'Letisztult, mai, építészeti' },
-    { nev: 'Művészi – intarzia', egy: 'Napsugár-furnérból kirakott G, berakott sarokkockák.',
-      g: 'Erős Bodoni-G, belsejében legyezős furnérberakás', t: 'Ritkított, közepes súlyú groteszk', k: 'Kettős szegély sarokkockákkal — mint egy intarziás táblán', h: 'Egyedi, mesterségre utaló, művészi' },
-    { nev: 'Extra letisztult luxus', egy: 'Tenor-G, fekvő keret kifutó sarkokkal, ritkított név.',
-      g: 'Finoman kiszélesedő, talp nélküli G', t: 'Erősen ritkított Tenor Sans', k: 'Fekvő téglalap, a sarkokon túlfutó vonalakkal', h: 'Csendes luxus, sok levegővel' }
+    { nev: 'Monolit', egy: 'Vastag, körből szerkesztett G, vízszintes vágás, finom keret.',
+      g: 'Körből szerkesztett, vastag G — vízszintesen vágott felső végződéssel', t: 'Unbounded, széles geometrikus groteszk', k: 'Egyetlen vékony téglalap', h: 'Erős, magabiztos, azonnal felismerhető' },
+    { nev: 'Négyzet', egy: 'Derékszögekből épített G, a kerettel azonos vonal.',
+      g: 'Négyzetből, sávokból szerkesztett szögletes G', t: 'Michroma, technikai, építészeti', k: 'Erősebb vonal, a G-vel egy rendszerben', h: 'Építészeti, precíz, „asztalosi pontosság”' },
+    { nev: 'Sablon', egy: 'Sablonvágásos G leválasztott szárral, sarokjelek.',
+      g: 'Gyűrű-G, három helyen elvágva, mint egy festősablon', t: 'Lexend Zetta, nagyon széles', k: 'Hajszálkeret, a sarkokon erős jelekkel', h: 'Műhelyes, kreatív, kortárs' },
+    { nev: 'Vonal', egy: 'Kontúros G karamell színben, kettős hajszálkeret.',
+      g: 'A Monolit körvonala — könnyed, kifinomult', t: 'Josefin Sans, art deco geometria', k: 'Kettős hajszálvonal', h: 'Elegáns, nőiesebb, prémium' },
+    { nev: 'Szerkesztés', egy: 'Kétszínű G szerkesztőkörrel és mérőjelekkel.',
+      g: 'Tömör G, alsó fele karamell; mögötte szerkesztőkör, tengelyek', t: 'Urbanist, nyugodt, nyitott', k: 'Hajszálkeret mérővonalkákkal', h: 'Tervezői, művészi, „rajzasztal”' }
   ];
   const HATTER = [
     { n: 'Törtfehér', c: '#FBF7F1', f: 'fo' }, { n: 'Homok', c: '#EADFD0', f: 'fo' },

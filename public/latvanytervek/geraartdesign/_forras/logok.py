@@ -1,274 +1,195 @@
-"""geraartdesign – 5 logóváltozat generálása (körvonalazott betűkkel, SVG).
+"""geraartdesign – 5 logóváltozat, 2. kör: saját szerkesztésű, geometrikus G-k.
 
+A G-k NEM betűtípusból jönnek: körből, négyzetből, sávokból szerkesztett formák.
+Csak a „geraartdesign” felirat betű (körvonalazva), változatonként más geometrikus groteszk.
 Futtatás:  python3 _forras/logok.py   (a geraartdesign mappából)
-Betűk: Google Fonts (OFL) – a google/fonts repó ofl/ mappájából, lásd FONT_DIR.
-Kimenet:  arculat/logo-<n>/geraartdesign-<n>-<valtozat>.svg
 """
 import math, os
 from fontTools.ttLib import TTFont
 from fontTools.varLib import instancer
 from fontTools.pens.svgPathPen import SVGPathPen
-from fontTools.pens.boundsPen import BoundsPen
 from fontTools.pens.transformPen import TransformPen
 
 FONT_DIR = os.environ.get('FONT_DIR', '/home/claude/google/fonts/ofl/')
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, '..', 'arculat')
 
-_cache = {}
-def font(path, axes=None):
-    key = (path, tuple(sorted((axes or {}).items())))
-    if key not in _cache:
-        f = TTFont(FONT_DIR + path)
-        if axes:
-            f = instancer.instantiateVariableFont(f, axes)
-        _cache[key] = f
-    return _cache[key]
-
 FONTS = {
-    'caslon':   ('librecaslondisplay/LibreCaslonDisplay-Regular.ttf', None),
-    'bodoni':   ('bodonimoda/BodoniModa[opsz,wght].ttf', {'opsz': 96, 'wght': 400}),
-    'bodoniB':  ('bodonimoda/BodoniModa[opsz,wght].ttf', {'opsz': 96, 'wght': 800}),
-    'corm_it':  ('cormorantgaramond/CormorantGaramond-Italic[wght].ttf', {'wght': 500}),
-    'comm300':  ('commissioner/Commissioner[FLAR,VOLM,slnt,wght].ttf', {'wght': 300, 'FLAR': 0, 'VOLM': 0, 'slnt': 0}),
-    'comm450':  ('commissioner/Commissioner[FLAR,VOLM,slnt,wght].ttf', {'wght': 450, 'FLAR': 0, 'VOLM': 0, 'slnt': 0}),
-    'jost':     ('jost/Jost[wght].ttf', {'wght': 350}),
-    'tenor':    ('tenorsans/TenorSans-Regular.ttf', None),
+    'unb':   ('unbounded/Unbounded[wght].ttf', {'wght': 400}),
+    'mich':  ('michroma/Michroma-Regular.ttf', None),
+    'zetta': ('lexendzetta/LexendZetta[wght].ttf', {'wght': 400}),
+    'jos':   ('josefinsans/JosefinSans[wght].ttf', {'wght': 400}),
+    'urb':   ('urbanist/Urbanist[wght].ttf', {'wght': 500}),
 }
+_c = {}
+def font(k):
+    if k not in _c:
+        p, ax = FONTS[k]
+        f = TTFont(FONT_DIR + p)
+        _c[k] = instancer.instantiateVariableFont(f, ax) if ax else f
+    return _c[k]
 
-def text(fkey, s, size, tracking=0.0, cx=0, baseline=0, align='center'):
-    """Szöveg -> SVG path d (körvonalazva). tracking: em-ben."""
-    p, ax = FONTS[fkey]
-    f = font(p, ax)
-    upm = f['head'].unitsPerEm
-    gs = f.getGlyphSet(); cmap = f.getBestCmap(); hmtx = f['hmtx']
-    sc = size / upm
-    names = [cmap[ord(c)] for c in s]
-    adv = [hmtx[n][0] * sc for n in names]
-    tr = tracking * size
-    width = sum(adv) + tr * (len(s) - 1)
-    x = cx - width / 2 if align == 'center' else cx
+def text(fk, s, size, tracking, cx, baseline):
+    f = font(fk); upm = f['head'].unitsPerEm
+    gs = f.getGlyphSet(); cmap = f.getBestCmap(); hm = f['hmtx']
+    sc = size / upm; names = [cmap[ord(c)] for c in s]
+    adv = [hm[n][0] * sc for n in names]; tr = tracking * size
+    w = sum(adv) + tr * (len(s) - 1)
+    x = cx - w / 2
     pen = SVGPathPen(gs)
     for n, a in zip(names, adv):
-        tp = TransformPen(pen, (sc, 0, 0, -sc, x, baseline))
-        gs[n].draw(tp)
-        x += a + tr
-    return pen.getCommands(), width
+        gs[n].draw(TransformPen(pen, (sc, 0, 0, -sc, x, baseline))); x += a + tr
+    return pen.getCommands(), w
 
-def glyph_G(fkey, cap, cx, baseline):
-    """Egy nagy G, optikailag középre (a tényleges kontúr szerint)."""
-    p, ax = FONTS[fkey]
-    f = font(p, ax)
-    gs = f.getGlyphSet(); n = f.getBestCmap()[ord('G')]
-    capH = getattr(f['OS/2'], 'sCapHeight', 0) or f['head'].unitsPerEm * 0.7
-    sc = cap / capH
-    bp = BoundsPen(gs); gs[n].draw(bp)
-    xmin, ymin, xmax, ymax = bp.bounds
-    ox = cx - (xmin + xmax) / 2 * sc
-    pen = SVGPathPen(gs)
-    gs[n].draw(TransformPen(pen, (sc, 0, 0, -sc, ox, baseline)))
-    box = (ox + xmin * sc, baseline - ymax * sc, ox + xmax * sc, baseline - ymin * sc)
-    return pen.getCommands(), box
+def f2(v): return f'{v:.2f}'.rstrip('0').rstrip('.')
+def pt(cx, cy, r, deg):
+    a = math.radians(deg); return cx + r * math.cos(a), cy + r * math.sin(a)
 
-def r(v):
-    return f'{v:.2f}'.rstrip('0').rstrip('.')
+# ---------------------------------------------------------------- G-szerkesztések
+def G_kor(cx, cy, Ro, t, nyit=None, bar_x=None, bar_h=None):
+    """Vastag gyűrű-G egyetlen zárt pályával; a felső végződés vízszintesen elvágva."""
+    Ri = Ro - t
+    bar_h = bar_h or t * 0.86
+    bx = cx + (bar_x if bar_x is not None else 4)
+    Y = cy - Ri * 0.78                       # vízszintes vágás magassága
+    so = (cx + math.sqrt(Ro*Ro - (cy-Y)**2), Y)
+    si = (cx + math.sqrt(Ri*Ri - (cy-Y)**2), Y)
+    return (f'M{f2(so[0])} {f2(so[1])}'
+            f'A{Ro} {Ro} 0 1 0 {f2(cx + Ro)} {f2(cy)}'
+            f'V{f2(cy - bar_h)}H{f2(bx)}V{f2(cy)}H{f2(cx + Ri)}'
+            f'A{Ri} {Ri} 0 1 1 {f2(si[0])} {f2(si[1])}Z')
+
+def G_negyzet(x0, y0, S, t, bar=0.5):
+    """Négyzetből szerkesztett G – egyetlen, nem metsző kontúr."""
+    x1, y1 = x0 + S, y0 + S
+    my = y0 + S * bar
+    bx = x0 + S * 0.5
+    return (f'M{f2(x0)} {f2(y0)}H{f2(x1)}V{f2(y0 + t)}H{f2(x0 + t)}V{f2(y1 - t)}H{f2(x1 - t)}'
+            f'V{f2(my)}H{f2(bx)}V{f2(my - t)}H{f2(x1)}V{f2(y1)}H{f2(x0)}Z')
+
+def G_stencil(cx, cy, Ro, t, gap=6, nyit=-42):
+    """Gyűrű-G sablonvágásokkal: három szelet + leválasztott szár."""
+    Ri = Ro - t
+    def szelet(a0, a1):
+        o0, o1 = pt(cx, cy, Ro, a0), pt(cx, cy, Ro, a1)
+        i0, i1 = pt(cx, cy, Ri, a0), pt(cx, cy, Ri, a1)
+        large = 1 if abs(a1 - a0) > 180 else 0
+        return (f'M{f2(o0[0])} {f2(o0[1])}A{Ro} {Ro} 0 {large} 0 {f2(o1[0])} {f2(o1[1])}'
+                f'L{f2(i1[0])} {f2(i1[1])}A{Ri} {Ri} 0 {large} 1 {f2(i0[0])} {f2(i0[1])}Z')
+    g = math.degrees(gap / ((Ro + Ri) / 2))
+    d = szelet(nyit, -180 + g / 2) + szelet(-180 - g / 2, -270 + g / 2) + szelet(-270 - g / 2, -360)
+    bh = t * 0.86
+    d += f'M{f2(cx + Ro)} {f2(cy - bh - gap)}V{f2(cy - gap)}H{f2(cx + 4)}V{f2(cy - bh - gap)}Z'
+    return d
 
 # ---------------------------------------------------------------- paletták
-PAL = {
-    'fo': None,  # változatonként saját
-    'sotet': {'g': '#EADDCB', 'w': '#E2D3BF', 'f': '#B79E83', 'a': '#D9BE99', 'b': '#A8865F', 'bg': '#3B322B'},
-    'mono':  {'g': '#3E342D', 'w': '#3E342D', 'f': '#3E342D', 'a': '#3E342D', 'b': 'none', 'bg': None},
-}
+SOTET = {'g': '#ECE1D2', 'g2': '#C9A47E', 'w': '#E4D7C6', 'f': '#9C8670', 'bg': '#3A312A'}
+MONO = {'g': '#3A312A', 'g2': '#3A312A', 'w': '#3A312A', 'f': '#3A312A', 'bg': None}
 MAIN = {
-    1: {'g': '#5E4D40', 'w': '#5E4D40', 'f': '#B8A48D'},
-    2: {'g': '#A07B58', 'w': '#7A6150', 'f': '#CDB8A0'},
-    3: {'g': '#7C6957', 'w': '#7C6957', 'f': '#7C6957'},
-    4: {'g': '#8E6E52', 'w': '#6E5A49', 'f': '#A88E74', 'a': '#C29A70', 'b': '#E6CFAE'},
-    5: {'g': '#7E6B5A', 'w': '#8C7864', 'f': '#B3A18C'},
+    1: {'g': '#4F4136', 'w': '#4F4136', 'f': '#BCA891'},
+    2: {'g': '#5A4A3E', 'w': '#5A4A3E', 'f': '#5A4A3E'},
+    3: {'g': '#6E5C4D', 'w': '#6E5C4D', 'f': '#C2AE97'},
+    4: {'g': '#9A7552', 'w': '#6E5C4D', 'f': '#C9B49B'},
+    5: {'g': '#5A4A3E', 'g2': '#B98D63', 'w': '#5A4A3E', 'f': '#BCA891'},
 }
-LIGHT_BG = '#FBF7F1'
+NEVEK = {1: 'Monolit', 2: 'Négyzet', 3: 'Sablon', 4: 'Vonal', 5: 'Szerkesztés'}
+WM = {1: ('unb', 19, .22), 2: ('mich', 16, .22), 3: ('zetta', 14.5, .10), 4: ('jos', 25, .24), 5: ('urb', 23, .34)}
 
-# ---------------------------------------------------------------- változatok
-def v1(c, compact=False):
-    if compact:
-        W = H = 200
-        G, _ = glyph_G('caslon', 90, 100, 145)
-        body = (f'<rect x="8" y="8" width="184" height="184" fill="none" stroke="{c["f"]}" stroke-width="1.4"/>'
-                f'<rect x="14" y="14" width="172" height="172" fill="none" stroke="{c["f"]}" stroke-width=".6"/>'
-                f'<path d="{G}" fill="{c["g"]}"/>')
-        return W, H, body
-    W, H = 320, 400
-    G, _ = glyph_G('caslon', 168, 160, 246)
-    t, _ = text('comm300', 'geraartdesign', 18.5, .26, 160, 316)
-    body = (f'<rect x="10" y="10" width="300" height="380" fill="none" stroke="{c["f"]}" stroke-width="1.4"/>'
-            f'<rect x="17" y="17" width="286" height="366" fill="none" stroke="{c["f"]}" stroke-width=".6"/>'
-            f'<path d="{G}" fill="{c["g"]}"/>'
-            f'<rect x="146" y="279" width="28" height=".8" fill="{c["f"]}"/>'
-            f'<path d="{t}" fill="{c["w"]}"/>')
-    return W, H, body
-
-def v2(c, compact=False):
-    if compact:
-        W = H = 200
-        G, _ = glyph_G('bodoni', 102, 100, 151)
-        body = (f'<rect x="10" y="10" width="180" height="180" fill="none" stroke="{c["f"]}" stroke-width=".9"/>'
-                f'<path d="{G}" fill="{c["g"]}"/>')
-        return W, H, body
-    W, H = 320, 392
-    G, _ = glyph_G('bodoni', 196, 160, 262)
-    t, tw = text('corm_it', 'geraartdesign', 31, .015, 160, 364)
-    y = 356  # a keret alsó éle – a felirat megszakítja
-    gap = tw / 2 + 12
-    frame = (f'M{r(160-gap)} {y}H12V12H308V{y}H{r(160+gap)}')
-    body = (f'<path d="{frame}" fill="none" stroke="{c["f"]}" stroke-width=".9"/>'
-            f'<path d="{G}" fill="{c["g"]}"/>'
-            f'<path d="{t}" fill="{c["w"]}"/>')
-    return W, H, body
-
-def geo_G(cx, cy, R, sw, color):
-    a = math.radians(42)
-    sx, sy = cx + R * math.cos(a), cy - R * math.sin(a)
-    ex, ey = cx + R, cy
-    arc = f'M{r(sx)} {r(sy)}A{R} {R} 0 1 0 {r(ex)} {r(ey)}'
-    bar = f'M{r(cx + R + sw/2)} {r(cy)}H{r(cx + 6)}'
-    spur = f'M{r(cx + R)} {r(cy - sw*0.31)}V{r(cy + R*0.34)}'
-    return (f'<path d="{arc}" fill="none" stroke="{color}" stroke-width="{sw}"/>'
-            f'<path d="{bar}" fill="none" stroke="{color}" stroke-width="{sw*0.62}"/>'
-            f'<path d="{spur}" fill="none" stroke="{color}" stroke-width="{sw*0.62}"/>')
-
-def v3(c, compact=False):
-    if compact:
-        W = H = 200
-        body = (f'<rect x="9" y="9" width="182" height="182" fill="none" stroke="{c["f"]}" stroke-width="2"/>'
-                + geo_G(100, 100, 44, 9, c['g']))
-        return W, H, body
-    W, H = 300, 420
-    t, _ = text('jost', 'geraartdesign', 22, .13, 150, 356)
-    body = (f'<rect x="10" y="10" width="280" height="400" fill="none" stroke="{c["f"]}" stroke-width="2"/>'
-            + geo_G(150, 172, 74, 13, c['g']) +
-            f'<path d="{t}" fill="{c["w"]}"/>')
-    return W, H, body
-
-def inlay_G(fkey, cap, cx, baseline, c, uid):
-    G, (x0, y0, x1, y1) = glyph_G(fkey, cap, cx, baseline)
-    # legyezőfurnér (napsugár) – a G-n belül váltakozó két fafurnér-tónus
-    ox, oy = (x0 + x1) / 2, y1 + 40
-    wedges = []
-    n = 22
-    Rr = (y1 - y0) * 2.2
-    for i in range(n):
-        a0 = math.radians(200 + i * (140 / n)); a1 = math.radians(200 + (i + 1) * (140 / n))
-        p = (f'M{r(ox)} {r(oy)}L{r(ox + Rr*math.cos(a0))} {r(oy + Rr*math.sin(a0))}'
-             f'L{r(ox + Rr*math.cos(a1))} {r(oy + Rr*math.sin(a1))}Z')
-        wedges.append(f'<path d="{p}" fill="{c["a"] if i % 2 else c["b"]}"/>')
-    return (f'<defs><clipPath id="{uid}"><path d="{G}"/></clipPath></defs>'
-            f'<g clip-path="url(#{uid})">{"".join(wedges)}</g>'
-            f'<path d="{G}" fill="none" stroke="{c["g"]}" stroke-width=".9"/>')
-
-def inlay_frame(x, y, w, h, c, outer=1, inset=(8, 12), sq=7):
-    s = f'<rect x="{x}" y="{y}" width="{w}" height="{h}" fill="none" stroke="{c["f"]}" stroke-width="{outer}"/>'
-    for d in inset:
-        s += f'<rect x="{x+d}" y="{y+d}" width="{w-2*d}" height="{h-2*d}" fill="none" stroke="{c["f"]}" stroke-width=".6"/>'
-    d0 = inset[0]
-    for (qx, qy) in [(x+d0, y+d0), (x+w-d0-sq, y+d0), (x+d0, y+h-d0-sq), (x+w-d0-sq, y+h-d0-sq)]:
-        s += f'<rect x="{qx}" y="{qy}" width="{sq}" height="{sq}" fill="{c["a"]}"/>'
-    return s
-
-def v4(c, compact=False, uid='g4'):
-    if compact:
-        W = H = 200
-        body = inlay_frame(6, 6, 188, 188, c, inset=(7, 10), sq=6) + inlay_G('bodoniB', 90, 100, 146, c, uid)
-        return W, H, body
-    W, H = 320, 400
-    t, _ = text('comm450', 'geraartdesign', 16.5, .3, 160, 322)
-    body = (inlay_frame(8, 8, 304, 384, c) + inlay_G('bodoniB', 178, 160, 252, c, uid) +
-            f'<path d="{t}" fill="{c["w"]}"/>')
-    return W, H, body
-
-def crop_frame(x, y, w, h, ext, color, sw):
-    return (f'<path d="M{x-ext} {y}H{x+w+ext}M{x-ext} {y+h}H{x+w+ext}M{x} {y-ext}V{y+h+ext}M{x+w} {y-ext}V{y+h+ext}" '
-            f'fill="none" stroke="{color}" stroke-width="{sw}"/>')
-
-def v5(c, compact=False):
-    if compact:
-        W = H = 200
-        G, _ = glyph_G('tenor', 78, 100, 139)
-        return W, H, crop_frame(18, 18, 164, 164, 12, c['f'], .7) + f'<path d="{G}" fill="{c["g"]}"/>'
-    W, H = 460, 300
-    G, _ = glyph_G('tenor', 104, 230, 162)
-    t, _ = text('tenor', 'geraartdesign', 15, .5, 230 + 15*.5/2, 232)
-    body = (crop_frame(22, 22, 416, 256, 13, c['f'], .7) +
-            f'<path d="{G}" fill="{c["g"]}"/><path d="{t}" fill="{c["w"]}"/>')
-    return W, H, body
-
-
-# ---------------------------------------------------------------- fejléc-változat (vízszintes, keretben)
-WM = {1: ('comm300', 15, .24), 2: ('corm_it', 25, .01), 3: ('jost', 17.5, .12),
-      4: ('comm450', 13.5, .26), 5: ('tenor', 13, .42)}
-def fejlec(n, c, uid='h'):
-    W, H = 320, 76
+def wordmark(n, c, cx, base, scale=1.0):
     fk, size, tr = WM[n]
-    if n == 3:
-        g = geo_G(40, 38, 19, 4.2, c['g'])
-    elif n == 4:
-        g = inlay_G('bodoniB', 40, 40, 58, c, uid)
-    else:
-        key = {1: 'caslon', 2: 'bodoni', 5: 'tenor'}[n]
-        G, _ = glyph_G(key, 40 if n != 5 else 35, 36, 58 if n != 5 else 56)
-        g = f'<path d="{G}" fill="{c["g"]}"/>'
-    base = 46 if n != 2 else 47
-    t, tw = text(fk, 'geraartdesign', size, tr, 82, base, align='left')
-    W = int(82 + tw + 26)
-    if n == 4:
-        fr = inlay_frame(3, 3, W - 6, H - 6, c, outer=.9, inset=(5, 7), sq=4)
-    elif n == 5:
-        fr = crop_frame(8, 8, W - 16, H - 16, 6, c['f'], .7)
-    elif n == 1:
-        fr = (f'<rect x="3" y="3" width="{W-6}" height="{H-6}" fill="none" stroke="{c["f"]}" stroke-width="1.1"/>'
-              f'<rect x="7" y="7" width="{W-14}" height="{H-14}" fill="none" stroke="{c["f"]}" stroke-width=".5"/>')
-    else:
-        fr = f'<rect x="3" y="3" width="{W-6}" height="{H-6}" fill="none" stroke="{c["f"]}" stroke-width="{1.6 if n == 3 else .8}"/>'
-    sep = f'<rect x="68" y="22" width=".7" height="32" fill="{c["f"]}"/>' if n in (1, 2, 5) else ''
-    return W, H, fr + g + sep + f'<path d="{t}" fill="{c["w"]}"/>'
+    t, w = text(fk, 'geraartdesign', size * scale, tr, cx + size * scale * tr / 2, base)
+    return f'<path d="{t}" fill="{c["w"]}"/>', w
 
-FNS = {1: v1, 2: v2, 3: v3, 4: v4, 5: v5}
-NEVEK = {1: 'Klasszikus prémium', 2: 'Finom elegáns', 3: 'Modern minimál',
-         4: 'Művészi – intarzia', 5: 'Extra letisztult luxus'}
+_uid = [0]
+def jel(n, c, cx, cy, R):
+    if n == 1:
+        return f'<path d="{G_kor(cx, cy, R, R*0.36)}" fill="{c["g"]}"/>'
+    if n == 2:
+        S = R * 1.84
+        return f'<path d="{G_negyzet(cx - S/2, cy - S/2, S, S*0.17)}" fill="{c["g"]}"/>'
+    if n == 3:
+        return f'<path d="{G_stencil(cx, cy, R, R*0.32, gap=max(3, R*0.07))}" fill="{c["g"]}"/>'
+    if n == 4:
+        sw = max(1.4, R * 0.03)
+        return f'<path d="{G_kor(cx, cy, R, R*0.30)}" fill="none" stroke="{c["g"]}" stroke-width="{f2(sw)}"/>'
+    if n == 5:
+        t = R * 0.34
+        d = G_kor(cx, cy, R, t)
+        _uid[0] += 1
+        clip = f'gc{_uid[0]}'
+        ring = R * 1.16
+        ext = R * 0.12
+        return (f'<defs><clipPath id="{clip}"><rect x="{f2(cx - R*2)}" y="{f2(cy)}" width="{f2(R*4)}" height="{f2(R*2)}"/></clipPath></defs>'
+                f'<circle cx="{f2(cx)}" cy="{f2(cy)}" r="{f2(ring)}" fill="none" stroke="{c["f"]}" stroke-width="{f2(max(.6, R*.011))}"/>'
+                f'<path d="M{f2(cx - ring - ext)} {f2(cy)}H{f2(cx + ring + ext)}M{f2(cx)} {f2(cy - ring - ext)}V{f2(cy + ring + ext)}" stroke="{c["f"]}" stroke-width="{f2(max(.5, R*.008))}"/>'
+                f'<path d="{d}" fill="{c["g"]}"/>'
+                f'<path d="{d}" fill="{c["g2"]}" clip-path="url(#{clip})"/>')
+
+def keret(n, c, x, y, w, h, s=1.0):
+    if n == 1:
+        return f'<rect x="{x}" y="{y}" width="{w}" height="{h}" fill="none" stroke="{c["f"]}" stroke-width="{f2(1.2*s)}"/>'
+    if n == 2:
+        return f'<rect x="{x}" y="{y}" width="{w}" height="{h}" fill="none" stroke="{c["f"]}" stroke-width="{f2(2.2*s)}"/>'
+    if n == 3:
+        L = 14 * s; sw = 2.4 * s
+        cs = ''.join(f'<path d="M{a} {f2(b+dy*L)}V{b}H{f2(a+dx*L)}" fill="none" stroke="{c["g"]}" stroke-width="{f2(sw)}"/>'
+                     for a, b, dx, dy in [(x, y, 1, 1), (x+w, y, -1, 1), (x, y+h, 1, -1), (x+w, y+h, -1, -1)])
+        return f'<rect x="{x}" y="{y}" width="{w}" height="{h}" fill="none" stroke="{c["f"]}" stroke-width="{f2(.8*s)}"/>' + cs
+    if n == 4:
+        d = 5 * s
+        return (f'<rect x="{x}" y="{y}" width="{w}" height="{h}" fill="none" stroke="{c["f"]}" stroke-width="{f2(.8*s)}"/>'
+                f'<rect x="{f2(x+d)}" y="{f2(y+d)}" width="{f2(w-2*d)}" height="{f2(h-2*d)}" fill="none" stroke="{c["f"]}" stroke-width="{f2(.8*s)}"/>')
+    if n == 5:
+        ticks = ''.join(f'<path d="M{f2(x + w*k/8)} {y}v{f2(5*s if k % 4 else 9*s)}" stroke="{c["f"]}" stroke-width="{f2(.8*s)}"/>' for k in range(1, 8))
+        return f'<rect x="{x}" y="{y}" width="{w}" height="{h}" fill="none" stroke="{c["f"]}" stroke-width="{f2(1*s)}"/>' + ticks
+
+def fo(n, c):
+    W, H = 320, 372
+    wm, _ = wordmark(n, c, 160, 318)
+    return W, H, keret(n, c, 10, 10, 300, 352) + jel(n, c, 160, 158, 88) + wm
+
+def kompakt(n, c):
+    return 200, 200, keret(n, c, 8, 8, 184, 184, .9) + jel(n, c, 100, 100, 52)
+
+def fejlec(n, c):
+    H = 76
+    fk, size, tr = WM[n]
+    sc = 0.74
+    _, w = text(fk, 'geraartdesign', size * sc, tr, 0, 0)
+    W = int(84 + w + 30)
+    wm, _ = wordmark(n, c, 84 + w / 2, 43 + size * sc * .36, sc)
+    sep = f'<rect x="70" y="20" width=".8" height="36" fill="{c["f"]}"/>'
+    return W, H, keret(n, c, 3, 3, W - 6, H - 6, .7) + jel(n, c, 38, 38, 21) + sep + wm
 
 def svg(W, H, body, bg=None, pad=0, title=''):
     vb = f'{-pad} {-pad} {W+2*pad} {H+2*pad}'
-    bgr = f'<rect x="{-pad}" y="{-pad}" width="{W+2*pad}" height="{H+2*pad}" fill="{bg}"/>' if bg else ''
-    return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="{vb}" width="{W+2*pad}" height="{H+2*pad}">'
-            f'<title>{title}</title>{bgr}{body}</svg>\n')
+    b = f'<rect x="{-pad}" y="{-pad}" width="{W+2*pad}" height="{H+2*pad}" fill="{bg}"/>' if bg else ''
+    return f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="{vb}" width="{W+2*pad}" height="{H+2*pad}"><title>{title}</title>{b}{body}</svg>\n'
 
 def build():
-    for n, fn in FNS.items():
+    for n in range(1, 6):
         d = os.path.join(OUT, f'logo-{n}'); os.makedirs(d, exist_ok=True)
-        base = f'geraartdesign-{n}'
-        main = dict(MAIN[n]); dark = dict(PAL['sotet']); mono = dict(PAL['mono'])
-        if n == 3:
-            dark['f'] = dark['g']
-        kw = lambda k: {'uid': f'g4{k}'} if n == 4 else {}
+        for old in os.listdir(d): os.remove(os.path.join(d, old))
+        m = dict(MAIN[n]); m.setdefault('g2', m['g'])
+        dk = dict(SOTET)
+        if n == 2: dk['f'] = dk['g']
+        nm = f'geraartdesign – {NEVEK[n]}'
         files = {
-            'fo':        svg(*fn(main, **kw('a')), title=f'geraartdesign – {NEVEK[n]}'),
-            'vilagos':   svg(*fn(main, **kw('b')), bg=LIGHT_BG, pad=40, title='világos háttéren'),
-            'sotet':     svg(*fn(dark, **kw('c')), bg=dark['bg'], pad=40, title='sötét háttéren'),
-            'sotet-atlatszo': svg(*fn(dark, **kw('d')), title='sötét háttérre, átlátszó'),
-            'mono':      svg(*fn(mono, **kw('e')), title='monokróm'),
-            'kompakt':   svg(*fn(main, compact=True, **kw('f')), title='kompakt'),
-            'kompakt-sotet': svg(*fn(dark, compact=True, **kw('g')), title='kompakt, sötét'),
+            'fo': svg(*fo(n, m), title=nm),
+            'vilagos': svg(*fo(n, m), bg='#FBF7F1', pad=40, title='világos háttéren'),
+            'sotet': svg(*fo(n, dk), bg=dk['bg'], pad=40, title='sötét háttéren'),
+            'sotet-atlatszo': svg(*fo(n, dk), title='sötét háttérre'),
+            'mono': svg(*fo(n, MONO), title='monokróm'),
+            'kompakt': svg(*kompakt(n, m), title='kompakt'),
+            'kompakt-sotet': svg(*kompakt(n, dk), title='kompakt, sötét'),
+            'social': svg(*kompakt(n, m), bg='#EEE4D7', pad=64, title='profilkép'),
+            'social-sotet': svg(*kompakt(n, dk), bg=dk['bg'], pad=64, title='profilkép, sötét'),
+            'fejlec': svg(*fejlec(n, m), title='fejléc'),
+            'fejlec-sotet': svg(*fejlec(n, dk), title='fejléc, sötét'),
         }
-        files['fejlec'] = svg(*fejlec(n, main, uid='h4a'), title='fejléc')
-        files['fejlec-sotet'] = svg(*fejlec(n, dark, uid='h4b'), title='fejléc, sötét')
-        # közösségi profilkép (négyzetes, kitöltött háttér)
-        W, H, body = fn(main, compact=True, **kw('h'))
-        files['social'] = svg(W, H, body, bg='#EFE5D8', pad=70, title='közösségi profilkép')
-        W, H, body = fn(dark, compact=True, **kw('i'))
-        files['social-sotet'] = svg(W, H, body, bg=dark['bg'], pad=70, title='közösségi profilkép, sötét')
         for k, s in files.items():
-            with open(os.path.join(d, f'{base}-{k}.svg'), 'w') as fh:
-                fh.write(s)
-    print('kész:', OUT)
+            open(os.path.join(d, f'geraartdesign-{n}-{k}.svg'), 'w').write(s)
+    print('kész')
 
 if __name__ == '__main__':
     build()

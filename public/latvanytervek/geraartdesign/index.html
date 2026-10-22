@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Gera Art Design — egyedi bútor és intarzia · Gera Péter</title>
-<meta name="description" content="Gera Péter bútorasztalos és intarziakészítő: egyedi bútorok, konyhák, beépített szekrények és berakásos díszítés.">
+<title>Gera Art Design — egyedi bútor, konyha, intarzia · Gera Péter</title>
+<meta name="description" content="Gera Péter bútorasztalos és intarziakészítő: méretre tervezett egyedi bútorok, konyhák, beépített szekrények és berakásos díszítés.">
 <meta name="robots" content="noindex">
-<meta name="theme-color" content="#F5EEE4">
+<meta name="theme-color" content="#F4EDE3">
 <link rel="icon" href="arculat/logo-1/geraartdesign-1-kompakt.svg" type="image/svg+xml">
-<link rel="preload" href="fonts/caslon-display.woff" as="font" type="font/woff" crossorigin>
-<link rel="preload" href="fonts/commissioner-var.woff" as="font" type="font/woff" crossorigin>
+<link rel="preload" href="fonts/unbounded-var.woff" as="font" type="font/woff" crossorigin>
+<link rel="preload" href="fonts/urbanist-var.woff" as="font" type="font/woff" crossorigin>
 <link rel="stylesheet" href="gera.css">
 </head>
 <body>
@@ -18,10 +18,10 @@
   <div class="wrap">
     <a class="logo-link" href="#top" aria-label="geraartdesign – kezdőlap"><img data-logo="fejlec" src="arculat/logo-1/geraartdesign-1-fejlec.svg" alt="geraartdesign" width="300" height="76"></a>
     <nav class="menu" id="menu" aria-label="Fő navigáció">
-      <a href="#muhely">Műhely</a>
       <a href="#szolgaltatasok">Szolgáltatások</a>
       <a href="#munkak">Munkák</a>
-      <a href="#anyagok">Anyagok</a>
+      <a href="#muhely">Műhely</a>
+      <a href="#folyamat">Folyamat</a>
       <a class="btn btn--fo" href="#kapcsolat">Ajánlatkérés</a>
     </nav>
     <button class="menu-gomb" id="menuGomb" aria-label="Menü" aria-expanded="false" aria-controls="menu"><span></span><span></span></button>
@@ -32,47 +32,81 @@
 
 <!-- HERO -->
 <section class="hero">
+  <div class="racsvonal" aria-hidden="true"></div>
   <div class="wrap">
-    <div class="hero-szoveg">
-      <p class="cimke felfed">Gera Péter · bútorasztalos és intarziakészítő</p>
-      <h1 class="felfed">Egyedi bútorok, amelyeken a fa rajzolata <em>maga a díszítés.</em></h1>
-      <p class="lead felfed">Konyha, beépített szekrény vagy egyetlen különleges darab: a tervet a térhez és a szokásaihoz igazítom, a furnért pedig úgy válogatom és rakom ki, hogy az erezet is a helyére kerüljön.</p>
+    <div>
+      <p class="cimke felfed"><b>G</b> Gera Péter · bútorasztalos, intarziakészítő</p>
+      <h1 class="felfed">Méretre tervezett bútorok, <span class="hang">tiszta arányokkal.</span></h1>
+      <p class="lead felfed">Konyha, beépített szekrény vagy egyetlen különleges darab: a teret felmérem, a formát a szokásaihoz igazítom, és úgy készítem el, hogy minden illesztés a helyén legyen.</p>
       <div class="cta-sor felfed">
-        <a class="btn btn--fo" href="#munkak">Munkák megtekintése <i class="nyil" aria-hidden="true"></i></a>
-        <a class="btn btn--vonal" href="#kapcsolat">Ajánlatot kérek</a>
+        <a class="btn btn--fo" href="#kapcsolat">Ajánlatot kérek <i class="nyil" aria-hidden="true"></i></a>
+        <a class="btn btn--vonal" href="#munkak">Munkák</a>
       </div>
       <div class="hero-adat felfed">
-        <span>Telefon: <a href="tel:+36202767939">+36 20 276 7939</a></span>
-        <span>Felmérés <b>személyesen, a helyszínen</b></span>
+        <div><b><a href="tel:+36202767939">+36 20 276 7939</a></b>hívjon bátran</div>
+        <div><b>Felmérés</b>a helyszínen</div>
+        <div><b>Egyedi</b>minden darab</div>
       </div>
     </div>
-    <figure class="tabla">
-      <div class="tabla-keret">
-        <div class="tabla-kep kirak" data-intarzia="hero" id="heroTabla"></div>
+
+    <figure class="szin">
+      <div class="szin-keret">
+        <svg class="jelenet" id="jelenet" viewBox="0 0 560 600" role="img" aria-label="Geometrikus látványrajz: tálalószekrény kerek tükörrel, méretvonalakkal">
+          <g class="reteg" data-m="4">
+            <rect class="rx" x="0" y="0" width="560" height="600" fill="#EADFD1"/>
+            <rect class="rx sy" style="--d:120" x="0" y="470" width="560" height="130" fill="#E0D2C0"/>
+            <g stroke="rgba(79,65,54,.08)" stroke-width="1">
+              <path class="rx" style="--d:60" d="M70 0V600M140 0V600M210 0V600M280 0V600M350 0V600M420 0V600M490 0V600"/>
+            </g>
+          </g>
+          <g class="reteg" data-m="10">
+            <circle class="rx sc" style="--d:260" cx="318" cy="196" r="112" fill="#F6EFE5"/>
+            <circle class="dr" style="--d:520" cx="318" cy="196" r="96" fill="none" stroke="#C8B6A1" stroke-width="1" pathLength="1"/>
+            <rect class="rx up" style="--d:900" x="92" y="232" width="34" height="238" fill="#CDBBA6"/>
+            <circle class="rx sc" style="--d:980" cx="109" cy="226" r="34" fill="#BE9670"/>
+          </g>
+          <g class="reteg" data-m="18">
+            <rect class="rx sx" style="--d:520" x="150" y="322" width="330" height="11" fill="#4F4136"/>
+            <rect class="rx up" style="--d:420" x="160" y="333" width="310" height="118" fill="#BE9670"/>
+            <path class="dr" style="--d:860" d="M263 340V444M367 340V444" stroke="#9E7752" stroke-width="1.4" fill="none" pathLength="1"/>
+            <g class="rx" style="--d:1000" fill="#4F4136"><circle cx="252" cy="392" r="3.4"/><circle cx="356" cy="392" r="3.4"/><circle cx="460" cy="392" r="3.4"/></g>
+            <rect class="rx sy" style="--d:700" x="176" y="451" width="7" height="27" fill="#4F4136"/>
+            <rect class="rx sy" style="--d:740" x="447" y="451" width="7" height="27" fill="#4F4136"/>
+            <path class="rx up" style="--d:1080" d="M208 322V290a22 22 0 0 1 44 0V322Z" fill="#7A6A5C"/>
+            <circle class="rx sc" style="--d:1160" cx="410" cy="300" r="22" fill="#E0D1BF"/>
+            <rect class="rx up" style="--d:1220" x="432" y="268" width="16" height="54" fill="#9C8670"/>
+          </g>
+          <g class="reteg" data-m="6" stroke="#9C8670" stroke-width="1" fill="none">
+            <path class="dr" style="--d:1350" d="M150 512H480M150 504V520M480 504V520" pathLength="1"/>
+            <path class="dr" style="--d:1450" d="M516 322V478M508 322H524M508 478H524" pathLength="1"/>
+            <path class="dr" style="--d:1550" d="M318 84V68M206 196H190M318 196L398 116" pathLength="1"/>
+          </g>
+          <g class="rx" style="--d:1650" font-family="Urbanist,sans-serif" font-weight="600" font-size="11" letter-spacing="1.8" fill="#9C8670">
+            <text x="315" y="538" text-anchor="middle">180 CM</text>
+            <text x="530" y="404" transform="rotate(90 530 404)" text-anchor="middle">85</text>
+            <text x="404" y="110">Ø 90</text>
+          </g>
+        </svg>
       </div>
-      <figcaption><em>Napsugár és iránytű</em><span>rajzolt intarziaminta · dió, cseresznye, körte, juhar</span></figcaption>
-      <span class="hero-dekor" aria-hidden="true">Intarzia · furnérberakás</span>
+      <figcaption><span>Látványrajz · tálaló és tükör</span><span>méretre</span></figcaption>
     </figure>
   </div>
 </section>
 
-<!-- MŰHELY / MÁRKASZTORI -->
-<section class="szakasz muhely" id="muhely">
+<!-- ELVEK -->
+<section class="elvek" aria-label="Ahogy dolgozom">
   <div class="wrap">
-    <figure class="portre felfed">
-      <div class="portre-hely">
-        <div data-intarzia="halszalka" aria-hidden="true"></div>
-        <p class="foto-jel"><b>Portré helye</b>Gera Péter saját fotója a műhelyben — ügyféltől kérendő</p>
-      </div>
-      <figcaption>Gera Péter a műhelyben</figcaption>
-    </figure>
-    <div class="muhely-szoveg">
-      <p class="cimke felfed">A műhelyről</p>
-      <h2 class="felfed">Gyerekkorom óta a fával dolgozom. <em>Az intarzia az a pont, ahol ebből művészet lesz.</em></h2>
-      <p class="lead felfed">Bútorasztalosként modern és klasszikus darabokat is készítek. Intarziánál különböző fafajok furnérjából rakok ki mintát, díszítést, akár egy egész képet — darabonként vágva, illesztve, ragasztva.</p>
-      <p class="felfed">Nincs két egyforma faanyag, ezért nincs két egyforma munka sem. Minden megrendelés beszélgetéssel és helyszíni felméréssel kezdődik: megnézem a teret, megkérdezem, mire használják majd a bútort, és csak utána rajzolok. Így a végeredmény nemcsak szép, hanem a mindennapokban is jól működik.</p>
-      <blockquote class="idezet felfed">„A jó bútoron az illesztést nem látni — csak azt, hogy minden a helyén van.”</blockquote>
-      <p class="alairas felfed"><em>Gera Péter</em></p>
+    <div class="elv felfed">
+      <svg viewBox="0 0 56 56" aria-hidden="true"><rect x="1" y="1" width="54" height="54" fill="none" stroke="#C8B6A1"/><circle class="forog" cx="28" cy="28" r="17" fill="none" stroke="#4F4136" stroke-width="1.5"/><path class="forog" d="M28 4V52M4 28H52" stroke="#BE9670" stroke-width="1"/></svg>
+      <div><h3>Arány</h3><p>A bútor a térhez készül: méretre, a szokásokhoz és a helyiség ritmusához igazítva.</p></div>
+    </div>
+    <div class="elv felfed">
+      <svg viewBox="0 0 56 56" aria-hidden="true"><rect x="1" y="1" width="54" height="54" fill="none" stroke="#C8B6A1"/><rect class="tol" x="10" y="14" width="22" height="28" fill="#BE9670"/><rect x="24" y="22" width="22" height="20" fill="none" stroke="#4F4136" stroke-width="1.5"/></svg>
+      <div><h3>Anyag</h3><p>Tömörfa, furnér, intarzia: minden felülethez a hozzá illő anyagot választjuk ki közösen.</p></div>
+    </div>
+    <div class="elv felfed">
+      <svg viewBox="0 0 56 56" aria-hidden="true"><rect x="1" y="1" width="54" height="54" fill="none" stroke="#C8B6A1"/><rect class="nyul" x="12" y="18" width="8" height="24" fill="#4F4136"/><rect class="nyul" x="24" y="12" width="8" height="30" fill="#BE9670"/><rect class="nyul" x="36" y="22" width="8" height="20" fill="none" stroke="#4F4136" stroke-width="1.5"/></svg>
+      <div><h3>Illesztés</h3><p>Pontos, tiszta kivitelezés — a jó bútoron az illesztés nem tűnik fel, csak az, hogy minden a helyén van.</p></div>
     </div>
   </div>
 </section>
@@ -81,51 +115,63 @@
 <section class="szakasz" id="szolgaltatasok">
   <div class="wrap">
     <div class="szakasz-fej">
-      <div>
-        <p class="cimke felfed">Szolgáltatások</p>
-        <h2 class="felfed">Amit a műhelyben <em>tervezek és elkészítek</em></h2>
-      </div>
-      <p class="felfed">Minden munka méretre készül. Ha még nincs kész elképzelése, a felmérésen együtt találjuk ki a formát, az anyagot és a díszítést.</p>
+      <div><p class="cimke felfed"><b>01</b> Szolgáltatások</p><h2 class="felfed">Amit tervezek és <span class="hang">elkészítek</span></h2></div>
+      <p class="felfed">Minden munka méretre készül. Ha még nincs kész elképzelése, a felmérésen együtt kitaláljuk a formát, az anyagot és a részleteket.</p>
     </div>
-    <ol class="szolg-lista" id="szolgLista"></ol>
+    <div class="szolg-racs" id="szolgRacs"></div>
   </div>
 </section>
 
 <!-- MUNKÁK -->
-<section class="szakasz munkak" id="munkak">
+<section class="szakasz" id="munkak" style="padding-top:0">
   <div class="wrap">
     <div class="szakasz-fej">
-      <div>
-        <p class="cimke felfed">Munkák</p>
-        <h2 class="felfed">Minták, rajzolatok, <em>kirakott felületek</em></h2>
-      </div>
-      <p class="felfed">Ezen a felületen a műhely elkészült munkái kapnak helyet, nagy képekkel. Addig klasszikus intarziamintákból rajzolt tanulmányok mutatják a hangulatot — kattintson bármelyikre a nagyobb nézethez.</p>
+      <div><p class="cimke felfed"><b>02</b> Munkák</p><h2 class="felfed">Elkészült <span class="hang">munkák</span></h2></div>
+      <p class="felfed">Ide kerülnek a műhely saját fotói, kategóriák szerint szűrhetően. A keretek a végleges képarányokat mutatják.</p>
     </div>
-    <div class="racs" id="racs"></div>
-    <div class="racs-jegyzet">
-      <span>Fotó-helyek: a valódi munkák képei egy listából cserélhetők (<code>PROJEKTEK</code>, js/gera.js).</span>
-      <a href="#kapcsolat">Hasonló munkát szeretne? Kérjen ajánlatot →</a>
+    <div class="szuro" id="szuro" role="group" aria-label="Szűrés kategória szerint"></div>
+    <div class="galeria" id="galeria"></div>
+    <div class="gal-jegyzet"><span>Fotó helyek — az ügyfél saját képei kerülnek ide (<code>MUNKAK</code>, js/gera.js).</span><a href="#kapcsolat">Hasonlót szeretne? Kérjen ajánlatot →</a></div>
+  </div>
+</section>
+
+<!-- MŰHELY -->
+<section class="szakasz muhely" id="muhely">
+  <div class="wrap">
+    <figure class="portre felfed">
+      <div class="portre-hely">
+        <svg viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><circle cx="200" cy="220" r="120" fill="none" stroke="rgba(242,233,221,.12)"/><path d="M0 250H400M200 0V500" stroke="rgba(242,233,221,.08)"/><rect x="120" y="300" width="160" height="200" fill="rgba(242,233,221,.05)"/></svg>
+        <p><b>Portré helye</b>Gera Péter a műhelyben — saját fotó</p>
+      </div>
+      <figcaption>Gera Péter</figcaption>
+    </figure>
+    <div>
+      <p class="cimke felfed"><b>03</b> A műhely</p>
+      <h2 class="felfed">Gyerekkorom óta a fával dolgozom.</h2>
+      <p class="lead felfed">Bútorasztalosként modern és klasszikus darabokat is készítek. Az intarziánál különböző fafajokból rakok ki mintát — ott lesz a mesterségből igazán alkotás.</p>
+      <p class="felfed">Nincs két egyforma faanyag, ezért nincs két egyforma munka sem. Minden megrendelés beszélgetéssel és helyszíni felméréssel kezdődik: megnézem a teret, megkérdezem, mire használják majd a bútort, és csak utána tervezek.</p>
+      <div class="tenyek felfed">
+        <div><b>Modern és klasszikus</b>stílusban is</div>
+        <div><b>Intarzia</b>berakásos díszítés</div>
+        <div><b>Felújítás</b>régi darabokhoz</div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ANYAGOK / RÉSZLETEK -->
-<section class="szakasz anyag" id="anyagok">
+<!-- FOLYAMAT -->
+<section class="szakasz" id="folyamat">
   <div class="wrap">
-    <div>
-      <p class="cimke felfed">Anyag és részlet</p>
-      <h2 class="felfed">A különbség <em>a részletekben</em> látszik</h2>
-      <p class="felfed">A furnér színe, a rost iránya, egy alig látható berakott szegély: ezek döntik el, hogy egy bútor drága hatású-e. Lapozza át a mintakönyvet — a lapokra koppintva többet is megtud a fafajokról.</p>
-      <ul class="reszlet-lista felfed">
-        <li><b>Rostirány</b>A szomszédos darabok erezete mindig tudatosan fordul el — ettől él a minta.</li>
-        <li><b>Illesztés</b>Hézagmentes, kézzel igazított élek; a díszítés a felülettel egy síkban fut.</li>
-        <li><b>Felület</b>Selymes, finoman fényes zárás, amely a fa természetes tónusát kiemeli.</li>
-      </ul>
+    <div class="szakasz-fej">
+      <div><p class="cimke felfed"><b>04</b> Folyamat</p><h2 class="felfed">Az első hívástól <span class="hang">a beépítésig</span></h2></div>
+      <p class="felfed">Átlátható lépések, egy kézben. Mindig tudja, hol tart a munka.</p>
     </div>
-    <div>
-      <div class="konyv" id="konyv" role="list" aria-label="Furnér-mintakönyv"></div>
-      <p class="anyag-info" id="anyagInfo" aria-live="polite"><b>Dió</b> — mély, meleg barna; elegáns kontraszt a világos fák mellett.</p>
-    </div>
+    <ol class="folyamat-sor" id="folyamatSor">
+      <li class="lepes felfed"><h3>Beszélgetés</h3><p>Telefonon vagy az űrlapon elmondja, mire gondolt.</p></li>
+      <li class="lepes felfed"><h3>Felmérés</h3><p>A helyszínen méretet veszek, és átbeszéljük az ötleteket.</p></li>
+      <li class="lepes felfed"><h3>Terv és ajánlat</h3><p>Rajz, anyagok, ár és határidő — egyértelműen.</p></li>
+      <li class="lepes felfed"><h3>Készítés, beépítés</h3><p>A műhelyből egyenesen a helyére, tisztán átadva.</p></li>
+    </ol>
   </div>
 </section>
 
@@ -133,21 +179,15 @@
 <section class="szakasz kapcsolat" id="kapcsolat">
   <div class="wrap">
     <div class="kapcs-info">
-      <p class="cimke felfed">Kapcsolat · ajánlatkérés</p>
-      <h2 class="felfed">Meséljen a térről — <em>a többit együtt kitaláljuk.</em></h2>
-      <p class="felfed">Írja le röviden, mire gondolt, vagy hívjon bátran. Ha van, küldjön fotót a helyről vagy egy vázlatot: ez sokat segít az első becslésben.</p>
+      <p class="cimke felfed"><b>05</b> Ajánlatkérés</p>
+      <h2 class="felfed">Meséljen a térről — <span class="hang">a többit együtt kitaláljuk.</span></h2>
+      <p class="felfed">Írja le röviden, mire gondolt, vagy hívjon. Ha van, küldjön fotót a helyről vagy egy vázlatot: ez sokat segít az első becslésben.</p>
       <a class="telefon felfed" href="tel:+36202767939"><small>Telefon</small><span>+36 20 276 7939</span></a>
-      <ol class="lepesek felfed">
-        <li><span><b>Beszélgetés</b> — telefonon vagy az űrlapon keresztül.</span></li>
-        <li><span><b>Felmérés</b> — a helyszínen, méretekkel és ötletekkel.</span></li>
-        <li><span><b>Terv és ajánlat</b> — anyagokkal, mintákkal, határidővel.</span></li>
-        <li><span><b>Készítés és beépítés</b> — a műhelyből egyenesen a helyére.</span></li>
-      </ol>
     </div>
     <form class="urlap felfed" id="urlap" novalidate>
       <div class="mezo"><label for="nev">Név</label><input id="nev" name="nev" autocomplete="name" required></div>
       <div class="mezo"><label for="tel">Telefonszám</label><input id="tel" name="tel" type="tel" autocomplete="tel" inputmode="tel" required></div>
-      <div class="mezo"><label for="email">E-mail <span class="halk">(nem kötelező)</span></label><input id="email" name="email" type="email" autocomplete="email"></div>
+      <div class="mezo"><label for="email">E-mail (nem kötelező)</label><input id="email" name="email" type="email" autocomplete="email"></div>
       <div class="mezo"><label for="hely">Település</label><input id="hely" name="hely" autocomplete="address-level2"></div>
       <fieldset class="mezo szeles">
         <legend>Mire gondolt?</legend>
@@ -155,15 +195,15 @@
           <label class="chip"><input type="checkbox" name="tema" value="Egyedi bútor"><span>Egyedi bútor</span></label>
           <label class="chip"><input type="checkbox" name="tema" value="Konyhabútor"><span>Konyhabútor</span></label>
           <label class="chip"><input type="checkbox" name="tema" value="Beépített szekrény"><span>Beépített szekrény</span></label>
-          <label class="chip"><input type="checkbox" name="tema" value="Intarzia"><span>Intarzia, díszítés</span></label>
+          <label class="chip"><input type="checkbox" name="tema" value="Intarzia"><span>Intarzia</span></label>
           <label class="chip"><input type="checkbox" name="tema" value="Felújítás"><span>Felújítás</span></label>
           <label class="chip"><input type="checkbox" name="tema" value="Egyéb"><span>Még nem tudom</span></label>
         </div>
       </fieldset>
-      <div class="mezo szeles"><label for="uzenet">Néhány mondat a munkáról</label><textarea id="uzenet" name="uzenet" placeholder="Pl. tálalószekrény az étkezőbe, kb. 180 cm széles, diófurnérral…"></textarea></div>
-      <label class="csatol szeles mezo" for="kep"><input id="kep" type="file" accept="image/*" multiple><span>＋</span><span id="kepNev">Fotó vagy vázlat csatolása (nem kötelező)</span></label>
+      <div class="mezo szeles"><label for="uzenet">Néhány mondat a munkáról</label><textarea id="uzenet" name="uzenet" placeholder="Pl. tálalószekrény az étkezőbe, kb. 180 cm széles…"></textarea></div>
+      <label class="csatol mezo szeles" for="kep"><input id="kep" type="file" accept="image/*" multiple><b>+</b><span id="kepNev">Fotó vagy vázlat csatolása (nem kötelező)</span></label>
       <div class="urlap-lab">
-        <small>Az elküldött adatokat csak az ajánlat elkészítéséhez használom. Adatkezelési tájékoztató: <span class="egyeztet" title="ügyféllel egyeztetendő">élesítéskor</span>.</small>
+        <small>Az adatokat csak az ajánlathoz használom. Adatkezelési tájékoztató: <span class="egyeztet" title="ügyféllel egyeztetendő">élesítéskor</span>.</small>
         <button class="btn btn--fo" type="submit">Ajánlatot kérek <i class="nyil" aria-hidden="true"></i></button>
       </div>
       <p class="visszajelzes" id="visszajelzes" role="status"></p>
@@ -174,44 +214,20 @@
 
 <footer class="lablec">
   <div class="wrap">
-    <div><img data-logo="sotet-atlatszo" src="arculat/logo-1/geraartdesign-1-sotet-atlatszo.svg" alt="geraartdesign" width="96" height="120"></div>
-    <div>
-      <h4>Oldalak</h4>
-      <ul><li><a href="#muhely">Műhely</a></li><li><a href="#szolgaltatasok">Szolgáltatások</a></li><li><a href="#munkak">Munkák</a></li><li><a href="#anyagok">Anyagok</a></li></ul>
-    </div>
-    <div>
-      <h4>Elérhetőség</h4>
-      <ul><li><a href="tel:+36202767939">+36 20 276 7939</a></li><li><span class="egyeztet" title="ügyféllel egyeztetendő">Budapest és környéke</span></li></ul>
-    </div>
-    <div>
-      <h4>Gera Art Design</h4>
-      <p style="font-size:15px;color:#CDBFAE;margin:0">Egyedi bútorok, intarzia és berakásos díszítés — Gera Péter műhelyéből.</p>
-    </div>
+    <div><img data-logo="sotet-atlatszo" src="arculat/logo-1/geraartdesign-1-sotet-atlatszo.svg" alt="geraartdesign" width="110" height="128"></div>
+    <div><h4>Oldalak</h4><ul><li><a href="#szolgaltatasok">Szolgáltatások</a></li><li><a href="#munkak">Munkák</a></li><li><a href="#muhely">Műhely</a></li><li><a href="#folyamat">Folyamat</a></li></ul></div>
+    <div><h4>Elérhetőség</h4><ul><li><a href="tel:+36202767939">+36 20 276 7939</a></li><li><span class="egyeztet" title="ügyféllel egyeztetendő">Budapest és környéke</span></li></ul></div>
+    <div><h4>Gera Art Design</h4><p style="font-size:15.5px;color:#CDBFAE;margin:0">Egyedi bútorok, konyhák, beépített szekrények és intarzia — Gera Péter műhelyéből.</p></div>
     <div class="lablec-also"><span>© 2026 Gera Art Design</span><span>Látványterv · DAEKON · <a href="logo.html">Logóválasztó</a></span></div>
   </div>
 </footer>
 
-<!-- csak a bemutatóhoz: logó kipróbálása az oldalon -->
 <div class="bemutato" id="bemutato" aria-label="Logóváltozat kipróbálása">
   <button type="button" class="kapcs" id="bemutatoKapcs" aria-expanded="true">Logó</button>
   <button type="button" data-v="1" aria-pressed="true">1</button><button type="button" data-v="2" aria-pressed="false">2</button><button type="button" data-v="3" aria-pressed="false">3</button><button type="button" data-v="4" aria-pressed="false">4</button><button type="button" data-v="5" aria-pressed="false">5</button>
   <a href="logo.html">Választó</a>
 </div>
 
-<dialog class="nagyito" id="nagyito">
-  <div class="nagyito-belso">
-    <div class="nagyito-kep" id="nagyitoKep"></div>
-    <div class="nagyito-szoveg">
-      <button class="bezar" id="bezar" aria-label="Bezárás">×</button>
-      <p class="cimke" id="nagyitoCimke"></p>
-      <h3 id="nagyitoCim"></h3>
-      <p id="nagyitoSzoveg"></p>
-      <p class="halk" style="font-size:13px">Rajzolt mintatanulmány — a helyére a műhely valódi munkájának fotója kerül.</p>
-    </div>
-  </div>
-</dialog>
-
-<script src="js/intarzia.js"></script>
 <script src="js/gera.js"></script>
 </body>
 </html>

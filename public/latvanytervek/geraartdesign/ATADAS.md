@@ -1,4 +1,6 @@
-# geraartdesign — átadás (1. kör, 2026.10.22.)
+# geraartdesign — átadás (2. kör, 2026.10.22.)
+
+**2. kör: teljes újratervezés** az ügyfél visszajelzése alapján („logók, betűk, minden gyenge”). Kért irány: erős, modern, geometrikus. A fa-/intarziaminták, a Caslon-betűk és a betűtípusból vett G-k kikerültek.
 
 Gera Péter (Gera Art Design) — bútorasztalos és intarziakészítő. Látványterv + 5 logóváltozat.
 
@@ -21,44 +23,37 @@ Gera Péter (Gera Art Design) — bútorasztalos és intarziakészítő. Látvá
 Nincs kitalált vélemény, ár, statisztika, évszám.
 
 ## Képek
-Valódi fotó nincs. **Minden kép programból rajzolt, nem fotó és nem AI-kép:**
-- `img/furner-*.jpg` – 6 fafaj furnértextúrája (`_forras/furner.py`, FFT-zaj, csempézhető).
-- Intarziaminták SVG-ben, futásidőben (`js/intarzia.js`): napsugár, iránytű, kocka, chevron-halszálka, sakktábla, keresztsávos tábla.
-- Portré helye jelölve. Munkák: „Mintatanulmány” címkével; valódi fotó: `js/gera.js` → `PROJEKTEK[n].foto = 'img/munkak/…jpg'` (ekkor a minta helyett a kép jelenik meg).
+Valódi fotó nincs; stock/AI kép nincs. A hero egy kódból rajzolt, lapos geometrikus látványrajz (tálaló, tükör, méretvonalak) – illusztráció, nem munka. A munkák helyein kategóriánként egyszerű nézetrajz + „saját kép kerül ide” felirat; valódi kép: `js/gera.js` → `MUNKAK[n].foto`. Portré helye jelölve.
 
-## Három irány (elemzés után)
-1. **„Intarzia” – kiválasztva.** A mesterségből születik: furnér, rostirány, berakás. A kért bézs–karamell paletta itt természetes (juhar, körte, cseresznye, dió). Művészi, nőiesebb finomság, mégis hiteles – nem barkácsos, nincs szerszámikon.
-2. „Galéria” – múzeumi fehér tér, tárgyfotók címkékkel. Elvetve: fotó nélkül üres, hideg, sablonos.
-3. „Műhelynapló” – vázlatok, mérethálók, kézírás. Elvetve: a brief kifejezetten nem kér iparos/barkács hatást.
+## Koncepció: „Arány”
+Építészeti, geometrikus: látható 12 hasábos tartórács a hero mögött, számozott szakaszok, hajszálvonalas rácsba rendezett szolgáltatások saját geometrikus jelekkel, sötét dió blokk a műhelynek, görgetésre haladó folyamatvonal.
 
-## Logók (`arculat/logo-1…5/`, körvonalazott SVG, `_forras/logok.py`)
-Mind: nagy G · alatta „geraartdesign” · vékony szögletes keret · pasztell bézs.
-1. Klasszikus prémium – Libre Caslon Display G, dupla hajszálkeret, Commissioner 300 ritkítva.
-2. Finom elegáns – Bodoni Moda G, Cormorant Garamond kurzív név, a keret alsó élét a név nyitja meg.
-3. Modern minimál – saját rajzolású geometrikus G, Jost, egyvonalas keret.
-4. Művészi – intarzia – Bodoni Moda 800 G legyezőfurnér-berakással, kettős szegély sarokkockákkal.
-5. Extra letisztult luxus – Tenor Sans, fekvő keret kifutó sarkokkal.
+## Logók (`arculat/logo-1…5/`, `_forras/logok.py`)
+Mind: saját szerkesztésű G (körből/négyzetből, nem betűtípus) · alatta „geraartdesign” · vékony szögletes keret · bézs–taupe–karamell.
+1. Monolit – vastag kör-G, vízszintesen vágott végződés; Unbounded.
+2. Négyzet – derékszögekből épített G, erősebb keret; Michroma.
+3. Sablon – sablonvágásos gyűrű-G, leválasztott szár, sarokjelek; Lexend Zetta.
+4. Vonal – a Monolit kontúrja karamellben, kettős hajszálkeret; Josefin Sans.
+5. Szerkesztés – kétszínű G szerkesztőkörrel, tengelyekkel, mérővonalkás keret; Urbanist.
 
-Fájlok változatonként: `fo`, `vilagos`, `sotet`, `sotet-atlatszo`, `mono`, `kompakt`, `kompakt-sotet`, `social`, `social-sotet`, `fejlec`, `fejlec-sotet`. Betűk: Google Fonts (OFL).
+Fájlok változatonként: `fo`, `vilagos`, `sotet`, `sotet-atlatszo`, `mono`, `kompakt`, `kompakt-sotet`, `social`, `social-sotet`, `fejlec`, `fejlec-sotet` (SVG, körvonalazott).
 
 ## Designrendszer
-- Betűk (helyben, WOFF, latin-ext): Libre Caslon Display (címek), Libre Caslon Text Italic (kiemelés), Commissioner változtatható (szöveg). Fraunces nincs.
-- Méretek (`gera.css` :root): h1 30–50 px, h2 26–40 px, h3 20–24 px, törzs 16,5 px, címke 11,5 px nagybetűs, 0,22 em ritkítás. Szándékosan mérsékelt.
-- Színek: papír `#FBF7F1`, krém `#F5EEE4`, homok `#EADFD0`, púder `#E3D3C1`, világos taupe `#C9B8A4`, taupe `#A08C77`, karamell `#B48A63` / `#9A7350`, mély taupe `#5E4D40`, dió (sötét blokkok, nem fekete) `#3B322B`.
-- Térköz: konténer 1240 px, oldalmargó 20–64 px, szakasz 96–160 px.
-- Töréspontok: 1080 (szolgáltatás-minták el), 900 (hamburger menü, egyoszlopos hero, tábla felül), 600 (mobil).
+- Betűk (helyben, WOFF): **Unbounded** 250–500 (címek, 300-as súlyon) + **Urbanist** 300–700 (szöveg). Fraunces nincs.
+- Méretek: h1 27–44 px, h2 23–34 px, h3 16–19 px, törzs 17 px, címke 11,5 px nagybetűs. Szándékosan mérsékelt.
+- Színek: papír `#FBF7F1`, krém `#F4EDE3`, homok `#EADFD1`, púder `#E0D1BF`, világos taupe `#C8B6A1`, taupe `#9C8670`, karamell `#BE9670`/`#9E7752`, mély taupe `#4F4136`, dió `#3A312A`.
+- Konténer 1280 px; töréspontok 1080 / 900 / 600.
 
 ## Mozgás
 | Elem | Mit csinál | Indító | Csökkentett mozgás |
 |---|---|---|---|
-| Hero intarziatábla | a furnérdarabok egyenként „berakódnak”, a legyező szeletei kinyílnak, a szegélyvonalak kirajzolódnak | betöltés | azonnal kész |
-| Szöveg, blokkok | lágy felúszás | görgetés (ugrásbiztos ellenőrzés) | nincs |
-| Munkák | krém fedőlap felhúzódik a kártyáról, hoverre lassú nagyítás | görgetés / hover | nincs |
-| Szolgáltatás-index | cím elcsúszik, mintacsík becsúszik | hover (asztali) | – |
-| Furnér-mintakönyv | a lapok legyezőszerűen kinyílnak; hover/koppintás kiemel egy lapot és kiírja a fafajt | görgetés / interakció | nyitott állapot |
-| Gombok | sötétedő kitöltés balról, nyíl nyúlik | hover | – |
+| Hero-látványrajz | elemek egymás után felépülnek, méretvonalak kirajzolódnak; egérre a rétegek finoman eltolódnak (mélység) | betöltés / egér (csak finom mutató) | azonnal kész, mozgás nélkül |
+| Szakaszok | lágy felúszás, lépcsőzetesen | görgetés | nincs |
+| Szolgáltatás-csempe | háttér alulról kitöltődik, a jel eleme elmozdul | hover | – |
+| Munkák | szűrő gombok; hoverre a rajz finoman emelkedik | kattintás / hover | – |
+| Folyamat | a vonal görgetéssel töltődik, a lépésszámok sötétre váltanak | görgetés | – |
 
-Mind vanilla JS + CSS; GSAP, Three.js, WebGL, React Bits, HorizonX **nincs** és nem szükséges.
+Vanilla JS + CSS; GSAP / Three.js / WebGL / React Bits / HorizonX nincs és nem kell.
 
 ## Nincs bekötve / élesítés előtt
 - Űrlap: demó (nincs háttér, nincs e-mail). Élesítés: PHP vagy űrlapszolgáltatás, fájlfeltöltéssel.
@@ -67,7 +62,7 @@ Mind vanilla JS + CSS; GSAP, Three.js, WebGL, React Bits, HorizonX **nincs** és
 - `noindex` levétele.
 
 ## Kérdések az ügyfélnek
-1. Melyik logó (1–5)? Finomítás a választott irányban.
+1. Melyik logó (1–5)? Finomítás a választott irányban (súly, arány, keret).
 2. Valódi fotók: elkészült munkák (6–12 db), portré, műhely.
 3. Cím, e-mail, működési terület; vállal-e ajtó-ablak gyártást?
 4. A bemutatkozó szöveg és a kiemelt mondat rendben van-e?
