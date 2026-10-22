@@ -3,6 +3,17 @@
 **Élő látványterv:** https://daekon-ship.github.io/daekon/latvanytervek/kalocsa-zoltan/ (noindex)
 **Állapot (2026.10.22., 10. kör):** ügyfélnek bemutatható látványterv. Az éles működéshez szükséges integrációk (űrlapküldés, mérés) előkészítve, de **nincsenek bekapcsolva** (lásd G).
 
+## Végleges audit (2026.10.22.)
+Ellenőrizve 360 / 390 / 430 / 768 / 1440 px-en (és 320 / 1024 / 1920 px-en a túlcsordulásra).
+- **Javítva:**
+  - tableten (768 px) a nyitóvideó kitöltötte a képernyőt, és a gomb lecsúszott; most 16:9-es a videósáv;
+  - az asztali főcím 62 px-ről legfeljebb 54 px-re csökkent;
+  - a „Bemutató mód” jelzés feltűnőbb, és a küldés gomb fölé került; a „Közvetlenül Zoltánhoz kerül” szöveg „Élesítés után közvetlenül Zoltánhoz kerül” lett;
+  - a nagyított képek alatt megjelenik: „Saját munkafotó – fény és kontraszt szerkesztve”;
+  - mobilon a hívógomb eltűnik, amíg az űrlap látszik.
+- **Videó:** Valósághű a kotró–kanál tele–kiemelés–ürítés sorrend, látszik az árok és a kitermelt föld; másodpercenkénti mintavétellel ellenőrizve. Kockáról kockára nem vizsgáltam. Szemléltető AI-felvétel (sárga–narancs kotró, nem Zoltán Kubotája), a „Szemléltető animáció” címke jelzi. Ha valósághűbb, saját géppel készült felvétel kell, az külön feladat.
+- **Élesítés NINCS bekapcsolva:** `AJANLAT.endpoint`, `MERES.endpoint`, `ANALYTICS` = null; a PHP-fájlok csak a `_forras/backend/` mappában vannak, telepítve nincsenek.
+
 ## 12. kör (2026.10.22.)
 - **Árkok sokkal mélyebbek:** a falak sötétítése mellett külön, keskenyebb maszk az árok fenekére (erős sötétítés + mélyebb tónus), így a talp „elnyelődik” – pirto-2, pirto-3, pirto-4, közműárok. A képek URL-je verziózva (`?v=12`), hogy a telefon ne a régit mutassa a gyorsítótárból.
 - **Térkép nem akasztja meg a görgetést:** alapból se kerékkel, se egy ujjal nem mozdul (a lap gördül tovább); „Koppints a térkép mozgatásához” gombra/koppintásra aktív, 8 mp tétlenség vagy kigörgetés után újra alszik.

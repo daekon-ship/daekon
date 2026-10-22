@@ -101,6 +101,8 @@
   // űrlapkitöltés közben (mobil billentyűzet) a hívógomb ne takarjon
   d.addEventListener('focusin', e => fab.classList.toggle('is-typing', !!e.target.closest('.form input:not([type=checkbox]), .form textarea, .form select')));
   d.addEventListener('focusout', () => fab.classList.remove('is-typing'));
+  // mobilon az űrlap látható részén a hívógomb elrejtőzik, hogy ne takarja a mezőket és a küldés gombot
+  if ('IntersectionObserver' in window) new IntersectionObserver(es => es.forEach(e => fab.classList.toggle('is-away', e.isIntersecting)), { rootMargin: '0px 0px -10% 0px' }).observe($('#ajanlat-form'));
 
   /* ---------- MOBILMENÜ ---------- */
   const burger = $('#burger'), nav = $('#nav');
@@ -151,7 +153,7 @@
   $$('[data-full]').forEach(el => { if (!LB.some(x => x[0] === el.dataset.full)) LB.push([el.dataset.full, el.dataset.cap || '']); });
   const lb = $('#lb'), lbImg = $('img', lb), lbCap = $('figcaption', lb);
   let cur = 0, last = null;
-  const show = i => { cur = (i + LB.length) % LB.length; lbImg.src = LB[cur][0]; lbImg.alt = LB[cur][1]; lbCap.textContent = `${String(cur + 1).padStart(2, '0')} · ${LB[cur][1]}`; };
+  const show = i => { cur = (i + LB.length) % LB.length; lbImg.src = LB[cur][0]; lbImg.alt = LB[cur][1]; lbCap.textContent = `${String(cur + 1).padStart(2, '0')} · ${LB[cur][1]}`; lbCap.dataset.note = 'Saját munkafotó – fény és kontraszt szerkesztve'; };
   const open = i => { last = d.activeElement; show(i); lb.hidden = false; d.body.style.overflow = 'hidden'; $('.lb__x', lb).focus(); track('portfolio_view', { via: 'lightbox', image: i + 1 }); };
   const close = () => { lb.hidden = true; d.body.style.overflow = ''; last && last.focus(); };
   d.addEventListener('click', e => {

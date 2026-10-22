@@ -11,7 +11,7 @@
 <link rel="preload" href="fonts/archivo-kgw.woff" as="font" type="font/woff" crossorigin>
 <link rel="preload" href="video/hero-poster.webp" as="image" type="image/webp" media="(min-width: 861px)">
 <link rel="preload" href="video/hero-poster-mobil.webp" as="image" type="image/webp" media="(max-width: 860px)">
-<link rel="stylesheet" href="kalocsa.css?v=33">
+<link rel="stylesheet" href="kalocsa.css?v=35">
 <script>if(!matchMedia("(prefers-reduced-motion: reduce)").matches){document.documentElement.classList.add("anim");setTimeout(function(){if(!window.gsap)document.documentElement.classList.remove("anim")},3000)}</script>
 </head>
 <body>
@@ -405,7 +405,7 @@
       <ul class="ticks ticks--sm">
         <li>Több munkatípus is választható</li>
         <li>Fotót is csatolhatsz a helyszínről</li>
-        <li>Közvetlenül Zoltánhoz kerül</li>
+        <li>Élesítés után közvetlenül Zoltánhoz kerül</li>
       </ul>
     </div>
 
@@ -445,9 +445,9 @@
 
       <label class="consent"><input type="checkbox" name="adatkezeles" required><span>Elolvastam és elfogadom az <a href="adatkezeles.html" target="_blank" rel="noopener">adatkezelési tájékoztatót</a>. <em>*</em></span></label>
 
+      <p class="form__demo" id="form-demo"><span class="dotk"></span><span><b>Bemutató mód</b> – ez a látványterv még nem küldi el az ajánlatkérést, Zoltánhoz most nem érkezik meg. Az elküldés az élesítéskor lesz bekötve; addig hívj, vagy küldd el e-mailben.</span></p>
       <button class="btn btn--full" type="submit">Ajánlatkérés elküldése</button>
       <p class="form__err" id="form-err" role="alert"></p>
-      <p class="form__demo" id="form-demo"><span class="dotk"></span> Bemutató változat: az elküldés az élesítéskor kerül bekötésre. Addig a gomb nem továbbít adatot – hívj, vagy küldd el e-mailben.</p>
     </form>
 
     <div class="done" id="form-done" hidden tabindex="-1">
@@ -513,6 +513,6 @@
 
 <script src="js/gsap.min.js" defer></script>
 <script src="js/ScrollTrigger.min.js" defer></script>
-<script src="kalocsa.js?v=33" defer></script>
+<script src="kalocsa.js?v=35" defer></script>
 </body>
 </html>
