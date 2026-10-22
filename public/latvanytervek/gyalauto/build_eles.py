@@ -26,7 +26,8 @@ FILES = ['index.html', 'impresszum.html', 'adatkezeles.html', '404.html', 'gyala
          'js/gsap.min.js', 'js/ScrollTrigger.min.js', 'logo.svg', 'logo-jel.svg', 'favicon.svg', 'favicon-32.png',
          'apple-touch-icon.png', 'icon-192.png', 'icon-512.png', 'og-gyalauto.jpg', 'site.webmanifest',
          'fonts/manrope-latin.woff2', 'fonts/manrope-latin-ext.woff2', 'fonts/space-grotesk-latin.woff2',
-         'fonts/space-grotesk-latin-ext.woff2', 'fonts/OFL.txt']
+         'fonts/space-grotesk-latin-ext.woff2', 'fonts/OFL.txt',
+         'google5d70e4856aa1ea66.html']  # Search Console-tulajdon igazolása – ne töröld
 INDEXED = ['index.html', 'impresszum.html', 'adatkezeles.html']
 TEXT = ('.html', '.css', '.js', '.svg', '.txt', '.webmanifest', '.xml')
 FORBIDDEN = [r'[Ll]átványterv', r'latvanyterv', r'daekon-ship\.github\.io', r'fonts\.googleapis', r'fonts\.gstatic', r'lorem ipsum']
@@ -77,7 +78,7 @@ def main():
 
     ver = {'gyalauto.css': short_hash(os.path.join(out, 'gyalauto.css')),
            'gyalauto.js': short_hash(os.path.join(out, 'gyalauto.js'))}
-    for rel in [f for f in FILES if f.endswith('.html')]:
+    for rel in [f for f in FILES if f.endswith('.html') and not f.startswith('google')]:
         p = os.path.join(out, rel)
         with open(p, encoding='utf-8') as f:
             html = f.read()
@@ -115,7 +116,7 @@ def main():
             for pat in FORBIDDEN:
                 if re.search(pat, txt):
                     fail(f'{rel}: tiltott tartalom: {pat}')
-            if n.endswith('.html'):
+            if n.endswith('.html') and not n.startswith('google'):
                 base = '' if rel != '404.html' else '/'
                 for ref in re.findall(r'(?:href|src)="([^"#:?]+)(?:\?[^"]*)?"', txt):
                     if ref in ('/', './'):
