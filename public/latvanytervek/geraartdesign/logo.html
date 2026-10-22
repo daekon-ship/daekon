@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Logóválasztó — geraartdesign</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#F5EEE4">
+<link rel="icon" href="arculat/logo-1/geraartdesign-1-kompakt.svg" type="image/svg+xml">
+<link rel="stylesheet" href="gera.css">
+<style>
+.lv-fej{display:flex;justify-content:space-between;align-items:center;gap:20px;height:76px;border-bottom:1px solid var(--vonal)}
+.lv-fej a{font-size:14px;text-decoration:none;color:var(--mely)}
+.lv-fej b{font:500 var(--t-cimke)/1 var(--sans);letter-spacing:.22em;text-transform:uppercase;color:var(--taupe)}
+.lv-intro{padding:clamp(56px,7vw,100px) 0 clamp(40px,5vw,64px);display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);gap:clamp(28px,6vw,90px);align-items:end}
+.alap{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:1px solid var(--vonal)}
+.alap li{padding:14px 0;border-bottom:1px solid var(--vonal);font-size:14.5px;color:var(--halk)}
+.alap li:nth-child(odd){padding-right:18px}
+.alap b{display:block;font:500 var(--t-cimke)/1.6 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--taupe)}
+
+/* öt kártya egymás mellett */
+.otos{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;padding-bottom:clamp(64px,8vw,110px)}
+.kartya{appearance:none;border:1px solid var(--vonal);background:var(--papir);padding:22px 18px 18px;cursor:pointer;text-align:left;display:flex;flex-direction:column;gap:16px;transition:border-color .4s,transform .6s var(--ease),box-shadow .6s var(--ease);font:inherit;color:inherit}
+.kartya:hover{transform:translateY(-4px);box-shadow:0 24px 40px -30px rgba(59,50,43,.45)}
+.kartya[aria-pressed=true]{border-color:var(--mely);box-shadow:inset 0 0 0 1px var(--mely)}
+.kartya .kep{aspect-ratio:4/5;display:grid;place-items:center;background:var(--krem);padding:14%}
+.kartya img{max-height:100%;width:auto;max-width:100%}
+.kartya .sz{font:450 12px/1 var(--sans);letter-spacing:.14em;color:var(--taupe)}
+.kartya h3{font-size:19px}
+.kartya p{margin:0;font-size:13.5px;color:var(--halk);line-height:1.5}
+.valasztva{display:none;font:500 10.5px/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--papir);background:var(--mely);padding:7px 9px;align-self:flex-start}
+.kartya.kedvenc .valasztva{display:inline-block}
+
+/* kiemelt nézet */
+.kiemelt{background:var(--papir);padding:clamp(72px,9vw,130px) 0}
+.kiemelt-racs{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(32px,6vw,90px);align-items:start}
+.szinpad{aspect-ratio:1/1;display:grid;place-items:center;transition:background .6s var(--ease);position:relative;padding:16%}
+.szinpad img{max-height:100%;max-width:100%;width:auto;transition:opacity .4s}
+.hatter-valto{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.hatter-valto button{display:flex;align-items:center;gap:8px;border:1px solid var(--vonal);background:transparent;min-height:40px;padding:0 12px 0 8px;font:400 13px/1 var(--sans);color:var(--mely);cursor:pointer}
+.hatter-valto button i{width:20px;height:20px;border:1px solid rgba(0,0,0,.08)}
+.hatter-valto button[aria-pressed=true]{border-color:var(--mely)}
+.leiras dl{margin:28px 0 34px;display:grid;grid-template-columns:120px 1fr;border-top:1px solid var(--vonal)}
+.leiras dt,.leiras dd{margin:0;padding:13px 0;border-bottom:1px solid var(--vonal);font-size:14.5px}
+.leiras dt{font:500 var(--t-cimke)/1.9 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--taupe)}
+.leiras dd{color:var(--szoveg)}
+.lep{display:flex;gap:10px;margin-top:12px}
+.lep button{width:48px;height:48px;border:1px solid var(--vonal);background:transparent;cursor:pointer;font-size:18px;color:var(--mely)}
+
+/* változatok */
+.valtozatok{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.valtozat{margin:0}
+.valtozat .kep{aspect-ratio:1/1;display:grid;place-items:center;padding:16%;border:1px solid var(--vonal)}
+.valtozat .kep img{max-height:100%;max-width:100%;width:auto}
+.valtozat figcaption{display:flex;justify-content:space-between;gap:10px;padding-top:10px;font-size:13px;color:var(--halk)}
+.valtozat figcaption b{font-weight:500;color:var(--mely)}
+.valtozat a{color:var(--karamell-s);font-size:12.5px}
+
+/* mockupok */
+.mock-racs{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:clamp(16px,2vw,28px)}
+.mock{margin:0;background:var(--homok);position:relative;overflow:hidden}
+.mock figcaption{position:absolute;left:14px;top:14px;font:500 10.5px/1 var(--sans);letter-spacing:.18em;text-transform:uppercase;background:rgba(251,247,241,.92);color:var(--mely);padding:8px 10px;z-index:3}
+.m-nevjegy{grid-column:span 7;aspect-ratio:7/5;display:grid;place-items:center;background:#E7DACA}
+.nevjegyek{position:relative;width:74%;aspect-ratio:85/55}
+.nj{position:absolute;width:78%;aspect-ratio:85/55;box-shadow:0 24px 40px -22px rgba(59,50,43,.55),0 2px 4px rgba(59,50,43,.12)}
+.nj-elo{left:0;top:0;background:var(--papir);display:grid;place-items:center;transform:rotate(-5deg);z-index:2}
+.nj-elo img{width:30%;height:auto}
+.nj-hat{right:0;bottom:0;background:var(--dio);color:#E2D3BF;transform:rotate(4deg);padding:7% 8%;display:flex;flex-direction:column;justify-content:space-between;font-size:clamp(9px,.8vw,12px);line-height:1.5}
+.nj-hat img{width:17%;height:auto;align-self:flex-start}
+.nj-hat b{display:block;font:400 clamp(12px,1.1vw,16px)/1.2 var(--serif);color:#F1E7DA;margin-bottom:2px}
+.m-tabla{grid-column:span 5;aspect-ratio:5/5;background-size:300px;display:grid;place-items:center}
+.m-tabla img{width:46%;mix-blend-mode:multiply;opacity:.78;filter:contrast(1.05)}
+.m-fejlec{grid-column:span 7;aspect-ratio:7/4;padding:9% 6% 0;display:flex;flex-direction:column;background:#E3D3C1}
+.bongeszo{background:var(--krem);flex:1;box-shadow:0 30px 50px -30px rgba(59,50,43,.5);display:flex;flex-direction:column;overflow:hidden}
+.bongeszo-sav{height:26px;background:#E9DFD2;display:flex;align-items:center;gap:6px;padding:0 10px}
+.bongeszo-sav i{width:8px;height:8px;border-radius:50%;background:#CDBBA6}
+.bongeszo-sav span{margin-left:10px;height:14px;flex:0 1 220px;background:var(--papir)}
+.mini-fej{display:flex;align-items:center;justify-content:space-between;padding:4% 6%;gap:16px}
+.mini-fej img{height:clamp(26px,3.4vw,46px);width:auto}
+.mini-fej nav{display:flex;gap:clamp(8px,1.4vw,20px);font-size:clamp(9px,.85vw,12px);color:var(--mely)}
+.mini-fej nav b{background:var(--mely);color:var(--papir);padding:5px 9px;font-weight:500}
+.mini-hero{padding:2% 6%;display:grid;grid-template-columns:1.1fr 1fr;gap:6%;align-items:center;flex:1}
+.mini-hero h4{margin:0;font:400 clamp(12px,1.5vw,22px)/1.15 var(--serif);color:var(--mely)}
+.mini-hero div{height:100%;min-height:60px;background-size:160px}
+.m-social{grid-column:span 5;aspect-ratio:5/4;display:grid;place-items:center;background:#EFE5D8}
+.profil{width:78%;background:var(--papir);box-shadow:0 30px 50px -30px rgba(59,50,43,.5)}
+.profil-borito{aspect-ratio:3/1;background-size:220px}
+.profil-test{padding:0 7% 7%;display:flex;flex-direction:column;align-items:flex-start}
+.profil-test img{width:30%;border-radius:50%;margin-top:-15%;border:4px solid var(--papir);background:var(--papir)}
+.profil-test b{font:400 clamp(15px,1.4vw,20px)/1.2 var(--serif);color:var(--mely);margin-top:10px}
+.profil-test span{font-size:12px;color:var(--halk)}
+.profil-test i{display:flex;gap:8px;margin-top:12px;font-style:normal}
+.profil-test i em{font:500 11px/1 var(--sans);font-style:normal;padding:8px 12px;background:var(--mely);color:var(--papir)}
+.profil-test i em+em{background:transparent;color:var(--mely);border:1px solid var(--vonal)}
+
+/* egymás mellett, három háttéren */
+.osszevet{display:grid;grid-template-columns:120px repeat(5,minmax(0,1fr));border-top:1px solid var(--vonal)}
+.osszevet>*{border-bottom:1px solid var(--vonal);display:grid;place-items:center;padding:20px 12px}
+.osszevet .fej{font:500 var(--t-cimke)/1.4 var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--taupe);place-items:center start;padding-left:0}
+.osszevet img{max-height:110px;width:auto;max-width:100%}
+.osszevet .h-papir{background:var(--papir)}.osszevet .h-puder{background:#EADCCB}.osszevet .h-dio{background:var(--dio)}
+.osszevet .oszlop{font:450 12px/1 var(--sans);letter-spacing:.12em;color:var(--taupe)}
+
+/* választás */
+.dontes{background:var(--dio);color:#E6DACB;padding:clamp(72px,9vw,120px) 0}
+.dontes h2{color:#F1E7DA}
+.dontes p{color:#CDBFAE}
+.dontes-sor{display:flex;flex-wrap:wrap;gap:10px;margin:30px 0}
+.dontes-sor button{min-width:56px;height:56px;border:1px solid rgba(230,218,203,.3);background:transparent;color:#F1E7DA;font:400 22px/1 var(--serif);cursor:pointer;transition:background .3s}
+.dontes-sor button[aria-pressed=true]{background:#EADDCB;color:var(--dio)}
+.dontes .btn--vonal{color:#F1E7DA;border-color:rgba(230,218,203,.5)}
+.dontes .btn--vonal::after{background:#EADDCB}
+.dontes .btn--vonal:hover{color:var(--dio)}
+#dontesSzoveg b{color:#F1E7DA;font-weight:500}
+
+@media (max-width:1000px){
+  .otos{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:minmax(220px,42%);overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:18px;margin-bottom:clamp(48px,8vw,90px);scrollbar-width:thin}
+  .kartya{scroll-snap-align:start}
+  .kiemelt-racs,.lv-intro{grid-template-columns:1fr}
+  .valtozatok{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .m-nevjegy,.m-tabla,.m-fejlec,.m-social{grid-column:1/-1}
+  .m-tabla{aspect-ratio:4/3}
+  .osszevet{grid-template-columns:repeat(5,minmax(120px,1fr));overflow-x:auto}
+  .osszevet .fej,.osszevet .ures{grid-column:1/-1;padding:16px 0 8px;border-bottom:0}
+}
+@media (max-width:600px){
+  .otos{grid-auto-columns:72%}
+  .alap{grid-template-columns:1fr}
+  .alap li:nth-child(odd){padding-right:0}
+  .leiras dl{grid-template-columns:96px 1fr}
+  .nevjegyek{width:86%}
+  .mini-fej nav span{display:none}
+  .lv-fej b{display:none}
+  .osszevet{grid-template-columns:repeat(5,minmax(0,1fr));overflow:visible}
+  .osszevet>*{padding:12px 4px}
+  .osszevet img{max-height:72px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="lv-fej"><a href="index.html">← Vissza a weboldal-látványtervhez</a><b>Logóterv · 5 változat</b></header>
+
+  <section class="lv-intro">
+    <div>
+      <p class="cimke">geraartdesign · logóválasztó</p>
+      <h1>Öt változat, <em>egy közös alapgondolat.</em></h1>
+    </div>
+    <div>
+      <p class="halk">Mindegyik ugyanarra épül, mégis máshogy hat. Nézze meg őket egymás mellett, nagyban, sötét és világos háttéren, névjegyen és fejlécként — és válassza ki a legerősebbet.</p>
+      <ul class="alap">
+        <li><b>Központ</b>nagy, nyomtatott G</li>
+        <li><b>Alatta</b>a geraartdesign név</li>
+        <li><b>Körben</b>vékony, szögletes keret</li>
+        <li><b>Színek</b>bézs, homok, taupe, karamell</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="otos" id="otos" role="group" aria-label="Logóváltozatok"></div>
+</div>
+
+<section class="kiemelt" id="kiemelt">
+  <div class="wrap">
+    <div class="kiemelt-racs">
+      <div>
+        <div class="szinpad" id="szinpad"><img id="szinpadKep" src="arculat/logo-1/geraartdesign-1-fo.svg" alt="Kiválasztott logó"></div>
+        <div class="hatter-valto" id="hatterValto" role="group" aria-label="Háttér"></div>
+      </div>
+      <div class="leiras">
+        <p class="cimke" id="kSz">01 · Kiemelt nézet</p>
+        <h2 id="kNev">Klasszikus prémium</h2>
+        <dl id="kDl"></dl>
+        <div class="cta-sor">
+          <button class="btn btn--fo" type="button" id="kedvencGomb">Ezt választom</button>
+          <a class="btn btn--vonal" id="weboldalon" href="index.html?logo=1">Megnézem a weboldalon</a>
+        </div>
+        <div class="lep"><button type="button" id="elozo" aria-label="Előző változat">←</button><button type="button" id="kovetkezo" aria-label="Következő változat">→</button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="szakasz">
+  <div class="wrap">
+    <div class="szakasz-fej">
+      <div><p class="cimke">Változatok</p><h2>Ugyanaz a logó, <em>minden felületre</em></h2></div>
+      <p>Fő logó, világos és sötét háttérre, egyszínű (pecséthez, gravírozáshoz), kompakt jel (kis méretre, kedvencikonnak) és közösségi profilkép. Minden fájl SVG — bármekkorára nagyítható.</p>
+    </div>
+    <div class="valtozatok" id="valtozatok"></div>
+  </div>
+</section>
+
+<section class="szakasz" style="padding-top:0">
+  <div class="wrap">
+    <div class="szakasz-fej">
+      <div><p class="cimke">Használatban</p><h2>Névjegyen, fejlécben, <em>a fán</em></h2></div>
+      <p>Így mutat a kiválasztott változat a gyakorlatban. A névjegy hátoldalán a telefonszám valós, a többi adat egyeztetés után kerül rá.</p>
+    </div>
+    <div class="mock-racs">
+      <figure class="mock m-nevjegy"><figcaption>Névjegy</figcaption>
+        <div class="nevjegyek">
+          <div class="nj nj-elo"><img data-v="fo" alt=""></div>
+          <div class="nj nj-hat"><img data-v="kompakt-sotet" alt=""><div><b>Gera Péter</b>bútorasztalos · intarziakészítő<br>+36 20 276 7939</div></div>
+        </div>
+      </figure>
+      <figure class="mock m-tabla" style="background-image:url(img/furner-juhar.jpg)"><figcaption>Beégetett jelölés fán</figcaption><img data-v="mono" alt=""></figure>
+      <figure class="mock m-fejlec"><figcaption>Weboldal fejléce</figcaption>
+        <div class="bongeszo">
+          <div class="bongeszo-sav"><i></i><i></i><i></i><span></span></div>
+          <div class="mini-fej"><img data-v="fejlec" alt=""><nav><span>Műhely</span><span>Munkák</span><span>Anyagok</span><b>Ajánlatkérés</b></nav></div>
+          <div class="mini-hero"><h4>Egyedi bútorok, amelyeken a fa rajzolata <em>maga a díszítés.</em></h4><div style="background-image:url(img/furner-korte.jpg)"></div></div>
+        </div>
+      </figure>
+      <figure class="mock m-social"><figcaption>Közösségi profil</figcaption>
+        <div class="profil">
+          <div class="profil-borito" style="background-image:url(img/furner-dio.jpg)"></div>
+          <div class="profil-test"><img data-v="social" alt=""><b>Gera Art Design</b><span>Bútorasztalos · intarzia</span><i><em>Üzenet</em><em>Követés</em></i></div>
+        </div>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section class="szakasz" style="padding-top:0">
+  <div class="wrap">
+    <div class="szakasz-fej">
+      <div><p class="cimke">Egymás mellett</p><h2>Mind az öt, <em>három háttéren</em></h2></div>
+      <p>Törtfehér, púderes bézs és sötét dió alapon — így a legkönnyebb látni, melyik bírja jól a környezetváltást.</p>
+    </div>
+    <div class="osszevet" id="osszevet"></div>
+  </div>
+</section>
+
+<section class="dontes">
+  <div class="wrap">
+    <p class="cimke" style="color:var(--taupe-v)">Választás</p>
+    <h2>Melyik legyen <em>a geraartdesign arca?</em></h2>
+    <div class="dontes-sor" id="dontesSor"></div>
+    <p id="dontesSzoveg">Még nincs kiválasztva változat. Kattintson egy számra, majd jelezze vissza a választását — a végleges logót a kiválasztott irányban finomítom.</p>
+    <a class="btn btn--vonal" href="index.html" id="dontesLink">Vissza a weboldalhoz</a>
+  </div>
+</section>
+
+<script>
+(function () {
+  const $ = s => document.querySelector(s);
+  const L = [
+    { nev: 'Klasszikus prémium', egy: 'Caslon-G, dupla hajszálkeret, ritkított név.',
+      g: 'Klasszikus Caslon-talpas, erős, nyugodt forma', t: 'Ritkított, vékony groteszk kisbetűk', k: 'Kettős hajszálvonal, mint egy berakott szegély', h: 'Időtálló, megbízható, „régi műhely, mai szemmel”' },
+    { nev: 'Finom elegáns', egy: 'Bodoni-G, kurzív név, a keretet a név nyitja meg.',
+      g: 'Magas kontrasztú Bodoni, hajszálvékony vonásokkal', t: 'Kurzív Cormorant — kézírásos melegség', k: 'Egyetlen hajszálvonal, alul a név szakítja meg', h: 'Nőies, kifinomult, divatházas hangulat' },
+    { nev: 'Modern minimál', egy: 'Geometrikus, rajzolt G, egyvonalas keret.',
+      g: 'Saját rajzolású, körívből épített G', t: 'Geometrikus Jost, nyugodt ritmus', k: 'A G vonalvastagságával rokon, egységes keret', h: 'Letisztult, mai, építészeti' },
+    { nev: 'Művészi – intarzia', egy: 'Napsugár-furnérból kirakott G, berakott sarokkockák.',
+      g: 'Erős Bodoni-G, belsejében legyezős furnérberakás', t: 'Ritkított, közepes súlyú groteszk', k: 'Kettős szegély sarokkockákkal — mint egy intarziás táblán', h: 'Egyedi, mesterségre utaló, művészi' },
+    { nev: 'Extra letisztult luxus', egy: 'Tenor-G, fekvő keret kifutó sarkokkal, ritkított név.',
+      g: 'Finoman kiszélesedő, talp nélküli G', t: 'Erősen ritkított Tenor Sans', k: 'Fekvő téglalap, a sarkokon túlfutó vonalakkal', h: 'Csendes luxus, sok levegővel' }
+  ];
+  const HATTER = [
+    { n: 'Törtfehér', c: '#FBF7F1', f: 'fo' }, { n: 'Homok', c: '#EADFD0', f: 'fo' },
+    { n: 'Púder', c: '#E8D7C6', f: 'fo' }, { n: 'Dió', c: '#3B322B', f: 'sotet-atlatszo' },
+    { n: 'Fehér, egyszínű', c: '#FFFFFF', f: 'mono' }
+  ];
+  const VALT = [
+    ['fo', 'Fő logó', '#F5EEE4'], ['vilagos', 'Világos háttéren', '#FBF7F1'], ['sotet', 'Sötét háttéren', '#3B322B'], ['mono', 'Monokróm', '#FFFFFF'],
+    ['kompakt', 'Kompakt jel', '#F5EEE4'], ['kompakt-sotet', 'Kompakt, sötét', '#3B322B'], ['social', 'Profilkép', '#EFE5D8'], ['fejlec', 'Fejléc (vízszintes)', '#FBF7F1']
+  ];
+  const src = (v, k) => `arculat/logo-${v}/geraartdesign-${v}-${k}.svg`;
+  let akt = 1, hatter = 0, kedvenc = null;
+  try { kedvenc = localStorage.getItem('gera-logo-valasztas'); } catch (e) {}
+
+  /* öt kártya */
+  const otos = $('#otos');
+  L.forEach((l, i) => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'kartya'; b.dataset.v = i + 1;
+    b.innerHTML = `<span class="sz">0${i + 1}</span><span class="kep"><img src="${src(i + 1, 'fo')}" alt="${l.nev} logóváltozat"></span><h3>${l.nev}</h3><p>${l.egy}</p><span class="valasztva">Kiválasztva</span>`;
+    b.addEventListener('click', () => { mutat(i + 1); if (innerWidth < 1000) $('#kiemelt').scrollIntoView({ behavior: 'smooth' }); });
+    otos.appendChild(b);
+  });
+
+  /* háttérváltó */
+  const hv = $('#hatterValto');
+  HATTER.forEach((h, i) => {
+    const b = document.createElement('button'); b.type = 'button';
+    b.innerHTML = `<i style="background:${h.c}"></i>${h.n}`;
+    b.addEventListener('click', () => { hatter = i; rajzol(); });
+    hv.appendChild(b);
+  });
+
+  /* egymás mellett */
+  const ov = $('#osszevet');
+  ov.insertAdjacentHTML('beforeend', '<span class="ures"></span>' + L.map((l, i) => `<span class="oszlop">0${i + 1}</span>`).join(''));
+  [['Törtfehér', 'h-papir', 'fo'], ['Púderes bézs', 'h-puder', 'fo'], ['Sötét dió', 'h-dio', 'sotet-atlatszo']].forEach(([n, cl, f]) => {
+    ov.insertAdjacentHTML('beforeend', `<span class="fej">${n}</span>` + L.map((l, i) => `<span class="${cl}"><img src="${src(i + 1, f)}" alt="${i + 1}. változat – ${n}" loading="lazy"></span>`).join(''));
+  });
+
+  /* döntés */
+  const ds = $('#dontesSor');
+  L.forEach((l, i) => { const b = document.createElement('button'); b.type = 'button'; b.textContent = i + 1; b.setAttribute('aria-label', `${i + 1}. változat: ${l.nev}`); b.addEventListener('click', () => valaszt(i + 1)); ds.appendChild(b); });
+
+  function valaszt(v) {
+    kedvenc = String(v);
+    try { localStorage.setItem('gera-logo-valasztas', kedvenc); localStorage.setItem('gera-logo', kedvenc); } catch (e) {}
+    mutat(+v); jelol();
+  }
+  function jelol() {
+    document.querySelectorAll('.kartya').forEach(k => k.classList.toggle('kedvenc', k.dataset.v === kedvenc));
+    ds.querySelectorAll('button').forEach((b, i) => b.setAttribute('aria-pressed', String(i + 1) === kedvenc));
+    if (kedvenc) {
+      $('#dontesSzoveg').innerHTML = `Kiválasztva: <b>${kedvenc}. változat — ${L[kedvenc - 1].nev}</b>. Kérem, jelezze vissza ezt a számot; a végleges logót ebben az irányban finomítom.`;
+      $('#dontesLink').href = `index.html?logo=${kedvenc}`; $('#dontesLink').textContent = 'Megnézem a weboldalon';
+    }
+    $('#kedvencGomb').textContent = kedvenc === String(akt) ? 'Kiválasztva ✓' : 'Ezt választom';
+  }
+  function rajzol() {
+    const h = HATTER[hatter];
+    $('#szinpad').style.background = h.c;
+    $('#szinpadKep').src = src(akt, h.f);
+    hv.querySelectorAll('button').forEach((b, i) => b.setAttribute('aria-pressed', i === hatter));
+  }
+  function mutat(v) {
+    akt = v; const l = L[v - 1];
+    otos.querySelectorAll('.kartya').forEach(k => k.setAttribute('aria-pressed', k.dataset.v === String(v)));
+    $('#kSz').textContent = `0${v} · Kiemelt nézet`; $('#kNev').textContent = l.nev;
+    $('#szinpadKep').alt = `${v}. változat: ${l.nev}`;
+    $('#kDl').innerHTML = `<dt>A „G”</dt><dd>${l.g}</dd><dt>Név</dt><dd>${l.t}</dd><dt>Keret</dt><dd>${l.k}</dd><dt>Hangulat</dt><dd>${l.h}</dd>`;
+    $('#weboldalon').href = `index.html?logo=${v}`;
+    $('#valtozatok').innerHTML = VALT.map(([k, n, bg]) => `<figure class="valtozat"><div class="kep" style="background:${bg}"><img src="${src(v, k)}" alt="${n}" loading="lazy"></div><figcaption><b>${n}</b><a href="${src(v, k)}" download>SVG</a></figcaption></figure>`).join('');
+    document.querySelectorAll('[data-v]').forEach(img => { if (img.tagName === 'IMG') img.src = src(v, img.dataset.v); });
+    rajzol(); jelol();
+  }
+  $('#kedvencGomb').addEventListener('click', () => valaszt(akt));
+  $('#elozo').addEventListener('click', () => mutat(akt === 1 ? 5 : akt - 1));
+  $('#kovetkezo').addEventListener('click', () => mutat(akt === 5 ? 1 : akt + 1));
+  mutat(kedvenc ? +kedvenc : 1);
+})();
+</script>
+</body>
+</html>
