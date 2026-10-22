@@ -30,9 +30,9 @@ Valódi fotó nincs; stock/AI kép nincs. A hero egy kódból rajzolt, lapos geo
 
 ## Logók (`arculat/logo-1`, `logo-4`, `logo-5`; `_forras/logok.py`) — 5. kör
 Az ügyfél az 1-es, 4-es és 5-ös irányt fogadta el; a 2-es (Forgács) és 3-as (Fecskefark) kikerült (a rajzoló függvények a forrásban maradtak).
-1. Szorító – a G maga egy pillanatszorító (íves test, orsó, karamell nyomótalp).
-4. Derékszög – a G szára asztalos derékszög (fa nyél, szegecsek, acél penge beosztással).
-5. Évgyűrű – gerenda bütüje évgyűrűkkel és bütürepedéssel.
+1. Szorító – a G maga egy pillanatszorító: íves test, menetes orsó, forgó csukló, karamell nyomótalp, lekerekített T-fogantyú.
+4. Derékszög – a G szára asztalos derékszög: erezett fa nyél, sárgaréz-hatású szegecsek, acél penge cm-beosztással.
+5. Évgyűrű – gerenda bütüje: változó szélességű évgyűrűk, bélsugarak, a bél a bal alsó sarokban, onnan induló bütürepedés.
 
 Névírás (ügyfélkérésre nagybetűs, ART kiemelve): „GERA**ART**DESIGN” – a GERA és a DESIGN vékony, az ART vastag és karamell, így a név három szóra esik szét. A három szó között kis szóköz van, hogy ne csússzanak egymásba. 1: Kumbh Sans 300/700, 4: Urbanist 500/800, 5: Lexend Exa 300/600. Alatta „BÚTORASZTALOS · INTARZIA” (Urbanist 700, ritkított), a névvel azonos szélességben.
 

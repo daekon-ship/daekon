@@ -64,29 +64,37 @@ def uid(p):
 
 # ================================================================ 1 · SZORÍTÓ
 def G_szorito(c, cx, cy, s):
-    """A G-szorító (pillanatszorító) teste maga a G: íves keret, csavarorsó a szár, a nyomótalp a vízszintes."""
-    H = s; W = s * 0.9; t = H * 0.19
-    x0, y0 = cx - W / 2, cy - H / 2 - H * 0.04; x1, y1 = x0 + W, y0 + H * 0.9
-    R = (y1 - y0) / 2; xc = x0 + R; r = R - t / 2
-    # keret (C-test) – vastag vonal, a pofák szögletesek
-    d = (f'M{f2(x1)} {f2(y0 + t/2)}H{f2(xc)}A{f2(r)} {f2(r)} 0 0 0 {f2(xc)} {f2(y1 - t/2)}H{f2(x1)}')
-    body = f'<path d="{d}" fill="none" stroke="{c["g"]}" stroke-width="{f2(t)}"/>'
-    # felső pofa kis lefelé álló ütközője
-    body += rect(x1 - t * 0.9, y0 + t, t * 0.9, t * 0.32, c['g'])
-    # orsó: alsó pofán át, felfelé a nyomótalpig
-    sx = x1 - t * 0.45; sw = t * 0.3
-    my = cy + H * 0.02
-    body += rect(sx - sw / 2, my, sw, y1 + t * 0.95 - my, c['g'])
-    # menet: vékony világos vonalkák az orsón
-    for k in range(5):
-        yy = my + t * 0.9 + k * t * 0.36
-        if yy < y1 - t:
-            body += f'<path d="M{f2(sx - sw/2)} {f2(yy)}l{f2(sw)} {f2(-sw*0.45)}" stroke="{c["bg2"]}" stroke-width="{f2(max(.7, sw*0.16))}"/>'
-    # nyomótalp = a G vízszintes szára (karamell)
-    body += rect(cx - W * 0.02, my - t * 0.62, x1 - (cx - W * 0.02) + t * 0.05, t * 0.62, c['a'])
-    # T-fogantyú az orsó alján
-    body += rect(sx - t * 0.95, y1 + t * 0.95, t * 1.9, t * 0.3, c['a'])
-    return body
+    """A G maga egy pillanatszorító: öntött íves test, menetes orsó, forgó nyomótalp (a G vízszintese), T-fogantyú."""
+    H = s * 0.86; W = s * 0.9; t = H * 0.22
+    lab = t * 1.25                                   # az orsó + fogantyú lelógása
+    y0 = cy - (H + lab) / 2; y1 = y0 + H
+    x0 = cx - W / 2; x1 = x0 + W
+    R = H / 2; xc = x0 + R; r = R - t / 2
+    out = (f'<path d="M{f2(x1)} {f2(y0 + t/2)}H{f2(xc)}A{f2(r)} {f2(r)} 0 0 0 {f2(xc)} {f2(y1 - t/2)}H{f2(x1)}" '
+           f'fill="none" stroke="{c["g"]}" stroke-width="{f2(t)}"/>')
+    # felső pofa: kissé megvastagodó ütközőfelület
+    out += rect(x1 - t * 0.85, y0 + t * 0.98, t * 0.85, t * 0.26, c['g'])
+    # orsó
+    sx = x1 - t * 0.5; sw = t * 0.4
+    my = y0 + H * 0.5 + t * 0.15                     # nyomótalp alja
+    ya = y1 + lab * 0.72                             # orsó alja
+    out += rect(sx - sw / 2, my, sw, ya - my, c['g'])
+    # menet: ferde világos vonalkák a látható orsószakaszokon
+    lw = f2(max(.7, sw * 0.16)); k = 0; yy = my + sw * 0.9
+    while yy < ya - sw * 0.2:
+        if not (y1 - t - sw * 0.2 < yy < y1 + sw * 0.1):
+            out += f'<path d="M{f2(sx - sw/2)} {f2(yy + sw*0.22)}L{f2(sx + sw/2)} {f2(yy - sw*0.22)}" stroke="{c["bg2"]}" stroke-width="{lw}"/>'
+        yy += sw * 0.62; k += 1
+    # forgó csukló a talp alatt
+    out += rect(sx - sw * 0.85, my, sw * 1.7, sw * 0.42, c['g'])
+    # nyomótalp = a G vízszintes szára
+    bx = cx - W * 0.05; th = t * 0.62
+    out += rect(bx, my - th, x1 + t * 0.06 - bx, th, c['a'])
+    # T-fogantyú, lekerekített végekkel
+    fh = t * 0.34; fw = t * 2.3
+    out += f'<rect x="{f2(sx - fw/2)}" y="{f2(ya)}" width="{f2(fw)}" height="{f2(fh)}" rx="{f2(fh/2)}" fill="{c["a"]}"/>'
+    out += rect(sx - sw * 0.7, ya - sw * 0.15, sw * 1.4, fh + sw * 0.3, c['g'])
+    return out
 
 # ================================================================ 2 · FORGÁCS
 def G_forgacs(c, cx, cy, s):
@@ -150,55 +158,68 @@ def G_fecske(c, cx, cy, s):
 
 # ================================================================ 4 · DERÉKSZÖG
 def G_derekszog(c, cx, cy, s):
-    """A G jobb oldali része egy asztalos derékszög: fa nyél (szár) + acél penge (vízszintes) mérővonalkákkal."""
-    S = s; t = S * 0.17
+    """A G jobb oldala egy asztalos derékszög: fa nyél (erezettel, sárgaréz szegecsekkel) + acél penge cm-beosztással."""
+    S = s * 0.96; t = S * 0.17
     x0, y0 = cx - S / 2, cy - S / 2; x1, y1 = x0 + S, y0 + S
-    g = (f'<path d="M{f2(x1)} {f2(y0 + t/2)}H{f2(x0 + t/2)}V{f2(y1 - t/2)}H{f2(x1 - t*1.3)}" '
+    g = (f'<path d="M{f2(x1)} {f2(y0 + t/2)}H{f2(x0 + t/2)}V{f2(y1 - t/2)}H{f2(x1 - t*1.35)}" '
          f'fill="none" stroke="{c["g"]}" stroke-width="{f2(t)}"/>')
-    # derékszög: nyél
-    nw = t * 1.3; ny0 = cy - t * 0.1
+    nw = t * 1.35; ny0 = cy - t * 0.25
     g += rect(x1 - nw, ny0, nw, y1 - ny0, c['a'])
-    for k in range(3):   # szegecsek
-        g += f'<circle cx="{f2(x1 - nw/2)}" cy="{f2(ny0 + nw*0.55 + k*(y1-ny0-nw*0.9)/2)}" r="{f2(nw*0.11)}" fill="{c["g"]}"/>'
-    # acél penge: a nyél tetejéről balra
-    pw = t * 0.55; px0 = cx - S * 0.06
+    # fa erezet a nyélen
+    for f in (0.28, 0.62):
+        xx = x1 - nw + nw * f
+        g += (f'<path d="M{f2(xx)} {f2(ny0 + 2)}C{f2(xx + nw*0.12)} {f2(ny0 + (y1-ny0)*0.35)} {f2(xx - nw*0.1)} {f2(ny0 + (y1-ny0)*0.65)} {f2(xx + nw*0.04)} {f2(y1 - 2)}" '
+              f'fill="none" stroke="{c["a2"]}" stroke-width="{f2(max(.6, s*0.006))}"/>')
+    # szegecsek
+    for k in range(3):
+        yy = ny0 + nw * 0.62 + k * (y1 - ny0 - nw * 1.1) / 2
+        g += f'<circle cx="{f2(x1 - nw/2)}" cy="{f2(yy)}" r="{f2(nw*0.13)}" fill="{c["bg2"]}" stroke="{c["g"]}" stroke-width="{f2(max(.8, nw*0.06))}"/>'
+    # acél penge
+    pw = t * 0.5; px0 = cx - S * 0.1
     g += rect(px0, ny0, x1 - nw - px0, pw, c['g'])
-    n = 8
+    n = 12; L = x1 - nw - px0
     for k in range(1, n):
-        xx = px0 + (x1 - nw - px0) * k / n
-        g += f'<path d="M{f2(xx)} {f2(ny0)}v{f2(pw * (0.55 if k % 2 else 0.35))}" stroke="{c["bg2"]}" stroke-width="{f2(max(.6, s*0.006))}"/>'
+        xx = px0 + L * k / n
+        h = pw * (0.62 if k % 4 == 0 else 0.38)
+        g += f'<path d="M{f2(xx)} {f2(ny0)}v{f2(h)}" stroke="{c["bg2"]}" stroke-width="{f2(max(.6, s*0.006))}"/>'
     return g
 
 # ================================================================ 5 · ÉVGYŰRŰ
 def G_evgyuru(c, cx, cy, s):
-    """Gerenda bütüje: a szögletes G-t évgyűrűk töltik ki, a bélrész a bal alsó sarkon kívül; egy bütürepedés."""
-    S = s; t = S * 0.25
+    """Gerenda bütüje: a szögletes G-ben évgyűrűk (korai/késői pászta), bélsugarak, bütürepedés; a bél a bal alsó sarokban."""
+    S = s * 0.96; t = S * 0.25
     x0, y0 = cx - S / 2, cy - S / 2; x1, y1 = x0 + S, y0 + S
-    my = y0 + S * 0.5; bx = x0 + S * 0.48
-    shape = (f'M{f2(x0)} {f2(y0)}H{f2(x1)}V{f2(y0 + t)}H{f2(x0 + t)}V{f2(y1 - t)}H{f2(x1 - t)}'
-             f'V{f2(my + t*0.9)}H{f2(bx)}V{f2(my)}H{f2(x1)}V{f2(y1)}H{f2(x0)}Z')
+    my = y0 + S * 0.44; bh = t * 0.8; bx = x0 + S * 0.5
+    shape = poly([(x0, y0), (x1, y0), (x1, y0 + t), (x0 + t, y0 + t), (x0 + t, y1 - t), (x1 - t, y1 - t),
+                  (x1 - t, my + bh), (bx, my + bh), (bx, my), (x1, my), (x1, y1), (x0, y1)])
     m = uid('e')
-    px, py = x0 + S * 0.04, y1 + S * 0.06
-    rings = ''
-    r = S * 0.08; k = 0
-    while r < S * 1.7:
-        dr = S * (0.034 + 0.016 * ((k * 7) % 5) / 4)
-        rings += f'<circle cx="{f2(px)}" cy="{f2(py)}" r="{f2(r)}" fill="none" stroke="{c["g"]}" stroke-width="{f2(max(.8, S*(0.008 + 0.006*(k % 3 == 0))))}"/>'
+    px, py = x0 + t * 0.55, y1 - t * 0.5            # bél
+    gy = ''; r = S * 0.05; k = 0
+    while r < S * 1.45:
+        dr = S * (0.042 + 0.022 * (((k * 5) % 7) / 6))        # változó gyűrűszélesség
+        w = max(.7, S * (0.007 + 0.009 * (((k * 3) % 4) / 3)))   # késői pászta vastagsága
+        gy += f'<circle cx="{f2(px)}" cy="{f2(py)}" r="{f2(r)}" fill="none" stroke="{c["ring"]}" stroke-width="{f2(w)}"/>'
         r += dr; k += 1
-    crack = poly([(x0 + S * 0.03, y0 + S * 0.08), (x0 + t * 0.95, y0 + t * 1.7), (x0 + t * 0.9, y0 + t * 1.78)])
+    sug = ''
+    for a in (-80, -62, -40, -24, -8, 12):
+        rad = math.radians(a)
+        sug += f'<path d="M{f2(px + S*0.12*math.cos(rad))} {f2(py + S*0.12*math.sin(rad))}L{f2(px + S*1.5*math.cos(rad))} {f2(py + S*1.5*math.sin(rad))}" stroke="{c["ring"]}" stroke-opacity=".35" stroke-width="{f2(max(.5, S*0.004))}"/>'
+    # bütürepedés: a béltől a bal felső szár felé, elvékonyodó ék
+    a = math.radians(-100); a2 = math.radians(-96)
+    crack = poly([(px, py), (px + S*0.7*math.cos(a), py + S*0.7*math.sin(a)), (px + S*0.55*math.cos(a2), py + S*0.55*math.sin(a2))])
     return (f'<defs><clipPath id="{m}"><path d="{shape}"/></clipPath></defs>'
-            f'<g clip-path="url(#{m})"><rect x="{f2(x0)}" y="{f2(y0)}" width="{f2(S)}" height="{f2(S)}" fill="{c["a"]}"/>{rings}'
-            f'<path d="{crack}" fill="{c["g"]}"/></g>'
-            f'<path d="{shape}" fill="none" stroke="{c["g"]}" stroke-width="{f2(max(1.2, S*0.014))}"/>')
+            f'<g clip-path="url(#{m})"><rect x="{f2(x0)}" y="{f2(y0)}" width="{f2(S)}" height="{f2(S)}" fill="{c["a"]}"/>'
+            f'{sug}{gy}<circle cx="{f2(px)}" cy="{f2(py)}" r="{f2(S*0.022)}" fill="{c["ring"]}"/><path d="{crack}" fill="{c["g"]}"/></g>'
+            f'<path d="{shape}" fill="none" stroke="{c["g"]}" stroke-width="{f2(max(1.3, S*0.016))}" stroke-linejoin="miter"/>')
 
 JEL = {1: G_szorito, 2: G_forgacs, 3: G_fecske, 4: G_derekszog, 5: G_evgyuru}
 NEVEK = {1: 'Szorító', 2: 'Forgács', 3: 'Fecskefark', 4: 'Derékszög', 5: 'Évgyűrű'}
 WM = {1: ('unb', 17, .1), 2: ('jos', 25, .14), 3: ('mich', 16.5, .14), 4: ('urb', 24, .2), 5: ('exa', 16.5, .08)}
 TAG = 'BÚTORASZTALOS · INTARZIA'
 
-SOTET = {'g': '#ECE1D2', 'a': '#C9A47E', 'w': '#E4D7C6', 'f': '#9C8670', 't': '#C9A47E', 'bg': '#3A312A', 'bg2': '#3A312A'}
-MONO = {'g': '#3A312A', 'a': '#3A312A', 'w': '#3A312A', 'f': '#3A312A', 't': '#3A312A', 'bg': None, 'bg2': '#FFFFFF'}
-MAIN = {'art': '#A97C52', 'g': '#4A3C31', 'a': '#BE9168', 'w': '#4A3C31', 'f': '#BCA891', 't': '#9E7752', 'bg2': '#F4EDE3'}
+SOTET = {'a2': '#9C7A57', 'ring': '#8A6747', 'g': '#ECE1D2', 'a': '#C9A47E', 'w': '#E4D7C6', 'f': '#9C8670', 't': '#C9A47E', 'bg': '#3A312A', 'bg2': '#3A312A'}
+MONO = {'art': '#3A312A', 'a2': '#FFFFFF', 'ring': '#FFFFFF', 'g': '#3A312A', 'a': '#3A312A', 'w': '#3A312A', 'f': '#3A312A', 't': '#3A312A', 'bg': None, 'bg2': '#FFFFFF'}
+MAIN = {'art': '#A97C52', 'a2': '#9E7752', 'ring': '#7E5B3D', 'g': '#4A3C31', 'a': '#C99B6E', 'w': '#4A3C31', 'f': '#BCA891', 't': '#9E7752', 'bg2': '#F4EDE3'}
 
 def keret(c, x, y, w, h, s=1.0):
     return f'<rect x="{f2(x)}" y="{f2(y)}" width="{f2(w)}" height="{f2(h)}" fill="none" stroke="{c["f"]}" stroke-width="{f2(1.2*s)}"/>'
@@ -207,6 +228,7 @@ def mono_fix(n, c):
     c = dict(c)
     if c.get('bg') is None and n in (2, 3, 5):   # monokrómban is legyen belső rajzolat
         c['a'] = '#FFFFFF'
+        c['ring'] = '#3A312A'
     return c
 
 # Névírás: „gera” erős, „artdesign” könnyebb – így a dupla „a” nem folyik össze, és jól olvasható.
