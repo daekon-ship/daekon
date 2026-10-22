@@ -145,12 +145,12 @@
   <section class="lv-intro">
     <div>
       <p class="cimke">geraartdesign · logóválasztó</p>
-      <h1>Öt geometrikus G, <span class="hang">egy közös alap.</span></h1>
+      <h1>Öt G, <span class="hang">asztalosi szerkezetekből.</span></h1>
     </div>
     <div>
       <p class="halk">Mindegyik ugyanarra épül, mégis máshogy hat. Nézze meg őket egymás mellett, nagyban, sötét és világos háttéren, névjegyen és fejlécként — és válassza ki a legerősebbet.</p>
       <ul class="alap">
-        <li><b>Központ</b>nagy, szerkesztett G — nem betűtípusból</li>
+        <li><b>Központ</b>nagy G — gérvágás, rétegelés, boltív, modul, vonal</li>
         <li><b>Alatta</b>a geraartdesign név</li>
         <li><b>Körben</b>vékony, szögletes keret</li>
         <li><b>Színek</b>bézs, homok, taupe, karamell</li>
@@ -247,16 +247,16 @@
 (function () {
   const $ = s => document.querySelector(s);
   const L = [
-    { nev: 'Monolit', egy: 'Vastag, körből szerkesztett G, vízszintes vágás, finom keret.',
-      g: 'Körből szerkesztett, vastag G — vízszintesen vágott felső végződéssel', t: 'Unbounded, széles geometrikus groteszk', k: 'Egyetlen vékony téglalap', h: 'Erős, magabiztos, azonnal felismerhető' },
-    { nev: 'Négyzet', egy: 'Derékszögekből épített G, a kerettel azonos vonal.',
-      g: 'Négyzetből, sávokból szerkesztett szögletes G', t: 'Michroma, technikai, építészeti', k: 'Erősebb vonal, a G-vel egy rendszerben', h: 'Építészeti, precíz, „asztalosi pontosság”' },
-    { nev: 'Sablon', egy: 'Sablonvágásos G leválasztott szárral, sarokjelek.',
-      g: 'Gyűrű-G, három helyen elvágva, mint egy festősablon', t: 'Lexend Zetta, nagyon széles', k: 'Hajszálkeret, a sarkokon erős jelekkel', h: 'Műhelyes, kreatív, kortárs' },
-    { nev: 'Vonal', egy: 'Kontúros G karamell színben, kettős hajszálkeret.',
-      g: 'A Monolit körvonala — könnyed, kifinomult', t: 'Josefin Sans, art deco geometria', k: 'Kettős hajszálvonal', h: 'Elegáns, nőiesebb, prémium' },
-    { nev: 'Szerkesztés', egy: 'Kétszínű G szerkesztőkörrel és mérőjelekkel.',
-      g: 'Tömör G, alsó fele karamell; mögötte szerkesztőkör, tengelyek', t: 'Urbanist, nyugodt, nyitott', k: 'Hajszálkeret mérővonalkákkal', h: 'Tervezői, művészi, „rajzasztal”' }
+    { nev: 'Gér', egy: 'Négyszögletes G, gérbe vágott sarkokkal — mint egy keretillesztés.',
+      g: 'Sávokból épített G, a sarkokon 45°-os gérvágással és hajszálnyi réssel', t: 'Michroma, technikai, építészeti', k: 'Egyetlen vékony téglalap', h: 'Mesterségbeli pontosság, erős és nyugodt' },
+    { nev: 'Rétegelt', egy: 'Félköríves G vízszintes rétegekből, mint a rétegelt lemez éle.',
+      g: 'Balra íves, jobbra szögletes G, hét rétegre bontva; a szár karamell réteg', t: 'Unbounded: „gera” erős, „artdesign” vékony', k: 'Vékony téglalap', h: 'Modern, dinamikus, anyagszerű' },
+    { nev: 'Ív', egy: 'Boltíves ajtó / tükör formájú, magas G.',
+      g: 'Boltív alakú vonal-G, a szár végén karamell elem', t: 'Josefin Sans, art deco hangulatú', k: 'Hajszálkeret', h: 'Elegáns, belsőépítészeti, nőiesebb' },
+    { nev: 'Modul', egy: 'Négy külön elemből összerakott G, mint egy korpuszbútor.',
+      g: 'Íves sarokelem, L-elem, függőleges oldal és karamell blokk — résekkel', t: 'Lexend Exa, széles, nyugodt', k: 'Vékony téglalap', h: 'Szerkezeti, kortárs, játékos' },
+    { nev: 'Szál', egy: 'Egyetlen vonal: a G felső szára a keretbe fut.',
+      g: 'Egyvonalas G, amely a keret jobb széléhez kapcsolódik; karamell illesztési pont', t: 'Urbanist, nyitott, ritkított', k: 'A G-vel azonos vonal — egy rendszer', h: 'Letisztult, kifinomult, emlékezetes' }
   ];
   const HATTER = [
     { n: 'Törtfehér', c: '#FBF7F1', f: 'fo' }, { n: 'Homok', c: '#EADFD0', f: 'fo' },

@@ -28,13 +28,13 @@ Valódi fotó nincs; stock/AI kép nincs. A hero egy kódból rajzolt, lapos geo
 ## Koncepció: „Arány”
 Építészeti, geometrikus: látható 12 hasábos tartórács a hero mögött, számozott szakaszok, hajszálvonalas rácsba rendezett szolgáltatások saját geometrikus jelekkel, sötét dió blokk a műhelynek, görgetésre haladó folyamatvonal.
 
-## Logók (`arculat/logo-1…5/`, `_forras/logok.py`)
-Mind: saját szerkesztésű G (körből/négyzetből, nem betűtípus) · alatta „geraartdesign” · vékony szögletes keret · bézs–taupe–karamell.
-1. Monolit – vastag kör-G, vízszintesen vágott végződés; Unbounded.
-2. Négyzet – derékszögekből épített G, erősebb keret; Michroma.
-3. Sablon – sablonvágásos gyűrű-G, leválasztott szár, sarokjelek; Lexend Zetta.
-4. Vonal – a Monolit kontúrja karamellben, kettős hajszálkeret; Josefin Sans.
-5. Szerkesztés – kétszínű G szerkesztőkörrel, tengelyekkel, mérővonalkás keret; Urbanist.
+## Logók (`arculat/logo-1…5/`, `_forras/logok.py`) — 3. kör
+A 2. kör kör alapú G-i túl „Google-szerűek” voltak, ezért minden G asztalosi szerkezetből indul (nem betűtípus, nem kör):
+1. Gér – négyszögletes G gérvágott sarkokkal, karamell szár; Michroma.
+2. Rétegelt – balra íves, jobbra szögletes G hét rétegből; Unbounded (gera erős / artdesign vékony).
+3. Ív – boltíves, magas vonal-G; Josefin Sans.
+4. Modul – négy elemből összerakott G, karamell blokk; Lexend Exa.
+5. Szál – egyvonalas G, amely a keretbe fut; Urbanist.
 
 Fájlok változatonként: `fo`, `vilagos`, `sotet`, `sotet-atlatszo`, `mono`, `kompakt`, `kompakt-sotet`, `social`, `social-sotet`, `fejlec`, `fejlec-sotet` (SVG, körvonalazott).
 

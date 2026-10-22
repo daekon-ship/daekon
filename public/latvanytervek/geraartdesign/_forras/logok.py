@@ -1,7 +1,8 @@
-"""geraartdesign – 5 logóváltozat, 2. kör: saját szerkesztésű, geometrikus G-k.
+"""geraartdesign – 5 logóváltozat, 3. kör: asztalosi szerkezetekből épített G-k.
 
-A G-k NEM betűtípusból jönnek: körből, négyzetből, sávokból szerkesztett formák.
-Csak a „geraartdesign” felirat betű (körvonalazva), változatonként más geometrikus groteszk.
+Nincs kör alapú G (a 2. kör „Google-hatású” volt). Minden G egy bútorasztalos
+szerkezetből indul: gérvágás, rétegelt lemez, boltív, modulok, egy vonal.
+Csak a „geraartdesign” felirat betű (körvonalazva).
 Futtatás:  python3 _forras/logok.py   (a geraartdesign mappából)
 """
 import math, os
@@ -15,11 +16,12 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, '..', 'arculat')
 
 FONTS = {
-    'unb':   ('unbounded/Unbounded[wght].ttf', {'wght': 400}),
-    'mich':  ('michroma/Michroma-Regular.ttf', None),
-    'zetta': ('lexendzetta/LexendZetta[wght].ttf', {'wght': 400}),
-    'jos':   ('josefinsans/JosefinSans[wght].ttf', {'wght': 400}),
-    'urb':   ('urbanist/Urbanist[wght].ttf', {'wght': 500}),
+    'mich':   ('michroma/Michroma-Regular.ttf', None),
+    'unb5':   ('unbounded/Unbounded[wght].ttf', {'wght': 500}),
+    'unb2':   ('unbounded/Unbounded[wght].ttf', {'wght': 250}),
+    'jos':    ('josefinsans/JosefinSans[wght].ttf', {'wght': 400}),
+    'exa':    ('lexendexa/LexendExa[wght].ttf', {'wght': 400}),
+    'urb':    ('urbanist/Urbanist[wght].ttf', {'wght': 500}),
 }
 _c = {}
 def font(k):
@@ -29,137 +31,165 @@ def font(k):
         _c[k] = instancer.instantiateVariableFont(f, ax) if ax else f
     return _c[k]
 
-def text(fk, s, size, tracking, cx, baseline):
+def run(fk, s, size, tracking):
     f = font(fk); upm = f['head'].unitsPerEm
     gs = f.getGlyphSet(); cmap = f.getBestCmap(); hm = f['hmtx']
     sc = size / upm; names = [cmap[ord(c)] for c in s]
-    adv = [hm[n][0] * sc for n in names]; tr = tracking * size
-    w = sum(adv) + tr * (len(s) - 1)
-    x = cx - w / 2
-    pen = SVGPathPen(gs)
-    for n, a in zip(names, adv):
-        gs[n].draw(TransformPen(pen, (sc, 0, 0, -sc, x, baseline))); x += a + tr
-    return pen.getCommands(), w
+    adv = [hm[n][0] * sc for n in names]
+    return f, gs, sc, names, adv
+
+def text_parts(parts, size, tracking, cx, baseline):
+    """parts: [(fontkulcs, szöveg)] – egymás után, közös ritkítással, középre."""
+    tr = tracking * size
+    runs = [run(fk, s, size, tracking) for fk, s in parts]
+    total = sum(sum(r[4]) for r in runs) + tr * (sum(len(s) for _, s in parts) - 1)
+    x = cx - total / 2
+    ds = []
+    for (f, gs, sc, names, adv) in runs:
+        pen = SVGPathPen(gs)
+        for n, a in zip(names, adv):
+            gs[n].draw(TransformPen(pen, (sc, 0, 0, -sc, x, baseline))); x += a + tr
+        ds.append(pen.getCommands())
+    return ds, total
 
 def f2(v): return f'{v:.2f}'.rstrip('0').rstrip('.')
-def pt(cx, cy, r, deg):
-    a = math.radians(deg); return cx + r * math.cos(a), cy + r * math.sin(a)
+def poly(pts): return 'M' + 'L'.join(f'{f2(x)} {f2(y)}' for x, y in pts) + 'Z'
+_uid = [0]
+def uid(p):
+    _uid[0] += 1; return f'{p}{_uid[0]}'
 
-# ---------------------------------------------------------------- G-szerkesztések
-def G_kor(cx, cy, Ro, t, nyit=None, bar_x=None, bar_h=None):
-    """Vastag gyűrű-G egyetlen zárt pályával; a felső végződés vízszintesen elvágva."""
-    Ri = Ro - t
-    bar_h = bar_h or t * 0.86
-    bx = cx + (bar_x if bar_x is not None else 4)
-    Y = cy - Ri * 0.78                       # vízszintes vágás magassága
-    so = (cx + math.sqrt(Ro*Ro - (cy-Y)**2), Y)
-    si = (cx + math.sqrt(Ri*Ri - (cy-Y)**2), Y)
-    return (f'M{f2(so[0])} {f2(so[1])}'
-            f'A{Ro} {Ro} 0 1 0 {f2(cx + Ro)} {f2(cy)}'
-            f'V{f2(cy - bar_h)}H{f2(bx)}V{f2(cy)}H{f2(cx + Ri)}'
-            f'A{Ri} {Ri} 0 1 1 {f2(si[0])} {f2(si[1])}Z')
+# ---------------------------------------------------------------- G-k
+# Mindegyik: jel(c, cx, cy, s) – s: a jel befoglaló mérete (magasság).
 
-def G_negyzet(x0, y0, S, t, bar=0.5):
-    """Négyzetből szerkesztett G – egyetlen, nem metsző kontúr."""
-    x1, y1 = x0 + S, y0 + S
-    my = y0 + S * bar
-    bx = x0 + S * 0.5
-    return (f'M{f2(x0)} {f2(y0)}H{f2(x1)}V{f2(y0 + t)}H{f2(x0 + t)}V{f2(y1 - t)}H{f2(x1 - t)}'
-            f'V{f2(my)}H{f2(bx)}V{f2(my - t)}H{f2(x1)}V{f2(y1)}H{f2(x0)}Z')
+def G_ger(c, cx, cy, s):
+    """1 · Gér: négyszögletes G gérbe vágott sarkokkal, hajszálnyi illesztési réssel."""
+    S = s; t = S * 0.2; g = max(1.2, S * 0.018)
+    x0, y0 = cx - S / 2, cy - S / 2; x1, y1 = x0 + S, y0 + S
+    my = y0 + S * 0.52; bx = x0 + S * 0.5
+    darabok = [
+        poly([(x0, y0), (x1, y0), (x1, y0 + t), (x0 + t, y0 + t)]),                 # felső
+        poly([(x0, y0), (x0 + t, y0 + t), (x0 + t, y1 - t), (x0, y1)]),             # bal
+        poly([(x0, y1), (x0 + t, y1 - t), (x1 - t, y1 - t), (x1, y1)]),             # alsó
+        poly([(x1, y1), (x1 - t, y1 - t), (x1 - t, my), (x1, my - t)]),             # jobb szár
+        poly([(bx, my - t), (x1, my - t), (x1 - t, my), (bx, my)]),                 # befelé
+    ]
+    vagas = [(x0, y0, x0 + t, y0 + t), (x0, y1, x0 + t, y1 - t), (x1, y1, x1 - t, y1 - t), (x1, my - t, x1 - t, my)]
+    m = uid('m')
+    lines = ''.join(f'<path d="M{f2(a - (c2 - a) * .3)} {f2(b - (d - b) * .3)}L{f2(c2 + (c2 - a) * .3)} {f2(d + (d - b) * .3)}" stroke="#000" stroke-width="{f2(g)}"/>' for a, b, c2, d in vagas)
+    return (f'<defs><mask id="{m}" maskUnits="userSpaceOnUse" x="{f2(x0-5)}" y="{f2(y0-5)}" width="{f2(S+10)}" height="{f2(S+10)}">'
+            f'<rect x="{f2(x0-5)}" y="{f2(y0-5)}" width="{f2(S+10)}" height="{f2(S+10)}" fill="#fff"/>{lines}</mask></defs>'
+            f'<g mask="url(#{m})" fill="{c["g"]}">' + ''.join(f'<path d="{d}"/>' for d in darabok[:4]) +
+            f'<path d="{darabok[4]}" fill="{c["a"]}"/></g>')
 
-def G_stencil(cx, cy, Ro, t, gap=6, nyit=-42):
-    """Gyűrű-G sablonvágásokkal: három szelet + leválasztott szár."""
-    Ri = Ro - t
-    def szelet(a0, a1):
-        o0, o1 = pt(cx, cy, Ro, a0), pt(cx, cy, Ro, a1)
-        i0, i1 = pt(cx, cy, Ri, a0), pt(cx, cy, Ri, a1)
-        large = 1 if abs(a1 - a0) > 180 else 0
-        return (f'M{f2(o0[0])} {f2(o0[1])}A{Ro} {Ro} 0 {large} 0 {f2(o1[0])} {f2(o1[1])}'
-                f'L{f2(i1[0])} {f2(i1[1])}A{Ri} {Ri} 0 {large} 1 {f2(i0[0])} {f2(i0[1])}Z')
-    g = math.degrees(gap / ((Ro + Ri) / 2))
-    d = szelet(nyit, -180 + g / 2) + szelet(-180 - g / 2, -270 + g / 2) + szelet(-270 - g / 2, -360)
-    bh = t * 0.86
-    d += f'M{f2(cx + Ro)} {f2(cy - bh - gap)}V{f2(cy - gap)}H{f2(cx + 4)}V{f2(cy - bh - gap)}Z'
-    return d
+def G_retegelt(c, cx, cy, s):
+    """2 · Rétegelt: balra félkörös, jobbra szögletes G, vízszintes lemezrétegekből."""
+    H = s; W = s * 0.92; t = H * 0.2
+    x0, y0 = cx - W / 2, cy - H / 2; x1, y1 = x0 + W, y0 + H
+    R = H / 2; xc = x0 + R
+    r = R - t / 2
+    my = y0 + H / 7 * 4.5; bx = cx - W * 0.02
+    d = (f'M{f2(x1)} {f2(y0 + t/2)}H{f2(xc)}A{f2(r)} {f2(r)} 0 0 0 {f2(xc)} {f2(y1 - t/2)}'
+         f'H{f2(x1 - t/2)}V{f2(my)}H{f2(bx)}')
+    m = uid('r')
+    n = 7; band = H / n; gap = max(1.2, H * 0.03)
+    rects = ''.join(f'<rect x="{f2(x0-2)}" y="{f2(y0 + k*band + (gap/2 if k else 0))}" width="{f2(W+4)}" height="{f2(band - (gap/2 if k else 0) - (gap/2 if k < n-1 else 0))}" fill="{c["a"] if k == 4 else c["g"]}"/>' for k in range(n))
+    return (f'<defs><mask id="{m}" maskUnits="userSpaceOnUse" x="{f2(x0-4)}" y="{f2(y0-4)}" width="{f2(W+8)}" height="{f2(H+8)}">'
+            f'<path d="{d}" fill="none" stroke="#fff" stroke-width="{f2(t)}" stroke-linejoin="miter"/></mask></defs>'
+            f'<g mask="url(#{m})">{rects}</g>')
+
+def G_iv(c, cx, cy, s):
+    """3 · Ív: boltíves ajtó/tükör formájú, magas G."""
+    H = s; W = s * 0.74; t = W * 0.2
+    x0, y0 = cx - W / 2, cy - H / 2; x1, y1 = x0 + W, y0 + H
+    R = W / 2 - t / 2; ac = y0 + W / 2
+    a = math.radians(-32)
+    sx, sy = cx + R * math.cos(a), ac + R * math.sin(a)
+    my = y0 + H * 0.62
+    d = (f'M{f2(sx)} {f2(sy)}A{f2(R)} {f2(R)} 0 0 0 {f2(cx - R)} {f2(ac)}'
+         f'V{f2(y1 - t/2)}H{f2(cx + R)}V{f2(my)}H{f2(cx - W*0.02)}')
+    return (f'<path d="{d}" fill="none" stroke="{c["g"]}" stroke-width="{f2(t)}" stroke-linejoin="miter"/>'
+            f'<rect x="{f2(cx - W*0.02 - t*0.9)}" y="{f2(my - t/2)}" width="{f2(t*0.9)}" height="{f2(t)}" fill="{c["a"]}"/>')
+
+def G_modul(c, cx, cy, s):
+    """4 · Modul: négy külön elemből összerakott G, mint a korpuszbútor."""
+    S = s; t = S * 0.22; g = S * 0.045
+    x0, y0 = cx - S / 2, cy - S / 2; x1, y1 = x0 + S, y0 + S
+    R = S / 2
+    # bal felső negyedív-gyűrű
+    rO, rI = R - g / 2, R - g / 2 - t
+    ox, oy = x0 + R - g / 2, y0 + R - g / 2
+    q = (f'M{f2(x0)} {f2(oy)}A{f2(rO)} {f2(rO)} 0 0 1 {f2(ox)} {f2(y0)}'
+         f'H{f2(x1)}V{f2(y0 + t)}H{f2(ox)}A{f2(rI)} {f2(rI)} 0 0 0 {f2(x0 + t)} {f2(oy)}Z')
+    L = poly([(x0, oy + g), (x0 + t, oy + g), (x0 + t, y1 - t), (x1 - t - g, y1 - t), (x1 - t - g, y1), (x0, y1)])
+    sz = poly([(x1 - t, y1), (x1, y1), (x1, y0 + S * 0.5), (x1 - t, y0 + S * 0.5)])
+    blokk = poly([(x0 + S * 0.47, y0 + S * 0.5), (x1 - t - g, y0 + S * 0.5), (x1 - t - g, y0 + S * 0.5 + t), (x0 + S * 0.47, y0 + S * 0.5 + t)])
+    return (f'<path d="{q}" fill="{c["g"]}"/><path d="{L}" fill="{c["g"]}"/>'
+            f'<path d="{sz}" fill="{c["g"]}"/><path d="{blokk}" fill="{c["a"]}"/>')
+
+def G_szal(c, cx, cy, s, keret_jobb=None):
+    """5 · Szál: egyetlen vonal – a G felső szára a keret jobb éléig fut és belekapaszkodik."""
+    S = s; sw = max(2.2, S * 0.05)
+    x0, y0 = cx - S / 2, cy - S / 2; x1, y1 = x0 + S, y0 + S
+    my = y0 + S * 0.55
+    r = S * 0.22
+    top_end = keret_jobb if keret_jobb is not None else x1
+    d = (f'M{f2(top_end)} {f2(y0)}H{f2(x0 + r)}A{f2(r)} {f2(r)} 0 0 0 {f2(x0)} {f2(y0 + r)}'
+         f'V{f2(y1)}H{f2(x1)}V{f2(my)}H{f2(cx)}')
+    return (f'<path d="{d}" fill="none" stroke="{c["g"]}" stroke-width="{f2(sw)}" stroke-linejoin="miter"/>'
+            f'<rect x="{f2(cx - sw*1.8)}" y="{f2(my - sw*1.8)}" width="{f2(sw*3.6)}" height="{f2(sw*3.6)}" fill="{c["a"]}"/>')
+
+JEL = {1: G_ger, 2: G_retegelt, 3: G_iv, 4: G_modul, 5: G_szal}
+NEVEK = {1: 'Gér', 2: 'Rétegelt', 3: 'Ív', 4: 'Modul', 5: 'Szál'}
+WM = {
+    1: ([('mich', 'geraartdesign')], 17, .18),
+    2: ([('unb5', 'gera'), ('unb2', 'artdesign')], 18.5, .06),
+    3: ([('jos', 'geraartdesign')], 26, .22),
+    4: ([('exa', 'geraartdesign')], 17, .08),
+    5: ([('urb', 'geraartdesign')], 23, .32),
+}
 
 # ---------------------------------------------------------------- paletták
-SOTET = {'g': '#ECE1D2', 'g2': '#C9A47E', 'w': '#E4D7C6', 'f': '#9C8670', 'bg': '#3A312A'}
-MONO = {'g': '#3A312A', 'g2': '#3A312A', 'w': '#3A312A', 'f': '#3A312A', 'bg': None}
+SOTET = {'g': '#ECE1D2', 'a': '#C9A47E', 'w': '#E4D7C6', 'f': '#9C8670', 'bg': '#3A312A'}
+MONO = {'g': '#3A312A', 'a': '#3A312A', 'w': '#3A312A', 'f': '#3A312A', 'bg': None}
 MAIN = {
-    1: {'g': '#4F4136', 'w': '#4F4136', 'f': '#BCA891'},
-    2: {'g': '#5A4A3E', 'w': '#5A4A3E', 'f': '#5A4A3E'},
-    3: {'g': '#6E5C4D', 'w': '#6E5C4D', 'f': '#C2AE97'},
-    4: {'g': '#9A7552', 'w': '#6E5C4D', 'f': '#C9B49B'},
-    5: {'g': '#5A4A3E', 'g2': '#B98D63', 'w': '#5A4A3E', 'f': '#BCA891'},
+    1: {'g': '#4F4136', 'a': '#B98D63', 'w': '#4F4136', 'f': '#BCA891'},
+    2: {'g': '#4F4136', 'a': '#B98D63', 'w': '#4F4136', 'f': '#BCA891'},
+    3: {'g': '#5A4A3E', 'a': '#B98D63', 'w': '#5A4A3E', 'f': '#C2AE97'},
+    4: {'g': '#4F4136', 'a': '#B98D63', 'w': '#4F4136', 'f': '#BCA891'},
+    5: {'g': '#4F4136', 'a': '#B98D63', 'w': '#4F4136', 'f': '#4F4136'},
 }
-NEVEK = {1: 'Monolit', 2: 'Négyzet', 3: 'Sablon', 4: 'Vonal', 5: 'Szerkesztés'}
-WM = {1: ('unb', 19, .22), 2: ('mich', 16, .22), 3: ('zetta', 14.5, .10), 4: ('jos', 25, .24), 5: ('urb', 23, .34)}
-
-def wordmark(n, c, cx, base, scale=1.0):
-    fk, size, tr = WM[n]
-    t, w = text(fk, 'geraartdesign', size * scale, tr, cx + size * scale * tr / 2, base)
-    return f'<path d="{t}" fill="{c["w"]}"/>', w
-
-_uid = [0]
-def jel(n, c, cx, cy, R):
-    if n == 1:
-        return f'<path d="{G_kor(cx, cy, R, R*0.36)}" fill="{c["g"]}"/>'
-    if n == 2:
-        S = R * 1.84
-        return f'<path d="{G_negyzet(cx - S/2, cy - S/2, S, S*0.17)}" fill="{c["g"]}"/>'
-    if n == 3:
-        return f'<path d="{G_stencil(cx, cy, R, R*0.32, gap=max(3, R*0.07))}" fill="{c["g"]}"/>'
-    if n == 4:
-        sw = max(1.4, R * 0.03)
-        return f'<path d="{G_kor(cx, cy, R, R*0.30)}" fill="none" stroke="{c["g"]}" stroke-width="{f2(sw)}"/>'
-    if n == 5:
-        t = R * 0.34
-        d = G_kor(cx, cy, R, t)
-        _uid[0] += 1
-        clip = f'gc{_uid[0]}'
-        ring = R * 1.16
-        ext = R * 0.12
-        return (f'<defs><clipPath id="{clip}"><rect x="{f2(cx - R*2)}" y="{f2(cy)}" width="{f2(R*4)}" height="{f2(R*2)}"/></clipPath></defs>'
-                f'<circle cx="{f2(cx)}" cy="{f2(cy)}" r="{f2(ring)}" fill="none" stroke="{c["f"]}" stroke-width="{f2(max(.6, R*.011))}"/>'
-                f'<path d="M{f2(cx - ring - ext)} {f2(cy)}H{f2(cx + ring + ext)}M{f2(cx)} {f2(cy - ring - ext)}V{f2(cy + ring + ext)}" stroke="{c["f"]}" stroke-width="{f2(max(.5, R*.008))}"/>'
-                f'<path d="{d}" fill="{c["g"]}"/>'
-                f'<path d="{d}" fill="{c["g2"]}" clip-path="url(#{clip})"/>')
 
 def keret(n, c, x, y, w, h, s=1.0):
-    if n == 1:
-        return f'<rect x="{x}" y="{y}" width="{w}" height="{h}" fill="none" stroke="{c["f"]}" stroke-width="{f2(1.2*s)}"/>'
-    if n == 2:
-        return f'<rect x="{x}" y="{y}" width="{w}" height="{h}" fill="none" stroke="{c["f"]}" stroke-width="{f2(2.2*s)}"/>'
-    if n == 3:
-        L = 14 * s; sw = 2.4 * s
-        cs = ''.join(f'<path d="M{a} {f2(b+dy*L)}V{b}H{f2(a+dx*L)}" fill="none" stroke="{c["g"]}" stroke-width="{f2(sw)}"/>'
-                     for a, b, dx, dy in [(x, y, 1, 1), (x+w, y, -1, 1), (x, y+h, 1, -1), (x+w, y+h, -1, -1)])
-        return f'<rect x="{x}" y="{y}" width="{w}" height="{h}" fill="none" stroke="{c["f"]}" stroke-width="{f2(.8*s)}"/>' + cs
-    if n == 4:
-        d = 5 * s
-        return (f'<rect x="{x}" y="{y}" width="{w}" height="{h}" fill="none" stroke="{c["f"]}" stroke-width="{f2(.8*s)}"/>'
-                f'<rect x="{f2(x+d)}" y="{f2(y+d)}" width="{f2(w-2*d)}" height="{f2(h-2*d)}" fill="none" stroke="{c["f"]}" stroke-width="{f2(.8*s)}"/>')
+    sw = {1: 1.1, 2: 1.1, 3: 1.0, 4: 1.1, 5: 1.6}[n] * s
+    return f'<rect x="{f2(x)}" y="{f2(y)}" width="{f2(w)}" height="{f2(h)}" fill="none" stroke="{c["f"]}" stroke-width="{f2(sw)}"/>'
+
+def wordmark(n, c, cx, base, scale=1.0):
+    parts, size, tr = WM[n]
+    ds, w = text_parts(parts, size * scale, tr, cx, base)
+    return ''.join(f'<path d="{d}" fill="{c["w"]}"/>' for d in ds), w
+
+def jel(n, c, cx, cy, s, kj=None):
     if n == 5:
-        ticks = ''.join(f'<path d="M{f2(x + w*k/8)} {y}v{f2(5*s if k % 4 else 9*s)}" stroke="{c["f"]}" stroke-width="{f2(.8*s)}"/>' for k in range(1, 8))
-        return f'<rect x="{x}" y="{y}" width="{w}" height="{h}" fill="none" stroke="{c["f"]}" stroke-width="{f2(1*s)}"/>' + ticks
+        return G_szal(c, cx, cy, s, kj)
+    return JEL[n](c, cx, cy, s)
 
 def fo(n, c):
     W, H = 320, 372
     wm, _ = wordmark(n, c, 160, 318)
-    return W, H, keret(n, c, 10, 10, 300, 352) + jel(n, c, 160, 158, 88) + wm
+    return W, H, keret(n, c, 10, 10, 300, 352) + jel(n, c, 160, 152, 170, kj=310) + wm
 
 def kompakt(n, c):
-    return 200, 200, keret(n, c, 8, 8, 184, 184, .9) + jel(n, c, 100, 100, 52)
+    return 200, 200, keret(n, c, 8, 8, 184, 184, .9) + jel(n, c, 100, 100, 112, kj=192)
 
 def fejlec(n, c):
     H = 76
-    fk, size, tr = WM[n]
-    sc = 0.74
-    _, w = text(fk, 'geraartdesign', size * sc, tr, 0, 0)
+    parts, size, tr = WM[n]
+    sc = 0.72
+    _, w = text_parts(parts, size * sc, tr, 0, 0)
     W = int(84 + w + 30)
     wm, _ = wordmark(n, c, 84 + w / 2, 43 + size * sc * .36, sc)
     sep = f'<rect x="70" y="20" width=".8" height="36" fill="{c["f"]}"/>'
-    return W, H, keret(n, c, 3, 3, W - 6, H - 6, .7) + jel(n, c, 38, 38, 21) + sep + wm
+    return W, H, keret(n, c, 3, 3, W - 6, H - 6, .7) + jel(n, c, 37, 38, 40, kj=None) + sep + wm
 
 def svg(W, H, body, bg=None, pad=0, title=''):
     vb = f'{-pad} {-pad} {W+2*pad} {H+2*pad}'
@@ -170,9 +200,8 @@ def build():
     for n in range(1, 6):
         d = os.path.join(OUT, f'logo-{n}'); os.makedirs(d, exist_ok=True)
         for old in os.listdir(d): os.remove(os.path.join(d, old))
-        m = dict(MAIN[n]); m.setdefault('g2', m['g'])
-        dk = dict(SOTET)
-        if n == 2: dk['f'] = dk['g']
+        m = dict(MAIN[n]); dk = dict(SOTET)
+        if n == 5: dk['f'] = dk['g']
         nm = f'geraartdesign – {NEVEK[n]}'
         files = {
             'fo': svg(*fo(n, m), title=nm),
