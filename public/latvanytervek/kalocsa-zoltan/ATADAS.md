@@ -3,6 +3,9 @@
 **Élő látványterv:** https://daekon-ship.github.io/daekon/latvanytervek/kalocsa-zoltan/ (noindex)
 **Állapot (2026.10.22., 10. kör):** ügyfélnek bemutatható látványterv. Az éles működéshez szükséges integrációk (űrlapküldés, mérés) előkészítve, de **nincsenek bekapcsolva** (lásd G).
 
+## Csak „Kiemelt munkák” (2026.10.22., ügyfélkérés)
+Zoltán kérése: ne legyen „Munkáim” (úgy hat, mintha csak ennyit dolgozott volna). A fülek és a „Munkáim” kártyarács törölve; egyetlen szakasz maradt „Kiemelt munkák” címmel (`#kiemelt-munkak`): 01 Pirtó–Halas (4 fotó), 02 Előtte–utána, 03 Közműárok, 04 Tuskóeltávolítás, 05 Kisgép munka közben (Kubota KX019-4, „Megkérdezem, befér-e” gombbal). Menü, nyitókép-gomb és lábléc: „Kiemelt munkák”.
+
 ## Végleges audit (2026.10.22.)
 Ellenőrizve 360 / 390 / 430 / 768 / 1440 px-en (és 320 / 1024 / 1920 px-en a túlcsordulásra).
 - **Javítva:**

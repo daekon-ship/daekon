@@ -25,7 +25,7 @@
      Események (mindig a window.dataLayer-be kerülnek; hálózatra csak beállított szolgáltatónál mennek):
      - phone_click: bármely tel: link kattintása (NEM bizonyított hívás, csak a gomb használata)
      - quote_submit_success: csak valódi, sikeres szerverválasz után (bemutató módban soha)
-     - portfolio_view: a Munkáim szekció első, legalább 25%-os láthatósága, illetve képnagyítás megnyitása
+     - portfolio_view: a Kiemelt munkák szekció első, legalább 25%-os láthatósága, illetve képnagyítás megnyitása
      - featured_project_open: a Kiemelt munkáim fül első megnyitása / nézetváltás
      Szolgáltató (élesítéskor): GA4 → csak hozzájárulás után tölt be (süti); GoatCounter → süti nélküli, hozzájárulás nem kell. */
   const ANALYTICS = { ga4: null /* pl. 'G-XXXXXXX' */, goatcounter: null /* pl. 'https://kalocsageoworks.goatcounter.com/count' */ };
@@ -76,7 +76,7 @@
   /* ---------- FEJLÉC, HÍVÓGOMB, AKTÍV MENÜ ---------- */
   const hdr = $('#fejlec'), fab = $('#fab'), hero = $('.hero');
   const navLinks = $$('.nav a[href^="#"]');
-  const spy = ['fooldal', 'szolgaltatasok', 'szuk-hely', 'munkaim', 'rolam', 'folyamat', 'munkaterulet', 'ajanlat'].map(id => d.getElementById(id));
+  const spy = ['fooldal', 'szolgaltatasok', 'szuk-hely', 'kiemelt-munkak', 'rolam', 'folyamat', 'munkaterulet', 'ajanlat'].map(id => d.getElementById(id));
   let ticking = false;
   const onScroll = () => {
     const y = scrollY;
@@ -88,10 +88,8 @@
     let id = cur.id;
     if (id === 'szuk-hely') id = 'szolgaltatasok';
     if (id === 'folyamat') id = 'rolam';
-    const featOpen = $('#tab-kiemelt').getAttribute('aria-selected') === 'true';
     navLinks.forEach(a => {
       let on = a.getAttribute('href') === '#' + id;
-      if (a.dataset.tab) on = on && ((a.dataset.tab === 'kiemelt') === featOpen);
       a.classList.toggle('is-active', on);
     });
     ticking = false;
@@ -116,36 +114,10 @@
   nav.addEventListener('click', e => { if (e.target.closest('a')) setMenu(false); });
   d.addEventListener('keydown', e => { if (e.key === 'Escape' && nav.classList.contains('is-open')) { setMenu(false); burger.focus(); } });
 
-  /* ---------- MUNKÁIM: FÜLEK ---------- */
-  const tabs = $$('.tab');
-  let featSeen = false;
-  const selectTab = (tab, focus) => {
-    tabs.forEach(t => {
-      const on = t === tab;
-      t.setAttribute('aria-selected', on); t.tabIndex = on ? 0 : -1;
-      d.getElementById(t.getAttribute('aria-controls')).hidden = !on;
-    });
-    if (focus) tab.focus();
-    if (tab.id === 'tab-kiemelt' && !featSeen) { featSeen = true; track('featured_project_open', { via: 'tab' }); }
-    if (window.gsap && !reduce) {
-      const p = d.getElementById(tab.getAttribute('aria-controls'));
-      gsap.fromTo(p.children, { y: 24, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: .7, stagger: .08, ease: 'expo.out', overwrite: true });
-      if (window.ScrollTrigger) ScrollTrigger.refresh();
-    }
-    onScroll();
-  };
-  tabs.forEach((t, i) => {
-    t.addEventListener('click', () => selectTab(t));
-    t.addEventListener('keydown', e => {
-      if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { e.preventDefault(); selectTab(tabs[(i + (e.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length], true); }
-    });
-  });
-  $$('[data-tab]').forEach(a => a.addEventListener('click', () => selectTab(d.getElementById('tab-' + a.dataset.tab))));
-
   // portfolio_view – első megtekintéskor
   if ('IntersectionObserver' in window) {
     const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { track('portfolio_view', { via: 'scroll' }); io.disconnect(); } }), { threshold: .25 });
-    io.observe($('#munkaim'));
+    io.observe($('#kiemelt-munkak'));
   }
 
   /* ---------- LIGHTBOX (a képlista a HTML-ből épül: [data-full] + [data-cap]) ---------- */
@@ -396,8 +368,8 @@
   }
 
   // munkák: a kártyák felúsznak (csak átlátszóság + eltolás – rejtett fülön sem maradhat semmi kitakarva)
-  ST.batch('#panel-osszes .wcard, #panel-osszes .ba', { start: 'top 92%', once: true,
-    onEnter: b => g.fromTo(b, { y: 36, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: .9, ease: 'expo.out', stagger: .08, clearProps: 'transform' }) });
+  ST.batch('.feat', { start: 'top 90%', once: true,
+    onEnter: b => g.fromTo(b, { y: 36, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: .9, ease: 'expo.out', stagger: .1, clearProps: 'transform' }) });
 
   // portré
   g.from('.portrait img', { y: 40, autoAlpha: 0, duration: 1.2, ease: 'expo.out', scrollTrigger: { trigger: '.portrait', start: 'top 85%' } });
