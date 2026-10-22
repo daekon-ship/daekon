@@ -314,9 +314,10 @@
 
     /* hero nyitány – a tartalom azonnal kattintható, csak a megjelenés finom */
     var tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
-    tl.from('.nav .lg-mark', { opacity: 0, rotation: -35, svgOrigin: '21 20', duration: 0.9, ease: 'back.out(1.5)' }, 0)
-      .from('.nav .lg-nut', { rotation: 60, svgOrigin: '21 20', duration: 0.9, ease: 'power3.out' }, 0.1)
-      .from('.nav .lg-word path', { opacity: 0, x: -8, duration: 0.5, stagger: 0.08 }, 0.15)
+    tl.from('.nav .lg-car', { y: 70, duration: 1.1, ease: 'power3.out' }, 0.1)
+      .from('.nav .lg-lamp', { opacity: 0.15, duration: 0.5, ease: 'steps(3)' }, 0.55)
+      .from('.nav .lg-cone', { opacity: 0, duration: 0.6 }, 0.75)
+      .from('.nav .lg-word', { opacity: 0, x: -10, duration: 0.6 }, 0.2)
       .from('.nav .brand-sub', { opacity: 0, duration: 0.6 }, 0.55)
       .from('.hero-bg', { opacity: 0, duration: 1.2, ease: 'power1.out' }, 0)
       .from('.hero-mark', { opacity: 0, x: -12, duration: 0.6 }, 0.15)

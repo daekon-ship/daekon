@@ -55,11 +55,16 @@ p{margin:0}
 .nav.solid .nav-in{height:56px}
 .brand{display:flex;align-items:center;gap:11px;min-height:44px;text-decoration:none;margin-right:auto}
 .brand{flex-direction:column;align-items:flex-start;justify-content:center;gap:4px}
-.logo{display:block;height:34px;width:auto;overflow:visible}
-.logo .lg-nut polygon{transition:fill .3s}
-.brand:hover .logo .lg-nut polygon{fill:var(--ice)}
-.brand-sub{font-family:var(--fh);font-size:8px;font-weight:600;letter-spacing:.075em;color:var(--soft);padding-left:3px;white-space:nowrap}
-.brand-sub span{color:var(--blue);margin:0 2px}
+.brand{--lh:40px}
+.logo{display:block;height:var(--lh);width:auto;overflow:visible}
+.logo .lg-lamp{transition:fill .3s}
+.brand:hover .logo .lg-lamp{fill:var(--ice)}
+/* alsor = műszaki rajzos méretvonal a GYÁLAUTÓ felirat szélességében */
+.brand-sub{display:flex;align-items:center;gap:6px;width:calc(var(--lh) * 4.457);margin-left:calc(var(--lh) * 2.577);font-family:var(--fh);font-size:7.6px;font-weight:600;letter-spacing:.04em;color:var(--soft);white-space:nowrap;line-height:1}
+.brand-sub::before,.brand-sub::after{content:"";flex:1 1 0;min-width:5px;height:7px;background:linear-gradient(var(--ice),var(--ice)) center/100% 1px no-repeat;opacity:.85}
+.brand-sub::before{border-left:1px solid var(--ice)}
+.brand-sub::after{border-right:1px solid var(--ice)}
+.brand-sub i{font-style:normal;color:var(--blue);margin:0 1px}
 .nav-links{display:flex;gap:26px}
 .nav-links a{position:relative;text-decoration:none;font-size:14.5px;color:var(--soft);padding:6px 0;transition:color .2s}
 .nav-links a::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1.5px;background:var(--ice);transform:scaleX(0);transform-origin:right;transition:transform .25s var(--e)}
@@ -300,7 +305,7 @@ address{font-style:normal}
 .foot{background:var(--g0);border-top:1px solid var(--line);padding:28px 0 30px;font-size:14px;color:var(--soft)}
 .foot-in{display:grid;grid-template-columns:1fr auto;gap:24px 40px}
 .foot-brand{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;color:var(--soft);font-size:11px;letter-spacing:.1em;margin-bottom:12px}
-.logo.sm{height:28px}
+.foot-brand .logo.sm{height:30px}
 .nw{white-space:nowrap}
 .foot-in>*{min-width:0}
 .foot nav{display:flex;flex-wrap:wrap;gap:8px 22px;align-items:flex-start}
@@ -420,8 +425,8 @@ address{font-style:normal}
 }
 @media (max-width:640px){
   body{font-size:16px}
-  .logo{height:30px}
-  .brand-sub{font-size:7.2px;letter-spacing:.06em;padding-left:2px}
+  .brand{--lh:32px}
+  .brand-sub{font-size:6.5px;letter-spacing:0;gap:4px}
   .hero h1{font-size:clamp(32px,9vw,40px)}
   .hero-cta .btn{flex:1 1 0;padding:0 12px}
   .hero-sub{font-size:15.5px}
@@ -446,6 +451,7 @@ address{font-style:normal}
   .hero-mark::before{width:14px}
   .hero-cta .btn{flex:1 1 100%}
   .brand-sub{display:none}
+  .brand{--lh:30px}
   .hero h1{font-size:30px}
   .contact-cta .btn{flex:1 1 auto;padding:0 16px}
 }

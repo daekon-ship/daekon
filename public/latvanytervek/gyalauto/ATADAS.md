@@ -45,14 +45,14 @@ Fájlok: `index.html`, `impresszum.html`, `adatkezeles.html`, `404.html`, `gyala
 - Az „Ismerje meg a műhelyt” szekció, a „A műhely” menüpont (asztali és mobil) és a képnagyító kikerült. A menü: Főoldal | Szolgáltatások | Miért minket? | Kapcsolat + Időpontkérés.
 - Ha később lesznek saját műhelyfotók, egy galéria a „Miért minket?” után visszatehető.
 
-## Logó (9. kör – új logó, 2026-10-22)
-- Három irányt terveztünk: (1) villáskulcs + anya jel egyenes szóképpel, (2) „műhelycímke” keretes felirat, (3) szókép, ahol az Ó egy anya. Az 1. lett a végleges: kicsiben (16–32 px) is felismerhető, önálló ikonként is működik, és nem trükközik a felirattal.
-- **Jel:** villáskulcs feje oldalról (a nyitott pofa C/G-formát ad), a pofában egy kék hatlapfejű anya. A pofa síkjai 15°-ban dőlnek, mint egy valódi villáskulcson. Telt formák, nincs fémhatás, árnyék vagy színátmenet.
-- **Szókép:** GYÁL fehér + AUTÓ acélszürke, Inter ExtraBold, **görbékké alakítva** (nem függ a betöltött betűtől). Alsor a teljes logón: AUTÓSZERVIZ · GYÁL (jeges cián). A fejlécben a brief szerinti „STABILTERV KFT. | Q-SERVICE PARTNER” sor marad alatta.
-- **Színek:** #F4F7FA (fehér), #A9B9CC (acélszürke), #16B8FF (anya), #91E7FF (alsor), alap #080D14. Világos háttéren: #0A1220 / #41536B / #0A6FA0.
-- **Fájlok:** `logo.svg` (sötét alapra), `logo-vilagos.svg` (világos alapra – nyomtatvány, matrica, számla), `logo-jel.svg` (csak a jel), `favicon.svg`, `favicon-32.png`, `apple-touch-icon.png`, `icon-192.png`, `icon-512.png`; az `og-gyalauto.jpg` megosztási kép is az új logóval készült.
-- **Mozgás:** betöltéskor a kulcs ráfordul az anyára, a felirat két része beúszik; rámutatáskor az anya kivilágosodik. `prefers-reduced-motion` esetén statikus.
-- A jogi oldalak a fejlécet a `_jogi/gen.py` futtatásával veszik át az index.html-ből (a favicon.svg is ott generálódik).
+## Logó (10. kör – egyedi jel: autó az emelőn, 2026-10-22)
+- A villáskulcsos jel túl általános volt (bármelyik szerelőé lehetne). Az új jel az oldal saját vizuális világából jön: **a kombi a szerelőemelőn, felette a kék műhelylámpa** – ugyanaz az autó, mint a hero-rajzon. Ez csak a Gyálautóé.
+- **Szókép:** GYÁLAUTÓ, Inter ExtraBold, görbékké alakítva (betűtől független). Alatta **műszaki rajzos méretvonal** (nyilak, végjelek) a felirat szélességében, a méret helyén a szöveg – mint a heróban a „tengelytáv”. Teljes logón: AUTÓSZERVIZ · GYÁL; a fejlécben (HTML-szövegként, hogy olvasható maradjon): STABILTERV KFT. | Q-SERVICE PARTNER. 360 px alatt a fejléc alsora rejtve.
+- **Kompakt ikon** (favicon, telefonos ikon, profilkép): két emelőoszlop, felül kék lámpa, középen G – 16 px-en is olvasható.
+- **Színek:** autó és felirat #F4F7FA, emelő #A9B9CC, lámpa #16B8FF, méretvonal #91E7FF, alap #080D14. Világos háttéren: #0A1220 / #6B7D93 / #0A6FA0.
+- **Fájlok:** `logo.svg` (sötét alapra), `logo-vilagos.svg` (világos alapra – nyomtatvány, matrica, számla, autómatrica), `logo-jel.svg` (autó az emelőn, felirat nélkül), `favicon.svg`, `favicon-32.png`, `apple-touch-icon.png`, `icon-192.png`, `icon-512.png`, `og-gyalauto.jpg`.
+- **Mozgás:** betöltéskor az autó felemelkedik az emelőn, a lámpa felvillan, a fénykúp megjelenik; rámutatáskor a lámpa kivilágosodik. `prefers-reduced-motion` esetén statikus.
+- Korábban vizsgált és elvetett irányok: villáskulcs + anya, keretes „műhelycímke”, Ó-anya szókép, dőlt levágott sarkú betűk.
 
 ## Teljes vizuális javítás (3. kör)
 - Egységes formavilág a logó csavaranyájából: a fő gombok kétsarkú, gépelt „lemez” formát kaptak (ferdén levágott sarkok, fényes élsúrolás rámutatáskor), a többi elem 4–6 px-es szögletes sarok — eltűntek a lekerekített „pill” gombok és dobozok.
