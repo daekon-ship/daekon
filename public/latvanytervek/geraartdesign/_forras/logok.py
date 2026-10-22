@@ -27,6 +27,8 @@ FONTS = {
     'exa':  ('lexendexa/LexendExa[wght].ttf', {'wght': 400}),
     'tag':  ('urbanist/Urbanist[wght].ttf', {'wght': 700}),
     'unbB': ('unbounded/Unbounded[wght].ttf', {'wght': 600}),
+    'kumB': ('kumbhsans/KumbhSans[YOPQ,wght].ttf', {'wght': 700}),
+    'kumL': ('kumbhsans/KumbhSans[YOPQ,wght].ttf', {'wght': 300}),
     'unbL': ('unbounded/Unbounded[wght].ttf', {'wght': 300}),
     'urbB': ('urbanist/Urbanist[wght].ttf', {'wght': 800}),
     'urbL': ('urbanist/Urbanist[wght].ttf', {'wght': 500}),
@@ -208,7 +210,7 @@ def mono_fix(n, c):
     return c
 
 # Névírás: „gera” erős, „artdesign” könnyebb – így a dupla „a” nem folyik össze, és jól olvasható.
-WM2 = {1: ('unbB', 'unbL', .06), 4: ('urbB', 'urbL', .09), 5: ('exaB', 'exaL', .04),
+WM2 = {1: ('kumB', 'kumL', .08), 4: ('urbB', 'urbL', .09), 5: ('exaB', 'exaL', .04),
        2: ('urbB', 'urbL', .03), 3: ('urbB', 'urbL', .03)}
 
 def _merete(fk, s, size, tr):
@@ -219,14 +221,15 @@ def nevir(n, c, cx, base, cel_w):
     """GERA (vékony) · ART (vastag, karamell) · DESIGN (vékony) – az ART a kiemelt szó."""
     fb, fl, tr = WM2[n]
     reszek = [(fl, 'GERA', c['w']), (fb, 'ART', c.get('art', c['a'])), (fl, 'DESIGN', c['w'])]
+    gap = 0.16   # szóköz a három szó között (em) – hogy ne csússzanak egymásba
     ws = [_merete(fk, t, 10, tr) for fk, t, _ in reszek]
-    size = 10 * cel_w / sum(ws)
-    ws = [w * size / 10 for w in ws]
-    x = cx - sum(ws) / 2; out = ''
+    size = 10 * cel_w / (sum(ws) + 2 * gap * 10)
+    ws = [w * size / 10 for w in ws]; g = gap * size
+    x = cx - (sum(ws) + 2 * g) / 2; out = ''
     for (fk, t, col), w in zip(reszek, ws):
-        d, _ = text(fk, t, size, tr, x + w / 2, base)
+        d, _ = text(fk, t, size, tr, x + w / 2 - tr * size / 2, base)
         out += f'<path d="{d}" fill="{col}"/>'
-        x += w
+        x += w + g
     return out, size
 
 def tagsor(c, cx, base, cel_w):
