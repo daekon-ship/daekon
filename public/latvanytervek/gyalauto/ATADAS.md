@@ -1,8 +1,23 @@
 # GYÁLAUTÓ (STABILTERV Kft.) — látványterv, átadás
 
-Élő cím: https://daekon-ship.github.io/daekon/latvanytervek/gyalauto/
-Fájlok: `index.html`, `gyalauto.css`, `gyalauto.js`, `logo.svg` (önálló logófájl), `js/` (GSAP 3 + ScrollTrigger, helyben).
-Az éles gyalauto.hu-hoz nem nyúltunk; a terv `noindex`.
+**ÉLES: https://gyalauto.hu** (DAEKON VPS, Site Factory; 2026-10-22). Ez a mappa a forrás; a GitHub Pages-változat
+(https://daekon-ship.github.io/daekon/latvanytervek/gyalauto/) előnézet marad: `noindex`, a canonical a gyalauto.hu-ra mutat.
+Fájlok: `index.html`, `impresszum.html`, `adatkezeles.html`, `404.html`, `gyalauto.css`, `gyalauto.js`, `js/` (GSAP 3 + ScrollTrigger),
+`fonts/` (Manrope + Space Grotesk, helyben, OFL), ikonok, `og-gyalauto.jpg`, `site.webmanifest`.
+
+## Éles build és élesítés
+1. Jogi oldalak / 404 / favicon újragenerálása, ha a fejléc, lábléc vagy a `_jogi/*.body.html` változott: `python -I _jogi/gen.py`
+2. Éles build (új, üres mappába; noindex → index, CSP-meta hash-sel, CSS/JS `?v=hash`, robots.txt, sitemap.xml, ellenőrzések):
+   `python -I build_eles.py --out <új mappa>` – ha hibát ad, NEM élesíthető.
+3. `tar --owner=0 --group=0 -czf gyalauto.tgz -C <mappa> .` → VPS: `sudo daekon-site deploy gyalauto.hu /tmp/gyalauto.tgz`
+   Visszaállítás: `sudo daekon-site rollback gyalauto.hu --to <kiadás>`. Jegyzőkönyv: `C:\daekon-migration\GYALAUTO_ELESITES.md`.
+
+## Élesítési véglegesítés (2026-10-22)
+- Látványterv-felirat a láblécből le; Impresszum + Adatkezelési tájékoztató és sütik oldal, saját 404.
+- Betűk helyben (nincs Google Fonts-kérés); a Google Térkép csak kattintásra töltődik (előtte nincs Google-kérés, nincs süti) → cookie-banner nem kell.
+- SEO: title/description, OG-kép, favicon/ikonok, JSON-LD (AutoRepair, szolgáltatáskatalógus, adószám; az alapítás dátuma kikerült a JSON-LD-ből – ellenőrizetlen).
+- Akadálymentesség: logó akadálymentes neve, mobil alsó sáv `nav`, szolgáltatás-fülek ARIA-szerkezete, lábléc-linkek érintési mérete, 320 px-en a levágott „Útvonaltervezés” gomb.
+- CLS: a nyitvatartás-jelző helye előre lefoglalva (0,13/0,19 → 0,00/0,03).
 
 ## Koncepció
 - **„Műszaki rajz”**: nincs saját műhelyfotó, stockfotót nem használunk, ezért egyetlen, saját rajzolású kombi vezet végig az oldalon: a heróban emelőn áll (felülvilágítás, padlófény, szkennelő vonal), a diagnosztikai szekcióban ugyanaz az autó „átvilágítva” mutatja a rendszereket, a műhely-szekció képkockái pedig ugyanennek a rajznak közeli kameraállásai.

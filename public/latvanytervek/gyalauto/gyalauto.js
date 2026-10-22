@@ -1,4 +1,4 @@
-/* GYÁLAUTÓ – látványterv (DAEKON, 2026)
+/* GYÁLAUTÓ – gyalauto.hu (DAEKON, 2026)
    Egy rajzolt autó vezet végig az oldalon: hero → diagnosztika. */
 (function () {
   'use strict';
@@ -151,6 +151,7 @@
   SERVICES.forEach(function (s, k) {
     var n = String(k + 1).padStart(2, '0');
     var li = document.createElement('li');
+    li.setAttribute('role', 'presentation');
     li.innerHTML = '<button role="tab" id="tab-' + s.id + '" aria-selected="false" aria-controls="svcPanel" tabindex="-1"><span class="n">' + n + '</span><span class="t">' + s.name + '</span><span class="c">' + s.items.length + ' tétel</span></button>';
     idx.appendChild(li);
     var a = document.createElement('div');
@@ -287,6 +288,18 @@
     if (hasG()) gsap.from($$('#bookDone > *'), { y: 14, opacity: 0, duration: 0.5, stagger: 0.06, ease: 'power2.out' });
   });
   $('#editBtn').addEventListener('click', function () { done.hidden = true; form.hidden = false; form.elements.brand.focus(); });
+
+  /* ===================== TÉRKÉP (csak kattintásra – addig nincs Google-kérés, nincs süti) ===================== */
+  var mapLoad = $('#mapLoad');
+  if (mapLoad) mapLoad.addEventListener('click', function () {
+    var f = document.createElement('iframe');
+    f.title = 'Térkép: Gyálautó, 2360 Gyál, Vállalkozó utca 8.';
+    f.referrerPolicy = 'no-referrer-when-downgrade';
+    f.src = mapLoad.getAttribute('data-src');
+    var gate = $('#mapGate');
+    gate.parentNode.insertBefore(f, gate); gate.remove();
+    f.focus();
+  });
 
   /* ===================== MOZGÁS ===================== */
   var flow = $('#flowSteps'), steps = $$('li', flow);
