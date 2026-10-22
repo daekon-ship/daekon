@@ -45,11 +45,14 @@ Fájlok: `index.html`, `impresszum.html`, `adatkezeles.html`, `404.html`, `gyala
 - Az „Ismerje meg a műhelyt” szekció, a „A műhely” menüpont (asztali és mobil) és a képnagyító kikerült. A menü: Főoldal | Szolgáltatások | Miért minket? | Kapcsolat + Időpontkérés.
 - Ha később lesznek saját műhelyfotók, egy galéria a „Miért minket?” után visszatehető.
 
-## Logó (4. kör – végleges koncepció)
-- Saját rajzolású, betűtípustól független szókép: GYÁLAUTÓ egyenes vonalú, ferdén levágott sarkú betűkkel, 10°-os dőléssel (mozgás, sebesség). A **GYÁL** törtfehér, az **AUTÓ** acélszürke, az ékezetek és a G keresztszára elektromos kék.
-- Jel: ferde, levágott sarkú lemez, benne átlós villás-csillagkulcs; a csillagvégben kék hatlapfejű anya. Önállóan is használható (favicon, profilkép, matrica).
-- Fájlok: `logo.svg` (teljes logó alsorral), `logo-jel.svg` (csak a jel). Mindkettő vektoros, nyomdai/matricás felhasználásra is alkalmas.
-- Betöltéskor a jel beúszik és a kulcs „ráhúz” (elfordul a helyére), a betűk egyenként megjelennek; rámutatáskor az anya kivilágosodik.
+## Logó (9. kör – új logó, 2026-10-22)
+- Három irányt terveztünk: (1) villáskulcs + anya jel egyenes szóképpel, (2) „műhelycímke” keretes felirat, (3) szókép, ahol az Ó egy anya. Az 1. lett a végleges: kicsiben (16–32 px) is felismerhető, önálló ikonként is működik, és nem trükközik a felirattal.
+- **Jel:** villáskulcs feje oldalról (a nyitott pofa C/G-formát ad), a pofában egy kék hatlapfejű anya. A pofa síkjai 15°-ban dőlnek, mint egy valódi villáskulcson. Telt formák, nincs fémhatás, árnyék vagy színátmenet.
+- **Szókép:** GYÁL fehér + AUTÓ acélszürke, Inter ExtraBold, **görbékké alakítva** (nem függ a betöltött betűtől). Alsor a teljes logón: AUTÓSZERVIZ · GYÁL (jeges cián). A fejlécben a brief szerinti „STABILTERV KFT. | Q-SERVICE PARTNER” sor marad alatta.
+- **Színek:** #F4F7FA (fehér), #A9B9CC (acélszürke), #16B8FF (anya), #91E7FF (alsor), alap #080D14. Világos háttéren: #0A1220 / #41536B / #0A6FA0.
+- **Fájlok:** `logo.svg` (sötét alapra), `logo-vilagos.svg` (világos alapra – nyomtatvány, matrica, számla), `logo-jel.svg` (csak a jel), `favicon.svg`, `favicon-32.png`, `apple-touch-icon.png`, `icon-192.png`, `icon-512.png`; az `og-gyalauto.jpg` megosztási kép is az új logóval készült.
+- **Mozgás:** betöltéskor a kulcs ráfordul az anyára, a felirat két része beúszik; rámutatáskor az anya kivilágosodik. `prefers-reduced-motion` esetén statikus.
+- A jogi oldalak a fejlécet a `_jogi/gen.py` futtatásával veszik át az index.html-ből (a favicon.svg is ott generálódik).
 
 ## Teljes vizuális javítás (3. kör)
 - Egységes formavilág a logó csavaranyájából: a fő gombok kétsarkú, gépelt „lemez” formát kaptak (ferdén levágott sarkok, fényes élsúrolás rámutatáskor), a többi elem 4–6 px-es szögletes sarok — eltűntek a lekerekített „pill” gombok és dobozok.

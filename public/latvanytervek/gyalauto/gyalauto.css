@@ -55,9 +55,9 @@ p{margin:0}
 .nav.solid .nav-in{height:56px}
 .brand{display:flex;align-items:center;gap:11px;min-height:44px;text-decoration:none;margin-right:auto}
 .brand{flex-direction:column;align-items:flex-start;justify-content:center;gap:4px}
-.logo{display:block;height:36px;width:auto;overflow:visible}
-.logo .lg-plate{transition:fill .3s}
-.brand:hover .logo .lg-nut{fill:var(--ice)}
+.logo{display:block;height:34px;width:auto;overflow:visible}
+.logo .lg-nut polygon{transition:fill .3s}
+.brand:hover .logo .lg-nut polygon{fill:var(--ice)}
 .brand-sub{font-family:var(--fh);font-size:8px;font-weight:600;letter-spacing:.075em;color:var(--soft);padding-left:3px;white-space:nowrap}
 .brand-sub span{color:var(--blue);margin:0 2px}
 .nav-links{display:flex;gap:26px}
@@ -420,7 +420,7 @@ address{font-style:normal}
 }
 @media (max-width:640px){
   body{font-size:16px}
-  .logo{height:31px}
+  .logo{height:30px}
   .brand-sub{font-size:7.2px;letter-spacing:.06em;padding-left:2px}
   .hero h1{font-size:clamp(32px,9vw,40px)}
   .hero-cta .btn{flex:1 1 0;padding:0 12px}
