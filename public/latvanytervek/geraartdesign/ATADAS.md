@@ -28,14 +28,13 @@ Valódi fotó nincs; stock/AI kép nincs. A hero egy kódból rajzolt, lapos geo
 ## Koncepció: „Arány”
 Építészeti, geometrikus: látható 12 hasábos tartórács a hero mögött, számozott szakaszok, hajszálvonalas rácsba rendezett szolgáltatások saját geometrikus jelekkel, sötét dió blokk a műhelynek, görgetésre haladó folyamatvonal.
 
-## Logók (`arculat/logo-1…5/`, `_forras/logok.py`) — 4. kör
-Kérés: első ránézésre látsszon, hogy asztalos. Minden G egy asztalosi tárgyból/szerkezetből épül, a név alatt „BÚTORASZTALOS · INTARZIA” sor:
-1. Szorító – a G maga egy pillanatszorító (íves test, orsó, karamell nyomótalp); Unbounded.
-2. Forgács – rostos gyaluforgács, befelé hajló nyelvvel; Josefin Sans.
-3. Fecskefark – szögletes G fecskefarkas sarokkötésekkel; Michroma.
-4. Derékszög – a G szára asztalos derékszög (fa nyél, szegecsek, acél penge beosztással); Urbanist.
-5. Évgyűrű – gerenda bütüje évgyűrűkkel és bütürepedéssel; Lexend Exa.
-(Korábbi körök: Caslon/Bodoni betű-G-k → kör alapú geometrikus G-k → gér/rétegelt/ív/modul/szál – mind elvetve.)
+## Logók (`arculat/logo-1`, `logo-4`, `logo-5`; `_forras/logok.py`) — 5. kör
+Az ügyfél az 1-es, 4-es és 5-ös irányt fogadta el; a 2-es (Forgács) és 3-as (Fecskefark) kikerült (a rajzoló függvények a forrásban maradtak).
+1. Szorító – a G maga egy pillanatszorító (íves test, orsó, karamell nyomótalp).
+4. Derékszög – a G szára asztalos derékszög (fa nyél, szegecsek, acél penge beosztással).
+5. Évgyűrű – gerenda bütüje évgyűrűkkel és bütürepedéssel.
+
+Névírás (5. kör): nagyobb, sűrűbb, kétsúlyú – „**gera**artdesign” (erős + könnyű), így a dupla „a” nem folyik össze. 1: Unbounded 600/300, 4: Urbanist 800/500, 5: Lexend Exa 600/300. Alatta „BÚTORASZTALOS · INTARZIA” (Urbanist 700, ritkított), a névvel azonos szélességben.
 
 Fájlok változatonként: `fo`, `vilagos`, `sotet`, `sotet-atlatszo`, `mono`, `kompakt`, `kompakt-sotet`, `social`, `social-sotet`, `fejlec`, `fejlec-sotet` (SVG, körvonalazott).
 
@@ -63,7 +62,7 @@ Vanilla JS + CSS; GSAP / Three.js / WebGL / React Bits / HorizonX nincs és nem 
 - `noindex` levétele.
 
 ## Kérdések az ügyfélnek
-1. Melyik logó (1–5)? Finomítás a választott irányban (súly, arány, keret).
+1. Melyik logó (1, 4 vagy 5)? Finomítás a választott irányban (súly, arány, keret).
 2. Valódi fotók: elkészült munkák (6–12 db), portré, műhely.
 3. Cím, e-mail, működési terület; vállal-e ajtó-ablak gyártást?
 4. A bemutatkozó szöveg és a kiemelt mondat rendben van-e?

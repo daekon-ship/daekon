@@ -127,9 +127,9 @@
   }
   let kezdo = new URLSearchParams(location.search).get('logo');
   if (!kezdo) { try { kezdo = localStorage.getItem('gera-logo'); } catch (e) {} }
-  if (kezdo && /^[1-5]$/.test(kezdo)) logo(kezdo);
+  if (kezdo && /^[145]$/.test(kezdo)) logo(kezdo);
   $$('#bemutato button[data-v]').forEach(b => b.addEventListener('click', () => logo(b.dataset.v)));
   const bm = $('#bemutato'), bk = $('#bemutatoKapcs');
-  const allit = z => { bm.classList.toggle('zart', z); bk.setAttribute('aria-expanded', !z); bk.textContent = z ? 'Logó 1–5' : 'Logó'; };
+  const allit = z => { bm.classList.toggle('zart', z); bk.setAttribute('aria-expanded', !z); bk.textContent = z ? 'Logó 1 · 4 · 5' : 'Logó'; };
   if (bm) { allit(innerWidth < 1100); bk.addEventListener('click', () => allit(!bm.classList.contains('zart'))); }
 })();

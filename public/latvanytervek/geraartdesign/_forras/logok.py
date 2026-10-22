@@ -1,4 +1,7 @@
-"""geraartdesign – 5 logóváltozat, 4. kör: felismerhetően ASZTALOS G-k.
+"""geraartdesign – logóváltozatok, 5. kör: az 1-es (Szorító), 4-es (Derékszög), 5-ös (Évgyűrű) marad,
+olvashatóbb névírással. A 2-es és 3-as kikerült (a függvényeik itt maradnak referenciának).
+
+4. kör: felismerhetően ASZTALOS G-k.
 
 Kérés: „kapcsolj hozzá valamit, hogy asztalos”. Minden G egy asztalosi tárgyból/szerkezetből:
 1 Szorító (G-szorító), 2 Forgács (gyaluforgács), 3 Fecskefark (illesztés),
@@ -23,6 +26,12 @@ FONTS = {
     'urb':  ('urbanist/Urbanist[wght].ttf', {'wght': 600}),
     'exa':  ('lexendexa/LexendExa[wght].ttf', {'wght': 400}),
     'tag':  ('urbanist/Urbanist[wght].ttf', {'wght': 700}),
+    'unbB': ('unbounded/Unbounded[wght].ttf', {'wght': 600}),
+    'unbL': ('unbounded/Unbounded[wght].ttf', {'wght': 300}),
+    'urbB': ('urbanist/Urbanist[wght].ttf', {'wght': 800}),
+    'urbL': ('urbanist/Urbanist[wght].ttf', {'wght': 500}),
+    'exaB': ('lexendexa/LexendExa[wght].ttf', {'wght': 600}),
+    'exaL': ('lexendexa/LexendExa[wght].ttf', {'wght': 300}),
 }
 _c = {}
 def font(k):
@@ -198,28 +207,46 @@ def mono_fix(n, c):
         c['a'] = '#FFFFFF'
     return c
 
+# Névírás: „gera” erős, „artdesign” könnyebb – így a dupla „a” nem folyik össze, és jól olvasható.
+WM2 = {1: ('unbB', 'unbL', .02), 4: ('urbB', 'urbL', .03), 5: ('exaB', 'exaL', .0),
+       2: ('urbB', 'urbL', .03), 3: ('urbB', 'urbL', .03)}
+
+def _merete(fk, s, size, tr):
+    _, w = text(fk, s, size, 0, 0, 0)
+    return w + tr * size * len(s)
+
+def nevir(n, c, cx, base, cel_w):
+    fb, fl, tr = WM2[n]
+    w1 = _merete(fb, 'gera', 10, tr); w2 = _merete(fl, 'artdesign', 10, tr)
+    size = 10 * cel_w / (w1 + w2)
+    w1 *= size / 10; w2 *= size / 10
+    x = cx - (w1 + w2) / 2
+    d1, ww1 = text(fb, 'gera', size, tr, x + w1 / 2, base)
+    d2, _ = text(fl, 'artdesign', size, tr, x + w1 + w2 / 2, base)
+    return f'<path d="{d1}" fill="{c["w"]}"/><path d="{d2}" fill="{c["w"]}"/>', size
+
+def tagsor(c, cx, base, cel_w):
+    _, w = text('tag', TAG, 10, .24, 0, 0)
+    size = 10 * cel_w / w
+    d, _ = text('tag', TAG, size, .24, cx + size * .24 / 2, base)
+    return f'<path d="{d}" fill="{c["t"]}"/>'
+
 def fo(n, c):
     W, H = 320, 372
-    fk, size, tr = WM[n]
-    wm, _ = text(fk, 'geraartdesign', size, tr, 160 + size * tr / 2, 298)
-    tg, _ = text('tag', TAG, 8.6, .32, 160 + 8.6 * .32 / 2, 322)
-    return W, H, (keret(c, 10, 10, 300, 352) + JEL[n](c, 160, 144, 168) +
-                  f'<path d="{wm}" fill="{c["w"]}"/><path d="{tg}" fill="{c["t"]}"/>')
+    wm, size = nevir(n, c, 160, 300, 236)
+    return W, H, (keret(c, 10, 10, 300, 352) + JEL[n](c, 160, 140, 164) + wm +
+                  tagsor(c, 160, 300 + size * 0.95, 210))
 
 def kompakt(n, c):
     return 200, 200, keret(c, 8, 8, 184, 184, .9) + JEL[n](c, 100, 100, 118)
 
 def fejlec(n, c):
-    H = 76
-    fk, size, tr = WM[n]; sc = 0.74
-    _, w = text(fk, 'geraartdesign', size * sc, tr, 0, 0)
-    W = int(84 + w + 30)
-    wm, _ = text(fk, 'geraartdesign', size * sc, tr, 84 + w / 2 + size * sc * tr / 2, 39)
-    _, tw = text('tag', TAG, 6.6, .3, 0, 0)
-    tg, _ = text('tag', TAG, 6.6, .3, 84 + tw / 2, 54)
+    H = 76; cel = 176
+    W = int(84 + cel + 22)
+    wm, size = nevir(n, c, 84 + cel / 2, 41, cel)
     sep = f'<rect x="70" y="18" width=".8" height="40" fill="{c["f"]}"/>'
-    return W, H, (keret(c, 3, 3, W - 6, H - 6, .7) + JEL[n](c, 37, 38, 42) + sep +
-                  f'<path d="{wm}" fill="{c["w"]}"/><path d="{tg}" fill="{c["t"]}"/>')
+    return W, H, (keret(c, 3, 3, W - 6, H - 6, .7) + JEL[n](c, 37, 38, 42) + sep + wm +
+                  tagsor(c, 84 + cel / 2, 57, cel * 0.94))
 
 def svg(W, H, body, bg=None, pad=0, title=''):
     vb = f'{-pad} {-pad} {W+2*pad} {H+2*pad}'
@@ -227,7 +254,10 @@ def svg(W, H, body, bg=None, pad=0, title=''):
     return f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="{vb}" width="{W+2*pad}" height="{H+2*pad}"><title>{title}</title>{b}{body}</svg>\n'
 
 def build():
-    for n in range(1, 6):
+    import shutil
+    for n in (2, 3):
+        shutil.rmtree(os.path.join(OUT, f'logo-{n}'), ignore_errors=True)
+    for n in (1, 4, 5):
         d = os.path.join(OUT, f'logo-{n}'); os.makedirs(d, exist_ok=True)
         for old in os.listdir(d): os.remove(os.path.join(d, old))
         m, dk, mo = dict(MAIN), dict(SOTET), mono_fix(n, MONO)

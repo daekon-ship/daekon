@@ -19,7 +19,7 @@
 .alap b{display:block;font:500 var(--t-cimke)/1.6 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--taupe)}
 
 /* öt kártya egymás mellett */
-.otos{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;padding-bottom:clamp(64px,8vw,110px)}
+.otos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;padding-bottom:clamp(64px,8vw,110px)}
 .kartya{appearance:none;border:1px solid var(--vonal);background:var(--papir);padding:22px 18px 18px;cursor:pointer;text-align:left;display:flex;flex-direction:column;gap:16px;transition:border-color .4s,transform .6s var(--ease),box-shadow .6s var(--ease);font:inherit;color:inherit}
 .kartya:hover{transform:translateY(-4px);box-shadow:0 24px 40px -30px rgba(59,50,43,.45)}
 .kartya[aria-pressed=true]{border-color:var(--mely);box-shadow:inset 0 0 0 1px var(--mely)}
@@ -95,7 +95,7 @@
 .profil-test i em+em{background:transparent;color:var(--mely);border:1px solid var(--vonal)}
 
 /* egymás mellett, három háttéren */
-.osszevet{display:grid;grid-template-columns:120px repeat(5,minmax(0,1fr));border-top:1px solid var(--vonal)}
+.osszevet{display:grid;grid-template-columns:120px repeat(3,minmax(0,1fr));border-top:1px solid var(--vonal)}
 .osszevet>*{border-bottom:1px solid var(--vonal);display:grid;place-items:center;padding:20px 12px}
 .osszevet .fej{font:500 var(--t-cimke)/1.4 var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--taupe);place-items:center start;padding-left:0}
 .osszevet img{max-height:110px;width:auto;max-width:100%}
@@ -121,7 +121,7 @@
   .valtozatok{grid-template-columns:repeat(2,minmax(0,1fr))}
   .m-nevjegy,.m-tabla,.m-fejlec,.m-social{grid-column:1/-1}
   .m-tabla{aspect-ratio:4/3}
-  .osszevet{grid-template-columns:repeat(5,minmax(120px,1fr));overflow-x:auto}
+  .osszevet{grid-template-columns:repeat(3,minmax(0,1fr))}
   .osszevet .fej,.osszevet .ures{grid-column:1/-1;padding:16px 0 8px;border-bottom:0}
 }
 @media (max-width:600px){
@@ -132,7 +132,7 @@
   .nevjegyek{width:86%}
   .mini-fej nav span{display:none}
   .lv-fej b{display:none}
-  .osszevet{grid-template-columns:repeat(5,minmax(0,1fr));overflow:visible}
+  .osszevet{grid-template-columns:repeat(3,minmax(0,1fr));overflow:visible}
   .osszevet>*{padding:12px 4px}
   .osszevet img{max-height:72px}
 }
@@ -140,17 +140,17 @@
 </head>
 <body>
 <div class="wrap">
-  <header class="lv-fej"><a href="index.html">← Vissza a weboldal-látványtervhez</a><b>Logóterv · 5 változat</b></header>
+  <header class="lv-fej"><a href="index.html">← Vissza a weboldal-látványtervhez</a><b>Logóterv · 3 változat</b></header>
 
   <section class="lv-intro">
     <div>
       <p class="cimke">geraartdesign · logóválasztó</p>
-      <h1>Öt G, <span class="hang">az asztalos műhelyéből.</span></h1>
+      <h1>Három G, <span class="hang">az asztalos műhelyéből.</span></h1>
     </div>
     <div>
       <p class="halk">Mindegyik ugyanarra épül, mégis máshogy hat. Nézze meg őket egymás mellett, nagyban, sötét és világos háttéren, névjegyen és fejlécként — és válassza ki a legerősebbet.</p>
       <ul class="alap">
-        <li><b>Központ</b>nagy G — szorító, forgács, fecskefark, derékszög, évgyűrű</li>
+        <li><b>Központ</b>nagy G — szorító, derékszög, évgyűrű</li>
         <li><b>Alatta</b>geraartdesign · BÚTORASZTALOS · INTARZIA</li>
         <li><b>Körben</b>vékony, szögletes keret</li>
         <li><b>Színek</b>bézs, homok, taupe, karamell</li>
@@ -226,7 +226,7 @@
 <section class="szakasz" style="padding-top:0">
   <div class="wrap">
     <div class="szakasz-fej">
-      <div><p class="cimke">Egymás mellett</p><h2>Mind az öt, <span class="hang">három háttéren</span></h2></div>
+      <div><p class="cimke">Egymás mellett</p><h2>Mindhárom, <span class="hang">három háttéren</span></h2></div>
       <p>Törtfehér, púderes bézs és sötét dió alapon — így a legkönnyebb látni, melyik bírja jól a környezetváltást.</p>
     </div>
     <div class="osszevet" id="osszevet"></div>
@@ -247,17 +247,20 @@
 (function () {
   const $ = s => document.querySelector(s);
   const L = [
-    { nev: 'Szorító', egy: 'A G maga egy asztalos pillanatszorító: íves test, csavarorsó, nyomótalp.',
+    { n: 1, nev: 'Szorító', egy: 'A G maga egy asztalos pillanatszorító: íves test, csavarorsó, nyomótalp.',
       g: 'G-szorító: a keret a G íve, az orsó a szára, a karamell nyomótalp a vízszintes', t: 'Unbounded, erős, modern', k: 'Vékony téglalap', h: 'Azonnal „asztalos”, karakteres, kicsit játékos' },
-    { nev: 'Forgács', egy: 'Gyaluforgács, ami körbefut és befelé hajlik — rostokkal.',
+    { n: 2, nev: 'Forgács', egy: 'Gyaluforgács, ami körbefut és befelé hajlik — rostokkal.',
       g: 'Keskenyedő, rostos forgácsszalag; a vége kunkorodó nyelv', t: 'Josefin Sans, finom, elegáns', k: 'Vékony téglalap', h: 'Művészi, meleg, nőiesebb — a gyalulás pillanata' },
-    { nev: 'Fecskefark', egy: 'Négyszögletes G, a sarkokban fecskefarkas illesztéssel.',
+    { n: 3, nev: 'Fecskefark', egy: 'Négyszögletes G, a sarkokban fecskefarkas illesztéssel.',
       g: 'Két tónusú elemek, a bal sarkokban klasszikus fecskefarkas kötés', t: 'Michroma, technikai', k: 'Vékony téglalap', h: 'Mesterségbeli tudás, precíz, hagyományos' },
-    { nev: 'Derékszög', egy: 'A G szára egy asztalos derékszög: fa nyél szegecsekkel, acél penge beosztással.',
+    { n: 4, nev: 'Derékszög', egy: 'A G szára egy asztalos derékszög: fa nyél szegecsekkel, acél penge beosztással.',
       g: 'Sötét, szögletes G; jobb oldalán karamell fa nyelű derékszög mérővonalkákkal', t: 'Urbanist, nyitott, ritkított', k: 'Vékony téglalap', h: 'Pontosság, mérés, megbízhatóság' },
-    { nev: 'Évgyűrű', egy: 'Gerenda bütüje: a G-t évgyűrűk töltik ki, egy bütürepedéssel.',
+    { n: 5, nev: 'Évgyűrű', egy: 'Gerenda bütüje: a G-t évgyűrűk töltik ki, egy bütürepedéssel.',
       g: 'Szögletes G, belsejében évgyűrűk; a bél a bal alsó sarokban', t: 'Lexend Exa, széles, nyugodt', k: 'Vékony téglalap', h: 'Anyagszerű, természetes, „ez fa”' }
   ];
+  const NUM = [1, 4, 5];
+  L.splice(0, L.length, ...L.filter(l => NUM.includes(l.n)));
+  const byN = v => L.find(l => l.n === +v);
   const HATTER = [
     { n: 'Törtfehér', c: '#FBF7F1', f: 'fo' }, { n: 'Homok', c: '#EADFD0', f: 'fo' },
     { n: 'Púder', c: '#E8D7C6', f: 'fo' }, { n: 'Dió', c: '#3B322B', f: 'sotet-atlatszo' },
@@ -275,9 +278,9 @@
   const otos = $('#otos');
   L.forEach((l, i) => {
     const b = document.createElement('button');
-    b.type = 'button'; b.className = 'kartya'; b.dataset.v = i + 1;
-    b.innerHTML = `<span class="sz">0${i + 1}</span><span class="kep"><img src="${src(i + 1, 'fo')}" alt="${l.nev} logóváltozat"></span><h3>${l.nev}</h3><p>${l.egy}</p><span class="valasztva">Kiválasztva</span>`;
-    b.addEventListener('click', () => { mutat(i + 1); if (innerWidth < 1000) $('#kiemelt').scrollIntoView({ behavior: 'smooth' }); });
+    b.type = 'button'; b.className = 'kartya'; b.dataset.v = l.n;
+    b.innerHTML = `<span class="sz">0${l.n}</span><span class="kep"><img src="${src(l.n, 'fo')}" alt="${l.nev} logóváltozat"></span><h3>${l.nev}</h3><p>${l.egy}</p><span class="valasztva">Kiválasztva</span>`;
+    b.addEventListener('click', () => { mutat(l.n); if (innerWidth < 1000) $('#kiemelt').scrollIntoView({ behavior: 'smooth' }); });
     otos.appendChild(b);
   });
 
@@ -292,14 +295,14 @@
 
   /* egymás mellett */
   const ov = $('#osszevet');
-  ov.insertAdjacentHTML('beforeend', '<span class="ures"></span>' + L.map((l, i) => `<span class="oszlop">0${i + 1}</span>`).join(''));
+  ov.insertAdjacentHTML('beforeend', '<span class="ures"></span>' + L.map((l, i) => `<span class="oszlop">0${l.n}</span>`).join(''));
   [['Törtfehér', 'h-papir', 'fo'], ['Púderes bézs', 'h-puder', 'fo'], ['Sötét dió', 'h-dio', 'sotet-atlatszo']].forEach(([n, cl, f]) => {
-    ov.insertAdjacentHTML('beforeend', `<span class="fej">${n}</span>` + L.map((l, i) => `<span class="${cl}"><img src="${src(i + 1, f)}" alt="${i + 1}. változat – ${n}" loading="lazy"></span>`).join(''));
+    ov.insertAdjacentHTML('beforeend', `<span class="fej">${n}</span>` + L.map((l, i) => `<span class="${cl}"><img src="${src(l.n, f)}" alt="${l.n}. változat – ${n}" loading="lazy"></span>`).join(''));
   });
 
   /* döntés */
   const ds = $('#dontesSor');
-  L.forEach((l, i) => { const b = document.createElement('button'); b.type = 'button'; b.textContent = i + 1; b.setAttribute('aria-label', `${i + 1}. változat: ${l.nev}`); b.addEventListener('click', () => valaszt(i + 1)); ds.appendChild(b); });
+  L.forEach((l, i) => { const b = document.createElement('button'); b.type = 'button'; b.textContent = l.n; b.setAttribute('aria-label', `${l.n}. változat: ${l.nev}`); b.addEventListener('click', () => valaszt(l.n)); ds.appendChild(b); });
 
   function valaszt(v) {
     kedvenc = String(v);
@@ -308,9 +311,9 @@
   }
   function jelol() {
     document.querySelectorAll('.kartya').forEach(k => k.classList.toggle('kedvenc', k.dataset.v === kedvenc));
-    ds.querySelectorAll('button').forEach((b, i) => b.setAttribute('aria-pressed', String(i + 1) === kedvenc));
+    ds.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', b.textContent === kedvenc));
     if (kedvenc) {
-      $('#dontesSzoveg').innerHTML = `Kiválasztva: <b>${kedvenc}. változat — ${L[kedvenc - 1].nev}</b>. Kérem, jelezze vissza ezt a számot; a végleges logót ebben az irányban finomítom.`;
+      $('#dontesSzoveg').innerHTML = `Kiválasztva: <b>${kedvenc}. változat — ${byN(kedvenc).nev}</b>. Kérem, jelezze vissza ezt a számot; a végleges logót ebben az irányban finomítom.`;
       $('#dontesLink').href = `index.html?logo=${kedvenc}`; $('#dontesLink').textContent = 'Megnézem a weboldalon';
     }
     $('#kedvencGomb').textContent = kedvenc === String(akt) ? 'Kiválasztva ✓' : 'Ezt választom';
@@ -322,7 +325,7 @@
     hv.querySelectorAll('button').forEach((b, i) => b.setAttribute('aria-pressed', i === hatter));
   }
   function mutat(v) {
-    akt = v; const l = L[v - 1];
+    akt = +v; const l = byN(v);
     otos.querySelectorAll('.kartya').forEach(k => k.setAttribute('aria-pressed', k.dataset.v === String(v)));
     $('#kSz').textContent = `0${v} · Kiemelt nézet`; $('#kNev').textContent = l.nev;
     $('#szinpadKep').alt = `${v}. változat: ${l.nev}`;
@@ -333,9 +336,9 @@
     rajzol(); jelol();
   }
   $('#kedvencGomb').addEventListener('click', () => valaszt(akt));
-  $('#elozo').addEventListener('click', () => mutat(akt === 1 ? 5 : akt - 1));
-  $('#kovetkezo').addEventListener('click', () => mutat(akt === 5 ? 1 : akt + 1));
-  mutat(kedvenc ? +kedvenc : 1);
+  $('#elozo').addEventListener('click', () => mutat(NUM[(NUM.indexOf(akt) + NUM.length - 1) % NUM.length]));
+  $('#kovetkezo').addEventListener('click', () => mutat(NUM[(NUM.indexOf(akt) + 1) % NUM.length]));
+  mutat(kedvenc && NUM.includes(+kedvenc) ? +kedvenc : 1);
 })();
 </script>
 </body>
