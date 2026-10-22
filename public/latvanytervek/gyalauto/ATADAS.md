@@ -45,14 +45,15 @@ Fájlok: `index.html`, `impresszum.html`, `adatkezeles.html`, `404.html`, `gyala
 - Az „Ismerje meg a műhelyt” szekció, a „A műhely” menüpont (asztali és mobil) és a képnagyító kikerült. A menü: Főoldal | Szolgáltatások | Miért minket? | Kapcsolat + Időpontkérés.
 - Ha később lesznek saját műhelyfotók, egy galéria a „Miért minket?” után visszatehető.
 
-## Logó (10. kör – egyedi jel: autó az emelőn, 2026-10-22)
-- A villáskulcsos jel túl általános volt (bármelyik szerelőé lehetne). Az új jel az oldal saját vizuális világából jön: **a kombi a szerelőemelőn, felette a kék műhelylámpa** – ugyanaz az autó, mint a hero-rajzon. Ez csak a Gyálautóé.
-- **Szókép:** GYÁLAUTÓ, Inter ExtraBold, görbékké alakítva (betűtől független). Alatta **műszaki rajzos méretvonal** (nyilak, végjelek) a felirat szélességében, a méret helyén a szöveg – mint a heróban a „tengelytáv”. Teljes logón: AUTÓSZERVIZ · GYÁL; a fejlécben (HTML-szövegként, hogy olvasható maradjon): STABILTERV KFT. | Q-SERVICE PARTNER. 360 px alatt a fejléc alsora rejtve.
-- **Kompakt ikon** (favicon, telefonos ikon, profilkép): két emelőoszlop, felül kék lámpa, középen G – 16 px-en is olvasható.
-- **Színek:** autó és felirat #F4F7FA, emelő #A9B9CC, lámpa #16B8FF, méretvonal #91E7FF, alap #080D14. Világos háttéren: #0A1220 / #6B7D93 / #0A6FA0.
-- **Fájlok:** `logo.svg` (sötét alapra), `logo-vilagos.svg` (világos alapra – nyomtatvány, matrica, számla, autómatrica), `logo-jel.svg` (autó az emelőn, felirat nélkül), `favicon.svg`, `favicon-32.png`, `apple-touch-icon.png`, `icon-192.png`, `icon-512.png`, `og-gyalauto.jpg`.
-- **Mozgás:** betöltéskor az autó felemelkedik az emelőn, a lámpa felvillan, a fénykúp megjelenik; rámutatáskor a lámpa kivilágosodik. `prefers-reduced-motion` esetén statikus.
-- Korábban vizsgált és elvetett irányok: villáskulcs + anya, keretes „műhelycímke”, Ó-anya szókép, dőlt levágott sarkú betűk.
+## Logó (11. kör – összetett tábla-logó, 2026-10-22)
+- Az ügyfélnek szánt, „normális, összetett” logó: jel és felirat **egy egységben**. Fő változat a **fekvő tábla**: lekerekített keret, bal oldalt kör alakú mezőben autó elölnézetből (kék fényszórók), elválasztó vonal, jobb oldalt GYÁLAUTÓ (Inter ExtraBold, görbésítve), alatta AUTÓSZERVIZ · GYÁL.
+- **Párja: kerek jelvény** (`logo-kerek.svg`) ugyanazzal az autóval, körben a felirattal – matricára, pecsétre, munkaruhára, profilképnek.
+- **Ikon** (favicon, telefonos ikon): az autó elölnézetből sötét alapon – 16 px-en is olvasható.
+- **Színek:** keret #A9B9CC, tábla #111D2D, körmező #080D14, autó és felirat #F4F7FA, fényszórók #16B8FF, alsor #91E7FF. Világos változat: fehér tábla, #0A1220 keret/felirat, #0A6FA0 alsor.
+- **Fájlok:** `logo.svg` (sötét), `logo-vilagos.svg` (világos), `logo-kerek.svg` (jelvény), `logo-jel.svg` (autó körben), `favicon.svg`, PNG-ikonok, `og-gyalauto.jpg`.
+- Fejléc: csak a tábla (a korábbi „STABILTERV KFT. | Q-SERVICE PARTNER” alsor kikerült a fejlécből; a cégnév a láblécben, a Q-SERVICE a hero feliratában szerepel).
+- Mozgás: betöltéskor a logó beúszik, a fényszórók felvillannak; rámutatáskor a keret kivilágosodik.
+- Elvetett irányok: dőlt levágott sarkú betűk, hatlapfejű anya G-vel, villáskulcs + anya, autó az emelőn méretvonallal, ívelt tetővonalas szókép.
 
 ## Teljes vizuális javítás (3. kör)
 - Egységes formavilág a logó csavaranyájából: a fő gombok kétsarkú, gépelt „lemez” formát kaptak (ferdén levágott sarkok, fényes élsúrolás rámutatáskor), a többi elem 4–6 px-es szögletes sarok — eltűntek a lekerekített „pill” gombok és dobozok.

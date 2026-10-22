@@ -55,15 +55,10 @@ p{margin:0}
 .nav.solid .nav-in{height:56px}
 .brand{display:flex;align-items:center;gap:11px;min-height:44px;text-decoration:none;margin-right:auto}
 .brand{flex-direction:column;align-items:flex-start;justify-content:center;gap:4px}
-.brand{--lh:40px}
-.logo{display:block;height:var(--lh);width:auto;overflow:visible}
-.logo .lg-lamp{transition:fill .3s}
-.brand:hover .logo .lg-lamp{fill:var(--ice)}
-/* alsor = műszaki rajzos méretvonal a GYÁLAUTÓ felirat szélességében */
-.brand-sub{display:flex;align-items:center;gap:6px;width:calc(var(--lh) * 4.457);margin-left:calc(var(--lh) * 2.577);font-family:var(--fh);font-size:7.6px;font-weight:600;letter-spacing:.04em;color:var(--soft);white-space:nowrap;line-height:1}
-.brand-sub::before,.brand-sub::after{content:"";flex:1 1 0;min-width:5px;height:7px;background:linear-gradient(var(--ice),var(--ice)) center/100% 1px no-repeat;opacity:.85}
-.brand-sub::before{border-left:1px solid var(--ice)}
-.brand-sub::after{border-right:1px solid var(--ice)}
+.logo{display:block;height:48px;width:auto}
+.logo .lg-plate{transition:stroke .3s}
+.brand:hover .logo .lg-plate{stroke:var(--ice)}
+.brand-sub{display:block;font-family:var(--fh);font-size:7.6px;font-weight:600;letter-spacing:.06em;color:var(--soft);white-space:nowrap;line-height:1;padding-left:2px}
 .brand-sub i{font-style:normal;color:var(--blue);margin:0 1px}
 .nav-links{display:flex;gap:26px}
 .nav-links a{position:relative;text-decoration:none;font-size:14.5px;color:var(--soft);padding:6px 0;transition:color .2s}
@@ -305,7 +300,7 @@ address{font-style:normal}
 .foot{background:var(--g0);border-top:1px solid var(--line);padding:28px 0 30px;font-size:14px;color:var(--soft)}
 .foot-in{display:grid;grid-template-columns:1fr auto;gap:24px 40px}
 .foot-brand{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;color:var(--soft);font-size:11px;letter-spacing:.1em;margin-bottom:12px}
-.foot-brand .logo.sm{height:30px}
+.foot-brand .logo.sm{height:40px}
 .nw{white-space:nowrap}
 .foot-in>*{min-width:0}
 .foot nav{display:flex;flex-wrap:wrap;gap:8px 22px;align-items:flex-start}
@@ -320,7 +315,7 @@ address{font-style:normal}
 .lnav{position:sticky;top:0;z-index:50;background:rgba(8,13,20,.92);border-bottom:1px solid var(--line);backdrop-filter:blur(8px)}
 .lnav .nav-in{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:var(--navh)}
 .lnav .brand{display:inline-flex;align-items:center;min-height:44px}
-.lnav .logo{height:26px;width:auto}
+.lnav .logo{height:36px;width:auto}
 .lnav .back{font-family:var(--fh);font-weight:600;font-size:14px;text-decoration:none;color:var(--ice);min-height:44px;display:inline-flex;align-items:center}
 .legal{padding:clamp(32px,6vw,72px) 0 clamp(48px,7vw,88px)}
 .legal .wrap{max-width:820px}
@@ -425,8 +420,7 @@ address{font-style:normal}
 }
 @media (max-width:640px){
   body{font-size:16px}
-  .brand{--lh:32px}
-  .brand-sub{font-size:6.5px;letter-spacing:0;gap:4px}
+  .logo{height:44px}
   .hero h1{font-size:clamp(32px,9vw,40px)}
   .hero-cta .btn{flex:1 1 0;padding:0 12px}
   .hero-sub{font-size:15.5px}
@@ -450,8 +444,7 @@ address{font-style:normal}
   .hero-mark{letter-spacing:.07em;gap:8px}
   .hero-mark::before{width:14px}
   .hero-cta .btn{flex:1 1 100%}
-  .brand-sub{display:none}
-  .brand{--lh:30px}
+  .logo{height:40px}
   .hero h1{font-size:30px}
   .contact-cta .btn{flex:1 1 auto;padding:0 16px}
 }
