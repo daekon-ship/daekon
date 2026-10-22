@@ -56,7 +56,7 @@ Hero → Szolgáltatások (6 kategória: asztalon index + nagy panel saját rajz
 
 ## Ellenőrizve
 - Adatok a Q-SERVICE adatlapról (cím, telefon, e-mail, nyitvatartás, kapcsolattartó, szolgáltatáslista) és a briefből (székhely, alapítás 1996. 04. 17.). A műhely nyitási évét nem állítjuk.
-- Minden telefonlink azonos: `tel:+36204038056`. E-mail: `mailto:stabilterv@gmail.com`. Útvonaltervezés: Google Maps `dir` link a szervizcímre.
+- Minden telefonlink azonos: `tel:+36203746783`. E-mail: `mailto:stabilterv@gmail.com`. Útvonaltervezés: Google Maps `dir` link a szervizcímre.
 - Menü (asztali + hamburger, Esc-re zár), minden menüpont létező szekcióra mutat; aktív menüpont görgetéskor.
 - Szolgáltatásválasztó (egér + nyilak/Home/End), diagnosztika-fülek (egér + nyilak) és pontok, „Időpontot kérek erre” gombok előválasztják a szolgáltatást az űrlapon.
 - Űrlap: kötelező mezők, évszám-, telefon- és e-mail-ellenőrzés, magyar hibaüzenetek, fókusz az első hibás mezőre. Sikeres kitöltés után **nem** ír „elküldtük”-et: összesítőt mutat, és hívást vagy előre kitöltött e-mailt kínál.
