@@ -34,7 +34,7 @@ Az ügyfél az 1-es, 4-es és 5-ös irányt fogadta el; a 2-es (Forgács) és 3-
 4. Derékszög – a G szára asztalos derékszög (fa nyél, szegecsek, acél penge beosztással).
 5. Évgyűrű – gerenda bütüje évgyűrűkkel és bütürepedéssel.
 
-Névírás (5. kör): nagyobb, sűrűbb, kétsúlyú – „**gera**artdesign” (erős + könnyű), így a dupla „a” nem folyik össze. 1: Unbounded 600/300, 4: Urbanist 800/500, 5: Lexend Exa 600/300. Alatta „BÚTORASZTALOS · INTARZIA” (Urbanist 700, ritkított), a névvel azonos szélességben.
+Névírás (5. kör, ügyfélkérésre nagybetűs): nagyobb, kétsúlyú – „**GERA**ARTDESIGN” (erős + könnyű), így a dupla „A” nem folyik össze. 1: Unbounded 600/300, 4: Urbanist 800/500, 5: Lexend Exa 600/300. Alatta „BÚTORASZTALOS · INTARZIA” (Urbanist 700, ritkított), a névvel azonos szélességben.
 
 Fájlok változatonként: `fo`, `vilagos`, `sotet`, `sotet-atlatszo`, `mono`, `kompakt`, `kompakt-sotet`, `social`, `social-sotet`, `fejlec`, `fejlec-sotet` (SVG, körvonalazott).
 

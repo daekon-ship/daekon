@@ -208,7 +208,7 @@ def mono_fix(n, c):
     return c
 
 # Névírás: „gera” erős, „artdesign” könnyebb – így a dupla „a” nem folyik össze, és jól olvasható.
-WM2 = {1: ('unbB', 'unbL', .02), 4: ('urbB', 'urbL', .03), 5: ('exaB', 'exaL', .0),
+WM2 = {1: ('unbB', 'unbL', .06), 4: ('urbB', 'urbL', .09), 5: ('exaB', 'exaL', .04),
        2: ('urbB', 'urbL', .03), 3: ('urbB', 'urbL', .03)}
 
 def _merete(fk, s, size, tr):
@@ -217,12 +217,12 @@ def _merete(fk, s, size, tr):
 
 def nevir(n, c, cx, base, cel_w):
     fb, fl, tr = WM2[n]
-    w1 = _merete(fb, 'gera', 10, tr); w2 = _merete(fl, 'artdesign', 10, tr)
+    w1 = _merete(fb, 'GERA', 10, tr); w2 = _merete(fl, 'ARTDESIGN', 10, tr)
     size = 10 * cel_w / (w1 + w2)
     w1 *= size / 10; w2 *= size / 10
     x = cx - (w1 + w2) / 2
-    d1, ww1 = text(fb, 'gera', size, tr, x + w1 / 2, base)
-    d2, _ = text(fl, 'artdesign', size, tr, x + w1 + w2 / 2, base)
+    d1, ww1 = text(fb, 'GERA', size, tr, x + w1 / 2, base)
+    d2, _ = text(fl, 'ARTDESIGN', size, tr, x + w1 + w2 / 2, base)
     return f'<path d="{d1}" fill="{c["w"]}"/><path d="{d2}" fill="{c["w"]}"/>', size
 
 def tagsor(c, cx, base, cel_w):
@@ -233,9 +233,9 @@ def tagsor(c, cx, base, cel_w):
 
 def fo(n, c):
     W, H = 320, 372
-    wm, size = nevir(n, c, 160, 300, 236)
+    wm, size = nevir(n, c, 160, 300, 232)
     return W, H, (keret(c, 10, 10, 300, 352) + JEL[n](c, 160, 140, 164) + wm +
-                  tagsor(c, 160, 300 + size * 0.95, 210))
+                  tagsor(c, 160, 300 + size * 1.05, 232))
 
 def kompakt(n, c):
     return 200, 200, keret(c, 8, 8, 184, 184, .9) + JEL[n](c, 100, 100, 118)
