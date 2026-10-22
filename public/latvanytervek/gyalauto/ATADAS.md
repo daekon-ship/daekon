@@ -46,7 +46,7 @@ Fájlok: `index.html`, `impresszum.html`, `adatkezeles.html`, `404.html`, `gyala
 - Ha később lesznek saját műhelyfotók, egy galéria a „Miért minket?” után visszatehető.
 
 ## Logó (12. kör – kompakt logó + Facebook, 2026-10-22)
-- **Egyszerű, keret nélküli logó:** autó elölnézetből (kék fényszórók) + GYÁLAUTÓ (Inter ExtraBold, görbésítve) + AUTÓSZERVIZ · GYÁL.
+- **Egyszerű, keret nélküli logó:** autó elölnézetből (kék fényszórók), mögötte átlósan kék villáskulcs (2026-10-23, ügyfélkérés) + GYÁLAUTÓ (Inter ExtraBold, görbésítve) + AUTÓSZERVIZ · GYÁL.
 - **Fekvő változat** (fejléc, lábléc, számla): `logo.svg` (sötét), `logo-vilagos.svg` (világos).
 - **Álló, négyzetes változat** (Facebook-profilkép, matrica): `logo-allo.svg`, `logo-allo-vilagos.svg`. Úgy méretezve, hogy a Facebook kör alakú kivágásában is kényelmes margó maradjon.
 - **Kész Facebook-képek:** `facebook-profilkep.png` (1080×1080), `facebook-boritokep.jpg` (1640×624; a fontos tartalom a középső részen van, így telefonon sem vágódik le).
