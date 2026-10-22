@@ -29,6 +29,9 @@
      - featured_project_open: a Kiemelt munkáim fül első megnyitása / nézetváltás
      Szolgáltató (élesítéskor): GA4 → csak hozzájárulás után tölt be (süti); GoatCounter → süti nélküli, hozzájárulás nem kell. */
   const ANALYTICS = { ga4: null /* pl. 'G-XXXXXXX' */, goatcounter: null /* pl. 'https://kalocsageoworks.goatcounter.com/count' */ };
+  // Saját, süti nélküli számláló (_forras/backend/meres.php + statisztika.php). null = nem küld semmit.
+  // Csak a telefon- és e-mail-kattintás megy ide; az elküldött ajánlatkérést a szerver maga számolja (hitelesen).
+  const MERES = { endpoint: null /* pl. '/api/meres.php' */ };
   window.dataLayer = window.dataLayer || [];
   const track = (event, params = {}) => {
     window.dataLayer.push({ event, ...params });
@@ -49,9 +52,22 @@
       d.body.appendChild(bar);
     }
   }
+  const where = el => {
+    if (el.closest('.fab')) return 'fab';
+    if (el.closest('header')) return 'fejlec';
+    if (el.closest('footer')) return 'lablec';
+    if (el.closest('.final')) return 'zaro';
+    return el.closest('section[id]')?.id || 'egyeb';
+  };
+  const beacon = (e, hely) => {
+    if (!MERES.endpoint) return;
+    const body = JSON.stringify({ e, hely });
+    try { if (!(navigator.sendBeacon && navigator.sendBeacon(MERES.endpoint, new Blob([body], { type: 'application/json' })))) fetch(MERES.endpoint, { method: 'POST', body, keepalive: true, headers: { 'Content-Type': 'application/json' } }).catch(() => {}); } catch (x) {}
+  };
   d.addEventListener('click', e => {
-    const a = e.target.closest('a[href^="tel:"]');
-    if (a) track('phone_click', { location: a.closest('section,header,footer,.fab')?.id || a.className || 'page' });
+    const a = e.target.closest('a[href^="tel:"], a[href^="mailto:"]'); if (!a) return;
+    const ev = a.href.startsWith('tel:') ? 'phone_click' : 'email_click', hely = where(a);
+    track(ev, { location: hely }); beacon(ev, hely);
   });
 
   const conn = navigator.connection;
@@ -130,31 +146,19 @@
     io.observe($('#munkaim'));
   }
 
-  /* ---------- KIEMELT MUNKÁK: nézetváltás ---------- */
-  $$('.feat').forEach(f => {
-    const main = $('.feat__main img', f), svg = $('.feat__svg', f);
-    $$('.feat__thumbs button', f).forEach(b => b.addEventListener('click', () => {
-      $$('.feat__thumbs button', f).forEach(x => x.classList.toggle('is-on', x === b));
-      if (b.dataset.view) { const s = b.dataset.view === 'svg'; svg && svg.toggleAttribute('hidden', !s); main.style.opacity = s ? 0 : 1; }
-      if (b.dataset.src) { main.src = b.dataset.src; main.dataset.lb = b.dataset.i || (/melyebb/.test(b.dataset.src) ? 6 : 0); }
-      const badge = $('.feat__badge', f); if (badge) badge.hidden = !(b.dataset.src && /melyebb/.test(b.dataset.src));
-      track('featured_project_open', { project: f.dataset.feat, view: b.dataset.view || b.dataset.i });
-    }));
-  });
-
-  /* ---------- LIGHTBOX ---------- */
-  const LB = [
-    ['img/kozmuarok-1200.webp', 'Közműárok-ásás'], ['img/tusko-1200.webp', 'Tuskóeltávolítás'],
-    ['img/fas-terulet-2-1200.webp', 'Kisgép munka közben'], ['img/fas-terulet-1-1200.webp', 'Terület-előkészítés'],
-    ['img/talajrendezes-1-1200.webp', 'Tereprendezés'], ['img/talajrendezes-2-1200.webp', 'Tereprendezés – más nézet'],
-    ['img/kozmuarok-melyebb-1200.webp', 'Közműárok-ásás – szerkesztett fénykép, mélyebb hatás']
-  ];
+  /* ---------- LIGHTBOX (a képlista a HTML-ből épül: [data-full] + [data-cap]) ---------- */
+  const LB = [];
+  $$('[data-full]').forEach(el => { if (!LB.some(x => x[0] === el.dataset.full)) LB.push([el.dataset.full, el.dataset.cap || '']); });
   const lb = $('#lb'), lbImg = $('img', lb), lbCap = $('figcaption', lb);
   let cur = 0, last = null;
   const show = i => { cur = (i + LB.length) % LB.length; lbImg.src = LB[cur][0]; lbImg.alt = LB[cur][1]; lbCap.textContent = `${String(cur + 1).padStart(2, '0')} · ${LB[cur][1]}`; };
   const open = i => { last = d.activeElement; show(i); lb.hidden = false; d.body.style.overflow = 'hidden'; $('.lb__x', lb).focus(); track('portfolio_view', { via: 'lightbox', image: i + 1 }); };
   const close = () => { lb.hidden = true; d.body.style.overflow = ''; last && last.focus(); };
-  d.addEventListener('click', e => { const t = e.target.closest('[data-lb]'); if (t && !t.closest('.feat__main svg')) open(+t.dataset.lb); });
+  d.addEventListener('click', e => {
+    const t = e.target.closest('[data-full]'); if (!t) return;
+    open(LB.findIndex(x => x[0] === t.dataset.full));
+    const f = t.closest('.feat'); if (f) track('featured_project_open', { project: f.dataset.feat, via: 'image' });
+  });
   $('.lb__x', lb).addEventListener('click', close);
   $('.lb__prev', lb).addEventListener('click', () => show(cur - 1));
   $('.lb__next', lb).addEventListener('click', () => show(cur + 1));
@@ -243,7 +247,7 @@
     if (!AJANLAT.endpoint) {
       // BEMUTATÓ MÓD – nincs szerveroldali továbbítás, ezért NEM jelzünk sikeres küldést.
       const body = `Név: ${fd.get('nev')}\nTelefon: ${fd.get('telefon')}\nHelyszín: ${fd.get('helyszin')}\nMunka: ${munka}\nMikor: ${fd.get('mikor') || '-'}\nE-mail: ${fd.get('email') || '-'}\n\n${fd.get('leiras')}`;
-      const mail = 'mailto:zkalocsa8@gmail.com?subject=' + encodeURIComponent('Ajánlatkérés – ' + munka) + '&body=' + encodeURIComponent(body);
+      const mail = 'mailto:kalocsageoworks@gmail.com?subject=' + encodeURIComponent('Ajánlatkérés – ' + munka) + '&body=' + encodeURIComponent(body);
       showDone('Bemutató mód', 'Ez a látványterv még nem továbbítja az üzenetet – az élesítéskor az ajánlatkérés közvetlenül Zoltánhoz érkezik. Addig hívj, vagy küldd el e-mailben az előre kitöltött üzenetet.' + (files.length ? ' (A fotókat az e-mailhez kézzel csatold.)' : ''),
         `<a class="btn" href="tel:+36704204170">Hívás most</a><a class="btn btn--ghost" href="${mail}">E-mail piszkozat</a>`);
       return;
@@ -375,13 +379,12 @@
     g.from('.plan svg', { y: 40, autoAlpha: 0, duration: 1, ease: 'expo.out', scrollTrigger: { trigger: '.plan', start: 'top 88%' } });
   }
 
-  // galéria: feltárás + belső mozgás
-  g.set('.gal__item', { clipPath: 'inset(100% 0% 0% 0%)' });
-  ST.batch('.gal__item', { start: 'top 92%', onEnter: b => g.to(b, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.2, ease: 'expo.inOut', stagger: .1 }) });
-  $$('.gal__item img').forEach(img => g.fromTo(img, { yPercent: -5 }, { yPercent: 5, ease: 'none', scrollTrigger: { trigger: img.parentNode, start: 'top bottom', end: 'bottom top', scrub: true } }));
+  // munkák: a kártyák felúsznak (csak átlátszóság + eltolás – rejtett fülön sem maradhat semmi kitakarva)
+  ST.batch('#panel-osszes .wcard, #panel-osszes .ba', { start: 'top 92%', once: true,
+    onEnter: b => g.fromTo(b, { y: 36, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: .9, ease: 'expo.out', stagger: .08, clearProps: 'transform' }) });
 
   // portré
-  g.from('.portrait__slot', { clipPath: 'inset(0% 0% 100% 0%)', duration: 1.3, ease: 'expo.inOut', scrollTrigger: { trigger: '.portrait', start: 'top 85%' } });
+  g.from('.portrait img', { y: 40, autoAlpha: 0, duration: 1.2, ease: 'expo.out', scrollTrigger: { trigger: '.portrait', start: 'top 85%' } });
 
   // folyamat: vonal húzódik, számok beugranak
   g.fromTo('.flow__line i', { [desk ? 'scaleX' : 'scaleY']: 0 }, { [desk ? 'scaleX' : 'scaleY']: 1, ease: 'none', scrollTrigger: { trigger: '.flow', start: 'top 75%', end: 'bottom 60%', scrub: .5 } });
@@ -453,9 +456,14 @@
     const scrub = desk && !reduce && !!g && !!ST;
 
     // --- videó ---
+    // Miért volt néha pixeles / üres / tökéletes? A görgetéses videót a böngésző menet közben töltötte:
+    // amíg egy rész nem jött le, a gyors egymás utáni ugrások (seek) egymást szakították meg → akadó, kockás vagy üres kép;
+    // lassabb netnél 10 mp után a kód a fotós tartalékra váltott; gyorsítótárból pedig hibátlan volt.
+    // Most: asztali gépen a teljes videó előbb letöltődik (blob), az ugrások sorban, egymás után futnak;
+    // hiba vagy tiltott automatikus lejátszás esetén a videó első kockája (poszter) marad – nem vált át más képekre.
     video = d.createElement('video');
     video.muted = true; video.playsInline = true; video.setAttribute('playsinline', ''); video.setAttribute('muted', '');
-    video.preload = scrub ? 'auto' : 'metadata';
+    video.preload = 'auto';
     video.poster = (isMobile && HERO_VIDEO.posterMobile) || HERO_VIDEO.poster;
     video.className = 'hero__video'; video.setAttribute('aria-hidden', 'true'); video.disablePictureInPicture = true;
     if (!scrub) { video.loop = true; video.autoplay = true; video.setAttribute('autoplay', ''); }
@@ -463,45 +471,68 @@
     const fail = (why) => {
       if (failed) return; failed = true;
       if (vidTrigger) { vidTrigger.kill(true); vidTrigger = null; }
-      video.remove(); startScenes(why);
+      video.remove(); heroEl.classList.add('video-off');   // a poszter (a videó első kockája) látszik tovább
+      track('hero_fallback', { reason: why });
     };
     video.addEventListener('error', () => fail('video-error'), { once: true });
-    video.src = (!desk && HERO_VIDEO.mobileMp4) || HERO_VIDEO.mp4;
-    media.appendChild(video);
-    // ha 10 mp alatt sem tölt be, a valódi fotókra váltunk
-    // (csak ha a nyitókép látszik – ha az oldal lejjebb nyílik meg, a szüneteltetett videó nem töltődik, az nem hiba)
-    const heroVisible = () => { const r = heroEl.getBoundingClientRect(); return r.bottom > 0 && r.top < innerHeight; };
-    let seen = 0;
-    const guard = setInterval(() => {
-      if (failed || video.readyState >= 2) { clearInterval(guard); return; }
-      if (heroVisible() && ++seen >= 10) { clearInterval(guard); fail('video-timeout'); }
-    }, 1000);
-    video.addEventListener('loadeddata', () => clearInterval(guard), { once: true });
+    const srcUrl = (!desk && HERO_VIDEO.mobileMp4) || HERO_VIDEO.mp4;
+    const guard = { id: 0 };
+    if (scrub && window.fetch && window.URL && URL.createObjectURL) {
+      // teljes letöltés előre → a görgetés mindig kész kockákat kap
+      const ctl = 'AbortController' in window ? new AbortController() : null;
+      guard.id = setTimeout(() => { ctl && ctl.abort(); }, 30000);
+      fetch(srcUrl, ctl ? { signal: ctl.signal } : {}).then(r => { if (!r.ok) throw new Error(r.status); return r.blob(); })
+        .then(bl => { clearTimeout(guard.id); if (!failed) { video.src = URL.createObjectURL(bl); media.appendChild(video); } })
+        .catch(() => { clearTimeout(guard.id); fail('video-load'); });
+    } else {
+      video.src = srcUrl; media.appendChild(video);
+      // ha 15 mp látható nyitókép után sincs kép, marad a poszter
+      const heroVisible = () => { const r = heroEl.getBoundingClientRect(); return r.bottom > 0 && r.top < innerHeight; };
+      let seen = 0;
+      guard.id = setInterval(() => {
+        if (failed || video.readyState >= 2) { clearInterval(guard.id); return; }
+        if (heroVisible() && ++seen >= 15) { clearInterval(guard.id); fail('video-timeout'); }
+      }, 1000);
+      video.addEventListener('loadeddata', () => clearInterval(guard.id), { once: true });
+    }
 
     if (scrub) {
       // görgetésre pörgetett videó (a referencia mechanikája)
       // a lap tetején magától, hurokban ás; görgetéskor a görgetés vezérli
-      let target = 0, raf = 0, idle = true;
-      const tick = () => { raf = 0; if (!idle && video.readyState >= 1 && Math.abs(video.currentTime - target) > .01) video.currentTime = target; };
-      const idlePlay = () => { idle = true; video.loop = true; video.play().catch(() => {}); };
-      video.addEventListener('timeupdate', () => { if (idle) setStage(video.currentTime / (video.duration || 8) * stages.length); });
-      const setup = () => {
-        if (failed || !g) return;
-        const dur = video.duration || 8;
-        vidTrigger = ST.create({ trigger: '.hero', start: 'top top', end: '+=260%', pin: true, scrub: true, anticipatePin: 1,
-          onUpdate: s => {
-            if (s.progress < .003) { if (!idle) idlePlay(); return; }
-            if (idle) { idle = false; video.loop = false; video.pause(); }
-            target = s.progress * (dur - .05); setStage(s.progress * stages.length); if (!raf) raf = requestAnimationFrame(tick);
-          } });
-        ST.refresh();
-        if (scrollY < 10) idlePlay(); else idle = false;
+      let target = 0, raf = 0, idle = true, seeking = false;
+      const tick = () => {
+        raf = 0;
+        if (idle || seeking || video.readyState < 2) return;
+        if (Math.abs(video.currentTime - target) > .02) { seeking = true; video.currentTime = target; }
       };
-      video.readyState >= 1 ? setup() : video.addEventListener('loadedmetadata', setup, { once: true });
+      video.addEventListener('seeked', () => { seeking = false; if (!raf) raf = requestAnimationFrame(tick); });
+      const idlePlay = () => { idle = true; seeking = false; video.loop = true; video.play().catch(() => {}); };
+      video.addEventListener('timeupdate', () => { if (idle) setStage(video.currentTime / (video.duration || 8) * stages.length); });
+      // a rögzítés azonnal létrejön (nincs későbbi ugrás az oldalon); a videó a letöltés után kapcsolódik be
+      let prog = 0;
+      vidTrigger = ST.create({ trigger: '.hero', start: 'top top', end: '+=260%', pin: true, scrub: true, anticipatePin: 1,
+        onUpdate: s => {
+          prog = s.progress; setStage(prog * stages.length);
+          if (prog < .003) { if (!idle && video.readyState >= 2) idlePlay(); return; }
+          if (idle) { idle = false; video.loop = false; video.pause(); }
+          target = prog * ((video.duration || 8) - .05); if (!raf) raf = requestAnimationFrame(tick);
+        } });
+      ST.refresh();
+      video.addEventListener('loadeddata', () => {
+        if (failed) return;
+        if (prog < .003) idlePlay(); else { idle = false; target = prog * (video.duration - .05); tick(); }
+      }, { once: true });
     } else {
       // mobil / csökkentett mozgás: némítva, hurokban; ha az automatikus lejátszás tiltott → valódi fotók
       let userPaused = false;
-      const p = video.play(); if (p) p.catch(e => { if (e && e.name === 'NotAllowedError') fail('autoplay-blocked'); });
+      const p = video.play();
+      if (p) p.catch(e => {
+        if (!e || e.name !== 'NotAllowedError') return;
+        // pl. iPhone energiatakarékos mód: a poszter látszik, és az első érintésre/kattintásra elindul
+        track('hero_fallback', { reason: 'autoplay-blocked' });
+        const go = () => { video.play().catch(() => {}); ['touchstart', 'click', 'keydown'].forEach(t => removeEventListener(t, go, true)); };
+        ['touchstart', 'click', 'keydown'].forEach(t => addEventListener(t, go, { capture: true, passive: true }));
+      });
       video.addEventListener('timeupdate', () => setStage(video.currentTime / (video.duration || 8) * stages.length));
       // megállító gomb (akadálymentesség: mozgó tartalom leállítható)
       const btn = d.createElement('button');

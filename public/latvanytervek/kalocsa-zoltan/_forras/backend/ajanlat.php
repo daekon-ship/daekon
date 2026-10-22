@@ -70,7 +70,7 @@ try {
   $m->Password = $cfg['smtp_pass']; $m->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; $m->Port = (int)$cfg['smtp_port'];
   $m->CharSet = 'UTF-8';
   $m->setFrom($cfg['from'], 'Kalocsa GeoWorks weboldal');
-  $m->addAddress($cfg['to']); // zkalocsa8@gmail.com
+  $m->addAddress($cfg['to']); // kalocsageoworks@gmail.com
   if ($email !== '') $m->addReplyTo($email, $nev);
   $m->Subject = 'Ajánlatkérés – ' . implode(', ', $munka) . ' – ' . $hely;
   $m->Body = "Név: $nev\nTelefon: $tel\nHelyszín: $hely\nMunka: " . implode(', ', $munka) .
@@ -81,4 +81,7 @@ try {
   error_log('ajanlat: mail failed'); // csak a tény, személyes adat nélkül
   out(502, ['ok' => false, 'error' => 'mail']);
 }
+// mérés: sikeres ajánlatkérés (csak darabszám, szerveroldalon – ez a hiteles szám)
+require_once __DIR__ . '/meres-lib.php';
+meres_add($cfg['stats_dir'], 'quote_submit_success', 'urlap');
 out(200, ['ok' => true]);

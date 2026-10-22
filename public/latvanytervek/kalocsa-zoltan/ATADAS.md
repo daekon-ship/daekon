@@ -1,9 +1,29 @@
 # Kalocsa GeoWorks (Kalocsa Zoltán) – gépi földmunka · látványterv, átadás
 
 **Élő látványterv:** https://daekon-ship.github.io/daekon/latvanytervek/kalocsa-zoltan/ (noindex)
-**Állapot (2026.10.20., véglegesítő kör):** ügyfélnek bemutatható látványterv. Az éles működéshez szükséges integrációk előkészítve, de **nincsenek bekapcsolva** (lásd G).
-**Felépítés:** build nélküli statikus oldal – `index.html`, `kalocsa.css`, `kalocsa.js`, `js/` (GSAP 3 + ScrollTrigger helyben), `video/`, `img/`, `fonts/`, `adatkezeles.html` és `impresszum.html` (vázlatok), `_forras/` (briefek, `video.sh`, `backend/`).
+**Állapot (2026.10.22., 10. kör):** ügyfélnek bemutatható látványterv. Az éles működéshez szükséges integrációk (űrlapküldés, mérés) előkészítve, de **nincsenek bekapcsolva** (lásd G).
 
+## 10. kör – Zoltán e-mailes kérései (2026.10.22.)
+| Kérés | Megoldás |
+|---|---|
+| Jobb minőségű logó, a barna részek narancsok | Az ügyfél X-jele vektorosan újrarajzolva (`_forras/logo.py`): 45°-os, pontosan egy vonalba eső szárak, lekerekített tompaszögű sarkok, a felső levált szár narancs (#F27A21), a felirat görbére alakítva (Archivo). Változatok: `arculat/` – álló és fekvő, világos és sötét háttérre, SVG + 1600–2000 px-es PNG. A fejlécben, a láblécben és faviconként is ez szerepel. |
+| „Összes munka” helyett „Munkáim” | A fül neve „Munkáim” (darabszám nélkül), a másik „Kiemelt munkáim”. |
+| Képek külön keretben (gomep.hu-szerűen) | Minden munka saját kártyán: kép felül, narancs elválasztó, alatta kategória, cím, rövid leírás; hoverre kiemelés, kattintásra nagyítás. Rács: 3 / 2 / 1 oszlop. |
+| A 4 vasúti fotó a kiemelt munkákhoz + a megadott szöveg | Kiemelt munka 01: **Pirtó–Halas vasútvonal** – 4 külön keretes fotó, szakasz / 18 km / munka adatsor, Zoltán szövege szó szerint. |
+| „03–04” előtte, „05–06” utána | Külön „Előtte – utána” blokk a Munkáimban (2 + 2 kép, nyíllal), és Kiemelt munka 02 is lett belőle. |
+| Árkok mélyebbnek, több kontraszt | A homokos vasúti árok, az erdő melletti árok, a gémkaros kép és a közműárok fotóin az árok belseje (falak, talp) maszkolt, lágy szélű sötétítést kapott, az egész kép finom kontraszt- és élességjavítást (`img/pirto-*`, `kozmuarok-melyebb-*`). Tárgyat nem adtunk hozzá és nem vettünk el; a Munkáim bevezetője jelzi, hogy a fény és a kontraszt szerkesztett. A nyitóvideó kontrasztja is erősebb (CSS). |
+| Új e-mail-cím | kalocsageoworks@gmail.com mindenhol (oldal, jogi vázlatok, PHP-végpont). |
+| Rólam | Zoltán fotója a gép mellett (`img/portre-*`). |
+| „Kisgép munka közben” | Az új KX019-4-es fotó (`img/kisgep-kx019-*`). |
+| Mérhető eredmények (telefonkattintás, ajánlatkérés) | Saját, süti nélküli számláló: `_forras/backend/meres.php` (+ `meres-lib.php`), Zoltánnak jelszavas `statisztika.php`. A telefon- és e-mail-kattintást a böngésző jelzi, az elküldött ajánlatkérést a szerver számolja (csak sikeres küldés után). IP, süti, személyes adat nincs; robotok és idegen oldalak kiszűrve, percenként max. 30 esemény. Minta-nézet: `statisztika-minta.html` (kitalált, jelölt bemutató számokkal). |
+| „Itt lehet kicsit csalni?” | Nyilvános, felfelé kerekített számlálót nem teszünk az oldalra: a valótlan szám a vásárlók megtévesztése lenne (tisztességtelen kereskedelmi gyakorlat). A számok csak Zoltán saját oldalán látszanak, valósan. |
+| Animáció: hol pixeles, hol nincs, hol tökéletes | **Ok:** az asztali görgetéses videó menet közben töltődött; amíg egy rész nem jött le, a gyors ugrások egymást szakították meg (akadás, kockás vagy üres kép). Lassabb netnél 10 mp után a kód más képekre (fotós tartalék) váltott – ez volt a „nem jelenik meg”. Gyorsítótárból (második látogatás) pedig tökéletes volt. Mobilon a 0,45 MB-os, 768 px-es hurokvideó túl erősen volt tömörítve. **Javítás:** asztali gépen a teljes videó előbb letöltődik, az ugrások sorban futnak; a rögzítés azonnal létrejön (nincs ugrás az oldalon). Új kódolás: asztali 1600×900 (4,4 MB), mobil 864×720 (1,3 MB) jobb minőségben. Hiba / tiltott automatikus lejátszás esetén a videó első kockája marad, és mobilon az első érintésre elindul; fotós tartalék csak adatkímélő módban / 2G-n. |
+
+**Tesztek (10. kör):** 320–1920 px (8 szélesség) vízszintes túlcsordulás 0, 11 px alatti szöveg 0, JS-hiba 0; lightbox a kártyákról és a kiemelt munkákból; asztali videó: blob-ból tölt, görgetésre 2,05 → 4,1 → 6,15 mp, lassított letöltésnél is; mobil hurok játszik; 404-es videónál a poszter marad. `meres.php` / `statisztika.php` helyi PHP-szerveren: saját oldalról 204 és számol, idegen origin 403, rossz esemény 400, robot nem számít.
+
+**Élesítéshez a méréshez:** `meres.php`, `meres-lib.php`, `statisztika.php` az `/api/` ill. `/admin/` alá; a configba `stats_dir` és `stats_password_hash`; `kalocsa.js` → `MERES.endpoint = '/api/meres.php'`.
+
+# 9. kör – véglegesítés (2026.10.20.)
 ## A. Véglegesítő kör javításai
 - **Nyitókép-vezérlés újraírva** (`heroInit`):
   - Videó → poszter → valódi fotós tartalék.
@@ -88,10 +108,10 @@ Lighthouse ebben a környezetben nem futtatható. Playwright + Chrome DevTools-h
 \* Az asztali LCP a bevezető szöveg animált megjelenése. A GitHub Pages / CDN-mérés (Lighthouse, PageSpeed Insights) élesítéskor ajánlott.
 
 ## F. Zoltántól elkérendő
-1. **Portré** (álló, jó fényben) a Rólam részbe.
+1. ~~Portré~~ – megkapva (10. kör).
 2. **„Kalocsa GeoWorks” név:** jóváhagyja-e így (a DAEKON közölte 2026.10.20-án), és van-e hivatalos cégforma.
 3. **Hivatalos adatok** az impresszumhoz és az adatkezeléshez: vállalkozási forma, székhely, adószám, nyilvántartási szám, megőrzési idő.
-4. **Kiemelt munkák:** mely 2–3 munka, település (publikálható-e), rövid leírás. A meglévő fotókhoz most nincs megerősített helyszín és méret.
+4. **Kiemelt munkák:** a Pirtó–Halas adatai megvannak; a közműárok és a fás terület helyszíne még nincs megadva (most helyszín nélkül szerepelnek).
 5. **Térképes munkapont:** jóváhagyott, nem lakcím-pontosságú helyszín (pl. település szintű), vagy maradjon csak a körzet.
 6. **Videó:** jóváhagyja-e a szemléltető animációt (és a „Szemléltető animáció” címkét).
 

@@ -11,7 +11,7 @@
 <link rel="preload" href="fonts/archivo-kgw.woff" as="font" type="font/woff" crossorigin>
 <link rel="preload" href="video/hero-poster.webp" as="image" type="image/webp" media="(min-width: 861px)">
 <link rel="preload" href="video/hero-poster-mobil.webp" as="image" type="image/webp" media="(max-width: 860px)">
-<link rel="stylesheet" href="kalocsa.css?v=21">
+<link rel="stylesheet" href="kalocsa.css?v=30">
 <script>if(!matchMedia("(prefers-reduced-motion: reduce)").matches){document.documentElement.classList.add("anim");setTimeout(function(){if(!window.gsap)document.documentElement.classList.remove("anim")},3000)}</script>
 </head>
 <body>
@@ -21,7 +21,7 @@
 <header class="hdr" id="fejlec">
   <div class="hdr__in wrap">
     <a class="brand" href="#fooldal" aria-label="Kalocsa GeoWorks – gépi földmunka, főoldal">
-      <svg class="brand__mark" viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="10" fill="#F27A21"/><path d="M6 38h11l3 5h8l3-5h11" fill="none" stroke="#21262B" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/><path class="bm-arm" d="M12.5 33L20.5 11.5L31.5 22.5" fill="none" stroke="#21262B" stroke-width="4.2" stroke-linejoin="round" stroke-linecap="round"/><path class="bm-arm" d="M29.6 20.8L37.4 23.2L36.6 31.4Q31.6 33 28.8 27.6Z" fill="#21262B"/><circle cx="12.5" cy="33" r="3.4" fill="#21262B"/></svg>
+      <svg class="brand__mark" viewBox="0 0 102 100" aria-hidden="true"><path class="km-a" d="M0.00 85.00L12.00 85.00Q17.00 85.00 20.54 81.46L102.00 0.00L90.00 0.00Q85.00 0.00 81.46 3.54Z"/><path class="km-a" d="M29.75 63.75L38.25 55.25L83.00 100.00L71.00 100.00Q66.00 100.00 62.46 96.46Z"/><path class="km-b" d="M0.00 34.00L12.00 34.00Q17.00 34.00 20.54 37.54L30.50 47.50L22.00 56.00Z"/></svg>
       <span class="brand__txt"><b>Kalocsa GeoWorks</b><small>Gépi földmunka</small></span>
     </a>
     <nav class="nav" id="nav" aria-label="Fő navigáció">
@@ -48,8 +48,8 @@
        3) tartalék: valódi munkafotós jelenetsor (lassú net, adatkímélés, videóhiba). Vezérlés: kalocsa.js → HERO -->
   <div class="hero__media" id="hero-media">
     <picture class="hero__poster">
-      <source media="(max-width: 860px)" srcset="video/hero-poster-mobil.webp" width="768" height="640">
-      <img src="video/hero-poster.webp" width="1280" height="720" alt="Szemléltető kép: kisebb kotrógép árkot ás, mellette kitermelt földkupac" fetchpriority="high" decoding="async">
+      <source media="(max-width: 860px)" srcset="video/hero-poster-mobil.webp" width="864" height="720">
+      <img src="video/hero-poster.webp" width="1600" height="900" alt="Szemléltető kép: kisebb kotrógép árkot ás, mellette kitermelt földkupac" fetchpriority="high" decoding="async">
     </picture>
     <img class="scene" data-src="img/hero-kisgep-1425.webp" data-srcset="img/hero-kisgep-900.webp 900w, img/hero-kisgep-1425.webp 1425w" sizes="(max-width: 860px) 100vw, 66vw" width="1425" height="1068" alt="Kisebb munkagép dolgozik egy fás területen, előtérben kiforgatott föld" decoding="async">
     <img class="scene" data-src="img/hero-tusko-1425.webp" data-srcset="img/hero-tusko-900.webp 900w, img/hero-tusko-1425.webp 1425w" sizes="(max-width: 860px) 100vw, 66vw" width="1425" height="1068" alt="Gép kanalában kiemelt nagy tuskó gyökérzettel" decoding="async">
@@ -196,99 +196,110 @@
       <div>
         <p class="kicker"><span class="dot"></span>Referenciák</p>
         <h2 id="munkaim-cim">Munkáim</h2>
-        <p class="sec__lead">Saját munkafotók, retusálás nélkül. Kattints egy képre a nagyobb nézetért.</p>
+        <p class="sec__lead">Saját munkafotók – a fényviszonyok és a kontraszt szerkesztve, hogy az árkok mélysége jól látsszon. Kattints egy képre a nagyobb nézetért.</p>
       </div>
       <div class="tabs" role="tablist" aria-label="Munkák nézete">
-        <button class="tab" role="tab" id="tab-osszes" aria-controls="panel-osszes" aria-selected="true">Összes munka <span>6</span></button>
+        <button class="tab" role="tab" id="tab-osszes" aria-controls="panel-osszes" aria-selected="true">Munkáim</button>
         <button class="tab" role="tab" id="tab-kiemelt" aria-controls="panel-kiemelt" aria-selected="false" tabindex="-1">Kiemelt munkáim</button>
       </div>
     </header>
 
     <div class="tabpanel" id="panel-osszes" role="tabpanel" aria-labelledby="tab-osszes">
-      <div class="gal">
-        <button class="gal__item g1" data-lb="0"><img src="img/kozmuarok-720.webp" srcset="img/kozmuarok-720.webp 720w, img/kozmuarok-1200.webp 1069w" sizes="(max-width: 860px) 100vw, 40vw" width="720" height="1280" loading="lazy" alt="Hosszú, egyenes közműárok homokos talajban, háttérben sárga kotró-rakodó"><span class="gal__cap"><b>01</b><span>Közműárok-ásás<small>Árok homokos talajban</small></span></span></button>
-        <button class="gal__item g2" data-lb="1"><img src="img/tusko-720.webp" srcset="img/tusko-720.webp 720w, img/tusko-1200.webp 1069w" sizes="(max-width: 860px) 100vw, 30vw" width="720" height="1280" loading="lazy" alt="Kiemelt nagy tuskó gyökérzettel egy gép kanalában, mellette munkás"><span class="gal__cap"><b>02</b><span>Tuskóeltávolítás<small>Tuskó és gyökérzet</small></span></span></button>
-        <button class="gal__item g3" data-lb="2"><img src="img/fas-terulet-2-720.webp" srcset="img/fas-terulet-2-720.webp 720w, img/fas-terulet-2-1200.webp 1200w" sizes="(max-width: 860px) 100vw, 26vw" width="720" height="960" loading="lazy" alt="Kisebb munkagép fás területen, előtte kiforgatott föld"><span class="gal__cap"><b>03</b><span>Kisgép munka közben<small>Fás terület</small></span></span></button>
-        <button class="gal__item g4" data-lb="3"><img src="img/fas-terulet-1-720.webp" srcset="img/fas-terulet-1-720.webp 720w, img/fas-terulet-1-1200.webp 1200w" sizes="(max-width: 860px) 100vw, 26vw" width="720" height="960" loading="lazy" alt="Fás területen felforgatott talaj, gyökércsonkok és ágak"><span class="gal__cap"><b>04</b><span>Terület-előkészítés<small>Fás terület</small></span></span></button>
-        <button class="gal__item g5" data-lb="4"><img src="img/talajrendezes-1-720.webp" srcset="img/talajrendezes-1-720.webp 720w, img/talajrendezes-1-1200.webp 1200w" sizes="(max-width: 860px) 100vw, 40vw" width="720" height="960" loading="lazy" alt="Géppel elegyengetett nagy földfelület keréknyomokkal"><span class="gal__cap"><b>05</b><span>Tereprendezés<small>Gépi talajrendezés</small></span></span></button>
-        <button class="gal__item g6" data-lb="5"><img src="img/talajrendezes-2-720.webp" srcset="img/talajrendezes-2-720.webp 720w, img/talajrendezes-2-1200.webp 1200w" sizes="(max-width: 860px) 100vw, 30vw" width="720" height="960" loading="lazy" alt="Elegyengetett földterület más szögből, háttérben fasor"><span class="gal__cap"><b>06</b><span>Tereprendezés<small>Ugyanaz a terület, más nézet</small></span></span></button>
+      <div class="wgrid">
+        <article class="wcard">
+          <button class="wcard__img" data-full="img/pirto-2-1200.webp" data-cap="Pirtó–Halas – árok a vasútvonal mentén" aria-label="Nagyítás: Pirtó–Halas – árok a vasútvonal mentén"><img src="img/pirto-2-720.webp" srcset="img/pirto-2-720.webp 720w, img/pirto-2-1200.webp 1200w" sizes="(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 380px" width="720" height="960" loading="lazy" decoding="async" alt="Hosszú, egyenes árok homokos talajban a vasútvonal mellett, háttérben az állomásépület"><i class="wcard__zoom" aria-hidden="true"></i></button>
+          <div class="wcard__body"><p class="wcard__tag">Árokásás · vasút mentén</p><h3>Pirtó–Halas, 18 km</h3><p>Árok a vasúti nyomvonal mentén, homokos talajban – a 18 km-es szakasz egyik része.</p></div>
+        </article>
+        <article class="wcard">
+          <button class="wcard__img" data-full="img/kozmuarok-melyebb-1200.webp" data-cap="Közműárok-ásás" aria-label="Nagyítás: Közműárok-ásás"><img src="img/kozmuarok-melyebb-720.webp" srcset="img/kozmuarok-melyebb-720.webp 720w, img/kozmuarok-melyebb-1200.webp 1200w" sizes="(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 380px" width="720" height="1280" loading="lazy" decoding="async" alt="Mély, egyenes falú közműárok homokos talajban, mellette a kitermelt föld"><i class="wcard__zoom" aria-hidden="true"></i></button>
+          <div class="wcard__body"><p class="wcard__tag">Közműárok-ásás</p><h3>Egyenes falú közműárok</h3><p>Árok a közművek fektetéséhez, a kitermelt föld rendezetten az árok mellett.</p></div>
+        </article>
+        <article class="wcard">
+          <button class="wcard__img" data-full="img/kisgep-kx019-1200.webp" data-cap="Kisgép munka közben – Kubota KX019-4" aria-label="Nagyítás: Kisgép munka közben – Kubota KX019-4"><img src="img/kisgep-kx019-720.webp" srcset="img/kisgep-kx019-720.webp 720w, img/kisgep-kx019-1200.webp 1200w" sizes="(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 380px" width="720" height="960" loading="lazy" decoding="async" alt="Kubota KX019-4 kisgép kanállal földet mozgat egy építési telken"><i class="wcard__zoom" aria-hidden="true"></i></button>
+          <div class="wcard__body"><p class="wcard__tag">Kisgép</p><h3>Kisgép munka közben</h3><p>Kubota KX019-4 – kis mérete miatt keskeny kapun, ház mellett is befér.</p></div>
+        </article>
+        <article class="wcard">
+          <button class="wcard__img" data-full="img/tusko-1200.webp" data-cap="Tuskóeltávolítás" aria-label="Nagyítás: Tuskóeltávolítás"><img src="img/tusko-720.webp" srcset="img/tusko-720.webp 720w, img/tusko-1200.webp 1200w" sizes="(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 380px" width="720" height="1280" loading="lazy" decoding="async" alt="Kiemelt nagy tuskó gyökérzettel egy gép kanalában"><i class="wcard__zoom" aria-hidden="true"></i></button>
+          <div class="wcard__body"><p class="wcard__tag">Tuskóeltávolítás</p><h3>Tuskó gyökérzettel</h3><p>Nagy tuskó teljes gyökérzettel kiemelve – a terület utána rendezhető.</p></div>
+        </article>
+        <article class="wcard">
+          <button class="wcard__img" data-full="img/pirto-4-1200.webp" data-cap="Pirtó–Halas – árok fás szakaszon" aria-label="Nagyítás: Pirtó–Halas – árok fás szakaszon"><img src="img/pirto-4-720.webp" srcset="img/pirto-4-720.webp 720w, img/pirto-4-1200.webp 1200w" sizes="(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 380px" width="720" height="960" loading="lazy" decoding="async" alt="Hosszú árok fás, bokros terepen a vasútvonal mellett"><i class="wcard__zoom" aria-hidden="true"></i></button>
+          <div class="wcard__body"><p class="wcard__tag">Árokásás · fás terep</p><h3>Pirtó–Halas, erdő mellett</h3><p>A nyomvonal fás, gyökeres szakaszon is tartja az irányt.</p></div>
+        </article>
+        <article class="wcard">
+          <button class="wcard__img" data-full="img/pirto-1-1200.webp" data-cap="Pirtói-szőlők – terepalakítás" aria-label="Nagyítás: Pirtói-szőlők – terepalakítás"><img src="img/pirto-1-720.webp" srcset="img/pirto-1-720.webp 720w, img/pirto-1-1200.webp 1200w" sizes="(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 380px" width="720" height="960" loading="lazy" decoding="async" alt="Kubota kisgép földtöltésen a Pirtói-szőlők megállóhely mellett"><i class="wcard__zoom" aria-hidden="true"></i></button>
+          <div class="wcard__body"><p class="wcard__tag">Terepalakítás</p><h3>Töltés a megállóhelynél</h3><p>Földtöltés alakítása a Pirtói-szőlők megállóhely mellett.</p></div>
+        </article>
       </div>
+      <section class="ba" aria-labelledby="ba-cim">
+        <header class="ba__head">
+          <p class="wcard__tag">Előtte – utána</p>
+          <h3 id="ba-cim">Terület-előkészítés és tereprendezés</h3>
+          <p>Ugyanaz a terület a munka előtt és után: a fás, gyökeres, felforgatott talajból géppel elegyengetett, rendezett felület lett.</p>
+        </header>
+        <div class="ba__grid">
+          <div class="ba__col">
+            <p class="ba__lbl ba__lbl--pre">Előtte</p>
+            <div class="ba__pair"><figure class="ba__tile"><button class="ba__img" data-full="img/fas-terulet-2-1200.webp" data-cap="Előtte – fás terület, munka közben" aria-label="Nagyítás: Előtte – fás terület, munka közben"><img src="img/fas-terulet-2-720.webp" srcset="img/fas-terulet-2-720.webp 720w, img/fas-terulet-2-1200.webp 1200w" sizes="(max-width: 640px) 50vw, 300px" width="720" height="960" loading="lazy" decoding="async" alt="Kisgép fás területen, előtte kiforgatott föld"></button><figcaption>Fás terület, munka közben</figcaption></figure><figure class="ba__tile"><button class="ba__img" data-full="img/fas-terulet-1-1200.webp" data-cap="Előtte – felforgatott, gyökeres talaj" aria-label="Nagyítás: Előtte – felforgatott, gyökeres talaj"><img src="img/fas-terulet-1-720.webp" srcset="img/fas-terulet-1-720.webp 720w, img/fas-terulet-1-1200.webp 1200w" sizes="(max-width: 640px) 50vw, 300px" width="720" height="960" loading="lazy" decoding="async" alt="Felforgatott talaj gyökércsonkokkal és ágakkal"></button><figcaption>Felforgatott, gyökeres talaj</figcaption></figure></div>
+          </div>
+          <span class="ba__arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span>
+          <div class="ba__col">
+            <p class="ba__lbl ba__lbl--post">Utána</p>
+            <div class="ba__pair"><figure class="ba__tile"><button class="ba__img" data-full="img/talajrendezes-1-1200.webp" data-cap="Utána – elegyengetett terület" aria-label="Nagyítás: Utána – elegyengetett terület"><img src="img/talajrendezes-1-720.webp" srcset="img/talajrendezes-1-720.webp 720w, img/talajrendezes-1-1200.webp 1200w" sizes="(max-width: 640px) 50vw, 300px" width="720" height="960" loading="lazy" decoding="async" alt="Géppel elegyengetett nagy földfelület"></button><figcaption>Elegyengetett felület</figcaption></figure><figure class="ba__tile"><button class="ba__img" data-full="img/talajrendezes-2-1200.webp" data-cap="Utána – a rendezett terület más szögből" aria-label="Nagyítás: Utána – a rendezett terület más szögből"><img src="img/talajrendezes-2-720.webp" srcset="img/talajrendezes-2-720.webp 720w, img/talajrendezes-2-1200.webp 1200w" sizes="(max-width: 640px) 50vw, 300px" width="720" height="960" loading="lazy" decoding="async" alt="Elegyengetett földterület más szögből, háttérben fasor"></button><figcaption>Ugyanaz, más szögből</figcaption></figure></div>
+          </div>
+        </div>
+      </section>
     </div>
 
     <div class="tabpanel" id="panel-kiemelt" role="tabpanel" aria-labelledby="tab-kiemelt" hidden>
-      <p class="feat__note">Előkészített felület: a kiemelt munkákat Zoltánnal közösen választjuk ki. A helyszínt és a leírást csak az ő jóváhagyásával tüntetjük fel.</p>
-
-      <article class="feat" data-feat="kozmuarok">
-        <div class="feat__media">
-          <div class="feat__main">
-            <img src="img/kozmuarok-melyebb-1200.webp" width="1069" height="1900" loading="lazy" alt="Kiásott közműárok homokos talajban – szerkesztett fénykép, árnyékolással mélyebb hatás" data-lb="6">
-            <span class="feat__badge" id="arok-badge">Szerkesztett fénykép – mélyebb hatás</span>
-            <svg class="feat__svg" viewBox="0 0 600 440" role="img" aria-label="Szemléltető árokmetszet: rétegzett talaj, mély árok, alján csővezeték, mellette kitermelt föld" hidden>
-              <rect width="600" height="440" fill="#2A3036"/>
-              <path d="M0 150H170L188 380H262L280 150H600V440H0Z" fill="#5A4632"/>
-              <path d="M0 150H170L172 176H0ZM280 150H600V176H278Z" fill="#3F3326"/>
-              <path d="M0 176H172L180 270H0ZM278 176H600V270H270Z" fill="#7A5C3C"/>
-              <path d="M0 270H180L188 380H262L270 270H600V440H0Z" fill="#9A7A4E"/>
-              <path d="M170 150L188 380H262L280 150" fill="#1C1F23"/>
-              <path d="M188 380H262L280 150" fill="none" stroke="#000" stroke-opacity=".35" stroke-width="10"/>
-              <circle cx="225" cy="362" r="16" fill="#E4E7EA" stroke="#8A949E" stroke-width="3"/>
-              <path d="M300 150Q340 92 400 96Q460 92 500 150Z" fill="#7A5C3C"/><path d="M330 150Q370 116 420 120Q470 118 488 150Z" fill="#8E6B45" opacity=".7"/>
-              <g stroke="#F27A21" stroke-width="2" fill="#F27A21"><path d="M292 150V380"/><path d="M284 150h16M284 380h16"/><path d="M292 158l-5 10h10zM292 372l-5-10h10z"/></g>
-              <g font-family="Manrope, sans-serif" font-size="12" letter-spacing="1.2" fill="#E4E7EA"><text x="20" y="168">TERMŐFÖLD</text><text x="20" y="228">HOMOKOS TALAJ</text><text x="20" y="330">ALTALAJ</text><text x="306" y="270" fill="#F27A21">MÉLYSÉG</text><text x="400" y="80" text-anchor="middle">KITERMELT FÖLD</text></g>
-              <text x="580" y="424" text-anchor="end" font-family="Manrope, sans-serif" font-size="11" fill="#A9B0B7">Szemléltető ábra – nem a valós munka mérete</text>
-            </svg>
-          </div>
-          <div class="feat__thumbs">
-            <button class="is-on" data-view="photo" data-src="img/kozmuarok-melyebb-1200.webp" aria-label="Szerkesztett fotó, mélyebb árokhatás"><img src="img/kozmuarok-melyebb-720.webp" alt="" loading="lazy"><span>Mélyebb hatás</span></button>
-            <button data-view="photo" data-src="img/kozmuarok-1200.webp" aria-label="Eredeti fotó"><img src="img/kozmuarok-720.webp" alt="" loading="lazy"><span>Eredeti fotó</span></button>
-            <button data-view="svg" aria-label="Szemléltető árokmetszet"><span class="feat__thumbsvg"></span><span>Szemléltető metszet</span></button>
-          </div>
-        </div>
+      <article class="feat" data-feat="pirto-halas">
+        <div class="feat__media"><div class="fgrid">
+          <figure class="ftile"><button class="ftile__img" data-full="img/pirto-1-1200.webp" data-cap="Pirtó–Halas – terepalakítás a megállóhelynél" aria-label="Nagyítás: Pirtó–Halas – terepalakítás a megállóhelynél"><img src="img/pirto-1-720.webp" srcset="img/pirto-1-720.webp 720w, img/pirto-1-1200.webp 1200w" sizes="(max-width: 860px) 50vw, 340px" width="720" height="960" loading="lazy" decoding="async" alt="Kubota kisgép földtöltésen a Pirtói-szőlők megállóhely mellett"></button><figcaption>Terepalakítás a megállóhelynél</figcaption></figure>
+          <figure class="ftile"><button class="ftile__img" data-full="img/pirto-2-1200.webp" data-cap="Pirtó–Halas – árok homokos talajban" aria-label="Nagyítás: Pirtó–Halas – árok homokos talajban"><img src="img/pirto-2-720.webp" srcset="img/pirto-2-720.webp 720w, img/pirto-2-1200.webp 1200w" sizes="(max-width: 860px) 50vw, 340px" width="720" height="960" loading="lazy" decoding="async" alt="Hosszú, egyenes árok homokos talajban a vasútvonal mellett"></button><figcaption>Árok homokos talajban</figcaption></figure>
+          <figure class="ftile"><button class="ftile__img" data-full="img/pirto-3-1200.webp" data-cap="Pirtó–Halas – a gép a nyomvonalon" aria-label="Nagyítás: Pirtó–Halas – a gép a nyomvonalon"><img src="img/pirto-3-720.webp" srcset="img/pirto-3-720.webp 720w, img/pirto-3-1200.webp 1200w" sizes="(max-width: 860px) 50vw, 340px" width="720" height="960" loading="lazy" decoding="async" alt="Kubota gémkar, mögötte a vasút mentén húzódó árok és az állomásépület"></button><figcaption>A gép a nyomvonalon</figcaption></figure>
+          <figure class="ftile"><button class="ftile__img" data-full="img/pirto-4-1200.webp" data-cap="Pirtó–Halas – árok fás szakaszon" aria-label="Nagyítás: Pirtó–Halas – árok fás szakaszon"><img src="img/pirto-4-720.webp" srcset="img/pirto-4-720.webp 720w, img/pirto-4-1200.webp 1200w" sizes="(max-width: 860px) 50vw, 340px" width="720" height="960" loading="lazy" decoding="async" alt="Hosszú árok fás, bokros terepen a vasútvonal mellett"></button><figcaption>Fás, gyökeres szakasz</figcaption></figure>
+        </div></div>
         <div class="feat__body">
           <p class="kicker"><span class="dot"></span>Kiemelt munka · 01</p>
-          <h3>Közműárok-ásás</h3>
+          <h3>Pirtó–Halas vasútvonal</h3>
           <dl class="feat__meta">
-            <div><dt>Munkatípus</dt><dd>Közműárok-ásás, nyomvonal</dd></div>
-            <div><dt>Helyszín</dt><dd class="tbd">egyeztetendő</dd></div>
+            <div><dt>Szakasz</dt><dd>Pirtó–Halas</dd></div>
+            <div><dt>Hossz</dt><dd>18 km</dd></div>
+            <div><dt>Munka</dt><dd>Árokásás a nyomvonal mentén, terepalakítás</dd></div>
           </dl>
-          <p>Egyenes falú árok homokos talajban, a kitermelt föld az árok mellett. A „Mélyebb hatás” nézet ugyanaz a fénykép árnyékolással kiemelve; az eredeti és egy szemléltető metszet is megnézhető.</p>
-          <button class="btn btn--sm" data-munka="Közműárok-ásás">Ilyen munkát kérek</button>
+          <p>Legyen szó vasúti nyomvonalak mentén végzett árokásásról vagy összetett terepalakításról, Kalocsa GeoWorks a Pirtó–Halas szakaszon is bizonyította megbízhatóságát. A 18 km-es projekt során végzett precíz gépi munkánkkal sikeresen hozzájárultunk az infrastruktúra fejlődéséhez.</p>
+          <button class="btn btn--sm" data-munka="Nyomvonalásás">Ilyen munkát kérek</button>
         </div>
       </article>
 
-      <article class="feat feat--rev" data-feat="tusko">
-        <div class="feat__media">
-          <div class="feat__main"><img src="img/tusko-1200.webp" width="1069" height="1900" loading="lazy" alt="Kiemelt nagy tuskó gyökérzettel egy gép kanalában" data-lb="1"></div>
-        </div>
+      <article class="feat feat--rev" data-feat="elotte-utana">
+        <div class="feat__media"><div class="fgrid fgrid--ba">
+          <figure class="ftile"><button class="ftile__img" data-full="img/fas-terulet-1-1200.webp" data-cap="Előtte – felforgatott, gyökeres talaj" aria-label="Nagyítás: Előtte – felforgatott, gyökeres talaj"><img src="img/fas-terulet-1-720.webp" srcset="img/fas-terulet-1-720.webp 720w, img/fas-terulet-1-1200.webp 1200w" sizes="(max-width: 860px) 50vw, 340px" width="720" height="960" loading="lazy" decoding="async" alt="Felforgatott talaj gyökércsonkokkal és ágakkal"></button><figcaption><b class="pill pill--pre">Előtte</b> Fás, gyökeres terület</figcaption></figure>
+          <figure class="ftile"><button class="ftile__img" data-full="img/talajrendezes-1-1200.webp" data-cap="Utána – elegyengetett terület" aria-label="Nagyítás: Utána – elegyengetett terület"><img src="img/talajrendezes-1-720.webp" srcset="img/talajrendezes-1-720.webp 720w, img/talajrendezes-1-1200.webp 1200w" sizes="(max-width: 860px) 50vw, 340px" width="720" height="960" loading="lazy" decoding="async" alt="Géppel elegyengetett nagy földfelület"></button><figcaption><b class="pill pill--post">Utána</b> Rendezett felület</figcaption></figure>
+        </div></div>
         <div class="feat__body">
           <p class="kicker"><span class="dot"></span>Kiemelt munka · 02</p>
-          <h3>Tuskóeltávolítás</h3>
+          <h3>Fás területből rendezett telek</h3>
           <dl class="feat__meta">
-            <div><dt>Munkatípus</dt><dd>Tuskó és gyökérzet kiemelése</dd></div>
-            <div><dt>Helyszín</dt><dd class="tbd">egyeztetendő</dd></div>
+            <div><dt>Munka</dt><dd>Terület-előkészítés, tereprendezés</dd></div>
           </dl>
-          <p>Nagy tuskó teljes gyökérzettel kiemelve – a terület ezután rendezhető, beépíthető.</p>
-          <button class="btn btn--sm" data-munka="Tuskóeltávolítás">Ilyen munkát kérek</button>
+          <p>A kiinduló állapot fás, gyökeres, felforgatott talaj volt. A végeredmény: géppel elegyengetett, rendezett, tovább építhető felület.</p>
+          <button class="btn btn--sm" data-munka="Tereprendezés">Ilyen munkát kérek</button>
         </div>
       </article>
 
-      <article class="feat" data-feat="terep">
-        <div class="feat__media">
-          <div class="feat__main"><img src="img/talajrendezes-1-1200.webp" width="1200" height="1600" loading="lazy" alt="Géppel elegyengetett nagy földfelület" data-lb="4"></div>
-          <div class="feat__thumbs">
-            <button class="is-on" data-src="img/talajrendezes-1-1200.webp" data-i="4"><img src="img/talajrendezes-1-720.webp" alt="" loading="lazy"><span>1. nézet</span></button>
-            <button data-src="img/talajrendezes-2-1200.webp" data-i="5"><img src="img/talajrendezes-2-720.webp" alt="" loading="lazy"><span>2. nézet</span></button>
-          </div>
-        </div>
+      <article class="feat" data-feat="kozmuarok">
+        <div class="feat__media"><div class="fgrid fgrid--one">
+          <figure class="ftile"><button class="ftile__img" data-full="img/kozmuarok-melyebb-1200.webp" data-cap="Közműárok-ásás" aria-label="Nagyítás: Közműárok-ásás"><img src="img/kozmuarok-melyebb-720.webp" srcset="img/kozmuarok-melyebb-720.webp 720w, img/kozmuarok-melyebb-1200.webp 1200w" sizes="(max-width: 860px) 100vw, 680px" width="1069" height="1900" loading="lazy" decoding="async" alt="Mély, egyenes falú közműárok homokos talajban"></button><figcaption>Egyenes falú árok homokos talajban</figcaption></figure>
+        </div></div>
         <div class="feat__body">
           <p class="kicker"><span class="dot"></span>Kiemelt munka · 03</p>
-          <h3>Tereprendezés</h3>
+          <h3>Közműárok-ásás</h3>
           <dl class="feat__meta">
-            <div><dt>Munkatípus</dt><dd>Gépi talajrendezés</dd></div>
-            <div><dt>Helyszín</dt><dd class="tbd">egyeztetendő</dd></div>
+            <div><dt>Munka</dt><dd>Közműárok, nyomvonal</dd></div>
           </dl>
-          <p>Nagyobb földterület géppel elegyengetve, két nézetből.</p>
-          <button class="btn btn--sm" data-munka="Tereprendezés">Ilyen munkát kérek</button>
+          <p>Egyenes falú árok homokos talajban, a kitermelt föld rendezetten az árok mellett – víz, csatorna vagy villany fektetéséhez.</p>
+          <button class="btn btn--sm" data-munka="Közműárok-ásás">Ilyen munkát kérek</button>
         </div>
       </article>
     </div>
@@ -299,10 +310,7 @@
 <section class="sec sec--panel" id="rolam" aria-labelledby="rolam-cim">
   <div class="wrap about">
     <figure class="portrait">
-      <div class="portrait__slot" role="img" aria-label="Kalocsa Zoltán portréjának helye">
-        <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M6 38h11l3 5h8l3-5h11" fill="none" stroke="#F27A21" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/><path d="M12.5 33L20.5 11.5L31.5 22.5" fill="none" stroke="#F27A21" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/><path d="M29.6 20.8L37.4 23.2L36.6 31.4Q31.6 33 28.8 27.6Z" fill="#F27A21"/><circle cx="12.5" cy="33" r="2.4" fill="#F27A21"/></svg>
-        <span>Portré</span>
-      </div>
+      <img src="img/portre-720.webp" srcset="img/portre-720.webp 720w, img/portre-1200.webp 1200w" sizes="(max-width: 860px) 100vw, 440px" width="720" height="960" loading="lazy" decoding="async" alt="Kalocsa Zoltán a Kubota kisgépe mellett, munkaterületen">
     </figure>
     <div class="about__copy">
       <p class="kicker"><span class="dot"></span>Rólam</p>
@@ -311,7 +319,7 @@
       <p class="muted">A Kalocsa GeoWorks mögött én állok – nincs diszpécser, nincs ügyintéző, a telefont én veszem fel.</p>
       <div class="about__cta">
         <a class="btn" href="tel:+36704204170"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 3h3l1.5 4.2-2 1.4a12 12 0 0 0 6.3 6.3l1.4-2 4.2 1.5v3A2 2 0 0 1 19 20 16 16 0 0 1 4 5a2 2 0 0 1 2.6-2Z"/></svg>+36 70 420 4170</a>
-        <a class="link" href="mailto:zkalocsa8@gmail.com">zkalocsa8@gmail.com</a>
+        <a class="link" href="mailto:kalocsageoworks@gmail.com">kalocsageoworks@gmail.com</a>
       </div>
     </div>
   </div>
@@ -469,12 +477,12 @@
 <footer class="ftr">
   <div class="wrap ftr__grid">
     <div class="ftr__brand">
-      <span class="brand"><svg class="brand__mark" viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="10" fill="#F27A21"/><path d="M6 38h11l3 5h8l3-5h11" fill="none" stroke="#21262B" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/><path d="M12.5 33L20.5 11.5L31.5 22.5" fill="none" stroke="#21262B" stroke-width="4.2" stroke-linejoin="round" stroke-linecap="round"/><path d="M29.6 20.8L37.4 23.2L36.6 31.4Q31.6 33 28.8 27.6Z" fill="#21262B"/><circle cx="12.5" cy="33" r="3.4" fill="#21262B"/></svg><span class="brand__txt"><b>Kalocsa GeoWorks</b><small>Gépi földmunka</small></span></span>
+      <span class="brand"><svg class="brand__mark" viewBox="0 0 102 100" aria-hidden="true"><path class="km-a" d="M0.00 85.00L12.00 85.00Q17.00 85.00 20.54 81.46L102.00 0.00L90.00 0.00Q85.00 0.00 81.46 3.54Z"/><path class="km-a" d="M29.75 63.75L38.25 55.25L83.00 100.00L71.00 100.00Q66.00 100.00 62.46 96.46Z"/><path class="km-b" d="M0.00 34.00L12.00 34.00Q17.00 34.00 20.54 37.54L30.50 47.50L22.00 56.00Z"/></svg><span class="brand__txt"><b>Kalocsa GeoWorks</b><small>Gépi földmunka</small></span></span>
       <p>Gépi földmunka Kecskeméten és 45 km-es körzetében. Kis géppel, szűk helyeken is.</p>
     </div>
     <div>
       <p class="ftr__h">Kapcsolat</p>
-      <p><a href="tel:+36704204170">+36 70 420 4170</a><br><a href="mailto:zkalocsa8@gmail.com">zkalocsa8@gmail.com</a><br>Kecskemét + 45 km</p>
+      <p><a href="tel:+36704204170">+36 70 420 4170</a><br><a href="mailto:kalocsageoworks@gmail.com">kalocsageoworks@gmail.com</a><br>Kecskemét + 45 km</p>
     </div>
     <nav aria-label="Lábléc navigáció">
       <p class="ftr__h">Oldal</p>
@@ -504,6 +512,6 @@
 
 <script src="js/gsap.min.js" defer></script>
 <script src="js/ScrollTrigger.min.js" defer></script>
-<script src="kalocsa.js?v=22" defer></script>
+<script src="kalocsa.js?v=30" defer></script>
 </body>
 </html>
