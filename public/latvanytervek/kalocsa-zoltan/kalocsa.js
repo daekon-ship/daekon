@@ -283,7 +283,22 @@
   function initMap() {
     const L = window.L; if (!L) return;
     $('#map-wrap').classList.add('is-live');
-    const map = L.map(mapEl, { scrollWheelZoom: false, zoomControl: true, attributionControl: true }).setView(MAP.center, 9);
+    // görgetés közben a térkép NEM foghatja meg az oldalt: alapból sem kerékkel, sem egy ujjal nem mozgatható;
+    // koppintás/kattintás után aktív, és amint kigörgetsz mellőle (vagy 8 mp tétlenség), újra „alszik”
+    const map = L.map(mapEl, { scrollWheelZoom: false, dragging: false, touchZoom: false, doubleClickZoom: false, boxZoom: false, keyboard: false, tap: false, zoomControl: true, attributionControl: true }).setView(MAP.center, 9);
+    const wrap = $('#map-wrap'), hint = d.createElement('button');
+    hint.type = 'button'; hint.className = 'map__hint'; hint.textContent = 'Koppints a térkép mozgatásához';
+    wrap.appendChild(hint);
+    let sleepT = 0;
+    const wake = () => {
+      ['dragging', 'touchZoom', 'scrollWheelZoom', 'doubleClickZoom'].forEach(k => map[k].enable());
+      wrap.classList.add('is-awake'); clearTimeout(sleepT); sleepT = setTimeout(sleep, 8000);
+    };
+    const sleep = () => { ['dragging', 'touchZoom', 'scrollWheelZoom', 'doubleClickZoom'].forEach(k => map[k].disable()); wrap.classList.remove('is-awake'); };
+    hint.addEventListener('click', wake);
+    map.on('click', wake);
+    ['movestart', 'zoomstart'].forEach(ev => map.on(ev, () => { if (wrap.classList.contains('is-awake')) { clearTimeout(sleepT); sleepT = setTimeout(sleep, 8000); } }));
+    if ('IntersectionObserver' in window) new IntersectionObserver(es => es.forEach(e => { if (!e.isIntersecting) sleep(); }), { threshold: .3 }).observe(wrap);
     // kulcs nélküli OpenStreetMap-csempék; a sötét hatást CSS-szűrő adja (.leaflet-tile-pane)
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 18,
@@ -296,7 +311,6 @@
       .bindPopup('<b>Kecskemét</b>A munkaterület központja.<br>Körzet: 45 km.<br><a href="tel:+36704204170" style="color:#F27A21">+36 70 420 4170</a>');
     const job = L.marker([47.034, 19.776], { icon: icon(true), title: 'Munkajelölő (bemutató)' }).addTo(map)
       .bindPopup('<b>Munkajelölő – bemutató</b>Így jelenik majd meg egy aktuális munka helye.<br><small style="color:#A9B0B7">Ez nem valós munkahelyszín. Élesítéskor csak Zoltán által jóváhagyott, nem pontos lakcímre mutató helyszín kerül fel.</small>');
-    map.on('click', () => map.scrollWheelZoom.enable());
     // a rögzített nyitókép miatt az elrendezés később változhat → méret újraszámolása
     const fix = () => { map.invalidateSize(); };
     setTimeout(fix, 300); setTimeout(fix, 1500); addEventListener('resize', fix);

@@ -3,6 +3,10 @@
 **Élő látványterv:** https://daekon-ship.github.io/daekon/latvanytervek/kalocsa-zoltan/ (noindex)
 **Állapot (2026.10.22., 10. kör):** ügyfélnek bemutatható látványterv. Az éles működéshez szükséges integrációk (űrlapküldés, mérés) előkészítve, de **nincsenek bekapcsolva** (lásd G).
 
+## 12. kör (2026.10.22.)
+- **Árkok sokkal mélyebbek:** a falak sötétítése mellett külön, keskenyebb maszk az árok fenekére (erős sötétítés + mélyebb tónus), így a talp „elnyelődik” – pirto-2, pirto-3, pirto-4, közműárok. A képek URL-je verziózva (`?v=12`), hogy a telefon ne a régit mutassa a gyorsítótárból.
+- **Térkép nem akasztja meg a görgetést:** alapból se kerékkel, se egy ujjal nem mozdul (a lap gördül tovább); „Koppints a térkép mozgatásához” gombra/koppintásra aktív, 8 mp tétlenség vagy kigörgetés után újra alszik.
+
 ## 11. kör (2026.10.22.)
 - **Rólam-fotó:** a teljes kép látszik (3:4 keret, alulra igazítva) – cipő, gép, tolólap is.
 - **„Elcsúszott” képek:** a kártyák és a kiemelt munkák kerete most a fotók saját álló 3:4-es arányát követi, így nem vágja le a gépet, a kanalat vagy a tetejét (mobilon 4:5, minimális vágással).
