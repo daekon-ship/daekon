@@ -196,7 +196,7 @@ TAG = 'BÚTORASZTALOS · INTARZIA'
 
 SOTET = {'g': '#ECE1D2', 'a': '#C9A47E', 'w': '#E4D7C6', 'f': '#9C8670', 't': '#C9A47E', 'bg': '#3A312A', 'bg2': '#3A312A'}
 MONO = {'g': '#3A312A', 'a': '#3A312A', 'w': '#3A312A', 'f': '#3A312A', 't': '#3A312A', 'bg': None, 'bg2': '#FFFFFF'}
-MAIN = {'g': '#4A3C31', 'a': '#BE9168', 'w': '#4A3C31', 'f': '#BCA891', 't': '#9E7752', 'bg2': '#F4EDE3'}
+MAIN = {'art': '#A97C52', 'g': '#4A3C31', 'a': '#BE9168', 'w': '#4A3C31', 'f': '#BCA891', 't': '#9E7752', 'bg2': '#F4EDE3'}
 
 def keret(c, x, y, w, h, s=1.0):
     return f'<rect x="{f2(x)}" y="{f2(y)}" width="{f2(w)}" height="{f2(h)}" fill="none" stroke="{c["f"]}" stroke-width="{f2(1.2*s)}"/>'
@@ -216,14 +216,18 @@ def _merete(fk, s, size, tr):
     return w + tr * size * len(s)
 
 def nevir(n, c, cx, base, cel_w):
+    """GERA (vékony) · ART (vastag, karamell) · DESIGN (vékony) – az ART a kiemelt szó."""
     fb, fl, tr = WM2[n]
-    w1 = _merete(fb, 'GERA', 10, tr); w2 = _merete(fl, 'ARTDESIGN', 10, tr)
-    size = 10 * cel_w / (w1 + w2)
-    w1 *= size / 10; w2 *= size / 10
-    x = cx - (w1 + w2) / 2
-    d1, ww1 = text(fb, 'GERA', size, tr, x + w1 / 2, base)
-    d2, _ = text(fl, 'ARTDESIGN', size, tr, x + w1 + w2 / 2, base)
-    return f'<path d="{d1}" fill="{c["w"]}"/><path d="{d2}" fill="{c["w"]}"/>', size
+    reszek = [(fl, 'GERA', c['w']), (fb, 'ART', c.get('art', c['a'])), (fl, 'DESIGN', c['w'])]
+    ws = [_merete(fk, t, 10, tr) for fk, t, _ in reszek]
+    size = 10 * cel_w / sum(ws)
+    ws = [w * size / 10 for w in ws]
+    x = cx - sum(ws) / 2; out = ''
+    for (fk, t, col), w in zip(reszek, ws):
+        d, _ = text(fk, t, size, tr, x + w / 2, base)
+        out += f'<path d="{d}" fill="{col}"/>'
+        x += w
+    return out, size
 
 def tagsor(c, cx, base, cel_w):
     _, w = text('tag', TAG, 10, .24, 0, 0)
