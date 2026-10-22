@@ -28,13 +28,14 @@ Valódi fotó nincs; stock/AI kép nincs. A hero egy kódból rajzolt, lapos geo
 ## Koncepció: „Arány”
 Építészeti, geometrikus: látható 12 hasábos tartórács a hero mögött, számozott szakaszok, hajszálvonalas rácsba rendezett szolgáltatások saját geometrikus jelekkel, sötét dió blokk a műhelynek, görgetésre haladó folyamatvonal.
 
-## Logók (`arculat/logo-1…5/`, `_forras/logok.py`) — 3. kör
-A 2. kör kör alapú G-i túl „Google-szerűek” voltak, ezért minden G asztalosi szerkezetből indul (nem betűtípus, nem kör):
-1. Gér – négyszögletes G gérvágott sarkokkal, karamell szár; Michroma.
-2. Rétegelt – balra íves, jobbra szögletes G hét rétegből; Unbounded (gera erős / artdesign vékony).
-3. Ív – boltíves, magas vonal-G; Josefin Sans.
-4. Modul – négy elemből összerakott G, karamell blokk; Lexend Exa.
-5. Szál – egyvonalas G, amely a keretbe fut; Urbanist.
+## Logók (`arculat/logo-1…5/`, `_forras/logok.py`) — 4. kör
+Kérés: első ránézésre látsszon, hogy asztalos. Minden G egy asztalosi tárgyból/szerkezetből épül, a név alatt „BÚTORASZTALOS · INTARZIA” sor:
+1. Szorító – a G maga egy pillanatszorító (íves test, orsó, karamell nyomótalp); Unbounded.
+2. Forgács – rostos gyaluforgács, befelé hajló nyelvvel; Josefin Sans.
+3. Fecskefark – szögletes G fecskefarkas sarokkötésekkel; Michroma.
+4. Derékszög – a G szára asztalos derékszög (fa nyél, szegecsek, acél penge beosztással); Urbanist.
+5. Évgyűrű – gerenda bütüje évgyűrűkkel és bütürepedéssel; Lexend Exa.
+(Korábbi körök: Caslon/Bodoni betű-G-k → kör alapú geometrikus G-k → gér/rétegelt/ív/modul/szál – mind elvetve.)
 
 Fájlok változatonként: `fo`, `vilagos`, `sotet`, `sotet-atlatszo`, `mono`, `kompakt`, `kompakt-sotet`, `social`, `social-sotet`, `fejlec`, `fejlec-sotet` (SVG, körvonalazott).
 
