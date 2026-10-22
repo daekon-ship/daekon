@@ -45,15 +45,13 @@ Fájlok: `index.html`, `impresszum.html`, `adatkezeles.html`, `404.html`, `gyala
 - Az „Ismerje meg a műhelyt” szekció, a „A műhely” menüpont (asztali és mobil) és a képnagyító kikerült. A menü: Főoldal | Szolgáltatások | Miért minket? | Kapcsolat + Időpontkérés.
 - Ha később lesznek saját műhelyfotók, egy galéria a „Miért minket?” után visszatehető.
 
-## Logó (11. kör – összetett tábla-logó, 2026-10-22)
-- Az ügyfélnek szánt, „normális, összetett” logó: jel és felirat **egy egységben**. Fő változat a **fekvő tábla**: lekerekített keret, bal oldalt kör alakú mezőben autó elölnézetből (kék fényszórók), elválasztó vonal, jobb oldalt GYÁLAUTÓ (Inter ExtraBold, görbésítve), alatta AUTÓSZERVIZ · GYÁL.
-- **Párja: kerek jelvény** (`logo-kerek.svg`) ugyanazzal az autóval, körben a felirattal – matricára, pecsétre, munkaruhára, profilképnek.
-- **Ikon** (favicon, telefonos ikon): az autó elölnézetből sötét alapon – 16 px-en is olvasható.
-- **Színek:** keret #A9B9CC, tábla #111D2D, körmező #080D14, autó és felirat #F4F7FA, fényszórók #16B8FF, alsor #91E7FF. Világos változat: fehér tábla, #0A1220 keret/felirat, #0A6FA0 alsor.
-- **Fájlok:** `logo.svg` (sötét), `logo-vilagos.svg` (világos), `logo-kerek.svg` (jelvény), `logo-jel.svg` (autó körben), `favicon.svg`, PNG-ikonok, `og-gyalauto.jpg`.
-- Fejléc: csak a tábla (a korábbi „STABILTERV KFT. | Q-SERVICE PARTNER” alsor kikerült a fejlécből; a cégnév a láblécben, a Q-SERVICE a hero feliratában szerepel).
-- Mozgás: betöltéskor a logó beúszik, a fényszórók felvillannak; rámutatáskor a keret kivilágosodik.
-- Elvetett irányok: dőlt levágott sarkú betűk, hatlapfejű anya G-vel, villáskulcs + anya, autó az emelőn méretvonallal, ívelt tetővonalas szókép.
+## Logó (12. kör – kompakt logó + Facebook, 2026-10-22)
+- **Egyszerű, keret nélküli logó:** autó elölnézetből (kék fényszórók) + GYÁLAUTÓ (Inter ExtraBold, görbésítve) + AUTÓSZERVIZ · GYÁL.
+- **Fekvő változat** (fejléc, lábléc, számla): `logo.svg` (sötét), `logo-vilagos.svg` (világos).
+- **Álló, négyzetes változat** (Facebook-profilkép, matrica): `logo-allo.svg`, `logo-allo-vilagos.svg`. Úgy méretezve, hogy a Facebook kör alakú kivágásában is kényelmes margó maradjon.
+- **Kész Facebook-képek:** `facebook-profilkep.png` (1080×1080), `facebook-boritokep.jpg` (1640×624; a fontos tartalom a középső részen van, így telefonon sem vágódik le).
+- Jel önmagában: `logo-jel.svg`; favicon és telefonos ikonok: az autó elölnézetből.
+- Elvetett irányok: keretes tábla, kerek jelvény, autó az emelőn, villáskulcs, hatlapfejű anya, dőlt levágott sarkú betűk.
 
 ## Teljes vizuális javítás (3. kör)
 - Egységes formavilág a logó csavaranyájából: a fő gombok kétsarkú, gépelt „lemez” formát kaptak (ferdén levágott sarkok, fényes élsúrolás rámutatáskor), a többi elem 4–6 px-es szögletes sarok — eltűntek a lekerekített „pill” gombok és dobozok.
