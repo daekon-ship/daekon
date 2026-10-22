@@ -3,6 +3,12 @@
 **Élő látványterv:** https://daekon-ship.github.io/daekon/latvanytervek/kalocsa-zoltan/ (noindex)
 **Állapot (2026.10.22., 10. kör):** ügyfélnek bemutatható látványterv. Az éles működéshez szükséges integrációk (űrlapküldés, mérés) előkészítve, de **nincsenek bekapcsolva** (lásd G).
 
+## 11. kör (2026.10.22.)
+- **Rólam-fotó:** a teljes kép látszik (3:4 keret, alulra igazítva) – cipő, gép, tolólap is.
+- **„Elcsúszott” képek:** a kártyák és a kiemelt munkák kerete most a fotók saját álló 3:4-es arányát követi, így nem vágja le a gépet, a kanalat vagy a tetejét (mobilon 4:5, minimális vágással).
+- **Árkok még mélyebbek, prémium színezés:** erősebb, lágy szélű árnyékolás az árkok falán és alján; minden munkafotó egységes „filmes” színezést kapott (meleg fények, hidegebb grafit árnyékok, finom vignetta, erősebb kontraszt).
+- **Logó csiszolása:** a jel finom színátmenetet kapott (narancs: #F89545 → #E0620E, világos: fehér → hideg szürke, sötét: grafit); a fejlécben a név kétszínű, mint a logóban: KALOCSA fehér, GEOWORKS narancs, alatta szürke „Gépi földmunka”. Az `arculat/` SVG- és PNG-fájljai frissítve.
+
 ## 10. kör – Zoltán e-mailes kérései (2026.10.22.)
 | Kérés | Megoldás |
 |---|---|

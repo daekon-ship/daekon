@@ -57,11 +57,12 @@ p{margin:0 0 1em}
 .hdr__in{position:relative;height:var(--hdr);display:flex;align-items:center;gap:26px;max-width:1360px}
 .brand{display:flex;align-items:center;gap:12px;text-decoration:none;margin-right:auto}
 .brand__mark{width:40px;height:40px;flex:none;overflow:visible}
-.brand__mark .km-a{fill:#F2F3F4}.brand__mark .km-b{fill:var(--o);transform-box:fill-box;transform-origin:100% 100%;transition:transform .5s var(--ease)}
+.brand__mark .km-a{fill:url(#kgl)}.brand__mark .km-b{fill:url(#kgo);transform-box:fill-box;transform-origin:100% 100%;transition:transform .5s var(--ease)}
 .brand:hover .brand__mark .km-b{transform:translate(-3px,-3px)}
 .brand__txt{display:flex;flex-direction:column;gap:4px;line-height:1}
 .brand__txt b{white-space:nowrap;font:800 18px/1 var(--disp);font-stretch:84%;text-transform:uppercase;letter-spacing:.02em;color:#fff}
-.brand__txt small{font:700 11px/1 var(--body);letter-spacing:.2em;text-transform:uppercase;color:var(--o)}
+.brand__txt small{font:700 11px/1 var(--body);letter-spacing:.24em;text-transform:uppercase;color:var(--mute)}
+.brand__txt b span{color:var(--o)}
 .nav{display:flex;align-items:center;gap:22px}
 .nav a{position:relative;font:600 13.5px/1 var(--body);text-decoration:none;color:#D6DADE;padding:8px 0;white-space:nowrap;transition:color .2s}
 .nav a::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;border-radius:2px;background:var(--o);transform:scaleX(0);transform-origin:left;transition:transform .35s var(--ease)}
@@ -467,3 +468,12 @@ p{margin:0 0 1em}
 .fgrid--ba .ftile__img{aspect-ratio:4/4.4}
 @media (max-width:860px){.feat--rev{grid-template-columns:1fr}}
 .ftr__grid>*{min-width:0}.ftr a[href^="mailto:"],.about__cta .link{overflow-wrap:anywhere}
+/* 11. kör: a képek a teljes fotót mutatják (álló 3:4 keret = a fotók saját aránya, nincs levágott gép/cipő) */
+.wcard__img{aspect-ratio:3/4}
+.ftile__img{aspect-ratio:3/4}
+.fgrid--one .ftile__img{aspect-ratio:4/3.6}
+.fgrid--ba .ftile__img{aspect-ratio:3/4}
+.wcard__img img[src*="tusko"],.wcard__img img[src*="kozmuarok"]{object-position:50% 55%}
+.portrait img{aspect-ratio:3/4;object-position:50% 100%}
+@media (max-width:860px){.portrait img{aspect-ratio:3/4}}
+@media (max-width:600px){.wcard__img{aspect-ratio:4/5}.wcard__img img{object-position:50% 70%}}

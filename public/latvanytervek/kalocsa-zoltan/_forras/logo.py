@@ -37,9 +37,25 @@ BAR = rpath([(0, 85), (17, 85), (102, 0), (85, 0)], [0, 5, 0, 5])              #
 LEG = rpath([(29.75, 63.75), (38.25, 55.25), (83, 100), (66, 100)], [0, 0, 0, 5])  # alsó szár (a rúdba fut)
 TIP = rpath([(0, 34), (17, 34), (30.5, 47.5), (22, 56)], [0, 5, 0, 0])         # felső, levált szár – NARANCS
 
+# finom, „fémes” színátmenetek (prémium hatás, kis méretben is tiszta marad)
+GRAD = {
+    ORANGE: ("#F89545", "#E0620E"),
+    INK: ("#30363C", "#15181B"),
+    LIGHT: ("#FFFFFF", "#D3D8DD"),
+}
+def defs(*cols):
+    out = ""
+    for c in cols:
+        if c in GRAD:
+            a, b = GRAD[c]
+            out += (f'<linearGradient id="kg{c[1:]}" x1="0" y1="0" x2="1" y2="1">'
+                    f'<stop offset="0" stop-color="{a}"/><stop offset="1" stop-color="{b}"/></linearGradient>')
+    return f"<defs>{out}</defs>" if out else ""
+def paint(c):
+    return f"url(#kg{c[1:]})" if c in GRAD else c
 def mark(main, accent, x=0, y=0, s=1.0):
     return (f'<g transform="translate({x:.2f} {y:.2f}) scale({s})">'
-            f'<path d="{BAR}" fill="{main}"/><path d="{LEG}" fill="{main}"/><path d="{TIP}" fill="{accent}"/></g>')
+            f'<path d="{BAR}" fill="{paint(main)}"/><path d="{LEG}" fill="{paint(main)}"/><path d="{TIP}" fill="{paint(accent)}"/></g>')
 
 # ---------- felirat görbére ----------
 def load(wght, wdth):
@@ -60,7 +76,7 @@ S, SW = text_path(MED, "GÉPI FÖLDMUNKA", 9.6, .2)
 
 def svg(w, h, body, title="Kalocsa GeoWorks"):
     return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w:.1f} {h:.1f}" role="img" aria-label="{title}">'
-            f'<title>{title}</title>{body}</svg>\n')
+            f'<title>{title}</title>{defs(ORANGE, INK, LIGHT)}{body}</svg>\n')
 
 def stacked(main, accent, word, sub, bg=None):
     # az eredeti elrendezés: nagy jel, a név a rúd alatt, az alsó szártól balra (kétsoros, balra zárt)
@@ -90,7 +106,7 @@ files = {
     "jel-sotet.svg": svg(102, 100, mark(LIGHT, ORANGE)),
 }
 for n, data in files.items(): (ART / n).write_text(data, encoding="utf-8"); print("arculat/" + n)
-fav = (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="20" fill="{GRAPH}"/>'
+fav = (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">{defs(ORANGE, LIGHT)}<rect width="100" height="100" rx="20" fill="{GRAPH}"/>'
        f'{mark(LIGHT, ORANGE, 17.5, 18, .64)}</svg>\n')
 (ROOT / "logo-jel.svg").write_text(fav, encoding="utf-8")
 (ROOT / "logo.svg").write_text(files["logo-fekvo-sotet.svg"], encoding="utf-8")
