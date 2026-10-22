@@ -213,3 +213,4 @@ Főcím és alcím · „30 év” · végzettségek és pálya · idézet · �
 - **„Lehet vidám, de a szemnek kellemes”:** a kezdőlapi rovatszámok a logó három színét kapták (01 kék, 02 türkiz, 03 arany, 04 türkiz) – visszafogottan.
 - **„Átlinkelés más partnerek oldalára”:** a Partnerközpont rovatban partnersor (jelenleg minta), kattintásra a partner oldalára visz; valódi partnernél közvetlenül a partner weboldalára.
 - Tesztek: 17 oldal × 8 szélesség – nincs túlcsordulás, nincs konzolhiba; kalkulátorok, visszahívás, Tudástár, dokumentumtár, partnerek, kezelőfelület működik.
+- 25. kör (10. 22.): telefonos és gépi ellenőrzés automatikus átfedés-/levágás-kereséssel (17 oldal × 8 szélesség). Valódi hiba: a „Minta” címke rácsúszott a partner- és ajánlatkártyák címére → a címke saját sort kapott. Egyéb elcsúszás nincs.
