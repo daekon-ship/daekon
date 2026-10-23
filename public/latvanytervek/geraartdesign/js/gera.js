@@ -124,7 +124,7 @@
   const mr = $('#munkakRacs');
   if (mr) MUNKAK.forEach((m, i) => {
     const f = document.createElement('figure'); f.className = 'foto felfed';
-    f.innerHTML = `<div class="foto-hely">${m.foto ? `<img src="${m.foto}" alt="${m.cim}" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">` : `<svg viewBox="0 0 300 300" aria-hidden="true"></svg><span>Fotó helye · 0${i + 1}</span>`}</div><figcaption><h3>${m.cim}</h3><span>${m.kat}</span></figcaption>`;
+    f.innerHTML = `<div class="foto-hely">${m.foto ? `<img src="${m.foto}" alt="${m.cim}" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">` : `<svg viewBox="0 0 300 300" aria-hidden="true"></svg><span>Fotó helye · 0${i + 1}</span>`}</div><figcaption><span class="no">No. 0${i + 3}</span><h3>${m.cim}</h3><span>${m.kat}</span></figcaption>`;
     mr.appendChild(f);
     if (!m.foto && M) {
       const s = $('svg', f);
@@ -141,6 +141,55 @@
     }
   });
 
+  /* ---------------- INTARZIA: görgetésre összeálló rozetta ---------------- */
+  let rozetta = null;
+  const rsvg = $('#rozetta');
+  if (rsvg) {
+    const C = { dio: '#3F332A', kar: '#C08A5A', kars: '#A6744A', vil: '#EBDCC8', hom: '#D6BE9C', var: '#F3ECE2' };
+    const db = [];
+    const P = pts => 'M' + pts.map(p => p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join('L') + 'Z';
+    const pol = (r, a) => [300 + r * Math.cos(a * Math.PI / 180), 300 + r * Math.sin(a * Math.PI / 180)];
+    const tesz = (d, f, csop) => db.push({ d, f, csop });
+    /* keret: gérelt sávok */
+    const o = 14, b = 58, e = 586;
+    tesz(P([[o, o], [e, o], [e - b + o, b], [b, b]]), C.dio, 0); tesz(P([[e, o], [e, e], [e - b + o, e - b + o], [e - b + o, b]]), C.dio, 0);
+    tesz(P([[e, e], [o, e], [b, e - b + o], [e - b + o, e - b + o]]), C.dio, 0); tesz(P([[o, e], [o, o], [b, b], [b, e - b + o]]), C.dio, 0);
+    tesz(P([[b, b], [e - b + o, b], [e - b + o, e - b + o], [b, e - b + o]]), C.hom, 0);
+    /* sarokban legyezők */
+    [[b, b, 0], [e - b + o, b, 90], [e - b + o, e - b + o, 180], [b, e - b + o, 270]].forEach(([x, y, a0]) => {
+      for (let k = 0; k < 6; k++) {
+        const a = a0 + k * 15, r = 120, p1 = [x + r * Math.cos(a * Math.PI / 180), y + r * Math.sin(a * Math.PI / 180)], p2 = [x + r * Math.cos((a + 15) * Math.PI / 180), y + r * Math.sin((a + 15) * Math.PI / 180)];
+        tesz(P([[x, y], p1, p2]), k % 2 ? C.vil : C.kars, 1);
+      }
+    });
+    /* gyűrű és mező */
+    tesz(`M${300 - 214} 300a214 214 0 1 0 428 0a214 214 0 1 0 -428 0Z M${300 - 198} 300a198 198 0 1 1 396 0a198 198 0 1 1 -396 0Z`, C.kar, 2);
+    tesz(`M${300 - 198} 300a198 198 0 1 0 396 0a198 198 0 1 0 -396 0Z`, C.vil, 2);
+    /* 16 ágú csillag: rövid ágak, majd hosszú ágak, két-két félben */
+    const ag = (R, a, w, f1, f2, cs) => { const t = pol(R, a), l = pol(56, a - w), r = pol(56, a + w); tesz(P([[300, 300], t, l]), f1, cs); tesz(P([[300, 300], t, r]), f2, cs); };
+    for (let k = 0; k < 8; k++) ag(132, 22.5 + k * 45, 22.5, C.hom, C.kars, 3);
+    for (let k = 0; k < 8; k++) ag(192, k * 45, 22.5, C.dio, C.kar, 4);
+    tesz(`M282 300a18 18 0 1 0 36 0a18 18 0 1 0 -36 0Z`, C.kar, 5);
+    /* rajzolás */
+    let seed = 7; const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
+    rsvg.innerHTML = db.map(p => `<path d="${p.d}" fill="${p.f}" fill-rule="evenodd" stroke="${C.var}" stroke-width="1.4" stroke-linejoin="round"/>`).join('');
+    const utak = $$('path', rsvg);
+    db.forEach((p, i) => { p.el = utak[i]; p.dx = (rnd() - .5) * 420; p.dy = (rnd() - .5) * 420 - 60; p.r = (rnd() - .5) * 140; });
+    const N = db.length;
+    rozetta = () => {
+      const r = rsvg.getBoundingClientRect();
+      let pr = halk ? 1 : (innerHeight * 0.95 - r.top) / (r.height * 0.95 + innerHeight * 0.15);
+      pr = Math.max(0, Math.min(1, pr));
+      db.forEach((p, i) => {
+        const s0 = (p.csop / 6) * 0.55 + (i / N) * 0.12;
+        const t = ease(Math.max(0, Math.min(1, (pr - s0) / 0.3)));
+        p.el.style.transform = t >= 1 ? '' : `translate(${(p.dx * (1 - t)).toFixed(1)}px,${(p.dy * (1 - t)).toFixed(1)}px) rotate(${(p.r * (1 - t)).toFixed(1)}deg)`;
+        p.el.style.opacity = (0.15 + 0.85 * t).toFixed(3);
+      });
+    };
+    rozetta();
+  }
+
   /* ---------------- görgetés: megjelenés + folyamatlépések ---------------- */
   let varo = $$('.felfed');
   $$('.elv, .foto, .mutato li').forEach((el, i) => { el.style.transitionDelay = (i % 4) * 80 + 'ms'; });
@@ -150,6 +199,7 @@
     tick = false;
     const h = innerHeight * 0.88;
     varo = varo.filter(el => (el.getBoundingClientRect().top < h) ? (el.classList.add('lathato'), false) : true);
+    if (rozetta) rozetta();
     if (lepesek.length && talaloSzakasz) {
       const kozep = innerWidth <= 900 ? innerHeight * 0.78 : innerHeight * 0.55;
       let best = 0, bd = 1e9;

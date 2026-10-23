@@ -1,4 +1,6 @@
-# geraartdesign — átadás (6. kör, 2026.10.23.)
+# geraartdesign — átadás (7. kör, 2026.10.23.)
+
+**7. kör:** „túl egybe van, tűnjön művészibbnek” → új sötét **Intarzia** szakasz görgetésre darabonként összeálló rozettával (No. 02), múzeumi tárgycímkék (No. 01–06) a 3D-rajzokon, aszimmetrikus kijelentés függőleges sínnel, lépcsőzetes munkák-galéria, mobilon a hero-sáv 2×2-es és nem lóg ki a margóból.
 
 **6. kör: a weboldal újratervezése „Műhely” koncepcióval** (ügyfél: „a látványterv nagyon gyenge még”). A lapos vektor-illusztrációk, ikonos kártyák és nagy üres képhelyek kikerültek; helyettük saját, forgatható 3D-rajzok (fecskefarkas kötés, épülő tálaló), sötét dió hero, szerkesztett szolgáltatás-mutató. Betű: Kumbh Sans, a logó névírásával egyezően.
 
@@ -27,6 +29,7 @@ Valódi fotó nincs; stock/AI kép nincs. Minden kép a saját 3D-rajzolóval k�
 - Hero: átmenő fecskefarkas kötés (karamell farokdeszka + világos csapdeszka).
 - Így dolgozom: tálalószekrény, amely görgetésre 4 lépésben épül fel.
 - Munkák: 4 fotóhely vonalas 3D-vázlattal (konyha, gardrób, asztal, komód), „Fotó helye” felirattal. Valódi kép: `js/gera.js` → `MUNKAK[n].foto`.
+- Intarzia: 16 ágú rozetta keretben, sarokban legyezőkkel – SVG-darabok, görgetésre a helyükre repülnek (`js/gera.js`, ROZETTA).
 - Rólam: portré helye jelölve.
 
 ## Koncepció: „Műhely”
@@ -53,6 +56,7 @@ Fájlok változatonként: `fo`, `vilagos`, `sotet`, `sotet-atlatszo`, `mono`, `k
 |---|---|---|---|
 | Hero – fecskefarkas kötés | betöltéskor a két deszka összecsúszik; egérre finoman fordul; húzással forgatható; „Szétszedem” gomb szétválasztja, feliratokkal | betöltés / egér / húzás / kattintás | összerakva, mozgás nélkül |
 | Így dolgozom – tálaló | ragadós kép; a lépések görgetésével 4 állapot: méretvonalas körvonal → korpusz → ajtó, fiókok, kihúzott fiók → lábak, fogantyúk, karamell frontok, sötét fedlap; közben lassan fordul | görgetés | állapotváltás animáció nélkül |
+| Intarzia – rozetta | ~60 darab szétszórtan indul, görgetésre csoportonként (keret → legyezők → gyűrű → rövid ágak → hosszú ágak → közép) a helyére fordul; visszagörgetve szétválik | görgetés | összerakva |
 | Munkák | a vázlat hoverre elfordul | hover (finom mutató) | – |
 | Szolgáltatás-mutató | cím elcsúszik, karamell alsó vonal, nyíl elfordul | hover | – |
 | Szakaszok | lágy felúszás | görgetés | nincs |
