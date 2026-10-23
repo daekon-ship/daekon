@@ -1,4 +1,6 @@
-# geraartdesign — átadás (8. kör, 2026.10.23.)
+# geraartdesign — átadás (9. kör, 2026.10.23.)
+
+**9. kör:** az intarziás doboz kikerült („nem kell”); az Intarzia rész tipográfiai sáv lett kép nélkül. A szövegek kontrasztja jóval erősebb (a szöveg „beleolvadt”): sötét alapon #EFE5D8, világos alapon #2F2620 / #54463B, nagyobb törzs (17 px) és bevezető (18–20 px), sötétebb címkék.
 
 **8. kör:** a rozetta („hülyeség”) helyett **intarziás doboz** 3D-ben: a fedél berakása görgetésre darabonként a helyére kerül, a „Kinyitom” gombra a fedél felnyílik (üreges test, sötét bélés). A „tanulmány / görgetésre áll össze” meta-feliratok és a gombnak látszó címkék kikerültek. Az összes szöveg átírva: konkrétabb, ügyfélnek szóló, első személyű.
 
@@ -31,7 +33,7 @@ Valódi fotó nincs; stock/AI kép nincs. Minden kép a saját 3D-rajzolóval k�
 - Hero: átmenő fecskefarkas kötés (karamell farokdeszka + világos csapdeszka).
 - Így dolgozom: tálalószekrény, amely görgetésre 4 lépésben épül fel.
 - Munkák: 4 fotóhely vonalas 3D-vázlattal (konyha, gardrób, asztal, komód), „Fotó helye” felirattal. Valódi kép: `js/gera.js` → `MUNKAK[n].foto`.
-- Intarzia: intarziás doboz (`Muhely3D.doboz`) – berakott szegély, rombusz, sarokháromszögek; nyitható fedél.
+- Intarzia: kép nélküli szöveges sáv (a `Muhely3D.doboz` modell a forrásban maradt, nincs használatban).
 - Rólam: portré helye jelölve.
 
 ## Koncepció: „Műhely”
@@ -58,7 +60,6 @@ Fájlok változatonként: `fo`, `vilagos`, `sotet`, `sotet-atlatszo`, `mono`, `k
 |---|---|---|---|
 | Hero – fecskefarkas kötés | betöltéskor a két deszka összecsúszik; egérre finoman fordul; húzással forgatható; „Szétszedem” gomb szétválasztja, feliratokkal | betöltés / egér / húzás / kattintás | összerakva, mozgás nélkül |
 | Így dolgozom – tálaló | ragadós kép; a lépések görgetésével 4 állapot: méretvonalas körvonal → korpusz → ajtó, fiókok, kihúzott fiók → lábak, fogantyúk, karamell frontok, sötét fedlap; közben lassan fordul | görgetés | állapotváltás animáció nélkül |
-| Intarzia – doboz | a fedél berakásának darabjai görgetésre rétegenként leereszkednek a helyükre (szegély → rombusz → belső rombusz → közép); „Kinyitom” gomb: a fedél a hátsó él körül felnyílik | görgetés / kattintás | kész berakás |
 | Munkák | a vázlat hoverre elfordul | hover (finom mutató) | – |
 | Szolgáltatás-mutató | cím elcsúszik, karamell alsó vonal, nyíl elfordul | hover | – |
 | Szakaszok | lágy felúszás | görgetés | nincs |

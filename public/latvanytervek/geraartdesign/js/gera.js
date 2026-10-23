@@ -141,42 +141,7 @@
     }
   });
 
-  /* ---------------- INTARZIA: doboz, a fedél berakása görgetésre kerül a helyére, a fedél nyitható ---------------- */
   let rozetta = null;
-  const dsvg = $('#doboz');
-  if (dsvg && M) {
-    const SZ = { test: '#B98252', vil: '#EBDCC8', hom: '#D2B48C', dio: '#3F332A', belso: '#6B4A3A' };
-    const J = new M.Jelenet(dsvg, { yaw: 148, pitch: 30, vonal: '#2A221D', vastag: .9, keret: 30 });
-    const mod = M.doboz(SZ);
-    J.testek = mod.reszek;
-    let szog = 0;
-    const zy = mod.zsanerY, zz = mod.zsanerZ;
-    const forgX = (p, a) => { const c = Math.cos(a), s2 = Math.sin(a), y = p[1] - zy, z = p[2] - zz; return [p[0], zy + y * c - z * s2, zz + y * s2 + z * c]; };
-    const forgN = (n, a) => { const c = Math.cos(a), s2 = Math.sin(a); return [n[0], n[1] * c - n[2] * s2, n[1] * s2 + n[2] * c]; };
-    J.testek.forEach(t => { if (t.resz === 'fedel') { t.xf = p => forgX(p, szog); t.xfn = n => forgN(n, szog); } });
-    szog = 1.15; J.illeszt(); szog = 0;
-    const berak = J.testek.filter(t => t.berakas !== undefined);
-    let pr = halk ? 1 : 0, nyit = 0, nyitCel = 0, fut = false;
-    function rajz() {
-      nyit += (nyitCel - nyit) * 0.1; szog = 1.15 * ease(nyit);
-      berak.forEach(t => {
-        const s0 = t.berakas * 0.16, v = ease(Math.max(0, Math.min(1, (pr - s0) / 0.36)));
-        t.off = [0, (1 - v) * 3.2, 0]; t.alpha = v * Math.max(0, Math.min(1, 1 - (szog - 0.45) * 4));
-      });
-      J.rajzol();
-      if (Math.abs(nyitCel - nyit) > 0.003) requestAnimationFrame(rajz); else fut = false;
-    }
-    const indit = () => { if (!fut) { fut = true; requestAnimationFrame(rajz); } };
-    rozetta = () => {
-      if (halk) return;
-      const r = dsvg.getBoundingClientRect();
-      const uj = Math.max(0, Math.min(1, (innerHeight * 0.92 - r.top) / (r.height * 0.9 + innerHeight * 0.1)));
-      if (Math.abs(uj - pr) > 0.002) { pr = uj; indit(); }
-    };
-    const g = $('#dobozGomb');
-    g && g.addEventListener('click', () => { nyitCel = nyitCel ? 0 : 1; g.textContent = nyitCel ? 'Becsukom' : 'Kinyitom'; g.setAttribute('aria-pressed', !!nyitCel); indit(); });
-    rajz(); rozetta();
-  }
 
   /* ---------------- görgetés: megjelenés + folyamatlépések ---------------- */
   let varo = $$('.felfed');
