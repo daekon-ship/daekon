@@ -4,7 +4,7 @@
 **Állapot (2026.10.22., 10. kör):** ügyfélnek bemutatható látványterv. Az éles működéshez szükséges integrációk (űrlapküldés, mérés) előkészítve, de **nincsenek bekapcsolva** (lásd G).
 
 ## Ügyfélkérés (2026.10.23.)
-1. „A gép a nyomvonalon” (pirto-3): az árokmélyítés sötét foltot hagyott a gémkar mellett → ezen a képen nincs árokmélyítés, csak az egységes színezés.
+1. „A gép a nyomvonalon” (pirto-3): Zoltán kérésére levéve; a Pirtó–Halas munkánál 3 fotó maradt (az árok nagyban felül, alatta a megállóhelyi és az erdő melletti kép).
 2. Közműárok-ásás: Zoltán kérésére az **eredeti, szerkesztetlen** fotó (`img/kozmuarok-*.webp`); a nagyításnál „Eredeti fotó, szerkesztés nélkül” felirat. A `kozmuarok-melyebb-*` fájlok nincsenek használatban.
 
 ## Csak „Kiemelt munkák” (2026.10.22., ügyfélkérés)

@@ -494,3 +494,7 @@ p{margin:0 0 1em}
 .form__demo b{color:var(--o);white-space:nowrap}
 .form__demo .dotk{flex:none;margin-top:5px}
 .lb figcaption::after{content:attr(data-note);display:block;margin-top:6px;font:500 12px/1.3 var(--body);text-transform:none;letter-spacing:.02em;color:var(--mute)}
+/* Pirtó–Halas: 3 fotó – az árok nagyban felül, alatta két kép */
+.fgrid--three>.ftile:first-child{grid-column:1/-1}
+.fgrid--three>.ftile:first-child .ftile__img{aspect-ratio:4/3}
+.fgrid--three>.ftile:first-child .ftile__img img{object-position:50% 62%}
