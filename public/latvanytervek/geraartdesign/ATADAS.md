@@ -1,12 +1,12 @@
-# geraartdesign — átadás (2. kör, 2026.10.22.)
+# geraartdesign — átadás (6. kör, 2026.10.23.)
 
-**2. kör: teljes újratervezés** az ügyfél visszajelzése alapján („logók, betűk, minden gyenge”). Kért irány: erős, modern, geometrikus. A fa-/intarziaminták, a Caslon-betűk és a betűtípusból vett G-k kikerültek.
+**6. kör: a weboldal újratervezése „Műhely” koncepcióval** (ügyfél: „a látványterv nagyon gyenge még”). A lapos vektor-illusztrációk, ikonos kártyák és nagy üres képhelyek kikerültek; helyettük saját, forgatható 3D-rajzok (fecskefarkas kötés, épülő tálaló), sötét dió hero, szerkesztett szolgáltatás-mutató. Betű: Kumbh Sans, a logó névírásával egyezően.
 
-Gera Péter (Gera Art Design) — bútorasztalos és intarziakészítő. Látványterv + 5 logóváltozat.
+Gera Péter (Gera Art Design) — bútorasztalos és intarziakészítő. Látványterv + 3 logóváltozat (1, 4, 5).
 
 - Weboldal: `index.html` → https://daekon-ship.github.io/daekon/latvanytervek/geraartdesign/
 - Logóválasztó: `logo.html` → https://daekon-ship.github.io/daekon/latvanytervek/geraartdesign/logo.html
-- A weboldalon bal lent „Logó 1–5” bemutatósáv: bármelyik logót ki lehet próbálni élőben (`?logo=3` is működik). **Élesítéskor törlendő.**
+- A weboldalon bal lent „Logó 1 · 4 · 5” bemutatósáv: a logók élőben kipróbálhatók (`?logo=4` is működik). **Élesítéskor törlendő.**
 
 ## Ügyféladatok – mi igazolt, mi nem
 
@@ -23,10 +23,14 @@ Gera Péter (Gera Art Design) — bútorasztalos és intarziakészítő. Látvá
 Nincs kitalált vélemény, ár, statisztika, évszám.
 
 ## Képek
-Valódi fotó nincs; stock/AI kép nincs. A hero egy kódból rajzolt, lapos geometrikus látványrajz (tálaló, tükör, méretvonalak) – illusztráció, nem munka. A munkák helyein kategóriánként egyszerű nézetrajz + „saját kép kerül ide” felirat; valódi kép: `js/gera.js` → `MUNKAK[n].foto`. Portré helye jelölve.
+Valódi fotó nincs; stock/AI kép nincs. Minden kép a saját 3D-rajzolóval készül (`js/muhely3d.js`): ortografikus vetítés, festő-algoritmus, lapfény a normálisokból, SVG-ben – nem fotó, nem WebGL.
+- Hero: átmenő fecskefarkas kötés (karamell farokdeszka + világos csapdeszka).
+- Így dolgozom: tálalószekrény, amely görgetésre 4 lépésben épül fel.
+- Munkák: 4 fotóhely vonalas 3D-vázlattal (konyha, gardrób, asztal, komód), „Fotó helye” felirattal. Valódi kép: `js/gera.js` → `MUNKAK[n].foto`.
+- Rólam: portré helye jelölve.
 
-## Koncepció: „Arány”
-Építészeti, geometrikus: látható 12 hasábos tartórács a hero mögött, számozott szakaszok, hajszálvonalas rácsba rendezett szolgáltatások saját geometrikus jelekkel, sötét dió blokk a műhelynek, görgetésre haladó folyamatvonal.
+## Koncepció: „Műhely”
+Sötét dió (#2A221D) + krém, karamell hangsúly. A fő vizuális elem nem dísz, hanem asztalosi szerkezet: a hero fecskefarkas kötése egérrel forgatható és szétszedhető, a folyamatnál egy bútor épül fel felméréstől beépítésig. A címek a logó névírását követik: vékony szöveg, a kulcsszó vastag karamell.
 
 ## Logók (`arculat/logo-1`, `logo-4`, `logo-5`; `_forras/logok.py`) — 5. kör
 Az ügyfél az 1-es, 4-es és 5-ös irányt fogadta el; a 2-es (Forgács) és 3-as (Fecskefark) kikerült (a rajzoló függvények a forrásban maradtak).
@@ -39,21 +43,21 @@ Névírás (ügyfélkérésre nagybetűs, ART kiemelve): „GERA**ART**DESIGN”
 Fájlok változatonként: `fo`, `vilagos`, `sotet`, `sotet-atlatszo`, `mono`, `kompakt`, `kompakt-sotet`, `social`, `social-sotet`, `fejlec`, `fejlec-sotet` (SVG, körvonalazott).
 
 ## Designrendszer
-- Betűk (helyben, WOFF): **Unbounded** 250–500 (címek, 300-as súlyon) + **Urbanist** 300–700 (szöveg). Fraunces nincs.
-- Méretek: h1 27–44 px, h2 23–34 px, h3 16–19 px, törzs 17 px, címke 11,5 px nagybetűs. Szándékosan mérsékelt.
-- Színek: papír `#FBF7F1`, krém `#F4EDE3`, homok `#EADFD1`, púder `#E0D1BF`, világos taupe `#C8B6A1`, taupe `#9C8670`, karamell `#BE9670`/`#9E7752`, mély taupe `#4F4136`, dió `#3A312A`.
-- Konténer 1280 px; töréspontok 1080 / 900 / 600.
+- Betű (helyben, WOFF, latin-ext): **Kumbh Sans** változtatható 300–700 – címek 300 + kiemelés 700, szöveg 400. Fraunces nincs.
+- Méretek: h1 30–48 px, h2 25–38 px, h3 18–21 px, törzs 16,5 px, címke 11,5 px nagybetűs, 0,24 em ritkítás. Szándékosan mérsékelt.
+- Színek: dió `#2A221D` / `#352B25`, világos `#F0E4D4`, papír `#FAF6F0`, krém `#F3ECE2`, homok `#E9DED0`, púder `#DFD0BD`, taupe `#9A846E`, karamell `#C08A5A` / `#A6744A`, mély `#3F332A`.
+- Konténer 1280 px; töréspontok 1080 / 900 / 600. Mobilon a folyamat 3D-képe a fejléc alá ragad, a lépések alatta görögnek.
 
 ## Mozgás
 | Elem | Mit csinál | Indító | Csökkentett mozgás |
 |---|---|---|---|
-| Hero-látványrajz | elemek egymás után felépülnek, méretvonalak kirajzolódnak; egérre a rétegek finoman eltolódnak (mélység) | betöltés / egér (csak finom mutató) | azonnal kész, mozgás nélkül |
-| Szakaszok | lágy felúszás, lépcsőzetesen | görgetés | nincs |
-| Szolgáltatás-csempe | háttér alulról kitöltődik, a jel eleme elmozdul | hover | – |
-| Munkák | szűrő gombok; hoverre a rajz finoman emelkedik | kattintás / hover | – |
-| Folyamat | a vonal görgetéssel töltődik, a lépésszámok sötétre váltanak | görgetés | – |
+| Hero – fecskefarkas kötés | betöltéskor a két deszka összecsúszik; egérre finoman fordul; húzással forgatható; „Szétszedem” gomb szétválasztja, feliratokkal | betöltés / egér / húzás / kattintás | összerakva, mozgás nélkül |
+| Így dolgozom – tálaló | ragadós kép; a lépések görgetésével 4 állapot: méretvonalas körvonal → korpusz → ajtó, fiókok, kihúzott fiók → lábak, fogantyúk, karamell frontok, sötét fedlap; közben lassan fordul | görgetés | állapotváltás animáció nélkül |
+| Munkák | a vázlat hoverre elfordul | hover (finom mutató) | – |
+| Szolgáltatás-mutató | cím elcsúszik, karamell alsó vonal, nyíl elfordul | hover | – |
+| Szakaszok | lágy felúszás | görgetés | nincs |
 
-Vanilla JS + CSS; GSAP / Three.js / WebGL / React Bits / HorizonX nincs és nem kell.
+Vanilla JS + SVG; GSAP / Three.js / WebGL / React Bits / HorizonX nincs és nem kell.
 
 ## Nincs bekötve / élesítés előtt
 - Űrlap: demó (nincs háttér, nincs e-mail). Élesítés: PHP vagy űrlapszolgáltatás, fájlfeltöltéssel.
