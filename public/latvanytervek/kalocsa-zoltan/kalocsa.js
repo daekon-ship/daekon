@@ -122,10 +122,10 @@
 
   /* ---------- LIGHTBOX (a képlista a HTML-ből épül: [data-full] + [data-cap]) ---------- */
   const LB = [];
-  $$('[data-full]').forEach(el => { if (!LB.some(x => x[0] === el.dataset.full)) LB.push([el.dataset.full, el.dataset.cap || '']); });
+  $$('[data-full]').forEach(el => { if (!LB.some(x => x[0] === el.dataset.full)) LB.push([el.dataset.full, el.dataset.cap || '', el.dataset.note || 'Saját munkafotó – fény és kontraszt szerkesztve']); });
   const lb = $('#lb'), lbImg = $('img', lb), lbCap = $('figcaption', lb);
   let cur = 0, last = null;
-  const show = i => { cur = (i + LB.length) % LB.length; lbImg.src = LB[cur][0]; lbImg.alt = LB[cur][1]; lbCap.textContent = `${String(cur + 1).padStart(2, '0')} · ${LB[cur][1]}`; lbCap.dataset.note = 'Saját munkafotó – fény és kontraszt szerkesztve'; };
+  const show = i => { cur = (i + LB.length) % LB.length; lbImg.src = LB[cur][0]; lbImg.alt = LB[cur][1]; lbCap.textContent = `${String(cur + 1).padStart(2, '0')} · ${LB[cur][1]}`; lbCap.dataset.note = LB[cur][2]; };
   const open = i => { last = d.activeElement; show(i); lb.hidden = false; d.body.style.overflow = 'hidden'; $('.lb__x', lb).focus(); track('portfolio_view', { via: 'lightbox', image: i + 1 }); };
   const close = () => { lb.hidden = true; d.body.style.overflow = ''; last && last.focus(); };
   d.addEventListener('click', e => {

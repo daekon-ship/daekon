@@ -3,6 +3,10 @@
 **Élő látványterv:** https://daekon-ship.github.io/daekon/latvanytervek/kalocsa-zoltan/ (noindex)
 **Állapot (2026.10.22., 10. kör):** ügyfélnek bemutatható látványterv. Az éles működéshez szükséges integrációk (űrlapküldés, mérés) előkészítve, de **nincsenek bekapcsolva** (lásd G).
 
+## Ügyfélkérés (2026.10.23.)
+1. „A gép a nyomvonalon” (pirto-3): az árokmélyítés sötét foltot hagyott a gémkar mellett → ezen a képen nincs árokmélyítés, csak az egységes színezés.
+2. Közműárok-ásás: Zoltán kérésére az **eredeti, szerkesztetlen** fotó (`img/kozmuarok-*.webp`); a nagyításnál „Eredeti fotó, szerkesztés nélkül” felirat. A `kozmuarok-melyebb-*` fájlok nincsenek használatban.
+
 ## Csak „Kiemelt munkák” (2026.10.22., ügyfélkérés)
 Zoltán kérése: ne legyen „Munkáim” (úgy hat, mintha csak ennyit dolgozott volna). A fülek és a „Munkáim” kártyarács törölve; egyetlen szakasz maradt „Kiemelt munkák” címmel (`#kiemelt-munkak`): 01 Pirtó–Halas (4 fotó), 02 Előtte–utána, 03 Közműárok, 04 Tuskóeltávolítás, 05 Kisgép munka közben (Kubota KX019-4, „Megkérdezem, befér-e” gombbal). Menü, nyitókép-gomb és lábléc: „Kiemelt munkák”.
 
