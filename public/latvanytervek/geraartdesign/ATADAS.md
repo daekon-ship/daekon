@@ -1,4 +1,6 @@
-# geraartdesign — átadás (7. kör, 2026.10.23.)
+# geraartdesign — átadás (8. kör, 2026.10.23.)
+
+**8. kör:** a rozetta („hülyeség”) helyett **intarziás doboz** 3D-ben: a fedél berakása görgetésre darabonként a helyére kerül, a „Kinyitom” gombra a fedél felnyílik (üreges test, sötét bélés). A „tanulmány / görgetésre áll össze” meta-feliratok és a gombnak látszó címkék kikerültek. Az összes szöveg átírva: konkrétabb, ügyfélnek szóló, első személyű.
 
 **7. kör:** „túl egybe van, tűnjön művészibbnek” → új sötét **Intarzia** szakasz görgetésre darabonként összeálló rozettával (No. 02), múzeumi tárgycímkék (No. 01–06) a 3D-rajzokon, aszimmetrikus kijelentés függőleges sínnel, lépcsőzetes munkák-galéria, mobilon a hero-sáv 2×2-es és nem lóg ki a margóból.
 
@@ -20,7 +22,7 @@ Gera Péter (Gera Art Design) — bútorasztalos és intarziakészítő. Látvá
 | E-mail: gera.peter@gmail.com | cegx.hu címtár | **egyeztetendő**, az oldalon nem szerepel |
 | Szolgáltatások: egyedi bútor, konyha, beépített szekrény, ajtó-ablak, felújítás | cegx.hu | ajtó–ablak jelölve egyeztetendőnek |
 | JóSzaki-profil (17 pozitív értékelés) | joszaki.hu | **nem biztos, hogy ugyanaz a személy** – nem használtam fel |
-| Bemutatkozó szöveg, kiemelt mondat (idézet) | szövegjavaslat | jóváhagyandó — a „gyerekkora óta szereti a fát” gondolat a cegx leírásából |
+| Bemutatkozó és szolgáltatás-szövegek, „Egy kézben – a tervtől a beépítésig” | szövegjavaslat | **jóváhagyandó** — a „gyerekkora óta a fával dolgozik” gondolat a cegx leírásából |
 
 Nincs kitalált vélemény, ár, statisztika, évszám.
 
@@ -29,7 +31,7 @@ Valódi fotó nincs; stock/AI kép nincs. Minden kép a saját 3D-rajzolóval k�
 - Hero: átmenő fecskefarkas kötés (karamell farokdeszka + világos csapdeszka).
 - Így dolgozom: tálalószekrény, amely görgetésre 4 lépésben épül fel.
 - Munkák: 4 fotóhely vonalas 3D-vázlattal (konyha, gardrób, asztal, komód), „Fotó helye” felirattal. Valódi kép: `js/gera.js` → `MUNKAK[n].foto`.
-- Intarzia: 16 ágú rozetta keretben, sarokban legyezőkkel – SVG-darabok, görgetésre a helyükre repülnek (`js/gera.js`, ROZETTA).
+- Intarzia: intarziás doboz (`Muhely3D.doboz`) – berakott szegély, rombusz, sarokháromszögek; nyitható fedél.
 - Rólam: portré helye jelölve.
 
 ## Koncepció: „Műhely”
@@ -56,7 +58,7 @@ Fájlok változatonként: `fo`, `vilagos`, `sotet`, `sotet-atlatszo`, `mono`, `k
 |---|---|---|---|
 | Hero – fecskefarkas kötés | betöltéskor a két deszka összecsúszik; egérre finoman fordul; húzással forgatható; „Szétszedem” gomb szétválasztja, feliratokkal | betöltés / egér / húzás / kattintás | összerakva, mozgás nélkül |
 | Így dolgozom – tálaló | ragadós kép; a lépések görgetésével 4 állapot: méretvonalas körvonal → korpusz → ajtó, fiókok, kihúzott fiók → lábak, fogantyúk, karamell frontok, sötét fedlap; közben lassan fordul | görgetés | állapotváltás animáció nélkül |
-| Intarzia – rozetta | ~60 darab szétszórtan indul, görgetésre csoportonként (keret → legyezők → gyűrű → rövid ágak → hosszú ágak → közép) a helyére fordul; visszagörgetve szétválik | görgetés | összerakva |
+| Intarzia – doboz | a fedél berakásának darabjai görgetésre rétegenként leereszkednek a helyükre (szegély → rombusz → belső rombusz → közép); „Kinyitom” gomb: a fedél a hátsó él körül felnyílik | görgetés / kattintás | kész berakás |
 | Munkák | a vázlat hoverre elfordul | hover (finom mutató) | – |
 | Szolgáltatás-mutató | cím elcsúszik, karamell alsó vonal, nyíl elfordul | hover | – |
 | Szakaszok | lágy felúszás | görgetés | nincs |

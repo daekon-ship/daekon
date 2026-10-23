@@ -56,7 +56,7 @@
     /* a látható méretet egyszer (alaphelyzetben) számolja, hogy forgatáskor ne „ugráljon” */
     let mx = 1e9, my = 1e9, Mx = -1e9, My = -1e9;
     this.testek.forEach(t => t.faces.forEach(f => f.v.forEach(p => {
-      const r = this.forgat(add(p, t.alap || [0, 0, 0]));
+      const r = this.forgat(add(t.xf ? t.xf(p) : p, t.alap || [0, 0, 0]));
       mx = Math.min(mx, r[0]); Mx = Math.max(Mx, r[0]); my = Math.min(my, r[1]); My = Math.max(My, r[1]);
     })));
     const vb = this.svg.viewBox.baseVal, k = this.opt.keret;
@@ -75,10 +75,10 @@
       if (t.alpha <= 0.001) return;
       const base = hex(t.szin);
       t.faces.forEach(f => {
-        const n = f.n;
+        const n = t.xfn ? t.xfn(f.n) : f.n;
         const rn = this.forgat(n);
         if (rn[2] <= 1e-6) return;
-        const pr = f.v.map(p => this.vetit(add(p, t.off)));
+        const pr = f.v.map(p => this.vetit(add(t.xf ? t.xf(p) : p, t.off)));
         const d = pr.reduce((s, p) => s + p[2], 0) / pr.length + (t.melyseg || 0);
         const fenyes = Math.max(0, dot(n, L));
         const c = fenyes > 0.5 ? mix(base, [255, 250, 242], (fenyes - 0.5) * 0.36) : mix(base, [30, 24, 20], (0.5 - fenyes) * 0.42);
@@ -188,5 +188,54 @@
     return P;
   }
 
-  window.Muhely3D = { Jelenet, prism, box, fecskefark, talalo, kicsi };
+  /* Intarziás doboz: test + fedél, a fedélen berakott minta (vékony lapok) */
+  function doboz(sz) {
+    const W = 10, H = 3.2, D = 7, f = 0.7, P = [];
+    const b = (...a) => { const t = box(...a); P.push(t); return t; };
+    /* test: üreges – négy oldalfal + fenék + sötét bélés */
+    const v = 0.4;
+    b(0, 0, 0, W, v, D, sz.test, { resz: 'test' });
+    b(0, v, 0, W, H, v, sz.test, { resz: 'test' });
+    b(0, v, D - v, W, H, D, sz.test, { resz: 'test' });
+    b(0, v, v, v, H, D - v, sz.test, { resz: 'test' });
+    b(W - v, v, v, W, H, D - v, sz.test, { resz: 'test' });
+    b(v, v, v, W - v, v + 0.08, D - v, sz.belso, { resz: 'test' });
+    /* fedél */
+    const fedel = b(-0.05, H + 0.06, -0.05, W + 0.05, H + 0.06 + f, D + 0.05, sz.test, { resz: 'fedel' });
+    const fy = H + 0.06 + f;
+    b(0.35, H + 0.02, 0.35, W - 0.35, H + 0.06, D - 0.35, sz.belso, { resz: 'fedel' });
+    /* berakás a fedél tetején: (x,z) síkban, Y mentén kihúzva */
+    const lap = (pts, szin, sorrend) => {
+      const h0 = fy + sorrend * 0.012; const t = prism(pts, X, Z, Y, h0, h0 + 0.03, [0, 0, 0], szin, { resz: 'fedel', berakas: sorrend, melyseg: 4 + sorrend * 0.6 });
+      P.push(t); return t;
+    };
+    const cx = W / 2, cz = D / 2;
+    /* szegély-csíkok */
+    const m = 0.45, s = 0.12;
+    lap([[m, m], [W - m, m], [W - m, m + s], [m, m + s]], sz.vil, 0);
+    lap([[m, D - m - s], [W - m, D - m - s], [W - m, D - m], [m, D - m]], sz.vil, 0);
+    lap([[m, m + s], [m + s, m + s], [m + s, D - m - s], [m, D - m - s]], sz.vil, 0);
+    lap([[W - m - s, m + s], [W - m, m + s], [W - m, D - m - s], [W - m - s, D - m - s]], sz.vil, 0);
+    /* rombusz-mező, négy háromszögre bontva (két tónus) */
+    const rx = 3.2, rz = 2.3;
+    const T = [cx, cz - rz], Rr = [cx + rx, cz], B = [cx, cz + rz], Lr = [cx - rx, cz], C0 = [cx, cz];
+    lap([Lr, T, C0], sz.vil, 1); lap([T, Rr, C0], sz.hom, 1); lap([Rr, B, C0], sz.vil, 1); lap([B, Lr, C0], sz.hom, 1);
+    /* belső rombusz – dió */
+    const k = 0.55;
+    lap([[cx - rx * k, cz], [cx, cz - rz * k], [cx + rx * k, cz], [cx, cz + rz * k]], sz.dio, 2);
+    /* közép – világos négyzet 45°-ban */
+    const q = 0.42;
+    lap([[cx - q, cz], [cx, cz - q], [cx + q, cz], [cx, cz + q]], sz.vil, 3);
+    /* sarokháromszögek */
+    const sar = 1.3, e0 = m + s + 0.15;
+    lap([[e0, e0], [e0 + sar, e0], [e0, e0 + sar]], sz.dio, 2);
+    lap([[W - e0, e0], [W - e0, e0 + sar], [W - e0 - sar, e0]], sz.dio, 2);
+    lap([[W - e0, D - e0], [W - e0 - sar, D - e0], [W - e0, D - e0 - sar]], sz.dio, 2);
+    lap([[e0, D - e0], [e0, D - e0 - sar], [e0 + sar, D - e0]], sz.dio, 2);
+    /* kis fogantyú-gomb elöl */
+    b(cx - 0.5, H - 0.55, -0.22, cx + 0.5, H - 0.25, 0, sz.dio, { resz: 'test', melyseg: 1 });
+    return { reszek: P, zsanerY: H + 0.06, zsanerZ: D + 0.05 };
+  }
+
+  window.Muhely3D = { Jelenet, prism, box, fecskefark, talalo, kicsi, doboz };
 })();

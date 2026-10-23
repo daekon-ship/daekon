@@ -114,7 +114,7 @@ p{margin:0 0 1em;max-width:60ch}
 .hero-sav a{text-decoration:none}
 
 /* tárgycímke (múzeumi felirat) */
-.targy{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;margin-top:10px;padding-top:12px;border-top:1px solid var(--dio-vonal);font-size:13px;color:var(--vilagos-h)}
+.targy{display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center;margin-top:10px;padding-top:12px;border-top:1px solid var(--dio-vonal);font-size:13px;color:var(--vilagos-h)}
 .targy .no{font:700 11px/1 var(--sans);letter-spacing:.2em;color:var(--karamell);text-transform:uppercase}
 .targy b{display:block;font-weight:500;color:#F6EEE3;font-size:14px}
 .targy button{font:600 11px/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--karamell);background:none;border:1px solid rgba(192,138,90,.5);padding:10px 12px;cursor:pointer;transition:background .3s,color .3s}
@@ -140,11 +140,12 @@ p{margin:0 0 1em;max-width:60ch}
 .intarzia h2 b{color:var(--karamell)}
 .intarzia .cimke{color:var(--vilagos-h)}
 .intarzia p{color:#D3C5B4}
-.intarzia .tipusok{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px;padding:0;list-style:none}
-.intarzia .tipusok li{border:1px solid var(--dio-vonal);padding:9px 14px;font-size:13.5px;color:var(--vilagos)}
+.hol{margin:30px 0 0;border-top:1px solid var(--dio-vonal)}
+.hol div{display:grid;grid-template-columns:120px 1fr;gap:16px;padding:14px 0;border-bottom:1px solid var(--dio-vonal)}
+.hol dt{font:600 11.5px/1.6 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--karamell)}
+.hol dd{margin:0;color:var(--vilagos);font-size:15.5px}
 .rozetta{margin:0}
-.rozetta svg{width:100%;height:auto;aspect-ratio:1;overflow:visible}
-.rozetta svg path{transform-box:fill-box;transform-origin:center;will-change:transform,opacity}
+.rozetta svg{width:100%;height:auto;aspect-ratio:600/520}
 .rozetta .targy{border-top-color:var(--dio-vonal)}
 
 /* szakaszfej */

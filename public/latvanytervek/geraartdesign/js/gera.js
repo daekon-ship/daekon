@@ -9,11 +9,11 @@
 
   /* ---------------- szolgáltatások: szerkesztett mutató ---------------- */
   const SZOLG = [
-    ['Egyedi bútorok', 'Asztal, komód, tálaló, polc — méretre, a helyiség stílusához.'],
-    ['Konyhabútorok', 'Átgondolt tárolás, tartós felületek, pontos illesztések a mindennapokra.'],
-    ['Beépített szekrények', 'Gardrób, falfülke, tetőtér: a hely minden centiméterét kihasználva.'],
-    ['Intarzia és díszítés', 'Berakásos minták, monogramok, díszlapok bútorra, dobozra, falra.'],
-    ['Bútorfelújítás', 'Régi darabok javítása, felújítása — a karakterük megtartásával.'],
+    ['Egyedi bútorok', 'Asztal, komód, tálaló, könyvespolc — a helyiséghez és annak stílusához igazítva.'],
+    ['Konyhabútorok', 'Konyha, amiben jó főzni: átgondolt tárolás, strapabíró felületek, pontosan záródó ajtók.'],
+    ['Beépített szekrények', 'Gardrób, falfülke, tetőtéri szekrény — a ferde falakat és a sarkokat is kihasználva.'],
+    ['Intarzia és díszítés', 'Monogram, minta vagy kép fából — dobozon, asztallapon, bútorfronton.'],
+    ['Bútorfelújítás', 'Régi, kedves darabok javítása és felújítása úgy, hogy megmaradjon a karakterük.'],
     ['Ajtók és ablakok', 'Fa nyílászárók készítése és javítása. <span class="egyeztet" title="ügyféllel egyeztetendő">(egyeztetendő)</span>']
   ];
   const mt = $('#mutato');
@@ -124,7 +124,7 @@
   const mr = $('#munkakRacs');
   if (mr) MUNKAK.forEach((m, i) => {
     const f = document.createElement('figure'); f.className = 'foto felfed';
-    f.innerHTML = `<div class="foto-hely">${m.foto ? `<img src="${m.foto}" alt="${m.cim}" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">` : `<svg viewBox="0 0 300 300" aria-hidden="true"></svg><span>Fotó helye · 0${i + 1}</span>`}</div><figcaption><span class="no">No. 0${i + 3}</span><h3>${m.cim}</h3><span>${m.kat}</span></figcaption>`;
+    f.innerHTML = `<div class="foto-hely">${m.foto ? `<img src="${m.foto}" alt="${m.cim}" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">` : `<svg viewBox="0 0 300 300" aria-hidden="true"></svg><span>Fotó helye · 0${i + 1}</span>`}</div><figcaption><h3>${m.cim}</h3><span>${m.kat}</span></figcaption>`;
     mr.appendChild(f);
     if (!m.foto && M) {
       const s = $('svg', f);
@@ -141,53 +141,41 @@
     }
   });
 
-  /* ---------------- INTARZIA: görgetésre összeálló rozetta ---------------- */
+  /* ---------------- INTARZIA: doboz, a fedél berakása görgetésre kerül a helyére, a fedél nyitható ---------------- */
   let rozetta = null;
-  const rsvg = $('#rozetta');
-  if (rsvg) {
-    const C = { dio: '#3F332A', kar: '#C08A5A', kars: '#A6744A', vil: '#EBDCC8', hom: '#D6BE9C', var: '#F3ECE2' };
-    const db = [];
-    const P = pts => 'M' + pts.map(p => p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join('L') + 'Z';
-    const pol = (r, a) => [300 + r * Math.cos(a * Math.PI / 180), 300 + r * Math.sin(a * Math.PI / 180)];
-    const tesz = (d, f, csop) => db.push({ d, f, csop });
-    /* keret: gérelt sávok */
-    const o = 14, b = 58, e = 586;
-    tesz(P([[o, o], [e, o], [e - b + o, b], [b, b]]), C.dio, 0); tesz(P([[e, o], [e, e], [e - b + o, e - b + o], [e - b + o, b]]), C.dio, 0);
-    tesz(P([[e, e], [o, e], [b, e - b + o], [e - b + o, e - b + o]]), C.dio, 0); tesz(P([[o, e], [o, o], [b, b], [b, e - b + o]]), C.dio, 0);
-    tesz(P([[b, b], [e - b + o, b], [e - b + o, e - b + o], [b, e - b + o]]), C.hom, 0);
-    /* sarokban legyezők */
-    [[b, b, 0], [e - b + o, b, 90], [e - b + o, e - b + o, 180], [b, e - b + o, 270]].forEach(([x, y, a0]) => {
-      for (let k = 0; k < 6; k++) {
-        const a = a0 + k * 15, r = 120, p1 = [x + r * Math.cos(a * Math.PI / 180), y + r * Math.sin(a * Math.PI / 180)], p2 = [x + r * Math.cos((a + 15) * Math.PI / 180), y + r * Math.sin((a + 15) * Math.PI / 180)];
-        tesz(P([[x, y], p1, p2]), k % 2 ? C.vil : C.kars, 1);
-      }
-    });
-    /* gyűrű és mező */
-    tesz(`M${300 - 214} 300a214 214 0 1 0 428 0a214 214 0 1 0 -428 0Z M${300 - 198} 300a198 198 0 1 1 396 0a198 198 0 1 1 -396 0Z`, C.kar, 2);
-    tesz(`M${300 - 198} 300a198 198 0 1 0 396 0a198 198 0 1 0 -396 0Z`, C.vil, 2);
-    /* 16 ágú csillag: rövid ágak, majd hosszú ágak, két-két félben */
-    const ag = (R, a, w, f1, f2, cs) => { const t = pol(R, a), l = pol(56, a - w), r = pol(56, a + w); tesz(P([[300, 300], t, l]), f1, cs); tesz(P([[300, 300], t, r]), f2, cs); };
-    for (let k = 0; k < 8; k++) ag(132, 22.5 + k * 45, 22.5, C.hom, C.kars, 3);
-    for (let k = 0; k < 8; k++) ag(192, k * 45, 22.5, C.dio, C.kar, 4);
-    tesz(`M282 300a18 18 0 1 0 36 0a18 18 0 1 0 -36 0Z`, C.kar, 5);
-    /* rajzolás */
-    let seed = 7; const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
-    rsvg.innerHTML = db.map(p => `<path d="${p.d}" fill="${p.f}" fill-rule="evenodd" stroke="${C.var}" stroke-width="1.4" stroke-linejoin="round"/>`).join('');
-    const utak = $$('path', rsvg);
-    db.forEach((p, i) => { p.el = utak[i]; p.dx = (rnd() - .5) * 420; p.dy = (rnd() - .5) * 420 - 60; p.r = (rnd() - .5) * 140; });
-    const N = db.length;
-    rozetta = () => {
-      const r = rsvg.getBoundingClientRect();
-      let pr = halk ? 1 : (innerHeight * 0.95 - r.top) / (r.height * 0.95 + innerHeight * 0.15);
-      pr = Math.max(0, Math.min(1, pr));
-      db.forEach((p, i) => {
-        const s0 = (p.csop / 6) * 0.55 + (i / N) * 0.12;
-        const t = ease(Math.max(0, Math.min(1, (pr - s0) / 0.3)));
-        p.el.style.transform = t >= 1 ? '' : `translate(${(p.dx * (1 - t)).toFixed(1)}px,${(p.dy * (1 - t)).toFixed(1)}px) rotate(${(p.r * (1 - t)).toFixed(1)}deg)`;
-        p.el.style.opacity = (0.15 + 0.85 * t).toFixed(3);
+  const dsvg = $('#doboz');
+  if (dsvg && M) {
+    const SZ = { test: '#B98252', vil: '#EBDCC8', hom: '#D2B48C', dio: '#3F332A', belso: '#6B4A3A' };
+    const J = new M.Jelenet(dsvg, { yaw: 148, pitch: 30, vonal: '#2A221D', vastag: .9, keret: 30 });
+    const mod = M.doboz(SZ);
+    J.testek = mod.reszek;
+    let szog = 0;
+    const zy = mod.zsanerY, zz = mod.zsanerZ;
+    const forgX = (p, a) => { const c = Math.cos(a), s2 = Math.sin(a), y = p[1] - zy, z = p[2] - zz; return [p[0], zy + y * c - z * s2, zz + y * s2 + z * c]; };
+    const forgN = (n, a) => { const c = Math.cos(a), s2 = Math.sin(a); return [n[0], n[1] * c - n[2] * s2, n[1] * s2 + n[2] * c]; };
+    J.testek.forEach(t => { if (t.resz === 'fedel') { t.xf = p => forgX(p, szog); t.xfn = n => forgN(n, szog); } });
+    szog = 1.15; J.illeszt(); szog = 0;
+    const berak = J.testek.filter(t => t.berakas !== undefined);
+    let pr = halk ? 1 : 0, nyit = 0, nyitCel = 0, fut = false;
+    function rajz() {
+      nyit += (nyitCel - nyit) * 0.1; szog = 1.15 * ease(nyit);
+      berak.forEach(t => {
+        const s0 = t.berakas * 0.16, v = ease(Math.max(0, Math.min(1, (pr - s0) / 0.36)));
+        t.off = [0, (1 - v) * 3.2, 0]; t.alpha = v * Math.max(0, Math.min(1, 1 - (szog - 0.45) * 4));
       });
+      J.rajzol();
+      if (Math.abs(nyitCel - nyit) > 0.003) requestAnimationFrame(rajz); else fut = false;
+    }
+    const indit = () => { if (!fut) { fut = true; requestAnimationFrame(rajz); } };
+    rozetta = () => {
+      if (halk) return;
+      const r = dsvg.getBoundingClientRect();
+      const uj = Math.max(0, Math.min(1, (innerHeight * 0.92 - r.top) / (r.height * 0.9 + innerHeight * 0.1)));
+      if (Math.abs(uj - pr) > 0.002) { pr = uj; indit(); }
     };
-    rozetta();
+    const g = $('#dobozGomb');
+    g && g.addEventListener('click', () => { nyitCel = nyitCel ? 0 : 1; g.textContent = nyitCel ? 'Becsukom' : 'Kinyitom'; g.setAttribute('aria-pressed', !!nyitCel); indit(); });
+    rajz(); rozetta();
   }
 
   /* ---------------- görgetés: megjelenés + folyamatlépések ---------------- */
