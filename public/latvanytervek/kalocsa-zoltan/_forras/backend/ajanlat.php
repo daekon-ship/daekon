@@ -10,7 +10,7 @@ declare(strict_types=1);
 header('Content-Type: application/json; charset=utf-8');
 header('X-Content-Type-Options: nosniff');
 
-$cfg = require __DIR__ . '/../../private/ajanlat-config.php'; // webgyökéren kívül!
+$cfg = require __DIR__ . '/../_private/ajanlat-config.php'; // MHosting: az FTP-gyökér a webgyökér → védett _private mappa (.htaccess: Require all denied)
 require $cfg['autoload'];
 use PHPMailer\PHPMailer\PHPMailer;
 
@@ -26,7 +26,9 @@ if (!empty($_POST['weboldal'])) out(200, ['ok' => true]); // botnak csendben "ok
 if ((int)($_POST['kitoltesi_ido_ms'] ?? 0) < 3000) out(400, ['ok' => false, 'error' => 'too-fast']);
 
 // 3) túlterhelés: IP-nként max. 5 kérés / óra (fájlalapú, csak hash-t tárol, személyes adat nincs naplózva)
-$ipHash = hash('sha256', ($_SERVER['REMOTE_ADDR'] ?? '') . $cfg['salt']);
+require_once __DIR__ . '/meres-lib.php';
+$ipHash = hash('sha256', kliens_ip($cfg) . $cfg['salt']);
+@mkdir($cfg['ratelimit_dir'], 0700, true);
 $rlFile = $cfg['ratelimit_dir'] . '/' . $ipHash;
 $hits = array_filter(array_map('intval', @file($rlFile, FILE_IGNORE_NEW_LINES) ?: []), fn($t) => $t > time() - 3600);
 if (count($hits) >= 5) out(429, ['ok' => false, 'error' => 'rate-limit']);

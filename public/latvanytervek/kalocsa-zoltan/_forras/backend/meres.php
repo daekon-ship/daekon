@@ -12,7 +12,7 @@
 declare(strict_types=1);
 header('Content-Type: application/json; charset=utf-8');
 header('X-Content-Type-Options: nosniff');
-$cfg = require __DIR__ . '/../../private/ajanlat-config.php';
+$cfg = require __DIR__ . '/../_private/ajanlat-config.php';
 require __DIR__ . '/meres-lib.php';
 function out(int $c): never { http_response_code($c); echo '{"ok":' . ($c < 300 ? 'true' : 'false') . '}'; exit; }
 
