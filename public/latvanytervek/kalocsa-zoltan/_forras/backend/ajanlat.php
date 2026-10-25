@@ -1,7 +1,7 @@
 <?php
 /**
  * Kalocsa GeoWorks – ajánlatkérő végpont (ÉLESÍTÉSHEZ ELŐKÉSZÍTVE, NINCS TELEPÍTVE)
- * Telepítés: PHP 8.1+ tárhely, PHPMailer (composer require phpmailer/phpmailer), SMTP fiók.
+ * Telepítés: PHP 8.2+ tárhely (MHosting: 8.4), PHPMailer (composer require phpmailer/phpmailer), SMTP fiók.
  * A titkos adatok NEM ide kerülnek: a config.php a webgyökéren KÍVÜL legyen (lásd config.example.php).
  * Kliens: kalocsa.js → AJANLAT.endpoint = 'https://<domain>/api/ajanlat.php'
  * Válasz: JSON { ok: true } vagy { ok: false, error: '...' } – a kliens csak ok:true esetén jelez sikert és mér konverziót.
@@ -21,6 +21,10 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') out(405, ['ok' => false, 'error' => '
 $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
 if ($origin && !in_array($origin, $cfg['allowed_origins'], true)) out(403, ['ok' => false, 'error' => 'origin']);
 
+// a tárhely post_max_size korlátja fölötti kérésnél a PHP üres $_POST-ot ad → egyértelmű „túl nagy” válasz, ne „too-fast”
+if (!$_POST && (int)($_SERVER['CONTENT_LENGTH'] ?? 0) > 0 && str_starts_with((string)($_SERVER['CONTENT_TYPE'] ?? ''), 'multipart/form-data')
+    && (int)$_SERVER['CONTENT_LENGTH'] > ini_parse_quantity((string)ini_get('post_max_size'))) out(413, ['ok' => false, 'error' => 'file-size']);
+
 // 2) spam: honeypot + minimális kitöltési idő
 if (!empty($_POST['weboldal'])) out(200, ['ok' => true]); // botnak csendben "ok", de nem küldünk
 if ((int)($_POST['kitoltesi_ido_ms'] ?? 0) < 3000) out(400, ['ok' => false, 'error' => 'too-fast']);
@@ -35,9 +39,11 @@ if (count($hits) >= 5) out(429, ['ok' => false, 'error' => 'rate-limit']);
 $hits[] = time(); @file_put_contents($rlFile, implode("\n", $hits), LOCK_EX);
 
 // 4) mezők szerveroldali ellenőrzése
-$s = fn(string $k, int $max) => mb_substr(trim(strip_tags((string)($_POST[$k] ?? ''))), 0, $max);
-// egysoros mezők (név, telefon, helyszín, e-mail, időpont): sortörés nélkül – a tárgyba / fejlécbe is kerülhetnek
-$s1 = fn(string $k, int $max) => trim(preg_replace('/[\x00-\x1F\x7F]+/u', ' ', $s($k, $max)));
+// a levél sima szöveges (nem HTML), ezért a leírásból nem szűrünk címkét: a strip_tags a „mélység <1 m” jellegű szövegből
+// mindent levágott a „<” jeltől; csak a vezérlőkaraktereket (sortörés és tab kivételével) cseréljük szóközre
+$s = fn(string $k, int $max) => mb_substr(trim(preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]+/u', ' ', (string)($_POST[$k] ?? ''))), 0, $max);
+// egysoros mezők (név, telefon, helyszín, e-mail, időpont): címke és sortörés nélkül – a tárgyba / fejlécbe is kerülhetnek
+$s1 = fn(string $k, int $max) => trim(preg_replace('/[\x00-\x1F\x7F]+/u', ' ', strip_tags($s($k, $max))));
 $nev = $s1('nev', 120); $tel = $s1('telefon', 40); $hely = $s1('helyszin', 160); $leiras = $s('leiras', 3000);
 $email = $s1('email', 160); $mikor = $s1('mikor', 60);
 $TIPUSOK = ['Alapásás', 'Közműárok-ásás', 'Nyomvonalásás', 'Tuskóeltávolítás', 'Tereprendezés', 'Egyéb földmunka'];
@@ -59,7 +65,11 @@ if (!empty($_FILES['fotok']['tmp_name'])) {
   $fi = new finfo(FILEINFO_MIME_TYPE);
   foreach ((array)$_FILES['fotok']['tmp_name'] as $i => $tmp) {
     if (count($attach) >= 5) break;
-    if (($_FILES['fotok']['error'][$i] ?? 1) !== UPLOAD_ERR_OK || !is_uploaded_file($tmp)) continue;
+    // egy feltöltési hiba sem nyelődhet el csendben (különben a levél fotó nélkül menne el, a látogató pedig sikert látna)
+    $ferr = (int)($_FILES['fotok']['error'][$i] ?? UPLOAD_ERR_NO_FILE);
+    if ($ferr === UPLOAD_ERR_NO_FILE) continue;
+    if ($ferr === UPLOAD_ERR_INI_SIZE || $ferr === UPLOAD_ERR_FORM_SIZE) out(413, ['ok' => false, 'error' => 'file-size']);
+    if ($ferr !== UPLOAD_ERR_OK || !is_uploaded_file($tmp)) out(400, ['ok' => false, 'error' => 'upload']);
     if (filesize($tmp) > 8 * 1024 * 1024) out(413, ['ok' => false, 'error' => 'file-size']);
     $mime = $fi->file($tmp);
     if (!isset($ALLOWED[$mime])) out(415, ['ok' => false, 'error' => 'file-type']);

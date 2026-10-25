@@ -58,6 +58,11 @@ for n in os.listdir(DIST):  # tartalom ürítése (a mappa maradhat nyitva pl. e
 # ---------------- index.html ----------------
 h = read(os.path.join(SRC, "index.html"))
 
+# meta description: 197 → 159 karakter, hogy a találati listában ne vágja le a kereső (tartalma változatlan)
+h = subre(h, r'<meta name="description" content="[^"]*">',
+          '<meta name="description" content="Gépi földmunka Kecskeméten és 45 km-es körzetében: alapásás, közműárok-ásás, '
+          'nyomvonalásás, tuskóeltávolítás, tereprendezés kis géppel. Hívás: +36 70 420 4170.">', "meta description")
+
 # fej: kanonikus cím, közösségi előnézet, strukturált adat (csak valós, megadott adatok)
 h = sub1(h, '<meta name="robots" content="noindex, nofollow">',
          '<meta name="robots" content="noindex, nofollow">\n'  # indexelés: csak a jogi/működési ellenőrzés után (lásd ELESITES.md)
@@ -149,7 +154,7 @@ h = sub1(h, '<p><a href="adatkezeles.html">Adatkezelési tájékoztató</a> <em>
 h = sub1(h, '<span>Látványterv: <a href="https://daekon.hu" rel="noopener">DAEKON</a></span>',
          '<span>Weboldal: <a href="https://daekon.hu" rel="noopener">DAEKON</a></span>', "lábléc készítő")
 # az éles JS-nek saját verzió (a statikus fájlok 1 évig gyorsítótárazódnak) – minden JS-változtatáskor emelni kell
-h = sub1(h, '<script src="kalocsa.js?v=37" defer></script>', '<script src="kalocsa.js?v=37-eles6" defer></script>', "js verzió")
+h = sub1(h, '<script src="kalocsa.js?v=37" defer></script>', '<script src="kalocsa.js?v=37-eles7" defer></script>', "js verzió")
 h = sub1(h, '<link rel="stylesheet" href="kalocsa.css?v=39">', '<link rel="stylesheet" href="kalocsa.css?v=39-eles3">', "css verzió")
 for bad in ("Bemutató mód", "bemutató", "BEMUTATÓ", "kitöltendő", "egyeztetendő", "github", "látványterv"):
     if bad.lower() in h.lower():
@@ -167,6 +172,25 @@ if AJANLAT_ON:
     j = sub1(j, "    const munka = fd.getAll('munka').join(', ');", "    const munka = munkak.join(', ');", "js munka felirat")
     # a bemutató ág (végpont nélküli e-mail-piszkozat) élesben nem kell – kivesszük, ne maradjon „Bemutató mód” szöveg
     j = subre(j, r"    if \(!AJANLAT\.endpoint\) \{\n      // BEMUTATÓ MÓD.*?\n      return;\n    \}\n", "", "js bemutató ág")
+    # a fájlnév ne kerüljön HTML-ként a DOM-ba (egy „"><img onerror=…>.jpg” nevű fájl ne futtathasson kódot)
+    j = sub1(j, " + `<button type=\"button\" aria-label=\"${f.name} eltávolítása\">×</button>`;\n",
+             " + '<button type=\"button\">×</button>';\n      $('button', li).setAttribute('aria-label', f.name + ' eltávolítása');\n", "js fájlnév biztonságosan")
+    # küldés: egyszerre csak egy kérés; 45 mp-es időkorlát; ha a válasz elvész (hálózat/időtúllépés), a levél
+    # akár meg is érkezhetett → nem „próbáld újra”, hanem hívást kérünk, hogy ne menjen ki kétszer ugyanaz
+    j = sub1(j, "    btn.disabled = true; btn.textContent = 'Küldés…';\n    try {\n"
+                "      const r = await fetch(AJANLAT.endpoint, { method: 'POST', body: fd, headers: { Accept: 'application/json' } });\n",
+             "    if (btn.disabled) return;\n"
+             "    btn.disabled = true; btn.textContent = 'Küldés…';\n"
+             "    const ac = window.AbortController ? new AbortController() : null, timer = ac && setTimeout(() => ac.abort(), 45000);\n"
+             "    let valasz = false;\n    try {\n"
+             "      const r = await fetch(AJANLAT.endpoint, { method: 'POST', body: fd, headers: { Accept: 'application/json' }, signal: ac ? ac.signal : undefined });\n"
+             "      valasz = true;\n", "js küldés időkorlát")
+    j = sub1(j, "    } catch (x) {\n      err.textContent = 'Az elküldés nem sikerült. Kérlek, próbáld újra, vagy hívj: +36 70 420 4170.';\n"
+                "    } finally { btn.disabled = false; btn.textContent = 'Ajánlatkérés elküldése'; }\n",
+             "    } catch (x) {\n"
+             "      err.textContent = valasz ? 'Az elküldés nem sikerült. Kérlek, próbáld újra, vagy hívj: +36 70 420 4170.'\n"
+             "        : 'Nem érkezett visszaigazolás – lehet, hogy az üzenet mégis megérkezett. Mielőtt újraküldenéd, kérlek, hívj: +36 70 420 4170.';\n"
+             "    } finally { clearTimeout(timer); btn.disabled = false; btn.textContent = 'Ajánlatkérés elküldése'; }\n", "js elveszett válasz")
 else:
     j = subre(j, r"  /\* ---------- AJÁNLATKÉRŐ ---------- \*/.*?(?=  /\* ---------- TÉRKÉP)",
               "  /* ---------- AJÁNLATKÉRŐ (éles: kikapcsolva) ---------- */\n"
@@ -191,6 +215,30 @@ j = sub1(j, "    video.addEventListener('error', () => fail('video-error'), { on
 # térképkönyvtár saját tárhelyről (Leaflet 1.9.4, a hivatalos SRI-hash-sel ellenőrizve) – nincs cdnjs/unpkg-kérés
 j = sub1(j, "const CDN = ['https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/', 'https://unpkg.com/leaflet@1.9.4/dist/'];",
          "const CDN = ['vendor/leaflet/'];", "js leaflet helyi")
+# mobilmenü: ha nyitva van, és a nézet asztali szélességre vált (pl. tablet elforgatása), a menü bezárul,
+# különben a body overflow:hidden beragadna, és érintéssel nem lehetne görgetni
+j = sub1(j, "burger.focus(); } });\n",
+         "burger.focus(); } });\n"
+         "  const deskMQ = matchMedia('(min-width: 1181px)');\n"
+         "  const deskMenu = e => { if (e.matches && nav.classList.contains('is-open')) setMenu(false); };\n"
+         "  if (deskMQ.addEventListener) deskMQ.addEventListener('change', deskMenu); else deskMQ.addListener(deskMenu);\n", "js menü bezárása szélesre váltáskor")
+# képnagyító: dupla koppintásnál a második kattintás a háttérre esne, és azonnal bezárná → a megnyitás utáni 400 ms-ben a háttérkattintás nem zár
+j = sub1(j, "  let cur = 0, last = null;\n", "  let cur = 0, last = null, lbAt = 0;\n", "js nagyító időbélyeg")
+j = sub1(j, "const open = i => { last = d.activeElement; show(i); lb.hidden = false;",
+         "const open = i => { last = d.activeElement; show(i); lb.hidden = false; lbAt = performance.now();", "js nagyító nyitás ideje")
+j = sub1(j, "lb.addEventListener('click', e => { if (e.target === lb) close(); });",
+         "lb.addEventListener('click', e => { if (e.target === lb && performance.now() - lbAt > 400) close(); });", "js nagyító dupla koppintás")
+# billentyűzet: a görgetésre beúszó elemek addig visibility:hidden állapotban vannak, így a Tab átugrotta őket
+# (Rólam, Munkaterület, Kapcsolat, lábléc linkjei) → az első Tabra minden nem görgetéshez kötött belépő animáció
+# azonnal a végállapotba ugrik és leáll; egérrel/érintéssel görgetve a megjelenés változatlan
+j = sub1(j, "  addEventListener('load', () => ST.refresh());\n",
+         "  addEventListener('load', () => ST.refresh());\n"
+         "  const kbReveal = e => {\n"
+         "    if (e.key !== 'Tab') return;\n"
+         "    removeEventListener('keydown', kbReveal, true);\n"
+         "    ST.getAll().forEach(t => { if (!t.vars.scrub && !t.vars.pin) { if (t.animation) t.animation.progress(1); t.kill(); } });\n"
+         "  };\n"
+         "  addEventListener('keydown', kbReveal, true);\n", "js billentyűzetes megjelenítés")
 if "Bemutató mód" in j or "Munkajelölő" in j:
     sys.exit("BUILD STOP – kalocsa.js még tartalmaz bemutató szöveget")
 write(os.path.join(DIST, "kalocsa.js"), j)

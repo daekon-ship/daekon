@@ -30,5 +30,8 @@ Statisztika: `../backend/meres.php` + `statisztika.php` + `admin.htaccess` (lás
 ## Telepítés (MHosting)
 `tools/deploy.py <jelszófájl> <dist> <mentés-mappa>` – **egy** FTPS-kapcsolat: a felülírandó élő fájlok mentése → feltöltés (index.html és .htaccess utoljára) → méretellenőrzés → HTTPS-próba (hibánál a .htaccess visszavonása). A host és a felhasználó környezeti változóból jön (`KGW_FTP_HOST`, `KGW_FTP_USER`), a jelszó egy ideiglenes, projekten kívüli fájlból. Az MHosting brute-force védelme miatt: nincs párhuzamos kapcsolat, nincs automatikus újrapróbálkozás, hitelesítési hibánál azonnali leállás.
 
+## Regressziós tesztek
+`tools/tesztek/` – HTTP-teszt (élő oldal: fejlécek, átirányítások, 405-ös adatküldés-tiltás, tiltott fájlok), böngészőteszt (13 szélesség, menü, képnagyító, billentyűzet, hibaesetek; Chromium/Firefox/WebKit), teljesítménymérés, valamint a 2027-es ajánlatkérő végpont- és böngészőtesztje helyi PHP-szerveren, csonk-levelezővel. Indítás és leírás: `tools/tesztek/README.md`. Minden élesítés után futtasd a HTTP- és a böngészőtesztet.
+
 ## Indexelés engedélyezése (a jogi és tartalmi feltételek rendezése után)
 `robots-vegleges.txt` → `/robots.txt`, `sitemap.xml` → `/sitemap.xml`; a `noindex` meta törlése (`build.py`, `tools/eles/impresszum.html`) és az `X-Robots-Tag` sor törlése (`tools/eles/htaccess`); Google Search Console + sitemap beküldése. A GitHub Pages-előnézet maradjon `noindex`.
