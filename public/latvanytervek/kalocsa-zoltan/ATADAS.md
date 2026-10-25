@@ -4,7 +4,7 @@
 **Állapot (2026.10.22., 10. kör):** ügyfélnek bemutatható látványterv. Az éles működéshez szükséges integrációk (űrlapküldés, mérés) előkészítve, de **nincsenek bekapcsolva** (lásd G).
 
 ## Ügyfélkérés – logó (2026.10.25.)
-- A narancs szár és a fő rúd közötti rés megszűnt: a narancs szár a rúd alá fut, így egybeolvad vele. A sötét (ill. világos) részek közös, a jelhez kötött színátmenetet kapnak, ezért a rúd és az alsó szár között nincs látható illesztés.
+- Zoltán pontosítása: a narancs szár maradjon „a levegőben” (rés a rúdtól – visszaállítva), a fekete részen zavaró illesztés tűnjön el → a sötét (ill. világos) részek közös, a jelhez kötött színátmenetet kapnak, a rúd és az alsó szár egy darabnak látszik.
 - A „GÉPI FÖLDMUNKA” alcím kikerült a logóból (álló és fekvő változat), valamint a fejlécből, a láblécből és a jogi oldalak fejlécéből.
 - Az `arculat/` SVG- és PNG-fájljai, valamint a favicon frissítve.
 

@@ -35,7 +35,7 @@ def rpath(pts, rad):
 
 BAR = rpath([(0, 85), (17, 85), (102, 0), (85, 0)], [0, 5, 0, 5])              # fő átló
 LEG = rpath([(29.75, 63.75), (38.25, 55.25), (83, 100), (66, 100)], [0, 0, 0, 5])  # alsó szár (a rúdba fut)
-TIP = rpath([(0, 34), (17, 34), (38.25, 55.25), (29.75, 63.75)], [0, 5, 0, 0])   # felső szár – NARANCS; a rúd alá fut, így rés nélkül „összeolvad” vele (ügyfélkérés)
+TIP = rpath([(0, 34), (17, 34), (30.5, 47.5), (22, 56)], [0, 5, 0, 0])         # felső szár – NARANCS, a rúdtól elválva „lebeg” (ügyfélkérés, 10.25.)
 
 # finom, „fémes” színátmenetek (prémium hatás, kis méretben is tiszta marad)
 GRAD = {
