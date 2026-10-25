@@ -3,6 +3,12 @@
 **Élő látványterv:** https://daekon-ship.github.io/daekon/latvanytervek/kalocsa-zoltan/ (noindex)
 **Állapot (2026.10.22., 10. kör):** ügyfélnek bemutatható látványterv. Az éles működéshez szükséges integrációk (űrlapküldés, mérés) előkészítve, de **nincsenek bekapcsolva** (lásd G).
 
+## Backend – biztonsági javítások, MHosting-elrendezés (2026.10.25.)
+Az éles tárhelyen (MHosting) az FTP-gyökér a webgyökér, ezért a titkos config **nem** a webgyökéren kívül, hanem a lezárt `/_private/` mappában van (`private.htaccess` → `/_private/.htaccess`, `Require all denied`). Telepített elrendezés: `api/ajanlat.php`, `api/meres.php`, `api/meres-lib.php`, `admin/statisztika.php` + `admin.htaccess` → `/admin/.htaccess`, `_private/ajanlat-config.php` (a `config.example.php` alapján, csak a szerveren).
+- **Valós kliens-IP** a túlterhelés-védelemhez: `kliens_ip()` – az `X-Forwarded-For` csak a configban megadott `trusted_proxies` címről fogadott el.
+- **Statisztika-belépés:** zárolt, versenyhelyzet-mentes számláló (IP-nként 5 próbálkozás / 15 perc, a próba az ellenőrzés előtt rögzül); beállítatlan jelszónál zárva (503); munkamenet 30 perc tétlenség / 8 óra után lejár; kilépés CSRF-tokennel; `no-store`, `X-Frame-Options: DENY`, noindex; az `/admin/` mappában csak a `statisztika.php` érhető el.
+- Az ajánlatkérő és a statisztika **nincs telepítve**; az éles oldalon az ajánlatkérő gombok telefonhívást indítanak.
+
 ## Ügyfélkérés – logó (2026.10.25.)
 - Zoltán pontosítása: a narancs szár maradjon „a levegőben” (rés a rúdtól – visszaállítva), a fekete részen zavaró illesztés tűnjön el → a sötét (ill. világos) részek közös, a jelhez kötött színátmenetet kapnak, a rúd és az alsó szár egy darabnak látszik.
 - A „GÉPI FÖLDMUNKA” alcím kikerült a logóból (álló és fekvő változat), valamint a fejlécből, a láblécből és a jogi oldalak fejlécéből.
