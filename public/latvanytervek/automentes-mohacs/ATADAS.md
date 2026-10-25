@@ -55,10 +55,17 @@ Fejléc + mobilmenü · hero (illusztráció, státuszjelző, XL hívógomb, 3 t
 1. A saját autómentő(k) fotói, színe, matricázása – a dizájn ehhez igazítható.
 2. Pontos kiszállási körzet, településlista, külföldi célországok.
 3. A jelenlegi oldal 3 véleményének forrása (nem került át, mert nem ellenőrizhető). Google- vagy Facebook-értékelések átvehetők, ha valósak.
-4. Logó: a borostyán rombusz + vontatóhorog jel munkajavaslat, nem az ügyfél meglévő logója.
+4. Logó: új javaslat (2. kör, `arculat/`) – az ügyfélnek eddig nem volt logója; jóváhagyásig munkaváltozat.
 5. Impresszum / adatkezelés adatai (cégforma, székhely, adószám) – ezek nélkül szándékosan nincs jogi oldal.
 6. Kell-e űrlap: jelenleg csak telefon, e-mail és Facebook (működő linkek), űrlap nincs.
 
 ## 8. Tesztek
 
 Playwright, 1440 / 768 / 390 / 360 px: vízszintes túlcsordulás 0, konzolhiba 0, minden belső horgony létező szekcióra mutat, 8 db `tel:+36202590264`, 2 db `mailto:`, 4 db Facebook-link. A galéria betöltött és sikertelen állapota is ellenőrizve.
+
+## 9. Logó (2. kör)
+
+- **Választott jel: „Villogó 24”** – borostyán mentővillogó, benne a „24”. Megmondja, mit csinál a cég és mikor hívható; 16 px-en is felismerhető alak.
+- Változatok (`arculat/`): fekvő sötét/világos, álló sötét/világos, jel sötét négyzetben (Facebook-profil, ikon), negatív borostyán alapon. Minden felirat görbére alakítva (Archivo, szűkített, 800).
+- Elvetett irányok: „Plató” (platós mentő sziluett – kicsiben elvész) és „Horgos M” (egyedi, de nem egyértelmű).
+- Bemutatóoldal: `arculat/index.html` (a lábléc „Logójavaslat” linkje). A weboldal fejléce, favicon és apple-touch ikon már az új jelet használja.
