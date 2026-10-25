@@ -1,0 +1,4 @@
+# Kalocsa GeoWorks – ideiglenes: a keresőindexelés a jogi és működési ellenőrzésig tiltva.
+# Végleges változat: indexeleshez-kesz/robots.txt (+ sitemap.xml)
+User-agent: *
+Disallow: /

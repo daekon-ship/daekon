@@ -1,0 +1,2 @@
+# a harmadik féltől származó fájlok bájtra pontosan maradjanak (a build SRI-hash-sel ellenőrzi őket)
+tools/vendor/** -text
