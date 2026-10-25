@@ -155,7 +155,7 @@ h = sub1(h, '<span>Látványterv: <a href="https://daekon.hu" rel="noopener">DAE
          '<span>Weboldal: <a href="https://daekon.hu" rel="noopener">DAEKON</a></span>', "lábléc készítő")
 # az éles JS-nek saját verzió (a statikus fájlok 1 évig gyorsítótárazódnak) – minden JS-változtatáskor emelni kell
 h = sub1(h, '<script src="kalocsa.js?v=37" defer></script>', '<script src="kalocsa.js?v=37-eles7" defer></script>', "js verzió")
-h = sub1(h, '<link rel="stylesheet" href="kalocsa.css?v=39">', '<link rel="stylesheet" href="kalocsa.css?v=39-eles4">', "css verzió")
+h = sub1(h, '<link rel="stylesheet" href="kalocsa.css?v=39">', '<link rel="stylesheet" href="kalocsa.css?v=39-eles5">', "css verzió")
 for bad in ("Bemutató mód", "bemutató", "BEMUTATÓ", "kitöltendő", "egyeztetendő", "github", "látványterv"):
     if bad.lower() in h.lower():
         sys.exit(f"BUILD STOP – index.html még tartalmazza: {bad}")
@@ -254,6 +254,10 @@ if not AJANLAT_ON:
 # a lábléc DAEKON-linkje aláhúzást kap, hogy ne csak a színe különböztesse meg (az arculati narancs változatlan)
 css += ("\n/* éles: akadálymentességi kontraszt */\n.stages li{color:rgba(255,255,255,.55)}\n"
         ".ftr span a{text-decoration:underline;text-underline-offset:2px}\n")
+# WCAG 1.4.3: a narancs KIS szövegek a világosabb panel-hátteren 4,22:1 (alcím) és 3,57:1 (kártyalink) voltak →
+# ugyanaz az árnyalat (25,6°), csak világosabb: alcím +4% (#F38634, 4,61:1), kártyalink +11,7% (#F59C59, 4,61:1).
+# Gombok, logó, vonalak, ikonok és a többi narancs elem (var(--o)) változatlan.
+css += ".sec--panel .kicker{color:#F38634}\n.card__link{color:#F59C59}\n"
 write(os.path.join(DIST, "kalocsa.css"), css)
 for r in sorted(refs):
     s = os.path.join(SRC, r)
