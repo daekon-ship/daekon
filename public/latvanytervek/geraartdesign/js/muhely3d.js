@@ -39,7 +39,7 @@
 
   /* Jelenet egy <svg>-ben */
   function Jelenet(svg, opt) {
-    opt = Object.assign({ yaw: 135, pitch: 28, vonal: '#2A221D', vastag: 1, feny: norm([-0.55, 0.85, -0.35]), keret: 24 }, opt || {});
+    opt = Object.assign({ yaw: 135, pitch: 28, vonal: '#2A221D', vastag: 1, arnyek: 1, feny: norm([-0.55, 0.85, -0.35]), keret: 24 }, opt || {});
     this.svg = svg; this.opt = opt; this.testek = []; this.cimkek = [];
     this.yaw = opt.yaw; this.pitch = opt.pitch;
     this.g = document.createElementNS(NS, 'g'); svg.appendChild(this.g);
@@ -81,7 +81,8 @@
         const pr = f.v.map(p => this.vetit(add(t.xf ? t.xf(p) : p, t.off)));
         const d = pr.reduce((s, p) => s + p[2], 0) / pr.length + (t.melyseg || 0);
         const fenyes = Math.max(0, dot(n, L));
-        const c = fenyes > 0.5 ? mix(base, [255, 250, 242], (fenyes - 0.5) * 0.36) : mix(base, [30, 24, 20], (0.5 - fenyes) * 0.42);
+        const k = this.opt.arnyek;
+        const c = fenyes > 0.5 ? mix(base, [255, 252, 247], (fenyes - 0.5) * 0.36 * k) : mix(base, [30, 24, 20], (0.5 - fenyes) * 0.42 * k);
         lista.push({ d, pts: pr, c: t.csakVonal ? 'none' : rgb(c), a: t.alpha, t });
       });
     });
