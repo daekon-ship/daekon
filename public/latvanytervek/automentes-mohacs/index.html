@@ -1,0 +1,545 @@
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Non-Stop Autómentés Mohács · 0–24 autómentés – látványterv</title>
+<meta name="description" content="Non-Stop Autómentés – Bősze Márió. 0–24 autómentés és járműszállítás Mohácson, Baranyában és az M6–M60 autópályán, 15 tonnáig. Látványterv-bemutató.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0d0f12">
+<link rel="icon" href="assets/jel.svg" type="image/svg+xml">
+<link rel="preload" href="fonts/archivo-var.woff" as="font" type="font/woff" crossorigin>
+<link rel="preload" href="fonts/plex-sans-regular.woff" as="font" type="font/woff" crossorigin>
+<link rel="stylesheet" href="css/mohacs.css">
+<script>document.documentElement.classList.add("js")</script>
+</head>
+<body>
+
+<a class="skip" href="#tartalom">Ugrás a tartalomra</a>
+
+<p class="demo-strip" role="note">Látványterv-bemutató a DAEKON-tól · nem a vállalkozás hivatalos weboldala</p>
+
+<header class="hdr" id="fejlec">
+  <div class="wrap hdr__in">
+    <a class="brand" href="#top" aria-label="Non-Stop Autómentés Mohács – az oldal teteje">
+      <svg class="brand__jel" viewBox="0 0 40 40" aria-hidden="true"><use href="#jel"/></svg>
+      <span class="brand__txt"><b>Non-Stop Autómentés</b><span>Mohács · Bősze Márió</span></span>
+    </a>
+    <nav class="nav" aria-label="Fő navigáció">
+      <a href="#szolgaltatasok">Szolgáltatások</a>
+      <a href="#menete">A mentés menete</a>
+      <a href="#korzet">Körzet</a>
+      <a href="#kepek">Képek</a>
+      <a href="#gyik">GYIK</a>
+      <a href="#kapcsolat">Kapcsolat</a>
+    </nav>
+    <a class="hdr__call" href="tel:+36202590264" aria-label="Hívás: +36 20 259 0264">
+      <svg class="hdr__ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-tel"/></svg>
+      <span class="hdr__num">+36 20 259 0264</span>
+      <span class="hdr__short">Hívás</span>
+    </a>
+    <button class="burger" id="burger" aria-expanded="false" aria-controls="mobilmenu" aria-label="Menü">
+      <span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<div class="mmenu" id="mobilmenu" hidden>
+  <nav aria-label="Mobil navigáció">
+    <a href="#szolgaltatasok"><i>01</i>Szolgáltatások</a>
+    <a href="#miert"><i>02</i>Miért minket?</a>
+    <a href="#rolunk"><i>03</i>Rólunk</a>
+    <a href="#menete"><i>04</i>A mentés menete</a>
+    <a href="#korzet"><i>05</i>Körzet</a>
+    <a href="#kepek"><i>06</i>Képek</a>
+    <a href="#gyik"><i>07</i>GYIK</a>
+    <a href="#kapcsolat"><i>08</i>Kapcsolat</a>
+  </nav>
+  <a class="btn btn--call btn--block" href="tel:+36202590264">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-tel"/></svg>
+    <span>Hívás most <small>+36 20 259 0264</small></span>
+  </a>
+</div>
+
+<main id="tartalom">
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="top" aria-labelledby="hero-cim">
+  <div class="hero__sky" aria-hidden="true">
+    <div class="hero__beam"></div>
+    <svg class="hero__hills" viewBox="0 0 1440 220" preserveAspectRatio="none"><path d="M0 170 C160 130 260 150 380 118 C500 86 610 120 720 104 C860 84 940 40 1060 58 C1170 74 1250 120 1440 96 L1440 220 L0 220 Z"/></svg>
+    <div class="hero__lamps"><i></i><i></i><i></i><i></i><i></i></div>
+  </div>
+
+  <div class="wrap hero__grid">
+    <div class="hero__copy">
+      <p class="status" aria-live="off">
+        <span class="live" aria-hidden="true"></span>
+        <span>Most is ügyeletben</span>
+        <time class="status__clock" id="ora">0–24</time>
+      </p>
+      <h1 id="hero-cim">Ha megálltál,<br><em>mi indulunk.</em></h1>
+      <p class="hero__lead">Non-stop autómentés és járműszállítás Mohácson és környékén, az M6-os és az M60-as autópályán is. Éjjel, hétvégén és ünnepnap ugyanúgy felvesszük a telefont.</p>
+
+      <div class="hero__cta">
+        <a class="btn btn--call btn--xl" href="tel:+36202590264">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-tel"/></svg>
+          <span>Hívás most<small>+36 20 259 0264</small></span>
+        </a>
+        <a class="btn btn--ghost" href="#szolgaltatasok">Mit vállalunk?</a>
+      </div>
+
+      <ul class="hero__facts">
+        <li><b>0–24</b><span>ünnepnap is</span></li>
+        <li><b>15 t-ig</b><span>teherautó, munkagép</span></li>
+        <li><b>2015 óta</b><span>családi vállalkozás</span></li>
+      </ul>
+    </div>
+
+    <figure class="hero__truck" aria-hidden="true">
+      <div class="truck" id="truck">
+        <svg viewBox="0 0 660 260" class="truck__svg">
+          <defs>
+            <linearGradient id="g-cab" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#3a3f47"/><stop offset="1" stop-color="#1c1f24"/>
+            </linearGradient>
+            <linearGradient id="g-car" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#d9dde2"/><stop offset="1" stop-color="#8d949c"/>
+            </linearGradient>
+            <linearGradient id="g-glass" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#3d5466"/><stop offset="1" stop-color="#14202a"/>
+            </linearGradient>
+            <radialGradient id="g-lamp"><stop offset="0" stop-color="#ffd36b"/><stop offset=".35" stop-color="#ffb200" stop-opacity=".9"/><stop offset="1" stop-color="#ffb200" stop-opacity="0"/></radialGradient>
+            <radialGradient id="g-head"><stop offset="0" stop-color="#fff6d6"/><stop offset="1" stop-color="#fff6d6" stop-opacity="0"/></radialGradient>
+          </defs>
+
+          <!-- fényszóró kúp -->
+          <path class="truck__headbeam" d="M604 172 L660 150 L660 214 Z" fill="url(#g-head)" opacity=".35"/>
+
+          <!-- plató -->
+          <rect x="54" y="158" width="414" height="14" rx="2" fill="#2b2f36"/>
+          <rect x="54" y="158" width="414" height="3" fill="#4a5059"/>
+          <rect x="54" y="168" width="414" height="4" fill="#ffb200"/>
+          <g class="chev">
+            <path d="M54 158h22v14H54z" fill="#111"/>
+            <path d="M54 158l8 0 14 14h-8z M66 158h8l2 2v6z" fill="#ffb200"/>
+          </g>
+          <rect x="84" y="172" width="384" height="18" fill="#17191d"/>
+          <!-- csörlő oszlop -->
+          <rect x="452" y="118" width="14" height="40" rx="2" fill="#2b2f36"/>
+          <rect x="455" y="124" width="8" height="6" fill="#ffb200"/>
+
+          <!-- szállított autó -->
+          <g class="car">
+            <path d="M112 152 L115 131 Q119 118 136 116 L184 112 L226 88 Q236 83 252 83 L322 83 Q340 83 352 95 L378 117 Q393 121 396 136 L398 152 Z" fill="url(#g-car)"/>
+            <path d="M236 94 Q242 90 254 90 L284 90 L284 114 L208 114 Z" fill="url(#g-glass)"/>
+            <path d="M292 90 L320 90 Q333 90 342 99 L358 114 L292 114 Z" fill="url(#g-glass)"/>
+            <rect x="112" y="138" width="286" height="3" fill="#6d747c" opacity=".7"/>
+            <circle cx="168" cy="146" r="18" fill="#121417"/><circle cx="168" cy="146" r="8" fill="#5a6068"/>
+            <circle cx="344" cy="146" r="18" fill="#121417"/><circle cx="344" cy="146" r="8" fill="#5a6068"/>
+            <!-- rögzítő hevederek -->
+            <path d="M150 158 L168 146 M186 158 L168 146 M326 158 L344 146 M362 158 L344 146" stroke="#ffb200" stroke-width="2.5"/>
+          </g>
+
+          <!-- fülke -->
+          <path d="M470 190 L470 108 Q470 96 482 96 L552 96 Q561 96 566 104 L594 150 Q604 153 604 164 L604 190 Z" fill="url(#g-cab)"/>
+          <path d="M486 108 L548 108 L572 148 L486 148 Z" fill="url(#g-glass)"/>
+          <path d="M486 108 L512 108 L496 148 L486 148 Z" fill="#fff" opacity=".06"/>
+          <rect x="520" y="152" width="14" height="3" rx="1.5" fill="#8a919a"/>
+          <rect x="470" y="168" width="134" height="5" fill="#ffb200"/>
+          <rect x="594" y="160" width="12" height="8" rx="2" fill="#fff4cc"/>
+          <rect x="598" y="176" width="10" height="14" fill="#111"/>
+
+          <!-- villogó híd -->
+          <rect x="490" y="86" width="56" height="10" rx="3" fill="#1a1c20"/>
+          <rect class="lamp lamp--a" x="492" y="87" width="16" height="8" rx="2" fill="#ffb200"/>
+          <rect class="lamp lamp--b" x="528" y="87" width="16" height="8" rx="2" fill="#ffb200"/>
+          <circle class="glow glow--a" cx="500" cy="91" r="46" fill="url(#g-lamp)"/>
+          <circle class="glow glow--b" cx="536" cy="91" r="46" fill="url(#g-lamp)"/>
+
+          <!-- kerekek -->
+          <g class="wheel" style="transform-origin:150px 204px"><circle cx="150" cy="204" r="27" fill="#0b0c0e"/><circle cx="150" cy="204" r="13" fill="#4b5058"/><path d="M150 191v26M137 204h26" stroke="#2a2d32" stroke-width="4"/></g>
+          <g class="wheel" style="transform-origin:212px 204px"><circle cx="212" cy="204" r="27" fill="#0b0c0e"/><circle cx="212" cy="204" r="13" fill="#4b5058"/><path d="M212 191v26M199 204h26" stroke="#2a2d32" stroke-width="4"/></g>
+          <g class="wheel" style="transform-origin:548px 204px"><circle cx="548" cy="204" r="27" fill="#0b0c0e"/><circle cx="548" cy="204" r="13" fill="#4b5058"/><path d="M548 191v26M535 204h26" stroke="#2a2d32" stroke-width="4"/></g>
+          <ellipse cx="330" cy="236" rx="300" ry="6" fill="#000" opacity=".45"/>
+        </svg>
+      </div>
+      <figcaption class="sr-only">Rajzolt illusztráció: platós autómentő szállított személyautóval.</figcaption>
+    </figure>
+  </div>
+
+  <div class="road" aria-hidden="true"><div class="road__dash"></div></div>
+</section>
+
+<!-- ============ BIZALMI SÁV ============ -->
+<section class="trust" aria-label="Elérhetőség és vállalások">
+  <div class="wrap trust__grid">
+    <div class="trust__item" data-reveal>
+      <svg viewBox="0 0 32 32" aria-hidden="true"><use href="#i-ora"/></svg>
+      <p><b>0–24, az év minden napján</b><span>hétvégén és ünnepnapokon is</span></p>
+    </div>
+    <div class="trust__item" data-reveal>
+      <svg viewBox="0 0 32 32" aria-hidden="true"><use href="#i-suly"/></svg>
+      <p><b>Motortól 15 tonnáig</b><span>személyautó, kisteher, teherautó</span></p>
+    </div>
+    <div class="trust__item" data-reveal>
+      <svg viewBox="0 0 32 32" aria-hidden="true"><use href="#i-ut"/></svg>
+      <p><b>M6 · M60 · Baranya</b><span>belföldön és külföldön is</span></p>
+    </div>
+    <div class="trust__item" data-reveal>
+      <svg viewBox="0 0 32 32" aria-hidden="true"><use href="#i-tel"/></svg>
+      <p><b>Ár telefonon, azonnal</b><span>indulás előtt megbeszéljük</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SZOLGÁLTATÁSOK ============ -->
+<section class="sec sec--paper" id="szolgaltatasok" aria-labelledby="szolg-cim">
+  <div class="wrap">
+    <header class="sec__head">
+      <p class="km"><span>km 01</span>Szolgáltatások</p>
+      <h2 id="szolg-cim">Mit mentünk, mit szállítunk?</h2>
+      <p class="sec__lead">Az árokba csúszott személyautótól a 15 tonnás teherautóig. Ha nem vagy biztos benne, hogy vállaljuk, hívj – egy perc alatt kiderül.</p>
+    </header>
+
+    <div class="svc">
+      <article class="svc__card svc__card--lead" data-reveal>
+        <div class="svc__top"><span class="svc__no">01</span><span class="tag tag--live"><span class="live" aria-hidden="true"></span>0–24</span></div>
+        <h3>Műszaki és baleseti mentés</h3>
+        <p>Lerobbant, balesetes vagy árokba csúszott jármű – Mohácson, a környező településeken, valamint az M6-os és az M60-as autópályán. Éjjel is, ünnepnap is.</p>
+        <svg class="svc__art" viewBox="0 0 220 90" aria-hidden="true"><use href="#a-mentes"/></svg>
+        <a class="svc__link" href="tel:+36202590264">Hívás most · +36 20 259 0264</a>
+      </article>
+
+      <article class="svc__card" data-reveal>
+        <div class="svc__top"><span class="svc__no">02</span></div>
+        <h3>Személyautó, kisteherautó, motor</h3>
+        <p>Szakszerű felrakás és rakományrögzítés, hogy a jármű ugyanúgy érkezzen meg, ahogy felvettük.</p>
+        <svg class="svc__art" viewBox="0 0 220 90" aria-hidden="true"><use href="#a-auto"/></svg>
+      </article>
+
+      <article class="svc__card" data-reveal>
+        <div class="svc__top"><span class="svc__no">03</span><span class="tag">15 t-ig</span></div>
+        <h3>Teherautó-mentés</h3>
+        <p>Teherautók mentése és szállítása 15 tonnáig – akkor is, ha a nagy jármű áll meg rossz helyen.</p>
+        <svg class="svc__art" viewBox="0 0 220 90" aria-hidden="true"><use href="#a-teher"/></svg>
+      </article>
+
+      <article class="svc__card" data-reveal>
+        <div class="svc__top"><span class="svc__no">04</span><span class="tag">15 t-ig</span></div>
+        <h3>Munkagép-szállítás</h3>
+        <p>Munkagépek fuvarozása telephelyre, munkaterületre vagy szervizbe, előre egyeztetett időpontban.</p>
+        <svg class="svc__art" viewBox="0 0 220 90" aria-hidden="true"><use href="#a-gep"/></svg>
+      </article>
+
+      <article class="svc__card" data-reveal>
+        <div class="svc__top"><span class="svc__no">05</span><span class="tag">15 t-ig</span></div>
+        <h3>Konténerszállítás</h3>
+        <p>Konténerek szállítása 15 tonnáig – telefonon megbeszéljük a helyszínt és az időpontot.</p>
+        <svg class="svc__art" viewBox="0 0 220 90" aria-hidden="true"><use href="#a-kont"/></svg>
+      </article>
+
+      <article class="svc__card" data-reveal>
+        <div class="svc__top"><span class="svc__no">06</span><span class="tag">belföld · külföld</span></div>
+        <h3>Járműszállítás itthon és külföldre</h3>
+        <p>Jármű szállítása belföldön és külföldön, rendezvényekre és vásárokra is, egyeztetett időpontra.</p>
+        <svg class="svc__art" viewBox="0 0 220 90" aria-hidden="true"><use href="#a-kulfold"/></svg>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MIÉRT ============ -->
+<section class="sec sec--dark" id="miert" aria-labelledby="miert-cim">
+  <div class="wrap why">
+    <header class="sec__head why__head">
+      <p class="km"><span>km 02</span>Miért minket?</p>
+      <h2 id="miert-cim">Amikor áll az autó, három dolog számít: hogy felvegyék, hogy odaérjenek, és hogy ne érjen meglepetés.</h2>
+    </header>
+    <ol class="why__list">
+      <li data-reveal>
+        <span class="why__no"><i>A</i></span>
+        <div><h3>Mindig felvesszük</h3><p>Éjjel kettőkor, szombaton vagy karácsonykor is. Non-stop ügyelet, az év minden napján.</p></div>
+      </li>
+      <li data-reveal>
+        <span class="why__no"><i>B</i></span>
+        <div><h3>Helyben vagyunk</h3><p>Mohácsról indulunk: a környék települései, főútjai és az M6–M60 szakaszai a mindennapi terepünk.</p></div>
+      </li>
+      <li data-reveal>
+        <span class="why__no"><i>C</i></span>
+        <div><h3>Korrekt, előre megbeszélt ár</h3><p>Telefonon gyors árajánlatot adunk, így indulás előtt tudod, mire számíts.</p></div>
+      </li>
+      <li data-reveal>
+        <span class="why__no"><i>D</i></span>
+        <div><h3>Gondos felrakás, biztos rögzítés</h3><p>Modern felszereléssel és rakománybiztosítással dolgozunk, a motortól a 15 tonnás teherautóig.</p></div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============ RÓLUNK ============ -->
+<section class="sec sec--graphite" id="rolunk" aria-labelledby="rolunk-cim">
+  <div class="wrap about">
+    <div class="about__plate" data-reveal aria-hidden="true">
+      <div class="kmko">
+        <span class="kmko__top">Mohács</span>
+        <span class="kmko__num">2015</span>
+        <span class="kmko__bot">óta úton · Bősze Márió és családja</span>
+      </div>
+      <dl class="about__figs">
+        <div><dt>Mentés</dt><dd>több ezer</dd></div>
+        <div><dt>Tapasztalat</dt><dd>10+ év</dd></div>
+        <div><dt>Kapacitás</dt><dd>15 t-ig</dd></div>
+        <div><dt>Ügyelet</dt><dd>0–24</dd></div>
+      </dl>
+    </div>
+    <div class="about__copy">
+      <p class="km"><span>km 03</span>Rólunk</p>
+      <h2 id="rolunk-cim">Családi vállalkozás, mohácsi kézben.</h2>
+      <p>A Non-Stop Autómentést <b>Bősze Márió</b> és a felesége indította 2015-ben. Azóta is családi vállalkozásként dolgozunk – közvetlenül, személyesen, ahogy egy kisvárosban szokás.</p>
+      <p>Pontosan tudjuk, mennyire megterhelő, amikor váratlanul áll meg az autó, főleg éjjel vagy úton, messze otthonról. Ezért a célunk egyszerű: gyorsan ott lenni, rendesen elvégezni a munkát, és korrekt árat kérni érte. Az évek alatt több ezer mentés van mögöttünk.</p>
+      <a class="btn btn--call" href="tel:+36202590264">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-tel"/></svg>
+        <span>Beszéljünk most</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MENETE ============ -->
+<section class="sec sec--paper" id="menete" aria-labelledby="menete-cim">
+  <div class="wrap">
+    <header class="sec__head">
+      <p class="km"><span>km 04</span>A mentés menete</p>
+      <h2 id="menete-cim">Három lépés, és már úton is vagyunk.</h2>
+    </header>
+
+    <div class="steps" id="steps">
+      <svg class="steps__road" viewBox="0 0 1000 40" preserveAspectRatio="none" aria-hidden="true">
+        <path class="steps__base" d="M0 20 H1000"/>
+        <path class="steps__draw" d="M0 20 H1000"/>
+      </svg>
+      <ol class="steps__list">
+        <li class="step" data-reveal>
+          <span class="step__pin">1</span>
+          <h3>Hívj minket</h3>
+          <p>Mondd el, hol vagy és mi történt. Ha nem tudod a pontos címet, a legközelebbi település, kijárat vagy kilométerkő is elég.</p>
+        </li>
+        <li class="step" data-reveal>
+          <span class="step__pin">2</span>
+          <h3>Megbeszéljük</h3>
+          <p>Telefonon egyeztetjük, milyen járművel megyünk, és mennyibe kerül – még mielőtt elindulunk.</p>
+        </li>
+        <li class="step" data-reveal>
+          <span class="step__pin">3</span>
+          <h3>Felrakjuk és visszük</h3>
+          <p>Szakszerűen felrakjuk, rögzítjük, és oda szállítjuk, ahová kéred: szervizbe, telephelyre vagy haza.</p>
+        </li>
+      </ol>
+    </div>
+
+    <aside class="safety" data-reveal aria-labelledby="safety-cim">
+      <div class="safety__mark" aria-hidden="true"><svg viewBox="0 0 48 44"><path d="M24 3 L45 40 H3 Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/><path d="M24 17v11M24 32v2" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg></div>
+      <div>
+        <h3 id="safety-cim">Amíg odaérünk</h3>
+        <ul>
+          <li>Kapcsold be a vészvillogót, és vedd fel a láthatósági mellényt.</li>
+          <li>Tedd ki az elakadásjelző háromszöget a jármű mögé, kellő távolságra.</li>
+          <li>Autópályán az utasokkal együtt a szalagkorláton kívül várjatok.</li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- ============ KÖRZET ============ -->
+<section class="sec sec--dark" id="korzet" aria-labelledby="korzet-cim">
+  <div class="wrap area">
+    <div class="area__copy">
+      <p class="km"><span>km 05</span>Működési terület</p>
+      <h2 id="korzet-cim">Mohácsról indulunk, oda megyünk, ahol szükség van ránk.</h2>
+      <ul class="area__list">
+        <li><b>Mohács és környéke</b><span>a város és a környező települések</span></li>
+        <li><b>Baranya vármegye</b><span>helyi mentés és szállítás</span></li>
+        <li><b>M6 és M60 autópálya</b><span>műszaki és baleseti mentés</span></li>
+        <li><b>Belföld és külföld</b><span>járműszállítás előre egyeztetve</span></li>
+      </ul>
+      <p class="area__note">Nem vagy biztos benne, hogy kijutunk hozzád? Hívj – megmondjuk.</p>
+    </div>
+
+    <figure class="map" data-reveal>
+      <svg viewBox="0 0 520 460" role="img" aria-labelledby="map-t">
+        <title id="map-t">Sematikus térkép: Mohács, a Duna, valamint az M6 és M60 autópálya</title>
+        <defs>
+          <pattern id="p-grid" width="26" height="26" patternUnits="userSpaceOnUse"><path d="M26 0H0V26" fill="none" stroke="rgba(255,255,255,.05)"/></pattern>
+          <radialGradient id="g-pulse"><stop offset="0" stop-color="#ffb200" stop-opacity=".55"/><stop offset="1" stop-color="#ffb200" stop-opacity="0"/></radialGradient>
+        </defs>
+        <rect width="520" height="460" fill="url(#p-grid)"/>
+        <!-- Duna -->
+        <path class="map__duna" d="M430 0 C418 70 446 120 426 190 C410 246 452 300 440 360 C432 400 452 430 446 460"/>
+        <text class="map__lbl map__lbl--duna" x="456" y="120">Duna</text>
+        <!-- M6 -->
+        <path class="map__mw" d="M300 0 C292 60 270 110 236 170 C214 210 196 250 190 300 C186 340 200 400 214 460"/>
+        <!-- M60 -->
+        <path class="map__mw" d="M190 300 C150 296 110 286 40 262"/>
+        <!-- 57-es út Mohács felé -->
+        <path class="map__road" d="M190 300 C250 316 320 330 392 336"/>
+        <path class="map__road" d="M392 336 C366 270 320 210 236 170"/>
+        <!-- táblák -->
+        <g class="map__shield" transform="translate(276 54)"><rect x="-18" y="-11" width="36" height="22" rx="4"/><text y="5">M6</text></g>
+        <g class="map__shield" transform="translate(96 276)"><rect x="-20" y="-11" width="40" height="22" rx="4"/><text y="5">M60</text></g>
+        <!-- települések -->
+        <g class="map__town"><circle cx="40" cy="262" r="5"/><text x="40" y="246" text-anchor="middle">Pécs</text></g>
+        <g class="map__town"><circle cx="190" cy="300" r="5"/><text x="176" y="326" text-anchor="end">Bóly</text></g>
+        <g class="map__town"><circle cx="236" cy="170" r="5"/><text x="222" y="160" text-anchor="end">Szekszárd felé</text></g>
+        <text class="map__lbl" x="306" y="22">↑ Budapest</text>
+        <!-- Mohács -->
+        <circle class="map__pulse" cx="392" cy="336" r="70" fill="url(#g-pulse)"/>
+        <circle cx="392" cy="336" r="9" fill="#ffb200"/>
+        <circle cx="392" cy="336" r="16" fill="none" stroke="#ffb200" stroke-width="2" opacity=".6"/>
+        <g class="map__home"><rect x="300" y="360" width="98" height="30" rx="4"/><text x="349" y="380" text-anchor="middle">MOHÁCS</text></g>
+      </svg>
+      <figcaption>Sematikus vázlat, nem méretarányos.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============ KÉPEK ============ -->
+<section class="sec sec--graphite" id="kepek" aria-labelledby="kepek-cim">
+  <div class="wrap">
+    <header class="sec__head sec__head--row">
+      <div>
+        <p class="km"><span>km 06</span>Képek</p>
+        <h2 id="kepek-cim">Munka közben.</h2>
+      </div>
+      <a class="txtlink" href="https://www.facebook.com/automentesmohacson" target="_blank" rel="noopener">Még több kép a Facebook-oldalon →</a>
+    </header>
+
+    <div class="gal" id="galeria" data-src="https://automentesmohacs.hu/galeria/Image" data-count="10"></div>
+
+    <div class="gal__fallback" id="gal-fallback" hidden>
+      <p>A referenciaképek a vállalkozás saját galériájából töltődnek be. Ha itt nem jelennek meg, a friss munkák a Facebook-oldalon láthatók.</p>
+      <a class="btn btn--ghost" href="https://www.facebook.com/automentesmohacson" target="_blank" rel="noopener">Képek a Facebookon</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GYIK ============ -->
+<section class="sec sec--paper" id="gyik" aria-labelledby="gyik-cim">
+  <div class="wrap faq">
+    <header class="sec__head">
+      <p class="km"><span>km 07</span>Gyakori kérdések</p>
+      <h2 id="gyik-cim">Amit a legtöbben megkérdeznek.</h2>
+    </header>
+    <div class="faq__list">
+      <details>
+        <summary>Tényleg éjjel és ünnepnap is hívhatlak?</summary>
+        <p>Igen. Non-stop dolgozunk, a nap 24 órájában, hétvégén és ünnepnapokon is.</p>
+      </details>
+      <details>
+        <summary>Mennyibe kerül egy mentés?</summary>
+        <p>Az ár a távolságtól, a jármű típusától és a helyzettől függ. Telefonon gyors árajánlatot adunk, így indulás előtt tudod, mire számíts.</p>
+      </details>
+      <details>
+        <summary>Milyen járműveket mentetek?</summary>
+        <p>Személyautót, kisteherautót és motorkerékpárt, valamint teherautót 15 tonnáig. Munkagépet és konténert is szállítunk.</p>
+      </details>
+      <details>
+        <summary>Autópályán is kijöttök?</summary>
+        <p>Igen, az M6-os és az M60-as autópályán is vállalunk műszaki és baleseti mentést.</p>
+      </details>
+      <details>
+        <summary>Külföldre is vállaltok szállítást?</summary>
+        <p>Igen, belföldön és külföldön is szállítunk járművet, rendezvényekre és vásárokra is. A részleteket telefonon egyeztetjük.</p>
+      </details>
+      <details>
+        <summary>Mit mondjak, amikor hívlak?</summary>
+        <p>Hol vagy (település, út, kilométerkő vagy kijárat), milyen járműről van szó, mi történt vele, és hová szeretnéd vinni. A többit mi kérdezzük.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============ KAPCSOLAT ============ -->
+<section class="contact" id="kapcsolat" aria-labelledby="kapcs-cim">
+  <div class="contact__beam" aria-hidden="true"></div>
+  <div class="wrap contact__grid">
+    <div class="contact__main">
+      <p class="km km--dark"><span>km 08</span>Kapcsolat</p>
+      <h2 id="kapcs-cim">Állsz valahol? Hívj most.</h2>
+      <p class="contact__lead">Éjjel-nappal felvesszük. Ha nem tudsz beszélni, írj e-mailt vagy üzenj Facebookon – de sürgős esetben a telefon a leggyorsabb.</p>
+      <a class="btn btn--call btn--xl btn--dark" href="tel:+36202590264">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-tel"/></svg>
+        <span>+36 20 259 0264<small>0–24 · ünnepnap is</small></span>
+      </a>
+    </div>
+    <ul class="contact__list">
+      <li><span>E-mail</span><a href="mailto:mantga9317@gmail.com">mantga9317@gmail.com</a></li>
+      <li><span>Facebook</span><a href="https://www.facebook.com/automentesmohacson" target="_blank" rel="noopener">facebook.com/automentesmohacson</a></li>
+      <li><span>Központ</span><b>Mohács, Baranya vármegye</b></li>
+      <li><span>Ügyelet</span><b>0–24, hétvégén és ünnepnap is</b></li>
+    </ul>
+  </div>
+</section>
+
+</main>
+
+<footer class="ftr">
+  <div class="wrap ftr__grid">
+    <div class="ftr__brand">
+      <a class="brand" href="#top">
+        <svg class="brand__jel" viewBox="0 0 40 40" aria-hidden="true"><use href="#jel"/></svg>
+        <span class="brand__txt"><b>Non-Stop Autómentés</b><span>Mohács · Bősze Márió</span></span>
+      </a>
+      <p>Non-stop autómentés és járműszállítás Mohácson, Baranyában és az M6–M60 autópályán, 15 tonnáig.</p>
+    </div>
+    <nav class="ftr__nav" aria-label="Lábléc navigáció">
+      <a href="#szolgaltatasok">Szolgáltatások</a>
+      <a href="#rolunk">Rólunk</a>
+      <a href="#menete">A mentés menete</a>
+      <a href="#korzet">Körzet</a>
+      <a href="#kepek">Képek</a>
+      <a href="#gyik">GYIK</a>
+    </nav>
+    <div class="ftr__contact">
+      <a href="tel:+36202590264">+36 20 259 0264</a>
+      <a href="mailto:mantga9317@gmail.com">mantga9317@gmail.com</a>
+      <a href="https://www.facebook.com/automentesmohacson" target="_blank" rel="noopener">Facebook</a>
+      <span>Mohács, Baranya vármegye</span>
+    </div>
+  </div>
+  <div class="wrap ftr__bottom">
+    <span>Non-Stop Autómentés – Bősze Márió · Mohács</span>
+    <span>Látványterv · bemutató célra készítette a <a href="https://daekon.hu" target="_blank" rel="noopener">DAEKON</a>. Nem a vállalkozás hivatalos weboldala.</span>
+  </div>
+</footer>
+
+<a class="dock" href="tel:+36202590264" aria-label="Hívás most: +36 20 259 0264">
+  <span class="dock__ico"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-tel"/></svg></span>
+  <span class="dock__txt"><b>Hívás most</b><small>+36 20 259 0264 · 0–24</small></span>
+</a>
+
+<!-- ============ SVG KÉSZLET ============ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="jel" viewBox="0 0 40 40">
+      <rect x="6" y="6" width="28" height="28" rx="4" transform="rotate(45 20 20)" fill="#ffb200"/>
+      <path d="M16.5 11.5h7M20 11.5v11.5a4.6 4.6 0 1 1-4.6-4.6" fill="none" stroke="#0d0f12" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="i-tel" viewBox="0 0 24 24"><path d="M6.6 3.5h2.6l1.4 4.1-2 1.4a12 12 0 0 0 6.4 6.4l1.4-2 4.1 1.4v2.6c0 1.1-.9 2-2 2C11 19.4 4.6 13 4.6 5.5c0-1.1.9-2 2-2Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+    <symbol id="i-ora" viewBox="0 0 32 32"><circle cx="16" cy="16" r="12" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16 9v7l5 3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-suly" viewBox="0 0 32 32"><path d="M9 12h14l3 15H6Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="16" cy="8" r="3" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
+    <symbol id="i-ut" viewBox="0 0 32 32"><path d="M11 4 6 28M21 4l5 24M16 6v4M16 15v4M16 24v4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+
+    <symbol id="a-mentes" viewBox="0 0 220 90"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"><path d="M8 64h126M134 64V36h30l18 18v10h-48"/><path d="M144 42h16l10 12h-26z"/><path d="M14 64l6-14h86l10 14"/><path d="M40 50l6-12h34l10 12"/><circle cx="34" cy="70" r="7"/><circle cx="96" cy="70" r="7"/><circle cx="160" cy="70" r="7"/><path d="M142 30h16"/></g><path d="M142 26h16v4h-16z" fill="#ffb200"/><path d="M186 30l10-6M188 40h12M186 50l10 6" stroke="#ffb200" stroke-width="2.2" stroke-linecap="round"/></symbol>
+    <symbol id="a-auto" viewBox="0 0 220 90"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"><path d="M20 66h180"/><path d="M28 60l4-14 20-4 16-14h40l18 14 14 4 2 14z"/><circle cx="54" cy="62" r="8"/><circle cx="118" cy="62" r="8"/><path d="M150 62l8-14h14l8 14M158 48l6-8h6"/><circle cx="152" cy="64" r="7"/><circle cx="184" cy="64" r="7"/></g><path d="M20 70h180" stroke="#ffb200" stroke-width="2.2"/></symbol>
+    <symbol id="a-teher" viewBox="0 0 220 90"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"><path d="M14 64V22h118v42M132 34h34l20 18v12h-54"/><path d="M142 40h20l12 12h-32z"/><circle cx="40" cy="68" r="8"/><circle cx="64" cy="68" r="8"/><circle cx="162" cy="68" r="8"/><path d="M8 64h196"/></g><path d="M14 30h118" stroke="#ffb200" stroke-width="2.2"/></symbol>
+    <symbol id="a-gep" viewBox="0 0 220 90"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"><path d="M40 60h70l-6-16H76V26H52v18H44z"/><path d="M104 44l30-22 26 18-8 8-18-10-22 14"/><path d="M152 48l10 10h-14"/><rect x="34" y="60" width="80" height="12" rx="6"/><path d="M8 78h204"/></g><path d="M56 30h16v10H56z" fill="#ffb200" opacity=".85"/></symbol>
+    <symbol id="a-kont" viewBox="0 0 220 90"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"><path d="M18 64V30h110v34z"/><path d="M36 34v26M54 34v26M72 34v26M90 34v26M108 34v26"/><path d="M128 64V40h30l16 14v10z"/><circle cx="40" cy="70" r="7"/><circle cx="150" cy="70" r="7"/><path d="M8 64h196"/></g><path d="M18 30h110" stroke="#ffb200" stroke-width="2.2"/></symbol>
+    <symbol id="a-kulfold" viewBox="0 0 220 90"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"><circle cx="58" cy="44" r="28"/><path d="M30 44h56M58 16c-10 10-10 46 0 56M58 16c10 10 10 46 0 56"/><path d="M104 60h100M110 54l6-12h40l12 12"/><circle cx="124" cy="62" r="6"/><circle cx="166" cy="62" r="6"/></g><path d="M96 30h40M126 22l10 8-10 8" fill="none" stroke="#ffb200" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  </defs>
+</svg>
+
+<script src="js/mohacs.js" defer></script>
+</body>
+</html>
