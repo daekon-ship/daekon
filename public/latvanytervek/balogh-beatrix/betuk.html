@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Betűválasztó | Balogh Beatrix</title>
+<meta name="robots" content="noindex, nofollow">
+<style>
+@font-face { font-family: F1; src: url(fonts/archivo-var.woff2) format('woff2'); font-weight: 100 900; }
+@font-face { font-family: F2; src: url(fonts/inter.woff) format('woff'); font-weight: 100 900; }
+@font-face { font-family: F3; src: url(fonts/hanken-var.woff) format('woff'); font-weight: 100 900; }
+@font-face { font-family: F4; src: url(fonts/figtree-var.woff) format('woff'); font-weight: 300 900; }
+@font-face { font-family: F5; src: url(fonts/kumbh-var.woff) format('woff'); font-weight: 300 700; }
+@font-face { font-family: F6; src: url(fonts/sora.woff) format('woff'); font-weight: 100 800; }
+@font-face { font-family: F7; src: url(fonts/brygada-var.woff) format('woff'); font-weight: 400 700; }
+@font-face { font-family: F8; src: url(fonts/literata.woff) format('woff'); font-weight: 400 600; }
+@font-face { font-family: F9; src: url(fonts/sourcesans3.woff) format('woff'); font-weight: 400 700; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #F4F1EC; color: #2B2725; font: 15px/1.5 system-ui, sans-serif; padding: 24px clamp(14px, 3vw, 40px) 60px; }
+.top { max-width: 1240px; margin: 0 auto 22px; font-size: 15px; }
+.top b { font-size: 18px; }
+.grid { max-width: 1240px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 380px), 1fr)); gap: 16px; }
+.s { background: #fff; border-radius: 6px; padding: 26px 26px 22px; display: flex; flex-direction: column; gap: 14px; box-shadow: 0 1px 2px rgba(0,0,0,.05); }
+.n { display: flex; justify-content: space-between; align-items: center; font: 600 12px/1 system-ui, sans-serif; letter-spacing: .08em; text-transform: uppercase; color: #8C7B6B; }
+.n span:first-child { background: #2B2725; color: #fff; width: 30px; height: 30px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 14px; letter-spacing: 0; }
+.h { font-size: 31px; line-height: 1.15; margin: 4px 0 0; }
+.h em { font-style: normal; color: #A07656; }
+.p { font-size: 16.5px; line-height: 1.55; color: #5B534D; margin: 0; }
+.row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 12px 0; border-top: 1px solid #ECE6DF; border-bottom: 1px solid #ECE6DF; font-size: 16px; }
+.row small { color: #8A817A; font-size: 14px; margin-left: 6px; }
+.btn { align-self: flex-start; background: #2B2725; color: #fff; padding: 14px 22px; border-radius: 4px; font-size: 15px; }
+.t1 { font-family: F1; } .t1 .h { font-weight: 600; letter-spacing: -.02em; } .t1 .btn { font-weight: 600; }
+.t2 { font-family: F2; } .t2 .h { font-weight: 600; letter-spacing: -.025em; } .t2 .btn { font-weight: 600; }
+.t3 { font-family: F3; } .t3 .h { font-weight: 600; letter-spacing: -.02em; } .t3 .btn { font-weight: 600; }
+.t4 { font-family: F4; } .t4 .h { font-weight: 600; letter-spacing: -.02em; } .t4 .btn { font-weight: 600; }
+.t5 { font-family: F5; } .t5 .h { font-weight: 600; letter-spacing: -.01em; } .t5 .btn { font-weight: 600; }
+.t6 { font-family: F6; } .t6 .h { font-weight: 600; letter-spacing: -.03em; font-size: 29px; } .t6 .btn { font-weight: 600; }
+.t7 { font-family: F3; } .t7 .h { font-family: F7; font-weight: 500; } .t7 .row b { font-family: F7; font-weight: 500; } .t7 .btn { font-weight: 600; }
+.t8 { font-family: F9; } .t8 .h { font-family: F8; font-weight: 500; } .t8 .row b { font-family: F8; font-weight: 500; } .t8 .btn { font-weight: 600; }
+.row b { font-weight: 600; }
+.row > b:last-child { white-space: nowrap; }
+.n { gap: 12px; }
+.n span:first-child { flex: none; }
+.n span:last-child { text-align: right; }
+</style>
+</head>
+<body>
+<div class="top"><b>Betűválasztó — Balogh Beatrix</b><br>Ugyanaz a szöveg nyolc különböző betűvel. Írd meg a számát annak, ami tetszik (vagy kettőt, ha a cím és a szöveg másik legyen).</div>
+<div class="grid">
+  <script>
+  var F = [
+    ['Archivo', 'modern, határozott'], ['Inter', 'semleges, nagyon olvasható'], ['Hanken Grotesk', 'puha, barátságos'],
+    ['Figtree', 'kerek, kedves'], ['Kumbh Sans', 'geometrikus, elegáns'], ['Sora', 'tágas, modern'],
+    ['Brygada 1918 + Hanken', 'klasszikus talpas cím'], ['Literata + Source Sans', 'könyves, nyugodt talpas cím']
+  ];
+  F.forEach(function (f, i) {
+    document.write('<div class="s t' + (i + 1) + '"><div class="n"><span>' + (i + 1) + '</span><span>' + f[0] + ' · ' + f[1] + '</span></div>' +
+      '<p class="h">Az ápoltság a <em>részleteknél</em> kezdődik.</p>' +
+      '<p class="p">Személyre szabott kéz- és lábápolás, ahol a szépség és a nyugalom találkozik.</p>' +
+      '<div class="row"><b>Vizes pedikűr géllakkozással<small>100 perc</small></b><b>13 500 Ft</b></div>' +
+      '<span class="btn">Időpontot foglalok</span></div>');
+  });
+  </script>
+</div>
+</body>
+</html>
