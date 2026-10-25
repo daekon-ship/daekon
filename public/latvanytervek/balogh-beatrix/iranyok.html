@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Három irány | Balogh Beatrix — 2. kör</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<style>
+@font-face { font-family: 'Bodoni Moda'; src: url(fonts/bodonimoda-var.woff) format('woff'); font-weight: 400 900; font-display: swap; }
+@font-face { font-family: 'Bodoni Moda'; src: url(fonts/bodonimoda-italic-var.woff) format('woff'); font-weight: 400 900; font-style: italic; font-display: swap; }
+@font-face { font-family: 'Jost'; src: url(fonts/jost-var.woff) format('woff'); font-weight: 100 900; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; src: url(fonts/plusjakarta.woff) format('woff'); font-weight: 400 800; font-display: swap; }
+@font-face { font-family: 'Instrument Serif'; src: url(fonts/instrumentserif-regular.woff) format('woff'); font-display: swap; }
+@font-face { font-family: 'Instrument Serif'; src: url(fonts/instrumentserif-italic.woff) format('woff'); font-style: italic; font-display: swap; }
+@font-face { font-family: 'Outfit'; src: url(fonts/outfit-regular.woff) format('woff'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Outfit'; src: url(fonts/outfit-bold.woff) format('woff'); font-weight: 700; font-display: swap; }
+
+* { box-sizing: border-box; }
+body { margin: 0; background: #ECE7E1; color: #2B2725; font: 15px/1.6 system-ui, sans-serif; }
+.picker { position: sticky; top: 0; z-index: 10; background: #1E1B1A; color: #E9E1D8; display: flex; gap: 18px; align-items: center; justify-content: space-between; padding: 12px clamp(16px, 4vw, 48px); font: 500 13px/1.3 system-ui, sans-serif; flex-wrap: wrap; }
+.picker nav { display: flex; gap: 6px; flex-wrap: wrap; }
+.picker a { color: #fff; text-decoration: none; padding: 7px 12px; border: 1px solid rgba(255,255,255,.25); border-radius: 99px; }
+.picker a:hover { background: rgba(255,255,255,.1); }
+.label { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 22px clamp(16px, 4vw, 48px) 10px; font: 600 12px/1.4 system-ui, sans-serif; letter-spacing: .12em; text-transform: uppercase; color: #6B625C; flex-wrap: wrap; }
+.label b { color: #2B2725; letter-spacing: .06em; }
+.label span { text-transform: none; letter-spacing: 0; font-weight: 400; }
+
+.dir { margin: 0 clamp(8px, 2vw, 24px) 28px; overflow: hidden; border-radius: 4px; box-shadow: 0 30px 70px -40px rgba(0,0,0,.45); }
+.dir .wrap { max-width: 1280px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 56px); }
+.dir header .wrap { display: flex; align-items: center; justify-content: space-between; gap: 20px; min-height: 78px; }
+.dir nav.m { display: flex; gap: 26px; font-size: 14px; }
+.dir nav.m a { color: inherit; text-decoration: none; opacity: .85; }
+.dir .hero { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); gap: clamp(28px, 5vw, 80px); align-items: center; padding: clamp(36px, 6vw, 88px) 0 clamp(44px, 6vw, 96px); }
+.dir .cta { display: flex; gap: 10px; flex-wrap: wrap; margin: 30px 0 34px; }
+.dir .facts { display: flex; gap: 0; flex-wrap: wrap; font-size: 14px; }
+.dir .facts > div { padding-right: 24px; margin-right: 24px; border-right: 1px solid currentColor; border-color: var(--rule); }
+.dir .facts > div:last-child { border: 0; margin: 0; padding: 0; }
+.dir .facts small { display: block; opacity: .7; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; margin-bottom: 4px; }
+.dir .strip { padding: 0 0 clamp(48px, 6vw, 80px); }
+.dir .rows { border-top: 1px solid var(--rule); }
+.dir .row { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 22px; align-items: center; padding: 18px 0; border-bottom: 1px solid var(--rule); }
+.dir .row p { margin: 4px 0 0; font-size: 14px; opacity: .75; }
+.dir .row .dur { font-size: 13px; opacity: .75; white-space: nowrap; }
+.dir .row .pr { white-space: nowrap; }
+.mini-h { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 16px; }
+.svc { border: 0; display: grid; grid-template-columns: 22px minmax(0, 1fr) auto; gap: 12px; align-items: center; width: 100%; text-align: left; cursor: pointer; padding: 13px 14px; margin-bottom: 8px; background: none; color: inherit; font: inherit; }
+.svc .r { width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid currentColor; opacity: .5; position: relative; }
+.svc[aria-checked="true"] .r { opacity: 1; }
+.svc[aria-checked="true"] .r::after { content: ''; position: absolute; inset: 3px; border-radius: 50%; background: currentColor; }
+.svc small { display: block; opacity: .7; font-size: 12.5px; }
+.slots { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 18px; }
+.slots button { cursor: pointer; font: inherit; font-size: 13px; padding: 9px 12px; background: none; color: inherit; }
+.demo { font-size: 11.5px; opacity: .65; margin: 12px 0 0; }
+.go { width: 100%; }
+@media (max-width: 900px) {
+  .dir .hero { grid-template-columns: 1fr; }
+  .dir nav.m { display: none; }
+  .dir .row { grid-template-columns: minmax(0, 1fr) auto; }
+  .dir .row .dur { grid-column: 1; }
+}
+@media (max-width: 520px) { .dir .facts > div { border: 0; margin: 0 0 10px; padding: 0; width: 50%; } .dir .cta a { flex: 1 1 100%; justify-content: center; } }
+
+/* ================= A — MAISON: sötét, Bodoni Moda + Jost ================= */
+.a { --rule: rgba(242, 236, 228, .16); background: #24201F; color: #EFE8DF; font-family: 'Jost', sans-serif; font-weight: 400; }
+.a header { border-bottom: 1px solid var(--rule); }
+.a .logo { display: flex; align-items: center; gap: 14px; font-family: 'Bodoni Moda'; font-size: 19px; letter-spacing: .02em; }
+.a .logo i { width: 44px; height: 44px; border: 1px solid #BE9A7B; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-family: 'Bodoni Moda'; font-style: italic; font-size: 17px; color: #D9BB9E; }
+.a .logo small { display: block; font-family: 'Jost'; font-size: 10.5px; letter-spacing: .32em; text-transform: uppercase; color: #BE9A7B; margin-top: 2px; }
+.a .kicker { font-size: 12px; letter-spacing: .32em; text-transform: uppercase; color: #BE9A7B; margin: 0 0 22px; }
+.a h1 { font-family: 'Bodoni Moda'; font-weight: 500; font-size: clamp(34px, 2.2rem + 1.4vw, 52px); line-height: 1.08; letter-spacing: -.01em; margin: 0 0 22px; font-variation-settings: 'opsz' 72; }
+.a h1 em { color: #D9BB9E; font-weight: 400; }
+.a .lead { font-size: 18px; font-weight: 300; line-height: 1.6; max-width: 30em; color: #D8CFC5; margin: 0; }
+.a .btn { display: inline-flex; align-items: center; min-height: 52px; padding: 0 26px; font: 500 12.5px/1 'Jost'; letter-spacing: .2em; text-transform: uppercase; text-decoration: none; border: 1px solid #BE9A7B; color: #24201F; background: #BE9A7B; }
+.a .btn.g { background: transparent; color: #EFE8DF; border-color: var(--rule); }
+.a .facts { font-family: 'Bodoni Moda'; font-size: 16px; }
+.a .facts small { font-family: 'Jost'; color: #BE9A7B; opacity: 1; }
+.a .card { background: #F4EEE6; color: #2B2725; padding: 26px; position: relative; }
+.a .card::before { content: ''; position: absolute; inset: 8px; border: 1px solid rgba(190, 154, 123, .5); pointer-events: none; }
+.a .mini-h b { font-family: 'Bodoni Moda'; font-weight: 500; font-size: 22px; }
+.a .mini-h span { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: #8C6A4F; }
+.a .svc { border: 1px solid rgba(43, 39, 37, .14); }
+.a .svc[aria-checked="true"] { border-color: #2B2725; background: #fff; }
+.a .svc b { font-family: 'Bodoni Moda'; font-weight: 500; font-size: 16px; }
+.a .svc .p { font-family: 'Bodoni Moda'; font-size: 15px; white-space: nowrap; }
+.a .slots button { border: 1px solid rgba(43, 39, 37, .2); }
+.a .slots button:hover { border-color: #2B2725; }
+.a .go { background: #24201F; color: #EFE8DF; border-color: #24201F; justify-content: center; }
+.a .row b { font-family: 'Bodoni Moda'; font-weight: 500; font-size: 19px; }
+.a .row .pr { font-family: 'Bodoni Moda'; font-size: 18px; color: #D9BB9E; }
+.a .lbl { font-size: 11px; letter-spacing: .3em; text-transform: uppercase; color: #BE9A7B; margin: 0 0 18px; }
+
+/* ================= B — STUDIO: világos, modern, Plus Jakarta Sans ================= */
+.b { --rule: rgba(43, 39, 37, .12); background: #FBFAF7; color: #23201E; font-family: 'Plus Jakarta Sans', sans-serif; }
+.b header .wrap { min-height: 74px; }
+.b .logo { display: flex; align-items: center; gap: 12px; font-weight: 700; font-size: 17px; letter-spacing: -.01em; }
+.b .logo i { width: 40px; height: 40px; border-radius: 12px; background: #23201E; color: #F3E7DC; display: inline-flex; align-items: center; justify-content: center; font-style: normal; font-weight: 700; font-size: 14px; letter-spacing: .02em; }
+.b .logo small { display: block; font-weight: 500; font-size: 12px; color: #7A716A; letter-spacing: 0; }
+.b nav.m a { font-weight: 500; }
+.b .kicker { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: #5A6353; background: #E6EBE1; border-radius: 99px; padding: 7px 14px; margin: 0 0 22px; }
+.b .kicker::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: #5A6353; }
+.b h1 { font-weight: 700; font-size: clamp(32px, 2rem + 1.3vw, 48px); line-height: 1.1; letter-spacing: -.03em; margin: 0 0 20px; }
+.b h1 em { font-style: normal; color: #9C7759; }
+.b .lead { font-size: 18px; line-height: 1.6; color: #5B534D; max-width: 30em; margin: 0; }
+.b .btn { display: inline-flex; align-items: center; min-height: 52px; padding: 0 24px; border-radius: 99px; font-weight: 600; font-size: 15px; text-decoration: none; background: #23201E; color: #fff; }
+.b .btn.g { background: #fff; color: #23201E; box-shadow: inset 0 0 0 1px var(--rule); }
+.b .facts b { font-weight: 600; }
+.b .card { background: #fff; border-radius: 24px; padding: 24px; box-shadow: 0 1px 0 rgba(0,0,0,.04), 0 30px 60px -30px rgba(43, 39, 37, .35); }
+.b .mini-h b { font-weight: 700; font-size: 19px; letter-spacing: -.01em; }
+.b .mini-h span { font-size: 13px; color: #7A716A; font-weight: 500; }
+.b .svc { border-radius: 14px; background: #F6F3EF; border: 1.5px solid transparent; }
+.b .svc[aria-checked="true"] { background: #fff; border-color: #23201E; }
+.b .svc b { font-weight: 600; font-size: 15px; }
+.b .svc .p { font-weight: 700; white-space: nowrap; }
+.b .slots button { border-radius: 99px; background: #F6F3EF; font-weight: 600; }
+.b .slots button:hover { background: #E6EBE1; }
+.b .go { justify-content: center; }
+.b .row b { font-weight: 600; font-size: 17px; }
+.b .row .pr { font-weight: 700; font-size: 17px; }
+.b .lbl { font-size: 14px; font-weight: 600; color: #7A716A; margin: 0 0 16px; }
+
+/* ================= C — SZALON: meleg, Instrument Serif + Outfit ================= */
+.c { --rule: rgba(43, 39, 37, .16); background: #EFE4DA; color: #2B2725; font-family: 'Outfit', sans-serif; }
+.c header .wrap { min-height: 80px; }
+.c .logo { font-family: 'Instrument Serif'; font-size: 26px; line-height: 1; }
+.c .logo em { color: #A0694F; }
+.c .logo small { display: block; font-family: 'Outfit'; font-size: 11px; letter-spacing: .26em; text-transform: uppercase; color: #7D5C4A; margin-top: 6px; }
+.c .kicker { font-size: 13px; letter-spacing: .2em; text-transform: uppercase; color: #A0694F; margin: 0 0 18px; }
+.c h1 { font-family: 'Instrument Serif'; font-weight: 400; font-size: clamp(38px, 2.4rem + 1.4vw, 56px); line-height: 1.02; letter-spacing: -.01em; margin: 0 0 22px; }
+.c h1 em { color: #A0694F; }
+.c .lead { font-size: 18px; line-height: 1.6; color: #5A4B42; max-width: 30em; margin: 0; }
+.c .btn { display: inline-flex; align-items: center; min-height: 52px; padding: 0 26px; border-radius: 4px; font-weight: 700; font-size: 14px; letter-spacing: .04em; text-decoration: none; background: #A0694F; color: #FFF8F2; }
+.c .btn.g { background: transparent; color: #2B2725; box-shadow: inset 0 0 0 1.5px #2B2725; }
+.c .facts { font-size: 15px; }
+.c .card { background: #FFF9F4; padding: 26px; border-radius: 180px 180px 6px 6px; padding-top: 70px; box-shadow: 0 30px 60px -36px rgba(120, 70, 45, .45); }
+.c .mini-h { justify-content: center; flex-direction: column; align-items: center; text-align: center; gap: 4px; }
+.c .mini-h b { font-family: 'Instrument Serif'; font-weight: 400; font-size: 28px; }
+.c .mini-h span { font-size: 12px; letter-spacing: .2em; text-transform: uppercase; color: #A0694F; }
+.c .svc { border-bottom: 1px solid var(--rule); border-radius: 0; padding: 13px 4px; }
+.c .svc[aria-checked="true"] { color: #A0694F; }
+.c .svc b { font-weight: 700; font-size: 15px; }
+.c .svc .p { font-family: 'Instrument Serif'; font-size: 20px; white-space: nowrap; }
+.c .slots { justify-content: center; }
+.c .slots button { border: 1.5px solid #2B2725; border-radius: 4px; font-weight: 700; }
+.c .slots button:hover { background: #2B2725; color: #FFF9F4; }
+.c .go { justify-content: center; }
+.c .row b { font-family: 'Instrument Serif'; font-weight: 400; font-size: 24px; }
+.c .row .pr { font-family: 'Instrument Serif'; font-size: 22px; }
+.c .lbl { font-size: 12px; letter-spacing: .2em; text-transform: uppercase; color: #A0694F; margin: 0 0 16px; }
+.c .demo { text-align: center; }
+</style>
+</head>
+<body>
+<div class="picker">
+  <span><b>Balogh Beatrix · 2. kör</b> — három irány. Mindegyik ugyanaz a tartalom, más betű és hangulat. Kép nincs, amíg nem jönnek Beatrix saját fotói.</span>
+  <nav><a href="#a">A · Maison</a><a href="#b">B · Studio</a><a href="#c">C · Szalon</a></nav>
+</div>
+
+<template id="tpl">
+  <header><div class="wrap"><div class="logo">LOGO</div><nav class="m"><a>Szolgáltatások</a><a>Árak</a><a>Rólam</a><a>Kapcsolat</a></nav></div></header>
+  <div class="wrap">
+    <section class="hero">
+      <div>
+        <p class="kicker">Kéz- és lábápolás · időpontra</p>
+        <h1>Az ápoltság a <em>részleteknél</em> kezdődik.</h1>
+        <p class="lead">Személyre szabott kéz- és lábápolás, ahol a szépség és a nyugalom találkozik.</p>
+        <div class="cta"><a class="btn" href="foglalas.html">Időpontot foglalok</a><a class="btn g" href="index.html#arak">Kezelések és árak</a></div>
+        <div class="facts"><div><small>Telefon</small><b>+36 70 614 6070</b></div><div><small>Időpont</small><b>Előre egyeztetve</b></div><div><small>Helyszín</small><b>Budapest XI. <span style="opacity:.6;font-size:12px">(egyeztetés alatt)</span></b></div></div>
+      </div>
+      <div class="card" role="group" aria-label="Gyorsfoglalás">
+        <div class="mini-h"><b>Gyorsfoglalás</b><span>1. lépés · kezelés</span></div>
+        <div class="svcs"></div>
+        <div class="mini-h" style="margin:14px 0 0"><span>Legközelebbi szabad időpontok</span></div>
+        <div class="slots"></div>
+        <a class="btn go" href="foglalas.html">Tovább a foglaláshoz</a>
+        <p class="demo">Bemutató — a szabad időpontok mintaadatok.</p>
+      </div>
+    </section>
+    <section class="strip">
+      <p class="lbl">Árlista — részlet</p>
+      <div class="rows"></div>
+    </section>
+  </div>
+</template>
+
+<p class="label" id="a"><b>A · Maison</b><span>Sötét eszpresszó és pezsgőarany, Bodoni Moda + Jost — esti, luxus butik, divatlap-hangulat.</span></p>
+<div class="dir a" data-logo='<i>BB</i><span>Balogh Beatrix<small>Foot &amp; Nail Studio</small></span>'></div>
+
+<p class="label" id="b"><b>B · Studio</b><span>Világos, letisztult, modern, Plus Jakarta Sans — mint a legjobb foglalóappok, nagyon olvasható mobilon.</span></p>
+<div class="dir b" data-logo='<i>BB</i><span>Balogh Beatrix<small>Kéz- és lábápolás</small></span>'></div>
+
+<p class="label" id="c"><b>C · Szalon</b><span>Meleg púder és terrakotta, Instrument Serif + Outfit — nőies, barátságos, boltíves foglalókártya.</span></p>
+<div class="dir c" data-logo='<span>Balogh <em>Beatrix</em><small>Foot &amp; Nail Studio</small></span>'></div>
+
+<script src="js/config.js"></script>
+<script src="js/core.js"></script>
+<script>
+(function () {
+  var T = BB.t, tpl = document.getElementById('tpl');
+  var picks = ['klasszikus-pedikur', 'vizes-pedikur-gellakk', 'labgellakk', 'gepi-manikur'];
+  document.querySelectorAll('.dir').forEach(function (dir, di) {
+    dir.appendChild(tpl.content.cloneNode(true));
+    dir.querySelector('.logo').innerHTML = dir.getAttribute('data-logo');
+    var svcs = dir.querySelector('.svcs'), slots = dir.querySelector('.slots'), cur = picks[0];
+    function draw() {
+      svcs.innerHTML = picks.map(function (id) {
+        var s = BB.service(id);
+        return '<button type="button" class="svc" role="radio" aria-checked="' + (id === cur) + '" data-id="' + id + '"><span class="r"></span><span><b>' + s.name + '</b><small>' + s.mins + ' perc</small></span><span class="p">' + T.fmtPrice(s) + '</span></button>';
+      }).join('');
+      var out = [], d = BB.nextAvailable(cur);
+      for (var guard = 0; d && out.length < 3 && guard < 30; guard++) {
+        var sl = BB.slots(d, cur);
+        if (sl.length) { var x = T.parseIso(d); out.push('<button type="button">' + T.DAYS_SHORT[x.getDay()] + ', ' + T.fmtShort(d) + ' ' + sl[0] + '</button>'); }
+        d = BB.nextAvailable(cur, T.iso(T.addDays(T.parseIso(d), 1)));
+      }
+      slots.innerHTML = out.join('');
+      dir.querySelector('.go').href = 'foglalas.html?kezeles=' + cur;
+    }
+    svcs.addEventListener('click', function (e) { var b = e.target.closest('.svc'); if (b) { cur = b.getAttribute('data-id'); draw(); svcs.querySelector('[data-id="' + cur + '"]').focus(); } });
+    draw();
+    dir.querySelector('.rows').innerHTML = ['klasszikus-pedikur', 'vizes-pedikur-gellakk', 'erositett-gellakk'].map(function (id) {
+      var s = BB.service(id);
+      return '<div class="row"><div><b>' + s.name + '</b><p>' + s.desc + '</p></div><span class="dur">' + s.mins + ' perc</span><span class="pr">' + T.fmtPrice(s) + '</span></div>';
+    }).join('');
+  });
+})();
+</script>
+</body>
+</html>
