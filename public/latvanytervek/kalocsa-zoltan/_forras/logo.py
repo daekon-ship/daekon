@@ -35,7 +35,7 @@ def rpath(pts, rad):
 
 BAR = rpath([(0, 85), (17, 85), (102, 0), (85, 0)], [0, 5, 0, 5])              # fő átló
 LEG = rpath([(29.75, 63.75), (38.25, 55.25), (83, 100), (66, 100)], [0, 0, 0, 5])  # alsó szár (a rúdba fut)
-TIP = rpath([(0, 34), (17, 34), (30.5, 47.5), (22, 56)], [0, 5, 0, 0])         # felső, levált szár – NARANCS
+TIP = rpath([(0, 34), (17, 34), (38.25, 55.25), (29.75, 63.75)], [0, 5, 0, 0])   # felső szár – NARANCS; a rúd alá fut, így rés nélkül „összeolvad” vele (ügyfélkérés)
 
 # finom, „fémes” színátmenetek (prémium hatás, kis méretben is tiszta marad)
 GRAD = {
@@ -48,14 +48,17 @@ def defs(*cols):
     for c in cols:
         if c in GRAD:
             a, b = GRAD[c]
-            out += (f'<linearGradient id="kg{c[1:]}" x1="0" y1="0" x2="1" y2="1">'
+            # a sötét/világos részek egy közös, a jelhez kötött átmenetet kapnak → a rúd és az alsó szár között nincs látható illesztés
+            units = '' if c == ORANGE else ' gradientUnits="userSpaceOnUse"'
+            x2, y2 = ('1', '1') if c == ORANGE else ('102', '100')
+            out += (f'<linearGradient id="kg{c[1:]}"{units} x1="0" y1="0" x2="{x2}" y2="{y2}">'
                     f'<stop offset="0" stop-color="{a}"/><stop offset="1" stop-color="{b}"/></linearGradient>')
     return f"<defs>{out}</defs>" if out else ""
 def paint(c):
     return f"url(#kg{c[1:]})" if c in GRAD else c
 def mark(main, accent, x=0, y=0, s=1.0):
     return (f'<g transform="translate({x:.2f} {y:.2f}) scale({s})">'
-            f'<path d="{BAR}" fill="{paint(main)}"/><path d="{LEG}" fill="{paint(main)}"/><path d="{TIP}" fill="{paint(accent)}"/></g>')
+            f'<path d="{TIP}" fill="{paint(accent)}"/><path d="{LEG}" fill="{paint(main)}"/><path d="{BAR}" fill="{paint(main)}"/></g>')
 
 # ---------- felirat görbére ----------
 def load(wght, wdth):
@@ -81,19 +84,18 @@ def svg(w, h, body, title="Kalocsa GeoWorks"):
 def stacked(main, accent, word, sub, bg=None):
     # az eredeti elrendezés: nagy jel, a név a rúd alatt, az alsó szártól balra (kétsoros, balra zárt)
     m = 3.0; ts = .7                      # jel- és szövegméret-szorzó
-    w, h = 102 * m, 100 * m + 34
+    w, h = 102 * m, 100 * m + 16
     y1 = 85 * m + 12 + 30 * ts * .74 + 6     # első sor alapvonala a rúd alatt
     b = (f'<rect width="{w+80:.1f}" height="{h+80:.1f}" x="-40" y="-40" fill="{bg}"/>' if bg else "")
     b += mark(main, accent, 0, 0, m)
     b += f'<g transform="translate(1 {y1:.1f}) scale({ts})"><path d="{K}" fill="{word}"/><path transform="translate(0 33)" d="{G}" fill="{accent}"/>'
-    b += f'<path transform="translate(1 {33+24:.1f}) scale(1.25)" d="{S}" fill="{sub}"/></g>'
+    b += '</g>'
     return svg(w + 80, h + 80, f'<g transform="translate(40 40)">{b}</g>') if bg else svg(w, h, b)
 
 def horizontal(main, accent, word, sub):
-    s = .62; tx = 102 * s + 16; w = tx + max(KW + 10 + GW, SW) * .8 + 2
+    s = .62; tx = 102 * s + 16; w = tx + (KW + 10 + GW) * .8 + 2
     b = mark(main, accent, 0, 0, s)
-    b += f'<g transform="translate({tx:.1f} 32) scale(.8)"><path d="{K}" fill="{word}"/><path transform="translate({KW+9:.1f} 0)" d="{G}" fill="{accent}"/></g>'
-    b += f'<path transform="translate({tx+1:.1f} 56) scale(.95)" d="{S}" fill="{sub}"/>'
+    b += f'<g transform="translate({tx:.1f} 39.5) scale(.8)"><path d="{K}" fill="{word}"/><path transform="translate({KW+9:.1f} 0)" d="{G}" fill="{accent}"/></g>'
     return svg(w, 62, b)
 
 files = {
@@ -112,5 +114,5 @@ fav = (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">{defs(ORA
 (ROOT / "logo.svg").write_text(files["logo-fekvo-sotet.svg"], encoding="utf-8")
 # inline jel az oldalhoz (CSS-ből színezhető: .km-a = fő szín, .km-b = narancs szár)
 (ROOT / "_forras/jel-inline.txt").write_text(
-    f'<svg class="brand__mark" viewBox="0 0 102 100" aria-hidden="true"><path class="km-a" d="{BAR}"/><path class="km-a" d="{LEG}"/><path class="km-b" d="{TIP}"/></svg>', encoding="utf-8")
+    f'<svg class="brand__mark" viewBox="0 0 102 100" aria-hidden="true"><path class="km-b" d="{TIP}"/><path class="km-a" d="{LEG}"/><path class="km-a" d="{BAR}"/></svg>', encoding="utf-8")
 print("KW GW SW", round(KW), round(GW), round(SW))

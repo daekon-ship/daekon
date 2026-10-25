@@ -3,6 +3,11 @@
 **Élő látványterv:** https://daekon-ship.github.io/daekon/latvanytervek/kalocsa-zoltan/ (noindex)
 **Állapot (2026.10.22., 10. kör):** ügyfélnek bemutatható látványterv. Az éles működéshez szükséges integrációk (űrlapküldés, mérés) előkészítve, de **nincsenek bekapcsolva** (lásd G).
 
+## Ügyfélkérés – logó (2026.10.25.)
+- A narancs szár és a fő rúd közötti rés megszűnt: a narancs szár a rúd alá fut, így egybeolvad vele. A sötét (ill. világos) részek közös, a jelhez kötött színátmenetet kapnak, ezért a rúd és az alsó szár között nincs látható illesztés.
+- A „GÉPI FÖLDMUNKA” alcím kikerült a logóból (álló és fekvő változat), valamint a fejlécből, a láblécből és a jogi oldalak fejlécéből.
+- Az `arculat/` SVG- és PNG-fájljai, valamint a favicon frissítve.
+
 ## Ügyfélkérés (2026.10.23.)
 1. „A gép a nyomvonalon” (pirto-3): Zoltán kérésére levéve; a Pirtó–Halas munkánál 3 fotó maradt (az árok nagyban felül, alatta a megállóhelyi és az erdő melletti kép).
 2. Közműárok-ásás: Zoltán kérésére az **eredeti, szerkesztetlen** fotó (`img/kozmuarok-*.webp`); a nagyításnál „Eredeti fotó, szerkesztés nélkül” felirat. A `kozmuarok-melyebb-*` fájlok nincsenek használatban.
