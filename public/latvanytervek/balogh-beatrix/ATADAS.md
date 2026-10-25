@@ -1,0 +1,131 @@
+# Balogh Beatrix | Foot & Nail Studio — átadási jegyzék
+
+Látványterv, 1. kör — 2026.10.25.
+Előnézet: `https://daekon-ship.github.io/daekon/latvanytervek/balogh-beatrix/` (noindex)
+
+> **Bemutató.** A foglalás és az admin a böngésző helyi tárolójával (localStorage) működik.
+> Nincs központi adatbázis, nem megy ki e-mail, nem jön létre valódi időpont.
+
+---
+
+## 1. Ami elkészült
+
+| Oldal | Tartalom |
+|---|---|
+| `index.html` | Hero, értékek, 3 kezeléskategória, szűrhető árlista óralappal, Rólam, „A szalonban”, galéria (szűrés, nagyítás, teljes képernyő, lapozás, swipe), ajándékutalvány (bemutató), GYIK (8), kapcsolat, térkép-helyőrző |
+| `pedikur.html`, `manikur.html` | Kategória-aloldal: kártyák (leírás, időtartam, ár, foglalás), „Melyiket válasszam?”, továbbvezetés |
+| `specialis-labapolas.html` | Telefonos egyeztetés, menete, „nem orvosi kezelés” tájékoztatás |
+| `foglalas.html` | 6 lépés: kezelés → nap → időpont → adatok → összesítés → kész. Foglalásaim, módosítás, lemondás, .ics |
+| `admin.html` | Áttekintés (5 KPI), naptár (nap/hét/hónap), új/módosít/lemond, szünet, lezárás, szabadság, munkaidő, szolgáltatások, vendégek (keresés, helyesbítés, törlés), értesítések (szimulált), beállítások |
+| `adatkezeles.html`, `impresszum.html`, `feltetelek.html` | **Tervezet helyei**, nem jogi szövegek |
+| `koncepcio.html` | 3 kreatív irány és az indoklás |
+
+## 2. Forrásfájlok
+
+- `js/config.js` — **minden üzleti adat**: név, telefon, két lehetséges cím (`activeLocation`, `addressConfirmed`), kategóriák, árlista, bemutató munkarend.
+- `js/core.js` — demó adattár + foglalási motor (szabad időpontok, ütközés, puffer, szünet, lezárás, előfutás).
+- `js/booking.js`, `js/admin.js`, `js/site.js` (közös), `js/art.js` (rajzolt csendéletek).
+- `css/bb.css` (designrendszer), `css/app.css` (foglalás + admin).
+- `_forras/build.py` — a statikus oldalak generátora (közös fejléc/lábléc/ikonok). Futtatás: `python3 _forras/build.py`.
+
+**Cím váltása:** `config.js` → `activeLocation: 'nagykata'` vagy `'budapest'`; ha megerősített: `addressConfirmed: true` (eltűnnek az „Egyeztetés alatt” jelölések).
+**Árak:** `config.js` → `services`. A sávos árhoz `priceMax` + `priceNote`.
+
+## 3. Kreatív irány — „Rituálé”
+
+Csendes, editorial szalonhangulat; a lábápolás és a nyugalom áll középen, nem a műköröm.
+Jelmotívum: **óralap** — minden kezelés időtartama vékony körív (árlista, kártyák, foglalás, összesítő).
+Nyomdai vágójelek a fő képek körül, hajszálvonalak, sorszámozott fejezetek (01–03).
+
+### Színek
+| Token | Érték | Használat |
+|---|---|---|
+| `--paper` | #F7F4EF | alap |
+| `--paper-2` / `--cream` | #F1EBE3 / #E8DFD5 | váltott szekció, képhely |
+| `--ink` | #2B2725 | szöveg, elsődleges gomb, sötét blokk |
+| `--gold` | #BE9A7B | vonalak, óralap, díszítés (szövegre nem — kontraszt) |
+| `--gold-ink` | #85654C | arany színű szöveg (AA kontraszt) |
+| `--sage` / `--sage-ink` | #929B89 / #5A6353 | kézápolás jelölése, állapotok |
+
+### Tipográfia
+- **Spectral** 300/400/500 + dőlt (címek; a briefben kért Cormorant Garamond helyett — finomabb, jobb mobil-olvashatóság, magyar ékezetek, helyben hostolva). Fraunces sehol.
+- **Manrope** változó (funkcionális szöveg, gombok, űrlapok).
+- Mérsékelt méretek: H1 33–47 px, H2 26–35 px, törzs 16 px / 1,65. Szemöldökcímke 11,5 px, 0,2 em betűköz.
+
+### Térköz, rács
+Konténer 1240 px + `clamp(20px, 4.2vw, 56px)` margó; szekciótávolság `clamp(76px, 9vw, 132px)`. Töréspontok: 1080 (mobilmenü + fix sáv), 980, 900, 820, 640, 520.
+
+### Animációk
+| Mi | Kiváltó | Leírás |
+|---|---|---|
+| Hero főcím | betöltés | soronként alulról felcsúszik (1,1 s, 0,12 s lépcső) |
+| Képek | görgetés | `clip-path` fentről lefelé kinyílik (1,3 s) — a szülőt figyeli az observer |
+| Szövegblokkok | görgetés | 18 px felúszás + áttűnés |
+| Óralap | görgetés | körív 0-ról a perc-arányig rajzolódik |
+| Gombok | hover | finom fénycsík áthalad |
+| Képek | hover | 3,5% lassú nagyítás |
+| Oldalváltás | belső link | 200 ms áttűnés |
+| Foglalás lépések | lépésváltás | 14 px oldalirányú beúszás, lépcsőzve |
+| Megerősítés | kész | arany kör körbefut, majd a pipa megrajzolódik |
+
+`prefers-reduced-motion`: minden animáció kikapcsol, a tartalom azonnal látszik. Nincs scrolljacking, nincs blokkoló betöltő. Külső könyvtár nincs (GSAP / Three.js / WebGL nem kell és nincs benne).
+
+### Képek
+**Nincs stock és nincs AI-fotó.** Minden képhelyen programból rajzolt SVG-csendélet (`js/art.js`: lábfürdő, törölközők, lakkok, kövek, paraffin, kézápolás, sterilizáló tasak) — jelölve, hogy illusztráció. Csere saját fotóra: az elemhez `data-src="img/foto.jpg"`. A galéria minden eleme „Illusztráció” feliratot visel; demóképet referenciaként nem tüntet fel.
+
+## 4. Foglalási logika (bemutató)
+
+- Kezdési időpontok `slotStep` (30 p) lépésközzel; csak ha a kezelés belefér a nyitvatartásba.
+- Ütközik, ha `[kezdés, vége + saját puffer)` metszi egy foglalás `[kezdés, vége + puffer)` sávját, ha szünetbe lóg, ha lezárt/szabadságos napra esik.
+- Aznapra legkorábban `leadMinutes` (180 p) múlva; előre `horizonDays` (75) napig.
+- Véglegesítés előtt újraellenőrzés (párhuzamos foglalás szimulálva → visszadob az időpontokhoz).
+- Speciális lábápolás: online nem foglalható, telefonos panel.
+- Adatok: név, e-mail, telefon; megjegyzés opcionális, egészségügyi adat kifejezetten nem kért. Adatkezelési elfogadás kötelező, marketing külön és alapból üres.
+
+## 5. Tesztelés (Playwright, 2026.10.25.)
+
+**51/51 automatikus ellenőrzés átment.** Túlfolyás 12 oldalon × 360 / 390 / 768 / 1440 px: nincs. Konzolhiba: nincs.
+
+1. Mobil 360 és 390 px — megjelenés, fix sáv, mobilmenü (Esc is) ✔
+2. Tablet 768 px ✔ (hero sorrend javítva: szöveg előre)
+3. Desktop 1440 px ✔
+4. Teljes foglalás billentyűzettel (naptár nyilakkal) ✔
+5. Foglalt időpontok kizárása — a felkínált időpontok a motorral egyezve ütközésmentesek; közben foglalt időpont elutasítva ✔
+6. Mind a 8 kezelés ára és időtartama a referencia szerint; sávos ár megjegyzéssel ✔
+7. Módosítás (ugyanazzal az azonosítóval) és lemondás ✔
+8. Admin: nap/hét/hónap nézet, új időpont, módosítás, lemondás, szünet (foglalásra nem tehető), szabadság, munkaidő ✔
+9. Üres állapotok és hibák: űrlap-hibaösszesítő, hibás e-mail, betelt nap, üres naptár, nincs találat ✔
+10. Billentyűzet: fókuszállapotok, galéria nyilak/Esc, modális fókuszcsapda, admin fül-nyilak ✔
+11. Mobilmenü és fix foglalási sáv (a tartalmat nem takarja: alsó térköz) ✔
+12. Konfiguráció: szolgáltatás ár/idő módosítása és címváltás azonnal megjelenik a nyilvános oldalon ✔
+
+Közben javított hibák: a felfedő animáció miatt a képek láthatatlanok maradtak (observer javítva); 360 px-en 12 px túlfolyás a foglalásnál; a monogram két sorba tört; a sávos ár tördelődött; tableten a hero elvitte az első képernyőt; a „Vissza” gomb az 1. lépésen is látszott.
+
+## 6. Élesítéshez szükséges backend
+
+- Adatbázis (pl. PostgreSQL): `services`, `bookings`, `customers` (csak név/e-mail/telefon), `schedule`, `closures`, `breaks`, `notifications`, `audit_log`.
+- **Atomi foglalás:** tranzakció + átfedést kizáró megkötés (pl. `EXCLUDE USING gist` időtartományra) vagy sorzár; a szabad időpontot a szerver számolja.
+- Admin hitelesítés (jelszó + 2FA vagy magic link), szerepkörök; frontendben tárolt jelszó nem.
+- Tranzakciós e-mail (visszaigazolás, .ics, módosítás, lemondás), időzített emlékeztető (pl. 24 órával előtte), sikertelen küldés naplózása és újrapróbálás.
+- Egyedi, aláírt, lejáró módosítási/lemondási link (belépés nélkül).
+- **Europe/Budapest** időzóna a szerveren; tárolás UTC-ben; óraátállítás napjainak tesztelése (márc./okt. utolsó vasárnap).
+- Spam- és visszaélésvédelem: rate limit, honeypot vagy Turnstile, telefonszám-normalizálás.
+- Naplózás, napi mentés, GDPR: törlés/helyesbítés naplózott folyamata, megőrzési idő.
+- Galéria: képfeltöltés adminból, automatikus átméretezés (AVIF/WebP, `srcset`).
+- SEO élesítéskor: `noindex` le, sitemap, kanonikus URL-ek, `BeautySalon` strukturált adat **csak a megerősített címmel**.
+
+## 7. A tulajdonostól bekérendő
+
+1. **Melyik a végleges cím** (Budapest XI., Bertalan Lajos u. 19. vagy Nagykáta, Dózsa György út 21.)? Parkolás, megközelítés.
+2. Heti munkarend, szünetek, pufferidő kezelésenként, lemondási határidő, késés szabálya.
+3. Végleges árlista (a mostani a Notino-profil referenciája), speciális lábápolás ára/időtartama.
+4. Saját fotók: portré, szalon, munkafotók (pedikűr, manikűr, géllakk) — jogtisztán.
+5. Hivatalos név, vállalkozási forma, adószám, székhely, e-mail-cím (impresszum, adatkezelés).
+6. Jóváhagyás: bemutatkozó szöveg, „Foot & Nail Studio” név, cukorbeteg vendégekre vonatkozó mondat.
+7. Fizetési módok; ajándékutalványt árul-e (és milyen feltételekkel).
+8. Közösségi profilok, ha vannak (nem találtunk ki egyet sem).
+
+## 8. Megjegyzések
+
+- A Notino-, JóSzaki- és Callux-oldalak ebből a munkakörnyezetből nem voltak elérhetők; minden adat a briefben megadott, onnan összegyűjtött értékekből származik.
+- Technológia: a DAEKON látványterv-rendje szerint build nélküli HTML/CSS/JS (nem React/Tailwind) — gyors, függőség nélkül publikálható; az éles változat komponensei (Stepper, Calendar, SlotPicker, ServiceCard, Dial, AdminCalendar) egy az egyben átültethetők React + TypeScript alá.
