@@ -14,7 +14,9 @@ function kliens_ip(array $cfg): string {
     return $ra;
 }
 function meres_add(string $dir, string $e, string $hely): void {
-    $f = fopen($dir . '/szamlalo.json', 'c+'); if (!$f) return;
+    // a mérés hibája soha nem törheti el a hívó végpont válaszát (pl. az ajánlatkérő JSON-válaszát) → csendes kilépés
+    if (!is_dir($dir) && !@mkdir($dir, 0700, true)) return;
+    $f = @fopen($dir . '/szamlalo.json', 'c+'); if (!$f) return;
     flock($f, LOCK_EX);
     $d = json_decode(stream_get_contents($f) ?: '{}', true) ?: [];
     $min = date('YmdHi');
