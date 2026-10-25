@@ -112,24 +112,26 @@ else:
               '      <div class="done__act"><a class="btn" href="tel:+36704204170">Hívás most</a><a class="btn btn--ghost" href="mailto:kalocsageoworks@gmail.com">E-mail küldése</a></div>\n'
               '    </div>\n', "űrlap → telefon")
     h = sub1(h, '<p>Telefonálsz, vagy elküldöd az ajánlatkérést.</p>', '<p>Telefonálsz, vagy írsz egy e-mailt.</p>', "folyamat 01")
-    # minden korábbi ajánlatkérő gomb hívógomb (ügyfélkérés 2026.10.25.): tel: link, telefonos felirat, stílus változatlan.
-    # A „Megkérdezem, befér-e” az ügyfél saját kérése volt – a felirata marad, de ez is hívást indít.
+    # Hívógomb csak a kulcspontokon (ügyfél-visszajelzés 2026.10.25.: „rengeteg a Hívás most”): hero, Kapcsolat panel,
+    # záró blokk, mobil lebegő gomb (+ a látványterv meglévő számos linkjei). A fejléc a számot mutatja.
+    # A kártyák / kiemelt munkák / „befér-e” gombjai a Kapcsolat szakaszhoz görgetnek (ott hívás vagy e-mail – űrlap nincs).
     TEL, NUM = 'href="tel:+36704204170"', "+36 70 420 4170"
     h = sub1(h, '<a class="btn btn--sm hdr__cta" href="#ajanlat">Ajánlatot kérek</a>',
-             f'<a class="btn btn--sm hdr__cta" {TEL} aria-label="Hívás most: {NUM}">Hívás most</a>', "fejléc gomb")
+             f'<a class="btn btn--sm hdr__cta" {TEL} aria-label="Hívás: {NUM}">{NUM}</a>', "fejléc gomb")
     h = sub1(h, '<a class="btn" href="#ajanlat">Ajánlatot kérek</a>',
              f'<a class="btn" {TEL} aria-label="Beszéljünk telefonon: {NUM}">Beszéljünk telefonon</a>', "hero gomb")
-    h = sub1(h, '<a class="btn btn--ghost btn--lg" href="#ajanlat">Ajánlatot kérek</a>',
-             f'<a class="btn btn--ghost btn--lg" {TEL} aria-label="Hívás: {NUM}">{NUM}</a>', "záró gomb")
-    LBL = {"Ajánlatot kérek erre": "Érdeklődöm telefonon", "Ilyen munkát kérek": "Telefonos érdeklődés"}
+    # záró blokk: közvetlenül a Kapcsolat panel alatt van, ezért nem ismétli annak „Hívás most / E-mail” párját – egy gomb, a számmal
+    h = sub1(h, '      <a class="btn btn--lg" href="tel:+36704204170">Hívás most</a>\n      <a class="btn btn--ghost btn--lg" href="#ajanlat">Ajánlatot kérek</a>\n',
+             f'      <a class="btn btn--lg" {TEL} aria-label="Hívás: {NUM}">{NUM}</a>\n', "záró gombok")
+    LBL = {"Ajánlatot kérek erre": "Érdeklődöm", "Ilyen munkát kérek": "Érdeklődöm"}
     def munka_gomb(m):
         txt = m[3]
         for old, new in LBL.items():
             txt = txt.replace(old, new)
-        return f'<a class="{m[1]}" {TEL} aria-label="{re.sub("<[^>]+>", "", txt).strip()} – {m[2]}: {NUM}">{txt}</a>'
+        return f'<a class="{m[1]}" href="#ajanlat" aria-label="{re.sub("<[^>]+>", "", txt).strip()}: {m[2]} – kapcsolat">{txt}</a>'
     h, n1 = re.subn(r'<button class="([^"]+)" data-munka="([^"]+)">(.*?)</button>', munka_gomb, h)
     h, n2 = re.subn(r'<button class="([^"]+)" data-befer>(.*?)</button>',
-                    lambda m: f'<a class="{m[1]}" {TEL} aria-label="{m[2]} – hívás: {NUM}">{m[2]}</a>', h)
+                    lambda m: f'<a class="{m[1]}" href="#ajanlat">{m[2]}</a>', h)
     if (n1, n2) != (10, 2):
         sys.exit(f"BUILD STOP – ajánlatkérő gombok: {n1} munka- és {n2} befér-gomb (10 és 2 kell)")
     h = sub1(h, "<p>Hívj most, vagy kérj ajánlatot – a részleteket közvetlenül velem beszéled meg.</p>",
