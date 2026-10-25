@@ -36,8 +36,10 @@ $hits[] = time(); @file_put_contents($rlFile, implode("\n", $hits), LOCK_EX);
 
 // 4) mezők szerveroldali ellenőrzése
 $s = fn(string $k, int $max) => mb_substr(trim(strip_tags((string)($_POST[$k] ?? ''))), 0, $max);
-$nev = $s('nev', 120); $tel = $s('telefon', 40); $hely = $s('helyszin', 160); $leiras = $s('leiras', 3000);
-$email = $s('email', 160); $mikor = $s('mikor', 60);
+// egysoros mezők (név, telefon, helyszín, e-mail, időpont): sortörés nélkül – a tárgyba / fejlécbe is kerülhetnek
+$s1 = fn(string $k, int $max) => trim(preg_replace('/[\x00-\x1F\x7F]+/u', ' ', $s($k, $max)));
+$nev = $s1('nev', 120); $tel = $s1('telefon', 40); $hely = $s1('helyszin', 160); $leiras = $s('leiras', 3000);
+$email = $s1('email', 160); $mikor = $s1('mikor', 60);
 $TIPUSOK = ['Alapásás', 'Közműárok-ásás', 'Nyomvonalásás', 'Tuskóeltávolítás', 'Tereprendezés', 'Egyéb földmunka'];
 $munka = array_values(array_intersect((array)($_POST['munka'] ?? []), $TIPUSOK));
 $errors = [];

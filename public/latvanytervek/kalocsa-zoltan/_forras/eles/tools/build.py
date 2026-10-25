@@ -160,6 +160,11 @@ write(os.path.join(DIST, "index.html"), h)
 j = read(os.path.join(SRC, "kalocsa.js"))
 if AJANLAT_ON:
     j = sub1(j, "const AJANLAT = { endpoint: null,", "const AJANLAT = { endpoint: '/api/ajanlat.php',", "js ajánlat végpont")
+    # több munkatípus: a „munka” nevű jelölőnégyzetekből PHP csak az utolsót kapná meg → munka[] tömbként küldjük
+    j = sub1(j, "    fd.delete('fotok'); files.forEach(f => fd.append('fotok[]', f, f.name));\n",
+             "    fd.delete('fotok'); files.forEach(f => fd.append('fotok[]', f, f.name));\n"
+             "    const munkak = fd.getAll('munka'); fd.delete('munka'); munkak.forEach(m => fd.append('munka[]', m));\n", "js munka[] tömb")
+    j = sub1(j, "    const munka = fd.getAll('munka').join(', ');", "    const munka = munkak.join(', ');", "js munka felirat")
     # a bemutató ág (végpont nélküli e-mail-piszkozat) élesben nem kell – kivesszük, ne maradjon „Bemutató mód” szöveg
     j = subre(j, r"    if \(!AJANLAT\.endpoint\) \{\n      // BEMUTATÓ MÓD.*?\n      return;\n    \}\n", "", "js bemutató ág")
 else:
@@ -237,7 +242,10 @@ write(os.path.join(DIST, ".htaccess"), ht)
 # indexeléshez előkészítve, de NEM feltöltendő (külön mappa)
 ready = os.environ.get("KGW_READY") or os.path.join(ROOT, "indexeleshez-kesz")
 os.makedirs(ready, exist_ok=True)
-shutil.copy2(os.path.join(TPL, "sitemap.xml"), os.path.join(ready, "sitemap.xml"))
+# sitemap: csak a ténylegesen kikerülő oldalak (az adatkezelési tájékoztató csak a véglegesítése után)
+pages = [("/", "monthly", "1.0"), ("/impresszum.html", "yearly", "0.2")] + ([("/adatkezeles.html", "yearly", "0.2")] if HAS_PRIVACY else [])
+write(os.path.join(ready, "sitemap.xml"), '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+      + "".join(f"  <url><loc>{DOMAIN}{p}</loc><changefreq>{c}</changefreq><priority>{pr}</priority></url>\n" for p, c, pr in pages) + "</urlset>\n")
 shutil.copy2(os.path.join(TPL, "robots-vegleges.txt"), os.path.join(ready, "robots.txt"))
 
 total = 0
