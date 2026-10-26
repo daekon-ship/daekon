@@ -19,11 +19,11 @@ Előnézet: `https://daekon-ship.github.io/daekon/latvanytervek/balogh-beatrix/`
 - Gombok mondatkezdő betűvel, nem csupa nagybetű.
 - Teszt: **52/52** (új: gyorsfoglaló mélylink), túlfolyás 12 oldal × 4 szélesség: nincs.
 
-## 0/b. Logó — 5. kör (2026.10.26.)
+## 0/b. Logó — nyitott kérdés (2026.10.26.)
 
-- Ügyfél-referencia alapján klasszikus szalonlogó-műfaj, **saját rajzzal** (nem stock): kecses kéz hátulnézetből, púderrózsa lakkal festett mandulakörmök, körömlakk-ecset, arany csillogás; név Bodoni Moda talpas betűvel, alatta „KÉZ- ÉS LÁBÁPOLÁS” (Jost) — mindkettő görbékké alakítva.
-- Változatok (`arculat/`): A fekvő vonalas kéz ecsettel (az oldalon ez van), B kör embléma kéz-sziluettel, C álló vonalas; sötét változatok, jel, favicon. Áttekintő: `arculat/index.html`.
-- Forrás: `_forras/logo_kez.py`. A korábbi logókörök (köröm, BB-lábnyom) törölve.
+- A kódból rajzolt logókísérleteket (köröm, lábnyom, kéz) az ügyfél elvetette; mind törölve.
+- Jelenleg **ideiglenes felirat** áll a helyén: „Balogh **Beatrix**” + „KÉZ- ÉS LÁBÁPOLÁS” (Hanken Grotesk), illusztráció nélkül — `arculat/logo-nev.svg`, forrás: `_forras/logo_nev.py`.
+- Végleges logó: licencelt vektor (pl. Shutterstock/DepositPhotos) vagy tervezői munka; a fájl beérkezése után cserélendő (fejléc, lábléc, admin, utalvány, favicon).
 
 ## 0/c. Animációk — Motion (motion.dev), 2026.10.26.
 

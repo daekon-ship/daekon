@@ -120,7 +120,7 @@ def header(current, is_index=False):
 {demo_strip()}
 <header class="hdr">
   <div class="wrap">
-    <a class="brand" href="index.html" aria-label="Balogh Beatrix — kezdőlap"><img class="logo" src="arculat/logo-kez-fejlec.svg" alt="Balogh Beatrix — kéz- és lábápolás" width="400" height="124"></a>
+    <a class="brand" href="index.html" aria-label="Balogh Beatrix — kezdőlap"><img class="logo" src="arculat/logo-nev.svg" alt="Balogh Beatrix — kéz- és lábápolás" width="250" height="84"></a>
     <nav class="nav" aria-label="Fő navigáció">{nav}</nav>
     <div class="hdr-cta">
       <a class="hdr-call" data-tel href="tel:+36706146070" aria-label="Hívás: +36 70 614 6070">{ico('phone')}</a>
@@ -148,7 +148,7 @@ def footer(is_index=False, mbar=True):
   <div class="wrap">
     <div class="ftr-grid">
       <div>
-        <a class="brand" href="index.html" style="margin-bottom:22px"><img class="logo" src="arculat/logo-kez-fejlec-sotet.svg" alt="Balogh Beatrix — kéz- és lábápolás" width="400" height="124"></a>
+        <a class="brand" href="index.html" style="margin-bottom:22px"><img class="logo" src="arculat/logo-nev-sotet.svg" alt="Balogh Beatrix — kéz- és lábápolás" width="250" height="84"></a>
         <p style="max-width:24em">Kéz- és lábápolás előre egyeztetett időpontban.</p>
         <p><a data-tel href="tel:+36706146070" data-bind="phone">+36 70 614 6070</a><br><span data-bind="addr-line2">1111 Budapest</span>, <span data-bind="addr-line1">Bertalan Lajos utca 19.</span> <span class="tag" data-addr-status>Egyeztetés alatt</span></p>
       </div>
@@ -161,7 +161,7 @@ def footer(is_index=False, mbar=True):
         <li><a href="{l('index.html#gyik')}">Gyakori kérdések</a></li><li><a href="admin.html">Admin demó</a></li></ul></div>
       <div><h4>Tudnivalók</h4><ul>
         <li><a href="adatkezeles.html">Adatkezelési tájékoztató</a></li><li><a href="feltetelek.html">Foglalási és lemondási feltételek</a></li>
-        <li><a href="impresszum.html">Impresszum</a></li><li><a href="arculat/">Logó és arculat</a></li><li><a href="koncepcio.html">Tervezési koncepció</a></li></ul></div>
+        <li><a href="impresszum.html">Impresszum</a></li><li><a href="koncepcio.html">Tervezési koncepció</a></li></ul></div>
     </div>
     <div class="ftr-bot">
       <span>© <span data-year>2026</span> Balogh Beatrix · látványterv, nem éles weboldal</span>
@@ -316,7 +316,7 @@ INDEX = f'''
   <div class="wrap about">
     <div class="portrait rv-img">
       <span class="frame-label">Portré helye</span>
-      <div class="portrait-inner"><img src="arculat/jel-kez.svg" alt="" width="96" height="96" style="margin:0 auto 12px"><p>Ide Beatrix saját portréja kerül, a szalonban, természetes fényben.</p></div>
+      <div class="portrait-inner"><p>Ide Beatrix saját portréja kerül, a szalonban, természetes fényben.</p></div>
     </div>
     <div>
       <p class="eyebrow rv">Rólam</p>
@@ -371,7 +371,7 @@ INDEX = f'''
 <section class="sec sec--cream" id="utalvany" aria-labelledby="ut-h">
   <div class="wrap voucher-wrap">
     <div class="voucher rv" aria-hidden="true">
-      <div class="voucher-top"><img src="arculat/jel-kez.svg" alt="" style="height:48px;width:48px"><small>Ajándékutalvány<br>N° 0001</small></div>
+      <div class="voucher-top"><img src="arculat/logo-nev-sotet.svg" alt="" style="height:40px;width:auto"><small>Ajándékutalvány<br>N° 0001</small></div>
       <h3>Egy nyugodt óra,<br>neked szánva.</h3>
       <div class="voucher-bot"><span>Érvényes egy választott kezelésre</span><b>Balogh Beatrix</b></div>
     </div>
