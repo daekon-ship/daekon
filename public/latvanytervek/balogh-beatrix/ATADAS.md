@@ -19,11 +19,11 @@ Előnézet: `https://daekon-ship.github.io/daekon/latvanytervek/balogh-beatrix/`
 - Gombok mondatkezdő betűvel, nem csupa nagybetű.
 - Teszt: **52/52** (új: gyorsfoglaló mélylink), túlfolyás 12 oldal × 4 szélesség: nincs.
 
-## 0/b. Logó (2026.10.26.)
+## 0/b. Logó — 3. kör (2026.10.26.)
 
-- Jel: mandula formájú köröm, benne kisbetűs „b”; fő logó = jel + „Balogh Beatrix” + „FOOT & NAIL STUDIO” (Hanken Grotesk görbékből).
-- Változatok: fő logó (világos/sötét), „beatrix” szóvédjegy köröm alakú i-ponttal, „Öt pont” (lábujjív) alternatíva, önálló jel, favicon — `arculat/`, áttekintő: `arculat/index.html`.
-- Forrás: `_forras/logo.py` (minden SVG újragenerálható). Az oldalon a fő logó szerepel (fejléc, lábléc, admin), a portrénál a vonalas jel, az utalványon a szóvédjegy.
+- Betű a jelben nincs. Jel: frissen lakkozott, fényes, mandulavégű köröm az ujjbegyen (rosé-nude lakk, csíkfény, szabad sáv a cuticula mentén); mellette csak a név: „Balogh **Beatrix**” (Hanken Grotesk, két súly).
+- Változatok (`arculat/`): **A lakkozott köröm + név** (az oldalon ez van), **B festés közben** (félig lakkozott köröm, ecset a nedves szélnél), **C csak a név** körömlakk-ecsetvonással; mind világos és sötét alapon; önálló jelek, ikonok, favicon. Áttekintő: `arculat/index.html`.
+- Forrás: `_forras/logo_lakk.py` (a `logo.py` segédfüggvényeit használja). Az előző „b” betűs és „öt pont” változatok törölve.
 
 ## 0/c. Animációk — Motion (motion.dev), 2026.10.26.
 

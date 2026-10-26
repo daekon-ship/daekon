@@ -163,12 +163,6 @@ def kombinalt(name, ink, gold, sub, paper, bg=None):
     write(name, svg(58 + max(w1, w2) + 6, H, body, 'Balogh Beatrix — Foot & Nail Studio', bg))
 
 if __name__ == '__main__':
-    mandula(INK, GOLD, GOLD_DARK, 'logo-mandula.svg')
-    mandula(PAPER, GOLD, '#CDB49C', 'logo-mandula-sotet.svg', bg=INK)
-    otpont(INK, GOLD, GOLD_DARK, 'logo-otpont.svg')
-    otpont(PAPER, GOLD, '#CDB49C', 'logo-otpont-sotet.svg', bg=INK)
-    jel(INK, GOLD, PAPER, 'jel-mandula.svg')
-    jel(INK, GOLD, PAPER, 'jel-mandula-vonal.svg', filled=False)
-    kombinalt('logo-fejlec.svg', INK, GOLD, GOLD_DARK, PAPER)
-    kombinalt('logo-fejlec-sotet.svg', PAPER, GOLD, '#CDB49C', INK)
-    favicon()
+    # 3. kör óta a logók forrása: logo_lakk.py (a fenti segédfüggvényeket használja)
+    import runpy
+    runpy.run_path(str(pathlib.Path(__file__).with_name('logo_lakk.py')), run_name='__main__')
