@@ -220,9 +220,32 @@ h = sub1(h, "<!-- ================= AJÁNLATKÉRŐ ================= -->", velem
 h = subre(h, r'(<nav class="nav" id="nav"[^>]*>.*?)(\n(\s*)<a href="#ajanlat">)', r'\1\n\3<a href="#velemenyek">Vélemények</a>\2', "menü: Vélemények")
 h = sub1(h, '<a href="#munkaterulet">Munkaterület</a><br><a href="#ajanlat">',
          '<a href="#munkaterulet">Munkaterület</a><br><a href="#velemenyek">Vélemények</a><br><a href="#ajanlat">', "lábléc: Vélemények")
-# az éles JS-nek saját verzió (a statikus fájlok 1 évig gyorsítótárazódnak) – minden JS-változtatáskor emelni kell
+
+# ---------------- Új logó (2026.10.26., LOGO.png): kétsoros felirat a jel mellett ----------------
+# A felirat a jóváhagyott arculati csomag görbéiből jön (arculat/logo-allo-sotet.svg): KALOCSA világos, GEOWORKS narancs,
+# egymás alatt (translate 0 33) – az új logó elrendezése. Betűtípustól független, nincs új betűfájl.
+# A K-jel útvonalai változatlanok: körvonaluk képpontra egyezik az új logóéval (az átfedés azonos színátmenet alatt nem látszik).
+_al = read(os.path.join(SRC, "arculat", "logo-allo-sotet.svg"))
+_wp = re.findall(r'<path (?:transform="translate\(0 33\)" )?d="([^"]+)" fill="(#F2F3F4|#F27A21)"/>', _al)
+if [c for _, c in _wp] != ["#F2F3F4", "#F27A21"]:
+    sys.exit("BUILD STOP – az arculati logó felirata nem a várt szerkezetű (KALOCSA + GEOWORKS)")
+
+
+def logo_felirat(cimke):
+    a = 'role="img" aria-label="Kalocsa GeoWorks"' if cimke else 'aria-hidden="true"'
+    return (f'<svg class="brand__word" viewBox="0 -21.5 225 55.5" {a}><path fill="#F2F3F4" d="{_wp[0][0]}"/>'
+            f'<path fill="#F27A21" transform="translate(0 33)" d="{_wp[1][0]}"/></svg>')
+
+
+_r = h.split('<span class="brand__txt"><b>Kalocsa <span>GeoWorks</span></b></span>')
+if len(_r) != 3:
+    sys.exit(f"BUILD STOP – logófelirat: {len(_r) - 1} találat (2 kell: fejléc, lábléc)")
+h = _r[0] + logo_felirat(False) + _r[1] + logo_felirat(True) + _r[2]  # fejléc: a link aria-labelje nevez; lábléc: saját név
+
+# az éles JS-nek és CSS-nek saját verzió (a statikus fájlok 1 évig gyorsítótárazódnak) – minden változtatáskor emelni kell
+CSS_V = "39-eles7"
 h = sub1(h, '<script src="kalocsa.js?v=37" defer></script>', '<script src="kalocsa.js?v=37-eles8" defer></script>', "js verzió")
-h = sub1(h, '<link rel="stylesheet" href="kalocsa.css?v=39">', '<link rel="stylesheet" href="kalocsa.css?v=39-eles6">', "css verzió")
+h = sub1(h, '<link rel="stylesheet" href="kalocsa.css?v=39">', f'<link rel="stylesheet" href="kalocsa.css?v={CSS_V}">', "css verzió")
 for bad in ("Bemutató mód", "bemutató", "BEMUTATÓ", "kitöltendő", "egyeztetendő", "github", "látványterv"):
     if bad.lower() in h.lower():
         sys.exit(f"BUILD STOP – index.html még tartalmazza: {bad}")
@@ -353,6 +376,11 @@ css += """
 .rcard figcaption a{color:#F59C59}
 .rev__attr{margin:16px 0 0;font-size:13px;color:#BFC5CB}
 .rev__nw{white-space:nowrap}
+/* új logó: kétsoros felirat a jel mellett (225 × 55,5 egység) */
+.brand__word{display:block;flex:none;width:138px;height:34px}
+@media (max-width:420px){.brand__word{width:122px;height:30px}}
+/* 320 px-es (nem mobil-emulált) ablakban a Kapcsolat szövegoszlopa 10 px-szel kilógott (rácselem min-width:auto) */
+.quote-grid>*{min-width:0}
 .rev__act .btn{text-align:center}
 /* az új menüpont miatt 1181–1340 px között szűkebb a menü: a fejléc hívógombjában a szám ne törjön két sorba */
 .hdr__cta{white-space:nowrap}
@@ -381,7 +409,16 @@ for f, want in LEAFLET_SRI.items():
 
 # ---------------- saját éles fájlok ----------------
 for name in ("impresszum.html", "404.html", "robots.txt") + (("adatkezeles.html",) if HAS_PRIVACY else ()):
-    shutil.copy2(os.path.join(TPL, name), os.path.join(DIST, name))
+    if not name.endswith(".html"):
+        shutil.copy2(os.path.join(TPL, name), os.path.join(DIST, name))
+        continue
+    t = read(os.path.join(TPL, name))
+    # új logó a kisoldalakon is; a CSS-hivatkozás mindig az aktuális verzió (ne a gyorsítótárból jöjjön régi stílus)
+    t = sub1(t, '<span class="brand__txt"><b>Kalocsa <span style="color:#F27A21">GeoWorks</span></b></span>', logo_felirat(True), f"{name}: logó")
+    t, n = re.subn(r'kalocsa\.css\?v=[0-9A-Za-z-]+', f"kalocsa.css?v={CSS_V}", t)
+    if n != 1:
+        sys.exit(f"BUILD STOP – {name}: CSS-hivatkozás {n} db")
+    write(os.path.join(DIST, name), t)
 
 # CSP: a fej inline szkriptje hash-sel engedélyezve
 inline = re.findall(r"<script>(.*?)</script>", h, re.S)
