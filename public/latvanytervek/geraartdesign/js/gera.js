@@ -23,7 +23,7 @@
     io.observe(el);
   }
   function gorgetesre(target, offset, cb) {
-    if (MO && MO.scroll) { try { MO.scroll(p => cb(typeof p === 'number' ? p : 0), { target, offset }); return; } catch (e) {} }
+    /* saját, közvetlen görgetésfigyelés: minden görgetési eseménynél azonnal számol (nem késik egy képkockát sem) */
     const f = () => {
       const r = target.getBoundingClientRect(), vh = innerHeight, sY = scrollY, top = r.top + sY;
       const m = s => s === 'start' ? 0 : s === 'end' ? 1 : s === 'center' ? .5 : parseFloat(s) / 100;
