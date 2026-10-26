@@ -63,9 +63,8 @@ Fejléc + mobilmenü · hero (illusztráció, státuszjelző, XL hívógomb, 3 t
 
 Playwright, 1440 / 768 / 390 / 360 px: vízszintes túlcsordulás 0, konzolhiba 0, minden belső horgony létező szekcióra mutat, 8 db `tel:+36202590264`, 2 db `mailto:`, 4 db Facebook-link. A galéria betöltött és sikertelen állapota is ellenőrizve.
 
-## 9. Logó (2. kör)
+## 9. Logó (végleges választás)
 
-- **Választott jel: „Villogó 24”** – borostyán mentővillogó, benne a „24”. Megmondja, mit csinál a cég és mikor hívható; 16 px-en is felismerhető alak.
-- Változatok (`arculat/`): fekvő sötét/világos, álló sötét/világos, jel sötét négyzetben (Facebook-profil, ikon), negatív borostyán alapon. Minden felirat görbére alakítva (Archivo, szűkített, 800).
-- Elvetett irányok: „Plató” (platós mentő sziluett – kicsiben elvész) és „Horgos M” (egyedi, de nem egyértelmű).
-- Bemutatóoldal: `arculat/index.html` (a lábléc „Logójavaslat” linkje). A weboldal fejléce, favicon és apple-touch ikon már az új jelet használja.
+- **„Villogó 24”**: borostyán mentővillogó, benne a „24”. Ez az egyetlen logó; a többi próba (Plató, Horgos M, álló és negatív változat) kikerült.
+- Fájlok (`arculat/`): `logo-lampa-sotet.svg` (fő logó), `logo-lampa-vilagos.svg` (világos háttér), `jel-lampa.svg` (profilkép, ikon, favicon). A feliratok görbére alakítva (Archivo, szűkített, 800).
+- Bemutató: `arculat/index.html` (lábléc: „Logójavaslat”). A weboldal fejléce, a favicon és a telefonos ikon ezt használja.
