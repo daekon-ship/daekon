@@ -235,9 +235,19 @@ if [c for _, c in _wp] != ["#F2F3F4", "#F27A21"]:
     sys.exit("BUILD STOP – az arculati logó felirata nem a várt szerkezetű (KALOCSA + GEOWORKS)")
 
 
+# A LOGO.png EREDETI színei (felhasználói kérés, 2026.10.26.: „az X egyik lába fekete”): fekete X (#30363C → #15181B
+# színátmenet, az arculat világos hátterű változata), fekete KALOCSA (#1E2226), narancs ág és GEOWORKS – a logó saját
+# fehér hátterén (a sötét fejlécen fehér lapon), ahogy a LOGO.png-ben. Negatív (fehér) változat sehol.
+FELIRAT_SOTET = "#1E2226"
+h = sub1(h, '<linearGradient id="kgl" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="102" y2="100">',
+         '<linearGradient id="kgd" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="102" y2="100"><stop offset="0" stop-color="#30363C"/>'
+         '<stop offset="1" stop-color="#15181B"/></linearGradient>'
+         '<linearGradient id="kgl" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="102" y2="100">', "sötét jel-színátmenet")
+
+
 def logo_felirat(cimke):
     a = 'role="img" aria-label="Kalocsa GeoWorks"' if cimke else 'aria-hidden="true"'
-    return (f'<svg class="brand__word" viewBox="0 -21.5 225 55.5" {a}><path fill="#F2F3F4" d="{_wp[0][0]}"/>'
+    return (f'<svg class="brand__word" viewBox="0 -21.5 225 55.5" {a}><path fill="{FELIRAT_SOTET}" d="{_wp[0][0]}"/>'
             f'<path fill="#F27A21" transform="translate(0 33)" d="{_wp[1][0]}"/></svg>')
 
 
@@ -254,15 +264,15 @@ _ws = 524 / 181.14
 ALLO_LOGO = ('<svg class="ftr__logo" viewBox="166 165 1268 1293" role="img" aria-label="Kalocsa GeoWorks">'
              f'<g transform="translate(166 165) scale(12.431)">{_jel}</g>'
              f'<g transform="translate({177 - 2.29 * _ws:.3f} {1301 + 20.99 * _ws:.3f}) scale({_ws:.5f})">'
-             f'<path fill="#F2F3F4" d="{_wp[0][0]}"/><path fill="#F27A21" transform="translate(0 33)" d="{_wp[1][0]}"/></g></svg>')
+             f'<path fill="{FELIRAT_SOTET}" d="{_wp[0][0]}"/><path fill="#F27A21" transform="translate(0 33)" d="{_wp[1][0]}"/></g></svg>')
 h = subre(h, r'(<div class="ftr__brand">\s*)<span class="brand"><svg class="brand__mark".*?</svg><svg class="brand__word".*?</svg></span>',
           lambda m: m.group(1) + ALLO_LOGO, "lábléc: álló logó")
 # iOS kezdőképernyő-ikon (a favicon jeléből; tools/eles/apple-touch-icon.png)
 h = sub1(h, '<link rel="icon" href="logo-jel.svg" type="image/svg+xml">',
-         '<link rel="icon" href="logo-jel.svg" type="image/svg+xml">\n<link rel="apple-touch-icon" href="apple-touch-icon.png">', "apple-touch-icon")
+         '<link rel="icon" href="logo-jel.svg?v=2" type="image/svg+xml">\n<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">', "apple-touch-icon")
 
 # az éles JS-nek és CSS-nek saját verzió (a statikus fájlok 1 évig gyorsítótárazódnak) – minden változtatáskor emelni kell
-CSS_V = "39-eles8"
+CSS_V = "39-eles9"
 h = sub1(h, '<script src="kalocsa.js?v=37" defer></script>', '<script src="kalocsa.js?v=37-eles8" defer></script>', "js verzió")
 h = sub1(h, '<link rel="stylesheet" href="kalocsa.css?v=39">', f'<link rel="stylesheet" href="kalocsa.css?v={CSS_V}">', "css verzió")
 for bad in ("Bemutató mód", "bemutató", "BEMUTATÓ", "kitöltendő", "egyeztetendő", "github", "látványterv"):
@@ -399,10 +409,14 @@ css += """
 .brand__word{display:block;flex:none;width:138px;height:34px}
 @media (max-width:420px){.brand__word{width:122px;height:30px}}
 /* lábléc: álló logó a LOGO.png elrendezésében (1268 × 1293 egység) */
-.ftr__logo{display:block;width:235px;height:240px;margin:0 0 22px}
-.ftr__logo .km-a{fill:url(#kgl)}
+.ftr__logo{display:block;box-sizing:content-box;width:235px;height:240px;margin:0 0 22px;padding:20px;background:#fff;border-radius:14px}
+.ftr__logo .km-a{fill:url(#kgd)}
 .ftr__logo .km-b{fill:url(#kgo)}
-@media (max-width:860px){.ftr__logo{width:216px;height:220px}}
+@media (max-width:860px){.ftr__logo{width:196px;height:200px;padding:16px}}
+/* fejléc (főoldal, 404, impresszum): a logó eredeti színeiben, a saját fehér lapján */
+.hdr .brand{background:#fff;border-radius:10px;padding:6px 12px 6px 8px;flex:none}
+.hdr .brand__mark .km-a{fill:url(#kgd)}
+@media (max-width:420px){.hdr .brand{padding:5px 9px 5px 6px;gap:7px}.hdr .brand__mark{width:30px;height:30px}.hdr .brand__word{width:106px;height:26px}}
 /* 320 px-es (nem mobil-emulált) ablakban a Kapcsolat szövegoszlopa 10 px-szel kilógott (rácselem min-width:auto) */
 .quote-grid>*{min-width:0}
 .rev__act .btn{text-align:center}
@@ -418,6 +432,15 @@ for r in sorted(refs):
         sys.exit(f"BUILD STOP – hiányzó hivatkozott fájl: {r}")
     os.makedirs(os.path.dirname(os.path.join(DIST, r)) or DIST, exist_ok=True)
     shutil.copy2(s, os.path.join(DIST, r))
+
+# favicon (és a 404/impresszum fejlécének jele): a LOGO.png eredeti színei – fehér lekerekített lap, fekete X, narancs ág
+_jp = re.findall(r'<path class="km-[ab]" d="([^"]+)"/>', _jel)
+write(os.path.join(DIST, "logo-jel.svg"),
+      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs>'
+      '<linearGradient id="o" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F89545"/><stop offset="1" stop-color="#E0620E"/></linearGradient>'
+      '<linearGradient id="d" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="102" y2="100"><stop offset="0" stop-color="#30363C"/><stop offset="1" stop-color="#15181B"/></linearGradient>'
+      '</defs><rect width="100" height="100" rx="20" fill="#FFFFFF"/><g transform="translate(17.50 18.00) scale(0.64)">'
+      f'<path d="{_jp[0]}" fill="url(#o)"/><path d="{_jp[1]}" fill="url(#d)"/><path d="{_jp[2]}" fill="url(#d)"/></g></svg>\n')
 
 # közösségi megosztókép, 1200×630 JPG (a WebP-t nem minden platform kezeli):
 # bal fele az ügyfél új logója VÁLTOZTATÁS NÉLKÜL (fehér alapú LOGO.png, arányosan kicsinyítve), jobb fele valós munkafotó (Kubota KX019-4)
@@ -446,6 +469,7 @@ for name in ("impresszum.html", "404.html", "robots.txt", "apple-touch-icon.png"
     t = read(os.path.join(TPL, name))
     # új logó a kisoldalakon is; a CSS-hivatkozás mindig az aktuális verzió (ne a gyorsítótárból jöjjön régi stílus)
     t = sub1(t, '<span class="brand__txt"><b>Kalocsa <span style="color:#F27A21">GeoWorks</span></b></span>', logo_felirat(True), f"{name}: logó")
+    t = t.replace('logo-jel.svg"', 'logo-jel.svg?v=2"')  # új színű jel – a böngésző ne a gyorsítótárból vegye a régit
     t, n = re.subn(r'kalocsa\.css\?v=[0-9A-Za-z-]+', f"kalocsa.css?v={CSS_V}", t)
     if n != 1:
         sys.exit(f"BUILD STOP – {name}: CSS-hivatkozás {n} db")
