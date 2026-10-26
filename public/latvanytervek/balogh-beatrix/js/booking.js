@@ -225,7 +225,7 @@
     renderStepper(); renderSummary();
     host.innerHTML = RENDER[st.step]();
     host.setAttribute('data-step', st.step);
-    if (!reduce) { host.classList.remove('is-anim'); void host.offsetWidth; host.classList.add('is-anim'); }
+    if (!reduce) { if (window.BBFX) BBFX.step(host); else { host.classList.remove('is-anim'); void host.offsetWidth; host.classList.add('is-anim'); } }
     var last = st.step === 5;
     $('#bkNav').hidden = last;
     $('#bkMobile').hidden = last;
@@ -237,7 +237,7 @@
     var sel = $('.cal-d.is-sel', host) || $('.cal-d.is-open, .cal-d.is-few', host);
     if (sel) sel.tabIndex = 0;
     window.BBArt && window.BBArt.mount(host);
-    if (st.step === 5 && !reduce) $('.done', host).classList.add('is-anim');
+    if (st.step === 5 && !reduce) { if (window.BBFX) BBFX.done($('.done', host)); else $('.done', host).classList.add('is-anim'); }
     if (focus !== false) {
       var h = st.step === 3 && $('#errSum', host) ? $('#errSum', host) : $('h2', host);
       if (h) h.focus({ preventScroll: true });
@@ -272,7 +272,7 @@
   }
 
   function flash(msg) {
-    var n = $('#bkFlash'); n.textContent = msg; n.classList.add('is-on');
+    var n = $('#bkFlash'); n.textContent = msg; n.classList.add('is-on'); if (window.BBFX) BBFX.toast(n);
     clearTimeout(flash.t); flash.t = setTimeout(function () { n.classList.remove('is-on'); }, 2600);
   }
 

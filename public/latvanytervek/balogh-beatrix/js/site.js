@@ -80,6 +80,7 @@
 
   /* ---------- megjelenési animációk ---------- */
   function reveals() {
+    if (doc.classList.contains('has-motion')) return; /* a Motion (motion-fx.js) vezérli */
     var els = $$('.rv, .rv-img');
     if (reduce || !('IntersectionObserver' in window)) { els.forEach(function (e) { e.classList.add('is-in'); }); return; }
     /* A clip-pathtal teljesen kitakart elemet az IntersectionObserver nem látja,
@@ -133,6 +134,7 @@
         chips.forEach(function (c) { c.setAttribute('aria-pressed', c === ch ? 'true' : 'false'); });
         $$('.price-row', host).forEach(function (r) { r.classList.toggle('is-hidden', f !== 'all' && r.getAttribute('data-cat') !== f); });
         var live = $('#priceLive'); if (live) live.textContent = $$('.price-row:not(.is-hidden)', host).length + ' kezelés látható';
+        if (window.BBFX) { $$('.price-row:not(.is-hidden)', host).forEach(function (r) { r.classList.add('is-in'); }); BBFX.pop($$('.price-row:not(.is-hidden)', host)); }
       });
     });
   }
@@ -175,6 +177,7 @@
         d = BB.nextAvailable(cur, T.iso(T.addDays(T.parseIso(d), 1)));
       }
       slots.innerHTML = out.length ? out.join('') : '<p class="small muted">Nincs szabad időpont a következő hetekben — hívj bátran.</p>';
+      if (focusId && window.BBFX) BBFX.pop(slots.children);
       go.href = 'foglalas.html?kezeles=' + cur;
       if (focusId) { var f = $('[data-qb="' + focusId + '"]', svcs); f && f.focus(); }
     }
@@ -226,6 +229,7 @@
         chips.forEach(function (c) { c.setAttribute('aria-pressed', c === ch ? 'true' : 'false'); });
         host.classList.toggle('is-filtered', f !== 'all');
         $$('.g-item', host).forEach(function (g) { var on = f === 'all' || g.getAttribute('data-cat') === f; g.classList.toggle('is-hidden', !on); if (on) g.classList.add('is-in'); });
+        if (window.BBFX) BBFX.pop($$('.g-item:not(.is-hidden)', host));
       });
     });
 
@@ -241,7 +245,7 @@
     }
     function step(d) { var v = visible(), p = v.indexOf(idx); show(v[(p + d + v.length) % v.length]); }
     function open(i) {
-      lastFocus = document.activeElement; show(i); lb.classList.add('is-open'); lb.setAttribute('aria-hidden', 'false');
+      lastFocus = document.activeElement; show(i); lb.classList.add('is-open'); lb.setAttribute('aria-hidden', 'false'); if (window.BBFX) BBFX.lightbox(stage);
       document.body.style.overflow = 'hidden'; $('.lb-close', lb).focus();
       if (lb.requestFullscreen && window.innerWidth < 700) { /* mobilon nem kérünk teljes képernyőt automatikusan */ }
     }

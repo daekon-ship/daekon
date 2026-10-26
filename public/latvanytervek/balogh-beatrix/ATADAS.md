@@ -25,6 +25,19 @@ Előnézet: `https://daekon-ship.github.io/daekon/latvanytervek/balogh-beatrix/`
 - Változatok: fő logó (világos/sötét), „beatrix” szóvédjegy köröm alakú i-ponttal, „Öt pont” (lábujjív) alternatíva, önálló jel, favicon — `arculat/`, áttekintő: `arculat/index.html`.
 - Forrás: `_forras/logo.py` (minden SVG újragenerálható). Az oldalon a fő logó szerepel (fejléc, lábléc, admin), a portrénál a vonalas jel, az utalványon a szóvédjegy.
 
+## 0/c. Animációk — Motion (motion.dev), 2026.10.26.
+
+- Könyvtár: **Motion vanilla JS** (`window.Motion`), `motion@11.18.2`, jsDelivr CDN-ről, rögzített verzióval. Az animációs réteg: `js/motion-fx.js`.
+- Tartalék: ha a Motion nem tölt be, vagy a látogató csökkentett mozgást kért, a korábbi CSS-animációk futnak — az oldal mindkét esetben teljes értékű.
+- Mit animál a Motion:
+  - **Betöltés:** a nyitószöveg lépcsőzve felúszik, a gyorsfoglaló kártya rugós mozgással érkezik, a kezeléssorok egymás után beúsznak.
+  - **Görgetés (`inView`):** blokkok testvérenként lépcsőzve; képhelyek `clip-path` kinyílással; az időtartam-óralapok körívei megrajzolódnak. A fejlécben arany csík mutatja az előrehaladást (`scroll`).
+  - **Interakció:** `press` (gombok, időpontok, kártyák 0,97-re nyomódnak, rugóval vissza), `hover` (kártyák 3 px-et emelkednek); a szűrésnél és a kezelésváltásnál az elemek felbukkannak; nagyításkor a kép finoman ráközelít.
+  - **Foglalás:** lépésváltás oldalirányú beúszással, siker-képernyőn körív, pipa és jegy; értesítések rugós beúszással.
+  - **Admin:** a KPI-számok felpörögnek, a modálok rugósan nyílnak.
+- Élesítéskor ajánlott a `motion.js` fájlt a projektbe másolni (helyi kiszolgálás + SRI), és ugyanazt a verziót rögzíteni.
+- Tesztelés: a helyi gépről a CDN nem volt elérhető, ezért a teljes tesztsor egy Motion-API-helyettesítővel (55/55) és Motion nélkül (53/53) is lefutott; az éles CDN-betöltést a publikált oldalon ellenőrizni kell.
+
 ## 1. Ami elkészült
 
 | Oldal | Tartalom |

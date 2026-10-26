@@ -740,3 +740,9 @@ html body :is(.kpi b, .contact-phone) { font-weight: 650; letter-spacing: -.02em
 @media (max-width: 520px) { .brand .logo { height: 40px; } }
 @media (max-width: 900px) { .adm-side .brand .logo { height: 36px; width: 24px; object-fit: cover; object-position: left; } }
 .voucher-top img { display: block; }
+
+/* Motion (motion-fx.js) — ha betöltött, a CSS-átmenetek nem futnak párhuzamosan */
+.has-motion .rv, .has-motion .rv-img { transition: none !important; }
+.has-motion .bk-step.is-anim > * { animation: none; }
+.scroll-bar { position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: var(--gold); transform-origin: 0 50%; transform: scaleX(0); pointer-events: none; }
+@media (prefers-reduced-motion: reduce) { .scroll-bar { display: none; } }

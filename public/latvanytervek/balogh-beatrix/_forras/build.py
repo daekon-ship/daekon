@@ -9,7 +9,9 @@ vannak, hanem a js/config.js-ben — azokat a böngésző tölti be.
 import pathlib
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-V = '20261026'  # gyorsítótár-törő verzió
+V = '20261026b'
+# Motion (https://motion.dev) — vanilla JS build, rögzített verzió; ha nem tölt be, CSS-tartalék fut
+MOTION_TAG = '\n<script src="https://cdn.jsdelivr.net/npm/motion@11.18.2/dist/motion.js" crossorigin="anonymous"></script>'  # gyorsítótár-törő verzió
 
 ICONS = {
     'phone': '<path d="M5 4h3l2 5-2.5 1.5a11 11 0 0 0 5 5L14 13l5 2v3a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/>',
@@ -75,6 +77,7 @@ def head(title, desc, extra_css=''):
 <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="fonts/hanken-var.woff" as="font" type="font/woff" crossorigin>
 <link rel="stylesheet" href="css/bb.css?v={V}">{extra_css}
+<script>document.documentElement.classList.remove('no-js')</script>
 </head>'''
 
 def demo_strip():
@@ -169,8 +172,8 @@ def footer(is_index=False, mbar=True):
 {bar}'''
 
 def scripts(*extra):
-    base = ['js/config.js', 'js/core.js', 'js/site.js'] + list(extra)
-    return ''.join(f'\n<script src="{s}?v={V}"></script>' for s in base)
+    base = ['js/config.js', 'js/core.js', 'MOTION', 'js/site.js', 'js/motion-fx.js'] + list(extra)
+    return ''.join(MOTION_TAG if s == 'MOTION' else f'\n<script src="{s}?v={V}"></script>' for s in base)
 
 def page(fname, title, desc, body, current=None, is_index=False, mbar=True, extra_js=()):
     html = head(title, desc) + f'\n<body class="{"has-mbar" if mbar else ""}">\n' + sprite() + '\n' + header(current or fname, is_index) + \

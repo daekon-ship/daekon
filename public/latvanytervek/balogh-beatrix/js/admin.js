@@ -26,7 +26,7 @@
   function svcCat(id) { var s = BB.service(id); return s ? s.cat : ''; }
   function endT(b) { return T.fromMin(T.toMin(b.start) + b.mins); }
   function weekStart(iso) { var x = T.parseIso(iso); return T.addDays(x, -((x.getDay() + 6) % 7)); }
-  function say(msg) { toast.textContent = msg; toast.classList.add('is-on'); clearTimeout(say.t); say.t = setTimeout(function () { toast.classList.remove('is-on'); }, 2600); }
+  function say(msg) { toast.textContent = msg; toast.classList.add('is-on'); if (window.BBFX) BBFX.toast(toast); clearTimeout(say.t); say.t = setTimeout(function () { toast.classList.remove('is-on'); }, 2600); }
   function ago(isoStr) {
     var m = Math.round((Date.now() - new Date(isoStr).getTime()) / 60000);
     if (m < 1) return 'most'; if (m < 60) return m + ' perce'; if (m < 1440) return Math.round(m / 60) + ' órája'; return Math.round(m / 1440) + ' napja';
@@ -39,7 +39,7 @@
   function openModal(title, body, foot, onMount) {
     lastFocus = document.activeElement;
     modal.innerHTML = '<div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="mTitle"><div class="modal-h"><h2 id="mTitle">' + title + '</h2><button type="button" class="icon-btn" data-close aria-label="Bezárás">' + icon('x') + '</button></div><div class="modal-b">' + body + '</div>' + (foot ? '<div class="modal-f">' + foot + '</div>' : '') + '</div>';
-    modal.classList.add('is-open');
+    modal.classList.add('is-open'); if (window.BBFX) BBFX.modal($('.modal-card', modal));
     var f = $('input, select, textarea, button:not([data-close])', modal) || $('[data-close]', modal); f && f.focus();
     onMount && onMount($('.modal-card', modal));
   }
@@ -98,6 +98,7 @@
           return '<tr><td>' + T.fmtShort(b.date) + ' ' + b.start + '</td><td>' + esc(b.name) + '</td><td>' + esc(svcName(b.serviceId)) + '</td><td>' + esc(T.fmtPrice(b)) + '</td><td>' + src(b) + '</td><td><button type="button" class="inline-link" data-open="' + b.id + '">Megnyitás</button></td></tr>';
         }).join('') + '</tbody></table></div>' : emptyBox('calendar', 'Nincs közelgő foglalás', 'A következő 7 napra még senki nem foglalt.')) +
       '</section>';
+    if (window.BBFX) BBFX.count(view.querySelectorAll('.kpi b'));
   }
   function kpi(l, v, s, pct) { return '<div class="kpi"><span>' + l + '</span><b>' + v + '</b><small>' + s + '</small>' + (pct != null ? '<div class="bar" aria-hidden="true"><i style="width:' + pct + '%"></i></div>' : '') + '</div>'; }
   function src(b) { return { online: '<span class="pill pill--ok">Online</span>', admin: '<span class="pill">Admin</span>', seed: '<span class="pill pill--gold">Minta</span>' }[b.source] || ''; }

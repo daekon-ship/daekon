@@ -22,7 +22,8 @@ def build(g):
 </div>
 <div class="modal" id="admModal"></div>
 <div class="toast" id="admToast" role="status" aria-live="polite"></div>'''
-    for s in ['js/config.js', 'js/core.js', 'js/site.js', 'js/admin.js']:
+    html += g['MOTION_TAG']
+    for s in ['js/config.js', 'js/core.js', 'js/site.js', 'js/motion-fx.js', 'js/admin.js']:
         html += f'\n<script src="{s}?v={V}"></script>'
     html += '\n</body>\n</html>\n'
     (g['ROOT'] / 'admin.html').write_text(html, encoding='utf-8')
