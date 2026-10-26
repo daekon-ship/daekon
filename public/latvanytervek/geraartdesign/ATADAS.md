@@ -5,6 +5,7 @@
 - Indítás a GT-oldal mintájára: sötét intró a logóval, kihúzódó vonal, „Bútorasztalos · intarzia”, majd függönyszerűen felhúzódik; mögötte egy keretes, teljes képernyős **rajzlap** nyílik ki.
 - A rajzlapon egy tálaló műszaki elölnézete rajzolódik ki vonalanként (bútor → részletek → méretvonalak → fecskefarkas nagyító), majd a feliratok; A/B/C – 1/2 koordináták, alul rajzi szövegmező (Készítő, Szakma, Felmérés, Hívás).
 - Lámpafény: az egér körül kivilágosodik a rácsháló és a rajz (érintős eszközön magától vándorol); a rajz finoman billen az egér felé; görgetéskor a rajzlap hátrébb lép.
+- Csiszolás (12b): a hero címe két sorban; az Intarzia mellé „Rajzlap 02” – kockamintás berakás három fa színével, ami görgetésre darabonként összeáll (illusztráció, nem valódi munka); a folyamatnál a vonal görgetésre kihúzódik, a lépésjelölők kitelnek; a fotóhelyeken vágójelek; a lábak/munkalapok fa színűek; a logóválasztó alapból összecsukva.
 - Utána: kijelentés, ragadós „Egy bútor, közelről” (sötét vonalas tálaló, Arány / Anyag / Illesztés), szolgáltatás-index, munkák sötét táblákon, intarzia szavas felgyúlással, folyamat, rólam, kapcsolat (lámpafénnyel).
 
 (11. kör:)

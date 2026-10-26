@@ -92,7 +92,7 @@ p{margin:0 0 1em;max-width:58ch}
 /* HERO – rajzlap */
 .hero{position:relative;height:100vh;height:100svh;min-height:660px;overflow:hidden;background:radial-gradient(70% 60% at 76% 34%,rgba(217,195,163,.08),transparent 70%),linear-gradient(180deg,#161310 0%,#110F0D 100%)}
 .lap{position:absolute;left:var(--gutter);right:var(--gutter);top:86px;bottom:22px;border:1px solid var(--line2);display:grid;grid-template-rows:minmax(0,1fr) auto}
-.lap-fo{position:relative;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(16px,3vw,48px);padding:clamp(24px,3vw,48px);min-height:0;isolation:isolate}
+.lap-fo{position:relative;display:grid;grid-template-columns:minmax(0,6fr) minmax(0,7fr);gap:clamp(16px,3vw,48px);padding:clamp(24px,3vw,48px);min-height:0;isolation:isolate}
 .lampa{position:absolute;inset:0;pointer-events:none;z-index:-1;--mx:70%;--my:40%;
   background-image:linear-gradient(rgba(217,195,163,.09) 1px,transparent 1px),linear-gradient(90deg,rgba(217,195,163,.09) 1px,transparent 1px),linear-gradient(rgba(217,195,163,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(217,195,163,.04) 1px,transparent 1px),radial-gradient(circle at var(--mx) var(--my),rgba(255,226,186,.10),transparent 60%);
   background-size:80px 80px,80px 80px,16px 16px,16px 16px,100% 100%;
@@ -102,7 +102,7 @@ p{margin:0 0 1em;max-width:58ch}
 .koord .t{top:-16px;transform:translateX(-50%)}
 .koord .l{left:-14px;transform:translateY(-50%)}
 .hero-szoveg{align-self:end;display:flex;flex-direction:column;gap:clamp(14px,1.6vw,22px);position:relative;z-index:2}
-.hero h1{max-width:12ch}
+.hero h1{max-width:none}
 .hero h1 .dim{display:block}
 .hero .lead{color:var(--fg2);max-width:30em;margin:0}
 .hero-kep{position:relative;display:flex;align-items:center;justify-content:center;min-height:0;perspective:1200px}
@@ -177,12 +177,23 @@ p{margin:0 0 1em;max-width:58ch}
 .foto figcaption b{font-weight:500;color:var(--fg)}
 
 /* intarzia */
+.intarzia .wrap{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);gap:clamp(40px,6vw,110px);align-items:center}
+.berakas{margin:0;position:relative;border:1px solid var(--line2);padding:clamp(18px,2.4vw,36px);background:radial-gradient(80% 70% at 50% 40%,rgba(217,195,163,.06),transparent 70%)}
+.berakas svg{display:block;width:100%;height:auto;overflow:visible}
+.berakas figcaption{display:flex;justify-content:space-between;gap:12px;margin-top:16px;font:600 9px/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.berakas::before,.berakas::after{content:"";position:absolute;width:12px;height:12px;border:1px solid var(--homokS);opacity:.6}
+.berakas::before{left:-6px;top:-6px;border-width:1px 0 0 1px}.berakas::after{right:-6px;bottom:-6px;border-width:0 1px 1px 0}
 .szoreveal{font:300 clamp(24px,1.5vw + 14px,38px)/1.32 var(--cim);color:var(--fg);letter-spacing:-.015em;max-width:26ch;margin:0 0 28px}
 .szoreveal .w{transition:opacity .25s linear}
 .js-motion .szoreveal .w{opacity:.16}
 
 /* folyamat */
-.lepesek{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--line2)}
+.lepesek{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--line2);position:relative}
+.lepesek::before{content:"";position:absolute;left:0;right:0;top:-1px;height:1px;background:var(--homokS);transform-origin:left;transform:scaleX(var(--v,1))}
+.lepesek li{position:relative}
+.lepesek li::before{content:"";position:absolute;left:0;top:-4px;width:7px;height:7px;background:var(--bg);border:1px solid var(--homokS);transition:background .4s}
+.lepesek li+li::before{left:-4px}
+.lepesek li.kesz::before{background:var(--homokS)}
 .lepesek li{padding:26px clamp(14px,2vw,28px) 0 0}
 .lepesek li+li{padding-left:clamp(14px,2vw,28px);border-left:1px solid var(--line)}
 .lepesek .sz{display:block;font:600 11px/1 var(--sans);letter-spacing:.2em;color:var(--homokS);margin-bottom:34px}
@@ -193,6 +204,8 @@ p{margin:0 0 1em;max-width:58ch}
 .rolam .wrap{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(40px,6vw,110px);align-items:end}
 .portre{margin:0}
 .portre-hely{aspect-ratio:4/5;background:var(--lapS);border:1px solid var(--line);position:relative}
+.foto-hely::after,.portre-hely::after{content:"";position:absolute;inset:14px;pointer-events:none;opacity:.55;background:linear-gradient(var(--homokS),var(--homokS)) left top/12px 1px,linear-gradient(var(--homokS),var(--homokS)) left top/1px 12px,linear-gradient(var(--homokS),var(--homokS)) right top/12px 1px,linear-gradient(var(--homokS),var(--homokS)) right top/1px 12px,linear-gradient(var(--homokS),var(--homokS)) left bottom/12px 1px,linear-gradient(var(--homokS),var(--homokS)) left bottom/1px 12px,linear-gradient(var(--homokS),var(--homokS)) right bottom/12px 1px,linear-gradient(var(--homokS),var(--homokS)) right bottom/1px 12px;background-repeat:no-repeat}
+.foto-hely .jel,.portre-hely span{right:34px!important;top:30px!important}
 .portre-hely span{position:absolute;right:16px;top:14px;font:600 9px/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
 .portre figcaption{padding-top:14px;font-size:14px;color:var(--muted)}
 .rolam h2{margin-bottom:24px}
@@ -263,7 +276,8 @@ p{margin:0 0 1em;max-width:58ch}
   .tblokk{grid-template-columns:1fr 1fr}
   .tblokk b{white-space:normal;letter-spacing:.08em}
   .tblokk>*:nth-child(n+3){display:none}
-  .szakasz-fej,.kijel .ket,.rolam .wrap,.kapcsolat .wrap{grid-template-columns:1fr}
+  .szakasz-fej,.kijel .ket,.rolam .wrap,.kapcsolat .wrap,.intarzia .wrap{grid-template-columns:1fr}
+  .lepesek li::before,.lepesek li+li::before{left:0}
   .szakasz-fej{gap:14px;align-items:start}
   .bemutat{height:300vh}
   .bemutat .wrap{grid-template-columns:1fr;gap:8px}

@@ -139,7 +139,7 @@
 
   /* ---------- sötét vonalas 3D stílus ---------- */
   const SOTET = { vonal: '#D9C3A3', vastag: .8, arnyek: .5 };
-  const SZIN = { vaz: '#000', meret: '#988B7B', nyers: '#1F1B18', front: '#221E1A', fiok: '#1C1916', lab: '#D9C3A3' };
+  const SZIN = { vaz: '#000', meret: '#988B7B', nyers: '#1F1B18', front: '#221E1A', fiok: '#1C1916', lab: '#6B5038' };
   const hex = c => [1, 3, 5].map(i => parseInt(c.substr(i, 2), 16));
   const keverd = (a, b, t) => '#' + hex(a).map((v, i) => Math.round(v + (hex(b)[i] - v) * t).toString(16).padStart(2, '0')).join('');
 
@@ -183,7 +183,7 @@
     let J = null;
     if (!m.foto && M3) {
       J = new M3.Jelenet($('svg', f), Object.assign({ yaw: 145, pitch: 20, keret: 6 }, SOTET));
-      const pal = { nyers: '#1F1B18', front: '#221E1A', fiok: '#1C1916', lab: '#D9C3A3' };
+      const pal = { nyers: '#1F1B18', front: '#221E1A', fiok: '#1C1916', lab: '#7A5C40' };
       J.testek = M3.kicsi(m.minta, pal); J.testek.forEach(t => { t.melyseg = t.szin === pal.front ? 1.2 : t.szin === pal.lab ? 1.6 : 0; });
       J.rajzol();
     }
@@ -222,6 +222,68 @@
     gorgetesre(sz, ['start 85%', 'end 45%'], p => { const n = p * w.length; w.forEach((el, i) => { el.style.opacity = (0.16 + 0.84 * clamp(n - i, 0, 1)).toFixed(3); }); });
   }
 
+  /* ---------- INTARZIA: kockaminta, görgetésre összeáll ---------- */
+  const bsvg = $('#berakasSvg');
+  if (bsvg) {
+    const NS = 'http://www.w3.org/2000/svg', mk = (n, a) => { const e = document.createElementNS(NS, n); for (const k in a) e.setAttribute(k, a[k]); return e; };
+    const KER = 22, B = 400 - KER, sz = 38, c = Math.cos(Math.PI / 6);
+    const FA = [{ f: '#D9C3A3', e: '#B9A07D' }, { f: '#9A6F48', e: '#7E5A39' }, { f: '#4A3626', e: '#33251A' }];
+    const defs = mk('defs', {}); const cp = mk('clipPath', { id: 'berakasKlip' }); cp.appendChild(mk('rect', { x: KER, y: KER, width: B - KER, height: B - KER })); defs.appendChild(cp); bsvg.appendChild(defs);
+    /* szegély: sötét fa csík, sarokban gérbe vágva */
+    const szegely = mk('g', {});
+    [[0, 0, 400, 0, B, KER, KER, KER], [400, 0, 400, 400, B, B, B, KER], [400, 400, 0, 400, KER, B, B, B], [0, 400, 0, 0, KER, KER, KER, B]].forEach(q => {
+      szegely.appendChild(mk('polygon', { points: `${q[0]},${q[1]} ${q[2]},${q[3]} ${q[4]},${q[5]} ${q[6]},${q[7]}`, fill: '#2E221A', stroke: '#D9C3A3', 'stroke-width': .6, 'stroke-opacity': .5 }));
+    });
+    const mezo = mk('g', { 'clip-path': 'url(#berakasKlip)' });
+    mezo.appendChild(mk('rect', { x: KER, y: KER, width: B - KER, height: B - KER, fill: '#1A1512' }));
+    const darabok = [];
+    const sor = Math.ceil(400 / (1.5 * sz)) + 2;
+    for (let r = -1; r < sor; r++) for (let q = -1; q < Math.ceil(400 / (2 * sz * c)) + 2; q++) {
+      const cx = q * 2 * sz * c + (r % 2 ? sz * c : 0), cy = r * 1.5 * sz;
+      const P = [
+        [[cx, cy - sz], [cx + sz * c, cy - sz / 2], [cx, cy], [cx - sz * c, cy - sz / 2]],
+        [[cx - sz * c, cy - sz / 2], [cx, cy], [cx, cy + sz], [cx - sz * c, cy + sz / 2]],
+        [[cx, cy], [cx + sz * c, cy - sz / 2], [cx + sz * c, cy + sz / 2], [cx, cy + sz]]
+      ];
+      P.forEach((pt, k) => {
+        const g = mk('g', {});
+        g.appendChild(mk('polygon', { points: pt.map(v => v.map(n => n.toFixed(2)).join(',')).join(' '), fill: FA[k].f, stroke: '#12100E', 'stroke-width': .9 }));
+        /* erezet: a rombusz egyik élével párhuzamos vékony vonalak */
+        const [a, b2, , d] = pt;
+        for (let i = 1; i < 4; i++) {
+          const t = i / 4 + (((q * 7 + r * 3 + k) % 5) - 2) * 0.02;
+          g.appendChild(mk('line', { x1: (a[0] + (d[0] - a[0]) * t).toFixed(2), y1: (a[1] + (d[1] - a[1]) * t).toFixed(2), x2: (b2[0] + (pt[2][0] - b2[0]) * t).toFixed(2), y2: (b2[1] + (pt[2][1] - b2[1]) * t).toFixed(2), stroke: FA[k].e, 'stroke-width': .5, opacity: .7 }));
+        }
+        const mx = (pt[0][0] + pt[2][0]) / 2, my = (pt[0][1] + pt[2][1]) / 2;
+        const dx = mx - 200, dy = my - 200, tav = Math.hypot(dx, dy) / 283;
+        const h = (Math.sin(q * 12.9898 + r * 78.233 + k * 4.1) * 43758.5453) % 1;
+        darabok.push({ g, mx, my, dx: dx / (Math.hypot(dx, dy) || 1), dy: dy / (Math.hypot(dx, dy) || 1), tav, h: Math.abs(h), k });
+        mezo.appendChild(g);
+      });
+    }
+    bsvg.appendChild(mezo); bsvg.appendChild(szegely);
+    /* vékony rajzi keret a mező körül */
+    bsvg.appendChild(mk('rect', { x: .5, y: .5, width: 399, height: 399, fill: 'none', stroke: '#D9C3A3', 'stroke-opacity': .35, 'stroke-width': 1 }));
+    const all = p => darabok.forEach(d => {
+      const t = clamp((p * 1.6) - d.tav * 0.55 - d.h * 0.15, 0, 1), e = 1 - Math.pow(1 - t, 3), u = 1 - e;
+      const r = 26 + 34 * d.h;
+      d.g.setAttribute('transform', u < 0.001 ? '' : `translate(${(d.dx * r * u * 1.4 + (d.k - 1) * 6 * u).toFixed(2)} ${(d.dy * r * u * 1.4 - 10 * u).toFixed(2)}) rotate(${((d.h - .5) * 40 * u).toFixed(2)} ${d.mx.toFixed(1)} ${d.my.toFixed(1)})`);
+      d.g.style.opacity = (0.15 + 0.85 * e).toFixed(3);
+    });
+    if (MO) gorgetesre($('#berakas'), ['start end', 'center 55%'], all); else all(1);
+  }
+
+  /* ---------- FOLYAMAT: kihúzódó vonal, lépésjelölők ---------- */
+  const lep = $('.lepesek');
+  if (lep && !MO) $$(':scope > li', lep).forEach(x => x.classList.add('kesz'));
+  if (lep && MO) {
+    const li = $$(':scope > li', lep);
+    gorgetesre(lep, ['start 85%', 'start 35%'], p => {
+      lep.style.setProperty('--v', p.toFixed(3));
+      li.forEach((x, i) => x.classList.toggle('kesz', p >= i / li.length + 0.02));
+    });
+  }
+
   /* ---------- fejléc ---------- */
   const fej = $('#fejlec');
   let elozo = scrollY;
@@ -258,5 +320,5 @@
   $$('#bemutato button[data-v]').forEach(b => b.addEventListener('click', () => logo(b.dataset.v)));
   const bm = $('#bemutato'), bk = $('#bemutatoKapcs');
   const allit = z => { bm.classList.toggle('zart', z); bk.setAttribute('aria-expanded', !z); };
-  if (bm) { allit(innerWidth < 1100); bk.addEventListener('click', () => allit(!bm.classList.contains('zart'))); }
+  if (bm) { allit(true); bk.addEventListener('click', () => allit(!bm.classList.contains('zart'))); }
 })();
