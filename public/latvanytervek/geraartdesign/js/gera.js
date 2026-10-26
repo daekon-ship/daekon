@@ -59,24 +59,35 @@
   const heroSzavak = MO ? szavakra($('[data-m="cim"]')) : [];
   const heroBe = $$('.hero [data-m="be"]');
   const rajzSzoveg = rajz ? $$('text', rajz) : [];
+  /* SVG-n a Motion attribútumot írna, ezért a rajzot számérték-animációval, saját stílusírással mozgatjuk */
+  const svgAnim = (els, kezd, cel, opt, ir) => els.forEach((el, i) => {
+    const d = (opt.delay || 0) + i * (opt.lepes || 0);
+    szam(kezd, cel, { duration: opt.duration, delay: d, ease: EASE }, v => ir(el, v));
+  });
   if (MO) {
     heroSzavak.forEach(s => { s.style.transform = 'translateY(108%)'; });
     heroBe.forEach(e => { e.style.opacity = 0; });
-    utak.forEach(p => { p.style.strokeDasharray = '1'; p.style.strokeDashoffset = '1'; });
+    utak.forEach(p => { p.style.strokeDasharray = '1 1'; p.style.strokeDashoffset = '1'; });
     rajzSzoveg.forEach(t => { t.style.opacity = 0; });
     $('.lap').style.clipPath = 'inset(0 0 100% 0)';
+  }
+  function heroVege() {
+    utak.forEach(p => { p.style.strokeDasharray = ''; p.style.strokeDashoffset = ''; });
+    rajzSzoveg.forEach(t => { t.style.opacity = ''; });
+    heroSzavak.forEach(s => { s.style.transform = 'none'; });
+    heroBe.forEach(e => { e.style.opacity = 1; e.style.transform = 'none'; });
+    $('.lap').style.clipPath = 'none';
   }
   function heroIndul() {
     if (!MO) return;
     anim($('.lap'), { clipPath: ['inset(0 0 100% 0)', 'inset(0 0 0% 0)'] }, { duration: 1.2, ease: [0.76, 0, 0.24, 1] });
-    const csop = ['.r-butor', '.r-reszlet', '.r-meret', '.r-nagyito'];
-    csop.forEach((c, k) => anim($$(c + ' .dr', rajz), { strokeDashoffset: [1, 0] }, { duration: 2.2, delay: lepcso(0.08, 0.5 + k * 0.45) }));
-    anim(rajzSzoveg, { opacity: [0, 0.8] }, { duration: 1, delay: lepcso(0.08, 2.1) });
+    ['.r-butor', '.r-reszlet', '.r-meret', '.r-nagyito'].forEach((c, k) =>
+      svgAnim($$(c + ' .dr', rajz), 1, 0, { duration: 2.2, delay: 0.5 + k * 0.45, lepes: 0.08 }, (el, v) => { el.style.strokeDashoffset = v.toFixed(4); }));
+    svgAnim(rajzSzoveg, 0, 1, { duration: 1, delay: 2.1, lepes: 0.08 }, (el, v) => { el.style.opacity = (v * 0.8).toFixed(3); });
     anim(heroSzavak, { transform: ['translateY(108%)', 'translateY(0%)'] }, { duration: 1.1, delay: lepcso(0.05, 0.75) });
     anim(heroBe, { opacity: [0, 1], transform: ['translateY(16px)', 'translateY(0px)'] }, { duration: 1, delay: lepcso(0.12, 1.05) });
-    /* lefelé jelző */
-    const lf = $('#lefele');
-    if (lf) anim(lf, { transform: ['translateY(-16px)', 'translateY(46px)'] }, { duration: 1.8, repeat: Infinity, ease: 'easeInOut', delay: 2.6 });
+    /* biztonsági háló: ha bármi elakadna, 6 mp után minden a végállapotban van */
+    setTimeout(heroVege, 6000);
   }
   if (MO) {
     const intro = document.createElement('div');
@@ -192,7 +203,7 @@
       hely.style.clipPath = 'inset(100% 0 0 0)'; cap.style.opacity = 0;
       lathatova(f, () => {
         anim(hely, { clipPath: ['inset(100% 0 0 0)', 'inset(0% 0 0 0)'] }, { duration: 1.2, ease: [0.76, 0, 0.24, 1] });
-        if (kep) anim(kep, { transform: ['scale(1.1)', 'scale(1)'] }, { duration: 1.8 });
+        if (kep) szam(1.1, 1, { duration: 1.8 }, v => { kep.style.transform = `scale(${v.toFixed(4)})`; });
         anim(cap, { opacity: [0, 1], transform: ['translateY(8px)', 'translateY(0px)'] }, { duration: .8, delay: .5 });
       });
     }
