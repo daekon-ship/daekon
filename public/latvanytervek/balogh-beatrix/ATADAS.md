@@ -1,12 +1,23 @@
 # Balogh Beatrix | Foot & Nail Studio — átadási jegyzék
 
-Látványterv, 1. kör — 2026.10.25.
+Látványterv, 2. kör — 2026.10.26. (1. kör: 2026.10.25.)
 Előnézet: `https://daekon-ship.github.io/daekon/latvanytervek/balogh-beatrix/` (noindex)
 
 > **Bemutató.** A foglalás és az admin a böngésző helyi tárolójával (localStorage) működik.
 > Nincs központi adatbázis, nem megy ki e-mail, nem jön létre valódi időpont.
 
 ---
+
+## 0. 2. kör — mi változott (ügyfél-visszajelzés: „gyenge képek”, „rossz betű”)
+
+- **Betű:** Hanken Grotesk egyetlen családként (cím + szöveg), mérsékelt méretek; talpas betű nincs. (Elvetett: Spectral, Bodoni Moda, Instrument Serif, Plus Jakarta — lásd `iranyok.html`, `betuk.html`.)
+- **Illusztrációk törölve** (`js/art.js` megszűnt). Nincs stock és AI-kép sem.
+- **Nyitókép:** élő gyorsfoglaló kártya — kezelésválasztás, 3 legközelebbi szabad időpont, egy kattintással az Adatok lépésre visz (`foglalas.html?kezeles=…&nap=…&ido=…`).
+- **Kezelések:** színkódolt kártyák (pedikűr homok, manikűr zsálya, speciális eszpresszó). Árlista, GYIK, értékek: lekerekített fehér kártyák.
+- **Galéria:** 8 fotóhely („Saját fotó helye”), a `js/site.js` `GALLERY` tömbjében `src` megadásával cserélhető; szűrés, nagyítás, lapozás működik.
+- **Aloldalak:** kép helyett kezelés- és árösszegző kártya.
+- Gombok mondatkezdő betűvel, nem csupa nagybetű.
+- Teszt: **52/52** (új: gyorsfoglaló mélylink), túlfolyás 12 oldal × 4 szélesség: nincs.
 
 ## 1. Ami elkészült
 
@@ -48,9 +59,8 @@ Nyomdai vágójelek a fő képek körül, hajszálvonalak, sorszámozott fejezet
 | `--sage` / `--sage-ink` | #929B89 / #5A6353 | kézápolás jelölése, állapotok |
 
 ### Tipográfia
-- **Spectral** 300/400/500 + dőlt (címek; a briefben kért Cormorant Garamond helyett — finomabb, jobb mobil-olvashatóság, magyar ékezetek, helyben hostolva). Fraunces sehol.
-- **Manrope** változó (funkcionális szöveg, gombok, űrlapok).
-- Mérsékelt méretek: H1 33–47 px, H2 26–35 px, törzs 16 px / 1,65. Szemöldökcímke 11,5 px, 0,2 em betűköz.
+- **Hanken Grotesk** változó (100–900), helyben hostolva — címek 650, alcímek 600, szöveg 400. Fraunces sehol.
+- Mérsékelt méretek: H1 32–44 px, H2 26–34 px, törzs 16,5 px / 1,65.
 
 ### Térköz, rács
 Konténer 1240 px + `clamp(20px, 4.2vw, 56px)` margó; szekciótávolság `clamp(76px, 9vw, 132px)`. Töréspontok: 1080 (mobilmenü + fix sáv), 980, 900, 820, 640, 520.

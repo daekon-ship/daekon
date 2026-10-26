@@ -151,13 +151,39 @@
       var cat = host.getAttribute('data-svc-cards'), tones = ['light', 'cream', 'sage', 'light'];
       host.innerHTML = BB.activeServices().filter(function (s) { return s.cat === cat; }).map(function (s, i) {
         return '<article class="svc-card rv" style="--d:' + (i * .06) + 's" id="' + s.id + '">' +
-          '<div class="frame zoomable" data-art="' + s.art + '" data-tone="' + tones[i % 4] + '"></div>' +
           '<div class="svc-card-body"><h3>' + esc(s.name) + '</h3><p>' + esc(s.desc) + '</p>' +
           '<div class="svc-meta">' + dial(s.mins) + '<span class="small muted">' + esc(T.fmtMins(s.mins)) + '</span><span class="price">' + priceHtml(s) + '</span></div>' +
           bookBtn(s, ' ') + '</div></article>';
       }).join('');
       window.BBArt && window.BBArt.mount(host);
     });
+  }
+
+  function quickBook() {
+    var box = $('.qb'); if (!box) return;
+    var ids = ['klasszikus-pedikur', 'vizes-pedikur-gellakk', 'labgellakk', 'gepi-manikur'].filter(function (id) { var s = BB.service(id); return s && s.active && s.bookable; });
+    var cur = ids[0], svcs = $('.qb-svcs', box), slots = $('.qb-slots', box), go = $('.qb-go', box);
+    function draw(focusId) {
+      svcs.innerHTML = ids.map(function (id) {
+        var s = BB.service(id), on = id === cur;
+        return '<button type="button" role="radio" aria-checked="' + on + '" class="qb-svc" data-qb="' + id + '" tabindex="' + (on ? 0 : -1) + '"><span class="qb-r" aria-hidden="true"></span><span class="qb-n"><b>' + esc(s.name) + '</b><small>' + s.mins + ' perc</small></span><span class="qb-p">' + esc(T.fmtPrice(s)) + '</span></button>';
+      }).join('');
+      var out = [], d = BB.nextAvailable(cur);
+      for (var g = 0; d && out.length < 3 && g < 40; g++) {
+        var sl = BB.slots(d, cur);
+        if (sl.length) { var x = T.parseIso(d); out.push('<a class="qb-slot" href="foglalas.html?kezeles=' + cur + '&nap=' + d + '&ido=' + sl[0] + '"><b>' + sl[0] + '</b><span>' + T.DAYS_SHORT[x.getDay()] + ', ' + T.fmtShort(d) + '</span></a>'); }
+        d = BB.nextAvailable(cur, T.iso(T.addDays(T.parseIso(d), 1)));
+      }
+      slots.innerHTML = out.length ? out.join('') : '<p class="small muted">Nincs szabad időpont a következő hetekben — hívj bátran.</p>';
+      go.href = 'foglalas.html?kezeles=' + cur;
+      if (focusId) { var f = $('[data-qb="' + focusId + '"]', svcs); f && f.focus(); }
+    }
+    svcs.addEventListener('click', function (e) { var b = e.target.closest('[data-qb]'); if (b) { cur = b.getAttribute('data-qb'); draw(cur); } });
+    svcs.addEventListener('keydown', function (e) {
+      var d = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[e.key]; if (!d) return;
+      e.preventDefault(); cur = ids[(ids.indexOf(cur) + d + ids.length) % ids.length]; draw(cur);
+    });
+    draw();
   }
 
   function heroChip() {
@@ -168,25 +194,28 @@
   }
 
   /* ---------- galéria + nagyító ---------- */
+  /* Saját fotók: src kitöltése (pl. 'img/galeria/pedikur-1.jpg'). Üres src = fotóhely. */
   var GALLERY = [
-    { art: 'labfurdo', tone: 'light', cat: 'pedikur', title: 'Lábfürdő előkészítve' },
-    { art: 'lakk', tone: 'dark', cat: 'gellakk', title: 'Árnyalatok' },
-    { art: 'torolkozo', tone: 'cream', cat: 'szalon', title: 'Friss törölközők' },
-    { art: 'kezpihi', tone: 'light', cat: 'manikur', title: 'Kézápolás' },
-    { art: 'eszkoz', tone: 'sage', cat: 'szalon', title: 'Lezárt eszközök' },
-    { art: 'paraffin', tone: 'cream', cat: 'manikur', title: 'Paraffinos pakolás' },
-    { art: 'ko', tone: 'sage', cat: 'pedikur', title: 'Nyugalom' },
-    { art: 'lakk', tone: 'light', cat: 'gellakk', title: 'Géllakk' },
-    { art: 'torolkozo', tone: 'dark', cat: 'szalon', title: 'Részletek' }
+    { src: '', tone: 'sand', cat: 'pedikur', title: 'Klasszikus pedikűr' },
+    { src: '', tone: 'sage', cat: 'gellakk', title: 'Lábgéllakk' },
+    { src: '', tone: 'cream', cat: 'szalon', title: 'A szalon' },
+    { src: '', tone: 'cream', cat: 'manikur', title: 'Gépi manikűr' },
+    { src: '', tone: 'sand', cat: 'gellakk', title: 'Erősített géllakk' },
+    { src: '', tone: 'sage', cat: 'manikur', title: 'Paraffinos kézápolás' },
+    { src: '', tone: 'cream', cat: 'pedikur', title: 'Vizes pedikűr' },
+    { src: '', tone: 'sand', cat: 'szalon', title: 'Kezelőszék' },
   ];
+  function photo(g) {
+    if (g.src) return '<span class="frame zoomable"><img src="' + esc(g.src) + '" alt="' + esc(g.title) + '" loading="lazy" decoding="async"></span>';
+    return '<span class="ph ph--' + g.tone + '"><span class="ph-in">' + icon('camera') + '<b>' + esc(g.title) + '</b><small>Saját fotó helye</small></span></span>';
+  }
   var GCATS = { pedikur: 'Pedikűr', manikur: 'Manikűr', gellakk: 'Géllakk', szalon: 'Szalon' };
 
   function gallery() {
     var host = $('#gallery'); if (!host) return;
     host.innerHTML = GALLERY.map(function (g, i) {
-      return '<button type="button" class="g-item rv-img" style="--d:' + (i % 3 * .08) + 's" data-i="' + i + '" data-cat="' + g.cat + '" aria-label="' + esc(g.title) + ' — illusztráció megnyitása nagyítva">' +
-        '<span class="frame zoomable" data-art="' + g.art + '" data-tone="' + g.tone + '"></span>' +
-        '<span class="g-cap"><span><b>' + esc(g.title) + '</b><br>' + GCATS[g.cat] + '</span><span>Illusztráció</span></span></button>';
+      return '<button type="button" class="g-item rv-img" style="--d:' + (i % 3 * .08) + 's" data-i="' + i + '" data-cat="' + g.cat + '" aria-label="' + esc(g.title) + ' — megnyitás nagyítva">' + photo(g) +
+        (g.src ? '<span class="g-cap"><span><b>' + esc(g.title) + '</b><br>' + GCATS[g.cat] + '</span></span>' : '') + '</button>';
     }).join('');
     window.BBArt && window.BBArt.mount(host);
 
@@ -206,9 +235,8 @@
       var v = visible(); if (!v.length) return;
       var pos = v.indexOf(i); if (pos < 0) pos = 0; idx = v[pos];
       var g = GALLERY[idx];
-      stage.innerHTML = '<div class="frame" data-art="' + g.art + '" data-tone="' + g.tone + '"></div>';
-      window.BBArt.mount(stage);
-      cap.innerHTML = '<b>' + esc(g.title) + '</b><span>' + GCATS[g.cat] + ' · programból rajzolt illusztráció, nem Beatrix munkája — saját fotóval cserélendő</span>';
+      stage.innerHTML = '<div class="lb-photo">' + photo(g) + '</div>';
+      cap.innerHTML = '<b>' + esc(g.title) + '</b><span>' + GCATS[g.cat] + (g.src ? '' : ' · ide Beatrix saját fotója kerül') + '</span>';
       cnt.textContent = (pos + 1) + ' / ' + v.length;
     }
     function step(d) { var v = visible(), p = v.indexOf(idx); show(v[(p + d + v.length) % v.length]); }
@@ -265,7 +293,7 @@
   }
 
   function init() {
-    bindConfig(); header(); priceList(); catLists(); svcCards(); heroChip(); gallery(); reveals(); transitions();
+    bindConfig(); header(); priceList(); catLists(); svcCards(); heroChip(); quickBook(); gallery(); reveals(); transitions();
     requestAnimationFrame(function () { doc.classList.add('is-loaded'); });
   }
   if (document.readyState !== 'loading') init(); else document.addEventListener('DOMContentLoaded', init);

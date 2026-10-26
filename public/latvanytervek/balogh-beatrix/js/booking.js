@@ -405,6 +405,10 @@
     if (pre && BB.service(pre) && BB.service(pre).active) { st.serviceId = pre; st.cat = BB.service(pre).cat; }
     var mod = params.get('modosit');
     if (mod && BB.getBooking(mod)) { startModify(mod); }
+    else if (pre && BB.service(pre) && BB.service(pre).bookable && params.get('nap') && BB.slots(params.get('nap'), pre).indexOf(params.get('ido')) >= 0) {
+      st.date = params.get('nap'); st.time = params.get('ido'); var pd0 = T.parseIso(st.date); st.month = new Date(pd0.getFullYear(), pd0.getMonth(), 1);
+      st.reached = 3; go(3); history.replaceState(null, '', 'foglalas.html?kezeles=' + pre); $('h2', host).blur();
+    }
     else if (pre && BB.service(pre) && BB.service(pre).bookable) { st.reached = 1; go(1); history.replaceState(null, '', 'foglalas.html?kezeles=' + pre); $('h2', host).blur(); }
     else render(false);
     renderMine();

@@ -9,7 +9,7 @@ vannak, hanem a js/config.js-ben — azokat a böngésző tölti be.
 import pathlib
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-V = '20261025'  # gyorsítótár-törő verzió
+V = '20261026'  # gyorsítótár-törő verzió
 
 ICONS = {
     'phone': '<path d="M5 4h3l2 5-2.5 1.5a11 11 0 0 0 5 5L14 13l5 2v3a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/>',
@@ -45,6 +45,7 @@ ICONS = {
     'home': '<path d="M4 11l8-7 8 7v9h-5v-6H9v6H4z"/>',
     'download': '<path d="M12 4v11M7 10l5 5 5-5M5 20h14"/>',
     'refresh': '<path d="M20 11a8 8 0 0 0-14.6-4.5L4 8M4 4v4h4M4 13a8 8 0 0 0 14.6 4.5L20 16M20 20v-4h-4"/>',
+    'camera': '<path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/>',
     'mail': '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>',
 }
 
@@ -72,8 +73,7 @@ def head(title, desc, extra_css=''):
 <meta property="og:image" content="img/og.png">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
-<link rel="preload" href="fonts/spectral-light.woff" as="font" type="font/woff" crossorigin>
-<link rel="preload" href="fonts/manrope-var.woff" as="font" type="font/woff" crossorigin>
+<link rel="preload" href="fonts/hanken-var.woff" as="font" type="font/woff" crossorigin>
 <link rel="stylesheet" href="css/bb.css?v={V}">{extra_css}
 </head>'''
 
@@ -172,7 +172,7 @@ def footer(is_index=False, mbar=True):
 {bar}'''
 
 def scripts(*extra):
-    base = ['js/config.js', 'js/core.js', 'js/art.js', 'js/site.js'] + list(extra)
+    base = ['js/config.js', 'js/core.js', 'js/site.js'] + list(extra)
     return ''.join(f'\n<script src="{s}?v={V}"></script>' for s in base)
 
 def page(fname, title, desc, body, current=None, is_index=False, mbar=True, extra_js=()):
@@ -228,7 +228,7 @@ INDEX = f'''
     <div class="hero-grid">
       <div class="hero-copy">
         <p class="eyebrow rv">Kéz- és lábápolás · időpontra</p>
-        <h1 id="hero-h"><span class="ln"><span>Az ápoltság a</span></span><span class="ln"><span style="--d:.12s"><em>részleteknél</em> kezdődik.</span></span></h1>
+        <h1 id="hero-h" class="rv" style="--d:.1s">Az ápoltság a <em>részleteknél</em> kezdődik.</h1>
         <p class="lead rv" style="--d:.25s">Személyre szabott kéz- és lábápolás, ahol a szépség és a nyugalom találkozik.</p>
         <div class="hero-cta rv" style="--d:.35s">
           <a class="btn" href="foglalas.html">{ico('calendar')}Időpontot foglalok</a>
@@ -240,14 +240,15 @@ INDEX = f'''
           <div><dt>Helyszín</dt><dd><span data-bind="addr-label">Budapest XI.</span> <span class="tag" data-addr-status>Egyeztetés alatt</span></dd></div>
         </dl>
       </div>
-      <div class="hero-art">
-        <div class="hero-vert" aria-hidden="true">Foot &amp; Nail Studio — N° 01</div>
-        <div class="hero-main rv-img"><div class="frame zoomable" style="position:absolute;inset:0" data-art="labfurdo" data-tone="light"></div><div class="cropmarks" aria-hidden="true"><i></i><i></i><i></i><i></i></div></div>
-        <div class="hero-sub rv-img" style="--d:.3s"><div class="frame" style="position:absolute;inset:0" data-art="lakk" data-tone="cream"></div></div>
-        <a class="hero-chip rv" style="--d:.6s" data-hero-chip="klasszikus-pedikur" href="foglalas.html">Klasszikus pedikűr</a>
-      </div>
+      <aside class="qb rv" style="--d:.2s" aria-labelledby="qb-h">
+        <div class="qb-head"><h2 id="qb-h">Gyorsfoglalás</h2><span>Bemutató</span></div>
+        <div class="qb-svcs" role="radiogroup" aria-label="Kezelés"></div>
+        <p class="qb-sub">Legközelebbi szabad időpontok</p>
+        <div class="qb-slots"></div>
+        <a class="btn qb-go" href="foglalas.html">Tovább a foglaláshoz</a>
+        <p class="qb-note">A szabad időpontok mintaadatok — valódi foglalás nem történik.</p>
+      </aside>
     </div>
-    <p class="hero-caption">Illusztráció — a végleges oldalon Beatrix saját fotói kerülnek ide.</p>
   </div>
 </section>
 
@@ -268,25 +269,22 @@ INDEX = f'''
       <p class="lead rv">A hangsúly a lábápoláson van, a klasszikus pedikűrtől a lábgéllakkig. Mellette kézápolás és géllakk — egyéni igényekre pedig előzetes telefonos egyeztetés.</p>
     </div>
     <div class="cats">
-      <article class="cat">
-        <a href="pedikur.html" class="frame zoomable rv-img" style="display:block" aria-label="Pedikűr és lábápolás részletei"><span class="frame" style="position:absolute;inset:0" data-art="labfurdo" data-tone="cream"></span></a>
-        <div class="rv"><div class="cat-top"><span class="num">01</span><span class="small muted">4 kezelés</span></div>
+      <article class="cat cat--1 rv">
+        <div><div class="cat-top"><span class="num">01</span><span class="small muted">4 kezelés</span></div>
         <h3>Pedikűr és lábápolás</h3>
         <p>Klasszikus és vizes pedikűr, lábgéllakk és eltávolítás — esztétika és komfort, alaposan.</p>
         <ul data-cat-list="pedikur"></ul>
         <div class="cat-actions"><a class="link" href="pedikur.html">Részletek {ico('arrow')}</a><a class="link" href="foglalas.html?kategoria=pedikur">Foglalás</a></div></div>
       </article>
-      <article class="cat">
-        <a href="manikur.html" class="frame zoomable rv-img" style="display:block;--d:.1s" aria-label="Manikűr és géllakk részletei"><span class="frame" style="position:absolute;inset:0" data-art="kezpihi" data-tone="light"></span></a>
-        <div class="rv"><div class="cat-top"><span class="num">02</span><span class="small muted">4 kezelés</span></div>
+      <article class="cat cat--2 rv" style="--d:.08s">
+        <div><div class="cat-top"><span class="num">02</span><span class="small muted">4 kezelés</span></div>
         <h3>Manikűr és géllakk</h3>
         <p>Gépi manikűr, erősített géllakk, paraffinos kézápolás — tartós szín, visszafogott elegancia.</p>
         <ul data-cat-list="manikur"></ul>
         <div class="cat-actions"><a class="link" href="manikur.html">Részletek {ico('arrow')}</a><a class="link" href="foglalas.html?kategoria=manikur">Foglalás</a></div></div>
       </article>
-      <article class="cat">
-        <a href="specialis-labapolas.html" class="frame zoomable rv-img" style="display:block;--d:.2s" aria-label="Speciális lábápolás részletei"><span class="frame" style="position:absolute;inset:0" data-art="ko" data-tone="sage"></span></a>
-        <div class="rv"><div class="cat-top"><span class="num">03</span><span class="small muted">Telefonos egyeztetés</span></div>
+      <article class="cat cat--3 rv" style="--d:.16s">
+        <div><div class="cat-top"><span class="num">03</span><span class="small muted">Telefonos egyeztetés</span></div>
         <h3>Speciális lábápolás</h3>
         <p>Ha a lábad több figyelmet kér, előbb beszéljük át telefonon. Az időpontot és a kezelés menetét ehhez igazítjuk.</p>
         <ul><li><span>Ár és időtartam</span><span>egyeztetés után</span></li><li><span>Foglalás</span><span>telefonon</span></li></ul>
@@ -319,7 +317,6 @@ INDEX = f'''
     <div class="portrait rv-img">
       <span class="frame-label">Portré helye</span>
       <div class="portrait-inner"><span class="mono" aria-hidden="true">B<span>B</span></span><p>Ide Beatrix saját portréja kerül, a szalonban, természetes fényben.</p></div>
-      <div class="cropmarks" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
     </div>
     <div>
       <p class="eyebrow rv">Rólam</p>
@@ -352,8 +349,8 @@ INDEX = f'''
 <section class="sec" id="galeria" aria-labelledby="gal-h">
   <div class="wrap">
     <div class="sec-head">
-      <div><p class="eyebrow rv">Galéria</p><h2 id="gal-h" class="rv">Csendes <em>részletek</em>.</h2></div>
-      <p class="rv muted">A képhelyeken most programból rajzolt illusztrációk állnak — <b>nem Beatrix munkái</b>. Átadáskor a saját fotók kerülnek a helyükre; az éles változatban az adminból is cserélhetők.</p>
+      <div><p class="eyebrow rv">Galéria</p><h2 id="gal-h" class="rv">Munkáim</h2></div>
+      <p class="rv muted">Ide Beatrix saját munkafotói kerülnek — a szűrés, a nagyítás és a lapozás már működik. Az éles változatban a képek az adminból tölthetők fel.</p>
     </div>
     <div class="chips chips--scroll" id="galleryChips" role="group" aria-label="Galéria szűrése">
       <button class="chip" type="button" data-filter="all" aria-pressed="true">Mind</button>
@@ -439,7 +436,7 @@ def cat_page(num, cat, h1, lead, art, tone, guide, callout):
         <p class="lead rv">{lead}</p>
         <div class="hero-cta rv" style="margin:28px 0 0"><a class="btn" href="foglalas.html?kategoria={cat}">{ico('calendar')}Időpontot foglalok</a><a class="btn btn--ghost" href="#kezelesek-lista">Kezelések és árak</a></div>
       </div>
-      <div class="rv-img" style="position:relative"><div class="frame zoomable" data-art="{art}" data-tone="{tone}"></div><div class="cropmarks" aria-hidden="true"><i></i><i></i><i></i><i></i></div></div>
+      <aside class="sumcard rv" style="--d:.15s"><p class="qb-sub" style="margin-top:0">Kezelések és árak</p><ul class="sum-list" data-cat-list="{cat}"></ul><a class="btn qb-go" href="foglalas.html?kategoria={cat}">{ico('calendar')}Időpontot foglalok</a></aside>
     </div>
   </div>
 </section>
@@ -488,7 +485,7 @@ SPECIALIS = f'''
         <div class="hero-cta rv" style="margin:28px 0 0"><a class="btn" data-tel href="tel:+36706146070">{ico('phone')}<span data-bind="phone">+36 70 614 6070</span></a></div>
         <p class="rv small muted" style="margin-top:16px">Ár és időtartam: egyeztetés után. {tag("Jóváhagyásra vár")}</p>
       </div>
-      <div class="rv-img" style="position:relative"><div class="frame zoomable" data-art="ko" data-tone="sage"></div><div class="cropmarks" aria-hidden="true"><i></i><i></i><i></i><i></i></div></div>
+      <aside class="sumcard rv" style="--d:.15s"><p class="qb-sub" style="margin-top:0">Időpont egyeztetése</p><a class="contact-phone" data-tel href="tel:+36706146070" data-bind="phone" style="margin:4px 0 14px">+36 70 614 6070</a><p class="small muted" style="margin:0">Ár és időtartam az egyeztetés után derül ki. Online nem kérünk egészségügyi adatot.</p></aside>
     </div>
   </div>
 </section>
@@ -560,33 +557,14 @@ FELTETELEK = legal('Foglalási és lemondási feltételek',
 # ======================================================================
 KONCEPCIO = f'''
 <section class="page-hero">
-  <div class="wrap">
+  <div class="wrap legal">
     <nav class="crumbs" aria-label="Morzsamenü"><a href="index.html">Kezdőlap</a><span aria-hidden="true">/</span><span aria-current="page">Tervezési koncepció</span></nav>
-    <p class="eyebrow">DAEKON · látványterv</p>
-    <h1 style="max-width:16em">Három irány, <em>egy választás</em>.</h1>
-    <p class="lead" style="margin-top:18px">Mielőtt a végleges oldalt felépítettük, három lényegesen eltérő kreatív irányt vizsgáltunk meg. Itt a rövid indoklás, miért a „Rituálé” lett a befutó.</p>
-  </div>
-</section>
-<section class="sec sec--cream">
-  <div class="wrap">
-    <div class="svc-cards" style="grid-template-columns:1fr">
-      <article class="svc-card"><div class="frame" data-art="labfurdo" data-tone="light"></div><div class="svc-card-body">
-        <p class="eyebrow">A irány · választott</p><h3>„Rituálé” — csendes editorial szalon</h3>
-        <p>Világos törtfehér és krémbézs, eszpresszó tipográfia, pezsgőarany hajszálvonalak, nyomdai vágójelek a képek körül. Képek helyett egységes, rajzolt csendéletek (tál, törölközők, kövek), amelyek egy az egyben cserélhetők Beatrix saját fotóira. Jelmotívum: az <b>óralap</b> — minden kezelés időtartama egy vékony körívként jelenik meg, a kártyákon és a foglalásban is.</p>
-        <p><b>Miért ez:</b> a lábápolást és a nyugalmat állítja középre, nem a műkörmöt; a foglalási folyamat ugyanazt a nyelvet beszéli (óralap, időtartam), így a fő funkció nem idegen test az oldalon. Mobilon is jól olvasható, nem épít óriás betűkre.</p>
-      </div></article>
-      <article class="svc-card"><div class="frame" data-art="lakk" data-tone="dark"></div><div class="svc-card-body">
-        <p class="eyebrow">B irány</p><h3>„Esti atelier” — sötét, lakkfényű butik</h3>
-        <p>Mély eszpresszó alap, pezsgőarany kiemelések, fényes lakkfelületek, filmszerű átmenetek.</p>
-        <p><b>Miért nem:</b> látványos, de a géllakkra és az estére hangol — elveszne a lábápolás nyugodt, nappali karaktere, és a hosszú árlista sötét alapon nehezebben olvasható. Elemeit (sötét előnyök-blokk, utalvány) átvettük.</p>
-      </div></article>
-      <article class="svc-card"><div class="frame" data-art="eszkoz" data-tone="sage"></div><div class="svc-card-body">
-        <p class="eyebrow">C irány</p><h3>„Index” — svájci, árlista-központú</h3>
-        <p>Szigorú rács, zsályazöld, a kezdőlap maga egy foglalható árlista, minimális képpel.</p>
-        <p><b>Miért nem:</b> nagyon gyors és őszinte, de hűvös, klinikai hatású — pont a „személyes törődés” érzése hiányzik belőle. Az árlista sorszerkezete és a szűrők innen jönnek.</p>
-      </div></article>
-    </div>
-    <p class="small muted" style="margin-top:28px">Részletes tipográfiai, szín-, animációs és fejlesztési átadás: <code>ATADAS.md</code> a projekt mappájában.</p>
+    <p class="eyebrow">DAEKON · látványterv · 2. kör</p>
+    <h1>Tiszta, meleg, <em>könnyen foglalható</em>.</h1>
+    <p class="lead" style="margin-top:18px">Az első kör rajzolt illusztrációit és talpas betűit elvetettük. A második kör egyetlen, jól olvasható betűvel (Hanken Grotesk) és kép nélküli, színekkel tagolt felülettel dolgozik — a nyitóképen maga a foglalás áll. A fotóhelyekre Beatrix saját képei kerülnek.</p>
+    <h2>Mi változott</h2>
+    <ul><li>Betű: Hanken Grotesk mindenhol, mérsékelt méretekkel.</li><li>Nyitókép: élő gyorsfoglaló kártya kezelésválasztással és a legközelebbi szabad időpontokkal.</li><li>Kezelések: színkódolt kártyák (pedikűr — homok, manikűr — zsálya, speciális — eszpresszó).</li><li>Illusztrációk törölve; galéria és portré csak saját fotóval.</li></ul>
+    <p class="small muted">Korábbi anyagok: <a href="iranyok.html">három irány</a> · <a href="betuk.html">betűválasztó</a>. Részletes átadás: <code>ATADAS.md</code>.</p>
   </div>
 </section>'''
 
