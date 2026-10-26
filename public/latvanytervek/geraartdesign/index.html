@@ -33,17 +33,34 @@
 <section class="hero">
   <div class="wrap">
     <div>
-      <h1 class="felfed">Egyedi bútor és intarzia, méretre készítve.</h1>
-      <p class="lead felfed">Gera Péter bútorasztalos vagyok. Konyhát, gardróbot, beépített szekrényt és egyedi darabokat tervezek és készítek — ha szeretné, intarziával díszítve.</p>
-      <div class="cta-sor felfed">
+      <h1 class="szavak" data-motion="cim">Egyedi bútor és intarzia, méretre készítve.</h1>
+      <p class="lead" data-motion="be">Gera Péter bútorasztalos vagyok. Konyhát, gardróbot, beépített szekrényt és egyedi darabokat tervezek és készítek — ha szeretné, intarziával díszítve.</p>
+      <div class="cta-sor" data-motion="be">
         <a class="link" href="#kapcsolat">Ajánlatot kérek <i class="nyil" aria-hidden="true">→</i></a>
         <a class="link link--halk" href="#munkak">Munkák</a>
       </div>
     </div>
-    <figure class="tabla felfed">
-      <div class="tabla-kep"><svg id="hero3d" viewBox="0 0 640 520" role="img" aria-label="Vonalas 3D vázlat: tálalószekrény kihúzott fiókkal"></svg></div>
-      <figcaption><span><b>Tálaló</b> — vázlat</span><span>Minden darab helyszíni mérés alapján készül.</span></figcaption>
+    <figure class="tabla" data-motion="tabla">
+      <div class="tabla-kep"><svg id="hero3d" viewBox="0 0 640 520" role="img" aria-label="Vonalas 3D vázlat: fecskefarkas kötés, ahogy a két deszka összecsúszik"></svg></div>
+      <figcaption><span><b>Fecskefarkas kötés</b> — a fiókok klasszikus sarokkötése</span><span>Húzza el a rajzot</span></figcaption>
     </figure>
+  </div>
+</section>
+
+<section class="bemutat" id="bemutat" aria-label="Egy bútor közelről">
+  <div class="bemutat-ragad">
+    <div class="wrap">
+      <div class="bemutat-szoveg">
+        <p class="cimke">Egy bútor, közelről</p>
+        <div class="bemutat-lapok">
+          <div class="blap aktiv"><h2>Arány</h2><p>A bútor a térhez készül: a falakhoz, a nyílásokhoz, és ahhoz, ahogy élni fognak vele.</p></div>
+          <div class="blap"><h2>Anyag</h2><p>Tömörfa vagy furnér, matt vagy selyemfényes — a fa színét és rajzolatát együtt választjuk ki.</p></div>
+          <div class="blap"><h2>Illesztés</h2><p>A jó bútoron nem az illesztés tűnik fel, hanem az, hogy minden a helyén van — a fióknál is.</p></div>
+        </div>
+        <div class="bemutat-sav" aria-hidden="true"><i id="bemutatSav"></i></div>
+      </div>
+      <div class="bemutat-kep"><svg id="talalo3d" viewBox="0 0 680 520" role="img" aria-label="Vonalas 3D vázlat: tálaló, amely görgetésre elfordul, a frontok fa színt kapnak, a fiók kinyílik"></svg></div>
+    </div>
   </div>
 </section>
 
@@ -64,7 +81,7 @@
     <div>
       <h2 class="felfed">Amit készítek</h2>
     </div>
-    <ul class="lista felfed">
+    <ul class="lista" data-motion="lista">
       <li><h3>Egyedi bútorok</h3><p>Asztal, komód, tálaló, könyvespolc — a helyiséghez és annak stílusához igazítva.</p></li>
       <li><h3>Konyhabútorok</h3><p>Átgondolt tárolás, strapabíró felületek, pontosan záródó ajtók.</p></li>
       <li><h3>Beépített szekrények</h3><p>Gardrób, falfülke, tetőtéri szekrény — a ferde falakat és a sarkokat is kihasználva.</p></li>
@@ -83,7 +100,7 @@
       <h2 class="felfed">Intarzia</h2>
     </div>
     <div>
-      <p class="idezet felfed">Különböző színű fákból kivágott, egymás mellé illesztett darabok. Nincs benne festék — a minta színe maga a fa.</p>
+      <p class="idezet szoreveal">Különböző színű fákból kivágott, egymás mellé illesztett darabok. Nincs benne festék — a minta színe maga a fa.</p>
       <p class="felfed halk">Készülhet dobozfedélre, asztallapra, bútorfrontra vagy falra: monogram, geometrikus minta vagy akár egy teljes kép. Ajándéknak is különleges.</p>
     </div>
   </div>
@@ -97,7 +114,7 @@
       <h2 class="felfed">Hogyan dolgozom</h2>
       <p class="felfed">A tervtől a beépítésig egy kézben.</p>
     </div>
-    <ol class="lepesek felfed">
+    <ol class="lepesek" data-motion="lepesek">
       <li><span class="sz">1</span><h3>Felmérés</h3><p>Megnézem a helyet, méretet veszek, és megbeszéljük, mire használják majd a bútort.</p></li>
       <li><span class="sz">2</span><h3>Terv és ajánlat</h3><p>Rajz, anyagok és felületek. Az ajánlat ehhez készül, tételesen, határidővel.</p></li>
       <li><span class="sz">3</span><h3>Készítés</h3><p>Szabás, összeállítás, ajtók és fiókok a műhelyben.</p></li>
@@ -164,6 +181,7 @@
   <a href="logo.html">Választó</a>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/motion@11.11.13/dist/motion.js"></script>
 <script src="js/muhely3d.js"></script>
 <script src="js/gera.js"></script>
 </body>

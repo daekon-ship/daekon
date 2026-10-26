@@ -148,21 +148,21 @@
     for (let i = 0; i < 3; i++) {
       const y0 = yb + t + i * fh + 0.04, y1 = y0 + fh - 0.08;
       const ki = i === 2 ? -2.6 : 0;
-      b(fx0, y0, -t + ki, fx1, y1, ki, sz.front, { szakasz: 2, front: true, fiok: i });
+      b(fx0, y0, -t + ki, fx1, y1, ki, sz.front, { szakasz: 2, front: true, fiok: i, fiokki: i === 2 });
       if (i === 2) { /* kihúzott fiók doboza */
-        b(fx0 + 0.12, y0 + 0.15, ki, fx0 + 0.27, y1 - 0.25, ki + 3.6, sz.fiok, { szakasz: 2 });
-        b(fx1 - 0.27, y0 + 0.15, ki, fx1 - 0.12, y1 - 0.25, ki + 3.6, sz.fiok, { szakasz: 2 });
-        b(fx0 + 0.27, y0 + 0.15, ki + 3.45, fx1 - 0.27, y1 - 0.25, ki + 3.6, sz.fiok, { szakasz: 2 });
-        b(fx0 + 0.27, y0 + 0.15, ki, fx1 - 0.27, y0 + 0.25, ki + 3.45, sz.fiok, { szakasz: 2 });
+        b(fx0 + 0.12, y0 + 0.15, ki, fx0 + 0.27, y1 - 0.25, ki + 3.6, sz.fiok, { szakasz: 2, fiokki: true });
+        b(fx1 - 0.27, y0 + 0.15, ki, fx1 - 0.12, y1 - 0.25, ki + 3.6, sz.fiok, { szakasz: 2, fiokki: true });
+        b(fx0 + 0.27, y0 + 0.15, ki + 3.45, fx1 - 0.27, y1 - 0.25, ki + 3.6, sz.fiok, { szakasz: 2, fiokki: true });
+        b(fx0 + 0.27, y0 + 0.15, ki, fx1 - 0.27, y0 + 0.25, ki + 3.45, sz.fiok, { szakasz: 2, fiokki: true });
       }
     }
     /* 3: lábak, fogantyúk */
     [[0.5, 0.5], [W - 0.9, 0.5], [0.5, D - 0.9], [W - 0.9, D - 0.9]].forEach(([x, z]) => b(x, 0, z, x + 0.4, yb, z + 0.4, sz.lab, { szakasz: 3 }));
     for (let i = 0; i < 3; i++) {
       const y = yb + t + i * fh + fh / 2, ki = i === 2 ? -2.6 : 0;
-      b((fx0 + fx1) / 2 - 0.6, y - 0.07, -t + ki - 0.12, (fx0 + fx1) / 2 + 0.6, y + 0.07, -t + ki, sz.lab, { szakasz: 3 });
+      b((fx0 + fx1) / 2 - 0.6, y - 0.07, -t + ki - 0.12, (fx0 + fx1) / 2 + 0.6, y + 0.07, -t + ki, sz.lab, { szakasz: 3, fogantyu: true, fiokki: i === 2 });
     }
-    b(W / 2 - t / 2 - 0.35, yb + H / 2 - 0.7, -t - 0.12, W / 2 - t / 2 - 0.22, yb + H / 2 + 0.7, -t, sz.lab, { szakasz: 3 });
+    b(W / 2 - t / 2 - 0.35, yb + H / 2 - 0.7, -t - 0.12, W / 2 - t / 2 - 0.22, yb + H / 2 + 0.7, -t, sz.lab, { szakasz: 3, fogantyu: true });
     return P;
   }
 

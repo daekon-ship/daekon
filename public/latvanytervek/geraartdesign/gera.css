@@ -210,3 +210,36 @@ p{margin:0 0 1em;max-width:58ch}
   *,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important;transition-delay:0s!important;scroll-behavior:auto!important}
   .felfed{opacity:1;transform:none}
 }
+
+/* ===== 11. kör: Motion (motion.dev) mozgások ===== */
+.fejlec{transition:box-shadow .35s,transform .5s var(--ease)}
+.fejlec.rejt{transform:translateY(-100%)}
+.szavak .sor{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.08em;margin-bottom:-.08em}
+.szavak .szo{display:inline-block;will-change:transform}
+.js-motion [data-motion="be"],.js-motion [data-motion="tabla"]{opacity:0}
+.tabla-kep{overflow:hidden}
+
+/* bemutató – ragadós, görgetésre forgó tálaló */
+.bemutat{height:340vh;position:relative;border-top:1px solid var(--vonal)}
+.bemutat-ragad{position:sticky;top:0;height:100vh;height:100svh;display:flex;align-items:center;overflow:hidden}
+.bemutat .wrap{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:clamp(32px,5vw,90px);align-items:center;width:100%}
+.bemutat-lapok{position:relative;min-height:220px}
+.blap{position:absolute;inset:0 0 auto 0;opacity:0;transform:translateY(16px);transition:opacity .6s var(--ease),transform .7s var(--ease);pointer-events:none}
+.blap.aktiv{opacity:1;transform:none}
+.blap h2{margin-bottom:16px}
+.blap p{color:var(--halk);max-width:34ch}
+.bemutat-sav{height:1px;background:var(--vonal);margin-top:28px;max-width:260px}
+.bemutat-sav i{display:block;height:1px;background:var(--mely);transform-origin:left;transform:scaleX(0)}
+.bemutat-kep svg{width:100%;height:auto;aspect-ratio:680/520}
+
+/* görgetésre kigyúló szavak */
+.szoreveal .w{transition:opacity .25s linear}
+.js-motion .szoreveal .w{opacity:.18}
+
+@media (max-width:860px){
+  .bemutat{height:300vh}
+  .bemutat .wrap{grid-template-columns:1fr;gap:8px}
+  .bemutat-kep{order:-1}
+  .bemutat-lapok{min-height:170px}
+  .bemutat-ragad{align-items:flex-start;padding-top:84px}
+}

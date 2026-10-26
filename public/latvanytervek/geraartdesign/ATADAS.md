@@ -1,3 +1,15 @@
+# geraartdesign — átadás (11. kör, 2026.10.26.)
+
+**11. kör – Motion (motion.dev), ügyfélkérésre.** A „Katalógus” alap marad, a mozgásokat a Motion könyvtár adja (vanilla JS, `window.Motion`, `https://cdn.jsdelivr.net/npm/motion@11.11.13/dist/motion.js`, rögzített verzió). Élesítéskor a fájlt érdemes helyben tárolni. Ha a Motion nem töltődik be, minden tartalom látszik, a görgetéses rész saját tartalékkal megy.
+- Hero: a cím szavanként felcsúszik (`animate` + `stagger`), a bevezető és a linkek utána; a kép tábla alulról kinyílik (clip-path); a fecskefarkas kötés két deszkája összecsúszik (`animate` számértékre, `onUpdate`); görgetésre lassan elfordul, húzással forgatható és visszarugózik.
+- Új „Egy bútor, közelről” rész: ragadós, 340 vh magas; görgetésre (`scroll`, target + offset) a tálaló elfordul, a 2. harmadban a frontok és a fedlap fa színt kapnak, a 3.-ban a felső fiók kinyílik; bal oldalt Arány / Anyag / Illesztés felirat vált, alatta vékony haladásjelző.
+- Munkák: a táblák alulról kinyílnak, a vázlat lassan a helyére skálázódik (`inView`); hoverre a vázlat elfordul.
+- Listák, lépések: lépcsőzetes belépés; elválasztó vonalak kihúzódnak.
+- Intarzia: a fő mondat szavai görgetésre egyenként kigyúlnak.
+- Fejléc: lefelé görgetve elbújik, felfelé előjön.
+- Ellenőrzés: a valódi Motion a fejlesztői környezetből nem volt elérhető, ezért a kód a Motion API-ját utánzó helyi teszttel és Motion nélkül (tartalék) lett kipróbálva 390 és 1440 px-en; élőben telefonon is meg kell nézni.
+
+(10. kör:)
 # geraartdesign — átadás (10. kör, 2026.10.25.)
 
 **10. kör – „Katalógus”** (ügyfél: „nagyon AI, nem elég prémium, letisztult”). Teljes egyszerűsítés:
