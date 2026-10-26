@@ -8,7 +8,7 @@ Kimenet: dist/ – csak a ténylegesen hivatkozott fájlok; _forras, ATADAS.md, 
 A dizájn nem változik; csak a bemutató jellegű feliratok, az inaktív ajánlatkérő és a jogi linkek.
 Minden csere pontosan egyszer kell, hogy illeszkedjen – különben a build leáll (forrásváltozás jelzése).
 """
-import base64, hashlib, os, re, shutil, sys
+import base64, hashlib, html as htmlmod, json, os, re, shutil, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC = os.environ.get("KGW_SRC") or os.path.join(ROOT, "eles-src", "public", "latvanytervek", "kalocsa-zoltan")  # jóváhagyott látványterv
@@ -23,6 +23,21 @@ if AJANLAT_ON and not HAS_PRIVACY:
     sys.exit("BUILD STOP – az ajánlatkérő csak végleges adatkezelési tájékoztatóval (tools/eles/adatkezeles.html) kapcsolható be")
 if HAS_PRIVACY and "kitöltendő" in open(os.path.join(TPL, "adatkezeles.html"), encoding="utf-8").read():
     sys.exit("BUILD STOP – az adatkezelési tájékoztató még [kitöltendő] mezőt tartalmaz")
+
+# Google-cégprofil (ellenőrizve 2026.10.26.: név „Kalocsa GeoWorks”, Földkitermelő vállalkozó, 06 70 420 4170).
+# Olvasás: a Google Térkép CID-linkje (a profil azonosítója a Google-től, nem kitalált).
+GOOGLE_PROFIL_URL = "https://www.google.com/maps?cid=7775453738665952318"
+# Véleményírás: a tulajdonos a Google Cégprofilban („Vélemények kérése”) kapja meg (g.page/r/…/review).
+# Amíg nincs megadva, a gomb nem jelenik meg. Soha ne a fenti olvasó linket tegyük ide.
+GOOGLE_IRAS_URL = None
+# Megjelenítendő vélemények: tools/eles/velemenyek.json – kizárólag szabályos forrásból (Google Places API, szerveroldalon,
+# a Google megjelenítési és forrásmegjelölési feltételei szerint), kézzel kitalált vagy átírt tartalom tilos.
+# Ha nincs fájl vagy üres a lista, csak a profil-kártya jelenik meg (nincs üres vagy hamis értékelési kártya).
+VELEMENY_JSON = os.path.join(TPL, "velemenyek.json")
+# Új logó (az ügyfél LOGO.png-je, 2026.10.26.; a repóban: arculat/logo-uj-2026-10-26.png) – a megosztókép ebből készül, változtatás nélkül.
+# Új fájlnév, hogy a közösségi oldalak ne a régi, gyorsítótárazott képet mutassák.
+UJ_LOGO = os.path.join(SRC, "arculat", "logo-uj-2026-10-26.png")
+OG_KEP = "og-kalocsageoworks-logo.jpg"
 
 
 def read(p):
@@ -73,9 +88,9 @@ h = sub1(h, '<meta name="robots" content="noindex, nofollow">',
          '<meta property="og:title" content="Kalocsa GeoWorks | Gépi földmunka Kecskeméten és 45 km-es körzetében">\n'
          '<meta property="og:description" content="Alapásás, közműárok-ásás, nyomvonalásás, tuskóeltávolítás, tereprendezés – kis géppel, szűk helyeken is. Hívás: +36 70 420 4170.">\n'
          f'<meta property="og:url" content="{DOMAIN}/">\n'
-         f'<meta property="og:image" content="{DOMAIN}/img/og-kalocsageoworks.jpg">\n'
+         f'<meta property="og:image" content="{DOMAIN}/img/{OG_KEP}">\n'
          '<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="630">\n'
-         '<meta property="og:image:alt" content="Kubota KX019-4 kisgép munka közben egy építési telken">\n'
+         '<meta property="og:image:alt" content="A Kalocsa GeoWorks logója és egy Kubota KX019-4 kisgép munka közben">\n'
          '<meta name="twitter:card" content="summary_large_image">\n'
          # strukturált adat csak igazolt adatokból: nincs bejegyzett vállalkozás → szolgáltatás + kapcsolattartó személy, cégadat nélkül
          # (a vállalkozás bejegyzése után: HomeAndConstructionBusiness a hivatalos névvel/címmel – lásd AKTIVALAS-2027.md)
@@ -84,7 +99,7 @@ h = sub1(h, '<meta name="robots" content="noindex, nofollow">',
          '"serviceType":["Alapásás","Közműárok-ásás","Nyomvonalásás","Tuskóeltávolítás","Tereprendezés"],'
          '"provider":{"@type":"Person","name":"Kalocsa Zoltán","telephone":"+36704204170","email":"kalocsageoworks@gmail.com"},'
          '"areaServed":{"@type":"GeoCircle","geoMidpoint":{"@type":"GeoCoordinates","latitude":46.9062,"longitude":19.6913},"geoRadius":"45000"},'
-         '"image":"' + DOMAIN + '/img/og-kalocsageoworks.jpg"}</script>',
+         '"image":"' + DOMAIN + '/img/' + OG_KEP + '"}</script>',
          "fej")
 
 # térkép: a bemutató munkajelölő nem valós helyszín → élesben csak a körzet
@@ -153,9 +168,103 @@ h = sub1(h, '<p><a href="adatkezeles.html">Adatkezelési tájékoztató</a> <em>
          '<p><a href="impresszum.html">Impresszum</a><br>Adatkezelési tájékoztató: előkészítés alatt</p>', "lábléc jogi")
 h = sub1(h, '<span>Látványterv: <a href="https://daekon.hu" rel="noopener">DAEKON</a></span>',
          '<span>Weboldal: <a href="https://daekon.hu" rel="noopener">DAEKON</a></span>', "lábléc készítő")
-# az éles JS-nek saját verzió (a statikus fájlok 1 évig gyorsítótárazódnak) – minden JS-változtatáskor emelni kell
-h = sub1(h, '<script src="kalocsa.js?v=37" defer></script>', '<script src="kalocsa.js?v=37-eles7" defer></script>', "js verzió")
-h = sub1(h, '<link rel="stylesheet" href="kalocsa.css?v=39">', '<link rel="stylesheet" href="kalocsa.css?v=39-eles5">', "css verzió")
+
+
+# ---------------- Vélemények (Google) ----------------
+def velemeny_szakasz():
+    e = lambda s: htmlmod.escape(str(s), quote=True)
+    adat = json.load(open(VELEMENY_JSON, encoding="utf-8")) if os.path.isfile(VELEMENY_JSON) else {}
+    lista = [v for v in adat.get("velemenyek", []) if v.get("szoveg") and v.get("nev") and v.get("csillag")]
+    for v in lista:
+        if not 1 <= int(v["csillag"]) <= 5 or not str(v.get("link", "")).startswith("https://"):
+            sys.exit("BUILD STOP – velemenyek.json: hibás csillag vagy hiányzó Google-link")
+    csillag = lambda n: f'<span class="rev__stars" role="img" aria-label="{n} / 5 csillag">' + "".join(
+        f'<i class="{"on" if i < n else ""}" aria-hidden="true"></i>' for i in range(5)) + "</span>"
+    uj = ' target="_blank" rel="noopener noreferrer"'
+    sr = '<span class="rev__sr"> (új lapon nyílik)</span>'
+    osszeg = ""
+    if lista and adat.get("atlag") and adat.get("db"):
+        osszeg = (f'<p class="rev__sum"><b>{e(str(adat["atlag"]).replace(".", ","))}</b>{csillag(round(float(adat["atlag"])))}'
+                  f'<span>{e(adat["db"])} értékelés a Google-on</span></p>')
+    iras = (f'<a class="btn btn--ghost" href="{e(GOOGLE_IRAS_URL)}"{uj}><span>Vélemény írása a <span class="rev__nw">Google-on</span></span>{sr}</a>' if GOOGLE_IRAS_URL else "")
+    kartyak = ""
+    if lista:
+        kartyak = '\n    <ul class="rev__list">\n' + "".join(
+            f'      <li class="rcard"><figure>\n'
+            f'        {csillag(int(v["csillag"]))}\n'
+            f'        <blockquote><p>{e(v["szoveg"])}</p></blockquote>\n'
+            f'        <figcaption><b>{e(v["nev"])}</b><span>{e(v.get("ido", ""))}</span>'
+            f'<a href="{e(v["link"])}"{uj}>Megnyitás a Google-on{sr}</a></figcaption>\n'
+            f'      </figure></li>\n' for v in lista) + '    </ul>\n    <p class="rev__attr">Forrás: Google. A véleményeket a Google-on közzétett formájukban, szerkesztés nélkül mutatjuk.</p>'
+    return (
+        '<!-- ================= VÉLEMÉNYEK (Google) ================= -->\n'
+        '<section class="sec rev" id="velemenyek" aria-labelledby="velemeny-cim">\n'
+        '  <div class="wrap">\n'
+        '    <div class="rev__grid">\n'
+        '      <div class="rev__copy">\n'
+        '        <p class="kicker"><span class="dot"></span>Vélemények</p>\n'
+        '        <h2 id="velemeny-cim">Vélemények a <span class="rev__nw">Google-on</span></h2>\n'
+        '        <p class="sec__lead">A megrendelők értékeléseit a Google-on, szerkesztés nélkül olvashatod. Ha már dolgoztunk együtt, '
+        'pár mondatos véleményeddel sokat segítesz a következő érdeklődőknek.</p>\n'
+        '      </div>\n'
+        '      <div class="rev__card">\n'
+        '        <p class="rev__src"><span class="dot"></span>Google Térkép · cégprofil</p>\n'
+        '        <h3>Kalocsa GeoWorks</h3>\n'
+        '        <p class="rev__meta">Földkitermelő vállalkozó</p>\n'
+        f'        {osszeg}\n'
+        f'        <div class="rev__act"><a class="btn" href="{e(GOOGLE_PROFIL_URL)}"{uj}><span>Vélemények megtekintése a <span class="rev__nw">Google-on</span></span>{sr}</a>{iras}</div>\n'
+        '        <p class="rev__note">A gomb a Google Térképre visz. Az oldal Google-szkriptet nem tölt be, és sütit nem használ.</p>\n'
+        '      </div>\n'
+        f'    </div>{kartyak}\n'
+        '  </div>\n'
+        '</section>\n\n')
+
+
+h = sub1(h, "<!-- ================= AJÁNLATKÉRŐ ================= -->", velemeny_szakasz() + "<!-- ================= AJÁNLATKÉRŐ ================= -->", "vélemények szakasz")
+h = subre(h, r'(<nav class="nav" id="nav"[^>]*>.*?)(\n(\s*)<a href="#ajanlat">)', r'\1\n\3<a href="#velemenyek">Vélemények</a>\2', "menü: Vélemények")
+h = sub1(h, '<a href="#munkaterulet">Munkaterület</a><br><a href="#ajanlat">',
+         '<a href="#munkaterulet">Munkaterület</a><br><a href="#velemenyek">Vélemények</a><br><a href="#ajanlat">', "lábléc: Vélemények")
+
+# ---------------- Új logó (2026.10.26., LOGO.png): kétsoros felirat a jel mellett ----------------
+# A felirat a jóváhagyott arculati csomag görbéiből jön (arculat/logo-allo-sotet.svg): KALOCSA világos, GEOWORKS narancs,
+# egymás alatt (translate 0 33) – az új logó elrendezése. Betűtípustól független, nincs új betűfájl.
+# A K-jel útvonalai változatlanok: körvonaluk képpontra egyezik az új logóéval (az átfedés azonos színátmenet alatt nem látszik).
+_al = read(os.path.join(SRC, "arculat", "logo-allo-sotet.svg"))
+_wp = re.findall(r'<path (?:transform="translate\(0 33\)" )?d="([^"]+)" fill="(#F2F3F4|#F27A21)"/>', _al)
+if [c for _, c in _wp] != ["#F2F3F4", "#F27A21"]:
+    sys.exit("BUILD STOP – az arculati logó felirata nem a várt szerkezetű (KALOCSA + GEOWORKS)")
+
+
+def logo_felirat(cimke):
+    a = 'role="img" aria-label="Kalocsa GeoWorks"' if cimke else 'aria-hidden="true"'
+    return (f'<svg class="brand__word" viewBox="0 -21.5 225 55.5" {a}><path fill="#F2F3F4" d="{_wp[0][0]}"/>'
+            f'<path fill="#F27A21" transform="translate(0 33)" d="{_wp[1][0]}"/></svg>')
+
+
+_r = h.split('<span class="brand__txt"><b>Kalocsa <span>GeoWorks</span></b></span>')
+if len(_r) != 3:
+    sys.exit(f"BUILD STOP – logófelirat: {len(_r) - 1} találat (2 kell: fejléc, lábléc)")
+h = _r[0] + logo_felirat(False) + _r[1] + logo_felirat(True) + _r[2]  # fejléc: a link aria-labelje nevez; lábléc: saját név
+
+# Lábléc: a logó PONTOSAN a LOGO.png álló elrendezésében (felhasználói döntés, 2026.10.26.) – ugyanaz a jel és ugyanazok a betűk,
+# a LOGO.png képpont-koordinátáiban elhelyezve (jel: 166,165 · 12,431×; felirat: a KALOCSA 177–701 px, felső él 1301 px),
+# a sötét lábléc miatt a jóváhagyott negatív színekkel (fehér jel és KALOCSA, narancs). Kivágás: a jel és a felirat befoglaló doboza.
+_jel = re.search(r'<svg class="brand__mark" viewBox="0 0 102 100" aria-hidden="true">(.*?)</svg>', h, re.S).group(1)
+_ws = 524 / 181.14
+ALLO_LOGO = ('<svg class="ftr__logo" viewBox="166 165 1268 1293" role="img" aria-label="Kalocsa GeoWorks">'
+             f'<g transform="translate(166 165) scale(12.431)">{_jel}</g>'
+             f'<g transform="translate({177 - 2.29 * _ws:.3f} {1301 + 20.99 * _ws:.3f}) scale({_ws:.5f})">'
+             f'<path fill="#F2F3F4" d="{_wp[0][0]}"/><path fill="#F27A21" transform="translate(0 33)" d="{_wp[1][0]}"/></g></svg>')
+h = subre(h, r'(<div class="ftr__brand">\s*)<span class="brand"><svg class="brand__mark".*?</svg><svg class="brand__word".*?</svg></span>',
+          lambda m: m.group(1) + ALLO_LOGO, "lábléc: álló logó")
+# iOS kezdőképernyő-ikon (a favicon jeléből; tools/eles/apple-touch-icon.png)
+h = sub1(h, '<link rel="icon" href="logo-jel.svg" type="image/svg+xml">',
+         '<link rel="icon" href="logo-jel.svg" type="image/svg+xml">\n<link rel="apple-touch-icon" href="apple-touch-icon.png">', "apple-touch-icon")
+
+# az éles JS-nek és CSS-nek saját verzió (a statikus fájlok 1 évig gyorsítótárazódnak) – minden változtatáskor emelni kell
+CSS_V = "39-eles8"
+h = sub1(h, '<script src="kalocsa.js?v=37" defer></script>', '<script src="kalocsa.js?v=37-eles8" defer></script>', "js verzió")
+h = sub1(h, '<link rel="stylesheet" href="kalocsa.css?v=39">', f'<link rel="stylesheet" href="kalocsa.css?v={CSS_V}">', "css verzió")
 for bad in ("Bemutató mód", "bemutató", "BEMUTATÓ", "kitöltendő", "egyeztetendő", "github", "látványterv"):
     if bad.lower() in h.lower():
         sys.exit(f"BUILD STOP – index.html még tartalmazza: {bad}")
@@ -215,6 +324,9 @@ j = sub1(j, "    video.addEventListener('error', () => fail('video-error'), { on
 # térképkönyvtár saját tárhelyről (Leaflet 1.9.4, a hivatalos SRI-hash-sel ellenőrizve) – nincs cdnjs/unpkg-kérés
 j = sub1(j, "const CDN = ['https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/', 'https://unpkg.com/leaflet@1.9.4/dist/'];",
          "const CDN = ['vendor/leaflet/'];", "js leaflet helyi")
+# Vélemények szakasz: a fejléc aktív menüpontja kövesse (görgetéskövetés)
+j = sub1(j, "'munkaterulet', 'ajanlat'].map(id => d.getElementById(id));",
+         "'munkaterulet', 'velemenyek', 'ajanlat'].map(id => d.getElementById(id));", "js görgetéskövetés: vélemények")
 # mobilmenü: ha nyitva van, és a nézet asztali szélességre vált (pl. tablet elforgatása), a menü bezárul,
 # különben a body overflow:hidden beragadna, és érintéssel nem lehetne görgetni
 j = sub1(j, "burger.focus(); } });\n",
@@ -246,7 +358,7 @@ write(os.path.join(DIST, "kalocsa.js"), j)
 # ---------------- statikus fájlok (csak a hivatkozottak) ----------------
 refs = set(re.findall(r"(?:img|video|fonts|js)/[A-Za-z0-9._-]+", h + read(os.path.join(SRC, "kalocsa.css")) + j))
 refs |= {"logo-jel.svg", "fonts/OFL-Archivo.txt", "fonts/OFL-Manrope.txt"}
-refs.discard("img/og-kalocsageoworks.jpg")  # a build generálja (lent)
+refs.discard("img/" + OG_KEP)  # a build generálja (lent)
 css = read(os.path.join(SRC, "kalocsa.css"))
 if not AJANLAT_ON:
     css += "\n/* éles: a hívó .card__link gomb <a> lett – ugyanaz a megjelenés, mint a <button>-é */\na.card__link{text-decoration:none}\n"
@@ -258,6 +370,47 @@ css += ("\n/* éles: akadálymentességi kontraszt */\n.stages li{color:rgba(255
 # ugyanaz az árnyalat (25,6°), csak világosabb: alcím +4% (#F38634, 4,61:1), kártyalink +11,7% (#F59C59, 4,61:1).
 # Gombok, logó, vonalak, ikonok és a többi narancs elem (var(--o)) változatlan.
 css += ".sec--panel .kicker{color:#F38634}\n.card__link{color:#F59C59}\n"
+# Vélemények (Google) – a meglévő tokenekkel; csillag: CSS-alakzat (nincs ikonkészlet, nincs külső kép)
+css += """
+/* éles: Vélemények (Google) */
+.rev__grid{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(28px,5vw,72px);align-items:center}
+.rev__card{background:var(--panel);border-radius:16px;padding:clamp(24px,3.5vw,40px);box-shadow:inset 0 0 0 1px rgba(242,122,33,.35)}
+.rev__src{display:flex;align-items:center;gap:10px;font:700 11.5px/1.2 var(--body);letter-spacing:.12em;text-transform:uppercase;color:#D6DADE;margin:0 0 14px}
+.rev__card h3{font-size:26px;text-transform:uppercase;margin:0 0 6px}
+.rev__meta{color:#D6DADE;margin:0 0 24px;font-size:15px}
+.rev__act{display:flex;flex-wrap:wrap;gap:12px}
+.rev__note{margin:18px 0 0;font-size:13px;line-height:1.5;color:#BFC5CB}
+.rev__sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+.rev__stars{display:inline-flex;gap:3px;vertical-align:middle}
+.rev__stars i{width:15px;height:15px;background:#5A636C;clip-path:polygon(50% 0,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)}
+.rev__stars i.on{background:var(--o)}
+.rev__sum{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin:0 0 22px;color:#D6DADE;font-size:14px}
+.rev__sum b{font:800 34px/1 var(--disp);color:#fff}
+.rev__list{list-style:none;padding:0;margin:48px 0 0;display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px}
+.rcard figure{margin:0;height:100%;background:var(--panel);border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:14px}
+.rcard blockquote{margin:0;color:var(--soft);font-size:15.5px;line-height:1.6}
+.rcard blockquote p{margin:0}
+.rcard figcaption{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;margin-top:auto;font-size:14px;color:#D6DADE}
+.rcard figcaption b{color:#fff}
+.rcard figcaption a{color:#F59C59}
+.rev__attr{margin:16px 0 0;font-size:13px;color:#BFC5CB}
+.rev__nw{white-space:nowrap}
+/* új logó: kétsoros felirat a jel mellett (225 × 55,5 egység) */
+.brand__word{display:block;flex:none;width:138px;height:34px}
+@media (max-width:420px){.brand__word{width:122px;height:30px}}
+/* lábléc: álló logó a LOGO.png elrendezésében (1268 × 1293 egység) */
+.ftr__logo{display:block;width:235px;height:240px;margin:0 0 22px}
+.ftr__logo .km-a{fill:url(#kgl)}
+.ftr__logo .km-b{fill:url(#kgo)}
+@media (max-width:860px){.ftr__logo{width:216px;height:220px}}
+/* 320 px-es (nem mobil-emulált) ablakban a Kapcsolat szövegoszlopa 10 px-szel kilógott (rácselem min-width:auto) */
+.quote-grid>*{min-width:0}
+.rev__act .btn{text-align:center}
+/* az új menüpont miatt 1181–1340 px között szűkebb a menü: a fejléc hívógombjában a szám ne törjön két sorba */
+.hdr__cta{white-space:nowrap}
+@media (min-width:1181px) and (max-width:1340px){.nav{gap:16px}}
+@media (max-width:860px){.rev__grid{grid-template-columns:1fr}.rev__act .btn{flex:1 1 100%}}
+"""
 write(os.path.join(DIST, "kalocsa.css"), css)
 for r in sorted(refs):
     s = os.path.join(SRC, r)
@@ -266,10 +419,17 @@ for r in sorted(refs):
     os.makedirs(os.path.dirname(os.path.join(DIST, r)) or DIST, exist_ok=True)
     shutil.copy2(s, os.path.join(DIST, r))
 
-# közösségi megosztókép: valós munkafotó (Kubota KX019-4), 1200×630 JPG – a WebP-t nem minden platform kezeli
+# közösségi megosztókép, 1200×630 JPG (a WebP-t nem minden platform kezeli):
+# bal fele az ügyfél új logója VÁLTOZTATÁS NÉLKÜL (fehér alapú LOGO.png, arányosan kicsinyítve), jobb fele valós munkafotó (Kubota KX019-4)
 from PIL import Image
-Image.open(os.path.join(SRC, "img", "kisgep-kx019-1200.webp")).convert("RGB").crop((0, 300, 1200, 930)).save(
-    os.path.join(DIST, "img", "og-kalocsageoworks.jpg"), quality=84, optimize=True, progressive=True)
+og = Image.new("RGB", (1200, 630), (255, 255, 255))
+_lg = Image.open(UJ_LOGO).convert("RGBA")
+_lg = _lg.resize((round(_lg.width * 560 / _lg.height), 560), Image.LANCZOS)
+og.paste(_lg, ((600 - _lg.width) // 2, 35), _lg)
+_ft = Image.open(os.path.join(SRC, "img", "kisgep-kx019-1200.webp")).convert("RGB")
+_ft = _ft.resize((600, round(_ft.height * 600 / _ft.width)), Image.LANCZOS)
+og.paste(_ft.crop((0, 150, 600, 780)), (600, 0))
+og.save(os.path.join(DIST, "img", OG_KEP), quality=86, optimize=True, progressive=True)
 
 shutil.copytree(os.path.join(ROOT, "tools", "vendor", "leaflet-1.9.4"), os.path.join(DIST, "vendor", "leaflet"))
 LEAFLET_SRI = {"leaflet.js": "20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=", "leaflet.css": "p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="}
@@ -279,8 +439,17 @@ for f, want in LEAFLET_SRI.items():
             sys.exit(f"BUILD STOP – a Leaflet {f} nem egyezik a hivatalos hash-sel")
 
 # ---------------- saját éles fájlok ----------------
-for name in ("impresszum.html", "404.html", "robots.txt") + (("adatkezeles.html",) if HAS_PRIVACY else ()):
-    shutil.copy2(os.path.join(TPL, name), os.path.join(DIST, name))
+for name in ("impresszum.html", "404.html", "robots.txt", "apple-touch-icon.png") + (("adatkezeles.html",) if HAS_PRIVACY else ()):
+    if not name.endswith(".html"):
+        shutil.copy2(os.path.join(TPL, name), os.path.join(DIST, name))
+        continue
+    t = read(os.path.join(TPL, name))
+    # új logó a kisoldalakon is; a CSS-hivatkozás mindig az aktuális verzió (ne a gyorsítótárból jöjjön régi stílus)
+    t = sub1(t, '<span class="brand__txt"><b>Kalocsa <span style="color:#F27A21">GeoWorks</span></b></span>', logo_felirat(True), f"{name}: logó")
+    t, n = re.subn(r'kalocsa\.css\?v=[0-9A-Za-z-]+', f"kalocsa.css?v={CSS_V}", t)
+    if n != 1:
+        sys.exit(f"BUILD STOP – {name}: CSS-hivatkozás {n} db")
+    write(os.path.join(DIST, name), t)
 
 # CSP: a fej inline szkriptje hash-sel engedélyezve
 inline = re.findall(r"<script>(.*?)</script>", h, re.S)

@@ -73,7 +73,8 @@ const fabTakar = async page => page.evaluate(async () => {
     if (el === fab || fab.contains(el) || el.closest('#lb, .leaflet-control-container, .skip, #nav, header')) continue;
     if (!el.getClientRects().length || getComputedStyle(el).visibility === 'hidden') continue;
     el.scrollIntoView({ block: 'center', behavior: 'instant' }); await new Promise(r => setTimeout(r, 60));
-    if (takart(el)) talalat.push((el.getAttribute('aria-label') || el.textContent.trim()).slice(0, 40));
+    // a lebegő gomb be-/kicsúszó animációja alatt átmeneti átfedés lehet → csak akkor hiba, ha 0,6 mp múlva is takar
+    if (takart(el)) { await new Promise(r => setTimeout(r, 600)); if (takart(el)) talalat.push((el.getAttribute('aria-label') || el.textContent.trim()).slice(0, 40)); }
   }
   scrollTo(0, 0);
   return talalat;
@@ -129,6 +130,11 @@ const fabTakar = async page => page.evaluate(async () => {
     s = await allapot();
     const gorget = await page.evaluate(async () => { const y = scrollY; scrollBy(0, 600); await new Promise(r => setTimeout(r, 300)); return scrollY - y; });
     ok(s.ovf === '' && gorget > 0, `menü: nyitott menüvel szélesre forgatva az oldal görgethető marad (overflow='${s.ovf}', görgetés: ${gorget}px)`);
+    // Vélemények menüpont: a mobilmenüből a szakaszhoz görget, a menü bezárul
+    await page.setViewportSize({ width: 390, height: 844 }); await page.evaluate(() => scrollTo(0, 0)); await wait(300);
+    await page.click('#burger'); await wait(400); await page.click('#nav a[href="#velemenyek"]'); await wait(1500);
+    const vp = await page.evaluate(() => ({ top: Math.round(document.querySelector('#velemenyek').getBoundingClientRect().top), nyitva: document.querySelector('#nav').classList.contains('is-open') }));
+    ok(!vp.nyitva && Math.abs(vp.top) < 140, `menü: „Vélemények” a szakaszhoz görget (${vp.top}px), a menü bezárul`);
     ok(!hibalista.length, `menü: nincs konzolhiba ${JSON.stringify(hibalista.slice(0, 3))}`);
     await ctx.close();
   }

@@ -33,5 +33,11 @@ Statisztika: `../backend/meres.php` + `statisztika.php` + `admin.htaccess` (lás
 ## Regressziós tesztek
 `tools/tesztek/` – HTTP-teszt (élő oldal: fejlécek, átirányítások, 405-ös adatküldés-tiltás, tiltott fájlok), böngészőteszt (13 szélesség, menü, képnagyító, billentyűzet, hibaesetek; Chromium/Firefox/WebKit), teljesítménymérés, valamint a 2027-es ajánlatkérő végpont- és böngészőtesztje helyi PHP-szerveren, csonk-levelezővel. Indítás és leírás: `tools/tesztek/README.md`. Minden élesítés után futtasd a HTTP- és a böngészőtesztet.
 
+## Google-vélemények (Vélemények szakasz)
+- A Google-cégprofil („Kalocsa GeoWorks”, Földkitermelő vállalkozó, 06 70 420 4170) 2026.10.26-án ellenőrizve; az olvasó link a profil CID-je: `GOOGLE_PROFIL_URL` a `tools/build.py` elején. Akkor még nem volt rajta vélemény, ezért csak a profilkártya és a „Vélemények megtekintése a Google-on” gomb jelenik meg – üres vagy kitalált értékelési kártya nincs.
+- **Véleményírás link:** a tulajdonos a Google Cégprofilban a „Vélemények kérése” gombbal kapja meg (`g.page/r/…/review`) → `GOOGLE_IRAS_URL`; ekkor megjelenik a „Vélemény írása a Google-on” gomb. Az olvasó és az író link külön marad.
+- **Vélemények megjelenítése az oldalon:** `tools/eles/velemenyek.json` (`atlag`, `db`, `velemenyek[]`: `nev`, `csillag` 1–5, `szoveg`, `ido`, `link` https). A build ebből forrásmegjelöléssel („Forrás: Google”), eredeti linkkel, HTML-escape-pel kártyákat épít. Adat csak szabályos forrásból kerülhet bele: Google Places API (New) Place Details, szerveroldalon (kulcs csak a szerveren, `_private`-ban), a Google megjelenítési és tárolási feltételei szerint – ez fizetős API-használat, jóváhagyás kell hozzá. Kitalált, átírt vagy scrapinggel szerzett tartalom tilos.
+- Külső szkript, beágyazás, süti nincs; a CSP változatlan.
+
 ## Indexelés engedélyezése (a jogi és tartalmi feltételek rendezése után)
 `robots-vegleges.txt` → `/robots.txt`, `sitemap.xml` → `/sitemap.xml`; a `noindex` meta törlése (`build.py`, `tools/eles/impresszum.html`) és az `X-Robots-Tag` sor törlése (`tools/eles/htaccess`); Google Search Console + sitemap beküldése. A GitHub Pages-előnézet maradjon `noindex`.
