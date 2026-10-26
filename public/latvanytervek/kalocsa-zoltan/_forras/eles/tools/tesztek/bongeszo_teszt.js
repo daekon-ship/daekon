@@ -73,7 +73,8 @@ const fabTakar = async page => page.evaluate(async () => {
     if (el === fab || fab.contains(el) || el.closest('#lb, .leaflet-control-container, .skip, #nav, header')) continue;
     if (!el.getClientRects().length || getComputedStyle(el).visibility === 'hidden') continue;
     el.scrollIntoView({ block: 'center', behavior: 'instant' }); await new Promise(r => setTimeout(r, 60));
-    if (takart(el)) talalat.push((el.getAttribute('aria-label') || el.textContent.trim()).slice(0, 40));
+    // a lebegő gomb be-/kicsúszó animációja alatt átmeneti átfedés lehet → csak akkor hiba, ha 0,6 mp múlva is takar
+    if (takart(el)) { await new Promise(r => setTimeout(r, 600)); if (takart(el)) talalat.push((el.getAttribute('aria-label') || el.textContent.trim()).slice(0, 40)); }
   }
   scrollTo(0, 0);
   return talalat;
