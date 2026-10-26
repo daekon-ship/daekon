@@ -19,11 +19,11 @@ Előnézet: `https://daekon-ship.github.io/daekon/latvanytervek/balogh-beatrix/`
 - Gombok mondatkezdő betűvel, nem csupa nagybetű.
 - Teszt: **52/52** (új: gyorsfoglaló mélylink), túlfolyás 12 oldal × 4 szélesség: nincs.
 
-## 0/b. Logó — 3. kör (2026.10.26.)
+## 0/b. Logó — 4. kör (2026.10.26.)
 
-- Betű a jelben nincs. Jel: frissen lakkozott, fényes, mandulavégű köröm az ujjbegyen (rosé-nude lakk, csíkfény, szabad sáv a cuticula mentén); mellette csak a név: „Balogh **Beatrix**” (Hanken Grotesk, két súly).
-- Változatok (`arculat/`): **A lakkozott köröm + név** (az oldalon ez van), **B festés közben** (félig lakkozott köröm, ecset a nedves szélnél), **C csak a név** körömlakk-ecsetvonással; mind világos és sötét alapon; önálló jelek, ikonok, favicon. Áttekintő: `arculat/index.html`.
-- Forrás: `_forras/logo_lakk.py` (a `logo.py` segédfüggvényeit használja). Az előző „b” betűs és „öt pont” változatok törölve.
+- Koncepció: **a BB monogram két lábnyom** — tükrözött B (bal talp) + B (jobb talp), a felső ív a talppárna, az alsó a sarok, fölöttük öt-öt ujjpont pezsgőaranyban; a talpak enyhén kifelé fordulnak. Mellette csak a név: „Balogh **Beatrix**”.
+- Változatok (`arculat/`): A fő logó (fekvő, álló, világos/sötét) — az oldalon ez van; B csak a név, a két B fölött apró ujjpontokkal; C csak a név „kéz- és lábápolás” alcímmel; önálló jel, ikonok, favicon. Áttekintő: `arculat/index.html`.
+- Forrás: `_forras/logo_lab.py`. A köröm alapú változatok (1–3. kör) törölve.
 
 ## 0/c. Animációk — Motion (motion.dev), 2026.10.26.
 

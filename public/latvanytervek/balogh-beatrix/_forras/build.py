@@ -120,7 +120,7 @@ def header(current, is_index=False):
 {demo_strip()}
 <header class="hdr">
   <div class="wrap">
-    <a class="brand" href="index.html" aria-label="Balogh Beatrix — kezdőlap"><img class="logo" src="arculat/logo-lakk.svg" alt="Balogh Beatrix" width="350" height="120"></a>
+    <a class="brand" href="index.html" aria-label="Balogh Beatrix — kezdőlap"><img class="logo" src="arculat/logo-lab.svg" alt="Balogh Beatrix" width="378" height="128"></a>
     <nav class="nav" aria-label="Fő navigáció">{nav}</nav>
     <div class="hdr-cta">
       <a class="hdr-call" data-tel href="tel:+36706146070" aria-label="Hívás: +36 70 614 6070">{ico('phone')}</a>
@@ -148,7 +148,7 @@ def footer(is_index=False, mbar=True):
   <div class="wrap">
     <div class="ftr-grid">
       <div>
-        <a class="brand" href="index.html" style="margin-bottom:22px"><img class="logo" src="arculat/logo-lakk-sotet.svg" alt="Balogh Beatrix" width="350" height="120"></a>
+        <a class="brand" href="index.html" style="margin-bottom:22px"><img class="logo" src="arculat/logo-lab-sotet.svg" alt="Balogh Beatrix" width="378" height="128"></a>
         <p style="max-width:24em">Kéz- és lábápolás előre egyeztetett időpontban.</p>
         <p><a data-tel href="tel:+36706146070" data-bind="phone">+36 70 614 6070</a><br><span data-bind="addr-line2">1111 Budapest</span>, <span data-bind="addr-line1">Bertalan Lajos utca 19.</span> <span class="tag" data-addr-status>Egyeztetés alatt</span></p>
       </div>
@@ -316,7 +316,7 @@ INDEX = f'''
   <div class="wrap about">
     <div class="portrait rv-img">
       <span class="frame-label">Portré helye</span>
-      <div class="portrait-inner"><img src="arculat/jel-lakk.svg" alt="" width="72" height="100" style="margin:0 auto 14px"><p>Ide Beatrix saját portréja kerül, a szalonban, természetes fényben.</p></div>
+      <div class="portrait-inner"><img src="arculat/jel-lab.svg" alt="" width="96" height="96" style="margin:0 auto 10px"><p>Ide Beatrix saját portréja kerül, a szalonban, természetes fényben.</p></div>
     </div>
     <div>
       <p class="eyebrow rv">Rólam</p>
@@ -371,7 +371,7 @@ INDEX = f'''
 <section class="sec sec--cream" id="utalvany" aria-labelledby="ut-h">
   <div class="wrap voucher-wrap">
     <div class="voucher rv" aria-hidden="true">
-      <div class="voucher-top"><img src="arculat/logo-ecset-sotet.svg" alt="" style="height:52px;width:auto;margin:-8px 0 0 -10px"><small>Ajándékutalvány<br>N° 0001</small></div>
+      <div class="voucher-top"><img src="arculat/logo-ujjpont-sotet.svg" alt="" style="height:46px;width:auto;margin:-6px 0 0 -12px"><small>Ajándékutalvány<br>N° 0001</small></div>
       <h3>Egy nyugodt óra,<br>neked szánva.</h3>
       <div class="voucher-bot"><span>Érvényes egy választott kezelésre</span><b>Balogh Beatrix</b></div>
     </div>

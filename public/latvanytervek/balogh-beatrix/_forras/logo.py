@@ -163,6 +163,6 @@ def kombinalt(name, ink, gold, sub, paper, bg=None):
     write(name, svg(58 + max(w1, w2) + 6, H, body, 'Balogh Beatrix — Foot & Nail Studio', bg))
 
 if __name__ == '__main__':
-    # 3. kör óta a logók forrása: logo_lakk.py (a fenti segédfüggvényeket használja)
+    # 4. kör óta a logók forrása: logo_lab.py (a fenti segédfüggvényeket használja)
     import runpy
-    runpy.run_path(str(pathlib.Path(__file__).with_name('logo_lakk.py')), run_name='__main__')
+    runpy.run_path(str(pathlib.Path(__file__).with_name('logo_lab.py')), run_name='__main__')
