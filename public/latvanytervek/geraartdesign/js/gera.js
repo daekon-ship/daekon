@@ -92,7 +92,7 @@
   if (MO) {
     const intro = document.createElement('div');
     intro.className = 'intro'; intro.setAttribute('aria-hidden', 'true');
-    const logoSrc = ($('[data-logo="fejlec-sotet"]') || {}).getAttribute ? $('[data-logo="fejlec-sotet"]').getAttribute('src') : '';
+    const logoSrc = ($('.logo-link img') || { getAttribute: () => '' }).getAttribute('src');
     intro.innerHTML = `<img src="${logoSrc}" alt=""><i><b></b></i><small>Bútorasztalos · intarzia</small>`;
     document.body.appendChild(intro);
     const [im, , sm] = [$('img', intro), null, $('small', intro)];
@@ -267,18 +267,4 @@
     vj.classList.add('lathato');
   });
 
-  /* ---------- bemutató: logóváltozat ---------- */
-  function logo(v) {
-    $$('[data-logo]').forEach(img => { img.src = `arculat/logo-${v}/geraartdesign-${v}-${img.dataset.logo}.svg`; });
-    $$('#bemutato button[data-v]').forEach(b => b.setAttribute('aria-pressed', b.dataset.v === String(v)));
-    const ico = $('link[rel=icon]'); if (ico) ico.href = `arculat/logo-${v}/geraartdesign-${v}-kompakt.svg`;
-    try { localStorage.setItem('gera-logo', v); } catch (e) {}
-  }
-  let kezdo = new URLSearchParams(location.search).get('logo');
-  if (!kezdo) { try { kezdo = localStorage.getItem('gera-logo'); } catch (e) {} }
-  if (kezdo && /^[145]$/.test(kezdo)) logo(kezdo);
-  $$('#bemutato button[data-v]').forEach(b => b.addEventListener('click', () => logo(b.dataset.v)));
-  const bm = $('#bemutato'), bk = $('#bemutatoKapcs');
-  const allit = z => { bm.classList.toggle('zart', z); bk.setAttribute('aria-expanded', !z); };
-  if (bm) { allit(true); bk.addEventListener('click', () => allit(!bm.classList.contains('zart'))); }
 })();
