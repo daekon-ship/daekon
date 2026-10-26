@@ -1,3 +1,13 @@
+# geraartdesign — átadás (12. kör, 2026.10.26.)
+
+**12. kör – „Rajzlap”** (ügyfél: „gyenge, semmitmondó, nem elég prémium; induljon úgy, mint a gt-lakasfelujitas.hu; legyen sokkal látványosabb, mégis letisztult”).
+- Sötét, meleg alap (`body.s`: háttér `#12100E`, szöveg `#EFE7DB`, homok `#D9C3A3`, bronz `#B4875B`); a logóválasztó (`logo.html`) marad világos.
+- Indítás a GT-oldal mintájára: sötét intró a logóval, kihúzódó vonal, „Bútorasztalos · intarzia”, majd függönyszerűen felhúzódik; mögötte egy keretes, teljes képernyős **rajzlap** nyílik ki.
+- A rajzlapon egy tálaló műszaki elölnézete rajzolódik ki vonalanként (bútor → részletek → méretvonalak → fecskefarkas nagyító), majd a feliratok; A/B/C – 1/2 koordináták, alul rajzi szövegmező (Készítő, Szakma, Felmérés, Hívás).
+- Lámpafény: az egér körül kivilágosodik a rácsháló és a rajz (érintős eszközön magától vándorol); a rajz finoman billen az egér felé; görgetéskor a rajzlap hátrébb lép.
+- Utána: kijelentés, ragadós „Egy bútor, közelről” (sötét vonalas tálaló, Arány / Anyag / Illesztés), szolgáltatás-index, munkák sötét táblákon, intarzia szavas felgyúlással, folyamat, rólam, kapcsolat (lámpafénnyel).
+
+(11. kör:)
 # geraartdesign — átadás (11. kör, 2026.10.26.)
 
 **11. kör – Motion (motion.dev), ügyfélkérésre.** A „Katalógus” alap marad, a mozgásokat a Motion könyvtár adja (vanilla JS, `window.Motion`, `https://cdn.jsdelivr.net/npm/motion@11.11.13/dist/motion.js`, rögzített verzió). Élesítéskor a fájlt érdemes helyben tárolni. Ha a Motion nem töltődik be, minden tartalom látszik, a görgetéses rész saját tartalékkal megy.
