@@ -272,7 +272,7 @@ h = sub1(h, '<link rel="icon" href="logo-jel.svg" type="image/svg+xml">',
          '<link rel="icon" href="logo-jel.svg?v=2" type="image/svg+xml">\n<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">', "apple-touch-icon")
 
 # az éles JS-nek és CSS-nek saját verzió (a statikus fájlok 1 évig gyorsítótárazódnak) – minden változtatáskor emelni kell
-CSS_V = "39-eles9"
+CSS_V = "39-eles12"
 h = sub1(h, '<script src="kalocsa.js?v=37" defer></script>', '<script src="kalocsa.js?v=37-eles8" defer></script>', "js verzió")
 h = sub1(h, '<link rel="stylesheet" href="kalocsa.css?v=39">', f'<link rel="stylesheet" href="kalocsa.css?v={CSS_V}">', "css verzió")
 for bad in ("Bemutató mód", "bemutató", "BEMUTATÓ", "kitöltendő", "egyeztetendő", "github", "látványterv"):
@@ -409,14 +409,26 @@ css += """
 .brand__word{display:block;flex:none;width:138px;height:34px}
 @media (max-width:420px){.brand__word{width:122px;height:30px}}
 /* lábléc: álló logó a LOGO.png elrendezésében (1268 × 1293 egység) */
-.ftr__logo{display:block;box-sizing:content-box;width:235px;height:240px;margin:0 0 22px;padding:20px;background:#fff;border-radius:14px}
+.ftr__logo{display:block;width:118px;height:120px;margin:0 0 18px}
 .ftr__logo .km-a{fill:url(#kgd)}
 .ftr__logo .km-b{fill:url(#kgo)}
-@media (max-width:860px){.ftr__logo{width:196px;height:200px;padding:16px}}
-/* fejléc (főoldal, 404, impresszum): a logó eredeti színeiben, a saját fehér lapján */
-.hdr .brand{background:#fff;border-radius:10px;padding:6px 12px 6px 8px;flex:none}
+@media (max-width:860px){.ftr__logo{width:108px;height:110px}}
+/* fejléc (főoldal, 404, impresszum): a logó eredeti színeiben, háttér nélkül (a felhasználó kérésére, 2026-10-26) */
+.hdr .brand{flex:none}
 .hdr .brand__mark .km-a{fill:url(#kgd)}
-@media (max-width:420px){.hdr .brand{padding:5px 9px 5px 6px;gap:7px}.hdr .brand__mark{width:30px;height:30px}.hdr .brand__word{width:106px;height:26px}}
+@media (max-width:420px){.hdr .brand{gap:7px}.hdr .brand__mark{width:30px;height:30px}.hdr .brand__word{width:106px;height:26px}}
+/* fehér fejléc és lábléc (a felhasználó kérésére, 2026-10-26): a logó eredeti színeiben, doboz nélkül */
+.hdr,.hdr.is-scrolled{background:#fff;backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:0 1px 0 rgba(0,0,0,.08)}
+.hdr.is-scrolled{box-shadow:0 2px 14px rgba(0,0,0,.22)}
+.hdr::before{display:none}
+@media (min-width:1181px){.nav a{color:#2B3137}.nav a:hover{color:#0F1215}.nav a.is-active{color:var(--o-dk)}}
+@media (max-width:1180px){.burger{background:#F1F3F5;border-color:#D5DADF}.burger span{background:#1E2226}}
+.ftr{background:#fff;color:#4A525A;border-top:1px solid #E3E6E9}
+.ftr__grid{border-bottom-color:#E3E6E9}
+.ftr__h{color:var(--o-dk)}
+.ftr a{color:#1E2226}
+.ftr a:hover{color:var(--o-dk)}
+.ftr em{color:#5F676F}
 /* 320 px-es (nem mobil-emulált) ablakban a Kapcsolat szövegoszlopa 10 px-szel kilógott (rácselem min-width:auto) */
 .quote-grid>*{min-width:0}
 .rev__act .btn{text-align:center}
