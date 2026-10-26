@@ -734,11 +734,11 @@ html body :is(.kpi b, .contact-phone) { font-weight: 650; letter-spacing: -.02em
 @media (max-width: 520px) { .qb-svc { padding: 12px; } .qb-n b { font-size: .94rem; } }
 
 /* logó */
-.brand .logo { height: 68px; width: auto; display: block; margin: -6px 0 -6px -10px; }
-.ftr .brand .logo { height: 68px; margin-left: -8px; }
-.adm-side .brand .logo { height: 46px; margin-left: -8px; }
-@media (max-width: 520px) { .brand .logo { height: 52px; margin: -6px 0 -6px -8px; } }
-@media (max-width: 900px) { .adm-side .brand .logo { height: 40px; width: 38px; object-fit: cover; object-position: left; } }
+.brand .logo { height: 70px; width: auto; display: block; margin: -4px 0 -4px -6px; }
+.ftr .brand .logo { height: 76px; margin-left: -6px; }
+.adm-side .brand .logo { height: 56px; margin: 0 0 0 -4px; }
+@media (max-width: 520px) { .brand .logo { height: 56px; margin: -2px 0 -2px -4px; } }
+@media (max-width: 900px) { .adm-side .brand .logo { height: 48px; width: 40px; object-fit: cover; object-position: left; margin: 0; } }
 .voucher-top img { display: block; }
 
 /* Motion (motion-fx.js) — ha betöltött, a CSS-átmenetek nem futnak párhuzamosan */
