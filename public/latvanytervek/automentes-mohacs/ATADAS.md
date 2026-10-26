@@ -26,19 +26,25 @@ Készült: 2026. október, DAEKON · Build nélküli statikus oldal (`index.html
 - **Színek:** `--asphalt #0d0f12` · `--graphite #15181c` · `--anth #202429` · `--paper #f2f0eb` · `--ink #121418` · `--beacon #ffb200` (kiemelés, hívógomb). Ritmus: sötét → borostyán sáv → papír → sötét → grafit → papír → sötét → grafit → papír → borostyán kapcsolat.
 - **Térköz:** szekció 76–128 px, oldalmargó 18–44 px, max. szélesség 1200 px.
 
-## 4. Mozgás
+## 4. Mozgás – Motion (motion.dev)
 
-| Elem | Mit csinál | Indító | Átadás |
+A mozgásokat a **Motion 11.18.2** (vanilla JS) hajtja. Helyben van, CDN nélkül: `js/vendor/motion-11.18.2.min.js` (~69 KB, gzip ~25 KB). A hivatalos forrásból (`motiondivision/motion`, v11.18.2 tag) tsc + bun építette, MIT licenc: `js/vendor/MOTION-LICENSE.md`. Élesítéskor lecserélhető az npm `motion` csomagra.
+
+| Elem | Mit csinál | Indító | Motion API |
 |---|---|---|---|
-| Hero mentő | 1,7 s alatt balról begördül, kerekek forognak, útfelfestés halad, majd megáll | betöltés | megállás után csak a villogó él tovább |
-| Villogóhíd | két lámpa felváltva villan + a háttérben borostyán fénykör „lélegzik” | folyamatos | — |
-| Élő pont, óra | zöld pulzáló pont; budapesti idő 20 mp-enként frissül | folyamatos | — |
-| Szekcióelemek | 18 px-ről beúszás, lépcsőzetes késleltetéssel | görgetés | — |
-| Mentés menete | az út vonala balról jobbra kirajzolódik a három lépés fölött | görgetés | — |
-| Térkép | Mohács pontja körül borostyán pulzálás | folyamatos | — |
-| Mobil hívássáv | a hero után felcsúszik, a Kapcsolat szekciónál eltűnik (nem takar CTA-t) | görgetés | — |
+| Hero szöveg | állapotjelző, két címsor, alcím, gombok, tények 70 ms-os lépcsővel úsznak be | betöltés | `animate` + `stagger` |
+| Hero mentő | rugós fizikával begördül és megáll (1,5 s, enyhe ráhúzás); fékezéskor a szállított autó előrebillen | betöltés | `animate`, `type: "spring"` |
+| Hero görgetés | a mentő görgetéssel továbbgördül a képből | görgetés (scroll-linked) | `scroll(animate(...))` |
+| Szekcióelemek | csoportonként, rugós beúszás, 80 ms lépcső | belépés a nézetbe | `inView` + spring |
+| A mentés menete | az út vonala pontosan a görgetéssel együtt rajzolódik ki | görgetés (scroll-linked) | `scroll`, `strokeDashoffset` |
+| Térkép | az M6 és M60 kirajzolódik, majd Mohács tűje rugósan leesik | belépés a nézetbe | `inView` + spring |
+| Mobil hívássáv | rugós felcsúszás a hero után, eltűnik a Kapcsolatnál | görgetés | spring |
+| Hívógombok | nyomásra 0,96-ra „besüllyednek” (tapintható visszajelzés) | érintés / kattintás | spring |
+| Mobilmenü, GYIK, galéria, nagyító | a menüpontok lépcsőzetesen jelennek meg; a válasz becsúszik; a képek elhalványulva érkeznek | interakció | `animate` |
 
-`prefers-reduced-motion` esetén minden animáció kikapcsol, a tartalom azonnal látszik. Nincs betöltő képernyő, nincs görgetés-eltérítés. Külső JS-könyvtár nincs (GSAP / Three.js / WebGL nem szükséges).
+**Biztonsági háló:** ha a Motion nem tölt be vagy hibát dob, natív tartalék fut (Web Animations + IntersectionObserver), a tartalom mindig megjelenik. A hero szövegét egy 3 mp-es időzítő akkor is láthatóvá teszi, ha minden szkript elhasal. `prefers-reduced-motion` esetén nincs mozgás. Nincs betöltő képernyő, nincs görgetés-eltérítés.
+
+Tesztelve (Playwright, 1440 és 390 px): Motion-ág, Motion nélküli tartalék és csökkentett mozgás – mindhárom hibamentes, minden elem láthatóra áll; a görgetéshez kötött animációk köztes állásai is mérve.
 
 ## 5. Komponensek
 

@@ -12,7 +12,7 @@
 <link rel="preload" href="fonts/archivo-var.woff" as="font" type="font/woff" crossorigin>
 <link rel="preload" href="fonts/plex-sans-regular.woff" as="font" type="font/woff" crossorigin>
 <link rel="stylesheet" href="css/mohacs.css">
-<script>document.documentElement.classList.add("js")</script>
+<script>document.documentElement.classList.add("js");setTimeout(function(){document.documentElement.classList.add("hero-safe")},3000)</script>
 </head>
 <body>
 
@@ -74,15 +74,15 @@
 
   <div class="wrap hero__grid">
     <div class="hero__copy">
-      <p class="status" aria-live="off">
+      <p class="status" aria-live="off" data-hero>
         <span class="live" aria-hidden="true"></span>
         <span>Most is ügyeletben</span>
         <time class="status__clock" id="ora">0–24</time>
       </p>
-      <h1 id="hero-cim">Ha megálltál,<br><em>mi indulunk.</em></h1>
-      <p class="hero__lead">Non-stop autómentés és járműszállítás Mohácson és környékén, az M6-os és az M60-as autópályán is. Éjjel, hétvégén és ünnepnap ugyanúgy felvesszük a telefont.</p>
+      <h1 id="hero-cim"><span class="ln" data-hero>Ha megálltál,</span> <span class="ln" data-hero><em>mi indulunk.</em></span></h1>
+      <p class="hero__lead" data-hero>Non-stop autómentés és járműszállítás Mohácson és környékén, az M6-os és az M60-as autópályán is. Éjjel, hétvégén és ünnepnap ugyanúgy felvesszük a telefont.</p>
 
-      <div class="hero__cta">
+      <div class="hero__cta" data-hero>
         <a class="btn btn--call btn--xl" href="tel:+36202590264">
           <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-tel"/></svg>
           <span>Hívás most<small>+36 20 259 0264</small></span>
@@ -91,9 +91,9 @@
       </div>
 
       <ul class="hero__facts">
-        <li><b>0–24</b><span>ünnepnap is</span></li>
-        <li><b>15 t-ig</b><span>teherautó, munkagép</span></li>
-        <li><b>2015 óta</b><span>családi vállalkozás</span></li>
+        <li data-hero><b>0–24</b><span>ünnepnap is</span></li>
+        <li data-hero><b>15 t-ig</b><span>teherautó, munkagép</span></li>
+        <li data-hero><b>2015 óta</b><span>családi vállalkozás</span></li>
       </ul>
     </div>
 
@@ -396,9 +396,11 @@
         <text class="map__lbl" x="306" y="22">↑ Budapest</text>
         <!-- Mohács -->
         <circle class="map__pulse" cx="392" cy="336" r="70" fill="url(#g-pulse)"/>
-        <circle cx="392" cy="336" r="9" fill="#ffb200"/>
-        <circle cx="392" cy="336" r="16" fill="none" stroke="#ffb200" stroke-width="2" opacity=".6"/>
-        <g class="map__home"><rect x="300" y="360" width="98" height="30" rx="4"/><text x="349" y="380" text-anchor="middle">MOHÁCS</text></g>
+        <g class="map__pin">
+          <circle cx="392" cy="336" r="9" fill="#ffb200"/>
+          <circle cx="392" cy="336" r="16" fill="none" stroke="#ffb200" stroke-width="2" opacity=".6"/>
+          <g class="map__home"><rect x="300" y="360" width="98" height="30" rx="4"/><text x="349" y="380" text-anchor="middle">MOHÁCS</text></g>
+        </g>
       </svg>
       <figcaption>Sematikus vázlat, nem méretarányos.</figcaption>
     </figure>
@@ -541,6 +543,7 @@
   </defs>
 </svg>
 
+<script src="js/vendor/motion-11.18.2.min.js" defer></script>
 <script src="js/mohacs.js" defer></script>
 </body>
 </html>

@@ -429,9 +429,22 @@ body.menu-open{overflow:hidden}
 .js [data-reveal]{opacity:0;transform:translateY(18px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
 .js [data-reveal].in{opacity:1;transform:none}
 
+.hero h1 .ln{display:block}
+/* ---------- Motion (motion.dev) állapotok ---------- */
+.js:not(.hero-safe) [data-hero]{opacity:0}
+.js .hero:not(.is-ready) .truck{opacity:0}
+.fx [data-reveal]{transition:none}
+.fx .steps__draw{transition:none;stroke-dashoffset:unset}
+.fx .dock{transition:none}
+.fx .btn--call:hover{transform:none}
+.hero-safe [data-hero]{opacity:1!important;transform:none!important}
+.map__pin{transform-box:fill-box;transform-origin:50% 100%}
+
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
   .js [data-reveal]{opacity:1;transform:none}
+  .js [data-hero]{opacity:1}
+  .js .hero .truck{opacity:1}
   .glow--b{opacity:0}
   .steps__draw{stroke-dashoffset:0!important}
 }
