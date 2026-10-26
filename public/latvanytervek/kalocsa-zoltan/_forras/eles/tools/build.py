@@ -34,6 +34,10 @@ GOOGLE_IRAS_URL = None
 # a Google megjelenítési és forrásmegjelölési feltételei szerint), kézzel kitalált vagy átírt tartalom tilos.
 # Ha nincs fájl vagy üres a lista, csak a profil-kártya jelenik meg (nincs üres vagy hamis értékelési kártya).
 VELEMENY_JSON = os.path.join(TPL, "velemenyek.json")
+# Új logó (az ügyfél LOGO.png-je, 2026.10.26.; a repóban: arculat/logo-uj-2026-10-26.png) – a megosztókép ebből készül, változtatás nélkül.
+# Új fájlnév, hogy a közösségi oldalak ne a régi, gyorsítótárazott képet mutassák.
+UJ_LOGO = os.path.join(SRC, "arculat", "logo-uj-2026-10-26.png")
+OG_KEP = "og-kalocsageoworks-logo.jpg"
 
 
 def read(p):
@@ -84,9 +88,9 @@ h = sub1(h, '<meta name="robots" content="noindex, nofollow">',
          '<meta property="og:title" content="Kalocsa GeoWorks | Gépi földmunka Kecskeméten és 45 km-es körzetében">\n'
          '<meta property="og:description" content="Alapásás, közműárok-ásás, nyomvonalásás, tuskóeltávolítás, tereprendezés – kis géppel, szűk helyeken is. Hívás: +36 70 420 4170.">\n'
          f'<meta property="og:url" content="{DOMAIN}/">\n'
-         f'<meta property="og:image" content="{DOMAIN}/img/og-kalocsageoworks.jpg">\n'
+         f'<meta property="og:image" content="{DOMAIN}/img/{OG_KEP}">\n'
          '<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="630">\n'
-         '<meta property="og:image:alt" content="Kubota KX019-4 kisgép munka közben egy építési telken">\n'
+         '<meta property="og:image:alt" content="A Kalocsa GeoWorks logója és egy Kubota KX019-4 kisgép munka közben">\n'
          '<meta name="twitter:card" content="summary_large_image">\n'
          # strukturált adat csak igazolt adatokból: nincs bejegyzett vállalkozás → szolgáltatás + kapcsolattartó személy, cégadat nélkül
          # (a vállalkozás bejegyzése után: HomeAndConstructionBusiness a hivatalos névvel/címmel – lásd AKTIVALAS-2027.md)
@@ -95,7 +99,7 @@ h = sub1(h, '<meta name="robots" content="noindex, nofollow">',
          '"serviceType":["Alapásás","Közműárok-ásás","Nyomvonalásás","Tuskóeltávolítás","Tereprendezés"],'
          '"provider":{"@type":"Person","name":"Kalocsa Zoltán","telephone":"+36704204170","email":"kalocsageoworks@gmail.com"},'
          '"areaServed":{"@type":"GeoCircle","geoMidpoint":{"@type":"GeoCoordinates","latitude":46.9062,"longitude":19.6913},"geoRadius":"45000"},'
-         '"image":"' + DOMAIN + '/img/og-kalocsageoworks.jpg"}</script>',
+         '"image":"' + DOMAIN + '/img/' + OG_KEP + '"}</script>',
          "fej")
 
 # térkép: a bemutató munkajelölő nem valós helyszín → élesben csak a körzet
@@ -242,8 +246,23 @@ if len(_r) != 3:
     sys.exit(f"BUILD STOP – logófelirat: {len(_r) - 1} találat (2 kell: fejléc, lábléc)")
 h = _r[0] + logo_felirat(False) + _r[1] + logo_felirat(True) + _r[2]  # fejléc: a link aria-labelje nevez; lábléc: saját név
 
+# Lábléc: a logó PONTOSAN a LOGO.png álló elrendezésében (felhasználói döntés, 2026.10.26.) – ugyanaz a jel és ugyanazok a betűk,
+# a LOGO.png képpont-koordinátáiban elhelyezve (jel: 166,165 · 12,431×; felirat: a KALOCSA 177–701 px, felső él 1301 px),
+# a sötét lábléc miatt a jóváhagyott negatív színekkel (fehér jel és KALOCSA, narancs). Kivágás: a jel és a felirat befoglaló doboza.
+_jel = re.search(r'<svg class="brand__mark" viewBox="0 0 102 100" aria-hidden="true">(.*?)</svg>', h, re.S).group(1)
+_ws = 524 / 181.14
+ALLO_LOGO = ('<svg class="ftr__logo" viewBox="166 165 1268 1293" role="img" aria-label="Kalocsa GeoWorks">'
+             f'<g transform="translate(166 165) scale(12.431)">{_jel}</g>'
+             f'<g transform="translate({177 - 2.29 * _ws:.3f} {1301 + 20.99 * _ws:.3f}) scale({_ws:.5f})">'
+             f'<path fill="#F2F3F4" d="{_wp[0][0]}"/><path fill="#F27A21" transform="translate(0 33)" d="{_wp[1][0]}"/></g></svg>')
+h = subre(h, r'(<div class="ftr__brand">\s*)<span class="brand"><svg class="brand__mark".*?</svg><svg class="brand__word".*?</svg></span>',
+          lambda m: m.group(1) + ALLO_LOGO, "lábléc: álló logó")
+# iOS kezdőképernyő-ikon (a favicon jeléből; tools/eles/apple-touch-icon.png)
+h = sub1(h, '<link rel="icon" href="logo-jel.svg" type="image/svg+xml">',
+         '<link rel="icon" href="logo-jel.svg" type="image/svg+xml">\n<link rel="apple-touch-icon" href="apple-touch-icon.png">', "apple-touch-icon")
+
 # az éles JS-nek és CSS-nek saját verzió (a statikus fájlok 1 évig gyorsítótárazódnak) – minden változtatáskor emelni kell
-CSS_V = "39-eles7"
+CSS_V = "39-eles8"
 h = sub1(h, '<script src="kalocsa.js?v=37" defer></script>', '<script src="kalocsa.js?v=37-eles8" defer></script>', "js verzió")
 h = sub1(h, '<link rel="stylesheet" href="kalocsa.css?v=39">', f'<link rel="stylesheet" href="kalocsa.css?v={CSS_V}">', "css verzió")
 for bad in ("Bemutató mód", "bemutató", "BEMUTATÓ", "kitöltendő", "egyeztetendő", "github", "látványterv"):
@@ -339,7 +358,7 @@ write(os.path.join(DIST, "kalocsa.js"), j)
 # ---------------- statikus fájlok (csak a hivatkozottak) ----------------
 refs = set(re.findall(r"(?:img|video|fonts|js)/[A-Za-z0-9._-]+", h + read(os.path.join(SRC, "kalocsa.css")) + j))
 refs |= {"logo-jel.svg", "fonts/OFL-Archivo.txt", "fonts/OFL-Manrope.txt"}
-refs.discard("img/og-kalocsageoworks.jpg")  # a build generálja (lent)
+refs.discard("img/" + OG_KEP)  # a build generálja (lent)
 css = read(os.path.join(SRC, "kalocsa.css"))
 if not AJANLAT_ON:
     css += "\n/* éles: a hívó .card__link gomb <a> lett – ugyanaz a megjelenés, mint a <button>-é */\na.card__link{text-decoration:none}\n"
@@ -379,6 +398,11 @@ css += """
 /* új logó: kétsoros felirat a jel mellett (225 × 55,5 egység) */
 .brand__word{display:block;flex:none;width:138px;height:34px}
 @media (max-width:420px){.brand__word{width:122px;height:30px}}
+/* lábléc: álló logó a LOGO.png elrendezésében (1268 × 1293 egység) */
+.ftr__logo{display:block;width:235px;height:240px;margin:0 0 22px}
+.ftr__logo .km-a{fill:url(#kgl)}
+.ftr__logo .km-b{fill:url(#kgo)}
+@media (max-width:860px){.ftr__logo{width:216px;height:220px}}
 /* 320 px-es (nem mobil-emulált) ablakban a Kapcsolat szövegoszlopa 10 px-szel kilógott (rácselem min-width:auto) */
 .quote-grid>*{min-width:0}
 .rev__act .btn{text-align:center}
@@ -395,10 +419,17 @@ for r in sorted(refs):
     os.makedirs(os.path.dirname(os.path.join(DIST, r)) or DIST, exist_ok=True)
     shutil.copy2(s, os.path.join(DIST, r))
 
-# közösségi megosztókép: valós munkafotó (Kubota KX019-4), 1200×630 JPG – a WebP-t nem minden platform kezeli
+# közösségi megosztókép, 1200×630 JPG (a WebP-t nem minden platform kezeli):
+# bal fele az ügyfél új logója VÁLTOZTATÁS NÉLKÜL (fehér alapú LOGO.png, arányosan kicsinyítve), jobb fele valós munkafotó (Kubota KX019-4)
 from PIL import Image
-Image.open(os.path.join(SRC, "img", "kisgep-kx019-1200.webp")).convert("RGB").crop((0, 300, 1200, 930)).save(
-    os.path.join(DIST, "img", "og-kalocsageoworks.jpg"), quality=84, optimize=True, progressive=True)
+og = Image.new("RGB", (1200, 630), (255, 255, 255))
+_lg = Image.open(UJ_LOGO).convert("RGBA")
+_lg = _lg.resize((round(_lg.width * 560 / _lg.height), 560), Image.LANCZOS)
+og.paste(_lg, ((600 - _lg.width) // 2, 35), _lg)
+_ft = Image.open(os.path.join(SRC, "img", "kisgep-kx019-1200.webp")).convert("RGB")
+_ft = _ft.resize((600, round(_ft.height * 600 / _ft.width)), Image.LANCZOS)
+og.paste(_ft.crop((0, 150, 600, 780)), (600, 0))
+og.save(os.path.join(DIST, "img", OG_KEP), quality=86, optimize=True, progressive=True)
 
 shutil.copytree(os.path.join(ROOT, "tools", "vendor", "leaflet-1.9.4"), os.path.join(DIST, "vendor", "leaflet"))
 LEAFLET_SRI = {"leaflet.js": "20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=", "leaflet.css": "p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="}
@@ -408,7 +439,7 @@ for f, want in LEAFLET_SRI.items():
             sys.exit(f"BUILD STOP – a Leaflet {f} nem egyezik a hivatalos hash-sel")
 
 # ---------------- saját éles fájlok ----------------
-for name in ("impresszum.html", "404.html", "robots.txt") + (("adatkezeles.html",) if HAS_PRIVACY else ()):
+for name in ("impresszum.html", "404.html", "robots.txt", "apple-touch-icon.png") + (("adatkezeles.html",) if HAS_PRIVACY else ()):
     if not name.endswith(".html"):
         shutil.copy2(os.path.join(TPL, name), os.path.join(DIST, name))
         continue
