@@ -112,6 +112,11 @@ ok('http://' not in re.sub(r'http://www\.w3\.org[^"\']*', '', html), 'nincs http
 ok(not re.search(r'(?<!\d)(06|\+36)[\s-]?(?!70[\s-]?420[\s-]?4170)\d{2}[\s-]?\d{3}[\s-]?\d{3,4}', html), 'nincs más telefonszám a forrásban')
 ok('/api/' not in html and 'ajanlat.php' not in html, 'nincs ajánlatkérő-végpont a HTML-ben')
 ok('kalocsageoworks@gmail.com' in html, 'e-mail-cím szerepel')
+GPROF = 'https://www.google.com/maps?cid=7775453738665952318'
+ok('id="velemenyek"' in html and '<a href="#velemenyek">Vélemények</a>' in html and html.count('href="#velemenyek"') >= 2, 'Vélemények szakasz + menüpont + lábléclink')
+ok(f'href="{GPROF}" target="_blank" rel="noopener noreferrer"' in html, 'a Google-gomb az igazolt cégprofilra mutat, új lapon, noopener')
+ok(not re.search(r'<script[^>]+src="https?://', html) and 'googleapis' not in html and 'maps.google' not in html.replace(GPROF, ''), 'nincs külső (Google) szkript vagy beágyazás')
+ok('rcard' not in html or 'Forrás: Google' in html, 'véleménykártya csak forrásmegjelöléssel')
 
 # 2) Erőforrások
 print('\n[2] Helyi erőforrások (képek, videók, betűk, szkriptek)')

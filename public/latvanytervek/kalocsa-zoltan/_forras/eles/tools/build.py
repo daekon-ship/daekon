@@ -8,7 +8,7 @@ Kimenet: dist/ – csak a ténylegesen hivatkozott fájlok; _forras, ATADAS.md, 
 A dizájn nem változik; csak a bemutató jellegű feliratok, az inaktív ajánlatkérő és a jogi linkek.
 Minden csere pontosan egyszer kell, hogy illeszkedjen – különben a build leáll (forrásváltozás jelzése).
 """
-import base64, hashlib, os, re, shutil, sys
+import base64, hashlib, html as htmlmod, json, os, re, shutil, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC = os.environ.get("KGW_SRC") or os.path.join(ROOT, "eles-src", "public", "latvanytervek", "kalocsa-zoltan")  # jóváhagyott látványterv
@@ -23,6 +23,17 @@ if AJANLAT_ON and not HAS_PRIVACY:
     sys.exit("BUILD STOP – az ajánlatkérő csak végleges adatkezelési tájékoztatóval (tools/eles/adatkezeles.html) kapcsolható be")
 if HAS_PRIVACY and "kitöltendő" in open(os.path.join(TPL, "adatkezeles.html"), encoding="utf-8").read():
     sys.exit("BUILD STOP – az adatkezelési tájékoztató még [kitöltendő] mezőt tartalmaz")
+
+# Google-cégprofil (ellenőrizve 2026.10.26.: név „Kalocsa GeoWorks”, Földkitermelő vállalkozó, 06 70 420 4170).
+# Olvasás: a Google Térkép CID-linkje (a profil azonosítója a Google-től, nem kitalált).
+GOOGLE_PROFIL_URL = "https://www.google.com/maps?cid=7775453738665952318"
+# Véleményírás: a tulajdonos a Google Cégprofilban („Vélemények kérése”) kapja meg (g.page/r/…/review).
+# Amíg nincs megadva, a gomb nem jelenik meg. Soha ne a fenti olvasó linket tegyük ide.
+GOOGLE_IRAS_URL = None
+# Megjelenítendő vélemények: tools/eles/velemenyek.json – kizárólag szabályos forrásból (Google Places API, szerveroldalon,
+# a Google megjelenítési és forrásmegjelölési feltételei szerint), kézzel kitalált vagy átírt tartalom tilos.
+# Ha nincs fájl vagy üres a lista, csak a profil-kártya jelenik meg (nincs üres vagy hamis értékelési kártya).
+VELEMENY_JSON = os.path.join(TPL, "velemenyek.json")
 
 
 def read(p):
@@ -153,9 +164,65 @@ h = sub1(h, '<p><a href="adatkezeles.html">Adatkezelési tájékoztató</a> <em>
          '<p><a href="impresszum.html">Impresszum</a><br>Adatkezelési tájékoztató: előkészítés alatt</p>', "lábléc jogi")
 h = sub1(h, '<span>Látványterv: <a href="https://daekon.hu" rel="noopener">DAEKON</a></span>',
          '<span>Weboldal: <a href="https://daekon.hu" rel="noopener">DAEKON</a></span>', "lábléc készítő")
+
+
+# ---------------- Vélemények (Google) ----------------
+def velemeny_szakasz():
+    e = lambda s: htmlmod.escape(str(s), quote=True)
+    adat = json.load(open(VELEMENY_JSON, encoding="utf-8")) if os.path.isfile(VELEMENY_JSON) else {}
+    lista = [v for v in adat.get("velemenyek", []) if v.get("szoveg") and v.get("nev") and v.get("csillag")]
+    for v in lista:
+        if not 1 <= int(v["csillag"]) <= 5 or not str(v.get("link", "")).startswith("https://"):
+            sys.exit("BUILD STOP – velemenyek.json: hibás csillag vagy hiányzó Google-link")
+    csillag = lambda n: f'<span class="rev__stars" role="img" aria-label="{n} / 5 csillag">' + "".join(
+        f'<i class="{"on" if i < n else ""}" aria-hidden="true"></i>' for i in range(5)) + "</span>"
+    uj = ' target="_blank" rel="noopener noreferrer"'
+    sr = '<span class="rev__sr"> (új lapon nyílik)</span>'
+    osszeg = ""
+    if lista and adat.get("atlag") and adat.get("db"):
+        osszeg = (f'<p class="rev__sum"><b>{e(str(adat["atlag"]).replace(".", ","))}</b>{csillag(round(float(adat["atlag"])))}'
+                  f'<span>{e(adat["db"])} értékelés a Google-on</span></p>')
+    iras = (f'<a class="btn btn--ghost" href="{e(GOOGLE_IRAS_URL)}"{uj}><span>Vélemény írása a <span class="rev__nw">Google-on</span></span>{sr}</a>' if GOOGLE_IRAS_URL else "")
+    kartyak = ""
+    if lista:
+        kartyak = '\n    <ul class="rev__list">\n' + "".join(
+            f'      <li class="rcard"><figure>\n'
+            f'        {csillag(int(v["csillag"]))}\n'
+            f'        <blockquote><p>{e(v["szoveg"])}</p></blockquote>\n'
+            f'        <figcaption><b>{e(v["nev"])}</b><span>{e(v.get("ido", ""))}</span>'
+            f'<a href="{e(v["link"])}"{uj}>Megnyitás a Google-on{sr}</a></figcaption>\n'
+            f'      </figure></li>\n' for v in lista) + '    </ul>\n    <p class="rev__attr">Forrás: Google. A véleményeket a Google-on közzétett formájukban, szerkesztés nélkül mutatjuk.</p>'
+    return (
+        '<!-- ================= VÉLEMÉNYEK (Google) ================= -->\n'
+        '<section class="sec rev" id="velemenyek" aria-labelledby="velemeny-cim">\n'
+        '  <div class="wrap">\n'
+        '    <div class="rev__grid">\n'
+        '      <div class="rev__copy">\n'
+        '        <p class="kicker"><span class="dot"></span>Vélemények</p>\n'
+        '        <h2 id="velemeny-cim">Vélemények a <span class="rev__nw">Google-on</span></h2>\n'
+        '        <p class="sec__lead">A megrendelők értékeléseit a Google-on, szerkesztés nélkül olvashatod. Ha már dolgoztunk együtt, '
+        'pár mondatos véleményeddel sokat segítesz a következő érdeklődőknek.</p>\n'
+        '      </div>\n'
+        '      <div class="rev__card">\n'
+        '        <p class="rev__src"><span class="dot"></span>Google Térkép · cégprofil</p>\n'
+        '        <h3>Kalocsa GeoWorks</h3>\n'
+        '        <p class="rev__meta">Földkitermelő vállalkozó</p>\n'
+        f'        {osszeg}\n'
+        f'        <div class="rev__act"><a class="btn" href="{e(GOOGLE_PROFIL_URL)}"{uj}><span>Vélemények megtekintése a <span class="rev__nw">Google-on</span></span>{sr}</a>{iras}</div>\n'
+        '        <p class="rev__note">A gomb a Google Térképre visz. Az oldal Google-szkriptet nem tölt be, és sütit nem használ.</p>\n'
+        '      </div>\n'
+        f'    </div>{kartyak}\n'
+        '  </div>\n'
+        '</section>\n\n')
+
+
+h = sub1(h, "<!-- ================= AJÁNLATKÉRŐ ================= -->", velemeny_szakasz() + "<!-- ================= AJÁNLATKÉRŐ ================= -->", "vélemények szakasz")
+h = subre(h, r'(<nav class="nav" id="nav"[^>]*>.*?)(\n(\s*)<a href="#ajanlat">)', r'\1\n\3<a href="#velemenyek">Vélemények</a>\2', "menü: Vélemények")
+h = sub1(h, '<a href="#munkaterulet">Munkaterület</a><br><a href="#ajanlat">',
+         '<a href="#munkaterulet">Munkaterület</a><br><a href="#velemenyek">Vélemények</a><br><a href="#ajanlat">', "lábléc: Vélemények")
 # az éles JS-nek saját verzió (a statikus fájlok 1 évig gyorsítótárazódnak) – minden JS-változtatáskor emelni kell
-h = sub1(h, '<script src="kalocsa.js?v=37" defer></script>', '<script src="kalocsa.js?v=37-eles7" defer></script>', "js verzió")
-h = sub1(h, '<link rel="stylesheet" href="kalocsa.css?v=39">', '<link rel="stylesheet" href="kalocsa.css?v=39-eles5">', "css verzió")
+h = sub1(h, '<script src="kalocsa.js?v=37" defer></script>', '<script src="kalocsa.js?v=37-eles8" defer></script>', "js verzió")
+h = sub1(h, '<link rel="stylesheet" href="kalocsa.css?v=39">', '<link rel="stylesheet" href="kalocsa.css?v=39-eles6">', "css verzió")
 for bad in ("Bemutató mód", "bemutató", "BEMUTATÓ", "kitöltendő", "egyeztetendő", "github", "látványterv"):
     if bad.lower() in h.lower():
         sys.exit(f"BUILD STOP – index.html még tartalmazza: {bad}")
@@ -215,6 +282,9 @@ j = sub1(j, "    video.addEventListener('error', () => fail('video-error'), { on
 # térképkönyvtár saját tárhelyről (Leaflet 1.9.4, a hivatalos SRI-hash-sel ellenőrizve) – nincs cdnjs/unpkg-kérés
 j = sub1(j, "const CDN = ['https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/', 'https://unpkg.com/leaflet@1.9.4/dist/'];",
          "const CDN = ['vendor/leaflet/'];", "js leaflet helyi")
+# Vélemények szakasz: a fejléc aktív menüpontja kövesse (görgetéskövetés)
+j = sub1(j, "'munkaterulet', 'ajanlat'].map(id => d.getElementById(id));",
+         "'munkaterulet', 'velemenyek', 'ajanlat'].map(id => d.getElementById(id));", "js görgetéskövetés: vélemények")
 # mobilmenü: ha nyitva van, és a nézet asztali szélességre vált (pl. tablet elforgatása), a menü bezárul,
 # különben a body overflow:hidden beragadna, és érintéssel nem lehetne görgetni
 j = sub1(j, "burger.focus(); } });\n",
@@ -258,6 +328,37 @@ css += ("\n/* éles: akadálymentességi kontraszt */\n.stages li{color:rgba(255
 # ugyanaz az árnyalat (25,6°), csak világosabb: alcím +4% (#F38634, 4,61:1), kártyalink +11,7% (#F59C59, 4,61:1).
 # Gombok, logó, vonalak, ikonok és a többi narancs elem (var(--o)) változatlan.
 css += ".sec--panel .kicker{color:#F38634}\n.card__link{color:#F59C59}\n"
+# Vélemények (Google) – a meglévő tokenekkel; csillag: CSS-alakzat (nincs ikonkészlet, nincs külső kép)
+css += """
+/* éles: Vélemények (Google) */
+.rev__grid{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(28px,5vw,72px);align-items:center}
+.rev__card{background:var(--panel);border-radius:16px;padding:clamp(24px,3.5vw,40px);box-shadow:inset 0 0 0 1px rgba(242,122,33,.35)}
+.rev__src{display:flex;align-items:center;gap:10px;font:700 11.5px/1.2 var(--body);letter-spacing:.12em;text-transform:uppercase;color:#D6DADE;margin:0 0 14px}
+.rev__card h3{font-size:26px;text-transform:uppercase;margin:0 0 6px}
+.rev__meta{color:#D6DADE;margin:0 0 24px;font-size:15px}
+.rev__act{display:flex;flex-wrap:wrap;gap:12px}
+.rev__note{margin:18px 0 0;font-size:13px;line-height:1.5;color:#BFC5CB}
+.rev__sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+.rev__stars{display:inline-flex;gap:3px;vertical-align:middle}
+.rev__stars i{width:15px;height:15px;background:#5A636C;clip-path:polygon(50% 0,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)}
+.rev__stars i.on{background:var(--o)}
+.rev__sum{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin:0 0 22px;color:#D6DADE;font-size:14px}
+.rev__sum b{font:800 34px/1 var(--disp);color:#fff}
+.rev__list{list-style:none;padding:0;margin:48px 0 0;display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px}
+.rcard figure{margin:0;height:100%;background:var(--panel);border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:14px}
+.rcard blockquote{margin:0;color:var(--soft);font-size:15.5px;line-height:1.6}
+.rcard blockquote p{margin:0}
+.rcard figcaption{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;margin-top:auto;font-size:14px;color:#D6DADE}
+.rcard figcaption b{color:#fff}
+.rcard figcaption a{color:#F59C59}
+.rev__attr{margin:16px 0 0;font-size:13px;color:#BFC5CB}
+.rev__nw{white-space:nowrap}
+.rev__act .btn{text-align:center}
+/* az új menüpont miatt 1181–1340 px között szűkebb a menü: a fejléc hívógombjában a szám ne törjön két sorba */
+.hdr__cta{white-space:nowrap}
+@media (min-width:1181px) and (max-width:1340px){.nav{gap:16px}}
+@media (max-width:860px){.rev__grid{grid-template-columns:1fr}.rev__act .btn{flex:1 1 100%}}
+"""
 write(os.path.join(DIST, "kalocsa.css"), css)
 for r in sorted(refs):
     s = os.path.join(SRC, r)
