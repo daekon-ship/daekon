@@ -10,7 +10,7 @@ def build(g):
 <a class="skip" href="#admView">Ugrás a tartalomra</a>
 <div class="adm">
   <aside class="adm-side">
-    <a class="brand" href="index.html" aria-label="Vissza a weboldalra"><span class="mono" aria-hidden="true">B<span>B</span></span><span class="brand-txt"><b>Balogh Beatrix</b><small>Admin · demó</small></span></a>
+    <a class="brand" href="index.html" aria-label="Vissza a weboldalra"><img class="logo" src="arculat/logo-fejlec-sotet.svg" alt="Balogh Beatrix" width="236" height="64"></a>
     <nav class="adm-tabs" id="admTabs" role="tablist" aria-label="Admin menü"></nav>
     <div class="adm-side-foot">
       <div class="adm-lock">{ico('lock')}<span>Bemutató — nincs bejelentkezés. Élesben szerveroldali hitelesítés és jogosultságkezelés védi.</span></div>

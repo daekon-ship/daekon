@@ -19,6 +19,12 @@ Előnézet: `https://daekon-ship.github.io/daekon/latvanytervek/balogh-beatrix/`
 - Gombok mondatkezdő betűvel, nem csupa nagybetű.
 - Teszt: **52/52** (új: gyorsfoglaló mélylink), túlfolyás 12 oldal × 4 szélesség: nincs.
 
+## 0/b. Logó (2026.10.26.)
+
+- Jel: mandula formájú köröm, benne kisbetűs „b”; fő logó = jel + „Balogh Beatrix” + „FOOT & NAIL STUDIO” (Hanken Grotesk görbékből).
+- Változatok: fő logó (világos/sötét), „beatrix” szóvédjegy köröm alakú i-ponttal, „Öt pont” (lábujjív) alternatíva, önálló jel, favicon — `arculat/`, áttekintő: `arculat/index.html`.
+- Forrás: `_forras/logo.py` (minden SVG újragenerálható). Az oldalon a fő logó szerepel (fejléc, lábléc, admin), a portrénál a vonalas jel, az utalványon a szóvédjegy.
+
 ## 1. Ami elkészült
 
 | Oldal | Tartalom |
