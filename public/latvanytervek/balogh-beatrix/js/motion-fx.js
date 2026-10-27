@@ -36,6 +36,42 @@
     }
   }
 
+  /* ---------- 1/b. Nyitókép-fotók, parallax, futó szalag ---------- */
+  function stage() {
+    var st = document.querySelector('.hero-stage'); if (!st) return;
+    var main = st.querySelector('.hs-main'), sub = st.querySelector('.hs-sub'), mini = st.querySelector('.hs-mini'), fl = st.querySelector('.hs-flower'), tag = st.querySelector('.hs-tag');
+    safe(function () {
+      animate(main, { opacity: [0, 1], clipPath: ['inset(100% 0% 0% 0% round 200px 200px 22px 22px)', 'inset(0% 0% 0% 0% round 200px 200px 22px 22px)'] }, { duration: 1.2, ease: EASE, delay: 0.1 });
+      animate(main.querySelector('img'), { scale: [1.18, 1] }, { duration: 1.6, ease: EASE, delay: 0.1 });
+      animate(sub, { opacity: [0, 1], y: [60, 0], rotate: [-4, 0] }, Object.assign({ delay: 0.55 }, SPRING));
+      animate(mini, { opacity: [0, 1], scale: [0.6, 1] }, Object.assign({ delay: 0.75 }, SPRING));
+      animate(fl, { opacity: [0, 0.55], rotate: [-18, 0], scale: [0.85, 1] }, { duration: 1.6, ease: EASE, delay: 0.4 });
+      animate(tag, { opacity: [0, 1], x: [20, 0] }, { duration: 0.7, ease: EASE, delay: 1.0 });
+    });
+    if (scroll) safe(function () {
+      var o = { target: st, offset: ['start start', 'end start'] };
+      scroll(animate(main, { y: [0, -60] }, { ease: 'linear' }), o);
+      scroll(animate(sub, { y: [0, 50] }, { ease: 'linear' }), o);
+      scroll(animate(mini, { y: [0, -90] }, { ease: 'linear' }), o);
+      scroll(animate(fl, { rotate: [0, 25] }, { ease: 'linear' }), o);
+    });
+    if (M.hover) [main, sub, mini].forEach(function (f) {
+      safe(function () { M.hover(f, function () { animate(f.querySelector('img'), { scale: 1.06 }, { duration: 0.8, ease: EASE }); return function () { animate(f.querySelector('img'), { scale: 1 }, { duration: 0.8, ease: EASE }); }; }); });
+    });
+  }
+  function marquee() {
+    $$('[data-marquee] .marquee-track').forEach(function (t) {
+      safe(function () {
+        var ctl = animate(t, { x: ['0%', '-50%'] }, { duration: 60, ease: 'linear', repeat: Infinity });
+        var box = t.parentElement;
+        box.addEventListener('mouseenter', function () { ctl.speed = 0.2; });
+        box.addEventListener('mouseleave', function () { ctl.speed = 1; });
+      });
+    });
+    var flw = document.querySelector('.sec-flower');
+    if (flw && scroll) safe(function () { scroll(animate(flw, { rotate: [-20, 20], y: [40, -40] }, { ease: 'linear' }), { target: flw.parentElement }); });
+  }
+
   /* ---------- 2. Görgetés: megjelenés csoportonként, lépcsőzve ---------- */
   function reveals() {
     var done = new WeakSet();
@@ -136,6 +172,6 @@
     lightbox: function (el) { safe(function () { animate(el, { opacity: [0, 1], scale: [0.96, 1] }, { duration: 0.4, ease: EASE }); }); }
   };
 
-  function init() { hero(); reveals(); progress(); gestures(); }
+  function init() { hero(); stage(); marquee(); reveals(); progress(); gestures(); }
   if (document.readyState !== 'loading') init(); else document.addEventListener('DOMContentLoaded', init);
 })();

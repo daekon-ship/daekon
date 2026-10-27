@@ -16,7 +16,7 @@
 <link rel="icon" href="img/favicon-48.png" type="image/png">
 <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
 <link rel="preload" href="fonts/hanken-var.woff" as="font" type="font/woff" crossorigin>
-<link rel="stylesheet" href="css/bb.css?v=20261027b">
+<link rel="stylesheet" href="css/bb.css?v=20261027c">
 <script>document.documentElement.classList.remove('no-js')</script>
 </head>
 <body class="has-mbar">
@@ -64,23 +64,32 @@
           <div><dt>Helyszín</dt><dd><span data-bind="addr-label">Budapest XI.</span> <span class="tag" data-addr-status>Egyeztetés alatt</span></dd></div>
         </dl>
       </div>
-      <aside class="qb rv" style="--d:.2s" aria-labelledby="qb-h">
-        <div class="qb-head"><h2 id="qb-h">Gyorsfoglalás</h2><span>Bemutató</span></div>
-        <div class="qb-svcs" role="radiogroup" aria-label="Kezelés"></div>
+      <div class="hero-stage" aria-label="Beatrix munkáiból">
+        <img class="hs-flower" src="arculat/virag-1-arany.png" alt="" width="316" height="320" aria-hidden="true">
+        <figure class="hs-main"><img src="img/munkak/levendula-1.jpg" alt="Levendula géllakk — Beatrix munkája" width="1452" height="1600" fetchpriority="high"></figure>
+        <figure class="hs-sub"><img src="img/munkak/magenta-3-k.jpg" alt="Magenta géllakk — Beatrix munkája" width="760" height="498"></figure>
+        <figure class="hs-mini"><img src="img/munkak/gyongyhaz-2-k.jpg" alt="Gyöngyházfényű géllakk — Beatrix munkája" width="760" height="456"></figure>
+        <p class="hs-tag"><span>Beatrix saját munkái</span></p>
+      </div>
+    </div>
+    <aside class="qb qb--bar rv" style="--d:.2s" aria-labelledby="qb-h">
+      <div class="qb-head"><h2 id="qb-h">Gyorsfoglalás</h2><span>Bemutató</span></div>
+      <div class="qb-svcs" role="radiogroup" aria-label="Kezelés"></div>
+      <div class="qb-right">
         <p class="qb-sub">Legközelebbi szabad időpontok</p>
         <div class="qb-slots"></div>
         <a class="btn qb-go" href="foglalas.html">Tovább a foglaláshoz</a>
-        <p class="qb-note">A szabad időpontok mintaadatok — valódi foglalás nem történik.</p>
-      </aside>
-    </div>
+      </div>
+      <p class="qb-note">A szabad időpontok mintaadatok — valódi foglalás nem történik.</p>
+    </aside>
   </div>
 </section>
 
 <section class="ribbon-sec" aria-label="Beatrix munkáiból">
-  <div class="wrap">
-    <div class="shots shots--ribbon"><figure class="shot rv-img" style="--d:0.00s"><img src="img/munkak/magenta-1-k.jpg" alt="Magenta géllakk — Beatrix munkája" width="760" height="262" loading="lazy" decoding="async"></figure><figure class="shot rv-img" style="--d:0.07s"><img src="img/munkak/levendula-3-k.jpg" alt="Levendula géllakk — Beatrix munkája" width="750" height="760" loading="lazy" decoding="async"></figure><figure class="shot rv-img" style="--d:0.14s"><img src="img/munkak/gyongyhaz-4-k.jpg" alt="Gyöngyházfényű géllakk — Beatrix munkája" width="760" height="331" loading="lazy" decoding="async"></figure><figure class="shot rv-img" style="--d:0.21s"><img src="img/munkak/levendula-4-k.jpg" alt="Levendula géllakk, rövid forma — Beatrix munkája" width="760" height="513" loading="lazy" decoding="async"></figure><figure class="shot rv-img" style="--d:0.28s"><img src="img/munkak/gyongyhaz-5-k.jpg" alt="Gyöngyház géllakk, szögletes forma — Beatrix munkája" width="760" height="410" loading="lazy" decoding="async"></figure></div>
-    <p class="ribbon-cap rv"><span>Beatrix saját munkái</span><a class="link" href="#galeria">Galéria <svg class="ico " aria-hidden="true"><use href="#i-arrow"/></svg></a></p>
+  <div class="marquee" data-marquee>
+    <div class="marquee-track"><figure class="mq"><img src="img/munkak/magenta-1-k.jpg" alt="Magenta géllakk — Beatrix munkája" width="760" height="262" loading="lazy" decoding="async"></figure><figure class="mq"><img src="img/munkak/levendula-3-k.jpg" alt="Levendula géllakk — Beatrix munkája" width="750" height="760" loading="lazy" decoding="async"></figure><figure class="mq"><img src="img/munkak/gyongyhaz-4-k.jpg" alt="Gyöngyházfényű géllakk — Beatrix munkája" width="760" height="331" loading="lazy" decoding="async"></figure><figure class="mq"><img src="img/munkak/neon-2-k.jpg" alt="Neon pink géllakk — Beatrix munkája" width="760" height="709" loading="lazy" decoding="async"></figure><figure class="mq"><img src="img/munkak/csokolade-1-k.jpg" alt="Csokoládébarna géllakk — Beatrix munkája" width="760" height="527" loading="lazy" decoding="async"></figure><figure class="mq"><img src="img/munkak/levendula-4-k.jpg" alt="Levendula, rövid forma — Beatrix munkája" width="760" height="513" loading="lazy" decoding="async"></figure><figure class="mq"><img src="img/munkak/gyongyhaz-5-k.jpg" alt="Gyöngyház, szögletes forma — Beatrix munkája" width="760" height="410" loading="lazy" decoding="async"></figure><figure class="mq"><img src="img/munkak/neon-1-k.jpg" alt="Neon pink, ovális forma — Beatrix munkája" width="760" height="740" loading="lazy" decoding="async"></figure><figure class="mq" aria-hidden="true"><img src="img/munkak/magenta-1-k.jpg" alt="" width="760" height="262" loading="lazy" decoding="async"></figure><figure class="mq" aria-hidden="true"><img src="img/munkak/levendula-3-k.jpg" alt="" width="750" height="760" loading="lazy" decoding="async"></figure><figure class="mq" aria-hidden="true"><img src="img/munkak/gyongyhaz-4-k.jpg" alt="" width="760" height="331" loading="lazy" decoding="async"></figure><figure class="mq" aria-hidden="true"><img src="img/munkak/neon-2-k.jpg" alt="" width="760" height="709" loading="lazy" decoding="async"></figure><figure class="mq" aria-hidden="true"><img src="img/munkak/csokolade-1-k.jpg" alt="" width="760" height="527" loading="lazy" decoding="async"></figure><figure class="mq" aria-hidden="true"><img src="img/munkak/levendula-4-k.jpg" alt="" width="760" height="513" loading="lazy" decoding="async"></figure><figure class="mq" aria-hidden="true"><img src="img/munkak/gyongyhaz-5-k.jpg" alt="" width="760" height="410" loading="lazy" decoding="async"></figure><figure class="mq" aria-hidden="true"><img src="img/munkak/neon-1-k.jpg" alt="" width="760" height="740" loading="lazy" decoding="async"></figure></div>
   </div>
+  <div class="wrap"><p class="ribbon-cap rv"><span>Beatrix saját munkái — mind a szalonban készült</span><a class="link" href="#galeria">Galéria <svg class="ico " aria-hidden="true"><use href="#i-arrow"/></svg></a></p></div>
 </section>
 
 <section aria-label="Értékek">
@@ -163,7 +172,8 @@
   </div>
 </section>
 
-<section class="sec sec--dark" aria-labelledby="elo-h">
+<section class="sec sec--dark sec--flower" aria-labelledby="elo-h">
+  <img class="sec-flower" src="arculat/virag-1-vilagos.png" alt="" width="316" height="320" aria-hidden="true">
   <div class="wrap">
     <div class="sec-head">
       <div><p class="eyebrow rv">A szalonban</p><h2 id="elo-h" class="rv">Amire <em style="color:var(--gold)">számíthatsz</em>.</h2></div>
@@ -267,10 +277,10 @@
   <a class="btn btn--ghost" data-tel href="tel:+36706146070" aria-label="Hívás"><svg class="ico " aria-hidden="true"><use href="#i-phone"/></svg>Hívás</a>
   <a class="btn" href="foglalas.html"><svg class="ico " aria-hidden="true"><use href="#i-calendar"/></svg>Időpontfoglalás</a>
 </div>
-<script src="js/config.js?v=20261027b"></script>
-<script src="js/core.js?v=20261027b"></script>
+<script src="js/config.js?v=20261027c"></script>
+<script src="js/core.js?v=20261027c"></script>
 <script src="https://cdn.jsdelivr.net/npm/motion@11.18.2/dist/motion.js" crossorigin="anonymous"></script>
-<script src="js/site.js?v=20261027b"></script>
-<script src="js/motion-fx.js?v=20261027b"></script>
+<script src="js/site.js?v=20261027c"></script>
+<script src="js/motion-fx.js?v=20261027c"></script>
 </body>
 </html>

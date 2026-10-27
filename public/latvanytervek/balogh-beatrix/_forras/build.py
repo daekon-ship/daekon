@@ -9,7 +9,7 @@ vannak, hanem a js/config.js-ben — azokat a böngésző tölti be.
 import pathlib
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-V = '20261027b'
+V = '20261027c'
 # Motion (https://motion.dev) — vanilla JS build, rögzített verzió; ha nem tölt be, CSS-tartalék fut
 MOTION_TAG = '\n<script src="https://cdn.jsdelivr.net/npm/motion@11.18.2/dist/motion.js" crossorigin="anonymous"></script>'  # gyorsítótár-törő verzió
 
@@ -195,6 +195,13 @@ def shots(items, cls=''):
                 for i, (n, a, w, h) in enumerate(items))
     return f'<div class="shots {cls}">{f}</div>'
 
+MARQUEE = [('magenta-1', 'Magenta géllakk', 760, 262), ('levendula-3', 'Levendula géllakk', 750, 760), ('gyongyhaz-4', 'Gyöngyházfényű géllakk', 760, 331),
+           ('neon-2', 'Neon pink géllakk', 760, 709), ('csokolade-1', 'Csokoládébarna géllakk', 760, 527), ('levendula-4', 'Levendula, rövid forma', 760, 513),
+           ('gyongyhaz-5', 'Gyöngyház, szögletes forma', 760, 410), ('neon-1', 'Neon pink, ovális forma', 760, 740)]
+def marquee_items():
+    one = lambda hidden: ''.join(f'<figure class="mq"{" aria-hidden=\"true\"" if hidden else ""}><img src="img/munkak/{n}-k.jpg" alt="{"" if hidden else a + " — Beatrix munkája"}" width="{w}" height="{h}" loading="lazy" decoding="async"></figure>' for n, a, w, h in MARQUEE)
+    return one(False) + one(True)
+
 STREETS = '''<svg class="streets" viewBox="0 0 600 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="#CDBFAF" stroke-width="10" stroke-linecap="round"><path d="M-20 120 C 120 140, 260 90, 620 130"/><path d="M80 -20 L 140 420"/><path d="M-20 300 L 620 260"/><path d="M360 -20 C 340 120, 400 260, 380 420"/><path d="M500 -20 L 470 420"/></g><g fill="none" stroke="#DFD4C7" stroke-width="4"><path d="M-20 210 L 620 200"/><path d="M240 -20 L 260 420"/><path d="M-20 40 L 300 0"/></g><circle cx="300" cy="200" r="7" fill="#BE9A7B"/><circle cx="300" cy="200" r="20" fill="none" stroke="#BE9A7B" opacity=".5"/></svg>'''
 
 # ======================================================================
@@ -246,23 +253,32 @@ INDEX = f'''
           <div><dt>Helyszín</dt><dd><span data-bind="addr-label">Budapest XI.</span> <span class="tag" data-addr-status>Egyeztetés alatt</span></dd></div>
         </dl>
       </div>
-      <aside class="qb rv" style="--d:.2s" aria-labelledby="qb-h">
-        <div class="qb-head"><h2 id="qb-h">Gyorsfoglalás</h2><span>Bemutató</span></div>
-        <div class="qb-svcs" role="radiogroup" aria-label="Kezelés"></div>
+      <div class="hero-stage" aria-label="Beatrix munkáiból">
+        <img class="hs-flower" src="arculat/virag-1-arany.png" alt="" width="316" height="320" aria-hidden="true">
+        <figure class="hs-main"><img src="img/munkak/levendula-1.jpg" alt="Levendula géllakk — Beatrix munkája" width="1452" height="1600" fetchpriority="high"></figure>
+        <figure class="hs-sub"><img src="img/munkak/magenta-3-k.jpg" alt="Magenta géllakk — Beatrix munkája" width="760" height="498"></figure>
+        <figure class="hs-mini"><img src="img/munkak/gyongyhaz-2-k.jpg" alt="Gyöngyházfényű géllakk — Beatrix munkája" width="760" height="456"></figure>
+        <p class="hs-tag"><span>Beatrix saját munkái</span></p>
+      </div>
+    </div>
+    <aside class="qb qb--bar rv" style="--d:.2s" aria-labelledby="qb-h">
+      <div class="qb-head"><h2 id="qb-h">Gyorsfoglalás</h2><span>Bemutató</span></div>
+      <div class="qb-svcs" role="radiogroup" aria-label="Kezelés"></div>
+      <div class="qb-right">
         <p class="qb-sub">Legközelebbi szabad időpontok</p>
         <div class="qb-slots"></div>
         <a class="btn qb-go" href="foglalas.html">Tovább a foglaláshoz</a>
-        <p class="qb-note">A szabad időpontok mintaadatok — valódi foglalás nem történik.</p>
-      </aside>
-    </div>
+      </div>
+      <p class="qb-note">A szabad időpontok mintaadatok — valódi foglalás nem történik.</p>
+    </aside>
   </div>
 </section>
 
 <section class="ribbon-sec" aria-label="Beatrix munkáiból">
-  <div class="wrap">
-    {shots([('magenta-1', 'Magenta géllakk — Beatrix munkája', 760, 262), ('levendula-3', 'Levendula géllakk — Beatrix munkája', 750, 760), ('gyongyhaz-4', 'Gyöngyházfényű géllakk — Beatrix munkája', 760, 331), ('levendula-4', 'Levendula géllakk, rövid forma — Beatrix munkája', 760, 513), ('gyongyhaz-5', 'Gyöngyház géllakk, szögletes forma — Beatrix munkája', 760, 410)], 'shots--ribbon')}
-    <p class="ribbon-cap rv"><span>Beatrix saját munkái</span><a class="link" href="#galeria">Galéria {ico('arrow')}</a></p>
+  <div class="marquee" data-marquee>
+    <div class="marquee-track">{marquee_items()}</div>
   </div>
+  <div class="wrap"><p class="ribbon-cap rv"><span>Beatrix saját munkái — mind a szalonban készült</span><a class="link" href="#galeria">Galéria {ico('arrow')}</a></p></div>
 </section>
 
 <section aria-label="Értékek">
@@ -345,7 +361,8 @@ INDEX = f'''
   </div>
 </section>
 
-<section class="sec sec--dark" aria-labelledby="elo-h">
+<section class="sec sec--dark sec--flower" aria-labelledby="elo-h">
+  <img class="sec-flower" src="arculat/virag-1-vilagos.png" alt="" width="316" height="320" aria-hidden="true">
   <div class="wrap">
     <div class="sec-head">
       <div><p class="eyebrow rv">A szalonban</p><h2 id="elo-h" class="rv">Amire <em style="color:var(--gold)">számíthatsz</em>.</h2></div>

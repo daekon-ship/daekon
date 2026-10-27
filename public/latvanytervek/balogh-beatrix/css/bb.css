@@ -792,3 +792,54 @@ html body :is(.kpi b, .contact-phone) { font-weight: 650; letter-spacing: -.02em
 @media (max-width: 820px) { .gallery, .gallery.is-filtered { columns: 2; column-gap: 10px; } .g-item { margin-bottom: 10px; } }
 .shot img { object-position: 50% 50%; }
 @media (max-width: 820px) { .g-item .g-cap { display: none; } }
+
+/* ===== 4. KÖR — látványosabb főoldal: fotós nyitókép, foglalósáv, futó fotószalag ===== */
+.hero { padding-bottom: 0; background:
+  radial-gradient(60% 70% at 85% 30%, rgba(190, 154, 123, .16), transparent 70%),
+  radial-gradient(40% 50% at 10% 90%, rgba(146, 155, 137, .14), transparent 70%); }
+.hero-grid { grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr); align-items: center; }
+.hero-stage { position: relative; height: clamp(440px, 46vw, 640px); }
+.hero-stage figure { margin: 0; position: absolute; overflow: hidden; border-radius: 22px; background: var(--paper-2); }
+.hero-stage img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.hs-main { right: 0; top: 0; width: 66%; height: 90%; border-radius: 200px 200px 22px 22px !important; box-shadow: 0 50px 90px -50px rgba(43, 39, 37, .55); }
+.hs-sub { left: 2%; bottom: 17%; width: 44%; aspect-ratio: 4 / 3; border: 7px solid var(--paper); box-shadow: 0 30px 60px -28px rgba(43, 39, 37, .5); z-index: 2; }
+.hs-mini { left: 8%; top: 6%; width: 28%; aspect-ratio: 1; border-radius: 50% !important; border: 6px solid var(--paper); box-shadow: 0 24px 50px -26px rgba(43, 39, 37, .45); z-index: 2; }
+.hs-flower { position: absolute; left: -6%; top: 30%; width: 42%; height: auto; opacity: .55; z-index: 1; pointer-events: none; }
+.hs-tag { position: absolute; right: 4%; bottom: 14%; z-index: 3; margin: 0; }
+.hs-tag span { display: inline-block; background: rgba(255, 255, 255, .92); backdrop-filter: blur(6px); padding: 8px 14px; border-radius: 99px; font: 600 .72rem/1 var(--sans); letter-spacing: .08em; text-transform: uppercase; color: var(--ink); box-shadow: 0 14px 30px -18px rgba(43, 39, 37, .5); }
+
+/* foglalósáv a nyitókép alján */
+.qb--bar { position: relative; z-index: 4; margin-top: clamp(-64px, -4.2vw, -36px); display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); grid-template-areas: "head head" "svcs right" "note note"; column-gap: clamp(20px, 3vw, 40px); }
+.qb--bar .qb-head { grid-area: head; }
+.qb--bar .qb-svcs { grid-area: svcs; grid-template-columns: repeat(2, minmax(0, 1fr)); align-content: start; }
+.qb--bar .qb-right { grid-area: right; display: flex; flex-direction: column; }
+.qb--bar .qb-right .qb-sub { margin-top: 0; }
+.qb--bar .qb-go { margin-top: auto; }
+.qb--bar .qb-note { grid-area: note; text-align: left; }
+@media (max-width: 900px) {
+  .hero-grid { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  .hero-stage { height: clamp(360px, 100vw, 520px); }
+  .hs-main { width: 70%; height: 92%; }
+  .hs-sub { bottom: 2%; width: 50%; }
+  .hs-mini { width: 30%; top: 4%; left: 4%; }
+  .hs-tag { bottom: 6%; }
+  .qb--bar { margin-top: 28px; grid-template-columns: 1fr; grid-template-areas: "head" "svcs" "right" "note"; max-width: none; }
+  .qb--bar .qb-right .qb-sub { margin-top: 18px; }
+}
+@media (max-width: 560px) { .qb--bar .qb-svcs { grid-template-columns: 1fr; } .hs-flower { width: 50%; left: -10%; } }
+
+/* futó fotószalag */
+.ribbon-sec { padding: clamp(40px, 5vw, 72px) 0 clamp(36px, 4vw, 56px); overflow: hidden; }
+.marquee { overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
+.marquee-track { display: flex; gap: 14px; width: max-content; animation: mq 60s linear infinite; }
+.has-motion .marquee-track { animation: none; }
+.marquee:hover .marquee-track { animation-play-state: paused; }
+.mq { margin: 0; height: clamp(200px, 22vw, 300px); flex: none; border-radius: 18px; overflow: hidden; background: var(--paper-2); }
+.mq img { height: 100%; width: auto; display: block; }
+@keyframes mq { to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) { .marquee-track { animation: none; } .marquee { overflow-x: auto; } }
+
+/* virágmotívum a sötét szekcióban (Beatrix logójából) */
+.sec--flower { position: relative; overflow: hidden; }
+.sec--flower .wrap { position: relative; z-index: 1; }
+.sec-flower { position: absolute; right: -40px; bottom: -60px; width: clamp(220px, 28vw, 380px); height: auto; opacity: .14; pointer-events: none; }

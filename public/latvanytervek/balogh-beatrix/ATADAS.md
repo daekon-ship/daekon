@@ -8,7 +8,14 @@ Előnézet: `https://daekon-ship.github.io/daekon/latvanytervek/balogh-beatrix/`
 
 ---
 
-## 0. 3. kör — Beatrix saját anyagai (2026.10.27.)
+## 0. 4. kör — látványosabb főoldal (2026.10.27.)
+
+- **Nyitókép:** Beatrix fotóiból rétegzett kompozíció (íves nagy kép, kerek és szegélyes kiskép), mögötte a logó virágmotívuma (`arculat/virag-1*.png`, a logóból kivágva). Motion: kinyíló/ráközelítő belépés, görgetésre parallaxis, hoverre lassú zoom.
+- **Gyorsfoglalás:** széles foglalósáv a nyitókép alján (kezelések 2×2 + 3 szabad időpont).
+- **Fotószalag:** végtelenített, lassan futó szalag 8 munkafotóval (Motion; hoverre lelassul; csökkentett mozgásnál áll, görgethető).
+- **Sötét szekció:** halvány virágmotívum, görgetésre lassan elfordul.
+
+## 0/0. 3. kör — Beatrix saját anyagai (2026.10.27.)
 
 Beatrix elküldte a logóját, az árlistáit és a munkafotóit. Ezekre épül most az oldal.
 
