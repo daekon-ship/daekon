@@ -614,3 +614,9 @@ html.locked,html.locked body{overflow:hidden}
 }
 html.motion{scroll-behavior:auto}
 .days__row .day.day--any{width:auto;padding:0 14px}
+
+/* 10. kör: hero-kompozíció kivéve, egyoszlopos hero */
+.hero__grid{grid-template-columns:1fr}
+.hero__text{max-width:680px}
+.hero{min-height:0;display:block}
+@media (min-width:900px){.hero{padding-bottom:clamp(80px,8vw,110px)}}

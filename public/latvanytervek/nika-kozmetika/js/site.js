@@ -279,32 +279,6 @@
   }
   animate('.hero [data-h]', { opacity: [0, 1], y: [14, 0] }, { delay: stagger(0.08, { startDelay: wide ? 0.6 : 0.35 }), duration: 0.6, ease: ease });
 
-  // jobb oldali kompozíció
-  var art = $('.art');
-  if (art) {
-    animate('.art__shape--a', { opacity: [0, 1], scale: [0.85, 1] }, { duration: 1.1, delay: 0.2, ease: ease });
-    animate('.art__shape--b, .art__shape--c', { opacity: [0, 1], scale: [0.6, 1] }, { delay: stagger(0.12, { startDelay: 0.5 }), type: spring, stiffness: 140, damping: 14 });
-    animate('.art__glass', { opacity: [0, 1], scale: [0.9, 1] }, { duration: 0.9, delay: 0.6, ease: ease });
-    animate('.art__ring', { opacity: [0, 1], scale: [0.92, 1] }, { duration: 1.2, delay: 0.4, ease: ease });
-    var am = $$('.art__mono path');
-    am.forEach(function (p) { p.setAttribute('stroke-dasharray', '1'); p.setAttribute('stroke-dashoffset', '1'); });
-    animate(am, { strokeDashoffset: [1, 0] }, { duration: 1.2, delay: stagger(0.15, { startDelay: 0.9 }), ease: [0.6, 0, 0.2, 1] });
-    animate('.art__hair', { scale: [0, 1] }, { delay: stagger(0.15, { startDelay: 1.2 }), duration: 0.8, ease: ease });
-    // lassú, folyamatos „lélegzés”
-    animate('.art__shape--a', { borderRadius: ['58% 42% 54% 46% / 46% 56% 44% 54%', '46% 54% 42% 58% / 56% 44% 58% 42%', '58% 42% 54% 46% / 46% 56% 44% 54%'] }, { duration: 12, repeat: Infinity, ease: 'easeInOut', delay: 1.2 });
-    animate('.art__shape--b', { y: [0, -10, 0] }, { duration: 6, repeat: Infinity, ease: 'easeInOut', delay: 1.5 });
-    animate('.art__shape--c', { y: [0, 8, 0] }, { duration: 7, repeat: Infinity, ease: 'easeInOut', delay: 1.5 });
-    animate('.art__orbit', { rotate: [0, 360] }, { duration: 40, repeat: Infinity, ease: 'linear' });
-    if (finePointer) {
-      art.parentNode.addEventListener('pointermove', function (e) {
-        var r = art.getBoundingClientRect(), dx = (e.clientX - r.left) / r.width - 0.5, dy = (e.clientY - r.top) / r.height - 0.5;
-        animate('.art__glass', { x: dx * 14, y: dy * 14 }, SPR);
-        animate('.art__mono', { x: dx * 8, y: dy * 8 }, SPR);
-        animate('.art__shape--c', { x: dx * -12 }, SPR);
-      });
-    }
-    if (wide) scroll(animate('.hero__art', { y: [0, 50] }, { ease: 'linear' }), { target: hero, offset: ['start start', 'end start'] });
-  }
   animate('.blob--1', { x: [0, -40, 20, 0], y: [0, 30, -20, 0] }, { duration: 20, repeat: Infinity, ease: 'easeInOut' });
   animate('.blob--3', { x: [0, 40, 0], y: [0, -24, 0] }, { duration: 22, repeat: Infinity, ease: 'easeInOut' });
 

@@ -1,7 +1,7 @@
 # Nika Kozmetika – látványterv, átadás
 
 **Élő előnézet:** https://daekon-ship.github.io/daekon/latvanytervek/nika-kozmetika/
-**Állapot:** 9. kör (2026. 10. 27.) – „Prémium véglegesítő és hibajavító” kör: új hero-kompozíció, finomított kezelések, időpont-lépések, teljesen átnézett időpontkérő panel magyar napválasztóval, visszafogottabb animációk, teljes Playwright-teszt (139/139).
+**Állapot:** 10. kör (2026. 10. 27.) – a hero jobb oldali gömb/monogram kompozíciója kikerült (ügyfél-visszajelzés: nem kell), a hero egyoszlopos. Tesztek újra: 139/139. 9. kör: prémium véglegesítés.
 
 > Miért nem külön repó? A brief a `nika-kozmetika-preview` repót javasolta. A DAEKON-ház-szabály szerint minden látványterv a `daekon-ship/daekon` → `public/latvanytervek/<ügyfél>/` mappába kerül, ugyanazon a GitHub Pages címen frissül körről körre. Új repót ezért nem hoztunk létre.
 
@@ -108,7 +108,7 @@ Kérés: „használj nagyon sok mindent a Motionből, legyen látványos”.
 ## 9. kör – véglegesítés (2026. 10. 27.)
 
 ### Módosítások
-- **Hero:** kétoszlopos, kiegyensúlyozott elrendezés. Bal: „Kozmetika Szegeden” felirat, „Nika Kozmetika” főcím, dőlt cím-sor, barátságos alcím, nagy „Időpontot kérek” + telefon gomb, alattuk cím és „Időpont egyeztetéssel”. Jobb: CSS-alapú kompozíció (púderrózsa organikus forma, pezsgő és rózsás gömb, üveges kör, arany pálya mozgó ponttal, hajszálvonalak, középen a kirajzolódó N-monogram). Fotó és rajzolt növény nincs. Mobilon a kompozíció kicsi (≈210 px) és a gombok alatt van.
+- **Hero:** kétoszlopos, kiegyensúlyozott elrendezés. Bal: „Kozmetika Szegeden” felirat, „Nika Kozmetika” főcím, dőlt cím-sor, barátságos alcím, nagy „Időpontot kérek” + telefon gomb, alattuk cím és „Időpont egyeztetéssel”. (A 9. körben készült jobb oldali gömb/monogram kompozíció a 10. körben kikerült.)
 - **Kezelések:** cím + rövid, személyes bevezető egy sorban; finomabb sorköz, hover-kiemelés, fókuszkeret billentyűzethez. Kattintásra a panel nyílik, a kezelés előre kiválasztva (megvillan a mező).
 - **Személyesség:** közvetlen, tegező szövegek; az Ilcsi-blokk csak annyit mond, hogy a szalon a kozmetikakeresőben is megtalálható (partner/tanúsítvány állítás nincs). Az időpont-blokk 3 lépést mutat: Hívj vagy írj → Egyeztetünk → Várunk.
 - **Időpontkérő panel:** mezőnkénti hibaüzenetek (aria-invalid), telefon- és e-mail-formátum ellenőrzés, kattintható adatkezelési link, **magyar napválasztó** (Mindegy + a következő 14 nap, pl. „SZE 28 okt.”; JS nélkül sima dátummező), jól látható tájékoztató, hogy a gomb e-mail-programot nyit és ez nem automatikus foglalás; a visszajelzés is ezt mondja („Az időpont akkor él, ha visszaigazoltuk”); „Vissza az űrlaphoz” gomb; görgetés zárolva a panel alatt; Esc, fókuszcsapda, fókusz visszaadása.
