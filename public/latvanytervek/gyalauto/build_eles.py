@@ -45,7 +45,7 @@ def short_hash(path):
 
 def csp_for(html):
     hashes = []
-    for m in re.finditer(r'<script(?![^>]*\bsrc=)(?![^>]*application/ld\+json)[^>]*>(.*?)</script>', html, re.S):
+    for m in re.finditer(r'<script(?![^>]*\bsrc=)(?![^>]*application/(?:ld\+)?json)[^>]*>(.*?)</script>', html, re.S):
         digest = base64.b64encode(hashlib.sha256(m.group(1).encode('utf-8')).digest()).decode()
         hashes.append(f"'sha256-{digest}'")
     script = ' '.join(["'self'"] + hashes)

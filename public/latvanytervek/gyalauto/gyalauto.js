@@ -62,9 +62,6 @@
   };
   var SYS_ORDER = ['motor', 'fek', 'futomu', 'klima', 'diag'];
 
-  /* Ellenőrzött vélemények (pl. Google) – amíg üres, a blokk nem jelenik meg. { text, name, source } */
-  var REVIEWS = [];
-
   /* ===================== SEGÉDEK ===================== */
   function drawIn(root, opts) {
     if (!hasG()) return;
@@ -228,10 +225,45 @@
   dsvg.addEventListener('click', function (e) { var g = e.target.closest('.hot'); if (g) showSys(g.dataset.k); });
   showSys('motor');
 
-  /* ===================== VÉLEMÉNYEK (csak ha van ellenőrzött) ===================== */
-  if (REVIEWS.length) {
-    var rv = $('#reviews'); rv.hidden = false;
-    rv.innerHTML = '<h3>Ügyfeleink mondták</h3>' + REVIEWS.map(function (r) { return '<blockquote><p>' + r.text + '</p><footer>' + r.name + ' · ' + r.source + '</footer></blockquote>'; }).join('');
+  /* ===================== GOOGLE-VÉLEMÉNYEK =====================
+     Kártyák a #reviewsData JSON-ból: [{ "name", "rating" (1–5), "date" (pl. "2026. október"), "text" (szó szerint), "url" (a Google-vélemény linkje) }].
+     Csak hiánytalan, Google-linkes tétel jelenik meg; üres listánál a kártyasáv rejtve marad (az összesítő mindig látszik). */
+  var STAR = '<svg viewBox="0 0 24 24"><path d="M12 2.6l2.85 6.05 6.65.8-4.9 4.55 1.28 6.58L12 17.3l-5.88 3.28 1.28-6.58-4.9-4.55 6.65-.8z"/></svg>';
+  var rvTrack = $('#revTrack'), rvWrap = $('#revCards'), REVIEWS = [];
+  try { REVIEWS = JSON.parse(($('#reviewsData') || {}).textContent || '[]'); } catch (e) { REVIEWS = []; }
+  REVIEWS = (Array.isArray(REVIEWS) ? REVIEWS : []).filter(function (r) {
+    return r && r.name && r.text && r.rating >= 1 && r.rating <= 5 && /^https:\/\/(www\.google\.[a-z.]+\/maps|maps\.app\.goo\.gl\/|g\.co\/kgs\/)/.test(r.url || '');
+  });
+  if (rvTrack && REVIEWS.length) {
+    var stars5 = STAR + STAR + STAR + STAR + STAR;
+    REVIEWS.forEach(function (r) {
+      var art = document.createElement('article'); art.className = 'rev-card';
+      var st = document.createElement('span'); st.className = 'stars'; st.setAttribute('role', 'img');
+      st.setAttribute('aria-label', String(r.rating).replace('.', ',') + ' csillag az 5-ből'); st.style.setProperty('--fill', (r.rating / 5 * 100) + '%');
+      st.innerHTML = '<span class="stars-bg" aria-hidden="true">' + stars5 + '</span><span class="stars-fg" aria-hidden="true">' + stars5 + '</span>';
+      var q = document.createElement('blockquote'); var qp = document.createElement('p'); qp.textContent = r.text; q.appendChild(qp);
+      var ft = document.createElement('footer');
+      var nm = document.createElement('strong'); nm.textContent = r.name; ft.appendChild(nm);
+      if (r.date) { var dt = document.createElement('span'); dt.className = 'rev-date'; dt.textContent = r.date; ft.appendChild(dt); }
+      var a = document.createElement('a'); a.href = r.url; a.target = '_blank'; a.rel = 'noopener'; a.className = 'rev-link';
+      a.textContent = 'Google-vélemény';
+      var hint = document.createElement('span'); hint.className = 'sr-only'; hint.textContent = ' – ' + r.name + ' (új lapon)'; a.appendChild(hint);
+      ft.appendChild(a);
+      art.appendChild(st); art.appendChild(q); art.appendChild(ft); rvTrack.appendChild(art);
+    });
+    rvWrap.hidden = false;
+    var prev = $('#revPrev'), next = $('#revNext');
+    var step = function () { var c = rvTrack.querySelector('.rev-card'); return c ? c.getBoundingClientRect().width + (parseFloat(getComputedStyle(rvTrack).columnGap) || 0) : rvTrack.clientWidth; };
+    var navState = function () {
+      var max = rvTrack.scrollWidth - rvTrack.clientWidth - 2;
+      prev.disabled = rvTrack.scrollLeft <= 2; next.disabled = rvTrack.scrollLeft >= max;
+      rvWrap.classList.toggle('no-nav', max <= 0);
+    };
+    prev.addEventListener('click', function () { rvTrack.scrollBy({ left: -step(), behavior: reduce ? 'auto' : 'smooth' }); });
+    next.addEventListener('click', function () { rvTrack.scrollBy({ left: step(), behavior: reduce ? 'auto' : 'smooth' }); });
+    rvTrack.addEventListener('scroll', navState, { passive: true });
+    window.addEventListener('resize', navState);
+    navState();
   }
 
   /* ===================== IDŐPONTKÉRÉS ===================== */
@@ -347,6 +379,11 @@
     gsap.from('.diag-svg', { opacity: 0, y: 30, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: '.diag-stage', start: 'top 80%', onEnter: function () { drawIn(dsvg, { d: 1.2, s: 0.006 }); } } });
     gsap.from('.why-list > div', { opacity: 0, y: 18, duration: 0.6, stagger: 0.08, ease: 'power2.out', scrollTrigger: { trigger: '.why-list', start: 'top 80%' } });
     gsap.from('.why-year', { opacity: 0, y: 18, duration: 0.7, ease: 'power2.out', scrollTrigger: { trigger: '.why-year', start: 'top 88%' } });
+    /* vélemények: csak transform + opacity (nincs layoutváltozás) */
+    gsap.from('.rev-score, .rev-dist', { opacity: 0, y: 16, duration: 0.7, stagger: 0.1, ease: 'power2.out', scrollTrigger: { trigger: '.rev-top', start: 'top 82%' } });
+    gsap.from('.rev-dist .bar i', { scaleX: 0, transformOrigin: '0 50%', duration: 0.9, stagger: 0.06, ease: 'power3.out', scrollTrigger: { trigger: '.rev-dist', start: 'top 85%' } });
+    gsap.from('.rev-score .stars-fg svg', { opacity: 0, scale: 0.6, transformOrigin: '50% 50%', duration: 0.45, stagger: 0.07, ease: 'back.out(2)', scrollTrigger: { trigger: '.rev-top', start: 'top 82%' } });
+    if (REVIEWS.length) gsap.from('.rev-card', { opacity: 0, y: 22, duration: 0.7, stagger: 0.08, ease: 'power3.out', scrollTrigger: { trigger: '#revCards', start: 'top 85%' } });
 
     /* folyamat: görgetéssel töltődő vonal */
     ScrollTrigger.create({ trigger: flow, start: 'top 75%', end: 'bottom 55%', scrub: 0.4, onUpdate: function (st) { setFlow(st.progress); } });

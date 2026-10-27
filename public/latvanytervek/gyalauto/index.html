@@ -304,7 +304,39 @@
       <div><dt>Egy hívás elég</dt><dd>Telefonon egyeztetjük a teendőt és az időpontot: <a href="tel:+36203746783">+36 20 374 6783</a>.</dd></div>
     </dl>
   </div>
-  <div class="wrap reviews" id="reviews" hidden></div>
+</section>
+
+<!-- ============ VÉLEMÉNYEK (Google) ============
+     Összesítő: a Google Térkép-profil adatai (Gyáli Autószerviz, 2026-10-27: 5,0 / 9 értékelés) – frissítéskor itt és a rev-note-ban írd át.
+     Kártyák: a lenti #reviewsData JSON-ba csak a Google-ön szereplő, az értékelő hozzájárulásával átvett, szó szerinti vélemény kerülhet. -->
+<section class="sec rev" id="velemenyek" aria-labelledby="rev-h">
+  <div class="wrap">
+    <div class="rev-top">
+      <div class="sec-head rev-head">
+        <h2 id="rev-h">Akik már minket választottak</h2>
+        <p>Ügyfeleink visszajelzései a Google-ről</p>
+      </div>
+      <div class="rev-score">
+        <p class="rev-src"><span class="rev-g">Google</span>-értékelések</p>
+        <p class="rev-avg"><strong>5,0</strong><span>/ 5</span></p>
+        <span class="stars" role="img" aria-label="5,0 csillag az 5-ből" style="--fill:100%"><span class="stars-bg" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2.6l2.85 6.05 6.65.8-4.9 4.55 1.28 6.58L12 17.3l-5.88 3.28 1.28-6.58-4.9-4.55 6.65-.8z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2.6l2.85 6.05 6.65.8-4.9 4.55 1.28 6.58L12 17.3l-5.88 3.28 1.28-6.58-4.9-4.55 6.65-.8z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2.6l2.85 6.05 6.65.8-4.9 4.55 1.28 6.58L12 17.3l-5.88 3.28 1.28-6.58-4.9-4.55 6.65-.8z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2.6l2.85 6.05 6.65.8-4.9 4.55 1.28 6.58L12 17.3l-5.88 3.28 1.28-6.58-4.9-4.55 6.65-.8z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2.6l2.85 6.05 6.65.8-4.9 4.55 1.28 6.58L12 17.3l-5.88 3.28 1.28-6.58-4.9-4.55 6.65-.8z"/></svg></span><span class="stars-fg" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2.6l2.85 6.05 6.65.8-4.9 4.55 1.28 6.58L12 17.3l-5.88 3.28 1.28-6.58-4.9-4.55 6.65-.8z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2.6l2.85 6.05 6.65.8-4.9 4.55 1.28 6.58L12 17.3l-5.88 3.28 1.28-6.58-4.9-4.55 6.65-.8z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2.6l2.85 6.05 6.65.8-4.9 4.55 1.28 6.58L12 17.3l-5.88 3.28 1.28-6.58-4.9-4.55 6.65-.8z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2.6l2.85 6.05 6.65.8-4.9 4.55 1.28 6.58L12 17.3l-5.88 3.28 1.28-6.58-4.9-4.55 6.65-.8z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2.6l2.85 6.05 6.65.8-4.9 4.55 1.28 6.58L12 17.3l-5.88 3.28 1.28-6.58-4.9-4.55 6.65-.8z"/></svg></span></span>
+        <p class="rev-count">9 értékelés alapján</p>
+      </div>
+      <dl class="rev-dist" aria-label="Az értékelések megoszlása csillagok szerint"><div><dt>5 csillag</dt><dd><span class="bar"><i style="--w:100%"></i></span><b>9</b></dd></div><div><dt>4 csillag</dt><dd><span class="bar"><i style="--w:0%"></i></span><b>0</b></dd></div><div><dt>3 csillag</dt><dd><span class="bar"><i style="--w:0%"></i></span><b>0</b></dd></div><div><dt>2 csillag</dt><dd><span class="bar"><i style="--w:0%"></i></span><b>0</b></dd></div><div><dt>1 csillag</dt><dd><span class="bar"><i style="--w:0%"></i></span><b>0</b></dd></div></dl>
+    </div>
+    <div class="rev-cards" id="revCards" hidden>
+      <div class="rev-track" id="revTrack" role="region" aria-label="Google-vélemények – oldalra görgethető" tabindex="0"></div>
+      <div class="rev-nav">
+        <button class="rev-btn" type="button" id="revPrev" aria-label="Előző vélemények"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M12.5 4l-6 6 6 6"/></svg></button>
+        <button class="rev-btn" type="button" id="revNext" aria-label="Következő vélemények"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7.5 4l6 6-6 6"/></svg></button>
+      </div>
+    </div>
+    <div class="rev-foot">
+      <a class="btn btn-glow" href="https://www.google.com/maps/place/Gy%C3%A1li+Aut%C3%B3szerviz/data=!4m8!3m7!1s0x4741eb0060f9f177:0x4e233833132f29c6!8m2!3d47.3714733!4d19.2125328!9m1!1b1!16s%2Fg%2F11vsxyr_kk?hl=hu" target="_blank" rel="noopener">Összes Google-vélemény megtekintése<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M8 4h8v8M16 4L5 15"/></svg><span class="sr-only"> (új lapon nyílik)</span></a>
+      <p class="rev-note">Forrás: a Gyáli Autószerviz (Gyál, Vállalkozó út 8.) nyilvános Google Térkép-profilja, 2026. október 27-i állapot. A vélemények teljes szövege a Google-on olvasható.</p>
+    </div>
+  </div>
+  <script type="application/json" id="reviewsData">[]</script>
 </section>
 
 <!-- ============ FOLYAMAT ============ -->

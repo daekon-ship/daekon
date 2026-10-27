@@ -90,3 +90,11 @@ Hero → Szolgáltatások (6 kategória: asztalon index + nagy panel saját rajz
 6. **Szövegek:** a szolgáltatás-leírások és a diagnosztika-szövegek általános szakmai megfogalmazások — a tulajdonossal átnézendők (pl. „hivatalos diagnosztikai eszközök” a Q-SERVICE adatlapról).
 7. **Jogi oldalak:** impresszum, adatkezelés, sütikezelés (Google Térkép és Google Fonts külső szolgáltatás).
 8. **Domain/SEO:** a canonical `https://gyalauto.hu/`; élesítéskor a `noindex` levételével együtt OG-kép készítendő.
+
+## Google-vélemények szekció (2026-10-27)
+- Hely: „Miért minket?” után, a folyamat / időpontkérés előtt (`#velemenyek`). Cím: „Akik már minket választottak”.
+- Google-cégprofil: **Gyáli Autószerviz**, 2360 Gyál, Vállalkozó út 8., weboldal gyalauto.hu, tel. 06 20 374 6783 (egyezik). Ellenőrzött állapot 2026-10-27: **5,0 / 5, 9 értékelés** (mind 5 csillag).
+- Az összesítő számokat az `index.html` VÉLEMÉNYEK szekciójában és a `rev-note` dátumában kell kézzel frissíteni.
+- Véleménykártyák: `#reviewsData` JSON (`[{"name","rating","date","text","url"}]`). **Üres** – a véleményszövegek és értékelőnevek átvételéhez az értékelők hozzájárulása kell
+  (szerzői jog + személyes adat; a Google feltételei a tartalom kimásolását sem engedik). Csak szó szerinti szöveg és a vélemény saját Google-linkje kerülhet bele.
+- Nincs AggregateRating strukturált adat (a Google irányelvei szerint saját magáról közölt értékelés nem jogosult csillagos találatra).
