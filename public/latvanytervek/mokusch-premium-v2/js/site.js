@@ -169,7 +169,10 @@
     var heroEl = $('.hero') || $('.sub-hero');
     var blockers = $$('.finale, .ftr, .cake-cta, .ribbon, .wiz');
     var seen = new Set(), pastHero = false;
-    var upd = function () { fl.classList.toggle('is-on', pastHero && seen.size === 0); };
+    // csak felfelé görgetéskor jelenik meg, így olvasás közben nem takar ki szöveget
+    var up = false, ly = window.scrollY;
+    window.addEventListener('scroll', function () { var y = window.scrollY; if (Math.abs(y - ly) > 6) { up = y < ly; ly = y; upd(); } }, { passive: true });
+    var upd = function () { fl.classList.toggle('is-on', pastHero && up && seen.size === 0); };
     if (heroEl) new IntersectionObserver(function (e) { pastHero = !e[0].isIntersecting; upd(); }, { threshold: 0 }).observe(heroEl);
     var bo = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) seen.add(e.target); else seen.delete(e.target); }); upd(); }, { threshold: 0 });
     blockers.forEach(function (b) { bo.observe(b); });

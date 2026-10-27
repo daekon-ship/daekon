@@ -247,7 +247,7 @@
     grow('.btn, .nav a, .chip, .pin, .link, .contents a', 44, '', 'is-btn');
 
     // mágneses gombok
-    $$('.btn').forEach(function (b) {
+    $$('.btn:not(.float-cta)').forEach(function (b) {
       b.addEventListener('pointermove', function (e) {
         var r = b.getBoundingClientRect();
         M.animate(b, { x: (e.clientX - r.left - r.width / 2) * 0.25, y: (e.clientY - r.top - r.height / 2) * 0.35 }, spring(260, 16));

@@ -172,10 +172,10 @@ def head(title, desc, prefix, extra=""):
 <meta property="og:description" content="{html.escape(desc)}">
 <link rel="icon" href="{prefix}img/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://static.wixstatic.com" crossorigin>
-<link rel="preload" href="{prefix}fonts/amatic-bold.woff" as="font" type="font/woff" crossorigin>
+<link rel="preload" href="{prefix}fonts/playfair-normal-400_900-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="{prefix}fonts/dancing-var.woff" as="font" type="font/woff" crossorigin>
 <link rel="preload" href="{prefix}fonts/manrope-normal-200_800-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="{prefix}css/site.css?v=6">
+<link rel="stylesheet" href="{prefix}css/site.css?v=8">
 <script>
   /* Animációs mód: teljes, vagy – csökkentett mozgást kérő eszközön – visszafogott (csak áttűnések,
      feltárások, ikonmozgás). A láblécben a látogató átkapcsolhat (localStorage). */
@@ -315,8 +315,8 @@ def footer(prefix, page_js="", float_cta=True):
 </footer>
 {fl}
 <script src="{prefix}js/vendor/motion-11.18.2.min.js" defer></script>
-<script src="{prefix}js/site.js?v=6" defer></script>
-<script src="{prefix}js/motion-fx.js?v=3" defer></script>
+<script src="{prefix}js/site.js?v=7" defer></script>
+<script src="{prefix}js/motion-fx.js?v=4" defer></script>
 {page_js}</body>
 </html>
 '''
@@ -1018,9 +1018,9 @@ def build_arculat():
 <section class="sec"><div class="wrap">
   <div class="sec__head"><h2 data-rv>Betűk</h2></div>
   <div class="type-spec">
-    <div class="card" data-rv><span class="tag">Címek, gombok · Amatic SC</span><p class="big">Hagyd magad mögött a várost</p><p>Ugyanaz a kézzel rajzolt betű, amit Wanda a Wix-oldalon választott.</p></div>
-    <div class="card" data-rv><span class="tag">Kézírás, logó · Dancing Script</span><p class="big big--script">kávék – sütik – kutyafülék</p><p>A Wix-logó betűje – alcímekhez, apró kiemelésekhez.</p></div>
-    <div class="card" data-rv><span class="tag">Szöveg · Manrope</span><p class="big big--sans">Kávék, sütik, kutyafülék</p><p>Modern, jól olvasható betű a hosszabb szövegekhez és az űrlapokhoz.</p></div>
+    <div class="card" data-rv><span class="tag">Címek · Playfair Display</span><p class="big">Hagyd magad mögött <em>a várost</em></p><p>Elegáns, jól olvasható antikva, dőlt kiemelésekkel.</p></div>
+    <div class="card" data-rv><span class="tag">Kézírás, logó · Dancing Script</span><p class="big big--script">kávék – sütik – kutyafülék</p><p>A Wix-logó betűje – csak a logóban, a fejezetszámokban és a nagy alcímekben.</p></div>
+    <div class="card" data-rv><span class="tag">Szöveg · Manrope</span><p class="big big--sans">Kávék, sütik, kutyafülék</p><p>Modern, jól olvasható betű a szövegekhez, gombokhoz és űrlapokhoz.</p></div>
   </div>
   <p class="note" data-rv><b>Licenc:</b> mindkét betű szabad (SIL Open Font License), a logó feliratai görbékké alakítva – betűtelepítés nélkül is pontos.</p>
 </div></section>'''
