@@ -1,7 +1,7 @@
 # Nika Kozmetika – látványterv, átadás
 
 **Élő előnézet:** https://daekon-ship.github.io/daekon/latvanytervek/nika-kozmetika/
-**Állapot:** 2. kör (2026. 10. 27.) – nőiesebb, púderes rózsa–mályva paletta a zsályazöld helyett. – csak látványterv, `noindex, nofollow`. Éles oldalhoz, domainhez nem nyúltunk, a vállalkozásnak nem ment üzenet.
+**Állapot:** 3. kör (2026. 10. 27.) – kikerültek a rajzolt képhelyek, a pecsét és a galéria; új betűpár: Cormorant Garamond + DM Sans. (2. kör: púderes rózsa–mályva paletta.) – csak látványterv, `noindex, nofollow`. Éles oldalhoz, domainhez nem nyúltunk, a vállalkozásnak nem ment üzenet.
 
 > Miért nem külön repó? A brief a `nika-kozmetika-preview` repót javasolta. A DAEKON-ház-szabály szerint minden látványterv a `daekon-ship/daekon` → `public/latvanytervek/<ügyfél>/` mappába kerül, ugyanazon a GitHub Pages címen frissül körről körre. Új repót ezért nem hoztunk létre.
 
@@ -20,15 +20,15 @@
 - N-monogram (`#mono` szimbólum az `index.html`-ben, `img/favicon.svg`): vékony szárak, telt átló, a jobb szárból kihajtó levél, boltíves arany keretben. Saját rajz, nem sablonikon.
 
 ## Szerkezet
-Fejléc (görgetésre zsugorodik, üveges krém háttér) · Hero (aszimmetrikus, boltíves keret + arany kontúr + pecsét) · Bemutatkozás (portréhely, jóváhagyandó bemutatkozó szöveg, 3 érték) · Kezelések (6 kártya, eltérő méretű/színű mozaik, mindegyik „Érdeklődöm” gombja előtölti az időpontkérő témáját) · Természetesen (sötét zöld blokk, Ilcsi-kozmetikakeresős említés linkkel – logó és partnerségi állítás nélkül – + Levél/Krém/Olaj kártyák) · Galéria (aszimmetrikus rács, teljes képernyős nagyító billentyűzettel és húzással) · Vélemények (mintakártyák, kitalált vélemény nincs) · Időpontkérés (hívás elsődlegesen) · Kapcsolat (adatok, 3 gomb, kattintásra töltődő Google-térkép) · Lábléc (jogi oldalak helye párbeszédablakkal, „Látványterv – DAEKON”) · mobil alsó gyors-CTA.
+Fejléc (görgetésre zsugorodik, üveges krém háttér) · Hero (aszimmetrikus: szöveg + boltíves látogatókártya) · Bemutatkozás (portréhely, jóváhagyandó bemutatkozó szöveg, 3 érték) · Kezelések (6 kártya, eltérő méretű/színű mozaik, mindegyik „Érdeklődöm” gombja előtölti az időpontkérő témáját) · Természetesen (sötét zöld blokk, Ilcsi-kozmetikakeresős említés linkkel – logó és partnerségi állítás nélkül – + Levél/Krém/Olaj számozott lista) · Vélemények (mintakártyák, kitalált vélemény nincs) · Időpontkérés (hívás elsődlegesen) · Kapcsolat (adatok, 3 gomb, kattintásra töltődő Google-térkép) · Lábléc (jogi oldalak helye párbeszédablakkal, „Látványterv – DAEKON”) · mobil alsó gyors-CTA.
 
 ## Időpontkérő
 - Elsődleges működő CTA: `tel:+36308661037` (fejléc, hero címsor alatt, mobil sáv, időpont-blokk, panel teteje).
 - Panel: név*, telefon*, e-mail, téma, napszak (Délelőtt/Délután/Mindegy – nem nyitvatartás!), nap, üzenet, hozzájárulás*. Ellenőrzés után **a látogató saját e-mail-programját nyitja meg** kitöltött levéllel; a visszajelzés ezt őszintén mondja („csak akkor ér célba, ha elküldöd”). Backend, adattárolás nincs. Éleshez: foglalási motor vagy űrlap-szolgáltatás + adatkezelési tájékoztató egyeztetendő.
 
-## Tipográfia
-- Címsor: **Playfair Display** (változtatható, helyben, OFL). A brief Cormorant Garamondot is engedett, de az mobilon kis méretben vékony; a Playfair korábbi projekten mobilon jól vizsgázott. Szöveg: **Manrope** (helyben).
-- Fraunces nincs. Nagy „display” méret nincs: H1 max. 47 px (mobilon 31 px), H2 max. 37 px, kártyacím 21–27 px, törzs 16,5 px.
+## Tipográfia – 3. kör
+- Visszajelzés: „a betűtípus is legyen jobb” → **Cormorant Garamond** (címsor, 500–600, dőlt kiemelések) + **DM Sans** (szöveg, változtatható). Mindkettő a brief listájáról, OFL, helyben (`fonts/`, a google/fonts repóból latin + magyar ékezetes részhalmazra vágva).
+- Fraunces nincs. Mérsékelt méretek: H1 max. 52 px (Cormorant kis x-magassága miatt ez kb. a korábbi 47 px-es Playfairnek felel meg), mobilon 35 px; H2 max. 42 px; kártyacím 26 px; törzs 16,5 px.
 
 ## Színek (`:root`) – 2. kör
 Visszajelzés: „nem elég jók a színek, legyen nőiesebb” → a zöld kikerült, púderes rózsa–mályva–pezsgőarany lett (a brief zöld palettája helyett).
@@ -63,8 +63,8 @@ Ha a Motion 2,5 s-on belül nem töltődik be, minden tartalom animáció nélk�
 ## Fájlok
 `index.html` · `css/site.css` · `js/site.js` · `js/vendor/motion-11.18.2.min.js` (+ licenc) · `fonts/` (Playfair, Manrope + OFL) · `img/favicon.svg`. A botanikai rajzok `<symbol>`-ként az `index.html`-ben (`#b-olive`, `#b-fern`, `#b-chamomile`, `#b-rosemary`, `#b-eucalyptus`, `#b-grass`).
 
-## Képanyag
-Stock-, Unsplash- vagy generált fotó **nincs**. Minden képhely („Fotó helye”) saját rajzolt botanikai lemez. Valós kép cseréje: a `.slot` elembe `<img src="img/…" alt="…" loading="lazy">` kerül, a `.slot__paper` és a címke törölhető – a keret, a lekerekítés és az animáció marad.
+## Képanyag – 3. kör
+Visszajelzés: „ezek nem kellenek” (rajzolt képhelyek, boltíves rajzos keret, forgó pecsét) → mind kikerült, a galéria szakasz is. Az oldal most kép nélkül, tipográfiával és színfelületekkel működik: a hero jobb oldalán boltíves **látogatókártya** (cím, telefon, Hívom/Útvonal gomb), a kezelések szöveges kártyamozaik. Ha megjönnek a szalon saját fotói, a galéria és a képes elemek visszaépíthetők. Stock- vagy generált kép továbbra sincs.
 
 ## Még egyeztetendő tartalmak
 1. **Fotók** (a legfontosabb): hero-kép, portré, a szalon belső tere, kezelés közbeni képek, részletek – és felhasználási hozzájárulás.
