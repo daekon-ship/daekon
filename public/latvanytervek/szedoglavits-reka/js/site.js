@@ -221,13 +221,12 @@
   animate('.hero__text > [data-h]:not(.hero__eyebrow)', { opacity: [0, 1], y: [16, 0] }, { duration: 0.8, ease: ease, delay: stagger(0.1, { startDelay: 0.7 }) });
   animate('.pp__img', { clipPath: ['inset(100% 0 0 0)', 'inset(0% 0 0 0)'] }, { duration: 1.3, ease: [0.7, 0, 0.2, 1], delay: 0.25 });
   animate(heroImg, { scale: [1.12, 1] }, { duration: 1.8, ease: ease, delay: 0.25 });
-  animate('.pp__frame', { opacity: [0, 1], x: [14, 0], y: [-14, 0] }, { duration: 1.1, ease: ease, delay: 0.9 });
+  animate('.pp__frame', { opacity: [0, 1], scale: [0.97, 1] }, { duration: 1.1, ease: ease, delay: 0.9 });
   animate('.pp__tag', { opacity: [0, 1], x: [-12, 0] }, { duration: 0.8, ease: ease, delay: 1.25 });
 
   // finom parallax a portrén (csak asztali nézetben)
   if (desktop) {
-    scroll(animate('.pp__img picture', { y: [0, 40] }, { ease: 'linear' }), { target: hero, offset: ['start start', 'end start'] });
-    scroll(animate('.pp__frame', { y: [0, -18] }, { ease: 'linear' }), { target: hero, offset: ['start start', 'end start'] });
+    scroll(animate('.hero__portrait', { y: [0, 36] }, { ease: 'linear' }), { target: hero, offset: ['start start', 'end start'] });
   }
 
   // szakaszonkénti megjelenés
