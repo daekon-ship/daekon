@@ -1,7 +1,7 @@
 # Nika Kozmetika – látványterv, átadás
 
 **Élő előnézet:** https://daekon-ship.github.io/daekon/latvanytervek/nika-kozmetika/
-**Állapot:** 7. kör (2026. 10. 27.) – a kezelésnevekkel futó szalag kikerült. 6. kör: sok Motion-effekt, új N-monogram.
+**Állapot:** 8. kör (2026. 10. 27.) – vevőcsalogatóbb, de természetes szövegek a hero alatt, a kezelések alatt és az időpont-blokkban. 7. kör: futó szalag ki.
 
 > Miért nem külön repó? A brief a `nika-kozmetika-preview` repót javasolta. A DAEKON-ház-szabály szerint minden látványterv a `daekon-ship/daekon` → `public/latvanytervek/<ügyfél>/` mappába kerül, ugyanazon a GitHub Pages címen frissül körről körre. Új repót ezért nem hoztunk létre.
 
