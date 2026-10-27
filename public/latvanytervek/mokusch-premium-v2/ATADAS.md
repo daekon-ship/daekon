@@ -3,6 +3,12 @@
 Élő előnézet: https://daekon-ship.github.io/daekon/latvanytervek/mokusch-premium-v2/
 Előző változat (érintetlen, összehasonlításhoz): https://daekon-ship.github.io/mokusch/
 
+## Olvashatóság (2026. október 27., délután)
+
+Minden apró dőlt szöveg (alcímek, nyitóidézet, lépések, szalag-szövegek, menüszámok, fotóhely-feliratok) Manrope-ra váltott, nagyobb mérettel; sötét háttéren a szöveg teljes krém színű (jobb kontraszt). Playfair dőlt csak a nagy címek kiemelésében maradt.
+
+B-változat: `../mokusch-premium-v3/` (rajzolt illusztrációkkal, a Wixhez csak kicsit hasonlít).
+
 ## Futó szalag kivéve (2026. október 27.)
 
 A „kávék · sütik · torták…” futó szalag az ügyfél kérésére kikerült a főoldalról.

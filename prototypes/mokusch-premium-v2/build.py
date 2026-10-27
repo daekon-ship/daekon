@@ -174,7 +174,7 @@ def head(title, desc, prefix, extra=""):
 <link rel="preconnect" href="https://static.wixstatic.com" crossorigin>
 <link rel="preload" href="{prefix}fonts/playfair-normal-400_900-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="{prefix}fonts/manrope-normal-200_800-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="{prefix}css/site.css?v=9">
+<link rel="stylesheet" href="{prefix}css/site.css?v=10">
 <script>
   /* Animációs mód: teljes, vagy – csökkentett mozgást kérő eszközön – visszafogott (csak áttűnések,
      feltárások, ikonmozgás). A láblécben a látogató átkapcsolhat (localStorage). */

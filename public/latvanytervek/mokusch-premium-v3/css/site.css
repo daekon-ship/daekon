@@ -1,0 +1,719 @@
+/* Közös alap a v2-ből (build_v3.py másolja) + B-változat felülírásai */
+/* Mókusch — prémium látványterv v2, 3. kör (DAEKON)
+   Wanda Wix-világa felnagyítva: olíva és púder, felhős szegélyek, kézírásos betűk,
+   nagy, filmszerű képpárok. Betűk: Playfair Display (címek – jól olvasható), Manrope (szöveg, gombok),
+   Kézírásos betű nincs. Mind saját tárhelyről. */
+
+@font-face{font-family:"Manrope";src:url(../fonts/manrope-normal-200_800-latin-ext.woff2) format("woff2");font-weight:200 800;font-display:swap;unicode-range:U+0100-02AF,U+0304,U+0308,U+0329,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:"Manrope";src:url(../fonts/manrope-normal-200_800-latin.woff2) format("woff2");font-weight:200 800;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+
+:root{
+  --paper:#F6EFE4;
+  --paper-2:#EEE4D6;
+  --cream:#FBF7F0;
+  --rose:#C9AFA0;        /* Wix-fejléc púderrózsa */
+  --rose-2:#DCC6B9;
+  --rose-soft:#EEE1D8;
+  --olive:#6C6946;       /* Wix-olíva, kicsit sötétítve – krém szöveggel AA */
+  --olive-2:#817E56;     /* eredeti Wix-olíva */
+  --olive-3:#5A5739;
+  --forest:#263A2D;
+  --berry:#793F49;
+  --berry-2:#5F2F38;
+  --brown:#6A482D;       /* Wix-gombok barnája */
+  --brass:#A68A5B;
+  --bark:#4A3527;
+  --ink:#2E241C;
+  --mute:#6B5A47;
+  --line:rgba(46,36,28,.14);
+  --line-strong:rgba(46,36,28,.3);
+
+  --display:"Playfair Display",Georgia,serif;
+  --script:"Playfair Display",Georgia,serif;
+  --sans:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
+
+  /* mérsékelt típusskála – nincs óriás címsor */
+  --fs-b:clamp(1rem,.97rem + .15vw,1.06rem);
+  --fs-lead:clamp(1.04rem,1rem + .25vw,1.15rem);
+  --fs-h1:clamp(2rem,1.55rem + 2vw,3.1rem);
+  --fs-h2:clamp(1.7rem,1.4rem + 1.3vw,2.5rem);
+  --fs-h3:clamp(1.15rem,1.06rem + .4vw,1.38rem);
+
+  --s3:1rem;--s4:1.5rem;--s5:2rem;--s6:3rem;
+  --wrap:1240px;
+  --gutter:clamp(18px,4.5vw,48px);
+  --radius:4px;
+  --ease:cubic-bezier(.22,.7,.2,1);
+  --hdr:78px;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:calc(var(--hdr) + 20px)}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:var(--fs-b);line-height:1.68;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{max-width:100%;height:auto;display:block}
+svg{display:block}
+a{color:inherit;text-underline-offset:.22em;text-decoration-thickness:1px}
+button,input,select,textarea{font:inherit;color:inherit}
+p{margin:0 0 1em}
+h1,h2,h3{font-family:var(--display);font-weight:500;line-height:1.15;letter-spacing:-.005em;margin:0;text-wrap:balance}
+h1{font-size:var(--fs-h1)}
+h2{font-size:var(--fs-h2)}
+h3{font-size:var(--fs-h3);line-height:1.2}
+h1 em,h2 em,h3 em{font-style:italic;font-weight:400;color:var(--berry)}
+.on-dark h1 em,.on-dark h2 em{color:var(--rose-2)}
+.it{font-family:var(--script);font-style:italic;font-weight:400}
+::selection{background:var(--rose);color:var(--ink)}
+:focus-visible{outline:2px solid var(--berry);outline-offset:3px;border-radius:2px}
+.on-dark :focus-visible{outline-color:var(--rose-2)}
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.skip{position:absolute;left:12px;top:-60px;z-index:200;background:var(--ink);color:var(--paper);padding:10px 16px;border-radius:var(--radius);text-decoration:none}
+.skip:focus{top:12px}
+.wrap{width:100%;max-width:var(--wrap);margin-inline:auto;padding-inline:var(--gutter)}
+.on-dark{color:var(--paper)}
+.muted{color:var(--mute)}
+
+/* ------- kis elemek ------- */
+.no{display:block;font-family:var(--display);font-weight:500;font-size:1.35rem;line-height:1;color:var(--berry);margin-bottom:.35rem}
+.on-dark .no{color:var(--rose-2)}
+.sub{font-family:var(--sans);font-weight:600;font-size:1rem;line-height:1.45;letter-spacing:.01em;color:var(--berry);margin:.7rem 0 1rem}
+.on-dark .sub{color:var(--paper)}
+.lead{font-size:var(--fs-lead);line-height:1.65;color:var(--bark);max-width:32em}
+.on-dark .lead{color:var(--paper)}
+.kicker{display:flex;align-items:center;gap:.7em;font-size:.76rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--mute);margin:0 0 1rem}
+.kicker .no{display:inline;margin:0;font-size:1.3rem}
+.kicker::after{content:"";flex:0 0 36px;height:1px;background:var(--brass)}
+
+/* gombok – a Wix-oldal pirulagombjai, jól olvasható felirattal */
+.btn{--b:var(--brown);--f:var(--paper);position:relative;display:inline-flex;align-items:center;justify-content:center;gap:.55em;min-height:50px;padding:.75em 1.45em;border-radius:999px;border:1.5px solid var(--b);background:var(--b);color:var(--f);font-family:var(--sans);font-weight:650;font-size:.95rem;letter-spacing:.01em;text-decoration:none;line-height:1;cursor:pointer;white-space:nowrap;transition:background .3s var(--ease),color .3s var(--ease),border-color .3s var(--ease),transform .3s var(--ease),box-shadow .3s var(--ease)}
+.btn svg{width:18px;height:18px;flex:none}
+.btn:hover{background:var(--berry);border-color:var(--berry);color:var(--paper);transform:translateY(-2px);box-shadow:0 14px 24px -14px rgba(46,36,28,.6)}
+.btn:active{transform:translateY(0)}
+.btn--cream{--b:var(--cream);--f:var(--ink)}
+.btn--ghost{background:transparent;color:var(--ink);border-color:var(--line-strong)}
+.btn--ghost:hover{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.btn--berry{--b:var(--berry)}
+.btn--berry:hover{background:var(--berry-2);border-color:var(--berry-2)}
+.btn .cake path{fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.on-dark .btn--cream:hover{background:var(--rose-2);border-color:var(--rose-2);color:var(--ink)}
+.on-dark .btn--ghost{color:var(--paper);border-color:rgba(246,239,228,.55)}
+.on-dark .btn--ghost:hover{background:var(--paper);color:var(--ink);border-color:var(--paper)}
+.btns{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:var(--s5)}
+.link{display:inline-flex;align-items:center;gap:.4em;font-weight:700;font-size:.92rem;color:var(--berry);text-decoration:none;border-bottom:1px solid rgba(121,63,73,.35);padding-bottom:1px}
+.link:hover{border-color:var(--berry)}
+.link svg{width:15px;height:15px}
+.on-dark .link{color:var(--rose-2);border-color:rgba(220,198,185,.5)}
+
+.tag{display:inline-flex;align-items:center;font-size:.72rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;padding:.35em .75em;border-radius:999px;border:1px solid var(--line-strong);color:var(--mute);line-height:1.3;white-space:nowrap}
+.tag--minta{border-style:dashed;border-color:rgba(121,63,73,.45);color:var(--berry)}
+.note{font-size:.85rem;line-height:1.55;color:var(--mute);border-left:1px solid var(--brass);padding:.1em 0 .1em .9em;margin:var(--s4) 0 0;max-width:44em}
+.note b{color:var(--bark)}
+.on-dark .note{color:rgba(246,239,228,.72)}
+.on-dark .note b{color:var(--paper)}
+
+/* felhőszegély – a Wix-fejléc felhőinek utóda */
+.cloud{position:absolute;left:0;right:0;width:100%;height:clamp(28px,4vw,56px);pointer-events:none;z-index:3;color:var(--to,var(--paper))}
+.cloud--top{top:1px;transform:translateY(-100%)}
+.cloud--bot{bottom:-1px}
+.cloud path{fill:currentColor}
+
+/* képek */
+.pic{position:relative;overflow:hidden;background:var(--paper-2)}
+.pic img{width:100%;height:100%;object-fit:cover}
+.pic .px{position:absolute;inset:-6% 0;height:112%}
+.pic .px img{height:100%}
+.pic__tag{position:absolute;left:14px;bottom:14px;z-index:2;font-size:.66rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:.35em .7em;border-radius:999px;background:rgba(251,247,240,.86);color:var(--bark)}
+.plate{position:relative;margin:0;background:var(--cream);padding:clamp(8px,1vw,11px);box-shadow:0 0 0 1px rgba(46,36,28,.08),0 28px 50px -34px rgba(46,36,28,.55);border-radius:6px}
+.plate__img{position:relative;overflow:hidden;background:var(--paper-2);aspect-ratio:var(--ar,4/5);border-radius:3px}
+.plate__img img{width:100%;height:100%;object-fit:cover;transition:transform 1.4s var(--ease)}
+.plate:hover .plate__img img{transform:scale(1.04)}
+.plate__img .px{position:absolute;left:0;right:0;top:-5%;height:110%}
+.plate__img .px img{height:100%}
+.plate__tag{position:absolute;left:12px;bottom:12px;z-index:3;font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:.35em .7em;border-radius:999px;background:rgba(251,247,240,.88);color:var(--bark)}
+.slot{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.4em;padding:1.2em;text-align:center;background:radial-gradient(110% 80% at 50% 0%,rgba(255,255,255,.55),transparent 65%),linear-gradient(160deg,var(--slot,#EFE5D9),var(--slot2,#E6D8C9));color:var(--bark)}
+.slot__ic{width:24px;height:24px;opacity:.5}
+.slot__t{font-family:var(--sans);font-weight:600;font-size:.95rem;line-height:1.3;max-width:14em}
+.slot__c{font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--mute)}
+
+/* ------- felső sáv + fejléc (púder, felhős alsó szegéllyel) ------- */
+.topbar{background:var(--olive-3);color:var(--paper);font-size:.78rem;letter-spacing:.03em}
+.topbar .wrap{display:flex;justify-content:space-between;align-items:center;gap:1rem;min-height:32px}
+.topbar a{color:inherit;text-decoration:none}
+.topbar a:hover{color:var(--paper);text-decoration:underline}
+.topbar .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:#A6B19A;margin-right:.5em;vertical-align:1px}
+.topbar .dot.is-closed{background:var(--rose)}
+.topbar__r{display:flex;gap:1.4rem}
+@media (max-width:700px){.topbar__r .opt{display:none}}
+.hdr{position:sticky;top:0;z-index:60;background:var(--rose-2)}
+.hdr__in{position:relative;z-index:2;display:flex;align-items:center;gap:var(--s4);height:var(--hdr)}
+.hdr .cloud{--to:var(--rose-2);height:16px;bottom:0;top:auto;transform:translateY(98%) scaleY(-1);z-index:1}
+.brand{display:flex;align-items:center;gap:.6rem;text-decoration:none;margin-right:auto;min-width:0;color:var(--ink)}
+.brand__mark{height:48px;width:auto;flex:none}
+.brand__t{display:flex;flex-direction:column;line-height:1}
+.brand__word{height:32px;width:auto}
+.brand__t span{font-size:.6rem;font-weight:700;letter-spacing:.21em;text-transform:uppercase;color:var(--bark);margin-top:.45em;white-space:nowrap;opacity:.8}
+.nav{display:none}
+.nav ul{display:flex;gap:.1rem;list-style:none;margin:0;padding:0}
+.nav a{display:block;white-space:nowrap;padding:.5em .75em;font-family:var(--sans);font-weight:650;font-size:.9rem;text-decoration:none;color:var(--bark);border-radius:999px;transition:background .25s,color .25s}
+.nav a:hover,.nav a[aria-current="page"]{background:rgba(251,247,240,.6);color:var(--ink)}
+.hdr .btn{min-height:44px;padding:.6em 1.1em;font-size:.88rem}
+.menu-btn{display:inline-flex;align-items:center;justify-content:center;gap:.55em;min-height:44px;min-width:44px;padding:0 .95em;border:1.5px solid rgba(46,36,28,.35);border-radius:999px;background:transparent;cursor:pointer;font-family:var(--sans);font-weight:650;font-size:.88rem}
+.menu-btn:hover{border-color:var(--ink)}
+.menu-btn i{position:relative;width:16px;height:1.5px;background:currentColor;display:block;transition:background .2s}
+.menu-btn i::before,.menu-btn i::after{content:"";position:absolute;left:0;width:16px;height:1.5px;background:currentColor;transition:transform .3s var(--ease)}
+.menu-btn i::before{top:-5px}.menu-btn i::after{top:5px}
+.menu-btn[aria-expanded="true"] i{background:transparent}
+.menu-btn[aria-expanded="true"] i::before{transform:translateY(5px) rotate(45deg)}
+.menu-btn[aria-expanded="true"] i::after{transform:translateY(-5px) rotate(-45deg)}
+.menu-btn .lbl{display:none}
+.lbl-short{display:none}
+@media (max-width:460px){.hdr .btn .lbl-long{display:none}.hdr .btn .lbl-short{display:inline}.brand__t span{display:none}.brand__mark{height:40px}.brand__word{height:27px}.hdr__in{gap:.55rem}.hdr .btn{padding-inline:.9em}}
+@media (min-width:1240px){.nav{display:block}.menu-btn .lbl{display:inline}}
+
+.sheet{position:fixed;inset:0;z-index:80}
+.sheet__bg{position:absolute;inset:0;background:rgba(46,36,28,.45)}
+.sheet__panel{position:absolute;right:0;top:0;bottom:0;width:min(460px,100%);background:var(--rose-soft);overflow-y:auto;padding:var(--s4) var(--gutter) var(--s6);display:flex;flex-direction:column;gap:var(--s4)}
+.sheet__top{display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.sheet__top p{margin:0;font-family:var(--script);font-style:italic;font-weight:400;font-size:1.4rem;color:var(--berry)}
+.toc{list-style:none;margin:0;padding:0}
+.toc li{border-bottom:1px solid var(--line)}
+.toc a{display:flex;align-items:baseline;gap:.8em;padding:.45em 0;text-decoration:none;font-family:var(--display);font-weight:500;font-size:1.12rem;line-height:1.1}
+.toc a .n{font-family:var(--sans);font-weight:700;font-size:.9rem;color:var(--berry);min-width:1.6em}
+.toc a:hover span:last-child{color:var(--berry)}
+.toc li.is-torta a{color:var(--berry)}
+.sheet .btn{width:100%}
+.sheet__meta{font-size:.9rem;color:var(--mute)}
+.sheet__meta p{margin:0 0 .4em}
+.sheet__meta a{color:var(--ink)}
+
+/* ------- NYITÓ: filmszerű, félig kifutó kép ------- */
+.hero{position:relative;background:var(--olive);color:var(--paper);overflow:hidden}
+.hero__grid{display:grid;grid-template-columns:minmax(0,1fr)}
+.hero__text{position:relative;z-index:2;padding:clamp(2.5rem,7vw,5rem) var(--gutter) clamp(4rem,8vw,6rem)}
+.hero__media{position:relative;min-height:62svh;overflow:hidden}
+.hero__media .pic{position:absolute;inset:0}
+@media (min-width:960px){
+  .hero__grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);min-height:min(calc(100svh - var(--hdr) - 32px),860px)}
+  .hero__text{display:flex;flex-direction:column;justify-content:center;padding-left:max(var(--gutter),calc((100vw - var(--wrap))/2 + var(--gutter)));padding-right:clamp(2rem,4vw,4rem)}
+  .hero__media{min-height:auto;order:2}
+}
+@media (max-width:959px){.hero__media{order:-1}}
+.hero h1{max-width:9.5em;margin-bottom:var(--s4)}
+.hero h1 .ln{display:block}
+.hero h1 em{color:var(--rose-2)}
+.hero__quote{font-family:var(--sans);font-weight:500;font-size:clamp(1.02rem,.98rem + .2vw,1.12rem);line-height:1.6;color:var(--paper);max-width:26em;margin:0}
+.hero .btns{margin-top:var(--s5)}
+.hero__facts{display:flex;flex-wrap:wrap;gap:.3rem 1.6rem;margin-top:var(--s5);padding-top:var(--s4);border-top:1px solid rgba(246,239,228,.25);font-size:.9rem;color:var(--paper)}
+.hero__facts b{color:var(--paper)}
+.hero__facts a{text-decoration:none}
+.hero__facts a:hover{text-decoration:underline}
+.hero__shade{position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(108,105,70,.5),transparent 30%);pointer-events:none}
+@media (max-width:959px){.hero__shade{background:linear-gradient(0deg,rgba(108,105,70,.85),transparent 35%)}}
+.seal{position:absolute;right:clamp(16px,3vw,40px);bottom:clamp(64px,8vw,96px);width:clamp(88px,10vw,124px);aspect-ratio:1;z-index:3;background:var(--paper);border-radius:50%;padding:5px;box-shadow:0 14px 30px -14px rgba(0,0,0,.5)}
+.seal img{width:100%;height:100%}
+@media (max-width:959px){.seal{bottom:24px}}
+.hero .cloud{--to:var(--paper);z-index:4}
+
+/* rajzolt ágak */
+.sprig{position:absolute;pointer-events:none;color:var(--rose-2);opacity:.45;z-index:1}
+.sprig path,.sprig circle{fill:none;stroke:currentColor;stroke-width:1.15;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.sprig--a{width:130px;left:-36px;bottom:12%;transform-origin:50% 100%}
+.sprig--c{width:100px;right:3%;top:8%;opacity:.35}
+.anim .sway{animation:sway 10s ease-in-out infinite alternate}
+@keyframes sway{from{transform:rotate(-2deg)}to{transform:rotate(2.2deg)}}
+@media (prefers-reduced-motion:reduce){.sway{animation:none!important}}
+
+/* ------- futó szalag (kézírás) ------- */
+.marquee{position:relative;overflow:hidden;padding:1.6rem 0 1.2rem;background:var(--paper)}
+.marquee__track{display:flex;width:max-content;gap:2.2rem;font-family:var(--script);font-style:italic;font-weight:400;font-size:clamp(1.13rem,1.01rem + .6vw,1.48rem);color:var(--olive);white-space:nowrap}
+.marquee__track span{display:inline-flex;align-items:center;gap:2.2rem}
+.marquee__track span::after{content:"";width:7px;height:7px;border-radius:50%;background:var(--berry);opacity:.7}
+
+/* ------- FEJEZET: kétoldalas „könyvlap” – félig kifutó kép + szöveg ------- */
+.spread{position:relative;display:grid;grid-template-columns:minmax(0,1fr)}
+.spread > *{min-width:0}
+.spread--olive{background:var(--olive);color:var(--paper)}
+.spread--rose{background:var(--rose-soft)}
+.spread--paper{background:var(--paper)}
+.spread--paper2{background:var(--paper-2)}
+.spread--forest{background:var(--forest);color:var(--paper)}
+.spread__media{position:relative;min-height:58svh;overflow:hidden}
+.spread__media > .pic{position:absolute;inset:0}
+.spread__text{position:relative;z-index:2;padding:clamp(3rem,8vw,5.5rem) var(--gutter) clamp(3.5rem,8vw,6rem)}
+@media (min-width:960px){
+  .spread{grid-template-columns:minmax(0,1fr) minmax(0,1fr);min-height:min(88vh,820px)}
+  .spread__text{display:flex;flex-direction:column;justify-content:center;padding-right:max(var(--gutter),calc((100vw - var(--wrap))/2 + var(--gutter)));padding-left:clamp(2.5rem,5vw,5rem)}
+  .spread--flip .spread__media{order:2}
+  .spread--flip .spread__text{order:1;padding-left:max(var(--gutter),calc((100vw - var(--wrap))/2 + var(--gutter)));padding-right:clamp(2.5rem,5vw,5rem)}
+  .spread__media{min-height:auto}
+}
+.spread__text h2{max-width:11em}
+.spread .inset{position:absolute;z-index:3;width:clamp(120px,16vw,220px);right:clamp(14px,3vw,40px);bottom:clamp(14px,3vw,40px);background:var(--cream);padding:7px;border-radius:6px;box-shadow:0 26px 40px -22px rgba(0,0,0,.6)}
+.spread--flip .inset{right:auto;left:clamp(14px,3vw,40px)}
+.spread .inset .pic{aspect-ratio:3/4;border-radius:3px}
+
+/* fejezetek apró tartozékai */
+.trio{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(.8rem,2vw,1.2rem);margin-top:var(--s5);max-width:min(330px,80%)}
+.trio figure{margin:0;text-align:center}
+.oval{position:relative;aspect-ratio:3/4;border-radius:999px;overflow:hidden;box-shadow:0 0 0 1px rgba(246,239,228,.35),0 0 0 5px var(--olive),0 0 0 6px rgba(220,198,185,.6)}
+.oval .slot{--slot:#7a7752;--slot2:#646140;color:var(--paper)}
+.trio figcaption{font-size:.72rem;margin-top:.8em;color:rgba(246,239,228,.92);letter-spacing:.06em;text-transform:uppercase}
+.trio figcaption b{display:block;font-family:var(--sans);font-weight:700;font-size:.95rem;letter-spacing:0;text-transform:none;color:var(--paper)}
+.menu-idx{list-style:none;margin:var(--s4) 0 0;padding:0;display:flex;flex-wrap:wrap;gap:.5rem}
+.menu-idx li{font-family:var(--sans);font-weight:600;font-size:.88rem;padding:.4em .95em;border:1.5px solid var(--line-strong);border-radius:999px;color:var(--bark)}
+.on-dark .menu-idx li{border-color:rgba(246,239,228,.4);color:var(--paper)}
+.pins{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-top:var(--s5);max-width:460px}
+.pins .btn{width:100%;padding-inline:.8em}
+.visit{display:flex;flex-wrap:wrap;gap:.4rem 2rem;margin-top:var(--s5);padding-top:var(--s4);border-top:1px solid var(--line);font-size:.88rem;color:var(--bark)}
+.visit b{color:var(--ink)}
+.visit a{font-weight:600}
+.hours{display:grid;grid-template-columns:auto 1fr;gap:.2em 1.2em}
+.hours dt{color:var(--mute)}
+.hours dd{margin:0;font-variant-numeric:tabular-nums}
+
+/* ------- TORTÁK: teljes szélességű finálé ------- */
+.finale{position:relative;color:var(--paper);background:var(--berry-2)}
+.finale__bg{position:absolute;inset:0;overflow:hidden}
+.finale__bg .pic{position:absolute;inset:0;background:transparent}
+.finale__bg::after{content:"";position:absolute;inset:0;background:radial-gradient(80% 90% at 50% 45%,rgba(95,47,56,.55),rgba(60,30,36,.9))}
+.finale__in{position:relative;z-index:2;text-align:center;padding:clamp(6rem,14vw,10rem) var(--gutter)}
+.finale .no{color:var(--rose-2)}
+.finale h2{max-width:12em;margin-inline:auto}
+.finale h2 em{color:var(--rose-2)}
+.finale .lead{margin-inline:auto;color:rgba(246,239,228,.9)}
+.finale .btns{justify-content:center}
+.finale .btn{min-height:56px;font-size:1.02rem;padding-inline:1.8em}
+.steps3{display:flex;flex-wrap:wrap;justify-content:center;gap:.6rem 1.6rem;margin:var(--s5) 0 0;padding:0;list-style:none;font-family:var(--sans);font-weight:600;font-size:.95rem;color:var(--paper)}
+.steps3 li{display:flex;align-items:center;gap:.6rem}
+.steps3 li + li::before{content:"";width:28px;height:1px;background:rgba(220,198,185,.6)}
+.finale .cloud{--to:var(--berry-2)}
+
+/* torta-szalag */
+.ribbon{position:relative;background:var(--berry);color:var(--paper);padding-block:clamp(2rem,4vw,2.6rem)}
+.ribbon__in{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem 2rem}
+.ribbon__l{display:flex;align-items:center;gap:1.2rem}
+.ribbon__mark{width:54px;height:54px;flex:none}
+.ribbon h2{font-size:clamp(1.4rem,1.2rem + .8vw,1.85rem);color:var(--paper)}
+.ribbon p{margin:.15rem 0 0;font-family:var(--sans);font-weight:500;font-size:.98rem;color:var(--paper)}
+
+/* ------- lábléc: púder, felhőkkel – mint a Wixen ------- */
+.ftr{position:relative;background:var(--rose);color:var(--ink);padding:clamp(4rem,8vw,5.5rem) 0 2rem}
+.ftr .cloud{--to:var(--rose)}
+.ftr__grid{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--s5)}
+@media (min-width:640px){.ftr__grid{grid-template-columns:1fr 1fr}}
+@media (min-width:980px){.ftr__grid{grid-template-columns:1.3fr 1fr 1fr 1fr}}
+.ftr h3{font-family:var(--display);font-size:1.12rem;;color:var(--brown);margin-bottom:.4em}
+.ftr p,.ftr ul,.ftr dl{margin:0;font-size:.9rem}
+.ftr ul{list-style:none;padding:0;display:grid;gap:.35em}
+.ftr a{text-decoration-color:rgba(46,36,28,.35)}
+.ftr a:hover{text-decoration-color:currentColor}
+.ftr .hours dt{color:var(--bark)}
+.ftr .ftr__cta{margin-top:var(--s4)}
+.ftr__bottom{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.6rem 2rem;margin-top:var(--s6);padding-top:var(--s4);border-top:1px solid rgba(46,36,28,.2);font-size:.74rem;color:var(--bark)}
+.ftr__bottom a{color:inherit}
+
+/* mobil lebegő tortagomb */
+.float-cta{position:fixed;left:auto;right:16px;min-height:46px;padding:.6em 1.15em;font-size:.88rem;bottom:max(14px,env(safe-area-inset-bottom));z-index:55;transform:translateY(160%);transition:transform .45s var(--ease);box-shadow:0 18px 34px -12px rgba(46,36,28,.75)}
+.float-cta.is-on{transform:translateY(0)}
+@media (min-width:1240px){.float-cta{display:none}}
+.has-float .ftr{padding-bottom:6.5rem}
+
+/* ------- aloldalak ------- */
+.sub-hero{position:relative;background:var(--olive);color:var(--paper)}
+.sub-hero .spread{background:transparent}
+@media (min-width:960px){.sub-hero .spread{min-height:min(62vh,560px)}}
+.sub-hero .spread__media{min-height:40svh}
+.sub-hero h1{font-size:clamp(1.9rem,1.5rem + 1.6vw,2.7rem);margin-bottom:var(--s4);max-width:10em}
+.sub-hero h1 em{color:var(--rose-2)}
+.sub-hero .lead{color:rgba(246,239,228,.9)}
+.sub-hero .cloud{--to:var(--paper)}
+.sub-hero--plain .sub-hero__in{padding:clamp(2rem,5vw,3.5rem) 0 clamp(3rem,6vw,4rem)}
+.crumb{display:inline-flex;align-items:center;gap:.5em;min-height:40px;margin-bottom:1rem;color:rgba(246,239,228,.85);text-decoration:none;font-weight:600;font-size:.88rem}
+.crumb:hover{color:var(--paper)}
+.crumb svg{width:16px;height:16px;transform:rotate(180deg)}
+.sec{padding-block:clamp(3rem,6vw,5rem)}
+.sec + .sec{padding-top:0}
+.sec__head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:1rem;margin-bottom:var(--s5);padding-bottom:var(--s3);border-bottom:1px solid var(--line)}
+.sec__head h2{font-size:clamp(1.45rem,1.25rem + .8vw,1.9rem)}
+.prose{max-width:38em}
+.prose p{font-size:var(--fs-lead);line-height:1.75;color:var(--bark)}
+.prose .dropcap::first-letter{float:left;font-family:var(--script);font-style:italic;font-weight:400;font-size:3.6em;line-height:.85;padding:.04em .12em 0 0;color:var(--berry)}
+.cards{display:grid;grid-template-columns:minmax(0,1fr);gap:clamp(14px,2.2vw,24px)}
+.cards > *{min-width:0}
+@media (min-width:640px){.cards--2,.cards--3{grid-template-columns:1fr 1fr}}
+@media (min-width:980px){.cards--3{grid-template-columns:repeat(3,1fr)}}
+.card{display:flex;flex-direction:column;gap:.5em;background:var(--cream);border:1px solid var(--line);border-radius:8px;padding:clamp(1.3rem,2.4vw,1.7rem);text-decoration:none}
+.card--tint{background:var(--rose-soft);border-color:transparent}
+.card h3{font-size:1.22rem}
+.card p{margin:0;font-size:.9rem;color:var(--mute)}
+.card .meta{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin-top:auto;padding-top:.6em}
+.card > .plate{margin:calc(-1 * clamp(1.3rem,2.4vw,1.7rem));margin-bottom:.9em;box-shadow:none;padding:0;border-radius:8px 8px 0 0;overflow:hidden}
+.card > .plate .plate__img{border-radius:0}
+a.card{transition:transform .35s var(--ease),box-shadow .35s var(--ease)}
+a.card:hover{transform:translateY(-3px);box-shadow:0 22px 34px -26px rgba(46,36,28,.65)}
+.timeline{list-style:none;margin:0;padding:0;border-left:1px solid var(--brass);display:grid;gap:var(--s5)}
+.timeline li{position:relative;padding-left:1.8rem}
+.timeline li::before{content:"";position:absolute;left:-6px;top:.6em;width:11px;height:11px;border-radius:50%;background:var(--paper);border:1.5px solid var(--berry)}
+.timeline h3{margin-bottom:.3em}
+.timeline p{margin:0;color:var(--mute)}
+.events{list-style:none;margin:0;padding:0;border-top:1px solid var(--line-strong)}
+.events li{display:grid;grid-template-columns:72px minmax(0,1fr);gap:1.2rem;padding:1.4rem 0;border-bottom:1px solid var(--line);align-items:start}
+.events li .btn{grid-column:2;justify-self:start}
+@media (min-width:760px){.events li{grid-template-columns:92px minmax(0,1fr) auto;align-items:center}.events li .btn{grid-column:auto}}
+.date{display:flex;flex-direction:column;align-items:center;justify-content:center;aspect-ratio:1;border-radius:50%;border:1.5px solid var(--brass);background:var(--cream);text-align:center;line-height:1.1}
+.date b{font-family:var(--display);font-size:1.12rem}
+.date span{font-size:.56rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--mute)}
+.events h3{font-size:1.16rem;margin-bottom:.15em}
+.events p{margin:0;font-size:.9rem;color:var(--mute)}
+.gallery{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(12px,1.8vw,20px)}
+@media (min-width:900px){.gallery{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.gallery > *{min-width:0}
+.filters{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:var(--s5)}
+.chip{display:inline-flex;align-items:center;min-height:42px;padding:.4em 1.05em;border-radius:999px;border:1.5px solid var(--line-strong);background:transparent;font-family:var(--sans);font-weight:600;font-size:.88rem;cursor:pointer;transition:background .2s,color .2s,border-color .2s}
+.chip[aria-pressed="true"],.chip:hover{background:var(--brown);color:var(--paper);border-color:var(--brown)}
+.menu-list{display:grid;grid-template-columns:minmax(0,1fr);gap:clamp(2rem,4vw,3.2rem)}
+@media (min-width:860px){.menu-list{grid-template-columns:1fr 1fr}}
+.menu-group h3{display:flex;align-items:baseline;gap:.6em;padding-bottom:.4em;border-bottom:1px solid var(--line-strong);margin-bottom:.3em}
+.menu-group h3 .tag{margin-left:auto}
+.menu-group ul{list-style:none;margin:0;padding:0}
+.menu-group li{display:flex;align-items:baseline;gap:.6em;padding:.75em 0;border-bottom:1px dashed var(--line)}
+.menu-group li > span:first-child{font-family:var(--sans);font-weight:500;font-size:.98rem}
+.menu-group li .dots{flex:1;border-bottom:1px dotted var(--line-strong);transform:translateY(-.3em)}
+.menu-group li .ar{font-size:.78rem;color:var(--mute);white-space:nowrap}
+.recipe{display:grid;grid-template-columns:minmax(0,1fr);gap:clamp(2rem,4vw,3rem);align-items:start}
+@media (min-width:860px){.recipe{grid-template-columns:.8fr 1.2fr}}
+.recipe > *{min-width:0}
+.recipe ul,.recipe ol{margin:0;padding-left:1.2em}
+.recipe li{margin-bottom:.5em;color:var(--bark)}
+.recipe-card{position:relative;background:var(--cream);border:1px solid var(--line);border-radius:8px;padding:clamp(1.6rem,3.5vw,2.5rem)}
+.recipe-card .kicker{margin-bottom:.4rem}
+.spines{display:flex;align-items:flex-end;gap:6px;padding:22px 18px 0;background:var(--forest);min-height:220px;overflow:hidden;border-radius:8px 8px 0 0}
+.book{position:relative;flex:none;width:var(--w,26px);height:var(--h,170px);background:var(--c,#7a5a42);border-radius:2px 2px 0 0;box-shadow:inset -3px 0 0 rgba(0,0,0,.18),inset 3px 0 0 rgba(255,255,255,.08);transition:transform .4s var(--ease)}
+.book::before,.book::after{content:"";position:absolute;left:4px;right:4px;height:1px;background:rgba(246,239,228,.45)}
+.book::before{top:14px}.book::after{bottom:14px}
+.book:hover{transform:translateY(-8px)}
+.spines-plank{height:14px;background:linear-gradient(#6d5140,#4d3829);margin-bottom:var(--s6);border-radius:0 0 4px 4px}
+.notes{display:grid;gap:12px}
+.pin{position:relative;display:flex;flex-direction:column;gap:.3em;min-height:150px;padding:1.4rem 1.2rem 1.15rem;background:var(--cream);border:1px solid var(--line);border-radius:8px;text-decoration:none}
+.pin::before{content:"";position:absolute;top:-6px;left:1.2rem;width:12px;height:12px;border-radius:50%;background:var(--berry)}
+.pin b{font-family:var(--display);font-size:1.19rem;line-height:1.2}
+.pin span{font-size:.86rem;color:var(--mute)}
+.pin i{margin-top:auto;font-style:normal;font-size:.68rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--berry)}
+.pin--main{background:var(--berry);color:var(--paper);border-color:var(--berry)}
+.pin--main span{color:rgba(246,239,228,.82)}
+.pin--main i{color:var(--rose-2)}
+.pin--main::before{background:var(--rose-2)}
+.cake-cta{display:grid;grid-template-columns:minmax(0,1fr);gap:1.2rem;align-items:center;margin-bottom:clamp(2.5rem,5vw,3.5rem);padding:clamp(1.5rem,3vw,2.2rem);background:var(--berry);color:var(--paper);border-radius:10px}
+@media (min-width:760px){.cake-cta{grid-template-columns:auto minmax(0,1fr) auto;gap:1.6rem}}
+.cake-cta__mark{width:56px;height:56px}
+.cake-cta h2{font-size:clamp(1.4rem,1.2rem + .7vw,1.8rem);color:var(--paper)}
+.cake-cta p{margin:.2rem 0 0;font-family:var(--sans);font-weight:500;font-size:.98rem;color:var(--paper)}
+.cake-cta .btn{--b:var(--cream);--f:var(--berry)}
+.next-prev{display:grid;grid-template-columns:minmax(0,1fr);gap:1rem;padding-bottom:clamp(3rem,6vw,4.5rem)}
+@media (min-width:700px){.next-prev{grid-template-columns:1fr 1fr}}
+.next-prev a{display:flex;flex-direction:column;gap:.15em;padding:1rem 1.3rem;border:1px solid var(--line);border-radius:8px;text-decoration:none;transition:background .2s}
+.next-prev a:hover{background:var(--rose-soft)}
+.next-prev a span{font-size:.64rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--mute)}
+.next-prev a b{font-family:var(--display);font-size:1.19rem;line-height:1.05}
+.next-prev a.nx{text-align:right}
+
+/* arculat */
+.brandboard{display:grid;grid-template-columns:minmax(0,1fr);gap:clamp(14px,2vw,22px)}
+@media (min-width:860px){.brandboard{grid-template-columns:repeat(6,minmax(0,1fr))}}
+.bb{position:relative;display:flex;align-items:center;justify-content:center;min-height:250px;padding:clamp(2rem,4vw,3rem) clamp(1.5rem,4vw,3rem) 3rem;border:1px solid var(--line);border-radius:10px;background:var(--cream);margin:0}
+.bb img{max-height:150px;width:auto;max-width:100%}
+.bb--wide{grid-column:1/-1;min-height:310px}
+.bb--wide img{max-height:118px}
+@media (min-width:860px){.bb--half{grid-column:span 3}.bb--third{grid-column:span 2}}
+.bb--forest{background:var(--forest);border-color:var(--forest)}
+.bb--moss{background:var(--olive);border-color:var(--olive)}
+.bb--rose{background:var(--rose-soft)}
+.bb figcaption{position:absolute;left:16px;bottom:14px;font-size:.62rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--mute)}
+.bb--forest figcaption,.bb--moss figcaption{color:rgba(246,239,228,.68)}
+.swatches{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media (min-width:760px){.swatches{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.sw{border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--cream)}
+.sw i{display:block;height:88px;background:var(--c)}
+.sw div{padding:.6rem .8rem}
+.sw b{display:block;font-family:var(--display);font-size:0.99rem;line-height:1.1}
+.sw span{font-size:.74rem;color:var(--mute)}
+.type-spec{display:grid;grid-template-columns:minmax(0,1fr);gap:clamp(14px,2vw,22px)}
+@media (min-width:760px){.type-spec{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.type-spec .big{font-family:var(--display);font-weight:500;font-size:1.58rem;line-height:1;margin:.3em 0}
+.type-spec .big--script{font-family:var(--script);font-style:italic;font-size:1.56rem}
+.type-spec .big--sans{font-family:var(--sans);font-size:1.4rem;font-weight:600}
+.dl-list{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:var(--s4)}
+.dl-list .btn{font-size:.88rem;min-height:44px}
+
+/* ------- űrlapok ------- */
+.form{display:grid;gap:var(--s4)}
+.f-row{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--s4)}
+@media (min-width:640px){.f-row--2{grid-template-columns:1fr 1fr}.f-row--3{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.field{display:flex;flex-direction:column;gap:.4em;min-width:0}
+.field label,.field legend,.lbl{font-size:.86rem;font-weight:700;color:var(--ink)}
+.field .opt{font-weight:500;color:var(--mute)}
+.input,.select,.textarea{width:100%;min-height:50px;padding:.75em .95em;border:1px solid var(--line-strong);border-radius:8px;background:#fffdf9;font-size:1rem;transition:border-color .2s,box-shadow .2s}
+.textarea{min-height:132px;resize:vertical;line-height:1.55}
+.input:focus,.select:focus,.textarea:focus{outline:none;border-color:var(--berry);box-shadow:0 0 0 3px rgba(121,63,73,.16)}
+.input[aria-invalid="true"],.textarea[aria-invalid="true"]{border-color:#9b2c2c}
+.hint{font-size:.8rem;color:var(--mute);margin:0}
+.err{font-size:.82rem;color:#8f2a2a;font-weight:600;margin:0;display:none}
+.err.is-on{display:block}
+fieldset{border:0;margin:0;padding:0;min-width:0}
+.choices{display:grid;gap:.6rem;grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
+.choice{position:relative}
+.choice input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer}
+.choice span{display:flex;flex-direction:column;justify-content:center;gap:.15em;min-height:58px;height:100%;padding:.75em .95em;border:1px solid var(--line-strong);border-radius:10px;background:#fffdf9;font-weight:600;font-size:.93rem;line-height:1.3;transition:background .2s,border-color .2s,color .2s}
+.choice span small{font-weight:500;font-size:.76rem;color:var(--mute)}
+.choice input:hover + span{border-color:var(--ink)}
+.choice input:checked + span{background:var(--brown);color:var(--paper);border-color:var(--brown)}
+.choice input:checked + span small{color:rgba(246,239,228,.75)}
+.choice input:focus-visible + span{outline:2px solid var(--berry);outline-offset:2px}
+.check{display:flex;gap:.7em;align-items:flex-start;font-size:.9rem;line-height:1.5;cursor:pointer}
+.check input{width:20px;height:20px;margin:.15em 0 0;flex:none;accent-color:var(--berry)}
+.demo-banner{display:flex;gap:.8em;align-items:flex-start;padding:.85rem 1rem;border:1px dashed rgba(121,63,73,.45);border-radius:8px;background:rgba(201,175,160,.15);font-size:.86rem;line-height:1.5;color:var(--bark)}
+.demo-banner b{color:var(--berry)}
+.done{display:none;padding:clamp(1.5rem,4vw,2.5rem);background:var(--cream);border:1px solid var(--line);border-radius:10px;text-align:center}
+.done.is-on{display:block}
+.done h2{margin-bottom:.4em}
+.panel{background:var(--cream);border:1px solid var(--line);border-radius:12px;padding:clamp(1.3rem,3.5vw,2.5rem);box-shadow:0 34px 60px -46px rgba(46,36,28,.6)}
+.grid-2{display:grid;grid-template-columns:minmax(0,1fr);gap:clamp(2rem,5vw,4rem);align-items:start}
+.grid-2 > *{min-width:0}
+@media (min-width:960px){.grid-2{grid-template-columns:minmax(0,7fr) minmax(0,4fr)}.grid-2 > aside{position:sticky;top:calc(var(--hdr) + 24px)}}
+
+/* ------- tortarendelő ------- */
+.wiz{display:grid;grid-template-columns:minmax(0,1fr);gap:clamp(1.5rem,4vw,3rem);align-items:start}
+.wiz > *{min-width:0}
+@media (min-width:980px){.wiz{grid-template-columns:260px minmax(0,1fr)}}
+.steps{list-style:none;margin:0;padding:0 0 4px;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+.steps::-webkit-scrollbar{display:none}
+.steps li{flex:0 0 auto}
+.steps button{display:flex;align-items:center;gap:.6em;width:100%;min-height:44px;padding:.35em .75em .35em .4em;border:1px solid var(--line);border-radius:999px;background:transparent;cursor:pointer;font-size:.84rem;font-weight:600;color:var(--mute);white-space:nowrap;text-align:left}
+.steps .n{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;flex:none;border-radius:50%;border:1px solid var(--line-strong);font-family:var(--sans);font-weight:700;font-size:.85rem;background:var(--cream)}
+.steps .t{display:none}
+.steps button[aria-current="step"]{color:var(--ink);border-color:var(--ink)}
+.steps button[aria-current="step"] .t{display:inline}
+.steps button[aria-current="step"] .n{background:var(--brown);color:var(--paper);border-color:var(--brown)}
+.steps button.is-done .n{background:#A6B19A;border-color:#A6B19A;color:var(--forest)}
+.steps button:disabled{cursor:not-allowed;opacity:.5}
+@media (min-width:980px){
+  .steps{flex-direction:column;overflow:visible;position:sticky;top:calc(var(--hdr) + 24px);gap:2px}
+  .steps button{border:0;border-radius:8px;padding:.5em .6em}
+  .steps .t{display:inline}
+  .steps button[aria-current="step"]{background:var(--rose-soft)}
+}
+.progress{height:3px;background:var(--line);border-radius:3px;overflow:hidden;margin:var(--s3) 0 0}
+.progress i{display:block;height:100%;width:var(--p,12.5%);background:var(--berry);transition:width .6s var(--ease)}
+.panel__count{font-size:.7rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--mute);margin:0 0 .5em}
+.panel h2{font-size:clamp(1.45rem,1.25rem + .8vw,1.9rem);margin-bottom:.25em}
+.step > .hint{margin-bottom:var(--s4);font-size:.9rem}
+.step{display:none}
+.step.is-on{display:block}
+.step:focus{outline:none}
+.wiz-nav{display:flex;flex-wrap:wrap;gap:.75rem;justify-content:space-between;align-items:center;margin-top:var(--s5);padding-top:var(--s4);border-top:1px solid var(--line)}
+.wiz-nav .save{font-size:.78rem;color:var(--mute);flex:1;text-align:center;min-width:8em}
+.drop{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.4em;min-height:150px;padding:1.5rem;border:1.5px dashed var(--line-strong);border-radius:12px;background:#fffdf9;text-align:center;cursor:pointer;transition:background .2s,border-color .2s}
+.drop.is-over,.drop:hover{background:var(--rose-soft);border-color:var(--berry)}
+.drop input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.drop svg{width:28px;height:28px;color:var(--berry)}
+.thumbs{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:.8rem;list-style:none;padding:0}
+.thumbs li{position:relative;width:96px}
+.thumbs img{width:96px;height:96px;object-fit:cover;border:1px solid var(--line);border-radius:8px}
+.thumbs button{position:absolute;top:4px;right:4px;width:28px;height:28px;border-radius:50%;border:0;background:rgba(46,36,28,.8);color:#fff;cursor:pointer;font-size:16px;line-height:1}
+.thumbs span{display:block;font-size:.7rem;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:.2em}
+.summary{display:grid;margin:0;border-top:1px solid var(--line-strong)}
+.summary > div{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.2em 1rem;padding:.95rem 0;border-bottom:1px solid var(--line)}
+@media (min-width:640px){.summary > div{grid-template-columns:170px minmax(0,1fr) auto}}
+.summary dt{font-size:.74rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.summary dd{margin:0;grid-column:1/-1;word-break:break-word}
+@media (min-width:640px){.summary dd{grid-column:auto}}
+.summary .edit{grid-row:1;grid-column:2;justify-self:end;border:0;background:none;padding:.2em 0;min-height:32px;font-weight:700;font-size:.8rem;color:var(--berry);cursor:pointer;text-decoration:underline;text-underline-offset:.2em}
+@media (min-width:640px){.summary .edit{grid-column:3}}
+.wiz-aside{display:none}
+@media (min-width:980px){.wiz-aside{display:block;margin-top:var(--s4);font-size:.8rem;color:var(--mute);line-height:1.5}}
+
+/* ------- Motion-effektek segédstílusai ------- */
+.fx-w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.08em;margin-bottom:-.08em}
+.fx-wi{display:inline-block;will-change:transform}
+.fx-progress{position:fixed;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,var(--berry),var(--rose));transform-origin:0 50%;transform:scaleX(0);z-index:120;pointer-events:none}
+.fx-leaves{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:2}
+.fx-leaf{position:absolute;top:0;height:auto;opacity:0;filter:drop-shadow(0 2px 2px rgba(0,0,0,.18))}
+.fx-spark{position:fixed;z-index:200;pointer-events:none;font-size:15px;line-height:1;translate:-50% -50%}
+.fx-cursor{position:fixed;left:0;top:0;z-index:150;width:14px;height:14px;translate:-50% -50%;border-radius:50%;border:1.5px solid var(--berry);background:rgba(121,63,73,.12);pointer-events:none;opacity:0;display:grid;place-items:center;mix-blend-mode:multiply}
+.fx-cursor span{font-family:var(--script);font-style:italic;font-weight:400;font-size:0.9rem;color:var(--paper)}
+.fx-cursor.is-pic{background:var(--berry);border-color:var(--berry);mix-blend-mode:normal}
+.fx-cursor.is-btn{background:transparent}
+@media (hover:hover) and (pointer:fine){.anim body{cursor:auto}}
+
+/* ------- animációs kezdőállapotok (csak Motion + nincs reduced-motion) ------- */
+.anim [data-rv]{opacity:0;transform:translateY(22px)}
+.anim [data-rv="fade"]{transform:none}
+.anim [data-reveal]{clip-path:inset(0 0 100% 0)}
+.anim .hero__media{clip-path:inset(0 0 0 100%)}
+.anim .spread__media > .pic{clip-path:inset(0 100% 0 0)}
+.anim .spread--flip .spread__media > .pic{clip-path:inset(0 0 0 100%)}
+.anim .seal{transform:scale(0)}
+.anim .sprig path,.anim .sprig circle{stroke-dasharray:1;stroke-dashoffset:1}
+.anim .hero h1 .ln{opacity:0;transform:translateY(.35em)}
+.motion-toggle{border:0;background:none;padding:0;font:inherit;color:inherit;text-decoration:underline;text-underline-offset:.2em;cursor:pointer}
+
+/* =====================================================================
+   B-VÁLTOZAT (mokusch-premium-v3) – felülírások a közös alapra
+   Papírkivágásos, rajzolt jelenetek; Literata + Figtree; erdő–krém–bogyó.
+   ===================================================================== */
+@font-face{font-family:"Literata";src:url(../fonts/literata.woff) format("woff");font-weight:400 600;font-style:normal;font-display:swap}
+@font-face{font-family:"Literata";src:url(../fonts/literata-italic.woff) format("woff");font-weight:400 600;font-style:italic;font-display:swap}
+@font-face{font-family:"Figtree";src:url(../fonts/figtree-var.woff) format("woff");font-weight:300 900;font-display:swap}
+
+:root{
+  --paper:#F4ECDD;--paper-2:#EDE2CF;--cream:#FBF6EC;
+  --forest:#24382B;--moss:#3E5134;--sage:#9AAA86;
+  --olive:#24382B;--olive-2:#3E5134;--olive-3:#1B2A20;
+  --rose:#D9B4A6;--rose-2:#EBCFC3;--rose-soft:#F3E3DA;
+  --berry:#7B3446;--berry-2:#5E2635;--brown:#24382B;
+  --ochre:#C68B3E;--honey:#E2B868;--bark:#5A3D2B;--ink:#26201A;--mute:#6A5848;
+  --display:"Literata",Georgia,serif;
+  --script:"Literata",Georgia,serif;
+  --sans:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --fs-h1:clamp(2rem,1.6rem + 1.8vw,3rem);
+  --fs-h2:clamp(1.65rem,1.4rem + 1.1vw,2.35rem);
+  --fs-h3:clamp(1.15rem,1.06rem + .4vw,1.35rem);
+  --hdr:74px;
+}
+body{background:var(--paper);font-size:1.04rem}
+h1,h2,h3{font-weight:600;letter-spacing:-.012em;line-height:1.15}
+h1 em,h2 em,h3 em{font-weight:500}
+
+/* fejléc: krém papírcsík, nincs felhő */
+.topbar{background:var(--forest)}
+.hdr{background:rgba(251,246,236,.96);border-bottom:1px solid rgba(38,32,26,.1)}
+.hdr .cloud{display:none}
+.brand__t span{color:var(--mute)}
+.nav a:hover,.nav a[aria-current="page"]{background:var(--paper-2)}
+.btn{--b:var(--forest)}
+.btn:hover{background:var(--berry);border-color:var(--berry)}
+.btn--cream{--b:var(--cream);--f:var(--forest)}
+.sheet__panel{background:var(--cream)}
+
+/* hullámos papírszél (a v2 felhői helyett) */
+.cloud{height:clamp(18px,2.4vw,30px)}
+
+/* gombok: kicsit szögletesebb, papírszerű */
+.btn{border-radius:14px;min-height:50px}
+.hdr .btn{border-radius:12px}
+.chip,.tag{border-radius:10px}
+
+/* ------- jelenetek (rajzolt SVG) ------- */
+svg.scene{display:block;width:100%;height:100%}
+.pic--scene{position:absolute;inset:0;background:var(--paper-2)}
+.plate__img svg.scene,.pic svg.scene{position:absolute;inset:0}
+.plate,.card > .plate{border-radius:18px}
+.plate__img{border-radius:12px}
+
+/* ------- NYITÓ: papírszínház ------- */
+.stage{position:relative;overflow:hidden;background:var(--paper)}
+.stage__art{position:relative;height:min(78svh,760px);min-height:420px}
+.stage__art svg{position:absolute;inset:0}
+.stage__in{position:relative;z-index:2}
+.stage__card{position:relative;background:var(--cream);border-radius:22px;padding:clamp(1.6rem,4vw,2.8rem);box-shadow:0 30px 60px -36px rgba(38,32,26,.55),0 0 0 1px rgba(38,32,26,.06)}
+@media (min-width:960px){
+  .stage__in{position:absolute;inset:0;display:flex;align-items:center;pointer-events:none}
+  .stage__card{max-width:520px;pointer-events:auto}
+  .stage__art{height:min(calc(100svh - var(--hdr) - 32px),820px)}
+}
+@media (max-width:959px){
+  .stage__art{height:52svh;min-height:300px}
+  .stage__in{margin-top:-60px;padding-bottom:2.5rem}
+}
+.stage h1{margin-bottom:1rem}
+.stage h1 .ln{display:block}
+.stage .lead{color:var(--bark)}
+.stage__more{display:flex;flex-wrap:wrap;gap:.5rem 1.4rem;margin:1.2rem 0 0}
+
+.chap__no{display:flex;align-items:center;gap:.6rem;margin:0 0 .9rem;font-size:.82rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.chap__no span{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--berry);color:var(--cream);font-family:var(--display);font-size:1rem;letter-spacing:0}
+.chap--forest .chap__no{color:rgba(251,246,236,.85)}
+.chap--forest .chap__no span{background:var(--honey);color:var(--forest)}
+
+/* ------- fejezet-kártyák (ikonos tartalomjegyzék) ------- */
+.chips{padding:clamp(2.2rem,5vw,3.5rem) 0;background:var(--paper)}
+.chips ol{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
+.chips a{display:flex;align-items:center;gap:.7rem;min-height:58px;padding:.7rem .95rem;background:var(--cream);border:1px solid rgba(38,32,26,.1);border-radius:14px;text-decoration:none;transition:border-color .25s,transform .3s var(--ease),background .25s}
+.chips a:hover{border-color:var(--forest);transform:translateY(-2px)}
+.chips .ic{width:26px;height:26px;flex:none;fill:none;stroke:var(--moss);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.chips .n{font-weight:800;color:var(--berry);font-size:.9rem}
+.chips .t{font-family:var(--display);font-weight:600;font-size:1rem;line-height:1.25}
+.chips li.is-torta a{background:var(--berry);border-color:var(--berry);color:var(--cream)}
+.chips li.is-torta .n{color:var(--honey)}
+.chips li.is-torta .ic{stroke:var(--honey)}
+
+/* ------- fejezetek: jelenet-kártya + szöveg ------- */
+.chap{padding-block:clamp(3.5rem,8vw,6.5rem)}
+.chap--tint{background:var(--paper-2)}
+.chap--forest{background:var(--forest);color:var(--cream)}
+.chap--forest .lead{color:var(--cream)}
+
+.chap--forest h2 em{color:var(--honey)}
+.chap__grid{display:grid;grid-template-columns:minmax(0,1fr);gap:clamp(2rem,4.5vw,4.5rem);align-items:center}
+.chap__grid > *{min-width:0}
+@media (min-width:960px){
+  .chap__grid{grid-template-columns:minmax(0,7fr) minmax(0,5fr)}
+  .chap--flip .stage-card{order:2}
+  .chap--flip .chap__text{order:1}
+}
+.stage-card{position:relative;margin:0;aspect-ratio:16/11;border-radius:24px;overflow:hidden;background:var(--paper-2);box-shadow:0 34px 60px -40px rgba(38,32,26,.65),0 0 0 1px rgba(38,32,26,.06)}
+.stage-card svg{position:absolute;inset:0}
+.chap h2{margin-bottom:.4rem}
+.chap .sub{margin:.4rem 0 .9rem;color:var(--berry);font-family:var(--sans);font-weight:600;font-size:.98rem}
+.chap.chap--forest .sub{color:var(--honey)}
+.chap .trio{max-width:300px}
+.chap .oval{box-shadow:0 0 0 1px rgba(38,32,26,.12),0 0 0 5px var(--paper),0 0 0 6px var(--ochre)}
+.chap .oval .slot{--slot:#EDE2CF;--slot2:#E2D3BC;color:var(--bark)}
+.chap .trio figcaption{color:var(--mute)}
+.chap .trio figcaption b{color:var(--ink)}
+.chap .visit{border-color:rgba(38,32,26,.12)}
+
+/* torta-szalag */
+.ribbon{background:var(--berry);border-radius:0}
+.ribbon h2{font-family:var(--display);font-style:normal;font-weight:600;color:var(--cream);font-size:clamp(1.35rem,1.2rem + .7vw,1.8rem)}
+.ribbon p{color:var(--cream)}
+
+/* ------- torta-finálé ------- */
+.finale2{position:relative;overflow:hidden;background:var(--berry-2)}
+.finale2__art{position:relative;height:min(84svh,800px);min-height:440px}
+.finale2__art svg{position:absolute;inset:0}
+.finale2__in{position:relative;z-index:2}
+.finale2__card{background:var(--cream);border-radius:22px;padding:clamp(1.6rem,4vw,2.6rem);box-shadow:0 30px 60px -30px rgba(0,0,0,.55)}
+@media (min-width:960px){
+  .finale2__in{position:absolute;inset:0;display:flex;align-items:center;justify-content:flex-start;pointer-events:none}
+  .finale2__card{max-width:460px;pointer-events:auto}
+}
+@media (max-width:959px){.finale2__art{height:48svh;min-height:300px}.finale2__in{margin-top:-60px;padding-bottom:3rem}}
+.finale2 .steps3{display:grid;gap:.5rem;margin:1.2rem 0 0;padding:0;list-style:none;font-family:var(--sans);font-size:.98rem;font-weight:600;color:var(--ink);justify-content:start}
+.finale2 .steps3 li{display:flex;align-items:center;gap:.6rem}
+.finale2 .steps3 li + li::before{display:none}
+.finale2 .steps3 b{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--rose-soft);color:var(--berry);font-size:.85rem}
+
+/* ------- lábléc: erdő ------- */
+.ftr{background:var(--forest);color:var(--cream)}
+.ftr .cloud{--to:var(--forest)}
+.ftr h3{font-family:var(--sans);font-size:.76rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--honey)}
+.ftr a{color:var(--cream);text-decoration-color:rgba(251,246,236,.4)}
+.ftr .hours dt{color:rgba(251,246,236,.75)}
+.ftr__bottom{color:rgba(251,246,236,.75);border-color:rgba(251,246,236,.18)}
+.ftr .brand{color:var(--cream)}
+.ftr .brand__t span{color:rgba(251,246,236,.7)}
+
+/* aloldalak */
+.sub-hero{background:var(--forest)}
+.sub-hero .spread__media{background:var(--paper-2)}
+.sub-hero .cloud{--to:var(--paper)}
+.spread__media{min-height:46svh}
+.card,.panel,.recipe-card,.done,.next-prev a,.cake-cta,.sw,.bb{border-radius:18px}
+.cake-cta{background:var(--berry)}
+.cake-cta h2{font-family:var(--display);font-style:normal;font-weight:600}
+.choice span,.input,.select,.textarea,.drop{border-radius:12px}
+
+/* jelenetek apró mozgásai – kezdőállapot nincs, a scenes.js indítja */
+.scene .ly{transform-box:fill-box}
