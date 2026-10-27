@@ -45,7 +45,7 @@
       entries.forEach(function (e) {
         if (!e.isIntersecting) return;
         var id = e.target.id;
-        if (id === 'idopont') id = 'velemenyek';
+        if (id === 'ilcsi') id = 'kezelesek';
         navLinks.forEach(function (a) { a.classList.toggle('is-active', a.getAttribute('href') === '#' + id); });
       });
     }, { rootMargin: '-45% 0px -50% 0px' });
@@ -180,7 +180,6 @@
   var inView = function (sel, fn, opt) { return M.inView(sel, function (a, b) { return fn(a && a.target ? a.target : a, b); }, opt); };
 
   // Hero – betöltéskor
-  animate('.hero .kicker', { opacity: [0, 1], x: [-12, 0] }, { duration: 0.7, delay: 0.15, ease: ease });
   animate('.h1 .ln > span', { y: ['105%', '0%'] }, { duration: 1.05, delay: stagger(0.12, { startDelay: 0.25 }), ease: ease });
   animate('.hero [data-h]:not(.kicker)', { opacity: [0, 1], y: [16, 0] }, { duration: 0.8, delay: stagger(0.1, { startDelay: 0.65 }), ease: ease });
   animate('.hero__bg', { x: [0, 22], y: [0, -14], scale: [1, 1.05] }, { duration: 14, repeat: Infinity, repeatType: 'reverse', ease: 'easeInOut' });

@@ -416,3 +416,23 @@ ul,ol{margin:0;padding:0;list-style:none}
 .ftr__grid{grid-template-columns:1.4fr 1fr 1fr}
 @media (max-width:899px){.ftr__grid{grid-template-columns:1fr 1fr}}
 @media (max-width:440px){.ftr__grid{grid-template-columns:1fr}}
+
+/* 5. kör: letisztított, kitalált szöveg nélkül */
+.sec__h{margin-bottom:clamp(28px,3.5vw,44px)}
+.hero{padding-bottom:clamp(80px,9vw,120px)}
+.hero .h1{margin-bottom:20px}
+.svcs{border-top:1px solid var(--line)}
+.svc{width:100%;display:grid;grid-template-columns:56px 1fr auto;align-items:center;gap:16px;padding:22px 4px;border-bottom:1px solid var(--line);text-align:left;transition:background .4s,padding .5s var(--ease)}
+.svc__n{font-family:var(--serif);font-style:italic;font-size:22px;color:var(--gold-d)}
+.svc__t{font-family:var(--serif);font-weight:600;font-size:clamp(23px,2.1vw,29px);line-height:1.2}
+.svc__go{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:var(--sage);opacity:.75;transition:gap .35s var(--ease),opacity .3s}
+.svc__go .ic{width:16px;height:16px}
+.svc:hover{background:var(--beige);padding-left:16px;padding-right:16px}
+.svc:hover .svc__go{opacity:1;gap:13px}
+@media (max-width:620px){
+  .svc{grid-template-columns:40px 1fr auto;padding:18px 0;gap:10px}
+  .svc__go{font-size:0;gap:0}
+  .svc__go .ic{width:20px;height:20px}
+}
+.services .note{margin-top:22px}
+.nature{padding:clamp(56px,7vw,88px) 0}

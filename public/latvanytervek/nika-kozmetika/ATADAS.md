@@ -1,7 +1,7 @@
 # Nika Kozmetika – látványterv, átadás
 
 **Élő előnézet:** https://daekon-ship.github.io/daekon/latvanytervek/nika-kozmetika/
-**Állapot:** 4. kör (2026. 10. 27.) – a hero látogatókártyája és a lábléc „Hívás most” blokkja kikerült, a szövegek egyszerűbbek, kevésbé szlogenesek (a „Levél/Krém/Olaj” lista és a lábléc-idézet is ki). 3. kör: rajzos képhelyek ki, Cormorant Garamond + DM Sans. 2. kör: rózsa–mályva paletta.
+**Állapot:** 5. kör (2026. 10. 27.) – minden kitalált/töltelék szöveg kikerült: nincs bemutatkozás, értékek, vélemény-helyek, leírások, szlogen. Az oldal csak valós adatokat mutat: név, cím, telefon, e-mail, kezelések neve, Ilcsi-adatlap, időpontkérés. Korábbi körök: 4. hero-kártya ki; 3. rajzos képhelyek ki, Cormorant Garamond + DM Sans; 2. rózsa–mályva paletta.
 
 > Miért nem külön repó? A brief a `nika-kozmetika-preview` repót javasolta. A DAEKON-ház-szabály szerint minden látványterv a `daekon-ship/daekon` → `public/latvanytervek/<ügyfél>/` mappába kerül, ugyanazon a GitHub Pages címen frissül körről körre. Új repót ezért nem hoztunk létre.
 
@@ -85,3 +85,6 @@ Visszajelzés: „ezek nem kellenek” (rajzolt képhelyek, boltíves rajzos ker
 
 ## 4. kör – szövegek
 Visszajelzés: „a szövegek is túl AI-osak” → rövid, tényszerű mondatok: hero „Kozmetika Szegeden, a Szabadkai úton”, bemutatkozás „Pár szó a szalonról”, kezelésenként egy egyszerű mondat, Ilcsi-blokk csak a tényekkel. A végleges szövegeket a tulajdonossal érdemes egyeztetni.
+
+## 5. kör – szerkezet
+Hero (név + cím, két gomb) · Kezelések (6 soros lista, soronként „Érdeklődöm” → időpontkérő panel előtöltve) · Ilcsi kozmetikakereső (egy mondat + link) · Időpontkérés · Elérhetőség + térkép · Lábléc. Bemutatkozás, vélemények, galéria akkor kerül vissza, ha a tulajdonos ad hozzá valós szöveget, fotót, véleményt.
