@@ -155,8 +155,7 @@ def footer(is_index=False, mbar=True):
       </div>
       <div><h4>Kezelések</h4><ul>
         <li><a href="pedikur.html">Pedikűr és lábápolás</a></li><li><a href="manikur.html">Manikűr és géllakk</a></li>
-        <li><a href="specialis-labapolas.html">Speciális lábápolás</a></li><li><a href="{l('index.html#arak')}">Árlista</a></li>
-        <li><a href="{l('index.html#utalvany')}">Ajándékutalvány</a></li></ul></div>
+        <li><a href="specialis-labapolas.html">Speciális lábápolás</a></li><li><a href="{l('index.html#arak')}">Árlista</a></li></ul></div>
       <div><h4>Foglalás</h4><ul>
         <li><a href="foglalas.html">Időpontfoglalás</a></li><li><a href="foglalas.html#foglalasaim">Foglalásaim (demó)</a></li>
         <li><a href="{l('index.html#gyik')}">Gyakori kérdések</a></li><li><a href="admin.html">Admin demó</a></li></ul></div>
@@ -381,24 +380,6 @@ INDEX = f'''
   </div>
 </section>
 
-<section class="sec sec--cream" id="utalvany" aria-labelledby="ut-h">
-  <div class="wrap voucher-wrap">
-    <div class="voucher rv" aria-hidden="true">
-      <div class="voucher-top"><img src="arculat/logo-fejlec-vilagos.png" alt="" style="height:40px;width:auto"><small>Ajándékutalvány<br>N° 0001</small></div>
-      <h3>Egy nyugodt óra,<br>neked szánva.</h3>
-      <div class="voucher-bot"><span>Érvényes egy választott kezelésre</span><b>Beatrix Nails &amp; Pedikűr</b></div>
-    </div>
-    <div>
-      <p class="eyebrow rv">Ajándék</p>
-      <h2 id="ut-h" class="rv" style="margin-bottom:20px">Ajándékozz egy <em>nyugodt órát</em>.</h2>
-      <p class="rv">Utalvány egy kiválasztott kezelésre — pedikűrre, manikűrre vagy paraffinos kézápolásra. Elegáns, kézbe adható ajándék szülinapra, névnapra, vagy csak úgy.</p>
-      <p class="rv small muted">Az online vásárlás és fizetés egy későbbi, külön jóváhagyott fejlesztés. Addig az utalványról telefonon lehet érdeklődni.</p>
-      <p class="rv">{tag("Bemutató szekció · ügyféllel egyeztetendő")}</p>
-      <div class="rv" style="margin-top:24px"><a class="btn btn--ghost" data-tel href="tel:+36706146070">{ico('phone')}Érdeklődöm telefonon</a></div>
-    </div>
-  </div>
-</section>
-
 <section class="sec" id="gyik" aria-labelledby="gyik-h">
   <div class="wrap">
     <div class="sec-head">
@@ -583,7 +564,7 @@ IMPRESSZUM = legal('Impresszum',
 
 FELTETELEK = legal('Foglalási és lemondási feltételek',
     'A szabályokat Beatrix határozza meg; az alábbi kérdésekre kell válasz a végleges szöveghez.',
-    [('Eldöntendő kérdések', '<ul><li>Meddig lehet díjmentesen lemondani vagy módosítani (pl. 24 órával előtte)?</li><li>Mi történik késés esetén — rövidül a kezelés, vagy új időpont kell?</li><li>Van-e következménye az előzetes lemondás nélküli távolmaradásnak?</li><li>Kell-e előleg bármelyik kezeléshez? (A bemutató nem kezel fizetést.)</li><li>Milyen fizetési módok elérhetők a helyszínen?</li><li>Ajándékutalvány: érvényesség, beválthatóság.</li></ul>'),
+    [('Eldöntendő kérdések', '<ul><li>Meddig lehet díjmentesen lemondani vagy módosítani (pl. 24 órával előtte)?</li><li>Mi történik késés esetén — rövidül a kezelés, vagy új időpont kell?</li><li>Van-e következménye az előzetes lemondás nélküli távolmaradásnak?</li><li>Kell-e előleg bármelyik kezeléshez? (A bemutató nem kezel fizetést.)</li><li>Milyen fizetési módok elérhetők a helyszínen?</li></ul>'),
      ('A tervezett rendszer működése', '<p>Foglalás után visszaigazoló e-mail egyedi foglalási azonosítóval, naptármeghívóval és egy biztonságos módosítási/lemondási linkkel; a kezelés előtt emlékeztető. Regisztráció nem szükséges.</p>')])
 
 # ======================================================================

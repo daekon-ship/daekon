@@ -76,7 +76,7 @@ Teszt: **55/55** (Motion-helyettesítővel) és **53/53** (Motion nélkül). Tú
 
 | Oldal | Tartalom |
 |---|---|
-| `index.html` | Hero, értékek, 3 kezeléskategória, szűrhető árlista óralappal, Rólam, „A szalonban”, galéria (szűrés, nagyítás, teljes képernyő, lapozás, swipe), ajándékutalvány (bemutató), GYIK (8), kapcsolat, térkép-helyőrző |
+| `index.html` | Hero, értékek, 3 kezeléskategória, szűrhető árlista óralappal, Rólam, „A szalonban”, galéria (szűrés, nagyítás, teljes képernyő, lapozás, swipe), GYIK (8), kapcsolat, térkép-helyőrző |
 | `pedikur.html`, `manikur.html` | Kategória-aloldal: kártyák (leírás, időtartam, ár, foglalás), „Melyiket válasszam?”, továbbvezetés |
 | `specialis-labapolas.html` | Telefonos egyeztetés, menete, „nem orvosi kezelés” tájékoztatás |
 | `foglalas.html` | 6 lépés: kezelés → nap → időpont → adatok → összesítés → kész. Foglalásaim, módosítás, lemondás, .ics |
@@ -185,7 +185,7 @@ Közben javított hibák: a felfedő animáció miatt a képek láthatatlanok ma
 4. Saját fotók: portré, szalon, munkafotók (pedikűr, manikűr, géllakk) — jogtisztán.
 5. Hivatalos név, vállalkozási forma, adószám, székhely, e-mail-cím (impresszum, adatkezelés).
 6. Jóváhagyás: bemutatkozó szöveg, érvényes kézápolás-árlista, becsült időtartamok, cukorbeteg vendégekre vonatkozó mondat; vendéghozzájárulás a fotókhoz; vektoros logó.
-7. Fizetési módok; ajándékutalványt árul-e (és milyen feltételekkel).
+7. Fizetési módok. (Az ajándékutalvány-szekciót 2026.10.27-én levettük — nem ismert, hogy Beatrix árul-e ilyet.)
 8. Közösségi profilok, ha vannak (nem találtunk ki egyet sem).
 
 ## 8. Megjegyzések
