@@ -83,7 +83,7 @@
 
     // finom képparallax
     $$('[data-px]').forEach(function (px) {
-      var target = px.closest('.plate') || px;
+      var target = px.closest('.pic, .plate') || px;
       M.scroll(M.animate(px, { y: ['-4%', '4%'] }, { ease: 'linear' }), { target: target, offset: ['start end', 'end start'] });
     });
 
@@ -99,6 +99,30 @@
         });
       }, { amount: 0.25 });
     }
+
+
+    // képfeltárás: a kép alulról felfelé „kinyílik”, közben finoman kicsinyedik
+    $$('[data-reveal]').forEach(function (el) {
+      M.inView(el, function () {
+        M.animate(el, { clipPath: ['inset(0 0 100% 0)', 'inset(0 0 0% 0)'] }, { duration: 1.3, ease: [0.7, 0, 0.2, 1] });
+        var im = el.querySelector('img');
+        if (im) M.animate(im, { scale: [1.18, 1] }, { duration: 1.8, ease: ease });
+      }, { amount: 0.2 });
+    });
+
+    // lassú „Ken Burns” nagyítás a nyitó- és a tortaképen
+    $$('[data-kb] img').forEach(function (im) {
+      M.animate(im, { scale: [1.04, 1.14] }, { duration: 22, ease: 'linear', repeat: Infinity, repeatType: 'reverse' });
+    });
+
+    // futó kézírásos szalag
+    var mq = $('[data-marquee]');
+    if (mq) M.animate(mq, { x: ['0%', '-50%'] }, { duration: 38, ease: 'linear', repeat: Infinity });
+
+    // felhőszegélyek: görgetésre alig érezhetően elsodródnak
+    $$('.cloud--top, .cloud--bot').forEach(function (c, i) {
+      M.scroll(M.animate(c.querySelector('path'), { x: [i % 2 ? -18 : 18, i % 2 ? 18 : -18] }, { ease: 'linear' }), { target: c.parentElement, offset: ['start end', 'end start'] });
+    });
 
     // a pecsét görgetésre lassan körbefordul
     var seal = $('[data-seal] img');
@@ -122,7 +146,7 @@
   if (fl && 'IntersectionObserver' in window) {
     document.body.classList.add('has-float');
     var heroEl = $('.hero') || $('.sub-hero');
-    var blockers = $$('.ch9, .ftr, .cake-cta, .ribbon, .wiz');
+    var blockers = $$('.finale, .ftr, .cake-cta, .ribbon, .wiz');
     var seen = new Set(), pastHero = false;
     var upd = function () { fl.classList.toggle('is-on', pastHero && seen.size === 0); };
     if (heroEl) new IntersectionObserver(function (e) { pastHero = !e[0].isIntersecting; upd(); }, { threshold: 0 }).observe(heroEl);

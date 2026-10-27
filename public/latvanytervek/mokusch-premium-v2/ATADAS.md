@@ -3,6 +3,14 @@
 Élő előnézet: https://daekon-ship.github.io/daekon/latvanytervek/mokusch-premium-v2/
 Előző változat (érintetlen, összehasonlításhoz): https://daekon-ship.github.io/mokusch/
 
+## 3. kör (2026. október 27.) – közelebb a Wixhez, látványosabban, kevesebb szöveggel
+
+- **Wanda betűi:** Amatic SC a címekben és a pirulagombokban, Dancing Script a kézírásos alcímekben és a logó feliratában (a Wix-oldal betűi, saját tárhelyről).
+- **Wix-színek és felhők:** púder fejléc felhős alsó szegéllyel, olíva nyitó, púder lábléc felhőkkel; felhőszegélyek a szakaszok között.
+- **Filmszerű elrendezés:** minden fejezet félig kifutó, teljes magasságú kép + rövid szöveg (könyvlap), váltakozó oldalon; nyitókép lassú „Ken Burns” nagyítással; képek alulról kinyíló feltárása; futó kézírásos szalag.
+- **Kevesebb szöveg:** fejezetenként egy mondat; a magyarázó jegyzetek a főoldalról kikerültek (ez az átadás tartalmazza őket).
+- A tortarendelés helyei megmaradtak (fejléc, menü, torta-szalag, finálé, lábléc, aloldalak, mobil lebegő gomb).
+
 ## 2. kör (2026. október 27.) – mi változott
 
 - **Új logó** (mókus makkal + mesekönyv-betűs felirat): fekvő, álló, sötét, pecsét, jel, ikon – `img/logo/`, bemutató oldal: `arculat/`. Generátor: `prototypes/mokusch-premium-v2/logo.py` (a feliratok görbékké alakítva).
@@ -112,7 +120,7 @@ Kérdés Wandának: ezek AI-val készült képek? Ha igen, illusztrációként m
 
 **Színek:** paper #F6EFE4 · paper-2 #ECE1D2 · rose #C9AFA0 · rose-soft #E6D6CB · moss #64613F (Wix-olíva sötétítve, kontraszt 5,5:1 krém szöveggel) · forest #263A2D · berry #793F49 · bark #4A3527 · ink #2E241C.
 
-**Betűk:** Playfair Display 400–900 + dőlt (címek és a logó felirata), Manrope 200–800 (szöveg), saját tárhely. Skála mérsékelt: h1 max 3,15rem, h2 max 2,45rem, h3 max 1,38rem.
+**Betűk (3. kör):** Amatic SC 400/700 (címek, gombok), Dancing Script 400–700 (kézírás, logó), Manrope 200–800 (szöveg), saját tárhely. Az Amatic keskeny: névleges h1 max 4,1rem, h2 max 3,5rem – látszó méretük mérsékelt.
 
 **Térköz:** 0,5 · 0,75 · 1 · 1,5 · 2 · 3 · 4,5 · 6,5 rem; fejezetek 4–7,5rem függőleges ritmus.
 
