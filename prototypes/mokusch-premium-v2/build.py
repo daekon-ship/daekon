@@ -172,9 +172,9 @@ def head(title, desc, prefix, extra=""):
 <meta property="og:description" content="{html.escape(desc)}">
 <link rel="icon" href="{prefix}img/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://static.wixstatic.com" crossorigin>
-<link rel="preload" href="{prefix}fonts/cormorant-var.woff" as="font" type="font/woff" crossorigin>
+<link rel="preload" href="{prefix}fonts/playfair-normal-400_900-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="{prefix}fonts/manrope-normal-200_800-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="{prefix}css/site.css?v=2">
+<link rel="stylesheet" href="{prefix}css/site.css?v=3">
 <script>
   /* Animációs kezdőállapot csak akkor, ha a látogató nem kért csökkentett mozgást */
   (function(){{var d=document.documentElement;d.classList.add('js');
@@ -293,7 +293,7 @@ def footer(prefix, page_js="", float_cta=True):
 </footer>
 {fl}
 <script src="{prefix}js/vendor/motion-11.18.2.min.js" defer></script>
-<script src="{prefix}js/site.js?v=2" defer></script>
+<script src="{prefix}js/site.js?v=3" defer></script>
 {page_js}</body>
 </html>
 '''
@@ -1120,7 +1120,7 @@ def build_arculat():
 <section class="sec"><div class="wrap">
   <div class="sec__head"><h2 data-rv>Betűk</h2></div>
   <div class="type-spec">
-    <div class="card" data-rv><span class="tag">Címek · Cormorant Garamond</span><p class="big">Hagyd magad mögött <em>a várost</em></p><p>Régi könyvek világát idéző, finom antikva – dőlt változata adja a mesés kiemeléseket.</p></div>
+    <div class="card" data-rv><span class="tag">Címek · Playfair Display</span><p class="big">Hagyd magad mögött <em>a várost</em></p><p>Elegáns, karakteres antikva – a korábbi DAEKON-tervből megtartva; dőlt változata adja a mesés kiemeléseket.</p></div>
     <div class="card" data-rv><span class="tag">Szöveg · Manrope</span><p class="big big--sans">Kávék, sütik, kutyafülék</p><p>Modern, jól olvasható betű a hosszabb szövegekhez, gombokhoz és az űrlapokhoz.</p></div>
   </div>
   <p class="note" data-rv><b>Licenc:</b> mindkét betű szabad (SIL Open Font License), a logó feliratai görbékké alakítva – betűtelepítés nélkül is pontos.</p>
