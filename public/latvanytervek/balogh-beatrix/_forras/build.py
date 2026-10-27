@@ -9,9 +9,9 @@ vannak, hanem a js/config.js-ben — azokat a böngésző tölti be.
 import pathlib
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-V = '20261027c'
+V = '20261027e'
 # Motion (https://motion.dev) — vanilla JS build, rögzített verzió; ha nem tölt be, CSS-tartalék fut
-MOTION_TAG = '\n<script src="https://cdn.jsdelivr.net/npm/motion@11.18.2/dist/motion.js" crossorigin="anonymous"></script>'  # gyorsítótár-törő verzió
+MOTION_TAG = '\n<script src="js/vendor/motion-11.18.2.min.js"></script>'  # Motion (motion.dev), helyben kiszolgálva, MIT  # gyorsítótár-törő verzió
 
 ICONS = {
     'phone': '<path d="M5 4h3l2 5-2.5 1.5a11 11 0 0 0 5 5L14 13l5 2v3a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/>',
@@ -56,7 +56,8 @@ def sprite():
     return f'<svg width="0" height="0" style="position:absolute" aria-hidden="true">{syms}</svg>'
 
 def ico(name, cls=''):
-    return f'<svg class="ico {cls}" aria-hidden="true"><use href="#i-{name}"/></svg>'
+    # beágyazott útvonalak (nem <use>), hogy a Motion meg tudja „rajzolni" őket
+    return f'<svg class="ico {cls}" viewBox="0 0 24 24" aria-hidden="true">{ICONS[name]}</svg>'
 
 def head(title, desc, extra_css=''):
     return f'''<!doctype html>
@@ -121,7 +122,7 @@ def header(current, is_index=False):
 {demo_strip()}
 <header class="hdr">
   <div class="wrap">
-    <a class="brand" href="index.html" aria-label="Beatrix Nails &amp; Pedikűr — kezdőlap"><img class="logo" src="arculat/logo-fejlec.png" alt="Beatrix Nails &amp; Pedikűr" width="911" height="240"></a>
+    <a class="brand" href="index.html" aria-label="Beatrix Nails &amp; Pedikűr — kezdőlap"><img class="logo" src="arculat/logo-fejlec.svg" alt="Beatrix Nails &amp; Pedikűr" width="2388" height="717"></a>
     <nav class="nav" aria-label="Fő navigáció">{nav}</nav>
     <div class="hdr-cta">
       <a class="hdr-call" data-tel href="tel:+36706146070" aria-label="Hívás: +36 70 614 6070">{ico('phone')}</a>
@@ -149,7 +150,7 @@ def footer(is_index=False, mbar=True):
   <div class="wrap">
     <div class="ftr-grid">
       <div>
-        <a class="brand" href="index.html" style="margin-bottom:22px"><img class="logo logo--full" src="arculat/logo-beatrix-vilagos.png" alt="Beatrix Nails &amp; Pedikűr" width="664" height="600"></a>
+        <a class="brand" href="index.html" style="margin-bottom:22px"><img class="logo logo--full" src="arculat/logo-vilagos.svg" alt="Beatrix Nails &amp; Pedikűr" width="953" height="866"></a>
         <p style="max-width:24em">Kéz- és lábápolás előre egyeztetett időpontban.</p>
         <p><a data-tel href="tel:+36706146070" data-bind="phone">+36 70 614 6070</a><br><span data-bind="addr-line2">1111 Budapest</span>, <span data-bind="addr-line1">Bertalan Lajos utca 19.</span> <span class="tag" data-addr-status>Egyeztetés alatt</span></p>
       </div>
@@ -201,6 +202,8 @@ MARQUEE = [('magenta-1', 'Magenta géllakk', 760, 262), ('levendula-3', 'Levendu
 def marquee_items():
     one = lambda hidden: ''.join(f'<figure class="mq"{" aria-hidden=\"true\"" if hidden else ""}><img src="img/munkak/{n}-k.jpg" alt="{"" if hidden else a + " — Beatrix munkája"}" width="{w}" height="{h}" loading="lazy" decoding="async"></figure>' for n, a, w, h in MARQUEE)
     return one(False) + one(True)
+
+LOGO_INLINE = (ROOT / '_forras' / 'logo.inline.svg').read_text().strip()
 
 STREETS = '''<svg class="streets" viewBox="0 0 600 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="#CDBFAF" stroke-width="10" stroke-linecap="round"><path d="M-20 120 C 120 140, 260 90, 620 130"/><path d="M80 -20 L 140 420"/><path d="M-20 300 L 620 260"/><path d="M360 -20 C 340 120, 400 260, 380 420"/><path d="M500 -20 L 470 420"/></g><g fill="none" stroke="#DFD4C7" stroke-width="4"><path d="M-20 210 L 620 200"/><path d="M240 -20 L 260 420"/><path d="M-20 40 L 300 0"/></g><circle cx="300" cy="200" r="7" fill="#BE9A7B"/><circle cx="300" cy="200" r="20" fill="none" stroke="#BE9A7B" opacity=".5"/></svg>'''
 
@@ -343,9 +346,9 @@ INDEX = f'''
 
 <section class="sec" id="rolam" aria-labelledby="rol-h">
   <div class="wrap about">
-    <div class="portrait rv-img">
+    <div class="portrait portrait--logo">
+      {LOGO_INLINE}
       <span class="frame-label">Portré helye</span>
-      <div class="portrait-inner"><p>Ide Beatrix saját portréja kerül, a szalonban, természetes fényben.</p></div>
     </div>
     <div>
       <p class="eyebrow rv">Rólam</p>

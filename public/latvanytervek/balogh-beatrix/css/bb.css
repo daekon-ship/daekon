@@ -843,3 +843,42 @@ html body :is(.kpi b, .contact-phone) { font-weight: 650; letter-spacing: -.02em
 .sec--flower { position: relative; overflow: hidden; }
 .sec--flower .wrap { position: relative; z-index: 1; }
 .sec-flower { position: absolute; right: -40px; bottom: -60px; width: clamp(220px, 28vw, 380px); height: auto; opacity: .14; pointer-events: none; }
+
+/* ===== 5. KÖR — Motion-effektek kiegészítő stílusai ===== */
+.is-split .w { display: inline-block; overflow: hidden; vertical-align: top; padding: 0 .02em .1em; margin: 0 -.02em -.1em; }
+.is-split .wi { display: inline-block; will-change: transform; }
+.has-motion .hero h1, .has-motion .page-hero h1 { opacity: 0; }
+/* logó-rajzolás */
+.portrait--logo { display: grid; place-items: center; background: linear-gradient(160deg, #FBF8F4, var(--paper-2)); color: var(--ink); }
+.portrait--logo .logo-draw { width: 78%; height: auto; overflow: visible; }
+/* csúszó szűrő-jelölő */
+.chips.has-ind { position: relative; }
+.chip-ind { position: absolute; left: 0; top: 0; width: 0; height: 0; border-radius: 99px; background: var(--ink); z-index: 0; pointer-events: none; }
+.has-ind .chip { position: relative; z-index: 1; transition: color .3s, border-color .3s; }
+.has-ind .chip[aria-pressed="true"] { background: transparent; border-color: transparent; color: var(--paper); }
+/* GYIK */
+.faq .ans { overflow: hidden; }
+/* billenő kártyák fényfolttal */
+.tilt { will-change: transform; }
+.cat.tilt, .svc-card.tilt, .values > div.tilt, .perk.tilt, .sumcard.tilt, .callout.tilt { position: relative; }
+.cat.tilt::after, .svc-card.tilt::after, .values > div.tilt::after, .perk.tilt::after, .callout.tilt::after {
+  content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0; transition: opacity .4s;
+  background: radial-gradient(420px circle at var(--gx, 50%) var(--gy, 50%), rgba(255, 255, 255, .55), transparent 45%); mix-blend-mode: soft-light; }
+.perk.tilt::after { background: radial-gradient(380px circle at var(--gx, 50%) var(--gy, 50%), rgba(190, 154, 123, .28), transparent 50%); mix-blend-mode: normal; }
+.tilt:hover::after { opacity: 1; }
+/* gombok: fényvillanás */
+.btn { position: relative; overflow: hidden; isolation: isolate; }
+.btn::before { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, .28) 50%, transparent 70%); transform: translateX(-120%); transition: transform .8s cubic-bezier(.2, .7, .2, 1); }
+.btn:hover::before { transform: translateX(120%); }
+/* futó szalag dőlése a görgetés sebességével */
+.mq img { transform: skewX(var(--skew, 0deg)) scale(1.06); transition: transform .2s linear; }
+/* kurzorgyűrű (csak egérrel) */
+.cursor, .cursor-dot { position: fixed; left: 0; top: 0; z-index: 9999; pointer-events: none; opacity: 0; }
+.cursor { width: 0; height: 0; }
+.cursor-ring { position: absolute; left: -18px; top: -18px; width: 36px; height: 36px; border-radius: 50%; border: 1.5px solid rgba(43, 39, 37, .55); }
+.cursor-label { position: absolute; left: -60px; top: -10px; width: 120px; text-align: center; font: 700 .62rem/20px var(--sans); letter-spacing: .14em; text-transform: uppercase; color: var(--paper); opacity: 0; }
+.cursor-dot { width: 6px; height: 6px; margin: -3px 0 0 -3px; left: -20px; top: -20px; border-radius: 50%; background: var(--gold-ink); }
+.sec--dark ~ .cursor .cursor-ring { border-color: rgba(247, 244, 239, .6); }
+/* konfetti */
+.confetti { position: absolute; left: 50%; top: 50%; width: 0; height: 0; pointer-events: none; }
+.confetti i { position: absolute; width: 8px; height: 8px; margin: -4px; border-radius: 2px; }

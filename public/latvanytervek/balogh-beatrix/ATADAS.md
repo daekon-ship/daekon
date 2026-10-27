@@ -8,7 +8,22 @@ Előnézet: `https://daekon-ship.github.io/daekon/latvanytervek/balogh-beatrix/`
 
 ---
 
-## 0. 4. kör — látványosabb főoldal (2026.10.27.)
+## 0. 5. kör — sok Motion-effekt (2026.10.27.)
+
+- **Motion helyben:** `js/vendor/motion-11.18.2.min.js` (MIT, licenc mellette). Nincs CDN-függés.
+- **Logó vektorosan:** `_forras/logo_vektor.py` a JPG-ből kontúrkövetéssel SVG-t készít: `arculat/logo.svg`, `logo-vilagos.svg`, `logo-fejlec.svg`.
+  - A Rólam-részben a teljes logó vonalanként **megrajzolódik**, majd kitöltődik. Ez ideiglenes, a portré beérkezéséig.
+  - A fejléc-logó betöltéskor kinyílik.
+- **Ikonok:** beágyazott SVG-útvonalak. Görgetésre megrajzolódnak, hoverre újrarajzolódnak.
+- **Címek:** szavanként, maszk mögül, elmosásból úsznak be.
+- **Nyitókép:** rétegzett fotók belépése, egérkövető mélység, görgetéses parallaxis, lebegő virág.
+- **Fotószalag:** végtelen futás. A görgetés sebességére gyorsul és megdől, hoverre lelassul.
+- **Interakció:** mágneses gombok, 3D-ben billenő kártyák fényfolttal, kurzorgyűrű („Nézd”, „Nagyítás”), fényvillanás a gombokon.
+- **Komponensek:** csúszó szűrő-jelölő, rugós GYIK, a nagyító a bélyegképből nyílik ki, konfetti a sikeres foglalásnál.
+- Érintőképernyőn és csökkentett mozgás kérésekor a mágnes, a billenés és a kurzor kikapcsol, illetve az animációk elmaradnak.
+- Teszt valódi Motionnel és Motion nélkül: 53/53 + 53/53. Túlfolyás nincs.
+
+## 0/1. 4. kör — látványosabb főoldal (2026.10.27.)
 
 - **Nyitókép:** Beatrix fotóiból rétegzett kompozíció (íves nagy kép, kerek és szegélyes kiskép), mögötte a logó virágmotívuma (`arculat/virag-1*.png`, a logóból kivágva). Motion: kinyíló/ráközelítő belépés, görgetésre parallaxis, hoverre lassú zoom.
 - **Gyorsfoglalás:** széles foglalósáv a nyitókép alján (kezelések 2×2 + 3 szabad időpont).

@@ -10,7 +10,11 @@
 
   function $(s, r) { return (r || document).querySelector(s); }
   function $$(s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); }
-  function icon(id, cls) { return '<svg class="ico ' + (cls || '') + '" aria-hidden="true"><use href="#i-' + id + '"/></svg>'; }
+  /* ikon: a sprite-ból beágyazott útvonalakkal (így a Motion meg tudja rajzolni) */
+  function icon(id, cls) {
+    var sym = document.getElementById('i-' + id);
+    return '<svg class="ico ' + (cls || '') + '" viewBox="0 0 24 24" aria-hidden="true">' + (sym ? sym.innerHTML : '') + '</svg>';
+  }
 
   /* ---------- óralap (időtartam) ---------- */
   function dial(mins, size) {
