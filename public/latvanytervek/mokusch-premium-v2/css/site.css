@@ -535,9 +535,26 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
 .wiz-aside{display:none}
 @media (min-width:980px){.wiz-aside{display:block;margin-top:var(--s4);font-size:.8rem;color:var(--mute);line-height:1.5}}
 
+/* ------- Motion-effektek segédstílusai ------- */
+.fx-w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.08em;margin-bottom:-.08em}
+.fx-wi{display:inline-block;will-change:transform}
+.fx-progress{position:fixed;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,var(--berry),var(--rose));transform-origin:0 50%;transform:scaleX(0);z-index:120;pointer-events:none}
+.fx-leaves{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:2}
+.fx-leaf{position:absolute;top:0;height:auto;opacity:0;filter:drop-shadow(0 2px 2px rgba(0,0,0,.18))}
+.fx-spark{position:fixed;z-index:200;pointer-events:none;font-size:15px;line-height:1;translate:-50% -50%}
+.fx-cursor{position:fixed;left:0;top:0;z-index:150;width:14px;height:14px;translate:-50% -50%;border-radius:50%;border:1.5px solid var(--berry);background:rgba(121,63,73,.12);pointer-events:none;opacity:0;display:grid;place-items:center;mix-blend-mode:multiply}
+.fx-cursor span{font-family:var(--script);font-weight:700;font-size:1.15rem;color:var(--paper)}
+.fx-cursor.is-pic{background:var(--berry);border-color:var(--berry);mix-blend-mode:normal}
+.fx-cursor.is-btn{background:transparent}
+@media (hover:hover) and (pointer:fine){.anim body{cursor:auto}}
+
 /* ------- animációs kezdőállapotok (csak Motion + nincs reduced-motion) ------- */
 .anim [data-rv]{opacity:0;transform:translateY(22px)}
 .anim [data-rv="fade"]{transform:none}
 .anim [data-reveal]{clip-path:inset(0 0 100% 0)}
+.anim .hero__media{clip-path:inset(0 0 0 100%)}
+.anim .spread__media > .pic{clip-path:inset(0 100% 0 0)}
+.anim .spread--flip .spread__media > .pic{clip-path:inset(0 0 0 100%)}
+.anim .seal{transform:scale(0)}
 .anim .sprig path,.anim .sprig circle{stroke-dasharray:1;stroke-dashoffset:1}
 .anim .hero h1 .ln{opacity:0;transform:translateY(.35em)}

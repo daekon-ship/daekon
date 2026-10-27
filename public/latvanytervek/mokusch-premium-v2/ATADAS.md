@@ -3,6 +3,34 @@
 Élő előnézet: https://daekon-ship.github.io/daekon/latvanytervek/mokusch-premium-v2/
 Előző változat (érintetlen, összehasonlításhoz): https://daekon-ship.github.io/mokusch/
 
+## Motion-réteg (js/motion-fx.js)
+
+Minden alábbi effekt a Motion (motion.dev) könyvtárral fut; csökkentett mozgásnál egyik sem indul, érintőképernyőn a kurzoros effektek kimaradnak.
+
+| Effekt | Kiváltó | Mit csinál |
+|---|---|---|
+| Görgetésjelző | görgetés | bordó–púder csík a lap tetején |
+| Nyitócím | betöltés | szavanként, elmosódásból élesedve emelkedik be |
+| Fejezetcímek | láthatóvá válás | szavanként, enyhe billenéssel bukkannak elő |
+| Kézírásos számok | láthatóvá válás | balról „berajzolódnak” |
+| Nyitókép | betöltés + egér | jobbról kinyíló függöny, egérkövető parallax, lassú nagyítás |
+| Hulló levelek | folyamatos | 6–11 levél/szirom lassan hullik a nyitóképen |
+| Pecsét | betöltés + görgetés | rugóval beforog, egérrel együtt mozdul, görgetésre forog |
+| Könyvlap-képek | láthatóvá válás + görgetés | oldalról kinyíló feltárás, közben kicsinyedő kép; görgetésre lassú nagyítás |
+| Betétképek | láthatóvá válás + görgetés | rugóval, billenve érkeznek, görgetésre lebegnek |
+| Szövegoszlop | görgetés | finom ellenirányú parallax (desktop) |
+| Gombok, címkék, portrék | láthatóvá válás | rugós, lépcsőzetes beugrás |
+| Futó szalag | görgetés | a görgetés sebességére gyorsul, irányt vált, megdől |
+| Torta-finálé | görgetés | háttér lassú zoom, lépések sorban beúsznak |
+| Tortarendelés gombok | rámutatás / kattintás | szív- és virágkonfetti robban ki |
+| Mókus-ikon | folyamatos + rámutatás | a farok lengedez, rámutatáskor nagyot csóvál; a logó rugóval beugrik |
+| Tortaikon | folyamatos | lobogó gyertyaláng |
+| Kurzor | egér | rugós kör, képek fölött „mese” felirattal megnő |
+| Mágneses gombok | egér | a gomb a kurzor felé húzódik |
+| 3D döntés | egér | képek, kártyák, cetlik a kurzor felé dőlnek |
+| Aloldali rácsok | láthatóvá válás | kártyák rugós, lépcsőzetes megjelenése |
+| Varázsló | kattintás | kiválasztott opció „kattan”, a folyamatjelző pulzál |
+
 ## 3. kör (2026. október 27.) – közelebb a Wixhez, látványosabban, kevesebb szöveggel
 
 - **Wanda betűi:** Amatic SC a címekben és a pirulagombokban, Dancing Script a kézírásos alcímekben és a logó feliratában (a Wix-oldal betűi, saját tárhelyről).

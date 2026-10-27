@@ -116,8 +116,7 @@
     });
 
     // futó kézírásos szalag
-    var mq = $('[data-marquee]');
-    if (mq) M.animate(mq, { x: ['0%', '-50%'] }, { duration: 38, ease: 'linear', repeat: Infinity });
+    // a futó szalagot a motion-fx.js mozgatja (görgetési sebességre gyorsul)
 
     // felhőszegélyek: görgetésre alig érezhetően elsodródnak
     $$('.cloud--top, .cloud--bot').forEach(function (c, i) {

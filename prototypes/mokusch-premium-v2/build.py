@@ -175,7 +175,7 @@ def head(title, desc, prefix, extra=""):
 <link rel="preload" href="{prefix}fonts/amatic-bold.woff" as="font" type="font/woff" crossorigin>
 <link rel="preload" href="{prefix}fonts/dancing-var.woff" as="font" type="font/woff" crossorigin>
 <link rel="preload" href="{prefix}fonts/manrope-normal-200_800-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="{prefix}css/site.css?v=4">
+<link rel="stylesheet" href="{prefix}css/site.css?v=5">
 <script>
   /* Animációs kezdőállapot csak akkor, ha a látogató nem kért csökkentett mozgást */
   (function(){{var d=document.documentElement;d.classList.add('js');
@@ -312,7 +312,8 @@ def footer(prefix, page_js="", float_cta=True):
 </footer>
 {fl}
 <script src="{prefix}js/vendor/motion-11.18.2.min.js" defer></script>
-<script src="{prefix}js/site.js?v=4" defer></script>
+<script src="{prefix}js/site.js?v=5" defer></script>
+<script src="{prefix}js/motion-fx.js?v=1" defer></script>
 {page_js}</body>
 </html>
 '''
@@ -339,7 +340,7 @@ def spread(no, sid, title, sub, lead, btns, key, tone="paper", flip=False, extra
     sub_html = f'<p class="sub" data-rv>{sub}</p>' if sub else ""
     ins = inset(inset_key) if inset_key else ""
     return f'''<section class="{cls}" id="{sid}" aria-labelledby="h-{sid}">
-  <div class="spread__media">{pic(key, (4, 5), tag=tag)}{ins}</div>
+  <div class="spread__media">{pic(key, (4, 5), tag=tag, reveal=False)}{ins}</div>
   <div class="spread__text">
     <span class="no" data-rv>{no}.</span>
     <{h} id="h-{sid}" data-rv>{title}</{h}>
@@ -511,7 +512,7 @@ def sub_page(slug, lead, body, plain=False, page_js="", hero_img=None, h1=None, 
     else:
         hero_html = f'''<section class="sub-hero on-dark" aria-labelledby="h1">
   <div class="spread spread--flip">
-    <div class="spread__media">{pic(img_key, (4, 5), eager=True, tag="Wix-kép" if img_key == "posta" else "Illusztráció")}</div>
+    <div class="spread__media">{pic(img_key, (4, 5), eager=True, reveal=False, tag="Wix-kép" if img_key == "posta" else "Illusztráció")}</div>
     <div class="spread__text">{text}</div>
   </div>
   {cloud("bot", 9)}
