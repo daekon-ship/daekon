@@ -9,7 +9,7 @@ vannak, hanem a js/config.js-ben — azokat a böngésző tölti be.
 import pathlib
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-V = '20261027i'
+V = '20261027j'
 # Motion (https://motion.dev) — vanilla JS build, rögzített verzió; ha nem tölt be, CSS-tartalék fut
 MOTION_TAG = '\n<script src="js/vendor/motion-11.18.2.min.js"></script>'  # Motion (motion.dev), helyben kiszolgálva, MIT  # gyorsítótár-törő verzió
 
@@ -347,11 +347,7 @@ INDEX = f'''
 </section>
 
 <section class="sec" id="rolam" aria-labelledby="rol-h">
-  <div class="wrap about">
-    <div class="portrait portrait--logo">
-      {LOGO_INLINE}
-      <span class="frame-label">Portré helye</span>
-    </div>
+  <div class="wrap about about--solo">
     <div>
       <p class="eyebrow rv">Rólam</p>
       <h2 id="rol-h" class="rv" style="margin-bottom:26px">Balogh Beatrix</h2>

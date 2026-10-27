@@ -892,3 +892,4 @@ html body :is(.kpi b, .contact-phone) { font-weight: 650; letter-spacing: -.02em
 #priceList.is-collapsed { position: relative; }
 #priceList.is-collapsed::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 90px; background: linear-gradient(to bottom, transparent, var(--paper-2)); pointer-events: none; }
 .prices-more { display: flex; justify-content: center; margin: 22px 0 6px; }
+.about--solo { grid-template-columns: minmax(0, 1fr); max-width: 860px; }
