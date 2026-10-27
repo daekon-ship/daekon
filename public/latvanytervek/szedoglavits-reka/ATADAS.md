@@ -1,7 +1,7 @@
 # Dr. Szedoglavits Réka – látványterv, átadás
 
 **Élő előnézet:** https://daekon-ship.github.io/daekon/latvanytervek/szedoglavits-reka/
-**Állapot:** 3. kör (2026. 10. 27.) – Libre Baskerville címbetű; korábban: kompaktabb térközök, a portré középre igazítva a keretben.
+**Állapot:** 4. kör (2026. 10. 27.) – bővített Motion-animációk; korábban: Libre Baskerville, kompaktabb térközök, középre igazított portré.
 
 > Miért nem külön repó? A brief a `daekon-ship/szedoglavits-reka-preview` repót javasolta, de ebben a munkamenetben új repót nem lehetett létrehozni (a GitHub-token nem érvényes repó-létrehozásra). Ezért a ház-szabály szerinti helyre került: `daekon-ship/daekon` → `public/latvanytervek/szedoglavits-reka/`. A cím állandó, nem jár le, bejelentkezést nem kér, a további körök ugyanezen a címen jelennek meg.
 > A korábbi terv a **privát** `daekon-ship/dr-szedoglavits-reka-latvanyterv` repóban van – valószínűleg ezért nem tudta az ügyvédnő újra megnyitni. Azt a repót nem módosítottuk.
@@ -31,23 +31,35 @@ Konténer 1200 px + `clamp(20px,4vw,40px)` oldalsáv; szakasztávolság `clamp(5
 - <720: a családjogi fülek vízszintesen görgethető sávvá válnak.
 - Ellenőrizve: 320, 375, 390, 430, 768, 1024, 1440, 1920 px – vízszintes görgetés nincs, konzolhiba nincs.
 
-## Animációk – Motion (motion.dev 11.18.2, helyben: `js/vendor/`)
-| Elem | Mit csinál | Indító | Csökkentett mozgás |
-|---|---|---|---|
-| Hero cím | soronként alulról becsúszik (maszk) | betöltés | azonnal látszik |
-| Aláírás-ív | kirajzolódik (stroke) | betöltés, 0,75 s | kész vonal |
-| Portré | alulról felfedő vágás + 1,12→1 skála, keret és címke később | betöltés | statikus |
-| Portré parallax | kép 40 px, keret −18 px | görgetés (csak ≥900 px) | nincs |
-| Szakaszok | `data-r` elemek lépcsőzetes felúszása | `inView` | azonnal látszik |
-| Kártyák | lépcsőzetes megjelenés + ikonrajzolás; hoverre az ikon újrarajzolódik | `inView`, egér | statikus |
-| Fülek | panel tartalma lépcsőzetesen beúszik | kattintás/nyíl | azonnali váltás |
-| Folyamat | a vonal görgetésre telik, a számok sorban bordóra váltanak | görgetés | mind aktív |
-| Görgetés-jelző | 2 px arany–bordó sáv felül | görgetés | rejtve marad |
-| Gombok | fényvillanás-csík hoverre, nyíl elmozdul | egér | – |
-Ha a Motion nem töltődik be 2,5 s-on belül, minden tartalom animáció nélkül látszik.
+## Animációk – Motion (motion.dev 11.18.2, helyben: `js/vendor/`), 4. kör: bővített réteg a `js/motion.js`-ben
+| Elem | Mit csinál | Indító |
+|---|---|---|
+| Fejléc-logó | az SzR-aláírás balról jobbra „kiíródik” (clip-path), menüpontok lépcsőzetesen leereszkednek | betöltés |
+| Hero cím | betűnként, maszk mögül, elmosásból élesedve | betöltés |
+| Hero felirat | a betűköz összehúzódik | betöltés |
+| Aláírás-ív, keret | az ív kirajzolódik, a portré kerete középről kinyílik | betöltés |
+| Portré | függönyszerű felfedés + lassú zoom, fénycsík végigfut; egérre 3D-ben dől, a fény követi | betöltés / egér |
+| Hero háttér | a bézs panel jobbról becsúszik; arany fényfolt követi az egeret | betöltés / egér |
+| Hero kifelé görgetés | a szöveg feljebb úszik és halványul, a portré lassabban mozog és kicsit kisebb lesz | görgetés |
+| Témasor | görgetésre vízszintesen sodródik | görgetés |
+| Gombok | mágneses húzás az egér felé, rugós lenyomás | egér |
+| Szakaszcímek | szavanként, maszk mögül, enyhe elfordulásból | inView |
+| Szemöldök-feliratok | a betűköz összehúzódik | inView |
+| Értékek | jobbról beúsznak, az ikonok kirajzolódnak; egérre az ikon megbillen és újrarajzolódik | inView / egér |
+| Aláírás (bemutatkozás, lábléc) | „kiíródik” | inView |
+| Szakterület-kártyák | 3D-ben felbillennek, ikonok kirajzolódnak; egérre dőlnek és arany fény követi a kurzort | inView / egér |
+| Családjogi fülek | csúszó jelölő (asztali: függőleges sáv, mobil: bordó kapszula), a panel elmosásból érkezik | kattintás |
+| Folyamat | a vonal görgetésre telik, a számok rugósan „bepattannak” | görgetés |
+| Tudástár | kártyák elfordulásból érkeznek, a borító felülről nyílik, az ív kirajzolódik, egérre dőlnek | inView / egér |
+| Időpontkérés | a bordó szakasz lekerekített „ablakból” teljes szélességre nyílik; reflektor követi az egeret; űrlapmezők fókuszra emelkednek; sikeres küldésnél a pipa kirajzolódik | görgetés / egér |
+| Kapcsolat | a térkép utcái kirajzolódnak, a tű rugósan leesik | inView |
+| Párbeszédablak | rugós, 3D-s nyitás, a sorok beúsznak | kattintás |
+| Görgetés-jelző | 2 px arany–bordó sáv felül | görgetés |
+
+Csökkentett mozgásnál (prefers-reduced-motion) és ha a Motion nem tölt be, semmi nem mozog, minden tartalom azonnal látszik. Egérkövető hatások csak asztali gépen futnak, mobilon nem terhelik a telefont.
 
 ## Fájlok
-`index.html` · `css/site.css` · `js/site.js` · `js/vendor/motion-11.18.2.min.js` (+ licenc) · `fonts/` · `img/`
+`index.html` · `css/site.css` · `js/site.js` · `js/motion.js` · `js/vendor/motion-11.18.2.min.js` (+ licenc) · `fonts/` · `img/`
 
 ## Képanyag – forráslista és státusz
 | Fájl | Forrás | Státusz |

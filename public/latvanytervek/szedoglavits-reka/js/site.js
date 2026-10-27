@@ -128,7 +128,6 @@
     if (typeof dlg.showModal === 'function') dlg.showModal(); else dlg.setAttribute('open', '');
     document.body.classList.add('dlg-open');
     if (canAnim) {
-      M.animate($('.dlg__box', dlg), { opacity: [0, 1], y: [24, 0], scale: [0.985, 1] }, { duration: 0.5, ease: ease });
       M.animate(dlgBody.children, { opacity: [0, 1], y: [10, 0] }, { delay: M.stagger(0.04, { startDelay: 0.12 }), duration: 0.45, ease: ease });
     }
   }
@@ -207,67 +206,5 @@
     var tr = $('.steps__track span'); if (tr) tr.style.transform = 'scaleY(1)';
     return;
   }
-  var animate = M.animate, scroll = M.scroll, inView = M.inView, stagger = M.stagger;
-  var desktop = window.matchMedia('(min-width: 900px)').matches;
-
-  // görgetés-jelző
-  scroll(animate('.progress span', { scaleX: [0, 1] }, { ease: 'linear' }));
-
-  // hero belépés
-  var heroImg = $('.pp__img img');
-  animate('.hero__eyebrow', { opacity: [0, 1], y: [10, 0] }, { duration: 0.7, ease: ease, delay: 0.1 });
-  animate('[data-hl]', { y: ['105%', '0%'] }, { duration: 1.05, ease: ease, delay: stagger(0.14, { startDelay: 0.2 }) });
-  animate('.hero__swash path', { strokeDashoffset: [1, 0] }, { duration: 1.6, ease: [0.45, 0, 0.2, 1], delay: 0.75 });
-  animate('.hero__text > [data-h]:not(.hero__eyebrow)', { opacity: [0, 1], y: [16, 0] }, { duration: 0.8, ease: ease, delay: stagger(0.1, { startDelay: 0.7 }) });
-  animate('.pp__img', { clipPath: ['inset(100% 0 0 0)', 'inset(0% 0 0 0)'] }, { duration: 1.3, ease: [0.7, 0, 0.2, 1], delay: 0.25 });
-  animate(heroImg, { scale: [1.12, 1] }, { duration: 1.8, ease: ease, delay: 0.25 });
-  animate('.pp__frame', { opacity: [0, 1], scale: [0.97, 1] }, { duration: 1.1, ease: ease, delay: 0.9 });
-  animate('.pp__tag', { opacity: [0, 1], x: [-12, 0] }, { duration: 0.8, ease: ease, delay: 1.25 });
-
-  // finom parallax a portrén (csak asztali nézetben)
-  if (desktop) {
-    scroll(animate('.hero__portrait', { y: [0, 36] }, { ease: 'linear' }), { target: hero, offset: ['start start', 'end start'] });
-  }
-
-  // szakaszonkénti megjelenés
-  $$('.sec').forEach(function (sec) {
-    var items = $$('[data-r]', sec);
-    if (!items.length) return;
-    inView(sec, function () {
-      animate(items, { opacity: [0, 1], y: [22, 0] }, { duration: 0.85, ease: ease, delay: stagger(0.07) });
-    }, { amount: 0.12 });
-  });
-  // kártyák lépcsőzetesen + ikonrajzolás
-  [['.areas__grid', '.card'], ['.kb__grid', '.post']].forEach(function (pair) {
-    var wrap = $(pair[0]); if (!wrap) return;
-    var cards = $$(pair[1], wrap);
-    inView(wrap, function () {
-      animate(cards, { opacity: [0, 1], y: [28, 0] }, { duration: 0.8, ease: ease, delay: stagger(0.08) });
-      var shapes = $$('.card__ic > *, .post__cover path', wrap);
-      animate(shapes, { strokeDashoffset: [1, 0] }, { duration: 1.2, ease: ease, delay: stagger(0.05, { startDelay: 0.3 }) });
-    }, { amount: 0.1 });
-  });
-  // a kártyák ikonja hoverre újrarajzolódik
-  $$('.card').forEach(function (c) {
-    c.addEventListener('mouseenter', function () {
-      var sh = $$('.card__ic > *', c);
-      animate(sh, { strokeDashoffset: [1, 0] }, { duration: 0.9, ease: ease, delay: stagger(0.06) });
-    });
-  });
-
-  // folyamat: a vonal görgetésre telik, a lépések sorban kigyúlnak
-  var list = $('.steps__list');
-  var steps = $$('[data-step]');
-  scroll(animate('.steps__track span', { scaleY: [0, 1] }, { ease: 'linear' }), { target: list, offset: ['start 70%', 'end 60%'] });
-  scroll(function (p) {
-    var n = Math.min(steps.length, Math.floor(p * (steps.length) + 0.25));
-    steps.forEach(function (s, i) { s.classList.toggle('is-on', i < n); });
-  }, { target: list, offset: ['start 70%', 'end 60%'] });
-  steps.forEach(function (s) { s.style.opacity = '0'; });
-  inView(list, function () {
-    animate(steps, { opacity: [0, 1], x: [16, 0] }, { duration: 0.8, ease: ease, delay: stagger(0.12) });
-  }, { amount: 0.15 });
-
-  // családjogi szakasz: lágy fényfolt mozgása görgetésre
-  scroll(animate('.family__light', { x: [60, -60], y: [-30, 30] }, { ease: 'linear' }), { target: $('#csaladjog') });
+  window.SZR_MOTION = true; // a Motion-réteg a js/motion.js-ben fut
 })();
