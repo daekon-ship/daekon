@@ -1,7 +1,7 @@
 # Nika Kozmetika – látványterv, átadás
 
 **Élő előnézet:** https://daekon-ship.github.io/daekon/latvanytervek/nika-kozmetika/
-**Állapot:** 8. kör (2026. 10. 27.) – vevőcsalogatóbb, de természetes szövegek a hero alatt, a kezelések alatt és az időpont-blokkban. 7. kör: futó szalag ki.
+**Állapot:** 9. kör (2026. 10. 27.) – „Prémium véglegesítő és hibajavító” kör: új hero-kompozíció, finomított kezelések, időpont-lépések, teljesen átnézett időpontkérő panel magyar napválasztóval, visszafogottabb animációk, teljes Playwright-teszt (139/139).
 
 > Miért nem külön repó? A brief a `nika-kozmetika-preview` repót javasolta. A DAEKON-ház-szabály szerint minden látványterv a `daekon-ship/daekon` → `public/latvanytervek/<ügyfél>/` mappába kerül, ugyanazon a GitHub Pages címen frissül körről körre. Új repót ezért nem hoztunk létre.
 
@@ -104,3 +104,39 @@ Kérés: „használj nagyon sok mindent a Motionből, legyen látványos”.
 - **Kapcsolat:** sorok lépcsőzetesen; a térkép vonalai kirajzolódnak, a tű rugóval „leesik”, lüktető gyűrűk.
 - **Panel:** rugós becsúszás, választógombok pattannak, a kész-jel kirajzolódik és beforog.
 - Csökkentett mozgás beállításnál semmi nem mozog; minden tartalom azonnal látszik. Mobilon az egérhez kötött effektek (kurzor, mágnes, billenés, követés) kikapcsolnak.
+
+## 9. kör – véglegesítés (2026. 10. 27.)
+
+### Módosítások
+- **Hero:** kétoszlopos, kiegyensúlyozott elrendezés. Bal: „Kozmetika Szegeden” felirat, „Nika Kozmetika” főcím, dőlt cím-sor, barátságos alcím, nagy „Időpontot kérek” + telefon gomb, alattuk cím és „Időpont egyeztetéssel”. Jobb: CSS-alapú kompozíció (púderrózsa organikus forma, pezsgő és rózsás gömb, üveges kör, arany pálya mozgó ponttal, hajszálvonalak, középen a kirajzolódó N-monogram). Fotó és rajzolt növény nincs. Mobilon a kompozíció kicsi (≈210 px) és a gombok alatt van.
+- **Kezelések:** cím + rövid, személyes bevezető egy sorban; finomabb sorköz, hover-kiemelés, fókuszkeret billentyűzethez. Kattintásra a panel nyílik, a kezelés előre kiválasztva (megvillan a mező).
+- **Személyesség:** közvetlen, tegező szövegek; az Ilcsi-blokk csak annyit mond, hogy a szalon a kozmetikakeresőben is megtalálható (partner/tanúsítvány állítás nincs). Az időpont-blokk 3 lépést mutat: Hívj vagy írj → Egyeztetünk → Várunk.
+- **Időpontkérő panel:** mezőnkénti hibaüzenetek (aria-invalid), telefon- és e-mail-formátum ellenőrzés, kattintható adatkezelési link, **magyar napválasztó** (Mindegy + a következő 14 nap, pl. „SZE 28 okt.”; JS nélkül sima dátummező), jól látható tájékoztató, hogy a gomb e-mail-programot nyit és ez nem automatikus foglalás; a visszajelzés is ezt mondja („Az időpont akkor él, ha visszaigazoltuk”); „Vissza az űrlaphoz” gomb; görgetés zárolva a panel alatt; Esc, fókuszcsapda, fókusz visszaadása.
+- **Animációk:** visszafogottabbak és gyorsabbak (a hero kb. 1,3 s alatt kész). Kivéve: a hero szövegének görgetésre halványulása (eltűnő tartalom) és az Ilcsi-mondat szavankénti „világosodása”. Mobilon nincs betűnkénti animáció, kitágulás, kurzor, mágnes, billenés. Menüpontra kattintva a fejléc látható marad. `prefers-reduced-motion` mellett semmi nem mozog.
+- **Jogi ablakok:** „Demonstrációs helykitöltő” címke, világos szöveg arról, hogy a látványterv nem éles és nem gyűjt adatot. Lábléc: „Látványterv (demó), nem éles weboldal – DAEKON”.
+
+### Tesztek (Playwright, Chromium) – 139/139 sikeres
+- **8 szélesség:** 320, 360, 375, 390, 412, 768, 1024, 1440 px – mindegyiken: nincs vízszintes túlcsordulás, nincs konzolhiba, minden erőforrás betöltődik, görgetés után minden tartalom látható, betűméret ≥ 13 px és H1 ≤ 60 px, minden gomb ≥ 40 px magas, a főcím a képernyőn belül, mobilmenü nyílik és a menüpont a szakaszhoz görget, a panel elfér, alatta nem görget az oldal, Esc-re bezárul.
+- **Navigáció:** a menüpontok a megfelelő szakaszhoz visznek, a logó a tetejére.
+- **Időpontkérés:** mind a 11 időpontkérő gomb megnyitja a panelt; mind a 6 kezelés előre kiválasztódik; általános gombnál „Még nem tudom” az alap; validáció (üres űrlap, hibás telefon/e-mail, hiányzó hozzájárulás) jelez és nem enged tovább; a magyar napválasztó 15 elemű; az e-mail a vanyoanyo2@gmail.com címre, minden kitöltött mezővel áll össze; őszinte visszajelzés; „Vissza” megtartja az adatokat; Tab a panelen belül marad; bezáráskor a fókusz visszakerül.
+- **Jogi ablakok:** mind a 3 nyílik a helyes címmel és demó-jelöléssel, és bezárul; a panelből is megnyitható.
+- **Térkép:** kattintásra a Google-térkép a pontos címmel töltődik be.
+- **Hivatkozások:** minden telefonlink tel:+36308661037, minden e-mail-link vanyoanyo2@gmail.com, az útvonaltervezés a 6725 Szeged, Szabadkai út 9/C címre, az Ilcsi-link a hivatalos adatlapra mutat; a cím legalább 3 helyen egyezik; nincs partner/tanúsítvány/referencia szó; noindex.
+- **Akadálymentesség:** egy H1, lang=hu, skip-link, minden gomb/link felirattal, minden mező címkével; kontraszt: törzsszöveg 6,6:1, gomb 5,1:1, arany szöveg 5,0:1, sötét blokk 13,8:1.
+- **Csökkentett mozgás:** nincs animációs állapot, minden azonnal látszik.
+
+### Jóváhagyandó / egyeztetendő (ügyfél)
+1. **Kezelések listája** – egyik sem igazolt (az Ilcsi-adatlapon nincs szolgáltatáslista): személyre szabott arckezelés, hidratáló-tápláló kezelés, bőrtisztítás, arcápolási tanácsadás, szemöldök- és szempillaápolás, egyéb. Árak, időtartamok sincsenek.
+2. **Nyitvatartás** (az Ilcsi-adatlapon üres) – addig „Időpont egyeztetéssel” szerepel.
+3. **Saját fotók** (szalon, kezelés, portré) – a hero-kompozíció mellé/helyére kerülhetnek.
+4. **Nagy Annamária szerepe** és egy rövid, saját bemutatkozás.
+5. **Valós vendégvélemények** (pl. Google-profil), engedéllyel.
+6. **Időpontkérés módja élesben** – marad-e az e-mail-program, vagy űrlapküldő / foglalási rendszer kell (adatkezelési tájékoztatóval).
+7. **Jogi oldalak** – impresszum, adatkezelési és sütikezelési tájékoztató a vállalkozás adataival.
+8. **„Visszahívunk” ígéret** – a tulajdonos vállalja-e.
+
+### Ismert korlátok, kockázatok
+- Az e-mail-alapú időpontkérés csak akkor működik, ha a látogató eszközén be van állítva levelezőprogram (főleg asztali gépen lehet gond); ezért a telefon az elsődleges.
+- A Google-térkép csak kattintásra töltődik (sütik miatt); a tesztkörnyezetben a Google maga nem volt elérhető, csak a beágyazás címét ellenőriztük.
+- A tesztek Chromiumban futottak; Safari/iOS valós eszközön érdemes egyszer végignézni (backdrop-filter, napválasztó görgetése).
+- Az egyéni kurzor csak egeres eszközön jelenik meg; tesztkörnyezetben a fej nélküli böngésző egérnek jelzi magát.
