@@ -183,8 +183,6 @@
   animate('.hero .kicker', { opacity: [0, 1], x: [-12, 0] }, { duration: 0.7, delay: 0.15, ease: ease });
   animate('.h1 .ln > span', { y: ['105%', '0%'] }, { duration: 1.05, delay: stagger(0.12, { startDelay: 0.25 }), ease: ease });
   animate('.hero [data-h]:not(.kicker)', { opacity: [0, 1], y: [16, 0] }, { duration: 0.8, delay: stagger(0.1, { startDelay: 0.65 }), ease: ease });
-  animate('.visit', { opacity: [0, 1], y: [40, 0], clipPath: ['inset(30% 0 0 0 round 240px 240px 22px 22px)', 'inset(0% 0 0 0 round 240px 240px 22px 22px)'] }, { duration: 1.3, delay: 0.45, ease: [0.7, 0, 0.2, 1] });
-  animate('.visit > *', { opacity: [0, 1], y: [14, 0] }, { duration: 0.7, delay: stagger(0.08, { startDelay: 1.0 }), ease: ease });
   animate('.hero__bg', { x: [0, 22], y: [0, -14], scale: [1, 1.05] }, { duration: 14, repeat: Infinity, repeatType: 'reverse', ease: 'easeInOut' });
 
   // Szakaszok: lépcsőzetes felúszás

@@ -388,7 +388,6 @@ ul,ol{margin:0;padding:0;list-style:none}
 /* ---------- animációs kezdőállapotok (csak ha a Motion fut) ---------- */
 .anim [data-r],.anim [data-h]{opacity:0}
 .anim .h1 .ln>span{transform:translateY(105%)}
-.anim .visit{opacity:0}
 
 /* 3. kör finomítások */
 .card--ask{grid-column:1/-1}
@@ -405,3 +404,15 @@ ul,ol{margin:0;padding:0;list-style:none}
   .hero__tags span{padding:7px 12px;border:1px solid rgba(201,164,124,.5);border-radius:999px;letter-spacing:.1em}
   .hero__tags span+span::before{display:none}
 }
+
+/* 4. kör: kártya nélküli hero, egyszerűsített blokkok */
+.hero__grid{grid-template-columns:1fr}
+.hero__text{max-width:720px}
+.hero{padding-bottom:clamp(72px,8vw,110px)}
+.nature__in{position:relative}
+.nature__in .body-l{max-width:56ch}
+.nature__in .h2{max-width:none}
+.nature__in .body-l{margin-bottom:24px}
+.ftr__grid{grid-template-columns:1.4fr 1fr 1fr}
+@media (max-width:899px){.ftr__grid{grid-template-columns:1fr 1fr}}
+@media (max-width:440px){.ftr__grid{grid-template-columns:1fr}}

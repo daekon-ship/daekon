@@ -1,7 +1,7 @@
 # Nika Kozmetika – látványterv, átadás
 
 **Élő előnézet:** https://daekon-ship.github.io/daekon/latvanytervek/nika-kozmetika/
-**Állapot:** 3. kör (2026. 10. 27.) – kikerültek a rajzolt képhelyek, a pecsét és a galéria; új betűpár: Cormorant Garamond + DM Sans. (2. kör: púderes rózsa–mályva paletta.) – csak látványterv, `noindex, nofollow`. Éles oldalhoz, domainhez nem nyúltunk, a vállalkozásnak nem ment üzenet.
+**Állapot:** 4. kör (2026. 10. 27.) – a hero látogatókártyája és a lábléc „Hívás most” blokkja kikerült, a szövegek egyszerűbbek, kevésbé szlogenesek (a „Levél/Krém/Olaj” lista és a lábléc-idézet is ki). 3. kör: rajzos képhelyek ki, Cormorant Garamond + DM Sans. 2. kör: rózsa–mályva paletta.
 
 > Miért nem külön repó? A brief a `nika-kozmetika-preview` repót javasolta. A DAEKON-ház-szabály szerint minden látványterv a `daekon-ship/daekon` → `public/latvanytervek/<ügyfél>/` mappába kerül, ugyanazon a GitHub Pages címen frissül körről körre. Új repót ezért nem hoztunk létre.
 
@@ -82,3 +82,6 @@ Visszajelzés: „ezek nem kellenek” (rajzolt képhelyek, boltíves rajzos ker
 - `noindex` levétele, kanonikus URL, a `BeautySalon` strukturált adat bővítése (nyitvatartás, képek).
 - SEO-cím és meta leírás a brief szerint már az oldalon van.
 - Nem tartalmaz és nem igényel GSAP-ot, Three.js/WebGL-t, React Bitset vagy licencelt HorizonX-elemet – minden mozgás a Motion vanilla csomagjával és CSS-sel készült.
+
+## 4. kör – szövegek
+Visszajelzés: „a szövegek is túl AI-osak” → rövid, tényszerű mondatok: hero „Kozmetika Szegeden, a Szabadkai úton”, bemutatkozás „Pár szó a szalonról”, kezelésenként egy egyszerű mondat, Ilcsi-blokk csak a tényekkel. A végleges szövegeket a tulajdonossal érdemes egyeztetni.
