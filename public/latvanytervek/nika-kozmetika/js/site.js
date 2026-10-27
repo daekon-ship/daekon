@@ -303,21 +303,6 @@
     });
   });
 
-  /* 6. Futószalag: végtelen sodródás, a görgetés sebessége gyorsítja és megdönti */
-  var track = $('.band__track');
-  if (track) {
-    var bx = 0, vel = 0, prevY = window.scrollY, skew = mv(0);
-    frame.update(function loop(data) {
-      var y = window.scrollY, d = y - prevY; prevY = y;
-      vel += (d - vel) * 0.1;
-      var w = track.scrollWidth / 2;
-      bx -= (0.6 + Math.abs(vel) * 0.25) * (data.delta / 16.67);
-      if (-bx > w) bx += w;
-      track.style.transform = 'translateX(' + bx + 'px) skewX(' + Math.max(-12, Math.min(12, -vel * 0.4)) + 'deg)';
-    }, true);
-    animate('.band', { opacity: [0, 1], scaleX: [0.9, 1] }, { delay: 1.5, ...SOFT });
-  }
-
   /* 7. Szakaszcímek: betűnként rugóval, alulról */
   $$('.sec__h, .nature .h2, .book .h2').forEach(function (h) {
     var cs = splitChars(h); cs.forEach(function (c) { c.style.opacity = '0'; });

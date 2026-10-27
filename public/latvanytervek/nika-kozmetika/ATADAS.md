@@ -1,7 +1,7 @@
 # Nika Kozmetika – látványterv, átadás
 
 **Élő előnézet:** https://daekon-ship.github.io/daekon/latvanytervek/nika-kozmetika/
-**Állapot:** 6. kör (2026. 10. 27.) – sok Motion-effekt (lásd lent „6. kör – Motion”), újrarajzolt, kirajzolódó N-monogram. 5. kör: csak valós adatok, töltelékszöveg nélkül.
+**Állapot:** 7. kör (2026. 10. 27.) – a kezelésnevekkel futó szalag kikerült. 6. kör: sok Motion-effekt, új N-monogram.
 
 > Miért nem külön repó? A brief a `nika-kozmetika-preview` repót javasolta. A DAEKON-ház-szabály szerint minden látványterv a `daekon-ship/daekon` → `public/latvanytervek/<ügyfél>/` mappába kerül, ugyanazon a GitHub Pages címen frissül körről körre. Új repót ezért nem hoztunk létre.
 
@@ -97,7 +97,6 @@ Kérés: „használj nagyon sok mindent a Motionből, legyen látványos”.
 - **Egyéni kurzor:** pont + rugóval követő gyűrű, interaktív elem fölött kinyílik (csak egérrel).
 - **Fejléc:** lefelé görgetésre eltűnik, felfelé rugóval visszajön; a haladásjelző rugóval simított.
 - **Horgonylinkek:** Motion-nel animált, lassuló görgetés.
-- **Futószalag** a kezelések nevével: végtelen sodródás, a görgetés sebessége gyorsítja és megdönti.
 - **Szakaszcímek:** betűnként, rugóval, enyhe forgással.
 - **Kezelések:** sorok balról, kivágásból; a számok pörögve érkeznek; egér alatt rugós, követő kiemelés-sáv, a cím elcsúszik; bal oldalt görgetésre telő arany vonal (széles kijelzőn).
 - **Ilcsi-blokk:** görgetésre kitágul (lekerekített kivágásból teljes szélességre), a háttér-monogram görgetésre kirajzolódik és forog, a mondat szavanként világosodik.
