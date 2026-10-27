@@ -113,6 +113,11 @@ window.BB_CONFIG = {
     horizonDays: 75    /* ennyi napra előre lehet foglalni */
   },
 
+  /* Előtte–utána galéria (speciális lábápolás oldal).
+     consentApproved: true csak a vendég(ek) ÍRÁSOS hozzájárulása után! Addig a képek
+     „belső bemutató" fátyol mögött vannak. pairingConfirmed: Beatrix megerősítette a párokat. */
+  beforeAfter: { consentApproved: false, pairingConfirmed: false },
+
   site: {
     baseUrl: 'https://daekon-ship.github.io/daekon/latvanytervek/balogh-beatrix/',
     demo: true

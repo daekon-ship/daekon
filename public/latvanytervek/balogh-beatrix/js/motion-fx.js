@@ -181,13 +181,18 @@
       safe(function () {
         var ctl = animate(t, { x: ['0%', '-50%'] }, { duration: 70, ease: 'linear', repeat: Infinity });
         var box = t.parentElement, hover = false, boost = 0, cur = 1;
+        var vis = true, lastSpeed = 1, lastSkew = '';
+        if ('IntersectionObserver' in window) new IntersectionObserver(function (en) { vis = en[0].isIntersecting; if (vis) ctl.play(); else ctl.pause(); }).observe(box);
         box.addEventListener('pointerenter', function () { hover = true; });
         box.addEventListener('pointerleave', function () { hover = false; });
         if (scroll) scroll(function (p, info) { var v = info && info.y ? info.y.velocity : 0; boost = Math.max(boost, Math.min(Math.abs(v) / 250, 6)); });
         (function loop() {
-          boost *= 0.94;
-          var target = hover ? 0.15 : 1 + boost; cur += (target - cur) * 0.08; ctl.speed = cur;
-          t.style.setProperty('--skew', (-boost * 1.2).toFixed(2) + 'deg');
+          /* csak akkor dolgozik, ha a szalag látszik, és csak változáskor ír a DOM-ba (akadásmentes) */
+          if (!vis) { requestAnimationFrame(loop); return; }
+          boost *= 0.94; if (boost < 0.01) boost = 0;
+          var target = hover ? 0.15 : 1 + boost; cur += (target - cur) * 0.08;
+          if (Math.abs(cur - lastSpeed) > 0.004) { ctl.speed = cur; lastSpeed = cur; }
+          var sk = (-boost * 1.2).toFixed(1); if (sk !== lastSkew) { t.style.setProperty('--skew', sk + 'deg'); lastSkew = sk; }
           requestAnimationFrame(loop);
         })();
         animate($$('.mq', t).slice(0, 8), { opacity: [0, 1], y: [40, 0], rotate: [3, 0] }, Object.assign({ delay: stagger(0.07, { startDelay: 0.2 }) }, SPRING));
@@ -371,6 +376,20 @@
             onComplete: function () { el.textContent = txt; }
           });
         });
+      });
+    },
+    baReveal: function (stage) {
+      safe(function () {
+        var p = stage.querySelector('.ba-pair.is-on'); if (!p) return;
+        animate(p.querySelectorAll('.ba-fig'), { opacity: [0, 1], y: [24, 0], scale: [0.96, 1] }, Object.assign({ delay: stagger(0.12) }, SPRING));
+      });
+    },
+    baSwitch: function (p) {
+      safe(function () {
+        var f = p.querySelectorAll('.ba-fig');
+        animate(f, { opacity: [0, 1], x: [18, 0] }, { duration: 0.55, ease: EASE, delay: stagger(0.1) });
+        animate(p.querySelectorAll('.ba-fig img'), { scale: [1.08, 1] }, { duration: 0.9, ease: EASE });
+        var a = p.querySelector('.ba-arrow'); if (a) animate(a, { scale: [0.4, 1], rotate: [-90, 0] }, Object.assign({ delay: 0.15 }, SPRING));
       });
     },
     modal: function (card) { safe(function () { animate(card, { opacity: [0, 1], y: [30, 0], scale: [0.96, 1] }, SPRING); }); },

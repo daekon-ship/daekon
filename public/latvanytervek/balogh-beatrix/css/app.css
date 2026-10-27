@@ -422,3 +422,4 @@
   .cal-label { min-width: 0; width: 100%; order: -1; margin: 0; }
 }
 .bk-step .chips--scroll { margin-right: 0; padding-right: 0; }
+@media (pointer: coarse) { .inline-link { padding: 8px 4px; margin: -8px -4px; min-height: 32px; display: inline-flex; align-items: center; } }

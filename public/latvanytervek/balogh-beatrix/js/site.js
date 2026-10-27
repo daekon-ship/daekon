@@ -56,10 +56,11 @@
     }
     /* asztali legördülő */
     $$('.nav-dd').forEach(function (dd) {
-      var btn = $('.nav-dd-btn', dd), panel = $('.nav-dd-panel', dd), timer;
+      var btn = $('.nav-dd-btn', dd), panel = $('.nav-dd-panel', dd), timer, hoverAt = 0;
       function set(open) { btn.setAttribute('aria-expanded', open ? 'true' : 'false'); panel.classList.toggle('is-open', open); }
-      btn.addEventListener('click', function () { set(btn.getAttribute('aria-expanded') !== 'true'); });
-      dd.addEventListener('mouseenter', function () { clearTimeout(timer); set(true); });
+      /* egérrel a rámutatás már kinyitja — az ezt követő kattintás ne csukja vissza */
+      btn.addEventListener('click', function () { if (Date.now() - hoverAt < 600 && btn.getAttribute('aria-expanded') === 'true') return; set(btn.getAttribute('aria-expanded') !== 'true'); });
+      dd.addEventListener('mouseenter', function () { clearTimeout(timer); hoverAt = Date.now(); set(true); });
       dd.addEventListener('mouseleave', function () { timer = setTimeout(function () { set(false); }, 180); });
       dd.addEventListener('focusout', function (e) { if (!dd.contains(e.relatedTarget)) set(false); });
       dd.addEventListener('keydown', function (e) { if (e.key === 'Escape') { set(false); btn.focus(); } });
@@ -215,20 +216,51 @@
     a.innerHTML = dial(s.mins) + '<span><b>' + esc(s.name) + '</b><span>' + s.mins + ' perc · ' + esc(T.fmtPrice(s)) + '</span></span>';
   }
 
+
+  /* ---------- előtte–utána galéria ---------- */
+  function beforeAfter() {
+    var box = $('[data-ba]'); if (!box) return;
+    var cfg = BB.cfg.beforeAfter || {}, stage = $('.ba-stage', box), tabs = $$('.ba-tab', box);
+    var shown = false;
+    try { shown = sessionStorage.getItem('bb-ba-shown') === '1'; } catch (e) {}
+    if (!cfg.consentApproved && !shown) { stage.classList.add('is-veiled'); box.classList.add('is-veiled'); }
+    if (cfg.consentApproved) { var st = $('.ba-status', box); if (st) st.hidden = true; }
+    var btn = $('[data-ba-show]', box);
+    if (btn) btn.addEventListener('click', function () {
+      stage.classList.remove('is-veiled'); box.classList.remove('is-veiled');
+      try { sessionStorage.setItem('bb-ba-shown', '1'); } catch (e) {}
+      if (window.BBFX && BBFX.baReveal) BBFX.baReveal(stage);
+      var t = $('.ba-tab[aria-selected="true"]', box); if (t) t.focus();
+    });
+    function select(tab, focus) {
+      var k = tab.getAttribute('data-pair');
+      tabs.forEach(function (b) { var on = b === tab; b.setAttribute('aria-selected', on ? 'true' : 'false'); b.tabIndex = on ? 0 : -1; });
+      $$('.ba-pair', stage).forEach(function (p) { var on = p.getAttribute('data-pair') === k; p.hidden = !on; p.classList.toggle('is-on', on); if (on && window.BBFX && BBFX.baSwitch) BBFX.baSwitch(p); });
+      stage.setAttribute('aria-labelledby', tab.id);
+      if (focus) tab.focus();
+    }
+    tabs.forEach(function (b, i) {
+      b.addEventListener('click', function () { select(b); });
+      b.addEventListener('keydown', function (e) {
+        var d = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[e.key]; if (!d) return;
+        e.preventDefault(); select(tabs[(i + d + tabs.length) % tabs.length], true);
+      });
+    });
+    if (tabs[0]) stage.setAttribute('aria-labelledby', tabs[0].id);
+  }
   /* ---------- galéria + nagyító ---------- */
   /* Beatrix saját munkafotói (img/munkak/). A rácsban a -k (kicsi) változat, a nagyítóban a teljes.
      Az arcokat, nyakat kivágtuk. A főoldalon csak kézfotó szerepel (brief: problémás lábat nem mutatunk); a pedikűr-fotók a pedikűr aloldalon vannak. */
+  /* 8 egyedi kép — közel azonos (ugyanarról a kézről, hasonló szögből készült) képek kiszűrve */
   var GALLERY = [
     { src: 'img/munkak/magenta-1.jpg', cat: 'elenk', title: 'Magenta géllakk', w: 1600, h: 576 },
     { src: 'img/munkak/levendula-1.jpg', cat: 'pasztell', title: 'Levendula géllakk', w: 1452, h: 1600 },
-    { src: 'img/munkak/gyongyhaz-1.jpg', cat: 'natur', title: 'Gyöngyházfényű géllakk', w: 1600, h: 900 },
+    { src: 'img/munkak/gyongyhaz-1.jpg', cat: 'natur', title: 'Gyöngyházfényű, szögletes forma', w: 1600, h: 900 },
     { src: 'img/munkak/neon-1.jpg', cat: 'elenk', title: 'Neon pink géllakk', w: 1600, h: 1557 },
     { src: 'img/munkak/csokolade-1.jpg', cat: 'natur', title: 'Csokoládébarna géllakk', w: 1600, h: 1109 },
-    { src: 'img/munkak/gyongyhaz-2.jpg', cat: 'natur', title: 'Gyöngyházfényű, szögletes forma', w: 1600, h: 960 },
-    { src: 'img/munkak/magenta-3.jpg', cat: 'elenk', title: 'Magenta géllakk, közelről', w: 1600, h: 859 },
-    { src: 'img/munkak/levendula-2.jpg', cat: 'pasztell', title: 'Levendula, rövid kerek forma', w: 1501, h: 1600 },
-    { src: 'img/munkak/gyongyhaz-3.jpg', cat: 'natur', title: 'Gyöngyház, finom csillámmal', w: 1600, h: 780 },
-    { src: 'img/munkak/neon-2.jpg', cat: 'elenk', title: 'Neon pink, ovális forma', w: 1600, h: 1493 },
+    { src: 'img/munkak/magenta-3.jpg', cat: 'elenk', title: 'Magenta, közelről', w: 1600, h: 859 },
+    { src: 'img/munkak/levendula-4.jpg', cat: 'pasztell', title: 'Levendula, rövid forma', w: 1600, h: 1080 },
+    { src: 'img/munkak/gyongyhaz-3.jpg', cat: 'natur', title: 'Gyöngyház, finom csillámmal', w: 1600, h: 780 }
   ];
   function thumb(src) { return src.replace(/\.jpg$/, '-k.jpg'); }
   function photo(g, big) {
@@ -320,7 +352,7 @@
   }
 
   function init() {
-    bindConfig(); header(); priceList(); catLists(); svcCards(); heroChip(); quickBook(); gallery(); reveals(); transitions();
+    bindConfig(); header(); priceList(); catLists(); svcCards(); heroChip(); quickBook(); gallery(); beforeAfter(); reveals(); transitions();
     requestAnimationFrame(function () { doc.classList.add('is-loaded'); });
   }
   if (document.readyState !== 'loading') init(); else document.addEventListener('DOMContentLoaded', init);

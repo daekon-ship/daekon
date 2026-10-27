@@ -8,7 +8,52 @@ Előnézet: `https://daekon-ship.github.io/daekon/latvanytervek/balogh-beatrix/`
 
 ---
 
-## 0. 6. kör — új színvilág, csiszolás (2026.10.27.)
+## 0. Bemutató változat — ügyfélbemutatóra kész (2026.10.28.)
+
+Cél: biztonsággal bemutatható látványterv, **nem élesítés**. A dizájn, a színvilág, a logó és az oldalstruktúra változatlan.
+
+**Előtte–utána galéria** (`specialis-labapolas.html#elotte-utana`, forrás: `_forras/elotte_utana.py`, képek: `img/elotte-utana/`)
+- 3 pár, vizuális egyezés alapján (lábujjforma, nézőpont):
+  - 1. pár: bal láb, lábujjak — 7067ac9c → d61eeb39;
+  - 2. pár: jobb láb, lábujjak — afa924e9 → 76cc9629;
+  - 3. pár: talp — c1535ce3 → 0e26dd32.
+- **A párosítást Beatrix ellenőrzi.** Nem párosítható biztosan, ezért kimaradt:
+  - 8b25086a (két láb, áttekintő);
+  - d860efe2 (körömközeli);
+  - 93f29616 (talp);
+  - 12fff8db (talp, a háttérben a vendég keze).
+- **Hozzájárulás:** a `js/config.js` → `beforeAfter.consentApproved: false`. Amíg nincs írásos vendég-hozzájárulás, a képek „Belső bemutató — jóváhagyásra vár” fátyol mögött vannak, a bélyegképek is elmosva; a „Megtekintés (bemutató)” gombbal nyithatók. `true` értéknél a fátyol eltűnik.
+- Főoldalon problémás láb nincs (brief).
+
+**Speciális lábápolás kiemelése:** új sötét szekció a főoldalon a kezelések után.
+- Tartalom: lépések, árak Beatrix listájáról, telefonos CTA, link az előtte–utána galériára.
+- Szöveg: „szépségápolási, komfortot szolgáló kezelés — nem helyettesíti az orvosi ellátást”. Gyógyító / orvosi állítás nincs.
+
+**Galéria:** 8 egyedi kép. A közel azonos felvételek (ugyanaz a kéz, hasonló szög) kiszűrve. A fotószalag 6 egyedi képből áll.
+
+**Jóváhagyási lista:** `jovahagyas.html` (lábléc → Tudnivalók). **Árat nem módosítottunk**, a lista csak jelöli az eltéréseket:
+- két eltérő kézápolás-árlista;
+- Notino-referenciaárak;
+- becsült időtartamok;
+- műköröm eltávolítás 6 500 Ft (Notino-forrás);
+- cím, bemutatkozó szöveg, fizetés, lemondás, fotó-hozzájárulások.
+
+**Javítások:**
+- Asztali „Szolgáltatások” lenyíló: egérrel kattintva bezáródott (a rámutatás már kinyitotta) — javítva.
+- Elavult GYIK-szövegek (régi kezelésnevek, 45–100 perc), oldalcímek és leírások, menüszámláló („8 kezelés”) frissítve.
+- „Menete” címsor alatti nagy rés megszüntetve.
+- Előtte–utána bélyegképek nyúlása javítva.
+- Fotószalag: csak látható állapotban fut, és csak változáskor ír a DOM-ba. Görgetésnél nincs 50 ms feletti képkocka.
+- A képek méretarányos szélesség/magasság attribútumai ellenőrizve (`magenta-3` javítva).
+- Admin érintési célok mobilon nagyobbak. A lábléc logólinkje akadálymentes nevet kapott.
+
+**Teszt:**
+- Végponttól végpontig (foglalás 6 lépés, ütközés, módosítás, lemondás, admin nézetek/szerkesztés): 53/53 valódi Motionnel, 53/53 Motion nélkül.
+- Bejárás 11 oldal × 5 szélesség (360/390/768/1024/1440): 962 ellenőrzés, 0 hiba — linkek, horgonyok, képek, túlfolyás, láthatatlan elemek, konzolhibák, menük, előtte–utána, árlista-lenyitás.
+
+**Nem aktív:** éles foglalás, e-mail/SMS, jogi dokumentumok.
+
+## 0/3. 6. kör — új színvilág, csiszolás (2026.10.27.)
 
 - **Színek:** a barna–homok–zsálya palettát lecseréltem. Az új paletta Beatrix munkáihoz és rózsaszín árlistáihoz igazodik:
   - alap: púderes, rózsás fehér (`#FBF6F5`);
