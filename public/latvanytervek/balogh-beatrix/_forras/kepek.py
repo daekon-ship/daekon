@@ -59,24 +59,23 @@ bg.resize((48, 48), Image.LANCZOS).save(f'{OUT}/img/favicon-48.png')
 
 # ---- munkafotók: (forrás, kimenet, kivágás arányokban x0,y0,x1,y1) ----
 # Arcok, nyak, áll levágva; kézfotók és kezelés utáni, rendezett lábfotók.
-PICS = [
- ('9e4042fd', 'magenta-1', (0, .34, 1, 1)),
- ('b1194264', 'magenta-2', (0, .27, 1, 1)),
- ('7daa8ed4', 'magenta-3', (0, .16, .92, 1)),
- ('47e9a5e4', 'levendula-1', (0, .04, 1, .96)),
- ('b9743407', 'levendula-2', (0, .08, 1, .92)),
- ('72e812c4', 'levendula-3', (0, .1, 1, .95)),
- ('b6837c6d', 'levendula-4', (0, .12, 1, 1)),
- ('fab05fb2', 'gyongyhaz-1', (0, .22, 1, 1)),
- ('f5b56168', 'gyongyhaz-2', (0, .08, 1, 1)),
- ('56f1490c', 'gyongyhaz-3', (0, .24, 1, 1)),
- ('fff694e5', 'gyongyhaz-4', (0, .2, 1, 1)),
- ('c7915bd6', 'gyongyhaz-5', (0, .12, 1, 1)),
- ('0154c950', 'csokolade-1', (0, 0, 1, 1)),
- ('e0bb54e9', 'neon-1', (0, .27, 1, 1)),
- ('efb2cacd', 'neon-2', (0, .22, 1, 1)),
- ('76cc9629', 'pedikur-1', (0, 0, 1, 1)),
- ('d61eeb39', 'pedikur-2', (0, 0, 1, 1)),
+PICS = [  # a körmök a kivágás közepére kerülnek; arc, áll, nyak kívül marad
+ ('9e4042fd', 'magenta-1', (0, .30, 1, .78)),
+ ('7daa8ed4', 'magenta-3', (0, .32, .95, 1)),
+ ('47e9a5e4', 'levendula-1', (.08, .08, 1, .84)),
+ ('b9743407', 'levendula-2', (0, .10, 1, .90)),
+ ('72e812c4', 'levendula-3', (0, .04, 1, .80)),
+ ('b6837c6d', 'levendula-4', (0, .08, 1, .98)),
+ ('fab05fb2', 'gyongyhaz-1', (0, .25, 1, 1)),
+ ('f5b56168', 'gyongyhaz-2', (0, .18, 1, .98)),
+ ('56f1490c', 'gyongyhaz-3', (0, .15, 1, .80)),
+ ('fff694e5', 'gyongyhaz-4', (0, .10, 1, .74)),
+ ('c7915bd6', 'gyongyhaz-5', (0, .10, 1, .80)),
+ ('0154c950', 'csokolade-1', (0, .15, .92, 1)),
+ ('e0bb54e9', 'neon-1', (0, .17, 1, .90)),
+ ('efb2cacd', 'neon-2', (0, .08, 1, .78)),
+ ('76cc9629', 'pedikur-1', (0, .28, 1, 1)),
+ ('d61eeb39', 'pedikur-2', (0, .28, 1, 1)),
 ]
 for src, name, (x0, y0, x1, y1) in PICS:
     im = load(src); W, H = im.size

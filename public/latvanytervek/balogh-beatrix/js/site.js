@@ -201,20 +201,20 @@
   /* Beatrix saját munkafotói (img/munkak/). A rácsban a -k (kicsi) változat, a nagyítóban a teljes.
      Az arcokat, nyakat kivágtuk. A főoldalon csak kézfotó szerepel (brief: problémás lábat nem mutatunk); a pedikűr-fotók a pedikűr aloldalon vannak. */
   var GALLERY = [
-    { src: 'img/munkak/magenta-1.jpg', cat: 'elenk', title: 'Magenta géllakk', w: 1600, h: 792 },
-    { src: 'img/munkak/levendula-1.jpg', cat: 'pasztell', title: 'Levendula géllakk', w: 1304, h: 1600 },
-    { src: 'img/munkak/gyongyhaz-1.jpg', cat: 'natur', title: 'Gyöngyházfényű géllakk', w: 1600, h: 936 },
+    { src: 'img/munkak/magenta-1.jpg', cat: 'elenk', title: 'Magenta géllakk', w: 1600, h: 576 },
+    { src: 'img/munkak/levendula-1.jpg', cat: 'pasztell', title: 'Levendula géllakk', w: 1452, h: 1600 },
+    { src: 'img/munkak/gyongyhaz-1.jpg', cat: 'natur', title: 'Gyöngyházfényű géllakk', w: 1600, h: 900 },
     { src: 'img/munkak/neon-1.jpg', cat: 'elenk', title: 'Neon pink géllakk', w: 1600, h: 1557 },
-    { src: 'img/munkak/csokolade-1.jpg', cat: 'natur', title: 'Csokoládébarna géllakk', w: 1600, h: 1200 },
-    { src: 'img/munkak/gyongyhaz-2.jpg', cat: 'natur', title: 'Gyöngyházfényű, szögletes forma', w: 1600, h: 1104 },
-    { src: 'img/munkak/magenta-3.jpg', cat: 'elenk', title: 'Magenta géllakk, közelről', w: 1600, h: 1096 },
-    { src: 'img/munkak/levendula-2.jpg', cat: 'pasztell', title: 'Levendula, rövid kerek forma', w: 1429, h: 1600 },
-    { src: 'img/munkak/gyongyhaz-3.jpg', cat: 'natur', title: 'Gyöngyház, finom csillámmal', w: 1600, h: 912 },
-    { src: 'img/munkak/neon-2.jpg', cat: 'elenk', title: 'Neon pink, ovális forma', w: 1539, h: 1600 },
+    { src: 'img/munkak/csokolade-1.jpg', cat: 'natur', title: 'Csokoládébarna géllakk', w: 1600, h: 1109 },
+    { src: 'img/munkak/gyongyhaz-2.jpg', cat: 'natur', title: 'Gyöngyházfényű, szögletes forma', w: 1600, h: 960 },
+    { src: 'img/munkak/magenta-3.jpg', cat: 'elenk', title: 'Magenta géllakk, közelről', w: 1600, h: 859 },
+    { src: 'img/munkak/levendula-2.jpg', cat: 'pasztell', title: 'Levendula, rövid kerek forma', w: 1501, h: 1600 },
+    { src: 'img/munkak/gyongyhaz-3.jpg', cat: 'natur', title: 'Gyöngyház, finom csillámmal', w: 1600, h: 780 },
+    { src: 'img/munkak/neon-2.jpg', cat: 'elenk', title: 'Neon pink, ovális forma', w: 1600, h: 1493 },
   ];
   function thumb(src) { return src.replace(/\.jpg$/, '-k.jpg'); }
   function photo(g, big) {
-    if (g.src) return '<span class="frame zoomable"><img src="' + esc(big ? g.src : thumb(g.src)) + '" alt="' + esc(g.title) + ' — Beatrix munkája" ' + (big ? '' : 'loading="lazy" ') + 'decoding="async"></span>';
+    if (g.src) return '<span class="frame zoomable"><img src="' + esc(big ? g.src : thumb(g.src)) + '" alt="' + esc(g.title) + ' — Beatrix munkája" width="' + g.w + '" height="' + g.h + '" ' + (big ? '' : 'loading="lazy" ') + 'decoding="async"></span>';
     return '<span class="ph ph--' + g.tone + '"><span class="ph-in">' + icon('camera') + '<b>' + esc(g.title) + '</b><small>Saját fotó helye</small></span></span>';
   }
   var GCATS = { elenk: 'Élénk színek', pasztell: 'Pasztell', natur: 'Natúr és elegáns' };

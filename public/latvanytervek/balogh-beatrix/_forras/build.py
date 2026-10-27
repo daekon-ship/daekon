@@ -9,7 +9,7 @@ vannak, hanem a js/config.js-ben — azokat a böngésző tölti be.
 import pathlib
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-V = '20261027a'
+V = '20261027b'
 # Motion (https://motion.dev) — vanilla JS build, rögzített verzió; ha nem tölt be, CSS-tartalék fut
 MOTION_TAG = '\n<script src="https://cdn.jsdelivr.net/npm/motion@11.18.2/dist/motion.js" crossorigin="anonymous"></script>'  # gyorsítótár-törő verzió
 
@@ -261,7 +261,7 @@ INDEX = f'''
 
 <section class="ribbon-sec" aria-label="Beatrix munkáiból">
   <div class="wrap">
-    {shots([('magenta-2', 'Magenta géllakk — Beatrix munkája', 760, 416), ('levendula-3', 'Levendula géllakk — Beatrix munkája', 671, 760), ('gyongyhaz-4', 'Gyöngyházfényű géllakk — Beatrix munkája', 760, 456), ('levendula-4', 'Levendula géllakk, rövid forma — Beatrix munkája', 760, 502), ('gyongyhaz-5', 'Gyöngyház géllakk, szögletes forma — Beatrix munkája', 760, 502)], 'shots--ribbon')}
+    {shots([('magenta-1', 'Magenta géllakk — Beatrix munkája', 760, 262), ('levendula-3', 'Levendula géllakk — Beatrix munkája', 750, 760), ('gyongyhaz-4', 'Gyöngyházfényű géllakk — Beatrix munkája', 760, 331), ('levendula-4', 'Levendula géllakk, rövid forma — Beatrix munkája', 760, 513), ('gyongyhaz-5', 'Gyöngyház géllakk, szögletes forma — Beatrix munkája', 760, 410)], 'shots--ribbon')}
     <p class="ribbon-cap rv"><span>Beatrix saját munkái</span><a class="link" href="#galeria">Galéria {ico('arrow')}</a></p>
   </div>
 </section>
@@ -478,7 +478,7 @@ PEDIKUR = cat_page('01', 'pedikur', 'Pedikűr és <em>lábápolás</em>',
      ('Színt vagy masszázst is kérnél', 'Az esztétikai pedikűr kérhető <b>lábgéllakkal</b>, <b>talpmasszázzsal</b>, vagy mindkettővel egy alkalommal.'),
      ('Egy kis kényeztetés', 'A <b>wellness pedikűr csomagok</b> (Frissítő, Relax, Deluxe) lábfürdővel, pakolással és hosszabb masszázzsal készülnek, 60–120 percben.')],
     f'<div><h2>Egyéni igényed van?</h2><p>Bőrkeményedés, tyúkszem, benőtt köröm, repedezett sarok: a <a href="specialis-labapolas.html">speciális lábápolást</a> telefonon egyeztetjük.</p></div><div class="acts"><a class="btn" data-tel href="tel:+36706146070">{ico("phone")}Hívás</a><a class="btn btn--ghost" href="specialis-labapolas.html">Bővebben</a></div>',
-    photos=f'''<section class="sec" style="padding-bottom:0" aria-label="Beatrix pedikűr munkáiból"><div class="wrap">{shots([('pedikur-1', 'Ápolt lábkörmök pedikűr után — Beatrix munkája', 760, 570), ('pedikur-2', 'Rendezett lábkörmök pedikűr után — Beatrix munkája', 760, 570)], 'shots--two')}</div></section>''')
+    photos=f'''<section class="sec" style="padding-bottom:0" aria-label="Beatrix pedikűr munkáiból"><div class="wrap">{shots([('pedikur-1', 'Ápolt lábkörmök pedikűr után — Beatrix munkája', 760, 410), ('pedikur-2', 'Rendezett lábkörmök pedikűr után — Beatrix munkája', 760, 410)], 'shots--two')}</div></section>''')
 
 def extras_html():
     """Díszítés-árlista a manikűr oldalra (forrás: js/config.js extras — itt a statikus változata)."""
@@ -504,7 +504,7 @@ MANIKUR = cat_page('02', 'manikur', 'Manikűr és <em>géllakk</em>',
      ('Tartós szín a saját körmön', 'Az <b>erősített géllakk</b> orosz manikűrrel készül, XS vagy S méretben (9 000 / 10 000 Ft). Két köröm díszítése benne van.'),
      ('Hosszabb köröm', 'A <b>műköröm szalonformába</b> XS, S és M méretben készül; a töltés külön kezelés, kedvezőbb áron.')],
     f'<div><h2>Lekerülne a régi?</h2><p>A <b>géllakk eltávolítás manikűrrel</b> és a <b>műköröm eltávolítás</b> külön kezelés — kíméletesen leszedjük, és rendbe tesszük a saját körmöd.</p></div><div class="acts"><a class="btn" href="foglalas.html?kezeles=gellakk-eltavolitas">{ico("calendar")}Eltávolítást foglalok</a></div>',
-    photos=f'''<section class="sec" style="padding-bottom:0" aria-label="Beatrix manikűr munkáiból"><div class="wrap">{shots([('magenta-3', 'Magenta géllakk — Beatrix munkája', 760, 520), ('levendula-1', 'Levendula géllakk — Beatrix munkája', 620, 760), ('gyongyhaz-2', 'Gyöngyházfényű géllakk — Beatrix munkája', 760, 524)])}</div></section>''',
+    photos=f'''<section class="sec" style="padding-bottom:0" aria-label="Beatrix manikűr munkáiból"><div class="wrap">{shots([('magenta-3', 'Magenta géllakk — Beatrix munkája', 760, 498), ('levendula-1', 'Levendula géllakk — Beatrix munkája', 690, 760), ('gyongyhaz-2', 'Gyöngyházfényű géllakk — Beatrix munkája', 760, 456)])}</div></section>''',
     extra=extras_html())
 
 SPECIALIS = f'''
