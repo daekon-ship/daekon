@@ -1,7 +1,7 @@
 # Nika Kozmetika – látványterv, átadás
 
 **Élő előnézet:** https://daekon-ship.github.io/daekon/latvanytervek/nika-kozmetika/
-**Állapot:** 1. kör (2026. 10. 27.) – csak látványterv, `noindex, nofollow`. Éles oldalhoz, domainhez nem nyúltunk, a vállalkozásnak nem ment üzenet.
+**Állapot:** 2. kör (2026. 10. 27.) – nőiesebb, púderes rózsa–mályva paletta a zsályazöld helyett. – csak látványterv, `noindex, nofollow`. Éles oldalhoz, domainhez nem nyúltunk, a vállalkozásnak nem ment üzenet.
 
 > Miért nem külön repó? A brief a `nika-kozmetika-preview` repót javasolta. A DAEKON-ház-szabály szerint minden látványterv a `daekon-ship/daekon` → `public/latvanytervek/<ügyfél>/` mappába kerül, ugyanazon a GitHub Pages címen frissül körről körre. Új repót ezért nem hoztunk létre.
 
@@ -30,8 +30,9 @@ Fejléc (görgetésre zsugorodik, üveges krém háttér) · Hero (aszimmetrikus
 - Címsor: **Playfair Display** (változtatható, helyben, OFL). A brief Cormorant Garamondot is engedett, de az mobilon kis méretben vékony; a Playfair korábbi projekten mobilon jól vizsgázott. Szöveg: **Manrope** (helyben).
 - Fraunces nincs. Nagy „display” méret nincs: H1 max. 47 px (mobilon 31 px), H2 max. 37 px, kártyacím 21–27 px, törzs 16,5 px.
 
-## Színek (`:root`)
-`--porcelain #F7F4ED` · `--beige #EAE6DC` · `--sage #526957` · `--ink #26342B` · `--gold #C0A47A` (csak vonal, ikon, sötét háttéren szöveg) · `--gold-d #86693F` (arany szöveg világos háttéren – kontraszt miatt) · `--sage-l #D8E1D3` · `--paper #FBF9F4`.
+## Színek (`:root`) – 2. kör
+Visszajelzés: „nem elég jók a színek, legyen nőiesebb” → a zöld kikerült, púderes rózsa–mályva–pezsgőarany lett (a brief zöld palettája helyett).
+`--porcelain #FBF6F3` (alap) · `--beige #F3E7E2` (púder) · `--sage-l #F2DCDA` (halvány rózsa) · `--sage #9C5F67` (fő szín: mályvarózsa – a változónév maradt) · `--ink #3A272C` (mély szilva, szöveg és sötét blokkok) · `--rose-dark #4A3036` · `--gold #C9A47C` (pezsgőarany, csak vonal/ikon) · `--gold-d #8C6743` (arany szöveg) · növényrajzok `#A06A72`. Időpont-blokk: rózsa→mályva átmenet.
 
 ## Térközök, rács
 Konténer 1240 px + `clamp(20px,4vw,44px)` oldalsáv; szakasztávolság `clamp(72px,8.5vw,116px)`; kártyarés 14–18 px; lekerekítés 18 px (boltív és „levél” sarkok 80–140 px).
