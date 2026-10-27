@@ -1,7 +1,7 @@
 # Nika Kozmetika – látványterv, átadás
 
 **Élő előnézet:** https://daekon-ship.github.io/daekon/latvanytervek/nika-kozmetika/
-**Állapot:** 5. kör (2026. 10. 27.) – minden kitalált/töltelék szöveg kikerült: nincs bemutatkozás, értékek, vélemény-helyek, leírások, szlogen. Az oldal csak valós adatokat mutat: név, cím, telefon, e-mail, kezelések neve, Ilcsi-adatlap, időpontkérés. Korábbi körök: 4. hero-kártya ki; 3. rajzos képhelyek ki, Cormorant Garamond + DM Sans; 2. rózsa–mályva paletta.
+**Állapot:** 6. kör (2026. 10. 27.) – sok Motion-effekt (lásd lent „6. kör – Motion”), újrarajzolt, kirajzolódó N-monogram. 5. kör: csak valós adatok, töltelékszöveg nélkül.
 
 > Miért nem külön repó? A brief a `nika-kozmetika-preview` repót javasolta. A DAEKON-ház-szabály szerint minden látványterv a `daekon-ship/daekon` → `public/latvanytervek/<ügyfél>/` mappába kerül, ugyanazon a GitHub Pages címen frissül körről körre. Új repót ezért nem hoztunk létre.
 
@@ -88,3 +88,20 @@ Visszajelzés: „a szövegek is túl AI-osak” → rövid, tényszerű mondato
 
 ## 5. kör – szerkezet
 Hero (név + cím, két gomb) · Kezelések (6 soros lista, soronként „Érdeklődöm” → időpontkérő panel előtöltve) · Ilcsi kozmetikakereső (egy mondat + link) · Időpontkérés · Elérhetőség + térkép · Lábléc. Bemutatkozás, vélemények, galéria akkor kerül vissza, ha a tulajdonos ad hozzá valós szöveget, fotót, véleményt.
+
+## 6. kör – Motion (motion.dev 11.18.2, helyben)
+Kérés: „használj nagyon sok mindent a Motionből, legyen látványos”.
+- **Logó:** az új, vonalas N-monogram (boltív, vékony szárak, telt átló, levél) betöltéskor kirajzolódik; a NIKA betűi rugóval billennek be; a „KOZMETIKA” ritkításból szűkül. A láblécben görgetésre rajzolódik ki. Favicon frissítve.
+- **Hero:** a cím betűnként, elmosódásból élesedve, 3D-ben billenve, rugóval érkezik; az alcím szavanként; a gombok rugósan pattannak be. Három púderes fényfolt végtelenül lebeg, és rugóval követi az egeret. Görgetésre a hero tartalma felúszik és halványul, a háttér nagyobbodik.
+- **Mágneses gombok** (egérrel) és **rugós lenyomás** minden gombon, soron, linken.
+- **Egyéni kurzor:** pont + rugóval követő gyűrű, interaktív elem fölött kinyílik (csak egérrel).
+- **Fejléc:** lefelé görgetésre eltűnik, felfelé rugóval visszajön; a haladásjelző rugóval simított.
+- **Horgonylinkek:** Motion-nel animált, lassuló görgetés.
+- **Futószalag** a kezelések nevével: végtelen sodródás, a görgetés sebessége gyorsítja és megdönti.
+- **Szakaszcímek:** betűnként, rugóval, enyhe forgással.
+- **Kezelések:** sorok balról, kivágásból; a számok pörögve érkeznek; egér alatt rugós, követő kiemelés-sáv, a cím elcsúszik; bal oldalt görgetésre telő arany vonal (széles kijelzőn).
+- **Ilcsi-blokk:** görgetésre kitágul (lekerekített kivágásból teljes szélességre), a háttér-monogram görgetésre kirajzolódik és forog, a mondat szavanként világosodik.
+- **Időpontkártya:** rugós felbukkanás, 3D billenés és fényfolt az egér alatt.
+- **Kapcsolat:** sorok lépcsőzetesen; a térkép vonalai kirajzolódnak, a tű rugóval „leesik”, lüktető gyűrűk.
+- **Panel:** rugós becsúszás, választógombok pattannak, a kész-jel kirajzolódik és beforog.
+- Csökkentett mozgás beállításnál semmi nem mozog; minden tartalom azonnal látszik. Mobilon az egérhez kötött effektek (kurzor, mágnes, billenés, követés) kikapcsolnak.

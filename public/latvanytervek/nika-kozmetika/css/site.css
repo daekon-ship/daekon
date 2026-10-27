@@ -436,3 +436,71 @@ ul,ol{margin:0;padding:0;list-style:none}
 }
 .services .note{margin-top:22px}
 .nature{padding:clamp(56px,7vw,88px) 0}
+
+/* ===== 6. kör: Motion-show ===== */
+/* új N-monogram (vonalas, kirajzolható) */
+.mono{width:32px;height:40px;flex:none;overflow:visible}
+.mono path{stroke:var(--sage)}
+.mono .mono__arch{stroke:var(--gold);stroke-width:1.2}
+.mono .mono__thin{stroke-width:1.4}
+.mono .mono__diag{stroke-width:3.2;stroke-linecap:butt}
+.mono .mono__serif{stroke-width:1}
+.mono .mono__leaf{stroke-width:1}
+.logo--light .mono path{stroke:var(--sage-l)}
+.logo--light .mono .mono__arch{stroke:var(--gold)}
+.logo__nika>span{display:inline-block}
+
+/* egyéni kurzor (csak egérrel) */
+.cursor{position:fixed;left:0;top:0;z-index:300;pointer-events:none;display:none}
+.has-cursor .cursor{display:block}
+.cursor__dot,.cursor__ring{position:fixed;left:0;top:0;border-radius:50%;pointer-events:none}
+.cursor__dot{width:6px;height:6px;margin:-3px 0 0 -3px;background:var(--sage)}
+.cursor__ring{width:36px;height:36px;margin:-18px 0 0 -18px;border:1px solid rgba(156,95,103,.55)}
+
+/* hero lebegő foltok */
+.hero__bg{background:none}
+.blob{position:absolute;border-radius:50%;filter:blur(60px);opacity:.85;will-change:transform}
+.blob--1{width:44vw;height:44vw;max-width:640px;max-height:640px;right:2%;top:4%;background:radial-gradient(circle at 40% 40%,#F2D3D1,rgba(242,211,209,0) 70%)}
+.blob--2{width:30vw;height:30vw;max-width:440px;max-height:440px;right:30%;top:-6%;background:radial-gradient(circle,#EEDCCB,rgba(238,220,203,0) 70%)}
+.blob--3{width:36vw;height:36vw;max-width:520px;max-height:520px;left:-6%;bottom:-10%;background:radial-gradient(circle,#F4E4DF,rgba(244,228,223,0) 70%)}
+.h1 .w{display:inline-block;white-space:nowrap}
+.h1 .ch{display:inline-block;will-change:transform}
+.lead .wd{display:inline-block}
+
+/* futószalag */
+.band{overflow:hidden;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--porcelain);padding:18px 0}
+.band__track{display:flex;width:max-content;align-items:center;gap:28px;will-change:transform}
+.band span{font-family:var(--serif);font-style:italic;font-size:clamp(22px,2.2vw,30px);white-space:nowrap;color:var(--ink)}
+.band i{font-style:normal;color:var(--gold);font-size:14px}
+
+/* kezelés-lista: követő kiemelés, görgetési vonal */
+.svcs-wrap{position:relative}
+.svcs__hl{position:absolute;left:0;right:0;top:0;height:0;border-radius:14px;background:var(--beige);opacity:0;pointer-events:none;z-index:0}
+.svcs{position:relative;z-index:1}
+.svc:hover{background:transparent}
+.svcs__line{position:absolute;left:-22px;top:0;bottom:0;width:1px;background:var(--line)}
+.svcs__line span{position:absolute;inset:0;background:linear-gradient(var(--gold),var(--sage));transform-origin:top;transform:scaleY(0)}
+@media (max-width:1300px){.svcs__line{display:none}}
+.sec__h .ch{display:inline-block}
+
+/* Ilcsi: háttér-monogram */
+.nature{isolation:isolate}
+.nature__mono{position:absolute;right:8%;top:0;bottom:0;margin:auto 0;width:min(26vw,260px);height:auto;max-height:86%;z-index:-1;opacity:.55}
+.nature__mono path{stroke:#B98A8F;stroke-width:.6}
+@media (max-width:760px){.nature__mono{right:-14%;width:60vw;opacity:.3}}
+.nature .body-l .wd{display:inline-block}
+
+/* időpontkártya: 3D billenés, fényfolt */
+.book .wrap{perspective:1200px}
+.book__card{transform-style:preserve-3d;will-change:transform}
+.book__glow{position:absolute;width:420px;height:420px;border-radius:50%;left:0;top:0;margin:-210px 0 0 -210px;background:radial-gradient(circle,rgba(255,255,255,.28),rgba(255,255,255,0) 65%);pointer-events:none;opacity:0}
+
+/* térkép-tű gyűrűk */
+.map__pin{box-shadow:none}
+.map__ring{position:absolute;inset:0;border-radius:50%;border:1.5px solid rgba(156,95,103,.5)}
+
+/* mobil CTA – a Motion mozgatja */
+.motion .mcta{transition:none}
+
+.motion .h1 .ln>span{transform:none}
+.motion .h1 .ln{overflow:visible}

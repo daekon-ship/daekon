@@ -51,23 +51,25 @@
 <symbol id="i-cal" viewBox="0 0 24 24"><rect x="4" y="5.5" width="16" height="14" rx="2"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4"/></symbol>
 <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
 <symbol id="i-out" viewBox="0 0 24 24"><path d="M14 4.5h5.5V10M19.5 4.5 11 13M18 14v4.5a1 1 0 0 1-1 1H5.5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1H10"/></symbol>
-<!-- N-monogram: vékony szárak, telt átló, a jobb szárból kihajtó levél -->
-<symbol id="mono" viewBox="0 0 64 80">
-  <path style="stroke:var(--mono-arch,#C9A47C)" d="M9 77V31a23 23 0 0 1 46 0v46" fill="none" stroke-width="1"/>
-  <path style="fill:var(--mono-n,#9C5F67)" d="M21.3 34h1.2V61h-1.2zM21.3 34h4.6l16.9 27h-4.6zM41.6 34h1.2V61h-1.2zM18.6 34h7.2v.9h-7.2zM18.6 60.6h6.7v.9h-6.7zM39 34h6.6v.9H39z"/>
-  <path style="stroke:var(--mono-leaf,#9C5F67)" d="M42.2 34c.6-4 3.2-7.4 7.6-8.6-.6 4.3-3.4 7.4-7.6 8.6Zm0 0c1.8-2.4 3.6-4.6 6-6.6" fill="none" stroke-width=".9" stroke-linecap="round"/>
-</symbol>
 </defs>
 </svg>
 
 <a class="skip" href="#tartalom">Ugrás a tartalomra</a>
+<div class="cursor" aria-hidden="true"><span class="cursor__dot"></span><span class="cursor__ring"></span></div>
 <div class="progress" aria-hidden="true"><span></span></div>
 
 <!-- ============ FEJLÉC ============ -->
 <header class="hdr" id="fejlec">
   <div class="wrap hdr__in">
     <a class="logo" href="#kezdolap" aria-label="Nika Kozmetika – kezdőlap">
-      <svg class="logo__mono" aria-hidden="true"><use href="#mono"/></svg>
+      <svg class="mono" viewBox="0 0 64 80" aria-hidden="true" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path class="mono__arch" pathLength="1" d="M10 77V32a22 22 0 0 1 44 0v45"/>
+        <path class="mono__thin" pathLength="1" d="M22 63V35"/>
+        <path class="mono__diag" pathLength="1" d="M22.6 35.6 41.4 62.4"/>
+        <path class="mono__thin" pathLength="1" d="M42 63V35"/>
+        <path class="mono__serif" pathLength="1" d="M18.5 35h7M18.5 63h7M38.5 35h4"/>
+        <path class="mono__leaf" pathLength="1" d="M42 35c.2-3.6 2.4-6.6 6.2-8.2M48.6 25.6c-3.8.2-6.2 2.8-6.6 6.4 3.8-.3 6.2-2.9 6.6-6.4Z"/>
+      </svg>
       <span class="logo__word"><span class="logo__nika">NIKA</span><span class="logo__sub">Kozmetika</span></span>
     </a>
     <nav class="nav" aria-label="Fő navigáció">
@@ -103,7 +105,7 @@
 
 <!-- ============ HERO ============ -->
 <section class="hero" id="kezdolap" aria-labelledby="hero-cim">
-  <div class="hero__bg" aria-hidden="true"></div>
+  <div class="hero__bg" aria-hidden="true"><span class="blob blob--1"></span><span class="blob blob--2"></span><span class="blob blob--3"></span></div>
   <div class="wrap hero__grid">
     <div class="hero__text">
       <h1 id="hero-cim" class="h1">
@@ -112,17 +114,22 @@
       </h1>
       <p class="lead" data-h>Kozmetikai kezelések, időpont egyeztetéssel.</p>
       <div class="hero__btns" data-h>
-        <button class="btn btn--sage" type="button" data-book><svg class="ic" aria-hidden="true"><use href="#i-cal"/></svg>Időpontot kérek</button>
-        <a class="btn btn--line" href="tel:+36308661037"><svg class="ic" aria-hidden="true"><use href="#i-phone"/></svg>+36 30 866 1037</a>
+        <button class="btn btn--sage" type="button" data-book data-mag><svg class="ic" aria-hidden="true"><use href="#i-cal"/></svg>Időpontot kérek</button>
+        <a class="btn btn--line" href="tel:+36308661037" data-mag><svg class="ic" aria-hidden="true"><use href="#i-phone"/></svg>+36 30 866 1037</a>
       </div>
     </div>
   </div>
 </section>
 
+<div class="band" aria-hidden="true"><div class="band__track"><span>Személyre szabott arckezelés</span><i>✦</i><span>Hidratáló és tápláló kezelés</span><i>✦</i><span>Bőrtisztítás</span><i>✦</i><span>Arcápolási tanácsadás</span><i>✦</i><span>Szemöldök- és szempillaápolás</span><i>✦</i><span>Személyre szabott arckezelés</span><i>✦</i><span>Hidratáló és tápláló kezelés</span><i>✦</i><span>Bőrtisztítás</span><i>✦</i><span>Arcápolási tanácsadás</span><i>✦</i><span>Szemöldök- és szempillaápolás</span><i>✦</i></div></div>
+
 <!-- ============ KEZELÉSEK ============ -->
 <section class="sec services" id="kezelesek" aria-labelledby="kez-cim">
   <div class="wrap">
     <h2 id="kez-cim" class="h2 sec__h" data-r>Kezelések</h2>
+    <div class="svcs-wrap">
+    <span class="svcs__line" aria-hidden="true"><span></span></span>
+    <span class="svcs__hl" aria-hidden="true"></span>
     <ul class="svcs">
       <li data-r><button class="svc" type="button" data-book="Személyre szabott arckezelés"><span class="svc__n">01</span><span class="svc__t">Személyre szabott arckezelés</span><span class="svc__go">Érdeklődöm<svg class="ic" aria-hidden="true"><use href="#i-arrow"/></svg></span></button></li>
       <li data-r><button class="svc" type="button" data-book="Hidratáló, tápláló kezelés"><span class="svc__n">02</span><span class="svc__t">Hidratáló és tápláló kezelés</span><span class="svc__go">Érdeklődöm<svg class="ic" aria-hidden="true"><use href="#i-arrow"/></svg></span></button></li>
@@ -131,12 +138,14 @@
       <li data-r><button class="svc" type="button" data-book="Szemöldök- és szempillaápolás"><span class="svc__n">05</span><span class="svc__t">Szemöldök- és szempillaápolás</span><span class="svc__go">Érdeklődöm<svg class="ic" aria-hidden="true"><use href="#i-arrow"/></svg></span></button></li>
       <li data-r><button class="svc" type="button" data-book="Egyéb kérdés"><span class="svc__n">06</span><span class="svc__t">Egyéb kozmetikai kezelések</span><span class="svc__go">Érdeklődöm<svg class="ic" aria-hidden="true"><use href="#i-arrow"/></svg></span></button></li>
     </ul>
+    </div>
     <p class="note" data-r>Árakért és időpontért hívj a +36 30 866 1037-es számon.</p>
   </div>
 </section>
 
 <!-- ============ ILCSI ============ -->
 <section class="sec nature" id="ilcsi" aria-labelledby="ter-cim">
+  <svg class="nature__mono" viewBox="0 0 64 80" aria-hidden="true" fill="none" stroke-linecap="round"><path pathLength="1" d="M10 77V32a22 22 0 0 1 44 0v45"/><path pathLength="1" d="M22 63V35M42 63V35"/><path pathLength="1" d="M22.6 35.6 41.4 62.4"/><path pathLength="1" d="M42 35c.2-3.6 2.4-6.6 6.2-8.2M48.6 25.6c-3.8.2-6.2 2.8-6.6 6.4 3.8-.3 6.2-2.9 6.6-6.4Z"/></svg>
   <div class="wrap nature__in">
     <h2 id="ter-cim" class="h2" data-r>Ilcsi kozmetikakereső</h2>
     <p class="body-l" data-r>A Nika Kozmetika szerepel az Ilcsi kozmetikakeresőjében.</p>
@@ -148,13 +157,14 @@
 <section class="sec book" id="idopont" aria-labelledby="ido-cim">
   <div class="wrap">
     <div class="book__card" data-r>
+      <span class="book__glow" aria-hidden="true"></span>
       <div class="book__text">
         <h2 id="ido-cim" class="h2">Időpontkérés</h2>
         <p class="body-l">Telefonon vagy írásban.</p>
       </div>
       <div class="book__actions">
-        <a class="btn btn--cream btn--lg" href="tel:+36308661037"><svg class="ic" aria-hidden="true"><use href="#i-phone"/></svg>+36 30 866 1037</a>
-        <button class="btn btn--ghost btn--lg" type="button" data-book>Írásban kérek időpontot</button>
+        <a class="btn btn--cream btn--lg" href="tel:+36308661037" data-mag><svg class="ic" aria-hidden="true"><use href="#i-phone"/></svg>+36 30 866 1037</a>
+        <button class="btn btn--ghost btn--lg" type="button" data-book data-mag>Írásban kérek időpontot</button>
       </div>
     </div>
   </div>
@@ -181,7 +191,7 @@
         <svg class="map__lines" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
           <path d="M-10 210C80 190 140 205 210 170S330 90 420 100"/><path d="M60 -10C90 80 120 150 150 310"/><path d="M250 -10c-10 90 10 180 60 320"/><path d="M-10 90c120 20 250 10 430-30" class="thin"/><path d="M-10 270c140-20 290-10 430 0" class="thin"/>
         </svg>
-        <span class="map__pin"><svg class="ic" aria-hidden="true"><use href="#i-pin"/></svg></span>
+        <span class="map__pin"><span class="map__ring"></span><span class="map__ring"></span><svg class="ic" aria-hidden="true"><use href="#i-pin"/></svg></span>
         <p class="map__addr">Szabadkai út 9/C</p>
         <button class="btn btn--sage btn--sm" type="button" id="mapLoad">Térkép betöltése</button>
       </div>
@@ -195,7 +205,14 @@
   <div class="wrap ftr__grid">
     <div class="ftr__brand">
       <a class="logo logo--light" href="#kezdolap" aria-label="Nika Kozmetika – vissza az oldal tetejére">
-        <svg class="logo__mono" aria-hidden="true"><use href="#mono"/></svg>
+        <svg class="mono" viewBox="0 0 64 80" aria-hidden="true" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path class="mono__arch" pathLength="1" d="M10 77V32a22 22 0 0 1 44 0v45"/>
+        <path class="mono__thin" pathLength="1" d="M22 63V35"/>
+        <path class="mono__diag" pathLength="1" d="M22.6 35.6 41.4 62.4"/>
+        <path class="mono__thin" pathLength="1" d="M42 63V35"/>
+        <path class="mono__serif" pathLength="1" d="M18.5 35h7M18.5 63h7M38.5 35h4"/>
+        <path class="mono__leaf" pathLength="1" d="M42 35c.2-3.6 2.4-6.6 6.2-8.2M48.6 25.6c-3.8.2-6.2 2.8-6.6 6.4 3.8-.3 6.2-2.9 6.6-6.4Z"/>
+      </svg>
         <span class="logo__word"><span class="logo__nika">NIKA</span><span class="logo__sub">Kozmetika</span></span>
       </a>
     </div>
