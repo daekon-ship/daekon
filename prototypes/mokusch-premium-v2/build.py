@@ -393,7 +393,6 @@ def index():
   {cloud("bot", 3)}
 </section>
 
-<div class="marquee" aria-hidden="true"><div class="marquee__track" data-marquee>{mq}{mq}</div></div>
 
 {spread(2, "akik-eletre-keltik", "Akik életre keltik <em>minden nap</em>", "Rólunk, minden mókuschról",
         "Három lány, aki minden reggel kinyitja az ajtót, kávét főz, süt és díszít.",

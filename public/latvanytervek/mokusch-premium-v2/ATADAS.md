@@ -3,6 +3,10 @@
 Élő előnézet: https://daekon-ship.github.io/daekon/latvanytervek/mokusch-premium-v2/
 Előző változat (érintetlen, összehasonlításhoz): https://daekon-ship.github.io/mokusch/
 
+## Futó szalag kivéve (2026. október 27.)
+
+A „kávék · sütik · torták…” futó szalag az ügyfél kérésére kikerült a főoldalról.
+
 ## Betű-javítás (2026. október 27., délután)
 
 Az Amatic SC több helyen alig volt olvasható, ezért kikerült. Címek: **Playfair Display** (dőlt kiemelésekkel); gombok, menü, címkék és szöveg: **Manrope**; Kézírásos betű (Dancing Script) **nincs** – a logó felirata, a fejezetszámok, alcímek és a futó szalag is Playfair dőlt. A nyitóidézet, az ajánló sorok és a folyamat-lépések Playfair dőltre váltottak.
@@ -24,7 +28,6 @@ Minden alábbi effekt a Motion (motion.dev) könyvtárral fut. Két mód van: **
 | Betétképek | láthatóvá válás + görgetés | rugóval, billenve érkeznek, görgetésre lebegnek |
 | Szövegoszlop | görgetés | finom ellenirányú parallax (desktop) |
 | Gombok, címkék, portrék | láthatóvá válás | rugós, lépcsőzetes beugrás |
-| Futó szalag | görgetés | a görgetés sebességére gyorsul, irányt vált, megdől |
 | Torta-finálé | görgetés | háttér lassú zoom, lépések sorban beúsznak |
 | Tortarendelés gombok | rámutatás / kattintás | szív- és virágkonfetti robban ki |
 | Mókus-ikon | folyamatos + rámutatás | a farok lengedez, rámutatáskor nagyot csóvál; a logó rugóval beugrik |
