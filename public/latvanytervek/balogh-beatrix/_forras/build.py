@@ -9,7 +9,7 @@ vannak, hanem a js/config.js-ben — azokat a böngésző tölti be.
 import pathlib
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-V = '20261027h'
+V = '20261027i'
 # Motion (https://motion.dev) — vanilla JS build, rögzített verzió; ha nem tölt be, CSS-tartalék fut
 MOTION_TAG = '\n<script src="js/vendor/motion-11.18.2.min.js"></script>'  # Motion (motion.dev), helyben kiszolgálva, MIT  # gyorsítótár-törő verzió
 
@@ -257,7 +257,9 @@ INDEX = f'''
         </dl>
       </div>
       <div class="hero-stage" aria-label="Beatrix munkáiból">
-        <img class="hs-flower" src="arculat/virag-1-arany.png" alt="" width="316" height="320" aria-hidden="true">
+        <span class="hs-glow hs-glow--a" aria-hidden="true"></span>
+        <span class="hs-glow hs-glow--b" aria-hidden="true"></span>
+        <svg class="hs-ring" viewBox="0 0 200 200" aria-hidden="true"><defs><path id="hsRing" d="M100 100m-82 0a82 82 0 1 1 164 0a82 82 0 1 1-164 0"/></defs><circle cx="100" cy="100" r="68" fill="none" stroke="currentColor" stroke-width=".6" opacity=".45"/><image href="arculat/emblema.svg" x="66" y="64" width="68" height="72"/><text><textPath href="#hsRing">BEATRIX · NAILS &amp; PEDIKŰR · KÉZ- ÉS LÁBÁPOLÁS ·</textPath></text></svg>
         <figure class="hs-main"><img src="img/munkak/levendula-1.jpg" alt="Levendula géllakk — Beatrix munkája" width="1452" height="1600" fetchpriority="high"></figure>
         <figure class="hs-sub"><img src="img/munkak/magenta-3-k.jpg" alt="Magenta géllakk — Beatrix munkája" width="760" height="498"></figure>
         <figure class="hs-mini"><img src="img/munkak/gyongyhaz-2-k.jpg" alt="Gyöngyházfényű géllakk — Beatrix munkája" width="760" height="456"></figure>
@@ -365,7 +367,7 @@ INDEX = f'''
 </section>
 
 <section class="sec sec--dark sec--flower" aria-labelledby="elo-h">
-  <img class="sec-flower" src="arculat/virag-1-vilagos.png" alt="" width="316" height="320" aria-hidden="true">
+  <span class="sec-glow" aria-hidden="true"></span>
   <div class="wrap">
     <div class="sec-head">
       <div><p class="eyebrow rv">A szalonban</p><h2 id="elo-h" class="rv">Amire <em style="color:var(--gold)">számíthatsz</em>.</h2></div>

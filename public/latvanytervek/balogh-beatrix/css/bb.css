@@ -804,7 +804,12 @@ html body :is(.kpi b, .contact-phone) { font-weight: 650; letter-spacing: -.02em
 .hs-main { right: 0; top: 0; width: 66%; height: 90%; border-radius: 200px 200px 22px 22px !important; box-shadow: 0 50px 90px -50px rgba(42, 31, 37, .55); }
 .hs-sub { left: 2%; bottom: 17%; width: 44%; aspect-ratio: 4 / 3; border: 7px solid var(--paper); box-shadow: 0 30px 60px -28px rgba(42, 31, 37, .5); z-index: 2; }
 .hs-mini { left: 8%; top: 6%; width: 28%; aspect-ratio: 1; border-radius: 50% !important; border: 6px solid var(--paper); box-shadow: 0 24px 50px -26px rgba(42, 31, 37, .45); z-index: 2; }
-.hs-flower { position: absolute; left: -6%; top: 30%; width: 42%; height: auto; opacity: .55; z-index: 1; pointer-events: none; }
+.hs-glow { position: absolute; border-radius: 50%; pointer-events: none; z-index: 0; filter: blur(48px); }
+.hs-glow--a { width: 62%; aspect-ratio: 1; right: 6%; top: 4%; background: radial-gradient(circle, rgba(201, 132, 154, .55), rgba(201, 132, 154, 0) 70%); }
+.hs-glow--b { width: 52%; aspect-ratio: 1; left: -4%; bottom: 4%; background: radial-gradient(circle, rgba(165, 150, 194, .5), rgba(165, 150, 194, 0) 70%); }
+.hs-ring { position: absolute; left: 30%; top: 46%; width: clamp(110px, 11vw, 150px); height: auto; z-index: 3; color: var(--gold-ink); pointer-events: none;
+  background: rgba(251, 246, 245, .9); border-radius: 50%; box-shadow: 0 20px 40px -22px rgba(42, 31, 37, .45); backdrop-filter: blur(6px); }
+.hs-ring text { font: 700 10.2px/1 var(--sans); letter-spacing: 5.85px; fill: currentColor; transform-origin: 100px 100px; transform-box: view-box; }
 .hs-tag { position: absolute; right: 4%; bottom: 14%; z-index: 3; margin: 0; }
 .hs-tag span { display: inline-block; background: rgba(255, 255, 255, .92); backdrop-filter: blur(6px); padding: 8px 14px; border-radius: 99px; font: 600 .72rem/1 var(--sans); letter-spacing: .08em; text-transform: uppercase; color: var(--ink); box-shadow: 0 14px 30px -18px rgba(42, 31, 37, .5); }
 
@@ -826,7 +831,7 @@ html body :is(.kpi b, .contact-phone) { font-weight: 650; letter-spacing: -.02em
   .qb--bar { margin-top: 28px; grid-template-columns: 1fr; grid-template-areas: "head" "svcs" "right" "note"; max-width: none; }
   .qb--bar .qb-right .qb-sub { margin-top: 18px; }
 }
-@media (max-width: 560px) { .qb--bar .qb-svcs { grid-template-columns: 1fr; } .hs-flower { width: 50%; left: -10%; } }
+@media (max-width: 560px) { .qb--bar .qb-svcs { grid-template-columns: 1fr; } .hs-ring { left: 26%; top: 44%; width: 104px; } }
 
 /* futó fotószalag */
 .ribbon-sec { padding: clamp(40px, 5vw, 72px) 0 clamp(36px, 4vw, 56px); overflow: hidden; }
@@ -842,7 +847,7 @@ html body :is(.kpi b, .contact-phone) { font-weight: 650; letter-spacing: -.02em
 /* virágmotívum a sötét szekcióban (Beatrix logójából) */
 .sec--flower { position: relative; overflow: hidden; }
 .sec--flower .wrap { position: relative; z-index: 1; }
-.sec-flower { position: absolute; right: -40px; bottom: -60px; width: clamp(220px, 28vw, 380px); height: auto; opacity: .14; pointer-events: none; }
+.sec-glow { position: absolute; right: -10%; bottom: -30%; width: 55%; aspect-ratio: 1; border-radius: 50%; pointer-events: none; background: radial-gradient(circle, rgba(201, 132, 154, .28), rgba(201, 132, 154, 0) 68%); filter: blur(30px); }
 
 /* ===== 5. KÖR — Motion-effektek kiegészítő stílusai ===== */
 .is-split .w { display: inline-block; overflow: hidden; vertical-align: top; padding: 0 .02em .1em; margin: 0 -.02em -.1em; }

@@ -133,14 +133,18 @@
   }
   function stage() {
     var st = document.querySelector('.hero-stage'); if (!st) return;
-    var main = st.querySelector('.hs-main'), sub = st.querySelector('.hs-sub'), mini = st.querySelector('.hs-mini'), fl = st.querySelector('.hs-flower'), tag = st.querySelector('.hs-tag');
+    var main = st.querySelector('.hs-main'), sub = st.querySelector('.hs-sub'), mini = st.querySelector('.hs-mini'), fl = st.querySelector('.hs-ring'), glows = $$('.hs-glow', st), tag = st.querySelector('.hs-tag');
     safe(function () {
       animate(main, { opacity: [0, 1], clipPath: ['inset(100% 0% 0% 0% round 200px 200px 22px 22px)', 'inset(0% 0% 0% 0% round 200px 200px 22px 22px)'] }, { duration: 1.3, ease: EASE, delay: 0.1 });
       animate(main.querySelector('img'), { scale: [1.25, 1] }, { duration: 1.8, ease: EASE, delay: 0.1 });
       animate(sub, { opacity: [0, 1], y: [80, 0], rotate: [-8, 0] }, Object.assign({ delay: 0.6 }, SPRING));
       animate(mini, { opacity: [0, 1], scale: [0.3, 1], rotate: [-40, 0] }, Object.assign({ delay: 0.85 }, SPRING));
-      animate(fl, { opacity: [0, 0.55], rotate: [-30, 0], scale: [0.7, 1] }, { duration: 1.8, ease: EASE, delay: 0.4 }).then(function () {
-        animate(fl, { rotate: [0, 6, -4, 0] }, { duration: 9, ease: 'easeInOut', repeat: Infinity });
+      animate(fl, { opacity: [0, 1], scale: [0.4, 1] }, Object.assign({ delay: 1.0 }, SPRING));
+      animate(fl.querySelector('text'), { rotate: [0, 360] }, { duration: 26, ease: 'linear', repeat: Infinity });
+      glows.forEach(function (g, i) {
+        animate(g, { opacity: [0, 1], scale: [0.6, 1] }, { duration: 2, ease: EASE, delay: 0.2 + i * 0.3 }).then(function () {
+          animate(g, { x: i ? [0, -30, 20, 0] : [0, 40, -20, 0], y: i ? [0, 25, -15, 0] : [0, -30, 20, 0], scale: [1, 1.12, 0.95, 1] }, { duration: 14 + i * 4, ease: 'easeInOut', repeat: Infinity });
+        });
       });
       animate(tag, { opacity: [0, 1], x: [30, 0] }, Object.assign({ delay: 1.2 }, SPRING));
     });
@@ -189,8 +193,8 @@
         animate($$('.mq', t).slice(0, 8), { opacity: [0, 1], y: [40, 0], rotate: [3, 0] }, Object.assign({ delay: stagger(0.07, { startDelay: 0.2 }) }, SPRING));
       });
     });
-    var flw = document.querySelector('.sec-flower');
-    if (flw && scroll) safe(function () { scroll(animate(flw, { rotate: [-30, 30], y: [80, -80], scale: [0.9, 1.1] }, { ease: 'linear' }), { target: flw.parentElement }); });
+    var flw = document.querySelector('.sec-glow');
+    if (flw && scroll) safe(function () { scroll(animate(flw, { x: ['-20%', '20%'], scale: [0.8, 1.2] }, { ease: 'linear' }), { target: flw.parentElement }); });
   }
 
   /* ---------- 4. megjelenés görgetésre ---------- */
