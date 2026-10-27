@@ -9,7 +9,7 @@ vannak, hanem a js/config.js-ben — azokat a böngésző tölti be.
 import pathlib
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-V = '20261026b'
+V = '20261027a'
 # Motion (https://motion.dev) — vanilla JS build, rögzített verzió; ha nem tölt be, CSS-tartalék fut
 MOTION_TAG = '\n<script src="https://cdn.jsdelivr.net/npm/motion@11.18.2/dist/motion.js" crossorigin="anonymous"></script>'  # gyorsítótár-törő verzió
 
@@ -74,7 +74,8 @@ def head(title, desc, extra_css=''):
 <meta property="og:description" content="{desc}">
 <meta property="og:image" content="img/og.png">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="img/favicon-48.png" type="image/png">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
 <link rel="preload" href="fonts/hanken-var.woff" as="font" type="font/woff" crossorigin>
 <link rel="stylesheet" href="css/bb.css?v={V}">{extra_css}
 <script>document.documentElement.classList.remove('no-js')</script>
@@ -88,7 +89,7 @@ def demo_strip():
 
 NAV = [('Kezdőlap', 'index.html', ''), ('Szolgáltatások', None, 'kezelesek'), ('Rólam', 'index.html#rolam', 'rolam'),
        ('Galéria', 'index.html#galeria', 'galeria'), ('Árak', 'index.html#arak', 'arak'), ('Kapcsolat', 'index.html#kapcsolat', 'kapcsolat')]
-SUBS = [('Pedikűr és lábápolás', 'pedikur.html', '4 kezelés'), ('Manikűr és géllakk', 'manikur.html', '4 kezelés'),
+SUBS = [('Pedikűr és lábápolás', 'pedikur.html', '11 kezelés'), ('Manikűr és géllakk', 'manikur.html', '9 kezelés'),
         ('Speciális lábápolás', 'specialis-labapolas.html', 'telefonos egyeztetés')]
 
 def link(href, is_index):
@@ -120,7 +121,7 @@ def header(current, is_index=False):
 {demo_strip()}
 <header class="hdr">
   <div class="wrap">
-    <a class="brand" href="index.html" aria-label="Balogh Beatrix — kezdőlap"><img class="logo" src="arculat/logo-nev.svg" alt="Balogh Beatrix — kéz- és lábápolás" width="250" height="84"></a>
+    <a class="brand" href="index.html" aria-label="Beatrix Nails &amp; Pedikűr — kezdőlap"><img class="logo" src="arculat/logo-fejlec.png" alt="Beatrix Nails &amp; Pedikűr" width="911" height="240"></a>
     <nav class="nav" aria-label="Fő navigáció">{nav}</nav>
     <div class="hdr-cta">
       <a class="hdr-call" data-tel href="tel:+36706146070" aria-label="Hívás: +36 70 614 6070">{ico('phone')}</a>
@@ -148,7 +149,7 @@ def footer(is_index=False, mbar=True):
   <div class="wrap">
     <div class="ftr-grid">
       <div>
-        <a class="brand" href="index.html" style="margin-bottom:22px"><img class="logo" src="arculat/logo-nev-sotet.svg" alt="Balogh Beatrix — kéz- és lábápolás" width="250" height="84"></a>
+        <a class="brand" href="index.html" style="margin-bottom:22px"><img class="logo logo--full" src="arculat/logo-beatrix-vilagos.png" alt="Beatrix Nails &amp; Pedikűr" width="664" height="600"></a>
         <p style="max-width:24em">Kéz- és lábápolás előre egyeztetett időpontban.</p>
         <p><a data-tel href="tel:+36706146070" data-bind="phone">+36 70 614 6070</a><br><span data-bind="addr-line2">1111 Budapest</span>, <span data-bind="addr-line1">Bertalan Lajos utca 19.</span> <span class="tag" data-addr-status>Egyeztetés alatt</span></p>
       </div>
@@ -188,6 +189,12 @@ def frame(art, tone='light', cls='', label=None, extra=''):
     lab = f'<span class="frame-label">{label}</span>' if label else ''
     return f'<div class="frame zoomable {cls}" data-art="{art}" data-tone="{tone}"{extra}></div>' if not lab else \
         f'<div class="frame zoomable {cls}" style="position:relative"><div class="frame" style="position:absolute;inset:0" data-art="{art}" data-tone="{tone}"></div>{lab}</div>'
+
+def shots(items, cls=''):
+    """Beatrix saját munkafotói egy sorban: [(fájlnév, alt, szélesség, magasság)]."""
+    f = ''.join(f'<figure class="shot rv-img" style="--d:{i*.07:.2f}s"><img src="img/munkak/{n}-k.jpg" alt="{a}" width="{w}" height="{h}" loading="lazy" decoding="async"></figure>'
+                for i, (n, a, w, h) in enumerate(items))
+    return f'<div class="shots {cls}">{f}</div>'
 
 STREETS = '''<svg class="streets" viewBox="0 0 600 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="#CDBFAF" stroke-width="10" stroke-linecap="round"><path d="M-20 120 C 120 140, 260 90, 620 130"/><path d="M80 -20 L 140 420"/><path d="M-20 300 L 620 260"/><path d="M360 -20 C 340 120, 400 260, 380 420"/><path d="M500 -20 L 470 420"/></g><g fill="none" stroke="#DFD4C7" stroke-width="4"><path d="M-20 210 L 620 200"/><path d="M240 -20 L 260 420"/><path d="M-20 40 L 300 0"/></g><circle cx="300" cy="200" r="7" fill="#BE9A7B"/><circle cx="300" cy="200" r="20" fill="none" stroke="#BE9A7B" opacity=".5"/></svg>'''
 
@@ -252,6 +259,13 @@ INDEX = f'''
   </div>
 </section>
 
+<section class="ribbon-sec" aria-label="Beatrix munkáiból">
+  <div class="wrap">
+    {shots([('magenta-2', 'Magenta géllakk — Beatrix munkája', 760, 416), ('levendula-3', 'Levendula géllakk — Beatrix munkája', 671, 760), ('gyongyhaz-4', 'Gyöngyházfényű géllakk — Beatrix munkája', 760, 456), ('levendula-4', 'Levendula géllakk, rövid forma — Beatrix munkája', 760, 502), ('gyongyhaz-5', 'Gyöngyház géllakk, szögletes forma — Beatrix munkája', 760, 502)], 'shots--ribbon')}
+    <p class="ribbon-cap rv"><span>Beatrix saját munkái</span><a class="link" href="#galeria">Galéria {ico('arrow')}</a></p>
+  </div>
+</section>
+
 <section aria-label="Értékek">
   <div class="wrap">
     <div class="values">
@@ -270,24 +284,24 @@ INDEX = f'''
     </div>
     <div class="cats">
       <article class="cat cat--1 rv">
-        <div><div class="cat-top"><span class="num">01</span><span class="small muted">4 kezelés</span></div>
+        <div><div class="cat-top"><span class="num">01</span><span class="small muted">11 kezelés</span></div>
         <h3>Pedikűr és lábápolás</h3>
-        <p>Klasszikus és vizes pedikűr, lábgéllakk és eltávolítás — esztétika és komfort, alaposan.</p>
-        <ul data-cat-list="pedikur"></ul>
+        <p>Esztétikai pedikűr, lábgéllakk, talpmasszázs és három wellness pedikűr csomag — esztétika és komfort, alaposan.</p>
+        <ul data-cat-list="pedikur" data-limit="5"></ul>
         <div class="cat-actions"><a class="link" href="pedikur.html">Részletek {ico('arrow')}</a><a class="link" href="foglalas.html?kategoria=pedikur">Foglalás</a></div></div>
       </article>
       <article class="cat cat--2 rv" style="--d:.08s">
-        <div><div class="cat-top"><span class="num">02</span><span class="small muted">4 kezelés</span></div>
+        <div><div class="cat-top"><span class="num">02</span><span class="small muted">9 kezelés</span></div>
         <h3>Manikűr és géllakk</h3>
-        <p>Gépi manikűr, erősített géllakk, paraffinos kézápolás — tartós szín, visszafogott elegancia.</p>
-        <ul data-cat-list="manikur"></ul>
+        <p>Orosz gépi manikűr, erősített géllakk, műköröm szalonformába és díszítés — tartós szín, gondos kidolgozás.</p>
+        <ul data-cat-list="manikur" data-limit="5"></ul>
         <div class="cat-actions"><a class="link" href="manikur.html">Részletek {ico('arrow')}</a><a class="link" href="foglalas.html?kategoria=manikur">Foglalás</a></div></div>
       </article>
       <article class="cat cat--3 rv" style="--d:.16s">
         <div><div class="cat-top"><span class="num">03</span><span class="small muted">Telefonos egyeztetés</span></div>
         <h3>Speciális lábápolás</h3>
         <p>Ha a lábad több figyelmet kér, előbb beszéljük át telefonon. Az időpontot és a kezelés menetét ehhez igazítjuk.</p>
-        <ul><li><span>Ár és időtartam</span><span>egyeztetés után</span></li><li><span>Foglalás</span><span>telefonon</span></li></ul>
+        <ul data-cat-list="specialis" data-limit="3"></ul>
         <div class="cat-actions"><a class="link" href="specialis-labapolas.html">Részletek {ico('arrow')}</a><a class="link" data-tel href="tel:+36706146070">Hívás</a></div></div>
       </article>
     </div>
@@ -308,7 +322,7 @@ INDEX = f'''
     </div>
     <p class="sr-only" id="priceLive" aria-live="polite"></p>
     <div class="prices" id="priceList"></div>
-    <p class="prices-note">{tag("Referenciaárak")} A Notino-profilon szereplő árak alapján — a végleges árlistát Beatrix hagyja jóvá.</p>
+    <p class="prices-note">{tag("Beatrix árlistája")} Az árak Beatrix saját árlistájáról valók. Ahol az árlistán nincs időtartam, ott a percek becsült értékek, a véglegesítésig egyeztetendők.</p>
   </div>
 </section>
 
@@ -324,7 +338,7 @@ INDEX = f'''
       <blockquote class="rv">„Nálam a kezelés nem rohanás: időt szánok rá, hogy minden részlet a helyére kerüljön.”</blockquote>
       <div class="rv">
       <p>A szalonomban nyugodt, személyes légkörben dolgozom. Fontos számomra a gondos, igényes munka és a higiénikus környezet — hogy a kezelés alatt valóban kikapcsolhass. Lábápolásra nőket és férfiakat egyaránt szívesen várok.</p>
-      <ul class="about-list"><li>Klasszikus és esztétikai pedikűr</li><li>Lábgéllakkozás</li><li>Gépi manikűr, erősített géllakk</li><li>Paraffinos kézápolás</li></ul>
+      <ul class="about-list"><li>Esztétikai és wellness pedikűr</li><li>Lábgéllakk, talpmasszázs</li><li>Orosz gépi manikűr, erősített géllakk</li><li>Műköröm szalonformába</li></ul>
       <p class="about-sign">Beatrix</p>
       <p style="margin-top:22px">{tag("Jóváhagyandó bemutatkozó szöveg")}</p>
       </div>
@@ -350,14 +364,13 @@ INDEX = f'''
   <div class="wrap">
     <div class="sec-head">
       <div><p class="eyebrow rv">Galéria</p><h2 id="gal-h" class="rv">Munkáim</h2></div>
-      <p class="rv muted">Ide Beatrix saját munkafotói kerülnek — a szűrés, a nagyítás és a lapozás már működik. Az éles változatban a képek az adminból tölthetők fel.</p>
+      <p class="rv muted">Beatrix saját munkái. Koppints egy képre a nagyításhoz — lapozni nyilakkal vagy húzással lehet.</p>
     </div>
     <div class="chips chips--scroll" id="galleryChips" role="group" aria-label="Galéria szűrése">
       <button class="chip" type="button" data-filter="all" aria-pressed="true">Mind</button>
-      <button class="chip" type="button" data-filter="pedikur" aria-pressed="false">Pedikűr</button>
-      <button class="chip" type="button" data-filter="manikur" aria-pressed="false">Manikűr</button>
-      <button class="chip" type="button" data-filter="gellakk" aria-pressed="false">Géllakk</button>
-      <button class="chip" type="button" data-filter="szalon" aria-pressed="false">Szalon</button>
+      <button class="chip" type="button" data-filter="elenk" aria-pressed="false">Élénk színek</button>
+      <button class="chip" type="button" data-filter="pasztell" aria-pressed="false">Pasztell</button>
+      <button class="chip" type="button" data-filter="natur" aria-pressed="false">Natúr és elegáns</button>
     </div>
     <div class="gallery" id="gallery"></div>
   </div>
@@ -371,9 +384,9 @@ INDEX = f'''
 <section class="sec sec--cream" id="utalvany" aria-labelledby="ut-h">
   <div class="wrap voucher-wrap">
     <div class="voucher rv" aria-hidden="true">
-      <div class="voucher-top"><img src="arculat/logo-nev-sotet.svg" alt="" style="height:40px;width:auto"><small>Ajándékutalvány<br>N° 0001</small></div>
+      <div class="voucher-top"><img src="arculat/logo-fejlec-vilagos.png" alt="" style="height:40px;width:auto"><small>Ajándékutalvány<br>N° 0001</small></div>
       <h3>Egy nyugodt óra,<br>neked szánva.</h3>
-      <div class="voucher-bot"><span>Érvényes egy választott kezelésre</span><b>Balogh Beatrix</b></div>
+      <div class="voucher-bot"><span>Érvényes egy választott kezelésre</span><b>Beatrix Nails &amp; Pedikűr</b></div>
     </div>
     <div>
       <p class="eyebrow rv">Ajándék</p>
@@ -423,7 +436,7 @@ INDEX = f'''
 # ======================================================================
 # KATEGÓRIA-ALOLDALAK
 # ======================================================================
-def cat_page(num, cat, h1, lead, art, tone, guide, callout):
+def cat_page(num, cat, h1, lead, art, tone, guide, callout, photos='', extra=''):
     g = ''.join(f'<div class="rv" style="--d:{i*.08}s"><h3>{t}</h3><p>{d}</p></div>' for i, (t, d) in enumerate(guide))
     return f'''
 <section class="page-hero">
@@ -440,13 +453,14 @@ def cat_page(num, cat, h1, lead, art, tone, guide, callout):
     </div>
   </div>
 </section>
+{photos}
 <section class="sec sec--cream" id="kezelesek-lista" aria-labelledby="kl-h">
   <div class="wrap">
     <div class="sec-head"><div><p class="eyebrow rv">Kezelések</p><h2 id="kl-h" class="rv">Válaszd ki a <em>hozzád illőt</em>.</h2></div>
-    <p class="rv muted">Ár és időtartam minden kártyán — a foglalásnál a kiválasztott kezelés már előre be lesz jelölve. {tag("Referenciaárak")}</p></div>
+    <p class="rv muted">Ár és időtartam minden kártyán — a foglalásnál a kiválasztott kezelés már előre be lesz jelölve. {tag("Időtartam: becsült")}</p></div>
     <div class="svc-cards" data-svc-cards="{cat}"></div>
   </div>
-</section>
+</section>{extra}
 <section class="sec" aria-labelledby="g-h">
   <div class="wrap">
     <div class="sec-head sec-head--single"><p class="eyebrow rv">Segítség a választáshoz</p><h2 id="g-h" class="rv">Melyiket <em>válasszam</em>?</h2></div>
@@ -458,20 +472,40 @@ def cat_page(num, cat, h1, lead, art, tone, guide, callout):
 </section>'''
 
 PEDIKUR = cat_page('01', 'pedikur', 'Pedikűr és <em>lábápolás</em>',
-    'Ápolt, könnyű lábak — esztétikusan és kényelmesen. Minden kezelésnél előre látod az időtartamot és az árat, a foglalás pedig pár lépés.',
+    'Ápolt, könnyű lábak — esztétikusan és kényelmesen. Esztétikai pedikűr, lábgéllakk, talpmasszázs és három wellness csomag.',
     'labfurdo', 'light',
-    [('Alapos ápolást szeretnél', 'A <b>klasszikus pedikűr</b> a láb és a lábkörmök teljes ápolása — szín nélkül, 80 percben.'),
-     ('Színt is kérnél', 'A <b>vizes pedikűr géllakkozással</b> a legteljesebb kezelés. Ha a lábad rendben van és csak szín kell, elég a <b>géllakkozás lábra</b>.'),
-     ('Lekerülne a régi lakk', 'A <b>lábgéllakk eltávolítás + mini pedikűr</b> kíméletesen leszedi a régi lakkot, és egy rövidebb ápolással frissít.')],
-    f'<div><h2>Egyéni igényed van?</h2><p>Ha a lábad több figyelmet igényel, a <a href="specialis-labapolas.html">speciális lábápolást</a> telefonon egyeztetjük.</p></div><div class="acts"><a class="btn" data-tel href="tel:+36706146070">{ico("phone")}Hívás</a><a class="btn btn--ghost" href="specialis-labapolas.html">Bővebben</a></div>')
+    [('Alapos ápolást szeretnél', 'A <b>klasszikus esztétikai pedikűr</b>: bőrkeményedés eltávolítása, a körmök rendbetétele, peeling és tápláló krémezés.'),
+     ('Színt vagy masszázst is kérnél', 'Az esztétikai pedikűr kérhető <b>lábgéllakkal</b>, <b>talpmasszázzsal</b>, vagy mindkettővel egy alkalommal.'),
+     ('Egy kis kényeztetés', 'A <b>wellness pedikűr csomagok</b> (Frissítő, Relax, Deluxe) lábfürdővel, pakolással és hosszabb masszázzsal készülnek, 60–120 percben.')],
+    f'<div><h2>Egyéni igényed van?</h2><p>Bőrkeményedés, tyúkszem, benőtt köröm, repedezett sarok: a <a href="specialis-labapolas.html">speciális lábápolást</a> telefonon egyeztetjük.</p></div><div class="acts"><a class="btn" data-tel href="tel:+36706146070">{ico("phone")}Hívás</a><a class="btn btn--ghost" href="specialis-labapolas.html">Bővebben</a></div>',
+    photos=f'''<section class="sec" style="padding-bottom:0" aria-label="Beatrix pedikűr munkáiból"><div class="wrap">{shots([('pedikur-1', 'Ápolt lábkörmök pedikűr után — Beatrix munkája', 760, 570), ('pedikur-2', 'Rendezett lábkörmök pedikűr után — Beatrix munkája', 760, 570)], 'shots--two')}</div></section>''')
+
+def extras_html():
+    """Díszítés-árlista a manikűr oldalra (forrás: js/config.js extras — itt a statikus változata)."""
+    rows = [('Ombre, babyboomer', '250 Ft / köröm'), ('Festett francia', '150 Ft / köröm'),
+            ('Egyszerű díszítés <small>porok, matrica, nyomda</small>', '100–300 Ft / köröm'),
+            ('Bonyolultabb díszítés <small>porcelán virág, 3D minta</small>', '300–800 Ft / köröm'),
+            ('Köröm ékszer', '250–400 Ft / köröm'), ('Teli kövezés', '500–1 100 Ft / köröm'),
+            ('Köröm pótlása', 'a szolgáltatás 10%-a / köröm')]
+    li = ''.join(f'<li><span>{n}</span><span>{p}</span></li>' for n, p in rows)
+    return f'''
+<section class="sec" aria-labelledby="dsz-h">
+  <div class="wrap extras">
+    <div><p class="eyebrow rv">Díszítés</p><h2 id="dsz-h" class="rv">Egy kis <em>extra</em>.</h2>
+    <p class="rv">A géllakk és a műköröm ára <b>2 köröm tetszőleges díszítését</b> tartalmazza. Nem tartalmazza a teli kövezést, a festett franciát, az ombre és a babyboomer technikát — ezek árai körmönként:</p></div>
+    <ul class="sum-list rv">{li}</ul>
+  </div>
+</section>'''
 
 MANIKUR = cat_page('02', 'manikur', 'Manikűr és <em>géllakk</em>',
-    'Ápolt kéz, tartós szín, egy kis csend a nap közepén. Gépi manikűr, erősített géllakk és paraffinos kézápolás.',
+    'Ápolt kéz, tartós szín, gondos kidolgozás. Orosz gépi manikűr, erősített géllakk, műköröm szalonformába és díszítés.',
     'kezpihi', 'cream',
-    [('Ápolt, natúr kéz', 'A <b>gépi manikűr</b> rendbe teszi a körmöket és a bőrt, formára igazítva — 45 perc.'),
-     ('Tartós szín', 'Az <b>erősített géllakk</b> a saját körmön készül, erősítő alapréteggel. Az ár 9 000–10 000 Ft között, a köröm hosszától és állapotától függően.'),
-     ('Egy kis pihenés', 'A <b>paraffinos kézápolás</b> meleg pakolás a kéz bőrének. Önmagában vagy manikűr mellé is jó választás.')],
-    f'<div><h2>Műkörmöt viselsz?</h2><p>A <b>műköröm eltávolítás</b> külön kezelés — kíméletesen leszedjük, és előkészítjük a saját körmöd.</p></div><div class="acts"><a class="btn" href="foglalas.html?kezeles=mukorom-eltavolitas">{ico("calendar")}Eltávolítást foglalok</a></div>')
+    [('Ápolt, natúr kéz', 'Az <b>orosz gépi manikűr</b> rendbe teszi a körmöket és a bőrt. Mellé jó választás a <b>paraffinos kézápolás</b>.'),
+     ('Tartós szín a saját körmön', 'Az <b>erősített géllakk</b> orosz manikűrrel készül, XS vagy S méretben (9 000 / 10 000 Ft). Két köröm díszítése benne van.'),
+     ('Hosszabb köröm', 'A <b>műköröm szalonformába</b> XS, S és M méretben készül; a töltés külön kezelés, kedvezőbb áron.')],
+    f'<div><h2>Lekerülne a régi?</h2><p>A <b>géllakk eltávolítás manikűrrel</b> és a <b>műköröm eltávolítás</b> külön kezelés — kíméletesen leszedjük, és rendbe tesszük a saját körmöd.</p></div><div class="acts"><a class="btn" href="foglalas.html?kezeles=gellakk-eltavolitas">{ico("calendar")}Eltávolítást foglalok</a></div>',
+    photos=f'''<section class="sec" style="padding-bottom:0" aria-label="Beatrix manikűr munkáiból"><div class="wrap">{shots([('magenta-3', 'Magenta géllakk — Beatrix munkája', 760, 520), ('levendula-1', 'Levendula géllakk — Beatrix munkája', 620, 760), ('gyongyhaz-2', 'Gyöngyházfényű géllakk — Beatrix munkája', 760, 524)])}</div></section>''',
+    extra=extras_html())
 
 SPECIALIS = f'''
 <section class="page-hero">
@@ -483,9 +517,9 @@ SPECIALIS = f'''
         <h1 class="rv">Speciális <em>lábápolás</em></h1>
         <p class="lead rv">Ha a lábad több figyelmet igényel, a kezelés egy beszélgetéssel kezdődik. Telefonon átbeszéljük, mire van szükséged, és ehhez igazítjuk az időpontot.</p>
         <div class="hero-cta rv" style="margin:28px 0 0"><a class="btn" data-tel href="tel:+36706146070">{ico('phone')}<span data-bind="phone">+36 70 614 6070</span></a></div>
-        <p class="rv small muted" style="margin-top:16px">Ár és időtartam: egyeztetés után. {tag("Jóváhagyásra vár")}</p>
+        <p class="rv small muted" style="margin-top:16px">Időpont telefonos egyeztetéssel. Az árakat lent találod.</p>
       </div>
-      <aside class="sumcard rv" style="--d:.15s"><p class="qb-sub" style="margin-top:0">Időpont egyeztetése</p><a class="contact-phone" data-tel href="tel:+36706146070" data-bind="phone" style="margin:4px 0 14px">+36 70 614 6070</a><p class="small muted" style="margin:0">Ár és időtartam az egyeztetés után derül ki. Online nem kérünk egészségügyi adatot.</p></aside>
+      <aside class="sumcard rv" style="--d:.15s"><p class="qb-sub" style="margin-top:0">Árak</p><ul class="sum-list" data-cat-list="specialis"></ul><a class="btn qb-go" data-tel href="tel:+36706146070">{ico('phone')}Időpontot egyeztetek</a><p class="small muted" style="margin:12px 0 0">Online nem kérünk egészségügyi adatot.</p></aside>
     </div>
   </div>
 </section>

@@ -1,6 +1,6 @@
-# Balogh Beatrix | Foot & Nail Studio — átadási jegyzék
+# Beatrix Nails & Pedikűr (Balogh Beatrix) — átadási jegyzék
 
-Látványterv, 2. kör — 2026.10.26. (1. kör: 2026.10.25.)
+Látványterv, 3. kör — 2026.10.27. (2. kör: 10.26., 1. kör: 10.25.)
 Előnézet: `https://daekon-ship.github.io/daekon/latvanytervek/balogh-beatrix/` (noindex)
 
 > **Bemutató.** A foglalás és az admin a böngésző helyi tárolójával (localStorage) működik.
@@ -8,7 +8,43 @@ Előnézet: `https://daekon-ship.github.io/daekon/latvanytervek/balogh-beatrix/`
 
 ---
 
-## 0. 2. kör — mi változott (ügyfél-visszajelzés: „gyenge képek”, „rossz betű”)
+## 0. 3. kör — Beatrix saját anyagai (2026.10.27.)
+
+Beatrix elküldte a logóját, az árlistáit és a munkafotóit. Ezekre épül most az oldal.
+
+**Márka és logó**
+- Név: **Beatrix Nails & Pedikűr** (a logóról). A korábbi „Foot & Nail Studio” javaslat megszűnt.
+- A logó egy 2000×2000-es JPG-ből készült, átlátszó PNG-ként:
+  - `arculat/logo-beatrix(-vilagos).png`: teljes, álló változat (lábléc).
+  - `arculat/logo-fejlec(-vilagos).png`: vízszintes fejléc-változat. A B-embléma és a felirat ugyanazokból az elemekből van egymás mellé téve.
+  - `img/favicon-48.png`, `apple-touch-icon.png`, `ikon-512.png`.
+- Takarítás a logón: a B felső szára fölötti kósza apró jelet, illetve a felirat fölé belógó levélvégeket eltávolítottam.
+- **Élesítéshez kérni kell az eredeti vektoros (SVG/PDF) logót**, mert a raszteres változat kis méretben elmosódik (főleg a „NAILS & PEDIKŰR” alcím).
+- Forrás és feldolgozás: `_forras/kepek.py` (újrafuttatható). Az előző ideiglenes felirat-logó és SVG-k törölve.
+
+**Árlista** (`js/config.js`). Forrás: Beatrix árlista-képei.
+- Lábápolás: esztétikai pedikűr négy változatban, lábgéllakk, eltávolítás + mini pedikűr, talpmasszázs, paraffinos lábápolás.
+- Wellness pedikűr csomagok: Frissítő (60 perc), Relax (90 perc), Deluxe (120 perc).
+- Kézápolás: orosz gépi manikűr, paraffinos kézápolás, géllakk eltávolítás, erősített géllakk XS/S, műköröm XS/S/M (a töltés ára a leírásban).
+- Díszítés: körömenkénti árak a manikűr aloldalon.
+- Speciális: konzultáció, speciális pedikűr, gombás köröm, benőtt köröm, körömprotézis. Mind telefonos egyeztetésű.
+- ⚠ **Két különböző Kézápolás-árlista érkezett.** Az A4-es, magasabb árú változatot használtam (5 500 / 6 500 / 9 000 / 10 000 Ft…), mert az egyezik a Notino-árakkal. Hogy melyik az érvényes, egyeztetni kell. Az L méretű műköröm, a rágott körömre építés (+2 000 Ft) és a műköröm eltávolítás 5 500 Ft-os ára csak a régebbi listán szerepel.
+- ⚠ **Időtartam** csak a talpmasszázsnál és a wellness csomagoknál volt megadva. A többi **becsült** (`estimate: true`), és Beatrix-szel egyeztetendő, mert a foglalási naptár ebből számol.
+
+**Fotók** (`img/munkak/`, 17 kép: teljes 1600 px + `-k` 760 px). Mind Beatrix saját munkája.
+- Adatvédelem: a háttérben látható arcot, állat és nyakat minden képről levágtam.
+- **A vendégek hozzájárulását a megjelenéshez kérjük írásban** (kéz/láb fotó is személyes adat lehet).
+- Főoldal:
+  - csak kézfotók szerepelnek: egy fotósáv a nyitókép alatt, és a galéria 10 képe;
+  - a galéria színcsalád szerint szűrhető: élénk, pasztell, natúr.
+- Pedikűr aloldal: 2 kezelés utáni, rendezett lábfotó.
+- **Kihagyva:** a kezelés előtti lábfotók (bőrkeményedés, elszíneződött köröm). A brief szerint problémás lábat nem mutatunk a főoldalon. Ha Beatrix „előtte–utána” blokkot szeretne a speciális oldalra, ahhoz kifejezett vendéghozzájárulás és orvosi állítás nélküli szöveg kell.
+- Nem használtam: a Facebook-képernyőképet (gyenge minőség, felület-elemek) és a két stock logó-képernyőképet (azok csak minták voltak).
+- Portré: még nincs, a helye megmaradt.
+
+Teszt: **55/55** (Motion-helyettesítővel) és **53/53** (Motion nélkül). Túlfolyás: 12 oldal × 4 szélesség, nincs.
+
+## 0/a. 2. kör — mi változott (ügyfél-visszajelzés: „gyenge képek”, „rossz betű”)
 
 - **Betű:** Hanken Grotesk egyetlen családként (cím + szöveg), mérsékelt méretek; talpas betű nincs. (Elvetett: Spectral, Bodoni Moda, Instrument Serif, Plus Jakarta — lásd `iranyok.html`, `betuk.html`.)
 - **Illusztrációk törölve** (`js/art.js` megszűnt). Nincs stock és AI-kép sem.
@@ -19,11 +55,9 @@ Előnézet: `https://daekon-ship.github.io/daekon/latvanytervek/balogh-beatrix/`
 - Gombok mondatkezdő betűvel, nem csupa nagybetű.
 - Teszt: **52/52** (új: gyorsfoglaló mélylink), túlfolyás 12 oldal × 4 szélesség: nincs.
 
-## 0/b. Logó — nyitott kérdés (2026.10.26.)
+## 0/b. Logó — lezárva (3. kör)
 
-- A kódból rajzolt logókísérleteket (köröm, lábnyom, kéz) az ügyfél elvetette; mind törölve.
-- Jelenleg **ideiglenes felirat** áll a helyén: „Balogh **Beatrix**” + „KÉZ- ÉS LÁBÁPOLÁS” (Hanken Grotesk), illusztráció nélkül — `arculat/logo-nev.svg`, forrás: `_forras/logo_nev.py`.
-- Végleges logó: licencelt vektor (pl. Shutterstock/DepositPhotos) vagy tervezői munka; a fájl beérkezése után cserélendő (fejléc, lábléc, admin, utalvány, favicon).
+- Beatrix saját logója van kint, lásd fent. A korábbi kódból rajzolt kísérletek és az ideiglenes felirat törölve.
 
 ## 0/c. Animációk — Motion (motion.dev), 2026.10.26.
 
@@ -150,7 +184,7 @@ Közben javított hibák: a felfedő animáció miatt a képek láthatatlanok ma
 3. Végleges árlista (a mostani a Notino-profil referenciája), speciális lábápolás ára/időtartama.
 4. Saját fotók: portré, szalon, munkafotók (pedikűr, manikűr, géllakk) — jogtisztán.
 5. Hivatalos név, vállalkozási forma, adószám, székhely, e-mail-cím (impresszum, adatkezelés).
-6. Jóváhagyás: bemutatkozó szöveg, „Foot & Nail Studio” név, cukorbeteg vendégekre vonatkozó mondat.
+6. Jóváhagyás: bemutatkozó szöveg, érvényes kézápolás-árlista, becsült időtartamok, cukorbeteg vendégekre vonatkozó mondat; vendéghozzájárulás a fotókhoz; vektoros logó.
 7. Fizetési módok; ajándékutalványt árul-e (és milyen feltételekkel).
 8. Közösségi profilok, ha vannak (nem találtunk ki egyet sem).
 

@@ -114,7 +114,7 @@
     return '<a class="btn btn--sm ' + (cls || 'btn--ghost') + '" href="' + bookHref(s) + '">Időpontot foglalok</a>';
   }
   function priceHtml(s) {
-    return esc(T.fmtPrice(s)) + (s.priceNote ? '<small>' + esc(s.priceNote) + '</small>' : '') + (s.price == null ? '<small>Ár és időtartam egyeztetés után</small>' : '');
+    return esc(T.fmtPrice(s)) + (s.priceNote ? '<small>' + esc(s.priceNote) + '</small>' : '') + (s.price == null ? '<small>Ár és időtartam egyeztetés után</small>' : (s.phoneOnly ? '<small>Időpont telefonos egyeztetéssel</small>' : ''));
   }
 
   function priceList() {
@@ -141,10 +141,11 @@
 
   function catLists() {
     $$('[data-cat-list]').forEach(function (ul) {
-      var cat = ul.getAttribute('data-cat-list');
-      ul.innerHTML = BB.activeServices().filter(function (s) { return s.cat === cat; }).map(function (s) {
+      var cat = ul.getAttribute('data-cat-list'), lim = +ul.getAttribute('data-limit') || 0;
+      var all = BB.activeServices().filter(function (s) { return s.cat === cat; }), list = lim ? all.slice(0, lim) : all;
+      ul.innerHTML = list.map(function (s) {
         return '<li><span>' + esc(s.name) + '</span><span>' + (s.mins ? s.mins + ' perc · ' : '') + esc(T.fmtPrice(s)) + '</span></li>';
-      }).join('');
+      }).join('') + (all.length > list.length ? '<li class="more"><span>+ további ' + (all.length - list.length) + ' kezelés</span><span></span></li>' : '');
     });
   }
 
@@ -197,22 +198,26 @@
   }
 
   /* ---------- galéria + nagyító ---------- */
-  /* Saját fotók: src kitöltése (pl. 'img/galeria/pedikur-1.jpg'). Üres src = fotóhely. */
+  /* Beatrix saját munkafotói (img/munkak/). A rácsban a -k (kicsi) változat, a nagyítóban a teljes.
+     Az arcokat, nyakat kivágtuk. A főoldalon csak kézfotó szerepel (brief: problémás lábat nem mutatunk); a pedikűr-fotók a pedikűr aloldalon vannak. */
   var GALLERY = [
-    { src: '', tone: 'sand', cat: 'pedikur', title: 'Klasszikus pedikűr' },
-    { src: '', tone: 'sage', cat: 'gellakk', title: 'Lábgéllakk' },
-    { src: '', tone: 'cream', cat: 'szalon', title: 'A szalon' },
-    { src: '', tone: 'cream', cat: 'manikur', title: 'Gépi manikűr' },
-    { src: '', tone: 'sand', cat: 'gellakk', title: 'Erősített géllakk' },
-    { src: '', tone: 'sage', cat: 'manikur', title: 'Paraffinos kézápolás' },
-    { src: '', tone: 'cream', cat: 'pedikur', title: 'Vizes pedikűr' },
-    { src: '', tone: 'sand', cat: 'szalon', title: 'Kezelőszék' },
+    { src: 'img/munkak/magenta-1.jpg', cat: 'elenk', title: 'Magenta géllakk', w: 1600, h: 792 },
+    { src: 'img/munkak/levendula-1.jpg', cat: 'pasztell', title: 'Levendula géllakk', w: 1304, h: 1600 },
+    { src: 'img/munkak/gyongyhaz-1.jpg', cat: 'natur', title: 'Gyöngyházfényű géllakk', w: 1600, h: 936 },
+    { src: 'img/munkak/neon-1.jpg', cat: 'elenk', title: 'Neon pink géllakk', w: 1600, h: 1557 },
+    { src: 'img/munkak/csokolade-1.jpg', cat: 'natur', title: 'Csokoládébarna géllakk', w: 1600, h: 1200 },
+    { src: 'img/munkak/gyongyhaz-2.jpg', cat: 'natur', title: 'Gyöngyházfényű, szögletes forma', w: 1600, h: 1104 },
+    { src: 'img/munkak/magenta-3.jpg', cat: 'elenk', title: 'Magenta géllakk, közelről', w: 1600, h: 1096 },
+    { src: 'img/munkak/levendula-2.jpg', cat: 'pasztell', title: 'Levendula, rövid kerek forma', w: 1429, h: 1600 },
+    { src: 'img/munkak/gyongyhaz-3.jpg', cat: 'natur', title: 'Gyöngyház, finom csillámmal', w: 1600, h: 912 },
+    { src: 'img/munkak/neon-2.jpg', cat: 'elenk', title: 'Neon pink, ovális forma', w: 1539, h: 1600 },
   ];
-  function photo(g) {
-    if (g.src) return '<span class="frame zoomable"><img src="' + esc(g.src) + '" alt="' + esc(g.title) + '" loading="lazy" decoding="async"></span>';
+  function thumb(src) { return src.replace(/\.jpg$/, '-k.jpg'); }
+  function photo(g, big) {
+    if (g.src) return '<span class="frame zoomable"><img src="' + esc(big ? g.src : thumb(g.src)) + '" alt="' + esc(g.title) + ' — Beatrix munkája" ' + (big ? '' : 'loading="lazy" ') + 'decoding="async"></span>';
     return '<span class="ph ph--' + g.tone + '"><span class="ph-in">' + icon('camera') + '<b>' + esc(g.title) + '</b><small>Saját fotó helye</small></span></span>';
   }
-  var GCATS = { pedikur: 'Pedikűr', manikur: 'Manikűr', gellakk: 'Géllakk', szalon: 'Szalon' };
+  var GCATS = { elenk: 'Élénk színek', pasztell: 'Pasztell', natur: 'Natúr és elegáns' };
 
   function gallery() {
     var host = $('#gallery'); if (!host) return;
@@ -239,7 +244,7 @@
       var v = visible(); if (!v.length) return;
       var pos = v.indexOf(i); if (pos < 0) pos = 0; idx = v[pos];
       var g = GALLERY[idx];
-      stage.innerHTML = '<div class="lb-photo">' + photo(g) + '</div>';
+      stage.innerHTML = '<div class="lb-photo">' + photo(g, true) + '</div>';
       cap.innerHTML = '<b>' + esc(g.title) + '</b><span>' + GCATS[g.cat] + (g.src ? '' : ' · ide Beatrix saját fotója kerül') + '</span>';
       cnt.textContent = (pos + 1) + ' / ' + v.length;
     }

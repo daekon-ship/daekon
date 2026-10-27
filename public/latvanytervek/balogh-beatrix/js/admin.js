@@ -320,7 +320,7 @@
   function services() {
     var list = BB.services();
     view.innerHTML = top('Szolgáltatások', 'Név, leírás, ár, időtartam, pufferidő és foglalhatóság. A változás azonnal megjelenik a nyilvános oldalon és a foglalásban (ezen a böngészőn).') +
-      '<div class="adm-banner">' + icon('info') + '<span>Kiindulás: a Notino-profil referenciaárai. A végleges árlistát Beatrix hagyja jóvá. A „Speciális lábápolás” telefonos egyeztetésű, online nem foglalható.</span></div>' +
+      '<div class="adm-banner">' + icon('info') + '<span>Kiindulás: Beatrix saját árlistája. A legtöbb időtartam becsült — itt pontosítható. A speciális lábápolás tételei telefonos egyeztetésűek, online nem foglalhatók.</span></div>' +
       '<div class="svc-edit">' + list.map(function (s) {
         return '<details class="svc-row' + (s.active ? '' : ' is-off') + '" data-sid="' + s.id + '"><summary>' + UI.dial(s.mins) + '<div><b>' + esc(s.name) + '</b><span class="small muted">' + (s.active ? (s.bookable ? 'Aktív · online foglalható' : 'Aktív · csak telefonon') : 'Inaktív — nem látszik az oldalon') + '</span></div>' +
           '<span class="sv-price">' + esc(T.fmtPrice(s)) + '</span><span class="small muted">+' + s.buffer + ' p puffer</span><svg class="ico chev" aria-hidden="true"><use href="#i-chev"/></svg></summary>' +
