@@ -5,7 +5,7 @@ Előző változat (érintetlen, összehasonlításhoz): https://daekon-ship.gith
 
 ## Betű-javítás (2026. október 27., délután)
 
-Az Amatic SC több helyen alig volt olvasható, ezért kikerült. Címek: **Playfair Display** (dőlt kiemelésekkel); gombok, menü, címkék és szöveg: **Manrope**; **Dancing Script** csak nagy, rövid díszként marad (logó, fejezetszámok, alcímek, futó szalag). A nyitóidézet, az ajánló sorok és a folyamat-lépések Playfair dőltre váltottak.
+Az Amatic SC több helyen alig volt olvasható, ezért kikerült. Címek: **Playfair Display** (dőlt kiemelésekkel); gombok, menü, címkék és szöveg: **Manrope**; Kézírásos betű (Dancing Script) **nincs** – a logó felirata, a fejezetszámok, alcímek és a futó szalag is Playfair dőlt. A nyitóidézet, az ajánló sorok és a folyamat-lépések Playfair dőltre váltottak.
 
 ## Motion-réteg (js/motion-fx.js)
 
@@ -152,7 +152,7 @@ Kérdés Wandának: ezek AI-val készült képek? Ha igen, illusztrációként m
 
 **Színek:** paper #F6EFE4 · paper-2 #ECE1D2 · rose #C9AFA0 · rose-soft #E6D6CB · moss #64613F (Wix-olíva sötétítve, kontraszt 5,5:1 krém szöveggel) · forest #263A2D · berry #793F49 · bark #4A3527 · ink #2E241C.
 
-**Betűk:** Playfair Display 400–900 + dőlt (címek), Manrope 200–800 (szöveg, gombok), Dancing Script 400–700 (csak logó, fejezetszám, alcím), saját tárhely. Skála: h1 max 3,1rem, h2 max 2,5rem, h3 max 1,38rem.
+**Betűk:** Playfair Display 400–900 + dőlt (címek), Manrope 200–800 (szöveg, gombok), saját tárhely. Skála: h1 max 3,1rem, h2 max 2,5rem, h3 max 1,38rem.
 
 **Térköz:** 0,5 · 0,75 · 1 · 1,5 · 2 · 3 · 4,5 · 6,5 rem; fejezetek 4–7,5rem függőleges ritmus.
 

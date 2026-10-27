@@ -10,7 +10,7 @@ def mark(fg=INK, bg=PAPER, acorn=BERRY, cap=BARK, tx=0, ty=0, s=1.0):
             f'<circle cx="36" cy="42.5" r="1.9" fill="{bg}"/>'
             f'<path d="M48 82 C 52 90, 58 94, 62 96" fill="none" stroke="{bg}" stroke-width="1.4" stroke-linecap="round"/>'
             f'<g transform="translate(29 63)"><ellipse cx="4" cy="6" rx="4.4" ry="5" fill="{acorn}"/><path d="M-0.8 3.6 C -0.6 0, 8.6 0, 8.8 3.6 Z" fill="{cap}"/></g></g>')
-WM=('dancing-var.ttf',700)
+WM=('playfair-italic-var.woff',500)
 def wordmark(size, x, y, fill):
     d,w=text_path('Mókusch',*WM,size,x,y,track=size*0.005)
     return f'<path d="{d}" fill="{fill}"/>', w

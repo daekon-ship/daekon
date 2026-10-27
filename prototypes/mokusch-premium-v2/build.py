@@ -173,9 +173,8 @@ def head(title, desc, prefix, extra=""):
 <link rel="icon" href="{prefix}img/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://static.wixstatic.com" crossorigin>
 <link rel="preload" href="{prefix}fonts/playfair-normal-400_900-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="{prefix}fonts/dancing-var.woff" as="font" type="font/woff" crossorigin>
 <link rel="preload" href="{prefix}fonts/manrope-normal-200_800-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="{prefix}css/site.css?v=8">
+<link rel="stylesheet" href="{prefix}css/site.css?v=9">
 <script>
   /* Animációs mód: teljes, vagy – csökkentett mozgást kérő eszközön – visszafogott (csak áttűnések,
      feltárások, ikonmozgás). A láblécben a látogató átkapcsolhat (localStorage). */
@@ -997,7 +996,7 @@ def build_arculat():
     <figure class="bb bb--third" data-rv><img src="../img/favicon.svg" alt="Mókusch ikon olívazöld négyzetben" width="64" height="64" style="max-height:96px"><figcaption>Ikon, profilkép</figcaption></figure>
   </div>
   <div class="prose" style="margin-top:var(--s6)" data-rv>
-    <p class="dropcap">A jel egy ülő mókus, a mancsában makkal – a Mókusch neve és a mesebeli, erdei világ egyetlen képben. A felirat kézírásos – ugyanaz a betű, ami a Wix-oldal logójában van.</p>
+    <p class="dropcap">A jel egy ülő mókus, a mancsában makkal – a Mókusch neve és a mesebeli, erdei világ egyetlen képben. A felirat elegáns, dőlt antikva – ugyanaz a Playfair, ami a weboldal címeiben is szerepel.</p>
     <p>A makk bordó pöttye az egyetlen színes részlet: kicsiben is felismerhető, és visszaköszön a weboldal tortarendelő gombjain.</p>
   </div>
   <div class="dl-list" data-rv>
@@ -1019,7 +1018,6 @@ def build_arculat():
   <div class="sec__head"><h2 data-rv>Betűk</h2></div>
   <div class="type-spec">
     <div class="card" data-rv><span class="tag">Címek · Playfair Display</span><p class="big">Hagyd magad mögött <em>a várost</em></p><p>Elegáns, jól olvasható antikva, dőlt kiemelésekkel.</p></div>
-    <div class="card" data-rv><span class="tag">Kézírás, logó · Dancing Script</span><p class="big big--script">kávék – sütik – kutyafülék</p><p>A Wix-logó betűje – csak a logóban, a fejezetszámokban és a nagy alcímekben.</p></div>
     <div class="card" data-rv><span class="tag">Szöveg · Manrope</span><p class="big big--sans">Kávék, sütik, kutyafülék</p><p>Modern, jól olvasható betű a szövegekhez, gombokhoz és űrlapokhoz.</p></div>
   </div>
   <p class="note" data-rv><b>Licenc:</b> mindkét betű szabad (SIL Open Font License), a logó feliratai görbékké alakítva – betűtelepítés nélkül is pontos.</p>
