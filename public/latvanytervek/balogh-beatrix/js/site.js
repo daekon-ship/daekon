@@ -131,12 +131,26 @@
         '<div class="price">' + priceHtml(s) + '</div>' +
         '<div class="row-act">' + bookBtn(s) + '</div></div>';
     }).join('');
+    /* hosszú árlista: alapból az első 8 sor, a többi egy gombnyomásra nyílik */
+    var LIM = 8, more = null;
+    if (svcs.length > LIM + 2) {
+      host.classList.add('is-collapsed');
+      more = document.createElement('div'); more.className = 'prices-more';
+      more.innerHTML = '<button type="button" class="btn btn--ghost" aria-expanded="false" aria-controls="priceList">Teljes árlista · ' + svcs.length + ' kezelés</button>';
+      host.parentNode.insertBefore(more, host.nextSibling);
+      more.querySelector('button').addEventListener('click', function () {
+        host.classList.remove('is-collapsed'); more.hidden = true;
+        var rows = $$('.price-row', host).slice(LIM); rows.forEach(function (r) { r.classList.add('is-in'); });
+        if (window.BBFX) BBFX.pop(rows);
+      });
+    }
     var chips = $$('#priceChips .chip');
     chips.forEach(function (ch) {
       ch.addEventListener('click', function () {
         var f = ch.getAttribute('data-filter');
         chips.forEach(function (c) { c.setAttribute('aria-pressed', c === ch ? 'true' : 'false'); });
         $$('.price-row', host).forEach(function (r) { r.classList.toggle('is-hidden', f !== 'all' && r.getAttribute('data-cat') !== f); });
+        if (more && !more.hidden) { host.classList.toggle('is-collapsed', f === 'all'); more.style.display = f === 'all' ? '' : 'none'; }
         var live = $('#priceLive'); if (live) live.textContent = $$('.price-row:not(.is-hidden)', host).length + ' kezelés látható';
         if (window.BBFX) { $$('.price-row:not(.is-hidden)', host).forEach(function (r) { r.classList.add('is-in'); }); BBFX.pop($$('.price-row:not(.is-hidden)', host)); }
       });

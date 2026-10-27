@@ -8,7 +8,19 @@ Előnézet: `https://daekon-ship.github.io/daekon/latvanytervek/balogh-beatrix/`
 
 ---
 
-## 0. 5. kör — sok Motion-effekt (2026.10.27.)
+## 0. 6. kör — új színvilág, csiszolás (2026.10.27.)
+
+- **Színek:** a barna–homok–zsálya palettát lecseréltem. Az új paletta Beatrix munkáihoz és rózsaszín árlistáihoz igazodik:
+  - alap: púderes, rózsás fehér (`#FBF6F5`);
+  - szöveg és sötét blokkok: mély szilva-fekete (`#2A1F25`);
+  - kiemelés: fáradt rózsa (`#C9849A` / szövegben `#9C4C68`);
+  - második kísérőszín: levendula (`#A596C2`).
+  - A virágmotívum is rózsaszínt kapott.
+- **Árlista a főoldalon:** alapból 8 sor látszik, a többit a „Teljes árlista” gomb nyitja. Szűréskor minden találat látszik.
+- A „régebbi árlista” belső megjegyzés lekerült a nyilvános oldalról (a configban kommentként megmaradt).
+- Mobilon a szekciócímkék nem csúsznak ki a margóból.
+
+## 0/2. 5. kör — sok Motion-effekt (2026.10.27.)
 
 - **Motion helyben:** `js/vendor/motion-11.18.2.min.js` (MIT, licenc mellette). Nincs CDN-függés.
 - **Logó vektorosan:** `_forras/logo_vektor.py` a JPG-ből kontúrkövetéssel SVG-t készít: `arculat/logo.svg`, `logo-vilagos.svg`, `logo-fejlec.svg`.

@@ -9,7 +9,7 @@ vannak, hanem a js/config.js-ben — azokat a böngésző tölti be.
 import pathlib
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-V = '20261027e'
+V = '20261027h'
 # Motion (https://motion.dev) — vanilla JS build, rögzített verzió; ha nem tölt be, CSS-tartalék fut
 MOTION_TAG = '\n<script src="js/vendor/motion-11.18.2.min.js"></script>'  # Motion (motion.dev), helyben kiszolgálva, MIT  # gyorsítótár-törő verzió
 
@@ -68,7 +68,7 @@ def head(title, desc, extra_css=''):
 <title>{title}</title>
 <meta name="description" content="{desc}">
 <meta name="robots" content="noindex, nofollow">
-<meta name="theme-color" content="#F7F4EF">
+<meta name="theme-color" content="#FBF6F5">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="hu_HU">
 <meta property="og:title" content="{title}">
@@ -205,7 +205,7 @@ def marquee_items():
 
 LOGO_INLINE = (ROOT / '_forras' / 'logo.inline.svg').read_text().strip()
 
-STREETS = '''<svg class="streets" viewBox="0 0 600 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="#CDBFAF" stroke-width="10" stroke-linecap="round"><path d="M-20 120 C 120 140, 260 90, 620 130"/><path d="M80 -20 L 140 420"/><path d="M-20 300 L 620 260"/><path d="M360 -20 C 340 120, 400 260, 380 420"/><path d="M500 -20 L 470 420"/></g><g fill="none" stroke="#DFD4C7" stroke-width="4"><path d="M-20 210 L 620 200"/><path d="M240 -20 L 260 420"/><path d="M-20 40 L 300 0"/></g><circle cx="300" cy="200" r="7" fill="#BE9A7B"/><circle cx="300" cy="200" r="20" fill="none" stroke="#BE9A7B" opacity=".5"/></svg>'''
+STREETS = '''<svg class="streets" viewBox="0 0 600 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="#D8C3C8" stroke-width="10" stroke-linecap="round"><path d="M-20 120 C 120 140, 260 90, 620 130"/><path d="M80 -20 L 140 420"/><path d="M-20 300 L 620 260"/><path d="M360 -20 C 340 120, 400 260, 380 420"/><path d="M500 -20 L 470 420"/></g><g fill="none" stroke="#E6D6D8" stroke-width="4"><path d="M-20 210 L 620 200"/><path d="M240 -20 L 260 420"/><path d="M-20 40 L 300 0"/></g><circle cx="300" cy="200" r="7" fill="#C9849A"/><circle cx="300" cy="200" r="20" fill="none" stroke="#C9849A" opacity=".5"/></svg>'''
 
 # ======================================================================
 # KEZDŐLAP

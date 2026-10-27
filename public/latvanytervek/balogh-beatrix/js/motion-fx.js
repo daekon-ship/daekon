@@ -230,8 +230,8 @@
       }, { margin: '0px 0px -10% 0px' });
     });
     /* szekciófejek finom parallaxisa */
-    if (scroll) $$('.sec-head .eyebrow').forEach(function (e) {
-      safe(function () { scroll(animate(e, { x: [-24, 24] }, { ease: 'linear' }), { target: e, offset: ['start end', 'end start'] }); });
+    if (scroll && FINE) $$('.sec-head .eyebrow').forEach(function (e) {
+      safe(function () { scroll(animate(e, { x: [-14, 14] }, { ease: 'linear' }), { target: e, offset: ['start end', 'end start'] }); });
     });
   }
 
@@ -294,7 +294,7 @@
       var s = !t ? '' : t.matches('.g-item, .shot, .mq, .hero-stage figure') ? 'view' : t.matches('input, select, textarea') ? 'text' : 'link';
       if (s === state) return; state = s;
       label.textContent = s === 'view' ? (t.matches('.g-item') ? 'Nagyítás' : 'Nézd') : '';
-      animate(r, { scale: s === 'view' ? 2.6 : s === 'link' ? 1.6 : s === 'text' ? 0.4 : 1, backgroundColor: s === 'view' ? 'rgba(43,39,37,.88)' : 'rgba(43,39,37,0)' }, SOFT);
+      animate(r, { scale: s === 'view' ? 2.6 : s === 'link' ? 1.6 : s === 'text' ? 0.4 : 1, backgroundColor: s === 'view' ? 'rgba(42,31,37,.88)' : 'rgba(42,31,37,0)' }, SOFT);
       animate(label, { opacity: s === 'view' ? 1 : 0, scale: s === 'view' ? 1 : 0.6 }, SOFT);
       animate(dot, { scale: s ? 0 : 1 }, SOFT);
     }
@@ -390,7 +390,7 @@
   /* sikeres foglalás: arany „konfetti" pontok */
   function confetti(host) {
     var box = document.createElement('div'); box.className = 'confetti'; box.setAttribute('aria-hidden', 'true');
-    var cols = ['#BE9A7B', '#929B89', '#D9C4B0', '#2B2725'], bits = [];
+    var cols = ['#C9849A', '#A596C2', '#E3C2CC', '#2A1F25'], bits = [];
     for (var i = 0; i < 28; i++) { var s = document.createElement('i'); s.style.background = cols[i % 4]; box.appendChild(s); bits.push(s); }
     var at = host.querySelector('.done-ring') ? host.querySelector('.done-ring').closest('svg').parentElement : host;
     if (getComputedStyle(at).position === 'static') at.style.position = 'relative';
