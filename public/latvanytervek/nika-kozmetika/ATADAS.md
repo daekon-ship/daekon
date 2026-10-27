@@ -122,7 +122,7 @@ Kérés: „használj nagyon sok mindent a Motionből, legyen látványos”.
 - **Jogi ablakok:** mind a 3 nyílik a helyes címmel és demó-jelöléssel, és bezárul; a panelből is megnyitható.
 - **Térkép:** kattintásra a Google-térkép a pontos címmel töltődik be.
 - **Hivatkozások:** minden telefonlink tel:+36308661037, minden e-mail-link vanyoanyo2@gmail.com, az útvonaltervezés a 6725 Szeged, Szabadkai út 9/C címre, az Ilcsi-link a hivatalos adatlapra mutat; a cím legalább 3 helyen egyezik; nincs partner/tanúsítvány/referencia szó; noindex.
-- **Akadálymentesség:** egy H1, lang=hu, skip-link, minden gomb/link felirattal, minden mező címkével; kontraszt: törzsszöveg 6,6:1, gomb 5,1:1, arany szöveg 5,0:1, sötét blokk 13,8:1.
+- **Akadálymentesség:** egy H1, lang=hu, skip-link, minden gomb/link felirattal, minden mező címkével; kontraszt: törzsszöveg 6,3:1, gomb 4,9:1, arany szöveg 4,7:1, sötét blokk 13,0:1.
 - **Csökkentett mozgás:** nincs animációs állapot, minden azonnal látszik.
 
 ### Jóváhagyandó / egyeztetendő (ügyfél)
