@@ -87,18 +87,47 @@
       M.scroll(M.animate(px, { y: ['-4%', '4%'] }, { ease: 'linear' }), { target: target, offset: ['start end', 'end start'] });
     });
 
-    // tortagaléria: legyezőszerűen kinyíló fotókompozíció
-    var cakes = $('.cakes');
+    // tortagaléria: a középső lap emelkedik ki először, a két szélső utána csúszik be
+    var cakes = $('[data-cakes]');
     if (cakes) {
-      var cp = $$('.plate', cakes);
+      var cp = Array.prototype.slice.call(cakes.children);
       M.inView(cakes, function () {
-        var from = [{ x: 60, r: 0 }, { x: 0, r: 0 }, { x: -60, r: 0 }];
-        cp.forEach(function (p, i) {
-          var tilt = parseFloat(getComputedStyle(p).getPropertyValue('--tilt')) || 0;
-          M.animate(p, { opacity: [0, 1], y: [40, 0], rotate: [from[i].r, tilt], x: [from[i].x, 0] }, { duration: 1.1, delay: 0.12 * i, ease: ease });
+        var order = [1, 0, 2], fromX = [-36, 0, 36];
+        order.forEach(function (k, i) {
+          var el = cp[k]; if (!el) return;
+          M.animate(el, { opacity: [0, 1], y: [k === 1 ? 50 : 30, 0], x: [fromX[k], 0] }, { duration: 1.2, delay: 0.15 * i, ease: ease });
         });
-      }, { amount: 0.3 });
+      }, { amount: 0.25 });
     }
+
+    // a pecsét görgetésre lassan körbefordul
+    var seal = $('[data-seal] img');
+    if (seal) M.scroll(M.animate(seal, { rotate: [0, 120] }, { ease: 'linear' }), { target: $('.hero'), offset: ['start start', 'end start'] });
+  }
+
+  /* ---------------- felső sáv: ma nyitva? (Wix-nyitvatartás alapján, egyeztetendő) ---------------- */
+  var openTxt = $('[data-open-text]'), openDot = $('[data-open-dot]');
+  if (openTxt) {
+    var H = { 0: [9, 13], 6: [9, 16] }; // vasárnap, szombat; hétköznap 7:30–18
+    var now = new Date(), wd = now.getDay(), h = now.getHours() + now.getMinutes() / 60;
+    var r = H[wd] || [7.5, 18];
+    var fmt = function (x) { return Math.floor(x) + ':' + (x % 1 ? '30' : '00'); };
+    var isOpen = h >= r[0] && h < r[1];
+    openTxt.textContent = isOpen ? 'Most nyitva · ma ' + fmt(r[0]) + '–' + fmt(r[1]) : 'Most zárva · ma ' + fmt(r[0]) + '–' + fmt(r[1]);
+    if (openDot) openDot.classList.toggle('is-closed', !isOpen);
+  }
+
+  /* ---------------- mobil lebegő tortagomb ---------------- */
+  var fl = $('[data-float]');
+  if (fl && 'IntersectionObserver' in window) {
+    document.body.classList.add('has-float');
+    var heroEl = $('.hero') || $('.sub-hero');
+    var blockers = $$('.ch9, .ftr, .cake-cta, .ribbon, .wiz');
+    var seen = new Set(), pastHero = false;
+    var upd = function () { fl.classList.toggle('is-on', pastHero && seen.size === 0); };
+    if (heroEl) new IntersectionObserver(function (e) { pastHero = !e[0].isIntersecting; upd(); }, { threshold: 0 }).observe(heroEl);
+    var bo = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) seen.add(e.target); else seen.delete(e.target); }); upd(); }, { threshold: 0 });
+    blockers.forEach(function (b) { bo.observe(b); });
   }
 
   /* ---------------- képek szűrése (Képek aloldal) ---------------- */

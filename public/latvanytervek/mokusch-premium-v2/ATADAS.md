@@ -3,6 +3,13 @@
 Élő előnézet: https://daekon-ship.github.io/daekon/latvanytervek/mokusch-premium-v2/
 Előző változat (érintetlen, összehasonlításhoz): https://daekon-ship.github.io/mokusch/
 
+## 2. kör (2026. október 27.) – mi változott
+
+- **Új logó** (mókus makkal + mesekönyv-betűs felirat): fekvő, álló, sötét, pecsét, jel, ikon – `img/logo/`, bemutató oldal: `arculat/`. Generátor: `prototypes/mokusch-premium-v2/logo.py` (a feliratok görbékké alakítva).
+- **Prémiumabb rendszer:** Cormorant Garamond címbetű, paszpartus képlapok sárgaréz hajszálvonallal, minden döntés (ferde kép, ferde cetli, egymásra csúszó tortaképek) megszüntetve – rácsra igazítva.
+- **Tortarendelés több helyen:** fejléc gomb (tortaikonnal), nyitó kártya, tartalomjegyzék kiemelt 9. sora, Finomságok-link, bordó torta-szalag az 5. fejezet után, 9. fejezet (3 lépéses folyamat + gombok), lábléc-felhívás, menü, minden aloldal alján torta-sáv, mobilon lebegő gomb (a hero után jelenik meg, a torta-blokkoknál és a láblécnél eltűnik, nem takar).
+- Felső sáv: „Most nyitva / zárva” a Wix-nyitvatartás alapján.
+
 Generátor: `prototypes/mokusch-premium-v2/build.py` (a repó gyökeréből: `python3 prototypes/mokusch-premium-v2/build.py`).
 A HTML-oldalakat ez írja; a CSS (`css/site.css`) és a JS (`js/site.js`) közvetlenül szerkeszthető.
 
@@ -15,7 +22,8 @@ A HTML-oldalakat ez írja; a CSS (`css/site.css`) és a JS (`js/site.js`) közve
 | Aloldalak | 11 létező URL, mind Wix-sablonszöveg (még üres) | nincs | **19 aloldal**, mind kidolgozott elrendezéssel |
 | Képek | festett, illusztrációs hatású képek (Wanda válogatása) | stock fotók (a README szerint is helyettesítők) | Wix-képek illusztrációként, jelölve; stock nincs |
 | Színek | olíva #817E56, púderrózsa #C3AA9B, krém #F3E5DA, barna #6A482D | papír, erdőzöld, bordó | Wix-színek finomítva + bordó/erdőzöld a briefből |
-| Betűk | Dancing Script + Amatic SC | Playfair Display + Manrope | Playfair Display (dőlt kiemelésekkel) + Manrope |
+| Betűk | Dancing Script + Amatic SC | Playfair Display + Manrope | Cormorant Garamond (dőlt kiemelésekkel) + Manrope |
+| Logó | szöveges felirat | szöveges felirat | **új mókusos logó** (arculat/) |
 | Tortarendelés | csak gomb | 8 lépéses varázsló | továbbfejlesztett 8 lépéses varázsló + esküvői ajánlatkérő |
 | Hangulat | felhős fejlécperem, mesekönyv | prémium szerkesztőségi | mesekönyv-lapok: albumsarkos képek, fodros perem, tartalomjegyzék |
 
@@ -104,11 +112,11 @@ Kérdés Wandának: ezek AI-val készült képek? Ha igen, illusztrációként m
 
 **Színek:** paper #F6EFE4 · paper-2 #ECE1D2 · rose #C9AFA0 · rose-soft #E6D6CB · moss #64613F (Wix-olíva sötétítve, kontraszt 5,5:1 krém szöveggel) · forest #263A2D · berry #793F49 · bark #4A3527 · ink #2E241C.
 
-**Betűk:** Playfair Display 400–900 + dőlt, Manrope 200–800, saját tárhely, latin + latin-ext. Skála mérsékelt: h1 max 3,2rem, h2 max 2,45rem, h3 max 1,42rem.
+**Betűk:** Cormorant Garamond 300–700 + dőlt (címek), Manrope 200–800 (szöveg), saját tárhely. Skála mérsékelt: h1 max 3,55rem, h2 max 2,85rem (Cormorant kisebb x-magassága miatt), h3 max 1,6rem.
 
 **Térköz:** 0,5 · 0,75 · 1 · 1,5 · 2 · 3 · 4,5 · 6,5 rem; fejezetek 4–7,5rem függőleges ritmus.
 
-**Komponensek:** `.plate` (albumsarkos képlap), `.slot` (fotóhely kóddal), `.kicker` (fejezetszám), `.note` (ügyfélnek szóló margójegyzet), `.tag--minta`, `.pin` (kitűzött cetli), `.recipe-card`, `.bookshelf`, `.cakes`, varázsló (`.steps`, `.panel`, `.summary`), `.choice`, `.drop`.
+**Komponensek:** `.plate` (paszpartus képlap), `.slot` (fotóhely kóddal), `.kicker` (fejezetszám), `.note` (ügyfélnek szóló margójegyzet), `.tag--minta`, `.pin` (kitűzött cetli), `.recipe-card`, `.bookshelf`, `.cakes`, varázsló (`.steps`, `.panel`, `.summary`), `.choice`, `.drop`.
 
 **Reszponzív:** mobil-first; 760 / 880 / 980 / 1080 px töréspontok; mobilon a Tortarendelés gomb a fejlécben marad (rövid felirattal), a teljes menü egy tartalomjegyzékes lap.
 
@@ -121,7 +129,9 @@ Kérdés Wandának: ezek AI-val készült képek? Ha igen, illusztrációként m
 | Szekcióelemek | görgetés (inView) | 18 px emelkedés + áttűnés, kis lépcsőzéssel | azonnal látszik |
 | Képparallax | görgetés | a kép ±4%-ot mozdul a kereten belül | nincs |
 | Hover | egér | kép 3,5%-os lassú nagyítás, gomb nyíl elmozdul | CSS marad, mozgás minimális |
-| Tortakompozíció | láthatóvá válás | a három lap legyezőszerűen a helyére fordul | statikus |
+| Tortakompozíció | láthatóvá válás | a középső lap emelkedik ki, a két szélső oldalról csúszik be | statikus |
+| Pecsét a nyitóképen | görgetés | lassan 120°-ot fordul | statikus |
+| Lebegő tortagomb (mobil) | görgetés | alulról becsúszik / eltűnik | azonnali |
 | Varázsló | lépésváltás | oldalirányú áttűnés | azonnali váltás |
 | Fejezetmenü | kattintás | panel becsúszik, tételek lépcsőzve | azonnali |
 

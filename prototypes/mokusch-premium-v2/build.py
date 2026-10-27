@@ -4,13 +4,17 @@
 A közös fejléc/lábléc miatt az oldalakat ez a szkript állítja elő
 statikus HTML-ként a public/latvanytervek/mokusch-premium-v2/ mappába.
 Futtatás a repó gyökeréből:  python3 prototypes/mokusch-premium-v2/build.py
-A kimenet build nélkül, kézzel is szerkeszthető – de a következő
-generálás felülírja, ezért a változtatást itt érdemes elvégezni.
+A logófájlokat a logo.py készíti (img/logo/), a fejléc-logót innen inline-oljuk.
 """
 from pathlib import Path
 import html
+import sys
 
-ROOT = Path(__file__).resolve().parents[2]
+HERE = Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE))
+import logo as LOGO  # noqa: E402
+
+ROOT = HERE.parents[1]
 OUT = ROOT / "public" / "latvanytervek" / "mokusch-premium-v2"
 
 PHONE = "+36 30 618 4373"
@@ -24,7 +28,7 @@ ADDR = "1012 Budapest, Várfok utca 30."
 # --- A Wix-oldal saját képei (Wanda válogatása). Festett, illusztrációs hatású képek:
 #     a tervben illusztrációként szerepelnek, sosem valódi termék- vagy üzletfotóként.
 WIX = {
-    "osveny":  ("1c02e2457c654f63bc501ea424959dbe", "png",  "Festett illusztráció: napfényes erdei ösvény páfrányokkal, virágokkal és egy piros kalapos gombával"),
+    "osveny":  ("1c02e2457c654f63bc501ea424959dbe", "png",  "Festett illusztráció: napfényes erdei ösvény páfrányokkal, virágokkal, egy Mókusch feliratú fatáblával"),
     "udvar":   ("de1100572d664c6fa755501935ba3cf6", "png",  "Festett illusztráció: lámpásokkal megvilágított, borostyános udvar kis asztalokkal és egy Mókusch feliratú táblával"),
     "bolt":    ("8c413555228144899a373d1a90d78540", "jpg",  "Festett illusztráció: polcokkal, befőttesüvegekkel és szárított virágokkal teli bolt, lépcsővel a bejáratnál"),
     "pult1":   ("b532d1c8fb82452ca1ee0c6a437521a3", "jpeg", "Festett illusztráció: kávéfőző gép a pulton, fölötte polcok sütis üvegekkel és egy függőlámpa"),
@@ -36,18 +40,18 @@ WIX = {
     "posta":   ("2478afc6d240420187f710e04ce729f5", "png",  "Kép a Wix-oldalról: üzenetekkel teleragasztott fal, szárított levendula, kis lámpa és egy sütis vitrin"),
     "kepfal":  ("c2114812ce19405593f6a7dd4da29f15", "png",  "Festett illusztráció: keretezett képek egy régi falon, előtte égő lámpás, mezei virágok és egy szív alakú dísz"),
 }
-CAP_ILL = "Illusztráció · a Mókusch saját Wix-oldaláról"
-CAP_POSTA = "Kép a Wix-oldalról · eredete egyeztetendő"
 
 
 def wimg(key, w, h):
     mid, ext, _ = WIX[key]
     return (f"https://static.wixstatic.com/media/4f5ae5_{mid}~mv2.{ext}"
-            f"/v1/fill/w_{w},h_{h},al_c,q_80,enc_auto/mokusch-{key}.{ext}")
+            f"/v1/fill/w_{w},h_{h},al_c,q_82,enc_auto/mokusch-{key}.{ext}")
 
 
-def img(key, ratio=(2, 3), sizes="(max-width: 879px) 90vw, 460px", eager=False, parallax=False):
+def img(key, ratio=(4, 5), sizes="(max-width: 899px) 90vw, 460px", eager=False, parallax=False):
     rw, rh = ratio
+    if parallax:  # a parallaxhoz kicsit magasabb kivágás kell
+        rh = rh * 1.1
     widths = [420, 720, 1000]
     srcset = ", ".join(f"{wimg(key, w, round(w * rh / rw))} {w}w" for w in widths)
     w0 = 720
@@ -59,30 +63,33 @@ def img(key, ratio=(2, 3), sizes="(max-width: 879px) 90vw, 460px", eager=False, 
     return tag
 
 
-def plate(key, ratio=(2, 3), cls="", cap=None, eager=False, parallax=False, sizes=None, attrs=""):
-    cap = cap if cap is not None else (CAP_POSTA if key == "posta" else CAP_ILL)
+def plate(key, ratio=(4, 5), cls="", eager=False, parallax=False, sizes=None, tag=None, attrs=""):
+    tag = tag if tag is not None else ("Wix-kép" if key == "posta" else "Illusztráció")
     kw = {"eager": eager, "parallax": parallax}
     if sizes:
         kw["sizes"] = sizes
-    capt = f'<figcaption><i>{cap}</i></figcaption>' if cap else ""
+    t = f'<span class="plate__tag">{tag}</span>' if tag else ""
     return (f'<figure class="plate {cls}" {attrs}><div class="plate__img" style="--ar:{ratio[0]}/{ratio[1]}">'
-            f'{img(key, ratio, **kw)}</div>{capt}</figure>')
+            f'{img(key, ratio, **kw)}{t}</div></figure>')
 
 
 CAM = ('<svg class="slot__ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true">'
        '<path d="M4 8.5h3l1.6-2.2h6.8L17 8.5h3v10H4z"/><circle cx="12" cy="13.2" r="3.4"/></svg>')
 
 
-def slot(title, code, ratio=(3, 4), cls="", tint=None, cap=None):
-    st = f' style="--slot:{tint}"' if tint else ""
-    capt = f'<figcaption><i>{cap}</i><span>{code}</span></figcaption>' if cap else ""
-    return (f'<figure class="plate plate--soft {cls}"><div class="plate__img" style="--ar:{ratio[0]}/{ratio[1]}">'
+def slot(title, code, ratio=(4, 5), cls="", tint=None):
+    st = f' style="--slot:{tint[0]};--slot2:{tint[1]}"' if tint else ""
+    return (f'<figure class="plate {cls}"><div class="plate__img" style="--ar:{ratio[0]}/{ratio[1]}">'
             f'<div class="slot"{st} role="img" aria-label="Fotóhely: {html.escape(title)} – a valódi Mókusch-fotó ide kerül">'
             f'{CAM}<span class="slot__t">{title}</span><span class="slot__c">Valódi fotó helye · {code}</span></div>'
-            f'</div>{capt}</figure>')
+            f'</div></figure>')
 
+
+ROSE_TINT = ("#F1E4DB", "#E5D2C6")
 
 ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>'
+CAKE = ('<svg class="cake" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16M5 20v-6.5h14V20M7 13.5V10h10v3.5M12 10V7.5"/>'
+        '<path d="M12 4.2c.8.9.8 2 0 2.6-.8-.6-.8-1.7 0-2.6Z"/><path d="M5 16.4c1.2 1 2.3 1 3.5 0s2.3-1 3.5 0 2.3 1 3.5 0 2.3-1 3.5 0"/></svg>')
 
 SPRIG_A = ('<svg class="sprig sprig--a sway" viewBox="0 0 150 260" aria-hidden="true">'
            '<path d="M75 258 C 74 200, 78 140, 72 70 C 70 46, 74 24, 80 4"/>'
@@ -104,26 +111,20 @@ SPRIG_C = ('<svg class="sprig sprig--c sway" viewBox="0 0 110 160" aria-hidden="
            '<path d="M52 84 C 62 72, 78 68, 92 72 C 82 84, 66 88, 52 84"/>'
            '<path d="M66 60 C 60 48, 62 36, 70 26 C 76 38, 74 50, 66 60"/></svg>')
 
-SCALLOP = ('<svg class="scallop" viewBox="0 0 1200 10" preserveAspectRatio="none" aria-hidden="true">'
-           '<path fill="currentColor" d="' + "M0 0" + "".join(f" q15 10 30 0" for _ in range(40)) + ' V0Z"/></svg>')
-SCALLOP_TOP = ('<svg class="scallop-top" viewBox="0 0 1200 12" preserveAspectRatio="none" aria-hidden="true">'
-               '<path fill="currentColor" d="M0 12' + "".join(" q15 -12 30 0" for _ in range(40)) + ' V12Z"/></svg>')
-
 # ---------- fejezetek és aloldalak ----------
 CHAPTERS = [
-    ("1", "meseba", "Hagyd magad mögött a várost", "A Mókusch meséje · Álmok, vágyak, tervek"),
+    ("1", "meseba", "Hagyd magad mögött a várost", "Mese · Álmok · Programok"),
     ("2", "akik-eletre-keltik", "Akik életre keltik minden nap", "Válogatott társaság"),
     ("3", "mit-muvelunk", "Mit művelünk mi itt?", "Képek · Sztorik"),
     ("4", "finomsagok", "Finomságok", "Enni · Inni"),
-    ("5", "boszorkanykonyha", "Ez a mi kis boszorkánykonyhánk", "Receptek · Tippek-trükkök"),
-    ("6", "nyuszis-polc", "A híres nyuszis polc", "…és ezt is mind ti csináltátok?"),
+    ("5", "boszorkanykonyha", "Ez a mi kis boszorkánykonyhánk", "Receptek · Tippek"),
+    ("6", "nyuszis-polc", "A híres nyuszis polc", "…és ezt is ti csináltátok?"),
     ("7", "akarmicsodak", "Varázslatos akármicsodák", "Könyvek · Csecsebecsék"),
     ("8", "palackposta", "Palackposta", "Üzenek · Asztalfoglalás"),
     ("9", "tortak", "Torták és romantika", "Tortarendelés · Esküvő"),
 ]
 CH = {c[0]: c for c in CHAPTERS}
 
-# slug: (fejezet, cím, rövid leírás – metának és lapozónak)
 SUBS = [
     ("a-mokusch-meseje", "1", "A Mókusch meséje", "Hogyan lett egy budai utcában erdei kuckó – a Mókusch története."),
     ("almok-vagyak-tervek", "1", "Álmok, vágyak, tervek", "Amiről a Mókusch álmodik, amit szeretne, és amin már dolgozik."),
@@ -146,10 +147,10 @@ SUBS = [
     ("eskuvo", "9", "Esküvő", "Esküvői torták a Mókusch tortaműhelytől – egyedi ajánlatkérés."),
 ]
 SUB = {s[0]: s for s in SUBS}
+SUB["arculat"] = ("arculat", None, "Arculat és logó", "A Mókusch új logója, színei és betűi – arculati javaslat.")
 
 
 def p(prefix, path):
-    """Hivatkozás a főoldal gyökeréhez képest."""
     return prefix + path
 
 
@@ -163,7 +164,7 @@ def head(title, desc, prefix, extra=""):
 <meta name="description" content="{html.escape(desc)}">
 <!-- Látványterv: ne indexelje a kereső -->
 <meta name="robots" content="noindex, nofollow">
-<meta name="theme-color" content="#F6EFE4">
+<meta name="theme-color" content="#263A2D">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="hu_HU">
 <meta property="og:site_name" content="Mókusch kávézó és tortaműhely">
@@ -171,9 +172,9 @@ def head(title, desc, prefix, extra=""):
 <meta property="og:description" content="{html.escape(desc)}">
 <link rel="icon" href="{prefix}img/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://static.wixstatic.com" crossorigin>
-<link rel="preload" href="{prefix}fonts/playfair-normal-400_900-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="{prefix}fonts/cormorant-var.woff" as="font" type="font/woff" crossorigin>
 <link rel="preload" href="{prefix}fonts/manrope-normal-200_800-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="{prefix}css/site.css?v=1">
+<link rel="stylesheet" href="{prefix}css/site.css?v=2">
 <script>
   /* Animációs kezdőállapot csak akkor, ha a látogató nem kért csökkentett mozgást */
   (function(){{var d=document.documentElement;d.classList.add('js');
@@ -184,8 +185,28 @@ def head(title, desc, prefix, extra=""):
 '''
 
 
+BRAND_INLINE = None
+
+
+def brand(home, dark=False):
+    global BRAND_INLINE
+    if BRAND_INLINE is None:
+        BRAND_INLINE = (LOGO.inline_mark(), LOGO.inline_wordmark())
+    m, w = BRAND_INLINE
+    if dark:
+        m = LOGO.inline_mark(bg="#263A2D", acorn="#C9AFA0", cap="#EBDDD3")
+    return (f'<a class="brand" href="{home}" aria-label="Mókusch kávézó és tortaműhely – főoldal">{m}'
+            f'<span class="brand__t">{w}<span>kávézó és tortaműhely</span></span></a>')
+
+
+def torta_btn(prefix, label_long="Tortarendelés", label_short="Torta", cls="btn btn--berry", cur=""):
+    return (f'<a class="{cls}" href="{p(prefix, "tortarendeles/")}"{cur}>{CAKE}<span class="lbl-long">{label_long}</span>'
+            f'<span class="lbl-short">{label_short}</span></a>')
+
+
 def header(prefix, current=None):
     home = prefix if prefix else "./"
+
     def a(href, label, key):
         cur = ' aria-current="page"' if current == key else ""
         return f'<li><a href="{href}"{cur}>{label}</a></li>'
@@ -196,28 +217,31 @@ def header(prefix, current=None):
         a(p(prefix, "konyvek/"), "Könyvek", "konyvek"),
         a(f"{home}#hol-vagyunk", "Hol vagyunk?", "hol"),
     ])
-    toc = "".join(f'<li><a href="{home}#{c[1]}"><span class="n">{c[0]}.</span><span>{c[2]}</span></a></li>' for c in CHAPTERS)
+    toc = "".join(f'<li{" class=\"is-torta\"" if c[0] == "9" else ""}><a href="{home}#{c[1]}"><span class="n">{c[0]}.</span><span>{c[2]}</span></a></li>' for c in CHAPTERS)
     cta_cur = ' aria-current="page"' if current == "tortarendeles" else ""
     return f'''<body>
 <a class="skip" href="#tartalom">Ugrás a tartalomra</a>
+<div class="topbar"><div class="wrap">
+  <span class="topbar__l"><span class="dot" data-open-dot></span><span data-open-text>H–P 7:30–18:00 · Szo 9–16 · V 9–13</span></span>
+  <span class="topbar__r"><a class="opt" href="{MAP}" target="_blank" rel="noopener">Várfok utca 30.</a><a href="{PHONE_HREF}">{PHONE}</a></span>
+</div></div>
 <header class="hdr" id="fejlec">
   <div class="wrap hdr__in">
-    <a class="brand" href="{home}" aria-label="Mókusch kávézó és tortaműhely – főoldal"><b>Mókusch</b><span>kávézó és tortaműhely</span></a>
+    {brand(home)}
     <nav class="nav" aria-label="Fő navigáció"><ul>{nav}</ul></nav>
-    <a class="btn btn--berry" href="{p(prefix, 'tortarendeles/')}"{cta_cur}><span class="lbl-long">Tortarendelés</span><span class="lbl-short">Torta</span></a>
-    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu"><i aria-hidden="true"></i><span class="lbl">Fejezetek</span></button>
+    {torta_btn(prefix, cur=cta_cur)}
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu"><i aria-hidden="true"></i><span class="lbl">Fejezetek</span><span class="sr-only">Menü és fejezetek</span></button>
   </div>
-  {SCALLOP}
 </header>
 <div class="sheet" id="menu" role="dialog" aria-modal="true" aria-label="Fejezetek és menü" hidden>
   <div class="sheet__bg" data-close></div>
   <div class="sheet__panel">
     <div class="sheet__top"><p>Tartalom</p><button class="menu-btn" type="button" data-close aria-label="Menü bezárása" aria-expanded="true"><i aria-hidden="true"></i></button></div>
-    <a class="btn btn--berry" href="{p(prefix, 'tortarendeles/')}">Tortarendelés indítása {ARROW}</a>
+    <a class="btn btn--berry" href="{p(prefix, 'tortarendeles/')}">{CAKE} Tortarendelés indítása</a>
     <ol class="toc">{toc}</ol>
     <div class="sheet__meta">
+      <p><a href="{p(prefix, 'eskuvo/')}">Esküvői torták</a> · <a href="{p(prefix, 'asztalfoglalas/')}">Asztalfoglalás</a> · <a href="{home}#hol-vagyunk">Hol vagyunk?</a></p>
       <p>{ADDR}<br><a href="{PHONE_HREF}">{PHONE}</a> · <a href="mailto:{EMAIL}">{EMAIL}</a></p>
-      <p><a href="{p(prefix, 'asztalfoglalas/')}">Asztalfoglalás</a> · <a href="{home}#hol-vagyunk">Hol vagyunk?</a></p>
     </div>
   </div>
 </div>
@@ -227,48 +251,57 @@ def header(prefix, current=None):
 HOURS = '''<dl class="hours"><dt>Hétfő–péntek</dt><dd>7:30–18:00</dd><dt>Szombat</dt><dd>9:00–16:00</dd><dt>Vasárnap</dt><dd>9:00–13:00</dd></dl>'''
 
 
-def footer(prefix, page_js=""):
+def footer(prefix, page_js="", float_cta=True):
     home = prefix if prefix else "./"
-    return f'''<footer class="ftr">
-  {SCALLOP_TOP}
+    fl = (f'<a class="btn btn--berry float-cta" href="{p(prefix, "tortarendeles/")}" data-float>{CAKE} Tortarendelés</a>'
+          if float_cta else "")
+    return f'''<footer class="ftr on-dark">
   <div class="wrap">
+    <div class="ftr__top">
+      <img class="ftr__seal" src="{prefix}img/logo/mokusch-pecset-vilagos.svg" alt="" width="116" height="116">
+      <div><h2>Tortát <em>álmodnál?</em></h2><p>Meséld el nyolc rövid lépésben – a műhely ajánlattal jelentkezik.</p></div>
+      <div class="btns">{torta_btn(prefix, label_short="Tortarendelés")}<a class="btn btn--ghost" href="{p(prefix, 'eskuvo/')}">Esküvői torták</a></div>
+    </div>
     <div class="ftr__grid">
       <div>
-        <a class="brand" href="{home}"><b>Mókusch</b><span>kávézó és tortaműhely</span></a>
-        <p class="ftr__cta"><a class="btn" href="{p(prefix, 'tortarendeles/')}">Tortarendelés {ARROW}</a></p>
+        {brand(home, dark=True)}
+        <p class="ftr__about">Mesebeli kávézó és tortaműhely a Várfok utcában – kávé, sütemény, kézműves világ.</p>
       </div>
       <div>
-        <h2>Itt találsz minket</h2>
+        <h3>Itt találsz minket</h3>
         <p>{ADDR}<br><a href="{MAP}" target="_blank" rel="noopener">Útvonal a térképen</a></p>
       </div>
       <div>
-        <h2>Nyitvatartás</h2>
+        <h3>Nyitvatartás</h3>
         {HOURS}
       </div>
       <div>
-        <h2>Üzenj nekünk</h2>
+        <h3>Üzenj nekünk</h3>
         <ul>
           <li><a href="{PHONE_HREF}">{PHONE}</a></li>
           <li><a href="mailto:{EMAIL}">{EMAIL}</a></li>
           <li><a href="{FB}" target="_blank" rel="noopener">Facebook</a> · <a href="{IG}" target="_blank" rel="noopener">Instagram</a></li>
+          <li><a href="{p(prefix, 'asztalfoglalas/')}">Asztalfoglalás</a></li>
         </ul>
       </div>
     </div>
     <div class="ftr__bottom">
-      <span>© 2026 Mókusch kávézó és tortaműhely</span>
+      <span>© 2026 Mókusch kávézó és tortaműhely · <a href="{p(prefix, 'arculat/')}">Arculat és logó</a></span>
       <span>Látványterv (DAEKON) · a mintatartalmak és képhelyek bemutatási célúak, az adatok egyeztetendők</span>
     </div>
   </div>
 </footer>
+{fl}
 <script src="{prefix}js/vendor/motion-11.18.2.min.js" defer></script>
-<script src="{prefix}js/site.js?v=1" defer></script>
+<script src="{prefix}js/site.js?v=2" defer></script>
 {page_js}</body>
 </html>
 '''
 
 
-def kick(no, text="fejezet"):
-    return f'<p class="kicker" data-rv><span class="no">{no}.</span> {text}</p>'
+def kick(no, text="fejezet", center=False):
+    c = " kicker--c" if center else ""
+    return f'<p class="kicker{c}" data-rv><span class="no">{no}.</span> {text}</p>'
 
 
 def btn(href, label, ghost=False, extra=""):
@@ -282,7 +315,7 @@ def btn(href, label, ghost=False, extra=""):
 def index():
     pre = ""
     contents = "".join(
-        f'<li><a href="#{c[1]}"><span class="n">{c[0]}.</span><span class="t">{c[2]}</span><span class="dots" aria-hidden="true"></span><span class="go">{c[3]}</span></a></li>'
+        f'<li{" class=\"is-torta\"" if c[0] == "9" else ""}><a href="#{c[1]}"><span class="n">{c[0]}.</span><span class="t">{c[2]}</span><span class="go">{c[3]}</span></a></li>'
         for c in CHAPTERS)
     body = f'''
 <main id="tartalom">
@@ -299,15 +332,16 @@ def index():
         {btn("a-mokusch-meseje/", "A Mókusch meséje")}
         {btn("almok-vagyak-tervek/", "Álmok, vágyak, tervek", ghost=True)}
       </div>
-      <p class="hero__more" data-rv>Délutánok, műhelyek, mesés alkalmak: <a href="mesebeli-programok/">mesebeli programok →</a></p>
-      <div class="hero__facts" data-rv>
-        <span><b>Várfok utca 30.</b> · <a href="{MAP}" target="_blank" rel="noopener">1012 Budapest</a></span>
-        <span>H–P 7:30–18:00 · Szo 9–16 · V 9–13</span>
-        <span><a href="{PHONE_HREF}">{PHONE}</a></span>
-      </div>
+      <p class="hero__more" data-rv>Délutánok, műhelyek, mesés alkalmak: <a class="link" href="mesebeli-programok/">mesebeli programok {ARROW}</a></p>
+      <a class="torta-card" href="tortarendeles/" data-rv>
+        <span class="ic">{CAKE}</span>
+        <span><b>Egyedi tortát szeretnél?</b><span>Ajánlatkérés nyolc rövid lépésben</span></span>
+        <svg class="go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
+      </a>
     </div>
     <div class="hero__media" data-rv="fade">
-      {plate("osveny", (2, 3), cls="arch", eager=True, parallax=True, sizes="(max-width: 899px) 86vw, 440px")}
+      {plate("osveny", (3, 4), cls="arch", eager=True, parallax=True, sizes="(max-width: 919px) 82vw, 430px", tag="")}
+      <div class="seal" data-seal><img src="img/logo/mokusch-pecset.svg" alt="" width="124" height="124"></div>
     </div>
   </div>
 </section>
@@ -324,19 +358,19 @@ def index():
 <section class="ch ch--moss on-dark ch--flip" id="akik-eletre-keltik" aria-labelledby="h-akik">
   {SPRIG_C}
   <div class="wrap ch__grid">
-    <div class="ch__media" data-rv="fade">{plate("udvar", (2, 3), parallax=True)}</div>
+    <div class="ch__media" data-rv="fade">{plate("udvar", parallax=True)}</div>
     <div class="ch__text">
       {kick(2)}
       <h2 id="h-akik" data-rv>Akik életre keltik <em>minden nap</em></h2>
-      <p class="ch__sub" data-rv>Rólunk, minden mókuschról</p>
+      <p class="sub" data-rv>Rólunk, minden mókuschról</p>
       <p class="lead" data-rv>A Mókusch mögött három lány áll: ők nyitják ki reggel az ajtót, ők főzik a kávét, sütnek és díszítenek. Itt bemutatkoznak – és azok is, akik velük együtt dolgoznak.</p>
       <div class="trio" data-rv>
         <figure><div class="oval"><div class="slot" role="img" aria-label="Portré helye: Wanda">{CAM}</div></div><figcaption><b>Wanda</b>alapító</figcaption></figure>
         <figure><div class="oval"><div class="slot" role="img" aria-label="Portré helye: második alapító">{CAM}</div></div><figcaption><b>Név</b>egyeztetendő</figcaption></figure>
         <figure><div class="oval"><div class="slot" role="img" aria-label="Portré helye: harmadik alapító">{CAM}</div></div><figcaption><b>Név</b>egyeztetendő</figcaption></figure>
       </div>
-      <p class="note" data-rv><b>Portrék:</b> csak valódi fotó kerül ide – kitalált vagy generált arc nem.</p>
       <div class="btns" data-rv>{btn("valogatott-tarsasag/", "Válogatott társaság")}</div>
+      <p class="note" data-rv><b>Portrék:</b> csak valódi fotó kerül ide – kitalált vagy generált arc nem.</p>
     </div>
   </div>
 </section>
@@ -348,13 +382,13 @@ def index():
       <div>
         {kick(3)}
         <h2 id="h-mit" data-rv>Mit művelünk <em>mi itt?</em></h2>
-        <p class="lead" data-rv style="margin-top:var(--s4)">Kávét főzünk, sütünk, tortát díszítünk – és közben mindig készül valami kézzel is. Ez a fejezet a Mókusch hétköznapjairól szól, képekben és rövid történetekben.</p>
+        <p class="lead" data-rv style="margin-top:var(--s3)">Kávét főzünk, sütünk, tortát díszítünk – és közben mindig készül valami kézzel is. Ez a fejezet a Mókusch hétköznapjairól szól, képekben és rövid történetekben.</p>
         <ul class="verbs" data-rv><li>kávéfőzés</li><li>sütés</li><li>tortadíszítés</li><li>kézműveskedés</li></ul>
       </div>
       <div class="btns" data-rv>{btn("kepek/", "Képek")}{btn("sztorik/", "Sztorik", ghost=True)}</div>
     </div>
     <div class="mosaic">
-      <div class="m1" data-rv>{plate("bolt", (2, 3), parallax=True, sizes="(max-width: 759px) 92vw, 460px")}</div>
+      <div class="m1" data-rv>{plate("bolt", sizes="(max-width: 759px) 92vw, 470px")}</div>
       <div class="m2" data-rv>{slot("Kávéfőzés a pult mögött", "K-01", (4, 3))}</div>
       <div class="m3" data-rv>{slot("Sütés a műhelyben", "K-02", (1, 1))}</div>
       <div class="m4" data-rv>{slot("Tortadíszítés közben", "K-03", (1, 1))}</div>
@@ -364,24 +398,24 @@ def index():
 </section>
 
 <!-- 4. fejezet -->
-<section class="ch ch--rose" id="finomsagok" aria-labelledby="h-finom">
+<section class="ch ch--tint ch--wide" id="finomsagok" aria-labelledby="h-finom">
   <div class="wrap ch__grid">
     <div class="ch__media" data-rv="fade">
-      <div class="diptych">{plate("pult1", (2, 3), cap="Illusztráció", sizes="(max-width: 879px) 45vw, 230px")}{plate("pult2", (2, 3), cap="Illusztráció", sizes="(max-width: 879px) 45vw, 230px")}</div>
+      <div class="diptych">{plate("pult1", (3, 4), sizes="(max-width: 899px) 45vw, 230px")}{plate("pult2", (3, 4), sizes="(max-width: 899px) 45vw, 230px")}</div>
     </div>
     <div class="ch__text">
       {kick(4)}
       <h2 id="h-finom" data-rv>Finomságok</h2>
-      <p class="ch__sub" data-rv>kávék · sütik · kutyafülék</p>
+      <p class="sub" data-rv>kávék · sütik · kutyafülék</p>
       <p class="lead" data-rv>Mit lehet itt? Enni és inni. Kávék, sütemények, reggelik és mindenféle apró finomság, amit helyben, egy csésze mellett érdemes megkóstolni.</p>
       <ol class="menu-idx" data-rv>
         <li><span class="n">01</span><b>Kávék</b><span>és más meleg italok</span></li>
         <li><span class="n">02</span><b>Sütemények</b><span>ami aznap a pultba kerül</span></li>
         <li><span class="n">03</span><b>Reggelik</b><span>a nap első órájához</span></li>
-        <li><span class="n">04</span><b>Egyéb finomságok</b><span>kutyafülék és apróságok</span></li>
+        <li><span class="n">04</span><b>Kutyafülék</b><span>és más apróságok</span></li>
       </ol>
       <div class="btns" data-rv>{btn("enni/", "Enni")}{btn("inni/", "Inni", ghost=True)}</div>
-      <p class="aside-link" data-rv>Egyedi tortát keresel? <a href="#tortak">Az a 9. fejezetben van →</a></p>
+      <p class="hero__more" data-rv>Egyedi tortát keresel? <a class="link" href="tortarendeles/">Tortarendelés {ARROW}</a></p>
     </div>
   </div>
 </section>
@@ -389,49 +423,58 @@ def index():
 <!-- 5. fejezet -->
 <section class="ch" id="boszorkanykonyha" aria-labelledby="h-bosz">
   <div class="wrap ch__grid">
-    <div class="ch__media" data-rv="fade">{plate("konyha", (2, 3), parallax=True)}</div>
+    <div class="ch__media" data-rv="fade">{plate("konyha", parallax=True)}</div>
     <div class="ch__text">
       <div class="recipe-card" data-rv>
         {kick(5)}
         <h2 id="h-bosz">Ez a mi kis <em>boszorkánykonyhánk</em></h2>
         <p class="lead" style="margin-top:var(--s3)">Receptek, praktikák és kézműves ötletek a műhelyből – hogy otthon is kipróbálhasd, amit nálunk megszerettél.</p>
         <div class="recipe-tabs">
-          <a href="nehany-artatlan-recept/"><span><b>Néhány ártatlan recept</b><br><span>receptek a műhelyből</span></span>{ARROW}</a>
-          <a href="tippek-trukkok/"><span><b>Tippek-trükkök</b><br><span>sütéshez, díszítéshez, kézműveskedéshez</span></span>{ARROW}</a>
+          <a href="nehany-artatlan-recept/"><span><b>Néhány ártatlan recept</b><small>receptek a műhelyből</small></span>{ARROW}</a>
+          <a href="tippek-trukkok/"><span><b>Tippek-trükkök</b><small>sütéshez, díszítéshez, kézműveskedéshez</small></span>{ARROW}</a>
         </div>
       </div>
     </div>
   </div>
 </section>
 
+<!-- Torta-szalag -->
+<aside class="ribbon on-dark" aria-label="Tortarendelés">
+  <div class="wrap ribbon__in">
+    {LOGO.inline_mark(cls="ribbon__mark", fg="#EBDDD3", bg="#793F49", acorn="#C9AFA0", cap="#F6EFE4")}
+    <div><h2>Születésnap, esküvő, vagy csak úgy?</h2><p>A Mókusch tortaműhelye egyedi tortákat készít. Meséld el az elképzelésed nyolc rövid lépésben – az ajánlatot a műhely küldi.</p></div>
+    <div class="btns">{torta_btn(pre, cls="btn", label_short="Tortarendelés")}<a class="btn btn--ghost" href="eskuvo/">Esküvő</a></div>
+  </div>
+</aside>
+
 <!-- 6. fejezet -->
-<section class="ch ch--paper2" id="nyuszis-polc" aria-labelledby="h-nyuszi">
+<section class="ch" id="nyuszis-polc" aria-labelledby="h-nyuszi">
   <div class="wrap">
     <div class="ch6__head">
-      {kick(6)}
+      {kick(6, center=True)}
       <h2 id="h-nyuszi" data-rv>A híres <em>nyuszis polc</em></h2>
-      <p class="lead" data-rv style="margin-top:var(--s4)">Minden, ami egy erdei teadélutánhoz kellhet – egy polcon, amely előtt érdemes megállni.</p>
+      <p class="lead" data-rv style="margin-top:var(--s3)">Minden, ami egy erdei teadélutánhoz kellhet – egy polcon, amely előtt érdemes megállni.</p>
       <div class="btns" data-rv>{btn("nyuszis-polc/", "…és ezt is mind ti csináltátok?")}</div>
     </div>
     <div class="shelf">
       <div class="shelf__row">
-        <div data-rv>{plate("polc1", (2, 3), sizes="(max-width: 879px) 45vw, 420px")}</div>
-        <div data-rv>{plate("polc2", (2, 3), sizes="(max-width: 879px) 45vw, 420px")}</div>
+        <div data-rv>{plate("polc1", (3, 4), sizes="(max-width: 899px) 44vw, 380px")}</div>
+        <div data-rv>{plate("polc2", (3, 4), sizes="(max-width: 899px) 44vw, 380px")}</div>
       </div>
       <div class="shelf__board" aria-hidden="true"></div>
     </div>
-    <p class="note" style="margin-inline:auto"><b>Termékfotók:</b> a polc valódi darabjairól készült fotók az aloldalra kerülnek – az illusztrációk csak a hangulatot adják.</p>
+    <div class="shelf-note"><p class="note"><b>Termékfotók:</b> a polc valódi darabjairól készült fotók az aloldalra kerülnek – az illusztrációk csak a hangulatot adják.</p></div>
   </div>
 </section>
 
 <!-- 7. fejezet -->
 <section class="ch ch--forest on-dark ch--flip" id="akarmicsodak" aria-labelledby="h-akarmi">
   <div class="wrap ch__grid">
-    <div class="ch__media" data-rv="fade">{plate("olvaso", (2, 3), parallax=True)}</div>
+    <div class="ch__media" data-rv="fade">{plate("olvaso", parallax=True)}</div>
     <div class="ch__text">
       {kick(7)}
       <h2 id="h-akarmi" data-rv>Varázslatos <em>akármicsodák</em></h2>
-      <p class="ch__sub" data-rv>Gondosan válogatott, varázslatos-mesés könyvek és csodás csecsebecsék</p>
+      <p class="sub" data-rv>Gondosan válogatott, varázslatos-mesés könyvek és csodás csecsebecsék</p>
       <p class="lead" data-rv>Egy sarok, ahol leülhetsz egy könyvvel – és apróságok, amelyekkel egy délután emléke hazavihető.</p>
       <div class="bookshelf" data-rv aria-hidden="true">
         <div class="books">
@@ -456,14 +499,14 @@ def index():
 <section class="ch" id="palackposta" aria-labelledby="h-posta">
   <div class="wrap">
     <div class="ch__grid">
-      <div class="ch__media" data-rv="fade">{plate("posta", (2, 3), parallax=True)}</div>
+      <div class="ch__media" data-rv="fade">{plate("posta", parallax=True)}</div>
       <div class="ch__text">
         {kick(8)}
         <h2 id="h-posta" data-rv>Palackposta</h2>
-        <p class="lead" data-rv style="margin-top:var(--s4)">Írj nekünk, foglalj asztalt, vagy nézd meg, mit üzentek mások. Minden levél ideér.</p>
+        <p class="lead" data-rv style="margin-top:var(--s3)">Írj nekünk, foglalj asztalt, vagy nézd meg, mit üzentek mások. Minden levél ideér.</p>
         <div class="notes" data-rv>
           <a class="pin pin--main" href="uzenek/"><b>Üzenek!</b><span>Kérdés, ötlet, köszönet – írj nekünk.</span><i>Levélírás →</i></a>
-          <a class="pin" href="asztalfoglalas/"><b>Asztalfoglalás</b><span>Nap, időpont, létszám – és már készül az asztal.</span><i>Foglalás →</i></a>
+          <a class="pin" href="asztalfoglalas/"><b>Asztalfoglalás</b><span>Nap, időpont, létszám – és készül az asztal.</span><i>Foglalás →</i></a>
           <a class="pin" href="uzenetek/"><b>Üzenetek</b><span>Levelek és üzenetek falra tűzve.</span><i>Olvasás →</i></a>
           <a class="pin" href="mokassagok/"><b>Mókásságok</b><span>Apró vidámságok a Mókusch világából.</span><i>Kukkantás →</i></a>
         </div>
@@ -473,7 +516,7 @@ def index():
       <div>
         <h3>Hol vagyunk?</h3>
         <p>Mókusch kávézó és tortaműhely<br>{ADDR}</p>
-        <p style="margin-top:.6em"><a href="{MAP}" target="_blank" rel="noopener">Útvonal a térképen →</a></p>
+        <p style="margin-top:.8em"><a class="link" href="{MAP}" target="_blank" rel="noopener">Útvonal a térképen {ARROW}</a></p>
       </div>
       <div>
         <h3>Nyitvatartás</h3>
@@ -489,23 +532,23 @@ def index():
 
 <!-- 9. fejezet -->
 <section class="ch ch9" id="tortak" aria-labelledby="h-tortak">
-  <div class="wrap ch9__grid">
-    <div class="cakes" aria-label="Tortafotók">
-      <div class="plate-wrap">{plate("kepfal", (3, 4), cls="c1", cap="Illusztráció", sizes="(max-width: 899px) 50vw, 300px")}</div>
-      {slot("Kiemelt Mókusch-torta", "T-01", (2, 3), cls="c2", tint="#EFE3DA", cap="Valódi tortafotó")}
-      {slot("Esküvői torta", "T-02", (3, 4), cls="c3", tint="#E9DCD0", cap="Valódi tortafotó")}
-    </div>
-    <div>
-      {kick(9)}
+  <div class="wrap">
+    <div class="ch9__head">
+      {kick(9, center=True)}
       <h2 id="h-tortak" data-rv>Torták <em>és romantika</em></h2>
-      <p class="lead" data-rv style="margin-top:var(--s4)">Születésnapra, esküvőre, vagy csak úgy. Meséld el, milyen tortát képzeltél el – a műhely átgondolja, és ajánlattal jelentkezik.</p>
-      <ul class="ch9__list" data-rv>
-        <li>Nyolc rövid lépés, bármikor visszaléphetsz</li>
-        <li>Referenciaképet is csatolhatsz</li>
-        <li>Az ajánlatkérés nem végleges rendelés – a műhely visszaigazol</li>
-      </ul>
-      <div class="btns" data-rv>{btn("tortarendeles/", "Tortarendelés", extra=" btn--berry")}{btn("eskuvo/", "Esküvő", ghost=True)}</div>
+      <p class="lead" data-rv style="margin-top:var(--s3)">Születésnapra, esküvőre, vagy csak úgy. Meséld el, milyen tortát képzeltél el – a műhely átgondolja, és ajánlattal jelentkezik.</p>
     </div>
+    <div class="cakes" data-cakes>
+      {slot("Kiemelt Mókusch-torta", "T-01", (4, 5), cls="c1", tint=ROSE_TINT)}
+      {slot("A legszebb tortájuk", "T-02", (3, 4), cls="c2", tint=ROSE_TINT)}
+      {slot("Esküvői torta", "T-03", (4, 5), cls="c3", tint=ROSE_TINT)}
+    </div>
+    <ol class="steps3">
+      <li data-rv><span class="n">01</span><b>Meséld el</b><p>Alkalom, dátum, méret, ízek és díszítés – nyolc rövid lépésben, referenciaképpel.</p></li>
+      <li data-rv><span class="n">02</span><b>Ajánlatot kapsz</b><p>A műhely átnézi az elképzelést, és ajánlattal jelentkezik.</p></li>
+      <li data-rv><span class="n">03</span><b>Megbeszéljük</b><p>Az ajánlatkérés nem végleges rendelés – a műhely visszaigazolja.</p></li>
+    </ol>
+    <div class="ch9__cta" data-rv>{torta_btn(pre, label_short="Tortarendelés")}{btn("eskuvo/", "Esküvői torták", ghost=True)}</div>
   </div>
 </section>
 
@@ -521,10 +564,9 @@ def index():
 {{"@type":"OpeningHoursSpecification","dayOfWeek":"Sunday","opens":"09:00","closes":"13:00"}}]}}
 </script>
 '''
-    pre_img = f'<link rel="preload" as="image" imagesrcset="{wimg("osveny",420,630)} 420w, {wimg("osveny",720,1080)} 720w, {wimg("osveny",1000,1500)} 1000w" imagesizes="(max-width: 899px) 86vw, 440px">\n'
     out = head("Mókusch kávézó és tortaműhely – Budapest, Várfok utca 30.",
                "Mesebeli kávézó és tortaműhely a Várfok utcában: kávék, sütemények, receptek, a híres nyuszis polc, könyvek és egyedi torták ajánlatkéréssel.",
-               pre, extra=pre_img + ld)
+               pre, extra=ld)
     out += header(pre) + body + footer(pre)
     (OUT / "index.html").write_text(out, encoding="utf-8")
 
@@ -534,24 +576,44 @@ def index():
 # =====================================================================
 CH_IMG = {"1": "osveny", "2": "udvar", "3": "bolt", "4": "pult2", "5": "konyha",
           "6": "polc1", "7": "olvaso", "8": "posta", "9": "kepfal"}
+SUB_ORDER = [s[0] for s in SUBS]
 
 
-def sub_page(slug, lead, body, plain=False, page_js="", hero_img=None, h1=None, current=None):
+def cake_cta(pre):
+    return (f'<div class="wrap"><aside class="cake-cta on-dark" aria-label="Tortarendelés">'
+            f'{LOGO.inline_mark(cls="cake-cta__mark", fg="#EBDDD3", bg="#793F49", acorn="#C9AFA0", cap="#F6EFE4")}'
+            f'<div><h2>Tortát álmodnál?</h2><p>Egyedi torta születésnapra, esküvőre, vagy csak úgy – ajánlatkérés nyolc rövid lépésben.</p></div>'
+            f'{torta_btn(pre, cls="btn", label_short="Tortarendelés")}</aside></div>')
+
+
+def sub_page(slug, lead, body, plain=False, page_js="", hero_img=None, h1=None, current=None, cta=True):
     ch_no, title, desc = SUB[slug][1], SUB[slug][2], SUB[slug][3]
-    ch = CH[ch_no]
     pre = "../"
-    idx = [s[0] for s in SUBS].index(slug)
-    prv, nxt = SUBS[idx - 1], SUBS[(idx + 1) % len(SUBS)]
-    img_key = hero_img or CH_IMG[ch_no]
-    media = "" if plain else f'<div data-rv="fade">{plate(img_key, (2, 3), sizes="320px", eager=True)}</div>'
+    if ch_no:
+        ch = CH[ch_no]
+        crumb = f'<a href="../#{ch[1]}">{ARROW} Vissza: {ch[0]}. fejezet – {ch[2]}</a>'
+        kicker = f'<p class="kicker" data-rv><span class="no">{ch[0]}.</span> fejezet · {html.escape(ch[2])}</p>'
+        idx = SUB_ORDER.index(slug)
+        prv, nxt = SUBS[idx - 1], SUBS[(idx + 1) % len(SUBS)]
+        np = f'''<div class="wrap"><nav class="next-prev" aria-label="Lapozás az aloldalak között">
+  <a href="../{prv[0]}/"><span>← Előző lap</span><b>{prv[2]}</b></a>
+  <a class="nx" href="../{nxt[0]}/"><span>Következő lap →</span><b>{nxt[2]}</b></a>
+</nav></div>'''
+        img_key = hero_img or CH_IMG[ch_no]
+    else:
+        crumb = f'<a href="../">{ARROW} Vissza a főoldalra</a>'
+        kicker = '<p class="kicker" data-rv>Mókusch · arculati javaslat</p>'
+        np = ""
+        img_key = hero_img
+    media = "" if plain or not img_key else f'<div data-rv="fade">{plate(img_key, (4, 5), sizes="330px", eager=True)}</div>'
     out = head(f"{title} – Mókusch kávézó és tortaműhely", desc, pre)
     out += header(pre, current=current or slug)
     out += f'''<main id="tartalom">
-<div class="wrap crumb"><a href="../#{ch[1]}">{ARROW} Vissza: {ch[0]}. fejezet – {ch[2]}</a></div>
-<section class="sub-hero{' sub-hero--plain' if plain else ''}" aria-labelledby="h1">
+<div class="wrap crumb">{crumb}</div>
+<section class="sub-hero" aria-labelledby="h1">
   <div class="wrap sub-hero__grid">
     <div>
-      <p class="kicker" data-rv><span class="no">{ch[0]}.</span> fejezet · {html.escape(ch[2])}</p>
+      {kicker}
       <h1 id="h1" data-rv>{h1 or title}</h1>
       <p class="lead" data-rv>{lead}</p>
     </div>
@@ -559,13 +621,11 @@ def sub_page(slug, lead, body, plain=False, page_js="", hero_img=None, h1=None, 
   </div>
 </section>
 {body}
-<div class="wrap"><nav class="next-prev" aria-label="Lapozás az aloldalak között">
-  <a href="../{prv[0]}/"><span>← Előző lap</span><b>{prv[2]}</b></a>
-  <a class="nx" href="../{nxt[0]}/"><span>Következő lap →</span><b>{nxt[2]}</b></a>
-</nav></div>
+{cake_cta(pre) if cta else ""}
+{np}
 </main>
 '''
-    out += footer(pre, page_js)
+    out += footer(pre, page_js, float_cta=(slug != "tortarendeles"))
     d = OUT / slug
     d.mkdir(parents=True, exist_ok=True)
     (d / "index.html").write_text(out, encoding="utf-8")
@@ -648,9 +708,9 @@ def build_subs():
              ("slot", "Kész torta a pulton", "torta", "K-05"), ("ill", "polc2", "kezmuves"), ("slot", "Reggeli fény a teremben", "hely", "K-06")]
     for it in items:
         if it[0] == "ill":
-            g.append(f'<div data-cat="{it[2]}" data-rv>{plate(it[1], (2, 3), sizes="(max-width: 899px) 46vw, 360px")}</div>')
+            g.append(f'<div data-cat="{it[2]}" data-rv>{plate(it[1], (4, 5), sizes="(max-width: 899px) 46vw, 360px")}</div>')
         else:
-            ratio = (1, 1) if len(g) % 2 else (4, 5)
+            ratio = (4, 5)
             g.append(f'<div data-cat="{it[2]}" data-rv>{slot(it[1], it[3], ratio)}</div>')
     chips = "".join(f'<button class="chip" type="button" data-filter="{k}" aria-pressed="{"true" if k == "mind" else "false"}">{v}</button>'
                     for k, v in [("mind", "Mind"), ("kave", "Kávé"), ("sutes", "Sütés"), ("torta", "Torták"), ("kezmuves", "Kézművesség"), ("hely", "A hely")])
@@ -858,12 +918,12 @@ def build_subs():
              f'''<section class="sec"><div class="wrap">
   <div class="sec__head"><h2 data-rv>Korábbi alkotások</h2><span class="tag">Valódi fotók ügyféltől</span></div>
   <div class="gallery">
-    <div data-rv>{slot("Esküvői torta", "E-01", (4, 5), tint="#EFE3DA")}</div>
-    <div data-rv>{slot("Részlet közelről", "E-02", (1, 1), tint="#E9DCD0")}</div>
-    <div data-rv>{slot("Torta a helyszínen", "E-03", (2, 3), tint="#EFE3DA")}</div>
-    <div data-rv>{slot("Díszítés készül", "E-04", (1, 1), tint="#E9DCD0")}</div>
-    <div data-rv>{slot("Emeletes torta", "E-05", (4, 5), tint="#EFE3DA")}</div>
-    <div data-rv>{slot("Virágos részlet", "E-06", (1, 1), tint="#E9DCD0")}</div>
+    <div data-rv>{slot("Esküvői torta", "E-01", (4, 5), tint=ROSE_TINT)}</div>
+    <div data-rv>{slot("Részlet közelről", "E-02", (4, 5), tint=ROSE_TINT)}</div>
+    <div data-rv>{slot("Torta a helyszínen", "E-03", (4, 5), tint=ROSE_TINT)}</div>
+    <div data-rv>{slot("Díszítés készül", "E-04", (4, 5), tint=ROSE_TINT)}</div>
+    <div data-rv>{slot("Emeletes torta", "E-05", (4, 5), tint=ROSE_TINT)}</div>
+    <div data-rv>{slot("Virágos részlet", "E-06", (4, 5), tint=ROSE_TINT)}</div>
   </div>
 </div></section>
 <section class="sec"><div class="wrap">
@@ -910,7 +970,7 @@ def build_subs():
       <div class="card card--tint"><h3>Ár helyett ajánlat</h3><p>Minden esküvői torta más – méret, ízek, díszítés és szállítás szerint. Ezért nincs fix árlista: az ajánlatot a műhely állítja össze.</p><p style="margin-top:.8em"><a href="../tortarendeles/?alkalom=eskuvo">Inkább a lépésenkénti rendelőt használnám →</a></p></div>
     </aside>
   </div>
-</div></section>''', h1="Esküvői <em>torták</em>")
+</div></section>''', h1="Esküvői <em>torták</em>", cta=False)
 
     # 9 / Tortarendelés
     build_wizard()
@@ -1019,15 +1079,60 @@ def build_wizard():
 </div></section>'''
     sub_page("tortarendeles",
              "Nyolc rövid lépés, és a műhely pontosan tudja, mit szeretnél. Ez ajánlatkérés: a végleges rendelést a Mókusch visszaigazolja.",
-             body, plain=True, h1="Tortarendelés <em>nyolc lépésben</em>")
+             body, plain=True, h1="Tortarendelés <em>nyolc lépésben</em>", cta=False)
 
 
-FAVICON = '''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#64613F"/><text x="32" y="44" text-anchor="middle" font-family="Georgia,serif" font-style="italic" font-size="36" fill="#F6EFE4">M</text></svg>'''
+# =====================================================================
+#   ARCULAT – logó és rendszer
+# =====================================================================
+def build_arculat():
+    L = "../img/logo/"
+    sw = lambda n, v, use: f'<div class="sw" data-rv><i style="--c:{v}"></i><div><b>{n}</b><span>{v} · {use}</span></div></div>'
+    body = f'''<section class="sec"><div class="wrap">
+  <div class="sec__head"><h2 data-rv>A logó</h2><span class="tag">Javaslat – jóváhagyásra</span></div>
+  <div class="brandboard">
+    <figure class="bb bb--wide" data-rv><img src="{L}mokusch-logo.svg" alt="Mókusch logó: makkot tartó mókus és a Mókusch felirat" width="420" height="112"><figcaption>Elsődleges, fekvő</figcaption></figure>
+    <figure class="bb bb--half bb--forest" data-rv><img src="{L}mokusch-logo-vilagos.svg" alt="Mókusch logó világos változata sötét háttéren" width="420" height="112"><figcaption>Sötét háttérre</figcaption></figure>
+    <figure class="bb bb--half bb--rose" data-rv><img src="{L}mokusch-logo-allo.svg" alt="Mókusch álló logó" width="260" height="256" style="max-height:200px"><figcaption>Álló</figcaption></figure>
+    <figure class="bb bb--third" data-rv><img src="{L}mokusch-pecset.svg" alt="Mókusch kerek pecsét: kávézó és tortaműhely, Budapest, Várfok utca" width="320" height="320" style="max-height:190px"><figcaption>Pecsét – dobozra, matricára</figcaption></figure>
+    <figure class="bb bb--third bb--moss" data-rv><img src="{L}mokusch-jel-vilagos.svg" alt="A mókus jel önmagában" width="120" height="120" style="max-height:130px"><figcaption>Jel önmagában</figcaption></figure>
+    <figure class="bb bb--third" data-rv><img src="../img/favicon.svg" alt="Mókusch ikon olívazöld négyzetben" width="64" height="64" style="max-height:96px"><figcaption>Ikon, profilkép</figcaption></figure>
+  </div>
+  <div class="prose" style="margin-top:var(--s6)" data-rv>
+    <p class="dropcap">A jel egy ülő mókus, a mancsában makkal – a Mókusch neve és a mesebeli, erdei világ egyetlen képben. A farka egy laza kunkorral zárul, mint egy mesekönyv iniciáléja. A felirat dőlt, régi könyvbetűs írás: elegáns, de barátságos; a kísérő sor szellős nagybetűs.</p>
+    <p>A makk bordó pöttye az egyetlen színes részlet: kicsiben is felismerhető, és visszaköszön a weboldal tortarendelő gombjain.</p>
+  </div>
+  <div class="dl-list" data-rv>
+    <a class="btn btn--ghost" href="{L}mokusch-logo.svg" download>Logó (SVG)</a>
+    <a class="btn btn--ghost" href="{L}mokusch-logo-vilagos.svg" download>Világos logó (SVG)</a>
+    <a class="btn btn--ghost" href="{L}mokusch-logo-allo.svg" download>Álló logó (SVG)</a>
+    <a class="btn btn--ghost" href="{L}mokusch-pecset.svg" download>Pecsét (SVG)</a>
+    <a class="btn btn--ghost" href="{L}mokusch-logo.png" download>Logó (PNG)</a>
+  </div>
+</div></section>
+<section class="sec"><div class="wrap">
+  <div class="sec__head"><h2 data-rv>Színek</h2><span class="tag">A Wix-oldal színeiből</span></div>
+  <div class="swatches">
+    {sw("Papír", "#F6EFE4", "alap")}{sw("Moha", "#5F5C3C", "sávok")}{sw("Erdő", "#263A2D", "sötét felületek")}{sw("Bogyó", "#793F49", "tortarendelés, kiemelés")}
+    {sw("Púder", "#C9AFA0", "díszítés")}{sw("Étcsoki", "#2E241C", "szöveg, logó")}{sw("Zsálya", "#A6B19A", "apró jelölések")}{sw("Sárgaréz", "#A68A5B", "hajszálvonalak")}
+  </div>
+</div></section>
+<section class="sec"><div class="wrap">
+  <div class="sec__head"><h2 data-rv>Betűk</h2></div>
+  <div class="type-spec">
+    <div class="card" data-rv><span class="tag">Címek · Cormorant Garamond</span><p class="big">Hagyd magad mögött <em>a várost</em></p><p>Régi könyvek világát idéző, finom antikva – dőlt változata adja a mesés kiemeléseket.</p></div>
+    <div class="card" data-rv><span class="tag">Szöveg · Manrope</span><p class="big big--sans">Kávék, sütik, kutyafülék</p><p>Modern, jól olvasható betű a hosszabb szövegekhez, gombokhoz és az űrlapokhoz.</p></div>
+  </div>
+  <p class="note" data-rv><b>Licenc:</b> mindkét betű szabad (SIL Open Font License), a logó feliratai görbékké alakítva – betűtelepítés nélkül is pontos.</p>
+</div></section>'''
+    sub_page("arculat", "Új logó a Mókuschnak: egy makkot tartó mókus, mesekönyv-betűs felirattal – hozzá színek és betűk, amelyek a Wix-oldal világából nőttek ki.",
+             body, plain=True, h1="Arculat <em>és logó</em>", current="arculat")
+
 
 if __name__ == "__main__":
     OUT.mkdir(parents=True, exist_ok=True)
     (OUT / "img").mkdir(exist_ok=True)
-    (OUT / "img" / "favicon.svg").write_text(FAVICON, encoding="utf-8")
     index()
     build_subs()
+    build_arculat()
     print("kész:", OUT)
