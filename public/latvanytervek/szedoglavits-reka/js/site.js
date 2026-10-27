@@ -102,7 +102,6 @@
       }
     });
     if (focus) t.focus();
-    if (window.innerWidth < 720) t.scrollIntoView({ block: 'nearest', inline: 'center', behavior: reduce ? 'auto' : 'smooth' });
   }
   tabs.forEach(function (t, i) {
     t.addEventListener('click', function () { selectTab(t); });
