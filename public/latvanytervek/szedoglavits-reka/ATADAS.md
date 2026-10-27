@@ -1,7 +1,7 @@
 # Dr. Szedoglavits Réka – látványterv, átadás
 
 **Élő előnézet:** https://daekon-ship.github.io/daekon/latvanytervek/szedoglavits-reka/
-**Állapot:** 2. kör (2026. 10. 27.) – Playfair Display, kompaktabb térközök, a portré középre igazítva a keretben. – csak látványterv, `noindex, nofollow`. Az ügyvédnő éles domainjéhez nem nyúltunk.
+**Állapot:** 3. kör (2026. 10. 27.) – Libre Baskerville címbetű; korábban: kompaktabb térközök, a portré középre igazítva a keretben.
 
 > Miért nem külön repó? A brief a `daekon-ship/szedoglavits-reka-preview` repót javasolta, de ebben a munkamenetben új repót nem lehetett létrehozni (a GitHub-token nem érvényes repó-létrehozásra). Ezért a ház-szabály szerinti helyre került: `daekon-ship/daekon` → `public/latvanytervek/szedoglavits-reka/`. A cím állandó, nem jár le, bejelentkezést nem kér, a további körök ugyanezen a címen jelennek meg.
 > A korábbi terv a **privát** `daekon-ship/dr-szedoglavits-reka-latvanyterv` repóban van – valószínűleg ezért nem tudta az ügyvédnő újra megnyitni. Azt a repót nem módosítottuk.
@@ -15,8 +15,8 @@
 Fejléc (sticky, görgetésre zsugorodó, üveges krém háttér) · Hero (aszimmetrikus, portré passe-partout keretben) · témasor · Bemutatkozás (levél + 6 érték + „Röviden” adatsor) · Szakterületek (családjogi blokk 2×2 kiemelve + polgári jog oszlop, mind kattintható részletablakkal) · Családjog (6 témás, billentyűzettel is kezelhető fülrendszer) · Konzultáció menete (4 lépés, görgetésre telő vonal) · Tudástár (5 tervezett cikk, vázlat-ablakkal) · Időpontkérés (bordó blokk, hívás/e-mail + demó űrlap) · Kapcsolat (kattintásra betöltődő Google-térkép, útvonaltervezés) · Lábléc · mobil gyors-CTA.
 
 ## Tipográfia
-- Címsor: **Playfair Display** változtatható 400/500 + dőlt (helyben, `fonts/`, OFL; 2. körben a Cormorant Garamond helyett – mobilon jobban olvasható). Szöveg: **Manrope** változtatható (helyben).
-- Fraunces nincs. Nagy, „display” méret nincs: H1 max. 47 px, H2 max. 35 px, kártyacím 18,5–19 px, törzs 16,5 px.
+- Címsor: **Libre Baskerville** 400 (helyben, `fonts/`, OFL) – 3. kör: a Cormorant, majd a Playfair után a komolyabb, klasszikus ügyvédi hatás miatt; a hero második sora egyenes bordó, nem dőlt. Szöveg: **Manrope** változtatható (helyben).
+- Fraunces nincs. Nagy, „display” méret nincs: H1 max. 40 px, H2 max. 30 px, kártyacím 16,5–17 px, törzs 16,5 px.
 
 ## Színek (`:root`)
 `--bordo #542938` · `--cream #F8F5F0` · `--paper #FCFAF7` · `--beige #E9E0D4` · `--gold #C5A477` (csak vonal/ikon) · `--gold-d #8C6B42` (arany szöveg, kontraszt miatt) · `--ink #242326` · `--muted #6E6569`.
