@@ -18,11 +18,14 @@
 <link rel="preload" href="../fonts/amatic-bold.woff" as="font" type="font/woff" crossorigin>
 <link rel="preload" href="../fonts/dancing-var.woff" as="font" type="font/woff" crossorigin>
 <link rel="preload" href="../fonts/manrope-normal-200_800-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../css/site.css?v=5">
+<link rel="stylesheet" href="../css/site.css?v=6">
 <script>
-  /* Animációs kezdőállapot csak akkor, ha a látogató nem kért csökkentett mozgást */
-  (function(){var d=document.documentElement;d.classList.add('js');
-  if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('anim');
+  /* Animációs mód: teljes, vagy – csökkentett mozgást kérő eszközön – visszafogott (csak áttűnések,
+     feltárások, ikonmozgás). A láblécben a látogató átkapcsolhat (localStorage). */
+  (function(){var d=document.documentElement,m='';d.classList.add('js');
+  try{m=localStorage.getItem('mokusch-motion')||''}catch(e){}
+  var red=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(m!=='off'){d.classList.add('anim',(red&&m!=='full')?'anim-soft':'anim-full');
   setTimeout(function(){if(!window.Motion){d.classList.remove('anim')}},2500);}})();
 </script>
 </head>
@@ -187,13 +190,13 @@
     </div>
     <div class="ftr__bottom">
       <span>© 2026 Mókusch kávézó és tortaműhely · <a href="../arculat/">Arculat és logó</a></span>
-      <span>Látványterv (DAEKON) · mintatartalmakkal, az adatok egyeztetendők</span>
+      <span>Látványterv (DAEKON) · mintatartalmakkal, az adatok egyeztetendők · <button class="motion-toggle" type="button" data-motion-toggle>Animációk</button></span>
     </div>
   </div>
 </footer>
 
 <script src="../js/vendor/motion-11.18.2.min.js" defer></script>
-<script src="../js/site.js?v=5" defer></script>
-<script src="../js/motion-fx.js?v=1" defer></script>
+<script src="../js/site.js?v=6" defer></script>
+<script src="../js/motion-fx.js?v=3" defer></script>
 </body>
 </html>

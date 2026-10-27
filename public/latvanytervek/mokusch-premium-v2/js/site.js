@@ -6,7 +6,8 @@
   var doc = document.documentElement;
   var M = window.Motion;
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var canAnim = !!M && !reduce && doc.classList.contains('anim');
+  var canAnim = !!M && doc.classList.contains('anim');
+  var soft = doc.classList.contains('anim-soft');
   if (!canAnim) doc.classList.remove('anim');
   var ease = [0.22, 0.7, 0.2, 1];
   var $ = function (s, c) { return (c || document).querySelector(s); };
@@ -82,11 +83,13 @@
     });
 
     // finom képparallax
+    if (!soft) {
     $$('[data-px]').forEach(function (px) {
       var target = px.closest('.pic, .plate') || px;
       M.scroll(M.animate(px, { y: ['-4%', '4%'] }, { ease: 'linear' }), { target: target, offset: ['start end', 'end start'] });
     });
 
+    }
     // tortagaléria: a középső lap emelkedik ki először, a két szélső utána csúszik be
     var cakes = $('[data-cakes]');
     if (cakes) {
@@ -111,22 +114,41 @@
     });
 
     // lassú „Ken Burns” nagyítás a nyitó- és a tortaképen
+    if (!soft) {
     $$('[data-kb] img').forEach(function (im) {
       M.animate(im, { scale: [1.04, 1.14] }, { duration: 22, ease: 'linear', repeat: Infinity, repeatType: 'reverse' });
     });
+    }
 
     // futó kézírásos szalag
     // a futó szalagot a motion-fx.js mozgatja (görgetési sebességre gyorsul)
 
     // felhőszegélyek: görgetésre alig érezhetően elsodródnak
+    if (!soft) {
     $$('.cloud--top, .cloud--bot').forEach(function (c, i) {
       M.scroll(M.animate(c.querySelector('path'), { x: [i % 2 ? -18 : 18, i % 2 ? 18 : -18] }, { ease: 'linear' }), { target: c.parentElement, offset: ['start end', 'end start'] });
     });
+    }
 
     // a pecsét görgetésre lassan körbefordul
+    if (!soft) {
     var seal = $('[data-seal] img');
     if (seal) M.scroll(M.animate(seal, { rotate: [0, 120] }, { ease: 'linear' }), { target: $('.hero'), offset: ['start start', 'end start'] });
+    }
   }
+
+  /* ---------------- animáció-kapcsoló a láblécben ---------------- */
+  $$('[data-motion-toggle]').forEach(function (t) {
+    var cur = doc.classList.contains('anim-full') ? 'teljes' : doc.classList.contains('anim-soft') ? 'visszafogott' : 'kikapcsolva';
+    t.textContent = 'Animációk: ' + cur + ' (váltás)';
+    t.addEventListener('click', function () {
+      var next = cur === 'teljes' ? 'off' : 'full';
+      if (cur === 'visszafogott') next = 'full';
+      if (cur === 'kikapcsolva') next = 'full';
+      try { localStorage.setItem('mokusch-motion', next); } catch (e) {}
+      location.reload();
+    });
+  });
 
   /* ---------------- felső sáv: ma nyitva? (Wix-nyitvatartás alapján, egyeztetendő) ---------------- */
   var openTxt = $('[data-open-text]'), openDot = $('[data-open-dot]');

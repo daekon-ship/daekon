@@ -5,7 +5,7 @@ Előző változat (érintetlen, összehasonlításhoz): https://daekon-ship.gith
 
 ## Motion-réteg (js/motion-fx.js)
 
-Minden alábbi effekt a Motion (motion.dev) könyvtárral fut; csökkentett mozgásnál egyik sem indul, érintőképernyőn a kurzoros effektek kimaradnak.
+Minden alábbi effekt a Motion (motion.dev) könyvtárral fut. Két mód van: **teljes**, és – ha az eszköz csökkentett mozgást kér – **visszafogott** (áttűnések, feltárások, ikonmozgás marad; parallax, hulló levelek, futó szalag, görgetéshez kötött mozgás kimarad). A lábléc „Animációk” kapcsolójával a látogató bármikor átválthat (teljes / ki); érintőképernyőn a kurzoros effektek kimaradnak.
 
 | Effekt | Kiváltó | Mit csinál |
 |---|---|---|

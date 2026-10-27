@@ -6,6 +6,8 @@
   var M = window.Motion;
   var doc = document.documentElement;
   if (!M || !doc.classList.contains('anim')) return;
+  // visszafogott mód (csökkentett mozgást kérő eszköz): nincs parallax, hulló levél, futó szalag, görgetéshez kötött mozgás
+  var SOFT = doc.classList.contains('anim-soft');
   var $ = function (s, c) { return (c || document).querySelector(s); };
   var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
   var fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
@@ -65,7 +67,7 @@
   // kézírásos fejezetszámok: „berajzolódnak” – balról kinyíló maszk + rugós billenés
   $$('.no').forEach(function (n) {
     M.inView(n, function () {
-      M.animate(n, { clipPath: ['inset(0 100% 0 0)', 'inset(0 0% 0 0)'], rotate: [-8, 0] }, { duration: 0.9, ease: ease });
+      M.animate(n, { opacity: [0, 1], y: [0, 0], clipPath: ['inset(0 100% 0 0)', 'inset(0 0% 0 0)'], rotate: [-8, 0] }, { duration: 0.9, ease: ease });
     });
   });
 
@@ -76,7 +78,7 @@
     var heroImg = $('.pic', heroMedia);
     var seal = $('.seal', heroMedia);
     if (seal) M.animate(seal, { scale: [0, 1], rotate: [-120, 0] }, Object.assign({ delay: 1.1 }, spring(160, 14)));
-    if (fine && heroImg) {
+    if (fine && heroImg && !SOFT) {
       var hx = M.motionValue(0), hy = M.motionValue(0);
       heroMedia.addEventListener('pointermove', function (e) {
         var r = heroMedia.getBoundingClientRect();
@@ -98,7 +100,7 @@
     var leafColors = ['#DCC6B9', '#A6B19A', '#C9AFA0', '#F6EFE4'];
     var layer = document.createElement('div'); layer.className = 'fx-leaves'; layer.setAttribute('aria-hidden', 'true');
     heroMedia.appendChild(layer);
-    var N = window.innerWidth < 700 ? 6 : 11;
+    var N = SOFT ? 0 : (window.innerWidth < 700 ? 6 : 11);
     for (var i = 0; i < N; i++) (function (i) {
       var s = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
       s.setAttribute('viewBox', '0 0 20 20'); s.setAttribute('class', 'fx-leaf');
@@ -125,7 +127,7 @@
         var im = $('img', picEl); if (im) M.animate(im, { scale: [1.25, 1] }, { duration: 2, ease: ease });
       }, { amount: 0.25 });
       // görgetésre a kép lassan nagyobbodik
-      M.scroll(M.animate(picEl, { scale: [1, 1.06] }, { ease: 'linear' }), { target: sp, offset: ['start end', 'end start'] });
+      if (!SOFT) M.scroll(M.animate(picEl, { scale: [1, 1.06] }, { ease: 'linear' }), { target: sp, offset: ['start end', 'end start'] });
     }
     var ins = $('.inset', sp);
     if (ins) {
@@ -133,10 +135,10 @@
       M.inView(sp, function () {
         M.animate(ins, { opacity: [0, 1], y: [80, 0], rotate: [flip ? 8 : -8, flip ? -3 : 3] }, Object.assign({ delay: 0.7 }, spring(120, 14)));
       }, { amount: 0.3 });
-      M.scroll(M.animate(ins, { y: [40, -40] }, { ease: 'linear' }), { target: sp, offset: ['start end', 'end start'] });
+      if (!SOFT) M.scroll(M.animate(ins, { y: [40, -40] }, { ease: 'linear' }), { target: sp, offset: ['start end', 'end start'] });
     }
     var txt = $('.spread__text', sp);
-    if (txt && window.innerWidth >= 960) M.scroll(M.animate(txt, { y: [50, -50] }, { ease: 'linear' }), { target: sp, offset: ['start end', 'end start'] });
+    if (txt && !SOFT && window.innerWidth >= 960) M.scroll(M.animate(txt, { y: [50, -50] }, { ease: 'linear' }), { target: sp, offset: ['start end', 'end start'] });
   });
 
   // címkék, gombok, portréovális: rugós, lépcsőzetes beugrás
@@ -150,7 +152,7 @@
 
   /* ---------- 5. futó szalag: görgetési sebességre gyorsul, irányt vált ---------- */
   var track = $('[data-marquee]');
-  if (track) {
+  if (track && !SOFT) {
     track.getAnimations && track.getAnimations().forEach(function (a) { a.cancel(); });
     var x = 0, dir = -1, lastY = window.scrollY, boost = 0;
     var half = function () { return track.scrollWidth / 2; };
@@ -169,7 +171,7 @@
   var fin = $('.finale');
   if (fin) {
     var bg = $('.finale__bg .pic', fin);
-    if (bg) M.scroll(M.animate(bg, { scale: [1.25, 1], y: ['-6%', '6%'] }, { ease: 'linear' }), { target: fin, offset: ['start end', 'end start'] });
+    if (bg && !SOFT) M.scroll(M.animate(bg, { scale: [1.25, 1], y: ['-6%', '6%'] }, { ease: 'linear' }), { target: fin, offset: ['start end', 'end start'] });
     $$('.steps3 li', fin).forEach(function (li) { li.style.opacity = 0; });
     M.inView(fin, function () {
       M.animate($$('.steps3 li', fin), { opacity: [0, 1], x: [-20, 0] }, { delay: M.stagger(0.25, { startDelay: 0.6 }), duration: 0.7, ease: ease });
@@ -220,7 +222,7 @@
     M.animate(flame, { scaleY: [1, 1.35, 0.85, 1.2, 1], scaleX: [1, 0.85, 1.1, 0.9, 1], rotate: [0, 6, -5, 3, 0] }, { duration: 1.4, repeat: Infinity, ease: 'easeInOut' });
   });
   // a pecsét a görgetéssel forog (a nyitóban is)
-  $$('.ftr__seal').forEach(function (s) { M.scroll(M.animate(s, { rotate: [0, 180] }, { ease: 'linear' })); });
+  if (!SOFT) $$('.ftr__seal').forEach(function (s) { M.scroll(M.animate(s, { rotate: [0, 180] }, { ease: 'linear' })); });
 
   /* ---------- 8. kurzorhoz kötött élmények (csak egérrel) ---------- */
   if (fine) {
