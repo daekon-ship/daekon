@@ -154,6 +154,7 @@ home = f'''
       <h2>Kérdése van?</h2>
       <a class="tel" href="tel:{TEL}">{TEL_H}</a>
       <p><a href="mailto:{MAIL}">{MAIL}</a></p>
+      <p class="hrs">Ügyfélfogadás: {HOURS}</p>
       <button class="btn btn-w btn-s" type="button" data-dlg="visszahivas">Visszahívást kérek</button>
     </section>
   </aside>

@@ -214,3 +214,5 @@ Főcím és alcím · „30 év” · végzettségek és pálya · idézet · �
 - **„Átlinkelés más partnerek oldalára”:** a Partnerközpont rovatban partnersor (jelenleg minta), kattintásra a partner oldalára visz; valódi partnernél közvetlenül a partner weboldalára.
 - Tesztek: 17 oldal × 8 szélesség – nincs túlcsordulás, nincs konzolhiba; kalkulátorok, visszahívás, Tudástár, dokumentumtár, partnerek, kezelőfelület működik.
 - 25. kör (10. 22.): telefonos és gépi ellenőrzés automatikus átfedés-/levágás-kereséssel (17 oldal × 8 szélesség). Valódi hiba: a „Minta” címke rácsúszott a partner- és ajánlatkártyák címére → a címke saját sort kapott. Egyéb elcsúszás nincs.
+
+- 26. kör (2026-10-30): Google Cégprofil adatai (Marcsi levele) beépítve: ügyfélfogadás 14:00–18:00 (kezdőlap jobb hasáb, Kapcsolat, lábléc, impresszum). Cím és telefon egyezik. A Kapcsolat oldalon jelölt hely vár a Google Térkép- és véleményírási linkre (igazolás folyamatban, max. 5 nap). Ügyfélfogadási napok pontosítandók; JSON-LD openingHours csak a napok ismeretében kerüljön be.

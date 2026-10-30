@@ -254,6 +254,7 @@ kapcs = ph("Kapcsolat", "Hívjon, írjon, vagy keressen fel minket Budaörsön. 
         <div><dt>Telefon</dt><dd><a class="big" href="tel:{TEL}">{TEL_H}</a></dd></div>
         <div><dt>E-mail</dt><dd><a href="mailto:{MAIL}">{MAIL}</a></dd></div>
         <div><dt>Iroda</dt><dd>{ADDR}</dd></div>
+        <div><dt>Ügyfélfogadás</dt><dd>{HOURS}, előre egyeztetett időpontban</dd></div>
         <div><dt>Nyelvek</dt><dd>magyar, német</dd></div>
         <div><dt>Kapcsolattartó</dt><dd>Horváth Mária</dd></div>
       </dl>
@@ -265,6 +266,8 @@ kapcs = ph("Kapcsolat", "Hívjon, írjon, vagy keressen fel minket Budaörsön. 
         </div>
         <a class="btn btn-w btn-s" href="{MAPS}" target="_blank" rel="noopener" style="border:1px solid var(--line-2)">Útvonaltervezés ↗</a>
       </div>
+      <!-- GOOGLE CÉGPROFIL: az igazolás után ide kerül a Térkép-link és a véleményírási link (Értékeljen minket a Google-on). -->
+      <p class="pend" style="margin-top:14px">Google Cégprofil: igazolás folyamatban. Utána ide kerül a Google Térkép- és az értékelési link. · Az ügyfélfogadási napok pontosítandók.</p>
     </div>
     <form class="form" id="urlap" novalidate data-mail="{MAIL}" data-subject="Érdeklődés a weboldalról">
       <h2 class="h3">Írjon nekünk</h2>

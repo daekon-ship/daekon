@@ -5,6 +5,7 @@ OUT = Path(__file__).resolve().parent.parent
 BASE = "https://daekon-ship.github.io/daekon/latvanytervek/multicont/"
 TEL, TEL_H, MAIL = "+36204337811", "+36 20 433 7811", "konyvelde@gmail.com"
 ADDR = "2040 Budaörs, Meredek utca 2."
+HOURS = "14:00–18:00"
 MAPS = "https://www.google.com/maps/dir/?api=1&amp;destination=2040%20Buda%C3%B6rs%2C%20Meredek%20utca%202."
 PAGES = []  # sitemaphoz
 
@@ -159,7 +160,7 @@ def footer(scripts=""):
     </ul></nav>
     <div><h2>Kapcsolat</h2><ul>
       <li><a class="tel" href="tel:{TEL}">{TEL_H}</a></li><li><a href="mailto:{MAIL}">{MAIL}</a></li>
-      <li class="f-addr">{ADDR}</li><li class="f-lang">Magyarul és németül</li><li><button class="lnk" type="button" data-dlg="visszahivas">Visszahívást kérek →</button></li>
+      <li class="f-addr">{ADDR}</li><li class="f-hours">Ügyfélfogadás: {HOURS}</li><li class="f-lang">Magyarul és németül</li><li><button class="lnk" type="button" data-dlg="visszahivas">Visszahívást kérek →</button></li>
     </ul></div>
   </div>
   <div class="wrap ftr-b">
@@ -179,6 +180,7 @@ def footer(scripts=""):
   <dl>
     <div><dt>Iroda</dt><dd>{ADDR}</dd></div>
     <div><dt>Telefon</dt><dd><a href="tel:{TEL}">{TEL_H}</a></dd></div>
+    <div><dt>Ügyfélfogadás</dt><dd>{HOURS}</dd></div>
     <div><dt>E-mail</dt><dd><a href="mailto:{MAIL}">{MAIL}</a></dd></div>
     <div><dt>Adószám</dt><dd>25378669-2-13</dd></div>
     <div><dt>Cégjegyzékszám</dt><dd>13-09-177232</dd></div>
