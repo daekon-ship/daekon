@@ -5,7 +5,7 @@ OUT = Path(__file__).resolve().parent.parent
 BASE = "https://daekon-ship.github.io/daekon/latvanytervek/multicont/"
 TEL, TEL_H, MAIL = "+36204337811", "+36 20 433 7811", "konyvelde@gmail.com"
 ADDR = "2040 Budaörs, Meredek utca 2."
-HOURS = "14:00–18:00"
+HOURS = "Ügyfélfogadás előzetes időpont-egyeztetéssel"  # a napok/órák megerősítéséig
 MAPS = "https://www.google.com/maps/dir/?api=1&amp;destination=2040%20Buda%C3%B6rs%2C%20Meredek%20utca%202."
 PAGES = []  # sitemaphoz
 
@@ -160,7 +160,7 @@ def footer(scripts=""):
     </ul></nav>
     <div><h2>Kapcsolat</h2><ul>
       <li><a class="tel" href="tel:{TEL}">{TEL_H}</a></li><li><a href="mailto:{MAIL}">{MAIL}</a></li>
-      <li class="f-addr">{ADDR}</li><li class="f-hours">Ügyfélfogadás: {HOURS}</li><li class="f-lang">Magyarul és németül</li><li><button class="lnk" type="button" data-dlg="visszahivas">Visszahívást kérek →</button></li>
+      <li class="f-addr">{ADDR}</li><li class="f-hours">{HOURS}</li><li class="f-lang">Magyarul és németül</li><li><button class="lnk" type="button" data-dlg="visszahivas">Visszahívást kérek →</button></li>
     </ul></div>
   </div>
   <div class="wrap ftr-b">
@@ -169,7 +169,6 @@ def footer(scripts=""):
       <li><button type="button" data-dlg="impresszum">Impresszum</button></li>
       <li><button type="button" data-dlg="adatkezeles">Adatkezelési tájékoztató</button></li>
       <li><button type="button" data-dlg="suti">Süti-beállítások</button></li>
-      <li><a href="admin-belepes.html">Kezelőfelület (látványterv)</a></li>
     </ul>
   </div>
 </footer>
@@ -180,17 +179,25 @@ def footer(scripts=""):
   <dl>
     <div><dt>Iroda</dt><dd>{ADDR}</dd></div>
     <div><dt>Telefon</dt><dd><a href="tel:{TEL}">{TEL_H}</a></dd></div>
-    <div><dt>Ügyfélfogadás</dt><dd>{HOURS}</dd></div>
+    <div><dt>Ügyfélfogadás</dt><dd>Előzetes időpont-egyeztetéssel</dd></div>
     <div><dt>E-mail</dt><dd><a href="mailto:{MAIL}">{MAIL}</a></dd></div>
     <div><dt>Adószám</dt><dd>25378669-2-13</dd></div>
     <div><dt>Cégjegyzékszám</dt><dd>13-09-177232</dd></div>
   </dl>
-  <p class="pend" style="margin-top:14px">Székhely, nyilvántartó bíróság, képviselő és tárhelyszolgáltató: ellenőrzésre és jóváhagyásra vár.</p>
 </div></dialog>
 <dialog class="dlg" id="dlg-adatkezeles" aria-labelledby="adat-t"><div class="dlg-in">
   <button class="dlg-x" type="button" data-close aria-label="Bezárás">×</button>
   <p class="eyebrow">Jogi dokumentum</p><h2 id="adat-t">Adatkezelési tájékoztató</h2>
-  <p class="pend">Helyőrző. Élesítés előtt az ügyféllel egyeztetett, jogilag ellenőrzött tájékoztató kerül ide (adatkezelő, célok, jogalap, megőrzési idő, érintetti jogok, űrlapok és sütik).</p>
+  <!-- ATADAS.md: élesítés előtt jogi átnézés szükséges. -->
+  <div class="legal">
+    <p><b>Adatkezelő:</b> MultiCont Center Kft., {ADDR} · <a href="mailto:{MAIL}">{MAIL}</a> · <a href="tel:{TEL}">{TEL_H}</a></p>
+    <p><b>Milyen adatot kezelünk?</b> Csak azt, amit Ön az űrlapokon vagy levélben megad: nevét, e-mail-címét, telefonszámát és üzenetét.</p>
+    <p><b>Mire használjuk?</b> Kizárólag a megkeresés megválaszolására, ajánlatadásra és a kapcsolattartásra. Az adatokat nem adjuk át harmadik félnek, és nem használjuk hírlevélhez.</p>
+    <p><b>Jogalap:</b> az Ön hozzájárulása, amelyet az űrlap elküldésével ad meg, és bármikor visszavonhat.</p>
+    <p><b>Meddig őrizzük?</b> A megkeresés lezárásáig, legfeljebb egy évig. Ha szerződést kötünk, az iratmegőrzési szabályok szerint.</p>
+    <p><b>Az Ön jogai:</b> kérhet tájékoztatást, helyesbítést, törlést és az adatkezelés korlátozását a fenti elérhetőségeken. Panasszal a Nemzeti Adatvédelmi és Információszabadság Hatósághoz (NAIH, naih.hu) fordulhat.</p>
+    <p><b>Sütik:</b> az oldal nem használ követő- vagy hirdetési sütit. A Google Térkép csak az Ön engedélyével töltődik be.</p>
+  </div>
 </div></dialog>
 <dialog class="dlg" id="dlg-suti" aria-labelledby="suti-t"><div class="dlg-in">
   <button class="dlg-x" type="button" data-close aria-label="Bezárás">×</button>

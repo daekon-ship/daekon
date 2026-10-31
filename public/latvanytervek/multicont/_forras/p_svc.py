@@ -117,7 +117,7 @@ DET = {
              ("Két nyelven", "Magyarul és németül.")],
         tg=["Budaörstől távol működő vállalkozások", "Sokat utazó vállalkozók", "Külföldi tulajdonosok"],
         faq=[("Hogyan küldöm a bizonylatokat?", "Elektronikusan; a pontos módot a megbízás elején egyeztetjük."),
-             ("Lehet személyesen is találkozni?", "Igen, Budaörsön, előre egyeztetett időpontban.")]),
+             ("Lehet személyesen is találkozni?", "Igen, Budaörsön. Ügyfélfogadás előzetes időpont-egyeztetéssel.")]),
     "vegelszamolas": dict(
         lead="Egyszerűsített és normál végelszámolás nagy tapasztalattal, az iratoktól a cégtörlésig.",
         intro="A végelszámolás az iroda egyik szakterülete. Végigvisszük a folyamatot; Önnek a döntéseknél kell jelen lennie.",
