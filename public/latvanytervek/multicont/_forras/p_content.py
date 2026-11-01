@@ -253,7 +253,7 @@ kapcs = ph("Kapcsolat", "Hívjon, írjon, vagy keressen fel minket Budaörsön. 
         <div><dt>Telefon</dt><dd><a class="big" href="tel:{TEL}">{TEL_H}</a></dd></div>
         <div><dt>E-mail</dt><dd><a href="mailto:{MAIL}">{MAIL}</a></dd></div>
         <div><dt>Iroda</dt><dd>{ADDR}</dd></div>
-        <div><dt>Ügyfélfogadás</dt><dd>Előzetes időpont-egyeztetéssel</dd></div>
+        <div><dt>Ügyfélfogadás</dt><dd>{HOURS_L}<br><span class="muted small">Kérjük, előtte egyeztessen időpontot.</span></dd></div>
         <div><dt>Nyelvek</dt><dd>magyar, német</dd></div>
         <div><dt>Kapcsolattartó</dt><dd>Horváth Mária</dd></div>
       </dl>

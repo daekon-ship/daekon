@@ -235,10 +235,12 @@ Főcím és alcím · „30 év” · végzettségek és pálya · idézet · �
 - Térkép: hozzájárulás után betölt (2040 Budaörs, Meredek utca 2.); útvonaltervező link.
 
 **Marcsival egyeztetni**
-1. Az ügyfélfogadás napjai és órái.
+1. ~~Az ügyfélfogadás napjai és órái.~~ Kész: Marcsi 2026. 10. 31-én megerősítette.
 2. A Google Cégprofil igazolása után a véleményírási link és a Térkép-link (a Kapcsolat oldalon a `GOOGLE CÉGPROFIL` megjegyzésnél van a helye). Véleményt kézzel nem írunk be.
 3. Impresszum: székhely (ha eltér az irodától), képviselő, nyilvántartó bíróság, tárhelyszolgáltató.
 4. Az adatkezelési tájékoztató jóváhagyása.
 5. A szakmai adatok jóváhagyása: 30 év, végzettségek, idézet, „Alapító, szakmai vezető”, kiemelt végelszámolás.
 6. Saját portréfotó, valódi partnerek és kuponok, a végleges ügyféladatlap PDF.
 7. Domain és tárhely; utána robots és sitemap élesítése, a Cégprofilba a webhely címe.
+
+- 28. kör (2026-11-01): Marcsi levele szerint minden munkanap du. 14-től van az irodában, a záróidő a Google Cégprofilból jön. Ügyfélfogadás mindenhol „H–P 14:00–18:00, előzetes egyeztetéssel” (kezdőlap, Kapcsolat, lábléc, impresszum, GYIK). A JSON-LD `openingHoursSpecification` bekerült (Mo–Fr 14:00–18:00). Ha a záróidő változik, a `common.py`-ban a `HOURS` / `HOURS_L` értéket és a `p_home.py` JSON-LD-jét kell átírni.

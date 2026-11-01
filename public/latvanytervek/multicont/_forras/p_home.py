@@ -153,7 +153,7 @@ home = f'''
       <h2>Kérdése van?</h2>
       <a class="tel" href="tel:{TEL}">{TEL_H}</a>
       <p><a href="mailto:{MAIL}">{MAIL}</a></p>
-      <p class="hrs">{HOURS}</p>
+      <p class="hrs">Ügyfélfogadás: {HOURS}</p>
       <button class="btn btn-w btn-s" type="button" data-dlg="visszahivas">Visszahívást kérek</button>
     </section>
   </aside>
@@ -161,7 +161,7 @@ home = f'''
 '''
 
 JSONLD = f'''
-<script type="application/ld+json">{{"@context":"https://schema.org","@type":"AccountingService","name":"MultiCont Center Kft.","url":"{BASE}","telephone":"{TEL}","email":"{MAIL}","logo":"{BASE}logo.svg","foundingDate":"2015-09-25","taxID":"25378669-2-13","address":{{"@type":"PostalAddress","streetAddress":"Meredek utca 2.","postalCode":"2040","addressLocality":"Budaörs","addressCountry":"HU"}},"areaServed":"HU","availableLanguage":["hu","de"],"founder":{{"@type":"Person","name":"Horváth Mária"}}}}</script>'''
+<script type="application/ld+json">{{"@context":"https://schema.org","@type":"AccountingService","name":"MultiCont Center Kft.","url":"{BASE}","telephone":"{TEL}","email":"{MAIL}","logo":"{BASE}logo.svg","foundingDate":"2015-09-25","taxID":"25378669-2-13","address":{{"@type":"PostalAddress","streetAddress":"Meredek utca 2.","postalCode":"2040","addressLocality":"Budaörs","addressCountry":"HU"}},"areaServed":"HU","availableLanguage":["hu","de"],"openingHoursSpecification":[{{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"14:00","closes":"18:00"}}],"founder":{{"@type":"Person","name":"Horváth Mária"}}}}</script>'''
 
 page("index.html", "MultiCont Center Kft. – Könyvelés, adózási támogatás, Budaörs",
      "Könyvelés, bérszámfejtés, adózási támogatás és végelszámolás Budaörsön és online, 2015 óta. Aktuális adóhírek, kalkulátorok, dokumentumtár, partnerközpont.",
