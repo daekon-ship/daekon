@@ -37,7 +37,10 @@ VELEMENY_JSON = os.path.join(TPL, "velemenyek.json")
 # Új logó (az ügyfél LOGO.png-je, 2026.10.26.; a repóban: arculat/logo-uj-2026-10-26.png) – a megosztókép ebből készül, változtatás nélkül.
 # Új fájlnév, hogy a közösségi oldalak ne a régi, gyorsítótárazott képet mutassák.
 UJ_LOGO = os.path.join(SRC, "arculat", "logo-uj-2026-10-26.png")
-OG_KEP = "og-kalocsageoworks-logo.jpg"
+# Sötét felületre az arculat saját sötét hátterű változata (fehér X, narancs ág, világos KALOCSA, narancs GEOWORKS) –
+# felhasználói döntés, 2026.11.02. (a sötét arculat visszaállításakor). A fekete X-es (LOGO.png) változat csak világos felületre.
+SOTET_LOGO = os.path.join(SRC, "arculat", "logo-allo-sotet.png")
+OG_KEP = "og-kalocsageoworks-sotet.jpg"
 
 
 def read(p):
@@ -73,6 +76,11 @@ for n in os.listdir(DIST):  # tartalom ürítése (a mappa maradhat nyitva pl. e
 # ---------------- index.html ----------------
 h = read(os.path.join(SRC, "index.html"))
 
+# munkaterület: Lajosmizse név szerint is (a körzetben van; az ügyfél kiemelt települése, 2026.11.02.)
+h = sub1(h, "Gépi földmunkát Kecskeméten és 45 km-es körzetében vállalok. A pontos helyszín alapján egyeztetünk.",
+         "Gépi földmunkát Kecskeméten és 45 km-es körzetében vállalok, például Lajosmizsén is. A pontos helyszín alapján egyeztetünk.",
+         "munkaterület: Lajosmizse")
+
 # meta description: 197 → 159 karakter, hogy a találati listában ne vágja le a kereső (tartalma változatlan)
 h = subre(h, r'<meta name="description" content="[^"]*">',
           '<meta name="description" content="Gépi földmunka Kecskeméten és 45 km-es körzetében: alapásás, közműárok-ásás, '
@@ -80,7 +88,7 @@ h = subre(h, r'<meta name="description" content="[^"]*">',
 
 # fej: kanonikus cím, közösségi előnézet, strukturált adat (csak valós, megadott adatok)
 h = sub1(h, '<meta name="robots" content="noindex, nofollow">',
-         '<meta name="robots" content="noindex, nofollow">\n'  # indexelés: csak a jogi/működési ellenőrzés után (lásd ELESITES.md)
+         '<meta name="robots" content="index, follow, max-image-preview:large">\n'  # indexelhető: felhasználói döntés, 2026.11.02. (JOGI-ATTEKINTES.md 7.)
          f'<link rel="canonical" href="{DOMAIN}/">\n'
          '<meta property="og:type" content="website">\n'
          '<meta property="og:locale" content="hu_HU">\n'
@@ -89,6 +97,7 @@ h = sub1(h, '<meta name="robots" content="noindex, nofollow">',
          '<meta property="og:description" content="Alapásás, közműárok-ásás, nyomvonalásás, tuskóeltávolítás, tereprendezés – kis géppel, szűk helyeken is. Hívás: +36 70 420 4170.">\n'
          f'<meta property="og:url" content="{DOMAIN}/">\n'
          f'<meta property="og:image" content="{DOMAIN}/img/{OG_KEP}">\n'
+         '<meta property="og:image:type" content="image/jpeg">\n'
          '<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="630">\n'
          '<meta property="og:image:alt" content="A Kalocsa GeoWorks logója és egy Kubota KX019-4 kisgép munka közben">\n'
          '<meta name="twitter:card" content="summary_large_image">\n'
@@ -235,19 +244,14 @@ if [c for _, c in _wp] != ["#F2F3F4", "#F27A21"]:
     sys.exit("BUILD STOP – az arculati logó felirata nem a várt szerkezetű (KALOCSA + GEOWORKS)")
 
 
-# A LOGO.png EREDETI színei (felhasználói kérés, 2026.10.26.: „az X egyik lába fekete”): fekete X (#30363C → #15181B
-# színátmenet, az arculat világos hátterű változata), fekete KALOCSA (#1E2226), narancs ág és GEOWORKS – a logó saját
-# fehér hátterén (a sötét fejlécen fehér lapon), ahogy a LOGO.png-ben. Negatív (fehér) változat sehol.
-FELIRAT_SOTET = "#1E2226"
-h = sub1(h, '<linearGradient id="kgl" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="102" y2="100">',
-         '<linearGradient id="kgd" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="102" y2="100"><stop offset="0" stop-color="#30363C"/>'
-         '<stop offset="1" stop-color="#15181B"/></linearGradient>'
-         '<linearGradient id="kgl" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="102" y2="100">', "sötét jel-színátmenet")
+# Sötét fejléc és lábléc (az eredeti sötét arculat, visszaállítva 2026.11.02.): a logó az arculat sötét hátterű változatában
+# (arculat/logo-allo-sotet.svg): világos X (#kgl színátmenet), narancs ág, világos KALOCSA (#F2F3F4), narancs GEOWORKS.
+FELIRAT_SZIN = "#F2F3F4"
 
 
 def logo_felirat(cimke):
     a = 'role="img" aria-label="Kalocsa GeoWorks"' if cimke else 'aria-hidden="true"'
-    return (f'<svg class="brand__word" viewBox="0 -21.5 225 55.5" {a}><path fill="{FELIRAT_SOTET}" d="{_wp[0][0]}"/>'
+    return (f'<svg class="brand__word" viewBox="0 -21.5 225 55.5" {a}><path fill="{FELIRAT_SZIN}" d="{_wp[0][0]}"/>'
             f'<path fill="#F27A21" transform="translate(0 33)" d="{_wp[1][0]}"/></svg>')
 
 
@@ -258,13 +262,13 @@ h = _r[0] + logo_felirat(False) + _r[1] + logo_felirat(True) + _r[2]  # fejléc:
 
 # Lábléc: a logó PONTOSAN a LOGO.png álló elrendezésében (felhasználói döntés, 2026.10.26.) – ugyanaz a jel és ugyanazok a betűk,
 # a LOGO.png képpont-koordinátáiban elhelyezve (jel: 166,165 · 12,431×; felirat: a KALOCSA 177–701 px, felső él 1301 px),
-# a sötét lábléc miatt a jóváhagyott negatív színekkel (fehér jel és KALOCSA, narancs). Kivágás: a jel és a felirat befoglaló doboza.
+# a sötét lábléc miatt az arculat sötét hátterű változatának színeivel. Kivágás: a jel és a felirat befoglaló doboza.
 _jel = re.search(r'<svg class="brand__mark" viewBox="0 0 102 100" aria-hidden="true">(.*?)</svg>', h, re.S).group(1)
 _ws = 524 / 181.14
 ALLO_LOGO = ('<svg class="ftr__logo" viewBox="166 165 1268 1293" role="img" aria-label="Kalocsa GeoWorks">'
              f'<g transform="translate(166 165) scale(12.431)">{_jel}</g>'
              f'<g transform="translate({177 - 2.29 * _ws:.3f} {1301 + 20.99 * _ws:.3f}) scale({_ws:.5f})">'
-             f'<path fill="{FELIRAT_SOTET}" d="{_wp[0][0]}"/><path fill="#F27A21" transform="translate(0 33)" d="{_wp[1][0]}"/></g></svg>')
+             f'<path fill="{FELIRAT_SZIN}" d="{_wp[0][0]}"/><path fill="#F27A21" transform="translate(0 33)" d="{_wp[1][0]}"/></g></svg>')
 h = subre(h, r'(<div class="ftr__brand">\s*)<span class="brand"><svg class="brand__mark".*?</svg><svg class="brand__word".*?</svg></span>',
           lambda m: m.group(1) + ALLO_LOGO, "lábléc: álló logó")
 # iOS kezdőképernyő-ikon (a favicon jeléből; tools/eles/apple-touch-icon.png)
@@ -272,7 +276,7 @@ h = sub1(h, '<link rel="icon" href="logo-jel.svg" type="image/svg+xml">',
          '<link rel="icon" href="logo-jel.svg?v=2" type="image/svg+xml">\n<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">', "apple-touch-icon")
 
 # az éles JS-nek és CSS-nek saját verzió (a statikus fájlok 1 évig gyorsítótárazódnak) – minden változtatáskor emelni kell
-CSS_V = "39-eles12"
+CSS_V = "39-eles13"
 h = sub1(h, '<script src="kalocsa.js?v=37" defer></script>', '<script src="kalocsa.js?v=37-eles8" defer></script>', "js verzió")
 h = sub1(h, '<link rel="stylesheet" href="kalocsa.css?v=39">', f'<link rel="stylesheet" href="kalocsa.css?v={CSS_V}">', "css verzió")
 for bad in ("Bemutató mód", "bemutató", "BEMUTATÓ", "kitöltendő", "egyeztetendő", "github", "látványterv"):
@@ -410,25 +414,12 @@ css += """
 @media (max-width:420px){.brand__word{width:122px;height:30px}}
 /* lábléc: álló logó a LOGO.png elrendezésében (1268 × 1293 egység) */
 .ftr__logo{display:block;width:118px;height:120px;margin:0 0 18px}
-.ftr__logo .km-a{fill:url(#kgd)}
+.ftr__logo .km-a{fill:url(#kgl)}
 .ftr__logo .km-b{fill:url(#kgo)}
 @media (max-width:860px){.ftr__logo{width:108px;height:110px}}
-/* fejléc (főoldal, 404, impresszum): a logó eredeti színeiben, háttér nélkül (a felhasználó kérésére, 2026-10-26) */
+/* fejléc (főoldal, 404, impresszum): az eredeti sötét fejléc, a logó sötét hátterű változatában, doboz nélkül */
 .hdr .brand{flex:none}
-.hdr .brand__mark .km-a{fill:url(#kgd)}
 @media (max-width:420px){.hdr .brand{gap:7px}.hdr .brand__mark{width:30px;height:30px}.hdr .brand__word{width:106px;height:26px}}
-/* fehér fejléc és lábléc (a felhasználó kérésére, 2026-10-26): a logó eredeti színeiben, doboz nélkül */
-.hdr,.hdr.is-scrolled{background:#fff;backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:0 1px 0 rgba(0,0,0,.08)}
-.hdr.is-scrolled{box-shadow:0 2px 14px rgba(0,0,0,.22)}
-.hdr::before{display:none}
-@media (min-width:1181px){.nav a{color:#2B3137}.nav a:hover{color:#0F1215}.nav a.is-active{color:var(--o-dk)}}
-@media (max-width:1180px){.burger{background:#F1F3F5;border-color:#D5DADF}.burger span{background:#1E2226}}
-.ftr{background:#fff;color:#4A525A;border-top:1px solid #E3E6E9}
-.ftr__grid{border-bottom-color:#E3E6E9}
-.ftr__h{color:var(--o-dk)}
-.ftr a{color:#1E2226}
-.ftr a:hover{color:var(--o-dk)}
-.ftr em{color:#5F676F}
 /* 320 px-es (nem mobil-emulált) ablakban a Kapcsolat szövegoszlopa 10 px-szel kilógott (rácselem min-width:auto) */
 .quote-grid>*{min-width:0}
 .rev__act .btn{text-align:center}
@@ -445,8 +436,14 @@ for r in sorted(refs):
     os.makedirs(os.path.dirname(os.path.join(DIST, r)) or DIST, exist_ok=True)
     shutil.copy2(s, os.path.join(DIST, r))
 
-# favicon (és a 404/impresszum fejlécének jele): a LOGO.png eredeti színei – fehér lekerekített lap, fekete X, narancs ág
+# favicon: a LOGO.png eredeti színei – fehér lekerekített lap, fekete X, narancs ág (böngészőfülön, világos és sötét sávon is látszik)
 _jp = re.findall(r'<path class="km-[ab]" d="([^"]+)"/>', _jel)
+# a 404/impresszum sötét fejlécének jele: a sötét hátterű változat (világos X, narancs ág), háttér nélkül
+write(os.path.join(DIST, "logo-jel-sotet.svg"),
+      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 102 100"><defs>'
+      '<linearGradient id="o" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F89545"/><stop offset="1" stop-color="#E0620E"/></linearGradient>'
+      '<linearGradient id="l" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="102" y2="100"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#CDD3D9"/></linearGradient>'
+      f'</defs><path d="{_jp[0]}" fill="url(#o)"/><path d="{_jp[1]}" fill="url(#l)"/><path d="{_jp[2]}" fill="url(#l)"/></svg>\n')
 write(os.path.join(DIST, "logo-jel.svg"),
       '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs>'
       '<linearGradient id="o" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F89545"/><stop offset="1" stop-color="#E0620E"/></linearGradient>'
@@ -455,12 +452,15 @@ write(os.path.join(DIST, "logo-jel.svg"),
       f'<path d="{_jp[0]}" fill="url(#o)"/><path d="{_jp[1]}" fill="url(#d)"/><path d="{_jp[2]}" fill="url(#d)"/></g></svg>\n')
 
 # közösségi megosztókép, 1200×630 JPG (a WebP-t nem minden platform kezeli):
-# bal fele az ügyfél új logója VÁLTOZTATÁS NÉLKÜL (fehér alapú LOGO.png, arányosan kicsinyítve), jobb fele valós munkafotó (Kubota KX019-4)
+# bal fele az arculat sötét hátterű álló logója VÁLTOZTATÁS NÉLKÜL (arculat/logo-allo-sotet.png, átlátszó, arányosan kicsinyítve)
+# az oldal grafit hátterén, jobb fele valós munkafotó (Kubota KX019-4)
 from PIL import Image
-og = Image.new("RGB", (1200, 630), (255, 255, 255))
-_lg = Image.open(UJ_LOGO).convert("RGBA")
-_lg = _lg.resize((round(_lg.width * 560 / _lg.height), 560), Image.LANCZOS)
-og.paste(_lg, ((600 - _lg.width) // 2, 35), _lg)
+og = Image.new("RGB", (1200, 630), (0x2B, 0x31, 0x37))
+_lg = Image.open(SOTET_LOGO).convert("RGBA")
+_lg = _lg.resize((round(_lg.width * 500 / _lg.height), 500), Image.LANCZOS)
+og.paste(_lg, ((600 - _lg.width) // 2, 65), _lg)
+# favicon.ico a régi kliensekhez és a linkelőnézetekhez, amelyek nem a <link rel="icon">-t, hanem a /favicon.ico-t kérik
+Image.open(os.path.join(TPL, "apple-touch-icon.png")).convert("RGBA").save(os.path.join(DIST, "favicon.ico"), sizes=[(16, 16), (32, 32), (48, 48)])
 _ft = Image.open(os.path.join(SRC, "img", "kisgep-kx019-1200.webp")).convert("RGB")
 _ft = _ft.resize((600, round(_ft.height * 600 / _ft.width)), Image.LANCZOS)
 og.paste(_ft.crop((0, 150, 600, 780)), (600, 0))
@@ -481,6 +481,10 @@ for name in ("impresszum.html", "404.html", "robots.txt", "apple-touch-icon.png"
     t = read(os.path.join(TPL, name))
     # új logó a kisoldalakon is; a CSS-hivatkozás mindig az aktuális verzió (ne a gyorsítótárból jöjjön régi stílus)
     t = sub1(t, '<span class="brand__txt"><b>Kalocsa <span style="color:#F27A21">GeoWorks</span></b></span>', logo_felirat(True), f"{name}: logó")
+    t, n = re.subn(r'<img src="(/?)logo-jel\.svg" width="40" height="40" alt="">',
+                   r'<img src="\1logo-jel-sotet.svg" width="40" height="40" alt="">', t)
+    if n != 1:
+        sys.exit(f"BUILD STOP – {name}: fejléc-jel {n} db")
     t = t.replace('logo-jel.svg"', 'logo-jel.svg?v=2"')  # új színű jel – a böngésző ne a gyorsítótárból vegye a régit
     t, n = re.subn(r'kalocsa\.css\?v=[0-9A-Za-z-]+', f"kalocsa.css?v={CSS_V}", t)
     if n != 1:
@@ -500,14 +504,14 @@ if "{{" in ht:
     sys.exit("BUILD STOP – kitöltetlen .htaccess-helyőrző")
 write(os.path.join(DIST, ".htaccess"), ht)
 
-# indexeléshez előkészítve, de NEM feltöltendő (külön mappa)
-ready = os.environ.get("KGW_READY") or os.path.join(ROOT, "indexeleshez-kesz")
-os.makedirs(ready, exist_ok=True)
-# sitemap: csak a ténylegesen kikerülő oldalak (az adatkezelési tájékoztató csak a véglegesítése után)
-pages = [("/", "monthly", "1.0"), ("/impresszum.html", "yearly", "0.2")] + ([("/adatkezeles.html", "yearly", "0.2")] if HAS_PRIVACY else [])
-write(os.path.join(ready, "sitemap.xml"), '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
-      + "".join(f"  <url><loc>{DOMAIN}{p}</loc><changefreq>{c}</changefreq><priority>{pr}</priority></url>\n" for p, c, pr in pages) + "</urlset>\n")
-shutil.copy2(os.path.join(TPL, "robots-vegleges.txt"), os.path.join(ready, "robots.txt"))
+# sitemap (az oldal 2026.11.02. óta indexelhető): csak a ténylegesen kikerülő oldalak; a lastmod a forrásfájl utolsó módosítása
+import datetime
+def _mod(p):
+    return datetime.date.fromtimestamp(os.path.getmtime(p)).isoformat()
+pages = [("/", max(_mod(os.path.join(SRC, "index.html")), _mod(__file__))),  # a főoldalt a build is módosítja
+         ("/impresszum.html", _mod(os.path.join(TPL, "impresszum.html")))] + ([("/adatkezeles.html", _mod(os.path.join(TPL, "adatkezeles.html")))] if HAS_PRIVACY else [])
+write(os.path.join(DIST, "sitemap.xml"), '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+      + "".join(f"  <url><loc>{DOMAIN}{p}</loc><lastmod>{d}</lastmod></url>\n" for p, d in pages) + "</urlset>\n")
 
 total = 0
 for rt, _, fs in os.walk(DIST):

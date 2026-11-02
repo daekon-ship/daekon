@@ -1,4 +1,6 @@
-# Kalocsa GeoWorks – ideiglenes: a keresőindexelés a jogi és működési ellenőrzésig tiltva.
-# Végleges változat: indexeleshez-kesz/robots.txt (+ sitemap.xml)
+# Kalocsa GeoWorks - kalocsageoworks.com
+# Az oldal nyilvanos es indexelheto (2026.11.02.). Ekezet nelkul, hogy minden robot es bongeszo helyesen olvassa.
 User-agent: *
-Disallow: /
+Allow: /
+
+Sitemap: https://kalocsageoworks.com/sitemap.xml
