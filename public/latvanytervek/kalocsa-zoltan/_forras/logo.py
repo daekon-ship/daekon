@@ -108,8 +108,9 @@ files = {
     "jel-sotet.svg": svg(102, 100, mark(LIGHT, ORANGE)),
 }
 for n, data in files.items(): (ART / n).write_text(data, encoding="utf-8"); print("arculat/" + n)
-fav = (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">{defs(ORANGE, LIGHT)}<rect width="100" height="100" rx="20" fill="{GRAPH}"/>'
-       f'{mark(LIGHT, ORANGE, 17.5, 18, .64)}</svg>\n')
+# favicon / ikon: az ügyfél eredeti logószíneiben – fehér alap, sötét X, narancs szár (ügyfélkérés, 2026.11.02.)
+fav = (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">{defs(ORANGE, INK)}<rect width="100" height="100" rx="20" fill="#FFFFFF"/>'
+       f'{mark(INK, ORANGE, 14, 15, .7)}</svg>\n')
 (ROOT / "logo-jel.svg").write_text(fav, encoding="utf-8")
 (ROOT / "logo.svg").write_text(files["logo-fekvo-sotet.svg"], encoding="utf-8")
 # inline jel az oldalhoz (CSS-ből színezhető: .km-a = fő szín, .km-b = narancs szár)

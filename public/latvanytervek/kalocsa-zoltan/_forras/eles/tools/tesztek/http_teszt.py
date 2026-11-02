@@ -118,7 +118,7 @@ ok(f'href="{GPROF}" target="_blank" rel="noopener noreferrer"' in html, 'a Googl
 ok(not re.search(r'<script[^>]+src="https?://', html) and 'googleapis' not in html and 'maps.google' not in html.replace(GPROF, ''), 'nincs külső (Google) szkript vagy beágyazás')
 ok('rcard' not in html or 'Forrás: Google' in html, 'véleménykártya csak forrásmegjelöléssel')
 ok(html.count('class="brand__word"') == 1 and html.count('class="ftr__logo"') == 1 and 'brand__txt' not in html, 'új logó: fejléc jel + kétsoros felirat, lábléc álló logó (LOGO.png elrendezés)')
-for _u in ('/img/og-kalocsageoworks-logo.jpg', '/apple-touch-icon.png', '/logo-jel.svg'):
+for _u in ('/img/og-kalocsageoworks-logo.jpg', '/apple-touch-icon.png', '/logo-jel.svg', '/favicon.ico', '/favicon-32.png', '/icon-192.png'):
     _s, _h, _b = kerdes(BASE + _u)
     ok(_s == 200 and len(_b) > 300, f'{_u} → 200 ({_s}, {len(_b)} bájt)')
 ok('og-kalocsageoworks-logo.jpg' in html, 'megosztókép: az új logós kép van megadva')
@@ -151,6 +151,7 @@ s, h, b = kerdes(BASE + '/impresszum.html')
 ok(s == 200 and b'noindex' in b, f'impresszum 200 + noindex ({s})')
 s, h, b = kerdes(BASE + '/robots.txt')
 ok(s == 200 and re.search(rb'Disallow:\s*/\s*$', b, re.M), f'robots.txt: Disallow: / ({s})')
+ok(re.search(rb'User-agent:\s*facebookexternalhit\s*\nAllow:\s*/', b, re.I), 'robots.txt: link-előnézet (facebookexternalhit) engedélyezve')
 s, *_ = kerdes(BASE + '/sitemap.xml')
 ok(s == 404, f'sitemap.xml még nincs fent (szándékos, indexelésig) ({s})')
 

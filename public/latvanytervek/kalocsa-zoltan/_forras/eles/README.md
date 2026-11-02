@@ -5,7 +5,7 @@ Az éles oldal a jóváhagyott látványtervből (`../../`) **build-lépéssel**
 ## Jelenlegi éles állapot (telefonos bemutatkozó oldal)
 - Nincs adatbekérés: az ajánlatkérő űrlap és a beküldő JS az éles buildből kikerül; a szerver minden POST/PUT/DELETE/PATCH kérést 405-tel elutasít (`tools/eles/htaccess`).
 - Minden korábbi ajánlatkérő gomb hívógomb: `tel:+36704204170`.
-- Indexelés tiltva: `noindex` meta + `X-Robots-Tag` + `robots.txt Disallow: /`. Végleges `robots-vegleges.txt` + `sitemap.xml` előkészítve.
+- Indexelés tiltva: `noindex` meta + `X-Robots-Tag` + `robots.txt Disallow: /` – a link-előnézet robotjai (Facebook/Messenger, WhatsApp, Viber, Telegram, X, LinkedIn) kivételek, hogy megosztáskor látsszon a logó és a megosztókép. Végleges `robots-vegleges.txt` + `sitemap.xml` előkészítve.
 - Térkép: Leaflet 1.9.4 saját tárhelyről (`tools/vendor/`, a build a hivatalos SRI-hash-sel ellenőrzi); kívülről csak az OpenStreetMap-csempék töltődnek.
 - Ajánlatkérő- és statisztika-backend: `../backend/` – nincs telepítve.
 

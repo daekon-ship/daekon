@@ -259,12 +259,14 @@ h = subre(h, r'(<div class="ftr__brand">\s*)<span class="brand"><svg class="bran
           lambda m: m.group(1) + ALLO_LOGO, "lábléc: álló logó")
 # iOS kezdőképernyő-ikon (a favicon jeléből; tools/eles/apple-touch-icon.png)
 h = sub1(h, '<link rel="icon" href="logo-jel.svg" type="image/svg+xml">',
-         '<link rel="icon" href="logo-jel.svg" type="image/svg+xml">\n<link rel="apple-touch-icon" href="apple-touch-icon.png">', "apple-touch-icon")
+         '<link rel="icon" href="/favicon.ico" sizes="48x48">\n<link rel="icon" href="logo-jel.svg" type="image/svg+xml">\n'
+         '<link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">\n<link rel="icon" href="icon-192.png" type="image/png" sizes="192x192">\n'
+         '<link rel="apple-touch-icon" href="apple-touch-icon.png">', "ikonok")
 
 # az éles JS-nek és CSS-nek saját verzió (a statikus fájlok 1 évig gyorsítótárazódnak) – minden változtatáskor emelni kell
-CSS_V = "39-eles8"
+CSS_V = "40-eles9"
 h = sub1(h, '<script src="kalocsa.js?v=37" defer></script>', '<script src="kalocsa.js?v=37-eles8" defer></script>', "js verzió")
-h = sub1(h, '<link rel="stylesheet" href="kalocsa.css?v=39">', f'<link rel="stylesheet" href="kalocsa.css?v={CSS_V}">', "css verzió")
+h = sub1(h, '<link rel="stylesheet" href="kalocsa.css?v=40">', f'<link rel="stylesheet" href="kalocsa.css?v={CSS_V}">', "css verzió")
 for bad in ("Bemutató mód", "bemutató", "BEMUTATÓ", "kitöltendő", "egyeztetendő", "github", "látványterv"):
     if bad.lower() in h.lower():
         sys.exit(f"BUILD STOP – index.html még tartalmazza: {bad}")
@@ -439,7 +441,7 @@ for f, want in LEAFLET_SRI.items():
             sys.exit(f"BUILD STOP – a Leaflet {f} nem egyezik a hivatalos hash-sel")
 
 # ---------------- saját éles fájlok ----------------
-for name in ("impresszum.html", "404.html", "robots.txt", "apple-touch-icon.png") + (("adatkezeles.html",) if HAS_PRIVACY else ()):
+for name in ("impresszum.html", "404.html", "robots.txt", "apple-touch-icon.png", "favicon.ico", "favicon-32.png", "icon-192.png", "icon-512.png") + (("adatkezeles.html",) if HAS_PRIVACY else ()):
     if not name.endswith(".html"):
         shutil.copy2(os.path.join(TPL, name), os.path.join(DIST, name))
         continue

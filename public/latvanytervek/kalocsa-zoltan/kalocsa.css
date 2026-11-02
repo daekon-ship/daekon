@@ -498,3 +498,21 @@ p{margin:0 0 1em}
 .fgrid--three>.ftile:first-child{grid-column:1/-1}
 .fgrid--three>.ftile:first-child .ftile__img{aspect-ratio:4/3}
 .fgrid--three>.ftile:first-child .ftile__img img{object-position:50% 62%}
+/* ===== Fehér fejléc, a logó az ügyfél eredeti színeiben (sötét X + narancs) – ügyfélkérés, 2026.11.02. ===== */
+.hdr,.hdr.is-scrolled{background:#fff;backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:0 1px 0 rgba(20,24,28,.08),0 6px 18px -12px rgba(20,24,28,.35)}
+.hdr::before{display:none}
+.hdr .brand__mark .km-a{fill:url(#kgd)}
+.hdr .brand__txt b{color:#1E2226}
+.hdr .brand__word path:first-child{fill:#1E2226}
+.hdr .nav a{color:#3A4148}
+.hdr .nav a:hover{color:#1E2226}
+.hdr .nav a.is-active{color:#B34C06}
+.hdr .brand img{border-radius:8px}
+@media (max-width:860px){
+  .hdr .burger{background:#F3F4F5;border-color:rgba(20,24,28,.16)}
+  .hdr .burger span{background:#1E2226}
+  .hdr .nav{background:rgba(255,255,255,.98)}
+  .hdr .nav a{color:#1E2226;border-bottom-color:rgba(20,24,28,.08)}
+  .hdr .nav a.is-active{color:#B34C06}
+  .hdr .nav__tel{color:#B34C06!important}
+}
