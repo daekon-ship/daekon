@@ -1,27 +1,6 @@
-# Kalocsa GeoWorks – ideiglenes: a keresőindexelés a jogi és működési ellenőrzésig tiltva.
-# A link-előnézetet készítő robotok (Messenger/Facebook, WhatsApp, Viber, Telegram, X, LinkedIn) beengedve,
-# hogy megosztáskor megjelenjen a logó, a cím és a leírás. A keresők (Google stb.) továbbra sem indexelnek.
-# Végleges változat: indexeleshez-kesz/robots.txt (+ sitemap.xml)
-User-agent: facebookexternalhit
-Allow: /
-
-User-agent: Facebot
-Allow: /
-
-User-agent: WhatsApp
-Allow: /
-
-User-agent: Viber
-Allow: /
-
-User-agent: TelegramBot
-Allow: /
-
-User-agent: Twitterbot
-Allow: /
-
-User-agent: LinkedInBot
-Allow: /
-
+# Kalocsa GeoWorks - kalocsageoworks.com
+# Az oldal nyilvanos es indexelheto (2026.11.02.). Ekezet nelkul, hogy minden robot es bongeszo helyesen olvassa.
 User-agent: *
-Disallow: /
+Allow: /
+
+Sitemap: https://kalocsageoworks.com/sitemap.xml

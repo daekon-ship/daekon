@@ -9,11 +9,6 @@ Az éles tárhelyen (MHosting) az FTP-gyökér a webgyökér, ezért a titkos co
 - **Statisztika-belépés:** zárolt, versenyhelyzet-mentes számláló (IP-nként 5 próbálkozás / 15 perc, a próba az ellenőrzés előtt rögzül); beállítatlan jelszónál zárva (503); munkamenet 30 perc tétlenség / 8 óra után lejár; kilépés CSRF-tokennel; `no-store`, `X-Frame-Options: DENY`, noindex; az `/admin/` mappában csak a `statisztika.php` érhető el.
 - Az ajánlatkérő és a statisztika **nincs telepítve**; az éles oldalon az ajánlatkérő gombok telefonhívást indítanak.
 
-## Ügyfélkérés (2026.11.02.)
-1. **Link-előnézet logó nélkül** (Messenger: „Nincs rendelkezésre álló információ”). Ok: az éles `robots.txt` (`Disallow: /`) a Facebook előnézet-robotját (`facebookexternalhit`) is kizárta, ezért az nem olvashatta be az oldalt, így sem a megosztóképet, sem az ikont. Javítás (`_forras/eles/tools/eles/robots.txt`): a link-előnézetet készítő robotok (Facebook/Messenger, WhatsApp, Viber, Telegram, X, LinkedIn) beengedve, a keresők továbbra is kizárva. Új ikonok az ügyfél eredeti logószíneiben (fehér alap, sötét X, narancs szár): `logo-jel.svg`, `favicon.ico`, `favicon-32.png`, `icon-192.png`, `icon-512.png`, `apple-touch-icon.png`.
-2. **Fehér fejléc, a logó az eredeti színeiben** (sötét X + narancs, „KALOCSA” sötét, „GEOWORKS” narancs): a fejléc és a mobilmenü fehér, menüpontok sötétszürkék, az aktív pont sötétnarancs (#B34C06, kontraszt fehéren ≈ 5,5:1). A lábléc és az oldal többi része változatlan.
-Élesítés: `tools/build.py` (CSS-verzió 40-eles9), majd `tools/deploy.py`; utána a Facebook Sharing Debuggerben (developers.facebook.com/tools/debug) „Újrabeolvasás” a https://kalocsageoworks.com/ címre, mert a Messenger a régi, üres előnézetet gyorsítótárazza.
-
 ## Ügyfélkérés – logó (2026.10.25.)
 - Zoltán pontosítása: a narancs szár maradjon „a levegőben” (rés a rúdtól – visszaállítva), a fekete részen zavaró illesztés tűnjön el → a sötét (ill. világos) részek közös, a jelhez kötött színátmenetet kapnak, a rúd és az alsó szár egy darabnak látszik.
 - A „GÉPI FÖLDMUNKA” alcím kikerült a logóból (álló és fekvő változat), valamint a fejlécből, a láblécből és a jogi oldalak fejlécéből.
@@ -234,3 +229,9 @@ Playwright: 1440 / 768 / 390 / 360 px – nincs vízszintes túlcsordulás, ninc
 - Asztali gép: a lap tetején a videó magától, hurokban ás; görgetéskor a görgetés vezérli.
 - Ha az oldal lejjebb görgetve nyílik meg (pl. #munkaterulet), a videó már nem vált tévesen fotókra.
 - Csökkentett mozgás (pl. Windows „Animációs effektusok: ki”): korábban csak állókép volt → most a videó hurokban megy rögzítés nélkül, megállító gombbal (mobilon is).
+
+## Állapot 2026.11.02. (felülírja a fenti napi bejegyzéseket)
+- Az ügyfél a fehér fejléc helyett a **korábbi sötét arculatot** kérte vissza: sötét fejléc és lábléc, a logó az arculat sötét hátterű változatában (fehér X, narancs ág). A fehér fejléces forrásmódosítás (`f2431c2`) ezért ebben a mappában nem került tovább.
+- **Link-előnézet:** a hiba oka a `robots.txt` teljes tiltása volt (a Facebook előnézet-robotját is kizárta). Megosztókép: `img/og-kalocsageoworks-sotet.jpg` (1200×630, sötét háttér, eredeti logó).
+- **Indexelés feloldva** (felhasználói döntés): Zoltán személyes bemutatkozó és referenciaoldala; a munkák számlázása egy partnercégen keresztül megy, saját vállalkozás 2027 tavaszán. A szövegek ezt átláthatóan jelzik (referenciák, impresszum).
+- Nyitott: adatkezelési tájékoztató, a partnercég adatai, a referenciák szerepkörének megerősítése – lásd a helyi `JOGI-ATTEKINTES.md`-t.

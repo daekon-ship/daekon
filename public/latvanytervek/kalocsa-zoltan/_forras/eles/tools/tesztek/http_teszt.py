@@ -102,7 +102,7 @@ g = Gyujto(); g.feed(html)
 tel = [a for a in g.a if a.startswith('tel:')]
 ok(len(tel) == TEL_DB and all(a == TEL for a in tel), f'{TEL_DB} hívólink, mind {TEL} (kapott: {len(tel)}, eltérő: {sorted(set(tel) - {TEL})})')
 ok(g.form == 0, f'nincs űrlapelem (form/input/textarea/select: {g.form})')
-ok('noindex' in g.meta.get('robots', ''), f'robots meta noindex ({g.meta.get("robots")!r})')
+ok('noindex' not in g.meta.get('robots', '') and 'index' in g.meta.get('robots', ''), f'robots meta: indexelhető ({g.meta.get("robots")!r})')
 ok(g.link.get('canonical') == 'https://kalocsageoworks.com/', f'canonical = https://kalocsageoworks.com/ ({g.link.get("canonical")!r})')
 ok(50 <= len(g.meta.get('description', '')) <= 160, f'meta description 50–160 karakter ({len(g.meta.get("description", ""))})')
 ok('<title>' in html and len(re.search(r'<title>(.*?)</title>', html).group(1)) <= 70, 'title legfeljebb 70 karakter')
@@ -118,10 +118,10 @@ ok(f'href="{GPROF}" target="_blank" rel="noopener noreferrer"' in html, 'a Googl
 ok(not re.search(r'<script[^>]+src="https?://', html) and 'googleapis' not in html and 'maps.google' not in html.replace(GPROF, ''), 'nincs külső (Google) szkript vagy beágyazás')
 ok('rcard' not in html or 'Forrás: Google' in html, 'véleménykártya csak forrásmegjelöléssel')
 ok(html.count('class="brand__word"') == 1 and html.count('class="ftr__logo"') == 1 and 'brand__txt' not in html, 'új logó: fejléc jel + kétsoros felirat, lábléc álló logó (LOGO.png elrendezés)')
-for _u in ('/img/og-kalocsageoworks-logo.jpg', '/apple-touch-icon.png', '/logo-jel.svg', '/favicon.ico', '/favicon-32.png', '/icon-192.png'):
+for _u in ('/img/og-kalocsageoworks-sotet.jpg', '/apple-touch-icon.png', '/logo-jel.svg', '/logo-jel-sotet.svg', '/favicon.ico'):
     _s, _h, _b = kerdes(BASE + _u)
     ok(_s == 200 and len(_b) > 300, f'{_u} → 200 ({_s}, {len(_b)} bájt)')
-ok('og-kalocsageoworks-logo.jpg' in html, 'megosztókép: az új logós kép van megadva')
+ok('og-kalocsageoworks-sotet.jpg' in html, 'megosztókép: a sötét hátterű logós kép van megadva')
 
 # 2) Erőforrások
 print('\n[2] Helyi erőforrások (képek, videók, betűk, szkriptek)')
@@ -148,12 +148,16 @@ ok(s == 404, f'nem létező oldal → 404 ({s})')
 if not HELYI:
     ok('Kalocsa GeoWorks' in b.decode('utf-8', 'replace') and 'tel:' in b.decode('utf-8', 'replace'), 'saját 404-oldal, hívólinkkel')
 s, h, b = kerdes(BASE + '/impresszum.html')
-ok(s == 200 and b'noindex' in b, f'impresszum 200 + noindex ({s})')
+ok(s == 200 and b'noindex' not in b and b'rel="canonical"' in b, f'impresszum 200, indexelhető, canonical ({s})')
 s, h, b = kerdes(BASE + '/robots.txt')
-ok(s == 200 and re.search(rb'Disallow:\s*/\s*$', b, re.M), f'robots.txt: Disallow: / ({s})')
-ok(re.search(rb'User-agent:\s*facebookexternalhit\s*\nAllow:\s*/', b, re.I), 'robots.txt: link-előnézet (facebookexternalhit) engedélyezve')
-s, *_ = kerdes(BASE + '/sitemap.xml')
-ok(s == 404, f'sitemap.xml még nincs fent (szándékos, indexelésig) ({s})')
+ok(s == 200 and not re.search(rb'Disallow:\s*/\s*$', b, re.M) and b'Sitemap: https://kalocsageoworks.com/sitemap.xml' in b, f'robots.txt: nincs teljes tiltás, sitemap megadva ({s})')
+ok(all(c < 128 for c in b), 'robots.txt: csak ASCII (nincs hibásan megjelenő ékezet)')
+s, h, b = kerdes(BASE + '/sitemap.xml')
+_locs = re.findall(rb'<loc>([^<]+)</loc>', b)
+ok(s == 200 and b'https://kalocsageoworks.com/' in _locs and all(x.startswith(b'https://kalocsageoworks.com/') for x in _locs), f'sitemap.xml 200, {len(_locs)} cím, mind kanonikus ({s})')
+for _l in _locs:
+    _s, *_ = kerdes(_l.decode())
+    ok(_s == 200, f'sitemap-cím 200: {_l.decode()} ({_s})')
 
 if HELYI:
     print(f'\nÖsszesen {db} ellenőrzés, {len(hibak)} hiba.')
@@ -173,9 +177,10 @@ ok(all('evil.example.com' not in urllib.parse.urlsplit(x[0]).netloc for x in l),
 print('\n[5] Biztonsági fejlécek')
 s, h, _ = kerdes(BASE + '/')
 for k, minta in (('strict-transport-security', 'max-age='), ('content-security-policy', "default-src 'self'"), ('x-content-type-options', 'nosniff'),
-                 ('referrer-policy', 'strict-origin'), ('x-frame-options', 'SAMEORIGIN'), ('permissions-policy', 'camera=()'), ('x-robots-tag', 'noindex')):
+                 ('referrer-policy', 'strict-origin'), ('x-frame-options', 'SAMEORIGIN'), ('permissions-policy', 'camera=()')):
     ok(minta in h.get(k, ''), f'{k}: {h.get(k, "(hiányzik)")[:70]}')
 ok("form-action 'none'" in h.get('content-security-policy', ''), "CSP form-action 'none' (űrlap kikapcsolva)")
+ok('noindex' not in h.get('x-robots-tag', ''), f'nincs noindex fejléc ({h.get("x-robots-tag")})')
 ok('x-powered-by' not in h, f'nincs X-Powered-By ({h.get("x-powered-by")})')
 
 # 6) Adatküldés tiltása
