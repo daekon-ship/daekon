@@ -9,9 +9,9 @@ vannak, hanem a js/config.js-ben — azokat a böngésző tölti be.
 import pathlib
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-V = '20261026b'
+V = '20261028e'
 # Motion (https://motion.dev) — vanilla JS build, rögzített verzió; ha nem tölt be, CSS-tartalék fut
-MOTION_TAG = '\n<script src="https://cdn.jsdelivr.net/npm/motion@11.18.2/dist/motion.js" crossorigin="anonymous"></script>'  # gyorsítótár-törő verzió
+MOTION_TAG = '\n<script src="js/vendor/motion-11.18.2.min.js"></script>'  # Motion (motion.dev), helyben kiszolgálva, MIT  # gyorsítótár-törő verzió
 
 ICONS = {
     'phone': '<path d="M5 4h3l2 5-2.5 1.5a11 11 0 0 0 5 5L14 13l5 2v3a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/>',
@@ -56,7 +56,8 @@ def sprite():
     return f'<svg width="0" height="0" style="position:absolute" aria-hidden="true">{syms}</svg>'
 
 def ico(name, cls=''):
-    return f'<svg class="ico {cls}" aria-hidden="true"><use href="#i-{name}"/></svg>'
+    # beágyazott útvonalak (nem <use>), hogy a Motion meg tudja „rajzolni" őket
+    return f'<svg class="ico {cls}" viewBox="0 0 24 24" aria-hidden="true">{ICONS[name]}</svg>'
 
 def head(title, desc, extra_css=''):
     return f'''<!doctype html>
@@ -67,14 +68,15 @@ def head(title, desc, extra_css=''):
 <title>{title}</title>
 <meta name="description" content="{desc}">
 <meta name="robots" content="noindex, nofollow">
-<meta name="theme-color" content="#F7F4EF">
+<meta name="theme-color" content="#FBF6F5">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="hu_HU">
 <meta property="og:title" content="{title}">
 <meta property="og:description" content="{desc}">
 <meta property="og:image" content="img/og.png">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="img/favicon-48.png" type="image/png">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
 <link rel="preload" href="fonts/hanken-var.woff" as="font" type="font/woff" crossorigin>
 <link rel="stylesheet" href="css/bb.css?v={V}">{extra_css}
 <script>document.documentElement.classList.remove('no-js')</script>
@@ -88,8 +90,8 @@ def demo_strip():
 
 NAV = [('Kezdőlap', 'index.html', ''), ('Szolgáltatások', None, 'kezelesek'), ('Rólam', 'index.html#rolam', 'rolam'),
        ('Galéria', 'index.html#galeria', 'galeria'), ('Árak', 'index.html#arak', 'arak'), ('Kapcsolat', 'index.html#kapcsolat', 'kapcsolat')]
-SUBS = [('Pedikűr és lábápolás', 'pedikur.html', '4 kezelés'), ('Manikűr és géllakk', 'manikur.html', '4 kezelés'),
-        ('Speciális lábápolás', 'specialis-labapolas.html', 'telefonos egyeztetés')]
+SUBS = [('Pedikűr és lábápolás', 'pedikur.html', '11 kezelés'), ('Manikűr és géllakk', 'manikur.html', '9 kezelés'),
+        ('Speciális lábápolás', 'specialis-labapolas.html', 'telefonos egyeztetés'), ('Előtte – utána', 'specialis-labapolas.html#elotte-utana', 'bemutató')]
 
 def link(href, is_index):
     if is_index and href.startswith('index.html#'):
@@ -101,7 +103,7 @@ def header(current, is_index=False):
     for label, href, key in NAV:
         if href is None:
             subs = ''.join(f'<a href="{h}"{" aria-current=\"page\"" if current == h else ""}><span>{l}</span><small>{m}</small></a>' for l, h, m in SUBS)
-            subs += f'<a href="{link("index.html#arak", is_index)}"><span>Teljes árlista</span><small>8 kezelés</small></a>'
+            subs += f'<a href="{link("index.html#arak", is_index)}"><span>Teljes árlista</span><small>25 tétel</small></a>'
             items.append(f'<div class="nav-dd"><button type="button" class="nav-dd-btn" aria-expanded="false" aria-controls="dd-svc">{label}<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 9l6 6 6-6"/></svg></button><div class="nav-dd-panel" id="dd-svc">{subs}</div></div>')
         else:
             cur = ' aria-current="page"' if (current == href) else ''
@@ -120,7 +122,7 @@ def header(current, is_index=False):
 {demo_strip()}
 <header class="hdr">
   <div class="wrap">
-    <a class="brand" href="index.html" aria-label="Balogh Beatrix — kezdőlap"><img class="logo" src="arculat/logo-kez-fejlec.svg" alt="Balogh Beatrix — kéz- és lábápolás" width="400" height="124"></a>
+    <a class="brand" href="index.html" aria-label="Beatrix Nails &amp; Pedikűr — kezdőlap"><img class="logo" src="arculat/logo-fejlec.svg" alt="Beatrix Nails &amp; Pedikűr" width="2388" height="717"></a>
     <nav class="nav" aria-label="Fő navigáció">{nav}</nav>
     <div class="hdr-cta">
       <a class="hdr-call" data-tel href="tel:+36706146070" aria-label="Hívás: +36 70 614 6070">{ico('phone')}</a>
@@ -148,23 +150,22 @@ def footer(is_index=False, mbar=True):
   <div class="wrap">
     <div class="ftr-grid">
       <div>
-        <a class="brand" href="index.html" style="margin-bottom:22px"><img class="logo" src="arculat/logo-kez-fejlec-sotet.svg" alt="Balogh Beatrix — kéz- és lábápolás" width="400" height="124"></a>
+        <a class="brand" href="index.html" aria-label="Beatrix Nails &amp; Pedikűr — kezdőlap" style="margin-bottom:22px"><img class="logo logo--full" src="arculat/logo-vilagos.svg" alt="Beatrix Nails &amp; Pedikűr" width="953" height="866"></a>
         <p style="max-width:24em">Kéz- és lábápolás előre egyeztetett időpontban.</p>
         <p><a data-tel href="tel:+36706146070" data-bind="phone">+36 70 614 6070</a><br><span data-bind="addr-line2">1111 Budapest</span>, <span data-bind="addr-line1">Bertalan Lajos utca 19.</span> <span class="tag" data-addr-status>Egyeztetés alatt</span></p>
       </div>
       <div><h4>Kezelések</h4><ul>
         <li><a href="pedikur.html">Pedikűr és lábápolás</a></li><li><a href="manikur.html">Manikűr és géllakk</a></li>
-        <li><a href="specialis-labapolas.html">Speciális lábápolás</a></li><li><a href="{l('index.html#arak')}">Árlista</a></li>
-        <li><a href="{l('index.html#utalvany')}">Ajándékutalvány</a></li></ul></div>
+        <li><a href="specialis-labapolas.html">Speciális lábápolás</a></li><li><a href="{l('index.html#arak')}">Árlista</a></li></ul></div>
       <div><h4>Foglalás</h4><ul>
         <li><a href="foglalas.html">Időpontfoglalás</a></li><li><a href="foglalas.html#foglalasaim">Foglalásaim (demó)</a></li>
         <li><a href="{l('index.html#gyik')}">Gyakori kérdések</a></li><li><a href="admin.html">Admin demó</a></li></ul></div>
       <div><h4>Tudnivalók</h4><ul>
         <li><a href="adatkezeles.html">Adatkezelési tájékoztató</a></li><li><a href="feltetelek.html">Foglalási és lemondási feltételek</a></li>
-        <li><a href="impresszum.html">Impresszum</a></li><li><a href="arculat/">Logó és arculat</a></li><li><a href="koncepcio.html">Tervezési koncepció</a></li></ul></div>
+        <li><a href="impresszum.html">Impresszum</a></li><li><a href="koncepcio.html">Tervezési koncepció</a></li><li><a href="jovahagyas.html">Jóváhagyási lista</a></li></ul></div>
     </div>
     <div class="ftr-bot">
-      <span>© <span data-year>2026</span> Balogh Beatrix · látványterv, nem éles weboldal</span>
+      <span>© <span data-year>2026</span> Beatrix Nails &amp; Pedikűr · Balogh Beatrix · látványterv, nem éles weboldal</span>
       <span>Tervezte: <a href="https://daekon.hu" rel="noopener">DAEKON</a></span>
     </div>
   </div>
@@ -189,7 +190,54 @@ def frame(art, tone='light', cls='', label=None, extra=''):
     return f'<div class="frame zoomable {cls}" data-art="{art}" data-tone="{tone}"{extra}></div>' if not lab else \
         f'<div class="frame zoomable {cls}" style="position:relative"><div class="frame" style="position:absolute;inset:0" data-art="{art}" data-tone="{tone}"></div>{lab}</div>'
 
-STREETS = '''<svg class="streets" viewBox="0 0 600 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="#CDBFAF" stroke-width="10" stroke-linecap="round"><path d="M-20 120 C 120 140, 260 90, 620 130"/><path d="M80 -20 L 140 420"/><path d="M-20 300 L 620 260"/><path d="M360 -20 C 340 120, 400 260, 380 420"/><path d="M500 -20 L 470 420"/></g><g fill="none" stroke="#DFD4C7" stroke-width="4"><path d="M-20 210 L 620 200"/><path d="M240 -20 L 260 420"/><path d="M-20 40 L 300 0"/></g><circle cx="300" cy="200" r="7" fill="#BE9A7B"/><circle cx="300" cy="200" r="20" fill="none" stroke="#BE9A7B" opacity=".5"/></svg>'''
+def shots(items, cls=''):
+    """Beatrix saját munkafotói egy sorban: [(fájlnév, alt, szélesség, magasság)]."""
+    f = ''.join(f'<figure class="shot rv-img" style="--d:{i*.07:.2f}s"><img src="img/munkak/{n}-k.jpg" alt="{a}" width="{w}" height="{h}" loading="lazy" decoding="async"></figure>'
+                for i, (n, a, w, h) in enumerate(items))
+    return f'<div class="shots {cls}">{f}</div>'
+
+MARQUEE = [('levendula-3', 'Levendula géllakk', 750, 760), ('gyongyhaz-4', 'Gyöngyházfényű géllakk', 760, 365), ('neon-2', 'Neon pink géllakk', 760, 709),
+           ('csokolade-1', 'Csokoládébarna géllakk', 760, 527), ('magenta-1', 'Magenta géllakk', 760, 273), ('gyongyhaz-1', 'Gyöngyház, szögletes forma', 760, 428)]
+def marquee_items():
+    one = lambda hidden: ''.join(f'<figure class="mq"{" aria-hidden=\"true\"" if hidden else ""}><img src="img/munkak/{n}-k.jpg" alt="{"" if hidden else a + " — Beatrix munkája"}" width="{w}" height="{h}" decoding="async"></figure>' for n, a, w, h in MARQUEE)
+    return one(False) + one(True)
+
+BA_PAIRS = [
+    ('par1', 'Lábujjak és körmök', 'bal láb'),
+    ('par2', 'Lábujjak és körmök', 'jobb láb'),
+    ('par3', 'Talp', 'bőrkeményedés'),
+]
+def ba_html():
+    tabs = ''.join(f'<button type="button" role="tab" class="ba-tab" id="ba-tab-{k}" aria-controls="ba-panel" aria-selected="{"true" if i == 0 else "false"}" tabindex="{0 if i == 0 else -1}" data-pair="{k}">'
+                   f'<span class="ba-thumbs" aria-hidden="true"><img src="img/elotte-utana/{k}-elotte-k.jpg" alt="" width="512" height="640" loading="lazy"><img src="img/elotte-utana/{k}-utana-k.jpg" alt="" width="512" height="640" loading="lazy"></span>'
+                   f'<span class="ba-tab-t"><span class="num">{i+1:02d}</span><b>{t}</b><small>{sub}</small></span></button>' for i, (k, t, sub) in enumerate(BA_PAIRS))
+    pairs = ''.join(f'<div class="ba-pair{" is-on" if i == 0 else ""}" data-pair="{k}"{"" if i == 0 else " hidden"}>'
+                    f'<figure class="ba-fig"><img src="img/elotte-utana/{k}-elotte.jpg" alt="{t} ({sub}) — kezelés előtt" width="960" height="1200" loading="lazy" decoding="async"><figcaption>Előtte</figcaption></figure>'
+                    f'<span class="ba-arrow" aria-hidden="true">{ico("arrow")}</span>'
+                    f'<figure class="ba-fig ba-fig--after"><img src="img/elotte-utana/{k}-utana.jpg" alt="{t} ({sub}) — kezelés után" width="960" height="1200" loading="lazy" decoding="async"><figcaption>Utána</figcaption></figure></div>'
+                    for i, (k, t, sub) in enumerate(BA_PAIRS))
+    return f'''<div class="ba rv" data-ba>
+      <div class="ba-tabs" role="tablist" aria-label="Előtte–utána párok">{tabs}</div>
+      <div class="ba-stage" id="ba-panel" role="tabpanel" aria-live="polite">
+        {pairs}
+        <div class="ba-veil" data-ba-veil>
+          <span class="ba-veil-ico">{ico('lock')}</span>
+          <b>Belső bemutató — jóváhagyásra vár</b>
+          <p>A kezelés előtti fotók nyilvános közzététele csak a vendég <b>írásos hozzájárulásával</b> lehetséges. A párosítást Beatrix ellenőrzi.</p>
+          <button type="button" class="btn btn--light" data-ba-show>Megtekintés (bemutató)</button>
+        </div>
+      </div>
+      <ul class="ba-status">
+        <li><span class="dot dot--warn"></span>Vendég-hozzájárulás: <b>függőben</b></li>
+        <li><span class="dot dot--warn"></span>Párosítás: <b>Beatrix megerősítésére vár</b></li>
+        <li><span class="dot"></span>Arc, személyes adat nem látható</li>
+      </ul>
+    </div>'''
+BA_HTML = ba_html()
+
+LOGO_INLINE = (ROOT / '_forras' / 'logo.inline.svg').read_text().strip()
+
+STREETS = '''<svg class="streets" viewBox="0 0 600 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="#D8C3C8" stroke-width="10" stroke-linecap="round"><path d="M-20 120 C 120 140, 260 90, 620 130"/><path d="M80 -20 L 140 420"/><path d="M-20 300 L 620 260"/><path d="M360 -20 C 340 120, 400 260, 380 420"/><path d="M500 -20 L 470 420"/></g><g fill="none" stroke="#E6D6D8" stroke-width="4"><path d="M-20 210 L 620 200"/><path d="M240 -20 L 260 420"/><path d="M-20 40 L 300 0"/></g><circle cx="300" cy="200" r="7" fill="#C9849A"/><circle cx="300" cy="200" r="20" fill="none" stroke="#C9849A" opacity=".5"/></svg>'''
 
 # ======================================================================
 # KEZDŐLAP
@@ -199,7 +247,7 @@ FAQ = [
      '<p>Az oldalon pár lépésben: kiválasztod a kezelést, a napot és a szabad időpontot, majd megadod a neved, e-mail-címed és telefonszámod. Regisztráció nem kell. Ha inkább beszélnél, hívj a <a data-tel href="tel:+36706146070" data-bind="phone">+36 70 614 6070</a> számon.</p>'
      '<p class="small muted">Ez a bemutató változat valódi időpontot nem rögzít.</p>'),
     ('Milyen pedikűrkezelést válasszak?',
-     '<p><b>Klasszikus pedikűr</b> (80 perc): alapos láb- és körömápolás. <b>Vizes pedikűr géllakkozással</b> (100 perc): áztatással induló teljes kezelés, tartós színnel. Ha csak a régi lakkot vinnéd le egy frissítő ápolással, a <b>lábgéllakk eltávolítás + mini pedikűr</b> (90 perc) a jó választás. Bizonytalan vagy? Hívj, és együtt kiválasztjuk.</p>'),
+     '<p>Az alap a <b>klasszikus esztétikai pedikűr</b>: bőrkeményedés eltávolítása, a körmök rövidítése és rendbetétele, peeling, tápláló krémezés. Kérhető <b>lábgéllakkal</b> és/vagy <b>talpmasszázzsal</b>. Kényeztetőbb alkalomhoz a <b>wellness pedikűr csomagok</b> (Frissítő, Relax, Deluxe) valók. Ha csak a régi lakk kerülne le, a <b>lábgéllakk végleges eltávolítása + mini pedikűr</b> a jó választás. Bizonytalan vagy? Hívj, és együtt kiválasztjuk.</p>'),
     ('Mi történik, ha módosítanám a foglalásomat?',
      '<p>A tervezett rendszerben a visszaigazoló e-mailben egyedi link lesz, amellyel a foglalást módosíthatod vagy lemondhatod — belépés nélkül. Telefonon is szólhatsz.</p>'
      f'<p>{tag("Megerősítendő")} A lemondási határidőt és a késésre vonatkozó szabályt Beatrix-szel még egyeztetjük.</p>'),
@@ -211,7 +259,8 @@ FAQ = [
     ('Hogyan egyeztethetek speciális lábápolási igényről?',
      '<p>Telefonon, időpontfoglalás előtt. Online nem kérünk egészségügyi adatot, ezért az egyéni igényeket személyesen beszéljük át, és ehhez igazítjuk az időpontot. <a href="specialis-labapolas.html">Bővebben a speciális lábápolásról</a></p>'),
     ('Mennyi ideig tartanak a kezelések?',
-     '<p>45 és 100 perc között — minden kezelésnél előre látod az időtartamot az <a href="#arak">árlistában</a>. A foglalási rendszer csak olyan kezdési időpontot kínál, amelybe a teljes kezelés belefér.</p>'),
+     '<p>Nagyjából 30 és 120 perc között — minden kezelésnél előre látod az időtartamot az <a href="#arak">árlistában</a>. A foglalási rendszer csak olyan kezdési időpontot kínál, amelybe a teljes kezelés belefér.</p>'
+     f'<p>{tag("Megerősítendő")} Az árlistán csak a talpmasszázs és a wellness csomagok ideje szerepel; a többi becslés.</p>'),
     ('Hogyan fizethetek?',
      f'<p>{tag("Megerősítendő")} A fizetési módokat (készpénz, kártya, átutalás) a végleges oldal előtt Beatrix-szel egyeztetjük.</p>'),
 ]
@@ -240,16 +289,34 @@ INDEX = f'''
           <div><dt>Helyszín</dt><dd><span data-bind="addr-label">Budapest XI.</span> <span class="tag" data-addr-status>Egyeztetés alatt</span></dd></div>
         </dl>
       </div>
-      <aside class="qb rv" style="--d:.2s" aria-labelledby="qb-h">
-        <div class="qb-head"><h2 id="qb-h">Gyorsfoglalás</h2><span>Bemutató</span></div>
-        <div class="qb-svcs" role="radiogroup" aria-label="Kezelés"></div>
+      <div class="hero-stage" aria-label="Beatrix munkáiból">
+        <span class="hs-glow hs-glow--a" aria-hidden="true"></span>
+        <span class="hs-glow hs-glow--b" aria-hidden="true"></span>
+        <svg class="hs-ring" viewBox="0 0 200 200" aria-hidden="true"><defs><path id="hsRing" d="M100 100m-82 0a82 82 0 1 1 164 0a82 82 0 1 1-164 0"/></defs><circle cx="100" cy="100" r="68" fill="none" stroke="currentColor" stroke-width=".6" opacity=".45"/><image href="arculat/emblema.svg" x="66" y="64" width="68" height="72"/><text><textPath href="#hsRing">BEATRIX · NAILS &amp; PEDIKŰR · KÉZ- ÉS LÁBÁPOLÁS ·</textPath></text></svg>
+        <figure class="hs-main"><img src="img/munkak/levendula-1.jpg" alt="Levendula géllakk — Beatrix munkája" width="1452" height="1600" fetchpriority="high"></figure>
+        <figure class="hs-sub"><img src="img/munkak/magenta-3-k.jpg" alt="Magenta géllakk — Beatrix munkája" width="760" height="408"></figure>
+        <figure class="hs-mini"><img src="img/munkak/gyongyhaz-2-k.jpg" alt="Gyöngyházfényű géllakk — Beatrix munkája" width="760" height="456"></figure>
+        <p class="hs-tag"><span>Beatrix saját munkái</span></p>
+      </div>
+    </div>
+    <aside class="qb qb--bar rv" style="--d:.2s" aria-labelledby="qb-h">
+      <div class="qb-head"><h2 id="qb-h">Gyorsfoglalás</h2><span>Bemutató</span></div>
+      <div class="qb-svcs" role="radiogroup" aria-label="Kezelés"></div>
+      <div class="qb-right">
         <p class="qb-sub">Legközelebbi szabad időpontok</p>
         <div class="qb-slots"></div>
         <a class="btn qb-go" href="foglalas.html">Tovább a foglaláshoz</a>
-        <p class="qb-note">A szabad időpontok mintaadatok — valódi foglalás nem történik.</p>
-      </aside>
-    </div>
+      </div>
+      <p class="qb-note">A szabad időpontok mintaadatok — valódi foglalás nem történik.</p>
+    </aside>
   </div>
+</section>
+
+<section class="ribbon-sec" aria-label="Beatrix munkáiból">
+  <div class="marquee" data-marquee>
+    <div class="marquee-track">{marquee_items()}</div>
+  </div>
+  <div class="wrap"><p class="ribbon-cap rv"><span>Beatrix saját munkái — mind a szalonban készült</span><a class="link" href="#galeria">Galéria {ico('arrow')}</a></p></div>
 </section>
 
 <section aria-label="Értékek">
@@ -270,27 +337,53 @@ INDEX = f'''
     </div>
     <div class="cats">
       <article class="cat cat--1 rv">
-        <div><div class="cat-top"><span class="num">01</span><span class="small muted">4 kezelés</span></div>
+        <div><div class="cat-top"><span class="num">01</span><span class="small muted">11 kezelés</span></div>
         <h3>Pedikűr és lábápolás</h3>
-        <p>Klasszikus és vizes pedikűr, lábgéllakk és eltávolítás — esztétika és komfort, alaposan.</p>
-        <ul data-cat-list="pedikur"></ul>
+        <p>Esztétikai pedikűr, lábgéllakk, talpmasszázs és három wellness pedikűr csomag — esztétika és komfort, alaposan.</p>
+        <ul data-cat-list="pedikur" data-limit="5"></ul>
         <div class="cat-actions"><a class="link" href="pedikur.html">Részletek {ico('arrow')}</a><a class="link" href="foglalas.html?kategoria=pedikur">Foglalás</a></div></div>
       </article>
       <article class="cat cat--2 rv" style="--d:.08s">
-        <div><div class="cat-top"><span class="num">02</span><span class="small muted">4 kezelés</span></div>
+        <div><div class="cat-top"><span class="num">02</span><span class="small muted">9 kezelés</span></div>
         <h3>Manikűr és géllakk</h3>
-        <p>Gépi manikűr, erősített géllakk, paraffinos kézápolás — tartós szín, visszafogott elegancia.</p>
-        <ul data-cat-list="manikur"></ul>
+        <p>Orosz gépi manikűr, erősített géllakk, műköröm szalonformába és díszítés — tartós szín, gondos kidolgozás.</p>
+        <ul data-cat-list="manikur" data-limit="5"></ul>
         <div class="cat-actions"><a class="link" href="manikur.html">Részletek {ico('arrow')}</a><a class="link" href="foglalas.html?kategoria=manikur">Foglalás</a></div></div>
       </article>
       <article class="cat cat--3 rv" style="--d:.16s">
         <div><div class="cat-top"><span class="num">03</span><span class="small muted">Telefonos egyeztetés</span></div>
         <h3>Speciális lábápolás</h3>
         <p>Ha a lábad több figyelmet kér, előbb beszéljük át telefonon. Az időpontot és a kezelés menetét ehhez igazítjuk.</p>
-        <ul><li><span>Ár és időtartam</span><span>egyeztetés után</span></li><li><span>Foglalás</span><span>telefonon</span></li></ul>
+        <ul data-cat-list="specialis" data-limit="3"></ul>
         <div class="cat-actions"><a class="link" href="specialis-labapolas.html">Részletek {ico('arrow')}</a><a class="link" data-tel href="tel:+36706146070">Hívás</a></div></div>
       </article>
     </div>
+  </div>
+</section>
+
+<section class="sec sec--dark sec--spec" id="specialis" aria-labelledby="sp-h">
+  <span class="sec-glow" aria-hidden="true"></span>
+  <div class="wrap spec">
+    <div class="spec-copy">
+      <p class="eyebrow rv">Speciális lábápolás · 03</p>
+      <h2 id="sp-h" class="rv">Ha a lábad <em>több figyelmet</em> kér.</h2>
+      <p class="lead rv">Vastag bőrkeményedés, tyúkszem, benőtt köröm, repedezett, száraz sarok: ezeknél a kezelés egy rövid beszélgetéssel kezdődik. Telefonon átbeszéljük, mire van szükséged, és az időpontot ehhez igazítjuk.</p>
+      <ol class="spec-steps rv">
+        <li><span class="num">01</span><b>Felhívsz</b><small>röviden elmondod, mire van szükséged</small></li>
+        <li><span class="num">02</span><b>Állapotfelmérés</b><small>személyesen, a szalonban</small></li>
+        <li><span class="num">03</span><b>Kezelés, kapkodás nélkül</b><small>a te tempódban</small></li>
+      </ol>
+      <div class="spec-cta rv">
+        <a class="btn btn--light" data-tel href="tel:+36706146070">{ico('phone')}Egyeztetek telefonon</a>
+        <a class="link link--light" href="specialis-labapolas.html#elotte-utana">Előtte – utána képek {ico('arrow')}</a>
+      </div>
+      <p class="spec-note rv">Szépségápolási, komfortot szolgáló kezelés — nem helyettesíti az orvosi ellátást. Online nem kérünk egészségügyi adatot.</p>
+    </div>
+    <aside class="spec-card rv" aria-label="Speciális lábápolás árai">
+      <p class="qb-sub" style="margin-top:0">Beatrix árlistája</p>
+      <ul class="sum-list" data-cat-list="specialis"></ul>
+      <p class="small" style="margin:14px 0 0;opacity:.75">Időpont csak telefonos egyeztetéssel.</p>
+    </aside>
   </div>
 </section>
 
@@ -308,23 +401,19 @@ INDEX = f'''
     </div>
     <p class="sr-only" id="priceLive" aria-live="polite"></p>
     <div class="prices" id="priceList"></div>
-    <p class="prices-note">{tag("Referenciaárak")} A Notino-profilon szereplő árak alapján — a végleges árlistát Beatrix hagyja jóvá.</p>
+    <p class="prices-note">{tag("Beatrix árlistája")} Az árak Beatrix saját árlistájáról valók. Ahol az árlistán nincs időtartam, ott a percek becsült értékek, a véglegesítésig egyeztetendők.</p>
   </div>
 </section>
 
 <section class="sec" id="rolam" aria-labelledby="rol-h">
-  <div class="wrap about">
-    <div class="portrait rv-img">
-      <span class="frame-label">Portré helye</span>
-      <div class="portrait-inner"><img src="arculat/jel-kez.svg" alt="" width="96" height="96" style="margin:0 auto 12px"><p>Ide Beatrix saját portréja kerül, a szalonban, természetes fényben.</p></div>
-    </div>
+  <div class="wrap about about--solo">
     <div>
       <p class="eyebrow rv">Rólam</p>
       <h2 id="rol-h" class="rv" style="margin-bottom:26px">Balogh Beatrix</h2>
       <blockquote class="rv">„Nálam a kezelés nem rohanás: időt szánok rá, hogy minden részlet a helyére kerüljön.”</blockquote>
       <div class="rv">
       <p>A szalonomban nyugodt, személyes légkörben dolgozom. Fontos számomra a gondos, igényes munka és a higiénikus környezet — hogy a kezelés alatt valóban kikapcsolhass. Lábápolásra nőket és férfiakat egyaránt szívesen várok.</p>
-      <ul class="about-list"><li>Klasszikus és esztétikai pedikűr</li><li>Lábgéllakkozás</li><li>Gépi manikűr, erősített géllakk</li><li>Paraffinos kézápolás</li></ul>
+      <ul class="about-list"><li>Esztétikai és wellness pedikűr</li><li>Lábgéllakk, talpmasszázs</li><li>Orosz gépi manikűr, erősített géllakk</li><li>Műköröm szalonformába</li></ul>
       <p class="about-sign">Beatrix</p>
       <p style="margin-top:22px">{tag("Jóváhagyandó bemutatkozó szöveg")}</p>
       </div>
@@ -332,7 +421,8 @@ INDEX = f'''
   </div>
 </section>
 
-<section class="sec sec--dark" aria-labelledby="elo-h">
+<section class="sec sec--dark sec--flower" aria-labelledby="elo-h">
+  <span class="sec-glow" aria-hidden="true"></span>
   <div class="wrap">
     <div class="sec-head">
       <div><p class="eyebrow rv">A szalonban</p><h2 id="elo-h" class="rv">Amire <em style="color:var(--gold)">számíthatsz</em>.</h2></div>
@@ -350,14 +440,13 @@ INDEX = f'''
   <div class="wrap">
     <div class="sec-head">
       <div><p class="eyebrow rv">Galéria</p><h2 id="gal-h" class="rv">Munkáim</h2></div>
-      <p class="rv muted">Ide Beatrix saját munkafotói kerülnek — a szűrés, a nagyítás és a lapozás már működik. Az éles változatban a képek az adminból tölthetők fel.</p>
+      <p class="rv muted">Beatrix saját munkái. Koppints egy képre a nagyításhoz — lapozni nyilakkal vagy húzással lehet.</p>
     </div>
     <div class="chips chips--scroll" id="galleryChips" role="group" aria-label="Galéria szűrése">
       <button class="chip" type="button" data-filter="all" aria-pressed="true">Mind</button>
-      <button class="chip" type="button" data-filter="pedikur" aria-pressed="false">Pedikűr</button>
-      <button class="chip" type="button" data-filter="manikur" aria-pressed="false">Manikűr</button>
-      <button class="chip" type="button" data-filter="gellakk" aria-pressed="false">Géllakk</button>
-      <button class="chip" type="button" data-filter="szalon" aria-pressed="false">Szalon</button>
+      <button class="chip" type="button" data-filter="elenk" aria-pressed="false">Élénk színek</button>
+      <button class="chip" type="button" data-filter="pasztell" aria-pressed="false">Pasztell</button>
+      <button class="chip" type="button" data-filter="natur" aria-pressed="false">Natúr és elegáns</button>
     </div>
     <div class="gallery" id="gallery"></div>
   </div>
@@ -365,24 +454,6 @@ INDEX = f'''
     <div class="lb-top"><span class="lb-count" aria-live="polite"></span><div class="lb-nav"><button class="lb-btn lb-fs" type="button" aria-label="Teljes képernyő">{ico('expand')}</button><button class="lb-btn lb-close" type="button" aria-label="Bezárás">{ico('x')}</button></div></div>
     <div class="lb-stage"></div>
     <div class="lb-bot"><div class="lb-cap"></div><div class="lb-nav"><button class="lb-btn lb-prev" type="button" aria-label="Előző kép">{ico('chev-l')}</button><button class="lb-btn lb-next" type="button" aria-label="Következő kép">{ico('chev-r')}</button></div></div>
-  </div>
-</section>
-
-<section class="sec sec--cream" id="utalvany" aria-labelledby="ut-h">
-  <div class="wrap voucher-wrap">
-    <div class="voucher rv" aria-hidden="true">
-      <div class="voucher-top"><img src="arculat/jel-kez.svg" alt="" style="height:48px;width:48px"><small>Ajándékutalvány<br>N° 0001</small></div>
-      <h3>Egy nyugodt óra,<br>neked szánva.</h3>
-      <div class="voucher-bot"><span>Érvényes egy választott kezelésre</span><b>Balogh Beatrix</b></div>
-    </div>
-    <div>
-      <p class="eyebrow rv">Ajándék</p>
-      <h2 id="ut-h" class="rv" style="margin-bottom:20px">Ajándékozz egy <em>nyugodt órát</em>.</h2>
-      <p class="rv">Utalvány egy kiválasztott kezelésre — pedikűrre, manikűrre vagy paraffinos kézápolásra. Elegáns, kézbe adható ajándék szülinapra, névnapra, vagy csak úgy.</p>
-      <p class="rv small muted">Az online vásárlás és fizetés egy későbbi, külön jóváhagyott fejlesztés. Addig az utalványról telefonon lehet érdeklődni.</p>
-      <p class="rv">{tag("Bemutató szekció · ügyféllel egyeztetendő")}</p>
-      <div class="rv" style="margin-top:24px"><a class="btn btn--ghost" data-tel href="tel:+36706146070">{ico('phone')}Érdeklődöm telefonon</a></div>
-    </div>
   </div>
 </section>
 
@@ -423,7 +494,7 @@ INDEX = f'''
 # ======================================================================
 # KATEGÓRIA-ALOLDALAK
 # ======================================================================
-def cat_page(num, cat, h1, lead, art, tone, guide, callout):
+def cat_page(num, cat, h1, lead, art, tone, guide, callout, photos='', extra=''):
     g = ''.join(f'<div class="rv" style="--d:{i*.08}s"><h3>{t}</h3><p>{d}</p></div>' for i, (t, d) in enumerate(guide))
     return f'''
 <section class="page-hero">
@@ -440,13 +511,14 @@ def cat_page(num, cat, h1, lead, art, tone, guide, callout):
     </div>
   </div>
 </section>
+{photos}
 <section class="sec sec--cream" id="kezelesek-lista" aria-labelledby="kl-h">
   <div class="wrap">
     <div class="sec-head"><div><p class="eyebrow rv">Kezelések</p><h2 id="kl-h" class="rv">Válaszd ki a <em>hozzád illőt</em>.</h2></div>
-    <p class="rv muted">Ár és időtartam minden kártyán — a foglalásnál a kiválasztott kezelés már előre be lesz jelölve. {tag("Referenciaárak")}</p></div>
+    <p class="rv muted">Ár és időtartam minden kártyán — a foglalásnál a kiválasztott kezelés már előre be lesz jelölve. {tag("Időtartam: becsült")}</p></div>
     <div class="svc-cards" data-svc-cards="{cat}"></div>
   </div>
-</section>
+</section>{extra}
 <section class="sec" aria-labelledby="g-h">
   <div class="wrap">
     <div class="sec-head sec-head--single"><p class="eyebrow rv">Segítség a választáshoz</p><h2 id="g-h" class="rv">Melyiket <em>válasszam</em>?</h2></div>
@@ -458,20 +530,40 @@ def cat_page(num, cat, h1, lead, art, tone, guide, callout):
 </section>'''
 
 PEDIKUR = cat_page('01', 'pedikur', 'Pedikűr és <em>lábápolás</em>',
-    'Ápolt, könnyű lábak — esztétikusan és kényelmesen. Minden kezelésnél előre látod az időtartamot és az árat, a foglalás pedig pár lépés.',
+    'Ápolt, könnyű lábak — esztétikusan és kényelmesen. Esztétikai pedikűr, lábgéllakk, talpmasszázs és három wellness csomag.',
     'labfurdo', 'light',
-    [('Alapos ápolást szeretnél', 'A <b>klasszikus pedikűr</b> a láb és a lábkörmök teljes ápolása — szín nélkül, 80 percben.'),
-     ('Színt is kérnél', 'A <b>vizes pedikűr géllakkozással</b> a legteljesebb kezelés. Ha a lábad rendben van és csak szín kell, elég a <b>géllakkozás lábra</b>.'),
-     ('Lekerülne a régi lakk', 'A <b>lábgéllakk eltávolítás + mini pedikűr</b> kíméletesen leszedi a régi lakkot, és egy rövidebb ápolással frissít.')],
-    f'<div><h2>Egyéni igényed van?</h2><p>Ha a lábad több figyelmet igényel, a <a href="specialis-labapolas.html">speciális lábápolást</a> telefonon egyeztetjük.</p></div><div class="acts"><a class="btn" data-tel href="tel:+36706146070">{ico("phone")}Hívás</a><a class="btn btn--ghost" href="specialis-labapolas.html">Bővebben</a></div>')
+    [('Alapos ápolást szeretnél', 'A <b>klasszikus esztétikai pedikűr</b>: bőrkeményedés eltávolítása, a körmök rendbetétele, peeling és tápláló krémezés.'),
+     ('Színt vagy masszázst is kérnél', 'Az esztétikai pedikűr kérhető <b>lábgéllakkal</b>, <b>talpmasszázzsal</b>, vagy mindkettővel egy alkalommal.'),
+     ('Egy kis kényeztetés', 'A <b>wellness pedikűr csomagok</b> (Frissítő, Relax, Deluxe) lábfürdővel, pakolással és hosszabb masszázzsal készülnek, 60–120 percben.')],
+    f'<div><h2>Egyéni igényed van?</h2><p>Bőrkeményedés, tyúkszem, benőtt köröm, repedezett sarok: a <a href="specialis-labapolas.html">speciális lábápolást</a> telefonon egyeztetjük.</p></div><div class="acts"><a class="btn" data-tel href="tel:+36706146070">{ico("phone")}Hívás</a><a class="btn btn--ghost" href="specialis-labapolas.html">Bővebben</a></div>',
+    photos=f'''<section class="sec" style="padding-bottom:0" aria-label="Beatrix pedikűr munkáiból"><div class="wrap">{shots([('pedikur-1', 'Ápolt lábkörmök pedikűr után — Beatrix munkája', 760, 410), ('pedikur-2', 'Rendezett lábkörmök pedikűr után — Beatrix munkája', 760, 410)], 'shots--two')}</div></section>''')
+
+def extras_html():
+    """Díszítés-árlista a manikűr oldalra (forrás: js/config.js extras — itt a statikus változata)."""
+    rows = [('Ombre, babyboomer', '250 Ft / köröm'), ('Festett francia', '150 Ft / köröm'),
+            ('Egyszerű díszítés <small>porok, matrica, nyomda</small>', '100–300 Ft / köröm'),
+            ('Bonyolultabb díszítés <small>porcelán virág, 3D minta</small>', '300–800 Ft / köröm'),
+            ('Köröm ékszer', '250–400 Ft / köröm'), ('Teli kövezés', '500–1 100 Ft / köröm'),
+            ('Köröm pótlása', 'a szolgáltatás 10%-a / köröm')]
+    li = ''.join(f'<li><span>{n}</span><span>{p}</span></li>' for n, p in rows)
+    return f'''
+<section class="sec" aria-labelledby="dsz-h">
+  <div class="wrap extras">
+    <div><p class="eyebrow rv">Díszítés</p><h2 id="dsz-h" class="rv">Egy kis <em>extra</em>.</h2>
+    <p class="rv">A géllakk és a műköröm ára <b>2 köröm tetszőleges díszítését</b> tartalmazza. Nem tartalmazza a teli kövezést, a festett franciát, az ombre és a babyboomer technikát — ezek árai körmönként:</p></div>
+    <ul class="sum-list rv">{li}</ul>
+  </div>
+</section>'''
 
 MANIKUR = cat_page('02', 'manikur', 'Manikűr és <em>géllakk</em>',
-    'Ápolt kéz, tartós szín, egy kis csend a nap közepén. Gépi manikűr, erősített géllakk és paraffinos kézápolás.',
+    'Ápolt kéz, tartós szín, gondos kidolgozás. Orosz gépi manikűr, erősített géllakk, műköröm szalonformába és díszítés.',
     'kezpihi', 'cream',
-    [('Ápolt, natúr kéz', 'A <b>gépi manikűr</b> rendbe teszi a körmöket és a bőrt, formára igazítva — 45 perc.'),
-     ('Tartós szín', 'Az <b>erősített géllakk</b> a saját körmön készül, erősítő alapréteggel. Az ár 9 000–10 000 Ft között, a köröm hosszától és állapotától függően.'),
-     ('Egy kis pihenés', 'A <b>paraffinos kézápolás</b> meleg pakolás a kéz bőrének. Önmagában vagy manikűr mellé is jó választás.')],
-    f'<div><h2>Műkörmöt viselsz?</h2><p>A <b>műköröm eltávolítás</b> külön kezelés — kíméletesen leszedjük, és előkészítjük a saját körmöd.</p></div><div class="acts"><a class="btn" href="foglalas.html?kezeles=mukorom-eltavolitas">{ico("calendar")}Eltávolítást foglalok</a></div>')
+    [('Ápolt, natúr kéz', 'Az <b>orosz gépi manikűr</b> rendbe teszi a körmöket és a bőrt. Mellé jó választás a <b>paraffinos kézápolás</b>.'),
+     ('Tartós szín a saját körmön', 'Az <b>erősített géllakk</b> orosz manikűrrel készül, XS vagy S méretben (9 000 / 10 000 Ft). Két köröm díszítése benne van.'),
+     ('Hosszabb köröm', 'A <b>műköröm szalonformába</b> XS, S és M méretben készül; a töltés külön kezelés, kedvezőbb áron.')],
+    f'<div><h2>Lekerülne a régi?</h2><p>A <b>géllakk eltávolítás manikűrrel</b> és a <b>műköröm eltávolítás</b> külön kezelés — kíméletesen leszedjük, és rendbe tesszük a saját körmöd.</p></div><div class="acts"><a class="btn" href="foglalas.html?kezeles=gellakk-eltavolitas">{ico("calendar")}Eltávolítást foglalok</a></div>',
+    photos=f'''<section class="sec" style="padding-bottom:0" aria-label="Beatrix manikűr munkáiból"><div class="wrap">{shots([('magenta-3', 'Magenta géllakk — Beatrix munkája', 760, 408), ('levendula-1', 'Levendula géllakk — Beatrix munkája', 690, 760), ('gyongyhaz-2', 'Gyöngyházfényű géllakk — Beatrix munkája', 760, 456)])}</div></section>''',
+    extra=extras_html())
 
 SPECIALIS = f'''
 <section class="page-hero">
@@ -483,12 +575,22 @@ SPECIALIS = f'''
         <h1 class="rv">Speciális <em>lábápolás</em></h1>
         <p class="lead rv">Ha a lábad több figyelmet igényel, a kezelés egy beszélgetéssel kezdődik. Telefonon átbeszéljük, mire van szükséged, és ehhez igazítjuk az időpontot.</p>
         <div class="hero-cta rv" style="margin:28px 0 0"><a class="btn" data-tel href="tel:+36706146070">{ico('phone')}<span data-bind="phone">+36 70 614 6070</span></a></div>
-        <p class="rv small muted" style="margin-top:16px">Ár és időtartam: egyeztetés után. {tag("Jóváhagyásra vár")}</p>
+        <p class="rv small muted" style="margin-top:16px">Időpont telefonos egyeztetéssel. <a href="#elotte-utana">Előtte – utána képek</a></p>
       </div>
-      <aside class="sumcard rv" style="--d:.15s"><p class="qb-sub" style="margin-top:0">Időpont egyeztetése</p><a class="contact-phone" data-tel href="tel:+36706146070" data-bind="phone" style="margin:4px 0 14px">+36 70 614 6070</a><p class="small muted" style="margin:0">Ár és időtartam az egyeztetés után derül ki. Online nem kérünk egészségügyi adatot.</p></aside>
+      <aside class="sumcard rv" style="--d:.15s"><p class="qb-sub" style="margin-top:0">Beatrix árlistája</p><ul class="sum-list" data-cat-list="specialis"></ul><a class="btn qb-go" data-tel href="tel:+36706146070">{ico('phone')}Időpontot egyeztetek</a><p class="small muted" style="margin:12px 0 0">Online nem kérünk egészségügyi adatot.</p></aside>
     </div>
   </div>
 </section>
+<section class="sec sec--ba" id="elotte-utana" aria-labelledby="ba-h">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><p class="eyebrow rv">Előtte – utána</p><h2 id="ba-h" class="rv">Ápolt lábak, <em>egy alkalom után</em>.</h2></div>
+      <p class="rv muted">Beatrix saját munkái a speciális pedikűrből, a kezelés előtt és után. Az eredmény a láb állapotától függően egyénenként eltér; a kezelés esztétikai, nem orvosi.</p>
+    </div>
+    {BA_HTML}
+  </div>
+</section>
+
 <section class="sec sec--cream" aria-labelledby="hz-h">
   <div class="wrap">
     <div class="sec-head sec-head--single"><p class="eyebrow rv">Menete</p><h2 id="hz-h" class="rv">Így <em>zajlik</em>.</h2></div>
@@ -549,38 +651,67 @@ IMPRESSZUM = legal('Impresszum',
 
 FELTETELEK = legal('Foglalási és lemondási feltételek',
     'A szabályokat Beatrix határozza meg; az alábbi kérdésekre kell válasz a végleges szöveghez.',
-    [('Eldöntendő kérdések', '<ul><li>Meddig lehet díjmentesen lemondani vagy módosítani (pl. 24 órával előtte)?</li><li>Mi történik késés esetén — rövidül a kezelés, vagy új időpont kell?</li><li>Van-e következménye az előzetes lemondás nélküli távolmaradásnak?</li><li>Kell-e előleg bármelyik kezeléshez? (A bemutató nem kezel fizetést.)</li><li>Milyen fizetési módok elérhetők a helyszínen?</li><li>Ajándékutalvány: érvényesség, beválthatóság.</li></ul>'),
+    [('Eldöntendő kérdések', '<ul><li>Meddig lehet díjmentesen lemondani vagy módosítani (pl. 24 órával előtte)?</li><li>Mi történik késés esetén — rövidül a kezelés, vagy új időpont kell?</li><li>Van-e következménye az előzetes lemondás nélküli távolmaradásnak?</li><li>Kell-e előleg bármelyik kezeléshez? (A bemutató nem kezel fizetést.)</li><li>Milyen fizetési módok elérhetők a helyszínen?</li></ul>'),
      ('A tervezett rendszer működése', '<p>Foglalás után visszaigazoló e-mail egyedi foglalási azonosítóval, naptármeghívóval és egy biztonságos módosítási/lemondási linkkel; a kezelés előtt emlékeztető. Regisztráció nem szükséges.</p>')])
 
 # ======================================================================
 # KONCEPCIÓ
 # ======================================================================
 KONCEPCIO = f'''
-<section class="page-hero">
+<section class="page-hero" style="padding-bottom:var(--sec)">
   <div class="wrap legal">
     <nav class="crumbs" aria-label="Morzsamenü"><a href="index.html">Kezdőlap</a><span aria-hidden="true">/</span><span aria-current="page">Tervezési koncepció</span></nav>
-    <p class="eyebrow">DAEKON · látványterv · 2. kör</p>
-    <h1>Tiszta, meleg, <em>könnyen foglalható</em>.</h1>
-    <p class="lead" style="margin-top:18px">Az első kör rajzolt illusztrációit és talpas betűit elvetettük. A második kör egyetlen, jól olvasható betűvel (Hanken Grotesk) és kép nélküli, színekkel tagolt felülettel dolgozik — a nyitóképen maga a foglalás áll. A fotóhelyekre Beatrix saját képei kerülnek.</p>
-    <h2>Mi változott</h2>
-    <ul><li>Betű: Hanken Grotesk mindenhol, mérsékelt méretekkel.</li><li>Nyitókép: élő gyorsfoglaló kártya kezelésválasztással és a legközelebbi szabad időpontokkal.</li><li>Kezelések: színkódolt kártyák (pedikűr — homok, manikűr — zsálya, speciális — eszpresszó).</li><li>Illusztrációk törölve; galéria és portré csak saját fotóval.</li></ul>
-    <p class="small muted">Korábbi anyagok: <a href="iranyok.html">három irány</a> · <a href="betuk.html">betűválasztó</a>. Részletes átadás: <code>ATADAS.md</code>.</p>
+    <p class="eyebrow">DAEKON · látványterv · bemutató változat</p>
+    <h1>Púderes, nyugodt, <em>Beatrix saját munkáival</em>.</h1>
+    <p class="lead" style="margin-top:18px">A látványterv Beatrix logójára, árlistájára és munkafotóira épül. A színvilág (púderes fehér, mély szilva, fáradt rózsa, levendula) a körmök és az árlista hangulatát követi; a betű egyetlen, jól olvasható család (Hanken Grotesk).</p>
+    <h2>Mi van a bemutató változatban</h2>
+    <ul>
+      <li>Nyitókép Beatrix fotóiból, forgó feliratos jelvénnyel és élő gyorsfoglalóval.</li>
+      <li>Árlista Beatrix saját árlistájáról (25 tétel), szűrhető, egy kattintással foglalható.</li>
+      <li>Kiemelt speciális lábápolás; az előtte–utána képek külön, jóváhagyáshoz kötött galériában.</li>
+      <li>Hatlépéses foglalás ütközésellenőrzéssel és admin demó — mindkettő csak bemutató, éles foglalás és e-mail nincs.</li>
+      <li>Animációk: Motion (motion.dev), csökkentett mozgás kérésekor kikapcsolnak.</li>
+    </ul>
+    <h2>Mi nem aktív</h2>
+    <ul><li>Éles foglalás, e-mail- és SMS-küldés.</li><li>Jogi dokumentumok (csak vázlat helyek).</li><li>Térkép, amíg a pontos cím nincs jóváhagyva.</li></ul>
+    <p class="small muted">Jóváhagyandó tételek: <a href="jovahagyas.html">jóváhagyási lista</a>. Korábbi anyagok: <a href="iranyok.html">irányok</a> · <a href="betuk.html">betűválasztó</a>.</p>
+  </div>
+</section>'''
+
+
+
+JOVAHAGYAS = '''
+<section class="page-hero" style="padding-bottom:var(--sec)">
+  <div class="wrap">
+    <nav class="crumbs" aria-label="Morzsamenü"><a href="index.html">Kezdőlap</a><span aria-hidden="true">/</span><span aria-current="page">Jóváhagyási lista</span></nav>
+    <div class="legal legal--wide">
+      <p class="eyebrow">Látványterv · Beatrix jóváhagyására vár</p>
+      <h1>Jóváhagyási lista</h1>
+      <div class="box"><p style="margin:0"><b>Egyetlen árat sem módosítottunk önállóan.</b> Az oldalon Beatrix A4-es kézápolás-árlistája és a lábápolási / wellness / díszítés árlistái szerepelnek. Ahol két forrás eltér, azt itt jelöljük — a döntés Beatrixé.</p></div>
+      <h2>1. Kézápolás — két eltérő árlista</h2><div class="apr-wrap"><table class="apr"><thead><tr><th scope="col">Tétel</th><th scope="col">Az oldalon most<br><small>(A4-es lista)</small></th><th scope="col">Másik árlista<br><small>(régebbi, álló)</small></th><th scope="col">Állapot</th></tr></thead><tbody><tr><td>Orosz gépi manikűr</td><td>5 500 Ft</td><td>5 000 Ft</td><td><span class="pill-s pill-s--warn">Döntés kell</span></td></tr><tr><td>Paraffinos kézápolás</td><td>6 500 Ft</td><td>5 500 Ft</td><td><span class="pill-s pill-s--warn">Döntés kell</span></td></tr><tr><td>Géllakk eltávolítás manikűrrel</td><td>6 500 Ft</td><td>5 500 Ft</td><td><span class="pill-s pill-s--warn">Döntés kell</span></td></tr><tr><td>Erősített géllakk — XS</td><td>9 000 Ft</td><td>8 000 Ft</td><td><span class="pill-s pill-s--warn">Döntés kell</span></td></tr><tr><td>Erősített géllakk — S</td><td>10 000 Ft</td><td>8 500 Ft</td><td><span class="pill-s pill-s--warn">Döntés kell</span></td></tr><tr><td>Műköröm XS — építés / töltés</td><td>9 500 / 8 500 Ft</td><td>8 500 / 8 000 Ft</td><td><span class="pill-s pill-s--warn">Döntés kell</span></td></tr><tr><td>Műköröm S — építés / töltés</td><td>12 000 / 11 000 Ft</td><td>10 000 / 9 500 Ft</td><td><span class="pill-s pill-s--warn">Döntés kell</span></td></tr><tr><td>Műköröm M — építés / töltés</td><td>14 000 / 13 000 Ft</td><td>11 000 / 10 500 Ft</td><td><span class="pill-s pill-s--warn">Döntés kell</span></td></tr><tr><td>Műköröm L — építés / töltés</td><td><i>nem szerepel</i></td><td>13 000 / 12 500 Ft</td><td><span class="pill-s pill-s--warn">Döntés kell</span></td></tr><tr><td>Rágott körömre építés</td><td><i>nem szerepel</i></td><td>+2 000 Ft</td><td><span class="pill-s pill-s--warn">Döntés kell</span></td></tr><tr><td>Műköröm eltávolítás manikűrrel</td><td>6 500 Ft <small>(Notino-profilról, Beatrix listáin így nincs)</small></td><td>5 500 Ft</td><td><span class="pill-s pill-s--warn">Döntés kell</span></td></tr><tr><td>Köröm pótlása</td><td>a szolgáltatás 10%-a / köröm</td><td>ugyanaz</td><td><span class="pill-s">Megerősítendő</span></td></tr></tbody></table></div>
+      <h2>2. Notino-profil — régi referenciaárak</h2><p>A Notino-profilon más árak és kezelésnevek szerepelnek. Az oldal Beatrix saját árlistáját követi; javasolt a Notino-adatlap frissítése.</p><div class="apr-wrap"><table class="apr"><thead><tr><th scope="col">Tétel a Notino-profilon</th><th scope="col">Notino</th><th scope="col">Beatrix árlistája (az oldalon)</th><th scope="col">Javaslat</th></tr></thead><tbody><tr><td>Klasszikus pedikűr (80 perc)</td><td>9 500 Ft</td><td>Klasszikus esztétikai pedikűr — 8 500 Ft</td><td>Notino frissítése</td></tr><tr><td>Vizes pedikűr géllakkozással (100 perc)</td><td>13 500 Ft</td><td>Esztétikai pedikűr + lábgéllakk — 12 500 Ft</td><td>Notino frissítése</td></tr><tr><td>Géllakkozás lábra</td><td>8 500 Ft</td><td>Lábgéllakk — 7 500 Ft</td><td>Notino frissítése</td></tr><tr><td>Lábgéllakk eltávolítás + mini pedikűr (90 perc)</td><td>8 500 Ft</td><td>6 500 Ft</td><td>Notino frissítése</td></tr></tbody></table></div>
+      <h2>3. Időtartamok</h2><p>A foglalási naptár ezekből számol, ezért a becsült értékeket pontosítani kell.</p><div class="apr-wrap"><table class="apr"><thead><tr><th scope="col">Kezelés</th><th scope="col">Becsült idő az oldalon</th><th scope="col">Forrás</th></tr></thead><tbody><tr><td>Klasszikus esztétikai pedikűr</td><td>60 perc</td><td>becslés</td></tr><tr><td>Esztétikai pedikűr + lábgéllakk</td><td>90 perc</td><td>becslés</td></tr><tr><td>Esztétikai pedikűr + talpmasszázs</td><td>90 perc</td><td>becslés</td></tr><tr><td>Esztétikai pedikűr + talpmasszázs + lábgéllakk</td><td>120 perc</td><td>becslés</td></tr><tr><td>Lábgéllakk (teli szín vagy francia)</td><td>60 perc</td><td>becslés</td></tr><tr><td>Lábgéllakk végleges eltávolítása + mini pedikűr</td><td>60 perc</td><td>becslés</td></tr><tr><td>Paraffinos lábápolás</td><td>30 perc</td><td>becslés</td></tr><tr><td>Orosz gépi manikűr</td><td>45 perc</td><td>becslés</td></tr><tr><td>Paraffinos kézápolás</td><td>45 perc</td><td>becslés</td></tr><tr><td>Géllakk eltávolítás manikűrrel</td><td>60 perc</td><td>becslés</td></tr><tr><td>Erősített géllakk XS / S</td><td>90 / 100 perc</td><td>becslés</td></tr><tr><td>Műköröm XS / S / M</td><td>120 / 135 / 150 perc</td><td>becslés</td></tr><tr><td>Műköröm eltávolítás manikűrrel</td><td>60 perc</td><td>becslés</td></tr><tr><td>Talpmasszázs</td><td>30 perc</td><td>Beatrix árlistája ✓</td></tr><tr><td>Wellness Frissítő / Relax / Deluxe</td><td>60 / 90 / 120 perc</td><td>Beatrix árlistája ✓</td></tr><tr><td>Speciális tételek (5)</td><td>— (telefonos egyeztetés)</td><td>megerősítendő</td></tr></tbody></table></div>
+      <h2>4. Szövegek, cím, egyéb adatok</h2><div class="apr-wrap"><table class="apr"><thead><tr><th scope="col">Téma</th><th scope="col">Jelenleg az oldalon</th><th scope="col">Állapot</th></tr></thead><tbody><tr><td>Pontos cím</td><td>Budapest XI., Bertalan Lajos u. 19. — „egyeztetés alatt” címkével. Másik ismert cím: Nagykáta, Dózsa György út 21. Térkép nincs élesítve.</td><td><span class="pill-s pill-s--warn">Döntés kell</span></td></tr><tr><td>Bemutatkozó szöveg és idézet</td><td>„Rólam” rész — „Jóváhagyandó bemutatkozó szöveg” címkével</td><td><span class="pill-s pill-s--warn">Döntés kell</span></td></tr><tr><td>Márkanév</td><td>Beatrix Nails &amp; Pedikűr (a logó alapján), mellette Balogh Beatrix</td><td><span class="pill-s">Megerősítendő</span></td></tr><tr><td>Logó</td><td>A küldött JPG-ből vektorizált SVG; élesítéshez az eredeti vektoros fájl kell</td><td><span class="pill-s">Megerősítendő</span></td></tr><tr><td>Nyitvatartás, munkarend, 15 perces puffer</td><td>Bemutató értékek a foglalási naptárban</td><td><span class="pill-s pill-s--warn">Döntés kell</span></td></tr><tr><td>Fizetési módok, lemondási határidő</td><td>GYIK-ben „Megerősítendő” címkével</td><td><span class="pill-s pill-s--warn">Döntés kell</span></td></tr><tr><td>Cukorbeteg vendégekre vonatkozó mondat</td><td>Speciális lábápolás oldal, „Megerősítendő megfogalmazás”</td><td><span class="pill-s">Megerősítendő</span></td></tr><tr><td>Wellness Deluxe: „francia vagy téli szín”</td><td>Az oldalon „teli szín” — valószínű elírás az árlistán</td><td><span class="pill-s">Megerősítendő</span></td></tr><tr><td>Ajándékutalvány</td><td>Levéve (nem ismert, hogy Beatrix árul-e)</td><td><span class="pill-s">Megerősítendő</span></td></tr></tbody></table></div>
+      <h2>5. Fotók és hozzájárulás</h2><div class="apr-wrap"><table class="apr"><thead><tr><th scope="col">Képcsoport</th><th scope="col">Hol látszik</th><th scope="col">Állapot</th></tr></thead><tbody><tr><td>Manikűr / géllakk fotók (12 db, arcok kivágva)</td><td>Főoldal: nyitókép, fotószalag, galéria; manikűr oldal</td><td>Vendég-hozzájárulás <span class="pill-s pill-s--warn">Döntés kell</span></td></tr><tr><td>Pedikűr utáni lábfotók (2 db)</td><td>Pedikűr oldal</td><td>Vendég-hozzájárulás <span class="pill-s pill-s--warn">Döntés kell</span></td></tr><tr><td>Előtte–utána párok (3 pár)</td><td>Csak a speciális lábápolás oldalon, „belső bemutató” fátyol mögött</td><td>Hozzájárulás + párosítás <span class="pill-s pill-s--warn">Döntés kell</span></td></tr><tr><td>Nem párosítható biztosan (4 kép)</td><td>Nem szerepel az oldalon</td><td>Beatrix döntése: pár vagy kihagyás</td></tr><tr><td>Problémás láb a főoldalon</td><td>Nincs (a brief szerint)</td><td>✓</td></tr></tbody></table></div>
+      <h2>6. Szándékosan nem aktív</h2><div class="apr-wrap"><table class="apr"><thead><tr><th scope="col">Funkció</th><th scope="col">Állapot</th></tr></thead><tbody><tr><td>Online foglalás</td><td>Bemutató — a böngészőben tárolt mintaadatok, valódi időpont nem jön létre <span class="pill-s pill-s--off">Nem aktív</span></td></tr><tr><td>Visszaigazoló e-mail, emlékeztető</td><td>Nincs küldés, csak szimulált értesítés az adminban <span class="pill-s pill-s--off">Nem aktív</span></td></tr><tr><td>Admin felület</td><td>Bejelentkezés nélküli demó, mintaadatokkal <span class="pill-s pill-s--off">Nem aktív</span></td></tr><tr><td>Adatkezelési tájékoztató, feltételek, impresszum</td><td>Vázlat helyek, jogi szakember bevonásával készítendők <span class="pill-s pill-s--off">Nem aktív</span></td></tr></tbody></table></div>
+    </div>
   </div>
 </section>'''
 
 PAGES = [
-    ('index.html', 'Balogh Beatrix | Pedikűr, lábápolás és manikűr — időpontfoglalás',
-     'Személyre szabott kéz- és lábápolás: klasszikus és vizes pedikűr, lábgéllakk, gépi manikűr, erősített géllakk, paraffinos kézápolás. Foglalj időpontot online.', INDEX, True),
-    ('pedikur.html', 'Pedikűr és lábápolás | Balogh Beatrix',
-     'Klasszikus pedikűr, vizes pedikűr géllakkozással, lábgéllakk és eltávolítás — időtartamok, árak és online időpontfoglalás.', PEDIKUR, False),
-    ('manikur.html', 'Manikűr és géllakk | Balogh Beatrix',
-     'Gépi manikűr, erősített géllakk, paraffinos kézápolás és műköröm eltávolítás — árak, időtartamok, online foglalás.', MANIKUR, False),
-    ('specialis-labapolas.html', 'Speciális lábápolás — telefonos egyeztetés | Balogh Beatrix',
-     'Egyéni figyelmet igénylő lábápolás előzetes telefonos egyeztetéssel. Ár és időtartam egyeztetés után.', SPECIALIS, False),
-    ('adatkezeles.html', 'Adatkezelési tájékoztató | Balogh Beatrix', 'Adatkezelési tájékoztató — tervezet helye.', ADATKEZELES, False),
-    ('impresszum.html', 'Impresszum | Balogh Beatrix', 'Impresszum — tervezet helye.', IMPRESSZUM, False),
-    ('feltetelek.html', 'Foglalási és lemondási feltételek | Balogh Beatrix', 'Foglalási és lemondási feltételek — tervezet helye.', FELTETELEK, False),
-    ('koncepcio.html', 'Tervezési koncepció | Balogh Beatrix látványterv', 'Három kreatív irány és a választás indoklása.', KONCEPCIO, False),
+    ('index.html', 'Beatrix Nails & Pedikűr | Pedikűr, lábápolás, manikűr — Balogh Beatrix',
+     'Esztétikai és wellness pedikűr, lábgéllakk, talpmasszázs, orosz gépi manikűr, erősített géllakk, műköröm és speciális lábápolás. Foglalj időpontot online.', INDEX, True),
+    ('pedikur.html', 'Pedikűr és lábápolás | Beatrix Nails & Pedikűr',
+     'Esztétikai pedikűr, lábgéllakk, talpmasszázs, paraffinos lábápolás és wellness pedikűr csomagok — árak és online időpontfoglalás.', PEDIKUR, False),
+    ('manikur.html', 'Manikűr és géllakk | Beatrix Nails & Pedikűr',
+     'Orosz gépi manikűr, erősített géllakk, műköröm szalonformába, díszítés és paraffinos kézápolás — árak és online foglalás.', MANIKUR, False),
+    ('specialis-labapolas.html', 'Speciális lábápolás — telefonos egyeztetés | Beatrix Nails & Pedikűr',
+     'Speciális pedikűr, állapotfelmérés, benőtt köröm, körömkorrekció — előzetes telefonos egyeztetéssel. Esztétikai kezelés, nem orvosi ellátás.', SPECIALIS, False),
+    ('adatkezeles.html', 'Adatkezelési tájékoztató | Beatrix Nails & Pedikűr', 'Adatkezelési tájékoztató — tervezet helye.', ADATKEZELES, False),
+    ('impresszum.html', 'Impresszum | Beatrix Nails & Pedikűr', 'Impresszum — tervezet helye.', IMPRESSZUM, False),
+    ('feltetelek.html', 'Foglalási és lemondási feltételek | Beatrix Nails & Pedikűr', 'Foglalási és lemondási feltételek — tervezet helye.', FELTETELEK, False),
+    ('koncepcio.html', 'Tervezési koncepció | Beatrix Nails & Pedikűr látványterv', 'A látványterv irányai és az aktuális kör változásai.', KONCEPCIO, False),
+    ('jovahagyas.html', 'Jóváhagyási lista | Beatrix Nails & Pedikűr látványterv', 'Árak, időtartamok, szövegek és fotók — Beatrix jóváhagyására váró tételek.', JOVAHAGYAS, False),
 ]
 
 if __name__ == '__main__':

@@ -25,7 +25,8 @@
   var byId = function (id) { for (var i = 0; i < cikkek.length; i++) if (cikkek[i].id === id) return cikkek[i]; return null; };
   var artUrl = function (a) { return 'cikk.html?id=' + encodeURIComponent(a.id); };
   var temaUrl = function (t) { return 'tudastar.html?tema=' + encodeURIComponent(t); };
-  var partnerek = (MC.partnerek || []).filter(function (p) { return p.allapot === 'jovahagyva'; });
+  var partnerek = (MC.partnerek || []).filter(function (p) { return p.allapot === 'jovahagyva' && !p.minta; });
+  var pubDok = function (x) { return x.statusz !== 'minta'; };
   var pById = function (id) { for (var i = 0; i < partnerek.length; i++) if (partnerek[i].id === id) return partnerek[i]; return null; };
   var ajanlatok = (MC.ajanlatok || []).filter(function (o) { return o.allapot === 'jovahagyva' && o.lejarat >= TODAY && pById(o.partner); });
   var hataridok = (MC.hataridok || []).filter(function (h) { return h.datum >= TODAY; });
@@ -128,10 +129,10 @@
     m.innerHTML = (MC.linkek || []).slice(0, +m.getAttribute('data-n') || 99).map(function (l) { return '<li><a href="' + esc(url(l.url)) + '" target="_blank" rel="noopener">' + esc(l.nev) + '</a></li>'; }).join('');
   });
   $$('[data-mod="docs"]').forEach(function (m) {
-    var list = (MC.dokumentumok || []).filter(function (x) { return x.statusz !== 'archiv'; }).slice(0, +m.getAttribute('data-n') || 4);
+    var list = (MC.dokumentumok || []).filter(function (x) { return x.statusz !== 'archiv' && pubDok(x); }).slice(0, +m.getAttribute('data-n') || 4);
     m.innerHTML = list.map(function (x) {
       var pdf = x.tipus === 'pdf';
-      return '<li><a href="' + esc(url(x.fajl)) + '"' + (pdf ? ' download' : ' target="_blank" rel="noopener"') + '><span class="ft' + (pdf ? '' : ' web') + '">' + (pdf ? 'PDF' : 'WEB') + '</span><span><b>' + esc(x.cim) + '</b><small>' + (pdf ? 'v' + esc(x.verzio) + ' · ' + dShort(x.datum) + (x.statusz === 'minta' ? ' · minta' : '') : 'Hivatalos oldal') + '</small></span></a></li>';
+      return '<li><a href="' + esc(url(x.fajl)) + '"' + (pdf ? ' download' : ' target="_blank" rel="noopener"') + '><span class="ft' + (pdf ? '' : ' web') + '">' + (pdf ? 'PDF' : 'WEB') + '</span><span><b>' + esc(x.cim) + '</b><small>' + (pdf ? 'v' + esc(x.verzio) + ' · ' + dShort(x.datum) : 'Hivatalos oldal') + '</small></span></a></li>';
     }).join('');
   });
   var offerHtml = function (o) {
@@ -140,11 +141,11 @@
   };
   $$('[data-mod="offer"]').forEach(function (m) {
     var o = ajanlatok[0];
-    m.innerHTML = o ? offerHtml(o) + '<p class="note">Minta: a partnerprogram indulásáig valódi kedvezmény nincs. <a href="partnerek.html#ajanlatok">Hogyan működik?</a></p>' : '<p class="muted small">Jelenleg nincs érvényes ajánlat.</p>';
+    m.innerHTML = o ? offerHtml(o)  : '<p class="muted small">Jelenleg nincs érvényes ajánlat.</p>';
   });
   $$('[data-mod="partners-mini"]').forEach(function (m) {
     m.innerHTML = partnerek.filter(function (p) { return p.kiemelt; }).slice(0, +m.getAttribute('data-n') || 3).map(function (p) {
-      return '<a class="pmini" href="partner.html?id=' + encodeURIComponent(p.id) + '" style="text-decoration:none;color:inherit"><span class="plogo">' + esc(p.rov) + '</span><span><b>' + esc(p.nev) + '</b><small>' + esc(p.kategoria) + (p.minta ? ' · minta' : '') + '</small></span></a>';
+      return '<a class="pmini" href="partner.html?id=' + encodeURIComponent(p.id) + '" style="text-decoration:none;color:inherit"><span class="plogo">' + esc(p.rov) + '</span><span><b>' + esc(p.nev) + '</b><small>' + esc(p.kategoria) + '</small></span></a>';
     }).join('') + '<p class="note"><a href="partnerek.html#jelentkezes">Legyen Ön is partnerünk →</a></p>';
   });
   $$('[data-mod="partner-chips"]').forEach(function (m) {
@@ -361,7 +362,7 @@
   /* ---------- Dokumentumtár ---------- */
   var dl = $('#doclib');
   if (dl) {
-    var dq = $('#doc-q'), dk = $('#doc-kat'), da = $('#doc-arch'), docs = MC.dokumentumok || [], kats = MC.dokKategoriak || [];
+    var dq = $('#doc-q'), dk = $('#doc-kat'), da = $('#doc-arch'), docs = (MC.dokumentumok || []).filter(pubDok), kats = MC.dokKategoriak || [];
     dk.innerHTML = '<option value="">Minden kategória</option>' + kats.map(function (k) { return '<option>' + esc(k) + '</option>'; }).join('');
     if (qs.get('kat')) dk.value = qs.get('kat');
     var drender = function () {
@@ -372,7 +373,7 @@
         if (!items.length) return '';
         return '<section class="dgroup"><h2>' + esc(grp) + ' <small class="muted" style="letter-spacing:0;text-transform:none;font-weight:600">' + items.length + ' tétel</small></h2>' + items.map(function (x) {
           var pdf = x.tipus === 'pdf', ar = x.statusz === 'archiv';
-          var badge = ar ? ' <span class="tag n">Archivált</span>' : x.statusz === 'minta' ? ' <span class="tag demo">Minta</span>' : '';
+          var badge = ar ? ' <span class="tag n">Archivált</span>' : '';
           var act = ar ? '<span class="muted small">Nem letölthető</span>' : pdf ? '<a class="btn btn-o btn-s" href="' + esc(url(x.fajl)) + '" download>Letöltés</a>' : '<a class="btn btn-o btn-s" href="' + esc(url(x.fajl)) + '" target="_blank" rel="noopener">Megnyitás ↗</a>';
           return '<div class="drow' + (ar ? ' arch' : '') + '"><span class="ft' + (pdf ? '' : ' web') + '">' + (pdf ? 'PDF' : 'WEB') + '</span><span><b>' + esc(x.cim) + '</b><small>' + esc(x.leiras) + '</small>' + badge + '</span>' +
             '<span class="c">' + (pdf ? 'Verzió: v' + esc(x.verzio) : 'Hivatalos oldal') + '</span><span class="c">' + (x.datum ? dShort(x.datum) : '–') + '</span><span class="act">' + act + '</span></div>';
@@ -386,7 +387,7 @@
 
   /* ---------- Partnerek ---------- */
   var pCard = function (p) {
-    return '<a class="pcard" href="partner.html?id=' + encodeURIComponent(p.id) + '">' + (p.minta ? '<span class="tag demo">Minta</span>' : '') + '<span class="top"><span class="plogo">' + esc(p.rov) + '</span><span><h3>' + esc(p.nev) + '</h3><span class="tag n" style="margin-top:4px">' + esc(p.kategoria) + '</span></span></span><p>' + esc(p.leiras) + '</p><span class="foot"><span class="muted">' + esc(p.varos) + '</span><span class="arrow">Részletek</span></span></a>';
+    return '<a class="pcard" href="partner.html?id=' + encodeURIComponent(p.id) + '">' + '<span class="top"><span class="plogo">' + esc(p.rov) + '</span><span><h3>' + esc(p.nev) + '</h3><span class="tag n" style="margin-top:4px">' + esc(p.kategoria) + '</span></span></span><p>' + esc(p.leiras) + '</p><span class="foot"><span class="muted">' + esc(p.varos) + '</span><span class="arrow">Részletek</span></span></a>';
   };
   var pg = $('#p-grid');
   if (pg) {
@@ -395,16 +396,17 @@
     var prender = function () {
       var k = pk.value, nq = norm(pq.value);
       var res = partnerek.filter(function (p) { return (!k || p.kategoria === k) && (!nq || norm(p.nev + ' ' + p.leiras + ' ' + p.kategoria + ' ' + p.szolg.join(' ')).indexOf(nq) > -1); });
-      pg.innerHTML = res.length ? res.map(pCard).join('') : '<p class="empty" style="grid-column:1/-1">' + (nq ? 'Nincs a keresésnek megfelelő partner.' : 'Ebben a kategóriában még nincs partner.') + '</p>';
+      pg.innerHTML = res.length ? res.map(pCard).join('') : '<p class="empty" style="grid-column:1/-1">' + (nq ? 'Nincs a keresésnek megfelelő partner.' : partnerek.length ? 'Ebben a kategóriában még nincs partner.' : 'Partnerlistánk most bővül. Ügyvédet, biztosítót vagy szoftvert keres? Kérdezzen minket – olyat ajánlunk, akivel mi is szívesen dolgozunk. <a href="#jelentkezes">Írjon nekünk →</a>') + '</p>';
     };
     pk.addEventListener('change', prender); pq.addEventListener('input', prender); prender();
+    if (!partnerek.length) { var dt = pk.closest('.dtools'); if (dt) dt.style.display = 'none'; var apl = d.querySelector('label[for="aj-p"]'); if (apl && apl.firstChild) apl.firstChild.nodeValue = 'Milyen területen keres szakembert? '; }
     $('#o-grid').innerHTML = ajanlatok.length ? ajanlatok.map(function (o) {
       var p = pById(o.partner);
-      return '<div class="pcard"><span class="tag demo">Minta</span><span class="top"><span class="plogo">' + esc(p.rov) + '</span><span><h3>' + esc(o.cim) + '</h3><span class="muted small">' + esc(p.nev) + '</span></span></span><p>' + esc(o.leiras) + '</p>' +
+      return '<div class="pcard"><span class="top"><span class="plogo">' + esc(p.rov) + '</span><span><h3>' + esc(o.cim) + '</h3><span class="muted small">' + esc(p.nev) + '</span></span></span><p>' + esc(o.leiras) + '</p>' +
         '<span class="foot"><button class="btn btn-o btn-s" type="button" data-code="' + esc(o.kod) + '">Kód: ' + esc(o.kod) + '</button><span class="date">Lejár: ' + dShort(o.lejarat) + '</span></span></div>';
     }).join('') : '<p class="empty" style="grid-column:1/-1">Jelenleg nincs érvényes ajánlat.</p>';
     var aps = $('#aj-p');
-    aps.innerHTML = '<option value="">Válasszon…</option>' + partnerek.map(function (p) { return '<option value="' + esc(p.nev) + '"' + (qs.get('partner') === p.id ? ' selected' : '') + '>' + esc(p.nev) + (p.minta ? ' (minta)' : '') + '</option>'; }).join('');
+    aps.innerHTML = '<option value="">Válasszon…</option>' + (partnerek.length ? partnerek.map(function (p) { return '<option value="' + esc(p.nev) + '"' + (qs.get('partner') === p.id ? ' selected' : '') + '>' + esc(p.nev) + '</option>'; }).join('') : (MC.partnerKategoriak || []).map(function (k) { return '<option>' + esc(k) + '</option>'; }).join(''));
   }
   var pdet = $('#pdet');
   if (pdet) {

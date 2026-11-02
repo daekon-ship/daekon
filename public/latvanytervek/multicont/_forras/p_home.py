@@ -20,7 +20,7 @@ NAME_SVG = '''<svg class="name-art" viewBox="0 0 560 236" role="img" aria-labell
 svc_cards = ""
 for i, (k, t, d) in enumerate(SVC):
     key = k == "vegelszamolas"
-    svc_cards += (f'<li><a class="svc-row{" key" if key else ""}" href="{svc_url(k)}"><span class="n">{i+1:02d}</span>{icon(k)}'
+    svc_cards += (f'<li><a class="svc-row{" key" if key else ""}" href="{svc_url(k)}">{icon(k)}'
                   f'<span class="tx"><b>{t}{" <span class=\"tag g\">Kiemelt szakterület</span>" if key else ""}</b><span>{d}</span></span><span class="go" aria-hidden="true">→</span></a></li>')
 
 home = f'''
@@ -64,12 +64,12 @@ home = f'''
     </section>
 
     <section class="ed rv o2" aria-labelledby="h-szolg">
-      <div class="sec-t"><div><p class="eyebrow"><span class="no">01</span>Szolgáltatások</p><h2 class="h2" id="h-szolg">Amiben segítünk</h2></div><a class="arrow" href="szolgaltatasok.html">Összes részlet</a></div>
+      <div class="sec-t"><div><p class="eyebrow">Szolgáltatások</p><h2 class="h2" id="h-szolg">Amiben segítünk</h2></div><a class="arrow" href="szolgaltatasok.html">Összes részlet</a></div>
       <ol class="svc-idx">{svc_cards}</ol>
     </section>
 
     <section class="ed rv o3" aria-labelledby="h-maria">
-      <p class="eyebrow t"><span class="no">02</span>A szakmai vezető</p>
+      <p class="eyebrow t">A szakmai vezető</p>
       <div class="pro">
         <figure class="portrait" aria-label="Horváth Mária">
           <!-- FOTÓCSERE: a .portrait-fr elejére: <img src="foto/horvath-maria.jpg" alt="Horváth Mária" width="400" height="500"> -->
@@ -91,7 +91,7 @@ home = f'''
     </section>
 
     <section class="ed rv o3" aria-labelledby="h-nev">
-      <p class="eyebrow g"><span class="no">03</span>A nevünk</p>
+      <p class="eyebrow g">A nevünk</p>
       <h2 class="h2" id="h-nev">Multi · Cont · Center</h2>
       {NAME_SVG}
       <ul class="chips3">
@@ -103,7 +103,7 @@ home = f'''
     </section>
 
     <section class="ed rv o6" aria-labelledby="h-net">
-      <p class="eyebrow t"><span class="no">04</span>Partnerközpont</p>
+      <p class="eyebrow t">Partnerközpont</p>
       <h2 class="h2" id="h-net">Kapcsolat más vállalkozásokkal</h2>
       <p class="ed-p">Ügyfeleink gyakran keresnek ügyvédet, biztosítót, szoftvert. Összekötjük őket azokkal a cégekkel, akiket jó szívvel ajánlunk.</p>
       <ul class="net-l">
@@ -111,7 +111,6 @@ home = f'''
         <li><a href="partnerek.html#ajanlo"><span class="ni t">⇄</span><span><b>Ajánlói rendszer</b> saját linkkel ajánljuk egymást</span></a></li>
         <li><a href="partnerek.html#ajanlatok"><span class="ni g">%</span><span><b>Kuponajánlatok</b> kedvezmények ügyfeleinknek</span></a></li>
       </ul>
-      <div class="p-strip"><span class="p-strip-k">Partnereink <span class="tag demo">Minta</span></span><div data-mod="partner-chips"></div></div>
     </section>
 
     <section class="cta o7" aria-labelledby="h-cta">
@@ -154,6 +153,7 @@ home = f'''
       <h2>Kérdése van?</h2>
       <a class="tel" href="tel:{TEL}">{TEL_H}</a>
       <p><a href="mailto:{MAIL}">{MAIL}</a></p>
+      <p class="hrs">Ügyfélfogadás: {HOURS}</p>
       <button class="btn btn-w btn-s" type="button" data-dlg="visszahivas">Visszahívást kérek</button>
     </section>
   </aside>
@@ -161,7 +161,7 @@ home = f'''
 '''
 
 JSONLD = f'''
-<script type="application/ld+json">{{"@context":"https://schema.org","@type":"AccountingService","name":"MultiCont Center Kft.","url":"{BASE}","telephone":"{TEL}","email":"{MAIL}","logo":"{BASE}logo.svg","foundingDate":"2015-09-25","taxID":"25378669-2-13","address":{{"@type":"PostalAddress","streetAddress":"Meredek utca 2.","postalCode":"2040","addressLocality":"Budaörs","addressCountry":"HU"}},"areaServed":"HU","availableLanguage":["hu","de"],"founder":{{"@type":"Person","name":"Horváth Mária"}}}}</script>'''
+<script type="application/ld+json">{{"@context":"https://schema.org","@type":"AccountingService","name":"MultiCont Center Kft.","url":"{BASE}","telephone":"{TEL}","email":"{MAIL}","logo":"{BASE}logo.svg","foundingDate":"2015-09-25","taxID":"25378669-2-13","address":{{"@type":"PostalAddress","streetAddress":"Meredek utca 2.","postalCode":"2040","addressLocality":"Budaörs","addressCountry":"HU"}},"areaServed":"HU","availableLanguage":["hu","de"],"openingHoursSpecification":[{{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"14:00","closes":"18:00"}}],"founder":{{"@type":"Person","name":"Horváth Mária"}}}}</script>'''
 
 page("index.html", "MultiCont Center Kft. – Könyvelés, adózási támogatás, Budaörs",
      "Könyvelés, bérszámfejtés, adózási támogatás és végelszámolás Budaörsön és online, 2015 óta. Aktuális adóhírek, kalkulátorok, dokumentumtár, partnerközpont.",

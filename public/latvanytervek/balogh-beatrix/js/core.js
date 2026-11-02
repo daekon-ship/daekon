@@ -35,8 +35,9 @@
   function fmtFt(n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' Ft'; }
   function fmtPrice(s) {
     if (s.price == null) return 'Egyeztetés alapján';
-    if (s.priceMax) return fmtFt(s.price).replace(' Ft', '') + '–' + fmtFt(s.priceMax);
-    return fmtFt(s.price);
+    var u = s.unit ? ' / ' + s.unit : '';
+    if (s.priceMax) return fmtFt(s.price).replace(' Ft', '') + '–' + fmtFt(s.priceMax) + u;
+    return fmtFt(s.price) + u;
   }
   function fmtMins(m) { return m == null ? 'Egyeztetés szerint' : m + ' perc'; }
 

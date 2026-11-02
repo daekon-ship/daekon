@@ -10,7 +10,11 @@
 
   function $(s, r) { return (r || document).querySelector(s); }
   function $$(s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); }
-  function icon(id, cls) { return '<svg class="ico ' + (cls || '') + '" aria-hidden="true"><use href="#i-' + id + '"/></svg>'; }
+  /* ikon: a sprite-ból beágyazott útvonalakkal (így a Motion meg tudja rajzolni) */
+  function icon(id, cls) {
+    var sym = document.getElementById('i-' + id);
+    return '<svg class="ico ' + (cls || '') + '" viewBox="0 0 24 24" aria-hidden="true">' + (sym ? sym.innerHTML : '') + '</svg>';
+  }
 
   /* ---------- óralap (időtartam) ---------- */
   function dial(mins, size) {
@@ -52,10 +56,11 @@
     }
     /* asztali legördülő */
     $$('.nav-dd').forEach(function (dd) {
-      var btn = $('.nav-dd-btn', dd), panel = $('.nav-dd-panel', dd), timer;
+      var btn = $('.nav-dd-btn', dd), panel = $('.nav-dd-panel', dd), timer, hoverAt = 0;
       function set(open) { btn.setAttribute('aria-expanded', open ? 'true' : 'false'); panel.classList.toggle('is-open', open); }
-      btn.addEventListener('click', function () { set(btn.getAttribute('aria-expanded') !== 'true'); });
-      dd.addEventListener('mouseenter', function () { clearTimeout(timer); set(true); });
+      /* egérrel a rámutatás már kinyitja — az ezt követő kattintás ne csukja vissza */
+      btn.addEventListener('click', function () { if (Date.now() - hoverAt < 600 && btn.getAttribute('aria-expanded') === 'true') return; set(btn.getAttribute('aria-expanded') !== 'true'); });
+      dd.addEventListener('mouseenter', function () { clearTimeout(timer); hoverAt = Date.now(); set(true); });
       dd.addEventListener('mouseleave', function () { timer = setTimeout(function () { set(false); }, 180); });
       dd.addEventListener('focusout', function (e) { if (!dd.contains(e.relatedTarget)) set(false); });
       dd.addEventListener('keydown', function (e) { if (e.key === 'Escape') { set(false); btn.focus(); } });
@@ -114,7 +119,7 @@
     return '<a class="btn btn--sm ' + (cls || 'btn--ghost') + '" href="' + bookHref(s) + '">Időpontot foglalok</a>';
   }
   function priceHtml(s) {
-    return esc(T.fmtPrice(s)) + (s.priceNote ? '<small>' + esc(s.priceNote) + '</small>' : '') + (s.price == null ? '<small>Ár és időtartam egyeztetés után</small>' : '');
+    return esc(T.fmtPrice(s)) + (s.priceNote ? '<small>' + esc(s.priceNote) + '</small>' : '') + (s.price == null ? '<small>Ár és időtartam egyeztetés után</small>' : (s.phoneOnly ? '<small>Időpont telefonos egyeztetéssel</small>' : ''));
   }
 
   function priceList() {
@@ -127,12 +132,26 @@
         '<div class="price">' + priceHtml(s) + '</div>' +
         '<div class="row-act">' + bookBtn(s) + '</div></div>';
     }).join('');
+    /* hosszú árlista: alapból az első 8 sor, a többi egy gombnyomásra nyílik */
+    var LIM = 8, more = null;
+    if (svcs.length > LIM + 2) {
+      host.classList.add('is-collapsed');
+      more = document.createElement('div'); more.className = 'prices-more';
+      more.innerHTML = '<button type="button" class="btn btn--ghost" aria-expanded="false" aria-controls="priceList">Teljes árlista · ' + svcs.length + ' kezelés</button>';
+      host.parentNode.insertBefore(more, host.nextSibling);
+      more.querySelector('button').addEventListener('click', function () {
+        host.classList.remove('is-collapsed'); more.hidden = true;
+        var rows = $$('.price-row', host).slice(LIM); rows.forEach(function (r) { r.classList.add('is-in'); });
+        if (window.BBFX) BBFX.pop(rows);
+      });
+    }
     var chips = $$('#priceChips .chip');
     chips.forEach(function (ch) {
       ch.addEventListener('click', function () {
         var f = ch.getAttribute('data-filter');
         chips.forEach(function (c) { c.setAttribute('aria-pressed', c === ch ? 'true' : 'false'); });
         $$('.price-row', host).forEach(function (r) { r.classList.toggle('is-hidden', f !== 'all' && r.getAttribute('data-cat') !== f); });
+        if (more && !more.hidden) { host.classList.toggle('is-collapsed', f === 'all'); more.style.display = f === 'all' ? '' : 'none'; }
         var live = $('#priceLive'); if (live) live.textContent = $$('.price-row:not(.is-hidden)', host).length + ' kezelés látható';
         if (window.BBFX) { $$('.price-row:not(.is-hidden)', host).forEach(function (r) { r.classList.add('is-in'); }); BBFX.pop($$('.price-row:not(.is-hidden)', host)); }
       });
@@ -141,10 +160,11 @@
 
   function catLists() {
     $$('[data-cat-list]').forEach(function (ul) {
-      var cat = ul.getAttribute('data-cat-list');
-      ul.innerHTML = BB.activeServices().filter(function (s) { return s.cat === cat; }).map(function (s) {
+      var cat = ul.getAttribute('data-cat-list'), lim = +ul.getAttribute('data-limit') || 0;
+      var all = BB.activeServices().filter(function (s) { return s.cat === cat; }), list = lim ? all.slice(0, lim) : all;
+      ul.innerHTML = list.map(function (s) {
         return '<li><span>' + esc(s.name) + '</span><span>' + (s.mins ? s.mins + ' perc · ' : '') + esc(T.fmtPrice(s)) + '</span></li>';
-      }).join('');
+      }).join('') + (all.length > list.length ? '<li class="more"><span>+ további ' + (all.length - list.length) + ' kezelés</span><span></span></li>' : '');
     });
   }
 
@@ -196,23 +216,58 @@
     a.innerHTML = dial(s.mins) + '<span><b>' + esc(s.name) + '</b><span>' + s.mins + ' perc · ' + esc(T.fmtPrice(s)) + '</span></span>';
   }
 
+
+  /* ---------- előtte–utána galéria ---------- */
+  function beforeAfter() {
+    var box = $('[data-ba]'); if (!box) return;
+    var cfg = BB.cfg.beforeAfter || {}, stage = $('.ba-stage', box), tabs = $$('.ba-tab', box);
+    var shown = false;
+    try { shown = sessionStorage.getItem('bb-ba-shown') === '1'; } catch (e) {}
+    if (!cfg.consentApproved && !shown) { stage.classList.add('is-veiled'); box.classList.add('is-veiled'); }
+    if (cfg.consentApproved) { var st = $('.ba-status', box); if (st) st.hidden = true; }
+    var btn = $('[data-ba-show]', box);
+    if (btn) btn.addEventListener('click', function () {
+      stage.classList.remove('is-veiled'); box.classList.remove('is-veiled');
+      try { sessionStorage.setItem('bb-ba-shown', '1'); } catch (e) {}
+      if (window.BBFX && BBFX.baReveal) BBFX.baReveal(stage);
+      var t = $('.ba-tab[aria-selected="true"]', box); if (t) t.focus();
+    });
+    function select(tab, focus) {
+      var k = tab.getAttribute('data-pair');
+      tabs.forEach(function (b) { var on = b === tab; b.setAttribute('aria-selected', on ? 'true' : 'false'); b.tabIndex = on ? 0 : -1; });
+      $$('.ba-pair', stage).forEach(function (p) { var on = p.getAttribute('data-pair') === k; p.hidden = !on; p.classList.toggle('is-on', on); if (on && window.BBFX && BBFX.baSwitch) BBFX.baSwitch(p); });
+      stage.setAttribute('aria-labelledby', tab.id);
+      if (focus) tab.focus();
+    }
+    tabs.forEach(function (b, i) {
+      b.addEventListener('click', function () { select(b); });
+      b.addEventListener('keydown', function (e) {
+        var d = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[e.key]; if (!d) return;
+        e.preventDefault(); select(tabs[(i + d + tabs.length) % tabs.length], true);
+      });
+    });
+    if (tabs[0]) stage.setAttribute('aria-labelledby', tabs[0].id);
+  }
   /* ---------- galéria + nagyító ---------- */
-  /* Saját fotók: src kitöltése (pl. 'img/galeria/pedikur-1.jpg'). Üres src = fotóhely. */
+  /* Beatrix saját munkafotói (img/munkak/). A rácsban a -k (kicsi) változat, a nagyítóban a teljes.
+     Az arcokat, nyakat kivágtuk. A főoldalon csak kézfotó szerepel (brief: problémás lábat nem mutatunk); a pedikűr-fotók a pedikűr aloldalon vannak. */
+  /* 8 egyedi kép — közel azonos (ugyanarról a kézről, hasonló szögből készült) képek kiszűrve */
   var GALLERY = [
-    { src: '', tone: 'sand', cat: 'pedikur', title: 'Klasszikus pedikűr' },
-    { src: '', tone: 'sage', cat: 'gellakk', title: 'Lábgéllakk' },
-    { src: '', tone: 'cream', cat: 'szalon', title: 'A szalon' },
-    { src: '', tone: 'cream', cat: 'manikur', title: 'Gépi manikűr' },
-    { src: '', tone: 'sand', cat: 'gellakk', title: 'Erősített géllakk' },
-    { src: '', tone: 'sage', cat: 'manikur', title: 'Paraffinos kézápolás' },
-    { src: '', tone: 'cream', cat: 'pedikur', title: 'Vizes pedikűr' },
-    { src: '', tone: 'sand', cat: 'szalon', title: 'Kezelőszék' },
+    { src: 'img/munkak/magenta-1.jpg', cat: 'elenk', title: 'Magenta géllakk', w: 1600, h: 576 },
+    { src: 'img/munkak/levendula-1.jpg', cat: 'pasztell', title: 'Levendula géllakk', w: 1452, h: 1600 },
+    { src: 'img/munkak/gyongyhaz-1.jpg', cat: 'natur', title: 'Gyöngyházfényű, szögletes forma', w: 1600, h: 900 },
+    { src: 'img/munkak/neon-1.jpg', cat: 'elenk', title: 'Neon pink géllakk', w: 1600, h: 1557 },
+    { src: 'img/munkak/csokolade-1.jpg', cat: 'natur', title: 'Csokoládébarna géllakk', w: 1600, h: 1109 },
+    { src: 'img/munkak/magenta-3.jpg', cat: 'elenk', title: 'Magenta, közelről', w: 1600, h: 859 },
+    { src: 'img/munkak/levendula-4.jpg', cat: 'pasztell', title: 'Levendula, rövid forma', w: 1600, h: 1080 },
+    { src: 'img/munkak/gyongyhaz-3.jpg', cat: 'natur', title: 'Gyöngyház, finom csillámmal', w: 1600, h: 780 }
   ];
-  function photo(g) {
-    if (g.src) return '<span class="frame zoomable"><img src="' + esc(g.src) + '" alt="' + esc(g.title) + '" loading="lazy" decoding="async"></span>';
+  function thumb(src) { return src.replace(/\.jpg$/, '-k.jpg'); }
+  function photo(g, big) {
+    if (g.src) return '<span class="frame zoomable"><img src="' + esc(big ? g.src : thumb(g.src)) + '" alt="' + esc(g.title) + ' — Beatrix munkája" width="' + g.w + '" height="' + g.h + '" ' + (big ? '' : 'loading="lazy" ') + 'decoding="async"></span>';
     return '<span class="ph ph--' + g.tone + '"><span class="ph-in">' + icon('camera') + '<b>' + esc(g.title) + '</b><small>Saját fotó helye</small></span></span>';
   }
-  var GCATS = { pedikur: 'Pedikűr', manikur: 'Manikűr', gellakk: 'Géllakk', szalon: 'Szalon' };
+  var GCATS = { elenk: 'Élénk színek', pasztell: 'Pasztell', natur: 'Natúr és elegáns' };
 
   function gallery() {
     var host = $('#gallery'); if (!host) return;
@@ -239,7 +294,7 @@
       var v = visible(); if (!v.length) return;
       var pos = v.indexOf(i); if (pos < 0) pos = 0; idx = v[pos];
       var g = GALLERY[idx];
-      stage.innerHTML = '<div class="lb-photo">' + photo(g) + '</div>';
+      stage.innerHTML = '<div class="lb-photo">' + photo(g, true) + '</div>';
       cap.innerHTML = '<b>' + esc(g.title) + '</b><span>' + GCATS[g.cat] + (g.src ? '' : ' · ide Beatrix saját fotója kerül') + '</span>';
       cnt.textContent = (pos + 1) + ' / ' + v.length;
     }
@@ -297,7 +352,7 @@
   }
 
   function init() {
-    bindConfig(); header(); priceList(); catLists(); svcCards(); heroChip(); quickBook(); gallery(); reveals(); transitions();
+    bindConfig(); header(); priceList(); catLists(); svcCards(); heroChip(); quickBook(); gallery(); beforeAfter(); reveals(); transitions();
     requestAnimationFrame(function () { doc.classList.add('is-loaded'); });
   }
   if (document.readyState !== 'loading') init(); else document.addEventListener('DOMContentLoaded', init);

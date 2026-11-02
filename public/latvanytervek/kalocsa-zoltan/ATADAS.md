@@ -229,3 +229,9 @@ Playwright: 1440 / 768 / 390 / 360 px – nincs vízszintes túlcsordulás, ninc
 - Asztali gép: a lap tetején a videó magától, hurokban ás; görgetéskor a görgetés vezérli.
 - Ha az oldal lejjebb görgetve nyílik meg (pl. #munkaterulet), a videó már nem vált tévesen fotókra.
 - Csökkentett mozgás (pl. Windows „Animációs effektusok: ki”): korábban csak állókép volt → most a videó hurokban megy rögzítés nélkül, megállító gombbal (mobilon is).
+
+## Állapot 2026.11.02. (felülírja a fenti napi bejegyzéseket)
+- Az ügyfél a fehér fejléc helyett a **korábbi sötét arculatot** kérte vissza: sötét fejléc és lábléc, a logó az arculat sötét hátterű változatában (fehér X, narancs ág). A fehér fejléces forrásmódosítás (`f2431c2`) ezért ebben a mappában nem került tovább.
+- **Link-előnézet:** a hiba oka a `robots.txt` teljes tiltása volt (a Facebook előnézet-robotját is kizárta). Megosztókép: `img/og-kalocsageoworks-sotet.jpg` (1200×630, sötét háttér, eredeti logó).
+- **Indexelés feloldva** (felhasználói döntés): Zoltán személyes bemutatkozó és referenciaoldala; a munkák számlázása egy partnercégen keresztül megy, saját vállalkozás 2027 tavaszán. A szövegek ezt átláthatóan jelzik (referenciák, impresszum).
+- Nyitott: adatkezelési tájékoztató, a partnercég adatai, a referenciák szerepkörének megerősítése – lásd a helyi `JOGI-ATTEKINTES.md`-t.

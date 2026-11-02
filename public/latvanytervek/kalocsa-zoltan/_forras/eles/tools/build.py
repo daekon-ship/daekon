@@ -81,6 +81,19 @@ h = sub1(h, "Gépi földmunkát Kecskeméten és 45 km-es körzetében vállalok
          "Gépi földmunkát Kecskeméten és 45 km-es körzetében vállalok, például Lajosmizsén is. A pontos helyszín alapján egyeztetünk.",
          "munkaterület: Lajosmizse")
 
+# Referenciák a valós helyzet szerint (felhasználó, 2026.11.02.): Zoltán már dolgozik, a számlázás egy másik cégen keresztül
+# megy, saját vállalkozása 2027 tavaszán indul. A szövegek ne sugallják, hogy a munkákat bejegyzett vállalkozásként végezte.
+h = sub1(h, '<p class="sec__lead">Néhány kiemelt munka saját fotókkal – a legtöbb képen',
+         '<p class="sec__lead">Néhány kiemelt munka saját fotókkal. Ezeken a munkákon személyesen dolgoztam, de nem saját '
+         'bejegyzett vállalkozásként: a számlázás jelenleg egy partnercégen keresztül történik, saját vállalkozásom várhatóan '
+         '2027 tavaszán indul. A legtöbb képen', "referenciák: bevezető")
+h = sub1(h, "<p>Legyen szó vasúti nyomvonalak mentén végzett árokásásról vagy összetett terepalakításról, Kalocsa GeoWorks a "
+         "Pirtó–Halas szakaszon is bizonyította megbízhatóságát. A 18 km-es projekt során végzett precíz gépi munkánkkal sikeresen "
+         "hozzájárultunk az infrastruktúra fejlődéséhez.</p>",
+         "<p>A Pirtó–Halas vasútvonal 18 km-es szakaszán dolgoztam: árokásás a nyomvonal mentén és terepalakítás. "
+         "A munka egy nagyobb vasúti kivitelezés része volt, nem saját vállalkozásként végeztem.</p>", "referenciák: Pirtó–Halas")
+h = sub1(h, "<div><dt>Hossz</dt><dd>18 km</dd></div>", "<div><dt>Szakasz hossza</dt><dd>18 km</dd></div>", "referenciák: szakasz")
+
 # meta description: 197 → 159 karakter, hogy a találati listában ne vágja le a kereső (tartalma változatlan)
 h = subre(h, r'<meta name="description" content="[^"]*">',
           '<meta name="description" content="Gépi földmunka Kecskeméten és 45 km-es körzetében: alapásás, közműárok-ásás, '
@@ -219,7 +232,8 @@ def velemeny_szakasz():
         '      <div class="rev__card">\n'
         '        <p class="rev__src"><span class="dot"></span>Google Térkép · cégprofil</p>\n'
         '        <h3>Kalocsa GeoWorks</h3>\n'
-        '        <p class="rev__meta">Földkitermelő vállalkozó</p>\n'
+        # a Google-kategória („Földkitermelő vállalkozó”) helyett semleges leírás: bejegyzett vállalkozás még nincs (2026.11.02.)
+        '        <p class="rev__meta">Gépi földmunka · Kecskemét és 45 km-es körzete</p>\n'
         f'        {osszeg}\n'
         f'        <div class="rev__act"><a class="btn" href="{e(GOOGLE_PROFIL_URL)}"{uj}><span>Vélemények megtekintése a <span class="rev__nw">Google-on</span></span>{sr}</a>{iras}</div>\n'
         '        <p class="rev__note">A gomb a Google Térképre visz. Az oldal Google-szkriptet nem tölt be, és sütit nem használ.</p>\n'

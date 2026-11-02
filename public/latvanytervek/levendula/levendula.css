@@ -44,7 +44,7 @@ ul{margin:0;padding:0;list-style:none}
 figure{margin:0}
 button{font:inherit;color:inherit}
 ::selection{background:var(--lav);color:var(--night)}
-:focus-visible{outline:2px solid var(--pink);outline-offset:3px}
+:focus-visible{outline:2px solid var(--night);outline-offset:2px;box-shadow:0 0 0 2px #fff}
 .skip{position:fixed;left:12px;top:-60px;z-index:300;background:var(--night);color:var(--mist);padding:10px 14px;text-decoration:none}
 .skip:focus{top:12px}
 .wrap{width:100%;max-width:var(--max);margin-inline:auto;padding-inline:var(--pad)}
@@ -60,7 +60,7 @@ button{font:inherit;color:inherit}
 .btn-ghost-ink{border-color:var(--ink);color:var(--ink)}
 .btn-sm{min-height:42px;padding:9px 18px;font-size:14.5px}
 .btn-block{width:100%}
-.pill{display:inline-block;vertical-align:2px;padding:2px 9px;border-radius:20px;background:var(--pink);color:#fff;font-family:var(--sans);font-size:12px;font-weight:600;line-height:1.45}
+.pill{display:inline-flex;align-items:center;flex:none;padding:3px 10px;border:1px solid rgba(203,184,230,.55);border-radius:20px;background:rgba(203,184,230,.1);color:var(--lav);font-family:var(--sans);font-size:11.5px;font-weight:600;letter-spacing:.08em;line-height:1.4;white-space:nowrap}
 
 /* ---------- header ---------- */
 .hdr{position:fixed;inset:0 0 auto 0;z-index:100;color:var(--on-dark);transition:background-color .35s,color .35s,box-shadow .35s}
@@ -109,15 +109,14 @@ button{font:inherit;color:inherit}
 .hero-info dd{margin:0;font-size:16px;line-height:1.5;color:#F6F1FA}
 .hero-info a{text-decoration:none;border-bottom:1px solid rgba(203,184,230,.4)}
 .hero-info a:hover{border-color:var(--lav)}
-.js .hero-info{opacity:0;transform:translateY(16px)}
-.js .is-ready .hero-info{opacity:1;transform:none;transition:opacity .9s var(--ease) .4s,transform .9s var(--ease) .4s}
+.hero-info{animation:heroIn .8s var(--ease) .3s both}
 
 /* JS-enhanced desktop: the eye is absolutely managed by GSAP */
-.js .hero-text > *{opacity:0;transform:translateY(16px)}
-.js .is-ready .hero-text > *{opacity:1;transform:none;transition:opacity .9s var(--ease),transform .9s var(--ease)}
-.js .is-ready .hero-text > :nth-child(2){transition-delay:.12s}
-.js .is-ready .hero-text > :nth-child(3){transition-delay:.24s}
-.js .is-ready .hero-text > :nth-child(4){transition-delay:.36s}
+.hero-text > *{animation:heroIn .7s var(--ease) both}
+.hero-text > :nth-child(2){animation-delay:.08s}
+.hero-text > :nth-child(3){animation-delay:.16s}
+.hero-text > :nth-child(4){animation-delay:.24s}
+@keyframes heroIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
 
 /* ============================================================
    KEZELÉSEK – vízszintes sáv
@@ -342,7 +341,7 @@ button{font:inherit;color:inherit}
 
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition-duration:.01ms!important}
-  .js .hero-text > *,.js .hero-info{opacity:1;transform:none}
+  .hero-text > *,.hero-info{animation:none}
 }
 
 /* ---------- Instagram + hívás ---------- */
@@ -390,3 +389,87 @@ button{font:inherit;color:inherit}
 .sp-from{margin-top:14px;font-size:15px;color:var(--on-dark-2)}
 .p-note{margin:16px 0 4px;padding:14px 16px;background:var(--mist);border-left:3px solid var(--lav-2);font-size:15px;color:#3F3049;max-width:640px}
 .menu-note{padding:14px 2px;font-size:15px;color:var(--muted)}
+
+/* mobil-csiszolás (2026-10-12): nyitó márkajel + kezelés-gyorslinkek,
+   tördelt árlista-fülek, egyenletes gombok, élénkebb ajándékkártya */
+.hero-sprig{position:absolute;z-index:1;right:calc(50% - 780px);bottom:-10%;height:92%;width:auto;pointer-events:none;opacity:.1;transform:rotate(10deg);transform-origin:50% 100%}
+.hero-sprig .hs-stem{fill:none;stroke:#A9C29A;stroke-width:.55;stroke-linecap:round}
+.hero-sprig .hs-leaf{fill:#A9C29A}
+.hero-sprig .hs-buds{fill:var(--lav)}
+.hero-svc{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}
+.hero-svc a{display:inline-flex;align-items:center;min-height:40px;padding:8px 16px;border:1px solid rgba(233,225,242,.26);border-radius:999px;font-size:14.5px;font-weight:500;color:var(--on-dark);text-decoration:none;transition:border-color .25s,background-color .25s,color .25s}
+.hero-svc a:hover{border-color:var(--lav);background:rgba(203,184,230,.12);color:#fff}
+
+.gift-card{background:#fff;padding:10px;border-radius:10px;box-shadow:0 34px 60px -34px rgba(31,20,36,.6);transform:rotate(-1.6deg)}
+.gift-card img{border-radius:4px;box-shadow:none;filter:saturate(1.12) contrast(1.07) brightness(1.04)}
+
+@media (max-width:1000px){
+  .hero-sprig{height:auto;width:min(58vw,260px);right:-14vw;top:calc(var(--hdr) + 4px);bottom:auto;opacity:.2;transform:rotate(14deg)}
+  .p-tabs{flex-wrap:wrap;overflow:visible;margin-inline:0;padding-inline:0;gap:8px;border-bottom:0;margin-bottom:18px}
+  .p-tab{flex:none;padding:9px 16px;min-height:42px;border:1px solid var(--line);border-radius:999px;font-family:var(--sans);font-size:15px;font-weight:600;color:var(--ink);background:#fff}
+  .p-tab::after{display:none}
+  .p-tab.is-on{background:var(--night);border-color:var(--night);color:var(--mist)}
+}
+@media (max-width:640px){
+  .hero-svc{margin-top:22px}
+  .hero-svc a{font-size:14px;padding:8px 14px}
+  .contact-cta .btn,.gift-cta .btn{flex:1 1 100%}
+  .gift-card{padding:7px;transform:rotate(-1.2deg)}
+}
+@media (prefers-reduced-motion:reduce){
+  .gift-card{transform:none}
+}
+
+/* végső QA (2026-10-13) */
+.vh{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.hero h1 .hero-kicker{display:block;font-family:var(--sans);font-size:14.5px;font-weight:400;line-height:1.4;letter-spacing:0;color:var(--on-dark-2);margin-bottom:22px}
+.lb button:focus-visible,.burger:focus-visible{box-shadow:0 0 0 2px #fff}
+.sp-prices li span{min-width:0}
+@media (max-width:640px){.hero h1 .hero-kicker{font-size:14px;margin-bottom:18px}}
+picture{display:contents}
+.burger,.hdr-ig{flex:none}
+@media (max-width:1000px){.hdr-ig{width:44px;height:44px;padding:0;display:inline-flex;align-items:center;justify-content:center}}
+.hdr.is-scrolled:not(.is-solid):not(.menu-open){background:rgba(31,20,36,.94);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 1px 0 var(--line-d)}
+@media (min-width:1001px) and (max-width:1180px){.p-tabs{gap:4px 20px}.p-tab{font-size:18px}.contact-cta .btn{flex:1 1 auto}}
+
+/* Google-értékelés (2026-10-26) – papírfehér sáv az utalvány és a kapcsolat között,
+   a QR egy kézbe adható kártyán, az ajándékkártyával ellentétes dőléssel */
+.rev{background:var(--paper);padding:clamp(80px,10vw,128px) 0}
+.rev-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:clamp(40px,7vw,112px);align-items:center}
+.rev-kicker{position:relative;padding-left:34px;margin-bottom:20px;font-size:14.5px;color:var(--muted)}
+.rev-kicker::before{content:"";position:absolute;left:0;top:50%;width:22px;height:1px;background:var(--lav-2)}
+.rev-text h2{font-size:clamp(30px,3.2vw,46px);max-width:580px}
+.rev-lead{margin-top:20px;max-width:540px;font-size:17.5px;color:var(--muted)}
+.rev-steps{margin:28px 0 0;padding:0;list-style:none;counter-reset:rv;max-width:520px;border-top:1px solid var(--line)}
+.rev-steps li{counter-increment:rv;display:grid;grid-template-columns:34px 1fr;gap:12px;align-items:baseline;padding:12px 0;border-bottom:1px solid var(--line);font-size:16px}
+.rev-steps li::before{content:counter(rv);font-family:var(--serif);font-size:20px;font-weight:600;line-height:1;color:#8E72BF}
+.rev-cta{display:flex;flex-wrap:wrap;align-items:center;gap:16px 30px;margin-top:34px}
+.rev-btn{gap:12px;min-height:54px;padding-inline:28px;font-size:16px}
+.rev-arr{width:15px;height:15px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:transform .3s var(--ease)}
+.rev-btn:hover .rev-arr{transform:translate(2px,-2px)}
+.rev-link{font-weight:600;color:var(--ink);text-decoration:none;border-bottom:1.5px solid var(--lav-2);padding-bottom:2px}
+.rev-link:hover{border-color:var(--ink)}
+.rev-note{margin-top:18px;font-size:14px;color:var(--muted);max-width:520px}
+.rev-card{justify-self:center;width:min(340px,100%);background:#fff;border-radius:10px;padding:26px 26px 22px;box-shadow:0 34px 60px -34px rgba(31,20,36,.55),0 0 0 1px rgba(36,24,43,.06);transform:rotate(1.6deg);text-align:center}
+.rev-card-brand{display:flex;align-items:center;justify-content:center;gap:9px;margin-bottom:18px;color:var(--ink)}
+.rev-card-brand span{font-family:var(--serif);font-size:23px;font-weight:600}
+.rev-card-brand .lm-buds{fill:#8E72BF}
+.rev-qr{width:100%;height:auto;aspect-ratio:1;padding:6px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding-block:18px}
+.rev-card figcaption{margin-top:14px;font-size:14px;line-height:1.45;color:var(--muted)}
+@media (max-width:1000px){
+  .rev-grid{grid-template-columns:1fr}
+  .rev-card{justify-self:start;width:min(320px,100%)}
+}
+@media (min-width:641px) and (max-width:1000px){
+  .rev-grid{grid-template-columns:minmax(0,1fr) 250px;gap:40px;align-items:start}
+  .rev-card{justify-self:end;width:100%;margin-top:40px;padding:22px 20px 18px}
+}
+@media (max-width:640px){
+  .rev-lead{font-size:16.5px}
+  .rev-btn{flex:1 1 100%}
+  .rev-cta{gap:18px}
+  .rev-card{justify-self:center;width:min(290px,100%);transform:rotate(1.2deg);padding:22px 22px 18px}
+}
+@media (prefers-reduced-motion:reduce){
+  .rev-card{transform:none}
+}

@@ -221,7 +221,10 @@ SOTET = {'a2': '#9C7A57', 'ring': '#8A6747', 'g': '#ECE1D2', 'a': '#C9A47E', 'w'
 MONO = {'art': '#3A312A', 'a2': '#FFFFFF', 'ring': '#FFFFFF', 'g': '#3A312A', 'a': '#3A312A', 'w': '#3A312A', 'f': '#3A312A', 't': '#3A312A', 'bg': None, 'bg2': '#FFFFFF'}
 MAIN = {'art': '#A97C52', 'a2': '#9E7752', 'ring': '#7E5B3D', 'g': '#4A3C31', 'a': '#C99B6E', 'w': '#4A3C31', 'f': '#BCA891', 't': '#9E7752', 'bg2': '#F4EDE3'}
 
-def keret(c, x, y, w, h, s=1.0):
+KERET_NELKUL = {1}   # ügyfélkérésre: az 1-es (Szorító) keret nélkül
+
+def keret(c, x, y, w, h, s=1.0, n=None):
+    if n in KERET_NELKUL: return ''
     return f'<rect x="{f2(x)}" y="{f2(y)}" width="{f2(w)}" height="{f2(h)}" fill="none" stroke="{c["f"]}" stroke-width="{f2(1.2*s)}"/>'
 
 def mono_fix(n, c):
@@ -263,18 +266,18 @@ def tagsor(c, cx, base, cel_w):
 def fo(n, c):
     W, H = 320, 372
     wm, size = nevir(n, c, 160, 300, 232)
-    return W, H, (keret(c, 10, 10, 300, 352) + JEL[n](c, 160, 140, 164) + wm +
+    return W, H, (keret(c, 10, 10, 300, 352, n=n) + JEL[n](c, 160, 140, 164) + wm +
                   tagsor(c, 160, 300 + size * 1.05, 232))
 
 def kompakt(n, c):
-    return 200, 200, keret(c, 8, 8, 184, 184, .9) + JEL[n](c, 100, 100, 118)
+    return 200, 200, keret(c, 8, 8, 184, 184, .9, n=n) + JEL[n](c, 100, 100, 118)
 
 def fejlec(n, c):
     H = 76; cel = 176
     W = int(84 + cel + 22)
     wm, size = nevir(n, c, 84 + cel / 2, 41, cel)
     sep = f'<rect x="70" y="18" width=".8" height="40" fill="{c["f"]}"/>'
-    return W, H, (keret(c, 3, 3, W - 6, H - 6, .7) + JEL[n](c, 37, 38, 42) + sep + wm +
+    return W, H, (keret(c, 3, 3, W - 6, H - 6, .7, n=n) + JEL[n](c, 37, 38, 42) + sep + wm +
                   tagsor(c, 84 + cel / 2, 57, cel * 0.94))
 
 def svg(W, H, body, bg=None, pad=0, title=''):

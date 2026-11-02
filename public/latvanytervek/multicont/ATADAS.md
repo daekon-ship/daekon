@@ -214,3 +214,33 @@ Főcím és alcím · „30 év” · végzettségek és pálya · idézet · �
 - **„Átlinkelés más partnerek oldalára”:** a Partnerközpont rovatban partnersor (jelenleg minta), kattintásra a partner oldalára visz; valódi partnernél közvetlenül a partner weboldalára.
 - Tesztek: 17 oldal × 8 szélesség – nincs túlcsordulás, nincs konzolhiba; kalkulátorok, visszahívás, Tudástár, dokumentumtár, partnerek, kezelőfelület működik.
 - 25. kör (10. 22.): telefonos és gépi ellenőrzés automatikus átfedés-/levágás-kereséssel (17 oldal × 8 szélesség). Valódi hiba: a „Minta” címke rácsúszott a partner- és ajánlatkártyák címére → a címke saját sort kapott. Egyéb elcsúszás nincs.
+
+- 26. kör (2026-10-30): Google Cégprofil adatai (Marcsi levele) beépítve: ügyfélfogadás 14:00–18:00 (kezdőlap jobb hasáb, Kapcsolat, lábléc, impresszum). Cím és telefon egyezik. A Kapcsolat oldalon jelölt hely vár a Google Térkép- és véleményírási linkre (igazolás folyamatban, max. 5 nap). Ügyfélfogadási napok pontosítandók; JSON-LD openingHours csak a napok ismeretében kerüljön be.
+
+## 16. 27. kör – Átadás előtti tisztítás és teljes ellenőrzés (2026. 10. 31.)
+
+**Változások**
+- Ügyfélfogadás mindenhol egységesen: „Ügyfélfogadás előzetes időpont-egyeztetéssel” (kezdőlap jobb hasáb, Kapcsolat, lábléc, impresszum, Könyvelés GYIK). A 14:00–18:00 csak a napok megerősítése után kerüljön vissza (`HOURS` a `common.py`-ban), és akkor a JSON-LD `openingHoursSpecification` is.
+- A látogatói oldalakról lekerült minden munkaközi szöveg: a sárga „ellenőrzésre vár / helyőrző / Cégprofil” dobozok, a „Minta” címkék, a lábléc „Kezelőfelület (látványterv)” linkje és a fejlesztői állapotcímkék („Backend kell”, „Részben”, „Működik”) a Partnereink oldalon.
+- A számozott szekciócímkék (01–04) és a szolgáltatássorok sorszámai kikerültek, mert sablonos hatásúak voltak.
+- A mintapartnerek, mintakuponok és a nem jóváhagyott dokumentumok a nyilvános oldalon nem jelennek meg (`mc.js`: `!p.minta`, `statusz !== 'minta'`). A kezelőfelület-demóban megmaradtak. Amíg nincs valódi partner, a Partnereink oldalon üres állapot és szakmaterület-választó jelenik meg.
+- Az adatkezelési tájékoztató helyőrzője helyett tényszerű, rövid tájékoztató áll (kapcsolatfelvételi adatok, hozzájárulás, NAIH, sütik). **Élesítés előtt jogi átnézés szükséges.**
+- A kezelőfelület továbbra is elérhető közvetlenül: `admin-belepes.html`.
+
+**Ellenőrzés**
+- 17 oldal × 8 szélesség (360–1920): 0 átfedés, levágás vagy vízszintes görgetés.
+- Belső linkek: nincs törött link. A kalkulátor- és admin-horgonyok fülként működnek (`data-hash`).
+- Konzolhiba nincs. Minden telefonlink `tel:+36204337811`.
+- SEO: minden nyilvános oldalon egyedi title és description, canonical, OG és egy H1 van; JSON-LD AccountingService; sitemap.xml. A robots.txt és a `noindex` látványtervként szándékos: **élesítéskor át kell állítani.**
+- Térkép: hozzájárulás után betölt (2040 Budaörs, Meredek utca 2.); útvonaltervező link.
+
+**Marcsival egyeztetni**
+1. ~~Az ügyfélfogadás napjai és órái.~~ Kész: Marcsi 2026. 10. 31-én megerősítette.
+2. A Google Cégprofil igazolása után a véleményírási link és a Térkép-link (a Kapcsolat oldalon a `GOOGLE CÉGPROFIL` megjegyzésnél van a helye). Véleményt kézzel nem írunk be.
+3. Impresszum: székhely (ha eltér az irodától), képviselő, nyilvántartó bíróság, tárhelyszolgáltató.
+4. Az adatkezelési tájékoztató jóváhagyása.
+5. A szakmai adatok jóváhagyása: 30 év, végzettségek, idézet, „Alapító, szakmai vezető”, kiemelt végelszámolás.
+6. Saját portréfotó, valódi partnerek és kuponok, a végleges ügyféladatlap PDF.
+7. Domain és tárhely; utána robots és sitemap élesítése, a Cégprofilba a webhely címe.
+
+- 28. kör (2026-11-01): Marcsi levele szerint minden munkanap du. 14-től van az irodában, a záróidő a Google Cégprofilból jön. Ügyfélfogadás mindenhol „H–P 14:00–18:00, előzetes egyeztetéssel” (kezdőlap, Kapcsolat, lábléc, impresszum, GYIK). A JSON-LD `openingHoursSpecification` bekerült (Mo–Fr 14:00–18:00). Ha a záróidő változik, a `common.py`-ban a `HOURS` / `HOURS_L` értéket és a `p_home.py` JSON-LD-jét kell átírni.

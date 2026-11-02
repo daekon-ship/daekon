@@ -130,7 +130,7 @@ page("kalkulatorok.html", "Kalkulátorok – MultiCont Center Kft. | Bér, ÁFA,
 # ======================= DOKUMENTUMTÁR =======================
 dok = ph("Dokumentumtár", "Formanyomtatványok és szakmai anyagok egy helyen, verziószámmal és dátummal. Az új anyagokat az iroda maga tölti fel.", ["Dokumentumtár"]) + f'''
 <div class="wrap" style="padding-top:32px;padding-bottom:64px">
-  <p class="notice" style="margin-bottom:20px">Itt csak nyilvános, közzétételre jóváhagyott dokumentumok vannak. Ügyféliratokat soha nem teszünk ide – azokhoz később külön, belépéssel védett felület készülhet.</p>
+  <p class="notice" style="margin-bottom:20px">Szabadon letölthető nyomtatványok és szakmai segédanyagok. Ügyfeleink személyes iratait itt nem tároljuk.</p>
   <div class="dtools">
     <div class="search"><label class="vh" for="doc-q">Keresés a dokumentumokban</label><input id="doc-q" type="search" placeholder="Keresés a dokumentumokban" autocomplete="off"><span class="ico" aria-hidden="true">{I_SEARCH}</span></div>
     <div><label class="vh" for="doc-kat">Kategória</label><select class="select" id="doc-kat" style="width:100%"></select></div>
@@ -152,10 +152,9 @@ HP = '<div class="hp" aria-hidden="true"><label for="{0}-web2">Ne töltse ki</la
 DONE = '<div class="done" hidden role="status"><p><b>Megnyílt a levelezőprogramja</b> a kész üzenettel. Az Elküldés gombbal érkezik meg hozzánk – amíg nem küldi el, nem kaptuk meg.</p><p>Nem nyílt meg? <button class="btn btn-o btn-s" type="button" data-copy>Szöveg másolása</button></p></div>'
 KATS = "".join(f'<option>{k}</option>' for k in ["Jogi szolgáltatás", "Pénzügy és biztosítás", "Informatika és szoftver", "Marketing és kommunikáció", "Egyéb vállalkozói szolgáltatás"])
 
-partner = ph("Partnereink", "Megbízható szakemberek, akiket ügyfeleinknek ajánlunk – és akik minket ajánlanak. A partnerprogram most indul: az alábbi kártyák a működését mutatják be.", ["Partnereink"]) + f'''
+partner = ph("Partnereink", "Megbízható szakemberek, akiket ügyfeleinknek ajánlunk – és akik minket ajánlanak.", ["Partnereink"]) + f'''
 <section class="band" style="padding-top:32px">
   <div class="wrap">
-    <p class="notice w" style="margin-bottom:20px"><b>Minta.</b> A partnerlista feltöltés alatt áll. A kártyák és ajánlatok csak a megjelenést mutatják, valódi céget és kedvezményt nem tartalmaznak.</p>
     <div class="dtools" style="grid-template-columns:minmax(0,1fr) 260px">
       <div class="search"><label class="vh" for="p-q">Keresés a partnerek között</label><input id="p-q" type="search" placeholder="Keresés a partnerek között" autocomplete="off"><span class="ico" aria-hidden="true">{I_SEARCH}</span></div>
       <div><label class="vh" for="p-kat">Kategória</label><select class="select" id="p-kat" style="width:100%"></select></div>
@@ -166,20 +165,20 @@ partner = ph("Partnereink", "Megbízható szakemberek, akiket ügyfeleinknek aj�
 
 <section class="band band-off" id="ajanlatok">
   <div class="wrap">
-    <div class="bhead"><div><p class="eyebrow g">Ajánlatok és kuponok</p><h2 class="h2">Kedvezmények ügyfeleinknek</h2></div><p class="lead">A partnerek időszakos ajánlatai, kuponkóddal és lejárati dátummal. Minden ajánlat az iroda jóváhagyása után jelenik meg.</p></div>
+    <div class="bhead"><div><p class="eyebrow g">Ajánlatok és kuponok</p><h2 class="h2">Kedvezmények ügyfeleinknek</h2></div><p class="lead">Partnereink időszakos ajánlatai ügyfeleinknek, kuponkóddal és lejárati dátummal.</p></div>
     <div class="pgrid" id="o-grid"></div>
   </div>
 </section>
 
 <section class="band" id="ajanlo">
   <div class="wrap">
-    <div class="bhead"><div><p class="eyebrow t">Ajánlói rendszer</p><h2 class="h2">Így ajánljuk egymást</h2></div><p class="lead">Az alap már most működik: a partner saját linkjével érkező érdeklődőnél az ajánlói kód automatikusan bekerül az űrlapba. A nyilvántartáshoz háttérrendszer kell.</p></div>
+    <div class="bhead"><div><p class="eyebrow t">Ajánlói rendszer</p><h2 class="h2">Így ajánljuk egymást</h2></div><p class="lead">Partnereink saját ajánlói linket kapnak. Aki ezen keresztül érkezik, annak az ajánlói kódja automatikusan bekerül az üzenetébe.</p></div>
     <ol class="flow">
-      <li><h3>Partnerlink</h3><p>Minden partner kártyája és aloldala átlinkel a partner saját weboldalára.</p><span class="tag live t">Kész – a címet a partner adja meg</span></li>
-      <li><h3>Ajánlói link</h3><p>A partner saját kódot kap: <code>kapcsolat.html?ajanlo=KÓD</code></p><span class="tag live t">Működik</span></li>
-      <li><h3>Kuponkód</h3><p>Az ajánlatokhoz kód és lejárati dátum tartozik.</p><span class="tag live t">Megjelenítés működik</span></li>
-      <li><h3>Érdeklődő rögzítése</h3><p>Ma: a kód bekerül az e-mailbe. Később: nyilvántartás.</p><span class="tag demo">Részben</span></li>
-      <li><h3>Jóváhagyás</h3><p>Partner, ajánlat és ajánlás csak jóváhagyás után él.</p><span class="tag demo">Backend kell</span></li>
+      <li><h3>Partnerlink</h3><p>Minden partnerünk bemutatkozó oldala átlinkel a saját weboldalára.</p></li>
+      <li><h3>Ajánlói link</h3><p>A partner saját kódot kap, amellyel hozzánk irányíthatja ügyfeleit.</p></li>
+      <li><h3>Kuponkód</h3><p>Az ajánlatokhoz kód és lejárati dátum tartozik.</p></li>
+      <li><h3>Visszajelzés</h3><p>Az ajánlásokat számon tartjuk, és jelezzük partnerünknek.</p></li>
+      <li><h3>Ellenőrzés</h3><p>Csak olyan partnert és ajánlatot teszünk közzé, amelyet ismerünk és vállalunk.</p></li>
     </ol>
   </div>
 </section>
@@ -191,7 +190,7 @@ partner = ph("Partnereink", "Megbízható szakemberek, akiket ügyfeleinknek aj�
       <h2 class="h2">Ajánlatkérés, ajánlás, jelentkezés</h2>
       <p style="margin-top:12px">Kérjen ajánlatot egy partnertől, ajánljon nekünk egy szakembert, vagy jelentkezzen partnernek. Minden űrlap a levelezőprogramján keresztül érkezik meg hozzánk.</p>
       <ul class="why" style="grid-template-columns:1fr;margin-top:18px">
-        <li><span><b>Jóváhagyás után</b> jelenik meg bármi a listán</span></li>
+        <li><span><b>Csak ellenőrzött</b> partnerek kerülnek a listára</span></li>
         <li><span><b>Hivatkozás</b> a partner weboldalára</span></li>
         <li><span><b>Kölcsönös ajánlás</b> ajánlói kóddal</span></li>
       </ul>
@@ -254,6 +253,7 @@ kapcs = ph("Kapcsolat", "Hívjon, írjon, vagy keressen fel minket Budaörsön. 
         <div><dt>Telefon</dt><dd><a class="big" href="tel:{TEL}">{TEL_H}</a></dd></div>
         <div><dt>E-mail</dt><dd><a href="mailto:{MAIL}">{MAIL}</a></dd></div>
         <div><dt>Iroda</dt><dd>{ADDR}</dd></div>
+        <div><dt>Ügyfélfogadás</dt><dd>{HOURS_L}<br><span class="muted small">Kérjük, előtte egyeztessen időpontot.</span></dd></div>
         <div><dt>Nyelvek</dt><dd>magyar, német</dd></div>
         <div><dt>Kapcsolattartó</dt><dd>Horváth Mária</dd></div>
       </dl>
@@ -265,6 +265,7 @@ kapcs = ph("Kapcsolat", "Hívjon, írjon, vagy keressen fel minket Budaörsön. 
         </div>
         <a class="btn btn-w btn-s" href="{MAPS}" target="_blank" rel="noopener" style="border:1px solid var(--line-2)">Útvonaltervezés ↗</a>
       </div>
+      <!-- GOOGLE CÉGPROFIL (ATADAS.md): az igazolás után ide kerül az "Értékeljen minket a Google-on" link. Véleményt kézzel NE írjunk be. -->
     </div>
     <form class="form" id="urlap" novalidate data-mail="{MAIL}" data-subject="Érdeklődés a weboldalról">
       <h2 class="h3">Írjon nekünk</h2>
