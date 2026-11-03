@@ -372,22 +372,33 @@ def jel_emelo(col, accent, acel=None):
 _NID = [0]
 
 
+def kulcs_alak(x0, x1, cy, R, fill, jaw_fill):
+    """Kétvégű villáskulcs: két kör-fej + szár, a pofák nyílása kifelé (jaw_fill = kivágás színe)."""
+    sh = R * 0.62
+    g = f'<rect x="{f(x0 + R)}" y="{f(cy - sh / 2)}" width="{f(x1 - x0 - 2 * R)}" height="{f(sh)}" fill="{fill}"/>'
+    g += f'<circle cx="{f(x0 + R)}" cy="{f(cy)}" r="{f(R)}" fill="{fill}"/><circle cx="{f(x1 - R)}" cy="{f(cy)}" r="{f(R)}" fill="{fill}"/>'
+    W = R * 0.95
+    jaws = (f'<path d="M{f(x0 - 1)} {f(cy - W / 2 - R * .25)}L{f(x0 + R * .95)} {f(cy - W / 2)}V{f(cy + W / 2)}L{f(x0 - 1)} {f(cy + W / 2 + R * .25)}Z" fill="{jaw_fill}"/>'
+            f'<path d="M{f(x1 + 1)} {f(cy - W / 2 - R * .25)}L{f(x1 - R * .95)} {f(cy - W / 2)}V{f(cy + W / 2)}L{f(x1 + 1)} {f(cy + W / 2 + R * .25)}Z" fill="{jaw_fill}"/>')
+    return g, jaws
+
+
 def jel_anya(col, accent, acel=None):
-    """Hatlapú csavaranya (Dunaújváros, az acélváros) – a furat helyén kivágott korona, narancs koronapánttal."""
+    """Hatlapú csavaranya – a furat helyén kivágott korona, alatta kivágásban ülő narancs villáskulcs."""
     _NID[0] += 1
-    mid = f"anya{_NID[0]}"
+    mid, kid = f"anya{_NID[0]}", f"kulcs{_NID[0]}"
     cx, cy, R = 50, 50, 46
     hx = [(cx + R * math.cos(math.radians(a)), cy + R * math.sin(math.radians(a))) for a in range(30, 390, 60)]
-    crown = [(27, 62), (27, 34), (38.5, 46), (50, 26), (61.5, 46), (73, 34), (73, 62)]
+    crown = [(29, 57), (29, 30), (39.5, 41), (50, 21), (60.5, 41), (71, 30), (71, 57)]
+    ky, kr = 68.5, 6.4
+    k_body, k_jaws = kulcs_alak(15.5, 84.5, ky, kr, "#000", "#fff")
+    gap, _ = kulcs_alak(13.3, 86.7, ky, kr + 2.2, "#000", "#000")
     m = (f'<mask id="{mid}" maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="100"><rect width="100" height="100" fill="#000"/>'
-         f'<path d="{P(hx)}" fill="#fff"/><path d="{P(crown)}" fill="#000"/><rect x="27" y="65" width="46" height="8" fill="#000"/></mask>')
-    g = f'<defs>{m}</defs><rect width="100" height="100" fill="{col}" mask="url(#{mid})"/>'
-    # belső letörés-gyűrű a hatlapon
-    hx2 = [(cx + 39 * math.cos(math.radians(a)), cy + 39 * math.sin(math.radians(a))) for a in range(30, 390, 60)]
-    g += f'<path d="{P(hx2)}" fill="none" stroke="{acel or col}" stroke-width="1.4" opacity="{.55 if acel else 0}"/>'
-    g += f'<rect x="27" y="65" width="46" height="8" fill="{accent}"/>'
-    for x in (27, 50, 73):
-        pass
+         f'<path d="{P(hx)}" fill="#fff"/><path d="{P(crown)}" fill="#000"/>{gap}</mask>')
+    kb, kj = kulcs_alak(15.5, 84.5, ky, kr, "#fff", "#000")
+    mk = f'<mask id="{kid}" maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="100"><rect width="100" height="100" fill="#000"/>{kb}{kj}</mask>'
+    g = f'<defs>{m}{mk}</defs><rect width="100" height="100" fill="{col}" mask="url(#{mid})"/>'
+    g += f'<rect width="100" height="100" fill="{accent}" mask="url(#{kid})"/>'
     return g, (cx - R * math.cos(math.radians(30)), cy - R, cx + R * math.cos(math.radians(30)), cy + R)
 
 
