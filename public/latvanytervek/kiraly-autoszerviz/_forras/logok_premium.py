@@ -147,6 +147,124 @@ def vizszintes(bg_shield, gold, inner_col, word_col, sub_col):
     return mark + p1 + p2 + p3 + rule, (mb[0] * k, 0, max(b1[2], b2[2]), 200 * k)
 
 
+# ---------------------------------------------------------- közös kiegészítők
+_UID = [0]
+
+
+def uid(p):
+    _UID[0] += 1
+    return f"{p}{_UID[0]}"
+
+
+def villaskulcs(cx, cy, L, ang, col, R=11):
+    """Egyvégű villáskulcs (fej felül, nyitott pofa), forgatva cx,cy körül."""
+    mid = uid("vk")
+    hy = cy - L / 2
+    head = circ(cx, hy, R)
+    jaw = f"M{f(cx - R * .42)} {f(hy - R - 2)}H{f(cx + R * .42)}V{f(hy + R * .05)}H{f(cx - R * .42)}Z"
+    shaft = f"M{f(cx - R * .36)} {f(hy + R * .5)}H{f(cx + R * .36)}L{f(cx + R * .3)} {f(cy + L / 2)}Q{f(cx)} {f(cy + L / 2 + R * .5)} {f(cx - R * .3)} {f(cy + L / 2)}Z"
+    m = (f'<mask id="{mid}" maskUnits="userSpaceOnUse" x="{f(cx - 200)}" y="{f(cy - 200)}" width="400" height="400">'
+         f'<rect x="{f(cx - 200)}" y="{f(cy - 200)}" width="400" height="400" fill="#000"/><path d="{head}" fill="#fff"/><path d="{shaft}" fill="#fff"/>'
+         f'<path d="{jaw}" fill="#000"/><circle cx="{f(cx)}" cy="{f(cy + L / 2 - R * .2)}" r="{f(R * .2)}" fill="#000"/></mask>')
+    return (f'<g transform="rotate({f(ang)} {f(cx)} {f(cy)})"><defs>{m}</defs>'
+            f'<rect x="{f(cx - 200)}" y="{f(cy - 200)}" width="400" height="400" fill="{col}" mask="url(#{mid})"/></g>')
+
+
+def lab_szoveg(cx, y, word_col, sub_col, gold, size=50):
+    p1, b1 = txt("KIRÁLY", "archivo", size, 700, 112, .06, cx, y, word_col)
+    p2, b2 = txt("AUTÓSZERVIZ", "manrope", size * .29, 700, None, .42, cx, y + size * .56, sub_col)
+    p3, b3 = txt("DUNAÚJVÁROS", "manrope", size * .2, 650, None, .4, cx, y + size * 1.0, gold)
+    ly = y + size * 1.0 - size * .07
+    w3 = b3[2] - b3[0]
+    rules = (f'<rect x="{f(b1[0])}" y="{f(ly)}" width="{f(cx - w3 / 2 - 10 - b1[0])}" height="1" fill="{gold}"/>'
+             f'<rect x="{f(cx + w3 / 2 + 10)}" y="{f(ly)}" width="{f(b1[2] - cx - w3 / 2 - 10)}" height="1" fill="{gold}"/>')
+    return p1 + p2 + p3 + rules, (b1[0], b1[1], b1[2], b3[3])
+
+
+# ---------------------------------------------------------- 2) KEREK PECSÉT – keresztbe tett kulcsok + korona
+def pecset(fill, gold, inner, txtc):
+    cx = cy = 100
+    g = f'<circle cx="100" cy="100" r="98" fill="{fill}"/>'
+    g += f'<circle cx="100" cy="100" r="92" fill="none" stroke="{gold}" stroke-width="2.4"/>'
+    g += f'<circle cx="100" cy="100" r="88" fill="none" stroke="{gold}" stroke-width=".8"/>'
+    g += f'<circle cx="100" cy="100" r="62" fill="none" stroke="{gold}" stroke-width="1.4"/>'
+    g += ring_text("KIRÁLY AUTÓSZERVIZ", 71, 14.5, 800, txtc, True, .2)
+    g += ring_text("DUNAÚJVÁROS", 81, 11.5, 700, gold, False, .34)
+    for a in (180, 0):
+        x = cx + 76 * math.cos(math.radians(a)); y = cy
+        g += f'<path d="{P([(x, y - 4), (x + 4, y), (x, y + 4), (x - 4, y)])}" fill="{gold}"/>'
+    g += villaskulcs(cx, 112, 70, -38, inner, 10)
+    g += villaskulcs(cx, 112, 70, 38, inner, 10)
+    g += crown(cx, 70, 40, 21, gold)
+    p, _ = txt("2008", "manrope", 9, 700, None, .35, cx, 150, gold)
+    return g + p, (2, 2, 198, 198)
+
+
+# ---------------------------------------------------------- 3) HATSZÖG – gyújtógyertya + korona
+def hatszog(fill, gold, inner, txtc):
+    from logok import gyertya
+    cx, cy = 100, 100
+    hx = lambda R: [(cx + R * math.cos(math.radians(a)), cy + R * math.sin(math.radians(a))) for a in range(-90, 270, 60)]
+    g = f'<path d="{P(hx(98))}" fill="{fill}"/>'
+    g += f'<path d="{P(hx(91))}" fill="none" stroke="{gold}" stroke-width="2.4" stroke-linejoin="round"/>'
+    g += f'<path d="{P(hx(86))}" fill="none" stroke="{gold}" stroke-width=".8" stroke-linejoin="round"/>'
+    g += crown(cx, 44, 34, 18, gold)
+    g += gyertya(cx + 2.5, 54, 62, inner, gold, "#8C9AAC")
+    g += f'<rect x="52" y="124" width="96" height="1" fill="{gold}"/>'
+    p1, b1 = txt("KIRÁLY", "archivo", 19, 700, 112, .08, cx, 146, txtc)
+    p2, b2 = txt("AUTÓSZERVIZ", "manrope", 6.6, 800, None, .42, cx, 158, "#B9C2CE")
+    p3, b3 = txt("DUNAÚJVÁROS", "manrope", 5.4, 700, None, .4, cx, 169, gold)
+    p2 += p3
+    return g + p1 + p2, (cx - 98 * math.cos(math.radians(30)), 2, cx + 98 * math.cos(math.radians(30)), 198)
+
+
+# ---------------------------------------------------------- 4) SZÁRNYAS JELVÉNY – kormány + korona
+def szarnyas(fill, gold, inner, txtc):
+    from logok import jel_anya
+    cx, cy = 150, 78
+    g = ""
+    for side in (-1, 1):
+        for i in range(5):
+            y = cy - 14 + i * 9
+            x0 = cx + side * 48
+            ln = 92 - i * 14
+            t = 7.2 - i * .6
+            x1 = x0 + side * ln
+            g += f'<path d="{P([(x0, y), (x1, y - 6 + i * 1.2), (x1 - side * 6, y + t - 6 + i * 1.2), (x0, y + t)])}" fill="{gold}"/>'
+    g += f'<circle cx="{cx}" cy="{cy}" r="50" fill="{fill}"/>'
+    g += f'<circle cx="{cx}" cy="{cy}" r="45" fill="none" stroke="{gold}" stroke-width="2.4"/>'
+    g += f'<circle cx="{cx}" cy="{cy}" r="41.5" fill="none" stroke="{gold}" stroke-width=".8"/>'
+    m, mb = jel_anya(inner, gold)
+    k = 64 / (mb[3] - mb[1])
+    g += f'<g transform="translate({f(cx - (mb[0] + mb[2]) / 2 * k)} {f(cy - (mb[1] + mb[3]) / 2 * k)}) scale({k:.4f})">{m}</g>'
+    t, tb = lab_szoveg(cx, 168, txtc, "#B9C2CE" if txtc != NAVY else "#4A5A70", gold, 44)
+    return g + t, (min(cx - 140, tb[0]), 18, max(cx + 140, tb[2]), tb[3])
+
+
+# ---------------------------------------------------------- 5) ÍVES TÁBLA – mérőóra + korona
+def tabla(fill, gold, inner, txtc):
+    from logok_v2 import sym_dial
+    import itertools
+    W, H = 220, 250
+    x0, y0 = 0, 0
+    def plaque(i):
+        x, y, w, h = x0 + i, y0 + i, W - 2 * i, H - 2 * i
+        r = w / 2
+        return f"M{f(x)} {f(y + r)}A{f(r)} {f(r)} 0 0 1 {f(x + w)} {f(y + r)}V{f(y + h - 8)}Q{f(x + w)} {f(y + h)} {f(x + w - 8)} {f(y + h)}H{f(x + 8)}Q{f(x)} {f(y + h)} {f(x)} {f(y + h - 8)}Z"
+    g = f'<path d="{plaque(0)}" fill="{fill}"/>'
+    g += f'<path d="{plaque(7)}" fill="none" stroke="{gold}" stroke-width="2.4"/>'
+    g += f'<path d="{plaque(11.5)}" fill="none" stroke="{gold}" stroke-width=".8"/>'
+    g += crown(W / 2, 46, 44, 23, gold)
+    d, db = sym_dial(dict(ink=inner, metal="#8C9AAC", accent=gold, ids=itertools.count(1)))
+    k = 86 / (db[3] - db[1])
+    g += f'<g transform="translate({f(W / 2 - (db[0] + db[2]) / 2 * k)} {f(56 - db[1] * k)}) scale({k:.4f})">{d}</g>'
+    g += f'<rect x="22" y="160" width="{W - 44}" height="1.2" fill="{gold}"/>'
+    p1, b1 = txt("KIRÁLY", "archivo", 30, 700, 112, .07, W / 2, 194, txtc)
+    p2, b2 = txt("AUTÓSZERVIZ", "manrope", 9.4, 800, None, .42, W / 2, 211, "#B9C2CE")
+    p3, b3 = txt("DUNAÚJVÁROS · 2008", "manrope", 7.6, 700, None, .36, W / 2, 229, gold)
+    return g + p1 + p2 + p3, (0, 0, W, H)
+
+
 def svg(body, bb, pad, bg=None, title="KIRÁLY Autószerviz – prémium embléma"):
     x0, y0, x1, y1 = bb
     x0 -= pad; y0 -= pad; x1 += pad; y1 += pad
@@ -159,13 +277,17 @@ def main():
     shutil.rmtree(OUT, ignore_errors=True)
     os.makedirs(OUT)
     def w(n, s): open(os.path.join(OUT, n + ".svg"), "w").write(s)
-    # világos háttér: navy pajzs, arany, krém dugattyú
-    w("A-cimer-vilagos", svg(*cimer(NAVY, GOLD, CREAM, NAVY, "#4A5A70"), 30, CREAM))
-    w("A-cimer-sotet", svg(*cimer("#13243A", GOLD, CREAM, CREAM, "#B9C2CE"), 30, NAVY))
-    w("B-jelveny-vilagos", svg(*jelveny(NAVY, GOLD, CREAM, CREAM), 24, CREAM))
-    w("B-jelveny-sotet", svg(*jelveny("#13243A", GOLD, CREAM, CREAM), 24, NAVY))
-    w("C-vizszintes-vilagos", svg(*vizszintes(NAVY, GOLD, CREAM, NAVY, "#4A5A70"), 30, CREAM))
-    w("C-vizszintes-sotet", svg(*vizszintes("#13243A", GOLD, CREAM, CREAM, "#B9C2CE"), 30, NAVY))
+    D = "#13243A"
+    w("1-cimer-sotet", svg(*cimer(D, GOLD, CREAM, CREAM, "#B9C2CE"), 30, NAVY))
+    w("1-cimer-vilagos", svg(*cimer(NAVY, GOLD, CREAM, NAVY, "#4A5A70"), 30, CREAM))
+    w("2-pecset-sotet", svg(*pecset(D, GOLD, CREAM, CREAM), 24, NAVY))
+    w("2-pecset-vilagos", svg(*pecset(NAVY, GOLD, CREAM, CREAM), 24, CREAM))
+    w("3-hatszog-sotet", svg(*hatszog(D, GOLD, CREAM, CREAM), 24, NAVY))
+    w("3-hatszog-vilagos", svg(*hatszog(NAVY, GOLD, CREAM, CREAM), 24, CREAM))
+    w("4-szarnyas-sotet", svg(*szarnyas(D, GOLD, CREAM, CREAM), 26, NAVY))
+    w("4-szarnyas-vilagos", svg(*szarnyas(NAVY, GOLD, CREAM, NAVY), 26, CREAM))
+    w("5-tabla-sotet", svg(*tabla(D, GOLD, CREAM, CREAM), 26, NAVY))
+    w("5-tabla-vilagos", svg(*tabla(NAVY, GOLD, CREAM, CREAM), 26, CREAM))
 
 
 if __name__ == "__main__":
