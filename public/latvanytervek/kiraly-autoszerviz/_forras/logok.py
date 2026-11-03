@@ -343,6 +343,31 @@ def jel_minta(col, accent, acel=None):
     return g, (cx - 49, cy - r1 - 21, cx + 49, cy + 11)
 
 
+# ------------------------------------------------ ÚJ 4. AUTÓEMELŐ
+def jel_emelo(col, accent, acel=None):
+    """Kétoszlopos autóemelő: két oszlop talppal, narancs emelőkarok, rajtuk megemelt autó (oldalnézet, kerekekkel)."""
+    m = acel or col
+    g = ""
+    # oszlopok + talp
+    for x in (8, 104):
+        g += f'<rect x="{x}" y="10" width="8" height="78" rx="1.5" fill="{col}"/>'
+        g += f'<rect x="{x - 4}" y="10" width="16" height="4" rx="1" fill="{col}"/>'
+    g += f'<rect x="2" y="88" width="116" height="6" rx="1.5" fill="{col}"/>'
+    # autó (egyszerű, nem sportos sziluett)
+    body = ("M24 50 L30 50 L40 35 Q42 32 46 32 L80 32 Q84 32 87 35 L97 49 L101 50 Q104 51 104 54 "
+            "L104 60 Q104 62 102 62 L18 62 Q16 62 16 60 L16 54 Q16 51 19 50 Z")
+    win = ("M45 36 L58 36 L58 48 L37 48 Z M62 36 L79 36 Q81 36 82.5 38 L89 48 L62 48 Z")
+    # narancs emelőkarok: oszloptól a küszöb alá, kis emelőpárnával (a kerekek mögött)
+    for x0, x1 in ((16, 52), (104, 68)):
+        g += f'<rect x="{min(x0, x1)}" y="63" width="{abs(x1 - x0)}" height="5.5" fill="{accent}"/>'
+        px = x1 - 5 if x1 > x0 else x1
+        g += f'<rect x="{px}" y="60" width="5" height="4" fill="{accent}"/>'
+    g += f'<path d="{body} {win}" fill="{col}" fill-rule="evenodd"/>'
+    for cx in (35, 85):
+        g += f'<path d="{circ_path(cx, 63, 9.5)} {circ_path(cx, 63, 4, rev=True)}" fill="{m}" fill-rule="evenodd"/>'
+    return g, (2, 10, 118, 94)
+
+
 # ------------------------------------------------ KIMENETEK
 def svg(body, bb, pad, bg=None, title=""):
     x0, y0, x1, y1 = bb
@@ -434,17 +459,18 @@ def main():
             logo3("#000", "#000", "#000"),
             jel3(FEHER, NARANCS, "#7C8792"), GRAFIT, 0.5)
 
-    # 4 — Kulcs-K (a v2 Precision Tools jele, a közös felirattal)
     import itertools
-    from logok_v2 import sym_tools, sym_dial
+    from logok_v2 import sym_dial
     LA, DA = "#8B959E", "#7C8792"
     def cc(ink, metal, acc):
         return dict(ink=ink, metal=metal, accent=acc, ids=itertools.count(1))
+
+    # 4 — Autóemelő
     sorozat(4, T + " 4",
-            lockup(*sym_tools(cc(GRAFIT, LA, NARANCS)), GRAFIT, ACEL),
-            lockup(*sym_tools(cc(FEHER, DA, NARANCS)), FEHER, HALK),
-            lockup(*sym_tools(cc("#000", "#000", "#000")), "#000", "#000"),
-            sym_tools(cc(FEHER, DA, NARANCS)), GRAFIT, 0.5)
+            lockup(*jel_emelo(GRAFIT, NARANCS, LA), GRAFIT, ACEL),
+            lockup(*jel_emelo(FEHER, NARANCS, DA), FEHER, HALK),
+            lockup(*jel_emelo("#000", "#000"), "#000", "#000"),
+            jel_emelo(FEHER, NARANCS, DA), GRAFIT, 0.56)
 
     # 5 — Mérőóra (a v2 Technical Precision jele, a közös felirattal)
     sorozat(5, T + " 5",
