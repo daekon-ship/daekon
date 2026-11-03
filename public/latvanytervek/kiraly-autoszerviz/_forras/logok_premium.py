@@ -304,7 +304,7 @@ def svg(body, bb, pad, bg=None, title="KIRÁLY Autószerviz – prémium emblém
 PALETTAK = {
     "ejkek-arany": ("#0E1B2C", "#13243A", "#C9A14F", "#F6F2EA"),
     "versenyzold-sargarez": ("#0F2A24", "#143630", "#C9A15A", "#F3F1EA"),
-    "antracit-piros": ("#151618", "#1E2023", "#C8102E", "#F5F4F2"),
+    "fekete-pezsgoarany": ("#0B0B0C", "#151517", "#D8BE84", "#F5F1E8"),
 }
 TIPUSOK = [("1-cimer", cimer, 30), ("2-pecset", pecset, 24), ("3-hatszog", hatszog, 24), ("4-szarnyas", szarnyas, 26), ("5-tabla", tabla, 26)]
 
