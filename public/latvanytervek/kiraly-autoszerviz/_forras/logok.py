@@ -50,32 +50,45 @@ def sub(s, width, x, y, col, track=0.4, wght=650):
     return f'<path d="{d}" fill="{col}"/>', b
 
 
-def lockup(mark, mb, fg, subc, gap=20, size=40, wght=620, wdth=118, track=0.1, sub_track=0.34, sep=None):
-    """Jel balra, KIRÁLY + alcím jobbra, a jel magasságához igazítva."""
+def lockup(mark, mb, fg, subc, gap=24, size=40, wght=640, wdth=118, track=0.08, sub_track=0.34, sep=None, city=None):
+    """Jel balra; jobbra három sor: KIRÁLY / AUTÓSZERVIZ (teljes szélességben) / — DUNAÚJVÁROS — vonalak között."""
+    city = city or subc
     mh = mb[3] - mb[1]
     cap = cap_height("archivo", size, wght, wdth)
-    sub_cap = 9.2
-    tot = cap + 13 + sub_cap
-    top = mb[1] + (mh - tot) / 2 + 2
     x0 = mb[2] + gap
-    g = ""
-    if sep:
-        g += f'<rect x="{f(mb[2] + gap / 2 + 2)}" y="{f(mb[1] + 6)}" width="1.1" height="{f(mh - 12)}" fill="{sep}"/>'
-        x0 += 6
+    w, b = word("KIRÁLY", size, wght, wdth, track, x0, 0, fg)
+    W = b[2] - b[0]
+    _, _, s2 = fit_track("manrope", "AUTÓSZERVIZ", W, 700, track=0.42)
+    c2 = cap_height("manrope", s2, 700)
+    s3 = 9.6
+    c3 = cap_height("manrope", s3, 700)
+    g1, g2 = 10, 9
+    tot = cap + g1 + c2 + g2 + c3
+    top = mb[1] + (mh - tot) / 2
     w, b = word("KIRÁLY", size, wght, wdth, track, x0, top + cap, fg)
-    s, b2 = sub(SUB, b[2] - b[0], b[0], top + cap + 13 + sub_cap, subc, track=sub_track)
-    return mark + g + w + s, bounds_union(mb, b, b2)
+    y2 = top + cap + g1 + c2
+    d2, b2, _ = fit_track("manrope", "AUTÓSZERVIZ", W, 700, track=0.42, x=b[0], y=y2)
+    y3 = y2 + g2 + c3
+    d3, b3, _ = text("manrope", "DUNAÚJVÁROS", s3, 700, track=0.4, x=0, y=0)
+    w3 = b3[2] - b3[0]
+    cx = b[0] + W / 2
+    d3, b3, _ = text("manrope", "DUNAÚJVÁROS", s3, 700, track=0.4, x=cx - w3 / 2 - b3[0], y=y3)
+    ly = y3 - c3 / 2 - 0.5
+    rules = (f'<rect x="{f(b[0])}" y="{f(ly)}" width="{f(cx - w3 / 2 - 7 - b[0])}" height="1" fill="{city}"/>'
+             f'<rect x="{f(cx + w3 / 2 + 7)}" y="{f(ly)}" width="{f(b[0] + W - cx - w3 / 2 - 7)}" height="1" fill="{city}"/>')
+    body = mark + w + f'<path d="{d2}" fill="{subc}"/><path d="{d3}" fill="{city}"/>' + rules
+    return body, bounds_union(mb, b, b2, b3)
 
 
 # ------------------------------------------------ 1. DUGATTYÚKORONA
-def dugattyu(cx, top, w, col, fej=None, bx=None, base=84):
+def dugattyu(cx, top, w, col, fej=None, bx=None, base=84, acel=None):
     """Dugattyú hajtókarral: fej, két gyűrűhorony, szoknya csapszeg-furattal, hajtókar a forgattyúsig."""
     x = cx - w / 2
     h = 31
     g = ""
     bx = cx if bx is None else bx
     rod = [(cx - 3.4, top + h - 1), (cx + 3.4, top + h - 1), (bx + 4.8, base + 1), (bx - 4.8, base + 1)]
-    g += poly(rod, col)
+    g += poly(rod, acel or col)
     g += f'<path d="M{f(x)} {f(top + 6.2)}V{f(top + 1.6)}Q{f(x)} {f(top)} {f(x + 1.6)} {f(top)}H{f(x + w - 1.6)}Q{f(x + w)} {f(top)} {f(x + w)} {f(top + 1.6)}V{f(top + 6.2)}Z" fill="{fej or col}"/>'
     g += f'<rect x="{f(x)}" y="{f(top + 8.4)}" width="{f(w)}" height="3" fill="{col}"/>'
     y3 = top + 13.6
@@ -84,11 +97,13 @@ def dugattyu(cx, top, w, col, fej=None, bx=None, base=84):
     return g
 
 
-def jel1(col, accent):
-    g = dugattyu(29, 27, 22, col, bx=46)
-    g += dugattyu(91, 27, 22, col, bx=74)
-    g += dugattyu(60, 12, 24, col, fej=accent)
-    g += f'<rect x="20" y="84" width="80" height="8" rx="1" fill="{col}"/>'
+def jel1(col, accent, acel=None):
+    g = dugattyu(29, 27, 22, col, bx=46, acel=acel)
+    g += dugattyu(91, 27, 22, col, bx=74, acel=acel)
+    g += dugattyu(60, 12, 24, col, fej=accent, acel=acel)
+    g += f'<rect x="20" y="84" width="80" height="8" rx="2" fill="{col}"/>'
+    for x in (46, 60, 74):
+        g += f'<circle cx="{x}" cy="88" r="2" fill="{acel or col}" opacity="{1 if acel else 0}"/>'
     return g, (18, 12, 102, 92)
 
 
@@ -110,23 +125,24 @@ def kulcs(bx, by, length, R, sw, ang, col):
     return f'<g transform="rotate({f(ang)} {f(bx)} {f(by)})">' + poly(pts, col) + poly(shaft, col) + "</g>"
 
 
-def jel2(col, accent):
-    g = kulcs(60, 84, 50, 13.5, 8.5, -26, col)
-    g += kulcs(60, 84, 50, 13.5, 8.5, 26, col)
+def jel2(col, accent, acel=None):
+    g = kulcs(60, 84, 50, 13.5, 8.5, -26, acel or col)
+    g += kulcs(60, 84, 50, 13.5, 8.5, 26, acel or col)
     g += kulcs(60, 84, 60, 15, 9.5, 0, accent)
-    g += f'<rect x="38" y="80" width="44" height="9" fill="{col}"/>'
+    g += f'<rect x="36" y="80" width="48" height="9" rx="2" fill="{col}"/>'
     return g, (22, 9, 98, 89)
 
 
 # ------------------------------------------------ 3. GYÚJTÓGYERTYA-I
-def gyertya(cx, top, H, col, spark):
+def gyertya(cx, top, H, col, spark, acel=None):
     """Gyújtógyertya valós arányokkal (álló), H magasságban, mellette narancs szikra."""
     u = H / 100
     X = lambda v: f(cx + v * u)
     Y = lambda v: f(top + v * u)
     g = ""
+    m = acel or col
     # csatlakozó anya + nyak
-    g += f'<path d="M{X(-7)} {Y(0)}H{X(7)}V{Y(5)}H{X(3.2)}V{Y(10)}H{X(-3.2)}V{Y(5)}H{X(-7)}Z" fill="{col}"/>'
+    g += f'<path d="M{X(-7)} {Y(0)}H{X(7)}V{Y(5)}H{X(3.2)}V{Y(10)}H{X(-3.2)}V{Y(5)}H{X(-7)}Z" fill="{m}"/>'
     # kerámia szigetelő 3 bordával
     ins = f"M{X(-8)} {Y(10)}H{X(8)}"
     for i in range(3):
@@ -143,10 +159,10 @@ def gyertya(cx, top, H, col, spark):
     # menet: ferde lamellák
     for i in range(4):
         y0 = 67 + i * 5.2
-        g += f'<path d="M{X(-9)} {Y(y0 + 1.2)}L{X(9)} {Y(y0)}V{Y(y0 + 3.4)}L{X(-9)} {Y(y0 + 4.6)}Z" fill="{col}"/>'
+        g += f'<path d="M{X(-9)} {Y(y0 + 1.2)}L{X(9)} {Y(y0)}V{Y(y0 + 3.4)}L{X(-9)} {Y(y0 + 4.6)}Z" fill="{m}"/>'
     # középelektróda + földelő kampó
-    g += f'<rect x="{X(-2)}" y="{Y(88)}" width="{f(4 * u)}" height="{f(5 * u)}" fill="{col}"/>'
-    g += f'<path d="M{X(6)} {Y(88)}H{X(9)}V{Y(100)}H{X(-4)}V{Y(97)}H{X(6)}Z" fill="{col}"/>'
+    g += f'<rect x="{X(-2)}" y="{Y(88)}" width="{f(4 * u)}" height="{f(5 * u)}" fill="{m}"/>'
+    g += f'<path d="M{X(6)} {Y(88)}H{X(9)}V{Y(100)}H{X(-4)}V{Y(97)}H{X(6)}Z" fill="{m}"/>'
     # szikra
     sx, sy = cx - 16.5 * u, top + 90 * u
     u = u * 1.35
@@ -154,14 +170,14 @@ def gyertya(cx, top, H, col, spark):
     return g
 
 
-def logo3(fg, subc, spark):
-    m = gyertya(40, 8, 84, fg, spark)
+def logo3(fg, subc, spark, acel=None):
+    m = gyertya(40, 8, 84, fg, spark, acel)
     mb = (21, 8, 55, 92)
     return lockup(m, mb, fg, subc, gap=22, sep=None)
 
 
-def jel3(fg, spark, bg=None):
-    return gyertya(52, 8, 84, fg, spark), (33, 8, 67, 92)
+def jel3(fg, spark, acel=None):
+    return gyertya(52, 8, 84, fg, spark, acel), (33, 8, 67, 92)
 
 
 # ------------------------------------------------ 4. ABRONCS-EMBLÉMA
@@ -285,24 +301,24 @@ def main():
 
     # 1 — Dugattyúkorona
     sorozat(1, T + " 1",
-            lockup(*jel1(GRAFIT, NARANCS), GRAFIT, ACEL, sep="#C9CED2"),
-            lockup(*jel1(FEHER, NARANCS), FEHER, HALK, sep="#3A4651"),
-            lockup(*jel1("#000", "#000"), "#000", "#000", sep="#000"),
-            jel1(FEHER, NARANCS), GRAFIT, 0.5)
+            lockup(*jel1(GRAFIT, NARANCS, "#8B959E"), GRAFIT, ACEL),
+            lockup(*jel1(FEHER, NARANCS, "#7C8792"), FEHER, HALK),
+            lockup(*jel1("#000", "#000"), "#000", "#000"),
+            jel1(FEHER, NARANCS, "#7C8792"), GRAFIT, 0.5)
 
     # 2 — Kulcskorona
     sorozat(2, T + " 2",
-            lockup(*jel2(GRAFIT, NARANCS), GRAFIT, ACEL, sep="#C9CED2"),
-            lockup(*jel2(FEHER, NARANCS), FEHER, HALK, sep="#3A4651"),
-            lockup(*jel2("#000", "#000"), "#000", "#000", sep="#000"),
-            jel2(FEHER, NARANCS), GRAFIT, 0.52)
+            lockup(*jel2(GRAFIT, NARANCS, "#8B959E"), GRAFIT, ACEL),
+            lockup(*jel2(FEHER, NARANCS, "#7C8792"), FEHER, HALK),
+            lockup(*jel2("#000", "#000"), "#000", "#000"),
+            jel2(FEHER, NARANCS, "#7C8792"), GRAFIT, 0.52)
 
     # 3 — Gyújtógyertya-I
     sorozat(3, T + " 3",
-            logo3(GRAFIT, ACEL, NARANCS),
-            logo3(FEHER, HALK, NARANCS),
+            logo3(GRAFIT, ACEL, NARANCS, "#8B959E"),
+            logo3(FEHER, HALK, NARANCS, "#7C8792"),
             logo3("#000", "#000", "#000"),
-            jel3(FEHER, NARANCS), GRAFIT, 0.5)
+            jel3(FEHER, NARANCS, "#7C8792"), GRAFIT, 0.5)
 
     # 4 — Fogaskerék-korona (arany–fekete)
     vil = logo4(FEKETE, ARANY, FEKETE, "#6B5A1E")

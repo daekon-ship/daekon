@@ -1,5 +1,8 @@
 # KIRÁLY Autószerviz – átadás (2. kör, 2026.11.03.)
 
+## 5. kör – logók csiszolása
+Kétszínű jelek (acélszürke hajtókarok / oldalsó kulcsok / a gyertya fémrészei), lekerekített talpak. Új, nagyobb felirat: KIRÁLY / AUTÓSZERVIZ teljes szélességben / DUNAÚJVÁROS két vonal között. Elválasztó vonal elhagyva.
+
 ## 4. kör – letisztítás
 Az ügyfél-oldali visszajelzés: „túl AI, értelmetlen animációk”. Kikerült: pontrács-háttér, fénycsík, kódolt számok, mágneses gombok, fényfolt, kurzorkövető kártyafény, futó szolgáltatássáv, forgó felirat, filmszemcse, szavankénti elmosódás, felszámlálás, a hero átfedő fotóhelye. Marad (Motion): a 3D futómű kerekeinek beállása, az előtte/utána kapcsoló, a lenyíló sorok és egy finom beúszás. Nyugodtabb felületek, könnyebb címsúly, több levegő, visszafogott demó-sáv.
 
