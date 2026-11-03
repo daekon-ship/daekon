@@ -297,7 +297,7 @@ def jel_rugo(col, spring, acel=None):
     # spirálrugó: ferde menetek
     for i in range(6):
         y = 41.5 + i * 5.4
-        g += f'<path d="M{cx - 14} {y + 2.2}L{cx + 14} {y - 1.2}V{y + 1.8}L{cx - 14} {y + 5.2}Z" fill="{spring}"/>'
+        g += f'<path d="M{cx - 14} {y + 2.2}L{cx + 14} {y - 1.4}V{y + 2.2}L{cx - 14} {y + 5.8}Z" fill="{spring}"/>'
     # alsó rugótányér
     g += f'<rect x="{cx - 18}" y="76" width="36" height="4" rx="1.2" fill="{col}"/>'
     # lengéscsillapító-test
@@ -328,13 +328,13 @@ def jel_minta(col, accent, acel=None):
     for a, h, w in ((-150, 15, 7), (-90, 21, 8), (-30, 15, 7)):
         g += poly([pt(a - w, r1 - .5), pt(a, r1 + h), pt(a + w, r1 - .5)], col)
     # kis skálajelek
-    for a in range(-170, -9, 10):
+    for a in range(-165, -14, 15):
         if a in (-150, -90, -30):
             continue
         p0, p1 = pt(a, r0 - 3), pt(a, r0 - 8 if a % 30 == 0 else r0 - 6)
-        g += f'<line x1="{f(p0[0])}" y1="{f(p0[1])}" x2="{f(p1[0])}" y2="{f(p1[1])}" stroke="{m}" stroke-width="2"/>'
+        g += f'<line x1="{f(p0[0])}" y1="{f(p0[1])}" x2="{f(p1[0])}" y2="{f(p1[1])}" stroke="{m}" stroke-width="2.8" stroke-linecap="round"/>'
     # mutató
-    tip = pt(-58, 31)
+    tip = pt(-58, 34)
     n = (math.cos(math.radians(32)), math.sin(math.radians(32)))
     g += poly([(cx - 3.2 * n[0], cy - 3.2 * n[1]), tip, (cx + 3.2 * n[0], cy + 3.2 * n[1])], accent)
     g += f'<circle cx="{cx}" cy="{cy}" r="6.5" fill="{accent}"/><circle cx="{cx}" cy="{cy}" r="2.4" fill="{col}"/>'
