@@ -39,7 +39,21 @@ def shield_path(x, y, w, h, inset=0):
             f"C{f(cx - w * .2)} {f(y + h * .92)} {f(x)} {f(y + h * .76)} {f(x)} {f(y + h * .46)}Z")
 
 
+KORONA = [True]
+
+
+def dísz(cx, base, w, h, col):
+    y = base - h * .45
+    r = h * .2
+    g = f'<path d="{P([(cx, y - r), (cx + r, y), (cx, y + r), (cx - r, y)])}" fill="{col}"/>'
+    g += f'<rect x="{f(cx - w * .62)}" y="{f(y - .6)}" width="{f(w * .62 - r * 1.8)}" height="1.2" fill="{col}"/>'
+    g += f'<rect x="{f(cx + r * 1.8)}" y="{f(y - .6)}" width="{f(w * .62 - r * 1.8)}" height="1.2" fill="{col}"/>'
+    return g
+
+
 def crown(cx, base, w, h, col):
+    if not KORONA[0]:
+        return dísz(cx, base, w, h, col)
     pts = [(cx - w / 2, base), (cx - w / 2, base - h * .72), (cx - w / 4, base - h * .32), (cx, base - h),
            (cx + w / 4, base - h * .32), (cx + w / 2, base - h * .72), (cx + w / 2, base)]
     g = f'<path d="{P(pts)}" fill="{col}"/>'
@@ -218,6 +232,17 @@ def hatszog(fill, gold, inner, txtc):
     return g + p1 + p2, (cx - 98 * math.cos(math.radians(30)), 2, cx + 98 * math.cos(math.radians(30)), 198)
 
 
+def kormany(col, accent):
+    from logok import circ_path
+    cx, cy, R, r = 50, 50, 34, 26
+    g = f'<path d="{circ_path(cx, cy, R)} {circ_path(cx, cy, r, rev=True)}" fill="{col}" fill-rule="evenodd"/>'
+    g += f'<path d="M{cx - r - 1} {cy - 3.2}H{cx - 8}L{cx - 6} {cy + 4}H{cx - r + 0.5}Z" fill="{col}"/>'
+    g += f'<path d="M{cx + r + 1} {cy - 3.2}H{cx + 8}L{cx + 6} {cy + 4}H{cx + r - 0.5}Z" fill="{col}"/>'
+    g += f'<path d="M{cx - 4.5} {cy + 8}H{cx + 4.5}L{cx + 5.5} {cy + r + 1}H{cx - 5.5}Z" fill="{col}"/>'
+    g += f'<circle cx="{cx}" cy="{cy}" r="10" fill="{col}"/><circle cx="{cx}" cy="{cy}" r="4.2" fill="{accent}"/>'
+    return g, (cx - R, cy - R, cx + R, cy + R)
+
+
 # ---------------------------------------------------------- 4) SZÁRNYAS JELVÉNY – kormány + korona
 def szarnyas(fill, gold, inner, txtc):
     from logok import jel_anya
@@ -234,7 +259,10 @@ def szarnyas(fill, gold, inner, txtc):
     g += f'<circle cx="{cx}" cy="{cy}" r="50" fill="{fill}"/>'
     g += f'<circle cx="{cx}" cy="{cy}" r="45" fill="none" stroke="{gold}" stroke-width="2.4"/>'
     g += f'<circle cx="{cx}" cy="{cy}" r="41.5" fill="none" stroke="{gold}" stroke-width=".8"/>'
-    m, mb = jel_anya(inner, gold)
+    if KORONA[0]:
+        m, mb = jel_anya(inner, gold)
+    else:
+        m, mb = kormany(inner, gold)
     k = 64 / (mb[3] - mb[1])
     g += f'<g transform="translate({f(cx - (mb[0] + mb[2]) / 2 * k)} {f(cy - (mb[1] + mb[3]) / 2 * k)}) scale({k:.4f})">{m}</g>'
     t, tb = lab_szoveg(cx, 168, txtc, "#B9C2CE" if txtc != NAVY else "#4A5A70", gold, 44)
@@ -273,22 +301,32 @@ def svg(body, bb, pad, bg=None, title="KIRÁLY Autószerviz – prémium emblém
     return f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="{f(x0)} {f(y0)} {f(w)} {f(h)}" width="{f(w * 4)}" height="{f(h * 4)}"><title>{title}</title>{r}{body}</svg>\n'
 
 
-def main():
-    shutil.rmtree(OUT, ignore_errors=True)
-    os.makedirs(OUT)
-    def w(n, s): open(os.path.join(OUT, n + ".svg"), "w").write(s)
-    D = "#13243A"
-    w("1-cimer-sotet", svg(*cimer(D, GOLD, CREAM, CREAM, "#B9C2CE"), 30, NAVY))
-    w("1-cimer-vilagos", svg(*cimer(NAVY, GOLD, CREAM, NAVY, "#4A5A70"), 30, CREAM))
-    w("2-pecset-sotet", svg(*pecset(D, GOLD, CREAM, CREAM), 24, NAVY))
-    w("2-pecset-vilagos", svg(*pecset(NAVY, GOLD, CREAM, CREAM), 24, CREAM))
-    w("3-hatszog-sotet", svg(*hatszog(D, GOLD, CREAM, CREAM), 24, NAVY))
-    w("3-hatszog-vilagos", svg(*hatszog(NAVY, GOLD, CREAM, CREAM), 24, CREAM))
-    w("4-szarnyas-sotet", svg(*szarnyas(D, GOLD, CREAM, CREAM), 26, NAVY))
-    w("4-szarnyas-vilagos", svg(*szarnyas(NAVY, GOLD, CREAM, NAVY), 26, CREAM))
-    w("5-tabla-sotet", svg(*tabla(D, GOLD, CREAM, CREAM), 26, NAVY))
-    w("5-tabla-vilagos", svg(*tabla(NAVY, GOLD, CREAM, CREAM), 26, CREAM))
+PALETTAK = {
+    "ejkek-arany": ("#0E1B2C", "#13243A", "#C9A14F", "#F6F2EA"),
+    "versenyzold-sargarez": ("#0F2A24", "#143630", "#C9A15A", "#F3F1EA"),
+    "antracit-piros": ("#151618", "#1E2023", "#C8102E", "#F5F4F2"),
+}
+TIPUSOK = [("1-cimer", cimer, 30), ("2-pecset", pecset, 24), ("3-hatszog", hatszog, 24), ("4-szarnyas", szarnyas, 26), ("5-tabla", tabla, 26)]
 
+
+def main():
+    global NAVY, GOLD, CREAM
+    shutil.rmtree(OUT, ignore_errors=True)
+    for pal, (navy, d, gold, cream) in PALETTAK.items():
+        for korona in (True, False):
+            KORONA[0] = korona
+            mappa = os.path.join(OUT, f"{pal}-{'koronaval' if korona else 'korona-nelkul'}")
+            os.makedirs(mappa)
+            NAVY, GOLD, CREAM = navy, gold, cream
+            for nev, fn, pad in TIPUSOK:
+                if nev == "1-cimer":
+                    sd, vl = fn(d, gold, cream, cream, "#B9C2CE"), fn(navy, gold, cream, navy, "#4A5A70")
+                elif nev == "4-szarnyas":
+                    sd, vl = fn(d, gold, cream, cream), fn(navy, gold, cream, navy)
+                else:
+                    sd, vl = fn(d, gold, cream, cream), fn(navy, gold, cream, cream)
+                open(os.path.join(mappa, f"{nev}-sotet.svg"), "w").write(svg(*sd, pad, navy))
+                open(os.path.join(mappa, f"{nev}-vilagos.svg"), "w").write(svg(*vl, pad, cream))
 
 if __name__ == "__main__":
     main()
