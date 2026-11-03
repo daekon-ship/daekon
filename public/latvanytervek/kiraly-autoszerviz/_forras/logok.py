@@ -148,7 +148,8 @@ def gyertya(cx, top, H, col, spark):
     g += f'<rect x="{X(-2)}" y="{Y(88)}" width="{f(4 * u)}" height="{f(5 * u)}" fill="{col}"/>'
     g += f'<path d="M{X(6)} {Y(88)}H{X(9)}V{Y(100)}H{X(-4)}V{Y(97)}H{X(6)}Z" fill="{col}"/>'
     # szikra
-    sx, sy = cx - 15 * u, top + 92 * u
+    sx, sy = cx - 16.5 * u, top + 90 * u
+    u = u * 1.35
     g += f'<path d="M{f(sx + 4 * u)} {f(sy - 9 * u)}L{f(sx - 3 * u)} {f(sy + 1 * u)}H{f(sx + 1.5 * u)}L{f(sx - 3.5 * u)} {f(sy + 10 * u)}L{f(sx + 6 * u)} {f(sy - 2 * u)}H{f(sx + 1.6 * u)}Z" fill="{spark}"/>'
     return g
 
@@ -181,40 +182,36 @@ def ring_text(s, r, size, wght, col, top=True, track=0.3, cx=100, cy=100):
     return "".join(parts)
 
 
-def jel4(tire, txt, metal, hub, hubdark):
-    cx = cy = 100
-    pts = []
-    n = 72
-    for i in range(n):
-        a0 = 2 * math.pi * i / n
-        for k, rr in ((0, 96), (0.55, 96), (0.55, 92.5), (1, 92.5)):
-            a = a0 + 2 * math.pi / n * k
-            pts.append((cx + rr * math.cos(a), cy + rr * math.sin(a)))
-    g = f'<path d="{P(pts)} {circ_path(cx, cy, 66, rev=True)}" fill="{tire}" fill-rule="evenodd"/>'
-    g += ring_text("KIRÁLY AUTÓSZERVIZ", 76, 10.4, 800, txt, top=True, track=0.26)
-    g += ring_text("DUNAÚJVÁROS · 2008", 85.2, 10.4, 800, txt, top=False, track=0.26)
-    g += f'<path d="{circ_path(cx, cy, 63)} {circ_path(cx, cy, 56, rev=True)}" fill="{metal}" fill-rule="evenodd"/>'
-    for i in range(5):
-        a = -math.pi / 2 + 2 * math.pi * i / 5
-        ca, sa = math.cos(a), math.sin(a)
-        nx, ny = -sa, ca
-        r0, r1, w0, w1 = 12, 58, 4.2, 6.6
-        sp = [(cx + ca * r0 + nx * w0, cy + sa * r0 + ny * w0), (cx + ca * r1 + nx * w1, cy + sa * r1 + ny * w1),
-              (cx + ca * r1 - nx * w1, cy + sa * r1 - ny * w1), (cx + ca * r0 - nx * w0, cy + sa * r0 - ny * w0)]
-        g += poly(sp, metal)
-    g += f'<circle cx="{cx}" cy="{cy}" r="15" fill="{hub}"/>'
-    g += f'<circle cx="{cx}" cy="{cy}" r="5" fill="{hubdark}"/>'
-    for i in range(5):
-        a = -math.pi / 2 + math.pi / 5 + 2 * math.pi * i / 5
-        g += f'<circle cx="{f(cx + 10 * math.cos(a))}" cy="{f(cy + 10 * math.sin(a))}" r="1.9" fill="{hubdark}"/>'
-    return g, (4, 4, 196, 196)
+def jel4(col, hub=None):
+    """Fogaskerék-korona: félkör fogaskerék hét foggal – a középső a legmagasabb, mint a korona csúcsa –,
+    hatlap alakú agyfurattal, talpsávon."""
+    cx, cy = 60, 74
+    r_out = 34
+    teeth = [(-165, 42), (-140, 42), (-115, 42.5), (-90, 46.5), (-65, 42.5), (-40, 42), (-15, 42)]
+    def pt(ang, r):
+        a = math.radians(ang)
+        return (cx + r * math.cos(a), cy + r * math.sin(a))
+    pts = [pt(-180, r_out)]
+    ang = -180.0
+    for tc, rt in teeth:
+        hb, ht = 8.2, 6.0
+        for i in range(1, 5):
+            pts.append(pt(ang + (tc - hb - ang) * i / 4, r_out))
+        pts += [pt(tc - ht, rt), pt(tc + ht, rt), pt(tc + hb, r_out)]
+        ang = tc + hb
+    for i in range(1, 5):
+        pts.append(pt(ang + (0 - ang) * i / 4, r_out))
+    pts += [(cx + r_out + 4, cy), (cx + r_out + 4, cy + 11), (cx - r_out - 4, cy + 11), (cx - r_out - 4, cy)]
+    hexa = [(cx + 9.5 * math.cos(math.radians(a)), cy - 10 + 9.5 * math.sin(math.radians(a))) for a in range(0, 360, 60)][::-1]
+    g = f'<path d="{P(pts)} {P(hexa)}" fill="{col}" fill-rule="evenodd"/>'
+    if hub:
+        g += f'<rect x="{f(cx - r_out - 4)}" y="{f(cy + 4)}" width="{f(2 * r_out + 8)}" height="2.2" fill="{hub}"/>'
+    return g, (cx - r_out - 6, cy - 47, cx + r_out + 6, cy + 11)
 
 
-def logo4(tire, txt, metal, hub, hubdark, fg, subc):
-    m, mb = jel4(tire, txt, metal, hub, hubdark)
-    m = f'<g transform="translate(0 0) scale(.5)">{m}</g>'
-    mb = (2, 2, 98, 98)
-    return lockup(m, mb, fg, subc, gap=22, size=40)
+def logo4(col, hub, fg, subc):
+    m, mb = jel4(col, hub)
+    return lockup(m, mb, fg, subc, gap=22, sep=None)
 
 
 # ------------------------------------------------ KIMENETEK
@@ -307,15 +304,14 @@ def main():
             logo3("#000", "#000", "#000"),
             jel3(FEHER, NARANCS), GRAFIT, 0.5)
 
-    # 4 — Abroncs-embléma (arany–fekete)
-    vil = logo4("#1E2226", ARANY, "#9AA3AB", ARANY, "#1E2226", FEKETE, "#6B5A1E")
-    sot = logo4("#2A2F35", ARANY, "#C9CED2", ARANY, FEKETE, FEHER, ARANY)
-    mono = logo4("#000", "#fff", "#000", "#000", "#fff", "#000", "#000")
-    j = jel4("#2A2F35", ARANY, "#C9CED2", ARANY, FEKETE)
-    sorozat(4, T + " 4", vil, sot, mono, j, FEKETE, 0.8, ARANY, PAPIR, FEKETE, ARANY)
-    b, bb = vil
-    write(4, "sarga-hatterrel", svg(*logo4("#0A0B0D", ARANY, "#3A3A3A", "#0A0B0D", ARANY, FEKETE, FEKETE)[0:1], bb, 40, ARANY, T + " 4"))
-
+    # 4 — Fogaskerék-korona (arany–fekete)
+    vil = logo4(FEKETE, ARANY, FEKETE, "#6B5A1E")
+    sot = logo4(ARANY, None, FEHER, ARANY)
+    mono = logo4("#000", None, "#000", "#000")
+    j = jel4(ARANY, None)
+    sorozat(4, T + " 4", vil, sot, mono, j, FEKETE, 0.52, ARANY, PAPIR, FEKETE, ARANY)
+    b, bb = logo4(FEKETE, None, FEKETE, FEKETE)
+    write(4, "sarga-hatterrel", svg(b, bb, 40, ARANY, T + " 4"))
 
 if __name__ == "__main__":
     main()

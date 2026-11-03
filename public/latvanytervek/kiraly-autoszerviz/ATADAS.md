@@ -5,7 +5,7 @@ Az ügyfél-oldali visszajelzés: „ne csak egy K legyen, legyen autószerelés
 1. **Dugattyúkorona** (javaslat) – három dugattyú hajtókarral, a középső magasabb, narancs fejjel → korona.
 2. **Kulcskorona** – három villáskulcs legyezőben, a középső narancs → korona.
 3. **Gyújtógyertya** – valós arányú gyertya narancs szikrával.
-4. **Abroncs-embléma** (arany–fekete) – futófelület, oldalfal-felirat (KIRÁLY AUTÓSZERVIZ / DUNAÚJVÁROS · 2008), ötküllős felni.
+4. **Fogaskerék-korona** (arany–fekete) – félkör fogaskerék hét foggal, a középső a legmagasabb (korona), hatlap agyfurat, talpsáv. (Az ügyfél-oldali kérésre a kerék-embléma helyett.)
 Névjegyek, hirdetések, Facebook-képek, ZIP, logóválasztó és a weboldal fejléce frissítve.
 
 ## 2. kör – mi változott
