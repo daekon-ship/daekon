@@ -1,5 +1,9 @@
 # KIRÁLY Autószerviz – átadás (2. kör, 2026.11.03.)
 
+## 7. kör – új 4. és 5. logó, új névjegyek
+4. **Rugóstag-király** – sakk-király futómű-rugóstagból (kereszt, felső tartó, narancs spirálrugó, lengéscsillapító, kétlépcsős talp). 5. **Műszer-korona** – fordulatszámmérő íve, a 3 fő skálajel koronacsúcs, narancs mutató. (A fogaskerék-korona és a jelvény kikerült.)
+Névjegy újratervezve: előlap sötét, narancs él a bal szélen, nagy tónusos jel kifutóval, logó balra; hátlap világos rács – név, beosztás, jel-csempe, vonal, ikonos elérhetőségek két oszlopban, alul szolgáltatássor.
+
 ## 6. kör – 5 logó + 5 névjegy, a többi kivéve
 Új 5. logó: **Jelvény** (letört sarkú keret, KIRÁLY + narancs AUTÓSZERVIZ sáv, DUNAÚJVÁROS · 2008 ÓTA, tetején dugattyú-korona). Az ügyfél kérésére kikerült az újsághirdetés, a Facebook-képek és a mono/egyéb változatok; a `logo.html` csak az 5 logót és az 5 névjegykártyát mutatja. Weboldalon `?logo=1..5`.
 

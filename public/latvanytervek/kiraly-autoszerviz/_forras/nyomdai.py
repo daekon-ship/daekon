@@ -7,18 +7,9 @@ from playwright.sync_api import sync_playwright
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BETU = os.path.join(ROOT, "_forras", "betu")
 
-TEMAK = {
-    1: dict(sotet="#11161C", felulet="#1C242D", vilagos="#F4F5F2", kiemel="#F26732", kiemel_szoveg="#11161C",
-            halk="#A6B0B8", logo_sotet="kiraly-1-sotet.svg", logo_vilagos="kiraly-1-vilagos.svg", jel="kiraly-1-jel.svg", logo_w=60),
-    2: dict(sotet="#11161C", felulet="#1C242D", vilagos="#F4F5F2", kiemel="#F26732", kiemel_szoveg="#11161C",
-            halk="#A6B0B8", logo_sotet="kiraly-2-sotet.svg", logo_vilagos="kiraly-2-vilagos.svg", jel="kiraly-2-jel.svg", logo_w=58),
-    3: dict(sotet="#11161C", felulet="#1C242D", vilagos="#F4F5F2", kiemel="#F26732", kiemel_szoveg="#11161C",
-            halk="#A6B0B8", logo_sotet="kiraly-3-sotet.svg", logo_vilagos="kiraly-3-vilagos.svg", jel="kiraly-3-jel.svg", logo_w=58),
-    4: dict(sotet="#0A0B0D", felulet="#17191D", vilagos="#FFFFFF", kiemel="#F2B705", kiemel_szoveg="#0A0B0D",
-            halk="#B4B8BE", logo_sotet="kiraly-4-sotet.svg", logo_vilagos="kiraly-4-vilagos.svg", jel="kiraly-4-jel.svg", logo_w=60),
-    5: dict(sotet="#11161C", felulet="#1C242D", vilagos="#F4F5F2", kiemel="#F26732", kiemel_szoveg="#11161C",
-            halk="#A6B0B8", logo_sotet="kiraly-5-sotet.svg", logo_vilagos="kiraly-5-vilagos.svg", jel="kiraly-5-jel.svg", logo_w=46),
-}
+TEMAK = {n: dict(sotet="#11161C", felulet="#1C242D", vilagos="#F4F5F2", kiemel="#F26732", halk="#A6B0B8",
+                 logo_sotet=f"kiraly-{n}-sotet.svg", jel=f"kiraly-{n}-jel-tiszta.svg", jel_tile=f"kiraly-{n}-jel.svg",
+                 logo_w={1: 52, 2: 50, 3: 50, 4: 50, 5: 52}[n]) for n in range(1, 6)}
 
 SZOLG = ["Márkafüggetlen szerviz", "Személy- és kishaszonjármű", "Teljes körű diagnosztika", "Dízelrendszer-javítás",
          "Adagoló, porlasztó javítás", "3D futóműállítás", "Önindító, generátor javítás", "Műszakira felkészítés",
@@ -43,33 +34,57 @@ svg{{display:block;width:100%;height:auto}}
 """
 
 
+IKON = {
+    "tel": '<path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-2z"/>',
+    "mail": '<rect x="3" y="5" width="18" height="14" rx="1.5"/><path d="m3.5 6 8.5 7 8.5-7"/>',
+    "pin": '<path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>',
+    "ora": '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/>',
+}
+
+
+def ikon(k, c):
+    return f'<svg class="ik" viewBox="0 0 24 24" fill="none" stroke="{c}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">{IKON[k]}</svg>'
+
+
 def nevjegy_html(n, t):
-    lista = "".join(f"<li>{s}</li>" for s in SZOLG)
+    k = t["kiemel"]
     return f"""<!doctype html><html lang="hu"><head><meta charset="utf-8"><style>{FONTOK}
 @page{{size:96mm 56mm;margin:0}}
-.lap{{width:96mm;height:56mm;position:relative;overflow:hidden;break-after:page}}.lap:last-child{{break-after:auto}}
-.elo{{background:{t['sotet']};display:grid;place-items:center}}
-.elo .logo{{width:{t['logo_w']}mm;margin-top:{'0' if n == 5 else '-3mm'}}}
-.elo .alja{{position:absolute;left:0;right:0;bottom:9mm;text-align:center;font:600 5.6pt/1 Manrope;letter-spacing:.24em;color:{t['halk']};text-transform:uppercase}}
-.elo .vonal{{position:absolute;left:50%;bottom:13.4mm;width:7mm;height:.6mm;margin-left:-3.5mm;background:{t['kiemel']}}}
-.hat{{background:{t['vilagos']};color:{t['sotet'] if n != 3 else '#11161C'}}}
-.belso{{position:absolute;left:3mm;top:3mm;width:90mm;height:50mm;padding:6.4mm 5mm 5.6mm 6mm;display:grid;grid-template-columns:1fr 34mm;gap:4mm}}
-.nev{{font:760 10pt/1.1 Archivo;font-stretch:112%;letter-spacing:.01em}}
-.beo{{font:600 6.2pt/1.2 Manrope;letter-spacing:.14em;text-transform:uppercase;opacity:.62;margin-top:1.1mm}}
-.tel{{font:760 11pt/1 Archivo;font-stretch:106%;margin-top:6.6mm;letter-spacing:.01em;white-space:nowrap}}
-.tel i{{display:inline-block;width:1.6mm;height:1.6mm;background:{t['kiemel'] if n != 4 else '#0B0D10'};margin-right:1.6mm;vertical-align:.35mm;font-style:normal}}
-.adat{{font:500 6.4pt/1.45 Manrope;margin-top:2.6mm}}
-.adat b{{font-weight:700}}
-.jobb{{border-left:.25mm solid rgba(17,22,28,.22);padding-left:3.2mm}}
-.cimke{{font:700 5.4pt/1 Manrope;letter-spacing:.2em;text-transform:uppercase;color:{t['kiemel'] if n != 4 else '#0B0D10'};margin-bottom:2mm;{'' if n != 4 else 'background:#F2B705;display:inline-block;padding:.8mm 1.2mm .7mm;'}}}
-ul{{list-style:none;font:500 5.9pt/1.44 Manrope;white-space:nowrap}}
+.lap{{width:96mm;height:56mm;position:relative;overflow:hidden;break-after:page}}
+.lap:last-child{{break-after:auto}}
+/* ELŐLAP: sötét, nagy tónusos jel kifutóval, logó balra, narancs él */
+.elo{{background:{t['sotet']}}}
+.elo .vizjel{{position:absolute;right:-9mm;top:50%;width:{'30mm' if n in (3, 4) else '52mm'};transform:translateY(-50%);opacity:.07;filter:grayscale(1) brightness(1.6)}}
+.elo .el{{position:absolute;left:0;top:0;bottom:0;width:4.8mm;background:{k}}}
+.elo .logo{{position:absolute;left:11mm;top:50%;width:{t['logo_w']}mm;transform:translateY(-50%)}}
+/* HÁTLAP: világos, rendezett rács */
+.hat{{background:{t['vilagos']};color:#11161C}}
+.belso{{position:absolute;left:3mm;top:3mm;width:90mm;height:50mm;padding:6mm 6mm 5mm 7mm;display:flex;flex-direction:column}}
+.fej{{display:flex;justify-content:space-between;align-items:flex-start}}
+.nev{{font:800 11pt/1.05 Archivo;letter-spacing:.005em}}
+.beo{{font:700 5.6pt/1 Manrope;letter-spacing:.22em;text-transform:uppercase;color:{k};margin-top:1.8mm}}
+.tile{{width:10.5mm;height:10.5mm;border-radius:1.6mm;overflow:hidden}}
+.vonal{{height:.25mm;background:rgba(17,22,28,.14);margin:4.2mm 0 3.6mm}}
+.racs{{display:grid;grid-template-columns:1.08fr 1fr;gap:2.2mm 4mm}}
+.s{{display:flex;gap:1.8mm;align-items:flex-start;font:600 6.4pt/1.35 Manrope;color:#11161C}}
+.s .ik{{width:2.9mm;height:2.9mm;flex:none;margin-top:.15mm}}
+.s.tel{{font:800 8.6pt/1.1 Archivo;letter-spacing:.01em}}
+.s.tel .ik{{width:3.2mm;height:3.2mm;margin-top:0}}
+.s small{{display:block;font:600 5.6pt/1.3 Manrope;color:#55616B}}
+.szolg{{margin-top:auto;font:700 5.1pt/1 Manrope;letter-spacing:.16em;text-transform:uppercase;color:#55616B;white-space:nowrap}}
+.szolg i{{display:inline-block;width:1mm;height:1mm;background:{k};margin:0 1.6mm;vertical-align:.25mm}}
 </style></head><body>
-<section class="lap elo"><div class="logo">{svg_inline(n, t['logo_sotet'])}</div>{"" if n == 5 else '<span class="vonal"></span><div class="alja">Márkafüggetlen autószerviz · 2008 óta</div>'}</section>
+<section class="lap elo"><span class="el"></span><div class="vizjel">{svg_inline(n, t['jel'])}</div><div class="logo">{svg_inline(n, t['logo_sotet'])}</div></section>
 <section class="lap hat"><div class="belso">
- <div><div class="nev">Király István</div><div class="beo">ügyvezető</div>
- <div class="tel"><i></i>+36 20 585 3234</div>
- <div class="adat">kiralyautoszervizkft@gmail.com<br>2400 Dunaújváros,<br>Budai Nagy Antal út 27/C<br><b>H–P: 8–12 és 13–17</b></div></div>
- <div class="jobb"><div class="cimke">Szolgáltatások</div><ul>{lista}</ul></div>
+ <div class="fej"><div><div class="nev">Király István</div><div class="beo">ügyvezető</div></div><div class="tile">{svg_inline(n, t['jel_tile'])}</div></div>
+ <div class="vonal"></div>
+ <div class="racs">
+  <div class="s tel">{ikon("tel", k)}<span>+36 20 585 3234</span></div>
+  <div class="s">{ikon("pin", k)}<span>2400 Dunaújváros,<br>Budai Nagy Antal út 27/C</span></div>
+  <div class="s">{ikon("mail", k)}<span>kiralyautoszervizkft@gmail.com</span></div>
+  <div class="s">{ikon("ora", k)}<span>Hétfő–péntek<small>8–12 és 13–17</small></span></div>
+ </div>
+ <div class="szolg">Diagnosztika<i></i>Dízel<i></i>Adagoló, porlasztó<i></i>3D futómű</div>
 </div></section>
 </body></html>"""
 

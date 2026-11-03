@@ -280,6 +280,69 @@ def jel5(fg, accent, bar_txt):
     return g, (0, 0, S, S)
 
 
+# ------------------------------------------------ ÚJ 4. RUGÓSTAG-KIRÁLY (sakk-király futómű-rugóstagból)
+def jel_rugo(col, spring, acel=None):
+    m = acel or col
+    cx = 40
+    g = ""
+    # kereszt (a sakk-király jele)
+    g += f'<rect x="{cx - 2.6}" y="0" width="5.2" height="15" rx="1" fill="{spring}"/>'
+    g += f'<rect x="{cx - 7.5}" y="4.6" width="15" height="5.2" rx="1" fill="{spring}"/>'
+    # felső csapágy / toronyfej (a király „feje”)
+    g += f'<path d="M{cx - 15} 18H{cx + 15}L{cx + 12} 26H{cx - 12}Z" fill="{col}"/>'
+    # dugattyúrúd
+    g += f'<rect x="{cx - 2.8}" y="26" width="5.6" height="9" fill="{m}"/>'
+    # felső rugótányér
+    g += f'<rect x="{cx - 17}" y="35" width="34" height="4" rx="1.2" fill="{col}"/>'
+    # spirálrugó: ferde menetek
+    for i in range(6):
+        y = 41.5 + i * 5.4
+        g += f'<path d="M{cx - 14} {y + 2.2}L{cx + 14} {y - 1.2}V{y + 1.8}L{cx - 14} {y + 5.2}Z" fill="{spring}"/>'
+    # alsó rugótányér
+    g += f'<rect x="{cx - 18}" y="76" width="36" height="4" rx="1.2" fill="{col}"/>'
+    # lengéscsillapító-test
+    g += f'<path d="M{cx - 8} 80H{cx + 8}V91H{cx - 8}Z" fill="{m}"/>'
+    # talp (sakkbábu-talp, kétlépcsős)
+    g += f'<path d="M{cx - 15} 91H{cx + 15}L{cx + 17} 95H{cx - 17}Z" fill="{col}"/>'
+    g += f'<rect x="{cx - 21}" y="95" width="42" height="6" rx="1.5" fill="{col}"/>'
+    return g, (cx - 21, 0, cx + 21, 101)
+
+
+# ------------------------------------------------ ÚJ 5. GUMIMINTA-KORONA
+_MID = [0]
+
+
+def jel_minta(col, accent, acel=None):
+    """Műszer-korona: fordulatszámmérő íve, a három fő skálajel koronacsúcsként nő ki, narancs mutató."""
+    m = acel or col
+    cx, cy = 60, 74
+    def pt(a, r):
+        t = math.radians(a)
+        return (cx + r * math.cos(t), cy + r * math.sin(t))
+    g = ""
+    # vastag ív
+    r0, r1 = 37, 45
+    arc = [pt(-180 + i * 180 / 60, r1) for i in range(61)] + [pt(0 - i * 180 / 60, r0) for i in range(61)]
+    g += poly(arc, col)
+    # koronacsúcsok (fő skálajelek)
+    for a, h, w in ((-150, 15, 7), (-90, 21, 8), (-30, 15, 7)):
+        g += poly([pt(a - w, r1 - .5), pt(a, r1 + h), pt(a + w, r1 - .5)], col)
+    # kis skálajelek
+    for a in range(-170, -9, 10):
+        if a in (-150, -90, -30):
+            continue
+        p0, p1 = pt(a, r0 - 3), pt(a, r0 - 8 if a % 30 == 0 else r0 - 6)
+        g += f'<line x1="{f(p0[0])}" y1="{f(p0[1])}" x2="{f(p1[0])}" y2="{f(p1[1])}" stroke="{m}" stroke-width="2"/>'
+    # mutató
+    tip = pt(-58, 31)
+    n = (math.cos(math.radians(32)), math.sin(math.radians(32)))
+    g += poly([(cx - 3.2 * n[0], cy - 3.2 * n[1]), tip, (cx + 3.2 * n[0], cy + 3.2 * n[1])], accent)
+    g += f'<circle cx="{cx}" cy="{cy}" r="6.5" fill="{accent}"/><circle cx="{cx}" cy="{cy}" r="2.4" fill="{col}"/>'
+    # talpsáv
+    g += f'<rect x="{cx - 49}" y="{cy + 3}" width="98" height="8" rx="1.5" fill="{col}"/>'
+    return g, (cx - 49, cy - r1 - 21, cx + 49, cy + 11)
+
+
 # ------------------------------------------------ KIMENETEK
 def svg(body, bb, pad, bg=None, title=""):
     x0, y0, x1, y1 = bb
@@ -340,6 +403,7 @@ def sorozat(n, T, vil, sot, mono, jel_s, jel_bg, prof_rel=0.5, glow=NARANCS, fo_
     write(n, "mono", svg(*mono, 12, title=T))
     j, jb = jel_s
     write(n, "jel", svg(j, jb, 16, jel_bg, T + " – jel"))
+    write(n, "jel-tiszta", svg(j, jb, 2, title=T + " – jel"))
     write(n, "profilkep", social(j, jb, jel_bg, prof_rel, glow))
     write(n, "borito", cover(bd, bbd, cov_bg, HALK, cov_acc))
 
@@ -370,26 +434,25 @@ def main():
             logo3("#000", "#000", "#000"),
             jel3(FEHER, NARANCS, "#7C8792"), GRAFIT, 0.5)
 
-    # 4 — Fogaskerék-korona (arany–fekete)
-    vil = logo4(FEKETE, ARANY, FEKETE, "#6B5A1E")
-    sot = logo4(ARANY, None, FEHER, ARANY)
-    mono = logo4("#000", None, "#000", "#000")
-    j = jel4(ARANY, None)
-    sorozat(4, T + " 4", vil, sot, mono, j, FEKETE, 0.52, ARANY, PAPIR, FEKETE, ARANY)
-    b, bb = logo4(FEKETE, None, FEKETE, FEKETE)
-    write(4, "sarga-hatterrel", svg(b, bb, 40, ARANY, T + " 4"))
+    # 4 — Rugóstag-király
+    LA, DA = "#8B959E", "#7C8792"
+    sorozat(4, T + " 4",
+            lockup(*jel_rugo(GRAFIT, NARANCS, LA), GRAFIT, ACEL),
+            lockup(*jel_rugo(FEHER, NARANCS, DA), FEHER, HALK),
+            lockup(*jel_rugo("#000", "#000"), "#000", "#000"),
+            jel_rugo(FEHER, NARANCS, DA), GRAFIT, 0.5)
 
-    # 5 — Jelvény
-    vil = logo5(GRAFIT, NARANCS, PAPIR, ACEL)
-    sot = logo5(FEHER, NARANCS, GRAFIT, HALK)
-    mono = logo5("#000", "#000", "#fff", "#000")
-    j = jel1(FEHER, NARANCS, "#7C8792")
-    sorozat(5, T + " 5", vil, sot, mono, j, GRAFIT, 0.5, NARANCS, PAPIR, GRAFIT, NARANCS)
+    # 5 — Műszer-korona
+    sorozat(5, T + " 5",
+            lockup(*jel_minta(GRAFIT, NARANCS, LA), GRAFIT, ACEL),
+            lockup(*jel_minta(FEHER, NARANCS, DA), FEHER, HALK),
+            lockup(*jel_minta("#000", "#000"), "#000", "#000"),
+            jel_minta(FEHER, NARANCS, DA), GRAFIT, 0.52)
     # csak a szükséges fájlok maradnak
     for n in range(1, 6):
         d = os.path.join(OUT, f"logo-{n}")
         for fn in os.listdir(d):
-            if not any(fn.endswith(k + ".svg") for k in ("-fo", "-sotet", "-vilagos", "-jel", "-sotet-hatterrel")):
+            if not any(fn.endswith(k + ".svg") for k in ("-fo", "-sotet", "-vilagos", "-jel", "-jel-tiszta", "-sotet-hatterrel")):
                 os.remove(os.path.join(d, fn))
 
 if __name__ == "__main__":
