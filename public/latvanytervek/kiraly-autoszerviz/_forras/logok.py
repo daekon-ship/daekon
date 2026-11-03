@@ -1,5 +1,5 @@
-"""KIRÁLY Autószerviz – 4 logókoncepció, 2. kör: egyszerűbb, prémium irány
-(vékonyabb vonalak, levegős betűköz, visszafogott szín). Minden betű görbe.
+"""KIRÁLY Autószerviz – 4 logókoncepció, 3. kör: autószerelős jelképek, egyszerű, prémium formában.
+1 Dugattyúkorona · 2 Kulcskorona · 3 Gyújtógyertya-I · 4 Abroncs-embléma. Minden betű görbe.
 Futtatás: python3 _forras/logok.py   ->  arculat/logo-1..4/*.svg
 """
 import math, os, shutil
@@ -14,49 +14,30 @@ FEHER = "#F4F5F6"
 HALK = "#A6B0B8"
 ACEL = "#4A5560"
 NARANCS = "#F26732"
-ARANY = "#F2B705"      # mélyebb, „prémium” sárga a 4. irányhoz
+ARANY = "#F2B705"
 FEKETE = "#0A0B0D"
+SUB = "AUTÓSZERVIZ · DUNAÚJVÁROS"
 
 
 def f(v):
     return f"{v:.2f}".rstrip("0").rstrip(".")
 
 
+def P(pts):
+    return "M" + " L".join(f"{f(x)} {f(y)}" for x, y in pts) + "Z"
+
+
 def poly(pts, fill):
-    return f'<path d="M{" L".join(f"{f(x)} {f(y)}" for x, y in pts)}Z" fill="{fill}"/>'
+    return f'<path d="{P(pts)}" fill="{fill}"/>'
+
+
+def circ_path(cx, cy, r, rev=False):
+    s = 0 if rev else 1
+    return f"M{f(cx - r)} {f(cy)}a{f(r)} {f(r)} 0 1 {s} {f(2 * r)} 0a{f(r)} {f(r)} 0 1 {s} {f(-2 * r)} 0Z"
 
 
 def bounds_union(*bs):
     return (min(b[0] for b in bs), min(b[1] for b in bs), max(b[2] for b in bs), max(b[3] for b in bs))
-
-
-def arm(c, theta_deg, w, s0, y_end, up=True):
-    t = math.radians(theta_deg)
-    sgn = -1 if up else 1
-    u = (math.cos(t), sgn * math.sin(t))
-    n = (math.sin(t), -sgn * math.cos(t))
-    pts = []
-    for side in (-1, 1):
-        o = side * w / 2
-        q = (c[0] + u[0] * s0 + n[0] * o, c[1] + u[1] * s0 + n[1] * o)
-        tt = (y_end - q[1]) / u[1]
-        pts.append((q, (q[0] + u[0] * tt, y_end)))
-    (q1, e1), (q2, e2) = pts
-    return [q1, e1, e2, q2]
-
-
-def kmono(col, pivot, w=11, top=16, bot=84, x0=24, cx=None, theta=48, s0=10.5, r=6.2):
-    """Finom K-monogram: szár + két kar, a találkozásnál gömbcsukló-pont."""
-    cx = cx if cx is not None else x0 + w + 13
-    c = (cx, (top + bot) / 2)
-    g = f'<rect x="{f(x0)}" y="{f(top)}" width="{f(w)}" height="{f(bot - top)}" fill="{col}"/>'
-    a1 = arm(c, theta, w, s0, top, True)
-    a2 = arm(c, theta, w, s0, bot, False)
-    g += poly(a1, col) + poly(a2, col)
-    if pivot:
-        g += f'<circle cx="{f(c[0])}" cy="{f(c[1])}" r="{f(r)}" fill="{pivot}"/>'
-    right = max(p[0] for p in a1 + a2)
-    return g, (x0, top, right, bot)
 
 
 def word(s, size, wght, wdth, track, x, y, col, skew=0):
@@ -64,122 +45,176 @@ def word(s, size, wght, wdth, track, x, y, col, skew=0):
     return f'<path d="{d}" fill="{col}"/>', b
 
 
-def sub(s, width, x, y, col, track=0.5, wght=600):
+def sub(s, width, x, y, col, track=0.4, wght=650):
     d, b, _ = fit_track("manrope", s, width, wght, track=track, x=x, y=y)
     return f'<path d="{d}" fill="{col}"/>', b
 
 
-# ------------------------------------------------ 1. TENGELY – monogram + szóvédjegy
-def logo1(fg, subc, mark, pivot, line):
-    m, mb = kmono(mark, pivot)
-    sep = f'<rect x="{f(mb[2] + 17)}" y="22" width="1.2" height="56" fill="{line}"/>'
-    x0 = mb[2] + 35
-    w, b = word("KIRÁLY", 40, 600, 125, 0.13, x0, 59, fg)
-    s, b2 = sub("AUTÓSZERVIZ", b[2] - b[0], b[0], 78.5, subc, track=0.62, wght=600)
-    return m + sep + w + s, bounds_union(mb, b, b2)
+def lockup(mark, mb, fg, subc, gap=20, size=40, wght=620, wdth=118, track=0.1, sub_track=0.34, sep=None):
+    """Jel balra, KIRÁLY + alcím jobbra, a jel magasságához igazítva."""
+    mh = mb[3] - mb[1]
+    cap = cap_height("archivo", size, wght, wdth)
+    sub_cap = 9.2
+    tot = cap + 13 + sub_cap
+    top = mb[1] + (mh - tot) / 2 + 2
+    x0 = mb[2] + gap
+    g = ""
+    if sep:
+        g += f'<rect x="{f(mb[2] + gap / 2 + 2)}" y="{f(mb[1] + 6)}" width="1.1" height="{f(mh - 12)}" fill="{sep}"/>'
+        x0 += 6
+    w, b = word("KIRÁLY", size, wght, wdth, track, x0, top + cap, fg)
+    s, b2 = sub(SUB, b[2] - b[0], b[0], top + cap + 13 + sub_cap, subc, track=sub_track)
+    return mark + g + w + s, bounds_union(mb, b, b2)
 
 
-def jel1(mark, pivot):
-    return kmono(mark, pivot)
+# ------------------------------------------------ 1. DUGATTYÚKORONA
+def dugattyu(cx, top, w, col, fej=None, bx=None, base=84):
+    """Dugattyú hajtókarral: fej, két gyűrűhorony, szoknya csapszeg-furattal, hajtókar a forgattyúsig."""
+    x = cx - w / 2
+    h = 31
+    g = ""
+    bx = cx if bx is None else bx
+    rod = [(cx - 3.4, top + h - 1), (cx + 3.4, top + h - 1), (bx + 4.8, base + 1), (bx - 4.8, base + 1)]
+    g += poly(rod, col)
+    g += f'<path d="M{f(x)} {f(top + 6.2)}V{f(top + 1.6)}Q{f(x)} {f(top)} {f(x + 1.6)} {f(top)}H{f(x + w - 1.6)}Q{f(x + w)} {f(top)} {f(x + w)} {f(top + 1.6)}V{f(top + 6.2)}Z" fill="{fej or col}"/>'
+    g += f'<rect x="{f(x)}" y="{f(top + 8.4)}" width="{f(w)}" height="3" fill="{col}"/>'
+    y3 = top + 13.6
+    body = f"M{f(x)} {f(y3)}H{f(x + w)}V{f(top + h - 2.5)}Q{f(cx)} {f(top + h + 1.5)} {f(x)} {f(top + h - 2.5)}Z " + circ_path(cx, top + 21.5, 3.1, rev=True)
+    g += f'<path d="{body}" fill="{col}" fill-rule="evenodd"/>'
+    return g
 
 
-# ------------------------------------------------ 2. ÉKEZET – tiszta szóvédjegy
-def logo2(fg, subc, accent):
-    size, y = 46, 70
-    w, b = word("KIRALY", size, 540, 125, 0.2, 0, y, fg)
-    # az A pontos helye
-    _, bk, _ = text("archivo", "KIR", size, 540, 125, track=0.2, x=0, y=y)
-    _, ba, _ = text("archivo", "A", size, 540, 125, x=0, y=y)
-    adv_kir = text("archivo", "KIR", size, 540, 125, track=0.2)[2] + 0.2 * size - 0.015 * size
-    cap = cap_height("archivo", size, 540, 125)
-    ax = adv_kir + (ba[0] + ba[2]) / 2
-    L, t, ang = 15, 3.2, math.radians(28)
-    p1 = (ax - L * math.cos(ang) * 0.35, y - cap - 6.5)
-    p2 = (p1[0] + L * math.cos(ang), p1[1] - L * math.sin(ang))
-    nx, ny = math.sin(ang) * t, math.cos(ang) * t
-    acc = poly([p1, p2, (p2[0] + nx, p2[1] + ny), (p1[0] + nx, p1[1] + ny)], accent)
-    s, b2 = sub("AUTÓSZERVIZ  ·  DUNAÚJVÁROS", b[2] - b[0], b[0], y + 22, subc, track=0.42, wght=600)
-    return w + acc + s, (b[0], p2[1] - 1, b[2], b2[3])
+def jel1(col, accent):
+    g = dugattyu(29, 27, 22, col, bx=46)
+    g += dugattyu(91, 27, 22, col, bx=74)
+    g += dugattyu(60, 12, 24, col, fej=accent)
+    g += f'<rect x="20" y="84" width="80" height="8" rx="1" fill="{col}"/>'
+    return g, (18, 12, 102, 92)
 
 
-def jel2(fg, accent, frame):
-    g = f'<rect x="8" y="8" width="84" height="84" fill="none" stroke="{frame}" stroke-width="1.6"/>'
-    d, b, _ = text("archivo", "K", 50, 540, 125, x=0, y=0)
-    w = b[2] - b[0]
-    cap = cap_height("archivo", 50, 540, 125)
-    d, b, _ = text("archivo", "K", 50, 540, 125, x=50 - w / 2 - b[0], y=50 + cap / 2 + 3)
-    g += f'<path d="{d}" fill="{fg}"/>'
-    ang = math.radians(28)
-    p1 = (60, 24)
-    p2 = (p1[0] + 12 * math.cos(ang), p1[1] - 12 * math.sin(ang))
-    nx, ny = math.sin(ang) * 2.8, math.cos(ang) * 2.8
-    g += poly([p1, p2, (p2[0] + nx, p2[1] + ny), (p1[0] + nx, p1[1] + ny)], accent)
-    return g, (8, 8, 92, 92)
+# ------------------------------------------------ 2. KULCSKORONA
+def kulcs(bx, by, length, R, sw, ang, col):
+    """Villáskulcs: nyitott pofa felül, szár lefelé; (bx,by) körül elforgatva."""
+    hx, hy = bx, by - length
+    W = R * 0.92
+    yt = -math.sqrt(R * R - (W / 2) ** 2)
+    nd = -R * 0.08
+    th_l = math.atan2(yt, -W / 2)
+    th_r = math.atan2(yt, W / 2) - 2 * math.pi
+    pts = [(hx - W / 2, hy + nd), (hx - W / 2, hy + yt)]
+    for i in range(1, 48):
+        a = th_l + (th_r - th_l) * i / 48
+        pts.append((hx + R * math.cos(a), hy + R * math.sin(a)))
+    pts += [(hx + W / 2, hy + yt), (hx + W / 2, hy + nd)]
+    shaft = [(bx - sw / 2, hy + R * 0.55), (bx + sw / 2, hy + R * 0.55), (bx + sw / 2 * 0.85, by + 2), (bx - sw / 2 * 0.85, by + 2)]
+    return f'<g transform="rotate({f(ang)} {f(bx)} {f(by)})">' + poly(pts, col) + poly(shaft, col) + "</g>"
 
 
-# ------------------------------------------------ 3. PECSÉT – kör alakú embléma
-def ring_text(s, r, size, wght, col, top=True, track=0.32, cx=100, cy=100):
-    """Szöveg körív mentén. top=True: felső ív (kifelé álló betűk), False: alsó ív."""
-    parts = []
-    advs = []
+def jel2(col, accent):
+    g = kulcs(60, 84, 50, 13.5, 8.5, -26, col)
+    g += kulcs(60, 84, 50, 13.5, 8.5, 26, col)
+    g += kulcs(60, 84, 60, 15, 9.5, 0, accent)
+    g += f'<rect x="38" y="80" width="44" height="9" fill="{col}"/>'
+    return g, (22, 9, 98, 89)
+
+
+# ------------------------------------------------ 3. GYÚJTÓGYERTYA-I
+def gyertya(cx, top, H, col, spark):
+    """Gyújtógyertya valós arányokkal (álló), H magasságban, mellette narancs szikra."""
+    u = H / 100
+    X = lambda v: f(cx + v * u)
+    Y = lambda v: f(top + v * u)
+    g = ""
+    # csatlakozó anya + nyak
+    g += f'<path d="M{X(-7)} {Y(0)}H{X(7)}V{Y(5)}H{X(3.2)}V{Y(10)}H{X(-3.2)}V{Y(5)}H{X(-7)}Z" fill="{col}"/>'
+    # kerámia szigetelő 3 bordával
+    ins = f"M{X(-8)} {Y(10)}H{X(8)}"
+    for i in range(3):
+        y0 = 10 + i * 9
+        ins += f"V{Y(y0 + 3)}Q{X(11)} {Y(y0 + 5.5)} {X(8)} {Y(y0 + 8)}"
+    ins += f"V{Y(42)}H{X(10)}V{Y(47)}H{X(-10)}V{Y(42)}H{X(-8)}"
+    for i in range(3)[::-1]:
+        y0 = 10 + i * 9
+        ins += f"V{Y(y0 + 8)}Q{X(-11)} {Y(y0 + 5.5)} {X(-8)} {Y(y0 + 3)}"
+    ins += "Z"
+    g += f'<path d="{ins}" fill="{col}"/>'
+    # hatlap (letört sarkokkal)
+    g += f'<path d="M{X(-15)} {Y(51)}L{X(-12)} {Y(49)}H{X(12)}L{X(15)} {Y(51)}V{Y(62)}L{X(12)} {Y(64)}H{X(-12)}L{X(-15)} {Y(62)}Z" fill="{col}"/>'
+    # menet: ferde lamellák
+    for i in range(4):
+        y0 = 67 + i * 5.2
+        g += f'<path d="M{X(-9)} {Y(y0 + 1.2)}L{X(9)} {Y(y0)}V{Y(y0 + 3.4)}L{X(-9)} {Y(y0 + 4.6)}Z" fill="{col}"/>'
+    # középelektróda + földelő kampó
+    g += f'<rect x="{X(-2)}" y="{Y(88)}" width="{f(4 * u)}" height="{f(5 * u)}" fill="{col}"/>'
+    g += f'<path d="M{X(6)} {Y(88)}H{X(9)}V{Y(100)}H{X(-4)}V{Y(97)}H{X(6)}Z" fill="{col}"/>'
+    # szikra
+    sx, sy = cx - 15 * u, top + 92 * u
+    g += f'<path d="M{f(sx + 4 * u)} {f(sy - 9 * u)}L{f(sx - 3 * u)} {f(sy + 1 * u)}H{f(sx + 1.5 * u)}L{f(sx - 3.5 * u)} {f(sy + 10 * u)}L{f(sx + 6 * u)} {f(sy - 2 * u)}H{f(sx + 1.6 * u)}Z" fill="{spark}"/>'
+    return g
+
+
+def logo3(fg, subc, spark):
+    m = gyertya(40, 8, 84, fg, spark)
+    mb = (21, 8, 55, 92)
+    return lockup(m, mb, fg, subc, gap=22, sep=None)
+
+
+def jel3(fg, spark, bg=None):
+    return gyertya(52, 8, 84, fg, spark), (33, 8, 67, 92)
+
+
+# ------------------------------------------------ 4. ABRONCS-EMBLÉMA
+def ring_text(s, r, size, wght, col, top=True, track=0.3, cx=100, cy=100):
+    parts, advs = [], []
     for ch in s:
-        if ch == " ":
-            advs.append(size * 0.32)
-            continue
-        _, b, adv = text("manrope", ch, size, wght)
-        advs.append(adv)
+        advs.append(size * 0.32 if ch == " " else text("manrope", ch, size, wght)[2])
     total = sum(advs) + track * size * (len(s) - 1)
-    span = total / r
-    a = -math.pi / 2 - span / 2 if top else math.pi / 2 + span / 2
+    a = -math.pi / 2 - (total / r) / 2 if top else math.pi / 2 + (total / r) / 2
     for ch, adv in zip(s, advs):
         mid = a + (adv / 2) / r * (1 if top else -1)
         if ch != " ":
-            d, b, _ = text("manrope", ch, size, wght, x=-adv / 2, y=0)
+            d, _, _ = text("manrope", ch, size, wght, x=-adv / 2, y=0)
             px, py = cx + r * math.cos(mid), cy + r * math.sin(mid)
-            rot = math.degrees(mid) + 90 if top else math.degrees(mid) - 90
+            rot = math.degrees(mid) + (90 if top else -90)
             parts.append(f'<path transform="translate({f(px)} {f(py)}) rotate({f(rot)})" d="{d}" fill="{col}"/>')
         a += (adv + track * size) / r * (1 if top else -1)
     return "".join(parts)
 
 
-def logo3(ring, txt, mark, pivot, dot, bg=None):
-    g = ""
-    if bg:
-        g += f'<circle cx="100" cy="100" r="97" fill="{bg}"/>'
-    g += f'<circle cx="100" cy="100" r="96" fill="none" stroke="{ring}" stroke-width="2.4"/>'
-    g += f'<circle cx="100" cy="100" r="70" fill="none" stroke="{ring}" stroke-width="1"/>'
-    g += ring_text("KIRÁLY AUTÓSZERVIZ", 79.5, 10.6, 700, txt, top=True, track=0.3)
-    g += ring_text("DUNAÚJVÁROS · 2008", 88.4, 10.6, 700, txt, top=False, track=0.3)
-    for x in (17.5, 182.5):
-        g += f'<circle cx="{x}" cy="100" r="2.6" fill="{dot}"/>'
-    m, _ = kmono(mark, pivot, w=10.5, top=70, bot=130, x0=77, cx=None, theta=48, s0=9.5, r=5.6)
-    g += m
-    return g, (2, 2, 198, 198)
+def jel4(tire, txt, metal, hub, hubdark):
+    cx = cy = 100
+    pts = []
+    n = 72
+    for i in range(n):
+        a0 = 2 * math.pi * i / n
+        for k, rr in ((0, 96), (0.55, 96), (0.55, 92.5), (1, 92.5)):
+            a = a0 + 2 * math.pi / n * k
+            pts.append((cx + rr * math.cos(a), cy + rr * math.sin(a)))
+    g = f'<path d="{P(pts)} {circ_path(cx, cy, 66, rev=True)}" fill="{tire}" fill-rule="evenodd"/>'
+    g += ring_text("KIRÁLY AUTÓSZERVIZ", 76, 10.4, 800, txt, top=True, track=0.26)
+    g += ring_text("DUNAÚJVÁROS · 2008", 85.2, 10.4, 800, txt, top=False, track=0.26)
+    g += f'<path d="{circ_path(cx, cy, 63)} {circ_path(cx, cy, 56, rev=True)}" fill="{metal}" fill-rule="evenodd"/>'
+    for i in range(5):
+        a = -math.pi / 2 + 2 * math.pi * i / 5
+        ca, sa = math.cos(a), math.sin(a)
+        nx, ny = -sa, ca
+        r0, r1, w0, w1 = 12, 58, 4.2, 6.6
+        sp = [(cx + ca * r0 + nx * w0, cy + sa * r0 + ny * w0), (cx + ca * r1 + nx * w1, cy + sa * r1 + ny * w1),
+              (cx + ca * r1 - nx * w1, cy + sa * r1 - ny * w1), (cx + ca * r0 - nx * w0, cy + sa * r0 - ny * w0)]
+        g += poly(sp, metal)
+    g += f'<circle cx="{cx}" cy="{cy}" r="15" fill="{hub}"/>'
+    g += f'<circle cx="{cx}" cy="{cy}" r="5" fill="{hubdark}"/>'
+    for i in range(5):
+        a = -math.pi / 2 + math.pi / 5 + 2 * math.pi * i / 5
+        g += f'<circle cx="{f(cx + 10 * math.cos(a))}" cy="{f(cy + 10 * math.sin(a))}" r="1.9" fill="{hubdark}"/>'
+    return g, (4, 4, 196, 196)
 
 
-# ------------------------------------------------ 4. CSAVARANYA – hatszög + K (arany–fekete)
-def hexagon(cx, cy, r):
-    return [(cx + r * math.cos(math.radians(a)), cy + r * math.sin(math.radians(a))) for a in range(0, 360, 60)]
-
-
-def jel4(col, ringcol, inner):
-    pts = hexagon(50, 50, 44)
-    outer = "M" + " L".join(f"{f(x)} {f(y)}" for x, y in pts) + "Z"
-    pts2 = hexagon(50, 50, 37.5)
-    inn = "M" + " L".join(f"{f(x)} {f(y)}" for x, y in reversed(pts2)) + "Z"
-    g = f'<path d="{outer} {inn}" fill="{col}" fill-rule="evenodd"/>'
-    g += f'<circle cx="50" cy="50" r="31.5" fill="none" stroke="{ringcol}" stroke-width="1"/>'
-    m, _ = kmono(inner, None, w=8.6, top=31, bot=69, x0=37, cx=37 + 8.6 + 6, theta=50, s0=6.4)
-    g += m
-    return g, (6, 11.9, 94, 88.1)
-
-
-def logo4(hexc, ring, k, fg, subc):
-    m, mb = jel4(hexc, ring, k)
-    x0 = mb[2] + 22
-    w, b = word("KIRÁLY", 40, 620, 118, 0.12, x0, 58, fg)
-    s, b2 = sub("AUTÓSZERVIZ", b[2] - b[0], b[0], 77, subc, track=0.6, wght=700)
-    return m + w + s, bounds_union(mb, b, b2)
+def logo4(tire, txt, metal, hub, hubdark, fg, subc):
+    m, mb = jel4(tire, txt, metal, hub, hubdark)
+    m = f'<g transform="translate(0 0) scale(.5)">{m}</g>'
+    mb = (2, 2, 98, 98)
+    return lockup(m, mb, fg, subc, gap=22, size=40)
 
 
 # ------------------------------------------------ KIMENETEK
@@ -205,24 +240,24 @@ def social(body, bb, bg, rel=0.5, glow=None):
     S = 1080
     gl = ""
     if glow:
-        gl = (f'<defs><radialGradient id="g" cx="50%" cy="42%" r="60%"><stop offset="0" stop-color="{glow}" stop-opacity=".16"/>'
+        gl = (f'<defs><radialGradient id="g" cx="50%" cy="45%" r="60%"><stop offset="0" stop-color="{glow}" stop-opacity=".16"/>'
               f'<stop offset="1" stop-color="{glow}" stop-opacity="0"/></radialGradient></defs><rect width="{S}" height="{S}" fill="url(#g)"/>')
     return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {S} {S}" width="{S}" height="{S}">'
             f'<rect width="{S}" height="{S}" fill="{bg}"/>{gl}{placed(body, bb, S, S, S * rel, S * rel)}</svg>\n')
 
 
-def cover(body, bb, bg, txtc, accent, logo_w=640, logo_h=200):
+def cover(body, bb, bg, txtc, accent, logo_w=700, logo_h=190):
     W, H = 1640, 624
-    line = "MÁRKAFÜGGETLEN AUTÓSZERVIZ   ·   DUNAÚJVÁROS   ·   +36 20 585 3234"
-    lt, lb, _ = text("manrope", line, 17, 600, track=0.22)
+    line = "MÁRKAFÜGGETLEN AUTÓSZERVIZ   ·   DÍZEL   ·   3D FUTÓMŰ   ·   +36 20 585 3234"
+    lt, lb, _ = text("manrope", line, 17, 600, track=0.2)
     lw = lb[2] - lb[0]
-    lt, lb, _ = text("manrope", line, 17, 600, track=0.22, x=W / 2 - lw / 2 - lb[0], y=462)
+    lt, lb, _ = text("manrope", line, 17, 600, track=0.2, x=W / 2 - lw / 2 - lb[0], y=470)
     return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}">'
             f'<defs><radialGradient id="g" cx="50%" cy="40%" r="55%"><stop offset="0" stop-color="#fff" stop-opacity=".07"/>'
             f'<stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient></defs>'
             f'<rect width="{W}" height="{H}" fill="{bg}"/><rect width="{W}" height="{H}" fill="url(#g)"/>'
-            f'<rect x="{W / 2 - 20}" y="414" width="40" height="2" fill="{accent}"/>'
-            f'{placed(body, bb, W, H, logo_w, logo_h, cy=272)}<path d="{lt}" fill="{txtc}"/></svg>\n')
+            f'<rect x="{W / 2 - 20}" y="420" width="40" height="2" fill="{accent}"/>'
+            f'{placed(body, bb, W, H, logo_w, logo_h, cy=275)}<path d="{lt}" fill="{txtc}"/></svg>\n')
 
 
 def write(n, name, s):
@@ -232,63 +267,54 @@ def write(n, name, s):
         fh.write(s)
 
 
+def sorozat(n, T, vil, sot, mono, jel_s, jel_bg, prof_rel=0.5, glow=NARANCS, fo_bg=PAPIR, cov_bg=GRAFIT, cov_acc=NARANCS):
+    b, bb = vil
+    write(n, "vilagos", svg(b, bb, 12, title=T))
+    write(n, "fo", svg(b, bb, 40, fo_bg, T))
+    bd, bbd = sot
+    write(n, "sotet", svg(bd, bbd, 12, title=T))
+    write(n, "sotet-hatterrel", svg(bd, bbd, 40, cov_bg, T))
+    write(n, "mono", svg(*mono, 12, title=T))
+    j, jb = jel_s
+    write(n, "jel", svg(j, jb, 16, jel_bg, T + " – jel"))
+    write(n, "profilkep", social(j, jb, jel_bg, prof_rel, glow))
+    write(n, "borito", cover(bd, bbd, cov_bg, HALK, cov_acc))
+
+
 def main():
     if os.path.isdir(OUT):
         shutil.rmtree(OUT)
     T = "KIRÁLY Autószerviz – logókoncepció"
 
-    # 1 — Tengely
-    b, bb = logo1(GRAFIT, ACEL, GRAFIT, NARANCS, "#C9CED2")
-    write(1, "vilagos", svg(b, bb, 12, title=T + " 1"))
-    write(1, "fo", svg(b, bb, 40, PAPIR, T + " 1"))
-    bd, bbd = logo1(FEHER, HALK, FEHER, NARANCS, "#3A4651")
-    write(1, "sotet", svg(bd, bbd, 12, title=T + " 1"))
-    write(1, "sotet-hatterrel", svg(bd, bbd, 40, GRAFIT, T + " 1"))
-    write(1, "mono", svg(*logo1("#000", "#000", "#000", "#000", "#000"), 12, title=T + " 1"))
-    j, jb = jel1(FEHER, NARANCS)
-    write(1, "jel", svg(j, jb, 18, GRAFIT, T + " 1 – jel"))
-    write(1, "profilkep", social(j, jb, GRAFIT, 0.42, NARANCS))
-    write(1, "borito", cover(bd, bbd, GRAFIT, HALK, NARANCS))
+    # 1 — Dugattyúkorona
+    sorozat(1, T + " 1",
+            lockup(*jel1(GRAFIT, NARANCS), GRAFIT, ACEL, sep="#C9CED2"),
+            lockup(*jel1(FEHER, NARANCS), FEHER, HALK, sep="#3A4651"),
+            lockup(*jel1("#000", "#000"), "#000", "#000", sep="#000"),
+            jel1(FEHER, NARANCS), GRAFIT, 0.5)
 
-    # 2 — Ékezet
-    b, bb = logo2(GRAFIT, ACEL, NARANCS)
-    write(2, "vilagos", svg(b, bb, 12, title=T + " 2"))
-    write(2, "fo", svg(b, bb, 40, PAPIR, T + " 2"))
-    bd, bbd = logo2(FEHER, HALK, NARANCS)
-    write(2, "sotet", svg(bd, bbd, 12, title=T + " 2"))
-    write(2, "sotet-hatterrel", svg(bd, bbd, 40, GRAFIT, T + " 2"))
-    write(2, "mono", svg(*logo2("#000", "#000", "#000"), 12, title=T + " 2"))
-    j, jb = jel2(FEHER, NARANCS, "#3A4651")
-    write(2, "jel", svg(j, jb, 0, GRAFIT, T + " 2 – jel"))
-    write(2, "profilkep", social(j, jb, GRAFIT, 0.5, NARANCS))
-    write(2, "borito", cover(bd, bbd, GRAFIT, HALK, NARANCS, 700, 170))
+    # 2 — Kulcskorona
+    sorozat(2, T + " 2",
+            lockup(*jel2(GRAFIT, NARANCS), GRAFIT, ACEL, sep="#C9CED2"),
+            lockup(*jel2(FEHER, NARANCS), FEHER, HALK, sep="#3A4651"),
+            lockup(*jel2("#000", "#000"), "#000", "#000", sep="#000"),
+            jel2(FEHER, NARANCS), GRAFIT, 0.52)
 
-    # 3 — Pecsét
-    b, bb = logo3(GRAFIT, GRAFIT, GRAFIT, NARANCS, NARANCS)
-    write(3, "vilagos", svg(b, bb, 4, title=T + " 3"))
-    write(3, "fo", svg(b, bb, 34, PAPIR, T + " 3"))
-    bd, bbd = logo3(FEHER, FEHER, FEHER, NARANCS, NARANCS)
-    write(3, "sotet", svg(bd, bbd, 4, title=T + " 3"))
-    write(3, "sotet-hatterrel", svg(bd, bbd, 34, GRAFIT, T + " 3"))
-    write(3, "mono", svg(*logo3("#000", "#000", "#000", "#000", "#000"), 4, title=T + " 3"))
-    write(3, "jel", svg(bd, bbd, 20, GRAFIT, T + " 3 – jel"))
-    write(3, "profilkep", social(bd, bbd, GRAFIT, 0.74, NARANCS))
-    write(3, "borito", cover(bd, bbd, GRAFIT, HALK, NARANCS, 300, 300))
+    # 3 — Gyújtógyertya-I
+    sorozat(3, T + " 3",
+            logo3(GRAFIT, ACEL, NARANCS),
+            logo3(FEHER, HALK, NARANCS),
+            logo3("#000", "#000", "#000"),
+            jel3(FEHER, NARANCS), GRAFIT, 0.5)
 
-    # 4 — Csavaranya
-    bd, bbd = logo4(ARANY, "#3B3420", FEHER, FEHER, ARANY)
-    write(4, "sotet", svg(bd, bbd, 12, title=T + " 4"))
-    write(4, "fo", svg(bd, bbd, 40, FEKETE, T + " 4"))
-    write(4, "sotet-hatterrel", svg(bd, bbd, 40, FEKETE, T + " 4"))
-    b, bb = logo4(FEKETE, "#D9D3BF", FEKETE, FEKETE, "#7A6A2E")
-    write(4, "vilagos", svg(b, bb, 12, title=T + " 4"))
-    b2, bb2 = logo4(FEKETE, "#9C7C04", FEKETE, FEKETE, FEKETE)
-    write(4, "sarga-hatterrel", svg(b2, bb2, 40, ARANY, T + " 4"))
-    write(4, "mono", svg(*logo4("#000", "#000", "#000", "#000", "#000"), 12, title=T + " 4"))
-    j, jb = jel4(ARANY, "#3B3420", FEHER)
-    write(4, "jel", svg(j, jb, 16, FEKETE, T + " 4 – jel"))
-    write(4, "profilkep", social(j, jb, FEKETE, 0.5, ARANY))
-    write(4, "borito", cover(bd, bbd, FEKETE, HALK, ARANY))
+    # 4 — Abroncs-embléma (arany–fekete)
+    vil = logo4("#1E2226", ARANY, "#9AA3AB", ARANY, "#1E2226", FEKETE, "#6B5A1E")
+    sot = logo4("#2A2F35", ARANY, "#C9CED2", ARANY, FEKETE, FEHER, ARANY)
+    mono = logo4("#000", "#fff", "#000", "#000", "#fff", "#000", "#000")
+    j = jel4("#2A2F35", ARANY, "#C9CED2", ARANY, FEKETE)
+    sorozat(4, T + " 4", vil, sot, mono, j, FEKETE, 0.8, ARANY, PAPIR, FEKETE, ARANY)
+    b, bb = vil
+    write(4, "sarga-hatterrel", svg(*logo4("#0A0B0D", ARANY, "#3A3A3A", "#0A0B0D", ARANY, FEKETE, FEKETE)[0:1], bb, 40, ARANY, T + " 4"))
 
 
 if __name__ == "__main__":
