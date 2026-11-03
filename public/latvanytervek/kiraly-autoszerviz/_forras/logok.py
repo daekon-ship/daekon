@@ -384,22 +384,23 @@ def kulcs_alak(x0, x1, cy, R, fill, jaw_fill):
 
 
 def jel_anya(col, accent, acel=None):
-    """Hatlapú csavaranya – a furat helyén kivágott korona, alatta kivágásban ülő narancs villáskulcs."""
-    _NID[0] += 1
-    mid, kid = f"anya{_NID[0]}", f"kulcs{_NID[0]}"
-    cx, cy, R = 50, 50, 46
-    hx = [(cx + R * math.cos(math.radians(a)), cy + R * math.sin(math.radians(a))) for a in range(30, 390, 60)]
-    crown = [(29, 57), (29, 30), (39.5, 41), (50, 21), (60.5, 41), (71, 30), (71, 57)]
-    ky, kr = 68.5, 6.4
-    k_body, k_jaws = kulcs_alak(15.5, 84.5, ky, kr, "#000", "#fff")
-    gap, _ = kulcs_alak(13.3, 86.7, ky, kr + 2.2, "#000", "#000")
-    m = (f'<mask id="{mid}" maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="100"><rect width="100" height="100" fill="#000"/>'
-         f'<path d="{P(hx)}" fill="#fff"/><path d="{P(crown)}" fill="#000"/>{gap}</mask>')
-    kb, kj = kulcs_alak(15.5, 84.5, ky, kr, "#fff", "#000")
-    mk = f'<mask id="{kid}" maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="100"><rect width="100" height="100" fill="#000"/>{kb}{kj}</mask>'
-    g = f'<defs>{m}{mk}</defs><rect width="100" height="100" fill="{col}" mask="url(#{mid})"/>'
-    g += f'<rect width="100" height="100" fill="{accent}" mask="url(#{kid})"/>'
-    return g, (cx - R * math.cos(math.radians(30)), cy - R, cx + R * math.cos(math.radians(30)), cy + R)
+    """Kormány-korona: háromküllős kormánykerék, a felső peremén ülő koronával (a vezetés „királya”)."""
+    cx, cy = 50, 60
+    R, r = 34, 26
+    g = f'<path d="{circ_path(cx, cy, R)} {circ_path(cx, cy, r, rev=True)}" fill="{col}" fill-rule="evenodd"/>'
+    # küllők: bal, jobb, lent
+    g += f'<path d="M{cx - r - 1} {cy - 3.2}H{cx - 8}L{cx - 6} {cy + 4}H{cx - r + 0.5}Z" fill="{col}"/>'
+    g += f'<path d="M{cx + r + 1} {cy - 3.2}H{cx + 8}L{cx + 6} {cy + 4}H{cx + r - 0.5}Z" fill="{col}"/>'
+    g += f'<path d="M{cx - 4.5} {cy + 8}H{cx + 4.5}L{cx + 5.5} {cy + r + 1}H{cx - 5.5}Z" fill="{col}"/>'
+    g += f'<circle cx="{cx}" cy="{cy}" r="10" fill="{col}"/><circle cx="{cx}" cy="{cy}" r="4.2" fill="{accent}"/>'
+    # korona a perem tetején
+    cw, ch, base = 46, 26, cy - R + 4
+    crown = [(cx - cw / 2, base), (cx - cw / 2, base - ch * .78), (cx - cw / 4, base - ch * .38), (cx, base - ch),
+             (cx + cw / 4, base - ch * .38), (cx + cw / 2, base - ch * .78), (cx + cw / 2, base)]
+    g += poly(crown, accent)
+    for x, y in ((cx - cw / 2, base - ch * .78), (cx, base - ch), (cx + cw / 2, base - ch * .78)):
+        g += f'<circle cx="{f(x)}" cy="{f(y - 2.4)}" r="3" fill="{accent}"/>'
+    return g, (cx - R, base - ch - 5.4, cx + R, cy + R)
 
 
 # ------------------------------------------------ KIMENETEK
@@ -513,12 +514,13 @@ def main():
             lockup(*sym_dial(cc("#000", "#000", "#000")), "#000", "#000"),
             sym_dial(cc(FEHER, DA, NARANCS)), GRAFIT, 0.5)
 
-    # 6 — Acél-anya koronával
+    # 6 — Kormány-korona (éjkék + arany)
+    EJKEK, ARANY6, PERGAMEN = "#0E1B2C", "#D2A64A", "#F6F2EA"
     sorozat(6, T + " 6",
-            lockup(*jel_anya(GRAFIT, NARANCS, "#5C6873"), GRAFIT, ACEL),
-            lockup(*jel_anya(FEHER, NARANCS, "#11161C"), FEHER, HALK),
+            lockup(*jel_anya(EJKEK, ARANY6), EJKEK, "#46556A", city="#8A7440"),
+            lockup(*jel_anya(PERGAMEN, ARANY6), PERGAMEN, "#B9C2CE", city=ARANY6),
             lockup(*jel_anya("#000", "#000"), "#000", "#000"),
-            jel_anya(FEHER, NARANCS, "#11161C"), GRAFIT, 0.5)
+            jel_anya(PERGAMEN, ARANY6), EJKEK, 0.5, ARANY6, PERGAMEN, EJKEK, ARANY6)
 
     # csak a szükséges fájlok maradnak
     for n in range(1, 7):
