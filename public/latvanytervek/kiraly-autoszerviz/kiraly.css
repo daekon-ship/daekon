@@ -326,3 +326,6 @@ h1{line-height:1.06}
 .btn:active{transform:none}
 .miert.ford{background:none}
 .sav li b{font-weight:600}
+
+:root[data-logo="5"] .logo-link img{height:58px}
+:root[data-logo="5"] .lab img{height:64px}

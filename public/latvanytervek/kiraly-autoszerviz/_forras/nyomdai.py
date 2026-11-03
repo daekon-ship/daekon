@@ -12,10 +12,12 @@ TEMAK = {
             halk="#A6B0B8", logo_sotet="kiraly-1-sotet.svg", logo_vilagos="kiraly-1-vilagos.svg", jel="kiraly-1-jel.svg", logo_w=60),
     2: dict(sotet="#11161C", felulet="#1C242D", vilagos="#F4F5F2", kiemel="#F26732", kiemel_szoveg="#11161C",
             halk="#A6B0B8", logo_sotet="kiraly-2-sotet.svg", logo_vilagos="kiraly-2-vilagos.svg", jel="kiraly-2-jel.svg", logo_w=58),
-    3: dict(sotet="#1C242D", felulet="#11161C", vilagos="#F4F5F2", kiemel="#F26732", kiemel_szoveg="#11161C",
+    3: dict(sotet="#11161C", felulet="#1C242D", vilagos="#F4F5F2", kiemel="#F26732", kiemel_szoveg="#11161C",
             halk="#A6B0B8", logo_sotet="kiraly-3-sotet.svg", logo_vilagos="kiraly-3-vilagos.svg", jel="kiraly-3-jel.svg", logo_w=58),
     4: dict(sotet="#0A0B0D", felulet="#17191D", vilagos="#FFFFFF", kiemel="#F2B705", kiemel_szoveg="#0A0B0D",
             halk="#B4B8BE", logo_sotet="kiraly-4-sotet.svg", logo_vilagos="kiraly-4-vilagos.svg", jel="kiraly-4-jel.svg", logo_w=60),
+    5: dict(sotet="#11161C", felulet="#1C242D", vilagos="#F4F5F2", kiemel="#F26732", kiemel_szoveg="#11161C",
+            halk="#A6B0B8", logo_sotet="kiraly-5-sotet.svg", logo_vilagos="kiraly-5-vilagos.svg", jel="kiraly-5-jel.svg", logo_w=46),
 }
 
 SZOLG = ["Márkafüggetlen szerviz", "Személy- és kishaszonjármű", "Teljes körű diagnosztika", "Dízelrendszer-javítás",
@@ -47,7 +49,7 @@ def nevjegy_html(n, t):
 @page{{size:96mm 56mm;margin:0}}
 .lap{{width:96mm;height:56mm;position:relative;overflow:hidden;break-after:page}}.lap:last-child{{break-after:auto}}
 .elo{{background:{t['sotet']};display:grid;place-items:center}}
-.elo .logo{{width:{t['logo_w']}mm;margin-top:-3mm}}
+.elo .logo{{width:{t['logo_w']}mm;margin-top:{'0' if n == 5 else '-3mm'}}}
 .elo .alja{{position:absolute;left:0;right:0;bottom:9mm;text-align:center;font:600 5.6pt/1 Manrope;letter-spacing:.24em;color:{t['halk']};text-transform:uppercase}}
 .elo .vonal{{position:absolute;left:50%;bottom:13.4mm;width:7mm;height:.6mm;margin-left:-3.5mm;background:{t['kiemel']}}}
 .hat{{background:{t['vilagos']};color:{t['sotet'] if n != 3 else '#11161C'}}}
@@ -62,7 +64,7 @@ def nevjegy_html(n, t):
 .cimke{{font:700 5.4pt/1 Manrope;letter-spacing:.2em;text-transform:uppercase;color:{t['kiemel'] if n != 4 else '#0B0D10'};margin-bottom:2mm;{'' if n != 4 else 'background:#F2B705;display:inline-block;padding:.8mm 1.2mm .7mm;'}}}
 ul{{list-style:none;font:500 5.9pt/1.44 Manrope;white-space:nowrap}}
 </style></head><body>
-<section class="lap elo"><div class="logo">{svg_inline(n, t['logo_sotet'])}</div><span class="vonal"></span><div class="alja">Márkafüggetlen autószerviz · 2008 óta</div></section>
+<section class="lap elo"><div class="logo">{svg_inline(n, t['logo_sotet'])}</div>{"" if n == 5 else '<span class="vonal"></span><div class="alja">Márkafüggetlen autószerviz · 2008 óta</div>'}</section>
 <section class="lap hat"><div class="belso">
  <div><div class="nev">Király István</div><div class="beo">ügyvezető</div>
  <div class="tel"><i></i>+36 20 585 3234</div>
@@ -112,14 +114,15 @@ li:before{{content:"";position:absolute;left:0;top:1.55mm;width:1.2mm;height:1.2
 
 
 def main():
+    import shutil
+    shutil.rmtree(os.path.join(ROOT, "nyomdai"), ignore_errors=True)
     S = 300 / 96
     with sync_playwright() as p:
         b = p.chromium.launch()
         for n, t in TEMAK.items():
             out = os.path.join(ROOT, "nyomdai", f"logo-{n}")
             os.makedirs(out, exist_ok=True)
-            for nev, html, w, h in (("nevjegykartya", nevjegy_html(n, t), "96mm", "56mm"),
-                                    ("ujsaghirdetes", hirdetes_html(n, t), "95mm", "125mm")):
+            for nev, html, w, h in (("nevjegykartya", nevjegy_html(n, t), "96mm", "56mm"),):
                 tmp = os.path.join(ROOT, "_forras", f"_tmp_{nev}.html")
                 pathlib.Path(tmp).write_text(html)
                 pg = b.new_page(device_scale_factor=S, viewport={"width": 400, "height": 520})

@@ -230,6 +230,56 @@ def logo4(col, hub, fg, subc):
     return lockup(m, mb, fg, subc, gap=22, sep=None)
 
 
+# ------------------------------------------------ 5. JELVÉNY – KIRÁLY + AUTÓSZERVIZ egy egységben
+def mini_korona(cx, base, col, accent):
+    """Három kis dugattyúfej (korona) – a jelvény tetején, a keretvonalat megszakítva."""
+    g = ""
+    for dx, h, w, c in ((-17, 13, 12, col), (0, 19, 14, accent), (17, 13, 12, col)):
+        x, top = cx + dx - w / 2, base - h
+        g += f'<rect x="{f(x)}" y="{f(top)}" width="{f(w)}" height="3.6" rx=".8" fill="{c}"/>'
+        g += f'<rect x="{f(x)}" y="{f(top + 5.2)}" width="{f(w)}" height="1.6" fill="{c}"/>'
+        g += f'<path d="M{f(x)} {f(top + 8.4)}H{f(x + w)}V{f(base)}H{f(x)}Z {circ_path(cx + dx, top + 8.4 + (base - top - 8.4) / 2, w * .14, rev=True)}" fill="{c}" fill-rule="evenodd"/>'
+    return g
+
+
+def logo5(fg, accent, bar_txt, small):
+    W, H, c = 300, 132, 12
+    top = 14
+    pts = [(c, top), (W - c, top), (W, top + c), (W, top + H - c), (W - c, top + H), (c, top + H), (0, top + H - c), (0, top + c)]
+    gap = 44
+    # keret, a tetején rés a koronának
+    frame = (f'<path d="M{f(W / 2 + gap)} {f(top)}H{f(W - c)}L{f(W)} {f(top + c)}V{f(top + H - c)}L{f(W - c)} {f(top + H)}'
+             f'H{f(c)}L0 {f(top + H - c)}V{f(top + c)}L{f(c)} {f(top)}H{f(W / 2 - gap)}" fill="none" stroke="{fg}" stroke-width="2.6"/>')
+    g = frame + f'<g transform="translate({f(W / 2)} {f(top + 6)}) scale(1.75) translate({f(-W / 2)} {f(-(top + 6))})">' + mini_korona(W / 2, top + 6, fg, accent) + "</g>"
+    size = 52
+    d, b, _ = text("archivo", "KIRÁLY", size, 660, 120, track=0.07)
+    wk = b[2] - b[0]
+    cap = cap_height("archivo", size, 660, 120)
+    yb = top + 26 + cap
+    d, b, _ = text("archivo", "KIRÁLY", size, 660, 120, track=0.07, x=W / 2 - wk / 2 - b[0], y=yb)
+    g += f'<path d="{d}" fill="{fg}"/>'
+    bx0, bx1, by0, bh = 22, W - 22, yb + 11, 25
+    g += f'<path d="M{f(bx0)} {f(by0)}H{f(bx1)}V{f(by0 + bh)}H{f(bx0)}Z" fill="{accent}"/>'
+    _, _, sz = fit_track("manrope", "AUTÓSZERVIZ", bx1 - bx0 - 40, 800, track=0.46)
+    cp = cap_height("manrope", sz, 800)
+    d2, b2, _ = fit_track("manrope", "AUTÓSZERVIZ", bx1 - bx0 - 40, 800, track=0.46, x=bx0 + 20, y=by0 + bh / 2 + cp / 2)
+    g += f'<path d="{d2}" fill="{bar_txt}"/>'
+    s3 = 9.8
+    d3, b3, _ = text("manrope", "DUNAÚJVÁROS  ·  2008 ÓTA", s3, 700, track=0.38)
+    w3 = b3[2] - b3[0]
+    d3, b3, _ = text("manrope", "DUNAÚJVÁROS  ·  2008 ÓTA", s3, 700, track=0.38, x=W / 2 - w3 / 2 - b3[0], y=by0 + bh + 16)
+    g += f'<path d="{d3}" fill="{small}"/>'
+    return g, (-1.5, top - 28, W + 1.5, top + H + 1.5)
+
+
+def jel5(fg, accent, bar_txt):
+    S, c = 100, 9
+    g = f'<path d="M{c} 0H{S - c}L{S} {c}V{S - c}L{S - c} {S}H{c}L0 {S - c}V{c}Z" fill="{fg}"/>'
+    g += f'<g transform="translate(50 58) scale(1.9) translate(-50 -58)">' + mini_korona(50, 58, bar_txt, accent) + "</g>"
+    g += f'<rect x="16" y="66" width="68" height="13" fill="{accent}"/>'
+    return g, (0, 0, S, S)
+
+
 # ------------------------------------------------ KIMENETEK
 def svg(body, bb, pad, bg=None, title=""):
     x0, y0, x1, y1 = bb
@@ -328,6 +378,19 @@ def main():
     sorozat(4, T + " 4", vil, sot, mono, j, FEKETE, 0.52, ARANY, PAPIR, FEKETE, ARANY)
     b, bb = logo4(FEKETE, None, FEKETE, FEKETE)
     write(4, "sarga-hatterrel", svg(b, bb, 40, ARANY, T + " 4"))
+
+    # 5 — Jelvény
+    vil = logo5(GRAFIT, NARANCS, PAPIR, ACEL)
+    sot = logo5(FEHER, NARANCS, GRAFIT, HALK)
+    mono = logo5("#000", "#000", "#fff", "#000")
+    j = jel1(FEHER, NARANCS, "#7C8792")
+    sorozat(5, T + " 5", vil, sot, mono, j, GRAFIT, 0.5, NARANCS, PAPIR, GRAFIT, NARANCS)
+    # csak a szükséges fájlok maradnak
+    for n in range(1, 6):
+        d = os.path.join(OUT, f"logo-{n}")
+        for fn in os.listdir(d):
+            if not any(fn.endswith(k + ".svg") for k in ("-fo", "-sotet", "-vilagos", "-jel", "-sotet-hatterrel")):
+                os.remove(os.path.join(d, fn))
 
 if __name__ == "__main__":
     main()
