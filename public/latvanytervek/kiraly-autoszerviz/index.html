@@ -69,10 +69,11 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('ani
 <main id="top">
 <!-- HERO -->
 <section class="hero" aria-labelledby="hero-cim">
+  <canvas class="pontracs" aria-hidden="true"></canvas>
   <div class="wrap hero-racs">
     <div class="hero-szoveg">
       <p class="eyebrow"><i aria-hidden="true"></i>Márkafüggetlen autószerviz · Dunaújváros · 2008 óta</p>
-      <h1 id="hero-cim">Precíz autójavítás. <em>Megbízható kezekben.</em></h1>
+      <h1 id="hero-cim">Precíz autójavítás. <em class="shiny">Megbízható kezekben.</em></h1>
       <p class="lead">Márkafüggetlen autószerviz Dunaújvárosban. Teljes körű diagnosztika, dízelrendszer-javítás és korszerű 3D futóműállítás személy- és kishaszongépjárművek számára.</p>
       <div class="hero-cta">
         <a class="btn btn-fo" href="tel:+36205853234"><svg aria-hidden="true"><use href="#i-tel"/></svg>Időpont-egyeztetés telefonon</a>
@@ -140,6 +141,9 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('ani
 </section>
 
 <!-- BIZALMI SÁV -->
+<div class="futosav" aria-hidden="true"><div class="futosav-belso">
+  <span>Teljes körű diagnosztika</span><i></i><span>Dízelrendszer-javítás</span><i></i><span>Adagoló és porlasztó</span><i></i><span>3D futóműállítás</span><i></i><span>Önindító, generátor</span><i></i><span>Műszaki vizsgára felkészítés</span><i></i><span>Szívósor- és EGR-tisztítás</span><i></i><span>Ford garanciális szerviz</span><i></i>
+</div></div>
 <section class="sav" aria-label="Röviden a szervizről">
   <div class="wrap">
     <ul>
@@ -393,7 +397,7 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('ani
 <section class="sec paper rolunk" id="rolunk" aria-labelledby="rolunk-cim">
   <div class="wrap rolunk-racs">
     <div class="foto" role="img" aria-label="Fotóhely: a műhely vagy a csapat valódi fényképe" data-be>
-      <span class="ev">2008</span>
+      <div class="korfelirat" aria-hidden="true"><svg viewBox="0 0 120 120"><defs><path id="kor" d="M60 60m-46 0a46 46 0 1 1 92 0a46 46 0 1 1-92 0"/></defs><text><textPath href="#kor" startOffset="0">KIRÁLY AUTÓSZERVIZ · 2008 ÓTA · </textPath></text></svg><b>2008</b></div>
       <b>Fotóhely</b><span>Ide a műhely, a szerelőállás vagy a 3D futóműállító valódi fotója kerül – az ügyféltől.</span>
     </div>
     <div class="rolunk-szoveg" data-be>
@@ -417,7 +421,7 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('ani
     <div data-be>
       <p class="label"><span class="n">06</span>Értékelések</p>
       <h2 id="vel-cim" style="margin:16px 0 26px">Amit az ügyfelek mondanak</h2>
-      <div class="pont"><b>4,5</b><small>/ 5 · 44 értékelés alapján</small></div>
+      <div class="pont"><b data-szamlalo="4.5" data-tized="1">4,5</b><small>/ 5 · <span data-szamlalo="44">44</span> értékelés alapján</small></div>
       <div class="csillag" aria-label="4,5 csillag az 5-ből"><svg><use href="#i-csillag"/></svg><svg><use href="#i-csillag"/></svg><svg><use href="#i-csillag"/></svg><svg><use href="#i-csillag"/></svg><svg><use href="#i-felcsillag"/></svg></div>
       <p class="forras">Forrás: <a href="https://www.autoturul.eu/profile-15525-kiraly-autoszerviz-kft" target="_blank" rel="noopener">Turul Auto adatlap</a> (2026. november). A Google-adatlapon szereplő értékelések külön linken érhetők el.</p>
     </div>
@@ -474,6 +478,7 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('ani
   </div>
 </section>
 </main>
+<div class="szemcse" aria-hidden="true"></div>
 
 <footer class="lab">
   <div class="wrap">

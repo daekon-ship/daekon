@@ -13,8 +13,8 @@ TEMAK = {
     2: dict(sotet="#11161C", felulet="#1C242D", vilagos="#F4F5F2", kiemel="#F26732", kiemel_szoveg="#11161C",
             halk="#A6B0B8", logo_sotet="kiraly-2-sotet.svg", logo_vilagos="kiraly-2-vilagos.svg", jel="kiraly-2-jel.svg", logo_w=58),
     3: dict(sotet="#1C242D", felulet="#11161C", vilagos="#F4F5F2", kiemel="#F26732", kiemel_szoveg="#11161C",
-            halk="#A6B0B8", logo_sotet="kiraly-3-sotet.svg", logo_vilagos="kiraly-3-vilagos.svg", jel="kiraly-3-jel.svg", logo_w=50),
-    4: dict(sotet="#0B0D10", felulet="#17191D", vilagos="#FFFFFF", kiemel="#FFC20E", kiemel_szoveg="#0B0D10",
+            halk="#A6B0B8", logo_sotet="kiraly-3-sotet.svg", logo_vilagos="kiraly-3-vilagos.svg", jel="kiraly-3-jel.svg", logo_w=27),
+    4: dict(sotet="#0A0B0D", felulet="#17191D", vilagos="#FFFFFF", kiemel="#F2B705", kiemel_szoveg="#0A0B0D",
             halk="#B4B8BE", logo_sotet="kiraly-4-sotet.svg", logo_vilagos="kiraly-4-vilagos.svg", jel="kiraly-4-jel.svg", logo_w=60),
 }
 
@@ -59,7 +59,7 @@ def nevjegy_html(n, t):
 .adat{{font:500 6.4pt/1.45 Manrope;margin-top:2.6mm}}
 .adat b{{font-weight:700}}
 .jobb{{border-left:.25mm solid rgba(17,22,28,.22);padding-left:3.2mm}}
-.cimke{{font:700 5.4pt/1 Manrope;letter-spacing:.2em;text-transform:uppercase;color:{t['kiemel'] if n != 4 else '#0B0D10'};margin-bottom:2mm;{'' if n != 4 else 'background:#FFC20E;display:inline-block;padding:.8mm 1.2mm .7mm;'}}}
+.cimke{{font:700 5.4pt/1 Manrope;letter-spacing:.2em;text-transform:uppercase;color:{t['kiemel'] if n != 4 else '#0B0D10'};margin-bottom:2mm;{'' if n != 4 else 'background:#F2B705;display:inline-block;padding:.8mm 1.2mm .7mm;'}}}
 ul{{list-style:none;font:500 5.9pt/1.44 Manrope;white-space:nowrap}}
 </style></head><body>
 <section class="lap elo"><div class="logo">{svg_inline(n, t['logo_sotet'])}</div><span class="vonal"></span><div class="alja">{"Márkafüggetlen autószerviz · Dunaújváros" if n == 3 else "Márkafüggetlen autószerviz · 2008 óta"}</div></section>
@@ -80,7 +80,7 @@ def hirdetes_html(n, t):
 @page{{size:95mm 125mm;margin:0}}
 .hird{{width:95mm;height:125mm;background:{t['sotet']};color:#F4F5F6;position:relative;overflow:hidden;display:flex;flex-direction:column}}
 .fej{{display:flex;justify-content:space-between;align-items:center;padding:5.4mm 6mm 0}}
-.fej .logo{{width:{min(t['logo_w'], 50) if n != 3 else 33}mm}}
+.fej .logo{{width:{min(t['logo_w'], 50) if n != 3 else 22}mm}}
 .fej .ota{{font:600 6pt/1.35 Manrope;letter-spacing:.18em;text-transform:uppercase;color:{t['halk']};text-align:right}}
 .tor{{padding:5mm 6mm 0}}
 .kicker{{font:700 6.6pt/1 Manrope;letter-spacing:.22em;text-transform:uppercase;color:{t['kiemel']}}}
@@ -98,7 +98,7 @@ li:before{{content:"";position:absolute;left:0;top:1.55mm;width:1.2mm;height:1.2
 .kapcs .sor{{display:flex;justify-content:space-between;gap:3mm;font:600 7.2pt/1.35 Manrope;margin-top:2mm}}
 </style></head><body>
 <div class="hird">
- <div class="fej"><div class="logo">{svg_inline(n, t['logo_sotet'])}</div>{'<div class="ota">Dunaújváros<br>2008 óta</div>' if n != 3 else '<div class="ota">Márkafüggetlen<br>autószerviz</div>'}</div>
+ <div class="fej"><div class="logo">{svg_inline(n, t['logo_sotet'])}</div>{'<div class="ota">Dunaújváros<br>2008 óta</div>' if n != 3 else '<div class="ota">Márkafüggetlen autószerviz<br>személy- és kishaszonjárművek</div>'}</div>
  <div class="tor">
   <div class="kicker">Bővült a szolgáltatásunk</div>
   <h1>Dióőrleményes szívósor- és EGR-tisztítás</h1>

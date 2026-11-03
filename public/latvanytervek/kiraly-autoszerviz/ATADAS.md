@@ -1,4 +1,10 @@
-# KIRÁLY Autószerviz – átadás (1. kör, 2026.11.03.)
+# KIRÁLY Autószerviz – átadás (2. kör, 2026.11.03.)
+
+## 2. kör – mi változott
+- **Logók újratervezve:** egyszerűbb, prémiumabb irány – vékonyabb vonalak, Archivo 540–620 súly (a korábbi 800–900 helyett), levegős betűköz. 1 Tengely (K-monogram + gömbcsukló), 2 Ékezet (szóvédjegy, narancs ékezetvágás), 3 Pecsét (kör alakú embléma körbefutó felirattal), 4 Csavaranya (hatszög + K, arany #F2B705–fekete). Profilképek finom fényudvarral, borítók új elrendezéssel. Névjegy, hirdetés, ZIP újragenerálva.
+- **Weboldal – React Bits-mintájú effektek** (statikus oldal, ezért saját, könnyű kód a komponensek mintájára, Motionnel): Dot Grid + Grid Scan (egérre reagáló pontrács, pásztázó fény a heróban, canvas, láthatóság szerint szünetel), Shiny Text (a hero kiemelt sora, a szöveg mindig látható), Decrypted Text (a mért értékek „kódolva” pörögnek, majd beállnak), Spotlight Card / Magic Bento (kurzorkövető fény és szegély a kártyákon), Glare Hover (fő gombok), Magnet (CTA-k, csak egérrel), Blur Text (szekciócímek szavanként élesednek), Count Up (értékelés), Scroll Velocity (görgetésre gyorsuló szolgáltatássáv), Circular Text (forgó felirat a Rólunk képhelyen), Noise (5%-os filmszemcse). Mind kikapcsol `prefers-reduced-motion` esetén.
+- sitereel.ai: promptgyűjtemény – onnan csak a sötét, filmszerű hangulat az inspiráció.
+
 
 Díjmentes, kötelezettségmentes DAEKON-bemutató. Nem éles, `noindex`, nem gyűjt adatot, nincs űrlap.
 
