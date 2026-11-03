@@ -1,5 +1,8 @@
 # KIRÁLY Autószerviz – átadás (2. kör, 2026.11.03.)
 
+## 4. kör – letisztítás
+Az ügyfél-oldali visszajelzés: „túl AI, értelmetlen animációk”. Kikerült: pontrács-háttér, fénycsík, kódolt számok, mágneses gombok, fényfolt, kurzorkövető kártyafény, futó szolgáltatássáv, forgó felirat, filmszemcse, szavankénti elmosódás, felszámlálás, a hero átfedő fotóhelye. Marad (Motion): a 3D futómű kerekeinek beállása, az előtte/utána kapcsoló, a lenyíló sorok és egy finom beúszás. Nyugodtabb felületek, könnyebb címsúly, több levegő, visszafogott demó-sáv.
+
 ## 3. kör (2026.11.03.) – autós jelképek
 Az ügyfél-oldali visszajelzés: „ne csak egy K legyen, legyen autószereléshez kapcsolódó”. Új logók, mind a város nevével (alcím: AUTÓSZERVIZ · DUNAÚJVÁROS):
 1. **Dugattyúkorona** (javaslat) – három dugattyú hajtókarral, a középső magasabb, narancs fejjel → korona.
@@ -10,7 +13,7 @@ Névjegyek, hirdetések, Facebook-képek, ZIP, logóválasztó és a weboldal fe
 
 ## 2. kör – mi változott
 - **Logók újratervezve:** egyszerűbb, prémiumabb irány – vékonyabb vonalak, Archivo 540–620 súly (a korábbi 800–900 helyett), levegős betűköz. 1 Tengely (K-monogram + gömbcsukló), 2 Ékezet (szóvédjegy, narancs ékezetvágás), 3 Pecsét (kör alakú embléma körbefutó felirattal), 4 Csavaranya (hatszög + K, arany #F2B705–fekete). Profilképek finom fényudvarral, borítók új elrendezéssel. Névjegy, hirdetés, ZIP újragenerálva.
-- **Weboldal – React Bits-mintájú effektek** (statikus oldal, ezért saját, könnyű kód a komponensek mintájára, Motionnel): Dot Grid + Grid Scan (egérre reagáló pontrács, pásztázó fény a heróban, canvas, láthatóság szerint szünetel), Shiny Text (a hero kiemelt sora, a szöveg mindig látható), Decrypted Text (a mért értékek „kódolva” pörögnek, majd beállnak), Spotlight Card / Magic Bento (kurzorkövető fény és szegély a kártyákon), Glare Hover (fő gombok), Magnet (CTA-k, csak egérrel), Blur Text (szekciócímek szavanként élesednek), Count Up (értékelés), Scroll Velocity (görgetésre gyorsuló szolgáltatássáv), Circular Text (forgó felirat a Rólunk képhelyen), Noise (5%-os filmszemcse). Mind kikapcsol `prefers-reduced-motion` esetén.
+- ~~Weboldal – React Bits-mintájú effektek~~ (a 4. körben kivéve) (statikus oldal, ezért saját, könnyű kód a komponensek mintájára, Motionnel): Dot Grid + Grid Scan (egérre reagáló pontrács, pásztázó fény a heróban, canvas, láthatóság szerint szünetel), Shiny Text (a hero kiemelt sora, a szöveg mindig látható), Decrypted Text (a mért értékek „kódolva” pörögnek, majd beállnak), Spotlight Card / Magic Bento (kurzorkövető fény és szegély a kártyákon), Glare Hover (fő gombok), Magnet (CTA-k, csak egérrel), Blur Text (szekciócímek szavanként élesednek), Count Up (értékelés), Scroll Velocity (görgetésre gyorsuló szolgáltatássáv), Circular Text (forgó felirat a Rólunk képhelyen), Noise (5%-os filmszemcse). Mind kikapcsol `prefers-reduced-motion` esetén.
 - sitereel.ai: promptgyűjtemény – onnan csak a sötét, filmszerű hangulat az inspiráció.
 
 
