@@ -1,5 +1,8 @@
 # KIRÁLY Autószerviz – átadás (2. kör, 2026.11.03.)
 
+## 9. kör – 6 logó
+Végleges sor: 1 Dugattyúkorona, 2 Kulcskorona, 3 Gyújtógyertya, 4 Autóemelő, 5 Mérőóra (a v2 jele a közös felirattal), 6 **Acél-anya koronával** (saját javaslat: hatlapú csavaranya – Dunaújváros, az acélváros –, a furat helyén kivágott korona, narancs pánttal). Mindegyikhez névjegy. Online kutatás: a nyilvános adatlapok (Turul Auto, europethrob, nyitva.hu) nem adnak új tényt; a Facebook-oldal robotok elől zárt.
+
 ## 8. kör – arculat-v2 (három kiforrott koncepció, külön mappa)
 `arculat-v2/` – az eredeti `arculat/` érintetlen. Generátor: `_forras/logok_v2.py`, exportok: `_forras/v2_export.py`. Bemutató: `arculat-v2/index.html`, ügyfélkép: `arculat-v2/kiraly-logokoncepciok-osszehasonlitas.png`.
 - 01 PRECISION TOOLS (fő ajánlás): K-monogram villáskulcsból (nyél = szár, nyitott pofa = két kar), narancs csavaranya a pofában.

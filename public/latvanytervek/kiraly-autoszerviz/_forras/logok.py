@@ -368,6 +368,29 @@ def jel_emelo(col, accent, acel=None):
     return g, (2, 10, 118, 94)
 
 
+# ------------------------------------------------ ÚJ 6. ACÉL-ANYA KORONÁVAL
+_NID = [0]
+
+
+def jel_anya(col, accent, acel=None):
+    """Hatlapú csavaranya (Dunaújváros, az acélváros) – a furat helyén kivágott korona, narancs koronapánttal."""
+    _NID[0] += 1
+    mid = f"anya{_NID[0]}"
+    cx, cy, R = 50, 50, 46
+    hx = [(cx + R * math.cos(math.radians(a)), cy + R * math.sin(math.radians(a))) for a in range(30, 390, 60)]
+    crown = [(27, 62), (27, 34), (38.5, 46), (50, 26), (61.5, 46), (73, 34), (73, 62)]
+    m = (f'<mask id="{mid}" maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="100"><rect width="100" height="100" fill="#000"/>'
+         f'<path d="{P(hx)}" fill="#fff"/><path d="{P(crown)}" fill="#000"/><rect x="27" y="65" width="46" height="8" fill="#000"/></mask>')
+    g = f'<defs>{m}</defs><rect width="100" height="100" fill="{col}" mask="url(#{mid})"/>'
+    # belső letörés-gyűrű a hatlapon
+    hx2 = [(cx + 39 * math.cos(math.radians(a)), cy + 39 * math.sin(math.radians(a))) for a in range(30, 390, 60)]
+    g += f'<path d="{P(hx2)}" fill="none" stroke="{acel or col}" stroke-width="1.4" opacity="{.55 if acel else 0}"/>'
+    g += f'<rect x="27" y="65" width="46" height="8" fill="{accent}"/>'
+    for x in (27, 50, 73):
+        pass
+    return g, (cx - R * math.cos(math.radians(30)), cy - R, cx + R * math.cos(math.radians(30)), cy + R)
+
+
 # ------------------------------------------------ KIMENETEK
 def svg(body, bb, pad, bg=None, title=""):
     x0, y0, x1, y1 = bb
@@ -479,8 +502,15 @@ def main():
             lockup(*sym_dial(cc("#000", "#000", "#000")), "#000", "#000"),
             sym_dial(cc(FEHER, DA, NARANCS)), GRAFIT, 0.5)
 
+    # 6 — Acél-anya koronával
+    sorozat(6, T + " 6",
+            lockup(*jel_anya(GRAFIT, NARANCS, "#5C6873"), GRAFIT, ACEL),
+            lockup(*jel_anya(FEHER, NARANCS, "#11161C"), FEHER, HALK),
+            lockup(*jel_anya("#000", "#000"), "#000", "#000"),
+            jel_anya(FEHER, NARANCS, "#11161C"), GRAFIT, 0.5)
+
     # csak a szükséges fájlok maradnak
-    for n in range(1, 6):
+    for n in range(1, 7):
         d = os.path.join(OUT, f"logo-{n}")
         for fn in os.listdir(d):
             if not any(fn.endswith(k + ".svg") for k in ("-fo", "-sotet", "-vilagos", "-jel", "-jel-tiszta", "-sotet-hatterrel")):

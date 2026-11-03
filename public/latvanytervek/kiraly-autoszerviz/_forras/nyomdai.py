@@ -9,7 +9,7 @@ BETU = os.path.join(ROOT, "_forras", "betu")
 
 TEMAK = {n: dict(sotet="#11161C", felulet="#1C242D", vilagos="#F4F5F2", kiemel="#F26732", halk="#A6B0B8",
                  logo_sotet=f"kiraly-{n}-sotet.svg", jel=f"kiraly-{n}-jel-tiszta.svg", jel_tile=f"kiraly-{n}-jel.svg",
-                 logo_w={1: 52, 2: 50, 3: 50, 4: 50, 5: 52}[n]) for n in range(1, 6)}
+                 logo_w={1: 52, 2: 50, 3: 50, 4: 50, 5: 52, 6: 52}[n]) for n in range(1, 7)}
 
 SZOLG = ["Márkafüggetlen szerviz", "Személy- és kishaszonjármű", "Teljes körű diagnosztika", "Dízelrendszer-javítás",
          "Adagoló, porlasztó javítás", "3D futóműállítás", "Önindító, generátor javítás", "Műszakira felkészítés",
