@@ -1,5 +1,14 @@
 # KIRÁLY Autószerviz – átadás (2. kör, 2026.11.03.)
 
+## 8. kör – arculat-v2 (három kiforrott koncepció, külön mappa)
+`arculat-v2/` – az eredeti `arculat/` érintetlen. Generátor: `_forras/logok_v2.py`, exportok: `_forras/v2_export.py`. Bemutató: `arculat-v2/index.html`, ügyfélkép: `arculat-v2/kiraly-logokoncepciok-osszehasonlitas.png`.
+- 01 PRECISION TOOLS (fő ajánlás): K-monogram villáskulcsból (nyél = szár, nyitott pofa = két kar), narancs csavaranya a pofában.
+- 02 ENGINEERING: egy dugattyú hajtókarral, narancs fej, gyűrűhornyok, csapszeg.
+- 03 TECHNICAL PRECISION: mérőóra, tüskék nélkül, 8 jeles skála, narancs mutató.
+- Tipográfia: KIRÁLY (Archivo 720, 112% szél., +3,5% betűköz) / AUTÓSZERVIZ (Manrope 800, 36%) / – DUNAÚJVÁROS (Manrope 650, 25%, narancs vonással).
+- Mindegyikhez: logó sötét/világos háttérre, jel, kompakt négyzetes, fekete és fehér mono – SVG (valódi vektor, görbékké alakított betűk) + átlátszó PNG (2400/1600 px) + weboldal- és mobilfejléc-bemutató.
+- Ellenőrzés: 30 SVG XML-validálva és böngészőben betöltve (0 hiba); PNG-k átlátszósága ellenőrizve; jelek 24/32 px-en (a mérőóra skálája ezért 12-ről 8 jelre egyszerűsítve); logó 160 px széles fejlécben: KIRÁLY és AUTÓSZERVIZ olvasható, a DUNAÚJVÁROS ott már nagyon kicsi (kis méretre a jel vagy a kompakt változat ajánlott).
+
 ## 7. kör – új 4. és 5. logó, új névjegyek
 4. **Rugóstag-király** – sakk-király futómű-rugóstagból (kereszt, felső tartó, narancs spirálrugó, lengéscsillapító, kétlépcsős talp). 5. **Műszer-korona** – fordulatszámmérő íve, a 3 fő skálajel koronacsúcs, narancs mutató. (A fogaskerék-korona és a jelvény kikerült.)
 Névjegy újratervezve: előlap sötét, narancs él a bal szélen, nagy tónusos jel kifutóval, logó balra; hátlap világos rács – név, beosztás, jel-csempe, vonal, ikonos elérhetőségek két oszlopban, alul szolgáltatássor.
