@@ -434,20 +434,25 @@ def main():
             logo3("#000", "#000", "#000"),
             jel3(FEHER, NARANCS, "#7C8792"), GRAFIT, 0.5)
 
-    # 4 — Rugóstag-király
+    # 4 — Kulcs-K (a v2 Precision Tools jele, a közös felirattal)
+    import itertools
+    from logok_v2 import sym_tools, sym_dial
     LA, DA = "#8B959E", "#7C8792"
+    def cc(ink, metal, acc):
+        return dict(ink=ink, metal=metal, accent=acc, ids=itertools.count(1))
     sorozat(4, T + " 4",
-            lockup(*jel_rugo(GRAFIT, NARANCS, LA), GRAFIT, ACEL),
-            lockup(*jel_rugo(FEHER, NARANCS, DA), FEHER, HALK),
-            lockup(*jel_rugo("#000", "#000"), "#000", "#000"),
-            jel_rugo(FEHER, NARANCS, DA), GRAFIT, 0.5)
+            lockup(*sym_tools(cc(GRAFIT, LA, NARANCS)), GRAFIT, ACEL),
+            lockup(*sym_tools(cc(FEHER, DA, NARANCS)), FEHER, HALK),
+            lockup(*sym_tools(cc("#000", "#000", "#000")), "#000", "#000"),
+            sym_tools(cc(FEHER, DA, NARANCS)), GRAFIT, 0.5)
 
-    # 5 — Műszer-korona
+    # 5 — Mérőóra (a v2 Technical Precision jele, a közös felirattal)
     sorozat(5, T + " 5",
-            lockup(*jel_minta(GRAFIT, NARANCS, LA), GRAFIT, ACEL),
-            lockup(*jel_minta(FEHER, NARANCS, DA), FEHER, HALK),
-            lockup(*jel_minta("#000", "#000"), "#000", "#000"),
-            jel_minta(FEHER, NARANCS, DA), GRAFIT, 0.52)
+            lockup(*sym_dial(cc(GRAFIT, LA, NARANCS)), GRAFIT, ACEL),
+            lockup(*sym_dial(cc(FEHER, DA, NARANCS)), FEHER, HALK),
+            lockup(*sym_dial(cc("#000", "#000", "#000")), "#000", "#000"),
+            sym_dial(cc(FEHER, DA, NARANCS)), GRAFIT, 0.5)
+
     # csak a szükséges fájlok maradnak
     for n in range(1, 6):
         d = os.path.join(OUT, f"logo-{n}")

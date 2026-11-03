@@ -16,8 +16,15 @@ SZOLG = ["Márkafüggetlen szerviz", "Személy- és kishaszonjármű", "Teljes k
          "Szívósor-, EGR-tisztítás"]
 
 
+_INL = [0]
+
+
 def svg_inline(n, name):
     s = pathlib.Path(ROOT, "arculat", f"logo-{n}", name).read_text()
+    _INL[0] += 1
+    pre = f"i{_INL[0]}_"
+    s = re.sub(r'id="([^"]+)"', lambda m: f'id="{pre}{m.group(1)}"', s)
+    s = re.sub(r'url\(#([^)]+)\)', lambda m: f'url(#{pre}{m.group(1)})', s)
     s = re.sub(r' width="[^"]+" height="[^"]+"', "", s, count=1)
     return s
 
@@ -54,7 +61,7 @@ def nevjegy_html(n, t):
 .lap:last-child{{break-after:auto}}
 /* ELŐLAP: sötét, nagy tónusos jel kifutóval, logó balra, narancs él */
 .elo{{background:{t['sotet']}}}
-.elo .vizjel{{position:absolute;right:-9mm;top:50%;width:{'30mm' if n in (3, 4) else '52mm'};transform:translateY(-50%);opacity:.07;filter:grayscale(1) brightness(1.6)}}
+.elo .vizjel{{position:absolute;right:-9mm;top:50%;width:{ {3: '30mm', 4: '44mm'}.get(n, '52mm') };transform:translateY(-50%);opacity:.07;filter:grayscale(1) brightness(1.6)}}
 .elo .el{{position:absolute;left:0;top:0;bottom:0;width:4.8mm;background:{k}}}
 .elo .logo{{position:absolute;left:11mm;top:50%;width:{t['logo_w']}mm;transform:translateY(-50%)}}
 /* HÁTLAP: világos, rendezett rács */
