@@ -243,7 +243,7 @@
         el.addEventListener('pointerleave', function () { lbl.textContent = ''; dot.className = 'fx-cursor'; M.animate(dot, { width: 14, height: 14 }, spring(300, 22)); });
       });
     }
-    grow('.spread__media, .hero__media, .plate, .finale__bg', 86, 'mese', 'is-pic');
+    grow('.spread__media, .hero__media, .plate, .finale__bg, .wc__page', 86, 'mese', 'is-pic');
     grow('.btn, .nav a, .chip, .pin, .link, .contents a', 44, '', 'is-btn');
 
     // mágneses gombok

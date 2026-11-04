@@ -13,6 +13,11 @@ import sys
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import logo as LOGO  # noqa: E402
+import story as STORY  # noqa: E402  – mesekönyves V2-réteg (csak a V2 kimenetre)
+
+
+def _me():
+    return sys.modules[__name__]
 
 ROOT = HERE.parents[1]
 OUT = ROOT / "public" / "latvanytervek" / "mokusch-premium-v2"
@@ -184,7 +189,7 @@ def head(title, desc, prefix, extra=""):
   if(m!=='off'){{d.classList.add('anim',(red&&m!=='full')?'anim-soft':'anim-full');
   setTimeout(function(){{if(!window.Motion){{d.classList.remove('anim')}}}},2500);}}}})();
 </script>
-{extra}</head>
+{STORY.head_extra(prefix) if STORY.is_v2(_me()) else ''}{extra}</head>
 '''
 
 
@@ -268,6 +273,7 @@ def header(prefix, current=None):
       <p><a href="{p(prefix, 'eskuvo/')}">Esküvői torták</a> · <a href="{p(prefix, 'asztalfoglalas/')}">Asztalfoglalás</a> · <a href="{home}#hol-vagyunk">Hol vagyunk?</a></p>
       <p>{ADDR}<br><a href="{PHONE_HREF}">{PHONE}</a> · <a href="mailto:{EMAIL}">{EMAIL}</a></p>
     </div>
+    {STORY.palette_picker('palette--sheet') if STORY.is_v2(_me()) else ''}
   </div>
 </div>
 '''
@@ -309,14 +315,15 @@ def footer(prefix, page_js="", float_cta=True):
     <div class="ftr__bottom">
       <span>© 2026 Mókusch kávézó és tortaműhely · <a href="{p(prefix, 'arculat/')}">Arculat és logó</a></span>
       <span>Látványterv (DAEKON) · mintatartalmakkal, az adatok egyeztetendők · <button class="motion-toggle" type="button" data-motion-toggle>Animációk</button></span>
+      {STORY.palette_picker() if STORY.is_v2(_me()) else ''}
     </div>
   </div>
 </footer>
 {fl}
 <script src="{prefix}js/vendor/motion-11.18.2.min.js" defer></script>
-<script src="{prefix}js/site.js?v=7" defer></script>
-<script src="{prefix}js/motion-fx.js?v=4" defer></script>
-{page_js}</body>
+<script src="{prefix}js/site.js?v=8" defer></script>
+<script src="{prefix}js/motion-fx.js?v=5" defer></script>
+{STORY.foot_extra(prefix) if STORY.is_v2(_me()) else ''}{page_js}</body>
 </html>
 '''
 
@@ -1028,7 +1035,7 @@ def build_arculat():
 if __name__ == "__main__":
     OUT.mkdir(parents=True, exist_ok=True)
     (OUT / "img").mkdir(exist_ok=True)
-    index()
+    STORY.index(_me())   # mesekönyves főoldal (a régi index() a B-változat generátorának kell)
     build_subs()
     build_arculat()
     print("kész:", OUT)

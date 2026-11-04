@@ -1,0 +1,214 @@
+/* Mókusch V2 – akvarell-mesekönyv réteg (DAEKON)
+   A site.css után töltődik. Vízfestékes képszélek (mask-image), festékfoltok, papírtextúra,
+   görgetéses út az erdőből a kávézóba, szentjánosbogarak (canvas – storybook.js).
+   A SZÍNVILÁG egyetlen helyen állítható: lent a --c-* változók (három bemutató-színvilággal). */
+
+/* ===================== SZÍNVILÁG – csak itt kell módosítani ===================== */
+:root{
+  --c-moss:#4E5A39; --c-moss-2:#33402A;
+  --c-sage:#A3AE8C; --c-sage-2:#C3CBB0;
+  --c-cream:#F4ECDC; --c-cream-2:#ECE1CC; --c-paper:#FBF7EE;
+  --c-gold:#C29B52; --c-gold-soft:#E6CF9E;
+  --c-brown:#6B4A33; --c-brown-2:#4C3626;
+  --c-powder:#D9BBAC; --c-powder-2:#E6CEC2; --c-powder-soft:#F1E2DA;
+  --c-accent:#7E3F4B; --c-accent-2:#63303A;
+  --c-ink:#2E241C; --c-mute:#6B5A47;
+  --c-glow:255,226,150;            /* szentjánosbogarak fénye (r,g,b) */
+  --c-glow-warm:255,204,140;       /* tündérfények a tortánál */
+}
+:root[data-palette="puder"]{
+  --c-moss:#6B6E4E; --c-moss-2:#4A4C35; --c-sage:#B9BFA2; --c-sage-2:#D3D7C2;
+  --c-cream:#F7EEE8; --c-cream-2:#F0E1D8; --c-paper:#FCF8F5;
+  --c-gold:#C9A37A; --c-gold-soft:#EBD5BC; --c-brown:#7A5545; --c-brown-2:#5A3E33;
+  --c-powder:#D8AFA3; --c-powder-2:#E8C9BF; --c-powder-soft:#F4E4DE;
+  --c-accent:#8E4757; --c-accent-2:#6E3443; --c-ink:#33262A; --c-mute:#6F5A55;
+  --c-glow:255,228,214;
+}
+:root[data-palette="arany"]{
+  --c-moss:#475436; --c-moss-2:#2F3A24; --c-sage:#A9AE80; --c-sage-2:#C8CBA6;
+  --c-cream:#F6EBD3; --c-cream-2:#EEDDBC; --c-paper:#FCF5E6;
+  --c-gold:#B88A36; --c-gold-soft:#E8C98A; --c-brown:#5E4026; --c-brown-2:#43301E;
+  --c-powder:#D6B48E; --c-powder-2:#E6CDAD; --c-powder-soft:#F2E3CC;
+  --c-accent:#7A3B2E; --c-accent-2:#5E2C22; --c-ink:#2C2116; --c-mute:#6A5636;
+  --c-glow:255,214,120;
+}
+/* az alap (site.css) változóinak hozzárendelése a palettához */
+:root{
+  --paper:var(--c-cream); --paper-2:var(--c-cream-2); --cream:var(--c-paper);
+  --rose:var(--c-powder); --rose-2:var(--c-powder-2); --rose-soft:var(--c-powder-soft);
+  --olive:var(--c-moss); --olive-2:var(--c-sage); --olive-3:var(--c-moss-2); --forest:var(--c-moss-2);
+  --berry:var(--c-accent); --berry-2:var(--c-accent-2); --brown:var(--c-brown);
+  --brass:var(--c-gold); --bark:var(--c-brown-2); --ink:var(--c-ink); --mute:var(--c-mute);
+  --wc-page:url(../img/wc/page.png);
+  --wc-wide:url(../img/wc/page-wide.png);
+  --wc-tall:url(../img/wc/scene-tall.png);
+  --paper-tex:url(../img/wc/paper.png);
+}
+
+/* ===================== papír, fejléc, lábléc ===================== */
+body{background-color:var(--paper);background-image:var(--paper-tex);background-size:384px 384px}
+.hdr{background:var(--rose-2)}
+.hdr .cloud{display:none}
+.hdr::after{content:"";position:absolute;left:0;right:0;bottom:-21px;height:22px;pointer-events:none;background:var(--rose-2);
+  -webkit-mask:url(../img/wc/edge.png) 0 0/100% 100% no-repeat;mask:url(../img/wc/edge.png) 0 0/100% 100% no-repeat;transform:scaleY(-1)}
+.topbar{background:var(--c-moss-2)}
+.ftr{background:var(--rose);margin-top:70px}
+.ftr .cloud{display:none}
+.ftr::before{content:"";position:absolute;left:0;right:0;top:-48px;height:50px;pointer-events:none;background:var(--rose);
+  -webkit-mask:url(../img/wc/edge.png) 0 0/100% 100% no-repeat;mask:url(../img/wc/edge.png) 0 0/100% 100% no-repeat}
+.ftr h3{color:var(--c-brown)}
+
+/* színvilág-választó (bemutató) */
+.palette{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem .5rem;font-size:.8rem;width:100%}
+.palette__lbl{font-weight:700;color:var(--bark)}
+.palette button{display:inline-flex;align-items:center;gap:.35rem;min-height:36px;padding:.25rem .7rem .25rem .45rem;border-radius:999px;border:1px solid rgba(46,36,28,.25);background:transparent;cursor:pointer;font:inherit;font-weight:600;color:var(--ink)}
+.palette button i{width:14px;height:14px;border-radius:50%;display:block;box-shadow:0 0 0 1px rgba(0,0,0,.08)}
+.palette button i + i{margin-left:-7px}
+.palette button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.palette--sheet{margin-top:.2rem}
+
+/* ===================== akvarell képlap + festékfolt (közös) ===================== */
+.wash{position:absolute;pointer-events:none;background:var(--c-sage);opacity:.62;
+  -webkit-mask:url(../img/wc/wash-1.png) center/100% 100% no-repeat;mask:url(../img/wc/wash-1.png) center/100% 100% no-repeat}
+.wash--1{background:var(--c-sage)}
+.wash--2{background:var(--c-powder);-webkit-mask-image:url(../img/wc/wash-2.png);mask-image:url(../img/wc/wash-2.png)}
+.wash--3{background:var(--c-gold-soft);-webkit-mask-image:url(../img/wc/wash-3.png);mask-image:url(../img/wc/wash-3.png);opacity:.85}
+.wash--4{background:var(--c-moss);opacity:.42;-webkit-mask-image:url(../img/wc/wash-2.png);mask-image:url(../img/wc/wash-2.png)}
+
+/* ===================== 1. GÖRGETÉSES ÚT (journey) ===================== */
+.journey{position:relative;height:430vh;height:430svh;background:transparent}
+@media (max-width:899px){.journey{height:380vh;height:380svh}}
+.journey__sticky{position:-webkit-sticky;position:sticky;top:var(--hdr);height:calc(100vh - var(--hdr));height:calc(100svh - var(--hdr));overflow:hidden;contain:paint}
+.journey__atmo{position:absolute;inset:-8%;pointer-events:none}
+.atmo{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0}
+.atmo[data-atmo="0"]{opacity:.55}
+.journey__veil{position:absolute;inset:0;pointer-events:none;background:var(--paper);opacity:.5;
+  -webkit-mask:linear-gradient(90deg,#000 0 34%,rgba(0,0,0,.35) 60%,transparent 85%);mask:linear-gradient(90deg,#000 0 34%,rgba(0,0,0,.35) 60%,transparent 85%)}
+.journey__veil::after{content:"";position:absolute;inset:auto 0 0 0;height:22%;background:linear-gradient(transparent,var(--paper))}
+.journey__frame{position:absolute;top:50%;right:max(var(--gutter),calc((100vw - var(--wrap))/2 + var(--gutter)));height:min(88%,900px);aspect-ratio:2/3;transform:translateY(-50%);pointer-events:none}
+.jscene{position:absolute;inset:0;margin:0;opacity:0;transform-origin:42% 62%;will-change:transform,opacity;background:transparent;
+  -webkit-mask:var(--wc-page) center/100% 100% no-repeat;mask:var(--wc-page) center/100% 100% no-repeat}
+.jscene[data-jscene="0"]{opacity:1}
+.jscene[data-jscene="1"]{transform-origin:50% 55%}
+.jscene[data-jscene="2"]{transform-origin:55% 72%}
+.jscene img{width:100%;height:100%;object-fit:cover;display:block}
+.jscene::after{content:"";position:absolute;inset:0;background:var(--paper-tex);background-size:384px 384px;opacity:.9}
+.journey__light{position:absolute;inset:0;pointer-events:none;opacity:.35;
+  background:radial-gradient(48% 42% at 72% 28%,rgba(255,236,186,.55),rgba(255,236,186,0) 70%),radial-gradient(70% 60% at 30% 90%,rgba(255,214,150,.18),transparent 70%)}
+.anim-full .journey__light::after{content:"";position:absolute;inset:8% 10% 30% 40%;background:radial-gradient(closest-side,rgba(255,240,200,.38),transparent);animation:breathe 9s ease-in-out infinite alternate}
+@keyframes breathe{from{opacity:.25;transform:translate(-2%,1%)}to{opacity:1;transform:translate(2%,-1%)}}
+.fireflies{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3}
+.journey__text{position:absolute;inset:0;z-index:4;pointer-events:none}
+.beat{position:absolute;left:max(var(--gutter),calc((100vw - var(--wrap))/2 + var(--gutter)));top:50%;transform:translateY(calc(-50% + var(--by,0px)));width:min(500px,42vw);opacity:0;visibility:hidden;pointer-events:auto}
+.beat.is-on{opacity:1;visibility:visible}
+.beat--2,.beat--3,.beat--4{top:auto;bottom:12%;transform:translateY(var(--by,0px));width:min(430px,40vw)}
+.beat__card{position:relative;isolation:isolate;padding:clamp(1.5rem,3vw,2.4rem)}
+.beat__card::before{content:"";position:absolute;inset:-14px;z-index:-1;background:var(--cream);opacity:.93;
+  -webkit-mask:var(--wc-wide) center/100% 100% no-repeat;mask:var(--wc-wide) center/100% 100% no-repeat}
+.beat__card--sm{padding:clamp(1.2rem,2.5vw,1.8rem) clamp(1.3rem,2.6vw,2rem)}
+.beat__kicker{display:flex;align-items:baseline;gap:.5rem;margin:0 0 .7rem;font-size:.78rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--c-moss)}
+.beat__kicker .no{display:inline;font-size:1.25rem;letter-spacing:0;margin:0}
+.journey h1{font-size:clamp(2rem,1.5rem + 2vw,3.05rem);line-height:1.12;margin:0 0 .9rem;color:var(--ink)}
+.journey h1 .ln{display:block}
+.beat__lead{font-size:var(--fs-lead);line-height:1.6;color:var(--bark);margin:0}
+.beat__line{font-family:var(--display);font-size:clamp(1.25rem,1.1rem + .6vw,1.6rem);line-height:1.35;color:var(--ink);margin:0}
+.beat__line em{color:var(--berry)}
+.beat .btns{margin-top:1.3rem}
+.beat__more{margin:1rem 0 0}
+.journey__hint{position:absolute;left:50%;bottom:18px;z-index:4;margin:0;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.4rem;font-size:.78rem;font-weight:700;letter-spacing:.06em;color:var(--bark);pointer-events:none}
+.journey__hint i{display:block;width:1px;height:34px;background:linear-gradient(var(--bark),transparent)}
+.anim-full .journey__hint i{animation:hint 2.4s ease-in-out infinite}
+@keyframes hint{0%{transform:scaleY(.3);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}100%{transform:scaleY(.3);transform-origin:bottom}}
+
+@media (max-width:899px){
+  .journey__frame{inset:0;top:0;right:0;height:auto;aspect-ratio:auto;transform:none}
+  .jscene{-webkit-mask-image:var(--wc-tall);mask-image:var(--wc-tall)}
+  .jscene img{object-position:50% 28%}
+  .journey__veil{-webkit-mask:linear-gradient(0deg,#000 0 26%,transparent 60%);mask:linear-gradient(0deg,#000 0 26%,transparent 60%);opacity:.65}
+  .journey__veil::after{display:none}
+  .beat,.beat--2,.beat--3,.beat--4{left:12px;right:12px;width:auto;top:auto;bottom:14px;transform:translateY(var(--by,0px))}
+  .beat__card{padding:1.25rem 1.2rem 1.3rem}
+  .beat__card::before{inset:-26px -20px -20px;opacity:.95}
+  .journey h1{font-size:clamp(1.75rem,1.4rem + 2.2vw,2.3rem);margin-bottom:.6rem}
+  .beat__lead{font-size:.98rem}
+  .beat .btns{margin-top:1rem;gap:.5rem}
+  .beat .btn{min-height:46px;padding:.65em 1.15em;font-size:.9rem}
+  .beat__more{margin-top:.7rem}
+  .journey__hint{display:none}
+}
+@media (max-width:899px) and (max-height:700px){
+  .beat__lead{display:none}
+}
+@media (orientation:landscape) and (max-height:520px){
+  .journey{height:300vh;height:300svh}
+  .journey__frame{left:auto;right:12px;top:8px;bottom:8px;width:auto;aspect-ratio:2/3}
+  .jscene{-webkit-mask-image:var(--wc-page);mask-image:var(--wc-page)}
+  .beat,.beat--2,.beat--3,.beat--4{left:12px;right:auto;top:auto;width:min(58vw,520px);bottom:10px;transform:translateY(var(--by,0px))}
+  .beat__lead,.beat__more{display:none}
+  .journey h1{font-size:1.55rem}
+}
+
+/* animáció nélkül (kikapcsolt animáció / JS nélkül): állókép – csak az első jelenet, rövid szakasz */
+html:not(.anim) .journey{height:auto}
+html:not(.anim) .journey__sticky{position:relative;top:0;height:min(88vh,860px);min-height:560px}
+html:not(.anim) .beat--2,html:not(.anim) .beat--3,html:not(.anim) .beat--4,html:not(.anim) .journey__hint{display:none}
+
+/* ===================== 2–9. FEJEZETEK: festett lapok ===================== */
+.leaf{position:relative;padding-block:clamp(4.5rem,9vw,8rem);overflow:hidden;overflow:clip}
+.leaf + .leaf{padding-top:clamp(1.5rem,4vw,3rem)}
+.leaf__grid{display:grid;grid-template-columns:minmax(0,1fr);gap:clamp(2.2rem,5vw,5.5rem);align-items:center}
+.leaf__grid > *{min-width:0}
+@media (min-width:900px){
+  .leaf__grid{grid-template-columns:minmax(0,6fr) minmax(0,5fr)}
+  .leaf--flip .wc{order:2}
+  .leaf--flip .leaf__text{order:1}
+}
+.wc{position:relative;margin:0;width:100%;max-width:540px;justify-self:center;isolation:isolate}
+.wc .wash{z-index:-1;width:122%;height:116%;left:-16%;top:-6%}
+.leaf--flip .wc .wash{left:auto;right:-16%}
+.wc__page{position:relative;aspect-ratio:4/5;overflow:hidden;
+  -webkit-mask:var(--wc-page) center/100% 100% no-repeat;mask:var(--wc-page) center/100% 100% no-repeat}
+.wc__page img{width:100%;height:100%;object-fit:cover;display:block;transform-origin:50% 58%;will-change:transform}
+.wc__page::after{content:"";position:absolute;inset:0;pointer-events:none;background:var(--paper-tex);background-size:384px 384px}
+.wc__page .fireflies{z-index:2}
+.wc__cap{margin-top:.6rem;text-align:center;font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+.leaf__text h2{margin:0 0 .4rem}
+.leaf .lead{color:var(--bark)}
+.leaf .trio{max-width:330px}
+.leaf .oval{box-shadow:0 0 0 1px rgba(46,36,28,.12),0 0 0 5px var(--paper),0 0 0 6px var(--c-gold)}
+.leaf .oval .slot{--slot:var(--c-cream-2);--slot2:var(--c-sage-2);color:var(--bark)}
+.leaf .trio figcaption{color:var(--mute)}
+.leaf .trio figcaption b{color:var(--ink)}
+.leaf .visit{border-color:rgba(46,36,28,.14)}
+.steps-book{list-style:none;margin:1.2rem 0 0;padding:0;display:grid;gap:.55rem;font-weight:600;color:var(--ink)}
+.steps-book li{display:flex;align-items:center;gap:.7rem}
+.steps-book b{display:inline-grid;place-items:center;width:30px;height:30px;flex:none;border-radius:50%;background:var(--rose-soft);color:var(--berry);font-size:.85rem}
+.leaf--finale{padding-bottom:clamp(5rem,10vw,9rem)}
+.leaf--finale .wc{max-width:600px}
+
+/* torta-sáv: festékfoltos kártya (nem kemény színes sáv) */
+.tortaband{padding-block:clamp(1rem,3vw,2rem);overflow:hidden;overflow:clip}
+.tortaband__card{position:relative;isolation:isolate;display:grid;grid-template-columns:minmax(0,1fr);gap:1rem 1.8rem;align-items:center;max-width:920px;margin-inline:auto;padding:clamp(2rem,5vw,3.2rem) clamp(1.5rem,5vw,3.5rem)}
+@media (min-width:760px){.tortaband__card{grid-template-columns:auto minmax(0,1fr) auto}}
+.tortaband__card .wash{z-index:-1;inset:0;width:100%;height:100%;left:0;top:0;opacity:.75}
+.tortaband__mark{width:58px;height:58px;color:var(--ink)}
+.tortaband h2{font-size:clamp(1.5rem,1.3rem + .8vw,2rem);margin:0}
+.tortaband p{margin:.25rem 0 0;color:var(--bark)}
+
+/* ===================== aloldalak: ugyanaz a mesekönyv ===================== */
+.sub-hero,.sub-hero.on-dark{background:transparent;color:var(--ink)}
+.sub-hero .cloud{display:none}
+.sub-hero h1{color:var(--ink)}
+.sub-hero h1 em{color:var(--berry)}
+.sub-hero .lead{color:var(--bark)}
+.sub-hero .crumb{color:var(--bark)}
+.sub-hero .crumb:hover{color:var(--berry)}
+.sub-hero .no{color:var(--berry)}
+.sub-hero .spread__media{background:transparent}
+.sub-hero .spread__media > .pic{inset:3% 2%;background:transparent;-webkit-mask:var(--wc-page) center/100% 100% no-repeat;mask:var(--wc-page) center/100% 100% no-repeat}
+.sub-hero .pic__tag{left:12%;bottom:9%}
+.sub-hero--plain{padding-top:.5rem}
+.card,.panel,.recipe-card{background-color:var(--cream)}
+
+/* csökkentett mozgás: a lebegő/ringó díszmozgás áll, a tartalom látszik */
+@media (prefers-reduced-motion:reduce){.journey__light::after,.journey__hint i{animation:none!important}}

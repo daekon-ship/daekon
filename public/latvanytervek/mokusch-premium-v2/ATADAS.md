@@ -3,6 +3,43 @@
 Élő előnézet: https://daekon-ship.github.io/daekon/latvanytervek/mokusch-premium-v2/
 Előző változat (érintetlen, összehasonlításhoz): https://daekon-ship.github.io/mokusch/
 
+## Mesekönyves továbbfejlesztés (2026. november 4.) – Vanda visszajelzése alapján
+
+Kérés: régi mesekönyvbe illő vízfestékes hangulat, elmosódott képszélek, lefelé görgetve egyre közelebb/beljebb jutunk a kávézóba (enyhe zoom), az első erdős képeknél szentjánosbogarak / tündérfények; a színvilág még nyitott.
+
+**Új / módosított fájlok**
+- `css/storybook.css` (új) – központi színváltozók (3 bemutató-színvilág), akvarell képszélek, festékfoltok, papírtextúra, görgetéses út, festett lapok, aloldalak egységesítése.
+- `js/storybook.js` (új) – görgetéses út, szentjánosbogarak (canvas), lapok közeledése, színvilág-választó.
+- `img/wc/*.png` (új) – akvarell-maszkok (`page`, `page-wide`, `scene-tall`, `scene-wide`), festékfoltok (`wash-1..3`), festett szél (`edge`), papír (`paper`). Generátor: `prototypes/mokusch-premium-v2/watercolor.py`. Ezek átlátszósági maszkok – a színt a CSS-változó adja.
+- `index.html` – új mesekönyves főoldal (generátor: `prototypes/mokusch-premium-v2/story.py`).
+- `js/site.js` (lebegő tortagomb az új szakaszokhoz), `js/motion-fx.js` (kurzor a festett lapokon), minden aloldal (új stíluslap + szkript betöltése, színvilág-választó).
+- A V3 (B-változat) nem változott; a generátor (`build.py`) a mesekönyv-réteget csak a V2 kimenetére teszi rá.
+
+**Jelenetek (főoldal)**
+1. *Varázserdő* – az ösvényes erdőkép festett, elmosódó szélű lapként; főcím, gombok; szentjánosbogarak.
+2. *Az erdei ösvény* – görgetésre a kép lassan közelít (az ösvény felé), a fény melegszik.
+3. *A kávézó megközelítése* – a kép áttűnik a lámpásos udvarba, tovább közelítünk.
+4. *Belépés a Mókuschba* – áttűnés a bolt belsejébe; „Nézz körül” + Tortarendelés.
+5–12. A Wix-oldal 2–9. témakörei festett lapokon (kép-hozzárendelés: 2 pult, 3 polc, 4 vitrin, 5 konyha, 6 nyuszis polc, 7 olvasósarok, 8 üzenőfal, 9 képfal + tündérfények), köztük festékfoltos torta-kártya.
+
+**Működés**
+- Görgetéses út: egy magas szakaszon belül ragadós (sticky) képkivágás; a natív görgetés előrehaladását a Motion `scroll()` követi, ebből számol áttetszőséget és nagyítást. Nincs scroll-jacking, visszafelé ugyanúgy működik, újratöltéskor a pillanatnyi állásból indul; a teljesen áttetsző rétegek nem rajzolódnak.
+- Szentjánosbogarak: canvas; 14–46 fény (mobilon legfeljebb 20), eltérő méret, két-szinuszos szabálytalan lebegés, lassú vándorlás felfelé, pislákolás, 4–14 mp után 1–6 mp-re eltűnnek. A szöveges kártyák alatt maradnak, nem kattinthatók. Csak látható, aktív fülön fut (különben leáll); a kávézóba érve elhalványulnak. Csökkentett mozgásnál álló fények.
+- Festett lapok: görgetésre a kép a festett kereten belül lassan közelít (1,02 → 1,17), a festékfolt ellentétesen mozdul.
+- Mobil: teljes képernyős jelenet fent-lent elmosódó széllel, a szöveg alul festett kártyán; kisebb zoom, kevesebb fény; alacsony és fekvő képernyőre külön elrendezés.
+- Színvilág: `storybook.css` tetején a `--c-*` változók; a menüben és a láblécben „Színvilág: Erdei / Púderes / Aranyló” bemutató-választó (a választás a böngészőben megmarad).
+
+**Tesztek (Playwright/Chromium, a Wix-képeket a tesztkörnyezet nem éri el – helyettük helyi rajzokkal)**
+- 360, 390, 430, 768, 1024, 1440, 1920 px: nincs vízszintes kilógás, konzolhiba, megszakadt kérés; minden aloldal rendben; tortarendelő végig működik.
+- Előre/visszagörgetés azonos állapot; gyors ugráló görgetés; újratöltés az oldal közepén; elforgatás (álló → fekvő); a gombok nincsenek eltakarva; csökkentett mozgás.
+- Képkocka-idő (GPU nélküli tesztböngésző, alapérték ~17 ms): asztali 30 ms, mobil 4× lassított processzorral 24 ms átlag.
+- Nem tesztelt valódi eszközön: Samsung Internet, Safari/iPhone, külső (Facebook/Messenger) böngésző.
+
+**Jóváhagyásra vár**
+- Végleges színvilág (3 bemutató-változat).
+- A képek a Wix-oldal saját festett képei (eredetük egyeztetendő) – új illusztráció nem készült; a mesés út képei: ösvény → udvar → bolt.
+- A jelenetek szövegei (rövid mondatok) javaslatok.
+
 ## Olvashatóság (2026. október 27., délután)
 
 Minden apró dőlt szöveg (alcímek, nyitóidézet, lépések, szalag-szövegek, menüszámok, fotóhely-feliratok) Manrope-ra váltott, nagyobb mérettel; sötét háttéren a szöveg teljes krém színű (jobb kontraszt). Playfair dőlt csak a nagy címek kiemelésében maradt.

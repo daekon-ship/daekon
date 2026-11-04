@@ -166,8 +166,8 @@
   var fl = $('[data-float]');
   if (fl && 'IntersectionObserver' in window) {
     document.body.classList.add('has-float');
-    var heroEl = $('.hero') || $('.sub-hero');
-    var blockers = $$('.finale, .ftr, .cake-cta, .ribbon, .wiz');
+    var heroEl = $('.journey') || $('.hero') || $('.sub-hero');
+    var blockers = $$('.finale, .ftr, .cake-cta, .ribbon, .wiz, .tortaband, .leaf--finale');
     var seen = new Set(), pastHero = false;
     // csak felfelé görgetéskor jelenik meg, így olvasás közben nem takar ki szöveget
     var up = false, ly = window.scrollY;

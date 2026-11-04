@@ -27,6 +27,8 @@
   if(m!=='off'){d.classList.add('anim',(red&&m!=='full')?'anim-soft':'anim-full');
   setTimeout(function(){if(!window.Motion){d.classList.remove('anim')}},2500);}})();
 </script>
+<link rel="stylesheet" href="../css/storybook.css?v=1">
+<script>(function(){try{var p=localStorage.getItem("mokusch-palette");if(p&&/^(erdei|puder|arany)$/.test(p))document.documentElement.setAttribute("data-palette",p)}catch(e){}})();</script>
 </head>
 <body>
 <a class="skip" href="#tartalom">Ugrás a tartalomra</a>
@@ -53,6 +55,7 @@
       <p><a href="../eskuvo/">Esküvői torták</a> · <a href="../asztalfoglalas/">Asztalfoglalás</a> · <a href="../#hol-vagyunk">Hol vagyunk?</a></p>
       <p>1012 Budapest, Várfok utca 30.<br><a href="tel:+36306184373">+36 30 618 4373</a> · <a href="mailto:mokuschinfo@gmail.com">mokuschinfo@gmail.com</a></p>
     </div>
+    <div class="palette palette--sheet" role="group" aria-label="Színvilág kipróbálása (bemutató)"><span class="palette__lbl">Színvilág:</span><button type="button" data-palette-set="erdei" aria-pressed="false" title="Erdei színvilág"><i style="background:#4E5A39"></i><i style="background:#D9BBAC"></i><span>Erdei</span></button><button type="button" data-palette-set="puder" aria-pressed="false" title="Púderes színvilág"><i style="background:#6B6E4E"></i><i style="background:#D8AFA3"></i><span>Púderes</span></button><button type="button" data-palette-set="arany" aria-pressed="false" title="Aranyló színvilág"><i style="background:#475436"></i><i style="background:#C9A45C"></i><span>Aranyló</span></button></div>
   </div>
 </div>
 <main id="tartalom">
@@ -106,12 +109,14 @@
     <div class="ftr__bottom">
       <span>© 2026 Mókusch kávézó és tortaműhely · <a href="../arculat/">Arculat és logó</a></span>
       <span>Látványterv (DAEKON) · mintatartalmakkal, az adatok egyeztetendők · <button class="motion-toggle" type="button" data-motion-toggle>Animációk</button></span>
+      <div class="palette " role="group" aria-label="Színvilág kipróbálása (bemutató)"><span class="palette__lbl">Színvilág:</span><button type="button" data-palette-set="erdei" aria-pressed="false" title="Erdei színvilág"><i style="background:#4E5A39"></i><i style="background:#D9BBAC"></i><span>Erdei</span></button><button type="button" data-palette-set="puder" aria-pressed="false" title="Púderes színvilág"><i style="background:#6B6E4E"></i><i style="background:#D8AFA3"></i><span>Púderes</span></button><button type="button" data-palette-set="arany" aria-pressed="false" title="Aranyló színvilág"><i style="background:#475436"></i><i style="background:#C9A45C"></i><span>Aranyló</span></button></div>
     </div>
   </div>
 </footer>
 <a class="btn btn--berry float-cta" href="../tortarendeles/" data-float><svg class="cake" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16M5 20v-6.5h14V20M7 13.5V10h10v3.5M12 10V7.5"/><path d="M12 4.2c.8.9.8 2 0 2.6-.8-.6-.8-1.7 0-2.6Z"/><path d="M5 16.4c1.2 1 2.3 1 3.5 0s2.3-1 3.5 0 2.3 1 3.5 0 2.3-1 3.5 0"/></svg> Tortarendelés</a>
 <script src="../js/vendor/motion-11.18.2.min.js" defer></script>
-<script src="../js/site.js?v=7" defer></script>
-<script src="../js/motion-fx.js?v=4" defer></script>
+<script src="../js/site.js?v=8" defer></script>
+<script src="../js/motion-fx.js?v=5" defer></script>
+<script src="../js/storybook.js?v=1" defer></script>
 </body>
 </html>
