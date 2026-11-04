@@ -1,0 +1,21 @@
+name: Mókusch képek 4K
+on:
+  push:
+    branches: [kepek-4k]
+    paths: [tools/upscale.py, .github/workflows/upscale.yml]
+permissions:
+  contents: write
+jobs:
+  up:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - run: pip install torch --index-url https://download.pytorch.org/whl/cpu && pip install spandrel pillow numpy
+      - run: curl -sSL -o RealESRGAN_x4plus.pth https://github.com/xinntao/Real-ESRGAN/releases/download/v0.1.0/RealESRGAN_x4plus.pth
+      - run: python tools/upscale.py
+      - run: |
+          git config user.name "daekon-bot"; git config user.email "actions@users.noreply.github.com"
+          git add out4k orig && git commit -m "Mókusch: 4K felskálázott képek (Real-ESRGAN x4plus, Vanda eredeti Wix-képeiből)" && git push
