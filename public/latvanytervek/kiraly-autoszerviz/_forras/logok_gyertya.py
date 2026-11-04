@@ -21,13 +21,13 @@ def hatszog_kulcs(pn, gold, cream):
     cx = cy = 100
     hx = lambda R: [(cx + R * math.cos(math.radians(a)), cy + R * math.sin(math.radians(a))) for a in range(-90, 270, 60)]
     g = f'<path d="{P(hx(98))}" fill="{pn}"/>' + f'<path d="{P(hx(91))}" fill="none" stroke="{gold}" stroke-width="2.4" stroke-linejoin="round"/>'
-    g += villaskulcs(cx, 86, 82, -40, gold, 9) + villaskulcs(cx, 86, 82, 40, gold, 9)
-    g += f'<rect x="{cx - 13}" y="44" width="26" height="80" fill="{pn}"/>'
-    g += gyertya_tiszta(cx, 46, 72, cream, gold, "#8C9AAC")
-    g += f'<rect x="52" y="128" width="96" height="1" fill="{gold}"/>'
-    p1, _ = txt("KIRÁLY", "archivo", 19, 700, 112, .08, cx, 150, cream)
-    p2, _ = txt("AUTÓSZERVIZ", "manrope", 6.6, 800, None, .42, cx, 162, "#B9C2CE")
-    p3, _ = txt("DUNAÚJVÁROS", "manrope", 5.4, 700, None, .4, cx, 172, gold)
+    g += villaskulcs(cx, 76, 74, -40, gold, 8.5) + villaskulcs(cx, 76, 74, 40, gold, 8.5)
+    g += f'<rect x="{cx - 12}" y="38" width="24" height="72" fill="{pn}"/>'
+    g += gyertya_tiszta(cx, 40, 64, cream, gold, "#8C9AAC")
+    g += f'<rect x="56" y="116" width="88" height="1" fill="{gold}"/>'
+    p1, _ = txt("KIRÁLY", "archivo", 18, 700, 112, .08, cx, 137, cream)
+    p2, _ = txt("AUTÓSZERVIZ", "manrope", 6.4, 800, None, .42, cx, 148, "#B9C2CE")
+    p3, _ = txt("DUNAÚJVÁROS", "manrope", 5.2, 700, None, .4, cx, 157, gold)
     return g + p1 + p2 + p3, (cx - 98 * math.cos(math.radians(30)), 2, cx + 98 * math.cos(math.radians(30)), 198)
 
 
