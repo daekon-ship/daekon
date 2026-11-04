@@ -134,3 +134,7 @@ Fájlok: `fo` (háttérrel), `vilagos`/`sotet` (átlátszó), `sotet-hatterrel`,
 
 ## 2026-11-04 – szemléltető képek ki
 - Kérésre kikerült: Rólunk fotóhely, futómű „Szemléltetés” (előtte/utána), porlasztó rajz. A dízel, futómű és rólunk szekció kétoszlopos: bal oldalt cím (asztalon rögzül görgetéskor), jobb oldalt tartalom.
+
+## 2026-11-04 – további prémium csiszolás
+- Hero: a futóműmérés-rajz helyett a végleges embléma, veretes plakettként (halvány arany fény, kettős gyűrű, egyszeri fényvillanás betöltéskor, finom parallax).
+- Fém hatású arany gombok; kiemelt kártyákon arany sarokvonal hoverre; a dízel kártyán a porlasztórajz helyett halvány jel-vízjel.

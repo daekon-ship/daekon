@@ -85,54 +85,10 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('ani
       </div>
     </div>
 
-    <div class="meroszoba">
-      <figure class="merolap" aria-label="Szemléltető rajz: 3D futóműállítás, kamerás mérőhíd és a kerekekre szerelt mérőtáblák">
-        <div class="fejsor" aria-hidden="true"><span>3D futóműmérés</span><span>Szemléltető rajz</span></div>
-        <svg viewBox="0 0 500 600" aria-hidden="true" font-family="Manrope, sans-serif">
-          <g stroke="rgba(245,241,232,.18)" fill="none">
-            <!-- kamerás mérőhíd -->
-            <rect x="40" y="64" width="420" height="10"/>
-            <rect class="kam" x="30" y="54" width="34" height="30" fill="#161618"/>
-            <rect class="kam" x="436" y="54" width="34" height="30" fill="#161618"/>
-            <path d="M250 74v24"/>
-          </g>
-          <g stroke="var(--accent)" stroke-width="1" stroke-dasharray="3 5" opacity=".7" class="latas">
-            <path d="M47 84 92 206"/><path d="M453 84 408 206"/>
-            <path d="M47 84 92 428"/><path d="M453 84 408 428"/>
-          </g>
-          <path d="M250 128v440" stroke="rgba(245,241,232,.25)" stroke-dasharray="2 6"/>
-          <!-- karosszéria -->
-          <rect x="160" y="128" width="180" height="400" rx="64" fill="none" stroke="rgba(245,241,232,.22)"/>
-          <path d="M178 236q72-26 144 0M178 432q72 22 144 0" fill="none" stroke="rgba(245,241,232,.14)"/>
-          <path d="M138 206h224M138 428h224" stroke="rgba(245,241,232,.28)"/>
-          <!-- első kerekek (forgathatók) -->
-          <g class="kerek kerek-b" style="transform-box:fill-box;transform-origin:center" transform="rotate(-4 115 206)">
-            <rect x="98" y="164" width="34" height="84" rx="7" fill="#0B0B0C" stroke="rgba(245,241,232,.6)"/>
-            <path d="M115 164V110" stroke="var(--accent)" stroke-width="1.6"/>
-            <rect x="74" y="190" width="22" height="32" fill="none" stroke="rgba(245,241,232,.55)"/><path d="M85 194v24M78 206h14" stroke="rgba(245,241,232,.4)"/>
-          </g>
-          <g class="kerek kerek-j" style="transform-box:fill-box;transform-origin:center" transform="rotate(3 385 206)">
-            <rect x="368" y="164" width="34" height="84" rx="7" fill="#0B0B0C" stroke="rgba(245,241,232,.6)"/>
-            <path d="M385 164V110" stroke="var(--accent)" stroke-width="1.6"/>
-            <rect x="404" y="190" width="22" height="32" fill="none" stroke="rgba(245,241,232,.55)"/><path d="M415 194v24M408 206h14" stroke="rgba(245,241,232,.4)"/>
-          </g>
-          <!-- hátsó kerekek -->
-          <g stroke="rgba(245,241,232,.45)" fill="#0B0B0C">
-            <rect x="98" y="386" width="34" height="84" rx="7"/><rect x="368" y="386" width="34" height="84" rx="7"/>
-          </g>
-          <g fill="none" stroke="rgba(245,241,232,.4)"><rect x="74" y="412" width="22" height="32"/><rect x="404" y="412" width="22" height="32"/></g>
-          <!-- értékek -->
-          <g font-size="11" font-weight="700" letter-spacing="1.4" fill="#7D776C">
-            <text x="40" y="282">BAL ELSŐ</text><text x="460" y="282" text-anchor="end">JOBB ELSŐ</text>
-          </g>
-          <g font-size="19" font-weight="700" font-family="Archivo, sans-serif">
-            <text class="ertek-b" x="40" y="306" fill="#D8BE84">−0°42′</text>
-            <text class="ertek-j" x="460" y="306" text-anchor="end" fill="#D8BE84">+0°31′</text>
-          </g>
-          <g font-size="11" fill="#B5AE9F" font-weight="600"><text x="40" y="324">összetartás</text><text x="460" y="324" text-anchor="end">összetartás</text></g>
-          <text class="statusz" x="250" y="118" text-anchor="middle" font-size="11.5" font-weight="700" letter-spacing="1.6" fill="#7D776C">MÉRÉS ÉS BEÁLLÍTÁS</text>
-        </svg>
-      </figure>
+    <div class="hero-jel">
+      <span class="hj-gyuru" aria-hidden="true"></span>
+      <img src="arculat-kombi/WEB/emblema.svg" alt="KIRÁLY Autószerviz – Dunaújváros, 2008" width="440" height="440">
+      <span class="hj-feny" aria-hidden="true"></span>
     </div>
   </div>
 </section>
@@ -158,13 +114,12 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('ani
     </div>
 
     <div class="kiemelt">
-      <a class="k-elem k-dizel" href="#dizel" data-be>
+      <a class="k-elem k-dizel" href="#dizel" data-be><img class="k-vizjel" src="arculat-kombi/WEB/jel.svg" alt="" aria-hidden="true">
         <span class="szam">A · KIEMELT</span>
         <div class="k-szoveg">
           <h3>Dízelrendszer, adagoló és porlasztó javítása</h3>
           <p style="margin-top:12px">Nehezen indul, füstöl, rángat vagy elment az ereje? Dízelmotornál ezek mögött gyakran az üzemanyag-ellátás áll – ezt mérjük be és javítjuk.</p>
         </div>
-        <svg class="k-rajz" viewBox="0 0 120 220" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="44" y="6" width="32" height="20" rx="2"/><rect x="76" y="12" width="22" height="10"/><rect x="38" y="26" width="44" height="96" rx="6"/><rect x="20" y="46" width="18" height="8"/><path d="M34 122h52v18H34zM44 140h32l-4 40H48zM52 180h16l-8 14z"/><path d="M60 196 36 216M60 196 48 218M60 196 60 218M60 196 72 218M60 196 84 216" stroke="var(--accent)" stroke-dasharray="3 3"/></svg>
         <span class="tovabb">Részletek<svg aria-hidden="true"><use href="#i-nyil"/></svg></span>
       </a>
       <a class="k-elem k-futomu" href="#futomu" data-be>

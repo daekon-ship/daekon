@@ -175,10 +175,12 @@
     M.animate("h1 .m-sor > *", { y: ["105%", "0%"] }, { duration: 0.95, delay: M.stagger(0.12, { startDelay: 0.12 }), ease: ease });
     M.animate(".hero .eyebrow", { opacity: [0, 1], y: [8, 0] }, { duration: 0.7, ease: ease });
     M.animate($$(".hero .lead, .hero-cta, .hero-info"), { opacity: [0, 1], y: [14, 0] }, { duration: 0.8, delay: M.stagger(0.1, { startDelay: 0.45 }), ease: ease });
-    M.animate(".merolap", { clipPath: ["inset(0 0 100% 0)", "inset(0 0 0% 0)"] }, { duration: 1.2, delay: 0.25, ease: [0.7, 0, 0.2, 1] });
+    var jelKep = $(".hero-jel img"), feny = $(".hj-feny");
+    if (jelKep) M.animate(jelKep, { opacity: [0, 1], scale: [0.94, 1] }, { duration: 1.3, delay: 0.2, ease: ease }).then(function () { if (feny) feny.classList.add("fut"); });
+    if ($(".hj-gyuru")) M.animate(".hj-gyuru", { opacity: [0, 1], scale: [0.9, 1] }, { duration: 1.6, delay: 0.1, ease: ease });
     // a mérőlap görgetéskor finoman lassabban mozog (mélység)
     if (M.scroll && matchMedia("(min-width: 981px)").matches) {
-      M.scroll(M.animate(".merolap svg", { y: [0, 46] }, { ease: "linear" }), { target: $(".hero"), offset: ["start start", "end start"] });
+      M.scroll(M.animate(".hero-jel img", { y: [0, 40] }, { ease: "linear" }), { target: $(".hero"), offset: ["start start", "end start"] });
     }
 
     // belépők: ami egyszerre ér a képernyőre, az lépcsőzetesen jön
