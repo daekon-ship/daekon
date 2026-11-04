@@ -5,7 +5,7 @@ build.py-t másik kimeneti mappával használja – arra ez a réteg nem kerül 
 """
 import html
 
-SB_VER = "8"
+SB_VER = "9"
 PALETTES = [("erdei", "Erdei", "#4E5A39", "#D9BBAC"),
             ("puder", "Púderes", "#6B6E4E", "#D8AFA3"),
             ("arany", "Aranyló", "#475436", "#C9A45C")]
@@ -143,8 +143,10 @@ def index(B):
         atmo.append(f'<div class="atmo" data-atmo="{i}" style="background-image:url({B.wimg(k, 18, 27)})"></div>')
 
     # --- fejezetkártyák (a Wix 9 témaköre, mindegyikben 1–2 gomb)
-    pins = (f'<div class="pins">{btn("uzenek/", "Üzenek!", "btn--berry")}{btn("asztalfoglalas/", "Asztalfoglalás")}'
-            f'{btn("uzenetek/", "Üzenetek", "btn--ghost")}{btn("mokassagok/", "Mókásságok", "btn--ghost")}</div>')
+    # Palackposta: két fő gomb; a további aloldalak finom szöveges hivatkozásként maradnak elérhetők
+    pins = (f'<div class="btns">{btn("uzenek/", "Üzenek!", "btn--berry")}{btn("asztalfoglalas/", "Asztalfoglalás", "btn--ghost")}</div>'
+            f'<p class="beat__more">Olvasd el, mit <a class="link" href="uzenetek/">üzentek mások</a>, vagy nézd meg a '
+            f'<a class="link" href="mokassagok/">mókásságokat</a>.</p>')
     CH = {
         2: ("akik-eletre-keltik", "A lámpások már égnek – megérkeztünk a kávézóhoz.", "Akik életre keltik <em>minden nap</em>",
             "Rólunk, minden mókuschról", "Három lány, aki minden reggel kinyitja az ajtót, kávét főz, süt és díszít.",
@@ -212,9 +214,9 @@ def index(B):
         {f'<div class="btns">{bts}</div>' if bts else ''}
       </div>
     </div>''')
-        anchors.append((sid, P(ib + 0.05), n))
+        anchors.append((sid, P(ib + 0.22), n))   # a fejléc miatti rövidebb ugrással is teljesen látszó kártyán érkezünk
         if n == 8:
-            anchors.append(("hol-vagyunk", P(ib + 0.05), n))
+            anchors.append(("hol-vagyunk", P(ib + 0.22), n))
     anc = "".join(f'<span class="janchor" id="{sid}" style="--p:{_r(p)}" data-p="{_r(p)}" data-ch="{c}" aria-hidden="true"></span>' for sid, p, c in anchors)
 
     body = f'''
@@ -228,6 +230,7 @@ def index(B):
     <div class="journey__atmo" aria-hidden="true">{"".join(atmo)}</div>
     <div class="journey__veil" aria-hidden="true"></div>
     <div class="journey__frame" data-jframe>{"".join(figs)}</div>
+    <div class="journey__mist" aria-hidden="true" data-jmist><i></i><i></i><i></i></div>
     <div class="journey__edge" aria-hidden="true"></div>
     <div class="journey__light" aria-hidden="true" data-jlight></div>
     <canvas class="fireflies" data-fireflies="forest" aria-hidden="true"></canvas>
@@ -238,13 +241,16 @@ def index(B):
   </div>
 </section>
 
-<aside class="tortaband" aria-label="Tortarendelés">
+<!-- A mese utolsó lapja: zárás, és a két legfontosabb következő lépés -->
+<aside class="tortaband epilog" aria-labelledby="h-epilog">
   <div class="wrap">
-    <div class="tortaband__card" data-rv>
+    <div class="tortaband__card epilog__page" data-rv>
       <div class="wash wash--2" aria-hidden="true"></div>
       {B.LOGO.inline_mark(cls="tortaband__mark", bg="#EEE1D8")}
-      <div class="tortaband__txt"><h2>Tortát álmodnál?</h2><p>Születésnapra, esküvőre, vagy csak úgy – nyolc rövid lépésben.</p></div>
-      {B.torta_btn(pre, label_short="Tortarendelés")}
+      <p class="epilog__orn" aria-hidden="true"><i></i><span>~</span><i></i></p>
+      <h2 id="h-epilog">Itt ér véget a mese első lapja.</h2>
+      <p class="epilog__txt">A folytatást a Várfok utcában meséljük el – egy csésze kávé mellett, vagy egy tortával, amit együtt álmodunk meg.</p>
+      <div class="btns">{B.torta_btn(pre, label_short="Tortarendelés")}{btn("asztalfoglalas/", "Asztalfoglalás", "btn--ghost")}</div>
     </div>
   </div>
 </aside>

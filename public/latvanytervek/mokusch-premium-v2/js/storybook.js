@@ -219,7 +219,7 @@
         var r = s.a < 0 ? 1 : seg(p, s.a, s.b);        // belépés (kinyílás)
         var h = seg(p, s.b, s.c);                       // ott állunk és lassan közelebb lépünk
         var x = s.c > 1 ? 0 : seg(p, s.c - (s.d - s.c) * 0.6, s.d);   // továbbmegyünk: a kép egyre gyorsabban ránk nő, „belépünk” a következőbe
-        travel += 0.5 * h + 2.2 * x * x + 0.4 * r;
+        travel += 0.35 * h + 1.2 * x * x + 0.25 * r;
         var vis = (s.a < 0 || p >= s.a) && p < s.d;
         if (vis !== s.v) {
           s.v = vis; s.el.style.visibility = vis ? 'visible' : 'hidden';
@@ -232,8 +232,10 @@
         // a „belépés” (ránk növő kép + akvarellfoltként kinyíló következő jelenet) a mese lényege, ezért
         // csökkentett mozgásnál is megmarad – csak lassabb, kisebb közelítéssel, repülő fények nélkül
         var A = FULL ? 1 : 0.45;
-        var zIn = i === 0 ? 1 : 1 - (0.28 * A) * (1 - easeOut(r));
-        z = zIn * (1 + 0.12 * A * h) * (1 + (mob ? 1.7 : 2.4) * A * x * x);
+        // visszafogott közelítés: finoman közelebb lépünk, majd átlépünk a következő képbe
+        var zIn = i === 0 ? 1 : 1 - (0.14 * A) * (1 - easeOut(r));
+        z = zIn * (1 + 0.07 * A * h) * (1 + (mob ? 1.1 : 1.45) * A * x * x);
+        var ty = (0.5 - h) * 1.6 * A;   // lassú függőleges úszás a jelenetben (parallax)
         var prev = scenes[i - 1];
         var bl = i > 0 && r < 1 && !!prev;
         if (bl !== s.bloom) { s.bloom = bl; s.el.classList.toggle('is-bloom', bl); }
@@ -246,7 +248,7 @@
           o = clamp(r * 6, 0, 1);
         }
         s.el.style.opacity = o.toFixed(3);
-        s.inner.style.transform = 'scale(' + z.toFixed(4) + ')';
+        s.inner.style.transform = 'translate3d(0,' + ty.toFixed(3) + '%,0) scale(' + z.toFixed(4) + ')';
         if (atmo[i]) atmo[i].style.opacity = (0.5 * Math.min(1, r * 2)).toFixed(3);
       }
       if (FULL && lastTravel !== null && travel !== lastTravel) {
@@ -287,8 +289,22 @@
         var s = scenes[i]; if (s.c > 1) continue;
         var x = seg(p, s.c - (s.d - s.c) * 0.6, s.d); tun = Math.max(tun, Math.sin(Math.PI * x));
       }
-      cozy.style.opacity = clamp(0.08 + 0.62 * ease(seg(p, insideAt - 0.04, 0.92)) + 0.3 * tun, 0, 1).toFixed(3);
+      var co = clamp(0.62 * ease(seg(p, insideAt - 0.04, 0.92)) + 0.3 * tun, 0, 1); cozy.style.opacity = co.toFixed(3); cozy.style.visibility = co > 0.005 ? 'visible' : 'hidden';
+      // köd: minden jelenetben előtűnik, a képnél gyorsabban úszik és nő, majd az átlépés előtt elillan
+      if (mist.length) {
+        var ci = 0; for (var k = 0; k < scenes.length; k++) if (scenes[k].a < 0 || p >= scenes[k].a) ci = k;
+        var sc = scenes[ci], st = sc.a < 0 ? 0 : sc.a, en = sc.d > 1 ? 1 : sc.d, L = clamp((p - st) / (en - st), 0, 1);
+        var out = 1 - ease(seg(p, forestEnd - 0.04, forestEnd + 0.04));       // kint sűrű erdei köd, bent halvány meleg pára
+        var str = (out * 0.9 + (1 - out) * 0.32) * Math.sin(Math.PI * L) * (FULL ? 1 : 0.6);
+        if (out < 0.5 !== mistWarm) { mistWarm = out < 0.5; mistBox.style.setProperty('--mist', mistWarm ? '255,232,196' : '251,247,238'); }
+        for (var m = 0; m < mist.length; m++) {
+          var sp = [1, 1.6, 0.7][m], dir = m === 2 ? 1 : -1;
+          mist[m].style.opacity = (str * [1, 0.85, 0.6][m]).toFixed(3); mist[m].style.visibility = str > 0.01 ? 'visible' : 'hidden';
+          mist[m].style.transform = 'translate3d(' + ((m === 1 ? 1 : -1) * L * 6 * sp).toFixed(2) + '%,' + (dir * L * 14 * sp).toFixed(2) + '%,0) scale(' + (1 + L * 0.35 * sp).toFixed(3) + ')';
+        }
+      }
     };
+    var mistBox = $('[data-jmist]', J), mist = mistBox ? $$('i', mistBox) : [], mistWarm = false;
     render(0);
     // natív görgetés követése (Motion scroll) – a pillanatnyi görgetési állásból számol, így visszafelé is pontos.
     // Teljes módban a kép puhán, kis késéssel követi a görgetést (a görgetést nem vesszük át, csak a rajzolást simítjuk).
@@ -296,7 +312,7 @@
     var follow = function (now) {
       var dt = slast ? Math.min((now - slast) / 1000, 0.05) : 0.016; slast = now;
       var d = tgt - cur;
-      cur = Math.abs(d) < 0.00008 || Math.abs(d) > 0.2 ? tgt : cur + d * (1 - Math.exp(-dt / 0.14));
+      cur = Math.abs(d) < 0.00008 || Math.abs(d) > 0.2 ? tgt : cur + d * (1 - Math.exp(-dt / 0.18));
       render(cur);
       sraf = cur === tgt ? 0 : requestAnimationFrame(follow);
       if (!sraf) { slast = 0; clearTimeout(still); still = setTimeout(function () { J.classList.remove('is-moving'); }, 180); }
@@ -360,7 +376,7 @@
       w = innerWidth; h = innerHeight; var dpr = Math.min(window.devicePixelRatio || 1, 1.5);
       c.width = Math.round(w * dpr); c.height = Math.round(h * dpr); ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       P.forEach(function (q) { q.x *= w / ow; q.y *= h / oh; q.tr.length = 0; });
-      var n = w < 600 ? 10 : w < 1100 ? 14 : 18;
+      var n = w < 600 ? 8 : w < 1100 ? 11 : 14;
       while (P.length < n) P.push(fly());
       P.length = n;
     };
@@ -377,10 +393,10 @@
         var q = P[i];
         // viselkedés: 0 = nyugodt röpködés, 1 = lebegés egy helyben, 2 = rövid meglódulás
         q.until -= dt;
-        if (q.until <= 0) { var r = R(); q.mode = r < 0.6 ? 0 : r < 0.85 ? 1 : 2; q.until = q.mode === 2 ? 0.5 + R() * 0.7 : 1.5 + R() * 3.5; }
-        var tsp = (q.mode === 1 ? 6 : q.mode === 2 ? 120 : 38) * (0.6 + q.d * 0.6);
+        if (q.until <= 0) { q.mode = R() < 0.72 ? 0 : 1; q.until = 2 + R() * 4; }
+        var tsp = (q.mode === 1 ? 5 : 24) * (0.6 + q.d * 0.6);
         q.sp += (tsp - q.sp) * (1 - Math.exp(-dt * 2.2));
-        q.av += ((R() - 0.5) * 9 - q.av * 1.6) * dt;                      // sima, szabálytalan kanyarodás
+        q.av += ((R() - 0.5) * 5 - q.av * 1.4) * dt;                      // sima, szabálytalan kanyarodás
         q.a += q.av * dt * (q.mode === 1 ? 2.5 : 1);
         q.x += Math.cos(q.a) * q.sp * dt; q.y += Math.sin(q.a) * q.sp * dt - 4 * dt;
         var bx = q.x + Math.sin(t * 2.1 + q.tp) * 3, by = q.y + Math.cos(t * 2.7 + q.tp) * 4;   // apró szárnycsapkodás-remegés
@@ -393,9 +409,9 @@
         var ph = (t * q.tw + q.tp) % 3, glow = ph < 1.6 ? Math.sin(ph / 1.6 * Math.PI) : 0;
         var al = (0.3 + 0.7 * glow) * (0.7 + 0.3 * q.d), s = q.s * (0.7 + q.d * 0.5) * (0.8 + 0.3 * glow);
         // fénycsík
-        q.tr.push({ x: bx, y: by }); if (q.tr.length > 7) q.tr.shift();
+        q.tr.push({ x: bx, y: by }); if (q.tr.length > 5) q.tr.shift();
         for (var k = 0; k < q.tr.length - 1; k++) {
-          var f = (k + 1) / q.tr.length; ctx.globalAlpha = al * f * 0.22;
+          var f = (k + 1) / q.tr.length; ctx.globalAlpha = al * f * 0.14;
           var ts = s * (0.35 + 0.4 * f); ctx.drawImage(sprite, q.tr[k].x - ts / 2, q.tr[k].y - ts / 2, ts, ts);
         }
         ctx.globalAlpha = al > 1 ? 1 : al; ctx.drawImage(sprite, bx - s / 2, by - s / 2, s, s);

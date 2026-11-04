@@ -260,3 +260,19 @@ html:not(.anim) .jscene{-webkit-mask:var(--wc-page) center/100% 100% no-repeat;m
 /* végig az oldalon kísérő fények */
 .siteflies{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:50}
 @media print{.siteflies{display:none}}
+/* köd-rétegek: a képnél gyorsabban úsznak – ettől lesz mélysége az erdőnek (parallax), bent meleg pára */
+.journey__mist{position:absolute;inset:0;z-index:2;pointer-events:none;overflow:hidden}
+.journey__mist i{position:absolute;display:block;border-radius:50%;opacity:0;will-change:transform,opacity;
+  background:radial-gradient(closest-side,rgba(var(--mist,251,247,238),.78),rgba(var(--mist,251,247,238),.32) 55%,rgba(var(--mist,251,247,238),0))}
+.journey__mist i:nth-child(1){width:95%;height:42%;left:-22%;top:58%}
+.journey__mist i:nth-child(2){width:80%;height:36%;right:-26%;top:66%}
+.journey__mist i:nth-child(3){width:70%;height:30%;left:18%;top:-6%}
+html:not(.anim) .journey__mist{display:none}
+/* a mese utolsó lapja */
+.epilog__page{grid-template-columns:minmax(0,1fr)!important;justify-items:center;text-align:center;max-width:720px}
+.epilog__page .tortaband__mark{width:52px;height:52px}
+.epilog__orn{display:flex;align-items:center;gap:.8rem;margin:0;color:var(--brass);font-family:var(--serif,'Playfair Display',serif);font-size:1.2rem;line-height:1}
+.epilog__orn i{display:block;width:clamp(48px,10vw,96px);height:1px;background:currentColor;opacity:.55}
+.epilog h2{font-size:clamp(1.45rem,1.25rem + .8vw,1.95rem);font-weight:500;margin:0;text-wrap:balance}
+.epilog__txt{max-width:46ch;margin:0!important;line-height:1.6;text-wrap:pretty}
+.epilog .btns{display:flex;flex-wrap:wrap;justify-content:center;gap:.6rem;margin-top:.4rem}

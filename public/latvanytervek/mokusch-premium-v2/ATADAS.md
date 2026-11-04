@@ -264,3 +264,39 @@ Playwright, 360 / 390 / 768 / 1024 / 1440 / 1920 px: vízszintes túlcsordulás 
 
 - **Élesebb képek:** a mese képein a `will-change: transform` csak görgetés közben él. Megálláskor a böngésző élesen újrarajzolja a képet, nem a korábbi kisebb rajzolatot nyújtja. A papírszemcse 0,45-ről 0,2-re halványodott. A Wix-képek q_90 minőséggel és enyhe élesítéssel (`usm`) érkeznek, 4K-ig (3840 px) érkező srcset-tel. A végső élesség attól függ, mekkora Vanda eredeti feltöltése a Wixen; nagyobb eredetivel élesebb lehet.
 - **Röpködő szentjánosbogarak:** az egész oldalon, a mese alatt is folyamatosan repülnek. Kanyarognak, néha lebegnek, néha meglódulnak, pulzálva villannak fel, halvány fénycsíkot húznak. Csak teljes mozgásnál.
+
+## Mesekönyv-élmény újratervezése (6. kör)
+
+**Mentés:** az eredeti V2 a mesekönyves átdolgozás előtti állapotában a `mentes/mokusch-v2-eredeti` ágon van (daekon-ship/daekon). Visszaállítás:
+`git checkout origin/mentes/mokusch-v2-eredeti -- public/latvanytervek/mokusch-premium-v2 prototypes/mokusch-premium-v2`
+Git-címkét a push-jogosultság nem engedett, ezért ág készült.
+
+**Változások**
+- **Visszafogott zoom:**
+  - Belépéskor a közelítés 0,72 → 0,86-ról indul.
+  - A jelenetben állva a közelítés legfeljebb +7%.
+  - Az átlépés 2,4× → 1,45× (mobilon 1,1×).
+  - Az akvarellfoltos „belépés” megmaradt.
+  - A görgetéskövetés simítása 0,18 s.
+- **Parallax mélység:**
+  - Minden jelenetben három lágy ködréteg úszik a képnél gyorsabban, majd az átlépés előtt elillan.
+  - Az erdőben papírfehér köd, bent halvány, meleg pára.
+  - A festmény lassan, függőlegesen úszik.
+- **Fények:**
+  - Az erdei jeleneteknél sűrű, lebegő szentjánosbogarak.
+  - Az oldal többi részén kevesebb, lassabban és nyugodtabban szálló fény, meglódulás nélkül.
+  - A jelenetváltáskor a fények szétrepülése is lassabb.
+- **Történeti folytonosság:**
+  - A sablonos „Tortát álmodnál?” sáv helyett a mese utolsó lapja zár: „Itt ér véget a mese első lapja.”
+  - A zárólapon két gomb van: Tortarendelés és Asztalfoglalás.
+- **1–2 gomb fejezetenként:**
+  - A Palackposta fejezetben 4 gomb helyett 2 maradt (Üzenek!, Asztalfoglalás).
+  - Az Üzenetek és a Mókásságok szöveges hivatkozásként érhető el. Minden aloldal megmaradt.
+- **Navigáció:** a Fejezetek menü ugrásai eddig kicsivel a kártya előtt álltak meg (félig áttetsző kártya). Most teljesen látható kártyán érkeznek.
+- **Teljesítmény:** a kuckó- és ködréteg nem rajzolódik, amikor nem látszik.
+
+**Nyitott kérdések, ügyféllel egyeztetendő**
+- **Színvilág:** a V2 színei (Erdei / Púderes / Aranyló) bemutató jellegűek, nem végleges ügyféljóváhagyás.
+- **Képek:** a fókuszpontok (a belépés helye a következő képbe) becslések. A valódi képeken még finomhangolni kell.
+- **Képfelbontás:** a képek élessége Vanda eredeti Wix-feltöltéseinek felbontásán múlik.
+- **AI-illusztráció:** új AI-kép nem került be.
