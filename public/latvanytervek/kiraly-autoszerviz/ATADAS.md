@@ -116,3 +116,9 @@ Fájlok: `fo` (háttérrel), `vilagos`/`sotet` (átlátszó), `sotet-hatterrel`,
 - Kipróbálva: lenyíló sorok nyitás/zárás, futómű-kapcsoló, hero-animáció végállapota, mobilmenü nyitás + horgony + zárás, `?logo=4` sárga változat, `logo.html` mind a 4 méreten.
 - Nem tesztelve valódi eszközön: Samsung Internet, Facebook/Messenger beépített böngésző, iOS Safari.
 - Linkek: `tel:+36205853234`, `mailto:`, Google Térkép keresés/útvonal cégnévre.
+
+## 2026-11-04 – végleges logó a látványtervben
+- Az ügyfél a fekete–pezsgőarany kombinált emblémát (VEGLEGES/1) választotta; bekerült a látványtervbe.
+- Webes változatok: `arculat-kombi/WEB/` (`jel.svg` felirat nélküli jel, kétszínű gyertyával; `fejlec-sotet.svg` jel + KIRÁLY / AUTÓSZERVIZ; `emblema.svg` a teljes logó a láblécben). Forrás: `_forras/web_logo.py`.
+- Az oldal színei a logóhoz igazítva: fekete #161618 / #0B0B0C, pezsgőarany #D8BE84, krém #F5F1E8; világos szekciókban sötétebb bronz kiemelés (#8C6D32) az olvashatóságért.
+- A régi `?logo=1..6` logóváltó kikerült az oldalból (a logo.html megmaradt).

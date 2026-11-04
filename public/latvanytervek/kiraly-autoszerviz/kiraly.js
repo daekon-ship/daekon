@@ -14,17 +14,6 @@
     return M.animate(from, to, Object.assign({}, opts, { onUpdate: write }));
   }
 
-  /* ---------- logóváltozat (?logo=1..4) ---------- */
-  var logo = root.getAttribute("data-logo") || "1";
-  $$("[data-logo-kep]").forEach(function (img) {
-    img.src = "arculat/logo-" + logo + "/kiraly-" + logo + "-" + img.getAttribute("data-logo-kep") + ".svg";
-  });
-  var fav = $('link[rel="icon"]');
-  if (fav) fav.href = "arculat/logo-" + logo + "/kiraly-" + logo + "-jel.svg";
-  if (logo === "4") {
-    $$('[fill="#F26732"]').forEach(function (el) { el.setAttribute("fill", "#F2B705"); });
-  }
-
   /* ---------- mobilmenü ---------- */
   var gomb = $(".menu-gomb"), menu = $("#mobilmenu");
   function menuAllit(nyit) {
