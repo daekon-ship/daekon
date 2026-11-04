@@ -497,6 +497,8 @@ def cake_cta(pre):
 
 
 def sub_page(slug, lead, body, plain=False, page_js="", hero_img=None, h1=None, current=None, cta=True):
+    if slug not in SUB:   # V2-ből kivett aloldal (pl. a minta-receptoldal)
+        return
     ch_no, title, desc = SUB[slug][1], SUB[slug][2], SUB[slug][3]
     pre = "../"
     if ch_no:
@@ -1042,6 +1044,14 @@ def build_arculat():
 if __name__ == "__main__":
     OUT.mkdir(parents=True, exist_ok=True)
     (OUT / "img").mkdir(exist_ok=True)
+    # V2: a kitalált minta-receptoldal kikerül (Vanda oldalán nincsenek valódi receptek); a V3 generátora ezt nem futtatja
+    _KI = {"nehany-artatlan-recept"}
+    SUBS[:] = [x for x in SUBS if x[0] not in _KI]
+    SUB_ORDER[:] = [x[0] for x in SUBS]
+    for k in _KI:
+        SUB.pop(k, None)
+    CHAPTERS[4] = ("5", "boszorkanykonyha", "Ez a mi kis boszorkánykonyhánk", "Tippek-trükkök")
+    CH["5"] = CHAPTERS[4]
     STORY.index(_me())   # mesekönyves főoldal (a régi index() a B-változat generátorának kell)
     build_subs()
     build_arculat()

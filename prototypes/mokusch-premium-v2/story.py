@@ -5,7 +5,7 @@ build.py-t másik kimeneti mappával használja – arra ez a réteg nem kerül 
 """
 import html
 
-SB_VER = "14"
+SB_VER = "15"
 PALETTES = [("erdei", "Erdei", "#4E5A39", "#D9BBAC"),
             ("puder", "Púderes", "#6B6E4E", "#D8AFA3"),
             ("arany", "Aranyló", "#475436", "#C9A45C")]
@@ -178,8 +178,8 @@ def index(B):
             "Mit lehet itt? Enni és inni – egy csésze mellett, kényelmesen.",
             btn("enni/", "Enni") + btn("inni/", "Inni", "btn--ghost"), ""),
         5: ("boszorkanykonyha", "Hátul, a konyhában mindig rotyog valami.", "Ez a mi kis <em>boszorkánykonyhánk</em>",
-            "receptek, praktikák, kézműves ötletek", "Amit nálunk megszerettél, otthon is kipróbálhatod.",
-            btn("nehany-artatlan-recept/", "Néhány ártatlan recept") + btn("tippek-trukkok/", "Tippek-trükkök", "btn--ghost"), ""),
+            "praktikák sütéshez, díszítéshez, kézműveskedéshez", "Amit nálunk megszerettél, otthon is kipróbálhatod.",
+            btn("tippek-trukkok/", "Tippek-trükkök"), ""),
         6: ("nyuszis-polc", "És itt a polc, amely előtt mindenki megáll.", "A híres <em>nyuszis polc</em>",
             "minden, ami egy erdei teadélutánhoz kellhet", "Kézzel készült apróságok egy erdei teadélutánhoz.",
             btn("nyuszis-polc/", "…és ezt is mind ti csináltátok?"), ""),

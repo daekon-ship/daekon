@@ -300,3 +300,8 @@ Git-címkét a push-jogosultság nem engedett, ezért ág készült.
 - **Képek:** a fókuszpontok (a belépés helye a következő képbe) becslések. A valódi képeken még finomhangolni kell.
 - **Képfelbontás:** a képek élessége Vanda eredeti Wix-feltöltéseinek felbontásán múlik.
 - **AI-illusztráció:** új AI-kép nem került be.
+
+## Receptoldal kivéve (2026-11-04)
+- A „Néhány ártatlan recept” aloldal (kitalált minta-receptszerkezet; Vanda oldalán nincsenek valódi receptek) kikerült.
+- Vele együtt kikerült az 5. fejezet receptgombja, a Fejezetek-menü „Receptek” felirata és az aloldalak közötti lapozásból is.
+- Az 5. fejezet („boszorkánykonyha”) a Tippek-trükkök aloldallal marad. A V3 nem változott.
