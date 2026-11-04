@@ -138,3 +138,6 @@ Fájlok: `fo` (háttérrel), `vilagos`/`sotet` (átlátszó), `sotet-hatterrel`,
 ## 2026-11-04 – további prémium csiszolás
 - Hero: a futóműmérés-rajz helyett a végleges embléma, veretes plakettként (halvány arany fény, kettős gyűrű, egyszeri fényvillanás betöltéskor, finom parallax).
 - Fém hatású arany gombok; kiemelt kártyákon arany sarokvonal hoverre; a dízel kártyán a porlasztórajz helyett halvány jel-vízjel.
+
+## 2026-11-04 – új fejléc-logó
+- Fejlécben tömör arany „érme” (sötét kulcsok + gyertya) + vékony arany elválasztó + KIRÁLY / AUTÓSZERVIZ. Forrás: `_forras/fejlec_logo.py`, fájl: `arculat-kombi/WEB/fejlec-erme-vonallal.svg`; favicon: `jel-erme.svg`.
