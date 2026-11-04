@@ -1,7 +1,7 @@
 # KIRÁLY Autószerviz – átadás (2. kör, 2026.11.03.)
 
 ## 10. kör – végleges logók (`arculat-vegso/`)
-Három kidolgozott irány: 1 kör alakú szervizembléma (éjkék–arany), 2 dugattyús pajzs (grafit–narancs), 3 szárnyas kormány kulcs-szárnyakkal (petrol–réz). Embléma, vízszintes, kis méretű vízszintes (város nélkül), kompakt, ikon, egyszínű – SVG + átlátszó PNG; mérettesztek és fejlécpróbák a `probak/` mappákban; ügyfélbemutató: `arculat-vegso/kiraly-arculati-javaslat.png`. Generátor: `_forras/logok_vegso.py`, export: `_forras/vegso_export.py`.
+Három kidolgozott irány: 1 kör alakú szervizembléma (éjkék–arany), 2 precíziós műszer (grafit–acél–narancs; a dugattyús pajzs kikerült), 3 szárnyas kormány kulcs-szárnyakkal (petrol–réz). Embléma, vízszintes, kis méretű vízszintes (város nélkül), kompakt, ikon, egyszínű – SVG + átlátszó PNG; mérettesztek és fejlécpróbák a `probak/` mappákban; ügyfélbemutató: `arculat-vegso/kiraly-arculati-javaslat.png`. Generátor: `_forras/logok_vegso.py`, export: `_forras/vegso_export.py`.
 
 ## 9. kör – 6 logó
 Végleges sor: 1 Dugattyúkorona, 2 Kulcskorona, 3 Gyújtógyertya, 4 Autóemelő, 5 Mérőóra (a v2 jele a közös felirattal), 6 **Acél-anya koronával** (saját javaslat: hatlapú csavaranya – Dunaújváros, az acélváros –, a furat helyén kivágott korona, narancs pánttal). Mindegyikhez névjegy. Online kutatás: a nyilvános adatlapok (Turul Auto, europethrob, nyitva.hu) nem adnak új tényt; a Facebook-oldal robotok elől zárt.

@@ -6,7 +6,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 V = os.path.join(ROOT, "arculat-vegso")
 FONTS = os.path.join(ROOT, "fonts")
 K = [("1-kor-emblema", "01", "Kör alakú szervizembléma", "Éjkék · arany", ["#0E1B2C", "#C9A14F", "#F6F2EA"]),
-     ("2-dugattyus-pajzs", "02", "Dugattyús pajzs", "Grafit · narancs", ["#12161B", "#F26732", "#F4F5F2"]),
+     ("2-muszer", "02", "Precíziós műszer", "Grafit · acél · narancs", ["#12161B", "#F26732", "#F4F5F2"]),
      ("3-szarnyas-kormany", "03", "Szárnyas kormány", "Petrol · réz", ["#0C2B33", "#C48A5A", "#F4F0EA"])]
 FONT = (f"<style>@font-face{{font-family:A;src:url(file://{FONTS}/archivo-var.woff);font-weight:500 900;font-stretch:100% 125%}}"
         f"@font-face{{font-family:M;src:url(file://{FONTS}/manrope-var.woff);font-weight:200 800}}*{{margin:0;padding:0;box-sizing:border-box}}</style>")

@@ -12,7 +12,7 @@ _ID = itertools.count(1)
 KONCEPCIOK = {
     1: dict(slug="1-kor-emblema", nev="Kör alakú szervizembléma", dark="#0E1B2C", panel="#13243A", acc="#C9A14F", light="#F6F2EA",
             ink_l="#0E1B2C", sub_l="#3E4E66", ink_d="#F6F2EA", sub_d="#C2CAD6"),
-    2: dict(slug="2-dugattyus-pajzs", nev="Dugattyús pajzs", dark="#12161B", panel="#1B2128", acc="#F26732", light="#F4F5F2",
+    2: dict(slug="2-muszer", nev="Precíziós műszer", dark="#12161B", panel="#1B2128", acc="#F26732", light="#F4F5F2", metal="#9AA3AC",
             ink_l="#12161B", sub_l="#46505B", ink_d="#F4F5F6", sub_d="#B4BCC4"),
     3: dict(slug="3-szarnyas-kormany", nev="Szárnyas kormány", dark="#0C2B33", panel="#123640", acc="#C48A5A", light="#F4F0EA",
             ink_l="#0C2B33", sub_l="#3D5A61", ink_d="#F4F0EA", sub_d="#B7C9CC"),
@@ -215,6 +215,55 @@ def pajzs_emblema(c, dark=True, mono=None):
     return ic + wm, (wb[0], 0, wb[2], wb[3])
 
 
+# ---------------------------------------------------------------- 2) PRECÍZIÓS MŰSZER
+def muszer(c, dark=True, mono=None):
+    """Mérőműszer: acél perem, 240°-os skála (fő- és osztásjelek), narancs határzóna, narancs mutató, agy."""
+    acc = mono or c["acc"]
+    ink = mono or c["light"]
+    met = mono or c["metal"]
+    cx = cy = 50
+    g = "" if mono else f'<circle cx="50" cy="50" r="49" fill="{c["panel"] if dark else c["dark"]}"/>'
+    g += ring(cx, cy, 45, 4.6, met)
+    g += ring(cx, cy, 40.2, 1, met)
+    a0, a1 = 150, 390  # 240°-os ív, alul nyitott
+    n = 16
+    for i in range(n + 1):
+        a = math.radians(a0 + (a1 - a0) * i / n)
+        major = i % 4 == 0
+        r0, r1 = 36, (27 if major else 31.5)
+        col = acc if i >= 14 else ink
+        g += (f'<line x1="{f(cx + r0 * math.cos(a))}" y1="{f(cy + r0 * math.sin(a))}" x2="{f(cx + r1 * math.cos(a))}" y2="{f(cy + r1 * math.sin(a))}" '
+              f'stroke="{col}" stroke-width="{3.6 if major else 2}" stroke-linecap="butt"/>')
+    # narancs határzóna-ív a skála végén
+    za, zb = math.radians(a0 + (a1 - a0) * 14 / n), math.radians(a1)
+    r = 37.8
+    g += (f'<path d="M{f(cx + r * math.cos(za))} {f(cy + r * math.sin(za))} A{r} {r} 0 0 1 {f(cx + r * math.cos(zb))} {f(cy + r * math.sin(zb))}" '
+          f'fill="none" stroke="{acc}" stroke-width="2"/>')
+    # mutató
+    am = math.radians(a0 + (a1 - a0) * .62)
+    tip = (cx + 31 * math.cos(am), cy + 31 * math.sin(am))
+    tail = (cx - 8 * math.cos(am), cy - 8 * math.sin(am))
+    nx, ny = -math.sin(am), math.cos(am)
+    g += f'<path d="{P([(tail[0] + nx * 2.4, tail[1] + ny * 2.4), tip, (tail[0] - nx * 2.4, tail[1] - ny * 2.4)])}" fill="{acc}"/>'
+    g += f'<circle cx="{cx}" cy="{cy}" r="6.4" fill="{ink}"/><circle cx="{cx}" cy="{cy}" r="2.6" fill="{acc}"/>'
+    # alsó nyílásban apró jelölés: két rövid vonal
+    g += f'<rect x="{cx - 7}" y="{cy + 25}" width="14" height="1.6" fill="{met}"/>'
+    return g, (1, 1, 99, 99)
+
+
+def muszer_emblema(c, dark=True, mono=None):
+    ink = mono or (c["ink_d"] if dark else c["ink_l"])
+    sub = mono or (c["sub_d"] if dark else c["sub_l"])
+    acc = mono or c["acc"]
+    ic, ib = muszer(c, dark, mono)
+    wm, wb = wordmark(0, 0, ink, sub, acc, 50, "c")
+    W = wb[2] - wb[0]
+    ih = 150
+    icg, iw = place(ic, ib, wb[0] + W / 2 - ih / 2, 0, ih)
+    wm, wb = wordmark(wb[0] + W / 2, ih + 26, ink, sub, acc, 50, "c")
+    return icg + wm, (wb[0], 0, wb[2], wb[3])
+
+
 # ---------------------------------------------------------------- 3) SZÁRNYAS KORMÁNY (kulcs-szárnyakkal)
 def kormany(cx, cy, R, col, acc):
     r = R * .76
@@ -296,7 +345,7 @@ def build(n):
         if n == 1:
             em = kor_emblema(c, dark); ic = kor_ikon(c, dark)
         elif n == 2:
-            em = pajzs_emblema(c, dark); ic = pajzs(c, dark)
+            em = muszer_emblema(c, dark); ic = muszer(c, dark)
         else:
             em = szarnyas_emblema(c, dark); ic = szarnyas_ikon(c, dark)
         w(f"emblema-{tag}", *em)
@@ -308,7 +357,7 @@ def build(n):
         if n == 1:
             em = kor_emblema(c, mono=col); ic = kor_ikon(c, mono=col)
         elif n == 2:
-            em = pajzs_emblema(c, mono=col); ic = pajzs(c, mono=col)
+            em = muszer_emblema(c, mono=col); ic = muszer(c, mono=col)
         else:
             em = szarnyas_emblema(c, mono=col); ic = szarnyas_ikon(c, mono=col)
         w(f"emblema-egyszinu-{tag}", *em)
