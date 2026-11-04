@@ -141,3 +141,6 @@ Fájlok: `fo` (háttérrel), `vilagos`/`sotet` (átlátszó), `sotet-hatterrel`,
 
 ## 2026-11-04 – új fejléc-logó
 - Fejlécben tömör arany „érme” (sötét kulcsok + gyertya) + vékony arany elválasztó + KIRÁLY / AUTÓSZERVIZ. Forrás: `_forras/fejlec_logo.py`, fájl: `arculat-kombi/WEB/fejlec-erme-vonallal.svg`; favicon: `jel-erme.svg`.
+
+## 2026-11-04 – prémiumabb szövegek
+- Az összes szekció szövege átírva magabiztosabb, letisztultabb hangra (valótlan állítás, kitalált szám nélkül). Új főcím: „Precíz autójavítás. Becsülettel, 2008 óta.”
