@@ -5,7 +5,7 @@ build.py-t másik kimeneti mappával használja – arra ez a réteg nem kerül 
 """
 import html
 
-SB_VER = "9"
+SB_VER = "11"
 PALETTES = [("erdei", "Erdei", "#4E5A39", "#D9BBAC"),
             ("puder", "Púderes", "#6B6E4E", "#D8AFA3"),
             ("arany", "Aranyló", "#475436", "#C9A45C")]
@@ -101,6 +101,18 @@ SCENES = [
 FADE = 0.8
 
 
+import json as _json
+from pathlib import Path as _Path
+# Vanda 11 festményének 4K-ra felskálázott helyi sorozata (mese_kepek.py; forrás: kepek-4k ág)
+_MJ = _Path(__file__).with_name("mese_kepek.json")
+MESE = _json.loads(_MJ.read_text()) if _MJ.exists() else {}
+
+
+def mese_srcset(key, pre=""):
+    W = MESE[key][0]
+    return ", ".join(f"{pre}img/mese/{key}-{w}.webp {w}w" for w in [w for w in (480, 720, 1080, 1600, 2200) if w < W] + [W])
+
+
 def _r(x):
     return f"{x:.4f}"
 
@@ -128,8 +140,13 @@ def index(B):
         c = 99 if i == len(SCENES) - 1 else E - FADE   # eltűnés kezdete
         d = 99 if i == len(SCENES) - 1 else E          # eltűnt
         z0, z1 = (0 if i == 0 else S - FADE), E
-        mob = ", ".join(f"{B.wimg(k, w, round(w * 1.5), True)} {w}w" for w in (640, 960, 1280, 1600))
-        desk = ", ".join(f"{B.wimg(k, w, round(w * 10 / 16), True)} {w}w" for w in (1280, 1920, 2560, 3200, 3840))
+        if k in MESE:   # 4K helyi kép; a kivágást a CSS végzi (object-fit: cover + fókuszpont)
+            mob = desk = mese_srcset(k)
+        else:
+            mob = ", ".join(f"{B.wimg(k, w, round(w * 1.5), True)} {w}w" for w in (640, 960, 1280, 1600))
+            desk = ", ".join(f"{B.wimg(k, w, round(w * 10 / 16), True)} {w}w" for w in (1280, 1920, 2560, 3200, 3840))
+        isrc = f"img/mese/{k}-1080.webp" if k in MESE else B.wimg(k, 960, 1440, True)
+        msz = "165vw" if k in MESE else "100vw"   # mobilon az álló festmény magasságra töltődik ki, szélesebb a képernyőnél
         eager = i == 0
         lazyattr = "" if i < 2 else "data-"
         prio = 'fetchpriority="high"' if eager else 'fetchpriority="low"'
@@ -138,9 +155,9 @@ def index(B):
             f'data-c="{_r(P(c)) if c < 90 else 2}" data-d="{_r(P(d)) if d < 90 else 3}" '
             f'data-f="{focal.replace("%", "").replace(" ", ",")}" style="--focal:{focal};--o:{i * 10}">'
             f'<div class="jscene__in"><picture><source media="(min-width: 900px)" {lazyattr}srcset="{desk}" sizes="100vw">'
-            f'<img {lazyattr}src="{B.wimg(k, 960, 1440, True)}" {lazyattr}srcset="{mob}" sizes="100vw" width="960" height="1440" '
+            f'<img {lazyattr}src="{isrc}" {lazyattr}srcset="{mob}" sizes="{msz}" width="960" height="1440" '
             f'alt="{html.escape(B.WIX[k][2])}" {prio} decoding="async"></picture></div></figure>')
-        atmo.append(f'<div class="atmo" data-atmo="{i}" style="background-image:url({B.wimg(k, 18, 27)})"></div>')
+        atmo.append(f'<div class="atmo" data-atmo="{i}" style="background-image:url({(f"img/mese/{k}-24.webp" if k in MESE else B.wimg(k, 18, 27))})"></div>')
 
     # --- fejezetkártyák (a Wix 9 témaköre, mindegyikben 1–2 gomb)
     # Palackposta: két fő gomb; a további aloldalak finom szöveges hivatkozásként maradnak elérhetők
@@ -268,8 +285,11 @@ def index(B):
 </script>
 '''
     k0 = SCENES[0][0]
-    pl = (f'<link rel="preload" as="image" media="(max-width: 899px)" imagesrcset="{B.wimg(k0, 640, 960, True)} 640w, {B.wimg(k0, 960, 1440, True)} 960w, {B.wimg(k0, 1280, 1920, True)} 1280w, {B.wimg(k0, 1600, 2400, True)} 1600w" imagesizes="100vw" fetchpriority="high">\n'
-          f'<link rel="preload" as="image" media="(min-width: 900px)" imagesrcset="{B.wimg(k0, 1280, 800, True)} 1280w, {B.wimg(k0, 1920, 1200, True)} 1920w, {B.wimg(k0, 2560, 1600, True)} 2560w, {B.wimg(k0, 3200, 2000, True)} 3200w, {B.wimg(k0, 3840, 2400, True)} 3840w" imagesizes="100vw" fetchpriority="high">\n')
+    if k0 in MESE:
+        pl = (f'<link rel="preload" as="image" media="(max-width: 899px)" imagesrcset="{mese_srcset(k0)}" imagesizes="165vw" fetchpriority="high">\n'
+              f'<link rel="preload" as="image" media="(min-width: 900px)" imagesrcset="{mese_srcset(k0)}" imagesizes="100vw" fetchpriority="high">\n')
+    else:
+        pl = ""
     out = B.head("Mókusch kávézó és tortaműhely – Budapest, Várfok utca 30.",
                  "Mesebeli kávézó és tortaműhely a Várfok utcában: egy erdei ösvény vezet a kávékhoz, süteményekhez, a híres nyuszis polchoz és az egyedi tortákhoz.",
                  pre, extra=pl + ld)
