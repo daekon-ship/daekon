@@ -43,32 +43,30 @@ def n2():
     cx, cy = 150, 70
     g = ""
     for s in (-1, 1):
-        g += kulcs_szarny(cx + s * 52, cy - 11, 96, 10.5, s, acc)
-        g += kulcs_szarny(cx + s * 52, cy + 11, 72, 8.5, s, acc)
-    g += f'<circle cx="{cx}" cy="{cy}" r="60" fill="{pn}"/>' + ring(cx, cy, 56, 3, acc)
-    g += arc_text("KIRÁLY", "archivo", 45, 15, 760, 112, ink, True, .16, cx, cy)
-    g += villaskulcs(cx, cy + 8, 56, -40, ink, 8.5) + villaskulcs(cx, cy + 8, 56, 40, ink, 8.5)
-    wm, wb = wordmark(cx, 148, ink, sub, acc, 30, "c")
+        g += kulcs_szarny(cx + s * 50, cy, 92, 8, s, acc)
+    g += f'<circle cx="{cx}" cy="{cy}" r="58" fill="{pn}"/>' + ring(cx, cy, 55, 2, acc)
+    g += villaskulcs(cx, cy, 70, -42, ink, 9.5) + villaskulcs(cx, cy, 70, 42, ink, 9.5)
+    wm, wb = wordmark(cx, 150, ink, sub, acc, 34, "c")
     return g + wm, (cx - 152, cy - 62, cx + 152, wb[3]), bg
 
 
 # 3) Szalagos kör: keresztezett kulcsok, a KIRÁLY egy vízszintes szalagon – fekete–pezsgőarany
 def n3():
     bg, pn, acc, ink, sub = C["fekete"]
-    g = f'<circle cx="100" cy="100" r="98" fill="{pn}"/>' + ring(100, 100, 92, 3, acc) + ring(100, 100, 85, 1.2, acc)
+    g = f'<circle cx="100" cy="100" r="98" fill="{pn}"/>' + ring(100, 100, 92, 2, acc)
     g += villaskulcs(100, 92, 92, -42, ink, 12) + villaskulcs(100, 92, 92, 42, ink, 12)
-    g += f'<path d="{P([(-6, 80), (206, 80), (196, 98), (206, 116), (-6, 116), (4, 98)])}" fill="{acc}"/>'
+    g += f'<path d="{P([(10, 82), (190, 82), (190, 114), (10, 114)])}" fill="{acc}"/>'
     p, _ = txt("KIRÁLY", "archivo", 27, 760, 112, .1, 100, 108, pn)
     g += p
     p2, _ = txt("AUTÓSZERVIZ", "manrope", 9.4, 800, None, .42, 100, 146, acc)
     p3, _ = txt("DUNAÚJVÁROS · 2008", "manrope", 6.4, 700, None, .3, 100, 158, sub)
-    return g + p + p2 + p3, (-8, 2, 208, 198), bg
+    return g + p + p2 + p3, (2, 2, 198, 198), bg
 
 
 # 4) Kormány + keresztezett kulcsok kör, körbefutó felirattal – versenyzöld–sárgaréz
 def n4():
     bg, pn, acc, ink, sub = C["zold"]
-    g = f'<circle cx="100" cy="100" r="98" fill="{pn}"/>' + ring(100, 100, 92, 3, acc) + ring(100, 100, 64, 1.4, acc)
+    g = f'<circle cx="100" cy="100" r="98" fill="{pn}"/>' + ring(100, 100, 92, 2, acc)
     g += arc_text("KIRÁLY", "archivo", 77, 21, 760, 112, ink, True, .18, 100, 100)
     g += arc_text("AUTÓSZERVIZ · DUNAÚJVÁROS", "manrope", 78, 9.6, 800, None, acc, False, .2, 100, 100)
     g += villaskulcs(100, 100, 108, -45, acc, 11) + villaskulcs(100, 100, 108, 45, acc, 11)
