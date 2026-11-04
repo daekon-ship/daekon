@@ -131,3 +131,6 @@ Fájlok: `fo` (háttérrel), `vilagos`/`sotet` (átlátszó), `sotet-hatterrel`,
 - Gombok: finom fényvillanás hoverre, nyomásra enyhe besüllyedés; szolgáltatás-sorok felett arany vonal; kártyák enyhén megemelkednek.
 - Nagyon finom szemcsés textúra az egész oldalon; a Rólunk fotóhelyén halvány pecsét-vízjel.
 - Csökkentett mozgás beállításnál minden animáció kikapcsol.
+
+## 2026-11-04 – szemléltető képek ki
+- Kérésre kikerült: Rólunk fotóhely, futómű „Szemléltetés” (előtte/utána), porlasztó rajz. A dízel, futómű és rólunk szekció kétoszlopos: bal oldalt cím (asztalon rögzül görgetéskor), jobb oldalt tartalom.

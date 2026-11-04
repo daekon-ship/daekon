@@ -242,6 +242,8 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('ani
         <p class="label"><span class="n">02</span>Dízelszerviz</p>
         <h2 id="dizel-cim" style="margin-top:16px">Dízelrendszer-javítás, célzott hibafeltárással</h2>
         <p class="lead" style="margin-top:18px">Adagolók, porlasztók és a dízel üzemanyag-rendszer javítása. Egy dízelmotor hibája sokféle tünetet okozhat – ezért a javítás a hiba pontos behatárolásával kezdődik, nem alkatrészcserével.</p>
+      </div>
+      <div data-be>
         <ul class="tunetek" aria-label="Gyakori tünetek">
           <li><span>01</span>Nehéz indulás</li>
           <li><span>02</span>Füstölés gyorsításkor</li>
@@ -256,34 +258,6 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('ani
           <div class="lepes"><div><b>Javítás</b><p>Az adagoló, a porlasztók vagy az üzemanyag-rendszer hibás részének javítása.</p></div></div>
         </div>
       </div>
-      <figure class="rajzlap" data-be aria-label="Szemléltető rajz: dízel befecskendező (porlasztó) részei">
-        <span class="cimke">Porlasztó · szemléltető rajz</span>
-        <svg viewBox="0 0 400 500" font-family="Manrope, sans-serif" aria-hidden="true">
-          <g fill="none" stroke="#F5F1E8" stroke-width="1.6" class="injektor">
-            <rect x="170" y="44" width="60" height="38" rx="3"/>
-            <rect x="230" y="56" width="52" height="20" rx="2"/>
-            <rect x="160" y="82" width="80" height="190" rx="10"/>
-            <path d="M160 120h80M160 236h80" stroke-opacity=".35"/>
-            <rect x="122" y="128" width="38" height="16" rx="2"/>
-            <path d="M150 272h100v40H150zM167 272v40M183 272v40M217 272v40M233 272v40" />
-            <path d="M172 312h56l-8 78h-40z"/>
-            <path d="M186 390h28l-14 30z"/>
-          </g>
-          <g class="permet" stroke="var(--accent)" stroke-width="1.6" stroke-dasharray="4 5" fill="none">
-            <path d="M200 424 150 486"/><path d="M200 424 172 490"/><path d="M200 424 200 492"/><path d="M200 424 228 490"/><path d="M200 424 250 486"/>
-          </g>
-          <g stroke="#7D776C" stroke-width="1" fill="none">
-            <path d="M282 66h16"/><path d="M240 160h58"/><path d="M122 136H84"/><path d="M220 360h78"/><path d="M252 470h46"/>
-          </g>
-          <g font-size="11.5" font-weight="600" fill="#B5AE9F">
-            <text x="304" y="70">csatlakozó</text>
-            <text x="304" y="164">befecskendező</text><text x="304" y="180">test</text>
-            <text x="78" y="140" text-anchor="end">visszafolyó</text><text x="78" y="156" text-anchor="end">ág</text>
-            <text x="304" y="364">porlasztócsúcs</text>
-            <text x="304" y="474">porlasztási</text><text x="304" y="490">kép</text>
-          </g>
-        </svg>
-      </figure>
     </div>
 
     <div class="egr" data-be>
@@ -306,6 +280,8 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('ani
       <p class="label"><span class="n">03</span>3D futóműállítás</p>
       <h2 id="futo-cim" style="margin-top:16px">Precíz futóműállítás 3D technológiával</h2>
       <p class="lead" style="margin-top:18px">A kerekek állása határozza meg, hogyan tartja az irányt az autó, mennyire stabil fékezéskor és kanyarban, és hogyan kopnak a gumik. Már néhány tized fok eltérés is érezhető – a pénztárcán is.</p>
+    </div>
+    <div data-be>
       <div class="fogalmak">
         <div class="fogalom"><b>Összetartás</b><p>A kerekek szöge felülről nézve. Ha eltér, az autó húz, a gumi a szélén „radírozódik”, nő a fogyasztás.</p></div>
         <div class="fogalom"><b>Kerékdőlés</b><p>A kerék dőlése elölről nézve. Rossz értéknél a gumi egyik oldala kopik gyorsabban.</p></div>
@@ -322,50 +298,6 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('ani
           <li>Új gumik felszerelésekor</li>
         </ul>
       </div>
-    </div>
-
-    <div class="allito" data-be>
-      <div class="allito-fej">
-        <small>Szemléltetés</small>
-        <div class="kapcsolo" role="group" aria-label="Kerékállás">
-          <button type="button" aria-pressed="true" data-allapot-gomb="elotte">Beállítás előtt</button>
-          <button type="button" aria-pressed="false" data-allapot-gomb="utana">Beállítás után</button>
-        </div>
-      </div>
-      <svg viewBox="0 0 520 430" role="img" aria-labelledby="allito-leiras" font-family="Manrope, sans-serif">
-        <title id="allito-leiras">Felülnézeti rajz: beállítás előtt a kerekek szögben állnak és a gumi egyik széle kopik, beállítás után párhuzamosak, a kopás egyenletes.</title>
-        <path d="M260 20v400" stroke="rgba(22,22,24,.18)" stroke-dasharray="3 6"/>
-        <rect x="185" y="60" width="150" height="320" rx="52" fill="#F5F1E8" stroke="#161618" stroke-width="1.6"/>
-        <path d="M200 160q60-22 120 0" fill="none" stroke="#161618" stroke-opacity=".4" stroke-width="1.4"/>
-        <path d="M200 320q60 18 120 0" fill="none" stroke="#161618" stroke-opacity=".3" stroke-width="1.4"/>
-        <g class="kormany" style="transform-box:fill-box;transform-origin:center" transform="rotate(-9 260 205)">
-          <circle cx="260" cy="205" r="20" fill="none" stroke="#161618" stroke-width="3"/><path d="M240 205h40M260 205v20" stroke="#161618" stroke-width="3"/>
-        </g>
-        <path d="M170 124h180M170 316h180" stroke="#161618" stroke-opacity=".35"/>
-        <g class="fk fk-b" style="transform-box:fill-box;transform-origin:center" transform="rotate(-5 150 124)">
-          <rect x="132" y="80" width="36" height="88" rx="7" fill="#161618"/>
-          <rect class="kop k1" x="136" y="86" width="8" height="76" fill="#8C6D32" opacity=".95"/>
-          <rect class="kop k2" x="146" y="86" width="8" height="76" fill="#8C6D32" opacity=".45"/>
-          <rect class="kop k3" x="156" y="86" width="8" height="76" fill="#8C6D32" opacity=".15"/>
-          <path d="M150 80V24" stroke="#161618" stroke-width="1.4" stroke-dasharray="4 4"/>
-        </g>
-        <g class="fk fk-j" style="transform-box:fill-box;transform-origin:center" transform="rotate(4 370 124)">
-          <rect x="352" y="80" width="36" height="88" rx="7" fill="#161618"/>
-          <rect class="kop k3" x="356" y="86" width="8" height="76" fill="#8C6D32" opacity=".15"/>
-          <rect class="kop k2" x="366" y="86" width="8" height="76" fill="#8C6D32" opacity=".45"/>
-          <rect class="kop k1" x="376" y="86" width="8" height="76" fill="#8C6D32" opacity=".95"/>
-          <path d="M370 80V24" stroke="#161618" stroke-width="1.4" stroke-dasharray="4 4"/>
-        </g>
-        <g fill="#161618"><rect x="132" y="272" width="36" height="88" rx="7"/><rect x="352" y="272" width="36" height="88" rx="7"/></g>
-        <g font-size="11.5" font-weight="700" fill="#5E584D" letter-spacing="1.2"><text x="96" y="194">GUMIKOPÁS</text><text x="424" y="194" text-anchor="end">GUMIKOPÁS</text></g>
-      </svg>
-      <div class="ertekek" aria-live="polite">
-        <div class="ertek"><small>Összetartás – bal</small><b class="rossz" data-e="ob">−0°42′</b></div>
-        <div class="ertek"><small>Összetartás – jobb</small><b class="rossz" data-e="oj">+0°31′</b></div>
-        <div class="ertek"><small>Kerékdőlés – bal</small><b class="rossz" data-e="db">−1°36′</b></div>
-        <div class="ertek"><small>Kerékdőlés – jobb</small><b data-e="dj">−0°34′</b></div>
-      </div>
-      <p class="megj">Szemléltető értékek, nem valós mérés. A megengedett tartományt az autó gyári adatai határozzák meg.</p>
     </div>
   </div>
 </section>
@@ -390,13 +322,11 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('ani
 <!-- RÓLUNK -->
 <section class="sec paper rolunk" id="rolunk" aria-labelledby="rolunk-cim">
   <div class="wrap rolunk-racs">
-    <div class="foto" role="img" aria-label="Fotóhely: a műhely vagy a csapat valódi fényképe" data-be><img class="pecset" src="arculat-kombi/WEB/jel.svg" alt="">
-      <span class="ev">2008</span>
-      <b>Fotóhely</b><span>Ide a műhely, a szerelőállás vagy a 3D futóműállító valódi fotója kerül – az ügyféltől.</span>
+    <div data-be>
+      <p class="label"><span class="n">05</span>Rólunk</p>
+      <h2 id="rolunk-cim" style="margin-top:16px">Dunaújvárosi műhely, 2008 óta</h2>
     </div>
     <div class="rolunk-szoveg" data-be>
-      <p class="label"><span class="n">05</span>Rólunk</p>
-      <h2 id="rolunk-cim" style="margin:16px 0 22px">Dunaújvárosi műhely, 2008 óta</h2>
       <p>A KIRÁLY Autószerviz 2008-ban alakult Dunaújvárosban. Márkafüggetlen szervizként személyautók és kishaszonjárművek karbantartásával és javításával foglalkozunk – a napi szerviztől a dízelrendszer javításán át a 3D futóműállításig.</p>
       <p>Kérdéssel, időpontért közvetlenül a szervizt hívja – nincs ügyfélszolgálat vagy online foglaló, egyszerűen megbeszéljük, mikor hozza az autót.</p>
       <div class="alairas"><div><b>Király István</b><span>ügyvezető</span></div></div>
