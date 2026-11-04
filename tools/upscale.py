@@ -22,7 +22,9 @@ def run(img, tile=192, pad=16):
             with torch.no_grad(): o = model(x[:, :, ya:yb, xa:xb])
             out[:, :, y0*4:y1*4, x0*4:x1*4] = o[:, :, (y0-ya)*4:(y0-ya)*4+(y1-y0)*4, (x0-xa)*4:(x0-xa)*4+(x1-x0)*4]
     return Image.fromarray((out[0].clamp(0, 1).permute(1, 2, 0).numpy() * 255 + .5).astype(np.uint8))
+ONLY = sys.argv[1:] or list(IDS)
 for k, (m, e) in IDS.items():
+    if k not in ONLY: continue
     p = f"orig/{k}.{e}"
     if not os.path.exists(p):
         urllib.request.urlretrieve(f"https://static.wixstatic.com/media/4f5ae5_{m}~mv2.{e}", p)

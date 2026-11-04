@@ -5,17 +5,34 @@ on:
     paths: [tools/upscale.py, .github/workflows/upscale.yml]
 permissions:
   contents: write
+concurrency:
+  group: mokusch-4k
+  cancel-in-progress: true
 jobs:
   up:
     runs-on: ubuntu-latest
-    timeout-minutes: 300
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      matrix:
+        key: [osveny, udvar, bolt, pult1, pult2, konyha, polc1, polc2, olvaso, posta, kepfal]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: {python-version: '3.11'}
       - run: pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu && pip install spandrel pillow numpy
       - run: curl -sSL -o RealESRGAN_x4plus.pth https://github.com/xinntao/Real-ESRGAN/releases/download/v0.1.0/RealESRGAN_x4plus.pth
-      - run: python tools/upscale.py
+      - run: python tools/upscale.py ${{ matrix.key }}
+      - uses: actions/upload-artifact@v4
+        with: {name: 'k-${{ matrix.key }}', path: 'out4k/${{ matrix.key }}.webp'}
+  commit:
+    needs: up
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with: {path: out4k, merge-multiple: true}
       - run: |
+          ls -la out4k
           git config user.name "daekon-bot"; git config user.email "actions@users.noreply.github.com"
-          git add out4k orig && git commit -m "Mókusch: 4K felskálázott képek (Real-ESRGAN x4plus, Vanda eredeti Wix-képeiből)" && git push
+          git add out4k && git commit -m "Mókusch: 4K felskálázott képek (Real-ESRGAN x4plus, Vanda eredeti Wix-képeiből)" && git push
