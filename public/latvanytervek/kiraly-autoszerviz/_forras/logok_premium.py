@@ -86,7 +86,6 @@ def cimer(bg_shield, gold, inner_col, word_col, sub_col):
     sx, sy, sw, sh = cx - 62, 50, 124, 150
     g += f'<path d="{shield_path(sx, sy, sw, sh)}" fill="{bg_shield}"/>'
     g += f'<path d="{shield_path(sx, sy, sw, sh, 7)}" fill="none" stroke="{gold}" stroke-width="2.6"/>'
-    g += f'<path d="{shield_path(sx, sy, sw, sh, 12)}" fill="none" stroke="{gold}" stroke-width="1" opacity=".7"/>'
     g += piston(cx, 78, 52, inner_col, bg_shield)
     # 2008 a pajzs alján
     p, _ = txt("2008", "manrope", 9.5, 700, None, .35, cx, 170, gold)
@@ -108,7 +107,6 @@ def cimer_jel(bg_shield, gold, inner_col):
     sx, sy, sw, sh = cx - 62, 50, 124, 150
     g += f'<path d="{shield_path(sx, sy, sw, sh)}" fill="{bg_shield}"/>'
     g += f'<path d="{shield_path(sx, sy, sw, sh, 7)}" fill="none" stroke="{gold}" stroke-width="2.6"/>'
-    g += f'<path d="{shield_path(sx, sy, sw, sh, 12)}" fill="none" stroke="{gold}" stroke-width="1" opacity=".7"/>'
     g += piston(cx, 78, 52, inner_col, bg_shield)
     p, _ = txt("2008", "manrope", 9.5, 700, None, .35, cx, 170, gold)
     return g + p, (sx, 2, sx + sw, 200)
@@ -200,18 +198,13 @@ def pecset(fill, gold, inner, txtc):
     cx = cy = 100
     g = f'<circle cx="100" cy="100" r="98" fill="{fill}"/>'
     g += f'<circle cx="100" cy="100" r="92" fill="none" stroke="{gold}" stroke-width="2.4"/>'
-    g += f'<circle cx="100" cy="100" r="88" fill="none" stroke="{gold}" stroke-width=".8"/>'
     g += f'<circle cx="100" cy="100" r="62" fill="none" stroke="{gold}" stroke-width="1.4"/>'
     g += ring_text("KIRÁLY AUTÓSZERVIZ", 71, 14.5, 800, txtc, True, .2)
-    g += ring_text("DUNAÚJVÁROS", 81, 11.5, 700, gold, False, .34)
-    for a in (180, 0):
-        x = cx + 76 * math.cos(math.radians(a)); y = cy
-        g += f'<path d="{P([(x, y - 4), (x + 4, y), (x, y + 4), (x - 4, y)])}" fill="{gold}"/>'
+    g += ring_text("DUNAÚJVÁROS · 2008", 81, 11, 700, gold, False, .3)
     g += villaskulcs(cx, 112, 70, -38, inner, 10)
     g += villaskulcs(cx, 112, 70, 38, inner, 10)
     g += crown(cx, 70, 40, 21, gold)
-    p, _ = txt("2008", "manrope", 9, 700, None, .35, cx, 150, gold)
-    return g + p, (2, 2, 198, 198)
+    return g, (2, 2, 198, 198)
 
 
 # ---------------------------------------------------------- 3) HATSZÖG – gyújtógyertya + korona
@@ -221,7 +214,6 @@ def hatszog(fill, gold, inner, txtc):
     hx = lambda R: [(cx + R * math.cos(math.radians(a)), cy + R * math.sin(math.radians(a))) for a in range(-90, 270, 60)]
     g = f'<path d="{P(hx(98))}" fill="{fill}"/>'
     g += f'<path d="{P(hx(91))}" fill="none" stroke="{gold}" stroke-width="2.4" stroke-linejoin="round"/>'
-    g += f'<path d="{P(hx(86))}" fill="none" stroke="{gold}" stroke-width=".8" stroke-linejoin="round"/>'
     g += crown(cx, 44, 34, 18, gold)
     g += gyertya(cx + 2.5, 54, 62, inner, gold, "#8C9AAC")
     g += f'<rect x="52" y="124" width="96" height="1" fill="{gold}"/>'
@@ -249,16 +241,15 @@ def szarnyas(fill, gold, inner, txtc):
     cx, cy = 150, 78
     g = ""
     for side in (-1, 1):
-        for i in range(5):
-            y = cy - 14 + i * 9
+        for i in range(3):
+            y = cy - 11 + i * 11
             x0 = cx + side * 48
-            ln = 92 - i * 14
-            t = 7.2 - i * .6
+            ln = 84 - i * 20
+            t = 7.4 - i * .8
             x1 = x0 + side * ln
             g += f'<path d="{P([(x0, y), (x1, y - 6 + i * 1.2), (x1 - side * 6, y + t - 6 + i * 1.2), (x0, y + t)])}" fill="{gold}"/>'
     g += f'<circle cx="{cx}" cy="{cy}" r="50" fill="{fill}"/>'
     g += f'<circle cx="{cx}" cy="{cy}" r="45" fill="none" stroke="{gold}" stroke-width="2.4"/>'
-    g += f'<circle cx="{cx}" cy="{cy}" r="41.5" fill="none" stroke="{gold}" stroke-width=".8"/>'
     if KORONA[0]:
         m, mb = jel_anya(inner, gold)
     else:
@@ -281,7 +272,6 @@ def tabla(fill, gold, inner, txtc):
         return f"M{f(x)} {f(y + r)}A{f(r)} {f(r)} 0 0 1 {f(x + w)} {f(y + r)}V{f(y + h - 8)}Q{f(x + w)} {f(y + h)} {f(x + w - 8)} {f(y + h)}H{f(x + 8)}Q{f(x)} {f(y + h)} {f(x)} {f(y + h - 8)}Z"
     g = f'<path d="{plaque(0)}" fill="{fill}"/>'
     g += f'<path d="{plaque(7)}" fill="none" stroke="{gold}" stroke-width="2.4"/>'
-    g += f'<path d="{plaque(11.5)}" fill="none" stroke="{gold}" stroke-width=".8"/>'
     g += crown(W / 2, 46, 44, 23, gold)
     d, db = sym_dial(dict(ink=inner, metal="#8C9AAC", accent=gold, ids=itertools.count(1)))
     k = 86 / (db[3] - db[1])
@@ -305,6 +295,10 @@ PALETTAK = {
     "ejkek-arany": ("#0E1B2C", "#13243A", "#C9A14F", "#F6F2EA"),
     "versenyzold-sargarez": ("#0F2A24", "#143630", "#C9A15A", "#F3F1EA"),
     "fekete-pezsgoarany": ("#0B0B0C", "#151517", "#D8BE84", "#F5F1E8"),
+    "grafit-acelezust": ("#16191D", "#1F2328", "#B9C1C9", "#F3F4F5"),
+    "petrol-rez": ("#0C2B33", "#123640", "#C48A5A", "#F4F0EA"),
+    "tengereszkek-ezust": ("#13294B", "#1A355E", "#C7CED6", "#F2F4F7"),
+    "grafit-narancs": ("#11161C", "#1A2129", "#F26732", "#F4F5F2"),
 }
 TIPUSOK = [("1-cimer", cimer, 30), ("2-pecset", pecset, 24), ("3-hatszog", hatszog, 24), ("4-szarnyas", szarnyas, 26), ("5-tabla", tabla, 26)]
 
@@ -313,7 +307,7 @@ def main():
     global NAVY, GOLD, CREAM
     shutil.rmtree(OUT, ignore_errors=True)
     for pal, (navy, d, gold, cream) in PALETTAK.items():
-        for korona in (True, False):
+        for korona in ((True, False) if pal == "ejkek-arany" else (False,)):
             KORONA[0] = korona
             mappa = os.path.join(OUT, f"{pal}-{'koronaval' if korona else 'korona-nelkul'}")
             os.makedirs(mappa)
