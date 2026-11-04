@@ -47,10 +47,11 @@ WIX = {
 }
 
 
-def wimg(key, w, h):
+def wimg(key, w, h, sharp=False):
     mid, ext, _ = WIX[key]
+    q = "q_90,usm_0.66_1.00_0.01," if sharp else "q_82,"
     return (f"https://static.wixstatic.com/media/4f5ae5_{mid}~mv2.{ext}"
-            f"/v1/fill/w_{w},h_{h},al_c,q_82,enc_auto/mokusch-{key}.{ext}")
+            f"/v1/fill/w_{w},h_{h},al_c,{q}enc_auto/mokusch-{key}.{ext}")
 
 
 def img(key, ratio=(4, 5), sizes="(max-width: 899px) 90vw, 460px", eager=False, parallax=False):

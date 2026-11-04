@@ -299,12 +299,13 @@
       cur = Math.abs(d) < 0.00008 || Math.abs(d) > 0.2 ? tgt : cur + d * (1 - Math.exp(-dt / 0.14));
       render(cur);
       sraf = cur === tgt ? 0 : requestAnimationFrame(follow);
-      if (!sraf) slast = 0;
+      if (!sraf) { slast = 0; clearTimeout(still); still = setTimeout(function () { J.classList.remove('is-moving'); }, 180); }
     };
+    var still = 0;
     M.scroll(function (a) {
       var v = typeof a === 'number' ? a : (a && a.y ? a.y.progress : 0);
       if (!FULL) { render(v); return; }
-      tgt = v; if (!sraf) sraf = requestAnimationFrame(follow);
+      tgt = v; clearTimeout(still); J.classList.add('is-moving'); if (!sraf) sraf = requestAnimationFrame(follow);
     }, { target: J, offset: ['start start', 'end end'] });
 
     // nyitás: a cím soronként érkezik
@@ -334,55 +335,76 @@
     if (tb && FULL) M.scroll(M.animate(tb, { scaleX: [0.94, 1.04], rotate: [-1, 1] }, { ease: 'linear' }), { target: tb.parentElement, offset: ['start end', 'end start'] });
   }
 
-  /* ---------------- végig az oldalon: kísérő szentjánosbogarak ----------------
-     Egy rögzített, kattintást átengedő vászon. A fények mélységük szerint lassabban/gyorsabban
-     úsznak a görgetéssel (parallax), így lefelé haladva „elhaladunk” mellettük. A mese
-     (ragadós út) alatt elhalványulnak, ott a saját fényei vannak. Csak teljes mozgásnál. */
+  /* ---------------- végig az oldalon: röpködő szentjánosbogarak ----------------
+     Egy rögzített, kattintást átengedő vászon az egész oldalon (a mese alatt is). Minden fény
+     saját útvonalon repül: kanyarog, néha megáll lebegni, néha meglódul; pulzálva felvillan,
+     halvány fénycsíkot húz maga után. Görgetéskor mélységük szerint elúsznak (parallax).
+     Csak teljes mozgásnál fut, rejtett lapon megáll. */
   if (FULL) (function () {
     var c = document.createElement('canvas'); c.className = 'siteflies'; c.setAttribute('aria-hidden', 'true');
     document.body.appendChild(c);
-    var ctx = c.getContext('2d'), w = 0, h = 0, P = [], sprite, level = 0, want = 1, raf = 0, last = 0, t = 0, sy = window.scrollY;
+    var ctx = c.getContext('2d'), w = 0, h = 0, P = [], sprite, raf = 0, last = 0, t = 0, sy = window.scrollY, R = Math.random;
     var mk = function () {
       var s = document.createElement('canvas'); s.width = s.height = 64;
       var g = s.getContext('2d'), gr = g.createRadialGradient(32, 32, 0, 32, 32, 32);
-      gr.addColorStop(0, 'rgba(255,252,232,1)'); gr.addColorStop(0.14, 'rgba(246,200,96,.9)');
-      gr.addColorStop(0.4, 'rgba(226,168,64,.28)'); gr.addColorStop(1, 'rgba(226,168,64,0)');
+      gr.addColorStop(0, 'rgba(255,253,236,1)'); gr.addColorStop(0.12, 'rgba(255,214,110,.95)');
+      gr.addColorStop(0.36, 'rgba(240,176,60,.32)'); gr.addColorStop(1, 'rgba(240,176,60,0)');
       g.fillStyle = gr; g.fillRect(0, 0, 64, 64); sprite = s;
     };
+    var fly = function () {
+      return { x: R() * w, y: R() * h, d: 0.35 + R() * 0.8, s: 13 + R() * 15, a: R() * 6.283, av: 0, sp: 0,
+        mode: 0, until: R() * 3, tw: 0.6 + R() * 0.9, tp: R() * 6.283, tr: [] };
+    };
     var size = function () {
+      var ow = w || innerWidth, oh = h || innerHeight;
       w = innerWidth; h = innerHeight; var dpr = Math.min(window.devicePixelRatio || 1, 1.5);
       c.width = Math.round(w * dpr); c.height = Math.round(h * dpr); ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      var n = w < 600 ? 9 : w < 1100 ? 13 : 17, R = Math.random;
-      while (P.length < n) P.push({ x: R(), y: R(), d: 0.25 + R() * 0.9, s: 8 + R() * 14, ax: 10 + R() * 30, ay: 8 + R() * 22,
-        fx: (0.04 + R() * 0.08) * 6.283, fy: (0.03 + R() * 0.07) * 6.283, px: R() * 6.283, py: R() * 6.283,
-        tw: (0.2 + R() * 0.6) * 6.283, tp: R() * 6.283, vy: -(0.004 + R() * 0.01) });
+      P.forEach(function (q) { q.x *= w / ow; q.y *= h / oh; q.tr.length = 0; });
+      var n = w < 600 ? 10 : w < 1100 ? 14 : 18;
+      while (P.length < n) P.push(fly());
       P.length = n;
     };
     mk(); size(); window.addEventListener('resize', size);
-    var jr = J ? $('.journey__sticky', J) : null, inJ = false;
-    if (jr && 'IntersectionObserver' in window) new IntersectionObserver(function (es) { inJ = es[0].isIntersecting; want = inJ ? 0 : 1; go(); }, { rootMargin: '-45% 0px -45% 0px' }).observe(J);
     window.addEventListener('scroll', function () {
       var y = window.scrollY, dy = y - sy; sy = y;
       if (Math.abs(dy) > h) return;
-      for (var i = 0; i < P.length; i++) { var q = P[i]; q.y -= dy * q.d * 0.55 / h; q.y = q.y < -0.1 ? q.y + 1.2 : q.y > 1.1 ? q.y - 1.2 : q.y; }
-      go();
+      for (var i = 0; i < P.length; i++) { var q = P[i], m = dy * q.d * 0.5; q.y -= m; for (var k = 0; k < q.tr.length; k++) q.tr[k].y -= m; }
     }, { passive: true });
     var tick = function (now) {
       var dt = last ? Math.min((now - last) / 1000, 0.05) : 0; last = now; t += dt;
-      level += (want - level) * (1 - Math.exp(-dt / 0.5));
       ctx.clearRect(0, 0, w, h);
-      if (level > 0.01) for (var i = 0; i < P.length; i++) {
-        var q = P[i]; q.y += q.vy * dt; if (q.y < -0.1) { q.y = 1.08; q.x = Math.random(); }
-        var tw = 0.5 + 0.5 * Math.sin(t * q.tw + q.tp), a = (0.3 + 0.7 * tw * tw) * level * (0.65 + 0.35 * q.d);
-        var x = q.x * w + Math.sin(t * q.fx + q.px) * q.ax + Math.sin(t * q.fx * 0.41 + q.px * 1.9) * q.ax * 0.4;
-        var y = q.y * h + Math.cos(t * q.fy + q.py) * q.ay, s = q.s * (0.7 + q.d * 0.6) * (0.85 + tw * 0.25);
-        ctx.globalAlpha = a > 1 ? 1 : a; ctx.drawImage(sprite, x - s / 2, y - s / 2, s, s);
+      for (var i = 0; i < P.length; i++) {
+        var q = P[i];
+        // viselkedés: 0 = nyugodt röpködés, 1 = lebegés egy helyben, 2 = rövid meglódulás
+        q.until -= dt;
+        if (q.until <= 0) { var r = R(); q.mode = r < 0.6 ? 0 : r < 0.85 ? 1 : 2; q.until = q.mode === 2 ? 0.5 + R() * 0.7 : 1.5 + R() * 3.5; }
+        var tsp = (q.mode === 1 ? 6 : q.mode === 2 ? 120 : 38) * (0.6 + q.d * 0.6);
+        q.sp += (tsp - q.sp) * (1 - Math.exp(-dt * 2.2));
+        q.av += ((R() - 0.5) * 9 - q.av * 1.6) * dt;                      // sima, szabálytalan kanyarodás
+        q.a += q.av * dt * (q.mode === 1 ? 2.5 : 1);
+        q.x += Math.cos(q.a) * q.sp * dt; q.y += Math.sin(q.a) * q.sp * dt - 4 * dt;
+        var bx = q.x + Math.sin(t * 2.1 + q.tp) * 3, by = q.y + Math.cos(t * 2.7 + q.tp) * 4;   // apró szárnycsapkodás-remegés
+        var m = 40;
+        if (q.x < -m || q.x > w + m || q.y < -m || q.y > h + m) {          // kirepült: a túloldalon visszajön
+          q.x = q.x < -m ? w + m * 0.8 : q.x > w + m ? -m * 0.8 : q.x;
+          q.y = q.y < -m ? h + m * 0.8 : q.y > h + m ? -m * 0.8 : q.y; q.tr.length = 0;
+        }
+        // pulzáló felvillanás, mint az igazi szentjánosbogáré
+        var ph = (t * q.tw + q.tp) % 3, glow = ph < 1.6 ? Math.sin(ph / 1.6 * Math.PI) : 0;
+        var al = (0.3 + 0.7 * glow) * (0.7 + 0.3 * q.d), s = q.s * (0.7 + q.d * 0.5) * (0.8 + 0.3 * glow);
+        // fénycsík
+        q.tr.push({ x: bx, y: by }); if (q.tr.length > 7) q.tr.shift();
+        for (var k = 0; k < q.tr.length - 1; k++) {
+          var f = (k + 1) / q.tr.length; ctx.globalAlpha = al * f * 0.22;
+          var ts = s * (0.35 + 0.4 * f); ctx.drawImage(sprite, q.tr[k].x - ts / 2, q.tr[k].y - ts / 2, ts, ts);
+        }
+        ctx.globalAlpha = al > 1 ? 1 : al; ctx.drawImage(sprite, bx - s / 2, by - s / 2, s, s);
       }
       ctx.globalAlpha = 1;
-      if (document.hidden || (want === 0 && level < 0.01)) { raf = 0; last = 0; ctx.clearRect(0, 0, w, h); return; }
+      if (document.hidden) { raf = 0; last = 0; return; }
       raf = requestAnimationFrame(tick);
     };
-    var go = function () { if (!raf && !document.hidden && (want || level > 0.01)) raf = requestAnimationFrame(tick); };
+    var go = function () { if (!raf && !document.hidden) raf = requestAnimationFrame(tick); };
     document.addEventListener('visibilitychange', go); go();
   })();
 

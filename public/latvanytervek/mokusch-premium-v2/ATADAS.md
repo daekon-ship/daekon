@@ -259,3 +259,8 @@ Playwright, 360 / 390 / 768 / 1024 / 1440 / 1920 px: vízszintes túlcsordulás 
 - **Szentjánosbogarak végig az oldalon:** egy rögzített, kattintást átengedő vászon az összes V2 aloldalon. A fények mélység szerinti parallaxszal úsznak a görgetéssel. A mese alatt elhalványulnak, ott a mese saját fényei vannak. Csak teljes mozgásnál látszanak; csökkentett mozgásnál és nyomtatásban nincsenek.
 - **Javítás (tortarendelés, ≥980 px):** a ragadós lépéslista eddig rácsúszott az alatta lévő tájékoztató szövegre. Most a teljes oldalsáv ragad.
 - **Illusztrációk:** továbbra is Vanda saját képei. Új, AI-val generált jelenetképek nem készültek, mert ebben a környezetben nincs képgeneráló. Ha készül ilyen, az ügyfél jóváhagyása kell hozzá.
+
+## Mesekönyves továbbfejlesztés, 5. kör
+
+- **Élesebb képek:** a mese képein a `will-change: transform` csak görgetés közben él. Megálláskor a böngésző élesen újrarajzolja a képet, nem a korábbi kisebb rajzolatot nyújtja. A papírszemcse 0,45-ről 0,2-re halványodott. A Wix-képek q_90 minőséggel és enyhe élesítéssel (`usm`) érkeznek, 4K-ig (3840 px) érkező srcset-tel. A végső élesség attól függ, mekkora Vanda eredeti feltöltése a Wixen; nagyobb eredetivel élesebb lehet.
+- **Röpködő szentjánosbogarak:** az egész oldalon, a mese alatt is folyamatosan repülnek. Kanyarognak, néha lebegnek, néha meglódulnak, pulzálva villannak fel, halvány fénycsíkot húznak. Csak teljes mozgásnál.
