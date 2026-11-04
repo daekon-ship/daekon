@@ -13,7 +13,6 @@ PAL = [  # név, sötét, panel, kiemelő, világos, alcím világoson, alcím s
     ("grafit-acelezust", "Grafit – acélezüst", "#16191D", "#1F2328", "#B9C1C9", "#F3F4F5", "#4E555D", "#B4BBC2"),
     ("petrol-rez", "Petrol – réz", "#0C2B33", "#123640", "#C48A5A", "#F4F0EA", "#3D5A61", "#B7C9CC"),
     ("tengereszkek-ezust", "Tengerészkék – ezüst", "#13294B", "#1A355E", "#C7CED6", "#F2F4F7", "#43567A", "#B6C2D3"),
-    ("grafit-narancs", "Grafit – narancs", "#12161B", "#1B2128", "#F26732", "#F4F5F2", "#46505B", "#B4BCC4"),
 ]
 ACC_VILAGOS = {"grafit-acelezust": "#7E8894", "tengereszkek-ezust": "#7A879C", "fekete-pezsgoarany": "#B39552"}
 FORMAK = [("1", "Kör alakú szervizembléma", L.kor_emblema), ("2", "Precíziós műszer", L.muszer_emblema), ("3", "Szárnyas kormány", L.szarnyas_emblema)]
@@ -60,12 +59,12 @@ def main():
             th.p i{{width:20px;height:20px;border-radius:50%;display:block;border:1px solid rgba(0,0,0,.15)}}
             td{{width:540px;height:400px;text-align:center;vertical-align:middle;padding:34px}}td img{{max-width:100%;max-height:330px}}
             .foot{{display:flex;justify-content:space-between;border-top:1px solid #14171B;padding-top:20px;margin-top:16px;font:600 15px M;color:#5B6066}}</style></head><body>
-            <div class="top"><h1>KIRÁLY Autószerviz – logók hét színvilágban</h1><p>{title}<br>2026 · DAEKON</p></div>
+            <div class="top"><h1>KIRÁLY Autószerviz – logók hat színvilágban</h1><p>{title}<br>2026 · DAEKON</p></div>
             <table><tr><th></th>{head}</tr>{rows}</table><div class="foot"><span>Jóváhagyásra váró tervek</span><span>daekon.hu</span></div></body></html>"""
             open(tmp, "w").write(html)
             p2 = b.new_page(device_scale_factor=2, viewport={"width": 2000, "height": 1000})
             p2.goto("file://" + tmp); p2.wait_for_timeout(800)
-            p2.screenshot(path=os.path.join(OUT, f"kiraly-logok-7-szin-{tag}.png"), full_page=True); p2.close()
+            p2.screenshot(path=os.path.join(OUT, f"kiraly-logok-6-szin-{tag}.png"), full_page=True); p2.close()
         os.unlink(tmp); b.close()
 
 
