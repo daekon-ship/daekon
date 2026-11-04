@@ -5,7 +5,7 @@ build.py-t másik kimeneti mappával használja – arra ez a réteg nem kerül 
 """
 import html
 
-SB_VER = "6"
+SB_VER = "7"
 PALETTES = [("erdei", "Erdei", "#4E5A39", "#D9BBAC"),
             ("puder", "Púderes", "#6B6E4E", "#D8AFA3"),
             ("arany", "Aranyló", "#475436", "#C9A45C")]

@@ -252,3 +252,10 @@ html:not(.anim) .jscene{-webkit-mask:var(--wc-page) center/100% 100% no-repeat;m
 
 /* csökkentett mozgás: a lebegő/ringó díszmozgás áll, a tartalom látszik */
 @media (prefers-reduced-motion:reduce){.journey__light::after,.journey__hint i{animation:none!important}}
+/* kuckó: befelé haladva meleg félhomály a kép szélein, átlépéskor egy pillanatra összeszűkül (mint egy ajtónyílás) */
+.journey__cozy{position:absolute;inset:0;z-index:3;pointer-events:none;opacity:0;will-change:opacity;
+  background:radial-gradient(120% 95% at 50% 52%,rgba(60,34,18,0) 46%,rgba(60,34,18,.44) 76%,rgba(38,20,10,.8) 100%)}
+@media (max-width:899px){.journey__cozy{background:radial-gradient(140% 85% at 50% 50%,rgba(60,34,18,0) 44%,rgba(60,34,18,.36) 76%,rgba(38,20,10,.68) 100%)}}
+/* végig az oldalon kísérő fények */
+.siteflies{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:50}
+@media print{.siteflies{display:none}}

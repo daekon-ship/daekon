@@ -276,10 +276,36 @@
       if (ffF) ffF.setLevel(1 - ease(seg(p, forestEnd - 0.05, forestEnd + 0.03)));
       if (ffW) ffW.setLevel(ease(seg(p, insideAt, insideAt + 0.05)) * (0.5 + 0.5 * seg(p, 0.86, 0.95)));
     };
+    // kuckó-fény: ahogy beljebb jutunk, a kép széle meleg félhomályba süllyed; minden „átlépésnél” egy pillanatra összeszűkül
+    var cozy = document.createElement('div'); cozy.className = 'journey__cozy'; cozy.setAttribute('aria-hidden', 'true');
+    if (light && light.parentNode) light.parentNode.insertBefore(cozy, light.nextSibling);
+    var baseRender = render;
+    render = function (p) {
+      baseRender(p);
+      var tun = 0;
+      for (var i = 0; i < scenes.length; i++) {
+        var s = scenes[i]; if (s.c > 1) continue;
+        var x = seg(p, s.c - (s.d - s.c) * 0.6, s.d); tun = Math.max(tun, Math.sin(Math.PI * x));
+      }
+      cozy.style.opacity = clamp(0.08 + 0.62 * ease(seg(p, insideAt - 0.04, 0.92)) + 0.3 * tun, 0, 1).toFixed(3);
+    };
     render(0);
-    // natív görgetés követése (Motion scroll) – a pillanatnyi görgetési állásból számol, így visszafelé is pontos
-    M.scroll(function (a) { render(typeof a === 'number' ? a : (a && a.y ? a.y.progress : 0)); },
-      { target: J, offset: ['start start', 'end end'] });
+    // natív görgetés követése (Motion scroll) – a pillanatnyi görgetési állásból számol, így visszafelé is pontos.
+    // Teljes módban a kép puhán, kis késéssel követi a görgetést (a görgetést nem vesszük át, csak a rajzolást simítjuk).
+    var tgt = 0, cur = 0, sraf = 0, slast = 0;
+    var follow = function (now) {
+      var dt = slast ? Math.min((now - slast) / 1000, 0.05) : 0.016; slast = now;
+      var d = tgt - cur;
+      cur = Math.abs(d) < 0.00008 || Math.abs(d) > 0.2 ? tgt : cur + d * (1 - Math.exp(-dt / 0.14));
+      render(cur);
+      sraf = cur === tgt ? 0 : requestAnimationFrame(follow);
+      if (!sraf) slast = 0;
+    };
+    M.scroll(function (a) {
+      var v = typeof a === 'number' ? a : (a && a.y ? a.y.progress : 0);
+      if (!FULL) { render(v); return; }
+      tgt = v; if (!sraf) sraf = requestAnimationFrame(follow);
+    }, { target: J, offset: ['start start', 'end end'] });
 
     // nyitás: a cím soronként érkezik
     if (FULL) {
@@ -307,6 +333,58 @@
     var tb = $('.tortaband__card .wash');
     if (tb && FULL) M.scroll(M.animate(tb, { scaleX: [0.94, 1.04], rotate: [-1, 1] }, { ease: 'linear' }), { target: tb.parentElement, offset: ['start end', 'end start'] });
   }
+
+  /* ---------------- végig az oldalon: kísérő szentjánosbogarak ----------------
+     Egy rögzített, kattintást átengedő vászon. A fények mélységük szerint lassabban/gyorsabban
+     úsznak a görgetéssel (parallax), így lefelé haladva „elhaladunk” mellettük. A mese
+     (ragadós út) alatt elhalványulnak, ott a saját fényei vannak. Csak teljes mozgásnál. */
+  if (FULL) (function () {
+    var c = document.createElement('canvas'); c.className = 'siteflies'; c.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(c);
+    var ctx = c.getContext('2d'), w = 0, h = 0, P = [], sprite, level = 0, want = 1, raf = 0, last = 0, t = 0, sy = window.scrollY;
+    var mk = function () {
+      var s = document.createElement('canvas'); s.width = s.height = 64;
+      var g = s.getContext('2d'), gr = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+      gr.addColorStop(0, 'rgba(255,252,232,1)'); gr.addColorStop(0.14, 'rgba(246,200,96,.9)');
+      gr.addColorStop(0.4, 'rgba(226,168,64,.28)'); gr.addColorStop(1, 'rgba(226,168,64,0)');
+      g.fillStyle = gr; g.fillRect(0, 0, 64, 64); sprite = s;
+    };
+    var size = function () {
+      w = innerWidth; h = innerHeight; var dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      c.width = Math.round(w * dpr); c.height = Math.round(h * dpr); ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      var n = w < 600 ? 9 : w < 1100 ? 13 : 17, R = Math.random;
+      while (P.length < n) P.push({ x: R(), y: R(), d: 0.25 + R() * 0.9, s: 8 + R() * 14, ax: 10 + R() * 30, ay: 8 + R() * 22,
+        fx: (0.04 + R() * 0.08) * 6.283, fy: (0.03 + R() * 0.07) * 6.283, px: R() * 6.283, py: R() * 6.283,
+        tw: (0.2 + R() * 0.6) * 6.283, tp: R() * 6.283, vy: -(0.004 + R() * 0.01) });
+      P.length = n;
+    };
+    mk(); size(); window.addEventListener('resize', size);
+    var jr = J ? $('.journey__sticky', J) : null, inJ = false;
+    if (jr && 'IntersectionObserver' in window) new IntersectionObserver(function (es) { inJ = es[0].isIntersecting; want = inJ ? 0 : 1; go(); }, { rootMargin: '-45% 0px -45% 0px' }).observe(J);
+    window.addEventListener('scroll', function () {
+      var y = window.scrollY, dy = y - sy; sy = y;
+      if (Math.abs(dy) > h) return;
+      for (var i = 0; i < P.length; i++) { var q = P[i]; q.y -= dy * q.d * 0.55 / h; q.y = q.y < -0.1 ? q.y + 1.2 : q.y > 1.1 ? q.y - 1.2 : q.y; }
+      go();
+    }, { passive: true });
+    var tick = function (now) {
+      var dt = last ? Math.min((now - last) / 1000, 0.05) : 0; last = now; t += dt;
+      level += (want - level) * (1 - Math.exp(-dt / 0.5));
+      ctx.clearRect(0, 0, w, h);
+      if (level > 0.01) for (var i = 0; i < P.length; i++) {
+        var q = P[i]; q.y += q.vy * dt; if (q.y < -0.1) { q.y = 1.08; q.x = Math.random(); }
+        var tw = 0.5 + 0.5 * Math.sin(t * q.tw + q.tp), a = (0.3 + 0.7 * tw * tw) * level * (0.65 + 0.35 * q.d);
+        var x = q.x * w + Math.sin(t * q.fx + q.px) * q.ax + Math.sin(t * q.fx * 0.41 + q.px * 1.9) * q.ax * 0.4;
+        var y = q.y * h + Math.cos(t * q.fy + q.py) * q.ay, s = q.s * (0.7 + q.d * 0.6) * (0.85 + tw * 0.25);
+        ctx.globalAlpha = a > 1 ? 1 : a; ctx.drawImage(sprite, x - s / 2, y - s / 2, s, s);
+      }
+      ctx.globalAlpha = 1;
+      if (document.hidden || (want === 0 && level < 0.01)) { raf = 0; last = 0; ctx.clearRect(0, 0, w, h); return; }
+      raf = requestAnimationFrame(tick);
+    };
+    var go = function () { if (!raf && !document.hidden && (want || level > 0.01)) raf = requestAnimationFrame(tick); };
+    document.addEventListener('visibilitychange', go); go();
+  })();
 
   // újratöltés után (a böngésző visszaállítja a görgetést) a fények méretét újraszámoljuk
   window.addEventListener('pageshow', function () { flies.forEach(function (f) { f.resize(); f.update(); if (!f.loop) f.drawStatic(); }); });

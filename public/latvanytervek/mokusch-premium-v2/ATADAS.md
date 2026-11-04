@@ -251,3 +251,11 @@ GSAP, Three.js/WebGL, React Bits, HorizonX **nincs** a tervben, és nem is szük
 ## 9. Minőségellenőrzés
 
 Playwright, 360 / 390 / 768 / 1024 / 1440 / 1920 px: vízszintes túlcsordulás nincs egyik oldalon sem, konzolhiba nincs; a tortarendelő végigkattintva (hibaüzenetek, frissítés utáni visszatöltés, összegzés, szimulált küldés) és az asztalfoglalás időpontjai tesztelve.
+
+## Mesekönyves továbbfejlesztés, 4. kör
+
+- **Simított mozgás:** teljes mozgásnál a mese képei puha késleltetéssel (~0,15 s) követik a görgetést. A görgetést nem vesszük át, csak a rajzolás finomabb. Nagy ugrásnál (menü, horgony) nincs késleltetés.
+- **Kuckó-fény:** a boltajtó után a kép széle egyre melegebb félhomályba süllyed. Minden átlépésnél egy pillanatra összeszűkül, mint egy ajtónyílás.
+- **Szentjánosbogarak végig az oldalon:** egy rögzített, kattintást átengedő vászon az összes V2 aloldalon. A fények mélység szerinti parallaxszal úsznak a görgetéssel. A mese alatt elhalványulnak, ott a mese saját fényei vannak. Csak teljes mozgásnál látszanak; csökkentett mozgásnál és nyomtatásban nincsenek.
+- **Javítás (tortarendelés, ≥980 px):** a ragadós lépéslista eddig rácsúszott az alatta lévő tájékoztató szövegre. Most a teljes oldalsáv ragad.
+- **Illusztrációk:** továbbra is Vanda saját képei. Új, AI-val generált jelenetképek nem készültek, mert ebben a környezetben nincs képgeneráló. Ha készül ilyen, az ügyfél jóváhagyása kell hozzá.
