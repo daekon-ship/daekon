@@ -18,7 +18,10 @@ def plug(cx, top, H, col, spark, met, halo=None):
 
 def emblema(pn, gold, cream, kulcs_szin, variant="A"):
     cx = cy = 100
-    g = f'<circle cx="100" cy="100" r="98" fill="{pn}"/>' + ring(100, 100, 93, 2.6, gold) + ring(100, 100, 66, 1.1, gold)
+    if variant == "B":  # dupla külső gyűrű, belső kör nélkül
+        g = f'<circle cx="100" cy="100" r="98" fill="{pn}"/>' + ring(100, 100, 94, 2.2, gold) + ring(100, 100, 89.5, .9, gold) + ring(100, 100, 66, .9, gold)
+    else:
+        g = f'<circle cx="100" cy="100" r="98" fill="{pn}"/>' + ring(100, 100, 93, 2.6, gold) + ring(100, 100, 66, 1.1, gold)
     g += arc_text("KIRÁLY", "archivo", 79, 21, 760, 112, cream, True, .2, 100, 100)
     g += arc_text("AUTÓSZERVIZ · DUNAÚJVÁROS", "manrope", 79.5, 8.8, 800, None, gold, False, .22, 100, 100)
     # 20 · 08 két oldalt
@@ -29,6 +32,16 @@ def emblema(pn, gold, cream, kulcs_szin, variant="A"):
     g += villaskulcs(cx, 101, 96, -42, kulcs_szin, 11) + villaskulcs(cx, 101, 96, 42, kulcs_szin, 11)
     g += plug(cx, 50, 92, cream, gold, "#8C9AAC", halo=pn)
     return g, (2, 2, 198, 198)
+
+
+def vegleges():
+    d = os.path.join(OUT, "VEGLEGES"); os.makedirs(d, exist_ok=True)
+    bg, pn, gold, cream = PAL["fekete-pezsgoarany"]
+    b, bb = emblema(pn, gold, cream, gold, "A")
+    open(os.path.join(d, "1-kiraly-logo-fekete-pezsgoarany.svg"), "w").write(svg(b, bb, 0, None, "KIRÁLY Autószerviz – logó"))
+    bg, pn, gold, cream = PAL["ejkek-arany"]
+    b, bb = emblema(pn, gold, cream, cream, "B")
+    open(os.path.join(d, "2-kiraly-logo-ejkek-arany.svg"), "w").write(svg(b, bb, 0, None, "KIRÁLY Autószerviz – logó"))
 
 
 def main():
@@ -42,3 +55,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    vegleges()
