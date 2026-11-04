@@ -229,24 +229,21 @@
         if (p > s.a - 0.06) { swapSrc(s.el); swapSrc(scenes[i + 1] && scenes[i + 1].el); }   // előre töltjük a következőt
         if (!vis) continue;
         var z, o = 1;
-        if (FULL) {
-          var zIn = i === 0 ? 1 : 0.72 + 0.28 * easeOut(r);
-          z = zIn * (1 + 0.12 * h) * (1 + (mob ? 1.7 : 2.4) * x * x);
-          var prev = scenes[i - 1];
-          var bl = i > 0 && r < 1 && !!prev;
-          if (bl !== s.bloom) { s.bloom = bl; s.el.classList.toggle('is-bloom', bl); }
-          if (bl) {
-            // a folt az előző kép fókuszpontjából nő ki (az előző kép e pont felé nagyul, így az a pont áll)
-            var diag = Math.sqrt(FW * FW + FH * FH);
-            var bs = 3.4 * diag * Math.pow(ease(r), 1.7);
-            s.el.style.setProperty('--bs', bs.toFixed(1) + 'px');
-            s.el.style.setProperty('--bp', (prev.fx * FW - bs / 2).toFixed(1) + 'px ' + (prev.fy * FH - bs / 2).toFixed(1) + 'px');
-            o = clamp(r * 6, 0, 1);
-          }
-        } else {
-          // csökkentett mozgás: csak lágy áttűnés, alig érezhető közelítés
-          z = 1 + 0.03 * h;
-          o = ease(r);
+        // a „belépés” (ránk növő kép + akvarellfoltként kinyíló következő jelenet) a mese lényege, ezért
+        // csökkentett mozgásnál is megmarad – csak lassabb, kisebb közelítéssel, repülő fények nélkül
+        var A = FULL ? 1 : 0.45;
+        var zIn = i === 0 ? 1 : 1 - (0.28 * A) * (1 - easeOut(r));
+        z = zIn * (1 + 0.12 * A * h) * (1 + (mob ? 1.7 : 2.4) * A * x * x);
+        var prev = scenes[i - 1];
+        var bl = i > 0 && r < 1 && !!prev;
+        if (bl !== s.bloom) { s.bloom = bl; s.el.classList.toggle('is-bloom', bl); }
+        if (bl) {
+          // a folt az előző kép fókuszpontjából nő ki (az előző kép e pont felé nagyul, így az a pont áll)
+          var diag = Math.sqrt(FW * FW + FH * FH);
+          var bs = 3.4 * diag * Math.pow(ease(r), 1.7);
+          s.el.style.setProperty('--bs', bs.toFixed(1) + 'px');
+          s.el.style.setProperty('--bp', (prev.fx * FW - bs / 2).toFixed(1) + 'px ' + (prev.fy * FH - bs / 2).toFixed(1) + 'px');
+          o = clamp(r * 6, 0, 1);
         }
         s.el.style.opacity = o.toFixed(3);
         s.inner.style.transform = 'scale(' + z.toFixed(4) + ')';

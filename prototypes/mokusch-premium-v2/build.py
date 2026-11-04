@@ -185,6 +185,7 @@ def head(title, desc, prefix, extra=""):
      feltárások, ikonmozgás). A láblécben a látogató átkapcsolhat (localStorage). */
   (function(){{var d=document.documentElement,m='';d.classList.add('js');
   try{{m=localStorage.getItem('mokusch-motion')||''}}catch(e){{}}
+  if(/[?&]mozgas=teljes/.test(location.search)){{m='full';try{{localStorage.setItem('mokusch-motion','full')}}catch(e){{}}}}
   var red=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if(m!=='off'){{d.classList.add('anim',(red&&m!=='full')?'anim-soft':'anim-full');
   setTimeout(function(){{if(!window.Motion){{d.classList.remove('anim')}}}},2500);}}}})();
