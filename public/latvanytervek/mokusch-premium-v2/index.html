@@ -27,9 +27,10 @@
   if(m!=='off'){d.classList.add('anim',(red&&m!=='full')?'anim-soft':'anim-full');
   setTimeout(function(){if(!window.Motion){d.classList.remove('anim')}},2500);}})();
 </script>
-<link rel="stylesheet" href="css/storybook.css?v=1">
+<link rel="stylesheet" href="css/storybook.css?v=2">
 <script>(function(){try{var p=localStorage.getItem("mokusch-palette");if(p&&/^(erdei|puder|arany)$/.test(p))document.documentElement.setAttribute("data-palette",p)}catch(e){}})();</script>
-<link rel="preload" as="image" imagesrcset="https://static.wixstatic.com/media/4f5ae5_1c02e2457c654f63bc501ea424959dbe~mv2.png/v1/fill/w_640,h_960,al_c,q_82,enc_auto/mokusch-osveny.png 640w, https://static.wixstatic.com/media/4f5ae5_1c02e2457c654f63bc501ea424959dbe~mv2.png/v1/fill/w_960,h_1440,al_c,q_82,enc_auto/mokusch-osveny.png 960w, https://static.wixstatic.com/media/4f5ae5_1c02e2457c654f63bc501ea424959dbe~mv2.png/v1/fill/w_1280,h_1920,al_c,q_82,enc_auto/mokusch-osveny.png 1280w" imagesizes="(max-width: 899px) 100vw, 46vw" fetchpriority="high">
+<link rel="preload" as="image" media="(max-width: 899px)" imagesrcset="https://static.wixstatic.com/media/4f5ae5_1c02e2457c654f63bc501ea424959dbe~mv2.png/v1/fill/w_640,h_960,al_c,q_82,enc_auto/mokusch-osveny.png 640w, https://static.wixstatic.com/media/4f5ae5_1c02e2457c654f63bc501ea424959dbe~mv2.png/v1/fill/w_960,h_1440,al_c,q_82,enc_auto/mokusch-osveny.png 960w, https://static.wixstatic.com/media/4f5ae5_1c02e2457c654f63bc501ea424959dbe~mv2.png/v1/fill/w_1280,h_1920,al_c,q_82,enc_auto/mokusch-osveny.png 1280w" imagesizes="100vw" fetchpriority="high">
+<link rel="preload" as="image" media="(min-width: 900px)" imagesrcset="https://static.wixstatic.com/media/4f5ae5_1c02e2457c654f63bc501ea424959dbe~mv2.png/v1/fill/w_960,h_853,al_c,q_82,enc_auto/mokusch-osveny.png 960w, https://static.wixstatic.com/media/4f5ae5_1c02e2457c654f63bc501ea424959dbe~mv2.png/v1/fill/w_1280,h_1138,al_c,q_82,enc_auto/mokusch-osveny.png 1280w, https://static.wixstatic.com/media/4f5ae5_1c02e2457c654f63bc501ea424959dbe~mv2.png/v1/fill/w_1600,h_1422,al_c,q_82,enc_auto/mokusch-osveny.png 1600w" imagesizes="66vw" fetchpriority="high">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"CafeOrCoffeeShop","name":"Mókusch kávézó és tortaműhely",
 "address":{"@type":"PostalAddress","streetAddress":"Várfok utca 30.","postalCode":"1012","addressLocality":"Budapest","addressCountry":"HU"},
@@ -71,118 +72,110 @@
 
 <main id="tartalom">
 
-<!-- 1. fejezet: mesekönyves út – Varázserdő → erdei ösvény → a kávézó megközelítése → belépés.
+<!-- A teljes főoldal egy görgetéses mesekönyv: 11 festett jelenet (a Mókusch saját képei) az erdőtől a tortákig.
      Natív görgetés (nincs scroll-jacking); a ragadós képkivágást a görgetés előrehaladása mozgatja. -->
-<section class="journey" id="meseba" aria-labelledby="h-meseba" data-journey>
+<section class="journey" aria-labelledby="h-meseba" data-journey style="--units:15.20">
+  <span class="janchor" id="meseba" style="--p:0.0000" data-p="0.0000" data-ch="1" aria-hidden="true"></span><span class="janchor" id="akik-eletre-keltik" style="--p:0.1612" data-p="0.1612" data-ch="2" aria-hidden="true"></span><span class="janchor" id="mit-muvelunk" style="--p:0.2599" data-p="0.2599" data-ch="3" aria-hidden="true"></span><span class="janchor" id="finomsagok" style="--p:0.3520" data-p="0.3520" data-ch="4" aria-hidden="true"></span><span class="janchor" id="boszorkanykonyha" style="--p:0.4901" data-p="0.4901" data-ch="5" aria-hidden="true"></span><span class="janchor" id="nyuszis-polc" style="--p:0.5822" data-p="0.5822" data-ch="6" aria-hidden="true"></span><span class="janchor" id="akarmicsodak" style="--p:0.7270" data-p="0.7270" data-ch="7" aria-hidden="true"></span><span class="janchor" id="palackposta" style="--p:0.8191" data-p="0.8191" data-ch="8" aria-hidden="true"></span><span class="janchor" id="hol-vagyunk" style="--p:0.8191" data-p="0.8191" data-ch="8" aria-hidden="true"></span><span class="janchor" id="tortak" style="--p:0.9178" data-p="0.9178" data-ch="9" aria-hidden="true"></span>
   <div class="journey__sticky">
-    <div class="journey__atmo" aria-hidden="true"><div class="atmo" data-atmo="0" style="background-image:url(https://static.wixstatic.com/media/4f5ae5_1c02e2457c654f63bc501ea424959dbe~mv2.png/v1/fill/w_18,h_27,al_c,q_82,enc_auto/mokusch-osveny.png)"></div><div class="atmo" data-atmo="1" style="background-image:url(https://static.wixstatic.com/media/4f5ae5_de1100572d664c6fa755501935ba3cf6~mv2.png/v1/fill/w_18,h_27,al_c,q_82,enc_auto/mokusch-udvar.png)"></div><div class="atmo" data-atmo="2" style="background-image:url(https://static.wixstatic.com/media/4f5ae5_8c413555228144899a373d1a90d78540~mv2.jpg/v1/fill/w_18,h_27,al_c,q_82,enc_auto/mokusch-bolt.jpg)"></div></div>
+    <div class="journey__atmo" aria-hidden="true"><div class="atmo" data-atmo="0" style="background-image:url(https://static.wixstatic.com/media/4f5ae5_1c02e2457c654f63bc501ea424959dbe~mv2.png/v1/fill/w_18,h_27,al_c,q_82,enc_auto/mokusch-osveny.png)"></div><div class="atmo" data-atmo="1" style="background-image:url(https://static.wixstatic.com/media/4f5ae5_de1100572d664c6fa755501935ba3cf6~mv2.png/v1/fill/w_18,h_27,al_c,q_82,enc_auto/mokusch-udvar.png)"></div><div class="atmo" data-atmo="2" style="background-image:url(https://static.wixstatic.com/media/4f5ae5_8c413555228144899a373d1a90d78540~mv2.jpg/v1/fill/w_18,h_27,al_c,q_82,enc_auto/mokusch-bolt.jpg)"></div><div class="atmo" data-atmo="3" style="background-image:url(https://static.wixstatic.com/media/4f5ae5_b532d1c8fb82452ca1ee0c6a437521a3~mv2.jpeg/v1/fill/w_18,h_27,al_c,q_82,enc_auto/mokusch-pult1.jpeg)"></div><div class="atmo" data-atmo="4" style="background-image:url(https://static.wixstatic.com/media/4f5ae5_315890bf789a4ad5aa95db1d942ada81~mv2.jpeg/v1/fill/w_18,h_27,al_c,q_82,enc_auto/mokusch-pult2.jpeg)"></div><div class="atmo" data-atmo="5" style="background-image:url(https://static.wixstatic.com/media/4f5ae5_cfbccf746a67484b964a2df6f863167e~mv2.png/v1/fill/w_18,h_27,al_c,q_82,enc_auto/mokusch-konyha.png)"></div><div class="atmo" data-atmo="6" style="background-image:url(https://static.wixstatic.com/media/4f5ae5_985771b104cd41dab77d14018f3442df~mv2.jpeg/v1/fill/w_18,h_27,al_c,q_82,enc_auto/mokusch-polc1.jpeg)"></div><div class="atmo" data-atmo="7" style="background-image:url(https://static.wixstatic.com/media/4f5ae5_cbfc9cb28d9a4925bc337c8867019c7e~mv2.jpeg/v1/fill/w_18,h_27,al_c,q_82,enc_auto/mokusch-polc2.jpeg)"></div><div class="atmo" data-atmo="8" style="background-image:url(https://static.wixstatic.com/media/4f5ae5_d7aecd48d9874c7fab65891cc27e88e8~mv2.png/v1/fill/w_18,h_27,al_c,q_82,enc_auto/mokusch-olvaso.png)"></div><div class="atmo" data-atmo="9" style="background-image:url(https://static.wixstatic.com/media/4f5ae5_2478afc6d240420187f710e04ce729f5~mv2.png/v1/fill/w_18,h_27,al_c,q_82,enc_auto/mokusch-posta.png)"></div><div class="atmo" data-atmo="10" style="background-image:url(https://static.wixstatic.com/media/4f5ae5_c2114812ce19405593f6a7dd4da29f15~mv2.png/v1/fill/w_18,h_27,al_c,q_82,enc_auto/mokusch-kepfal.png)"></div></div>
     <div class="journey__veil" aria-hidden="true"></div>
-    <div class="journey__frame" data-jframe><figure class="jscene" data-jscene="0"><img src="https://static.wixstatic.com/media/4f5ae5_1c02e2457c654f63bc501ea424959dbe~mv2.png/v1/fill/w_960,h_1440,al_c,q_82,enc_auto/mokusch-osveny.png" srcset="https://static.wixstatic.com/media/4f5ae5_1c02e2457c654f63bc501ea424959dbe~mv2.png/v1/fill/w_640,h_960,al_c,q_82,enc_auto/mokusch-osveny.png 640w, https://static.wixstatic.com/media/4f5ae5_1c02e2457c654f63bc501ea424959dbe~mv2.png/v1/fill/w_960,h_1440,al_c,q_82,enc_auto/mokusch-osveny.png 960w, https://static.wixstatic.com/media/4f5ae5_1c02e2457c654f63bc501ea424959dbe~mv2.png/v1/fill/w_1280,h_1920,al_c,q_82,enc_auto/mokusch-osveny.png 1280w" sizes="(max-width: 899px) 100vw, 46vw" width="960" height="1440" alt="Festett illusztráció: napfényes erdei ösvény páfrányokkal, virágokkal, egy Mókusch feliratú fatáblával" fetchpriority="high" decoding="async"></figure><figure class="jscene" data-jscene="1"><img src="https://static.wixstatic.com/media/4f5ae5_de1100572d664c6fa755501935ba3cf6~mv2.png/v1/fill/w_960,h_1440,al_c,q_82,enc_auto/mokusch-udvar.png" srcset="https://static.wixstatic.com/media/4f5ae5_de1100572d664c6fa755501935ba3cf6~mv2.png/v1/fill/w_640,h_960,al_c,q_82,enc_auto/mokusch-udvar.png 640w, https://static.wixstatic.com/media/4f5ae5_de1100572d664c6fa755501935ba3cf6~mv2.png/v1/fill/w_960,h_1440,al_c,q_82,enc_auto/mokusch-udvar.png 960w, https://static.wixstatic.com/media/4f5ae5_de1100572d664c6fa755501935ba3cf6~mv2.png/v1/fill/w_1280,h_1920,al_c,q_82,enc_auto/mokusch-udvar.png 1280w" sizes="(max-width: 899px) 100vw, 46vw" width="960" height="1440" alt="Festett illusztráció: lámpásokkal megvilágított, borostyános udvar kis asztalokkal és egy Mókusch feliratú táblával" loading="eager" fetchpriority="low" decoding="async"></figure><figure class="jscene" data-jscene="2"><img src="https://static.wixstatic.com/media/4f5ae5_8c413555228144899a373d1a90d78540~mv2.jpg/v1/fill/w_960,h_1440,al_c,q_82,enc_auto/mokusch-bolt.jpg" srcset="https://static.wixstatic.com/media/4f5ae5_8c413555228144899a373d1a90d78540~mv2.jpg/v1/fill/w_640,h_960,al_c,q_82,enc_auto/mokusch-bolt.jpg 640w, https://static.wixstatic.com/media/4f5ae5_8c413555228144899a373d1a90d78540~mv2.jpg/v1/fill/w_960,h_1440,al_c,q_82,enc_auto/mokusch-bolt.jpg 960w, https://static.wixstatic.com/media/4f5ae5_8c413555228144899a373d1a90d78540~mv2.jpg/v1/fill/w_1280,h_1920,al_c,q_82,enc_auto/mokusch-bolt.jpg 1280w" sizes="(max-width: 899px) 100vw, 46vw" width="960" height="1440" alt="Festett illusztráció: polcokkal, befőttesüvegekkel és szárított virágokkal teli bolt, lépcsővel a bejáratnál" loading="eager" fetchpriority="low" decoding="async"></figure></div>
+    <div class="journey__frame" data-jframe><figure class="jscene" data-jscene="0" data-a="-1" data-b="0.0000" data-c="0.1132" data-d="0.1382" data-z0="0.0000" data-z1="0.1382" style="--focal:55% 72%;--o:0"><picture><source media="(min-width: 900px)" srcset="https://static.wixstatic.com/media/4f5ae5_1c02e2457c654f63bc501ea424959dbe~mv2.png/v1/fill/w_960,h_853,al_c,q_82,enc_auto/mokusch-osveny.png 960w, https://static.wixstatic.com/media/4f5ae5_1c02e2457c654f63bc501ea424959dbe~mv2.png/v1/fill/w_1280,h_1138,al_c,q_82,enc_auto/mokusch-osveny.png 1280w, https://static.wixstatic.com/media/4f5ae5_1c02e2457c654f63bc501ea424959dbe~mv2.png/v1/fill/w_1600,h_1422,al_c,q_82,enc_auto/mokusch-osveny.png 1600w" sizes="66vw"><img src="https://static.wixstatic.com/media/4f5ae5_1c02e2457c654f63bc501ea424959dbe~mv2.png/v1/fill/w_960,h_1440,al_c,q_82,enc_auto/mokusch-osveny.png" srcset="https://static.wixstatic.com/media/4f5ae5_1c02e2457c654f63bc501ea424959dbe~mv2.png/v1/fill/w_640,h_960,al_c,q_82,enc_auto/mokusch-osveny.png 640w, https://static.wixstatic.com/media/4f5ae5_1c02e2457c654f63bc501ea424959dbe~mv2.png/v1/fill/w_960,h_1440,al_c,q_82,enc_auto/mokusch-osveny.png 960w, https://static.wixstatic.com/media/4f5ae5_1c02e2457c654f63bc501ea424959dbe~mv2.png/v1/fill/w_1280,h_1920,al_c,q_82,enc_auto/mokusch-osveny.png 1280w" sizes="100vw" width="960" height="1440" alt="Festett illusztráció: napfényes erdei ösvény páfrányokkal, virágokkal, egy Mókusch feliratú fatáblával" fetchpriority="high" decoding="async"></picture></figure><figure class="jscene" data-jscene="1" data-a="0.1132" data-b="0.1382" data-c="0.2118" data-d="0.2368" data-z0="0.1132" data-z1="0.2368" style="--focal:62% 58%;--o:10"><picture><source media="(min-width: 900px)" srcset="https://static.wixstatic.com/media/4f5ae5_de1100572d664c6fa755501935ba3cf6~mv2.png/v1/fill/w_960,h_853,al_c,q_82,enc_auto/mokusch-udvar.png 960w, https://static.wixstatic.com/media/4f5ae5_de1100572d664c6fa755501935ba3cf6~mv2.png/v1/fill/w_1280,h_1138,al_c,q_82,enc_auto/mokusch-udvar.png 1280w, https://static.wixstatic.com/media/4f5ae5_de1100572d664c6fa755501935ba3cf6~mv2.png/v1/fill/w_1600,h_1422,al_c,q_82,enc_auto/mokusch-udvar.png 1600w" sizes="66vw"><img src="https://static.wixstatic.com/media/4f5ae5_de1100572d664c6fa755501935ba3cf6~mv2.png/v1/fill/w_960,h_1440,al_c,q_82,enc_auto/mokusch-udvar.png" srcset="https://static.wixstatic.com/media/4f5ae5_de1100572d664c6fa755501935ba3cf6~mv2.png/v1/fill/w_640,h_960,al_c,q_82,enc_auto/mokusch-udvar.png 640w, https://static.wixstatic.com/media/4f5ae5_de1100572d664c6fa755501935ba3cf6~mv2.png/v1/fill/w_960,h_1440,al_c,q_82,enc_auto/mokusch-udvar.png 960w, https://static.wixstatic.com/media/4f5ae5_de1100572d664c6fa755501935ba3cf6~mv2.png/v1/fill/w_1280,h_1920,al_c,q_82,enc_auto/mokusch-udvar.png 1280w" sizes="100vw" width="960" height="1440" alt="Festett illusztráció: lámpásokkal megvilágított, borostyános udvar kis asztalokkal és egy Mókusch feliratú táblával" fetchpriority="low" decoding="async"></picture></figure><figure class="jscene" data-jscene="2" data-a="0.2118" data-b="0.2368" data-c="0.3039" data-d="0.3289" data-z0="0.2118" data-z1="0.3289" style="--focal:50% 62%;--o:20"><picture><source media="(min-width: 900px)" data-srcset="https://static.wixstatic.com/media/4f5ae5_8c413555228144899a373d1a90d78540~mv2.jpg/v1/fill/w_960,h_853,al_c,q_82,enc_auto/mokusch-bolt.jpg 960w, https://static.wixstatic.com/media/4f5ae5_8c413555228144899a373d1a90d78540~mv2.jpg/v1/fill/w_1280,h_1138,al_c,q_82,enc_auto/mokusch-bolt.jpg 1280w, https://static.wixstatic.com/media/4f5ae5_8c413555228144899a373d1a90d78540~mv2.jpg/v1/fill/w_1600,h_1422,al_c,q_82,enc_auto/mokusch-bolt.jpg 1600w" sizes="66vw"><img data-src="https://static.wixstatic.com/media/4f5ae5_8c413555228144899a373d1a90d78540~mv2.jpg/v1/fill/w_960,h_1440,al_c,q_82,enc_auto/mokusch-bolt.jpg" data-srcset="https://static.wixstatic.com/media/4f5ae5_8c413555228144899a373d1a90d78540~mv2.jpg/v1/fill/w_640,h_960,al_c,q_82,enc_auto/mokusch-bolt.jpg 640w, https://static.wixstatic.com/media/4f5ae5_8c413555228144899a373d1a90d78540~mv2.jpg/v1/fill/w_960,h_1440,al_c,q_82,enc_auto/mokusch-bolt.jpg 960w, https://static.wixstatic.com/media/4f5ae5_8c413555228144899a373d1a90d78540~mv2.jpg/v1/fill/w_1280,h_1920,al_c,q_82,enc_auto/mokusch-bolt.jpg 1280w" sizes="100vw" width="960" height="1440" alt="Festett illusztráció: polcokkal, befőttesüvegekkel és szárított virágokkal teli bolt, lépcsővel a bejáratnál" fetchpriority="low" decoding="async"></picture></figure><figure class="jscene" data-jscene="3" data-a="0.3039" data-b="0.3289" data-c="0.3697" data-d="0.3947" data-z0="0.3039" data-z1="0.3947" style="--focal:55% 48%;--o:30"><picture><source media="(min-width: 900px)" data-srcset="https://static.wixstatic.com/media/4f5ae5_b532d1c8fb82452ca1ee0c6a437521a3~mv2.jpeg/v1/fill/w_960,h_853,al_c,q_82,enc_auto/mokusch-pult1.jpeg 960w, https://static.wixstatic.com/media/4f5ae5_b532d1c8fb82452ca1ee0c6a437521a3~mv2.jpeg/v1/fill/w_1280,h_1138,al_c,q_82,enc_auto/mokusch-pult1.jpeg 1280w, https://static.wixstatic.com/media/4f5ae5_b532d1c8fb82452ca1ee0c6a437521a3~mv2.jpeg/v1/fill/w_1600,h_1422,al_c,q_82,enc_auto/mokusch-pult1.jpeg 1600w" sizes="66vw"><img data-src="https://static.wixstatic.com/media/4f5ae5_b532d1c8fb82452ca1ee0c6a437521a3~mv2.jpeg/v1/fill/w_960,h_1440,al_c,q_82,enc_auto/mokusch-pult1.jpeg" data-srcset="https://static.wixstatic.com/media/4f5ae5_b532d1c8fb82452ca1ee0c6a437521a3~mv2.jpeg/v1/fill/w_640,h_960,al_c,q_82,enc_auto/mokusch-pult1.jpeg 640w, https://static.wixstatic.com/media/4f5ae5_b532d1c8fb82452ca1ee0c6a437521a3~mv2.jpeg/v1/fill/w_960,h_1440,al_c,q_82,enc_auto/mokusch-pult1.jpeg 960w, https://static.wixstatic.com/media/4f5ae5_b532d1c8fb82452ca1ee0c6a437521a3~mv2.jpeg/v1/fill/w_1280,h_1920,al_c,q_82,enc_auto/mokusch-pult1.jpeg 1280w" sizes="100vw" width="960" height="1440" alt="Festett illusztráció: kávéfőző gép a pulton, fölötte polcok sütis üvegekkel és egy függőlámpa" fetchpriority="low" decoding="async"></picture></figure><figure class="jscene" data-jscene="4" data-a="0.3697" data-b="0.3947" data-c="0.4421" data-d="0.4671" data-z0="0.3697" data-z1="0.4671" style="--focal:60% 52%;--o:40"><picture><source media="(min-width: 900px)" data-srcset="https://static.wixstatic.com/media/4f5ae5_315890bf789a4ad5aa95db1d942ada81~mv2.jpeg/v1/fill/w_960,h_853,al_c,q_82,enc_auto/mokusch-pult2.jpeg 960w, https://static.wixstatic.com/media/4f5ae5_315890bf789a4ad5aa95db1d942ada81~mv2.jpeg/v1/fill/w_1280,h_1138,al_c,q_82,enc_auto/mokusch-pult2.jpeg 1280w, https://static.wixstatic.com/media/4f5ae5_315890bf789a4ad5aa95db1d942ada81~mv2.jpeg/v1/fill/w_1600,h_1422,al_c,q_82,enc_auto/mokusch-pult2.jpeg 1600w" sizes="66vw"><img data-src="https://static.wixstatic.com/media/4f5ae5_315890bf789a4ad5aa95db1d942ada81~mv2.jpeg/v1/fill/w_960,h_1440,al_c,q_82,enc_auto/mokusch-pult2.jpeg" data-srcset="https://static.wixstatic.com/media/4f5ae5_315890bf789a4ad5aa95db1d942ada81~mv2.jpeg/v1/fill/w_640,h_960,al_c,q_82,enc_auto/mokusch-pult2.jpeg 640w, https://static.wixstatic.com/media/4f5ae5_315890bf789a4ad5aa95db1d942ada81~mv2.jpeg/v1/fill/w_960,h_1440,al_c,q_82,enc_auto/mokusch-pult2.jpeg 960w, https://static.wixstatic.com/media/4f5ae5_315890bf789a4ad5aa95db1d942ada81~mv2.jpeg/v1/fill/w_1280,h_1920,al_c,q_82,enc_auto/mokusch-pult2.jpeg 1280w" sizes="100vw" width="960" height="1440" alt="Festett illusztráció: üveges süteményes vitrin a pulton, fölötte koszorú és bögrék" fetchpriority="low" decoding="async"></picture></figure><figure class="jscene" data-jscene="5" data-a="0.4421" data-b="0.4671" data-c="0.5342" data-d="0.5592" data-z0="0.4421" data-z1="0.5592" style="--focal:50% 42%;--o:50"><picture><source media="(min-width: 900px)" data-srcset="https://static.wixstatic.com/media/4f5ae5_cfbccf746a67484b964a2df6f863167e~mv2.png/v1/fill/w_960,h_853,al_c,q_82,enc_auto/mokusch-konyha.png 960w, https://static.wixstatic.com/media/4f5ae5_cfbccf746a67484b964a2df6f863167e~mv2.png/v1/fill/w_1280,h_1138,al_c,q_82,enc_auto/mokusch-konyha.png 1280w, https://static.wixstatic.com/media/4f5ae5_cfbccf746a67484b964a2df6f863167e~mv2.png/v1/fill/w_1600,h_1422,al_c,q_82,enc_auto/mokusch-konyha.png 1600w" sizes="66vw"><img data-src="https://static.wixstatic.com/media/4f5ae5_cfbccf746a67484b964a2df6f863167e~mv2.png/v1/fill/w_960,h_1440,al_c,q_82,enc_auto/mokusch-konyha.png" data-srcset="https://static.wixstatic.com/media/4f5ae5_cfbccf746a67484b964a2df6f863167e~mv2.png/v1/fill/w_640,h_960,al_c,q_82,enc_auto/mokusch-konyha.png 640w, https://static.wixstatic.com/media/4f5ae5_cfbccf746a67484b964a2df6f863167e~mv2.png/v1/fill/w_960,h_1440,al_c,q_82,enc_auto/mokusch-konyha.png 960w, https://static.wixstatic.com/media/4f5ae5_cfbccf746a67484b964a2df6f863167e~mv2.png/v1/fill/w_1280,h_1920,al_c,q_82,enc_auto/mokusch-konyha.png 1280w" sizes="100vw" width="960" height="1440" alt="Festett illusztráció: keskeny, meleg fényű konyha munkapulttal, edényekkel és szárított gyógynövényekkel" fetchpriority="low" decoding="async"></picture></figure><figure class="jscene" data-jscene="6" data-a="0.5342" data-b="0.5592" data-c="0.6066" data-d="0.6316" data-z0="0.5342" data-z1="0.6316" style="--focal:65% 45%;--o:60"><picture><source media="(min-width: 900px)" data-srcset="https://static.wixstatic.com/media/4f5ae5_985771b104cd41dab77d14018f3442df~mv2.jpeg/v1/fill/w_960,h_853,al_c,q_82,enc_auto/mokusch-polc1.jpeg 960w, https://static.wixstatic.com/media/4f5ae5_985771b104cd41dab77d14018f3442df~mv2.jpeg/v1/fill/w_1280,h_1138,al_c,q_82,enc_auto/mokusch-polc1.jpeg 1280w, https://static.wixstatic.com/media/4f5ae5_985771b104cd41dab77d14018f3442df~mv2.jpeg/v1/fill/w_1600,h_1422,al_c,q_82,enc_auto/mokusch-polc1.jpeg 1600w" sizes="66vw"><img data-src="https://static.wixstatic.com/media/4f5ae5_985771b104cd41dab77d14018f3442df~mv2.jpeg/v1/fill/w_960,h_1440,al_c,q_82,enc_auto/mokusch-polc1.jpeg" data-srcset="https://static.wixstatic.com/media/4f5ae5_985771b104cd41dab77d14018f3442df~mv2.jpeg/v1/fill/w_640,h_960,al_c,q_82,enc_auto/mokusch-polc1.jpeg 640w, https://static.wixstatic.com/media/4f5ae5_985771b104cd41dab77d14018f3442df~mv2.jpeg/v1/fill/w_960,h_1440,al_c,q_82,enc_auto/mokusch-polc1.jpeg 960w, https://static.wixstatic.com/media/4f5ae5_985771b104cd41dab77d14018f3442df~mv2.jpeg/v1/fill/w_1280,h_1920,al_c,q_82,enc_auto/mokusch-polc1.jpeg 1280w" sizes="100vw" width="960" height="1440" alt="Festett illusztráció: fa polc befőttesüvegekkel, szárított virágcsokor, koszorú és egy nyuszis doboz" fetchpriority="low" decoding="async"></picture></figure><figure class="jscene" data-jscene="7" data-a="0.6066" data-b="0.6316" data-c="0.6789" data-d="0.7039" data-z0="0.6066" data-z1="0.7039" style="--focal:38% 45%;--o:70"><picture><source media="(min-width: 900px)" data-srcset="https://static.wixstatic.com/media/4f5ae5_cbfc9cb28d9a4925bc337c8867019c7e~mv2.jpeg/v1/fill/w_960,h_853,al_c,q_82,enc_auto/mokusch-polc2.jpeg 960w, https://static.wixstatic.com/media/4f5ae5_cbfc9cb28d9a4925bc337c8867019c7e~mv2.jpeg/v1/fill/w_1280,h_1138,al_c,q_82,enc_auto/mokusch-polc2.jpeg 1280w, https://static.wixstatic.com/media/4f5ae5_cbfc9cb28d9a4925bc337c8867019c7e~mv2.jpeg/v1/fill/w_1600,h_1422,al_c,q_82,enc_auto/mokusch-polc2.jpeg 1600w" sizes="66vw"><img data-src="https://static.wixstatic.com/media/4f5ae5_cbfc9cb28d9a4925bc337c8867019c7e~mv2.jpeg/v1/fill/w_960,h_1440,al_c,q_82,enc_auto/mokusch-polc2.jpeg" data-srcset="https://static.wixstatic.com/media/4f5ae5_cbfc9cb28d9a4925bc337c8867019c7e~mv2.jpeg/v1/fill/w_640,h_960,al_c,q_82,enc_auto/mokusch-polc2.jpeg 640w, https://static.wixstatic.com/media/4f5ae5_cbfc9cb28d9a4925bc337c8867019c7e~mv2.jpeg/v1/fill/w_960,h_1440,al_c,q_82,enc_auto/mokusch-polc2.jpeg 960w, https://static.wixstatic.com/media/4f5ae5_cbfc9cb28d9a4925bc337c8867019c7e~mv2.jpeg/v1/fill/w_1280,h_1920,al_c,q_82,enc_auto/mokusch-polc2.jpeg 1280w" sizes="100vw" width="960" height="1440" alt="Festett illusztráció: üvegekkel teli fa polc, kosár fonallal és egy virágokkal díszített létra" fetchpriority="low" decoding="async"></picture></figure><figure class="jscene" data-jscene="8" data-a="0.6789" data-b="0.7039" data-c="0.7711" data-d="0.7961" data-z0="0.6789" data-z1="0.7961" style="--focal:45% 66%;--o:80"><picture><source media="(min-width: 900px)" data-srcset="https://static.wixstatic.com/media/4f5ae5_d7aecd48d9874c7fab65891cc27e88e8~mv2.png/v1/fill/w_960,h_853,al_c,q_82,enc_auto/mokusch-olvaso.png 960w, https://static.wixstatic.com/media/4f5ae5_d7aecd48d9874c7fab65891cc27e88e8~mv2.png/v1/fill/w_1280,h_1138,al_c,q_82,enc_auto/mokusch-olvaso.png 1280w, https://static.wixstatic.com/media/4f5ae5_d7aecd48d9874c7fab65891cc27e88e8~mv2.png/v1/fill/w_1600,h_1422,al_c,q_82,enc_auto/mokusch-olvaso.png 1600w" sizes="66vw"><img data-src="https://static.wixstatic.com/media/4f5ae5_d7aecd48d9874c7fab65891cc27e88e8~mv2.png/v1/fill/w_960,h_1440,al_c,q_82,enc_auto/mokusch-olvaso.png" data-srcset="https://static.wixstatic.com/media/4f5ae5_d7aecd48d9874c7fab65891cc27e88e8~mv2.png/v1/fill/w_640,h_960,al_c,q_82,enc_auto/mokusch-olvaso.png 640w, https://static.wixstatic.com/media/4f5ae5_d7aecd48d9874c7fab65891cc27e88e8~mv2.png/v1/fill/w_960,h_1440,al_c,q_82,enc_auto/mokusch-olvaso.png 960w, https://static.wixstatic.com/media/4f5ae5_d7aecd48d9874c7fab65891cc27e88e8~mv2.png/v1/fill/w_1280,h_1920,al_c,q_82,enc_auto/mokusch-olvaso.png 1280w" sizes="100vw" width="960" height="1440" alt="Festett illusztráció: könyvespolcokkal körülvett olvasósarok zöld fotellel, lámpával és kötögetős kosárral" fetchpriority="low" decoding="async"></picture></figure><figure class="jscene" data-jscene="9" data-a="0.7711" data-b="0.7961" data-c="0.8697" data-d="0.8947" data-z0="0.7711" data-z1="0.8947" style="--focal:50% 42%;--o:90"><picture><source media="(min-width: 900px)" data-srcset="https://static.wixstatic.com/media/4f5ae5_2478afc6d240420187f710e04ce729f5~mv2.png/v1/fill/w_960,h_853,al_c,q_82,enc_auto/mokusch-posta.png 960w, https://static.wixstatic.com/media/4f5ae5_2478afc6d240420187f710e04ce729f5~mv2.png/v1/fill/w_1280,h_1138,al_c,q_82,enc_auto/mokusch-posta.png 1280w, https://static.wixstatic.com/media/4f5ae5_2478afc6d240420187f710e04ce729f5~mv2.png/v1/fill/w_1600,h_1422,al_c,q_82,enc_auto/mokusch-posta.png 1600w" sizes="66vw"><img data-src="https://static.wixstatic.com/media/4f5ae5_2478afc6d240420187f710e04ce729f5~mv2.png/v1/fill/w_960,h_1440,al_c,q_82,enc_auto/mokusch-posta.png" data-srcset="https://static.wixstatic.com/media/4f5ae5_2478afc6d240420187f710e04ce729f5~mv2.png/v1/fill/w_640,h_960,al_c,q_82,enc_auto/mokusch-posta.png 640w, https://static.wixstatic.com/media/4f5ae5_2478afc6d240420187f710e04ce729f5~mv2.png/v1/fill/w_960,h_1440,al_c,q_82,enc_auto/mokusch-posta.png 960w, https://static.wixstatic.com/media/4f5ae5_2478afc6d240420187f710e04ce729f5~mv2.png/v1/fill/w_1280,h_1920,al_c,q_82,enc_auto/mokusch-posta.png 1280w" sizes="100vw" width="960" height="1440" alt="Kép a Wix-oldalról: üzenetekkel teleragasztott fal, szárított levendula, kis lámpa és egy sütis vitrin" fetchpriority="low" decoding="async"></picture></figure><figure class="jscene" data-jscene="10" data-a="0.8697" data-b="0.8947" data-c="2" data-d="3" data-z0="0.8697" data-z1="1.0000" style="--focal:45% 70%;--o:100"><picture><source media="(min-width: 900px)" data-srcset="https://static.wixstatic.com/media/4f5ae5_c2114812ce19405593f6a7dd4da29f15~mv2.png/v1/fill/w_960,h_853,al_c,q_82,enc_auto/mokusch-kepfal.png 960w, https://static.wixstatic.com/media/4f5ae5_c2114812ce19405593f6a7dd4da29f15~mv2.png/v1/fill/w_1280,h_1138,al_c,q_82,enc_auto/mokusch-kepfal.png 1280w, https://static.wixstatic.com/media/4f5ae5_c2114812ce19405593f6a7dd4da29f15~mv2.png/v1/fill/w_1600,h_1422,al_c,q_82,enc_auto/mokusch-kepfal.png 1600w" sizes="66vw"><img data-src="https://static.wixstatic.com/media/4f5ae5_c2114812ce19405593f6a7dd4da29f15~mv2.png/v1/fill/w_960,h_1440,al_c,q_82,enc_auto/mokusch-kepfal.png" data-srcset="https://static.wixstatic.com/media/4f5ae5_c2114812ce19405593f6a7dd4da29f15~mv2.png/v1/fill/w_640,h_960,al_c,q_82,enc_auto/mokusch-kepfal.png 640w, https://static.wixstatic.com/media/4f5ae5_c2114812ce19405593f6a7dd4da29f15~mv2.png/v1/fill/w_960,h_1440,al_c,q_82,enc_auto/mokusch-kepfal.png 960w, https://static.wixstatic.com/media/4f5ae5_c2114812ce19405593f6a7dd4da29f15~mv2.png/v1/fill/w_1280,h_1920,al_c,q_82,enc_auto/mokusch-kepfal.png 1280w" sizes="100vw" width="960" height="1440" alt="Festett illusztráció: keretezett képek egy régi falon, előtte égő lámpás, mezei virágok és egy szív alakú dísz" fetchpriority="low" decoding="async"></picture></figure></div>
     <div class="journey__light" aria-hidden="true" data-jlight></div>
     <canvas class="fireflies" data-fireflies="forest" aria-hidden="true"></canvas>
-    <div class="journey__text">
-      <div class="beat beat--1 is-on" data-beat="0">
-        <div class="beat__card">
-          <p class="beat__kicker"><span class="no">1.</span> Varázserdő</p>
-          <h1 id="h-meseba"><span class="ln">Hagyd magad mögött a várost,</span> <span class="ln">és lépj be <em>egy mesébe.</em></span></h1>
-          <p class="beat__lead">Kézzel készített sütemények, illatos kávék és mesebeli pillanatok egy természetközeli kuckóban.</p>
-          <div class="btns"><a class="btn" href="a-mokusch-meseje/">A Mókusch meséje</a><a class="btn btn--ghost" href="almok-vagyak-tervek/">Álmok, vágyak, tervek</a></div>
-          <p class="beat__more"><a class="link" href="mesebeli-programok/">Mesebeli programok <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a></p>
-        </div>
+    <canvas class="fireflies fireflies--warm" data-fireflies="warm" aria-hidden="true"></canvas>
+    <div class="journey__text"><div class="beat beat--hero is-on" data-beat data-a="-1" data-b="0" data-c="0.0497" data-d="0.0608" data-ch="1" style="--o:-1">
+      <div class="beat__card">
+        <p class="beat__kicker"><span class="no">1.</span> Varázserdő</p>
+        <h1 id="h-meseba"><span class="ln">Hagyd magad mögött a várost,</span> <span class="ln">és lépj be <em>egy mesébe.</em></span></h1>
+        <p class="beat__lead">Kézzel készített sütemények, illatos kávék és mesebeli pillanatok egy természetközeli kuckóban.</p>
+        <div class="btns"><a class="btn" href="a-mokusch-meseje/">A Mókusch meséje</a><a class="btn btn--ghost" href="almok-vagyak-tervek/">Álmok, vágyak, tervek</a></div>
+        <p class="beat__more"><a class="link" href="mesebeli-programok/">Mesebeli programok <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a></p>
       </div>
-      <div class="beat beat--2" data-beat="1">
-        <div class="beat__card beat__card--sm">
-          <p class="beat__kicker">Az erdei ösvény</p>
-          <p class="beat__line">Az ösvény egyre beljebb visz a fák közé, <em>a fények pedig mutatják az utat.</em></p>
-        </div>
+    </div><div class="beat beat--line" data-beat data-a="0.0691" data-b="0.0801" data-c="0.1184" data-d="0.1303" style="--o:5">
+      <div class="beat__card beat__card--sm"><p class="beat__story">Az ösvény egyre beljebb visz a fák közé – <em>a fények mutatják az utat.</em></p></div>
+    </div><div class="beat" data-beat data-a="0.1434" data-b="0.1579" data-c="0.2000" data-d="0.2132" data-ch="2" style="--o:15">
+      <div class="beat__card">
+        <p class="beat__story">A lámpások már égnek – megérkeztünk a kávézóhoz.</p>
+        <p class="beat__kicker"><span class="no">2.</span> fejezet</p>
+        <h2 id="h-akik-eletre-keltik">Akik életre keltik <em>minden nap</em></h2>
+        <p class="sub">Rólunk, minden mókuschról</p>
+        <p class="beat__lead">Három lány, aki minden reggel kinyitja az ajtót, kávét főz, süt és díszít.</p>
+        
+        <div class="btns"><a class="btn" href="valogatott-tarsasag/">Válogatott társaság</a></div>
       </div>
-      <div class="beat beat--3" data-beat="2">
-        <div class="beat__card beat__card--sm">
-          <p class="beat__kicker">A kávézó megközelítése</p>
-          <p class="beat__line">A lámpások már égnek – <em>valahol itt kell lennie.</em></p>
-        </div>
+    </div><div class="beat" data-beat data-a="0.2421" data-b="0.2566" data-c="0.2921" data-d="0.3053" data-ch="3" style="--o:25">
+      <div class="beat__card">
+        <p class="beat__story">Nyisd ki az ajtót, és lépj be.</p>
+        <p class="beat__kicker"><span class="no">3.</span> fejezet</p>
+        <h2 id="h-mit-muvelunk">Mit művelünk <em>mi itt?</em></h2>
+        <p class="sub">kávéfőzés · sütés · tortadíszítés · kézművesség</p>
+        <p class="beat__lead">A Mókusch hétköznapjai – képekben és rövid történetekben.</p>
+        
+        <div class="btns"><a class="btn" href="kepek/">Képek</a><a class="btn btn--ghost" href="sztorik/">Sztorik</a></div>
       </div>
-      <div class="beat beat--4" data-beat="3">
-        <div class="beat__card beat__card--sm">
-          <p class="beat__kicker">Belépés a Mókuschba</p>
-          <p class="beat__line">Nyisd ki az ajtót: <em>megérkeztél.</em></p>
-          <div class="btns"><a class="btn" href="#akik-eletre-keltik">Nézz körül</a><a class="btn btn--berry" href="tortarendeles/"><svg class="cake" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16M5 20v-6.5h14V20M7 13.5V10h10v3.5M12 10V7.5"/><path d="M12 4.2c.8.9.8 2 0 2.6-.8-.6-.8-1.7 0-2.6Z"/><path d="M5 16.4c1.2 1 2.3 1 3.5 0s2.3-1 3.5 0 2.3 1 3.5 0 2.3-1 3.5 0"/></svg><span class="lbl-long">Tortarendelés</span><span class="lbl-short">Tortarendelés</span></a></div>
-        </div>
+    </div><div class="beat" data-beat data-a="0.3342" data-b="0.3487" data-c="0.4303" data-d="0.4434" data-ch="4" style="--o:35">
+      <div class="beat__card">
+        <p class="beat__story">Kávéillat szálldogál a pult felől…</p>
+        <p class="beat__kicker"><span class="no">4.</span> fejezet</p>
+        <h2 id="h-finomsagok">Finomságok</h2>
+        <p class="sub">kávék – sütik – kutyafülék</p>
+        <p class="beat__lead">Mit lehet itt? Enni és inni – egy csésze mellett, kényelmesen.</p>
+        
+        <div class="btns"><a class="btn" href="enni/">Enni</a><a class="btn btn--ghost" href="inni/">Inni</a></div>
       </div>
-    </div>
+    </div><div class="beat" data-beat data-a="0.4724" data-b="0.4868" data-c="0.5224" data-d="0.5355" data-ch="5" style="--o:55">
+      <div class="beat__card">
+        <p class="beat__story">Hátul, a konyhában mindig rotyog valami.</p>
+        <p class="beat__kicker"><span class="no">5.</span> fejezet</p>
+        <h2 id="h-boszorkanykonyha">Ez a mi kis <em>boszorkánykonyhánk</em></h2>
+        <p class="sub">receptek, praktikák, kézműves ötletek</p>
+        <p class="beat__lead">Amit nálunk megszerettél, otthon is kipróbálhatod.</p>
+        
+        <div class="btns"><a class="btn" href="nehany-artatlan-recept/">Néhány ártatlan recept</a><a class="btn btn--ghost" href="tippek-trukkok/">Tippek-trükkök</a></div>
+      </div>
+    </div><div class="beat" data-beat data-a="0.5645" data-b="0.5789" data-c="0.6671" data-d="0.6803" data-ch="6" style="--o:65">
+      <div class="beat__card">
+        <p class="beat__story">És itt a polc, amely előtt mindenki megáll.</p>
+        <p class="beat__kicker"><span class="no">6.</span> fejezet</p>
+        <h2 id="h-nyuszis-polc">A híres <em>nyuszis polc</em></h2>
+        <p class="sub">minden, ami egy erdei teadélutánhoz kellhet</p>
+        <p class="beat__lead">Kézzel készült apróságok egy erdei teadélutánhoz.</p>
+        
+        <div class="btns"><a class="btn" href="nyuszis-polc/">…és ezt is mind ti csináltátok?</a></div>
+      </div>
+    </div><div class="beat" data-beat data-a="0.7092" data-b="0.7237" data-c="0.7592" data-d="0.7724" data-ch="7" style="--o:85">
+      <div class="beat__card">
+        <p class="beat__story">Egy csendes sarok, egy jó könyv.</p>
+        <p class="beat__kicker"><span class="no">7.</span> fejezet</p>
+        <h2 id="h-akarmicsodak">Varázslatos <em>akármicsodák</em></h2>
+        <p class="sub">varázslatos-mesés könyvek, csodás csecsebecsék</p>
+        <p class="beat__lead">Leülhetsz egy könyvvel – és apróságokat is hazavihetsz.</p>
+        
+        <div class="btns"><a class="btn" href="konyvek/">Könyvek</a><a class="btn btn--ghost" href="csodas-csecsebecsek/">Csodás csecsebecsék</a></div>
+      </div>
+    </div><div class="beat" data-beat data-a="0.8013" data-b="0.8158" data-c="0.8579" data-d="0.8711" data-ch="8" style="--o:95">
+      <div class="beat__card">
+        <p class="beat__story">A falon üzenetek – írj te is!</p>
+        <p class="beat__kicker"><span class="no">8.</span> fejezet</p>
+        <h2 id="h-palackposta">Palackposta</h2>
+        <p class="sub">minden levél ideér</p>
+        <p class="beat__lead">Írj nekünk, foglalj asztalt, vagy olvasd el, mit üzentek mások.</p>
+        <div class="pins"><a class="btn btn--berry" href="uzenek/">Üzenek!</a><a class="btn" href="asztalfoglalas/">Asztalfoglalás</a><a class="btn btn--ghost" href="uzenetek/">Üzenetek</a><a class="btn btn--ghost" href="mokassagok/">Mókásságok</a></div><p class="beat__visit"><b>Hol vagyunk?</b> 1012 Budapest, Várfok utca 30. · <a href="https://www.google.com/maps/search/?api=1&query=M%C3%B3kusch%20k%C3%A1v%C3%A9z%C3%B3%2C%201012%20Budapest%2C%20V%C3%A1rfok%20utca%2030" target="_blank" rel="noopener">térkép</a> · <a href="tel:+36306184373">+36 30 618 4373</a></p>
+        
+      </div>
+    </div><div class="beat" data-beat data-a="0.9000" data-b="0.9145" data-c="2" data-d="3" data-ch="9" style="--o:105">
+      <div class="beat__card">
+        <p class="beat__story">És a mese végén: a torták.</p>
+        <p class="beat__kicker"><span class="no">9.</span> fejezet</p>
+        <h2 id="h-tortak">Torták <em>és romantika</em></h2>
+        <p class="sub">születésnapra, esküvőre, vagy csak úgy</p>
+        <p class="beat__lead">Meséld el, milyen tortát álmodtál – a műhely ajánlattal jelentkezik.</p>
+        <ol class="steps-book"><li><b>1</b>Meséld el, mit álmodtál</li><li><b>2</b>Ajánlatot kapsz</li><li><b>3</b>Megbeszélitek a részleteket</li></ol>
+        <div class="btns"><a class="btn btn--berry" href="tortarendeles/"><svg class="cake" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16M5 20v-6.5h14V20M7 13.5V10h10v3.5M12 10V7.5"/><path d="M12 4.2c.8.9.8 2 0 2.6-.8-.6-.8-1.7 0-2.6Z"/><path d="M5 16.4c1.2 1 2.3 1 3.5 0s2.3-1 3.5 0 2.3 1 3.5 0 2.3-1 3.5 0"/></svg><span class="lbl-long">Tortarendelés</span><span class="lbl-short">Tortarendelés</span></a><a class="btn btn--ghost" href="eskuvo/">Esküvői torták</a></div>
+      </div>
+    </div></div>
     <p class="journey__hint" aria-hidden="true" data-jhint><span>Görgess, és indulj el az ösvényen</span><i></i></p>
-  </div>
-</section>
-
-<section class="leaf" id="akik-eletre-keltik" aria-labelledby="h-akik-eletre-keltik">
-  <div class="wrap leaf__grid">
-    <figure class="wc" data-wc>
-      <div class="wash wash--2" aria-hidden="true" data-wash></div>
-      <div class="wc__page"><img src="https://static.wixstatic.com/media/4f5ae5_b532d1c8fb82452ca1ee0c6a437521a3~mv2.jpeg/v1/fill/w_720,h_900,al_c,q_82,enc_auto/mokusch-pult1.jpeg" srcset="https://static.wixstatic.com/media/4f5ae5_b532d1c8fb82452ca1ee0c6a437521a3~mv2.jpeg/v1/fill/w_480,h_600,al_c,q_82,enc_auto/mokusch-pult1.jpeg 480w, https://static.wixstatic.com/media/4f5ae5_b532d1c8fb82452ca1ee0c6a437521a3~mv2.jpeg/v1/fill/w_720,h_900,al_c,q_82,enc_auto/mokusch-pult1.jpeg 720w, https://static.wixstatic.com/media/4f5ae5_b532d1c8fb82452ca1ee0c6a437521a3~mv2.jpeg/v1/fill/w_1000,h_1250,al_c,q_82,enc_auto/mokusch-pult1.jpeg 1000w" sizes="(max-width: 899px) 92vw, 520px" width="720" height="900" alt="Festett illusztráció: kávéfőző gép a pulton, fölötte polcok sütis üvegekkel és egy függőlámpa" loading="lazy" decoding="async"></div>
-      <figcaption class="wc__cap">Illusztráció</figcaption>
-    </figure>
-    <div class="leaf__text">
-      <span class="no" data-rv>2.</span>
-      <h2 id="h-akik-eletre-keltik">Akik életre keltik <em>minden nap</em></h2>
-      <p class="sub" data-rv>Rólunk, minden mókuschról</p>
-      <p class="lead" data-rv>Három lány, aki minden reggel kinyitja az ajtót, kávét főz, süt és díszít.</p>
-      <div class="trio" data-rv><figure><div class="oval"><div class="slot" role="img" aria-label="Portré helye: Wanda"><svg class="slot__ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M4 8.5h3l1.6-2.2h6.8L17 8.5h3v10H4z"/><circle cx="12" cy="13.2" r="3.4"/></svg></div></div><figcaption><b>Wanda</b>alapító</figcaption></figure><figure><div class="oval"><div class="slot" role="img" aria-label="Portré helye: …"><svg class="slot__ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M4 8.5h3l1.6-2.2h6.8L17 8.5h3v10H4z"/><circle cx="12" cy="13.2" r="3.4"/></svg></div></div><figcaption><b>…</b>alapító</figcaption></figure><figure><div class="oval"><div class="slot" role="img" aria-label="Portré helye: …"><svg class="slot__ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M4 8.5h3l1.6-2.2h6.8L17 8.5h3v10H4z"/><circle cx="12" cy="13.2" r="3.4"/></svg></div></div><figcaption><b>…</b>alapító</figcaption></figure></div>
-      <div class="btns" data-rv><a class="btn" href="valogatott-tarsasag/">Válogatott társaság</a></div>
-    </div>
-  </div>
-</section>
-
-<section class="leaf leaf--flip" id="mit-muvelunk" aria-labelledby="h-mit-muvelunk">
-  <div class="wrap leaf__grid">
-    <figure class="wc" data-wc>
-      <div class="wash wash--1" aria-hidden="true" data-wash></div>
-      <div class="wc__page"><img src="https://static.wixstatic.com/media/4f5ae5_cbfc9cb28d9a4925bc337c8867019c7e~mv2.jpeg/v1/fill/w_720,h_900,al_c,q_82,enc_auto/mokusch-polc2.jpeg" srcset="https://static.wixstatic.com/media/4f5ae5_cbfc9cb28d9a4925bc337c8867019c7e~mv2.jpeg/v1/fill/w_480,h_600,al_c,q_82,enc_auto/mokusch-polc2.jpeg 480w, https://static.wixstatic.com/media/4f5ae5_cbfc9cb28d9a4925bc337c8867019c7e~mv2.jpeg/v1/fill/w_720,h_900,al_c,q_82,enc_auto/mokusch-polc2.jpeg 720w, https://static.wixstatic.com/media/4f5ae5_cbfc9cb28d9a4925bc337c8867019c7e~mv2.jpeg/v1/fill/w_1000,h_1250,al_c,q_82,enc_auto/mokusch-polc2.jpeg 1000w" sizes="(max-width: 899px) 92vw, 520px" width="720" height="900" alt="Festett illusztráció: üvegekkel teli fa polc, kosár fonallal és egy virágokkal díszített létra" loading="lazy" decoding="async"></div>
-      <figcaption class="wc__cap">Illusztráció</figcaption>
-    </figure>
-    <div class="leaf__text">
-      <span class="no" data-rv>3.</span>
-      <h2 id="h-mit-muvelunk">Mit művelünk <em>mi itt?</em></h2>
-      <p class="sub" data-rv>kávéfőzés · sütés · tortadíszítés · kézművesség</p>
-      <p class="lead" data-rv>A Mókusch hétköznapjai – képekben és rövid történetekben.</p>
-      
-      <div class="btns" data-rv><a class="btn" href="kepek/">Képek</a><a class="btn btn--ghost" href="sztorik/">Sztorik</a></div>
-    </div>
-  </div>
-</section>
-
-<section class="leaf" id="finomsagok" aria-labelledby="h-finomsagok">
-  <div class="wrap leaf__grid">
-    <figure class="wc" data-wc>
-      <div class="wash wash--3" aria-hidden="true" data-wash></div>
-      <div class="wc__page"><img src="https://static.wixstatic.com/media/4f5ae5_315890bf789a4ad5aa95db1d942ada81~mv2.jpeg/v1/fill/w_720,h_900,al_c,q_82,enc_auto/mokusch-pult2.jpeg" srcset="https://static.wixstatic.com/media/4f5ae5_315890bf789a4ad5aa95db1d942ada81~mv2.jpeg/v1/fill/w_480,h_600,al_c,q_82,enc_auto/mokusch-pult2.jpeg 480w, https://static.wixstatic.com/media/4f5ae5_315890bf789a4ad5aa95db1d942ada81~mv2.jpeg/v1/fill/w_720,h_900,al_c,q_82,enc_auto/mokusch-pult2.jpeg 720w, https://static.wixstatic.com/media/4f5ae5_315890bf789a4ad5aa95db1d942ada81~mv2.jpeg/v1/fill/w_1000,h_1250,al_c,q_82,enc_auto/mokusch-pult2.jpeg 1000w" sizes="(max-width: 899px) 92vw, 520px" width="720" height="900" alt="Festett illusztráció: üveges süteményes vitrin a pulton, fölötte koszorú és bögrék" loading="lazy" decoding="async"></div>
-      <figcaption class="wc__cap">Illusztráció</figcaption>
-    </figure>
-    <div class="leaf__text">
-      <span class="no" data-rv>4.</span>
-      <h2 id="h-finomsagok">Finomságok</h2>
-      <p class="sub" data-rv>kávék – sütik – kutyafülék</p>
-      <p class="lead" data-rv>Mit lehet itt? Enni és inni – egy csésze mellett, kényelmesen.</p>
-      <ul class="menu-idx" data-rv><li>kávék</li><li>sütemények</li><li>reggelik</li><li>kutyafülék</li></ul>
-      <div class="btns" data-rv><a class="btn" href="enni/">Enni</a><a class="btn btn--ghost" href="inni/">Inni</a></div>
-    </div>
-  </div>
-</section>
-
-<section class="leaf leaf--flip" id="boszorkanykonyha" aria-labelledby="h-boszorkanykonyha">
-  <div class="wrap leaf__grid">
-    <figure class="wc" data-wc>
-      <div class="wash wash--1" aria-hidden="true" data-wash></div>
-      <div class="wc__page"><img src="https://static.wixstatic.com/media/4f5ae5_cfbccf746a67484b964a2df6f863167e~mv2.png/v1/fill/w_720,h_900,al_c,q_82,enc_auto/mokusch-konyha.png" srcset="https://static.wixstatic.com/media/4f5ae5_cfbccf746a67484b964a2df6f863167e~mv2.png/v1/fill/w_480,h_600,al_c,q_82,enc_auto/mokusch-konyha.png 480w, https://static.wixstatic.com/media/4f5ae5_cfbccf746a67484b964a2df6f863167e~mv2.png/v1/fill/w_720,h_900,al_c,q_82,enc_auto/mokusch-konyha.png 720w, https://static.wixstatic.com/media/4f5ae5_cfbccf746a67484b964a2df6f863167e~mv2.png/v1/fill/w_1000,h_1250,al_c,q_82,enc_auto/mokusch-konyha.png 1000w" sizes="(max-width: 899px) 92vw, 520px" width="720" height="900" alt="Festett illusztráció: keskeny, meleg fényű konyha munkapulttal, edényekkel és szárított gyógynövényekkel" loading="lazy" decoding="async"></div>
-      <figcaption class="wc__cap">Illusztráció</figcaption>
-    </figure>
-    <div class="leaf__text">
-      <span class="no" data-rv>5.</span>
-      <h2 id="h-boszorkanykonyha">Ez a mi kis <em>boszorkánykonyhánk</em></h2>
-      <p class="sub" data-rv>receptek, praktikák, kézműves ötletek</p>
-      <p class="lead" data-rv>Amit nálunk megszerettél, otthon is kipróbálhatod.</p>
-      
-      <div class="btns" data-rv><a class="btn" href="nehany-artatlan-recept/">Néhány ártatlan recept</a><a class="btn btn--ghost" href="tippek-trukkok/">Tippek-trükkök</a></div>
-    </div>
+    <ol class="journey__dots" aria-hidden="true"><li data-dot="1"></li><li data-dot="2"></li><li data-dot="3"></li><li data-dot="4"></li><li data-dot="5"></li><li data-dot="6"></li><li data-dot="7"></li><li data-dot="8"></li><li data-dot="9"></li></ol>
   </div>
 </section>
 
@@ -196,78 +189,6 @@
     </div>
   </div>
 </aside>
-
-<section class="leaf" id="nyuszis-polc" aria-labelledby="h-nyuszis-polc">
-  <div class="wrap leaf__grid">
-    <figure class="wc" data-wc>
-      <div class="wash wash--2" aria-hidden="true" data-wash></div>
-      <div class="wc__page"><img src="https://static.wixstatic.com/media/4f5ae5_985771b104cd41dab77d14018f3442df~mv2.jpeg/v1/fill/w_720,h_900,al_c,q_82,enc_auto/mokusch-polc1.jpeg" srcset="https://static.wixstatic.com/media/4f5ae5_985771b104cd41dab77d14018f3442df~mv2.jpeg/v1/fill/w_480,h_600,al_c,q_82,enc_auto/mokusch-polc1.jpeg 480w, https://static.wixstatic.com/media/4f5ae5_985771b104cd41dab77d14018f3442df~mv2.jpeg/v1/fill/w_720,h_900,al_c,q_82,enc_auto/mokusch-polc1.jpeg 720w, https://static.wixstatic.com/media/4f5ae5_985771b104cd41dab77d14018f3442df~mv2.jpeg/v1/fill/w_1000,h_1250,al_c,q_82,enc_auto/mokusch-polc1.jpeg 1000w" sizes="(max-width: 899px) 92vw, 520px" width="720" height="900" alt="Festett illusztráció: fa polc befőttesüvegekkel, szárított virágcsokor, koszorú és egy nyuszis doboz" loading="lazy" decoding="async"></div>
-      <figcaption class="wc__cap">Illusztráció</figcaption>
-    </figure>
-    <div class="leaf__text">
-      <span class="no" data-rv>6.</span>
-      <h2 id="h-nyuszis-polc">A híres <em>nyuszis polc</em></h2>
-      <p class="sub" data-rv>minden, ami egy erdei teadélutánhoz kellhet</p>
-      <p class="lead" data-rv>Egy polc, amely előtt mindenki megáll egy pillanatra.</p>
-      
-      <div class="btns" data-rv><a class="btn" href="nyuszis-polc/">…és ezt is mind ti csináltátok?</a></div>
-    </div>
-  </div>
-</section>
-
-<section class="leaf leaf--flip" id="akarmicsodak" aria-labelledby="h-akarmicsodak">
-  <div class="wrap leaf__grid">
-    <figure class="wc" data-wc>
-      <div class="wash wash--4" aria-hidden="true" data-wash></div>
-      <div class="wc__page"><img src="https://static.wixstatic.com/media/4f5ae5_d7aecd48d9874c7fab65891cc27e88e8~mv2.png/v1/fill/w_720,h_900,al_c,q_82,enc_auto/mokusch-olvaso.png" srcset="https://static.wixstatic.com/media/4f5ae5_d7aecd48d9874c7fab65891cc27e88e8~mv2.png/v1/fill/w_480,h_600,al_c,q_82,enc_auto/mokusch-olvaso.png 480w, https://static.wixstatic.com/media/4f5ae5_d7aecd48d9874c7fab65891cc27e88e8~mv2.png/v1/fill/w_720,h_900,al_c,q_82,enc_auto/mokusch-olvaso.png 720w, https://static.wixstatic.com/media/4f5ae5_d7aecd48d9874c7fab65891cc27e88e8~mv2.png/v1/fill/w_1000,h_1250,al_c,q_82,enc_auto/mokusch-olvaso.png 1000w" sizes="(max-width: 899px) 92vw, 520px" width="720" height="900" alt="Festett illusztráció: könyvespolcokkal körülvett olvasósarok zöld fotellel, lámpával és kötögetős kosárral" loading="lazy" decoding="async"></div>
-      <figcaption class="wc__cap">Illusztráció</figcaption>
-    </figure>
-    <div class="leaf__text">
-      <span class="no" data-rv>7.</span>
-      <h2 id="h-akarmicsodak">Varázslatos <em>akármicsodák</em></h2>
-      <p class="sub" data-rv>varázslatos-mesés könyvek, csodás csecsebecsék</p>
-      <p class="lead" data-rv>Egy sarok, ahol leülhetsz egy könyvvel – és apróságok, amiket haza is vihetsz.</p>
-      
-      <div class="btns" data-rv><a class="btn" href="konyvek/">Könyvek</a><a class="btn btn--ghost" href="csodas-csecsebecsek/">Csodás csecsebecsék</a></div>
-    </div>
-  </div>
-</section>
-
-<section class="leaf" id="palackposta" aria-labelledby="h-palackposta">
-  <div class="wrap leaf__grid">
-    <figure class="wc" data-wc>
-      <div class="wash wash--3" aria-hidden="true" data-wash></div>
-      <div class="wc__page"><img src="https://static.wixstatic.com/media/4f5ae5_2478afc6d240420187f710e04ce729f5~mv2.png/v1/fill/w_720,h_900,al_c,q_82,enc_auto/mokusch-posta.png" srcset="https://static.wixstatic.com/media/4f5ae5_2478afc6d240420187f710e04ce729f5~mv2.png/v1/fill/w_480,h_600,al_c,q_82,enc_auto/mokusch-posta.png 480w, https://static.wixstatic.com/media/4f5ae5_2478afc6d240420187f710e04ce729f5~mv2.png/v1/fill/w_720,h_900,al_c,q_82,enc_auto/mokusch-posta.png 720w, https://static.wixstatic.com/media/4f5ae5_2478afc6d240420187f710e04ce729f5~mv2.png/v1/fill/w_1000,h_1250,al_c,q_82,enc_auto/mokusch-posta.png 1000w" sizes="(max-width: 899px) 92vw, 520px" width="720" height="900" alt="Kép a Wix-oldalról: üzenetekkel teleragasztott fal, szárított levendula, kis lámpa és egy sütis vitrin" loading="lazy" decoding="async"></div>
-      <figcaption class="wc__cap">Kép a Wix-oldalról</figcaption>
-    </figure>
-    <div class="leaf__text">
-      <span class="no" data-rv>8.</span>
-      <h2 id="h-palackposta">Palackposta</h2>
-      <p class="sub" data-rv>minden levél ideér</p>
-      <p class="lead" data-rv>Írj nekünk, foglalj asztalt, vagy olvasd el, mit üzentek mások.</p>
-      <div class="pins" data-rv><a class="btn btn--berry" href="uzenek/">Üzenek!</a><a class="btn" href="asztalfoglalas/">Asztalfoglalás</a><a class="btn btn--ghost" href="uzenetek/">Üzenetek</a><a class="btn btn--ghost" href="mokassagok/">Mókásságok</a></div><p class="visit" id="hol-vagyunk" data-rv><span><b>Hol vagyunk?</b> 1012 Budapest, Várfok utca 30. · <a href="https://www.google.com/maps/search/?api=1&query=M%C3%B3kusch%20k%C3%A1v%C3%A9z%C3%B3%2C%201012%20Budapest%2C%20V%C3%A1rfok%20utca%2030" target="_blank" rel="noopener">térkép</a></span><span><a href="tel:+36306184373">+36 30 618 4373</a> · <a href="mailto:mokuschinfo@gmail.com">mokuschinfo@gmail.com</a></span></p>
-      
-    </div>
-  </div>
-</section>
-
-<section class="leaf leaf--flip leaf--finale" id="tortak" aria-labelledby="h-tortak">
-  <div class="wrap leaf__grid">
-    <figure class="wc" data-wc>
-      <div class="wash wash--2" aria-hidden="true" data-wash></div>
-      <div class="wc__page"><img src="https://static.wixstatic.com/media/4f5ae5_c2114812ce19405593f6a7dd4da29f15~mv2.png/v1/fill/w_720,h_900,al_c,q_82,enc_auto/mokusch-kepfal.png" srcset="https://static.wixstatic.com/media/4f5ae5_c2114812ce19405593f6a7dd4da29f15~mv2.png/v1/fill/w_480,h_600,al_c,q_82,enc_auto/mokusch-kepfal.png 480w, https://static.wixstatic.com/media/4f5ae5_c2114812ce19405593f6a7dd4da29f15~mv2.png/v1/fill/w_720,h_900,al_c,q_82,enc_auto/mokusch-kepfal.png 720w, https://static.wixstatic.com/media/4f5ae5_c2114812ce19405593f6a7dd4da29f15~mv2.png/v1/fill/w_1000,h_1250,al_c,q_82,enc_auto/mokusch-kepfal.png 1000w" sizes="(max-width: 899px) 92vw, 520px" width="720" height="900" alt="Festett illusztráció: keretezett képek egy régi falon, előtte égő lámpás, mezei virágok és egy szív alakú dísz" loading="lazy" decoding="async"><canvas class="fireflies fireflies--warm" data-fireflies="warm" aria-hidden="true"></canvas></div>
-      <figcaption class="wc__cap">Illusztráció</figcaption>
-    </figure>
-    <div class="leaf__text">
-      <span class="no" data-rv>9.</span>
-      <h2 id="h-tortak">Torták <em>és romantika</em></h2>
-      <p class="sub" data-rv>születésnapra, esküvőre, vagy csak úgy</p>
-      <p class="lead" data-rv>Meséld el, milyen tortát álmodtál – a műhely ajánlattal jelentkezik.</p>
-      <ol class="steps-book" data-rv><li><b>1</b>Meséld el, milyen tortát álmodtál</li><li><b>2</b>A műhely ajánlattal jelentkezik</li><li><b>3</b>Megbeszélitek a részleteket</li></ol>
-      <div class="btns" data-rv><a class="btn btn--berry" href="tortarendeles/"><svg class="cake" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16M5 20v-6.5h14V20M7 13.5V10h10v3.5M12 10V7.5"/><path d="M12 4.2c.8.9.8 2 0 2.6-.8-.6-.8-1.7 0-2.6Z"/><path d="M5 16.4c1.2 1 2.3 1 3.5 0s2.3-1 3.5 0 2.3 1 3.5 0 2.3-1 3.5 0"/></svg><span class="lbl-long">Tortarendelés</span><span class="lbl-short">Tortarendelés</span></a><a class="btn btn--ghost" href="eskuvo/">Esküvői torták</a></div>
-    </div>
-  </div>
-</section>
 
 </main>
 <footer class="ftr">
@@ -305,8 +226,8 @@
 </footer>
 <a class="btn btn--berry float-cta" href="tortarendeles/" data-float><svg class="cake" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16M5 20v-6.5h14V20M7 13.5V10h10v3.5M12 10V7.5"/><path d="M12 4.2c.8.9.8 2 0 2.6-.8-.6-.8-1.7 0-2.6Z"/><path d="M5 16.4c1.2 1 2.3 1 3.5 0s2.3-1 3.5 0 2.3 1 3.5 0 2.3-1 3.5 0"/></svg> Tortarendelés</a>
 <script src="js/vendor/motion-11.18.2.min.js" defer></script>
-<script src="js/site.js?v=8" defer></script>
-<script src="js/motion-fx.js?v=5" defer></script>
-<script src="js/storybook.js?v=1" defer></script>
+<script src="js/site.js?v=9" defer></script>
+<script src="js/motion-fx.js?v=6" defer></script>
+<script src="js/storybook.js?v=2" defer></script>
 </body>
 </html>

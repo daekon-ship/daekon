@@ -5,7 +5,7 @@ build.py-t másik kimeneti mappával használja – arra ez a réteg nem kerül 
 """
 import html
 
-SB_VER = "1"
+SB_VER = "2"
 PALETTES = [("erdei", "Erdei", "#4E5A39", "#D9BBAC"),
             ("puder", "Púderes", "#6B6E4E", "#D8AFA3"),
             ("arany", "Aranyló", "#475436", "#C9A45C")]
@@ -75,90 +75,166 @@ def leaf(B, no, sid, title, sub, lead, btns, key, wash=1, flip=False, extra="", 
 </section>'''
 
 
+
+
+# ---------------------------------------------------------------------------------------------
+#  A teljes főoldal egyetlen görgetéses mese: Vanda Wix-oldalának 11 festett képe, ugyanabban
+#  a sorrendben, ahogy a Wix-en szerepelnek (ösvény → udvar → bolt → pult → … → képfal).
+#  Minden kép teljes képernyős festmény, elmosódó szélekkel; görgetésre beljebb közelítünk,
+#  majd áttűnünk a következő helyiségbe.
+# ---------------------------------------------------------------------------------------------
+# kulcs, hossz (képernyőnyi görgetés), fókuszpont (a közelítés iránya), fejezet sorszáma
+SCENES = [
+    ("osveny", 2.1, "55% 72%", 1),
+    ("udvar", 1.5, "62% 58%", 2),
+    ("bolt", 1.4, "50% 62%", 3),
+    ("pult1", 1.0, "55% 48%", 4),
+    ("pult2", 1.1, "60% 52%", 4),
+    ("konyha", 1.4, "50% 42%", 5),
+    ("polc1", 1.1, "65% 45%", 6),
+    ("polc2", 1.1, "38% 45%", 6),
+    ("olvaso", 1.4, "45% 66%", 7),
+    ("posta", 1.5, "50% 42%", 8),
+    ("kepfal", 1.6, "45% 70%", 9),
+]
+FADE = 0.38     # az áttűnés hossza (képernyőnyi görgetés)
+
+
+def _r(x):
+    return f"{x:.4f}"
+
+
 def index(B):
     pre = ""
     btn = B.btn
     arrow = B.ARROW
-    trio = ('<div class="trio" data-rv>' + "".join(
-        f'<figure><div class="oval"><div class="slot" role="img" aria-label="Portré helye: {n}">{B.CAM}</div></div>'
-        f'<figcaption><b>{n}</b>alapító</figcaption></figure>' for n in ("Wanda", "…", "…")) + '</div>')
-    posta_extra = (f'<div class="pins" data-rv>{btn("uzenek/", "Üzenek!", "btn--berry")}{btn("asztalfoglalas/", "Asztalfoglalás")}'
-                   f'{btn("uzenetek/", "Üzenetek", "btn--ghost")}{btn("mokassagok/", "Mókásságok", "btn--ghost")}</div>'
-                   f'<p class="visit" id="hol-vagyunk" data-rv><span><b>Hol vagyunk?</b> {B.ADDR} · '
-                   f'<a href="{B.MAP}" target="_blank" rel="noopener">térkép</a></span>'
-                   f'<span><a href="{B.PHONE_HREF}">{B.PHONE}</a> · <a href="mailto:{B.EMAIL}">{B.EMAIL}</a></span></p>')
-    torta_steps = ('<ol class="steps-book" data-rv><li><b>1</b>Meséld el, milyen tortát álmodtál</li>'
-                   '<li><b>2</b>A műhely ajánlattal jelentkezik</li><li><b>3</b>Megbeszélitek a részleteket</li></ol>')
+    T = sum(s[1] for s in SCENES)
+    starts, u = [], 0.0
+    for s in SCENES:
+        starts.append(u); u += s[1]
+    P = lambda units: max(0.0, min(1.0, units / T))
+    chap_span = {}
+    for i, s in enumerate(SCENES):
+        a, b = chap_span.get(s[3], (starts[i], starts[i] + s[1]))
+        chap_span[s[3]] = (min(a, starts[i]), max(b, starts[i] + s[1]))
 
-    scenes = [("osveny", "Varázserdő"), ("udvar", "A kávézó megközelítése"), ("bolt", "Belépés a Mókuschba")]
-    atmo = "".join(f'<div class="atmo" data-atmo="{i}" style="background-image:url({lqip(B, k)})"></div>' for i, (k, _) in enumerate(scenes))
-    frames = "".join(
-        f'<figure class="jscene" data-jscene="{i}">{story_img(B, k, eager=(i == 0), low=(i > 0))}</figure>'
-        for i, (k, _) in enumerate(scenes))
+    # --- jelenetek
+    figs, atmo = [], []
+    for i, (k, units, focal, ch) in enumerate(SCENES):
+        S, E = starts[i], starts[i] + units
+        a = -1 if i == 0 else S - FADE          # megjelenés kezdete
+        b = 0 if i == 0 else S                  # teljesen látszik
+        c = 99 if i == len(SCENES) - 1 else E - FADE   # eltűnés kezdete
+        d = 99 if i == len(SCENES) - 1 else E          # eltűnt
+        z0, z1 = (0 if i == 0 else S - FADE), E
+        mob = ", ".join(f"{B.wimg(k, w, round(w * 1.5))} {w}w" for w in (640, 960, 1280))
+        desk = ", ".join(f"{B.wimg(k, w, round(w * 8 / 9))} {w}w" for w in (960, 1280, 1600))
+        eager = i == 0
+        lazyattr = "" if i < 2 else "data-"
+        prio = 'fetchpriority="high"' if eager else 'fetchpriority="low"'
+        figs.append(
+            f'<figure class="jscene" data-jscene="{i}" data-a="{_r(P(a)) if a >= 0 else -1}" data-b="{_r(P(b))}" '
+            f'data-c="{_r(P(c)) if c < 90 else 2}" data-d="{_r(P(d)) if d < 90 else 3}" data-z0="{_r(P(z0))}" data-z1="{_r(P(z1))}" '
+            f'style="--focal:{focal};--o:{i * 10}">'
+            f'<picture><source media="(min-width: 900px)" {lazyattr}srcset="{desk}" sizes="66vw">'
+            f'<img {lazyattr}src="{B.wimg(k, 960, 1440)}" {lazyattr}srcset="{mob}" sizes="100vw" width="960" height="1440" '
+            f'alt="{html.escape(B.WIX[k][2])}" {prio} decoding="async"></picture></figure>')
+        atmo.append(f'<div class="atmo" data-atmo="{i}" style="background-image:url({B.wimg(k, 18, 27)})"></div>')
+
+    # --- fejezetkártyák (a Wix 9 témaköre, mindegyikben 1–2 gomb)
+    pins = (f'<div class="pins">{btn("uzenek/", "Üzenek!", "btn--berry")}{btn("asztalfoglalas/", "Asztalfoglalás")}'
+            f'{btn("uzenetek/", "Üzenetek", "btn--ghost")}{btn("mokassagok/", "Mókásságok", "btn--ghost")}</div>')
+    CH = {
+        2: ("akik-eletre-keltik", "A lámpások már égnek – megérkeztünk a kávézóhoz.", "Akik életre keltik <em>minden nap</em>",
+            "Rólunk, minden mókuschról", "Három lány, aki minden reggel kinyitja az ajtót, kávét főz, süt és díszít.",
+            btn("valogatott-tarsasag/", "Válogatott társaság"), ""),
+        3: ("mit-muvelunk", "Nyisd ki az ajtót, és lépj be.", "Mit művelünk <em>mi itt?</em>",
+            "kávéfőzés · sütés · tortadíszítés · kézművesség", "A Mókusch hétköznapjai – képekben és rövid történetekben.",
+            btn("kepek/", "Képek") + btn("sztorik/", "Sztorik", "btn--ghost"), ""),
+        4: ("finomsagok", "Kávéillat szálldogál a pult felől…", "Finomságok", "kávék – sütik – kutyafülék",
+            "Mit lehet itt? Enni és inni – egy csésze mellett, kényelmesen.",
+            btn("enni/", "Enni") + btn("inni/", "Inni", "btn--ghost"), ""),
+        5: ("boszorkanykonyha", "Hátul, a konyhában mindig rotyog valami.", "Ez a mi kis <em>boszorkánykonyhánk</em>",
+            "receptek, praktikák, kézműves ötletek", "Amit nálunk megszerettél, otthon is kipróbálhatod.",
+            btn("nehany-artatlan-recept/", "Néhány ártatlan recept") + btn("tippek-trukkok/", "Tippek-trükkök", "btn--ghost"), ""),
+        6: ("nyuszis-polc", "És itt a polc, amely előtt mindenki megáll.", "A híres <em>nyuszis polc</em>",
+            "minden, ami egy erdei teadélutánhoz kellhet", "Kézzel készült apróságok egy erdei teadélutánhoz.",
+            btn("nyuszis-polc/", "…és ezt is mind ti csináltátok?"), ""),
+        7: ("akarmicsodak", "Egy csendes sarok, egy jó könyv.", "Varázslatos <em>akármicsodák</em>",
+            "varázslatos-mesés könyvek, csodás csecsebecsék", "Leülhetsz egy könyvvel – és apróságokat is hazavihetsz.",
+            btn("konyvek/", "Könyvek") + btn("csodas-csecsebecsek/", "Csodás csecsebecsék", "btn--ghost"), ""),
+        8: ("palackposta", "A falon üzenetek – írj te is!", "Palackposta", "minden levél ideér",
+            "Írj nekünk, foglalj asztalt, vagy olvasd el, mit üzentek mások.", "",
+            pins + f'<p class="beat__visit"><b>Hol vagyunk?</b> {B.ADDR} · <a href="{B.MAP}" target="_blank" rel="noopener">térkép</a> · <a href="{B.PHONE_HREF}">{B.PHONE}</a></p>'),
+        9: ("tortak", "És a mese végén: a torták.", "Torták <em>és romantika</em>", "születésnapra, esküvőre, vagy csak úgy",
+            "Meséld el, milyen tortát álmodtál – a műhely ajánlattal jelentkezik.",
+            B.torta_btn(pre, label_short="Tortarendelés") + btn("eskuvo/", "Esküvői torták", "btn--ghost"),
+            '<ol class="steps-book"><li><b>1</b>Meséld el, mit álmodtál</li><li><b>2</b>Ajánlatot kapsz</li><li><b>3</b>Megbeszélitek a részleteket</li></ol>'),
+    }
+
+    def win(a, b, c, d):
+        return f'data-a="{_r(P(a)) if a >= 0 else -1}" data-b="{_r(P(b)) if a >= 0 else 0}" data-c="{_r(P(c)) if c < 90 else 2}" data-d="{_r(P(d)) if d < 90 else 3}"'
+
+    beats, anchors = [], []
+    first = {}
+    for i, sc in enumerate(SCENES):
+        first.setdefault(sc[3], i)
+    # 1. fejezet – nyitókártya + az ösvény mondata
+    s0, e0 = chap_span[1]
+    beats.append(f'''<div class="beat beat--hero is-on" data-beat {win(-1, 0, e0 * 0.36, e0 * 0.44)} data-ch="1" style="--o:-1">
+      <div class="beat__card">
+        <p class="beat__kicker"><span class="no">1.</span> Varázserdő</p>
+        <h1 id="h-meseba"><span class="ln">Hagyd magad mögött a várost,</span> <span class="ln">és lépj be <em>egy mesébe.</em></span></h1>
+        <p class="beat__lead">Kézzel készített sütemények, illatos kávék és mesebeli pillanatok egy természetközeli kuckóban.</p>
+        <div class="btns">{btn("a-mokusch-meseje/", "A Mókusch meséje")}{btn("almok-vagyak-tervek/", "Álmok, vágyak, tervek", "btn--ghost")}</div>
+        <p class="beat__more"><a class="link" href="mesebeli-programok/">Mesebeli programok {arrow}</a></p>
+      </div>
+    </div>''')
+    beats.append(f'''<div class="beat beat--line" data-beat {win(e0 * 0.5, e0 * 0.58, e0 - 0.3, e0 - 0.12)} style="--o:5">
+      <div class="beat__card beat__card--sm"><p class="beat__story">Az ösvény egyre beljebb visz a fák közé – <em>a fények mutatják az utat.</em></p></div>
+    </div>''')
+    anchors.append(('meseba', 0.0, 1))
+    for n in range(2, 10):
+        sid, story, title, sub, lead, bts, extra = CH[n]
+        a0, b0 = chap_span[n]
+        last = n == 9
+        ia, ib = a0 + 0.08, a0 + 0.3
+        oc, od = (99, 99) if last else (b0 - FADE - 0.18, b0 - FADE + 0.02)
+        beats.append(f'''<div class="beat" data-beat {win(ia, ib, oc, od)} data-ch="{n}" style="--o:{first[n] * 10 + 5}">
+      <div class="beat__card">
+        <p class="beat__story">{story}</p>
+        <p class="beat__kicker"><span class="no">{n}.</span> fejezet</p>
+        <h2 id="h-{sid}">{title}</h2>
+        <p class="sub">{sub}</p>
+        <p class="beat__lead">{lead}</p>
+        {extra}
+        {f'<div class="btns">{bts}</div>' if bts else ''}
+      </div>
+    </div>''')
+        anchors.append((sid, P(ib + 0.05), n))
+        if n == 8:
+            anchors.append(("hol-vagyunk", P(ib + 0.05), n))
+    anc = "".join(f'<span class="janchor" id="{sid}" style="--p:{_r(p)}" data-p="{_r(p)}" data-ch="{c}" aria-hidden="true"></span>' for sid, p, c in anchors)
 
     body = f'''
 <main id="tartalom">
 
-<!-- 1. fejezet: mesekönyves út – Varázserdő → erdei ösvény → a kávézó megközelítése → belépés.
+<!-- A teljes főoldal egy görgetéses mesekönyv: 11 festett jelenet (a Mókusch saját képei) az erdőtől a tortákig.
      Natív görgetés (nincs scroll-jacking); a ragadós képkivágást a görgetés előrehaladása mozgatja. -->
-<section class="journey" id="meseba" aria-labelledby="h-meseba" data-journey>
+<section class="journey" aria-labelledby="h-meseba" data-journey style="--units:{T:.2f}">
+  {anc}
   <div class="journey__sticky">
-    <div class="journey__atmo" aria-hidden="true">{atmo}</div>
+    <div class="journey__atmo" aria-hidden="true">{"".join(atmo)}</div>
     <div class="journey__veil" aria-hidden="true"></div>
-    <div class="journey__frame" data-jframe>{frames}</div>
+    <div class="journey__frame" data-jframe>{"".join(figs)}</div>
     <div class="journey__light" aria-hidden="true" data-jlight></div>
     <canvas class="fireflies" data-fireflies="forest" aria-hidden="true"></canvas>
-    <div class="journey__text">
-      <div class="beat beat--1 is-on" data-beat="0">
-        <div class="beat__card">
-          <p class="beat__kicker"><span class="no">1.</span> Varázserdő</p>
-          <h1 id="h-meseba"><span class="ln">Hagyd magad mögött a várost,</span> <span class="ln">és lépj be <em>egy mesébe.</em></span></h1>
-          <p class="beat__lead">Kézzel készített sütemények, illatos kávék és mesebeli pillanatok egy természetközeli kuckóban.</p>
-          <div class="btns">{btn("a-mokusch-meseje/", "A Mókusch meséje")}{btn("almok-vagyak-tervek/", "Álmok, vágyak, tervek", "btn--ghost")}</div>
-          <p class="beat__more"><a class="link" href="mesebeli-programok/">Mesebeli programok {arrow}</a></p>
-        </div>
-      </div>
-      <div class="beat beat--2" data-beat="1">
-        <div class="beat__card beat__card--sm">
-          <p class="beat__kicker">Az erdei ösvény</p>
-          <p class="beat__line">Az ösvény egyre beljebb visz a fák közé, <em>a fények pedig mutatják az utat.</em></p>
-        </div>
-      </div>
-      <div class="beat beat--3" data-beat="2">
-        <div class="beat__card beat__card--sm">
-          <p class="beat__kicker">A kávézó megközelítése</p>
-          <p class="beat__line">A lámpások már égnek – <em>valahol itt kell lennie.</em></p>
-        </div>
-      </div>
-      <div class="beat beat--4" data-beat="3">
-        <div class="beat__card beat__card--sm">
-          <p class="beat__kicker">Belépés a Mókuschba</p>
-          <p class="beat__line">Nyisd ki az ajtót: <em>megérkeztél.</em></p>
-          <div class="btns">{btn("#akik-eletre-keltik", "Nézz körül")}{B.torta_btn(pre, label_short="Tortarendelés")}</div>
-        </div>
-      </div>
-    </div>
+    <canvas class="fireflies fireflies--warm" data-fireflies="warm" aria-hidden="true"></canvas>
+    <div class="journey__text">{"".join(beats)}</div>
     <p class="journey__hint" aria-hidden="true" data-jhint><span>Görgess, és indulj el az ösvényen</span><i></i></p>
+    <ol class="journey__dots" aria-hidden="true">{"".join(f'<li data-dot="{n}"></li>' for n in range(1, 10))}</ol>
   </div>
 </section>
-
-{leaf(B, 2, "akik-eletre-keltik", "Akik életre keltik <em>minden nap</em>", "Rólunk, minden mókuschról",
-      "Három lány, aki minden reggel kinyitja az ajtót, kávét főz, süt és díszít.",
-      btn("valogatott-tarsasag/", "Válogatott társaság"), "pult1", wash=2, extra=trio)}
-
-{leaf(B, 3, "mit-muvelunk", "Mit művelünk <em>mi itt?</em>", "kávéfőzés · sütés · tortadíszítés · kézművesség",
-      "A Mókusch hétköznapjai – képekben és rövid történetekben.",
-      btn("kepek/", "Képek") + btn("sztorik/", "Sztorik", "btn--ghost"), "polc2", wash=1, flip=True)}
-
-{leaf(B, 4, "finomsagok", "Finomságok", "kávék – sütik – kutyafülék",
-      "Mit lehet itt? Enni és inni – egy csésze mellett, kényelmesen.",
-      btn("enni/", "Enni") + btn("inni/", "Inni", "btn--ghost"), "pult2", wash=3,
-      extra='<ul class="menu-idx" data-rv><li>kávék</li><li>sütemények</li><li>reggelik</li><li>kutyafülék</li></ul>')}
-
-{leaf(B, 5, "boszorkanykonyha", "Ez a mi kis <em>boszorkánykonyhánk</em>", "receptek, praktikák, kézműves ötletek",
-      "Amit nálunk megszerettél, otthon is kipróbálhatod.",
-      btn("nehany-artatlan-recept/", "Néhány ártatlan recept") + btn("tippek-trukkok/", "Tippek-trükkök", "btn--ghost"),
-      "konyha", wash=1, flip=True)}
 
 <aside class="tortaband" aria-label="Tortarendelés">
   <div class="wrap">
@@ -170,24 +246,6 @@ def index(B):
     </div>
   </div>
 </aside>
-
-{leaf(B, 6, "nyuszis-polc", "A híres <em>nyuszis polc</em>", "minden, ami egy erdei teadélutánhoz kellhet",
-      "Egy polc, amely előtt mindenki megáll egy pillanatra.",
-      btn("nyuszis-polc/", "…és ezt is mind ti csináltátok?"), "polc1", wash=2)}
-
-{leaf(B, 7, "akarmicsodak", "Varázslatos <em>akármicsodák</em>", "varázslatos-mesés könyvek, csodás csecsebecsék",
-      "Egy sarok, ahol leülhetsz egy könyvvel – és apróságok, amiket haza is vihetsz.",
-      btn("konyvek/", "Könyvek") + btn("csodas-csecsebecsek/", "Csodás csecsebecsék", "btn--ghost"),
-      "olvaso", wash=4, flip=True)}
-
-{leaf(B, 8, "palackposta", "Palackposta", "minden levél ideér",
-      "Írj nekünk, foglalj asztalt, vagy olvasd el, mit üzentek mások.", "", "posta", wash=3,
-      extra=posta_extra, tag="Kép a Wix-oldalról")}
-
-{leaf(B, 9, "tortak", "Torták <em>és romantika</em>", "születésnapra, esküvőre, vagy csak úgy",
-      "Meséld el, milyen tortát álmodtál – a műhely ajánlattal jelentkezik.",
-      B.torta_btn(pre, label_short="Tortarendelés") + btn("eskuvo/", "Esküvői torták", "btn--ghost"),
-      "kepfal", wash=2, flip=True, extra=torta_steps, fireflies=True, cls="leaf--finale")}
 
 </main>
 '''
@@ -201,8 +259,9 @@ def index(B):
 {{"@type":"OpeningHoursSpecification","dayOfWeek":"Sunday","opens":"09:00","closes":"13:00"}}]}}
 </script>
 '''
-    pl = (f'<link rel="preload" as="image" imagesrcset="{B.wimg("osveny", 640, 960)} 640w, {B.wimg("osveny", 960, 1440)} 960w, '
-          f'{B.wimg("osveny", 1280, 1920)} 1280w" imagesizes="(max-width: 899px) 100vw, 46vw" fetchpriority="high">\n')
+    k0 = SCENES[0][0]
+    pl = (f'<link rel="preload" as="image" media="(max-width: 899px)" imagesrcset="{B.wimg(k0, 640, 960)} 640w, {B.wimg(k0, 960, 1440)} 960w, {B.wimg(k0, 1280, 1920)} 1280w" imagesizes="100vw" fetchpriority="high">\n'
+          f'<link rel="preload" as="image" media="(min-width: 900px)" imagesrcset="{B.wimg(k0, 960, 853)} 960w, {B.wimg(k0, 1280, 1138)} 1280w, {B.wimg(k0, 1600, 1422)} 1600w" imagesizes="66vw" fetchpriority="high">\n')
     out = B.head("Mókusch kávézó és tortaműhely – Budapest, Várfok utca 30.",
                  "Mesebeli kávézó és tortaműhely a Várfok utcában: egy erdei ösvény vezet a kávékhoz, süteményekhez, a híres nyuszis polchoz és az egyedi tortákhoz.",
                  pre, extra=pl + ld)

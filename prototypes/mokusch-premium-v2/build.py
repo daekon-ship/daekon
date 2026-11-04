@@ -321,8 +321,8 @@ def footer(prefix, page_js="", float_cta=True):
 </footer>
 {fl}
 <script src="{prefix}js/vendor/motion-11.18.2.min.js" defer></script>
-<script src="{prefix}js/site.js?v=8" defer></script>
-<script src="{prefix}js/motion-fx.js?v=5" defer></script>
+<script src="{prefix}js/site.js?v=9" defer></script>
+<script src="{prefix}js/motion-fx.js?v=6" defer></script>
 {STORY.foot_extra(prefix) if STORY.is_v2(_me()) else ''}{page_js}</body>
 </html>
 '''

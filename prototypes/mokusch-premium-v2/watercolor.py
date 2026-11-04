@@ -132,6 +132,22 @@ def paper(size=384, seed=3, name="paper.png"):
     print(name, (OUT / name).stat().st_size // 1024, "KB")
 
 
+def scene_desk(w=900, h=800, seed=15, name="scene-desk.png", edges=(0.07, 0.035, 0.07, 0.34)):
+    """Asztali jelenet: a festmény bal széle hosszan, lágyan kifut a papírba (ott a szöveg),
+    a többi szél rövidebb, szabálytalan, festékszerű. edges = (fent, jobb, lent, bal) arányban."""
+    rng = np.random.default_rng(seed)
+    y, x = np.mgrid[0:h, 0:w].astype(np.float32)
+    et, er, eb, el = edges
+    d = np.minimum.reduce([(y / h) / et, ((w - x) / w) / er, ((h - y) / h) / eb, (x / w) / el])
+    n1 = fbm(h, w, (int(w * .3), int(w * .12), int(w * .045)), (0.55, 0.3, 0.15), rng)
+    dd = d + (n1 - 0.5) * 0.7
+    a = smoothstep(0.05, 1.0, dd)
+    bloom = fbm(h, w, (int(w * .08), int(w * .03)), (0.7, 0.3), rng)
+    near = 1 - smoothstep(0.6, 1.8, dd)
+    a = a * (1 - near * np.clip((bloom - 0.55) * 1.2, 0, 0.3))
+    save_alpha(a, name, blur=2.4)
+
+
 if __name__ == "__main__":
     OUT.mkdir(parents=True, exist_ok=True)
     page_mask(400, 600, seed=11, name="page.png")                       # álló képlap (2:3, 3:4, 4:5 is jó)
@@ -143,3 +159,5 @@ if __name__ == "__main__":
     wash(560, 380, 23, "wash-3.png", irregular=0.22, base=0.5)
     edge_strip(1200, 90, 31, "edge.png")
     paper()
+    scene_desk()
+

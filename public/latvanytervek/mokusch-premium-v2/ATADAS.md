@@ -3,6 +3,25 @@
 Élő előnézet: https://daekon-ship.github.io/daekon/latvanytervek/mokusch-premium-v2/
 Előző változat (érintetlen, összehasonlításhoz): https://daekon-ship.github.io/mokusch/
 
+## Mesekönyves továbbfejlesztés, 2. kör (2026. november 4.) – az egész főoldal egy mese
+
+Az első mesekönyves kör túl hagyományos weboldal maradt (3 kép útvonal, utána külön blokkok). Most **a teljes főoldal egyetlen görgetéses mese**: a Mókusch Wix-oldalának mind a 11 festett képe, a Wix sorrendjében, teljes képernyős, elmosódó szélű festményként követi egymást – erdei ösvény → lámpásos udvar → boltajtó → pult (2 kép) → konyha → nyuszis polc (2 kép) → olvasósarok → üzenőfal → képfal/torták.
+
+**Működés**
+- Egy magas szakasz, benne ragadós (sticky) kivágás; a natív görgetés arányában minden jelenet lassan közelít a saját fókuszpontja felé (asztalon 1 → 1,26, mobilon 1 → 1,20, csökkentett mozgásnál 1 → 1,03), majd a következő festmény a régi *fölött* tűnik fel (nincs kifehéredés). Nincs scroll-jacking; visszafelé, gyors görgetésnél és oldal közepén újratöltve is pontos.
+- Asztalon a festmény a képernyő jobb ~72%-át tölti ki, balra hosszan beleolvad a papírba (`img/wc/scene-desk.png` maszk); mögötte a kép elmosott színei (18×27 px-es felnagyított kép, nincs drága blur). Mobilon teljes képernyős jelenet, a szöveg alul festett kártyán.
+- Minden fejezet egy rövid mesemondattal érkezik („A lámpások már égnek…”, „Nyisd ki az ajtót…”), alatta a Wix témakör címe és ugyanazok a gombok, mint eddig (1–4 gomb fejezetenként). Fejezetjelző pöttyök a jobb szélen.
+- Szentjánosbogarak az ösvényen és az udvaron; a boltba lépve elhalványulnak, bent meleg tündérfények gyúlnak, a tortáknál a legtöbb. Mindkét vászon csak akkor fut, ha látszik és szükség van rá.
+- Képek betöltése: az első két jelenet azonnal, a többi a görgetéssel egy lépéssel előre (nem tölt be egyszerre 11 nagy képet).
+- A régi horgonyok (`#akik-eletre-keltik`, `#finomsagok`, `#tortak`, `#hol-vagyunk` …) megmaradtak, a mese megfelelő pontjára ugranak.
+- Animáció kikapcsolva (lábléc kapcsoló): a jelenetek és a szövegek egymás alatt, álló képként.
+
+**Fájlok:** `prototypes/mokusch-premium-v2/story.py` (új főoldal), `watercolor.py` (+ `scene-desk.png`, világosabb `paper.png`), `css/storybook.css`, `js/storybook.js`, `js/site.js` (lebegő tortagomb a 2. fejezettől), `js/motion-fx.js` (a mesében saját belépő animáció).
+
+**Tesztek:** 360/390/430/768/1024/1440/1920 px – nincs kilógás, konzolhiba; előre-vissza, gyors görgetés, újratöltés középen, elforgatás, csökkentett mozgás, kattinthatóság rendben; tortarendelő működik. Képkocka-idő: asztali ~22 ms, mobil (4× lassítva) ~23 ms átlag. A valódi Wix-képekkel a tesztkörnyezet nem tud dolgozni (helyi helyettesítő rajzokkal futott) – **a végleges látványt valódi böngészőben meg kell nézni.**
+
+**Jóváhagyásra vár:** a mesemondatok szövege; a színvilág; a képek eredete/felhasználása (Vanda saját Wix-képei, új illusztráció nem készült).
+
 ## Mesekönyves továbbfejlesztés (2026. november 4.) – Vanda visszajelzése alapján
 
 Kérés: régi mesekönyvbe illő vízfestékes hangulat, elmosódott képszélek, lefelé görgetve egyre közelebb/beljebb jutunk a kávézóba (enyhe zoom), az első erdős képeknél szentjánosbogarak / tündérfények; a színvilág még nyitott.

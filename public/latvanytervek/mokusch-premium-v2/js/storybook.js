@@ -142,64 +142,98 @@
   };
   $$('canvas[data-fireflies]').forEach(function (c) {
     var f = new Fireflies(c, c.getAttribute('data-fireflies'));
+    if (c.getAttribute('data-fireflies') === 'warm' && c.closest('[data-journey]')) f.setLevel(0);
     flies.push(f); c._ff = f;
   });
 
-  /* ---------------- 1. görgetéses út ---------------- */
+  /* ---------------- 1. a főoldal görgetéses meséje (11 jelenet) ---------------- */
   var J = $('[data-journey]');
+  var swapSrc = function (fig, lazy) {
+    if (!fig || fig._ld) return; fig._ld = true;
+    $$('[data-srcset]', fig).forEach(function (e) { e.setAttribute('srcset', e.getAttribute('data-srcset')); e.removeAttribute('data-srcset'); });
+    $$('img[data-src]', fig).forEach(function (e) { if (lazy) e.loading = 'lazy'; e.src = e.getAttribute('data-src'); e.removeAttribute('data-src'); });
+  };
+  if (J && !ANIM) {
+    // animáció nélkül a jelenetek egymás alatt állnak: minden kép lusta betöltéssel érkezik
+    $$('[data-jscene]', J).forEach(function (f) { swapSrc(f, true); });
+  }
   if (J && ANIM) {
-    var scenes = $$('[data-jscene]', J), atmo = $$('[data-atmo]', J), beats = $$('[data-beat]', J);
-    var light = $('[data-jlight]', J), hint = $('[data-jhint]', J);
-    var jff = $('canvas[data-fireflies]', J); jff = jff && jff._ff;
-    var beatWin = [[-1, -1, 0.10, 0.18], [0.20, 0.26, 0.38, 0.44], [0.54, 0.60, 0.70, 0.76], [0.86, 0.92, 2, 3]];
+    var num = function (el, k) { return parseFloat(el.getAttribute('data-' + k)); };
+    var scenes = $$('[data-jscene]', J).map(function (el) {
+      return { el: el, a: num(el, 'a'), b: num(el, 'b'), c: num(el, 'c'), d: num(el, 'd'), z0: num(el, 'z0'), z1: num(el, 'z1'), v: el.style.visibility === 'visible' };
+    });
+    var atmo = $$('[data-atmo]', J);
+    var beats = $$('[data-beat]', J).map(function (el) {
+      return { el: el, a: num(el, 'a'), b: num(el, 'b'), c: num(el, 'c'), d: num(el, 'd'), ch: +(el.getAttribute('data-ch') || 0), on: el.classList.contains('is-on'), shown: false };
+    });
+    var dots = $$('[data-dot]', J), light = $('[data-jlight]', J), hint = $('[data-jhint]', J);
+    var ffF = $('canvas[data-fireflies="forest"]', J), ffW = $('canvas[data-fireflies="warm"]', J);
+    ffF = ffF && ffF._ff; ffW = ffW && ffW._ff;
+    // hol tart az erdő / hol kezdődik a belső tér (az udvar még kint van, a boltajtó után bent vagyunk)
+    var forestEnd = scenes[2] ? scenes[2].b : 0.3, insideAt = scenes[3] ? scenes[3].a : 0.35;
+    var curDot = -1;
 
-    var setBeat = function (el, o) {
-      el.style.opacity = o.toFixed(3);
-      el.style.setProperty('--by', ((1 - o) * 18).toFixed(1) + 'px');
-      var on = o > 0.02;
-      if (on !== el._on) { el._on = on; el.style.visibility = on ? 'visible' : 'hidden'; el.classList.toggle('is-on', on); }
+    var enter = function (b) {
+      // egyszeri belépő: a kártya tartalma lépcsőzetesen, rugalmasan érkezik
+      if (b.shown || !FULL) { b.shown = true; return; }
+      b.shown = true;
+      var kids = $$('.beat__card > *', b.el);
+      M.animate(kids, { opacity: [0, 1], y: [16, 0] }, { delay: M.stagger(0.06), duration: 0.7, ease: [0.22, 0.7, 0.2, 1] });
+      var bt = $$('.btns > *, .pins > *', b.el);
+      if (bt.length) M.animate(bt, { scale: [0.85, 1] }, { delay: M.stagger(0.07, { startDelay: 0.25 }), type: 'spring', stiffness: 260, damping: 17 });
     };
     var render = function (p) {
       var mob = isMobile();
-      var Z = FULL ? (mob ? 0.7 : 1) : 0.12;       // a közeledés mértéke (csökkentett mozgásnál alig)
-      var o0 = 1 - ease(seg(p, 0.40, 0.55));
-      var o1 = ease(seg(p, 0.40, 0.55)) * (1 - ease(seg(p, 0.74, 0.86)));
-      var o2 = ease(seg(p, 0.74, 0.86));
-      var s0 = 1 + 0.55 * Z * seg(p, 0, 0.55);
-      var s1 = 1 + (0.1 + 0.32 * seg(p, 0.40, 0.86)) * Z;
-      var s2 = 1 + (0.14 + 0.2 * seg(p, 0.74, 1)) * Z;
-      var y0 = -2.5 * Z * seg(p, 0, 0.55);
-      scenes[0].style.transform = 'translate3d(0,' + y0.toFixed(2) + '%,0) scale(' + s0.toFixed(4) + ')';
-      scenes[0].style.opacity = o0.toFixed(3);
-      if (scenes[1]) { scenes[1].style.transform = 'scale(' + s1.toFixed(4) + ')'; scenes[1].style.opacity = o1.toFixed(3); }
-      if (scenes[2]) { scenes[2].style.transform = 'scale(' + s2.toFixed(4) + ')'; scenes[2].style.opacity = o2.toFixed(3); }
-      if (atmo[0]) atmo[0].style.opacity = (0.55 * o0).toFixed(3);
-      if (atmo[1]) atmo[1].style.opacity = (0.55 * o1).toFixed(3);
-      if (atmo[2]) atmo[2].style.opacity = (0.6 * o2).toFixed(3);
-      // a teljesen áttetsző rétegeket a böngésző ne is rajzolja (gyorsabb görgetés)
-      [o0, o1, o2].forEach(function (o, i) {
-        var v = o > 0.004 ? 'visible' : 'hidden';
-        if (scenes[i] && scenes[i]._v !== v) { scenes[i]._v = v; scenes[i].style.visibility = v; if (atmo[i]) atmo[i].style.visibility = v; }
-      });
-      if (light) light.style.opacity = (0.3 + 0.6 * seg(p, 0.3, 0.95)).toFixed(3);   // a fény egyre melegebb
-      if (hint) hint.style.opacity = (1 - seg(p, 0, 0.05)).toFixed(3);
-      beats.forEach(function (b, i) {
-        var w = beatWin[i];
-        var o = (w[0] < 0 ? 1 : ease(seg(p, w[0], w[1]))) * (1 - ease(seg(p, w[2], w[3])));
-        setBeat(b, o);
-      });
-      if (jff) jff.setLevel(1 - ease(seg(p, 0.5, 0.84)));   // a fények az erdőben élnek, a kávézóba érve elhalványulnak
+      var Z = FULL ? (mob ? 0.2 : 0.26) : 0.03;     // a közeledés mértéke jelenetenként (csökkentett mozgásnál alig)
+      for (var i = 0; i < scenes.length; i++) {
+        var s = scenes[i];
+        // a következő jelenet a régi FÖLÖTT tűnik fel – így nincs „kifehéredés” két kép között
+        var o = (s.a < 0 ? 1 : ease(seg(p, s.a, s.b))) * (p >= s.d ? 0 : 1);
+        var vis = o > 0.004;
+        if (vis !== s.v) {
+          s.v = vis; s.el.style.visibility = vis ? 'visible' : 'hidden';
+          if (atmo[i]) atmo[i].style.visibility = vis ? 'visible' : 'hidden';
+          if (!vis) { s.el.style.opacity = '0'; if (atmo[i]) atmo[i].style.opacity = '0'; }
+        }
+        if (p > s.a - 0.06) { swapSrc(s.el); swapSrc(scenes[i + 1] && scenes[i + 1].el); }   // előre töltjük a következőt
+        if (!vis) continue;
+        var z = seg(p, s.z0, s.z1);
+        s.el.style.opacity = o.toFixed(3);
+        s.el.style.transform = 'scale(' + (1 + Z * z).toFixed(4) + ')';
+        if (atmo[i]) atmo[i].style.opacity = (0.5 * o).toFixed(3);
+      }
+      var curCh = 1;
+      for (var j = 0; j < beats.length; j++) {
+        var b = beats[j];
+        var bo = (b.a < 0 ? 1 : ease(seg(p, b.a, b.b))) * (1 - ease(seg(p, b.c, b.d)));
+        var on = bo > 0.02;
+        if (b.ch && p >= (b.a < 0 ? 0 : b.a)) curCh = b.ch;
+        if (on !== b.on) {
+          b.on = on; b.el.style.visibility = on ? 'visible' : 'hidden'; b.el.classList.toggle('is-on', on);
+          if (on) enter(b);
+        }
+        if (on || b.el.style.opacity !== '0') {
+          b.el.style.opacity = on ? bo.toFixed(3) : '0';
+          b.el.style.setProperty('--by', ((1 - bo) * 18).toFixed(1) + 'px');
+        }
+      }
+      if (curCh !== curDot) { curDot = curCh; dots.forEach(function (d, k) { d.classList.toggle('is-on', k === curCh - 1); }); }
+      if (light) light.style.opacity = (0.28 + 0.6 * seg(p, insideAt, 1)).toFixed(3);   // bent egyre melegebb a fény
+      if (hint) hint.style.opacity = (1 - seg(p, 0, 0.03)).toFixed(3);
+      // szentjánosbogarak az erdőben és az udvaron, bent meleg tündérfények – a tortáknál a legtöbb
+      if (ffF) ffF.setLevel(1 - ease(seg(p, forestEnd - 0.05, forestEnd + 0.03)));
+      if (ffW) ffW.setLevel(ease(seg(p, insideAt, insideAt + 0.05)) * (0.5 + 0.5 * seg(p, 0.86, 0.95)));
     };
-    beats.forEach(function (b, i) { b._on = i === 0; });
-    // natív görgetés követése (Motion scroll – modern böngészőben hardveresen gyorsított)
+    render(0);
+    // natív görgetés követése (Motion scroll) – a pillanatnyi görgetési állásból számol, így visszafelé is pontos
     M.scroll(function (a) { render(typeof a === 'number' ? a : (a && a.y ? a.y.progress : 0)); },
       { target: J, offset: ['start start', 'end end'] });
 
-    // nyitás: a cím soronként, a kártya finoman megjelenik (a teljes kártya azonnal olvasható)
+    // nyitás: a cím soronként érkezik
     if (FULL) {
-      var lines = $$('.beat--1 h1 .ln', J);
-      M.animate(lines, { opacity: [0, 1], y: [14, 0] }, { delay: M.stagger(0.14, { startDelay: 0.15 }), duration: 1, ease: [0.22, 0.7, 0.2, 1] });
-      M.animate($('.beat--1 .beat__card', J), { opacity: [0, 1] }, { duration: 0.9 });
+      M.animate($$('.beat--hero h1 .ln', J), { opacity: [0, 1], y: [14, 0] }, { delay: M.stagger(0.14, { startDelay: 0.15 }), duration: 1, ease: [0.22, 0.7, 0.2, 1] });
+      M.animate($('.beat--hero .beat__card', J), { opacity: [0, 1] }, { duration: 0.9 });
+      beats[0].shown = true;
     }
   }
 
