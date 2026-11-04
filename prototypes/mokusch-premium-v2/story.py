@@ -5,7 +5,7 @@ build.py-t másik kimeneti mappával használja – arra ez a réteg nem kerül 
 """
 import html
 
-SB_VER = "11"
+SB_VER = "12"
 PALETTES = [("erdei", "Erdei", "#4E5A39", "#D9BBAC"),
             ("puder", "Púderes", "#6B6E4E", "#D8AFA3"),
             ("arany", "Aranyló", "#475436", "#C9A45C")]
@@ -108,9 +108,10 @@ _MJ = _Path(__file__).with_name("mese_kepek.json")
 MESE = _json.loads(_MJ.read_text()) if _MJ.exists() else {}
 
 
-def mese_srcset(key, pre=""):
-    W = MESE[key][0]
-    return ", ".join(f"{pre}img/mese/{key}-{w}.webp {w}w" for w in [w for w in (480, 720, 1080, 1600, 2200) if w < W] + [W])
+def mese_srcset(key, pre="", kind="f"):
+    """kind: d = asztali 16:10, m = mobil 2:3 (a régi Wix-kivágással azonos, középre igazított), f = teljes kép"""
+    tag = "-" if kind == "f" else f"-{kind}-"
+    return ", ".join(f"{pre}img/mese/{key}{tag}{w}.webp {w}w" for w in MESE[key][kind])
 
 
 def _r(x):
@@ -141,12 +142,12 @@ def index(B):
         d = 99 if i == len(SCENES) - 1 else E          # eltűnt
         z0, z1 = (0 if i == 0 else S - FADE), E
         if k in MESE:   # 4K helyi kép; a kivágást a CSS végzi (object-fit: cover + fókuszpont)
-            mob = desk = mese_srcset(k)
+            mob, desk = mese_srcset(k, kind="m"), mese_srcset(k, kind="d")
         else:
             mob = ", ".join(f"{B.wimg(k, w, round(w * 1.5), True)} {w}w" for w in (640, 960, 1280, 1600))
             desk = ", ".join(f"{B.wimg(k, w, round(w * 10 / 16), True)} {w}w" for w in (1280, 1920, 2560, 3200, 3840))
-        isrc = f"img/mese/{k}-1080.webp" if k in MESE else B.wimg(k, 960, 1440, True)
-        msz = "165vw" if k in MESE else "100vw"   # mobilon az álló festmény magasságra töltődik ki, szélesebb a képernyőnél
+        isrc = f"img/mese/{k}-m-960.webp" if k in MESE else B.wimg(k, 960, 1440, True)
+        msz = "100vw"
         eager = i == 0
         lazyattr = "" if i < 2 else "data-"
         prio = 'fetchpriority="high"' if eager else 'fetchpriority="low"'
@@ -286,8 +287,8 @@ def index(B):
 '''
     k0 = SCENES[0][0]
     if k0 in MESE:
-        pl = (f'<link rel="preload" as="image" media="(max-width: 899px)" imagesrcset="{mese_srcset(k0)}" imagesizes="165vw" fetchpriority="high">\n'
-              f'<link rel="preload" as="image" media="(min-width: 900px)" imagesrcset="{mese_srcset(k0)}" imagesizes="100vw" fetchpriority="high">\n')
+        pl = (f'<link rel="preload" as="image" media="(max-width: 899px)" imagesrcset="{mese_srcset(k0, kind='m')}" imagesizes="100vw" fetchpriority="high">\n'
+              f'<link rel="preload" as="image" media="(min-width: 900px)" imagesrcset="{mese_srcset(k0, kind='d')}" imagesizes="100vw" fetchpriority="high">\n')
     else:
         pl = ""
     out = B.head("Mókusch kávézó és tortaműhely – Budapest, Várfok utca 30.",
