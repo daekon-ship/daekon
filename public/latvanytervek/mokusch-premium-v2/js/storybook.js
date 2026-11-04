@@ -1,12 +1,13 @@
 /* Mókusch V2 – mesekönyves réteg (DAEKON)
-   1) Megérkezés (1–3. fejezet): ragadós könyvlap, benne az ösvény, az udvar és a bolt festménye.
-      Görgetésre finoman közelebb lépünk oda, ahová az út vezet, és onnan nyílik ki a következő kép.
-      Nincs scroll-jacking; visszafelé is pontos; újratöltéskor a pillanatnyi állásból indul.
-   2) Szentjánosbogarak (canvas) csak az erdőben és az udvaron.
-   3) Fejezetek (4–9.): a lapok csendesen előtűnnek, görgetésre ragadó zoom nélkül.
+   1) Görgetéses út: a ragadós (sticky) jelenetkivágást a natív görgetés előrehaladása mozgatja –
+      nincs scroll-jacking, visszafelé is pontosan ugyanúgy működik, újratöltéskor a pillanatnyi
+      állásból indul.
+   2) Szentjánosbogarak / tündérfények: canvas, eltérő méret, lassú szabálytalan lebegés,
+      pislákolás, időnként eltűnnek és újra feltűnnek. Csak látható állapotban fut.
+   3) Festett lapok: görgetésre lassú közeledés (zoom) és festékfolt-parallax.
    4) Színvilág-választó (bemutató).
-   Mód: .anim-full = minden; .anim-soft (csökkentett mozgás) = kisebb közelítés, rövid áttűnések, álló fények;
-   animáció kikapcsolva = a lapok egymás alatt. */
+   Mód: .anim-full = minden; .anim-soft (csökkentett mozgás) = csak áttűnések, álló fények;
+   animáció kikapcsolva = állókép. */
 (function () {
   'use strict';
   var doc = document.documentElement;
@@ -160,140 +161,268 @@
   };
   $$('canvas[data-fireflies]').forEach(function (c) {
     var f = new Fireflies(c, c.getAttribute('data-fireflies'));
+    if (c.getAttribute('data-fireflies') === 'warm' && c.closest('[data-journey]')) f.setLevel(0);
     flies.push(f); c._ff = f;
   });
 
-  /* ---------------- 1–3. MEGÉRKEZÉS: ösvény → udvar → bolt ----------------
-     Egy ragadós könyvlap, benne a három festmény. Görgetésre finoman közelebb lépünk oda, ahová
-     az út vezet (a festmény fókuszpontja), és onnan nyílik ki vízfestékfoltként a következő kép.
-     A görgetést nem vesszük át: a pillanatnyi állásból számol, visszafelé is pontos. */
+  /* ---------------- 1. a főoldal görgetéses meséje (11 jelenet) ---------------- */
   var J = $('[data-journey]');
-  var swapSrc = function (fig) {
+  var swapSrc = function (fig, lazy) {
     if (!fig || fig._ld) return; fig._ld = true;
     $$('[data-srcset]', fig).forEach(function (e) { e.setAttribute('srcset', e.getAttribute('data-srcset')); e.removeAttribute('data-srcset'); });
-    $$('img[data-src]', fig).forEach(function (e) { e.src = e.getAttribute('data-src'); e.removeAttribute('data-src'); });
+    $$('img[data-src]', fig).forEach(function (e) { if (lazy) e.loading = 'lazy'; e.src = e.getAttribute('data-src'); e.removeAttribute('data-src'); });
   };
-  if (J && !ANIM) $$('[data-ascene]', J).forEach(function (f) { swapSrc(f); });
+  if (J && !ANIM) {
+    // animáció nélkül a jelenetek egymás alatt állnak: minden kép lusta betöltéssel érkezik
+    $$('[data-jscene]', J).forEach(function (f) { swapSrc(f, true); });
+  }
   if (J && ANIM) {
     var num = function (el, k) { return parseFloat(el.getAttribute('data-' + k)); };
-    var easeOut = function (t) { return 1 - Math.pow(1 - t, 3); };
-    var scenes = $$('[data-ascene]', J).map(function (el) {
-      var f = (el.getAttribute('data-f') || '50,50').split(',');
-      return { el: el, inner: $('.ascene__in', el), a: num(el, 'a'), b: num(el, 'b'), c: num(el, 'c'), d: num(el, 'd'),
-        fx: +f[0] / 100, fy: +f[1] / 100, v: el.getAttribute('data-ascene') === '0', bloom: false };
+    var scenes = $$('[data-jscene]', J).map(function (el) {
+      return { el: el, a: num(el, 'a'), b: num(el, 'b'), c: num(el, 'c'), d: num(el, 'd'), z0: num(el, 'z0'), z1: num(el, 'z1'), v: el.style.visibility === 'visible' };
     });
     var atmo = $$('[data-atmo]', J);
     var beats = $$('[data-beat]', J).map(function (el) {
-      return { el: el, a: num(el, 'a'), b: num(el, 'b'), c: num(el, 'c'), d: num(el, 'd'), on: el.classList.contains('is-on'), shown: false };
+      return { el: el, a: num(el, 'a'), b: num(el, 'b'), c: num(el, 'c'), d: num(el, 'd'), ch: +(el.getAttribute('data-ch') || 0), on: el.classList.contains('is-on'), shown: false };
     });
-    var trail = $$('[data-trail]', J), hint = $('[data-jhint]', J), frame = $('[data-jframe]', J);
-    var ff = $('canvas[data-fireflies]', J); ff = ff && ff._ff;
-    var FW = 1, FH = 1, curTrail = -1, lastTravel = null;
-    var measure = function () { FW = frame.clientWidth || 1; FH = frame.clientHeight || 1; };
-    measure(); window.addEventListener('resize', measure);
-    var A = FULL ? 1 : 0.4;   // csökkentett mozgásnál kisebb közelítés, a kinyíló átmenet megmarad
+    var dots = $$('[data-dot]', J), light = $('[data-jlight]', J), hint = $('[data-jhint]', J);
+    var ffF = $('canvas[data-fireflies="forest"]', J), ffW = $('canvas[data-fireflies="warm"]', J);
+    ffF = ffF && ffF._ff; ffW = ffW && ffW._ff;
+    // hol tart az erdő / hol kezdődik a belső tér (az udvar még kint van, a boltajtó után bent vagyunk)
+    var forestEnd = scenes[2] ? scenes[2].b : 0.3, insideAt = scenes[3] ? scenes[3].a : 0.35;
+    var curDot = -1;
+
     var enter = function (b) {
+      // egyszeri belépő: a kártya tartalma lépcsőzetesen, rugalmasan érkezik
       if (b.shown || !FULL) { b.shown = true; return; }
       b.shown = true;
-      M.animate($$(':scope > *', b.el), { opacity: [0, 1], y: [10, 0] }, { delay: M.stagger(0.07), duration: 0.9, ease: [0.22, 0.7, 0.2, 1] });
+      var kids = $$('.beat__card > *', b.el);
+      M.animate(kids, { opacity: [0, 1], y: [16, 0] }, { delay: M.stagger(0.06), duration: 0.7, ease: [0.22, 0.7, 0.2, 1] });
+      var bt = $$('.btns > *, .pins > *', b.el);
+      if (bt.length) M.animate(bt, { scale: [0.85, 1] }, { delay: M.stagger(0.07, { startDelay: 0.25 }), type: 'spring', stiffness: 260, damping: 17 });
     };
-    var forestOut = scenes[1] ? [scenes[1].c, scenes[1].d] : [0.6, 0.7];
-
+    var frameEl = $('[data-jframe]', J), FW = 1, FH = 1;
+    var measure = function () { FW = frameEl.clientWidth || innerWidth; FH = frameEl.clientHeight || innerHeight; };
+    measure(); window.addEventListener('resize', measure);
+    scenes.forEach(function (s) {
+      var f = (s.el.getAttribute('data-f') || '50,50').split(',');
+      s.fx = (+f[0]) / 100; s.fy = (+f[1]) / 100; s.inner = $('.jscene__in', s.el); s.bloom = false;
+    });
+    var easeIn = function (t) { return t * t * t; };
+    var easeOut = function (t) { return 1 - Math.pow(1 - t, 3); };
+    var lastTravel = null;
     var render = function (p) {
-      var travel = 0, cur = 0;
+      var mob = isMobile();
+      var travel = 0;
       for (var i = 0; i < scenes.length; i++) {
         var s = scenes[i];
-        var r = s.a < 0 ? 1 : seg(p, s.a, s.b);          // kinyílik
-        var h = seg(p, s.b, s.c);                         // ott állunk, lassan közelebb lépünk
-        var x = s.c > 1 ? 0 : seg(p, s.c, s.d);           // továbblépünk: a következő kép kinyílik előttünk
-        travel += 0.3 * h + 0.8 * x * x;
-        if (s.a < 0 || p >= s.b) cur = i;
+        var r = s.a < 0 ? 1 : seg(p, s.a, s.b);        // belépés (kinyílás)
+        var h = seg(p, s.b, s.c);                       // ott állunk és lassan közelebb lépünk
+        var x = s.c > 1 ? 0 : seg(p, s.c - (s.d - s.c) * 0.6, s.d);   // továbbmegyünk: a kép egyre gyorsabban ránk nő, „belépünk” a következőbe
+        travel += 0.35 * h + 1.2 * x * x + 0.25 * r;
         var vis = (s.a < 0 || p >= s.a) && p < s.d;
-        if (p > s.a - 0.12) { swapSrc(s.el); }
-        if (vis !== s.v) { s.v = vis; s.el.style.visibility = vis ? 'visible' : 'hidden'; if (!vis) s.el.style.opacity = '0'; }
-        var ao = vis ? 0.3 * (s.a < 0 ? 1 : ease(r)) * (1 - ease(x)) : 0;
-        if (atmo[i]) atmo[i].style.opacity = ao.toFixed(3);
+        if (vis !== s.v) {
+          s.v = vis; s.el.style.visibility = vis ? 'visible' : 'hidden';
+          if (atmo[i]) atmo[i].style.visibility = vis ? 'visible' : 'hidden';
+          if (!vis) { s.el.style.opacity = '0'; if (atmo[i]) atmo[i].style.opacity = '0'; }
+        }
+        if (p > s.a - 0.06) { swapSrc(s.el); swapSrc(scenes[i + 1] && scenes[i + 1].el); }   // előre töltjük a következőt
         if (!vis) continue;
-        var z = (1 + 0.06 * A * ease(h)) * (1 + 0.24 * A * x * x);
-        var prev = scenes[i - 1], bl = i > 0 && r < 1 && !!prev;
+        var z, o = 1;
+        // a „belépés” (ránk növő kép + akvarellfoltként kinyíló következő jelenet) a mese lényege, ezért
+        // csökkentett mozgásnál is megmarad – csak lassabb, kisebb közelítéssel, repülő fények nélkül
+        var A = FULL ? 1 : 0.45;
+        // visszafogott közelítés: finoman közelebb lépünk, majd átlépünk a következő képbe
+        var zIn = i === 0 ? 1 : 1 - (0.14 * A) * (1 - easeOut(r));
+        z = zIn * (1 + 0.07 * A * h) * (1 + (mob ? 1.1 : 1.45) * A * x * x);
+        var ty = (0.5 - h) * 1.6 * A;   // lassú függőleges úszás a jelenetben (parallax)
+        var prev = scenes[i - 1];
+        var bl = i > 0 && r < 1 && !!prev;
         if (bl !== s.bloom) { s.bloom = bl; s.el.classList.toggle('is-bloom', bl); }
-        var o = 1;
         if (bl) {
-          var diag = Math.sqrt(FW * FW + FH * FH), bs = 2.8 * diag * Math.pow(ease(r), 1.6);
+          // a folt az előző kép fókuszpontjából nő ki (az előző kép e pont felé nagyul, így az a pont áll)
+          var diag = Math.sqrt(FW * FW + FH * FH);
+          var bs = 3.4 * diag * Math.pow(ease(r), 1.7);
           s.el.style.setProperty('--bs', bs.toFixed(1) + 'px');
           s.el.style.setProperty('--bp', (prev.fx * FW - bs / 2).toFixed(1) + 'px ' + (prev.fy * FH - bs / 2).toFixed(1) + 'px');
-          o = clamp(r * 5, 0, 1);
+          o = clamp(r * 6, 0, 1);
         }
         s.el.style.opacity = o.toFixed(3);
-        s.inner.style.transform = 'scale(' + z.toFixed(4) + ')';
+        s.inner.style.transform = 'translate3d(0,' + ty.toFixed(3) + '%,0) scale(' + z.toFixed(4) + ')';
+        if (atmo[i]) atmo[i].style.opacity = (0.5 * Math.min(1, r * 2)).toFixed(3);
       }
-      if (ff) {
-        if (FULL && lastTravel !== null && travel !== lastTravel) ff.push(travel - lastTravel);
-        ff.setLevel(1 - ease(seg(p, forestOut[0], forestOut[1])));   // szentjánosbogarak csak kint, az erdőben és az udvaron
+      if (FULL && lastTravel !== null && travel !== lastTravel) {
+        var dT = travel - lastTravel;
+        if (ffF) ffF.push(dT); if (ffW) ffW.push(dT);
       }
       lastTravel = travel;
+      var curCh = 1;
       for (var j = 0; j < beats.length; j++) {
         var b = beats[j];
         var bo = (b.a < 0 ? 1 : ease(seg(p, b.a, b.b))) * (1 - ease(seg(p, b.c, b.d)));
         var on = bo > 0.02;
-        if (on !== b.on) { b.on = on; b.el.style.visibility = on ? 'visible' : 'hidden'; b.el.classList.toggle('is-on', on); if (on) enter(b); }
+        if (b.ch && p >= (b.a < 0 ? 0 : b.a)) curCh = b.ch;
+        if (on !== b.on) {
+          b.on = on; b.el.style.visibility = on ? 'visible' : 'hidden'; b.el.classList.toggle('is-on', on);
+          if (on) enter(b);
+        }
         if (on || b.el.style.opacity !== '0') {
           b.el.style.opacity = on ? bo.toFixed(3) : '0';
-          b.el.style.setProperty('--by', ((1 - bo) * 12).toFixed(1) + 'px');
+          b.el.style.setProperty('--by', ((1 - bo) * 18).toFixed(1) + 'px');
         }
       }
-      if (cur !== curTrail) { curTrail = cur; trail.forEach(function (t, k) { t.classList.toggle('is-on', k === cur); t.classList.toggle('is-past', k < cur); }); }
-      if (hint) hint.style.opacity = (1 - seg(p, 0, 0.04)).toFixed(3);
+      if (curCh !== curDot) { curDot = curCh; dots.forEach(function (d, k) { d.classList.toggle('is-on', k === curCh - 1); }); }
+      if (light) light.style.opacity = (0.28 + 0.6 * seg(p, insideAt, 1)).toFixed(3);   // bent egyre melegebb a fény
+      if (hint) hint.style.opacity = (1 - seg(p, 0, 0.03)).toFixed(3);
+      // szentjánosbogarak az erdőben és az udvaron, bent meleg tündérfények – a tortáknál a legtöbb
+      if (ffF) ffF.setLevel(1 - ease(seg(p, forestEnd - 0.05, forestEnd + 0.03)));
+      if (ffW) ffW.setLevel(ease(seg(p, insideAt, insideAt + 0.05)) * (0.5 + 0.5 * seg(p, 0.86, 0.95)));
     };
+    // kuckó-fény: ahogy beljebb jutunk, a kép széle meleg félhomályba süllyed; minden „átlépésnél” egy pillanatra összeszűkül
+    var cozy = document.createElement('div'); cozy.className = 'journey__cozy'; cozy.setAttribute('aria-hidden', 'true');
+    if (light && light.parentNode) light.parentNode.insertBefore(cozy, light.nextSibling);
+    var baseRender = render;
+    render = function (p) {
+      baseRender(p);
+      var tun = 0;
+      for (var i = 0; i < scenes.length; i++) {
+        var s = scenes[i]; if (s.c > 1) continue;
+        var x = seg(p, s.c - (s.d - s.c) * 0.6, s.d); tun = Math.max(tun, Math.sin(Math.PI * x));
+      }
+      var co = clamp(0.62 * ease(seg(p, insideAt - 0.04, 0.92)) + 0.3 * tun, 0, 1); cozy.style.opacity = co.toFixed(3); cozy.style.visibility = co > 0.005 ? 'visible' : 'hidden';
+      // köd: minden jelenetben előtűnik, a képnél gyorsabban úszik és nő, majd az átlépés előtt elillan
+      if (mist.length) {
+        var ci = 0; for (var k = 0; k < scenes.length; k++) if (scenes[k].a < 0 || p >= scenes[k].a) ci = k;
+        var sc = scenes[ci], st = sc.a < 0 ? 0 : sc.a, en = sc.d > 1 ? 1 : sc.d, L = clamp((p - st) / (en - st), 0, 1);
+        var out = 1 - ease(seg(p, forestEnd - 0.04, forestEnd + 0.04));       // kint sűrű erdei köd, bent halvány meleg pára
+        var str = (out * 0.9 + (1 - out) * 0.32) * Math.sin(Math.PI * L) * (FULL ? 1 : 0.6);
+        if (out < 0.5 !== mistWarm) { mistWarm = out < 0.5; mistBox.style.setProperty('--mist', mistWarm ? '255,232,196' : '251,247,238'); }
+        for (var m = 0; m < mist.length; m++) {
+          var sp = [1, 1.6, 0.7][m], dir = m === 2 ? 1 : -1;
+          mist[m].style.opacity = (str * [1, 0.85, 0.6][m]).toFixed(3); mist[m].style.visibility = str > 0.01 ? 'visible' : 'hidden';
+          mist[m].style.transform = 'translate3d(' + ((m === 1 ? 1 : -1) * L * 6 * sp).toFixed(2) + '%,' + (dir * L * 14 * sp).toFixed(2) + '%,0) scale(' + (1 + L * 0.35 * sp).toFixed(3) + ')';
+        }
+      }
+    };
+    var mistBox = $('[data-jmist]', J), mist = mistBox ? $$('i', mistBox) : [], mistWarm = false;
     render(0);
-    // teljes mozgásnál a kép puhán követi a görgetést (csak a rajzolást simítjuk, a görgetést nem vesszük át)
-    var tgt = 0, cur = 0, sraf = 0, slast = 0, still = 0;
+    // natív görgetés követése (Motion scroll) – a pillanatnyi görgetési állásból számol, így visszafelé is pontos.
+    // Teljes módban a kép puhán, kis késéssel követi a görgetést (a görgetést nem vesszük át, csak a rajzolást simítjuk).
+    var tgt = 0, cur = 0, sraf = 0, slast = 0;
     var follow = function (now) {
       var dt = slast ? Math.min((now - slast) / 1000, 0.05) : 0.016; slast = now;
       var d = tgt - cur;
-      cur = Math.abs(d) < 0.00008 || Math.abs(d) > 0.25 ? tgt : cur + d * (1 - Math.exp(-dt / 0.16));
+      cur = Math.abs(d) < 0.00008 || Math.abs(d) > 0.2 ? tgt : cur + d * (1 - Math.exp(-dt / 0.18));
       render(cur);
       sraf = cur === tgt ? 0 : requestAnimationFrame(follow);
       if (!sraf) { slast = 0; clearTimeout(still); still = setTimeout(function () { J.classList.remove('is-moving'); }, 180); }
     };
+    var still = 0;
     M.scroll(function (a) {
       var v = typeof a === 'number' ? a : (a && a.y ? a.y.progress : 0);
       if (!FULL) { render(v); return; }
       tgt = v; clearTimeout(still); J.classList.add('is-moving'); if (!sraf) sraf = requestAnimationFrame(follow);
     }, { target: J, offset: ['start start', 'end end'] });
 
+    // nyitás: a cím soronként érkezik
     if (FULL) {
-      M.animate($$('.beat--hero > *', J), { opacity: [0, 1], y: [12, 0] }, { delay: M.stagger(0.1, { startDelay: 0.15 }), duration: 1, ease: [0.22, 0.7, 0.2, 1] });
-      M.animate($('[data-ascene="0"] img', J), { opacity: [0, 1], scale: [1.03, 1] }, { duration: 1.6, ease: [0.22, 0.7, 0.2, 1] });
+      M.animate($$('.beat--hero h1 .ln', J), { opacity: [0, 1], y: [14, 0] }, { delay: M.stagger(0.14, { startDelay: 0.15 }), duration: 1, ease: [0.22, 0.7, 0.2, 1] });
+      M.animate($('.beat--hero .beat__card', J), { opacity: [0, 1] }, { duration: 0.9 });
       beats[0].shown = true;
     }
   }
 
-  /* ---------------- 4–9. FEJEZETEK: a lapok csendesen előtűnnek ----------------
-     Nincs görgetésre ragadó zoom: a festmény a saját arányában, élesen áll. */
+  /* ---------------- 2–9. festett lapok: közeledés + festékfolt ---------------- */
   if (ANIM) {
-    $$('.chap').forEach(function (ch) {
-      var pages = $$('[data-page]', ch), txt = $$('[data-ctext] > *', ch), two = ch.classList.contains('chap--two');
-      pages.concat(txt).forEach(function (e) { e.style.opacity = 0; });
-      M.inView(ch, function () {
-        pages.forEach(function (pg, k) {
-          var from = two && !isMobile() ? (k === 0 ? 14 : -14) : 0;
-          M.animate(pg, FULL ? { opacity: [0, 1], x: [from, 0], y: [18, 0] } : { opacity: [0, 1] },
-            { duration: FULL ? 1.2 : 0.6, delay: k * 0.12, ease: [0.22, 0.7, 0.2, 1] });
-          var im = $('img', pg);
-          if (FULL && im) M.animate(im, { scale: [1.035, 1] }, { duration: 1.8, delay: k * 0.12, ease: [0.22, 0.7, 0.2, 1] });
-        });
-        M.animate(txt, FULL ? { opacity: [0, 1], y: [12, 0] } : { opacity: [0, 1] },
-          { delay: M.stagger(0.06, { startDelay: 0.25 }), duration: FULL ? 0.9 : 0.5, ease: [0.22, 0.7, 0.2, 1] });
-      }, { amount: 0.18 });
+    $$('[data-wc]').forEach(function (fig) {
+      var page = $('.wc__page', fig), im = $('.wc__page img', fig), wash = $('[data-wash]', fig);
+      page.style.opacity = 0;
+      M.inView(fig, function () {
+        M.animate(page, FULL ? { opacity: [0, 1], scale: [0.965, 1] } : { opacity: [0, 1] }, { duration: 1.2, ease: [0.22, 0.7, 0.2, 1] });
+        if (wash) M.animate(wash, { opacity: [0, parseFloat(getComputedStyle(wash).opacity) || 0.6] }, { duration: 1.6 });
+      }, { amount: 0.2 });
+      if (FULL) {
+        // ahogy lefelé haladunk, egyre közelebb kerülünk a képhez
+        M.scroll(M.animate(im, { scale: [1.02, 1.17], y: ['-2.5%', '2.5%'] }, { ease: 'linear' }), { target: fig, offset: ['start end', 'end start'] });
+        if (wash) M.scroll(M.animate(wash, { y: [36, -36], rotate: [-2.5, 2.5] }, { ease: 'linear' }), { target: fig, offset: ['start end', 'end start'] });
+      }
     });
+    var tb = $('.tortaband__card .wash');
+    if (tb && FULL) M.scroll(M.animate(tb, { scaleX: [0.94, 1.04], rotate: [-1, 1] }, { ease: 'linear' }), { target: tb.parentElement, offset: ['start end', 'end start'] });
   }
-  // mobilon a kétoldalas illusztráció lapozható: első lapozás után eltűnik a „lapozz” jelzés
-  $$('[data-spread]').forEach(function (sp) {
-    var h = sp.parentNode.querySelector('.chap__hint');
-    sp.addEventListener('scroll', function () { if (h && sp.scrollLeft > 20) h.style.opacity = '0'; }, { passive: true });
-  });
 
+  /* ---------------- végig az oldalon: röpködő szentjánosbogarak ----------------
+     Egy rögzített, kattintást átengedő vászon az egész oldalon (a mese alatt is). Minden fény
+     saját útvonalon repül: kanyarog, néha megáll lebegni, néha meglódul; pulzálva felvillan,
+     halvány fénycsíkot húz maga után. Görgetéskor mélységük szerint elúsznak (parallax).
+     Csak teljes mozgásnál fut, rejtett lapon megáll. */
+  if (FULL) (function () {
+    var c = document.createElement('canvas'); c.className = 'siteflies'; c.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(c);
+    var ctx = c.getContext('2d'), w = 0, h = 0, P = [], sprite, raf = 0, last = 0, t = 0, sy = window.scrollY, R = Math.random;
+    var mk = function () {
+      var s = document.createElement('canvas'); s.width = s.height = 64;
+      var g = s.getContext('2d'), gr = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+      gr.addColorStop(0, 'rgba(255,253,236,1)'); gr.addColorStop(0.12, 'rgba(255,214,110,.95)');
+      gr.addColorStop(0.36, 'rgba(240,176,60,.32)'); gr.addColorStop(1, 'rgba(240,176,60,0)');
+      g.fillStyle = gr; g.fillRect(0, 0, 64, 64); sprite = s;
+    };
+    var fly = function () {
+      return { x: R() * w, y: R() * h, d: 0.35 + R() * 0.8, s: 13 + R() * 15, a: R() * 6.283, av: 0, sp: 0,
+        mode: 0, until: R() * 3, tw: 0.6 + R() * 0.9, tp: R() * 6.283, tr: [] };
+    };
+    var size = function () {
+      var ow = w || innerWidth, oh = h || innerHeight;
+      w = innerWidth; h = innerHeight; var dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      c.width = Math.round(w * dpr); c.height = Math.round(h * dpr); ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      P.forEach(function (q) { q.x *= w / ow; q.y *= h / oh; q.tr.length = 0; });
+      var n = w < 600 ? 8 : w < 1100 ? 11 : 14;
+      while (P.length < n) P.push(fly());
+      P.length = n;
+    };
+    mk(); size(); window.addEventListener('resize', size);
+    window.addEventListener('scroll', function () {
+      var y = window.scrollY, dy = y - sy; sy = y;
+      if (Math.abs(dy) > h) return;
+      for (var i = 0; i < P.length; i++) { var q = P[i], m = dy * q.d * 0.5; q.y -= m; for (var k = 0; k < q.tr.length; k++) q.tr[k].y -= m; }
+    }, { passive: true });
+    var tick = function (now) {
+      var dt = last ? Math.min((now - last) / 1000, 0.05) : 0; last = now; t += dt;
+      ctx.clearRect(0, 0, w, h);
+      for (var i = 0; i < P.length; i++) {
+        var q = P[i];
+        // viselkedés: 0 = nyugodt röpködés, 1 = lebegés egy helyben, 2 = rövid meglódulás
+        q.until -= dt;
+        if (q.until <= 0) { q.mode = R() < 0.72 ? 0 : 1; q.until = 2 + R() * 4; }
+        var tsp = (q.mode === 1 ? 5 : 24) * (0.6 + q.d * 0.6);
+        q.sp += (tsp - q.sp) * (1 - Math.exp(-dt * 2.2));
+        q.av += ((R() - 0.5) * 5 - q.av * 1.4) * dt;                      // sima, szabálytalan kanyarodás
+        q.a += q.av * dt * (q.mode === 1 ? 2.5 : 1);
+        q.x += Math.cos(q.a) * q.sp * dt; q.y += Math.sin(q.a) * q.sp * dt - 4 * dt;
+        var bx = q.x + Math.sin(t * 2.1 + q.tp) * 3, by = q.y + Math.cos(t * 2.7 + q.tp) * 4;   // apró szárnycsapkodás-remegés
+        var m = 40;
+        if (q.x < -m || q.x > w + m || q.y < -m || q.y > h + m) {          // kirepült: a túloldalon visszajön
+          q.x = q.x < -m ? w + m * 0.8 : q.x > w + m ? -m * 0.8 : q.x;
+          q.y = q.y < -m ? h + m * 0.8 : q.y > h + m ? -m * 0.8 : q.y; q.tr.length = 0;
+        }
+        // pulzáló felvillanás, mint az igazi szentjánosbogáré
+        var ph = (t * q.tw + q.tp) % 3, glow = ph < 1.6 ? Math.sin(ph / 1.6 * Math.PI) : 0;
+        var al = (0.3 + 0.7 * glow) * (0.7 + 0.3 * q.d), s = q.s * (0.7 + q.d * 0.5) * (0.8 + 0.3 * glow);
+        // fénycsík
+        q.tr.push({ x: bx, y: by }); if (q.tr.length > 5) q.tr.shift();
+        for (var k = 0; k < q.tr.length - 1; k++) {
+          var f = (k + 1) / q.tr.length; ctx.globalAlpha = al * f * 0.14;
+          var ts = s * (0.35 + 0.4 * f); ctx.drawImage(sprite, q.tr[k].x - ts / 2, q.tr[k].y - ts / 2, ts, ts);
+        }
+        ctx.globalAlpha = al > 1 ? 1 : al; ctx.drawImage(sprite, bx - s / 2, by - s / 2, s, s);
+      }
+      ctx.globalAlpha = 1;
+      if (document.hidden) { raf = 0; last = 0; return; }
+      raf = requestAnimationFrame(tick);
+    };
+    var go = function () { if (!raf && !document.hidden) raf = requestAnimationFrame(tick); };
+    document.addEventListener('visibilitychange', go); go();
+  })();
 
   // újratöltés után (a böngésző visszaállítja a görgetést) a fények méretét újraszámoljuk
   window.addEventListener('pageshow', function () { flies.forEach(function (f) { f.resize(); f.update(); if (!f.loop) f.drawStatic(); }); });
