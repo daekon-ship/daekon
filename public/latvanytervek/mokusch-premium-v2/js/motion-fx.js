@@ -55,7 +55,7 @@
 
   // fejezetcímek: szavanként, amikor a képernyőre érnek
   $$('main h2, .sub-hero h1').forEach(function (h) {
-    if (h.closest('.hero') || h.closest('.journey')) return;
+    if (h.closest('.hero') || h.closest('.journey') || h.closest('.chap') || h.closest('.epilog')) return;
     h.style.opacity = 1; h.style.transform = 'none';
     var ws = splitWords(h);
     $$('.fx-wi', h).forEach(function (x) { x.style.transform = 'translateY(110%)'; });
@@ -143,7 +143,7 @@
 
   // címkék, gombok, portréovális: rugós, lépcsőzetes beugrás
   $$('.menu-idx, .trio, .pins, .btns').forEach(function (g) {
-    if (g.closest('.journey')) return;   // a mesekönyv-út saját belépő animációt kap (storybook.js)
+    if (g.closest('.journey') || g.closest('.chap') || g.closest('.epilog')) return;   // a mesekönyv-út és -fejezetek saját belépő animációt kap (storybook.js)
     var kids = Array.prototype.slice.call(g.children);
     kids.forEach(function (c) { c.style.opacity = 0; });
     M.inView(g, function () {

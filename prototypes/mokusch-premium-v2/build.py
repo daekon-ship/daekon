@@ -62,7 +62,13 @@ def img(key, ratio=(4, 5), sizes="(max-width: 899px) 90vw, 460px", eager=False, 
     srcset = ", ".join(f"{wimg(key, w, round(w * rh / rw))} {w}w" for w in widths)
     w0 = 720
     load = 'fetchpriority="high"' if eager else 'loading="lazy"'
-    tag = (f'<img src="{wimg(key, w0, round(w0 * rh / rw))}" srcset="{srcset}" sizes="{sizes}" '
+    src0 = wimg(key, w0, round(w0 * rh / rw))
+    mese = getattr(STORY, "MESE", {}) if STORY.is_v2(_me()) else {}
+    if key in mese:   # V2: Vanda képeinek 4K-ra felskálázott helyi sorozata (a .pic/.plate object-fit: cover-rel vág)
+        W = mese[key][0]
+        srcset = ", ".join(f"@@MESE@@img/mese/{key}-{w}.webp {w}w" for w in (480, 720, 1080, 1600, 2200) if w < W)
+        src0 = f"@@MESE@@img/mese/{key}-1080.webp"
+    tag = (f'<img src="{src0}" srcset="{srcset}" sizes="{sizes}" '
            f'width="{w0}" height="{round(w0 * rh / rw)}" alt="{html.escape(WIX[key][2])}" {load} decoding="async">')
     if parallax:
         tag = f'<div class="px" data-px>{tag}</div>'
@@ -324,7 +330,7 @@ def footer(prefix, page_js="", float_cta=True):
 {fl}
 <script src="{prefix}js/vendor/motion-11.18.2.min.js" defer></script>
 <script src="{prefix}js/site.js?v=9" defer></script>
-<script src="{prefix}js/motion-fx.js?v=6" defer></script>
+<script src="{prefix}js/motion-fx.js?v=7" defer></script>
 {STORY.foot_extra(prefix) if STORY.is_v2(_me()) else ''}{page_js}</body>
 </html>
 '''
@@ -539,7 +545,7 @@ def sub_page(slug, lead, body, plain=False, page_js="", hero_img=None, h1=None, 
     out += footer(pre, page_js, float_cta=(slug != "tortarendeles"))
     d = OUT / slug
     d.mkdir(parents=True, exist_ok=True)
-    (d / "index.html").write_text(out, encoding="utf-8")
+    (d / "index.html").write_text(out.replace("@@MESE@@", pre), encoding="utf-8")
 
 
 def ph_lines(n=3, label="Tétel neve", meta="ár ügyféltől"):
