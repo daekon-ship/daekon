@@ -318,3 +318,30 @@ html:not(.anim) .journey__mist{display:none}
   .beat__card{padding-top:1.35rem}
   .beat{max-height:calc(100% - 24px)}
 }
+
+/* ===================== vizuális audit (2026-11-04): egységes mesekönyv-tipográfia =====================
+   A sok apró, csupa nagybetűs, ritkított Manrope-címke webapp-hatású volt. A címkék, fejezetjelzők és
+   képaláírások most könyvszerű, dőlt Playfair-betűvel, kisbetűsen állnak; a Manrope a folyószövegé és a gomboké. */
+.kicker,.tag,.pic__tag,.plate__tag,.slot__c,.pin i,.next-prev a span,.bb figcaption,.panel__count,.wc__cap,.beat__kicker,.date span{
+  font-family:var(--display);font-style:italic;font-weight:500;text-transform:none;letter-spacing:.01em}
+.kicker{font-size:.95rem}
+.beat__kicker{font-size:.95rem;color:var(--c-moss)}
+.beat__kicker .no,.kicker .no{font-style:normal}
+.tag{font-size:.82rem;padding:.25em .7em}
+.pic__tag,.plate__tag{font-size:.78rem;padding:.25em .65em}
+.slot__c{font-size:.8rem}
+.next-prev a span{font-size:.84rem}
+.panel__count{font-size:.9rem}
+.pin i{font-size:.84rem}
+.date span{font-size:.7rem}
+/* iniciálé nélkül: a leválasztott nagy „A” széttörte az első szót („A z erdő…”) */
+.prose .dropcap::first-letter{float:none;font:inherit;font-size:inherit;line-height:inherit;padding:0;margin:0;color:inherit}
+/* „Tortát álmodnál?” – a tömör bordó sáv helyett világos papírlap, mint a mese többi része */
+.cake-cta{position:relative;isolation:isolate;background:var(--cream);color:var(--ink);border-radius:6px;
+  box-shadow:0 0 0 1px rgba(46,36,28,.1),0 18px 40px -28px rgba(46,36,28,.45)}
+.cake-cta::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;pointer-events:none;
+  background:radial-gradient(90% 140% at 0% 50%,rgba(217,187,172,.35),transparent 60%)}
+.cake-cta h2{color:var(--ink)}
+.cake-cta p{color:var(--bark)}
+.cake-cta .btn{--b:var(--berry);--f:var(--cream)}
+.cake-cta__mark{filter:brightness(.32) sepia(.35)}

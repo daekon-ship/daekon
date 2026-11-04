@@ -300,3 +300,13 @@ Git-címkét a push-jogosultság nem engedett, ezért ág készült.
 - **Képek:** a fókuszpontok (a belépés helye a következő képbe) becslések. A valódi képeken még finomhangolni kell.
 - **Képfelbontás:** a képek élessége Vanda eredeti Wix-feltöltéseinek felbontásán múlik.
 - **AI-illusztráció:** új AI-kép nem került be.
+
+## Vizuális audit (2026-11-04 délután)
+- **Ellenőrzés:** főoldal + 20 aloldal, 390 és 1366 px széles nézetben. Automatikusan kerestem a kilógó, levágott és egymásra csúszó szövegeket, mindegyik oldalról teljes képernyőképet készítettem. Az automatikus ellenőrzés nem talált hibát, a vizuális átnézés alapján javítottam.
+- **Betűhasználat:**
+  - A csupa nagybetűs, ritkított Manrope-címkék helyett (fejezetjelző, „Minta”, „Illusztráció”, lapozás, kártyacímkék) dőlt Playfair, kisbetűvel.
+  - A Manrope a folyószövegé és a gomboké maradt. Más betűtípus nem került be.
+- **Iniciálé kivéve:** az „A Mókusch meséje” oldalon a leválasztott nagy „A” széttörte az első szót („A z erdő…”).
+- **„Tortát álmodnál?” blokk:** a tömör bordó sáv helyett világos papírlap bordó gombbal, egységesen a mesekönyv többi részével.
+- **Szövegkártyák a főoldalon:** a szöveg mindig a papíron belül marad (lásd előző bejegyzés).
+- **Szándékosan maradt:** az aloldalak „Valódi fotó helye” mezői (Vanda fotói kerülnek oda), és a minta-receptoldal (Vanda menüpontja, valódi receptek nélkül).
