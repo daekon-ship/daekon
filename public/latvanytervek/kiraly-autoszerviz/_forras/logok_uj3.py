@@ -26,9 +26,9 @@ def pajzs_kulcs(fill, gold, inner, txtc, sub):
     sx, sy, sw, sh = cx - 70, 6, 140, 176
     g = f'<path d="{shield_path(sx, sy, sw, sh)}" fill="{fill}"/>'
     g += f'<path d="{shield_path(sx, sy, sw, sh, 7)}" fill="none" stroke="{gold}" stroke-width="2.6"/>'
-    g += villaskulcs(cx, 66, 74, -38, inner, 10.5) + villaskulcs(cx, 66, 74, 38, inner, 10.5)
-    g += f'<rect x="58" y="112" width="84" height="1.2" fill="{gold}"/>'
-    g += felirat(cx, 138, txtc, sub, gold, 20)
+    g += villaskulcs(cx, 56, 62, -38, inner, 9.5) + villaskulcs(cx, 56, 62, 38, inner, 9.5)
+    g += f'<rect x="56" y="98" width="88" height="1.2" fill="{gold}"/>'
+    g += felirat(cx, 121, txtc, sub, gold, 19)
     return g, (sx, sy, sx + sw, sy + sh)
 
 

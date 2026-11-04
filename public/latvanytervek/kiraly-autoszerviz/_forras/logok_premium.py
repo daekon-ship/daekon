@@ -243,12 +243,12 @@ def hatszog(fill, gold, inner, txtc):
     hx = lambda R: [(cx + R * math.cos(math.radians(a)), cy + R * math.sin(math.radians(a))) for a in range(-90, 270, 60)]
     g = f'<path d="{P(hx(98))}" fill="{fill}"/>'
     g += f'<path d="{P(hx(91))}" fill="none" stroke="{gold}" stroke-width="2.4" stroke-linejoin="round"/>'
-    g += crown(cx, 44, 34, 18, gold)
-    g += gyertya_tiszta(cx, 52, 66, inner, gold, "#8C9AAC")
-    g += f'<rect x="52" y="124" width="96" height="1" fill="{gold}"/>'
-    p1, b1 = txt("KIRÁLY", "archivo", 19, 700, 112, .08, cx, 146, txtc)
-    p2, b2 = txt("AUTÓSZERVIZ", "manrope", 6.6, 800, None, .42, cx, 158, "#B9C2CE")
-    p3, b3 = txt("DUNAÚJVÁROS", "manrope", 5.4, 700, None, .4, cx, 169, gold)
+    g += crown(cx, 38, 34, 18, gold)
+    g += gyertya_tiszta(cx, 44, 64, inner, gold, "#8C9AAC")
+    g += f'<rect x="56" y="116" width="88" height="1" fill="{gold}"/>'
+    p1, b1 = txt("KIRÁLY", "archivo", 18, 700, 112, .08, cx, 137, txtc)
+    p2, b2 = txt("AUTÓSZERVIZ", "manrope", 6.4, 800, None, .42, cx, 148, "#B9C2CE")
+    p3, b3 = txt("DUNAÚJVÁROS", "manrope", 5.2, 700, None, .4, cx, 157, gold)
     p2 += p3
     return g + p1 + p2, (cx - 98 * math.cos(math.radians(30)), 2, cx + 98 * math.cos(math.radians(30)), 198)
 
