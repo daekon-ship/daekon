@@ -1,0 +1,20 @@
+name: Mókusch eredeti képek
+on:
+  push:
+    branches: [kepek-4k]
+    paths: [.github/workflows/orig.yml]
+permissions:
+  contents: write
+jobs:
+  get:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          mkdir -p orig; cd orig
+          for kv in osveny:1c02e2457c654f63bc501ea424959dbe.png udvar:de1100572d664c6fa755501935ba3cf6.png bolt:8c413555228144899a373d1a90d78540.jpg pult1:b532d1c8fb82452ca1ee0c6a437521a3.jpeg pult2:315890bf789a4ad5aa95db1d942ada81.jpeg konyha:cfbccf746a67484b964a2df6f863167e.png polc1:985771b104cd41dab77d14018f3442df.jpeg polc2:cbfc9cb28d9a4925bc337c8867019c7e.jpeg olvaso:d7aecd48d9874c7fab65891cc27e88e8.png posta:2478afc6d240420187f710e04ce729f5.png kepfal:c2114812ce19405593f6a7dd4da29f15.png; do
+            k=${kv%%:*}; f=${kv#*:}; ext=${f##*.}; curl -sSfL -o "$k.$ext" "https://static.wixstatic.com/media/4f5ae5_${f%.*}~mv2.$ext"; done
+          ls -la
+      - run: |
+          git config user.name "daekon-bot"; git config user.email "actions@users.noreply.github.com"
+          git add orig && git commit -m "Mókusch: Vanda eredeti Wix-képei (összehasonlításhoz)" && git push
