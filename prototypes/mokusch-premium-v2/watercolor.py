@@ -148,6 +148,22 @@ def scene_desk(w=900, h=800, seed=15, name="scene-desk.png", edges=(0.07, 0.035,
     save_alpha(a, name, blur=2.4)
 
 
+def bloom(size=600, seed=41, name="bloom.png"):
+    """Akvarell „virágzás”: középen teljesen fedő, szabálytalan, festékszerű szélű folt. A következő jelenet
+    ebből a foltból nyílik ki, mintha a festék szétfutna a papíron (a CSS maszk méretét a JS növeli)."""
+    rng = np.random.default_rng(seed)
+    y, x = np.mgrid[0:size, 0:size].astype(np.float32)
+    r = np.hypot(x - size / 2, y - size / 2) / (size / 2)
+    ang = np.arctan2(y - size / 2, x - size / 2)
+    lobes = 0.045 * np.sin(ang * 5 + 1.3) + 0.03 * np.sin(ang * 9 + 0.4) + 0.015 * np.sin(ang * 17 + 2.2)
+    n1 = fbm(size, size, (int(size * .18), int(size * .07), int(size * .025)), (0.55, 0.3, 0.15), rng)
+    rr = r + lobes + (n1 - 0.5) * 0.3
+    a = 1 - smoothstep(0.62, 0.9, rr)
+    tide = 1 - smoothstep(0.03, 0.09, np.abs(rr - 0.74))      # festékperem: a szél felé enyhe sötétedés helyett halvány gyűrű
+    a = np.clip(a * (1 - 0.12 * tide), 0, 1)
+    save_alpha(a, name, blur=1.6)
+
+
 if __name__ == "__main__":
     OUT.mkdir(parents=True, exist_ok=True)
     page_mask(400, 600, seed=11, name="page.png")                       # álló képlap (2:3, 3:4, 4:5 is jó)
@@ -160,4 +176,13 @@ if __name__ == "__main__":
     edge_strip(1200, 90, 31, "edge.png")
     paper()
     scene_desk()
+    scene_desk(1000, 640, seed=16, name="scene-full.png", edges=(0.06, 0.035, 0.06, 0.035))      # teljes képernyős jelenet (asztal)
+    scene_desk(480, 900, seed=17, name="scene-full-tall.png", edges=(0.035, 0.05, 0.05, 0.05))   # teljes képernyős jelenet (mobil)
+    bloom()
+    # a teljes képernyős jelenetek széle egyetlen álló „papírkeretként” kerül a képek fölé (inverz maszk) – így a mozgó
+    # képeken nincs maszk, a görgetés gyorsabb
+    from PIL import Image as _I
+    for n in ("scene-full", "scene-full-tall"):
+        im = _I.open(OUT / f"{n}.png"); l, a = im.split()
+        _I.merge("LA", (l, a.point(lambda v: 255 - v))).save(OUT / f"{n}-inv.png", optimize=True)
 

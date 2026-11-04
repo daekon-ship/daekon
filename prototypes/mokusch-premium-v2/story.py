@@ -5,7 +5,7 @@ build.py-t másik kimeneti mappával használja – arra ez a réteg nem kerül 
 """
 import html
 
-SB_VER = "2"
+SB_VER = "5"
 PALETTES = [("erdei", "Erdei", "#4E5A39", "#D9BBAC"),
             ("puder", "Púderes", "#6B6E4E", "#D8AFA3"),
             ("arany", "Aranyló", "#475436", "#C9A45C")]
@@ -85,19 +85,20 @@ def leaf(B, no, sid, title, sub, lead, btns, key, wash=1, flip=False, extra="", 
 # ---------------------------------------------------------------------------------------------
 # kulcs, hossz (képernyőnyi görgetés), fókuszpont (a közelítés iránya), fejezet sorszáma
 SCENES = [
-    ("osveny", 2.1, "55% 72%", 1),
-    ("udvar", 1.5, "62% 58%", 2),
-    ("bolt", 1.4, "50% 62%", 3),
-    ("pult1", 1.0, "55% 48%", 4),
-    ("pult2", 1.1, "60% 52%", 4),
-    ("konyha", 1.4, "50% 42%", 5),
-    ("polc1", 1.1, "65% 45%", 6),
-    ("polc2", 1.1, "38% 45%", 6),
-    ("olvaso", 1.4, "45% 66%", 7),
-    ("posta", 1.5, "50% 42%", 8),
-    ("kepfal", 1.6, "45% 70%", 9),
+    ("osveny", 2.4, "50% 58%", 1),
+    ("udvar", 1.7, "52% 52%", 2),
+    ("bolt", 1.7, "50% 56%", 3),
+    ("pult1", 1.4, "52% 50%", 4),
+    ("pult2", 1.5, "55% 52%", 4),
+    ("konyha", 1.7, "50% 48%", 5),
+    ("polc1", 1.4, "58% 48%", 6),
+    ("polc2", 1.5, "45% 48%", 6),
+    ("olvaso", 1.7, "48% 58%", 7),
+    ("posta", 1.8, "50% 48%", 8),
+    ("kepfal", 1.9, "48% 60%", 9),
 ]
-FADE = 0.38     # az áttűnés hossza (képernyőnyi görgetés)
+# az átmenet hossza: ennyi görgetés alatt „lépünk be” a következő képbe (a régi felnagyul, az új akvarellfoltként kinyílik)
+FADE = 0.8
 
 
 def _r(x):
@@ -128,17 +129,17 @@ def index(B):
         d = 99 if i == len(SCENES) - 1 else E          # eltűnt
         z0, z1 = (0 if i == 0 else S - FADE), E
         mob = ", ".join(f"{B.wimg(k, w, round(w * 1.5))} {w}w" for w in (640, 960, 1280))
-        desk = ", ".join(f"{B.wimg(k, w, round(w * 8 / 9))} {w}w" for w in (960, 1280, 1600))
+        desk = ", ".join(f"{B.wimg(k, w, round(w * 10 / 16))} {w}w" for w in (1280, 1920, 2400))
         eager = i == 0
         lazyattr = "" if i < 2 else "data-"
         prio = 'fetchpriority="high"' if eager else 'fetchpriority="low"'
         figs.append(
             f'<figure class="jscene" data-jscene="{i}" data-a="{_r(P(a)) if a >= 0 else -1}" data-b="{_r(P(b))}" '
-            f'data-c="{_r(P(c)) if c < 90 else 2}" data-d="{_r(P(d)) if d < 90 else 3}" data-z0="{_r(P(z0))}" data-z1="{_r(P(z1))}" '
-            f'style="--focal:{focal};--o:{i * 10}">'
-            f'<picture><source media="(min-width: 900px)" {lazyattr}srcset="{desk}" sizes="66vw">'
+            f'data-c="{_r(P(c)) if c < 90 else 2}" data-d="{_r(P(d)) if d < 90 else 3}" '
+            f'data-f="{focal.replace("%", "").replace(" ", ",")}" style="--focal:{focal};--o:{i * 10}">'
+            f'<div class="jscene__in"><picture><source media="(min-width: 900px)" {lazyattr}srcset="{desk}" sizes="100vw">'
             f'<img {lazyattr}src="{B.wimg(k, 960, 1440)}" {lazyattr}srcset="{mob}" sizes="100vw" width="960" height="1440" '
-            f'alt="{html.escape(B.WIX[k][2])}" {prio} decoding="async"></picture></figure>')
+            f'alt="{html.escape(B.WIX[k][2])}" {prio} decoding="async"></picture></div></figure>')
         atmo.append(f'<div class="atmo" data-atmo="{i}" style="background-image:url({B.wimg(k, 18, 27)})"></div>')
 
     # --- fejezetkártyák (a Wix 9 témaköre, mindegyikben 1–2 gomb)
@@ -181,7 +182,7 @@ def index(B):
         first.setdefault(sc[3], i)
     # 1. fejezet – nyitókártya + az ösvény mondata
     s0, e0 = chap_span[1]
-    beats.append(f'''<div class="beat beat--hero is-on" data-beat {win(-1, 0, e0 * 0.36, e0 * 0.44)} data-ch="1" style="--o:-1">
+    beats.append(f'''<div class="beat beat--hero is-on" data-beat {win(-1, 0, e0 * 0.24, e0 * 0.31)} data-ch="1" style="--o:-1">
       <div class="beat__card">
         <p class="beat__kicker"><span class="no">1.</span> Varázserdő</p>
         <h1 id="h-meseba"><span class="ln">Hagyd magad mögött a várost,</span> <span class="ln">és lépj be <em>egy mesébe.</em></span></h1>
@@ -190,7 +191,7 @@ def index(B):
         <p class="beat__more"><a class="link" href="mesebeli-programok/">Mesebeli programok {arrow}</a></p>
       </div>
     </div>''')
-    beats.append(f'''<div class="beat beat--line" data-beat {win(e0 * 0.5, e0 * 0.58, e0 - 0.3, e0 - 0.12)} style="--o:5">
+    beats.append(f'''<div class="beat beat--line" data-beat {win(e0 * 0.36, e0 * 0.43, e0 - FADE - 0.12, e0 - FADE + 0.04)} style="--o:5">
       <div class="beat__card beat__card--sm"><p class="beat__story">Az ösvény egyre beljebb visz a fák közé – <em>a fények mutatják az utat.</em></p></div>
     </div>''')
     anchors.append(('meseba', 0.0, 1))
@@ -227,6 +228,7 @@ def index(B):
     <div class="journey__atmo" aria-hidden="true">{"".join(atmo)}</div>
     <div class="journey__veil" aria-hidden="true"></div>
     <div class="journey__frame" data-jframe>{"".join(figs)}</div>
+    <div class="journey__edge" aria-hidden="true"></div>
     <div class="journey__light" aria-hidden="true" data-jlight></div>
     <canvas class="fireflies" data-fireflies="forest" aria-hidden="true"></canvas>
     <canvas class="fireflies fireflies--warm" data-fireflies="warm" aria-hidden="true"></canvas>
@@ -261,7 +263,7 @@ def index(B):
 '''
     k0 = SCENES[0][0]
     pl = (f'<link rel="preload" as="image" media="(max-width: 899px)" imagesrcset="{B.wimg(k0, 640, 960)} 640w, {B.wimg(k0, 960, 1440)} 960w, {B.wimg(k0, 1280, 1920)} 1280w" imagesizes="100vw" fetchpriority="high">\n'
-          f'<link rel="preload" as="image" media="(min-width: 900px)" imagesrcset="{B.wimg(k0, 960, 853)} 960w, {B.wimg(k0, 1280, 1138)} 1280w, {B.wimg(k0, 1600, 1422)} 1600w" imagesizes="66vw" fetchpriority="high">\n')
+          f'<link rel="preload" as="image" media="(min-width: 900px)" imagesrcset="{B.wimg(k0, 1280, 800)} 1280w, {B.wimg(k0, 1920, 1200)} 1920w, {B.wimg(k0, 2400, 1500)} 2400w" imagesizes="100vw" fetchpriority="high">\n')
     out = B.head("Mókusch kávézó és tortaműhely – Budapest, Várfok utca 30.",
                  "Mesebeli kávézó és tortaműhely a Várfok utcában: egy erdei ösvény vezet a kávékhoz, süteményekhez, a híres nyuszis polchoz és az egyedi tortákhoz.",
                  pre, extra=pl + ld)

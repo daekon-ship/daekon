@@ -43,6 +43,8 @@
   --wc-wide:url(../img/wc/page-wide.png);
   --wc-tall:url(../img/wc/scene-tall.png);
   --paper-tex:url(../img/wc/paper.png);
+  --wc-full:url(../img/wc/scene-full.png);
+  --wc-full-inv:url(../img/wc/scene-full-inv.png);
 }
 
 /* ===================== papír, fejléc, lábléc ===================== */
@@ -78,8 +80,8 @@ body{background-color:var(--paper);background-image:var(--paper-tex);background-
 /* ===================== A FŐOLDAL: EGY GÖRGETÉSES MESE (journey) =====================
    11 festett jelenet (a Mókusch saját képei) az erdei ösvénytől a tortákig. A ragadós (sticky) kivágás
    a natív görgetés arányában közelít a képbe, majd áttűnik a következőbe – nincs scroll-jacking. */
-.journey{--k:1;position:relative;height:calc((var(--units) * var(--k) + 1) * 100vh);height:calc((var(--units) * var(--k) + 1) * 100svh)}
-@media (max-width:899px){.journey{--k:.82}}
+.journey{--k:.75;position:relative;height:calc((var(--units) * var(--k) + 1) * 100vh);height:calc((var(--units) * var(--k) + 1) * 100svh)}
+@media (max-width:899px){.journey{--k:.62}}
 .janchor{position:absolute;left:0;width:1px;height:1px;top:calc(var(--p) * (100% - 100svh));scroll-margin-top:0!important;pointer-events:none}
 .journey__sticky{position:-webkit-sticky;position:sticky;top:var(--hdr);height:calc(100vh - var(--hdr));height:calc(100svh - var(--hdr));overflow:hidden;contain:paint;background:var(--paper)}
 /* a festmény színei elmosódva szétfolynak a papíron (apró, felnagyított kép – nincs drága blur) */
@@ -87,14 +89,21 @@ body{background-color:var(--paper);background-image:var(--paper-tex);background-
 .atmo{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;visibility:hidden}
 .atmo[data-atmo="0"]{opacity:.5;visibility:visible}
 .journey__veil{position:absolute;inset:0;pointer-events:none;background:var(--paper);opacity:.62;background-image:var(--paper-tex);background-size:384px 384px}
-.journey__frame{position:absolute;top:0;bottom:0;right:0;width:min(72vw,calc(100% - 300px));pointer-events:none}
-.jscene{position:absolute;inset:0;margin:0;opacity:0;visibility:hidden;transform-origin:var(--focal,50% 50%);will-change:transform,opacity;
-  -webkit-mask:url(../img/wc/scene-desk.png) center/100% 100% no-repeat;mask:url(../img/wc/scene-desk.png) center/100% 100% no-repeat}
+.journey__frame{position:absolute;inset:0;pointer-events:none}
+.journey__atmo{display:none}
+/* minden jelenet egy akvarell-lap, szabálytalan, papírba futó széllel; a kép a saját fókuszpontja felé nagyul */
+.jscene{position:absolute;inset:0;margin:0;opacity:0;visibility:hidden;overflow:hidden}
+/* álló papírkeret a képek fölött: szabálytalan, festékszerűen kifutó lapszél (a mozgó képeken nincs maszk) */
+.journey__edge{position:absolute;inset:0;z-index:2;pointer-events:none;background:var(--paper) var(--paper-tex);background-size:auto,384px 384px;
+  -webkit-mask:var(--wc-full-inv) center/100% 100% no-repeat;mask:var(--wc-full-inv) center/100% 100% no-repeat}
+.jscene__in{position:absolute;inset:0;transform-origin:var(--focal,50% 50%);will-change:transform}
+/* belépés: a következő jelenet akvarellfoltként nyílik ki az előző kép fókuszpontjából */
+.jscene.is-bloom{-webkit-mask:url(../img/wc/bloom.png) var(--bp,50% 50%)/var(--bs,0px) var(--bs,0px) no-repeat;mask:url(../img/wc/bloom.png) var(--bp,50% 50%)/var(--bs,0px) var(--bs,0px) no-repeat}
 .jscene[data-jscene="0"]{opacity:1;visibility:visible}
 .jscene picture{display:contents}
 .jscene img{width:100%;height:100%;object-fit:cover;object-position:var(--focal,50% 50%);display:block}
 /* papírszemcse a festményen – mintha a lapra festették volna */
-.jscene::after{content:"";position:absolute;inset:0;background:var(--paper-tex);background-size:384px 384px;opacity:.75;mix-blend-mode:multiply}
+.journey__frame::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;background:var(--paper-tex);background-size:384px 384px;opacity:.45}
 .journey__light{position:absolute;inset:0;pointer-events:none;opacity:.3;
   background:radial-gradient(46% 44% at 68% 30%,rgba(255,236,186,.5),rgba(255,236,186,0) 70%),radial-gradient(70% 60% at 40% 95%,rgba(255,210,150,.22),transparent 70%)}
 .anim-full .journey__light::after{content:"";position:absolute;inset:8% 8% 30% 42%;background:radial-gradient(closest-side,rgba(255,240,200,.34),transparent);animation:breathe 9s ease-in-out infinite alternate}
@@ -135,8 +144,7 @@ body{background-color:var(--paper);background-image:var(--paper-tex);background-
 .journey__dots li.is-on{background:var(--c-gold);transform:scale(1.5)}
 
 @media (max-width:899px){
-  .journey__frame{inset:0;width:auto}
-  .jscene{-webkit-mask-image:var(--wc-tall);mask-image:var(--wc-tall)}
+  .journey{--wc-full:url(../img/wc/scene-full-tall.png);--wc-full-inv:url(../img/wc/scene-full-tall-inv.png)}
   .journey__veil{opacity:.55}
   .beat,.beat--line{left:12px;right:12px;width:auto;top:auto;bottom:16px;transform:translateY(var(--by,0px))}
   .beat__card{padding:1.15rem 1.15rem 1.2rem}
@@ -163,8 +171,7 @@ body{background-color:var(--paper);background-image:var(--paper-tex);background-
 }
 @media (orientation:landscape) and (max-height:520px){
   .journey{--k:.7}
-  .journey__frame{inset:0 0 0 auto;width:62vw}
-  .jscene{-webkit-mask-image:url(../img/wc/scene-desk.png);mask-image:url(../img/wc/scene-desk.png)}
+  .journey{--wc-full:url(../img/wc/scene-full.png);--wc-full-inv:url(../img/wc/scene-full-inv.png)}
   .beat,.beat--line{left:12px;right:auto;top:50%;bottom:auto;width:min(48vw,460px);transform:translateY(calc(-50% + var(--by,0px)))}
   .beat__lead,.beat__more,.beat__story,.beat__visit{display:none}
   .beat__card{padding:.9rem 1rem}
@@ -178,10 +185,12 @@ html:not(.anim) .journey{height:auto}
 html:not(.anim) .janchor{display:none}
 html:not(.anim) .journey__sticky{position:relative;top:0;height:auto;overflow:visible;contain:none;display:flex;flex-direction:column;gap:1.5rem;padding:1rem 0 2rem;background:transparent}
 html:not(.anim) .journey__frame,html:not(.anim) .journey__text{display:contents}
-html:not(.anim) .journey__atmo,html:not(.anim) .journey__veil,html:not(.anim) .journey__light,html:not(.anim) .fireflies,html:not(.anim) .journey__hint,html:not(.anim) .journey__dots{display:none}
-html:not(.anim) .jscene{position:relative;inset:auto;order:var(--o);opacity:1;visibility:visible;transform:none;width:min(1100px,100%);margin-inline:auto;aspect-ratio:9/8;-webkit-mask-image:var(--wc-page);mask-image:var(--wc-page)}
+html:not(.anim) .journey__atmo,html:not(.anim) .journey__edge,html:not(.anim) .journey__veil,html:not(.anim) .journey__light,html:not(.anim) .fireflies,html:not(.anim) .journey__hint,html:not(.anim) .journey__dots{display:none}
+html:not(.anim) .jscene{position:relative;inset:auto;order:var(--o);opacity:1;visibility:visible;width:min(1100px,100%);margin-inline:auto;aspect-ratio:9/8;-webkit-mask-image:var(--wc-page);mask-image:var(--wc-page)}
 html:not(.anim) .beat{position:relative;order:var(--o);left:auto;right:auto;top:auto;bottom:auto;transform:none;opacity:1;visibility:visible;width:min(560px,calc(100% - 2*var(--gutter)));margin:-4rem auto 0}
 html:not(.anim) .beat--hero{margin-top:1rem}
+html:not(.anim) .jscene__in{transform:none!important}
+html:not(.anim) .jscene{-webkit-mask:var(--wc-page) center/100% 100% no-repeat;mask:var(--wc-page) center/100% 100% no-repeat}
 @media (max-width:899px){html:not(.anim) .jscene{aspect-ratio:4/5}html:not(.anim) .beat .sub,html:not(.anim) .beat__lead{display:block}}
 
 /* ===================== 2–9. FEJEZETEK: festett lapok ===================== */

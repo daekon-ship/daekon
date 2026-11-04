@@ -3,6 +3,12 @@
 Élő előnézet: https://daekon-ship.github.io/daekon/latvanytervek/mokusch-premium-v2/
 Előző változat (érintetlen, összehasonlításhoz): https://daekon-ship.github.io/mokusch/
 
+## Mesekönyves továbbfejlesztés, 3. kör (2026. november 4.) – „egyre beljebb” átmenetek
+
+Az átmenet már nem áttűnés: görgetésre a kép egyre gyorsabban ránk nő a fókuszpontja felé (asztalon kb. 3,4×, mobilon 2,9×), mintha belesétálnánk, és a következő helyiség ebből a pontból **akvarellfoltként nyílik ki** (`img/wc/bloom.png`), majd tovább közelít. A szentjánosbogarak és tündérfények mélységük szerint a kép közepéből kifelé suhannak és nőnek – előre haladva elhaladunk mellettük, visszafelé visszaúsznak. A festmény teljes képernyős, a szélén álló, szabálytalan papírkeret (`scene-full-inv.png`). Csökkentett mozgásnál marad a lágy áttűnés. Képkocka-idő GPU nélküli tesztböngészőben: asztal ~27 ms, mobil (4× lassítva) ~19 ms.
+
+**Fontos:** a fókuszpontokat (hová „lépünk be” az egyes képeken) a képek leírása alapján becsültem – a valódi képeken ellenőrizni és szükség esetén `story.py` `SCENES` listájában állítani kell (pl. a boltajtóra, az ösvény végére).
+
 ## Mesekönyves továbbfejlesztés, 2. kör (2026. november 4.) – az egész főoldal egy mese
 
 Az első mesekönyves kör túl hagyományos weboldal maradt (3 kép útvonal, utána külön blokkok). Most **a teljes főoldal egyetlen görgetéses mese**: a Mókusch Wix-oldalának mind a 11 festett képe, a Wix sorrendjében, teljes képernyős, elmosódó szélű festményként követi egymást – erdei ösvény → lámpásos udvar → boltajtó → pult (2 kép) → konyha → nyuszis polc (2 kép) → olvasósarok → üzenőfal → képfal/torták.
