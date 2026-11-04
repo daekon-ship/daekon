@@ -179,7 +179,7 @@
     if (jelKep) M.animate(jelKep, { opacity: [0, 1], scale: [0.94, 1] }, { duration: 1.3, delay: 0.2, ease: ease }).then(function () { if (feny) feny.classList.add("fut"); });
     if ($(".hj-gyuru")) M.animate(".hj-gyuru", { opacity: [0, 1], scale: [0.9, 1] }, { duration: 1.6, delay: 0.1, ease: ease });
     // a mérőlap görgetéskor finoman lassabban mozog (mélység)
-    if (M.scroll && matchMedia("(min-width: 981px)").matches) {
+    if (M.scroll && $(".hero-jel img") && matchMedia("(min-width: 981px)").matches) {
       M.scroll(M.animate(".hero-jel img", { y: [0, 40] }, { ease: "linear" }), { target: $(".hero"), offset: ["start start", "end start"] });
     }
 

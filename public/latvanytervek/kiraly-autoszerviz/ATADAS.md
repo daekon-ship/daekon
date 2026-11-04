@@ -144,3 +144,6 @@ Fájlok: `fo` (háttérrel), `vilagos`/`sotet` (átlátszó), `sotet-hatterrel`,
 
 ## 2026-11-04 – prémiumabb szövegek
 - Az összes szekció szövege átírva magabiztosabb, letisztultabb hangra (valótlan állítás, kitalált szám nélkül). Új főcím: „Precíz autójavítás. Becsülettel, 2008 óta.”
+
+## 2026-11-04 – hero nagy logó ki
+- Kérésre a nyitóképről kikerült a nagy embléma; a hero csak szöveg. A logó a fejlécben és a láblécben marad.

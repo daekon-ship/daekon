@@ -384,3 +384,7 @@ h1 .m-sor > *{display:block}
 p,.lead,li{text-wrap:pretty;hanging-punctuation:first}
 .lead{letter-spacing:.002em}
 .k-elem .szam,.label{font-variant-numeric:lining-nums tabular-nums}
+
+/* hero: csak szöveg, nagy logó nélkül */
+.hero-racs{grid-template-columns:minmax(0,1fr)}
+.hero-szoveg{max-width:760px}
