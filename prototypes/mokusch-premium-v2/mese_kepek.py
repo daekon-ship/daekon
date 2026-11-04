@@ -6,8 +6,8 @@ A tiszta Real-ESRGAN a vízfestéken szögletes, „kristályos” foltokat hagy
       + 20% Real-ESRGAN (tisztább kontúrok).
 A kivágások ugyanazok, mint a Wix „fill, al_c” kivágásai voltak (középre igazítva), így a jelenetek
 kompozíciója nem csúszik el:
-  <kulcs>-d-<w>.webp  asztali 16:10       <kulcs>-m-<w>.webp  mobil 2:3
-  <kulcs>-<w>.webp    teljes kép (aloldalak)   <kulcs>-24.webp  apró háttérkép
+  <kulcs>-m-<w>.webp  mobil 2:3 (a régi Wix-kivágás)
+  <kulcs>-<w>.webp    teljes, vágatlan kép (asztali nézet és aloldalak)   <kulcs>-24.webp  apró, elmosott háttér
 Használat:  python3 mese_kepek.py <kepek-4k ág mappája>
 """
 import json
@@ -19,7 +19,7 @@ HERE = Path(__file__).resolve().parent
 OUT = HERE.parents[1] / "public/latvanytervek/mokusch-premium-v2/img/mese"
 DESK_W = (1280, 1920, 2560)
 MOB_W = (640, 960, 1280, 1600)
-FULL_W = (480, 720, 1080, 1600)
+FULL_W = (480, 720, 1080, 1600, 2200)
 
 
 def crop_c(im, ratio):
@@ -55,12 +55,10 @@ def main(src):
         lan = Image.open(o).convert("RGB").resize((W, H), Image.LANCZOS)
         lan = lan.filter(ImageFilter.UnsharpMask(radius=2.2, percent=70, threshold=2))
         im = Image.blend(lan, big, 0.2)
-        d = crop_c(im, 16 / 10)
         m = crop_c(im, 2 / 3)
-        meta[k] = {"full": [W, H], "d": save_set(d, k, "-d-", DESK_W), "dh": d.size[1],
-                   "m": save_set(m, k, "-m-", MOB_W, full=False), "mh": m.size[1], "f": save_set(im, k, "-", FULL_W, full=False)}
+        meta[k] = {"full": [W, H], "m": save_set(m, k, "-m-", MOB_W, full=False), "mh": m.size[1], "f": save_set(im, k, "-", FULL_W)}
         im.resize((24, round(H * 24 / W)), Image.LANCZOS).save(OUT / f"{k}-24.webp", quality=70)
-        print(k, W, H, d.size, m.size, flush=True)
+        print(k, W, H, m.size, flush=True)
     (HERE / "mese_kepek.json").write_text(json.dumps(meta, indent=1))
 
 

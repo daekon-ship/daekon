@@ -276,3 +276,15 @@ html:not(.anim) .journey__mist{display:none}
 .epilog h2{font-size:clamp(1.45rem,1.25rem + .8vw,1.95rem);font-weight:500;margin:0;text-wrap:balance}
 .epilog__txt{max-width:46ch;margin:0!important;line-height:1.6;text-wrap:pretty}
 .epilog .btns{display:flex;flex-wrap:wrap;justify-content:center;gap:.6rem;margin-top:.4rem}
+/* ===== asztali nézet: a festmény egészben, a saját álló arányában (nem nyújtott, széles kivágás) =====
+   Vanda képei álló formátumúak; a teljes képernyős széles sávban 1,7× nagyítva pixelesek lettek.
+   Asztalon a kép a jobb oldalon, vízfestékes széllel áll, mögötte ugyanannak a festménynek az elmosott
+   színei töltik ki a képernyőt. A pontos helyét a storybook.js számolja (a fókuszpont ehhez igazodik). */
+.jscene__bg{display:none}
+@media (min-width:900px){
+  .jscene__bg{display:block;position:absolute;inset:-6%;background-size:cover;background-position:center;opacity:.78}
+  .jscene__bg::after{content:"";position:absolute;inset:0;background:var(--paper);opacity:.28}
+  .jscene img{object-fit:contain;object-position:76% 50%}
+  .jscene img.is-placed{position:absolute;object-fit:cover;object-position:50% 50%;
+    -webkit-mask:var(--wc-page) center/100% 100% no-repeat;mask:var(--wc-page) center/100% 100% no-repeat}
+}

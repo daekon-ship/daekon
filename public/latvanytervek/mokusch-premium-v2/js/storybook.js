@@ -202,12 +202,37 @@
       if (bt.length) M.animate(bt, { scale: [0.85, 1] }, { delay: M.stagger(0.07, { startDelay: 0.25 }), type: 'spring', stiffness: 260, damping: 17 });
     };
     var frameEl = $('[data-jframe]', J), FW = 1, FH = 1;
-    var measure = function () { FW = frameEl.clientWidth || innerWidth; FH = frameEl.clientHeight || innerHeight; };
+    // asztalon a festmény a saját arányában, jobbra igazítva áll; a fókuszpontot (közelítés és kinyílás
+    // iránya) a kép dobozához igazítjuk. Mobilon a teljes képernyős kivágás marad.
+    var place = function () {
+      var desk = !isMobile();
+      scenes.forEach(function (s) {
+        var im = $('img', s.inner);
+        if (!im) return;
+        if (!desk) {
+          im.classList.remove('is-placed'); im.style.left = im.style.top = im.style.width = im.style.height = '';
+          s.fx = s.fx0; s.fy = s.fy0; s.inner.style.transformOrigin = ''; return;
+        }
+        var ar = s.ar, bh = FH * 0.94, bw = bh * ar;
+        var maxW = FW < 1200 ? 0.5 : 0.56;               // keskenyebb asztalon is maradjon hely a szövegkártyának
+        if (bw > FW * maxW) { bw = FW * maxW; bh = bw / ar; }
+        var left = Math.max((FW - bw) * 0.76, FW - bw - FW * 0.035), top = (FH - bh) / 2;
+        if (FW >= 1200) left = (FW - bw) * 0.76;
+        im.classList.add('is-placed');
+        im.style.left = left.toFixed(1) + 'px'; im.style.top = top.toFixed(1) + 'px';
+        im.style.width = bw.toFixed(1) + 'px'; im.style.height = bh.toFixed(1) + 'px';
+        s.fx = (left + s.fx0 * bw) / FW; s.fy = (top + s.fy0 * bh) / FH;
+        s.inner.style.transformOrigin = (s.fx * 100).toFixed(2) + '% ' + (s.fy * 100).toFixed(2) + '%';
+      });
+    };
+    var measure = function () { FW = frameEl.clientWidth || innerWidth; FH = frameEl.clientHeight || innerHeight; if (scenes[0] && scenes[0].fx0 !== undefined) place(); };
     measure(); window.addEventListener('resize', measure);
     scenes.forEach(function (s) {
       var f = (s.el.getAttribute('data-f') || '50,50').split(',');
-      s.fx = (+f[0]) / 100; s.fy = (+f[1]) / 100; s.inner = $('.jscene__in', s.el); s.bloom = false;
+      s.fx0 = s.fx = (+f[0]) / 100; s.fy0 = s.fy = (+f[1]) / 100; s.inner = $('.jscene__in', s.el); s.bloom = false;
+      s.ar = parseFloat(s.el.getAttribute('data-ar')) || 0.8;
     });
+    place();
     var easeIn = function (t) { return t * t * t; };
     var easeOut = function (t) { return 1 - Math.pow(1 - t, 3); };
     var lastTravel = null;

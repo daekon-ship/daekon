@@ -5,7 +5,7 @@ build.py-t másik kimeneti mappával használja – arra ez a réteg nem kerül 
 """
 import html
 
-SB_VER = "12"
+SB_VER = "13"
 PALETTES = [("erdei", "Erdei", "#4E5A39", "#D9BBAC"),
             ("puder", "Púderes", "#6B6E4E", "#D8AFA3"),
             ("arany", "Aranyló", "#475436", "#C9A45C")]
@@ -141,8 +141,8 @@ def index(B):
         c = 99 if i == len(SCENES) - 1 else E - FADE   # eltűnés kezdete
         d = 99 if i == len(SCENES) - 1 else E          # eltűnt
         z0, z1 = (0 if i == 0 else S - FADE), E
-        if k in MESE:   # 4K helyi kép; a kivágást a CSS végzi (object-fit: cover + fókuszpont)
-            mob, desk = mese_srcset(k, kind="m"), mese_srcset(k, kind="d")
+        if k in MESE:   # helyi, nagy felbontású kép: mobilon 2:3 kivágás, asztalon a teljes (vágatlan) festmény
+            mob, desk = mese_srcset(k, kind="m"), mese_srcset(k, kind="f")
         else:
             mob = ", ".join(f"{B.wimg(k, w, round(w * 1.5), True)} {w}w" for w in (640, 960, 1280, 1600))
             desk = ", ".join(f"{B.wimg(k, w, round(w * 10 / 16), True)} {w}w" for w in (1280, 1920, 2560, 3200, 3840))
@@ -154,8 +154,10 @@ def index(B):
         figs.append(
             f'<figure class="jscene" data-jscene="{i}" data-a="{_r(P(a)) if a >= 0 else -1}" data-b="{_r(P(b))}" '
             f'data-c="{_r(P(c)) if c < 90 else 2}" data-d="{_r(P(d)) if d < 90 else 3}" '
-            f'data-f="{focal.replace("%", "").replace(" ", ",")}" style="--focal:{focal};--o:{i * 10}">'
-            f'<div class="jscene__in"><picture><source media="(min-width: 900px)" {lazyattr}srcset="{desk}" sizes="100vw">'
+            f'data-f="{focal.replace("%", "").replace(" ", ",")}" data-ar="{(MESE[k]["full"][0] / MESE[k]["full"][1]) if k in MESE else 0.8:.4f}" '
+            f'style="--focal:{focal};--o:{i * 10}">'
+            f'<div class="jscene__in"><i class="jscene__bg" aria-hidden="true" style="background-image:url({(f"img/mese/{k}-24.webp" if k in MESE else B.wimg(k, 24, 32))})"></i>'
+            f'<picture><source media="(min-width: 900px)" {lazyattr}srcset="{desk}" sizes="{"min(60vw, 120vh)" if k in MESE else "100vw"}">'
             f'<img {lazyattr}src="{isrc}" {lazyattr}srcset="{mob}" sizes="{msz}" width="960" height="1440" '
             f'alt="{html.escape(B.WIX[k][2])}" {prio} decoding="async"></picture></div></figure>')
         atmo.append(f'<div class="atmo" data-atmo="{i}" style="background-image:url({(f"img/mese/{k}-24.webp" if k in MESE else B.wimg(k, 18, 27))})"></div>')
@@ -288,7 +290,7 @@ def index(B):
     k0 = SCENES[0][0]
     if k0 in MESE:
         pl = (f'<link rel="preload" as="image" media="(max-width: 899px)" imagesrcset="{mese_srcset(k0, kind='m')}" imagesizes="100vw" fetchpriority="high">\n'
-              f'<link rel="preload" as="image" media="(min-width: 900px)" imagesrcset="{mese_srcset(k0, kind='d')}" imagesizes="100vw" fetchpriority="high">\n')
+              f'<link rel="preload" as="image" media="(min-width: 900px)" imagesrcset="{mese_srcset(k0, kind='f')}" imagesizes="min(60vw, 120vh)" fetchpriority="high">\n')
     else:
         pl = ""
     out = B.head("Mókusch kávézó és tortaműhely – Budapest, Várfok utca 30.",
