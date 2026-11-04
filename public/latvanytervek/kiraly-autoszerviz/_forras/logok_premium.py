@@ -208,6 +208,35 @@ def pecset(fill, gold, inner, txtc):
 
 
 # ---------------------------------------------------------- 3) HATSZÖG – gyújtógyertya + korona
+def gyertya_tiszta(cx, top, H, col, spark, met):
+    """Pontosított gyújtógyertya: szimmetrikus, lekerekített részek, 3 borda, hatlap, 4 menet, L-elektróda, szikra."""
+    u = H / 100
+    X = lambda v: cx + v * u
+    Y = lambda v: top + v * u
+    def rr(x0, y0, x1, y1, r, c):
+        return f'<rect x="{X(x0):.2f}" y="{Y(y0):.2f}" width="{(x1 - x0) * u:.2f}" height="{(y1 - y0) * u:.2f}" rx="{r * u:.2f}" fill="{c}"/>'
+    g = rr(-5, 0, 5, 5, 1, met) + rr(-2.6, 4.5, 2.6, 9, 0, met)
+    # szigetelő: törzs + 3 borda
+    g += rr(-7.5, 8.5, 7.5, 44, 3, col)
+    for y in (12, 21, 30):
+        g += rr(-9.5, y, 9.5, y + 5.5, 2.75, col)
+    g += rr(-10, 42, 10, 46, 1, col)
+    # hatlap
+    g += f'<path d="M{X(-14):.2f} {Y(50):.2f}L{X(-11):.2f} {Y(47):.2f}H{X(11):.2f}L{X(14):.2f} {Y(50):.2f}V{Y(59):.2f}L{X(11):.2f} {Y(62):.2f}H{X(-11):.2f}L{X(-14):.2f} {Y(59):.2f}Z" fill="{col}"/>'
+    # menet
+    g += rr(-7, 63, 7, 85, 0, met)
+    for i in range(5):
+        y = 65 + i * 4
+        g += f'<path d="M{X(-7):.2f} {Y(y + 1.6):.2f}L{X(7):.2f} {Y(y):.2f}V{Y(y + 1.3):.2f}L{X(-7):.2f} {Y(y + 2.9):.2f}Z" fill="{col}" opacity=".55"/>'
+    # középelektróda + L földelő
+    g += rr(-1.4, 85, 1.4, 91, .5, met)
+    g += f'<path d="M{X(4.5):.2f} {Y(85):.2f}H{X(7):.2f}V{Y(95):.2f}H{X(-3):.2f}V{Y(92.6):.2f}H{X(4.5):.2f}Z" fill="{met}"/>'
+    # szikra a rés mellett
+    sx, sy, k = X(-12), Y(90), u
+    g += f'<path d="M{sx + 5 * k:.2f} {sy - 9 * k:.2f}L{sx - 1.5 * k:.2f} {sy + 1 * k:.2f}H{sx + 2.5 * k:.2f}L{sx - 2 * k:.2f} {sy + 10 * k:.2f}L{sx + 6.5 * k:.2f} {sy - 1.5 * k:.2f}H{sx + 2.5 * k:.2f}Z" fill="{spark}"/>'
+    return g
+
+
 def hatszog(fill, gold, inner, txtc):
     from logok import gyertya
     cx, cy = 100, 100
@@ -215,7 +244,7 @@ def hatszog(fill, gold, inner, txtc):
     g = f'<path d="{P(hx(98))}" fill="{fill}"/>'
     g += f'<path d="{P(hx(91))}" fill="none" stroke="{gold}" stroke-width="2.4" stroke-linejoin="round"/>'
     g += crown(cx, 44, 34, 18, gold)
-    g += gyertya(cx + 2.5, 54, 62, inner, gold, "#8C9AAC")
+    g += gyertya_tiszta(cx, 52, 66, inner, gold, "#8C9AAC")
     g += f'<rect x="52" y="124" width="96" height="1" fill="{gold}"/>'
     p1, b1 = txt("KIRÁLY", "archivo", 19, 700, 112, .08, cx, 146, txtc)
     p2, b2 = txt("AUTÓSZERVIZ", "manrope", 6.6, 800, None, .42, cx, 158, "#B9C2CE")
