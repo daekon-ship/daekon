@@ -320,3 +320,30 @@ h1{line-height:1.06}
 .btn:active{transform:none}
 .miert.ford{background:none}
 .sav li b{font-weight:600}
+
+/* ---------- prémium mozgásréteg (Motion) ---------- */
+body::before{content:"";position:fixed;inset:0;z-index:100;pointer-events:none;opacity:.05;mix-blend-mode:overlay;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.fej{transition:background .35s,box-shadow .35s}
+.fej.gorgetve{background:rgba(14,14,15,.97);box-shadow:0 10px 30px -18px rgba(0,0,0,.8)}
+.halado{position:absolute;left:0;right:0;bottom:-1px;height:1px;background:var(--accent);transform:scaleX(0);transform-origin:left;pointer-events:none}
+h1 .m-sor{display:block;overflow:hidden;padding-bottom:.06em;margin-bottom:-.06em}
+h1 .m-sor > *{display:block}
+.label::after{transform-origin:left;transition:transform .9s var(--ease) .15s}
+.anim [data-be] .label::after{transform:scaleX(0)}
+.anim [data-be].be-kesz .label::after{transform:scaleX(1)}
+.anim .hero .eyebrow,.anim .hero .lead,.anim .hero-cta,.anim .hero-info{opacity:0}
+.anim h1 .m-sor > *{transform:translateY(105%)}
+.anim .merolap{clip-path:inset(0 0 100% 0)}
+.btn{position:relative;overflow:hidden;isolation:isolate}
+.btn-fo::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.38) 50%,transparent 70%);transform:translateX(-120%);transition:transform .8s var(--ease)}
+.btn-fo:hover::before{transform:translateX(120%)}
+.btn:active{transform:scale(.98)}
+.k-elem{transition:border-color .3s,background .3s,transform .5s var(--ease)}
+.k-elem:hover{transform:translateY(-3px)}
+.sor > button{position:relative}
+.sor > button::before{content:"";position:absolute;left:0;top:-1px;height:1px;width:100%;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .6s var(--ease)}
+.sor > button:hover::before,.sor[data-nyitva] > button::before{transform:scaleX(1)}
+.rolunk .foto{position:relative;overflow:hidden}
+.rolunk .foto .pecset{position:absolute;right:-12%;bottom:-10%;width:62%;opacity:.12;pointer-events:none}
+@media (prefers-reduced-motion:reduce){.anim .hero .eyebrow,.anim .hero .lead,.anim .hero-cta,.anim .hero-info{opacity:1}.anim h1 .m-sor > *{transform:none}.anim .merolap{clip-path:none}.btn-fo::before{display:none}}

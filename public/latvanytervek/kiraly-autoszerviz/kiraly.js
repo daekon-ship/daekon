@@ -161,12 +161,49 @@
     }, { amount: 0.55 });
   }
 
-  /* ---------- belépő animációk ---------- */
+  /* ---------- prémium mozgásréteg ---------- */
+  var fej = $(".fej");
+  function fejAllit() { if (fej) fej.classList.toggle("gorgetve", window.scrollY > 24); }
+  fejAllit(); addEventListener("scroll", fejAllit, { passive: true });
+
   if (M && !reduce && root.classList.contains("anim")) {
+    // görgetésjelző: vékony arany vonal a fejléc alján
+    var hal = $(".halado");
+    if (hal && M.scroll) M.scroll(M.animate(hal, { scaleX: [0, 1] }, { ease: "linear" }));
+
+    // hero: a címsorok alulról „kicsúsznak”, utána a többi elem, a mérőlap felülről lefelé tárul fel
+    M.animate("h1 .m-sor > *", { y: ["105%", "0%"] }, { duration: 0.95, delay: M.stagger(0.12, { startDelay: 0.12 }), ease: ease });
+    M.animate(".hero .eyebrow", { opacity: [0, 1], y: [8, 0] }, { duration: 0.7, ease: ease });
+    M.animate($$(".hero .lead, .hero-cta, .hero-info"), { opacity: [0, 1], y: [14, 0] }, { duration: 0.8, delay: M.stagger(0.1, { startDelay: 0.45 }), ease: ease });
+    M.animate(".merolap", { clipPath: ["inset(0 0 100% 0)", "inset(0 0 0% 0)"] }, { duration: 1.2, delay: 0.25, ease: [0.7, 0, 0.2, 1] });
+    // a mérőlap görgetéskor finoman lassabban mozog (mélység)
+    if (M.scroll && matchMedia("(min-width: 981px)").matches) {
+      M.scroll(M.animate(".merolap svg", { y: [0, 46] }, { ease: "linear" }), { target: $(".hero"), offset: ["start start", "end start"] });
+    }
+
+    // belépők: ami egyszerre ér a képernyőre, az lépcsőzetesen jön
+    var sor = 0, sorReset = null;
     M.inView("[data-be]", function (info) {
       var el = info && info.target ? info.target : info;
-      M.animate(el, { opacity: [0, 1], y: [16, 0] }, { duration: 0.7, ease: ease });
-    }, { margin: "0px 0px -8% 0px" });
+      var d = sor++ * 0.08;
+      if (!sorReset) sorReset = requestAnimationFrame(function () { sor = 0; sorReset = null; });
+      var rajz = el.matches(".rajzlap, .allito, .foto");
+      if (rajz) {
+        el.style.opacity = 1; el.style.transform = "none";
+        M.animate(el, { clipPath: ["inset(0 0 100% 0)", "inset(0 0 0% 0)"] }, { duration: 1.1, delay: d, ease: [0.7, 0, 0.2, 1] });
+      } else {
+        M.animate(el, { opacity: [0, 1], y: [22, 0] }, { duration: 0.85, delay: d, ease: ease });
+      }
+      setTimeout(function () { el.classList.add("be-kesz"); }, d * 1000);
+    }, { margin: "0px 0px -10% 0px" });
+
+    // a porlasztó rajza „megrajzolódik”, ahogy a nézetbe ér
+    var vonalak = $$(".injektor > *");
+    vonalak.forEach(function (v) { v.setAttribute("pathLength", "1"); v.style.strokeDasharray = "1"; v.style.strokeDashoffset = "1"; });
+    if (vonalak.length) M.inView(".rajzlap", function () {
+      vonalak.forEach(function (v, i) {
+        tween(1, 0, { duration: 1.4, delay: 0.5 + i * 0.07, ease: ease }, function (x) { v.style.strokeDashoffset = x; });
+      });
+    }, { amount: 0.35 });
   }
 })();
-

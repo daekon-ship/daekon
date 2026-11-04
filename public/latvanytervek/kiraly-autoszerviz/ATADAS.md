@@ -122,3 +122,12 @@ Fájlok: `fo` (háttérrel), `vilagos`/`sotet` (átlátszó), `sotet-hatterrel`,
 - Webes változatok: `arculat-kombi/WEB/` (`jel.svg` felirat nélküli jel, kétszínű gyertyával; `fejlec-sotet.svg` jel + KIRÁLY / AUTÓSZERVIZ; `emblema.svg` a teljes logó a láblécben). Forrás: `_forras/web_logo.py`.
 - Az oldal színei a logóhoz igazítva: fekete #161618 / #0B0B0C, pezsgőarany #D8BE84, krém #F5F1E8; világos szekciókban sötétebb bronz kiemelés (#8C6D32) az olvashatóságért.
 - A régi `?logo=1..6` logóváltó kikerült az oldalból (a logo.html megmaradt).
+
+## 2026-11-04 – prémium mozgásréteg (Motion)
+- Hero: a címsorok alulról kicsúsznak, a többi elem lépcsőzetesen érkezik, a 3D mérőlap felülről lefelé tárul fel; asztalon görgetéskor finom mélység (parallax).
+- Fejléc: görgetéskor sötétebb és árnyékot kap; alján vékony arany görgetésjelző vonal.
+- Belépők: az egyszerre beérkező elemek lépcsőzetesen jönnek; a rajzlapok (porlasztó, futómű, fotóhely) függönyszerűen nyílnak; a címkék vonala kirajzolódik.
+- A porlasztó műszaki rajza „megrajzolódik”, amikor a nézetbe ér. Címkék a rajzon belülre igazítva (eddig levágódtak).
+- Gombok: finom fényvillanás hoverre, nyomásra enyhe besüllyedés; szolgáltatás-sorok felett arany vonal; kártyák enyhén megemelkednek.
+- Nagyon finom szemcsés textúra az egész oldalon; a Rólunk fotóhelyén halvány pecsét-vízjel.
+- Csökkentett mozgás beállításnál minden animáció kikapcsol.
