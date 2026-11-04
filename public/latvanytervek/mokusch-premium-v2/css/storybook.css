@@ -288,3 +288,33 @@ html:not(.anim) .journey__mist{display:none}
   .jscene img.is-placed{position:absolute;object-fit:cover;object-position:50% 50%;
     -webkit-mask:var(--wc-page) center/100% 100% no-repeat;mask:var(--wc-page) center/100% 100% no-repeat}
 }
+/* ===== szövegkártyák: a szöveg mindig a fehér papíron belül marad =====
+   A papírlap (::before) jóval túlnyúlik a szövegen, így a vízfestékes, halványuló széle nem a betűk alá esik;
+   alacsonyabb ablakban a kártya tömörebb, hogy sose legyen magasabb a látható résznél. */
+.beat__card::before{inset:-34px -30px;opacity:.97}
+.beat{max-height:calc(100% - 64px)}
+@media (min-width:900px) and (max-height:820px){
+  .beat__card{padding:1.1rem 1.4rem}
+  .beat__story{font-size:1.02rem;margin-bottom:.55rem}
+  .beat__kicker{margin-bottom:.35rem}
+  .journey h1{font-size:clamp(1.7rem,1.3rem + 1.4vw,2.3rem);margin-bottom:.55rem}
+  .journey h2{font-size:clamp(1.45rem,1.2rem + .9vw,1.9rem)}
+  .beat .sub{margin-bottom:.45rem;font-size:.84rem}
+  .beat__lead{font-size:.96rem;line-height:1.5}
+  .beat .btns{margin-top:.85rem;gap:.5rem}
+  .beat .btn{min-height:44px;padding:.55em 1.1em;font-size:.9rem}
+  .beat__more{margin-top:.6rem}
+  .beat .steps-book{margin-top:.7rem;gap:.25rem;font-size:.86rem}
+  .beat .steps-book b{width:24px;height:24px;font-size:.78rem}
+  .beat__visit{margin-top:.6rem;font-size:.84rem}
+  .journey__hint{display:none}
+}
+@media (min-width:900px) and (max-height:680px){
+  .beat .sub,.beat .steps-book{display:none}
+  .beat--hero .beat__lead{font-size:.92rem}
+}
+@media (max-width:899px){
+  .beat__card::before{inset:-52px -14px -16px;opacity:.97}
+  .beat__card{padding-top:1.35rem}
+  .beat{max-height:calc(100% - 24px)}
+}
