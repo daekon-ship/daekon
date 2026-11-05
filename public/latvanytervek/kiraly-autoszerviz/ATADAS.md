@@ -13,10 +13,15 @@
 - Logócsomag az ügyfélnek: `arculat-kombi/kiraly-vegleges-logo-ejkek-csomag.zip` (a fekete változat csomagja is megmaradt).
 - Ellenőrizve 390 / 1024 / 1200 / 1440 px szélességen: nincs vízszintes görgetés, nincs konzolhiba, nincs 404, minden belső link él, minden képnek van alt szövege.
 
+## Élesítés
+- `python3 _forras/eles_csomag.py https://www.<domain>.hu` → `_eles/` mappa + `kiraly-weboldal-eles.zip`: látványterv-sáv nélkül, `index, follow`, canonical, robots.txt, sitemap.xml, abszolút megosztási linkek a domainre. A zip tartalmát a tárhely gyökerébe kell feltölteni (statikus, nincs szerveroldali igény).
+- Jogi aloldalak: `impresszum.html`, `adatkezeles.html` (az oldal nem gyűjt adatot, nincs süti/űrlap). Az impresszumban a **tárhelyszolgáltató adatai élesítéskor kitöltendők**.
+- Kontraszt ellenőrizve (WCAG AA): halvány szöveg #8291A6, bronz kiemelés #7C5E24.
+
 ## Élesítés előtt az ügyféllel egyeztetni
 - Valódi műhelyfotók (ha szeretne képeket – jelenleg szándékosan nincs kép).
 - Turul Auto minősítések (2021–2026) és a 4,5 / 44 értékelés feltüntetése – Turul felhasználási engedély.
-- Impresszum és adatkezelési tájékoztató szövege.
+- Az impresszum és az adatkezelési tájékoztató átnézése (tárhelyszolgáltató adatai).
 - Domain, tárhely, Google Cégprofil link; a `noindex` levétele élesítéskor.
 
 ---
