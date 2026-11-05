@@ -175,3 +175,5 @@ Fájlok: `fo` (háttérrel), `vilagos`/`sotet` (átlátszó), `sotet-hatterrel`,
 - 2026-11-05: fejléc-logó a fejlécen belül, állandó méretben (gépen 56 px, telefonon 46 px), nem lóg le és nem változik görgetéskor.
 
 - 2026-11-05: kompaktabb oldal (~30%-kal rövidebb): kiemelt kártyák, bizalmi sáv, EGR-doboz, futómű-fogalmak és Rólunk cégadat-sor ki (a cégadat a láblécben van); kisebb szekció-térközök; dízel lépések egy sorban.
+
+- 2026-11-05: logó javítva – a KIRÁLY felirat Á ékezete nem ér a gyűrűhöz (felirat kicsit beljebb/kisebb, éjkék változatban a vékony gyűrű kijjebb). Minden PNG, webes fájl, névjegy, megosztási kép újragenerálva. Export: `_forras/vegleges_export.py`.

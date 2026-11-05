@@ -19,10 +19,10 @@ def plug(cx, top, H, col, spark, met, halo=None):
 def emblema(pn, gold, cream, kulcs_szin, variant="A"):
     cx = cy = 100
     if variant == "B":  # dupla külső gyűrű, belső kör nélkül
-        g = f'<circle cx="100" cy="100" r="98" fill="{pn}"/>' + ring(100, 100, 94, 2.2, gold) + ring(100, 100, 89.5, .9, gold) + ring(100, 100, 66, .9, gold)
+        g = f'<circle cx="100" cy="100" r="98" fill="{pn}"/>' + ring(100, 100, 94, 2.2, gold) + ring(100, 100, 90.6, .8, gold) + ring(100, 100, 66, .9, gold)
     else:
         g = f'<circle cx="100" cy="100" r="98" fill="{pn}"/>' + ring(100, 100, 93, 2.6, gold) + ring(100, 100, 66, 1.1, gold)
-    g += arc_text("KIRÁLY", "archivo", 79, 21, 760, 112, cream, True, .2, 100, 100)
+    g += arc_text("KIRÁLY", "archivo", 76, 19.5, 760, 112, cream, True, .22, 100, 100)  # az Á ékezete ne érjen a gyűrűhöz
     g += arc_text("AUTÓSZERVIZ · DUNAÚJVÁROS", "manrope", 79.5, 8.8, 800, None, gold, False, .22, 100, 100)
     # 20 · 08 két oldalt
     for x, s in ((21.5, "20"), (178.5, "08")):

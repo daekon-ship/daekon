@@ -24,7 +24,7 @@ def jel():
 
 
 def main():
-    shutil.rmtree(OUT, ignore_errors=True); os.makedirs(OUT)
+    os.makedirs(OUT, exist_ok=True)
     jb, jbb = jel()
     open(os.path.join(OUT, "jel.svg"), "w").write(svg(jb, jbb, 0, None, "KIRÁLY Autószerviz – jel"))
     hb, hbb = horizontal(jb, jbb, {"acc": gold}, cream, gold, city=False)
