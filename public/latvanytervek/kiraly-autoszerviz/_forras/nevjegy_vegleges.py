@@ -63,11 +63,11 @@ html,body{{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 .belso{{position:absolute;left:3mm;top:3mm;width:90mm;height:50mm;padding:5.6mm 6mm 4.6mm 9.2mm;display:flex;flex-direction:column}}
 .fej{{display:flex;justify-content:space-between;align-items:flex-start}}
 .nev{{font:800 12.4pt/1 A;font-stretch:100%;letter-spacing:.1em;text-transform:uppercase}}
-.beo{{font:800 5.6pt/1 M;letter-spacing:.28em;text-transform:uppercase;margin-top:2.1mm}}
+.beo{{font:700 5.8pt/1 A;font-stretch:100%;letter-spacing:.28em;text-transform:uppercase;margin-top:2.1mm}}
 .jel{{width:11.5mm;height:11.5mm;margin-top:-.6mm}}
 .vonal{{height:.22mm;margin:3.6mm 0 3.1mm}}
 .sorok{{display:grid;gap:1.55mm}}
-.s{{display:flex;gap:2mm;align-items:center;font:600 6.4pt/1.2 M;letter-spacing:.015em}}
+.s{{display:flex;gap:2mm;align-items:center;font:600 6.4pt/1.2 A;font-stretch:100%;letter-spacing:.02em}}
 .s svg{{width:2.8mm;height:2.8mm;flex:none}}
 .s.tel{{font:800 9pt/1 A;font-stretch:100%;letter-spacing:.05em}}
 .s.tel svg{{width:3.1mm;height:3.1mm}}
