@@ -293,7 +293,7 @@
         }
         if (on || b.el.style.opacity !== '0') {
           b.el.style.opacity = on ? bo.toFixed(3) : '0';
-          b.el.style.setProperty('--by', ((1 - bo) * 18).toFixed(1) + 'px');
+          b.el.style.setProperty('--by', Math.round((1 - bo) * 18) + 'px');   // egész pixel: tört eltolásnál mobilon elmosódik a szöveg
         }
       }
       if (curCh !== curDot) { curDot = curCh; dots.forEach(function (d, k) { d.classList.toggle('is-on', k === curCh - 1); }); }
