@@ -27,9 +27,8 @@ def ik(k, c):
 
 
 def elo():
-    """Előlap: éjkék, középen a logó, finom arany keret és fény."""
+    """Előlap: éjkék, középen a logó, finom fény – keret nélkül."""
     return f"""<div class="lap elo">
-  <div class="keret"></div>
   <img class="emb" src="{B}arculat-kombi/VEGLEGES/2-kiraly-logo-ejkek-arany-atlatszo.png">
 </div>"""
 
@@ -64,7 +63,7 @@ html,body{{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 .elo{{background:radial-gradient(60% 85% at 50% 48%,#1A2D45 0,{NAVY} 70%)}}
 .elo .keret{{position:absolute;left:7.6mm;top:7.6mm;right:7.6mm;bottom:7.6mm;border:.22mm solid rgba(201,161,79,.55)}}
 .elo .keret::after{{content:"";position:absolute;inset:.9mm;border:.12mm solid rgba(201,161,79,.25)}}
-.elo .emb{{position:absolute;left:50%;top:50%;width:33mm;height:33mm;transform:translate(-50%,-50%)}}
+.elo .emb{{position:absolute;left:50%;top:50%;width:36mm;height:36mm;transform:translate(-50%,-50%)}}
 .arany-el{{position:absolute;left:0;top:0;bottom:0;width:5.6mm;background:linear-gradient(180deg,#DDBB72,{GOLD} 50%,#B38B3A)}}
 .belso{{position:absolute;left:3mm;top:3mm;width:90mm;height:50mm;padding:5.6mm 6mm 4.6mm 9.2mm;display:flex;flex-direction:column}}
 .fej{{display:flex;justify-content:space-between;align-items:flex-start}}
@@ -92,13 +91,13 @@ def main():
     with sync_playwright() as p:
         b = p.chromium.launch()
         pg = b.new_page(device_scale_factor=1)
-        for nev, body in (("A-krem-hatlap", elo() + hat(False)), ("B-ejkek-hatlap", elo() + hat(True))):
+        for nev, body in (("ejkek", elo() + hat(True)),):
             open(tmp, "w", encoding="utf-8").write(page(body))
             pg.goto(B + "_nv.html?" + nev); pg.wait_for_timeout(700)
             pg.pdf(path=os.path.join(OUT, f"nevjegykartya-{nev}-nyomdai-96x56mm.pdf"), width="96mm", height="56mm", print_background=True)
         # bemutató PNG-k: vágott méret (90×50 mm), 1 mm = 12 px
         sh = b.new_page(viewport={"width": 1152, "height": 672}, device_scale_factor=1)
-        for nev, body in (("elolap", elo()), ("hatlap-krem", hat(False)), ("hatlap-ejkek", hat(True))):
+        for nev, body in (("elolap", elo()), ("hatlap", hat(True))):
             html = page(f'<div style="zoom:3.1496">{body}</div>')  # 96mm -> ~1152 px
             open(tmp, "w", encoding="utf-8").write(html)
             sh.goto(B + "_nv.html?" + nev); sh.wait_for_timeout(600)
@@ -110,7 +109,7 @@ def main():
         img{{position:absolute;width:760px;border-radius:6px;box-shadow:0 2px 3px rgba(0,0,0,.18),0 30px 60px -20px rgba(0,0,0,.45)}}
         .a{{left:150px;top:150px;transform:rotate(-5deg)}}.b{{left:700px;top:470px;transform:rotate(4deg)}}
         p{{position:absolute;left:60px;bottom:40px;font:700 18px M;letter-spacing:.2em;color:#6b6457;text-transform:uppercase}}</style></head>
-        <body><img class="a" src="{cards('elolap')}"><img class="b" src="{cards('hatlap-krem')}"><p>KIRÁLY Autószerviz · névjegykártya · 90×50 mm</p></body></html>"""
+        <body><img class="a" src="{cards('elolap')}"><img class="b" src="{cards('hatlap')}"><p>KIRÁLY Autószerviz · névjegykártya · 90×50 mm</p></body></html>"""
         open(tmp, "w", encoding="utf-8").write(html)
         bm = b.new_page(viewport={"width": 1600, "height": 1100}); bm.goto(B + "_nv.html?bemutato"); bm.wait_for_timeout(800)
         bm.screenshot(path=os.path.join(OUT, "nevjegy-bemutato.png"))
