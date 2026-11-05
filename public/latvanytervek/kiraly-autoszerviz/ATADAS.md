@@ -173,3 +173,5 @@ Fájlok: `fo` (háttérrel), `vilagos`/`sotet` (átlátszó), `sotet-hatterrel`,
 - Kérésre a nyitóképről kikerült a nagy embléma; a hero csak szöveg. A logó a fejlécben és a láblécben marad.
 
 - 2026-11-05: fejléc-logó a fejlécen belül, állandó méretben (gépen 56 px, telefonon 46 px), nem lóg le és nem változik görgetéskor.
+
+- 2026-11-05: kompaktabb oldal (~30%-kal rövidebb): kiemelt kártyák, bizalmi sáv, EGR-doboz, futómű-fogalmak és Rólunk cégadat-sor ki (a cégadat a láblécben van); kisebb szekció-térközök; dízel lépések egy sorban.
