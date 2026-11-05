@@ -9,7 +9,7 @@
 - Színek: #0E1B2C éjkék, #C9A14F arany, #F6F2EA krém; világos szekciókban #8A6A2C bronz kiemelés.
 - Motion animációk (visszafogott), csökkentett mozgásnál kikapcsolnak.
 - Megosztási kép (`img/og-kiraly.png`), favicon, telefonos ikon, strukturált adat (AutoRepair).
-- Prémium névjegykártya a végleges logóval: `nyomdai/vegleges-ejkek/` – nyomdai PDF (90×50 mm + 3 mm kifutó, előlap + hátlap), mindkét oldal éjkék, az előlapon keret nélkül a logó; bemutató PNG-k. Forrás: `_forras/nevjegy_vegleges.py`.
+- Prémium névjegykártya a végleges logóval: `nyomdai/vegleges-ejkek/` – nyomdai PDF (90×50 mm + 3 mm kifutó, előlap + hátlap), mindkét oldal éjkék; előlap: logó keret nélkül; hátlap: bal oldali panel nagy logóval, arany választóvonal, jobbra a névjegy; bemutató PNG-k. Forrás: `_forras/nevjegy_vegleges.py`.
 - Logócsomag az ügyfélnek: `arculat-kombi/kiraly-vegleges-logo-ejkek-csomag.zip` (a fekete változat csomagja is megmaradt).
 - Ellenőrizve 390 / 1024 / 1200 / 1440 px szélességen: nincs vízszintes görgetés, nincs konzolhiba, nincs 404, minden belső link él, minden képnek van alt szövege.
 

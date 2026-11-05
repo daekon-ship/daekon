@@ -33,24 +33,19 @@ def elo():
 </div>"""
 
 
-def hat(sotet=False):
-    bg, ink, sub, line, ic = ((NAVY, CREAM, "#A9B4C2", "rgba(201,161,79,.35)", GOLD) if sotet
-                              else (CREAM, NAVY, INK2, "rgba(14,27,44,.16)", "#8A6A2C"))
-    return f"""<div class="lap hat" style="background:{bg};color:{ink}">
-  <div class="arany-el"></div>
-  <div class="belso">
-    <div class="fej">
-      <div><div class="nev">Király István</div><div class="beo" style="color:{ic}">Ügyvezető</div></div>
-      <img class="jel" src="{B}arculat-kombi/VEGLEGES/2-kiraly-logo-ejkek-arany-atlatszo.png">
-    </div>
-    <div class="vonal" style="background:{line}"></div>
-    <div class="sorok" style="color:{ink}">
-      <div class="s tel">{ik("tel", ic)}<span>+36 20 585 3234</span></div>
-      <div class="s">{ik("mail", ic)}<span>kiralyautoszervizkft@gmail.com</span></div>
-      <div class="s">{ik("hely", ic)}<span>2400 Dunaújváros, Budai Nagy Antal út 27/C</span></div>
-      <div class="s" style="color:{sub}">{ik("ora", ic)}<span>H–P: 8–12 és 13–17</span></div>
-    </div>
-    <div class="szolg" style="color:{sub}">Dízelrendszer<i style="background:{GOLD}"></i>3D futómű<i style="background:{GOLD}"></i>Diagnosztika</div>
+def hat(sotet=True):
+    """Hátlap: bal oldalt világosabb éjkék panel nagy logóval, arany választóvonal, jobbra a névjegy."""
+    return f"""<div class="lap hat2">
+  <div class="panel"><img class="nagyjel" src="{B}arculat-kombi/VEGLEGES/2-kiraly-logo-ejkek-arany-atlatszo.png"></div>
+  <div class="valaszto"></div>
+  <div class="adat">
+    <div class="nev">Király István</div>
+    <div class="beo">Ügyvezető</div>
+    <div class="vonal2"></div>
+    <div class="s tel">{ik("tel", GOLD)}<span>+36 20 585 3234</span></div>
+    <div class="s">{ik("mail", GOLD)}<span>kiralyautoszervizkft@gmail.com</span></div>
+    <div class="s ket">{ik("hely", GOLD)}<span>2400 Dunaújváros,<br>Budai Nagy Antal út 27/C</span></div>
+    <div class="s hal">{ik("ora", GOLD)}<span>H–P: 8–12 és 13–17</span></div>
   </div>
 </div>"""
 
@@ -76,6 +71,18 @@ html,body{{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 .s svg{{width:2.8mm;height:2.8mm;flex:none}}
 .s.tel{{font:760 9pt/1 A;font-stretch:108%;letter-spacing:.01em}}
 .s.tel svg{{width:3.1mm;height:3.1mm}}
+.hat2{{background:{NAVY};color:{CREAM}}}
+.panel{{position:absolute;left:0;top:0;bottom:0;width:39mm;background:radial-gradient(90% 70% at 55% 50%,#1C3251,#13243A 75%)}}
+.nagyjel{{position:absolute;left:21mm;top:50%;width:27mm;height:27mm;transform:translate(-50%,-50%)}}
+.valaszto{{position:absolute;left:39mm;top:0;bottom:0;width:.35mm;background:linear-gradient(180deg,#DDBB72,{GOLD} 50%,#B38B3A)}}
+.adat{{position:absolute;left:44.5mm;right:6mm;top:50%;transform:translateY(-50%)}}
+.adat .nev{{font-size:11.6pt}}
+.adat .beo{{color:{GOLD}}}
+.vonal2{{height:.22mm;width:10mm;background:{GOLD};margin:3mm 0 3.2mm}}
+.adat .s{{margin-top:1.5mm;color:{CREAM}}}
+.adat .s.ket{{align-items:flex-start;line-height:1.3}}
+.adat .s.ket svg{{margin-top:.2mm}}
+.adat .s.hal{{color:#A9B4C2}}
 .szolg{{margin-top:auto;font:800 4.9pt/1 M;letter-spacing:.2em;text-transform:uppercase;white-space:nowrap}}
 .szolg i{{display:inline-block;width:.9mm;height:.9mm;border-radius:50%;margin:0 1.6mm;vertical-align:.3mm}}
 """
