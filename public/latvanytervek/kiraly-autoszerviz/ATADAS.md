@@ -9,6 +9,7 @@
 - Színek: #0E1B2C éjkék, #C9A14F arany, #F6F2EA krém; világos szekciókban #8A6A2C bronz kiemelés.
 - Motion animációk (visszafogott), csökkentett mozgásnál kikapcsolnak.
 - Megosztási kép (`img/og-kiraly.png`), favicon, telefonos ikon, strukturált adat (AutoRepair).
+- Prémium névjegykártya a végleges logóval: `nyomdai/vegleges-ejkek/` – nyomdai PDF (90×50 mm + 3 mm kifutó, előlap + hátlap), krém vagy éjkék hátlappal, bemutató PNG-k. Forrás: `_forras/nevjegy_vegleges.py`.
 - Logócsomag az ügyfélnek: `arculat-kombi/kiraly-vegleges-logo-ejkek-csomag.zip` (a fekete változat csomagja is megmaradt).
 - Ellenőrizve 390 / 1024 / 1200 / 1440 px szélességen: nincs vízszintes görgetés, nincs konzolhiba, nincs 404, minden belső link él, minden képnek van alt szövege.
 
@@ -17,7 +18,6 @@
 - Turul Auto minősítések (2021–2026) és a 4,5 / 44 értékelés feltüntetése – Turul felhasználási engedély.
 - Impresszum és adatkezelési tájékoztató szövege.
 - Domain, tárhely, Google Cégprofil link; a `noindex` levétele élesítéskor.
-- Névjegykártya a végleges logóval (a `nyomdai/` mappában a korábbi logókhoz készült változatok vannak).
 
 ---
 
