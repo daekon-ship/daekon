@@ -62,21 +62,21 @@ html,body{{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 .arany-el{{position:absolute;left:0;top:0;bottom:0;width:5.6mm;background:linear-gradient(180deg,#DDBB72,{GOLD} 50%,#B38B3A)}}
 .belso{{position:absolute;left:3mm;top:3mm;width:90mm;height:50mm;padding:5.6mm 6mm 4.6mm 9.2mm;display:flex;flex-direction:column}}
 .fej{{display:flex;justify-content:space-between;align-items:flex-start}}
-.nev{{font:740 12.4pt/1 A;font-stretch:112%;letter-spacing:.005em}}
-.beo{{font:800 5.4pt/1 M;letter-spacing:.24em;text-transform:uppercase;margin-top:1.9mm}}
+.nev{{font:800 12.4pt/1 A;font-stretch:100%;letter-spacing:.1em;text-transform:uppercase}}
+.beo{{font:800 5.6pt/1 M;letter-spacing:.28em;text-transform:uppercase;margin-top:2.1mm}}
 .jel{{width:11.5mm;height:11.5mm;margin-top:-.6mm}}
 .vonal{{height:.22mm;margin:3.6mm 0 3.1mm}}
 .sorok{{display:grid;gap:1.55mm}}
-.s{{display:flex;gap:2mm;align-items:center;font:600 6.5pt/1.2 M}}
+.s{{display:flex;gap:2mm;align-items:center;font:600 6.4pt/1.2 M;letter-spacing:.015em}}
 .s svg{{width:2.8mm;height:2.8mm;flex:none}}
-.s.tel{{font:760 9pt/1 A;font-stretch:108%;letter-spacing:.01em}}
+.s.tel{{font:800 9pt/1 A;font-stretch:100%;letter-spacing:.05em}}
 .s.tel svg{{width:3.1mm;height:3.1mm}}
 .hat2{{background:{NAVY};color:{CREAM}}}
 .panel{{position:absolute;left:0;top:0;bottom:0;width:39mm;background:radial-gradient(90% 70% at 55% 50%,#1C3251,#13243A 75%)}}
 .nagyjel{{position:absolute;left:21mm;top:50%;width:27mm;height:27mm;transform:translate(-50%,-50%)}}
 .valaszto{{position:absolute;left:39mm;top:0;bottom:0;width:.35mm;background:linear-gradient(180deg,#DDBB72,{GOLD} 50%,#B38B3A)}}
 .adat{{position:absolute;left:44.5mm;right:6mm;top:50%;transform:translateY(-50%)}}
-.adat .nev{{font-size:11.6pt}}
+.adat .nev{{font-size:10.4pt}}
 .adat .beo{{color:{GOLD}}}
 .vonal2{{height:.22mm;width:10mm;background:{GOLD};margin:3mm 0 3.2mm}}
 .adat .s{{margin-top:1.5mm;color:{CREAM}}}
