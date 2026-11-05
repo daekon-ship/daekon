@@ -8,11 +8,6 @@
   var $ = function (s, c) { return (c || document).querySelector(s); };
   var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
   var ease = [0.2, 0.7, 0.1, 1];
-  /* SVG-elemeken a Motion értéket animál, a stílust mi írjuk (megbízható minden böngészőben) */
-  function tween(from, to, opts, write) {
-    write(from);
-    return M.animate(from, to, Object.assign({}, opts, { onUpdate: write }));
-  }
 
   /* ---------- mobilmenü ---------- */
   var gomb = $(".menu-gomb"), menu = $("#mobilmenu");
@@ -79,88 +74,6 @@
     });
   });
 
-  /* ---------- hero: 3D mérés – a kerekek beállnak ---------- */
-  var hb = $(".kerek-b"), hj = $(".kerek-j");
-  var zold = "#4CC38A";
-  function heroKesz(azonnal) {
-    [[hb, -4], [hj, 3]].forEach(function (x) {
-      x[0].removeAttribute("transform");
-      if (azonnal || !M) { x[0].style.rotate = "0deg"; return; }
-      tween(x[1], 0, { duration: 1.6, delay: 0.5, ease: ease }, function (v) { x[0].style.rotate = v + "deg"; });
-    });
-    var eb = $(".ertek-b"), ej = $(".ertek-j"), st = $(".statusz");
-    var vege = function () {
-      eb.textContent = "+0°03′"; ej.textContent = "+0°04′";
-      eb.setAttribute("fill", zold); ej.setAttribute("fill", zold);
-      st.textContent = "BEÁLLÍTVA · GYÁRI TARTOMÁNYBAN"; st.setAttribute("fill", zold);
-    };
-    if (azonnal || !M) { vege(); return; }
-    // számláló: a perc értékek lefutnak 0 felé
-    M.animate(0, 1, {
-      duration: 1.6, delay: 0.5, ease: ease,
-      onUpdate: function (v) {
-        var b = Math.round(-42 + (45 * v)), j = Math.round(31 - (27 * v));
-        eb.textContent = (b < 0 ? "−" : "+") + "0°" + String(Math.abs(b)).padStart(2, "0") + "′";
-        ej.textContent = (j < 0 ? "−" : "+") + "0°" + String(Math.abs(j)).padStart(2, "0") + "′";
-      }
-    }).then(vege);
-    var latas = $$(".latas path");
-    tween(0.15, 0.7, { duration: 1.8, delay: 0.3 }, function (v) { latas.forEach(function (l) { l.style.opacity = v; }); });
-  }
-  if (hb && hj) heroKesz(reduce || !M);
-
-  /* ---------- dízel: porlasztási kép ---------- */
-  if (M && !reduce) {
-    var permet = $$(".permet path");
-    tween(0, -18, { duration: 0.9, repeat: Infinity, ease: "linear" }, function (v) { permet.forEach(function (l) { l.style.strokeDashoffset = v; }); });
-  }
-
-  /* ---------- futómű: előtte / utána ---------- */
-  var ALL = {
-    elotte: { b: -5, j: 4, korm: -9, kop: [0.95, 0.45, 0.15], e: { ob: ["−0°42′", "rossz"], oj: ["+0°31′", "rossz"], db: ["−1°36′", "rossz"], dj: ["−0°34′", ""] } },
-    utana: { b: 0, j: 0, korm: 0, kop: [0.5, 0.5, 0.5], e: { ob: ["+0°04′", "jo"], oj: ["+0°05′", "jo"], db: ["−0°36′", "jo"], dj: ["−0°34′", "jo"] } }
-  };
-  var fkb = $(".fk-b"), fkj = $(".fk-j"), korm = $(".kormany");
-  var aktualis = "elotte", felhasznaloKattintott = false;
-  [fkb, fkj, korm].forEach(function (el, i) {
-    if (!el) return;
-    el.removeAttribute("transform");
-    el.style.rotate = [-5, 4, -9][i] + "deg";
-  });
-  function futomu(nev, azonnal) {
-    var a = ALL[nev], d = (azonnal || !M || reduce) ? 0 : 0.9;
-    aktualis = nev;
-    $$("[data-allapot-gomb]").forEach(function (g) { g.setAttribute("aria-pressed", String(g.getAttribute("data-allapot-gomb") === nev)); });
-    var cel = [[fkb, a.b], [fkj, a.j], [korm, a.korm]];
-    cel.forEach(function (x) {
-      if (!x[0]) return;
-      var tol = parseFloat(x[0].style.rotate) || 0;
-      if (d) tween(tol, x[1], { duration: d, ease: ease }, function (v) { x[0].style.rotate = v + "deg"; });
-      else x[0].style.rotate = x[1] + "deg";
-    });
-    [".k1", ".k2", ".k3"].forEach(function (k, i) {
-      $$(".allito " + k).forEach(function (el) {
-        var tol = parseFloat(el.getAttribute("opacity"));
-        if (d) tween(tol, a.kop[i], { duration: d }, function (v) { el.setAttribute("opacity", v); });
-        else el.setAttribute("opacity", a.kop[i]);
-      });
-    });
-    Object.keys(a.e).forEach(function (k) {
-      var el = $('[data-e="' + k + '"]');
-      el.textContent = a.e[k][0];
-      el.className = a.e[k][1];
-      if (d) M.animate(el, { opacity: [0.3, 1] }, { duration: 0.4 });
-    });
-  }
-  $$("[data-allapot-gomb]").forEach(function (g) {
-    g.addEventListener("click", function () { felhasznaloKattintott = true; futomu(g.getAttribute("data-allapot-gomb")); });
-  });
-  if (M && !reduce && $(".allito")) {
-    M.inView(".allito", function () {
-      setTimeout(function () { if (!felhasznaloKattintott && aktualis === "elotte") futomu("utana"); }, 1100);
-    }, { amount: 0.55 });
-  }
-
   /* ---------- prémium mozgásréteg ---------- */
   var fej = $(".fej");
   function fejAllit() { if (fej) fej.classList.toggle("gorgetve", window.scrollY > 24); }
@@ -171,17 +84,10 @@
     var hal = $(".halado");
     if (hal && M.scroll) M.scroll(M.animate(hal, { scaleX: [0, 1] }, { ease: "linear" }));
 
-    // hero: a címsorok alulról „kicsúsznak”, utána a többi elem, a mérőlap felülről lefelé tárul fel
+    // hero: a címsorok alulról „kicsúsznak”, utána a többi elem
     M.animate("h1 .m-sor > *", { y: ["105%", "0%"] }, { duration: 0.95, delay: M.stagger(0.12, { startDelay: 0.12 }), ease: ease });
     M.animate(".hero .eyebrow", { opacity: [0, 1], y: [8, 0] }, { duration: 0.7, ease: ease });
     M.animate($$(".hero .lead, .hero-cta, .hero-info"), { opacity: [0, 1], y: [14, 0] }, { duration: 0.8, delay: M.stagger(0.1, { startDelay: 0.45 }), ease: ease });
-    var jelKep = $(".hero-jel img"), feny = $(".hj-feny");
-    if (jelKep) M.animate(jelKep, { opacity: [0, 1], scale: [0.94, 1] }, { duration: 1.3, delay: 0.2, ease: ease }).then(function () { if (feny) feny.classList.add("fut"); });
-    if ($(".hj-gyuru")) M.animate(".hj-gyuru", { opacity: [0, 1], scale: [0.9, 1] }, { duration: 1.6, delay: 0.1, ease: ease });
-    // a mérőlap görgetéskor finoman lassabban mozog (mélység)
-    if (M.scroll && $(".hero-jel img") && matchMedia("(min-width: 981px)").matches) {
-      M.scroll(M.animate(".hero-jel img", { y: [0, 40] }, { ease: "linear" }), { target: $(".hero"), offset: ["start start", "end start"] });
-    }
 
     // belépők: ami egyszerre ér a képernyőre, az lépcsőzetesen jön
     var sor = 0, sorReset = null;
@@ -189,23 +95,9 @@
       var el = info && info.target ? info.target : info;
       var d = sor++ * 0.08;
       if (!sorReset) sorReset = requestAnimationFrame(function () { sor = 0; sorReset = null; });
-      var rajz = el.matches(".rajzlap, .allito, .foto");
-      if (rajz) {
-        el.style.opacity = 1; el.style.transform = "none";
-        M.animate(el, { clipPath: ["inset(0 0 100% 0)", "inset(0 0 0% 0)"] }, { duration: 1.1, delay: d, ease: [0.7, 0, 0.2, 1] });
-      } else {
-        M.animate(el, { opacity: [0, 1], y: [22, 0] }, { duration: 0.85, delay: d, ease: ease });
-      }
+      M.animate(el, { opacity: [0, 1], y: [22, 0] }, { duration: 0.85, delay: d, ease: ease });
       setTimeout(function () { el.classList.add("be-kesz"); }, d * 1000);
     }, { margin: "0px 0px -10% 0px" });
 
-    // a porlasztó rajza „megrajzolódik”, ahogy a nézetbe ér
-    var vonalak = $$(".injektor > *");
-    vonalak.forEach(function (v) { v.setAttribute("pathLength", "1"); v.style.strokeDasharray = "1"; v.style.strokeDashoffset = "1"; });
-    if (vonalak.length) M.inView(".rajzlap", function () {
-      vonalak.forEach(function (v, i) {
-        tween(1, 0, { duration: 1.4, delay: 0.5 + i * 0.07, ease: ease }, function (x) { v.style.strokeDashoffset = x; });
-      });
-    }, { amount: 0.35 });
   }
 })();

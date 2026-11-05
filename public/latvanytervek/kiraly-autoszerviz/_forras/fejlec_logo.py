@@ -34,7 +34,7 @@ def felirat(x, ink, sub, size=60, rule=None):
     _, bb, _ = text("manrope", "AUTÓSZERVIZ", s2, 800, None, track=0)
     tr = max(.06, min(.42, (W - (bb[2] - bb[0])) / 10 / s2))
     p2, b2 = txt("AUTÓSZERVIZ", "manrope", s2, 800, None, tr, b1[0], y2, sub, "l")
-    return p1 + p2, (b1[0], 0, max(b1[2], b2[2]), b2[3])
+    return p1 + p2, (b1[0], min(0, b1[1]), max(b1[2], b2[2]), b2[3])
 
 
 def lockup(divider=True):

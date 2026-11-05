@@ -1,3 +1,27 @@
+# KIRÁLY Autószerviz – átadási állapot (2026-11-05)
+
+**Élő látványterv:** https://daekon-ship.github.io/daekon/latvanytervek/kiraly-autoszerviz/
+(noindex – keresőben nem jelenik meg, amíg nem élesítjük)
+
+## Mi van kész
+- Egyoldalas weboldal: nyitókép, szolgáltatások (3 szakterület + 8 lenyíló tétel), dízel, EGR-tisztítás, 3D futómű, miért minket, rólunk, értékelések, elérhetőség élő nyitvatartással, lábléc cégadatokkal.
+- Végleges logó: fekete–pezsgőarany kombinált embléma (`arculat-kombi/VEGLEGES/1-…`). Fejlécben a valódi kerek logó pecsétként + KIRÁLY/AUTÓSZERVIZ felirat; görgetéskor kisebb lesz.
+- Színek: #161618 fekete, #D8BE84 pezsgőarany, #F5F1E8 krém; világos szekciókban #8C6D32 bronz kiemelés.
+- Motion animációk (visszafogott), csökkentett mozgásnál kikapcsolnak.
+- Megosztási kép (`img/og-kiraly.png`), favicon, telefonos ikon, strukturált adat (AutoRepair).
+- Logócsomag az ügyfélnek: `arculat-kombi/kiraly-vegleges-logo-csomag.zip`.
+- Ellenőrizve 390 / 1024 / 1200 / 1440 px szélességen: nincs vízszintes görgetés, nincs konzolhiba, nincs 404, minden belső link él, minden képnek van alt szövege.
+
+## Élesítés előtt az ügyféllel egyeztetni
+- Valódi műhelyfotók (ha szeretne képeket – jelenleg szándékosan nincs kép).
+- Turul Auto minősítések (2021–2026) és a 4,5 / 44 értékelés feltüntetése – Turul felhasználási engedély.
+- Impresszum és adatkezelési tájékoztató szövege.
+- Domain, tárhely, Google Cégprofil link; a `noindex` levétele élesítéskor.
+- Névjegykártya a végleges logóval (a `nyomdai/` mappában a korábbi logókhoz készült változatok vannak).
+
+---
+
+## Korábbi körök naplója
 # KIRÁLY Autószerviz – átadás (2. kör, 2026.11.03.)
 
 ## 10. kör – végleges logók (`arculat-vegso/`)
