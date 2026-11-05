@@ -4,6 +4,8 @@ from logok_premium import txt, villaskulcs, svg, gyertya_tiszta
 from logok_vegso import ring, arc_text
 
 OUT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "arculat-kombi")
+# körfeliratok és belső gyűrű: a szöveg mindkét gyűrűtől egyenlő távolságra ül
+BELSO, FR, FS, AR, SK = 63, 76.5, 17.5, 77.5, .88
 PAL = {"fekete-pezsgoarany": ("#0B0B0C", "#161618", "#D8BE84", "#F5F1E8"),
        "ejkek-arany": ("#0E1B2C", "#13243A", "#C9A14F", "#F6F2EA")}
 
@@ -19,18 +21,19 @@ def plug(cx, top, H, col, spark, met, halo=None):
 def emblema(pn, gold, cream, kulcs_szin, variant="A"):
     cx = cy = 100
     if variant == "B":  # dupla külső gyűrű, belső kör nélkül
-        g = f'<circle cx="100" cy="100" r="98" fill="{pn}"/>' + ring(100, 100, 94, 2.2, gold) + ring(100, 100, 90.6, .8, gold) + ring(100, 100, 66, .9, gold)
+        g = f'<circle cx="100" cy="100" r="98" fill="{pn}"/>' + ring(100, 100, 94, 2.2, gold) + ring(100, 100, 90.6, .8, gold) + ring(100, 100, BELSO, .9, gold)
     else:
-        g = f'<circle cx="100" cy="100" r="98" fill="{pn}"/>' + ring(100, 100, 93, 2.6, gold) + ring(100, 100, 66, 1.1, gold)
-    g += arc_text("KIRÁLY", "archivo", 76, 20, 800, 100, cream, True, .2, 100, 100, kern={"LY": -.12})  # az Á ékezete ne érjen a gyűrűhöz
-    g += arc_text("AUTÓSZERVIZ · DUNAÚJVÁROS", "manrope", 79.5, 8.8, 800, None, gold, False, .22, 100, 100)
+        g = f'<circle cx="100" cy="100" r="98" fill="{pn}"/>' + ring(100, 100, 93, 2.6, gold) + ring(100, 100, BELSO, 1.1, gold)
+    g += arc_text("KIRÁLY", "archivo", FR, FS, 800, 100, cream, True, .22, 100, 100, kern={"LY": -.12})  # az Á ékezete ne érjen a gyűrűhöz
+    g += arc_text("AUTÓSZERVIZ · DUNAÚJVÁROS", "manrope", AR, 8.4, 800, None, gold, False, .22, 100, 100)
     # 20 · 08 két oldalt
     for x, s in ((21.5, "20"), (178.5, "08")):
         p, _ = txt(s, "manrope", 8.4, 800, None, .1, x, 103, gold)
         g += p
     # kulcsok, gyertya
-    g += villaskulcs(cx, 101, 96, -42, kulcs_szin, 11) + villaskulcs(cx, 101, 96, 42, kulcs_szin, 11)
-    g += plug(cx, 50, 92, cream, gold, "#8C9AAC", halo=pn)
+    belso = villaskulcs(cx, 101, 96, -42, kulcs_szin, 11) + villaskulcs(cx, 101, 96, 42, kulcs_szin, 11)
+    belso += plug(cx, 50, 92, cream, gold, "#8C9AAC", halo=pn)
+    g += f'<g transform="translate(100 100) scale({SK}) translate(-100 -100)">{belso}</g>'  # a jel a belső körön belül marad
     return g, (2, 2, 198, 198)
 
 
