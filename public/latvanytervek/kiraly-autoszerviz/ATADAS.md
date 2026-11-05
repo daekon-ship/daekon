@@ -171,3 +171,5 @@ Fájlok: `fo` (háttérrel), `vilagos`/`sotet` (átlátszó), `sotet-hatterrel`,
 
 ## 2026-11-04 – hero nagy logó ki
 - Kérésre a nyitóképről kikerült a nagy embléma; a hero csak szöveg. A logó a fejlécben és a láblécben marad.
+
+- 2026-11-05: fejléc-logó a fejlécen belül, állandó méretben (gépen 56 px, telefonon 46 px), nem lóg le és nem változik görgetéskor.
