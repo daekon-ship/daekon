@@ -3,10 +3,10 @@
 @font-face{font-family:"Manrope";src:url(fonts/manrope-var.woff) format("woff");font-weight:200 800;font-display:swap}
 
 :root{
-  --bg:#161618; --bg-2:#1C1C1F; --bg-3:#0B0B0C; --ink:#F5F1E8; --muted:#B5AE9F; --dim:#7D776C;
-  --line:rgba(245,241,232,.12); --line-2:rgba(245,241,232,.2);
-  --paper:#F5F1E8; --paper-ink:#161618; --paper-muted:#5E584D; --paper-line:rgba(22,22,24,.14);
-  --accent:#D8BE84; --accent-ink:#161618; --accent-soft:rgba(216,190,132,.14);
+  --bg:#0E1B2C; --bg-2:#15263B; --bg-3:#09131F; --ink:#F6F2EA; --muted:#A9B4C2; --dim:#6E7D91;
+  --line:rgba(246,242,234,.12); --line-2:rgba(246,242,234,.2);
+  --paper:#F6F2EA; --paper-ink:#0E1B2C; --paper-muted:#46556A; --paper-line:rgba(14,27,44,.14);
+  --accent:#C9A14F; --accent-ink:#0E1B2C; --accent-soft:rgba(201,161,79,.14);
   --head:"Archivo",system-ui,sans-serif; --body:"Manrope",system-ui,sans-serif;
   --wrap:1200px; --gut:clamp(16px,4vw,40px);
   --h1:clamp(31px,3.5vw + 8px,50px); --h2:clamp(25px,1.9vw + 14px,38px); --h3:clamp(18px,.6vw + 14px,22px);
@@ -34,7 +34,7 @@ p{margin:0}
 .label .n{color:var(--accent);font-feature-settings:"tnum"}
 .label::after{content:"";height:1px;width:34px;background:var(--line-2)}
 .lead{font-size:clamp(16.5px,.35vw + 15px,18.5px);color:var(--muted);line-height:1.6;max-width:56ch}
-.egyeztet{display:inline-flex;align-items:center;gap:6px;font:700 10.5px/1 var(--body);letter-spacing:.12em;text-transform:uppercase;color:#161618;background:#E8D9A0;padding:5px 7px;border-radius:2px;vertical-align:middle;white-space:nowrap}
+.egyeztet{display:inline-flex;align-items:center;gap:6px;font:700 10.5px/1 var(--body);letter-spacing:.12em;text-transform:uppercase;color:#0E1B2C;background:#E8D9A0;padding:5px 7px;border-radius:2px;vertical-align:middle;white-space:nowrap}
 
 /* gombok */
 .btn{--h:52px;display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:var(--h);padding:0 22px;border-radius:3px;font:700 15.5px/1 var(--body);letter-spacing:.01em;text-decoration:none;border:1px solid transparent;cursor:pointer;transition:background .25s,border-color .25s,color .25s,transform .25s var(--ease)}
@@ -48,7 +48,7 @@ p{margin:0}
 .paper .btn-ko:hover{border-color:var(--paper-ink)}
 
 /* fejléc */
-.fej{position:sticky;top:0;z-index:40;background:rgba(22,22,24,.94);border-bottom:1px solid var(--line);backdrop-filter:saturate(1.2) blur(8px);-webkit-backdrop-filter:saturate(1.2) blur(8px)}
+.fej{position:sticky;top:0;z-index:40;background:rgba(14,27,44,.94);border-bottom:1px solid var(--line);backdrop-filter:saturate(1.2) blur(8px);-webkit-backdrop-filter:saturate(1.2) blur(8px)}
 .fej .wrap{display:flex;align-items:center;justify-content:space-between;gap:24px;height:76px}
 .logo-link{display:flex;align-items:center;flex:none;text-decoration:none}
 
@@ -88,7 +88,7 @@ p{margin:0}
 .hero-info{display:flex;flex-wrap:wrap;gap:10px 28px;margin-top:34px;padding-top:22px;border-top:1px solid var(--line);font-size:14.5px;color:var(--muted)}
 .hero-info b{color:var(--ink);font-weight:700}
 .allapot{display:inline-flex;align-items:center;gap:8px}
-.allapot i{width:8px;height:8px;border-radius:50%;background:var(--dim);box-shadow:0 0 0 4px rgba(125,119,108,.18)}
+.allapot i{width:8px;height:8px;border-radius:50%;background:var(--dim);box-shadow:0 0 0 4px rgba(110,125,145,.18)}
 .allapot.nyitott i{background:#4CC38A;box-shadow:0 0 0 4px rgba(76,195,138,.18)}
 
 @media (max-width:900px){
@@ -112,14 +112,14 @@ p{margin:0}
 .sec-fej{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:clamp(24px,5vw,80px);align-items:end;margin-bottom:clamp(36px,5vw,64px)}
 .sec-fej h2{margin-top:16px}
 @media (max-width:860px){.sec-fej{grid-template-columns:1fr;gap:16px}}
-.paper{background:var(--paper);color:var(--paper-ink);--accent:#8C6D32;--accent-ink:#F5F1E8;--accent-soft:rgba(140,109,50,.12)}
+.paper{background:var(--paper);color:var(--paper-ink);--accent:#8A6A2C;--accent-ink:#F6F2EA;--accent-soft:rgba(138,106,44,.12)}
 .paper .label{color:var(--paper-muted)} .paper .label::after{background:var(--paper-line)}
 .paper .lead{color:var(--paper-muted)}
 
 /* szolgáltatások */
 .kiemelt{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
 .k-elem{position:relative;background:var(--bg-2);border:1px solid var(--line);padding:clamp(22px,2.4vw,32px);display:flex;flex-direction:column;gap:14px;text-decoration:none;transition:border-color .3s,background .3s}
-.k-elem:hover{border-color:var(--line-2);background:#232326}
+.k-elem:hover{border-color:var(--line-2);background:#1A2D45}
 .k-elem .szam{font:700 12px/1 var(--body);letter-spacing:.16em;color:var(--accent)}
 .k-elem p{color:var(--muted);font-size:15.5px}
 .k-elem .tovabb{margin-top:auto;padding-top:8px;display:inline-flex;gap:8px;align-items:center;font:700 14px/1 var(--body);color:var(--ink)}
@@ -262,7 +262,7 @@ p{margin:0}
 @media (max-width:480px){.lab-racs{grid-template-columns:1fr}}
 
 /* mobil hívássáv */
-.hivassav{position:fixed;left:0;right:0;bottom:0;z-index:38;display:none;gap:8px;padding:10px var(--gut) calc(10px + env(safe-area-inset-bottom));background:rgba(11,11,12,.96);border-top:1px solid var(--line)}
+.hivassav{position:fixed;left:0;right:0;bottom:0;z-index:38;display:none;gap:8px;padding:10px var(--gut) calc(10px + env(safe-area-inset-bottom));background:rgba(9,19,31,.96);border-top:1px solid var(--line)}
 .hivassav .btn{flex:1;--h:50px;padding:0 10px}
 @media (max-width:980px){.hivassav{display:flex}:root{--bar-h:calc(70px + env(safe-area-inset-bottom))}}
 
@@ -284,7 +284,7 @@ h1{line-height:1.06}
 .hero-cta{margin-top:36px}
 
 .k-elem{background:transparent;transition:border-color .4s,background .4s}
-.k-elem:hover{background:rgba(245,241,232,.025);border-color:var(--line-2)}
+.k-elem:hover{background:rgba(246,242,234,.025);border-color:var(--line-2)}
 .egyeztet{background:transparent;color:var(--muted);border:1px solid var(--line-2);font-weight:600}
 
 .btn{transition:background .3s,border-color .3s,color .3s}
@@ -296,7 +296,7 @@ h1{line-height:1.06}
 body::before{content:"";position:fixed;inset:0;z-index:100;pointer-events:none;opacity:.05;mix-blend-mode:overlay;
   background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 .fej{transition:background .35s,box-shadow .35s}
-.fej.gorgetve{background:rgba(14,14,15,.97);box-shadow:0 10px 30px -18px rgba(0,0,0,.8)}
+.fej.gorgetve{background:rgba(10,20,34,.97);box-shadow:0 10px 30px -18px rgba(0,0,0,.8)}
 .halado{position:absolute;left:0;right:0;bottom:-1px;height:1px;background:var(--accent);transform:scaleX(0);transform-origin:left;pointer-events:none}
 h1 .m-sor{display:block;overflow:hidden;padding-bottom:.06em;margin-bottom:-.06em}
 h1 .m-sor > *{display:block}
@@ -328,10 +328,10 @@ h1 .m-sor > *{display:block}
 /* hero: a végleges embléma, mint egy veretes plakett */
 
 /* fém hatású arany gomb */
-.btn-fo{background:linear-gradient(180deg,#E6D09D 0%,#D8BE84 48%,#C7A866 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 10px 24px -14px rgba(216,190,132,.6)}
-.btn-fo:hover{background:linear-gradient(180deg,#EDDAAB 0%,#DFC690 48%,#CDAF6E 100%)}
+.btn-fo{background:linear-gradient(180deg,#DDBB72 0%,#C9A14F 48%,#B38B3A 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 10px 24px -14px rgba(201,161,79,.6)}
+.btn-fo:hover{background:linear-gradient(180deg,#E3C47F 0%,#D0AA5A 48%,#BA9343 100%)}
 .paper .btn-fo{background:var(--accent);box-shadow:none}
-.fej-hivas{background:linear-gradient(180deg,#E6D09D,#C7A866)}
+.fej-hivas{background:linear-gradient(180deg,#DDBB72,#B38B3A)}
 /* kártyák: arany sarokvonal hoverre */
 .k-elem{position:relative}
 .k-elem::after{content:"";position:absolute;left:-1px;top:-1px;width:44px;height:44px;border-left:1px solid var(--accent);border-top:1px solid var(--accent);opacity:0;transition:opacity .4s,width .5s var(--ease),height .5s var(--ease)}

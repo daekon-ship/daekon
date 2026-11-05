@@ -5,11 +5,11 @@
 
 ## Mi van kész
 - Egyoldalas weboldal: nyitókép, szolgáltatások (3 szakterület + 8 lenyíló tétel), dízel, EGR-tisztítás, 3D futómű, miért minket, rólunk, értékelések, elérhetőség élő nyitvatartással, lábléc cégadatokkal.
-- Végleges logó: fekete–pezsgőarany kombinált embléma (`arculat-kombi/VEGLEGES/1-…`). Fejlécben a valódi kerek logó pecsétként + KIRÁLY/AUTÓSZERVIZ felirat; görgetéskor kisebb lesz.
-- Színek: #161618 fekete, #D8BE84 pezsgőarany, #F5F1E8 krém; világos szekciókban #8C6D32 bronz kiemelés.
+- Végleges logó: **éjkék–arany** kombinált embléma (`arculat-kombi/VEGLEGES/2-…`; 2026-11-05-én az ügyfél erre váltott a fekete–pezsgőarany helyett). Fejlécben a valódi kerek logó pecsétként + KIRÁLY/AUTÓSZERVIZ felirat; görgetéskor kisebb lesz.
+- Színek: #0E1B2C éjkék, #C9A14F arany, #F6F2EA krém; világos szekciókban #8A6A2C bronz kiemelés.
 - Motion animációk (visszafogott), csökkentett mozgásnál kikapcsolnak.
 - Megosztási kép (`img/og-kiraly.png`), favicon, telefonos ikon, strukturált adat (AutoRepair).
-- Logócsomag az ügyfélnek: `arculat-kombi/kiraly-vegleges-logo-csomag.zip`.
+- Logócsomag az ügyfélnek: `arculat-kombi/kiraly-vegleges-logo-ejkek-csomag.zip` (a fekete változat csomagja is megmaradt).
 - Ellenőrizve 390 / 1024 / 1200 / 1440 px szélességen: nincs vízszintes görgetés, nincs konzolhiba, nincs 404, minden belső link él, minden képnek van alt szövege.
 
 ## Élesítés előtt az ügyféllel egyeztetni
