@@ -44,16 +44,18 @@ def txt(s, key, size, wght, wdth, track, x, y, col, anchor="c"):
     return f'<path d="{d}" fill="{col}"/>', b
 
 
-def arc_text(s, key, r, size, wght, wdth, col, top=True, track=.2, cx=0, cy=0):
+def arc_text(s, key, r, size, wght, wdth, col, top=True, track=.2, cx=0, cy=0, kern=None):
     """Ívre írt szöveg; top=True: felső ív, kifelé álló betűk; False: alsó ív, olvasható irányban."""
     advs = []
     for ch in s:
         advs.append(size * .3 if ch == " " else text(key, ch, size, wght, wdth)[2])
-    total = sum(advs) + track * size * (len(s) - 1)
+    kern = kern or {}
+    kk = [kern.get(s[i:i + 2], 0) * size for i in range(len(s) - 1)] + [0]  # páronkénti optikai alávágás
+    total = sum(advs) + track * size * (len(s) - 1) + sum(kk)
     a = -math.pi / 2 - (total / r) / 2 if top else math.pi / 2 + (total / r) / 2
     out = []
     capo = cap_height(key, size, wght, wdth) / 2
-    for ch, adv in zip(s, advs):
+    for ch, adv, kv in zip(s, advs, kk):
         mid = a + (adv / 2) / r * (1 if top else -1)
         if ch != " ":
             # betű középre igazítva az ívre (alapvonal a cap-magasság felével eltolva)
@@ -61,7 +63,7 @@ def arc_text(s, key, r, size, wght, wdth, col, top=True, track=.2, cx=0, cy=0):
             px, py = cx + r * math.cos(mid), cy + r * math.sin(mid)
             rot = math.degrees(mid) + (90 if top else -90)
             out.append(f'<path transform="translate({f(px)} {f(py)}) rotate({f(rot)})" d="{d}" fill="{col}"/>')
-        a += (adv + track * size) / r * (1 if top else -1)
+        a += (adv + track * size + kv) / r * (1 if top else -1)
     return "".join(out)
 
 

@@ -22,7 +22,7 @@ def emblema(pn, gold, cream, kulcs_szin, variant="A"):
         g = f'<circle cx="100" cy="100" r="98" fill="{pn}"/>' + ring(100, 100, 94, 2.2, gold) + ring(100, 100, 90.6, .8, gold) + ring(100, 100, 66, .9, gold)
     else:
         g = f'<circle cx="100" cy="100" r="98" fill="{pn}"/>' + ring(100, 100, 93, 2.6, gold) + ring(100, 100, 66, 1.1, gold)
-    g += arc_text("KIRÁLY", "archivo", 76, 19.5, 760, 112, cream, True, .22, 100, 100)  # az Á ékezete ne érjen a gyűrűhöz
+    g += arc_text("KIRÁLY", "archivo", 76, 20, 800, 100, cream, True, .2, 100, 100, kern={"LY": -.12})  # az Á ékezete ne érjen a gyűrűhöz
     g += arc_text("AUTÓSZERVIZ · DUNAÚJVÁROS", "manrope", 79.5, 8.8, 800, None, gold, False, .22, 100, 100)
     # 20 · 08 két oldalt
     for x, s in ((21.5, "20"), (178.5, "08")):

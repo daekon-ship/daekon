@@ -177,3 +177,4 @@ Fájlok: `fo` (háttérrel), `vilagos`/`sotet` (átlátszó), `sotet-hatterrel`,
 - 2026-11-05: kompaktabb oldal (~30%-kal rövidebb): kiemelt kártyák, bizalmi sáv, EGR-doboz, futómű-fogalmak és Rólunk cégadat-sor ki (a cégadat a láblécben van); kisebb szekció-térközök; dízel lépések egy sorban.
 
 - 2026-11-05: logó javítva – a KIRÁLY felirat Á ékezete nem ér a gyűrűhöz (felirat kicsit beljebb/kisebb, éjkék változatban a vékony gyűrű kijjebb). Minden PNG, webes fájl, névjegy, megosztási kép újragenerálva. Export: `_forras/vegleges_export.py`.
+- 2026-11-05: KIRÁLY körfelirat finomítva (Archivo normál szélesség, 800-as vastagság, L–Y alávágás) – a Y már nem lóg ki furcsán. `arc_text` kapott `kern` paramétert.
