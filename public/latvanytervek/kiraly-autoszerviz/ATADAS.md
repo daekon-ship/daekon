@@ -13,9 +13,13 @@
 - Logócsomag az ügyfélnek: `arculat-kombi/kiraly-vegleges-logo-ejkek-csomag.zip` (a fekete változat csomagja is megmaradt).
 - Ellenőrizve 390 / 1024 / 1200 / 1440 px szélességen: nincs vízszintes görgetés, nincs konzolhiba, nincs 404, minden belső link él, minden képnek van alt szövege.
 
-## Élesítés
-- `python3 _forras/eles_csomag.py https://www.<domain>.hu` → `_eles/` mappa + `kiraly-weboldal-eles.zip`: látványterv-sáv nélkül, `index, follow`, canonical, robots.txt, sitemap.xml, abszolút megosztási linkek a domainre. A zip tartalmát a tárhely gyökerébe kell feltölteni (statikus, nincs szerveroldali igény).
-- Jogi aloldalak: `impresszum.html`, `adatkezeles.html` (az oldal nem gyűjt adatot, nincs süti/űrlap). Az impresszumban a **tárhelyszolgáltató adatai élesítéskor kitöltendők**.
+## Élesítés (FTP)
+1. Töltsd ki: `_forras/eles_adatok.json` – `domain` (https://…), `tarhely_nev`, `tarhely_szekhely`, `tarhely_email`.
+2. Futtasd: `python3 _forras/eles_csomag.py` → `_eles/` + `kiraly-autoszerviz-eles.zip` (gyökerében `index.html`). A szkript kiírja a státuszt: üres mezőnél „ELESITESRE-VAR”, és megáll, ha látványterv-maradványt (github.io, /latvanytervek/, demo-sáv, noindex) talál.
+3. Az éles csomagban: nincs „Látványterv · DAEKON” sáv (HTML és CSS is ki), `index, follow`, canonical, `og:url`/`og:image` abszolút, sitemap.xml, robots.txt (Allow: /), JSON-LD `url`/`image`/`logo` a domainre. A lábléc „Weboldal: DAEKON” kreditje marad.
+4. A ZIP tartalma közvetlenül a webgyökérbe megy. A két ZIP (`_eles/`, `kiraly-autoszerviz-eles.zip`) nincs a repóban (.gitignore), mert helykitöltő domaint tartalmazhat.
+- Animáció hibatűrés: ha a Motion nem tölt be, a kiraly.js nem fut, vagy indulás közben hibát dob, a tartalom animáció nélkül azonnal / legkésőbb 2,5 mp után látszik.
+- Jogi aloldalak: `impresszum.html` (nyilvántartó cégbíróság: Székesfehérvári Törvényszék Cégbírósága – a 07-es cégjegyzékszám-előtagból), `adatkezeles.html` (az oldal nem gyűjt adatot, nincs süti/űrlap).
 - Kontraszt ellenőrizve (WCAG AA): halvány szöveg #8291A6, bronz kiemelés #7C5E24.
 
 ## Élesítés előtt az ügyféllel egyeztetni

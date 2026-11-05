@@ -1,4 +1,4 @@
-/* KIRÁLY Autószerviz – látványterv. Interakciók + Motion (motion.dev).
+/* KIRÁLY Autószerviz – interakciók + Motion (motion.dev).
    Csökkentett mozgásnál minden azonnal a végállapotban látszik. */
 (function () {
   "use strict";
@@ -79,7 +79,14 @@
   function fejAllit() { if (fej) fej.classList.toggle("gorgetve", window.scrollY > 24); }
   fejAllit(); addEventListener("scroll", fejAllit, { passive: true });
 
-  if (M && !reduce && root.classList.contains("anim")) {
+  /* ha az animáció bármi miatt nem tud elindulni, minden tartalom azonnal, animáció nélkül látszik */
+  function mindentMutat() {
+    root.classList.remove("anim");
+    $$("[data-be], .hero .eyebrow, .hero .lead, .hero-cta, .hero-info, h1 .m-sor > *").forEach(function (el) {
+      el.style.opacity = ""; el.style.transform = "";
+    });
+  }
+  if (M && !reduce && root.classList.contains("anim")) try {
     // görgetésjelző: vékony arany vonal a fejléc alján
     var hal = $(".halado");
     if (hal && M.scroll) M.scroll(M.animate(hal, { scaleX: [0, 1] }, { ease: "linear" }));
@@ -98,6 +105,6 @@
       M.animate(el, { opacity: [0, 1], y: [22, 0] }, { duration: 0.85, delay: d, ease: ease });
       setTimeout(function () { el.classList.add("be-kesz"); }, d * 1000);
     }, { margin: "0px 0px -10% 0px" });
-
-  }
+    root.classList.add("anim-ok"); // csak sikeres indulás után – a fejben lévő biztosíték különben 2,5 mp után mindent megmutat
+  } catch (e) { mindentMutat(); }
 })();
