@@ -362,3 +362,11 @@ html:not(.anim) .journey__mist{display:none}
   .beat__card{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 }
 @media (max-width:899px){.journey__dots{display:none}}
+
+/* a mese zárólapja: éles, középre igazított, nagy felbontású festékfolt (a kis wash-2.png mobilon homályos és torz volt) */
+.epilog .wash{inset:-4% -2%;width:auto;height:auto;left:-2%;top:-4%;right:-2%;bottom:-4%;opacity:.7;
+  -webkit-mask:url(../img/wc/wash-epilog-wide.png) center/100% 100% no-repeat;mask:url(../img/wc/wash-epilog-wide.png) center/100% 100% no-repeat}
+@media (max-width:759px){
+  .epilog .wash{left:-6%;right:-6%;top:-2%;bottom:-2%;
+    -webkit-mask:url(../img/wc/wash-epilog-tall.png) center/100% 100% no-repeat;mask:url(../img/wc/wash-epilog-tall.png) center/100% 100% no-repeat}
+}
