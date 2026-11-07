@@ -53,10 +53,10 @@ Ez generálja az `index.html`-t (a sablon: `_forras/sablon.html`) és a `js/adat
 
 ### Referenciaszalag
 
-- Alapállapot: a szalag a szolgáltatási területeket mutatja („Terek, ahol dolgozunk”).
+- **2. lépés (2026.11.07.):** DAEKON döntése alapján a szalag az ügyfél által megadott 11 nevet mutatja szövegesen, logó nélkül, „Akiknél már dolgoztunk” címmel (nem „partnereink”). A „Poller Tecnology” a pontos név tisztázásáig kimaradt. Ha a `referenciak` tömb üres, a szalag a szolgáltatási területeket mutatja.
 - A `referenciak` tömb mezői: `nev`, `kapcsolat` (`kozvetlen` / `alvallalkozo` / `korabbi_munkatarsi` / `null`), `leiras`, `szoveg_jovahagyva`, `logo_engedely`, `logo`.
 - Csak `szoveg_jovahagyva: true` tétel jelenik meg; ha van ilyen, a szalag címe „Referenciák” lesz. Logó csak `logo_engedely: true` mellett.
-- **Az ügyfél által megadott, ellenőrizetlen névlista nincs ebben a nyilvános repóban** – külön, publikálatlan fájlként adtam át. Logót nem töltöttem le és nem rajzoltam.
+- Logót nem töltöttem le és nem rajzoltam. Élesítés előtt az ügyfél tételenként erősítse meg a neveket és a munkakapcsolatot.
 
 ### Időpontkérő
 

@@ -76,8 +76,97 @@
 
   "teruletek": ["Otthonok", "Irodák", "Üzletek", "Szálláshelyek", "Ipari terek", "Rendezvényhelyszínek"],
 
-  "referenciak": [],
-  "_referenciak": "Csak jóváhagyott tételek kerülhetnek ide. Mezők: nev (pontos, ügyfél által igazolt név), kapcsolat ('kozvetlen' | 'alvallalkozo' | 'korabbi_munkatarsi' | null), leiras (jóváhagyott rövid szöveg vagy null), szoveg_jovahagyva (true/false), logo_engedely (true/false), logo (fájlútvonal vagy null). A szalag csak a szoveg_jovahagyva: true tételeket jeleníti meg; ha nincs ilyen, a 'teruletek' listát mutatja. Logó csak logo_engedely: true esetén jelenik meg. Az ellenőrizetlen névlista NINCS ebben a (nyilvános) repóban.",
+  "referenciak": [
+      {
+          "nev": "Pizza King",
+          "kapcsolat": null,
+          "leiras": null,
+          "szoveg_jovahagyva": true,
+          "logo_engedely": false,
+          "logo": null
+      },
+      {
+          "nev": "EMIH",
+          "kapcsolat": null,
+          "leiras": null,
+          "szoveg_jovahagyva": true,
+          "logo_engedely": false,
+          "logo": null
+      },
+      {
+          "nev": "ROKK",
+          "kapcsolat": null,
+          "leiras": null,
+          "szoveg_jovahagyva": true,
+          "logo_engedely": false,
+          "logo": null
+      },
+      {
+          "nev": "Készenléti Rendőrség",
+          "kapcsolat": null,
+          "leiras": null,
+          "szoveg_jovahagyva": true,
+          "logo_engedely": false,
+          "logo": null
+      },
+      {
+          "nev": "Walton Security",
+          "kapcsolat": null,
+          "leiras": null,
+          "szoveg_jovahagyva": true,
+          "logo_engedely": false,
+          "logo": null
+      },
+      {
+          "nev": "Semmelweis Egyetem",
+          "kapcsolat": null,
+          "leiras": null,
+          "szoveg_jovahagyva": true,
+          "logo_engedely": false,
+          "logo": null
+      },
+      {
+          "nev": "Rákossy Glass",
+          "kapcsolat": null,
+          "leiras": null,
+          "szoveg_jovahagyva": true,
+          "logo_engedely": false,
+          "logo": null
+      },
+      {
+          "nev": "BAT – dohánygyár",
+          "kapcsolat": null,
+          "leiras": null,
+          "szoveg_jovahagyva": true,
+          "logo_engedely": false,
+          "logo": null
+      },
+      {
+          "nev": "TEK",
+          "kapcsolat": null,
+          "leiras": null,
+          "szoveg_jovahagyva": true,
+          "logo_engedely": false,
+          "logo": null
+      },
+      {
+          "nev": "Zsolnay Kulturális Negyed, Pécs",
+          "kapcsolat": null,
+          "leiras": null,
+          "szoveg_jovahagyva": true,
+          "logo_engedely": false,
+          "logo": null
+      },
+      {
+          "nev": "Pécsi Állatkert",
+          "kapcsolat": null,
+          "leiras": null,
+          "szoveg_jovahagyva": true,
+          "logo_engedely": false,
+          "logo": null
+      }
+  ],
+  "_referenciak": "Az ügyfél által megadott nevek, DAEKON döntése alapján szövegesen megjelenítve (logó nélkül) a látványtervben. Élesítés előtt az ügyféllel tételenként megerősítendő: pontos név, munkakapcsolat (kozvetlen / alvallalkozo / korabbi_munkatarsi), közzétehetőség. A 'Poller Tecnology' nevet a pontosításig kihagytuk. Mezők: nev, kapcsolat, leiras, szoveg_jovahagyva, logo_engedely, logo.",
 
   "lepesek": [
     { "cim": "Kapcsolatfelvétel", "szoveg": "Hívjon, írjon e-mailt, vagy állítsa össze időpontigényét itt az oldalon." },

@@ -28,7 +28,7 @@ def szalag_tetelek():
     """Jóváhagyott referenciák, vagy ha nincs ilyen, a szolgáltatási területek."""
     ok = [r for r in ADAT.get("referenciak", []) if r.get("szoveg_jovahagyva")]
     if ok:
-        return "Referenciák", [
+        return "Akiknél már dolgoztunk", [
             {
                 "nev": r["nev"],
                 "kapcsolat": KAPCSOLAT_NEV.get(r.get("kapcsolat")),
