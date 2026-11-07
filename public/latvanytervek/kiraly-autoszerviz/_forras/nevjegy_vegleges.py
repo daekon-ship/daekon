@@ -46,14 +46,14 @@ def elo():
 
 
 def hat(sotet=True):
-    """Hátlap: bal oldalt világosabb éjkék panel nagy logóval, arany választóvonal, jobbra a névjegy."""
-    return f"""<div class="lap hat2">
-  <div class="panel"><img class="nagyjel" src="{B}arculat-kombi/VEGLEGES/2-kiraly-logo-ejkek-arany-atlatszo.png"></div>
-  <div class="valaszto"></div>
-  <div class="adat">
-    <div class="nev">Király István</div>
-    <div class="beo">Ügyvezető</div>
-    <div class="vonal2"></div>
+    """Hátlap (logó nélkül – a logó csak a szolgáltatások oldalán van): cégnév-felirat, név, elérhetőségek."""
+    return f"""<div class="lap hat3">
+  <div class="bal">
+    <img class="szojel" src="{B}arculat-kombi/WEB/fejlec-felirat-ejkek.svg">
+    <div class="szemely"><div class="nev">Király István</div><div class="beo">Ügyvezető</div></div>
+  </div>
+  <div class="valaszto kozep"></div>
+  <div class="jobbo">
     <div class="s tel">{ik("tel", GOLD)}<span>+36 20 585 3234</span></div>
     <div class="s">{ik("mail", GOLD)}<span>kiralyautoszervizkft@gmail.com</span></div>
     <div class="s ket">{ik("hely", GOLD)}<span>2400 Dunaújváros,<br>Budai Nagy Antal út 27/C</span></div>
@@ -105,6 +105,17 @@ html,body{{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 .szlista li{{font:600 6.3pt/1.15 A;font-stretch:100%;letter-spacing:.015em;display:flex;align-items:center;gap:1.8mm;white-space:nowrap}}
 .szlista li::before{{content:"";width:1.1mm;height:1.1mm;background:{GOLD};transform:rotate(45deg);flex:none}}
 .szlab{{margin-top:2.6mm;font:600 4.9pt/1.2 A;font-stretch:100%;letter-spacing:.08em;color:#A9B4C2}}
+.hat3{{background:radial-gradient(80% 90% at 20% 50%,#15263B,{NAVY} 70%);color:{CREAM}}}
+.hat3 .bal{{position:absolute;left:9mm;top:9.5mm;bottom:9.5mm;width:30mm;display:flex;flex-direction:column;justify-content:space-between}}
+.szojel{{width:27mm;height:auto;display:block}}
+.hat3 .nev{{font-size:9.6pt}}
+.hat3 .beo{{color:{GOLD}}}
+.valaszto.kozep{{left:43mm;top:9.5mm;bottom:9.5mm;width:.3mm}}
+.jobbo{{position:absolute;left:47mm;right:5.5mm;top:50%;transform:translateY(-50%);display:grid;gap:1.9mm}}
+.jobbo .s{{color:{CREAM}}}
+.jobbo .s.ket{{align-items:flex-start;line-height:1.3}}
+.jobbo .s.ket svg{{margin-top:.2mm}}
+.jobbo .s.hal{{color:#A9B4C2}}
 .szolg{{margin-top:auto;font:800 4.9pt/1 M;letter-spacing:.2em;text-transform:uppercase;white-space:nowrap}}
 .szolg i{{display:inline-block;width:.9mm;height:.9mm;border-radius:50%;margin:0 1.6mm;vertical-align:.3mm}}
 """

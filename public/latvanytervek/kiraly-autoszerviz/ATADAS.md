@@ -191,3 +191,4 @@ Fájlok: `fo` (háttérrel), `vilagos`/`sotet` (átlátszó), `sotet-hatterrel`,
 - 2026-11-05: névjegy betűi a logóhoz igazítva: név nagybetűs Archivo 800, ritkítva (mint a KIRÁLY); beosztás Manrope 800 ritkítva (mint az alsó körfelirat); telefonszám Archivo 800.
 - 2026-11-05: a névjegy hátlapján minden szöveg a logó betűtípusával (Archivo) szedve.
 - 2026-11-07: névjegy előlapja: balra a weboldal 9 szolgáltatása (vizsgafelkészítés, EGR, Ford garanciális is), jobbra logópanel – a hátlap tükörképe.
+- 2026-11-07: logó csak a szolgáltatások oldalán; az elérhetőségek oldalán logó helyett KIRÁLY / AUTÓSZERVIZ felirat, név, arany függőleges vonal, elérhetőségek.
