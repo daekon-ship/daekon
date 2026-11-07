@@ -45,12 +45,12 @@ def elo():
 </div>"""
 
 
-def hat(sotet=True):
-    """Hátlap (logó nélkül – a logó csak a szolgáltatások oldalán van): cégnév-felirat, név, elérhetőségek."""
-    return f"""<div class="lap hat3">
+def hat(sotet=True, ceges=False):
+    """Hátlap (logó nélkül – a logó csak a szolgáltatások oldalán van): cégnév-felirat, név (vagy céges kártyán szlogen), elérhetőségek."""
+    return f"""<div class="lap hat3{' ceges' if ceges else ''}">
   <div class="bal">
     <img class="szojel" src="{B}arculat-kombi/WEB/fejlec-felirat-ejkek.svg">
-    <div class="szemely"><div class="nev">Király István</div><div class="beo">Ügyvezető</div></div>
+    {'<div class="szemely ceg"><i></i><div class="beo">Dunaújváros · 2008 óta</div></div>' if ceges else '<div class="szemely"><div class="nev">Király István</div><div class="beo">Ügyvezető</div></div>'}
   </div>
   <div class="valaszto kozep"></div>
   <div class="jobbo">
@@ -116,6 +116,10 @@ html,body{{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 .jobbo .s.ket{{align-items:flex-start;line-height:1.3}}
 .jobbo .s.ket svg{{margin-top:.2mm}}
 .jobbo .s.hal{{color:#A9B4C2}}
+.hat3.ceges .bal{{justify-content:center;gap:5mm}}
+.hat3.ceges .szojel{{width:31mm}}
+.szemely.ceg i{{display:block;width:9mm;height:.25mm;background:{GOLD};margin-bottom:2.6mm}}
+.szemely.ceg .beo{{margin-top:0;color:#A9B4C2;font-size:5pt;letter-spacing:.16em;white-space:nowrap}}
 .szolg{{margin-top:auto;font:800 4.9pt/1 M;letter-spacing:.2em;text-transform:uppercase;white-space:nowrap}}
 .szolg i{{display:inline-block;width:.9mm;height:.9mm;border-radius:50%;margin:0 1.6mm;vertical-align:.3mm}}
 """
@@ -131,28 +135,29 @@ def main():
     with sync_playwright() as p:
         b = p.chromium.launch()
         pg = b.new_page(device_scale_factor=1)
-        for nev, body in (("ejkek", elo() + hat(True)),):
+        for nev, body in (("ejkek", elo() + hat(True)), ("ejkek-ceges", elo() + hat(True, ceges=True))):
             open(tmp, "w", encoding="utf-8").write(page(body))
             pg.goto(B + "_nv.html?" + nev); pg.wait_for_timeout(700)
             pg.pdf(path=os.path.join(OUT, f"nevjegykartya-{nev}-nyomdai-96x56mm.pdf"), width="96mm", height="56mm", print_background=True)
         # bemutató PNG-k: vágott méret (90×50 mm), 1 mm = 12 px
         sh = b.new_page(viewport={"width": 1152, "height": 672}, device_scale_factor=1)
-        for nev, body in (("elolap", elo()), ("hatlap", hat(True))):
+        for nev, body in (("elolap", elo()), ("hatlap", hat(True)), ("hatlap-ceges", hat(True, ceges=True))):
             html = page(f'<div style="zoom:3.1496">{body}</div>')  # 96mm -> ~1152 px
             open(tmp, "w", encoding="utf-8").write(html)
             sh.goto(B + "_nv.html?" + nev); sh.wait_for_timeout(600)
             sh.screenshot(path=os.path.join(OUT, f"nevjegy-{nev}.png"), clip={"x": 36, "y": 36, "width": 1080, "height": 600})
-        # bemutató kép: két kártya egy asztalon
+        # bemutató képek: két kártya egy asztalon (személyes és céges)
         cards = lambda f: f'{B}nyomdai/vegleges-ejkek/nevjegy-{f}.png'
-        html = f"""<!doctype html><html><head><meta charset="utf-8"><style>{FONT}
-        body{{margin:0;width:1600px;height:1100px;background:radial-gradient(80% 80% at 50% 40%,#E9E4DA,#D6D0C4);position:relative;overflow:hidden;font-family:M}}
-        img{{position:absolute;width:760px;border-radius:6px;box-shadow:0 2px 3px rgba(0,0,0,.18),0 30px 60px -20px rgba(0,0,0,.45)}}
-        .a{{left:150px;top:150px;transform:rotate(-5deg)}}.b{{left:700px;top:470px;transform:rotate(4deg)}}
-        p{{position:absolute;left:60px;bottom:40px;font:700 18px M;letter-spacing:.2em;color:#6b6457;text-transform:uppercase}}</style></head>
-        <body><img class="a" src="{cards('elolap')}"><img class="b" src="{cards('hatlap')}"><p>KIRÁLY Autószerviz · névjegykártya · 90×50 mm</p></body></html>"""
-        open(tmp, "w", encoding="utf-8").write(html)
-        bm = b.new_page(viewport={"width": 1600, "height": 1100}); bm.goto(B + "_nv.html?bemutato"); bm.wait_for_timeout(800)
-        bm.screenshot(path=os.path.join(OUT, "nevjegy-bemutato.png"))
+        for cel, hl in (("nevjegy-bemutato.png", "hatlap"), ("nevjegy-bemutato-ceges.png", "hatlap-ceges")):
+            html = f"""<!doctype html><html><head><meta charset="utf-8"><style>{FONT}
+            body{{margin:0;width:1600px;height:1100px;background:radial-gradient(80% 80% at 50% 40%,#E9E4DA,#D6D0C4);position:relative;overflow:hidden;font-family:M}}
+            img{{position:absolute;width:760px;border-radius:6px;box-shadow:0 2px 3px rgba(0,0,0,.18),0 30px 60px -20px rgba(0,0,0,.45)}}
+            .a{{left:150px;top:150px;transform:rotate(-5deg)}}.b{{left:700px;top:470px;transform:rotate(4deg)}}
+            p{{position:absolute;left:60px;bottom:40px;font:700 18px M;letter-spacing:.2em;color:#6b6457;text-transform:uppercase}}</style></head>
+            <body><img class="a" src="{cards('elolap')}"><img class="b" src="{cards(hl)}"><p>KIRÁLY Autószerviz · névjegykártya · 90×50 mm</p></body></html>"""
+            open(tmp, "w", encoding="utf-8").write(html)
+            bm = b.new_page(viewport={"width": 1600, "height": 1100}); bm.goto(B + "_nv.html?" + cel); bm.wait_for_timeout(800)
+            bm.screenshot(path=os.path.join(OUT, cel)); bm.close()
         os.unlink(tmp)
         b.close()
 
