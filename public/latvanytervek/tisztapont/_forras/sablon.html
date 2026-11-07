@@ -159,9 +159,9 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('ani
       <p data-rv>Fotók a munkavégzés helyszíneiről. Bármelyik képre kattintva nagyobb méretben is megnézheti.</p>
     </header>
     <div class="szurok" role="group" aria-label="Képek szűrése">
-      <button type="button" class="szuro" aria-pressed="true" data-szuro="mind">Összes <span class="db">{{ munkak|length }}</span></button>
+      <button type="button" class="szuro" aria-pressed="true" data-szuro="mind">Összes</button>
       {%- for k in kategoriak %}
-      <button type="button" class="szuro" aria-pressed="false" data-szuro="{{ k.id }}">{{ k.nev }} <span class="db">{{ k.db }}</span></button>
+      <button type="button" class="szuro" aria-pressed="false" data-szuro="{{ k.id }}">{{ k.nev }}</button>
       {%- endfor %}
     </div>
     <ul class="galeria" data-galeria data-szuro-allapot="mind">
@@ -177,7 +177,7 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('ani
             <span class="gal-ikon" aria-hidden="true"><svg><use href="#i-nagyit"/></svg></span>
           </span>
         </button>
-        <p class="gal-felirat"><span class="gal-kat">{{ m.kat_nev }}</span>{{ m.felirat }}</p>
+        <p class="gal-felirat">{{ m.felirat }}</p>
       </li>
       {%- endfor %}
     </ul>
