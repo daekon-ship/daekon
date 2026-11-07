@@ -1,0 +1,94 @@
+{
+  "_megjegyzes": "TisztaPont látványterv – KÖZPONTI ADATOK. Itt módosítson, majd futtassa: python3 _forras/epites.py (az index.html és a js/adatok.js ebből készül). Ami 'egyeztetendo': true, azt élesítés előtt az ügyféllel ellenőrizni kell.",
+
+  "ceg": {
+    "marka": "TisztaPont",
+    "nev": "TisztaPont-Hungary Kft.",
+    "teljes_nev": "TisztaPont-Hungary Korlátolt Felelősségű Társaság",
+    "telefon": "+36 20 596 6042",
+    "telefon_link": "tel:+36205966042",
+    "email": "tisztapont.ugyfelszolgalat@gmail.com",
+    "szekhely": "7932 Mozsgó, Pozsonyi utca 4.",
+    "adoszam": "32921692-2-02",
+    "cegjegyzekszam": "02-09-089303",
+    "cegadatok_egyeztetendo": true,
+    "szolgaltatasi_terulet": "A munkavégzés helyszínéről érdeklődjön elérhetőségeinken.",
+    "elerhetoseg_ideje": null,
+    "_elerhetoseg_ideje": "Ügyfélfogadási / telefonos elérhetőségi idő: egyeztetendő. Amíg null, az oldal nem ír ki időpontot."
+  },
+
+  "oldal": {
+    "url": "https://daekon-ship.github.io/daekon/latvanytervek/tisztapont/",
+    "verzio": "20261107a"
+  },
+
+  "szolgaltatasok": [
+    {
+      "id": "lakas",
+      "cim": "Lakások és családi házak",
+      "rovid": "Lakás, ház",
+      "leiras": "Rendszeres vagy alkalmi takarítás otthonokban. A helyiségeket és a teendőket előre egyeztetjük, hogy a munka az Ön napirendjéhez igazodjon."
+    },
+    {
+      "id": "iroda",
+      "cim": "Irodák, üzletek és üzleti terek",
+      "rovid": "Iroda, üzlet",
+      "leiras": "Munkaterek, eladóterek és közösségi helyiségek takarítása egyeztetett időpontban, úgy, hogy a lehető legkevésbé zavarja a működést."
+    },
+    {
+      "id": "szallas",
+      "cim": "Szálláshelyek és apartmanok",
+      "rovid": "Szálláshely, apartman",
+      "leiras": "Takarítás vendégváltások között vagy előre megbeszélt rendben, apartmanokban és szálláshelyeken."
+    },
+    {
+      "id": "epitkezes",
+      "cim": "Építkezés és felújítás utáni takarítás",
+      "rovid": "Építkezés, felújítás után",
+      "leiras": "A munkálatok után maradt por és szennyeződés eltávolítása, hogy a helyiségeket újra birtokba vehesse."
+    },
+    {
+      "id": "rendezveny",
+      "cim": "Rendezvényekhez kapcsolódó takarítás",
+      "rovid": "Rendezvény",
+      "leiras": "Előkészítés a rendezvény előtt, rendrakás és takarítás utána, a helyszín és a program ismeretében."
+    },
+    {
+      "id": "ipari",
+      "cim": "Ipari terek és nagyobb ingatlanok",
+      "rovid": "Ipari tér, nagyobb ingatlan",
+      "leiras": "Csarnokok, raktárak és nagyobb alapterületű ingatlanok takarítása, a feladat és a helyszín előzetes egyeztetése alapján."
+    }
+  ],
+
+  "munkak_kategoriak": [
+    { "id": "lakoter", "nev": "Lakóterek", "egyes": "Lakótér" },
+    { "id": "uzleti", "nev": "Üzleti terek", "egyes": "Üzleti tér" }
+  ],
+
+  "munkak": [
+    { "kep": "etkezo", "w": 1000, "h": 1333, "kisebb": 620, "kat": "lakoter", "felirat": "Étkezősarok üveglapos asztallal", "alt": "Világos étkezősarok üveglapos asztallal, három rózsaszín kárpitos székkel és laminált padlóval" },
+    { "kep": "konyha", "w": 640, "h": 510, "kisebb": null, "kat": "uzleti", "felirat": "Vendéglátóhelyi konyha rozsdamentes pultokkal", "alt": "Csempézett vendéglátóhelyi konyha rozsdamentes pultokkal, mosogatóval és polcokkal, üveg védőfal mögül fotózva" },
+    { "kep": "furdo", "w": 900, "h": 1200, "kisebb": 600, "kat": "lakoter", "felirat": "Fürdőszoba káddal és mosdóval", "alt": "Bézs csempés fürdőszoba fehér káddal, zuhanyfüggönnyel és falra szerelt mosdóval" },
+    { "kep": "eloszoba", "w": 1200, "h": 1600, "kisebb": 760, "kat": "lakoter", "felirat": "Előszoba burkolattal, rálátással a nappalira", "alt": "Világos, csempézett előszoba sötét fa ajtókkal, a nyitott üvegezett ajtón át a nappali látszik" },
+    { "kep": "nappali", "w": 768, "h": 1024, "kisebb": 560, "kat": "lakoter", "felirat": "Tágas nappali étkezőrésszel", "alt": "Tágas, világos nappali sarokülőkkel, két kerek szőnyeggel és üvegasztalos étkezőrésszel" }
+  ],
+
+  "teruletek": ["Otthonok", "Irodák", "Üzletek", "Szálláshelyek", "Ipari terek", "Rendezvényhelyszínek"],
+
+  "referenciak": [],
+  "_referenciak": "Csak jóváhagyott tételek kerülhetnek ide. Mezők: nev (pontos, ügyfél által igazolt név), kapcsolat ('kozvetlen' | 'alvallalkozo' | 'korabbi_munkatarsi' | null), leiras (jóváhagyott rövid szöveg vagy null), szoveg_jovahagyva (true/false), logo_engedely (true/false), logo (fájlútvonal vagy null). A szalag csak a szoveg_jovahagyva: true tételeket jeleníti meg; ha nincs ilyen, a 'teruletek' listát mutatja. Logó csak logo_engedely: true esetén jelenik meg. Az ellenőrizetlen névlista NINCS ebben a (nyilvános) repóban.",
+
+  "lepesek": [
+    { "cim": "Kapcsolatfelvétel", "szoveg": "Hívjon, írjon e-mailt, vagy állítsa össze időpontigényét itt az oldalon." },
+    { "cim": "A feladat és a helyszín egyeztetése", "szoveg": "Átbeszéljük, milyen térről van szó, mekkora a terület, és mire van szüksége." },
+    { "cim": "Ajánlat és időpont véglegesítése", "szoveg": "Az egyeztetés alapján ajánlatot adunk, és közösen rögzítjük az időpontot." },
+    { "cim": "Takarítás és átadás", "szoveg": "Elvégezzük a megbeszélt munkát, majd átadjuk a helyszínt." }
+  ],
+
+  "foglalas": {
+    "mod": "demo",
+    "alapterulet": ["50 m² alatt", "50–100 m²", "100–250 m²", "250 m² felett", "Még nem tudom"],
+    "napszak": ["Délelőtt", "Délután", "Mindegy"]
+  }
+}

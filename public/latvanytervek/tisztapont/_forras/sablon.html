@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{{ c.marka }} – takarítás otthonoknak, üzleti tereknek és intézményeknek</title>
+<meta name="description" content="Takarítás otthonok, üzleti terek és intézmények számára, az adott helyszínhez és feladathoz igazítva. Hívjon: {{ c.telefon }}.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#FFFFFF">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="hu_HU">
+<meta property="og:title" content="{{ c.marka }} – Tiszta terek. Nyugodtabb mindennapok.">
+<meta property="og:description" content="Takarítás otthonok, üzleti terek és intézmények számára, az adott helyszínhez és feladathoz igazítva.">
+<meta property="og:url" content="{{ o.url }}">
+<meta property="og:image" content="{{ o.url }}img/eloszoba-1200.jpg">
+<link rel="icon" href="favicon.ico?v={{ v }}" sizes="16x16 32x32 48x48">
+<link rel="icon" href="favicon.svg?v={{ v }}" type="image/svg+xml">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png?v={{ v }}">
+<link rel="manifest" href="site.webmanifest?v={{ v }}">
+<link rel="preload" href="fonts/hanken-var.woff" as="font" type="font/woff" crossorigin>
+<link rel="preload" as="image" type="image/avif" imagesrcset="img/eloszoba-760.avif 760w, img/eloszoba-1200.avif 1200w" imagesizes="(min-width: 981px) 520px, 92vw" fetchpriority="high">
+<link rel="stylesheet" href="tisztapont.css?v={{ v }}">
+<script>
+(function(){var d=document.documentElement;d.classList.add('js');
+if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('anim');setTimeout(function(){if(!d.classList.contains('anim-ok'))d.classList.remove('anim')},2500)}})();
+</script>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="i-tel" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-2z"/></symbol>
+  <symbol id="i-level" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m4 7 8 6 8-6" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
+  <symbol id="i-nyil" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" d="M4 12h15M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-bal" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" d="M15 5l-7 7 7 7"/></symbol>
+  <symbol id="i-jobb" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" d="M9 5l7 7-7 7"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" d="M4 8h16M4 16h16"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" d="M6 6l12 12M18 6 6 18"/></symbol>
+  <symbol id="i-nagyit" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"/></symbol>
+  <symbol id="i-szunet" viewBox="0 0 24 24"><path fill="currentColor" d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/></symbol>
+  <symbol id="i-lejatszas" viewBox="0 0 24 24"><path fill="currentColor" d="M7 4.5v15l12.5-7.5z"/></symbol>
+  <symbol id="i-pipa" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+</svg>
+
+<a class="ugro" href="#tartalom">Ugrás a tartalomra</a>
+<div class="demo-csik" role="note"><span>Látványterv · DAEKON</span><span class="demo-csik-r">Bemutató, nem éles oldal</span></div>
+
+<header class="fej" id="fej">
+  <div class="kont fej-sor">
+    <a class="logo" href="#top" aria-label="{{ c.marka }} – vissza az oldal tetejére">
+      <img class="logo-jel" src="arculat/emblema.svg?v={{ v }}" alt="" width="167" height="224">
+      <img class="logo-felirat" src="arculat/felirat.svg?v={{ v }}" alt="{{ c.marka }}" width="363" height="60">
+    </a>
+    <nav class="nav" aria-label="Fő navigáció">
+      <a href="#szolgaltatasok">Szolgáltatások</a>
+      <a href="#munkaink">Munkáink</a>
+      <a href="#igy-dolgozunk">Így dolgozunk</a>
+      <a href="#kapcsolat">Kapcsolat</a>
+    </nav>
+    <a class="gomb gomb-fo fej-cta" href="#idopont"><span class="hosszu">Időpontot egyeztetek</span><span class="rovid" aria-hidden="true">Időpont</span></a>
+    <button class="menu-gomb" type="button" aria-expanded="false" aria-controls="mobilmenu" aria-label="Menü megnyitása"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
+  </div>
+</header>
+  <div class="mobilmenu" id="mobilmenu" hidden>
+  <nav class="kont" aria-label="Mobil navigáció">
+    <a href="#szolgaltatasok"><span class="mm-sz">01</span>Szolgáltatások</a>
+    <a href="#munkaink"><span class="mm-sz">02</span>Munkáink</a>
+    <a href="#igy-dolgozunk"><span class="mm-sz">03</span>Így dolgozunk</a>
+    <a href="#idopont"><span class="mm-sz">04</span>Időpontegyeztetés</a>
+    <a href="#kapcsolat"><span class="mm-sz">05</span>Kapcsolat</a>
+    <div class="mm-kontakt">
+      <a class="gomb gomb-fo" href="#idopont">Időpontot egyeztetek</a>
+      <a class="mm-tel" href="{{ c.telefon_link }}"><svg aria-hidden="true"><use href="#i-tel"/></svg>{{ c.telefon }}</a>
+    </div>
+  </nav>
+</div>
+
+<main id="tartalom">
+<span id="top"></span>
+
+<!-- ============ NYITÓ ============ -->
+<section class="hero" aria-labelledby="hero-cim">
+  <div class="kont hero-racs">
+    <div class="hero-szoveg">
+      <p class="cimke"><span class="pont" aria-hidden="true"></span>{{ c.marka }} · takarítás</p>
+      <h1 id="hero-cim" data-rv>Tiszta terek.<br><span class="h1-2">Nyugodtabb mindennapok.</span></h1>
+      <p class="hero-lead" data-rv>Takarítás otthonok, üzleti terek és intézmények számára, az adott helyszínhez és feladathoz igazítva.</p>
+      <div class="hero-gombok" data-rv>
+        <a class="gomb gomb-fo gomb-nagy" href="#idopont">Időpontot egyeztetek<svg aria-hidden="true"><use href="#i-nyil"/></svg></a>
+        <a class="gomb gomb-masod gomb-nagy" href="#munkaink">Megnézem a munkákat</a>
+      </div>
+      <p class="hero-hivas" data-rv>Inkább beszélne? <a href="{{ c.telefon_link }}"><svg aria-hidden="true"><use href="#i-tel"/></svg>{{ c.telefon }}</a></p>
+    </div>
+    <figure class="hero-foto">
+      <div class="hero-keret">
+        <picture>
+          <source type="image/avif" srcset="img/eloszoba-760.avif 760w, img/eloszoba-1200.avif 1200w" sizes="(min-width: 981px) 520px, 92vw">
+          <source type="image/webp" srcset="img/eloszoba-760.webp 760w, img/eloszoba-1200.webp 1200w" sizes="(min-width: 981px) 520px, 92vw">
+          <img src="img/eloszoba-1200.jpg" width="1200" height="1600" alt="Világos, csempézett előszoba sötét fa ajtókkal; a nyitott, üvegezett ajtón át a nappali látszik" fetchpriority="high" decoding="async">
+        </picture>
+      </div>
+      <figcaption class="hero-felirat"><span class="pont" aria-hidden="true"></span>Munkafotó · előszoba</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============ SZALAG ============ -->
+<section class="szalag-blokk" aria-label="{{ szalag_cimke }}">
+  <div class="kont szalag-fej">
+    <p class="cimke-mono">{{ szalag_cimke }}</p>
+    <button class="szalag-gomb" type="button" aria-pressed="false" data-szalag-gomb><svg aria-hidden="true"><use href="#i-szunet"/></svg><span>Megállítás</span></button>
+  </div>
+  <div class="szalag" data-szalag>
+    <div class="szalag-sav">
+      <ul class="szalag-lista">
+        {%- for t in szalag %}
+        <li>{% if t.logo %}<img src="{{ t.logo }}" alt="" height="28">{% endif %}<span>{{ t.nev }}</span>{% if t.kapcsolat %}<em>{{ t.kapcsolat }}</em>{% endif %}</li>
+        {%- endfor %}
+      </ul>
+      <ul class="szalag-lista szalag-masolat" aria-hidden="true">
+        {%- for t in szalag %}
+        <li>{% if t.logo %}<img src="{{ t.logo }}" alt="" height="28">{% endif %}<span>{{ t.nev }}</span>{% if t.kapcsolat %}<em>{{ t.kapcsolat }}</em>{% endif %}</li>
+        {%- endfor %}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SZOLGÁLTATÁSOK ============ -->
+<section class="szekcio szolg" id="szolgaltatasok" aria-labelledby="szolg-cim">
+  <div class="kont szolg-racs">
+    <header class="szekcio-fej szolg-fej">
+      <p class="cimke-mono" data-rv><span>01</span> Szolgáltatások</p>
+      <h2 id="szolg-cim" data-rv>Minden térhez a hozzá illő takarítás.</h2>
+      <p data-rv>Egy lakás, egy iroda és egy szálláshely mást kíván. A teendőket mindig a helyszínhez és az Ön igényeihez igazítjuk.</p>
+      <p class="szolg-megj" data-rv>Válasszon egy területet, és az időpontegyeztetőben már ki is jelöljük.</p>
+    </header>
+    <ol class="szolg-lista">
+      {%- for s in szolg %}
+      <li class="szolg-sor" data-rv>
+        <span class="szolg-sz" aria-hidden="true">{{ '%02d' % loop.index }}</span>
+        <div class="szolg-tart">
+          <h3>{{ s.cim }}</h3>
+          <p>{{ s.leiras }}</p>
+        </div>
+        <a class="szolg-gomb" href="#idopont" data-szolg="{{ s.id }}" aria-label="Időpontot kérek: {{ s.cim }}"><span>Időpontot kérek</span><svg aria-hidden="true"><use href="#i-nyil"/></svg></a>
+      </li>
+      {%- endfor %}
+    </ol>
+  </div>
+</section>
+
+<!-- ============ MUNKÁINK ============ -->
+<section class="szekcio munkak" id="munkaink" aria-labelledby="munkak-cim">
+  <div class="kont">
+    <header class="szekcio-fej munkak-fej">
+      <div>
+        <p class="cimke-mono" data-rv><span>02</span> Munkáink</p>
+        <h2 id="munkak-cim" data-rv>Helyszínek, ahol dolgoztunk.</h2>
+      </div>
+      <p data-rv>Fotók a munkavégzés helyszíneiről. Bármelyik képre kattintva nagyobb méretben is megnézheti.</p>
+    </header>
+    <div class="szurok" role="group" aria-label="Képek szűrése">
+      <button type="button" class="szuro" aria-pressed="true" data-szuro="mind">Összes <span class="db">{{ munkak|length }}</span></button>
+      {%- for k in kategoriak %}
+      <button type="button" class="szuro" aria-pressed="false" data-szuro="{{ k.id }}">{{ k.nev }} <span class="db">{{ k.db }}</span></button>
+      {%- endfor %}
+    </div>
+    <ul class="galeria" data-galeria data-szuro-allapot="mind">
+      {%- for m in munkak %}
+      <li class="gal-elem gal-{{ m.kep }}" data-kat="{{ m.kat }}">
+        <button type="button" class="gal-gomb" data-nagyit="{{ loop.index0 }}" aria-label="Nagyítás: {{ m.felirat }}">
+          <span class="gal-kep" style="aspect-ratio: {{ m.w }} / {{ m.h }}">
+            <picture>
+              <source type="image/avif" srcset="{% if m.kisebb %}img/{{ m.kep }}-{{ m.kisebb }}.avif {{ m.kisebb }}w, {% endif %}img/{{ m.kep }}-{{ m.w }}.avif {{ m.w }}w" sizes="(min-width: 981px) 40vw, (min-width: 640px) 50vw, 92vw">
+              <source type="image/webp" srcset="{% if m.kisebb %}img/{{ m.kep }}-{{ m.kisebb }}.webp {{ m.kisebb }}w, {% endif %}img/{{ m.kep }}-{{ m.w }}.webp {{ m.w }}w" sizes="(min-width: 981px) 40vw, (min-width: 640px) 50vw, 92vw">
+              <img src="img/{{ m.kep }}-{{ m.w }}.jpg" width="{{ m.w }}" height="{{ m.h }}" alt="{{ m.alt }}" loading="lazy" decoding="async">
+            </picture>
+            <span class="gal-ikon" aria-hidden="true"><svg><use href="#i-nagyit"/></svg></span>
+          </span>
+        </button>
+        <p class="gal-felirat"><span class="gal-kat">{{ m.kat_nev }}</span>{{ m.felirat }}</p>
+      </li>
+      {%- endfor %}
+    </ul>
+  </div>
+</section>
+
+<!-- ============ ÍGY DOLGOZUNK ============ -->
+<section class="szekcio folyamat" id="igy-dolgozunk" aria-labelledby="folyamat-cim">
+  <div class="kont">
+    <header class="szekcio-fej folyamat-fej">
+      <p class="cimke-mono" data-rv><span>03</span> Így dolgozunk</p>
+      <h2 id="folyamat-cim" data-rv>Négy lépés az első hívástól az átadásig.</h2>
+    </header>
+    <ol class="lepesek">
+      {%- for l in lepesek %}
+      <li class="lepes" data-rv>
+        <span class="lepes-pont" aria-hidden="true"></span>
+        <span class="lepes-sz">{{ '%02d' % loop.index }}</span>
+        <h3>{{ l.cim }}</h3>
+        <p>{{ l.szoveg }}</p>
+      </li>
+      {%- endfor %}
+    </ol>
+  </div>
+</section>
+
+<!-- ============ IDŐPONTEGYEZTETÉS ============ -->
+<section class="szekcio idopont" id="idopont" aria-labelledby="idopont-cim">
+  <div class="kont idopont-racs">
+    <div class="idopont-bal">
+      <p class="cimke-mono" data-rv><span>04</span> Időpontegyeztetés</p>
+      <h2 id="idopont-cim" data-rv>Kérjen időpontot néhány lépésben.</h2>
+      <p data-rv>Az itt összeállított igény alapján egyeztetjük a részleteket. Az időpont az egyeztetés után válik véglegessé.</p>
+      <p class="demo-jel"><span class="pont" aria-hidden="true"></span>Bemutató felület – az adatok nem kerülnek elküldésre.</p>
+      <div class="idopont-kozvetlen">
+        <p>Sürgős kérdése van? Keressen minket közvetlenül:</p>
+        <a href="{{ c.telefon_link }}"><svg aria-hidden="true"><use href="#i-tel"/></svg>{{ c.telefon }}</a>
+        <a class="email-link" href="mailto:{{ c.email }}?subject=Id%C5%91pontig%C3%A9ny"><svg aria-hidden="true"><use href="#i-level"/></svg><span>{{ c.email }}</span></a>
+      </div>
+    </div>
+
+    <div class="foglalo" data-foglalo>
+      <ol class="fog-lepesek" aria-label="Az időpontkérés lépései">
+        {%- for nev in ['Szolgáltatás','Helyszín','Időpont','Elérhetőség','Összesítés'] %}
+        <li data-fl="{{ loop.index }}"{% if loop.first %} aria-current="step"{% endif %}><span class="fl-pont" aria-hidden="true">{{ loop.index }}</span><span class="fl-nev">{{ nev }}</span></li>
+        {%- endfor %}
+      </ol>
+      <p class="fog-allapot" aria-live="polite" data-fog-allapot>1. lépés az 5-ből: Szolgáltatás</p>
+
+      <form class="fog-urlap" novalidate data-fog-urlap aria-describedby="fog-demo">
+        <p id="fog-demo" class="sr-only">Bemutató felület – az adatok nem kerülnek elküldésre.</p>
+        <noscript><p class="fog-noscript">Az időpontkérő JavaScript nélkül nem működik. Kérjük, hívjon minket: {{ c.telefon }}, vagy írjon a(z) {{ c.email }} címre.</p></noscript>
+
+        <fieldset class="fog-lepes" data-lepes="1">
+          <legend tabindex="-1"><span class="fl-num">1/5</span>Milyen takarításra van szüksége?</legend>
+          <div class="valaszto valaszto-szolg">
+            {%- for s in szolg %}
+            <label class="opcio"><input type="radio" name="szolgaltatas" value="{{ s.id }}" required><span class="opcio-sz">{{ '%02d' % loop.index }}</span><span class="opcio-nev">{{ s.cim }}</span><span class="opcio-jel" aria-hidden="true"><svg><use href="#i-pipa"/></svg></span></label>
+            {%- endfor %}
+          </div>
+          <p class="hiba" id="hiba-szolgaltatas" data-hiba="szolgaltatas" hidden>Kérjük, válasszon szolgáltatást.</p>
+        </fieldset>
+
+        <fieldset class="fog-lepes" data-lepes="2">
+          <legend tabindex="-1"><span class="fl-num">2/5</span>Hol és mekkora területen?</legend>
+          <div class="mezo">
+            <label for="f-telepules">Település</label>
+            <input id="f-telepules" name="telepules" type="text" autocomplete="address-level2" required aria-describedby="hiba-telepules" placeholder="pl. Pécs">
+            <p class="hiba" id="hiba-telepules" data-hiba="telepules" hidden>Kérjük, adja meg a települést.</p>
+          </div>
+          <div class="mezo">
+            <span class="mezo-cim" id="lbl-terulet">Hozzávetőleges alapterület</span>
+            <div class="chipek" role="radiogroup" aria-labelledby="lbl-terulet">
+              {%- for a in foglalas.alapterulet %}
+              <label class="chip"><input type="radio" name="alapterulet" value="{{ a }}" required><span>{{ a }}</span></label>
+              {%- endfor %}
+            </div>
+            <p class="hiba" id="hiba-alapterulet" data-hiba="alapterulet" hidden>Kérjük, válasszon egy lehetőséget.</p>
+          </div>
+        </fieldset>
+
+        <fieldset class="fog-lepes" data-lepes="3">
+          <legend tabindex="-1"><span class="fl-num">3/5</span>Mikor lenne alkalmas?</legend>
+          <div class="mezo">
+            <label for="f-datum">Kívánt dátum</label>
+            <input id="f-datum" name="datum" type="date" required aria-describedby="datum-sugo hiba-datum">
+            <p class="sugo" id="datum-sugo">A megadott nap kívánság: a végleges időpontot egyeztetés után rögzítjük.</p>
+            <p class="hiba" id="hiba-datum" data-hiba="datum" hidden>Kérjük, mai vagy későbbi dátumot adjon meg.</p>
+          </div>
+          <div class="mezo">
+            <span class="mezo-cim" id="lbl-napszak">Napszak</span>
+            <div class="chipek" role="radiogroup" aria-labelledby="lbl-napszak">
+              {%- for n in foglalas.napszak %}
+              <label class="chip"><input type="radio" name="napszak" value="{{ n }}" required><span>{{ n }}</span></label>
+              {%- endfor %}
+            </div>
+            <p class="hiba" id="hiba-napszak" data-hiba="napszak" hidden>Kérjük, válasszon napszakot.</p>
+          </div>
+        </fieldset>
+
+        <fieldset class="fog-lepes" data-lepes="4">
+          <legend tabindex="-1"><span class="fl-num">4/5</span>Hogyan érhetjük el?</legend>
+          <div class="mezo">
+            <label for="f-nev">Név</label>
+            <input id="f-nev" name="nev" type="text" autocomplete="name" required aria-describedby="hiba-nev">
+            <p class="hiba" id="hiba-nev" data-hiba="nev" hidden>Kérjük, adja meg a nevét.</p>
+          </div>
+          <div class="mezo-par">
+            <div class="mezo">
+              <label for="f-tel">Telefonszám</label>
+              <input id="f-tel" name="telefon" type="tel" autocomplete="tel" inputmode="tel" aria-describedby="kontakt-sugo hiba-kontakt">
+            </div>
+            <div class="mezo">
+              <label for="f-email">E-mail-cím</label>
+              <input id="f-email" name="email" type="email" autocomplete="email" aria-describedby="kontakt-sugo hiba-kontakt">
+            </div>
+          </div>
+          <p class="sugo" id="kontakt-sugo">Elég az egyiket megadnia.</p>
+          <p class="hiba" id="hiba-kontakt" data-hiba="kontakt" hidden>Kérjük, adjon meg telefonszámot vagy érvényes e-mail-címet.</p>
+          <div class="mezo">
+            <label for="f-megj">Megjegyzés <span class="opc">(nem kötelező)</span></label>
+            <textarea id="f-megj" name="megjegyzes" rows="3" maxlength="500" placeholder="pl. helyiségek száma, különleges kérés, megközelítés"></textarea>
+          </div>
+        </fieldset>
+
+        <fieldset class="fog-lepes" data-lepes="5">
+          <legend tabindex="-1"><span class="fl-num">5/5</span>Az időpontigény összesítése</legend>
+          <dl class="osszesito" data-osszesito></dl>
+          <div class="demo-doboz">
+            <p><strong>Bemutató felület – az adatok nem kerülnek elküldésre.</strong> Az igényt nem továbbítottuk, és az adatokat nem tároljuk. Az éles változatban innen küldhető majd el, és az időpontot ezután Önnel egyeztetve véglegesítjük.</p>
+            <p>Addig is elérhet minket közvetlenül:</p>
+            <div class="demo-doboz-gombok">
+              <a class="gomb gomb-fo" href="{{ c.telefon_link }}"><svg aria-hidden="true"><use href="#i-tel"/></svg>{{ c.telefon }}</a>
+              <a class="gomb gomb-masod email-link" href="mailto:{{ c.email }}?subject=Id%C5%91pontig%C3%A9ny"><svg aria-hidden="true"><use href="#i-level"/></svg><span>E-mailt írok</span></a>
+            </div>
+          </div>
+        </fieldset>
+
+        <div class="fog-nav">
+          <button type="button" class="gomb gomb-szel" data-vissza hidden><svg aria-hidden="true"><use href="#i-bal"/></svg>Vissza</button>
+          <button type="button" class="gomb gomb-fo" data-tovabb><span data-tovabb-szoveg>Tovább</span><svg aria-hidden="true"><use href="#i-nyil"/></svg></button>
+          <button type="button" class="gomb gomb-szel" data-ujra hidden>Új igény összeállítása</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ============ KAPCSOLAT ============ -->
+<section class="kapcsolat" id="kapcsolat" aria-labelledby="kapcs-cim">
+  <div class="kapcs-gyuruk" aria-hidden="true"></div>
+  <div class="kont kapcs-racs">
+    <div class="kapcs-bal">
+      <p class="cimke-mono" data-rv><span>05</span> Kapcsolat</p>
+      <h2 id="kapcs-cim" data-rv>Beszéljük meg, mire van szüksége.</h2>
+      <p data-rv>Hívjon, vagy írjon e-mailt: mondja el, milyen térről és milyen feladatról van szó, és egyeztetjük a részleteket.</p>
+    </div>
+    <div class="kapcs-jobb">
+      <a class="kapcs-sor" href="{{ c.telefon_link }}" data-rv>
+        <span class="kapcs-cimke">Telefon</span>
+        <span class="kapcs-ertek kapcs-tel">{{ c.telefon }}</span>
+        <svg aria-hidden="true"><use href="#i-nyil"/></svg>
+      </a>
+      <a class="kapcs-sor" href="mailto:{{ c.email }}" data-rv>
+        <span class="kapcs-cimke">E-mail</span>
+        <span class="kapcs-ertek kapcs-email">{{ email_tort|safe }}</span>
+        <svg aria-hidden="true"><use href="#i-nyil"/></svg>
+      </a>
+      <div class="kapcs-sor kapcs-sor-info" data-rv>
+        <span class="kapcs-cimke">Szolgáltatási terület</span>
+        <span class="kapcs-info">{{ c.szolgaltatasi_terulet }}</span>
+      </div>
+      {%- if c.elerhetoseg_ideje %}
+      <div class="kapcs-sor kapcs-sor-info" data-rv>
+        <span class="kapcs-cimke">Elérhetőség</span>
+        <span class="kapcs-info">{{ c.elerhetoseg_ideje }}</span>
+      </div>
+      {%- endif %}
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="lab">
+  <div class="kont lab-racs">
+    <div class="lab-logo">
+      <img src="arculat/emblema-feher.svg?v={{ v }}" alt="" width="167" height="224" class="lab-jel">
+      <div>
+        <img src="arculat/felirat-feher.svg?v={{ v }}" alt="{{ c.marka }}" width="363" height="60" class="lab-felirat">
+        <img src="arculat/szlogen-feher.svg?v={{ v }}" alt="Tiszta megoldás. Azonnal." width="363" height="21" class="lab-szlogen">
+      </div>
+    </div>
+    <nav class="lab-nav" aria-label="Lábléc navigáció">
+      <p class="lab-cim">Oldal</p>
+      <a href="#szolgaltatasok">Szolgáltatások</a>
+      <a href="#munkaink">Munkáink</a>
+      <a href="#igy-dolgozunk">Így dolgozunk</a>
+      <a href="#idopont">Időpontegyeztetés</a>
+    </nav>
+    <div class="lab-kontakt">
+      <p class="lab-cim">Elérhetőség</p>
+      <a href="{{ c.telefon_link }}">{{ c.telefon }}</a>
+      <a class="email-link" href="mailto:{{ c.email }}">{{ email_tort|safe }}</a>
+    </div>
+    <div class="lab-ceg">
+      <p class="lab-cim">Cégadatok</p>
+      <p>{{ c.teljes_nev }}</p>
+      <p>Székhely: {{ c.szekhely }}</p>
+      <p>Adószám: {{ c.adoszam }}</p>
+      <p>Cégjegyzékszám: {{ c.cegjegyzekszam }}</p>
+    </div>
+  </div>
+  <div class="kont lab-also">
+    <p>© {{ ev }} {{ c.nev }}</p>
+    <p>Látványterv – DAEKON · nem éles oldal</p>
+  </div>
+</footer>
+
+<dialog class="nagyito" data-nagyito aria-label="Képnézegető">
+  <div class="nagyito-belso">
+    <div class="nagyito-fej">
+      <p class="nagyito-szamlalo" data-nszam aria-live="polite"></p>
+      <button type="button" class="nagyito-gomb" data-nzar aria-label="Bezárás"><svg aria-hidden="true"><use href="#i-x"/></svg></button>
+    </div>
+    <figure class="nagyito-kep">
+      <img src="data:," alt="" data-nkep>
+      <figcaption data-nfel></figcaption>
+    </figure>
+    <button type="button" class="nagyito-gomb nagyito-elozo" data-nelozo aria-label="Előző kép"><svg aria-hidden="true"><use href="#i-bal"/></svg></button>
+    <button type="button" class="nagyito-gomb nagyito-kov" data-nkov aria-label="Következő kép"><svg aria-hidden="true"><use href="#i-jobb"/></svg></button>
+  </div>
+</dialog>
+
+<script src="js/adatok.js?v={{ v }}"></script>
+<script src="js/foglalas-adapter.js?v={{ v }}"></script>
+<script src="js/vendor/motion-11.18.2.min.js"></script>
+<script src="tisztapont.js?v={{ v }}"></script>
+</body>
+</html>
