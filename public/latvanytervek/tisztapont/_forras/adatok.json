@@ -19,7 +19,7 @@
 
   "oldal": {
     "url": "https://daekon-ship.github.io/daekon/latvanytervek/tisztapont/",
-    "verzio": "20261107a"
+    "verzio": "20261107b"
   },
 
   "szolgaltatasok": [
@@ -79,94 +79,102 @@
   "referenciak": [
       {
           "nev": "Pizza King",
+          "allapot": "ugyfel_altal_megadott",
           "kapcsolat": null,
           "leiras": null,
-          "szoveg_jovahagyva": true,
           "logo_engedely": false,
           "logo": null
       },
       {
           "nev": "EMIH",
+          "allapot": "ugyfel_altal_megadott",
           "kapcsolat": null,
           "leiras": null,
-          "szoveg_jovahagyva": true,
           "logo_engedely": false,
           "logo": null
       },
       {
           "nev": "ROKK",
+          "allapot": "ugyfel_altal_megadott",
           "kapcsolat": null,
           "leiras": null,
-          "szoveg_jovahagyva": true,
           "logo_engedely": false,
           "logo": null
       },
       {
           "nev": "Készenléti Rendőrség",
+          "allapot": "ugyfel_altal_megadott",
           "kapcsolat": null,
           "leiras": null,
-          "szoveg_jovahagyva": true,
           "logo_engedely": false,
           "logo": null
       },
       {
           "nev": "Walton Security",
+          "allapot": "ugyfel_altal_megadott",
           "kapcsolat": null,
           "leiras": null,
-          "szoveg_jovahagyva": true,
           "logo_engedely": false,
           "logo": null
       },
       {
           "nev": "Semmelweis Egyetem",
+          "allapot": "ugyfel_altal_megadott",
           "kapcsolat": null,
           "leiras": null,
-          "szoveg_jovahagyva": true,
           "logo_engedely": false,
           "logo": null
       },
       {
           "nev": "Rákossy Glass",
+          "allapot": "ugyfel_altal_megadott",
           "kapcsolat": null,
           "leiras": null,
-          "szoveg_jovahagyva": true,
           "logo_engedely": false,
           "logo": null
       },
       {
           "nev": "BAT – dohánygyár",
+          "allapot": "ugyfel_altal_megadott",
           "kapcsolat": null,
           "leiras": null,
-          "szoveg_jovahagyva": true,
+          "logo_engedely": false,
+          "logo": null
+      },
+      {
+          "nev": "Poller Tecnology",
+          "allapot": "nev_pontositando",
+          "kapcsolat": null,
+          "leiras": null,
           "logo_engedely": false,
           "logo": null
       },
       {
           "nev": "TEK",
+          "allapot": "ugyfel_altal_megadott",
           "kapcsolat": null,
           "leiras": null,
-          "szoveg_jovahagyva": true,
           "logo_engedely": false,
           "logo": null
       },
       {
           "nev": "Zsolnay Kulturális Negyed, Pécs",
+          "allapot": "ugyfel_altal_megadott",
           "kapcsolat": null,
           "leiras": null,
-          "szoveg_jovahagyva": true,
           "logo_engedely": false,
           "logo": null
       },
       {
           "nev": "Pécsi Állatkert",
+          "allapot": "ugyfel_altal_megadott",
           "kapcsolat": null,
           "leiras": null,
-          "szoveg_jovahagyva": true,
           "logo_engedely": false,
           "logo": null
       }
   ],
-  "_referenciak": "Az ügyfél által megadott nevek, DAEKON döntése alapján szövegesen megjelenítve (logó nélkül) a látványtervben. Élesítés előtt az ügyféllel tételenként megerősítendő: pontos név, munkakapcsolat (kozvetlen / alvallalkozo / korabbi_munkatarsi), közzétehetőség. A 'Poller Tecnology' nevet a pontosításig kihagytuk. Mezők: nev, kapcsolat, leiras, szoveg_jovahagyva, logo_engedely, logo.",
+  "_referenciak": "Referenciák jóváhagyási állapottal. allapot: 'ugyfel_altal_megadott' (az ügyfél közölte, nem igazolt – a látványtervben jelöléssel megjelenik, élesben NEM), 'nev_pontositando' (sehol nem jelenik meg), 'igazolt' (munkakapcsolat igazolt, közzététel még nem engedélyezett – élesben NEM), 'kozzeteheto' (igazolt és közzétehető – élesben is megjelenik). kapcsolat: 'kozvetlen' | 'alvallalkozo' | 'korabbi_munkatarsi' | null. leiras: jóváhagyott rövid szöveg vagy null. Logó csak logo_engedely: true és megadott logo fájl esetén. Éles építés: python3 _forras/epites.py --eles",
 
   "lepesek": [
     { "cim": "Kapcsolatfelvétel", "szoveg": "Hívjon, írjon e-mailt, vagy állítsa össze időpontigényét itt az oldalon." },

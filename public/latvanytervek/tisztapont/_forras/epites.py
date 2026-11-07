@@ -4,39 +4,53 @@
 Az _forras/adatok.json (központi adatok) és az _forras/sablon.html alapján
 legenerálja az index.html-t és a js/adatok.js-t. Futtatás a mappából:
 
-    python3 _forras/epites.py
+    python3 _forras/epites.py          # látványterv (alapértelmezett)
+    python3 _forras/epites.py --eles   # csak 'kozzeteheto' referenciák, jelölések nélkül
+
+Az --eles kapcsoló csak a referenciák és az egyeztetendő-jelölések szűrését
+végzi; a demó időpontkérőt, a noindex beállítást és a látványterv-csíkot NEM
+kapcsolja ki – az éles oldal külön munkafolyamat.
 """
+import base64
 import datetime
+import hashlib
 import html
 import json
 import pathlib
+import re
+import sys
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 GYOKER = pathlib.Path(__file__).resolve().parent.parent
 FORRAS = GYOKER / "_forras"
 ADAT = json.loads((FORRAS / "adatok.json").read_text(encoding="utf-8"))
+ELES = "--eles" in sys.argv
 
 KAPCSOLAT_NEV = {
     "kozvetlen": "megbízó",
     "alvallalkozo": "alvállalkozóként",
     "korabbi_munkatarsi": "munkatársaink korábbi munkája",
 }
+# Mely állapotok jelenhetnek meg az adott módban
+LATHATO = {"kozzeteheto"} if ELES else {"kozzeteheto", "igazolt", "ugyfel_altal_megadott"}
 
 
 def szalag_tetelek():
-    """Jóváhagyott referenciák, vagy ha nincs ilyen, a szolgáltatási területek."""
-    ok = [r for r in ADAT.get("referenciak", []) if r.get("szoveg_jovahagyva")]
+    """Megjeleníthető referenciák, vagy ha nincs ilyen, a szolgáltatási területek.
+    Visszaad: (címke, tételek, jóváhagyásra vár-e bármelyik)."""
+    ok = [r for r in ADAT.get("referenciak", []) if r.get("allapot") in LATHATO]
     if ok:
+        var = any(r["allapot"] != "kozzeteheto" for r in ok)
         return "Akiknél már dolgoztunk", [
             {
                 "nev": r["nev"],
                 "kapcsolat": KAPCSOLAT_NEV.get(r.get("kapcsolat")),
-                "logo": r.get("logo") if r.get("logo_engedely") else None,
+                "logo": r.get("logo") if r.get("logo_engedely") and r.get("logo") else None,
             }
             for r in ok
-        ]
-    return "Terek, ahol dolgozunk", [{"nev": t, "kapcsolat": None, "logo": None} for t in ADAT["teruletek"]]
+        ], var
+    return "Terek, ahol dolgozunk", [{"nev": t, "kapcsolat": None, "logo": None} for t in ADAT["teruletek"]], False
 
 
 def email_tort(email):
@@ -45,20 +59,22 @@ def email_tort(email):
     return e.replace(".", ".<wbr>", 1).replace("@", "<wbr>@")
 
 
+def csp_hash(oldal):
+    """A <head> beágyazott szkriptjének sha256-hash-e a CSP-hez."""
+    m = re.search(r"<script>(.*?)</script>", oldal, re.S)
+    return "'sha256-" + base64.b64encode(hashlib.sha256(m.group(1).encode("utf-8")).digest()).decode() + "'"
+
+
 def main():
     c = ADAT["ceg"]
     kat_nev = {k["id"]: k.get("egyes", k["nev"]) for k in ADAT["munkak_kategoriak"]}
     munkak = [dict(m, kat_nev=kat_nev[m["kat"]]) for m in ADAT["munkak"]]
     # csak az a szűrő jelenik meg, amelyhez tartozik kép
-    kategoriak = []
-    for k in ADAT["munkak_kategoriak"]:
-        db = sum(1 for m in munkak if m["kat"] == k["id"])
-        if db:
-            kategoriak.append({**k, "db": db})
+    kategoriak = [k for k in ADAT["munkak_kategoriak"] if any(m["kat"] == k["id"] for m in munkak)]
 
-    szalag_cimke, szalag = szalag_tetelek()
+    szalag_cimke, szalag, szalag_jovahagyasra = szalag_tetelek()
     env = Environment(loader=FileSystemLoader(str(FORRAS)), autoescape=select_autoescape(["html"]))
-    out = env.get_template("sablon.html").render(
+    params = dict(
         c=c,
         o=ADAT["oldal"],
         v=ADAT["oldal"]["verzio"],
@@ -69,9 +85,17 @@ def main():
         foglalas=ADAT["foglalas"],
         szalag=szalag,
         szalag_cimke=szalag_cimke,
+        szalag_jovahagyasra=szalag_jovahagyasra and not ELES,
+        cegadat_jeloles=bool(c.get("cegadatok_egyeztetendo")) and not ELES,
         email_tort=email_tort(c["email"]),
         ev=datetime.date.today().year,
+        csp="",
     )
+    tpl = env.get_template("sablon.html")
+    out = tpl.render(**params)
+    # második menet: a CSP a végleges head-szkript hash-ét kapja
+    params["csp"] = csp_hash(out)
+    out = tpl.render(**params)
     (GYOKER / "index.html").write_text(out, encoding="utf-8")
 
     # futásidejű adatok (időpontkérő, képnézegető)
@@ -91,7 +115,8 @@ def main():
         "window.TP_ADATOK = " + json.dumps(futas, ensure_ascii=False, indent=2) + ";\n",
         encoding="utf-8",
     )
-    print("kész:", GYOKER / "index.html")
+    print("kész:", GYOKER / "index.html", "(ÉLES szűrés)" if ELES else "(látványterv)",
+          "| referenciák a szalagon:", len(szalag) if szalag_cimke != "Terek, ahol dolgozunk" else 0)
 
 
 if __name__ == "__main__":

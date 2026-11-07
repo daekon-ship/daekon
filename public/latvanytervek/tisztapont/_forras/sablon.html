@@ -6,14 +6,23 @@
 <title>{{ c.marka }} – takarítás otthonoknak, üzleti tereknek és intézményeknek</title>
 <meta name="description" content="Takarítás otthonok, üzleti terek és intézmények számára, az adott helyszínhez és feladathoz igazítva. Hívjon: {{ c.telefon }}.">
 <meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+{%- if csp %}
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' {{ csp|safe }}; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'">
+{%- endif %}
 <meta name="theme-color" content="#FFFFFF">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="hu_HU">
 <meta property="og:title" content="{{ c.marka }} – Tiszta terek. Nyugodtabb mindennapok.">
 <meta property="og:description" content="Takarítás otthonok, üzleti terek és intézmények számára, az adott helyszínhez és feladathoz igazítva.">
+<meta property="og:site_name" content="{{ c.marka }} – látványterv">
 <meta property="og:url" content="{{ o.url }}">
-<meta property="og:image" content="{{ o.url }}img/eloszoba-1200.jpg">
-<link rel="icon" href="favicon.ico?v={{ v }}" sizes="16x16 32x32 48x48">
+<meta property="og:image" content="{{ o.url }}img/og-tisztapont.jpg?v={{ v }}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="{{ c.marka }} logó és egy világos, csempézett előszoba fotója">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.ico?v={{ v }}" sizes="48x48">
 <link rel="icon" href="favicon.svg?v={{ v }}" type="image/svg+xml">
 <link rel="apple-touch-icon" href="img/apple-touch-icon.png?v={{ v }}">
 <link rel="manifest" href="site.webmanifest?v={{ v }}">
@@ -41,7 +50,7 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('ani
 </svg>
 
 <a class="ugro" href="#tartalom">Ugrás a tartalomra</a>
-<div class="demo-csik" role="note"><span>Látványterv · DAEKON</span><span class="demo-csik-r">Bemutató, nem éles oldal</span></div>
+<div class="demo-csik" role="note"><span>Látványterv · DAEKON</span><span class="demo-csik-r">Bemutató, nem éles oldal</span><span class="demo-csik-m">Látványterv – nem éles oldal</span></div>
 
 <header class="fej" id="fej">
   <div class="kont fej-sor">
@@ -105,7 +114,12 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('ani
 <!-- ============ SZALAG ============ -->
 <section class="szalag-blokk" aria-label="{{ szalag_cimke }}">
   <div class="kont szalag-fej">
-    <p class="cimke-mono">{{ szalag_cimke }}</p>
+    <div class="szalag-cim">
+      <p class="cimke-mono">{{ szalag_cimke }}</p>
+      {%- if szalag_jovahagyasra %}
+      <p class="egyeztet" role="note"><span class="pont" aria-hidden="true"></span>Az ügyfél által megadott lista – közzététel előtt egyeztetendő</p>
+      {%- endif %}
+    </div>
     <button class="szalag-gomb" type="button" aria-pressed="false" data-szalag-gomb><svg aria-hidden="true"><use href="#i-szunet"/></svg><span>Megállítás</span></button>
   </div>
   <div class="szalag" data-szalag>
@@ -222,13 +236,13 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('ani
     <div class="foglalo" data-foglalo>
       <ol class="fog-lepesek" aria-label="Az időpontkérés lépései">
         {%- for nev in ['Szolgáltatás','Helyszín','Időpont','Elérhetőség','Összesítés'] %}
-        <li data-fl="{{ loop.index }}"{% if loop.first %} aria-current="step"{% endif %}><span class="fl-pont" aria-hidden="true">{{ loop.index }}</span><span class="fl-nev">{{ nev }}</span></li>
+        <li data-fl="{{ loop.index }}"{% if loop.first %} aria-current="step"{% endif %}><span class="fl-nev">{{ nev }}</span></li>
         {%- endfor %}
       </ol>
       <p class="fog-allapot" aria-live="polite" data-fog-allapot>1. lépés az 5-ből: Szolgáltatás</p>
 
       <form class="fog-urlap" novalidate data-fog-urlap aria-describedby="fog-demo">
-        <p id="fog-demo" class="sr-only">Bemutató felület – az adatok nem kerülnek elküldésre.</p>
+        <p id="fog-demo" class="fog-demo"><span class="pont" aria-hidden="true"></span>Bemutató felület – az adatok nem kerülnek elküldésre.</p>
         <noscript><p class="fog-noscript">Az időpontkérő JavaScript nélkül nem működik. Kérjük, hívjon minket: {{ c.telefon }}, vagy írjon a(z) {{ c.email }} címre.</p></noscript>
 
         <fieldset class="fog-lepes" data-lepes="1">
@@ -384,6 +398,9 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('ani
     </div>
     <div class="lab-ceg">
       <p class="lab-cim">Cégadatok</p>
+      {%- if cegadat_jeloles %}
+      <p class="egyeztet egyeztet-sotet" role="note"><span class="pont" aria-hidden="true"></span>Élesítés előtt ellenőrizendő</p>
+      {%- endif %}
       <p>{{ c.teljes_nev }}</p>
       <p>Székhely: {{ c.szekhely }}</p>
       <p>Adószám: {{ c.adoszam }}</p>

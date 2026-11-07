@@ -70,7 +70,8 @@ section[id],#top{scroll-margin-top:calc(var(--fej-m) + 12px)}
 
 /* ---------- demó csík ---------- */
 .demo-csik{display:flex;justify-content:space-between;gap:12px;padding:7px var(--szel);background:var(--tenger);color:#C9D7EA;font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase}
-@media (max-width:480px){.demo-csik-r{display:none}}
+.demo-csik-m{display:none}
+@media (max-width:480px){.demo-csik>span{display:none}.demo-csik>.demo-csik-m{display:inline}}
 
 /* ---------- fejléc ---------- */
 .fej{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.96);border-bottom:1px solid transparent;transition:border-color var(--t),box-shadow var(--t)}
@@ -119,15 +120,16 @@ section[id],#top{scroll-margin-top:calc(var(--fej-m) + 12px)}
 .h1-2{color:var(--kek)}
 .hero-lead{margin-top:26px;font-size:clamp(1.06rem,1rem + .3vw,1.22rem);line-height:1.55;color:var(--szurke);max-width:39ch}
 .hero-gombok{display:flex;flex-wrap:wrap;gap:12px;margin-top:36px}
-.hero-hivas{margin-top:26px;font-size:15.5px;color:var(--szurke);display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
-.hero-hivas a{display:inline-flex;align-items:center;gap:8px;color:var(--tenger);font-weight:600;text-decoration:none;border-bottom:1.5px solid var(--jeg-2);padding:6px 0 3px;transition:border-color var(--t)}
-.hero-hivas a:hover{border-color:var(--kek)}
+.hero-hivas{margin-top:18px;font-size:15.5px;color:var(--szurke);display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
+.hero-hivas a{display:inline-flex;align-items:center;gap:8px;min-height:44px;color:var(--tenger);font-weight:600;text-decoration:underline;text-decoration-color:var(--jeg-2);text-decoration-thickness:1.5px;text-underline-offset:6px;transition:text-decoration-color var(--t)}
+.hero-hivas a:hover{text-decoration-color:var(--kek)}
 .hero-hivas svg{width:17px;height:17px;color:var(--kek)}
 
 .hero-foto{position:relative;margin:0;justify-self:end;width:100%;max-width:520px}
 .hero-foto::before{content:"";position:absolute;inset:44px -28px -28px 44px;border-radius:calc(var(--r) + 6px);background-color:var(--jeg);background-image:radial-gradient(#C3D8F1 1.5px,transparent 1.6px);background-size:18px 18px;background-position:9px 9px;z-index:-1}
 .hero-foto::after{content:"";position:absolute;width:12px;height:12px;border-radius:50%;background:var(--logo-kek);box-shadow:0 0 0 7px var(--feher);left:-6px;bottom:22%}
 .hero-keret{border-radius:var(--r);overflow:hidden;aspect-ratio:3/4;background:var(--jeg-2)}
+@media (min-width:981px){.hero-keret{aspect-ratio:auto;height:clamp(460px,calc(100svh - 230px),680px)}}
 .hero-keret img{width:100%;height:100%;object-fit:cover;object-position:50% 60%}
 .hero-felirat{position:absolute;left:18px;bottom:18px;display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border-radius:var(--r-gomb);background:rgba(255,255,255,.92);font-size:13px;font-weight:500;color:var(--tenger)}
 .hero-felirat .pont{width:7px;height:7px}
@@ -294,9 +296,7 @@ section[id],#top{scroll-margin-top:calc(var(--fej-m) + 12px)}
 .fog-lepesek li::before{content:"";height:3px;border-radius:3px;background:var(--jeg-2);transition:background var(--t)}
 .fog-lepesek li.kesz::before,.fog-lepesek li[aria-current="step"]::before{background:var(--kek)}
 .fog-lepesek li[aria-current="step"]{color:var(--tenger);font-weight:600}
-.fl-pont{display:none}
 .fog-allapot{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--szurke);margin:14px 0 4px}
-.js .fog-allapot{}
 .fog-urlap{margin:0}
 .fog-lepes{border:0;margin:0;padding:18px 0 0;min-width:0}
 .fog-lepes legend{padding:0;font-size:clamp(1.3rem,1.15rem + .5vw,1.6rem);font-weight:600;letter-spacing:-.02em;line-height:1.2;margin-bottom:24px;display:flex;flex-direction:column;gap:6px}
@@ -319,6 +319,11 @@ section[id],#top{scroll-margin-top:calc(var(--fej-m) + 12px)}
 .opcio:has(input:checked){border-color:var(--kek);background:var(--jeg)}
 .opcio:has(input:checked) .opcio-jel{background:var(--kek);border-color:var(--kek);color:#fff}
 .opcio:has(input:focus-visible),.chip:has(input:focus-visible){outline:3px solid var(--logo-kek);outline-offset:2px}
+/* :has() nélküli böngészők (régebbi Firefox, Samsung Internet): a JS osztályokat tesz fel */
+.opcio.valasztva{border-color:var(--kek);background:var(--jeg)}
+.opcio.valasztva .opcio-jel{background:var(--kek);border-color:var(--kek);color:#fff}
+.chip.valasztva span{background:var(--tenger);border-color:var(--tenger);color:#fff}
+.opcio.fokuszban,.chip.fokuszban{outline:3px solid var(--logo-kek);outline-offset:2px}
 
 .mezo{display:flex;flex-direction:column;gap:8px;margin-bottom:22px;min-width:0}
 .mezo label,.mezo-cim{font-weight:600;font-size:15px}
@@ -352,7 +357,6 @@ section[id],#top{scroll-margin-top:calc(var(--fej-m) + 12px)}
 .demo-doboz-gombok .gomb{min-width:0}
 .fog-nav{display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-end;margin-top:28px;padding-top:24px;border-top:1px solid var(--vonal)}
 .fog-nav [data-vissza]{margin-right:auto}
-.no-js-rejt{display:none}
 html:not(.js) .fog-nav,html:not(.js) .fog-lepesek,html:not(.js) .fog-allapot{display:none}
 .fog-noscript{padding:14px 16px;border-radius:var(--r-kis);background:var(--jeg);margin-bottom:20px}
 
@@ -448,3 +452,11 @@ a.kapcs-sor:hover .kapcs-ertek{text-decoration:underline;text-decoration-thickne
   .gomb,.gal-kep img,.szolg-gomb svg{transition:none}
 }
 @media print{.fej,.demo-csik,.szalag-blokk,.foglalo,.nagyito{display:none}}
+
+/* ---------- egyeztetendő-jelölések (csak látványterv módban generálódnak) ---------- */
+.egyeztet{display:inline-flex;align-items:center;gap:8px;padding:5px 12px;border-radius:var(--r-gomb);border:1px dashed #9DB8DA;background:var(--jeg);font-size:12.5px;font-weight:500;color:var(--tenger);line-height:1.35}
+.egyeztet .pont{width:6px;height:6px}
+.egyeztet-sotet{background:transparent;border-color:rgba(124,196,247,.45);color:#C3D1E6;margin-bottom:10px}
+.szalag-cim{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;min-width:0}
+.fog-demo{display:flex;align-items:center;gap:10px;margin:2px 0 4px;padding:9px 14px;border-radius:var(--r-kis);background:var(--jeg);border:1px dashed #9DB8DA;font-size:14px;font-weight:500}
+.fog-demo .pont{width:7px;height:7px}

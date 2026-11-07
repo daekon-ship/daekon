@@ -35,7 +35,9 @@
   document.addEventListener("keydown", function (e) {
     if (e.key === "Escape" && !menu.hidden) { menuAllit(false); mGomb.focus(); }
   });
-  matchMedia("(min-width: 981px)").addEventListener("change", function (e) { if (e.matches && !menu.hidden) menuAllit(false); });
+  var szeles = matchMedia("(min-width: 981px)");
+  var szelesValt = function (e) { if (e.matches && !menu.hidden) menuAllit(false); };
+  if (szeles.addEventListener) szeles.addEventListener("change", szelesValt); else if (szeles.addListener) szeles.addListener(szelesValt);
 
   /* ---------- aktív menüpont ---------- */
   if ("IntersectionObserver" in window) {
@@ -134,6 +136,11 @@
     $("[data-nelozo]", dlg).hidden = !tobb;
     $("[data-nkov]", dlg).hidden = !tobb;
     if (animOk && irany) M.animate(nKep, { opacity: [0, 1], x: [irany * 24, 0] }, { duration: 0.35, ease: ease });
+    // a szomszédos képek előtöltése a gyors lapozáshoz
+    [aktualis + 1, aktualis - 1].forEach(function (j) {
+      var n = munkak[sor[(j + sor.length) % sor.length]];
+      if (n) { var im = new Image(); im.src = "img/" + n.kep + "-" + n.w + ".jpg"; }
+    });
   }
   function nyit(idx, gomb) {
     sor = lathatoIndexek();
@@ -198,6 +205,7 @@
     if (el instanceof RadioNodeList || (el.length && !el.tagName)) { return el.value || ""; }
     return (el.value || "").trim();
   }
+  function invalid(el, rossz) { if (rossz) el.setAttribute("aria-invalid", "true"); else el.removeAttribute("aria-invalid"); }
   function hiba(kulcs, mutatva, mezo) {
     var p = $('[data-hiba="' + kulcs + '"]', urlap);
     if (p) p.hidden = !mutatva;
@@ -230,8 +238,8 @@
       var emOk = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em);
       var rossz = !(telOk || emOk);
       hiba("kontakt", rossz);
-      $("#f-tel").toggleAttribute("aria-invalid", rossz);
-      $("#f-email").toggleAttribute("aria-invalid", rossz && em !== "");
+      invalid($("#f-tel"), rossz);
+      invalid($("#f-email"), rossz && em !== "");
       if (rossz) { ok = false; if (!elso) elso = $("#f-tel"); }
     }
     if (!ok && elso) elso.focus();
@@ -306,10 +314,7 @@
   });
   bVissza.addEventListener("click", function () { menj(Math.max(1, lepes - 1), true); });
   bUjra.addEventListener("click", function () {
-    urlap.reset();
-    $$(".hiba", urlap).forEach(function (h) { h.hidden = true; });
-    $$("[aria-invalid]", urlap).forEach(function (h) { h.removeAttribute("aria-invalid"); });
-    $("[data-osszesito]", urlap).textContent = "";
+    alaphelyzet();
     menj(1, true);
   });
   // hibajelzés eltüntetése javításkor
@@ -325,7 +330,39 @@
     if (e.key === "Enter" && e.target.tagName === "INPUT" && e.target.type !== "radio") { e.preventDefault(); bTovabb.hidden || bTovabb.click(); }
   });
   urlap.addEventListener("submit", function (e) { e.preventDefault(); });
+
+  // :has() nélküli böngészők: a kiválasztott / fókuszált opció osztályt kap
+  var vanHas = !!(window.CSS && CSS.supports && CSS.supports("selector(:has(*))"));
+  function opcioFrissit() {
+    if (vanHas) return;
+    $$('input[type="radio"]', urlap).forEach(function (r) { r.closest("label").classList.toggle("valasztva", r.checked); });
+  }
+  urlap.addEventListener("change", opcioFrissit);
+  if (!vanHas) {
+    urlap.addEventListener("focusin", function (e) { if (e.target.type === "radio") e.target.closest("label").classList.add("fokuszban"); });
+    urlap.addEventListener("focusout", function (e) { if (e.target.type === "radio") e.target.closest("label").classList.remove("fokuszban"); });
+  }
+
+  // tiszta kezdőállapot: a böngésző se töltse vissza a korábban beírt adatokat
+  function alaphelyzet() {
+    urlap.reset();
+    $$(".hiba", urlap).forEach(function (h) { h.hidden = true; });
+    $$("[aria-invalid]", urlap).forEach(function (h) { h.removeAttribute("aria-invalid"); });
+    $("[data-osszesito]", urlap).textContent = "";
+    opcioFrissit();
+  }
+  alaphelyzet();
   menj(1, false);
+
+  // vissza/előre gombbal visszatöltött oldal (bfcache): menü, nagyító bezárva, űrlap üres
+  window.addEventListener("pageshow", function (e) {
+    if (!e.persisted) return;
+    if (!menu.hidden) menuAllit(false);
+    if (dlg.open) dlg.close();
+    document.body.classList.remove("zar");
+    alaphelyzet();
+    menj(1, false);
+  });
 
   /* ---------- szolgáltatás előválasztása ---------- */
   $$("[data-szolg]").forEach(function (a) {
@@ -333,6 +370,7 @@
       var r = $('input[name="szolgaltatas"][value="' + a.getAttribute("data-szolg") + '"]', urlap);
       if (!r) return;
       r.checked = true;
+      opcioFrissit();
       hiba("szolgaltatas", false, $(".valaszto-szolg", urlap));
       if (lepes !== 1) menj(1, false);
       setTimeout(function () { r.focus({ preventScroll: true }); }, reduce ? 0 : 450);
