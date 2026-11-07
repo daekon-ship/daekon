@@ -26,10 +26,22 @@ def ik(k, c):
     return f'<svg viewBox="0 0 24 24" fill="none" stroke="{c}" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round">{IK[k]}</svg>'
 
 
+SZOLG = ["Teljes körű autószerviz", "Autódiagnosztika", "Dízelrendszer-javítás", "Adagoló- és porlasztójavítás",
+         "3D futóműállítás", "Önindító- és generátorjavítás", "Műszaki vizsgára felkészítés",
+         "Szívósor- és EGR-tisztítás", "Ford garanciális szervizelés"]  # a weboldal szolgáltatáslistája alapján
+
+
 def elo():
-    """Előlap: éjkék, középen a logó, finom fény – keret nélkül."""
-    return f"""<div class="lap elo">
-  <img class="emb" src="{B}arculat-kombi/VEGLEGES/2-kiraly-logo-ejkek-arany-atlatszo.png">
+    """Előlap: balra a szolgáltatások listája, jobbra világosabb panel a logóval (a hátlap tükörképe)."""
+    li = "".join(f"<li>{x}</li>" for x in SZOLG)
+    return f"""<div class="lap elo2">
+  <div class="szlista">
+    <div class="szcim">Szolgáltatásaink</div>
+    <ul>{li}</ul>
+    <div class="szlab">Márkafüggetlen · személyautó és kishaszonjármű</div>
+  </div>
+  <div class="valaszto jobb"></div>
+  <div class="panel jobb"><img class="nagyjel" src="{B}arculat-kombi/VEGLEGES/2-kiraly-logo-ejkek-arany-atlatszo.png"></div>
 </div>"""
 
 
@@ -83,6 +95,16 @@ html,body{{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 .adat .s.ket{{align-items:flex-start;line-height:1.3}}
 .adat .s.ket svg{{margin-top:.2mm}}
 .adat .s.hal{{color:#A9B4C2}}
+.elo2{{background:{NAVY};color:{CREAM}}}
+.panel.jobb{{left:auto;right:0;width:39mm}}
+.panel.jobb .nagyjel{{left:auto;right:21mm;transform:translate(50%,-50%)}}
+.valaszto.jobb{{left:auto;right:39mm}}
+.szlista{{position:absolute;left:9mm;top:50%;transform:translateY(-50%);width:46mm}}
+.szcim{{font:700 5.6pt/1 A;font-stretch:100%;letter-spacing:.28em;text-transform:uppercase;color:{GOLD};margin-bottom:2.6mm}}
+.szlista ul{{list-style:none;margin:0;padding:0;display:grid;gap:1.05mm}}
+.szlista li{{font:600 6.3pt/1.15 A;font-stretch:100%;letter-spacing:.015em;display:flex;align-items:center;gap:1.8mm;white-space:nowrap}}
+.szlista li::before{{content:"";width:1.1mm;height:1.1mm;background:{GOLD};transform:rotate(45deg);flex:none}}
+.szlab{{margin-top:2.6mm;font:600 4.9pt/1.2 A;font-stretch:100%;letter-spacing:.08em;color:#A9B4C2}}
 .szolg{{margin-top:auto;font:800 4.9pt/1 M;letter-spacing:.2em;text-transform:uppercase;white-space:nowrap}}
 .szolg i{{display:inline-block;width:.9mm;height:.9mm;border-radius:50%;margin:0 1.6mm;vertical-align:.3mm}}
 """
