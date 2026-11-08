@@ -127,11 +127,40 @@
      Kosár állapot (csak böngészőben, nem személyes demóadat)
      ========================================================= */
   var state = { items: [], town: 'Bük' };
+  var TOWNS = [].concat.apply([], M.delivery.zones.map(function (z) { return z.towns; }));
+  var arr = function (a, allowed) { return Array.isArray(a) ? a.filter(function (x) { return typeof x === 'string' && (!allowed || allowed.indexOf(x) > -1); }) : []; };
+  function cleanItem(it) {
+    if (!it || typeof it !== 'object') return null;
+    var q = Math.round(+it.qty); if (!(q >= 1)) return null; q = Math.min(20, q);
+    if (it.type === 'drink') return drinkById(it.id) ? { type: 'drink', id: it.id, qty: q } : null;
+    var p = byId(it.id); if (!p) return null;
+    return { type: 'pizza', id: p.id, qty: q,
+      base: M.bases.some(function (b) { return b.id === it.base; }) ? it.base : 'paradicsomszosz',
+      removed: arr(it.removed, p.ingredients), plusz: arr(it.plusz, PLUSZ.items), extra: arr(it.extra, EXTRA.items),
+      note: typeof it.note === 'string' ? it.note.slice(0, 140) : '' };
+  }
   try {
     var saved = JSON.parse(localStorage.getItem(STORE_KEY) || 'null');
-    if (saved && Array.isArray(saved.items)) state = saved;
+    if (saved && Array.isArray(saved.items)) {
+      state.items = saved.items.map(cleanItem).filter(Boolean);
+      state.town = TOWNS.indexOf(saved.town) > -1 ? saved.town : 'Bük';
+    }
   } catch (e) {}
   function save() { try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch (e) {} }
+
+  /* ---------- közös demó-állapot (admin beállítások) ---------- */
+  var D = window.LimitDemo, S = D.getSettings();
+  var outPizza = function (id) { return S.soldOut.pizzas.indexOf(id) > -1; };
+  var outTop = function (t) { return S.soldOut.toppings.indexOf(t) > -1; };
+  var DUPLA = function (p, t) { return p.ingredients.indexOf(t) > -1 || (t === 'feta sajt' && p.ingredients.indexOf('feta') > -1) || (t === 'trappista sajt' && p.ingredients.indexOf('trappista') > -1); };
+  /* a kosárban lévő tétel időközben elfogyott-e (pizza vagy hozzáadott feltét) */
+  function itemProblem(it) {
+    if (it.type !== 'pizza') return '';
+    if (outPizza(it.id)) return 'Ez a pizza ma elfogyott — töröld a kosárból.';
+    var gone = it.plusz.concat(it.extra).filter(outTop);
+    return gone.length ? 'Elfogyott feltét: ' + gone.join(', ') + ' — töröld, és rakd össze újra.' : '';
+  }
+  var cartBlocked = function () { return state.items.some(function (it) { return !!itemProblem(it); }); };
 
   function unitPrice(it) {
     if (it.type === 'drink') return drinkById(it.id).price;
@@ -181,27 +210,31 @@
   var listEl = $('[data-pizza-list]');
   listEl.innerHTML = M.pizzas.map(ProductCard).join('');
 
-  /* --- „Ma elfogyott” jelzés: az admin demóban állítható (ugyanebben a böngészőben) --- */
-  var OUT_KEY = 'limitpizza-demo-elfogyott-v1';
-  function soldOut() { try { return JSON.parse(localStorage.getItem(OUT_KEY) || '[]'); } catch (e) { return []; } }
+  /* --- „Ma elfogyott” jelzés: a konyhai admin demóban állítható --- */
   function renderSoldOut() {
-    var out = soldOut();
     M.pizzas.forEach(function (p) {
-      var li = listEl.querySelector('[data-id="' + p.id + '"]'), on = out.indexOf(p.id) > -1;
+      var li = listEl.querySelector('[data-id="' + p.id + '"]'), on = outPizza(p.id);
       li.classList.toggle('is-out', on);
       var btn = $('.pi__btn', li); btn.disabled = on;
+      btn.setAttribute('aria-label', p.no + '. ' + cap(p.name) + ', ' + p.price + ' forint' + (on ? ' — ma elfogyott' : ' — összeállítás és kosárba'));
       var tag = $('.pi__out', li);
-      if (on && !tag) $('.pi__line', li).insertAdjacentHTML('afterend', '<span class="pi__out">Ma elfogyott</span>');
+      if (on && !tag) $('.pi__body', li).insertAdjacentHTML('beforeend', '<span class="pi__out">Ma elfogyott</span>');
       if (!on && tag) tag.remove();
     });
+    $$('.plate').forEach(function (f) {
+      var b = $('[data-open-pizza]', f), on = outPizza(b.getAttribute('data-open-pizza'));
+      f.classList.toggle('is-out', on); b.disabled = on;
+    });
+    $$('[data-topping-groups] .tg__items').forEach(function (el, i) {
+      var g = M.toppingGroups[i];
+      el.innerHTML = g.items.map(function (t) { return outTop(t) ? '<s title="ma elfogyott">' + esc(t) + '</s>' : esc(t); }).join(' / ');
+    });
   }
-  renderSoldOut();
-  window.addEventListener('storage', function (e) { if (e.key === OUT_KEY) renderSoldOut(); });
-
   $('[data-topping-groups]').innerHTML = M.toppingGroups.map(function (g) {
     return '<div class="tg"><div class="tg__line"><span class="tg__name">' + g.name + '</span><span class="lead" aria-hidden="true"></span><span class="tg__price">' + ft(g.price) + '</span></div>' +
       '<p class="tg__items">' + g.items.join(' / ') + '</p></div>';
   }).join('');
+  renderSoldOut();
   $('[data-legend]').innerHTML = Object.keys(M.allergens).map(function (k) {
     return '<span class="lg' + (k === 'csipos' ? ' is-hot' : '') + '">' + ICON[k] + M.allergens[k] + '</span>';
   }).join('');
@@ -300,8 +333,25 @@
     return '<label class="opt ' + (cls || '') + '"><input type="' + type + '" name="' + name + '" value="' + esc(value) + '"' + (extra || '') + '><span>' + label + '</span></label>';
   }
 
+  var cfgPizza = null, cfgUpdate = null, cfgSetQty = function () {};
+  /* admin közben elfogyottra állít valamit: a nyitott konfigurátor azonnal frissül */
+  function refreshCfg() {
+    if (!cfgDlg.open || !cfgPizza) return;
+    if (outPizza(cfgPizza.id)) { closeDialog(cfgDlg, cfgDlg, cfgTo()); toast(cap(cfgPizza.name) + ': közben elfogyott'); return; }
+    $$('input[name="plusz"], input[name="extra"]', cfgForm).forEach(function (inp) {
+      var out = outTop(inp.value), lab = inp.parentNode, tag = $('.tag--out', lab);
+      if (out && inp.checked) inp.checked = false;
+      inp.disabled = out;
+      if (out && !tag) $('span', lab).insertAdjacentHTML('beforeend', ' <em class="tag tag--out">elfogyott</em>');
+      if (!out && tag) tag.remove();
+    });
+    if (cfgUpdate) cfgUpdate(false);
+  }
   function ProductConfigurator(id) {
     var p = byId(id);
+    if (!p) return;
+    if (outPizza(p.id)) { toast(cap(p.name) + ': ma elfogyott'); return; }
+    cfgPizza = p;
     var removable = p.ingredients.filter(function (i) { return i !== 'paradicsomszósz'; });
     var media = p.photo
       ? '<figure class="cfg__media"><img class="cfg__photo" src="img/' + p.photo + '-kivagas-720.webp" srcset="img/' + p.photo + '-kivagas-720.webp 720w, img/' + p.photo + '-kivagas-1080.webp 1080w" sizes="300px" width="720" height="720" alt="' + esc(M.photos[p.photo].alt) + '"><figcaption>Saját fotó a Limit Pizza konyhájából</figcaption></figure>'
@@ -326,12 +376,12 @@
         '</div></fieldset>' +
 
         '<fieldset class="fs"><legend>Plusz feltétek <em>+' + ft(PLUSZ.price) + ' / db</em></legend><div class="opts">' +
-          PLUSZ.items.map(function (i) { return opt('checkbox', 'plusz', i, i); }).join('') +
+          PLUSZ.items.map(function (i) { return opt('checkbox', 'plusz', i, i + (outTop(i) ? ' <em class="tag tag--out">elfogyott</em>' : ''), outTop(i) ? ' disabled' : ''); }).join('') +
         '</div></fieldset>' +
 
         '<fieldset class="fs"><legend>Extra feltétek <em>+' + ft(EXTRA.price) + ' / db</em></legend><div class="opts">' +
-          EXTRA.items.map(function (i) { return opt('checkbox', 'extra', i, i + (p.ingredients.indexOf(i) > -1 || (i === 'feta sajt' && p.ingredients.indexOf('feta') > -1) || (i === 'trappista sajt' && p.ingredients.indexOf('trappista') > -1) ? ' <small>még egy adag</small>' : '')); }).join('') +
-        '</div></fieldset>' +
+          EXTRA.items.map(function (i) { return opt('checkbox', 'extra', i, i + (DUPLA(p, i) ? ' <small>dupla adag</small>' : '') + (outTop(i) ? ' <em class="tag tag--out">elfogyott</em>' : ''), outTop(i) ? ' disabled' : ''); }).join('') +
+        '</div><p class="fs__hint" style="margin-top:8px">„Dupla adag”: a pizzán már rajta lévő feltét még egyszer — az étlap extra árával számolva, a felára egyeztetendő.</p></fieldset>' +
 
         '<fieldset class="fs"><legend>Megjegyzés a konyhának</legend>' +
           '<label class="sr" for="cfg-note">Megjegyzés</label><textarea id="cfg-note" class="note" name="note" maxlength="140" placeholder="pl. jól átsütve, félbevágva"></textarea>' +
@@ -342,7 +392,7 @@
         '<button type="button" class="btn btn--ink cfg__add" data-cfg-add><span>Kosárba</span><span class="sum" data-sum>' + ft(p.price) + '</span></button>' +
       '</div>';
 
-    var qty = 1;
+    var qty = 1, adding = false;
     function read() {
       var fd = new FormData(cfgForm);
       return { type: 'pizza', id: p.id, base: fd.get('base'), removed: fd.getAll('removed'), plusz: fd.getAll('plusz'), extra: fd.getAll('extra'), note: (fd.get('note') || '').trim(), qty: qty };
@@ -362,13 +412,19 @@
       var q = e.target.closest('[data-q]');
       if (q) { qty = Math.max(1, Math.min(20, qty + +q.getAttribute('data-q'))); update(true); }
       if (e.target.closest('[data-cfg-add]')) {
+        if (adding) return;                       // gyors dupla kattintás ellen
         var it = read();
+        if (outPizza(p.id) || it.plusz.concat(it.extra).some(outTop)) { toast('Közben elfogyott — nézd át a választást.'); refreshCfg(); return; }
+        adding = true;
         addItem(it);
         closeDialog(cfgDlg, cfgDlg, cfgTo()).then(function () {
           toast(qty + ' × ' + cap(p.name) + ' a kosárban');
+          adding = false;
         });
       }
     };
+    cfgUpdate = update;
+    cfgSetQty = function (n) { qty = Math.max(1, Math.min(20, n)); update(false); };
     update(false);
     openCfgDlg();
     var body = $('.cfg__body', cfgForm); if (body) body.scrollTop = 0;
@@ -394,32 +450,26 @@
     if (base && !base.default) out.push('<li>Alap: <b>' + base.name + '</b> <span class="vf">(felár egyeztetendő)</span></li>');
     if (it.removed.length) out.push('<li>Nélküle: <span class="rm">' + it.removed.map(esc).join(', ') + '</span></li>');
     if (it.plusz.length) out.push('<li>Plusz: <b>' + it.plusz.map(esc).join(', ') + '</b> (' + it.plusz.length + ' × ' + ft(PLUSZ.price) + ')</li>');
-    if (it.extra.length) out.push('<li>Extra: <b>' + it.extra.map(esc).join(', ') + '</b> (' + it.extra.length + ' × ' + ft(EXTRA.price) + ')</li>');
+    if (it.extra.length) out.push('<li>Extra: <b>' + it.extra.map(esc).join(', ') + '</b> (' + it.extra.length + ' × ' + ft(EXTRA.price) + ')' + (it.extra.some(function (t) { return DUPLA(byId(it.id), t); }) ? ' <span class="vf">(dupla adag felára egyeztetendő)</span>' : '') + '</li>');
     if (it.note) out.push('<li>Megjegyzés: „' + esc(it.note) + '”</li>');
+    var pr = itemProblem(it); if (pr) out.push('<li class="ci__prob">' + esc(pr) + '</li>');
     return out.length ? '<ul class="ci__mods">' + out.join('') + '</ul>' : '';
   }
   function itemName(it) {
     if (it.type === 'drink') { var d = drinkById(it.id); return d.name + ' ' + d.volume; }
     return byId(it.id).name;
   }
-  function slipText() {
-    var lines = ['LIMIT PIZZA — rendelési lista (bemutató)', ''];
-    state.items.forEach(function (it) {
-      lines.push(it.qty + ' × ' + (it.type === 'pizza' ? byId(it.id).no + '. ' + cap(byId(it.id).name) : itemName(it)) + ' — ' + ft(unitPrice(it) * it.qty));
-      if (it.type === 'pizza') {
-        var b = M.bases.find(function (x) { return x.id === it.base; });
-        if (b && !b.default) lines.push('   alap: ' + b.name.toLowerCase());
-        if (it.removed.length) lines.push('   nélküle: ' + it.removed.join(', '));
-        if (it.plusz.length) lines.push('   plusz: ' + it.plusz.join(', '));
-        if (it.extra.length) lines.push('   extra: ' + it.extra.join(', '));
-        if (it.note) lines.push('   megjegyzés: ' + it.note);
-      }
+  function slipText(o) {
+    var L = { alap: 'alap', nelkule: 'nélküle', plusz: 'plusz', extra: 'extra', megj: 'megjegyzés' };
+    var lines = ['LIMIT PIZZA — bemutató-rendelés #' + o.no, ''];
+    o.lines.forEach(function (l) {
+      lines.push(l.qty + ' × ' + (l.no ? l.no + '. ' : '') + l.name + ' — ' + ft(l.sum));
+      l.mods.forEach(function (m) { lines.push('   ' + (typeof m === 'string' ? m : L[m.k] + ': ' + m.v)); });
     });
-    lines.push('', 'Település: ' + state.town, 'Részösszeg: ' + ft(subtotal()), 'Kiszállítás: ' + (fee() ? ft(fee()) : 'ingyenes'), 'Összesen: ' + ft(subtotal() + fee()));
+    lines.push('', 'Település: ' + o.customer.town, 'Részösszeg: ' + ft(o.sub), 'Kiszállítás: ' + (o.fee ? ft(o.fee) : 'ingyenes'), 'Összesen: ' + ft(o.total));
     return lines.join('\n');
   }
 
-  var ORDERS_KEY = 'limitpizza-demo-rendelesek-v1';
   var DEMO_CUSTOMER = { name: 'Minta Vendég', phone: '+36 30 000 0000', address: 'Minta utca 1.' };
   var PAYS = [
     { id: 'kartya', label: 'Bankkártya a futárnál' },
@@ -430,79 +480,100 @@
 
   function orderLines() {
     return state.items.map(function (it) {
-      var mods = [];
+      var mods = [];   /* {k: alap|nelkule|plusz|extra|megj, v: szöveg} */
       if (it.type === 'pizza') {
         var b = M.bases.find(function (x) { return x.id === it.base; });
-        if (b && !b.default) mods.push('alap: ' + b.name.toLowerCase() + ' (felár egyeztetendő)');
-        if (it.removed.length) mods.push('nélküle: ' + it.removed.join(', '));
-        if (it.plusz.length) mods.push('plusz: ' + it.plusz.join(', '));
-        if (it.extra.length) mods.push('extra: ' + it.extra.join(', '));
-        if (it.note) mods.push('megjegyzés: ' + it.note);
+        if (b && !b.default) mods.push({ k: 'alap', v: b.name.toLowerCase() + ' (felár egyeztetendő)' });
+        it.removed.forEach(function (t) { mods.push({ k: 'nelkule', v: t }); });
+        it.plusz.forEach(function (t) { mods.push({ k: 'plusz', v: t }); });
+        it.extra.forEach(function (t) { mods.push({ k: 'extra', v: t + (DUPLA(byId(it.id), t) ? ' (dupla adag)' : '') }); });
+        if (it.note) mods.push({ k: 'megj', v: it.note });
       }
       return { qty: it.qty, no: it.type === 'pizza' ? byId(it.id).no : null, name: it.type === 'pizza' ? cap(byId(it.id).name) : itemName(it), unit: unitPrice(it), sum: unitPrice(it) * it.qty, mods: mods };
     });
   }
   function saveDemoOrder() {
-    var list = [];
-    try { list = JSON.parse(localStorage.getItem(ORDERS_KEY) || '[]'); } catch (e) {}
-    var last = list.reduce(function (m, o) { return Math.max(m, o.no || 0); }, 1040);
-    var o = {
-      no: last + 1, ts: Date.now(), status: 'uj', demo: true,
+    return D.addOrder({
+      ts: Date.now(), status: 'uj', demo: true,
       customer: { name: DEMO_CUSTOMER.name, phone: DEMO_CUSTOMER.phone, town: state.town, address: DEMO_CUSTOMER.address },
       pay: checkout.pay, note: checkout.note, lines: orderLines(),
-      sub: subtotal(), fee: fee(), total: subtotal() + fee(), gift: pizzaCount() >= M.delivery.gift.pizzaCount
-    };
-    list.push(o);
-    try { localStorage.setItem(ORDERS_KEY, JSON.stringify(list)); } catch (e) {}
-    return o;
+      sub: subtotal(), fee: fee(), total: subtotal() + fee(), gift: pizzaCount() >= M.delivery.gift.pizzaCount,
+      etaAtOrder: { min: S.eta.min, max: S.eta.max }
+    });
+  }
+  var etaText = function () { return 'kb. ' + D.etaLabel(S.eta); };
+  var ETA_NOTE = 'becsült idő, nem garantált';
+
+  /* a bemutató-rendelés állapota, ahogy a konyhai admin demó beállítja (ugyanebben a böngészőben) */
+  var STATUS_TXT = {
+    uj: ['Megérkezett a konyhára', 'A konyha még nem igazolta vissza. (Bemutató: nyisd meg a konyhai demót egy másik fülön, és fogadd el.)'],
+    keszul: ['A konyha elfogadta — készül', ''],
+    uton: ['Úton van', 'A futár elindult.'],
+    kesz: ['Kiszállítva', ''],
+    elutasitva: ['A konyha nem tudta elfogadni', 'Élesben itt kapna értesítést a vendég, és telefonon egyeztetnének.']
+  };
+  function liveStatusHtml(no) {
+    var o = D.getOrders().find(function (x) { return x.no === no; });
+    if (!o) return '<p class="live__t">A bemutató-rendelés már nincs meg (a konyhai demóban visszaállították a minta adatokat).</p>';
+    var t = STATUS_TXT[o.status] || STATUS_TXT.uj, extra = t[1];
+    if (o.status === 'keszul' && o.prepMin) extra = 'A konyha szerint várhatóan ' + o.prepMin + ' perc múlva indul. (' + ETA_NOTE + ')';
+    return '<p class="live__k">Konyhai állapot · #' + o.no + '</p><p class="live__t live__t--' + o.status + '">' + t[0] + '</p>' + (extra ? '<p class="live__d">' + esc(extra) + '</p>' : '');
   }
 
   function CartDrawer() {
-    var titles = { list: ['Kosár', 'A rendelésed összesítője'], checkout: ['Rendelés', 'Szállítási adatok · bemutató'], done: ['Elküldve', 'Bemutató'] };
+    var titles = { list: ['Kosár', 'A rendelésed összesítője'], checkout: ['Rendelés', 'Szállítási adatok · bemutató'], done: ['Bemutató vége', 'Így működne a rendelés'] };
     var head = '<div class="cart__head"><div><h2 id="cart-cim">' + titles[view][0] + '</h2><p>' + titles[view][1] + '</p></div>' +
       '<button type="button" class="xbtn" data-close aria-label="Bezárás">' + ICON.x + '</button></div>';
-    var steps = '<ol class="steps" aria-label="Rendelés lépései">' + ['Kosár', 'Adatok', 'Kész'].map(function (t, i) {
+    var steps = '<ol class="steps" aria-label="Rendelés lépései">' + ['Kosár', 'Adatok', 'Konyha'].map(function (t, i) {
       var cur = { list: 0, checkout: 1, done: 2 }[view];
       return '<li class="' + (i < cur ? 'is-done' : i === cur ? 'is-on' : '') + '"' + (i === cur ? ' aria-current="step"' : '') + '><span>' + (i + 1) + '</span>' + t + '</li>';
     }).join('') + '</ol>';
+    var paused = !S.accepting
+      ? '<div class="cart__pause" role="status"><b>A rendelésfelvétel most szünetel.</b> A kosarad megmarad; amint a konyha újra fogad rendelést, folytathatod. Sürgős esetben hívj: <a href="' + M.meta.phoneHref + '">' + M.meta.phone + '</a>.</div>'
+      : '';
 
     if (view === 'done') {
       var o = lastOrder;
       cartEl.innerHTML = head + steps +
         '<div class="done">' +
           '<span class="done__badge">Bemutató</span>' +
-          '<h3>Bemutató — valódi rendelés nem történt.</h3>' +
-          '<p>Élesben itt kapná meg a vendég a visszaigazolást, a konyhán pedig ebben a pillanatban megjelenne a rendelés. Megnézheted, hogyan:</p>' +
-          '<a class="btn btn--ink" href="admin.html#r' + o.no + '" target="_blank" rel="noopener">Így látja a konyha · admin demó</a>' +
-          '<pre class="slip" data-slip>' + esc(slipText()) + '</pre>' +
+          '<h3>Valódi rendelés nem történt.</h3>' +
+          '<p>Ez a látványterv bemutatója: a rendelés csak ebben a böngészőben, a konyhai demó felületen jelenik meg — a pizzériához nem jut el.</p>' +
+          '<div class="live" aria-live="polite" data-live>' + liveStatusHtml(o.no) + '</div>' +
+          '<a class="btn btn--ink" href="admin.html#r' + o.no + '" target="_blank" rel="noopener">Konyhai demó megnyitása</a>' +
+          '<details class="done__slip"><summary>A rendelés részletei</summary><pre class="slip" data-slip>' + esc(slipText(o)) + '</pre></details>' +
           '<p class="done__small">Ma a Limit Pizzánál telefonon lehet rendelni:</p>' +
           '<a class="btn btn--red" href="' + M.meta.phoneHref + '">' + ICON.phone + 'Hívás: ' + M.meta.phone + '</a>' +
-          '<button type="button" class="linkbtn" data-new>Új rendelés összeállítása</button>' +
+          '<button type="button" class="linkbtn" data-new>Új bemutató-rendelés</button>' +
         '</div>';
       return;
     }
 
     if (!state.items.length) {
-      cartEl.innerHTML = head +
+      cartEl.innerHTML = head + paused +
         '<div class="cart__demo"><span><b>Bemutató.</b> A kosár nem küld rendelést — ma telefonon lehet rendelni.</span></div>' +
         '<div class="cart__empty"><img src="img/logo-160.webp" width="160" height="160" alt=""><p>A kosár még üres. Válassz az étlapról, és itt összeáll a rendelésed.</p>' +
         '<button type="button" class="btn btn--ink btn--sm" data-goto-menu>Étlap</button></div>';
       return;
     }
 
-    var sub = subtotal(), f = fee(), pc = pizzaCount(), min = M.delivery.minimumOrder;
+    var sub = subtotal(), f = fee(), pc = pizzaCount(), min = M.delivery.minimumOrder, blocked = cartBlocked();
     var gift = '';
     if (pc >= M.delivery.gift.pizzaCount) gift = '<p class="warn warn--gift">5 pizza egy nyugtán: ajándék ' + M.delivery.gift.item + ' jár.</p>';
     else if (pc >= 3) gift = '<p class="warn warn--gift">Még ' + (M.delivery.gift.pizzaCount - pc) + ' pizza, és ajándék ' + M.delivery.gift.item + ' jár.</p>';
     var townSel = '<label class="field"><span>Település</span><select data-town>' +
       M.delivery.zones.map(function (z) { return z.towns.map(function (t) { return '<option value="' + t + '"' + (t === state.town ? ' selected' : '') + '>' + t + ' — ' + (z.fee ? ft(z.fee) + ' kiszállítás' : 'ingyenes kiszállítás') + '</option>'; }).join(''); }).join('') +
       '</select></label>';
-    var totals = '<div class="rows"><div><span>Részösszeg</span><span>' + ft(sub) + '</span></div><div><span>Kiszállítás (' + esc(state.town) + ')</span><span>' + (f ? ft(f) : 'ingyenes') + '</span></div>' +
-      '<div class="tot"><span>Összesen</span><span data-total>' + ft(sub + f) + '</span></div></div>';
+    var totals = '<div class="rows"><div><span>Részösszeg (étel, ital)</span><span>' + ft(sub) + '</span></div><div><span>Kiszállítási díj · ' + esc(state.town) + '</span><span>' + (f ? ft(f) : 'ingyenes') + '</span></div>' +
+      '<div class="tot"><span>Összesen</span><span data-total>' + ft(sub + f) + '</span></div></div>' +
+      '<p class="eta-row">Várható kiszállítás most: <b>' + etaText() + '</b> <span>· ' + ETA_NOTE + '</span></p>';
+    var warns = (sub < min ? '<p class="warn warn--min">A minimum rendelés ' + ft(min) + ' — még ' + ft(min - sub) + ' hiányzik.</p>' : '') +
+      (blocked ? '<p class="warn warn--min">A kosárban van ma elfogyott tétel. Töröld, és folytathatod.</p>' : '');
 
     if (view === 'checkout') {
-      cartEl.innerHTML = head + steps +
-        '<div class="cart__demo"><span><b>Bemutató.</b> A mezők minta adatokat tartalmaznak, nem írhatók át, és semmi nem kerül elküldésre. Élesben itt adja meg a vendég a nevét, telefonszámát és címét.</span></div>' +
+      var canSend = S.accepting && !blocked && sub >= min;
+      cartEl.innerHTML = head + steps + paused +
+        '<div class="cart__demo"><span><b>Bemutató.</b> A mezők rögzített minta adatok, nem írhatók át, és semmi nem kerül elküldésre. Élesben itt adja meg a vendég a nevét, telefonszámát és címét.</span></div>' +
         '<div class="co">' +
           '<div class="co__grid">' +
             '<label class="field"><span>Név</span><input value="' + DEMO_CUSTOMER.name + '" readonly aria-readonly="true"></label>' +
@@ -515,59 +586,78 @@
           '</div><p class="fs__hint" style="margin-top:8px">Online kártyás fizetés nincs a tervben — a fizetés átvételkor történik.</p></fieldset>' +
           '<label class="field"><span>Üzenet a futárnak</span><textarea class="note" maxlength="140" placeholder="pl. kapucsengő nem működik, hívjon" data-co-note>' + esc(checkout.note) + '</textarea></label>' +
         '</div>' +
-        '<div class="cart__sum">' + totals +
+        '<div class="cart__sum">' + totals + warns +
           '<div class="cart__btns">' +
-            '<button type="button" class="btn btn--ink" data-send>Rendelés elküldése · bemutató</button>' +
+            '<button type="button" class="btn btn--ink" data-send' + (canSend ? '' : ' disabled') + '>' + (S.accepting ? 'Bemutató-rendelés leadása' : 'Rendelésfelvétel szünetel') + '</button>' +
             '<button type="button" class="linkbtn" data-back>Vissza a kosárhoz</button>' +
           '</div>' +
         '</div>';
       return;
     }
 
-    cartEl.innerHTML = head + steps +
+    cartEl.innerHTML = head + steps + paused +
       '<ul class="cart__list">' + state.items.map(function (it, i) {
-        return '<li class="ci" data-i="' + i + '"><div class="ci__top"><span class="ci__name">' + esc(itemName(it)) + '</span><span class="lead" aria-hidden="true"></span><span class="ci__unit">' + ft(unitPrice(it)) + ' / db</span></div>' +
+        return '<li class="ci' + (itemProblem(it) ? ' is-prob' : '') + '" data-i="' + i + '"><div class="ci__top"><span class="ci__name">' + esc(itemName(it)) + '</span><span class="lead" aria-hidden="true"></span><span class="ci__unit">' + ft(unitPrice(it)) + ' / db</span></div>' +
           modsHtml(it) +
           '<div class="ci__bot"><div class="qty qty--sm" role="group" aria-label="' + esc(itemName(it)) + ' darabszám">' +
             '<button type="button" data-cq="-1" aria-label="Eggyel kevesebb"' + (it.qty <= 1 ? ' disabled' : '') + '>' + ICON.minus + '</button><output>' + it.qty + '</output>' +
-            '<button type="button" data-cq="1" aria-label="Eggyel több"' + (it.qty >= 20 ? ' disabled' : '') + '>' + ICON.plus + '</button></div>' +
+            '<button type="button" data-cq="1" aria-label="Eggyel több"' + (it.qty >= 20 || itemProblem(it) ? ' disabled' : '') + '>' + ICON.plus + '</button></div>' +
+            (it.type === 'pizza' && !itemProblem(it) ? '<button type="button" class="ci__del" data-edit>Módosítás</button>' : '') +
             '<button type="button" class="ci__del" data-del>Törlés</button><span class="ci__sum">' + ft(unitPrice(it) * it.qty) + '</span></div></li>';
       }).join('') + '</ul>' +
-      '<div class="cart__sum">' + townSel + totals +
-        (sub < min ? '<p class="warn warn--min">A minimum rendelés ' + ft(min) + ' — még ' + ft(min - sub) + ' hiányzik.</p>' : '') + gift +
+      '<div class="cart__sum">' + townSel + totals + warns + gift +
         '<div class="cart__btns">' +
-          '<button type="button" class="btn btn--ink" data-checkout' + (sub < min ? ' disabled' : '') + '>Tovább a szállítási adatokhoz</button>' +
+          '<button type="button" class="btn btn--ink" data-checkout' + (sub < min || blocked || !S.accepting ? ' disabled' : '') + '>' + (S.accepting ? 'Tovább a szállítási adatokhoz' : 'Rendelésfelvétel szünetel') + '</button>' +
           '<a class="btn btn--line" href="' + M.meta.phoneHref + '">' + ICON.phone + 'Inkább telefonon: ' + M.meta.phone + '</a>' +
         '</div>' +
       '</div>';
   }
-  var lastOrder = null;
+  var lastOrder = null, sending = false;
 
   cartEl.addEventListener('click', function (e) {
     var li = e.target.closest('.ci'), t;
     if ((t = e.target.closest('[data-cq]')) && li) {
-      var it = state.items[+li.getAttribute('data-i')];
+      var it = state.items[+li.getAttribute('data-i')]; if (!it) return;
       it.qty = Math.max(1, Math.min(20, it.qty + +t.getAttribute('data-cq')));
       save(); syncCount(false); CartDrawer();
       var newSum = $('.ci[data-i="' + li.getAttribute('data-i') + '"] .ci__sum', cartEl);
       anim(newSum, { opacity: [0.3, 1], y: [-4, 0] }, { duration: 0.2 });
       anim($('[data-total]', cartEl), { opacity: [0.3, 1] }, { duration: 0.2 });
     } else if (e.target.closest('[data-del]') && li) {
+      if (li.dataset.removing) return; li.dataset.removing = '1';
       var idx = +li.getAttribute('data-i');
       anim(li, { opacity: [1, 0], x: [0, 24] }, { duration: 0.18 }).then(function () {
         state.items.splice(idx, 1); save(); syncCount(false); CartDrawer();
       });
+    } else if (e.target.closest('[data-edit]') && li) {
+      /* módosítás: a tétel visszakerül a konfigurátorba az eddigi választásokkal */
+      var ei = +li.getAttribute('data-i'), item = state.items[ei]; if (!item) return;
+      closeDialog(cartDlg, cartDlg, cartTo()).then(function () {
+        state.items.splice(ei, 1); save(); syncCount(false);
+        ProductConfigurator(item.id);
+        var set = function (name, vals) { $$('input[name="' + name + '"]', cfgForm).forEach(function (x) { x.checked = vals.indexOf(x.value) > -1 && !x.disabled; }); };
+        $$('input[name="base"]', cfgForm).forEach(function (x) { x.checked = x.value === item.base; });
+        set('removed', item.removed); set('plusz', item.plusz); set('extra', item.extra);
+        $('#cfg-note').value = item.note || '';
+        cfgSetQty(item.qty);
+      });
     } else if (e.target.closest('[data-checkout]')) {
+      if (!S.accepting || cartBlocked()) { CartDrawer(); return; }
       view = 'checkout'; CartDrawer();
       anim($('.co', cartEl), { opacity: [0, 1], x: [16, 0] }, { duration: 0.26 });
     } else if (e.target.closest('[data-send]')) {
+      if (sending) return;
+      S = D.getSettings();                       // friss állapot: közben szüneteltethették
+      if (!S.accepting || cartBlocked() || subtotal() < M.delivery.minimumOrder || !state.items.length) { CartDrawer(); toast(!S.accepting ? 'A rendelésfelvétel közben szünetel.' : 'A kosár közben megváltozott.'); return; }
+      sending = true;
       lastOrder = saveDemoOrder();
-      view = 'done'; CartDrawer();
+      state.items = []; save(); syncCount(false);
+      view = 'done'; CartDrawer(); sending = false;
       anim($('.done', cartEl), { opacity: [0, 1], y: [10, 0] }, { duration: 0.28 });
     } else if (e.target.closest('[data-back]')) {
       view = 'list'; CartDrawer();
     } else if (e.target.closest('[data-new]')) {
-      state.items = []; save(); syncCount(false); view = 'list';
+      view = 'list';
       closeDialog(cartDlg, cartDlg, cartTo()).then(function () { location.hash = '#etlap'; });
     } else if (e.target.closest('[data-goto-menu]')) {
       closeDialog(cartDlg, cartDlg, cartTo()).then(function () { location.hash = '#etlap'; });
@@ -585,6 +675,29 @@
   $$('[data-open-cart]').forEach(function (b) {
     b.addEventListener('click', function () { view = 'list'; CartDrawer(); openCartDlg(); });
   });
+
+  /* =========================================================
+     Admin → vevői oldal: szüneteltetés, várható idő, elfogyott
+     ========================================================= */
+  function renderEta() {
+    $$('[data-eta]').forEach(function (el) { el.innerHTML = 'Várható kiszállítás most: <b>' + etaText() + '</b> <span>· ' + ETA_NOTE + '</span>'; });
+    var bar = $('[data-pause-bar]'); bar.hidden = S.accepting;
+    $$('[data-eta]').forEach(function (el) { el.hidden = !S.accepting; });
+  }
+  function onShared(what) {
+    if (what === 'settings') {
+      S = D.getSettings(); renderSoldOut(); renderEta(); refreshCfg();
+      if (cartDlg.open && view !== 'done') CartDrawer();
+    }
+    if (what === 'orders' && cartDlg.open && view === 'done' && lastOrder) {
+      var live = $('[data-live]', cartEl);
+      if (live) { live.innerHTML = liveStatusHtml(lastOrder.no); anim(live, { opacity: [0.4, 1] }, { duration: 0.3 }); }
+    }
+  }
+  D.subscribe(onShared);
+  /* tartalék: ha a fül háttérben volt, visszatéréskor újraolvasunk */
+  document.addEventListener('visibilitychange', function () { if (!document.hidden) { onShared('settings'); onShared('orders'); } });
+  renderEta();
 
   /* =========================================================
      Eredeti étlap nézet

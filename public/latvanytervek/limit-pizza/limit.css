@@ -82,7 +82,7 @@ p{margin:0}
 .demo-bar{background:var(--brandPrimary);color:#fff;font-size:13px}
 .demo-bar__in{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:38px;padding-top:6px;padding-bottom:6px}
 .demo-bar b{color:var(--brandSecondary);font-weight:700;letter-spacing:.06em;text-transform:uppercase;font-stretch:75%}
-.demo-bar__x{flex:none;width:32px;height:32px;border:0;background:transparent;color:#fff;display:grid;place-items:center;border-radius:50%}
+.demo-bar__x{flex:none;width:40px;height:40px;border:0;background:transparent;color:#fff;display:grid;place-items:center;border-radius:50%}
 .demo-bar__x svg{width:12px;height:12px;stroke:currentColor;stroke-width:2;fill:none}
 .demo-bar__x:hover{background:rgba(255,255,255,.12)}
 
@@ -447,7 +447,7 @@ body.is-locked{overflow:hidden}
 .warn--gift{background:#eef8f2;color:#145c33}
 .cart__btns{display:grid;gap:10px;margin-top:14px}
 .cart__btns .btn{width:100%}
-.done{padding:28px 20px;display:grid;gap:14px;overflow-y:auto}
+.done{padding:24px 20px calc(24px + env(safe-area-inset-bottom));display:grid;gap:14px;overflow-y:auto;flex:1;min-height:0;align-content:start;overscroll-behavior:contain}
 .done__badge{display:inline-flex;align-self:start;justify-self:start;font-weight:800;font-stretch:75%;letter-spacing:.14em;text-transform:uppercase;font-size:12.5px;background:var(--brandSecondary);color:var(--brandPrimary);padding:6px 12px;border-radius:var(--r-pill)}
 .done h3{font-size:26px}
 .done p{color:#3a3c40}
@@ -517,3 +517,62 @@ html.anim .a-plate{opacity:0;transform:scale(.96)}
 .field input{min-height:46px;border:1.5px dashed #c3c5c9;border-radius:var(--r-md);padding:0 12px;background:var(--surface);font-size:16px;color:#55585d;width:100%}
 .co .fs{margin-top:6px}
 .done__small{font-size:14px;color:var(--muted);margin-top:4px}
+
+/* --- 3. kör: szünet, várható idő, elfogyott feltét, konyhai demó belépő --- */
+.pause-bar{background:#fff1f0;color:#8f1717;border-bottom:1.5px solid #f3b4b0;font-size:14.5px}
+.pause-bar .wrap{padding-top:10px;padding-bottom:10px}
+.pause-bar a{font-weight:700;white-space:nowrap}
+.hero__eta{margin-top:6px;font-size:14px;color:#3a3c40}
+.hero__eta b{font-weight:700}
+.hero__eta span,.eta-row span{color:var(--muted)}
+.eta-row{font-size:13.5px;margin-top:10px;color:#3a3c40}
+.cart__pause{margin:14px 20px 0;padding:10px 12px;border-radius:var(--r-sm);background:#fff1f0;color:#8f1717;font-size:13.5px}
+.cart__pause a{font-weight:700;white-space:nowrap}
+.ci.is-prob .ci__name{color:var(--muted);text-decoration:line-through}
+.ci__prob{color:#8f1717;font-weight:600}
+.opt input:disabled+span{opacity:.45;cursor:not-allowed;background:var(--surface)}
+.opt input:disabled{cursor:not-allowed}
+.tag--out{color:#fff!important;background:var(--brandPrimary);border-color:var(--brandPrimary)!important}
+.plate.is-out{opacity:.45}
+.plate.is-out .plate__btn{cursor:not-allowed}
+.tg__items s{color:var(--muted)}
+.live{border:1.5px solid var(--brandPrimary);border-radius:var(--r-md);padding:14px 16px}
+.live__k{font-size:12px;font-weight:800;font-stretch:75%;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.live__t{font-weight:850;font-stretch:62%;text-transform:uppercase;font-size:22px;letter-spacing:.02em;margin-top:4px}
+.live__t--keszul,.live__t--uton,.live__t--kesz{color:var(--ok)}
+.live__t--elutasitva{color:#8f1717}
+.live__d{font-size:14px;color:#3a3c40;margin-top:4px}
+.done__slip summary{cursor:pointer;font-weight:600;font-size:14.5px;padding:6px 0}
+.done__slip .slip{margin-top:8px}
+.mnav__demo{text-align:center;font-size:14px;font-weight:600;color:var(--accentText)}
+
+.kdemo{padding:80px 0;border-top:1px solid var(--border)}
+.kdemo__grid{display:grid;gap:44px;align-items:center}
+@media (min-width:1000px){.kdemo__grid{grid-template-columns:1.05fr 1fr;gap:72px}}
+.kdemo h2{font-size:var(--fs-h2);margin-top:10px;max-width:20ch}
+.kdemo__steps{list-style:none;counter-reset:k;margin:24px 0 0;padding:0;display:grid;gap:10px}
+.kdemo__steps li{counter-increment:k;display:grid;grid-template-columns:34px 1fr;gap:12px;align-items:baseline;font-size:15.5px}
+.kdemo__steps li::before{content:counter(k);width:28px;height:28px;border-radius:50%;border:1.5px solid var(--brandPrimary);display:grid;place-items:center;font-weight:800;font-size:13px}
+.kdemo__steps b{font-weight:800;font-stretch:75%;text-transform:uppercase;letter-spacing:.1em;font-size:13.5px;margin-right:4px}
+.kdemo__cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+.kdemo__note{font-size:13.5px;color:var(--muted);margin-top:16px;max-width:62ch}
+@media (max-width:420px){.kdemo__cta .btn{flex:1 1 100%}}
+/* iPad-vázlat: HTML/CSS, nem képernyőfotó */
+.ipad{width:100%;max-width:440px;margin:0 auto;background:#1a1a1a;border-radius:28px;padding:16px;box-shadow:0 30px 60px rgba(13,13,13,.18)}
+.ipad__scr{min-height:300px;height:100%;background:var(--surface);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+.ipad__alarm{background:var(--brandSecondary);color:var(--brandPrimary);font-weight:850;font-stretch:62%;letter-spacing:.12em;text-align:center;padding:8px;font-size:15px;animation:ipadPulse 1.6s ease-in-out infinite}
+@keyframes ipadPulse{50%{background:#ff6a6a}}
+@media (prefers-reduced-motion:reduce){.ipad__alarm{animation:none}}
+.ipad__card{margin:12px;background:#fff;border-radius:12px;border-left:4px solid var(--brandSecondary);padding:12px 14px;font-size:12.5px;flex:1;display:flex;flex-direction:column}
+.ipad__no{font-weight:850;font-stretch:62%;font-size:20px}
+.ipad__no span{font-size:10px;font-weight:700;font-stretch:75%;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);border:1px solid var(--border);border-radius:99px;padding:1px 6px;vertical-align:3px;margin-left:6px}
+.ipad__who{color:var(--muted);margin-bottom:6px}
+.ipad__card ul{list-style:none;margin:0;padding:6px 0;border-top:1px dashed #c3c5c9}
+.ipad__card li{padding:3px 0;font-weight:600}
+.ipad__card li small{display:block;font-weight:400;color:var(--accentText)}
+.ipad__tot{margin-top:auto;display:flex;justify-content:space-between;border-top:1px solid var(--border);padding-top:6px}
+.ipad__btns{display:grid;grid-template-columns:2fr 1fr;gap:8px;margin-top:10px}
+.ipad__btns span{display:grid;place-items:center;min-height:34px;border-radius:99px;font-weight:800;font-stretch:75%;letter-spacing:.1em;text-transform:uppercase;font-size:11px}
+.ipad__ok{background:var(--brandPrimary);color:#fff}
+.ipad__no-btn{border:1.5px solid var(--brandPrimary)}
+@media (max-width:420px){.ipad{border-radius:20px;padding:10px}.ipad__card{font-size:11.5px;margin:8px;padding:10px}}

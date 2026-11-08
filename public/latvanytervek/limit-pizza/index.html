@@ -35,6 +35,10 @@
   </div>
 </div>
 
+<div class="pause-bar" data-pause-bar role="status" hidden>
+  <div class="wrap"><p><b>A rendelésfelvétel most szünetel.</b> A kosarad megmarad. Sürgős esetben: <a href="tel:+36307869239">+36 30 786 9239</a></p></div>
+</div>
+
 <!-- Header -->
 <header class="hdr" id="hdr">
   <div class="wrap hdr__in">
@@ -75,6 +79,7 @@
   </nav>
   <div class="mnav__foot">
     <a class="btn btn--ink" href="tel:+36307869239">Hívás: +36 30 786 9239</a>
+    <a class="mnav__demo" href="#konyha">Bemutató: így érkezik a rendelés a konyhába →</a>
     <p class="mnav__hours">Szerda–vasárnap 16:00–22:00 · hétfő, kedd zárva</p>
     <ul class="social social--mnav" aria-label="Közösségi oldalaink"><li><a href="https://www.facebook.com/683872544816054" target="_blank" rel="noopener"><svg class="ic ic--fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M13.6 21v-7.4h2.5l.4-2.9h-2.9V8.9c0-.8.2-1.4 1.4-1.4h1.6V4.9c-.3 0-1.2-.1-2.3-.1-2.3 0-3.8 1.4-3.8 3.9v2H8v2.9h2.5V21z"/></svg><span>Limit Pizza Házhozszállítás</span><span class="sr"> a Facebookon</span></a></li><li><a href="https://www.instagram.com/limitpizza/" target="_blank" rel="noopener"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".6" class="dot"/></svg><span>@limitpizza</span><span class="sr"> az Instagramon</span></a></li></ul>
   </div>
@@ -98,6 +103,7 @@
           </a>
         </div>
         <p class="hero__status a-in" data-status-long>Rendelésfelvétel: szerda–vasárnap 16:00–22:00</p>
+        <p class="hero__eta a-in" data-eta></p>
         <div class="hero__social a-in"><p>Kövess minket</p><ul class="social social--hero" aria-label="Közösségi oldalaink"><li><a href="https://www.facebook.com/683872544816054" target="_blank" rel="noopener"><svg class="ic ic--fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M13.6 21v-7.4h2.5l.4-2.9h-2.9V8.9c0-.8.2-1.4 1.4-1.4h1.6V4.9c-.3 0-1.2-.1-2.3-.1-2.3 0-3.8 1.4-3.8 3.9v2H8v2.9h2.5V21z"/></svg><span>Limit Pizza Házhozszállítás</span><span class="sr"> a Facebookon</span></a></li><li><a href="https://www.instagram.com/limitpizza/" target="_blank" rel="noopener"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".6" class="dot"/></svg><span>@limitpizza</span><span class="sr"> az Instagramon</span></a></li></ul></div>
       </div>
 
@@ -251,6 +257,44 @@
     </div>
   </section>
 
+  <!-- Konyhai demó belépő -->
+  <section class="kdemo" id="konyha" aria-labelledby="kdemo-cim">
+    <div class="wrap kdemo__grid">
+      <div class="kdemo__txt">
+        <p class="eyebrow">Bemutató · online rendelés</p>
+        <h2 id="kdemo-cim">Nézd meg, hogyan érkezik meg a rendelés a konyhába</h2>
+        <p class="sec-head__sub">Ha a vendég a weboldalon rendel, a rendelés a konyhai iPaden jelenik meg, hangjelzéssel. Egy koppintással elfogadható, megadható, mennyi idő múlva indul, és ha valami elfogyott, egy kapcsolóval letiltható. Ha túl sok a rendelés, a rendelésfelvétel szüneteltethető.</p>
+        <ol class="kdemo__steps">
+          <li><span><b>Vendég</b> összeállítja a pizzát, és leadja a bemutató-rendelést.</span></li>
+          <li><span><b>Konyha</b> hangjelzést kap, elfogadja, és beállítja a várható időt.</span></li>
+          <li><span><b>Vendég</b> látja, hogy a konyha elfogadta.</span></li>
+        </ol>
+        <div class="kdemo__cta">
+          <a class="btn btn--ink" href="admin.html" target="_blank" rel="noopener">Konyhai demó megnyitása</a>
+          <a class="btn btn--line" href="#etlap">Bemutató-rendelés leadása</a>
+        </div>
+        <p class="kdemo__note">Bemutató: a két fül ugyanabban a böngészőben kommunikál egymással. A pizzériához semmi nem jut el — ma telefonon lehet rendelni. Két külön eszköz (vendég telefonja és konyhai iPad) közötti valódi működéshez szerveroldali rendszer kell.</p>
+      </div>
+      <div class="kdemo__ipad" aria-hidden="true">
+        <div class="ipad">
+          <div class="ipad__scr">
+            <div class="ipad__alarm">ÚJ RENDELÉS</div>
+            <div class="ipad__card">
+              <p class="ipad__no">#1041 <span>minta</span></p>
+              <p class="ipad__who">Minta Vendég · Bük</p>
+              <ul>
+                <li><b>2×</b> 18. Magyaros<small>nélküle: lilahagyma · plusz: gomba · extra: bacon</small></li>
+                <li><b>1×</b> Coca Cola 1,75 l</li>
+              </ul>
+              <p class="ipad__tot">Összesen <b>10 200 Ft</b></p>
+              <div class="ipad__btns"><span class="ipad__ok">Elfogadás</span><span class="ipad__no-btn">Elutasítás</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ContactSection -->
   <section class="contact" id="kapcsolat" aria-labelledby="kapcs-cim">
     <div class="wrap contact__grid">
@@ -327,6 +371,7 @@
 <div class="toast" role="status" aria-live="polite" data-toast></div>
 
 <script src="data/menu.js"></script>
+<script src="js/demo-store.js"></script>
 <script src="js/vendor/motion-11.18.2.min.js" defer></script>
 <script src="limit.js" defer></script>
 </body>

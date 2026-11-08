@@ -4,9 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Konyha · rendelések — Limit Pizza admin demó</title>
-<meta name="description" content="A Limit Pizza rendelési felületének admin oldala, bemutató: beérkező rendelések, állapotok, nyomtatás, elfogyott termékek.">
+<meta name="description" content="A Limit Pizza konyhai rendelésfogadó felületének bemutatója iPadre: új rendelés hangjelzéssel, elfogadás idővel, szüneteltetés, elfogyott termékek, konyhai blokk.">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#0d0d0d">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Limit konyha">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -18,8 +20,11 @@
 
 <div class="demo-bar" role="note">
   <div class="wrap demo-bar__in">
-    <p><b>Admin demó</b> — minta rendelésekkel. Semmi nem kerül elküldésre; minden csak ebben a böngészőben tárolódik.</p>
-    <button type="button" class="adm__reset" data-reset>Minta adatok visszaállítása</button>
+    <p><b>Konyhai demó</b> — minta adatokkal, csak ebben a böngészőben. Semmi nem kerül elküldésre.</p>
+    <div class="demo-bar__act">
+      <button type="button" class="adm__mini" data-simulate>Próbarendelés érkezik</button>
+      <button type="button" class="adm__mini" data-reset>Visszaállítás</button>
+    </div>
   </div>
 </div>
 
@@ -27,51 +32,133 @@
   <div class="wrap atop__in">
     <a class="atop__brand" href="index.html" aria-label="Vissza a weboldalra">
       <img src="img/logo-160.webp" width="160" height="160" alt="Limit Pizza logó">
-      <span><b>Konyha</b><small>Rendelések · <span data-clock>--:--</span></small></span>
+      <span><b>Konyha</b><small><span data-clock>--:--</span> · <span data-eta-top>45–60 perc</span></small></span>
     </a>
     <div class="atop__ctl">
-      <label class="sw" title="Rendelésfelvétel a weboldalon">
-        <input type="checkbox" data-accepting checked>
-        <span class="sw__track" aria-hidden="true"></span>
-        <span class="sw__lbl" data-accepting-lbl>Rendelést fogadunk</span>
-      </label>
-      <button type="button" class="abtn" data-sound aria-pressed="false">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path class="sw-on" d="M15.5 9a4 4 0 010 6M18 6.5a7.5 7.5 0 010 11"/><path class="sw-off" d="M16 9.5l5 5M21 9.5l-5 5"/></svg>
-        <span data-sound-lbl>Hang ki</span>
+      <button type="button" class="accept" data-accepting aria-pressed="true">
+        <span class="accept__dot" aria-hidden="true"></span>
+        <span class="accept__txt" data-accepting-txt>Rendelést fogadunk</span>
       </button>
-      <a class="abtn abtn--line" href="index.html">Weboldal</a>
+      <button type="button" class="abtn abtn--sound" data-sound aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path class="sw-on" d="M15.5 9a4 4 0 010 6M18 6.5a7.5 7.5 0 010 11"/><path class="sw-off" d="M16 9.5l5 5M21 9.5l-5 5"/></svg>
+        <span data-sound-lbl>Hang bekapcsolása</span>
+      </button>
     </div>
   </div>
 </header>
 
-<main class="wrap amain">
-  <section class="stats" aria-label="Mai összesítő">
-    <div><span>Mai rendelések</span><b data-st="count">0</b></div>
-    <div><span>Mai forgalom</span><b data-st="sum">0 Ft</b></div>
-    <div><span>Átlagos rendelés</span><b data-st="avg">0 Ft</b></div>
-    <div><span>Várakozik</span><b data-st="open">0</b></div>
-  </section>
+<!-- riasztás: amíg van el nem fogadott új rendelés -->
+<div class="alarm" data-alarm role="alert" hidden>
+  <div class="wrap alarm__in">
+    <p><b data-alarm-n>1</b> új rendelés vár elfogadásra</p>
+    <button type="button" class="alarm__snd" data-sound-fix hidden>A hang nincs bekapcsolva — koppints ide</button>
+  </div>
+</div>
 
+<main class="wrap amain">
   <nav class="atabs" role="tablist" aria-label="Nézetek">
-    <button type="button" role="tab" class="atab is-on" aria-selected="true" aria-controls="p-rend" id="t-rend" data-tab="rend">Rendelések</button>
-    <button type="button" role="tab" class="atab" aria-selected="false" aria-controls="p-etlap" id="t-etlap" data-tab="etlap">Étlap · elérhetőség</button>
+    <button type="button" role="tab" class="atab is-on" aria-selected="true" aria-controls="p-rend" id="t-rend" data-tab="rend">Rendelések <span data-tab-n></span></button>
+    <button type="button" role="tab" class="atab" aria-selected="false" aria-controls="p-beall" id="t-beall" data-tab="beall">Beállítások</button>
   </nav>
 
   <section id="p-rend" role="tabpanel" aria-labelledby="t-rend">
+    <div class="newwrap" data-new-wrap>
+      <h2 class="sech">Új rendelések</h2>
+      <div class="newlist" data-new-list></div>
+    </div>
     <div class="cols-nav" role="group" aria-label="Állapot" data-colnav></div>
     <div class="board" data-board></div>
+    <details class="rejected" data-rejected-wrap>
+      <summary>Elutasított rendelések <span data-rejected-n>0</span></summary>
+      <div data-rejected></div>
+    </details>
   </section>
 
-  <section id="p-etlap" role="tabpanel" aria-labelledby="t-etlap" hidden>
-    <p class="hint">Amit itt „elfogyott”-ra állítasz, az a weboldal étlapján azonnal szürkén, „Ma elfogyott” jelzéssel jelenik meg, és nem tehető kosárba. (Bemutató: ugyanebben a böngészőben, a weboldalt egy másik fülön nyitva tartva látszik.)</p>
-    <div class="avail" data-avail></div>
+  <section id="p-beall" role="tabpanel" aria-labelledby="t-beall" hidden>
+    <div class="set">
+      <section class="set__box">
+        <h2 class="sech">Várható kiszállítási idő</h2>
+        <p class="hint">A vevői oldalon azonnal ez jelenik meg, „becsült idő, nem garantált” jelöléssel.</p>
+        <div class="etas" role="radiogroup" aria-label="Várható kiszállítási idő" data-etas></div>
+        <form class="eta-own" data-eta-own>
+          <span>Egyedi:</span>
+          <label><span class="sr">Legalább (perc)</span><input type="number" inputmode="numeric" min="10" max="240" step="5" data-eta-min></label>
+          <span>–</span>
+          <label><span class="sr">Legfeljebb (perc)</span><input type="number" inputmode="numeric" min="10" max="240" step="5" data-eta-max></label>
+          <span>perc</span>
+          <button type="submit" class="abtn">Beállítás</button>
+        </form>
+        <p class="eta-err" data-eta-err role="alert" hidden></p>
+      </section>
+
+      <section class="set__box">
+        <h2 class="sech">Elfogyott ma</h2>
+        <p class="hint">Amit kikapcsolsz, az a vevői oldalon azonnal elfogyottként jelenik meg, és nem rendelhető. Az állapot újratöltés után is megmarad.</p>
+        <div data-avail></div>
+      </section>
+
+      <section class="set__box set__box--info">
+        <h2 class="sech">Hang és iPad — fontos tudnivalók</h2>
+        <ul class="info">
+          <li>A hangot a böngésző csak egy koppintás után engedi elindítani. Műszak elején koppints a <b>Hang bekapcsolása</b> gombra, és a teszthanggal ellenőrizd a hangerőt.</li>
+          <li>A riasztás addig ismétlődik, amíg minden új rendelést el nem fogadtok vagy el nem utasítotok.</li>
+          <li>Lezárt kijelzőnél, vagy ha a Safari a háttérbe kerül, az iPad <b>nem garantálja</b> a hangot. A felületet érdemes előtérben, bekapcsolt kijelzővel, töltőn tartani. Ahol a böngésző támogatja, a felület kéri, hogy a kijelző ne kapcsoljon ki.</li>
+          <li>A némító kapcsoló és a „Ne zavarjanak” mód elnémíthatja a hangot.</li>
+          <li>Ez a demó csak ugyanazon a böngészőn belül, fülek között működik. A vendég telefonja és a konyhai iPad közötti valódi kapcsolathoz szerveroldali rendszer kell.</li>
+        </ul>
+        <button type="button" class="abtn abtn--line" data-test-sound>Teszthang</button>
+        <p class="hint" data-wake></p>
+      </section>
+    </div>
   </section>
 </main>
+
+<!-- elfogadás: elkészítési idő -->
+<dialog class="sheet" id="acc-dlg" aria-labelledby="acc-t">
+  <form method="dialog" class="sheet__in" data-acc-form>
+    <h2 id="acc-t">Elfogadás <span data-acc-no></span></h2>
+    <p class="hint">Mennyi idő múlva indul a futár? Ezt látja a vendég (becsült idő).</p>
+    <div class="prep" role="radiogroup" aria-label="Elkészítési idő" data-prep></div>
+    <label class="prep__own"><span>Egyedi (perc)</span><input type="number" inputmode="numeric" min="5" max="180" step="5" data-prep-own></label>
+    <p class="eta-err" data-prep-err role="alert" hidden></p>
+    <div class="sheet__btns">
+      <button type="button" class="abtn abtn--line abtn--xl" data-sheet-cancel>Mégse</button>
+      <button type="submit" class="abtn abtn--go abtn--xl" data-acc-ok>Elfogadás</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- elutasítás: megerősítés -->
+<dialog class="sheet" id="rej-dlg" aria-labelledby="rej-t">
+  <form method="dialog" class="sheet__in" data-rej-form>
+    <h2 id="rej-t">Biztosan elutasítod? <span data-rej-no></span></h2>
+    <p class="hint">Élesben a vendég értesítést kapna. Indok (nem kötelező):</p>
+    <div class="prep" role="radiogroup" aria-label="Indok" data-rej-reasons></div>
+    <div class="sheet__btns">
+      <button type="button" class="abtn abtn--line abtn--xl" data-sheet-cancel autofocus>Mégse</button>
+      <button type="submit" class="abtn abtn--danger abtn--xl" data-rej-ok>Igen, elutasítom</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- konyhai blokk előnézet -->
+<dialog class="sheet sheet--print" id="prn-dlg" aria-labelledby="prn-t">
+  <div class="sheet__in">
+    <h2 id="prn-t">Konyhai blokk · előnézet</h2>
+    <p class="hint">80 mm-es blokknyomtatóra méretezve. Automatikus nyomtatás nincs bekötve: hogy az iPadről hogyan nyomtat, a nyomtató típusától függ (lásd átadási dokumentum).</p>
+    <div class="slipwrap"><div class="kslip" data-slip></div></div>
+    <div class="sheet__btns">
+      <button type="button" class="abtn abtn--line abtn--xl" data-sheet-cancel>Bezárás</button>
+      <button type="button" class="abtn abtn--go abtn--xl" data-do-print>Nyomtatás</button>
+    </div>
+  </div>
+</dialog>
 
 <div class="toast" role="status" aria-live="polite" data-toast></div>
 <div class="print-slip" data-print aria-hidden="true"></div>
 
 <script src="data/menu.js"></script>
+<script src="js/demo-store.js"></script>
 <script src="js/vendor/motion-11.18.2.min.js" defer></script>
 <script src="admin.js" defer></script>
 </body>
