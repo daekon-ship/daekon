@@ -123,18 +123,25 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('ani
     <button class="szalag-gomb" type="button" aria-pressed="false" data-szalag-gomb><svg aria-hidden="true"><use href="#i-szunet"/></svg><span>Megállítás</span></button>
   </div>
   <div class="szalag" data-szalag>
-    <div class="szalag-sav">
-      <ul class="szalag-lista">
-        {%- for t in szalag %}
-        <li>{% if t.logo %}<img src="{{ t.logo }}" alt="" height="28">{% endif %}<span>{{ t.nev }}</span>{% if t.kapcsolat %}<em>{{ t.kapcsolat }}</em>{% endif %}</li>
-        {%- endfor %}
-      </ul>
-      <ul class="szalag-lista szalag-masolat" aria-hidden="true">
-        {%- for t in szalag %}
-        <li>{% if t.logo %}<img src="{{ t.logo }}" alt="" height="28">{% endif %}<span>{{ t.nev }}</span>{% if t.kapcsolat %}<em>{{ t.kapcsolat }}</em>{% endif %}</li>
-        {%- endfor %}
-      </ul>
+    {%- for sor in szalag_sorok %}
+    <div class="szalag-sor{% if loop.index == 2 %} szalag-sor-2{% endif %}">
+      <div class="szalag-sav">
+        <ul class="szalag-lista">
+          {%- for t in sor.tetelek %}
+          <li>{% if t.logo %}<img src="{{ t.logo }}" alt="" height="28">{% endif %}<span>{{ t.nev }}</span>{% if t.kapcsolat %}<em>{{ t.kapcsolat }}</em>{% endif %}</li>
+          {%- endfor %}
+          {%- for t in sor.kitolto %}
+          <li class="szalag-kitolto" aria-hidden="true">{% if t.logo %}<img src="{{ t.logo }}" alt="" height="28">{% endif %}<span>{{ t.nev }}</span>{% if t.kapcsolat %}<em>{{ t.kapcsolat }}</em>{% endif %}</li>
+          {%- endfor %}
+        </ul>
+        <ul class="szalag-lista szalag-masolat" aria-hidden="true">
+          {%- for t in sor.tetelek + sor.kitolto %}
+          <li>{% if t.logo %}<img src="{{ t.logo }}" alt="" height="28">{% endif %}<span>{{ t.nev }}</span>{% if t.kapcsolat %}<em>{{ t.kapcsolat }}</em>{% endif %}</li>
+          {%- endfor %}
+        </ul>
+      </div>
     </div>
+    {%- endfor %}
   </div>
 </section>
 

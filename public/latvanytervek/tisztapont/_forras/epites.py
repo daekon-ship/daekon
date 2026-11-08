@@ -73,6 +73,13 @@ def main():
     kategoriak = [k for k in ADAT["munkak_kategoriak"] if any(m["kat"] == k["id"] for m in munkak)]
 
     szalag_cimke, szalag, szalag_jovahagyasra = szalag_tetelek()
+    # két sor: fele-fele (a felső kapja a páratlan többletet); rövid sornál
+    # kitöltő ismétlés, hogy széles képernyőn se maradjon üres sáv
+    fel = (len(szalag) + 1) // 2
+    szalag_sorok = []
+    for tetelek in (szalag[:fel], szalag[fel:]) if len(szalag) > 1 else (szalag,):
+        ism = max(1, -(-8 // len(tetelek)))  # legalább ~8 tétel egy példányban
+        szalag_sorok.append({"tetelek": tetelek, "kitolto": tetelek * (ism - 1)})
     env = Environment(loader=FileSystemLoader(str(FORRAS)), autoescape=select_autoescape(["html"]))
     params = dict(
         c=c,
@@ -84,6 +91,7 @@ def main():
         lepesek=ADAT["lepesek"],
         foglalas=ADAT["foglalas"],
         szalag=szalag,
+        szalag_sorok=szalag_sorok,
         szalag_cimke=szalag_cimke,
         szalag_jovahagyasra=szalag_jovahagyasra and not ELES,
         cegadat_jeloles=bool(c.get("cegadatok_egyeztetendo")) and not ELES,
