@@ -546,3 +546,42 @@ a.kapcs-sor:hover .kapcs-ertek{text-decoration:underline;text-decoration-thickne
   .ut,.ut+.ut{padding:22px 0 8px;border-left:0}
   .ut+.ut{border-top:1px solid var(--vonal)}
 }
+
+/* élesnek ható összesítő: küldés e-mailben */
+.kuldes-doboz{margin-top:26px;padding:22px 22px 18px;border-radius:var(--r-kis);background:var(--jeg);font-size:15.5px}
+.kuldes-doboz .demo-doboz-gombok{margin-top:16px}
+.kuldes-wolt{margin-top:12px;font-size:14.5px;color:var(--szurke)}
+.kuldes-wolt a{display:inline-flex;align-items:center;gap:6px;min-height:44px;font-weight:600;color:var(--kek);text-underline-offset:4px}
+.kuldes-wolt .kulso-ikon{width:14px;height:14px}
+
+/* ---------- interakciós réteg (js/hatasok.js) ---------- */
+.szo{display:inline-block;will-change:transform,filter,opacity}
+.olvasas-sav{position:absolute;left:0;right:0;bottom:-1px;height:2px;background:linear-gradient(90deg,var(--logo-kek),var(--kek));transform-origin:0 50%;transform:scaleX(0);pointer-events:none}
+.lepes-toltes{position:absolute;left:0;right:0;top:7px;height:2px;background:var(--logo-kek);transform-origin:0 50%;transform:scaleX(0);border-radius:2px;pointer-events:none}
+@media (max-width:560px){.lepes-toltes{left:7px;right:auto;top:8px;bottom:8px;width:2px;height:auto;transform-origin:50% 0;transform:scaleY(0)}}
+.lepes{z-index:1}
+.hero{isolation:isolate}
+.pontracs{position:absolute;inset:0;z-index:-1;pointer-events:none;
+  -webkit-mask-image:radial-gradient(120% 90% at 30% 40%,#000 25%,transparent 75%);mask-image:radial-gradient(120% 90% at 30% 40%,#000 25%,transparent 75%)}
+.kor-jelveny{position:absolute;left:-52px;top:44px;z-index:2;width:112px;height:112px;border-radius:50%;background:#fff;box-shadow:0 10px 30px -14px rgba(6,24,61,.35);display:grid;place-items:center}
+.kor-jelveny::after{content:"";position:absolute;left:50%;top:50%;width:12px;height:12px;margin:-6px;border-radius:50%;background:var(--logo-kek)}
+.kor-jelveny svg{width:100%;height:100%;overflow:visible}
+.kor-jelveny text{font-family:var(--mono);font-size:8.6px;letter-spacing:.14em;fill:var(--tenger)}
+@media (max-width:980px){.kor-jelveny{left:auto;right:-6px;top:-40px;width:96px;height:96px}}
+@media (max-width:560px){.kor-jelveny{right:-4px;top:-34px;width:84px;height:84px}}
+/* GlareHover – fényvillanás a kék gombokon (csak egérrel) */
+@media (hover:hover) and (pointer:fine){
+  .gomb-fo{position:relative;overflow:hidden;isolation:isolate}
+  .gomb-fo::after{content:"";position:absolute;inset:-2px;z-index:-1;background:linear-gradient(105deg,transparent 35%,rgba(255,255,255,.28) 50%,transparent 65%);transform:translateX(-120%);transition:transform 700ms cubic-bezier(.2,.7,.1,1)}
+  .gomb-fo:hover::after{transform:translateX(120%)}
+  .spot{position:relative}
+  .spot::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:0;opacity:0;transition:opacity 300ms;
+    background:radial-gradient(360px circle at var(--mx,50%) var(--my,50%),rgba(10,143,234,.09),transparent 65%)}
+  .spot:hover::before{opacity:1}
+  .spot>*{position:relative;z-index:1}
+  .szolg-sor.spot::before{inset:0 -18px;border-radius:12px}
+  .kapcs-sor.spot::before{background:radial-gradient(320px circle at var(--mx,50%) var(--my,50%),rgba(124,196,247,.12),transparent 65%)}
+  .gal-gomb{perspective:900px}
+  .gal-kep{transform-style:preserve-3d;will-change:transform}
+}
+@media (max-width:640px){.kuldes-doboz .demo-doboz-gombok .gomb{flex:1 1 100%}}

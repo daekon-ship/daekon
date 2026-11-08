@@ -26,6 +26,8 @@ GYOKER = pathlib.Path(__file__).resolve().parent.parent
 FORRAS = GYOKER / "_forras"
 ADAT = json.loads((FORRAS / "adatok.json").read_text(encoding="utf-8"))
 ELES = "--eles" in sys.argv
+# Látványterv-jelölések (csík, „bemutató” feliratok, egyeztetendő-címkék): adatok.json → oldal.jelolesek
+JELOLESEK = bool(ADAT["oldal"].get("jelolesek", True)) and not ELES
 
 KAPCSOLAT_NEV = {
     "kozvetlen": "megbízó",
@@ -94,8 +96,9 @@ def main():
         szalag_sorok=szalag_sorok,
         wolt=ADAT["wolt"],
         szalag_cimke=szalag_cimke,
-        szalag_jovahagyasra=szalag_jovahagyasra and not ELES,
-        cegadat_jeloles=bool(c.get("cegadatok_egyeztetendo")) and not ELES,
+        jelolesek=JELOLESEK,
+        szalag_jovahagyasra=szalag_jovahagyasra and JELOLESEK,
+        cegadat_jeloles=bool(c.get("cegadatok_egyeztetendo")) and JELOLESEK,
         email_tort=email_tort(c["email"]),
         ev=datetime.date.today().year,
         csp="",

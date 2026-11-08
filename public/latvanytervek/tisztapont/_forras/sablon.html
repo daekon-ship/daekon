@@ -15,7 +15,7 @@
 <meta property="og:locale" content="hu_HU">
 <meta property="og:title" content="{{ c.marka }} – Tiszta terek. Nyugodtabb mindennapok.">
 <meta property="og:description" content="Takarítás otthonok, üzleti terek és intézmények számára, az adott helyszínhez és feladathoz igazítva.">
-<meta property="og:site_name" content="{{ c.marka }} – látványterv">
+<meta property="og:site_name" content="{{ c.marka }}{% if jelolesek %} – látványterv{% endif %}">
 <meta property="og:url" content="{{ o.url }}">
 <meta property="og:image" content="{{ o.url }}img/og-tisztapont.jpg?v={{ v }}">
 <meta property="og:image:width" content="1200">
@@ -51,7 +51,9 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('ani
 </svg>
 
 <a class="ugro" href="#tartalom">Ugrás a tartalomra</a>
+{%- if jelolesek %}
 <div class="demo-csik" role="note"><span>Látványterv · DAEKON</span><span class="demo-csik-r">Bemutató, nem éles oldal</span><span class="demo-csik-m">Látványterv – nem éles oldal</span></div>
+{%- endif %}
 
 <header class="fej" id="fej">
   <div class="kont fej-sor">
@@ -208,7 +210,7 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('ani
         <li class="ut" data-rv>
           <span class="ut-betu" aria-hidden="true">A</span>
           <h3>Időpontigény itt az oldalon</h3>
-          <p>Állítsa össze igényét öt lépésben, a részleteket ezután egyeztetjük. Jelenleg bemutató változat.</p>
+          <p>Állítsa össze igényét öt lépésben, a részleteket ezután egyeztetjük.{% if jelolesek %} Jelenleg bemutató változat.{% endif %}</p>
           <a class="ut-link" href="#idopont">Időpontot kérek<svg aria-hidden="true"><use href="#i-nyil"/></svg></a>
         </li>
         <li class="ut" data-rv>
@@ -291,7 +293,9 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('ani
       <p class="cimke-mono" data-rv><span>05</span> Időpontegyeztetés</p>
       <h2 id="idopont-cim" data-rv>Kérjen időpontot néhány lépésben.</h2>
       <p data-rv>Az itt összeállított igény alapján egyeztetjük a részleteket. Az időpont az egyeztetés után válik véglegessé.</p>
+      {%- if jelolesek %}
       <p class="demo-jel"><span class="pont" aria-hidden="true"></span>Bemutató felület – az adatok nem kerülnek elküldésre.</p>
+      {%- endif %}
       <p class="idopont-wolt">Ez az időpontkérő független a Wolttól. Ha a Wolton rendelne, azt a Wolt saját felületén teheti meg: <a href="{{ wolt.url }}" target="_blank" rel="noopener noreferrer" data-wolt="idopont">megnézem a Wolton<svg class="kulso-ikon" aria-hidden="true"><use href="#i-kulso"/></svg><span class="sr-only"> (külső oldal, új lapon nyílik)</span></a></p>
       <div class="idopont-kozvetlen">
         <p>Sürgős kérdése van? Keressen minket közvetlenül:</p>
@@ -308,8 +312,10 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('ani
       </ol>
       <p class="fog-allapot" aria-live="polite" data-fog-allapot>1. lépés az 5-ből: Szolgáltatás</p>
 
-      <form class="fog-urlap" novalidate data-fog-urlap aria-describedby="fog-demo">
+      <form class="fog-urlap" novalidate data-fog-urlap{% if jelolesek %} aria-describedby="fog-demo"{% endif %}>
+        {%- if jelolesek %}
         <p id="fog-demo" class="fog-demo"><span class="pont" aria-hidden="true"></span>Bemutató felület – az adatok nem kerülnek elküldésre.</p>
+        {%- endif %}
         <noscript><p class="fog-noscript">Az időpontkérő JavaScript nélkül nem működik. Kérjük, hívjon minket: {{ c.telefon }}, vagy írjon a(z) {{ c.email }} címre.</p></noscript>
 
         <fieldset class="fog-lepes" data-lepes="1">
@@ -387,6 +393,7 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('ani
         <fieldset class="fog-lepes" data-lepes="5">
           <legend tabindex="-1"><span class="fl-num">5/5</span>Az időpontigény összesítése</legend>
           <dl class="osszesito" data-osszesito></dl>
+          {%- if jelolesek %}
           <div class="demo-doboz">
             <p><strong>Bemutató felület – az adatok nem kerülnek elküldésre.</strong> Az igényt nem továbbítottuk, és az adatokat nem tároljuk. Az éles változatban innen küldhető majd el, és az időpontot ezután Önnel egyeztetve véglegesítjük.</p>
             <p>Addig is elérhet minket közvetlenül:</p>
@@ -396,6 +403,16 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('ani
               <a class="gomb gomb-masod" href="{{ wolt.url }}" target="_blank" rel="noopener noreferrer" data-wolt="osszesito">Megnézem a Wolton<svg class="kulso-ikon" aria-hidden="true"><use href="#i-kulso"/></svg><span class="sr-only"> (külső oldal, új lapon nyílik)</span></a>
             </div>
           </div>
+          {%- else %}
+          <div class="kuldes-doboz">
+            <p><strong>Küldje el igényét egy kattintással.</strong> A gomb megnyitja levelezőprogramját a fenti adatokkal kitöltött levéllel – ellenőrizze, majd küldje el. Az időpontot ezután Önnel egyeztetve véglegesítjük.</p>
+            <div class="demo-doboz-gombok">
+              <a class="gomb gomb-fo gomb-nagy" href="mailto:{{ c.email }}" data-igeny-email><svg aria-hidden="true"><use href="#i-level"/></svg><span>Igény küldése e-mailben</span></a>
+              <a class="gomb gomb-masod" href="{{ c.telefon_link }}"><svg aria-hidden="true"><use href="#i-tel"/></svg>Inkább telefonon</a>
+            </div>
+            <p class="kuldes-wolt">Csomagot rendelne? <a href="{{ wolt.url }}" target="_blank" rel="noopener noreferrer" data-wolt="osszesito">Megnézem a Wolton<svg class="kulso-ikon" aria-hidden="true"><use href="#i-kulso"/></svg><span class="sr-only"> (külső oldal, új lapon nyílik)</span></a></p>
+          </div>
+          {%- endif %}
         </fieldset>
 
         <div class="fog-nav">
@@ -479,7 +496,9 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('ani
   </div>
   <div class="kont lab-also">
     <p>© {{ ev }} {{ c.nev }}</p>
+    {%- if jelolesek %}
     <p>Látványterv – DAEKON · nem éles oldal</p>
+    {%- endif %}
   </div>
 </footer>
 
@@ -501,6 +520,7 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('ani
 <script src="js/adatok.js?v={{ v }}"></script>
 <script src="js/foglalas-adapter.js?v={{ v }}"></script>
 <script src="js/vendor/motion-11.18.2.min.js"></script>
+<script src="js/hatasok.js?v={{ v }}"></script>
 <script src="tisztapont.js?v={{ v }}"></script>
 </body>
 </html>

@@ -267,9 +267,9 @@
       ["Kívánt nap", datumSzoveg(ertek("datum")), 3],
       ["Napszak", ertek("napszak"), 3],
       ["Név", ertek("nev"), 4],
-      ["Telefon", ertek("telefon") || "–", 4],
-      ["E-mail", ertek("email") || "–", 4]
     ];
+    if (ertek("telefon")) sorok.push(["Telefon", ertek("telefon"), 4]);
+    if (ertek("email")) sorok.push(["E-mail", ertek("email"), 4]);
     if (ertek("megjegyzes")) sorok.push(["Megjegyzés", ertek("megjegyzes"), 4]);
     var dl = $("[data-osszesito]", urlap);
     dl.textContent = "";
@@ -285,6 +285,16 @@
       w.appendChild(dt); w.appendChild(dd); w.appendChild(md);
       dl.appendChild(w);
     });
+    // élesnek ható módban: a látogató saját levelezőjéből elküldhető, előre kitöltött levél
+    var mailA = $("[data-igeny-email]", urlap);
+    if (mailA) {
+      var NL = "\r\n";
+      var torzs = "Kedves TisztaPont!" + NL + NL + "Időpontot szeretnék kérni az alábbiak szerint:" + NL + NL +
+        sorok.filter(function (x) { return x[1] && x[1] !== "–"; }).map(function (x) { return x[0] + ": " + x[1]; }).join(NL) +
+        NL + NL + "Köszönöm!" + NL + ertek("nev");
+      mailA.href = "mailto:" + (D.email || "") + "?subject=" + encodeURIComponent("Időpontigény – " + szolgNev(ertek("szolgaltatas"))) +
+        "&body=" + encodeURIComponent(torzs);
+    }
   }
   function menj(n, fokusz) {
     var regi = lepes;

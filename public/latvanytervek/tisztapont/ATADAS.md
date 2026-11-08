@@ -1,4 +1,4 @@
-# TisztaPont – látványterv, átadás (3. kör – Wolt-integráció, 2026.11.08.)
+# TisztaPont – látványterv, átadás (4. kör – élesnek ható megjelenés + interakciós réteg, 2026.11.08.)
 
 **Ügyfél:** TisztaPont-Hungary Kft. · **Előnézet:** https://daekon-ship.github.io/daekon/latvanytervek/tisztapont/
 Bemutató prototípus: `noindex, nofollow`, nincs éles foglalás, nincs adatküldés (CSP-vel technikailag is tiltva).
@@ -18,6 +18,32 @@ Három vizsgált irány:
 | **A – Pontrács** | Pont-motívum, számozott index, aszimmetrikus fotópárok, sötétkék zárás | **Választott.** Közvetlenül a logóból következik, vállalati és lakossági ügyfélnek egyaránt hiteles. |
 | B – Tükörfény | Teljes szélességű fotók, matt üveg panelek | Elvetve: üvegkártyás sablonérzet, és a fotók felbontása nem bírja a teljes szélességet. |
 | C – Svájci index | Tisztán tipográfiai lista, kevés kép | Elvetve önállóan – a szolgáltatáslistába beépítve él tovább. |
+
+## 4. kör – mi változott
+
+### Élesnek ható megjelenés (`oldal.jelolesek: false`)
+DAEKON kérésére (az élesítés felé haladva) a látványterv-jelölések le vannak kapcsolva: nincs felső „Látványterv” csík, nincs „Bemutató felület” felirat, nincs „egyeztetendő / ellenőrizendő” címke a referenciáknál és a cégadatoknál, a láblécben nincs „nem éles oldal”. Visszakapcsolás: `"jelolesek": true` → `python3 _forras/epites.py`.
+- Ami **marad**: `noindex, nofollow` (a GitHub Pages-előnézet ne kerüljön keresőbe – élesítéskor a saját domainen kell levenni), a CSP, az adatok jóváhagyási állapotai (`--eles` továbbra is csak a `kozzeteheto` referenciákat engedi).
+- **Az időpontkérő most valóban használható** szerver nélkül: az összesítő „Igény küldése e-mailben” gombja a látogató saját levelezőprogramját nyitja meg, a cég címére címzett, kitöltött levéllel (tárgy: „Időpontigény – <szolgáltatás>”). Az oldal maga továbbra sem küld és nem tárol semmit; a látogató küldi el. Mellette „Inkább telefonon” és a Wolt-link.
+- **Fontos élesítés előtt:** a referencianevek és a cégadatok attól, hogy a címke lekerült, még nincsenek igazolva – lásd a tisztázandó listát.
+
+### Interakciós réteg – `js/hatasok.js` (Motion 11.18.2)
+A React Bits (reactbits.dev) komponensek mintájára, **React és build nélkül**, natív JS + Motion (a React Bits React-komponenskönyvtár; ehhez npm-telepítés és build kellene, a statikus oldalba a hatásokat ezért natívan építettük be – azonos látvány, kisebb méret, gyorsabb betöltés):
+
+| React Bits minta | Hol | Mit csinál |
+|---|---|---|
+| BlurText / SplitText | nyitó főcím, minden szekciócím | szavanként, elmosásból élesedve, lépcsőzve (görgetésre) |
+| DotGrid | nyitó háttere | a „Pont” motívum: pontrács, amely a mutató elől kitér és kékül; érintésre/betöltéskor lökéshullám a fotó pontjából |
+| CircularText | nyitófotó sarka | forgó „TISZTAPONT • TAKARÍTÁS” körirat-jelvény a márka kék pontja körül |
+| Magnet | kék elsődleges gombok | finoman a mutató felé húzódnak (rugós) |
+| GlareHover | kék gombok | fényvillanás hoverre (CSS) |
+| SpotlightCard | szolgáltatássorok, A/B/C utak, Wolt-kínálat, időpontkérő, kapcsolat-sorok | a mutatót követő halvány fényfolt |
+| TiltedCard | galériaképek | enyhe 3D-dőlés |
+| AnimatedContent | galériaképek | alulról feltáruló képek görgetésre |
+| ScrollVelocity | referenciaszalag | görgetéskor felgyorsul, majd visszalassul |
+| ScrollProgress | fejléc alja | olvasási sáv; az „Így dolgozunk” vonala görgetésre töltődik |
+
+Szabályok: csökkentett mozgásnál egyik sem fut; a hover-effektek csak egérrel (érintőképernyőn nem); minden effekt hibatűrő (egy hiba nem viszi el a többit), és biztonsági háló gondoskodik róla, hogy semmi ne maradjon rejtve. Nincs egyedi kurzor, nincs görgetés-eltérítés, nincs betöltőképernyő.
 
 ## Felépítés
 
@@ -117,7 +143,7 @@ Felhasznált fotók (7): előszoba (nyitókép), étkezősarok, fürdőszoba, na
 
 ## Automatikus tesztek
 
-`_forras/teszt.py` (Playwright + Chrome/Chromium) – futtatás a fájl elején leírva. 93 ellenőrzés, legutóbb **mind rendben** (2026.11.08.). A 3. körben hozzáadva: mind a 12 Wolt-link címe, új lapos megnyitása és `rel` értéke; a „Megnézem a Wolton” gomb valóban új lapon nyitja a Wolt-címet (a Wolt-oldalt a teszt helyben válaszolja meg, nem tölti le); minden külső link biztonságos; minden belső horgony létező elemre mutat; a fejléc minden menüpontja a fejléc alá görget; szolgáltatások és időpontkérő-opciók száma az adatokból; taxi előválasztása; metaadatok és OG-kép; a fejléc 981–1440 px között egy sorban fér el; nincs ár, nincs Wolt-telefonszám, nincs iframe, nincs szinkron-állítás. Korábbról:
+`_forras/teszt.py` (Playwright + Chrome/Chromium) – futtatás a fájl elején leírva. 103 ellenőrzés, legutóbb **mind rendben** (2026.11.08., 4. kör). A 4. körben hozzáadva: nincs látható bemutató/egyeztetendő felirat; az e-mailes igény a cég címére, kitöltve nyílik; főcím szövege változatlan; DotGrid, CircularText, olvasási sáv jelen és rejtve a képernyőolvasó elől; Magnet; végiggörgetés után minden szó/kép/blokk látható; érintőképernyőn nincs hover-effekt; csökkentett mozgásnál az effektek ki vannak kapcsolva. A 3. körben hozzáadva: mind a 12 Wolt-link címe, új lapos megnyitása és `rel` értéke; a „Megnézem a Wolton” gomb valóban új lapon nyitja a Wolt-címet (a Wolt-oldalt a teszt helyben válaszolja meg, nem tölti le); minden külső link biztonságos; minden belső horgony létező elemre mutat; a fejléc minden menüpontja a fejléc alá görget; szolgáltatások és időpontkérő-opciók száma az adatokból; taxi előválasztása; metaadatok és OG-kép; a fejléc 981–1440 px között egy sorban fér el; nincs ár, nincs Wolt-telefonszám, nincs iframe, nincs szinkron-állítás. Korábbról:
 
 - forrás: noindex, CSP, nincs „partnereink”, nincs hamis siker, nincs külső szkript, nincs Fraunces; `--eles` szűrés;
 - 360 / 390 / 768 / 1024 / 1366 / 1440 / 1920 px: vízszintes csúszás, konzolhiba, hiányzó fájl, rejtve maradt elem, 40 px alatti érintési cél;

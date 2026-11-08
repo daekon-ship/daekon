@@ -21,6 +21,9 @@ from playwright.sync_api import sync_playwright
 URL = sys.argv[1] if len(sys.argv) > 1 else "http://localhost:8765/daekon/latvanytervek/tisztapont/"
 GYOKER = pathlib.Path(__file__).resolve().parent.parent
 HIBAK = []
+import json as _j
+_ADAT = _j.loads((GYOKER / "_forras" / "adatok.json").read_text(encoding="utf-8"))
+JELOLESEK = bool(_ADAT["oldal"].get("jelolesek", True))
 
 
 def ok(feltetel, uzenet):
@@ -167,7 +170,11 @@ def mobil(b):
     pg.wait_for_timeout(1000)
     ok(pg.evaluate("document.querySelector('input[value=\"iroda\"]').checked"), "szolgáltatás előválasztása az időpontkérőben")
     pg.on("request", lambda r: keresek.append(r.url))
-    ok(pg.is_visible(".fog-demo"), "demójelzés látható az időpontkérőben")
+    if JELOLESEK:
+        ok(pg.is_visible(".fog-demo"), "demójelzés látható az időpontkérőben")
+    else:
+        lathato = pg.evaluate("document.body.innerText")
+        ok(not re.search(r"bemutató|látványterv|nem éles|egyeztetendő|ellenőrizendő", lathato, re.I), "élesnek ható mód: nincs látható bemutató / egyeztetendő felirat")
     pg.click("[data-tovabb]")
     pg.wait_for_timeout(300)
     pg.click("[data-tovabb]")
@@ -198,7 +205,13 @@ def mobil(b):
     pg.wait_for_timeout(500)
     s = pg.inner_text("[data-osszesito]")
     ok("Irodák" in s and "Pécs" in s and "2030" in s, "összesítő tartalma")
-    ok(pg.is_visible(".demo-doboz"), "összesítőben demó-figyelmeztetés")
+    if JELOLESEK:
+        ok(pg.is_visible(".demo-doboz"), "összesítőben demó-figyelmeztetés")
+    else:
+        from urllib.parse import unquote
+        h = pg.get_attribute("[data-igeny-email]", "href")
+        ok(h.startswith("mailto:" + _ADAT["ceg"]["email"]) and "Pécs" in unquote(h) and "Teszt Elek" in unquote(h) and "Irodák" in unquote(h),
+           "összesítő: „Igény küldése e-mailben” kitöltött levelet nyit a cég címére")
     ok(keresek == [], f"időpontkérés közben nulla hálózati kérés {keresek[:2]}")
     ok(pg.evaluate("[localStorage.length, sessionStorage.length, document.cookie]") == [0, 0, ""], "nincs tárolás (localStorage / session / süti)")
     ok(pg.evaluate("location.search") == "", "nincs adat az URL-ben")
@@ -261,12 +274,47 @@ def asztali(b):
     ctx.close()
 
 
+def hatasok(b):
+    ctx = b.new_context(viewport={"width": 1440, "height": 900})
+    pg = ctx.new_page()
+    hib = []
+    pg.on("pageerror", lambda e: hib.append(str(e)))
+    pg.goto(URL, wait_until="networkidle")
+    pg.wait_for_timeout(2200)
+    ok(pg.inner_text("h1").replace("\n", " ").split() == "Tiszta terek. Nyugodtabb mindennapok.".split(), "BlurText: a főcím szövege változatlan")
+    ok(pg.evaluate("[...document.querySelectorAll('.hero h1 .szo')].every(s=>getComputedStyle(s).opacity==='1')"), "BlurText: a főcím szavai megjelentek")
+    ok(pg.get_attribute("canvas.pontracs", "aria-hidden") == "true", "DotGrid: vászon jelen, képernyőolvasó elől rejtve")
+    ok(pg.get_attribute(".kor-jelveny", "aria-hidden") == "true", "CircularText: jelvény jelen, rejtve a képernyőolvasó elől")
+    ok(pg.query_selector(".olvasas-sav") is not None and pg.query_selector(".lepes-toltes") is not None, "ScrollProgress + folyamatvonal")
+    g = pg.locator(".gomb-fo.gomb-nagy").first
+    bx = g.bounding_box()
+    pg.mouse.move(bx["x"] + bx["width"] / 2, bx["y"] + bx["height"] / 2)
+    pg.mouse.move(bx["x"] + bx["width"] - 24, bx["y"] + bx["height"] / 2 - 8, steps=6)
+    pg.wait_for_timeout(400)
+    ok(pg.evaluate("getComputedStyle(document.querySelector('.hero .gomb-fo')).transform") != "none", "Magnet: a gomb a mutató felé mozdul")
+    hh = pg.evaluate("document.body.scrollHeight")
+    for y in range(0, hh, 400):
+        pg.evaluate(f"window.scrollTo(0,{y})")
+        pg.wait_for_timeout(60)
+    pg.wait_for_timeout(1500)
+    ok(pg.evaluate("[...document.querySelectorAll('.szo,.gal-kep,[data-rv]')].filter(e=>getComputedStyle(e).opacity<0.99).length") == 0, "végiggörgetés után minden szó, kép és blokk látható")
+    ok(hib == [], f"effektek: nincs JS-hiba {hib[:2]}")
+    ctx.close()
+    ctx = b.new_context(viewport={"width": 390, "height": 844}, has_touch=True, is_mobile=True)
+    pg = ctx.new_page()
+    pg.goto(URL, wait_until="networkidle")
+    pg.wait_for_timeout(1500)
+    ok(pg.evaluate("document.querySelectorAll('.spot').length") == 0, "érintőképernyőn nincsenek hover-effektek")
+    ctx.close()
+
+
 def kulonleges(b):
     ctx = b.new_context(viewport={"width": 1024, "height": 900}, reduced_motion="reduce")
     pg = ctx.new_page()
     pg.goto(URL, wait_until="networkidle")
     ok(pg.evaluate("[...document.querySelectorAll('.szalag-sav')].every(e=>getComputedStyle(e).animationName=='none')"), "csökkentett mozgás: szalag áll")
     ok(pg.evaluate("[...document.querySelectorAll('[data-rv]')].every(e=>getComputedStyle(e).opacity=='1')"), "csökkentett mozgás: minden látszik")
+    ok(pg.evaluate("document.querySelectorAll('.szo,canvas.pontracs,.kor-jelveny').length") == 0, "csökkentett mozgás: effektek kikapcsolva")
     ctx.close()
     ctx = b.new_context(viewport={"width": 390, "height": 844}, java_script_enabled=False)
     pg = ctx.new_page()
@@ -299,6 +347,7 @@ if __name__ == "__main__":
         mobil(b)
         asztali(b)
         wolt_es_linkek(b)
+        hatasok(b)
         kulonleges(b)
         b.close()
     print("\n" + ("MINDEN ELLENŐRZÉS RENDBEN" if not HIBAK else f"{len(HIBAK)} HIBA:\n- " + "\n- ".join(HIBAK)))
