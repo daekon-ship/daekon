@@ -15,18 +15,18 @@
 <meta property="og:description" content="Takarítás otthonok, üzleti terek és intézmények számára, az adott helyszínhez és feladathoz igazítva.">
 <meta property="og:site_name" content="TisztaPont – látványterv">
 <meta property="og:url" content="https://daekon-ship.github.io/daekon/latvanytervek/tisztapont/">
-<meta property="og:image" content="https://daekon-ship.github.io/daekon/latvanytervek/tisztapont/img/og-tisztapont.jpg?v=20261108a">
+<meta property="og:image" content="https://daekon-ship.github.io/daekon/latvanytervek/tisztapont/img/og-tisztapont.jpg?v=20261108b">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="TisztaPont logó és egy világos, csempézett előszoba fotója">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="favicon.ico?v=20261108a" sizes="48x48">
-<link rel="icon" href="favicon.svg?v=20261108a" type="image/svg+xml">
-<link rel="apple-touch-icon" href="img/apple-touch-icon.png?v=20261108a">
-<link rel="manifest" href="site.webmanifest?v=20261108a">
+<link rel="icon" href="favicon.ico?v=20261108b" sizes="48x48">
+<link rel="icon" href="favicon.svg?v=20261108b" type="image/svg+xml">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png?v=20261108b">
+<link rel="manifest" href="site.webmanifest?v=20261108b">
 <link rel="preload" href="fonts/hanken-var.woff" as="font" type="font/woff" crossorigin>
 <link rel="preload" as="image" type="image/avif" imagesrcset="img/eloszoba-760.avif 760w, img/eloszoba-1200.avif 1200w" imagesizes="(min-width: 981px) 520px, 92vw" fetchpriority="high">
-<link rel="stylesheet" href="tisztapont.css?v=20261108a">
+<link rel="stylesheet" href="tisztapont.css?v=20261108b">
 <script>
 (function(){var d=document.documentElement;d.classList.add('js');
 if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('anim');setTimeout(function(){if(!d.classList.contains('anim-ok'))d.classList.remove('anim')},2500)}})();
@@ -40,6 +40,7 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('ani
   <symbol id="i-bal" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" d="M15 5l-7 7 7 7"/></symbol>
   <symbol id="i-jobb" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" d="M9 5l7 7-7 7"/></symbol>
   <symbol id="i-menu" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" d="M4 8h16M4 16h16"/></symbol>
+  <symbol id="i-kulso" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
   <symbol id="i-x" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" d="M6 6l12 12M18 6 6 18"/></symbol>
   <symbol id="i-nagyit" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"/></symbol>
   <symbol id="i-szunet" viewBox="0 0 24 24"><path fill="currentColor" d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/></symbol>
@@ -53,11 +54,12 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('ani
 <header class="fej" id="fej">
   <div class="kont fej-sor">
     <a class="logo" href="#top" aria-label="TisztaPont – vissza az oldal tetejére">
-      <img class="logo-jel" src="arculat/emblema.svg?v=20261108a" alt="" width="167" height="224">
-      <img class="logo-felirat" src="arculat/felirat.svg?v=20261108a" alt="TisztaPont" width="363" height="60">
+      <img class="logo-jel" src="arculat/emblema.svg?v=20261108b" alt="" width="167" height="224">
+      <img class="logo-felirat" src="arculat/felirat.svg?v=20261108b" alt="TisztaPont" width="363" height="60">
     </a>
     <nav class="nav" aria-label="Fő navigáció">
       <a href="#szolgaltatasok">Szolgáltatások</a>
+      <a href="#wolt">Wolt</a>
       <a href="#munkaink">Munkáink</a>
       <a href="#igy-dolgozunk">Így dolgozunk</a>
       <a href="#kapcsolat">Kapcsolat</a>
@@ -69,10 +71,11 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('ani
   <div class="mobilmenu" id="mobilmenu" hidden>
   <nav class="kont" aria-label="Mobil navigáció">
     <a href="#szolgaltatasok"><span class="mm-sz">01</span>Szolgáltatások</a>
-    <a href="#munkaink"><span class="mm-sz">02</span>Munkáink</a>
-    <a href="#igy-dolgozunk"><span class="mm-sz">03</span>Így dolgozunk</a>
-    <a href="#idopont"><span class="mm-sz">04</span>Időpontegyeztetés</a>
-    <a href="#kapcsolat"><span class="mm-sz">05</span>Kapcsolat</a>
+    <a href="#wolt"><span class="mm-sz">02</span>Rendelés a Wolton</a>
+    <a href="#munkaink"><span class="mm-sz">03</span>Munkáink</a>
+    <a href="#igy-dolgozunk"><span class="mm-sz">04</span>Így dolgozunk</a>
+    <a href="#idopont"><span class="mm-sz">05</span>Időpontegyeztetés</a>
+    <a href="#kapcsolat"><span class="mm-sz">06</span>Kapcsolat</a>
     <div class="mm-kontakt">
       <a class="gomb gomb-fo" href="#idopont">Időpontot egyeztetek</a>
       <a class="mm-tel" href="tel:+36205966042"><svg aria-hidden="true"><use href="#i-tel"/></svg>+36 20 596 6042</a>
@@ -94,7 +97,7 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('ani
         <a class="gomb gomb-fo gomb-nagy" href="#idopont">Időpontot egyeztetek<svg aria-hidden="true"><use href="#i-nyil"/></svg></a>
         <a class="gomb gomb-masod gomb-nagy" href="#munkaink">Megnézem a munkákat</a>
       </div>
-      <p class="hero-hivas" data-rv>Inkább beszélne? <a href="tel:+36205966042"><svg aria-hidden="true"><use href="#i-tel"/></svg>+36 20 596 6042</a></p>
+      <p class="hero-hivas" data-rv><span>Inkább beszélne?</span> <a href="tel:+36205966042"><svg aria-hidden="true"><use href="#i-tel"/></svg>+36 20 596 6042</a><span class="hero-wolt"><span class="hero-wolt-elv" aria-hidden="true">·</span> <a href="https://wolt.com/hu/hun/budapest/venue/tph-tisztapont-hungary?no_universal_links=true" target="_blank" rel="noopener noreferrer" data-wolt="nyito">Rendelés a Wolton<svg class="kulso-ikon" aria-hidden="true"><use href="#i-kulso"/></svg><span class="sr-only"> (külső oldal, új lapon nyílik)</span></a></span></p>
     </div>
     <figure class="hero-foto">
       <div class="hero-keret">
@@ -189,7 +192,7 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('ani
       <p class="cimke-mono" data-rv><span>01</span> Szolgáltatások</p>
       <h2 id="szolg-cim" data-rv>Minden térhez a hozzá illő takarítás.</h2>
       <p data-rv>Egy lakás, egy iroda és egy szálláshely mást kíván. A teendőket mindig a helyszínhez és az Ön igényeihez igazítjuk.</p>
-      <p class="szolg-megj" data-rv>Válasszon egy területet, és az időpontegyeztetőben már ki is jelöljük.</p>
+      <p class="szolg-megj" data-rv>Válasszon egy területet, és az időpontegyeztetőben már ki is jelöljük. A „Wolton is” jelölésű területekhez a Wolt felületén is talál csomagokat.</p>
     </header>
     <ol class="szolg-lista">
       <li class="szolg-sor" data-rv>
@@ -198,7 +201,10 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('ani
           <h3>Lakások és családi házak</h3>
           <p>Rendszeres vagy alkalmi takarítás otthonokban. A helyiségeket és a teendőket előre egyeztetjük, hogy a munka az Ön napirendjéhez igazodjon.</p>
         </div>
-        <a class="szolg-gomb" href="#idopont" data-szolg="lakas" aria-label="Időpontot kérek: Lakások és családi házak"><span>Időpontot kérek</span><svg aria-hidden="true"><use href="#i-nyil"/></svg></a>
+        <div class="szolg-akciok">
+          <a class="szolg-gomb" href="#idopont" data-szolg="lakas" aria-label="Időpontot kérek: Lakások és családi házak"><span>Időpontot kérek</span><svg aria-hidden="true"><use href="#i-nyil"/></svg></a>
+          <a class="szolg-wolt" href="https://wolt.com/hu/hun/budapest/venue/tph-tisztapont-hungary?no_universal_links=true" target="_blank" rel="noopener noreferrer" data-wolt="szolgaltatas" aria-label="Lakások és családi házak: megnézem a Wolton (külső oldal, új lapon nyílik)">Wolton is<svg class="kulso-ikon" aria-hidden="true"><use href="#i-kulso"/></svg></a>
+        </div>
       </li>
       <li class="szolg-sor" data-rv>
         <span class="szolg-sz" aria-hidden="true">02</span>
@@ -206,7 +212,10 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('ani
           <h3>Irodák, üzletek és üzleti terek</h3>
           <p>Munkaterek, eladóterek és közösségi helyiségek takarítása egyeztetett időpontban, úgy, hogy a lehető legkevésbé zavarja a működést.</p>
         </div>
-        <a class="szolg-gomb" href="#idopont" data-szolg="iroda" aria-label="Időpontot kérek: Irodák, üzletek és üzleti terek"><span>Időpontot kérek</span><svg aria-hidden="true"><use href="#i-nyil"/></svg></a>
+        <div class="szolg-akciok">
+          <a class="szolg-gomb" href="#idopont" data-szolg="iroda" aria-label="Időpontot kérek: Irodák, üzletek és üzleti terek"><span>Időpontot kérek</span><svg aria-hidden="true"><use href="#i-nyil"/></svg></a>
+          <a class="szolg-wolt" href="https://wolt.com/hu/hun/budapest/venue/tph-tisztapont-hungary?no_universal_links=true" target="_blank" rel="noopener noreferrer" data-wolt="szolgaltatas" aria-label="Irodák, üzletek és üzleti terek: megnézem a Wolton (külső oldal, új lapon nyílik)">Wolton is<svg class="kulso-ikon" aria-hidden="true"><use href="#i-kulso"/></svg></a>
+        </div>
       </li>
       <li class="szolg-sor" data-rv>
         <span class="szolg-sz" aria-hidden="true">03</span>
@@ -214,7 +223,10 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('ani
           <h3>Szálláshelyek és apartmanok</h3>
           <p>Takarítás vendégváltások között vagy előre megbeszélt rendben, apartmanokban és szálláshelyeken.</p>
         </div>
-        <a class="szolg-gomb" href="#idopont" data-szolg="szallas" aria-label="Időpontot kérek: Szálláshelyek és apartmanok"><span>Időpontot kérek</span><svg aria-hidden="true"><use href="#i-nyil"/></svg></a>
+        <div class="szolg-akciok">
+          <a class="szolg-gomb" href="#idopont" data-szolg="szallas" aria-label="Időpontot kérek: Szálláshelyek és apartmanok"><span>Időpontot kérek</span><svg aria-hidden="true"><use href="#i-nyil"/></svg></a>
+          <a class="szolg-wolt" href="https://wolt.com/hu/hun/budapest/venue/tph-tisztapont-hungary?no_universal_links=true" target="_blank" rel="noopener noreferrer" data-wolt="szolgaltatas" aria-label="Szálláshelyek és apartmanok: megnézem a Wolton (külső oldal, új lapon nyílik)">Wolton is<svg class="kulso-ikon" aria-hidden="true"><use href="#i-kulso"/></svg></a>
+        </div>
       </li>
       <li class="szolg-sor" data-rv>
         <span class="szolg-sz" aria-hidden="true">04</span>
@@ -222,7 +234,10 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('ani
           <h3>Építkezés és felújítás utáni takarítás</h3>
           <p>A munkálatok után maradt por és szennyeződés eltávolítása, hogy a helyiségeket újra birtokba vehesse.</p>
         </div>
-        <a class="szolg-gomb" href="#idopont" data-szolg="epitkezes" aria-label="Időpontot kérek: Építkezés és felújítás utáni takarítás"><span>Időpontot kérek</span><svg aria-hidden="true"><use href="#i-nyil"/></svg></a>
+        <div class="szolg-akciok">
+          <a class="szolg-gomb" href="#idopont" data-szolg="epitkezes" aria-label="Időpontot kérek: Építkezés és felújítás utáni takarítás"><span>Időpontot kérek</span><svg aria-hidden="true"><use href="#i-nyil"/></svg></a>
+          <a class="szolg-wolt" href="https://wolt.com/hu/hun/budapest/venue/tph-tisztapont-hungary?no_universal_links=true" target="_blank" rel="noopener noreferrer" data-wolt="szolgaltatas" aria-label="Építkezés és felújítás utáni takarítás: megnézem a Wolton (külső oldal, új lapon nyílik)">Wolton is<svg class="kulso-ikon" aria-hidden="true"><use href="#i-kulso"/></svg></a>
+        </div>
       </li>
       <li class="szolg-sor" data-rv>
         <span class="szolg-sz" aria-hidden="true">05</span>
@@ -230,7 +245,10 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('ani
           <h3>Rendezvényekhez kapcsolódó takarítás</h3>
           <p>Előkészítés a rendezvény előtt, rendrakás és takarítás utána, a helyszín és a program ismeretében.</p>
         </div>
-        <a class="szolg-gomb" href="#idopont" data-szolg="rendezveny" aria-label="Időpontot kérek: Rendezvényekhez kapcsolódó takarítás"><span>Időpontot kérek</span><svg aria-hidden="true"><use href="#i-nyil"/></svg></a>
+        <div class="szolg-akciok">
+          <a class="szolg-gomb" href="#idopont" data-szolg="rendezveny" aria-label="Időpontot kérek: Rendezvényekhez kapcsolódó takarítás"><span>Időpontot kérek</span><svg aria-hidden="true"><use href="#i-nyil"/></svg></a>
+          <a class="szolg-wolt" href="https://wolt.com/hu/hun/budapest/venue/tph-tisztapont-hungary?no_universal_links=true" target="_blank" rel="noopener noreferrer" data-wolt="szolgaltatas" aria-label="Rendezvényekhez kapcsolódó takarítás: megnézem a Wolton (külső oldal, új lapon nyílik)">Wolton is<svg class="kulso-ikon" aria-hidden="true"><use href="#i-kulso"/></svg></a>
+        </div>
       </li>
       <li class="szolg-sor" data-rv>
         <span class="szolg-sz" aria-hidden="true">06</span>
@@ -238,9 +256,77 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('ani
           <h3>Ipari terek és nagyobb ingatlanok</h3>
           <p>Csarnokok, raktárak és nagyobb alapterületű ingatlanok takarítása, a feladat és a helyszín előzetes egyeztetése alapján.</p>
         </div>
-        <a class="szolg-gomb" href="#idopont" data-szolg="ipari" aria-label="Időpontot kérek: Ipari terek és nagyobb ingatlanok"><span>Időpontot kérek</span><svg aria-hidden="true"><use href="#i-nyil"/></svg></a>
+        <div class="szolg-akciok">
+          <a class="szolg-gomb" href="#idopont" data-szolg="ipari" aria-label="Időpontot kérek: Ipari terek és nagyobb ingatlanok"><span>Időpontot kérek</span><svg aria-hidden="true"><use href="#i-nyil"/></svg></a>
+        </div>
+      </li>
+      <li class="szolg-sor" data-rv>
+        <span class="szolg-sz" aria-hidden="true">07</span>
+        <div class="szolg-tart">
+          <h3>Taxik utasterének takarítása</h3>
+          <p>Taxik belső terének takarítása. A Wolt-felületen ez külön szolgáltatásként is szerepel; a részleteket ott, vagy telefonon egyeztetve találja.</p>
+        </div>
+        <div class="szolg-akciok">
+          <a class="szolg-gomb" href="#idopont" data-szolg="taxi" aria-label="Időpontot kérek: Taxik utasterének takarítása"><span>Időpontot kérek</span><svg aria-hidden="true"><use href="#i-nyil"/></svg></a>
+          <a class="szolg-wolt" href="https://wolt.com/hu/hun/budapest/venue/tph-tisztapont-hungary?no_universal_links=true" target="_blank" rel="noopener noreferrer" data-wolt="szolgaltatas" aria-label="Taxik utasterének takarítása: megnézem a Wolton (külső oldal, új lapon nyílik)">Wolton is<svg class="kulso-ikon" aria-hidden="true"><use href="#i-kulso"/></svg></a>
+        </div>
       </li>
     </ol>
+  </div>
+</section>
+
+<!-- ============ WOLT ============ -->
+<section class="szekcio wolt" id="wolt" aria-labelledby="wolt-cim">
+  <div class="kont">
+    <div class="wolt-panel">
+      <div class="wolt-gyuruk" aria-hidden="true"></div>
+      <div class="wolt-szoveg">
+        <p class="cimke-mono" data-rv><span>02</span> Online rendelés</p>
+        <h2 id="wolt-cim" data-rv>Válasszon takarítást online is.</h2>
+        <p class="wolt-lead" data-rv>Szolgáltatásaink egy része a Wolt felületén keresztül is elérhető. Tekintse meg az aktuális lehetőségeket és részleteket.</p>
+        <div class="wolt-gombok" data-rv>
+          <a class="gomb gomb-fo gomb-nagy" href="https://wolt.com/hu/hun/budapest/venue/tph-tisztapont-hungary?no_universal_links=true" target="_blank" rel="noopener noreferrer" data-wolt="szekcio">Megnézem a Wolton<svg class="kulso-ikon" aria-hidden="true"><use href="#i-kulso"/></svg><span class="sr-only"> (külső oldal, új lapon nyílik)</span></a>
+        </div>
+        <p class="wolt-megj" data-rv>A Wolt külső felület, saját árakkal és rendelési feltételekkel. Az ott leadott rendelés nem kapcsolódik az oldal időpontkérőjéhez.</p>
+      </div>
+      <div class="wolt-kinalat" data-rv>
+        <p class="cimke-mono">A Wolton jelenleg</p>
+        <ul class="wolt-lista">
+          <li><span class="pont" aria-hidden="true"></span>Lakás és családi ház</li>
+          <li><span class="pont" aria-hidden="true"></span>Hotel és apartman</li>
+          <li><span class="pont" aria-hidden="true"></span>Airbnb SOS</li>
+          <li><span class="pont" aria-hidden="true"></span>Üzletek és irodák</li>
+          <li><span class="pont" aria-hidden="true"></span>Építkezés után</li>
+          <li><span class="pont" aria-hidden="true"></span>Rendezvények</li>
+          <li><span class="pont" aria-hidden="true"></span>Taxitakarítás</li>
+        </ul>
+        <p class="wolt-datum">Ellenőrizve: 2026. 11. 08. · aktuális kínálat és árak a Wolton</p>
+      </div>
+    </div>
+
+    <div class="utak">
+      <p class="cimke-mono utak-cimke" data-rv>Három út a takarításig</p>
+      <ol class="utak-lista">
+        <li class="ut" data-rv>
+          <span class="ut-betu" aria-hidden="true">A</span>
+          <h3>Időpontigény itt az oldalon</h3>
+          <p>Állítsa össze igényét öt lépésben, a részleteket ezután egyeztetjük. Jelenleg bemutató változat.</p>
+          <a class="ut-link" href="#idopont">Időpontot kérek<svg aria-hidden="true"><use href="#i-nyil"/></svg></a>
+        </li>
+        <li class="ut" data-rv>
+          <span class="ut-betu" aria-hidden="true">B</span>
+          <h3>Rendelés a Wolton</h3>
+          <p>Válasszon a Wolton elérhető csomagok közül, a Wolt saját felületén, az ott látható árakon.</p>
+          <a class="ut-link" href="https://wolt.com/hu/hun/budapest/venue/tph-tisztapont-hungary?no_universal_links=true" target="_blank" rel="noopener noreferrer" data-wolt="utak">Megnézem a Wolton<svg class="kulso-ikon" aria-hidden="true"><use href="#i-kulso"/></svg><span class="sr-only"> (külső oldal, új lapon nyílik)</span></a>
+        </li>
+        <li class="ut" data-rv>
+          <span class="ut-betu" aria-hidden="true">C</span>
+          <h3>Telefonos egyeztetés</h3>
+          <p>Ha egyedi a feladat, vagy kérdése van, beszéljük meg telefonon.</p>
+          <a class="ut-link" href="tel:+36205966042">+36 20 596 6042<svg aria-hidden="true"><use href="#i-tel"/></svg></a>
+        </li>
+      </ol>
+    </div>
   </div>
 </section>
 
@@ -249,7 +335,7 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('ani
   <div class="kont">
     <header class="szekcio-fej munkak-fej">
       <div>
-        <p class="cimke-mono" data-rv><span>02</span> Munkáink</p>
+        <p class="cimke-mono" data-rv><span>03</span> Munkáink</p>
         <h2 id="munkak-cim" data-rv>Helyszínek, ahol dolgoztunk.</h2>
       </div>
       <p data-rv>Fotók a munkavégzés helyszíneiről. Bármelyik képre kattintva nagyobb méretben is megnézheti.</p>
@@ -359,7 +445,7 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('ani
 <section class="szekcio folyamat" id="igy-dolgozunk" aria-labelledby="folyamat-cim">
   <div class="kont">
     <header class="szekcio-fej folyamat-fej">
-      <p class="cimke-mono" data-rv><span>03</span> Így dolgozunk</p>
+      <p class="cimke-mono" data-rv><span>04</span> Így dolgozunk</p>
       <h2 id="folyamat-cim" data-rv>Négy lépés az első hívástól az átadásig.</h2>
     </header>
     <ol class="lepesek">
@@ -395,10 +481,11 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('ani
 <section class="szekcio idopont" id="idopont" aria-labelledby="idopont-cim">
   <div class="kont idopont-racs">
     <div class="idopont-bal">
-      <p class="cimke-mono" data-rv><span>04</span> Időpontegyeztetés</p>
+      <p class="cimke-mono" data-rv><span>05</span> Időpontegyeztetés</p>
       <h2 id="idopont-cim" data-rv>Kérjen időpontot néhány lépésben.</h2>
       <p data-rv>Az itt összeállított igény alapján egyeztetjük a részleteket. Az időpont az egyeztetés után válik véglegessé.</p>
       <p class="demo-jel"><span class="pont" aria-hidden="true"></span>Bemutató felület – az adatok nem kerülnek elküldésre.</p>
+      <p class="idopont-wolt">Ez az időpontkérő független a Wolttól. Ha a Wolton rendelne, azt a Wolt saját felületén teheti meg: <a href="https://wolt.com/hu/hun/budapest/venue/tph-tisztapont-hungary?no_universal_links=true" target="_blank" rel="noopener noreferrer" data-wolt="idopont">megnézem a Wolton<svg class="kulso-ikon" aria-hidden="true"><use href="#i-kulso"/></svg><span class="sr-only"> (külső oldal, új lapon nyílik)</span></a></p>
       <div class="idopont-kozvetlen">
         <p>Sürgős kérdése van? Keressen minket közvetlenül:</p>
         <a href="tel:+36205966042"><svg aria-hidden="true"><use href="#i-tel"/></svg>+36 20 596 6042</a>
@@ -429,6 +516,7 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('ani
             <label class="opcio"><input type="radio" name="szolgaltatas" value="epitkezes" required><span class="opcio-sz">04</span><span class="opcio-nev">Építkezés és felújítás utáni takarítás</span><span class="opcio-jel" aria-hidden="true"><svg><use href="#i-pipa"/></svg></span></label>
             <label class="opcio"><input type="radio" name="szolgaltatas" value="rendezveny" required><span class="opcio-sz">05</span><span class="opcio-nev">Rendezvényekhez kapcsolódó takarítás</span><span class="opcio-jel" aria-hidden="true"><svg><use href="#i-pipa"/></svg></span></label>
             <label class="opcio"><input type="radio" name="szolgaltatas" value="ipari" required><span class="opcio-sz">06</span><span class="opcio-nev">Ipari terek és nagyobb ingatlanok</span><span class="opcio-jel" aria-hidden="true"><svg><use href="#i-pipa"/></svg></span></label>
+            <label class="opcio"><input type="radio" name="szolgaltatas" value="taxi" required><span class="opcio-sz">07</span><span class="opcio-nev">Taxik utasterének takarítása</span><span class="opcio-jel" aria-hidden="true"><svg><use href="#i-pipa"/></svg></span></label>
           </div>
           <p class="hiba" id="hiba-szolgaltatas" data-hiba="szolgaltatas" hidden>Kérjük, válasszon szolgáltatást.</p>
         </fieldset>
@@ -506,6 +594,7 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('ani
             <div class="demo-doboz-gombok">
               <a class="gomb gomb-fo" href="tel:+36205966042"><svg aria-hidden="true"><use href="#i-tel"/></svg>+36 20 596 6042</a>
               <a class="gomb gomb-masod email-link" href="mailto:tisztapont.ugyfelszolgalat@gmail.com?subject=Id%C5%91pontig%C3%A9ny"><svg aria-hidden="true"><use href="#i-level"/></svg><span>E-mailt írok</span></a>
+              <a class="gomb gomb-masod" href="https://wolt.com/hu/hun/budapest/venue/tph-tisztapont-hungary?no_universal_links=true" target="_blank" rel="noopener noreferrer" data-wolt="osszesito">Megnézem a Wolton<svg class="kulso-ikon" aria-hidden="true"><use href="#i-kulso"/></svg><span class="sr-only"> (külső oldal, új lapon nyílik)</span></a>
             </div>
           </div>
         </fieldset>
@@ -525,7 +614,7 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('ani
   <div class="kapcs-gyuruk" aria-hidden="true"></div>
   <div class="kont kapcs-racs">
     <div class="kapcs-bal">
-      <p class="cimke-mono" data-rv><span>05</span> Kapcsolat</p>
+      <p class="cimke-mono" data-rv><span>06</span> Kapcsolat</p>
       <h2 id="kapcs-cim" data-rv>Beszéljük meg, mire van szüksége.</h2>
       <p data-rv>Hívjon, vagy írjon e-mailt: mondja el, milyen térről és milyen feladatról van szó, és egyeztetjük a részleteket.</p>
     </div>
@@ -552,15 +641,16 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('ani
 <footer class="lab">
   <div class="kont lab-racs">
     <div class="lab-logo">
-      <img src="arculat/emblema-feher.svg?v=20261108a" alt="" width="167" height="224" class="lab-jel">
+      <img src="arculat/emblema-feher.svg?v=20261108b" alt="" width="167" height="224" class="lab-jel">
       <div>
-        <img src="arculat/felirat-feher.svg?v=20261108a" alt="TisztaPont" width="363" height="60" class="lab-felirat">
-        <img src="arculat/szlogen-feher.svg?v=20261108a" alt="Tiszta megoldás. Azonnal." width="363" height="21" class="lab-szlogen">
+        <img src="arculat/felirat-feher.svg?v=20261108b" alt="TisztaPont" width="363" height="60" class="lab-felirat">
+        <img src="arculat/szlogen-feher.svg?v=20261108b" alt="Tiszta megoldás. Azonnal." width="363" height="21" class="lab-szlogen">
       </div>
     </div>
     <nav class="lab-nav" aria-label="Lábléc navigáció">
       <p class="lab-cim">Oldal</p>
       <a href="#szolgaltatasok">Szolgáltatások</a>
+      <a href="#wolt">Rendelés a Wolton</a>
       <a href="#munkaink">Munkáink</a>
       <a href="#igy-dolgozunk">Így dolgozunk</a>
       <a href="#idopont">Időpontegyeztetés</a>
@@ -569,6 +659,7 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('ani
       <p class="lab-cim">Elérhetőség</p>
       <a href="tel:+36205966042">+36 20 596 6042</a>
       <a class="email-link" href="mailto:tisztapont.ugyfelszolgalat@gmail.com">tisztapont.<wbr>ugyfelszolgalat<wbr>@gmail.com</a>
+      <a href="https://wolt.com/hu/hun/budapest/venue/tph-tisztapont-hungary?no_universal_links=true" target="_blank" rel="noopener noreferrer" data-wolt="lablec">Wolt-felület<svg class="kulso-ikon" aria-hidden="true"><use href="#i-kulso"/></svg><span class="sr-only"> (külső oldal, új lapon nyílik)</span></a>
     </div>
     <div class="lab-ceg">
       <p class="lab-cim">Cégadatok</p>
@@ -600,9 +691,9 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('ani
   </div>
 </dialog>
 
-<script src="js/adatok.js?v=20261108a"></script>
-<script src="js/foglalas-adapter.js?v=20261108a"></script>
+<script src="js/adatok.js?v=20261108b"></script>
+<script src="js/foglalas-adapter.js?v=20261108b"></script>
 <script src="js/vendor/motion-11.18.2.min.js"></script>
-<script src="tisztapont.js?v=20261108a"></script>
+<script src="tisztapont.js?v=20261108b"></script>
 </body>
 </html>

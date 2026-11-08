@@ -47,7 +47,64 @@ def forras_ellenorzes():
     ok(not re.search(r"partnerei|hivatalos partner", html, re.I), "nincs 'partnereink' állítás")
     ok(not re.search(r"sikeresen|lefoglaltuk|elküldtük", html, re.I), "nincs hamis sikerüzenet")
     ok("<script src=\"http" not in html and "googletagmanager" not in html, "nincs külső szkript / követőkód")
+    ok("308308233" not in html and "+36 30 830" not in html, "a Wolton szereplő eltérő telefonszám nincs átvéve")
+    ok(not re.search(r"\d\s?Ft\b|forint", html), "nincs ár az oldalon (a Wolt árai ott láthatók)")
+    ok(not re.search(r"szinkroniz|automatikusan visszaigazol", html, re.I), "nincs hamis Wolt-szinkron állítás")
+    ok("<iframe" not in html, "nincs beágyazott (iframe) Wolt-felület")
     ok("Fraunces" not in (GYOKER / "tisztapont.css").read_text(encoding="utf-8"), "nincs Fraunces betű")
+
+
+def wolt_es_linkek(b):
+    import json as _json
+    adat = _json.loads((GYOKER / "_forras" / "adatok.json").read_text(encoding="utf-8"))
+    wurl = adat["wolt"]["url"]
+    n_wolt_szolg = sum(1 for x in adat["szolgaltatasok"] if x.get("wolt"))
+    ctx = b.new_context(viewport={"width": 1440, "height": 900})
+    # a külső oldalt nem töltjük le: a Wolt-kérést helyben megválaszoljuk
+    ctx.route("**://wolt.com/**", lambda r: r.fulfill(status=200, content_type="text/html", body="<title>Wolt teszt</title>"))
+    pg = ctx.new_page()
+    pg.goto(URL, wait_until="networkidle")
+    pg.wait_for_timeout(800)
+    linkek = pg.evaluate("[...document.querySelectorAll('[data-wolt]')].map(a=>({h:a.getAttribute('href'),t:a.target,r:a.rel,hely:a.dataset.wolt}))")
+    helyek = {l["hely"] for l in linkek}
+    ok(len(linkek) >= 8 and all(l["h"] == wurl for l in linkek), f"Wolt-hivatkozások ({len(linkek)} db) mind a megadott Wolt-címre mutatnak")
+    ok(all(l["t"] == "_blank" and "noopener" in l["r"] and "noreferrer" in l["r"] for l in linkek), "Wolt-linkek: új lap, noopener noreferrer")
+    ok({"nyito", "szolgaltatas", "szekcio", "utak", "idopont", "osszesito", "lablec"} <= helyek, "Wolt CTA a nyitóban, szolgáltatásoknál, szekcióban, A/B/C-ben, időpontkérőnél, összesítőben, láblécben")
+    ok(sum(1 for l in linkek if l["hely"] == "szolgaltatas") == n_wolt_szolg, f"szolgáltatásonkénti Wolt-link csak a Wolton is elérhető területeknél ({n_wolt_szolg})")
+    kulso = pg.evaluate("[...document.querySelectorAll('a[href^=\"http\"]')].filter(a=>a.target!=='_blank'||!a.rel.includes('noopener')).map(a=>a.href)")
+    ok(kulso == [], "minden külső hivatkozás biztonságosan, új lapon nyílik")
+    with ctx.expect_page() as uj:
+        pg.click("a[data-wolt='szekcio']")
+    up = uj.value
+    up.wait_for_load_state()
+    ok(up.url == wurl, "„Megnézem a Wolton” gomb a Wolt-oldalt nyitja új lapon")
+    ok(pg.url.startswith(URL), "az eredeti oldal megmarad")
+    up.close()
+    rossz = pg.evaluate("[...document.querySelectorAll('a[href^=\"#\"]')].map(a=>a.getAttribute('href')).filter(h=>h.length>1&&!document.getElementById(h.slice(1)))")
+    ok(rossz == [], f"minden belső horgony létező elemre mutat {rossz}")
+    for h in ["#szolgaltatasok", "#wolt", "#munkaink", "#igy-dolgozunk", "#kapcsolat"]:
+        pg.click(f".nav a[href='{h}']")
+        pg.wait_for_timeout(900)
+        t = pg.evaluate(f"document.querySelector('{h} h2').getBoundingClientRect().top")
+        f = pg.evaluate("document.querySelector('#fej').getBoundingClientRect().bottom")
+        ok(f < t < 500, f"fejléc-menü {h}: a cím a fejléc alatt, látható helyen")
+    ok(pg.evaluate("document.querySelectorAll('.szolg-sor').length") == len(adat["szolgaltatasok"]), "szolgáltatássorok száma = adatok")
+    ok(pg.evaluate("document.querySelectorAll('input[name=szolgaltatas]').length") == len(adat["szolgaltatasok"]), "időpontkérő opciói = szolgáltatások")
+    pg.click("[data-szolg='taxi']")
+    pg.wait_for_timeout(700)
+    ok(pg.evaluate("document.querySelector('input[value=\"taxi\"]').checked"), "új szolgáltatás (taxi) előválasztása működik")
+    meta = pg.evaluate("""()=>{const m=n=>{const e=document.querySelector(`meta[property="${n}"],meta[name="${n}"]`);return e&&e.content};
+        return [m('description'),m('og:title'),m('og:description'),m('og:image'),m('og:url'),m('twitter:card'),m('robots'),document.title]}""")
+    ok(all(meta) and meta[6] == "noindex, nofollow", "metaadatok: description, OG, Twitter, robots, title")
+    ok(pg.request.get(meta[3].replace(adat["oldal"]["url"], URL).split("?")[0]).status == 200, "OG-kép elérhető")
+    ctx.close()
+    for w in (981, 1024, 1180, 1440):
+        pg = b.new_page(viewport={"width": w, "height": 700})
+        pg.goto(URL, wait_until="networkidle")
+        ok(pg.evaluate("document.querySelector('.fej-sor').getBoundingClientRect().height") <= 80 and
+           pg.evaluate("[...document.querySelectorAll('.nav a,.fej-cta')].every(a=>a.getBoundingClientRect().height<50)"),
+           f"{w}px: a fejléc menüje egy sorban fér el")
+        pg.close()
 
 
 def eles_szures():
@@ -241,6 +298,7 @@ if __name__ == "__main__":
         nezetek(b)
         mobil(b)
         asztali(b)
+        wolt_es_linkek(b)
         kulonleges(b)
         b.close()
     print("\n" + ("MINDEN ELLENŐRZÉS RENDBEN" if not HIBAK else f"{len(HIBAK)} HIBA:\n- " + "\n- ".join(HIBAK)))

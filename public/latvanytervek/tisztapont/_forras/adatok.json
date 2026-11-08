@@ -19,47 +19,67 @@
 
   "oldal": {
     "url": "https://daekon-ship.github.io/daekon/latvanytervek/tisztapont/",
-    "verzio": "20261108a"
+    "verzio": "20261108b"
   },
 
   "szolgaltatasok": [
     {
       "id": "lakas",
+      "wolt": true,
       "cim": "Lakások és családi házak",
       "rovid": "Lakás, ház",
       "leiras": "Rendszeres vagy alkalmi takarítás otthonokban. A helyiségeket és a teendőket előre egyeztetjük, hogy a munka az Ön napirendjéhez igazodjon."
     },
     {
       "id": "iroda",
+      "wolt": true,
       "cim": "Irodák, üzletek és üzleti terek",
       "rovid": "Iroda, üzlet",
       "leiras": "Munkaterek, eladóterek és közösségi helyiségek takarítása egyeztetett időpontban, úgy, hogy a lehető legkevésbé zavarja a működést."
     },
     {
       "id": "szallas",
+      "wolt": true,
       "cim": "Szálláshelyek és apartmanok",
       "rovid": "Szálláshely, apartman",
       "leiras": "Takarítás vendégváltások között vagy előre megbeszélt rendben, apartmanokban és szálláshelyeken."
     },
     {
       "id": "epitkezes",
+      "wolt": true,
       "cim": "Építkezés és felújítás utáni takarítás",
       "rovid": "Építkezés, felújítás után",
       "leiras": "A munkálatok után maradt por és szennyeződés eltávolítása, hogy a helyiségeket újra birtokba vehesse."
     },
     {
       "id": "rendezveny",
+      "wolt": true,
       "cim": "Rendezvényekhez kapcsolódó takarítás",
       "rovid": "Rendezvény",
       "leiras": "Előkészítés a rendezvény előtt, rendrakás és takarítás utána, a helyszín és a program ismeretében."
     },
     {
       "id": "ipari",
+      "wolt": false,
       "cim": "Ipari terek és nagyobb ingatlanok",
       "rovid": "Ipari tér, nagyobb ingatlan",
       "leiras": "Csarnokok, raktárak és nagyobb alapterületű ingatlanok takarítása, a feladat és a helyszín előzetes egyeztetése alapján."
+    },
+    {
+      "id": "taxi",
+      "wolt": true,
+      "cim": "Taxik utasterének takarítása",
+      "rovid": "Taxi",
+      "leiras": "Taxik belső terének takarítása. A Wolt-felületen ez külön szolgáltatásként is szerepel; a részleteket ott, vagy telefonon egyeztetve találja."
     }
   ],
+
+  "wolt": {
+    "url": "https://wolt.com/hu/hun/budapest/venue/tph-tisztapont-hungary?no_universal_links=true",
+    "ellenorizve": "2026. 11. 08.",
+    "kinalat": ["Lakás és családi ház", "Hotel és apartman", "Airbnb SOS", "Üzletek és irodák", "Építkezés után", "Rendezvények", "Taxitakarítás"],
+    "_megjegyzes": "A Wolt-felület kategóriái a 2026.11.08-i állapot szerint (összefoglalva, nem szó szerint). Árakat, a Wolton szereplő eltérő telefonszámot (+36 30…), címet és kiszállítási időt szándékosan NEM vesszük át. Nem szerepel itt: 'Steril / egészségügyi takarítás' (igazolás nélkül nem ígérhető) és a 'Segítsünk Egymásnak' program (ügyféllel egyeztetendő). Nincs API-kapcsolat: csak közvetlen hivatkozás."
+  },
 
   "munkak_kategoriak": [
     { "id": "lakoter", "nev": "Lakóterek", "egyes": "Lakótér" },

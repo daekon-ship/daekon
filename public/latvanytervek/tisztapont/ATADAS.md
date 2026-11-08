@@ -1,4 +1,4 @@
-# TisztaPont – látványterv, átadás (2. kör – véglegesítő audit, 2026.11.07.)
+# TisztaPont – látványterv, átadás (3. kör – Wolt-integráció, 2026.11.08.)
 
 **Ügyfél:** TisztaPont-Hungary Kft. · **Előnézet:** https://daekon-ship.github.io/daekon/latvanytervek/tisztapont/
 Bemutató prototípus: `noindex, nofollow`, nincs éles foglalás, nincs adatküldés (CSP-vel technikailag is tiltva).
@@ -21,7 +21,7 @@ Három vizsgált irány:
 
 ## Felépítés
 
-Fejléc (ragadós, mobilon teljes képernyős menü) → Nyitó → Referenciaszalag → 01 Szolgáltatások (6 sor, mindegyik előtölti az időpontkérőt) → 02 Munkáink (szűrhető galéria + képnézegető) → 03 Így dolgozunk (4 lépés) → 04 Időpontegyeztetés (5 lépés, demó) → 05 Kapcsolat (sötétkék) → Lábléc.
+Fejléc (ragadós, mobilon teljes képernyős menü; menüpontok: Szolgáltatások · Wolt · Munkáink · Így dolgozunk · Kapcsolat) → Nyitó (diszkrét „Rendelés a Wolton” link a telefonszám mellett) → Referenciaszalag (2 sor) → 01 Szolgáltatások (7 sor, mindegyik előtölti az időpontkérőt; a Wolton is elérhetőknél „Wolton is” link) → 02 Online rendelés / Wolt (+ „Három út a takarításig”: A időpontigény, B Wolt, C telefon) → 03 Munkáink (szűrhető galéria + képnézegető) → 04 Így dolgozunk (4 lépés) → 05 Időpontegyeztetés (5 lépés, demó, Wolttól elkülönítve) → 06 Kapcsolat (sötétkék) → Lábléc (Wolt-felület link).
 
 ## Tipográfia, színek, térközök
 
@@ -78,6 +78,15 @@ További mezők: `kapcsolat` (`kozvetlen` / `alvallalkozo` / `korabbi_munkatarsi
 - A tartalombiztonsági szabályzat (`connect-src 'none'`, `form-action 'none'`) technikailag is megakadályozza az adatküldést – éles bekötéskor ezt a CSP-t az új végponttal együtt kell módosítani (`_forras/sablon.html`).
 - Az éles bekötés helye kizárólag `js/foglalas-adapter.js` (`TPFoglalas.kuld`), a felülettől elválasztva; módváltás: `foglalas.mod: "eles"`.
 
+### Wolt – hogyan kapcsolódik
+
+- **Csak közvetlen hivatkozás**, a megrendelő által megadott címre (`wolt.url` az `adatok.json`-ban). Nincs API, nincs iframe, nincs szinkron: a Wolton leadott rendelés a Wolt saját folyamata, az oldal ezt több helyen ki is mondja (Wolt-szekció, időpontkérő bal oszlopa, összesítő).
+- 12 Wolt-link: nyitó, 6 szolgáltatássor („Wolton is”), Wolt-szekció gombja („Megnézem a Wolton”), B út, időpontkérő, összesítő, lábléc. Mind `target="_blank" rel="noopener noreferrer"`, külső-link ikonnal és képernyőolvasónak szóló „(külső oldal, új lapon nyílik)” szöveggel. A CSP nem korlátozza a navigációt, a link működik.
+- A Wolt-kínálat **2026.11.08-án ellenőrizve** (a Wolt nyilvános oldala alapján). Az oldal csak összefoglaló kategóriákat mutat dátummal, árat nem – „aktuális kínálat és árak a Wolton”.
+- **Szándékosan nem vettük át a Woltról:** a +36 30 830… telefonszámot (eltér az ügyfél levelében szereplőtől), az 1126 Budapest címet („virtual venue”), a 08–24 órás kiszállítási időt (nem nyitvatartás), az árakat, a „Steril / egészségügyi takarítás” ígéretet (igazolás nélkül nem állítható) és a „Segítsünk Egymásnak” programot (egyeztetendő).
+- Új szolgáltatás a Wolt-kínálat alapján: **Taxik utasterének takarítása** (`taxi`). Az Ipari terek a Wolton nem szerepel, ott nincs Wolt-link.
+- A Wolt logóját nem használjuk – csak a „Wolt” nevet szövegesen, a TisztaPont saját arculatában.
+
 ## Logó és ikonok
 
 - Az ügyfélnek nem volt külön logófájlja: a jelet és a feliratot a két Wolt-grafikájából emeltem ki, és **pontosan követve vektorizáltam** (`arculat/`), formát nem rajzoltam át. A színek a grafikából mintavételezve.
@@ -108,7 +117,7 @@ Felhasznált fotók (7): előszoba (nyitókép), étkezősarok, fürdőszoba, na
 
 ## Automatikus tesztek
 
-`_forras/teszt.py` (Playwright + Chrome/Chromium) – futtatás a fájl elején leírva. 70 ellenőrzés, legutóbb **mind rendben** (2026.11.07.):
+`_forras/teszt.py` (Playwright + Chrome/Chromium) – futtatás a fájl elején leírva. 93 ellenőrzés, legutóbb **mind rendben** (2026.11.08.). A 3. körben hozzáadva: mind a 12 Wolt-link címe, új lapos megnyitása és `rel` értéke; a „Megnézem a Wolton” gomb valóban új lapon nyitja a Wolt-címet (a Wolt-oldalt a teszt helyben válaszolja meg, nem tölti le); minden külső link biztonságos; minden belső horgony létező elemre mutat; a fejléc minden menüpontja a fejléc alá görget; szolgáltatások és időpontkérő-opciók száma az adatokból; taxi előválasztása; metaadatok és OG-kép; a fejléc 981–1440 px között egy sorban fér el; nincs ár, nincs Wolt-telefonszám, nincs iframe, nincs szinkron-állítás. Korábbról:
 
 - forrás: noindex, CSP, nincs „partnereink”, nincs hamis siker, nincs külső szkript, nincs Fraunces; `--eles` szűrés;
 - 360 / 390 / 768 / 1024 / 1366 / 1440 / 1920 px: vízszintes csúszás, konzolhiba, hiányzó fájl, rejtve maradt elem, 40 px alatti érintési cél;
@@ -131,5 +140,5 @@ Felhasznált fotók (7): előszoba (nyitókép), étkezősarok, fürdőszoba, na
 9. **Fotók publikálhatósága** – az ügyfél készítette-e, és a helyszínek tulajdonosai hozzájárulnak-e.
 10. **Valódi időpontfoglalás működése** – e-mail, űrlapkezelő vagy foglalási rendszer; ehhez adatkezelési tájékoztató és impresszum (tárhelyszolgáltatóval) kell, ezeket most szándékosan nem készítettem el.
 11. **Eredeti vektoros logó** és a vízszintes elrendezés jóváhagyása.
-12. **Wolt-link** – jelenleg nem szerepel (az ügyfél szerint fejlesztés alatt áll, innen nem volt ellenőrizhető). Ha a felület kész, egy sorral felvehető.
+12. **Wolt** – a link beépítve. Tisztázandó: melyik telefonszám a hivatalos (a Wolton +36 30 830…, a levélben +36 20 596 6042); a Wolton szereplő „steril / egészségügyi” takarítás igazolható-e; a „Segítsünk Egymásnak” program megjelenjen-e a honlapon; a Wolt-kategóriák végleges listája. Élesítés előtt a Wolt-kínálatot újra ellenőrizni (`wolt.kinalat`, `wolt.ellenorizve`).
 13. **Meglévő tisztaponthungary.hu oldal** – a keresés szerint létezik ilyen domain „Magyarország egész területén” típusú állítással. Tisztázandó, hogy az ügyfél oldala-e, és erre a domainre kerül-e az új oldal (a lefedettségi állítást az új oldal szándékosan nem veszi át).

@@ -28,6 +28,10 @@ window.TP_ADATOK = {
     {
       "id": "ipari",
       "cim": "Ipari terek és nagyobb ingatlanok"
+    },
+    {
+      "id": "taxi",
+      "cim": "Taxik utasterének takarítása"
     }
   ],
   "munkak": [

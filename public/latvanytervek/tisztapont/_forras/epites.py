@@ -92,6 +92,7 @@ def main():
         foglalas=ADAT["foglalas"],
         szalag=szalag,
         szalag_sorok=szalag_sorok,
+        wolt=ADAT["wolt"],
         szalag_cimke=szalag_cimke,
         szalag_jovahagyasra=szalag_jovahagyasra and not ELES,
         cegadat_jeloles=bool(c.get("cegadatok_egyeztetendo")) and not ELES,

@@ -51,7 +51,7 @@
         });
       });
     }, { rootMargin: "-45% 0px -50% 0px" });
-    ["szolgaltatasok", "munkaink", "igy-dolgozunk", "idopont", "kapcsolat"].forEach(function (id) { var el = document.getElementById(id); if (el) io.observe(el); });
+    ["szolgaltatasok", "wolt", "munkaink", "igy-dolgozunk", "idopont", "kapcsolat"].forEach(function (id) { var el = document.getElementById(id); if (el) io.observe(el); });
   }
 
   /* ---------- megjelenés görgetésre + a márka képfeltárása ---------- */
