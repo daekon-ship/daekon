@@ -19,7 +19,7 @@
 
   "oldal": {
     "url": "https://daekon-ship.github.io/daekon/latvanytervek/tisztapont/",
-    "verzio": "20261107b"
+    "verzio": "20261108a"
   },
 
   "szolgaltatasok": [
@@ -71,7 +71,9 @@
     { "kep": "konyha", "w": 640, "h": 510, "kisebb": null, "kat": "uzleti", "felirat": "Vendéglátóhelyi konyha rozsdamentes pultokkal", "alt": "Csempézett vendéglátóhelyi konyha rozsdamentes pultokkal, mosogatóval és polcokkal, üveg védőfal mögül fotózva" },
     { "kep": "furdo", "w": 900, "h": 1200, "kisebb": 600, "kat": "lakoter", "felirat": "Fürdőszoba káddal és mosdóval", "alt": "Bézs csempés fürdőszoba fehér káddal, zuhanyfüggönnyel és falra szerelt mosdóval" },
     { "kep": "eloszoba", "w": 1200, "h": 1600, "kisebb": 760, "kat": "lakoter", "felirat": "Előszoba burkolattal, rálátással a nappalira", "alt": "Világos, csempézett előszoba sötét fa ajtókkal, a nyitott üvegezett ajtón át a nappali látszik" },
-    { "kep": "nappali", "w": 768, "h": 1024, "kisebb": 560, "kat": "lakoter", "felirat": "Tágas nappali étkezőrésszel", "alt": "Tágas, világos nappali sarokülőkkel, két kerek szőnyeggel és üvegasztalos étkezőrésszel" }
+    { "kep": "nappali", "w": 768, "h": 1024, "kisebb": 560, "kat": "lakoter", "felirat": "Tágas nappali étkezőrésszel", "alt": "Tágas, világos nappali sarokülőkkel, két kerek szőnyeggel és üvegasztalos étkezőrésszel" },
+    { "kep": "pavilon", "w": 960, "h": 540, "kisebb": 640, "kat": "uzleti", "felirat": "Vendéglátó pavilon esti világításban", "alt": "Kivilágított vendéglátó pavilon üvegezett kiszolgálóablakkal, mögötte csempézett konyharész; jobbra piros burkolatú fal" },
+    { "kep": "nappali2", "w": 768, "h": 1024, "kisebb": 560, "kat": "lakoter", "felirat": "Nappali fotellel és tévéfallal", "alt": "Világos nappali barna kanapéval, kék fotellel, tévészekrénnyel és fehér, kétszárnyú ajtóval" }
   ],
 
   "teruletek": ["Otthonok", "Irodák", "Üzletek", "Szálláshelyek", "Ipari terek", "Rendezvényhelyszínek"],

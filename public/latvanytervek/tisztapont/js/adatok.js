@@ -70,6 +70,22 @@ window.TP_ADATOK = {
       "kat": "lakoter",
       "felirat": "Tágas nappali étkezőrésszel",
       "alt": "Tágas, világos nappali sarokülőkkel, két kerek szőnyeggel és üvegasztalos étkezőrésszel"
+    },
+    {
+      "kep": "pavilon",
+      "w": 960,
+      "h": 540,
+      "kat": "uzleti",
+      "felirat": "Vendéglátó pavilon esti világításban",
+      "alt": "Kivilágított vendéglátó pavilon üvegezett kiszolgálóablakkal, mögötte csempézett konyharész; jobbra piros burkolatú fal"
+    },
+    {
+      "kep": "nappali2",
+      "w": 768,
+      "h": 1024,
+      "kat": "lakoter",
+      "felirat": "Nappali fotellel és tévéfallal",
+      "alt": "Világos nappali barna kanapéval, kék fotellel, tévészekrénnyel és fehér, kétszárnyú ajtóval"
     }
   ]
 };

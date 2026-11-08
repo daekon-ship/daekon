@@ -121,7 +121,11 @@
   var munkak = D.munkak || [];
 
   function lathatoIndexek() {
-    return elemek.filter(function (li) { return !li.hidden; }).map(function (li) { return +$("[data-nagyit]", li).getAttribute("data-nagyit"); });
+    // a képernyőn látható sorrend (mobilon a CSS „order” átrendez)
+    return elemek.filter(function (li) { return !li.hidden; })
+      .map(function (li, i) { return { li: li, i: i, o: parseInt(getComputedStyle(li).order, 10) || 0 }; })
+      .sort(function (a, b) { return a.o - b.o || a.i - b.i; })
+      .map(function (x) { return +$("[data-nagyit]", x.li).getAttribute("data-nagyit"); });
   }
   function mutat(i, irany) {
     aktualis = (i + sor.length) % sor.length;

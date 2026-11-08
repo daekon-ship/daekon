@@ -88,7 +88,10 @@ További mezők: `kapcsolat` (`kozvetlen` / `alvallalkozo` / `korabbi_munkatarsi
 
 ## Fotók
 
-Felhasznált (az ügyfél 7 csatolmányából 5): előszoba (nyitókép), étkezősarok, fürdőszoba, nappali, vendéglátóhelyi konyha.
+Felhasznált fotók (7): előszoba (nyitókép), étkezősarok, fürdőszoba, nappali, nappali más szögből, vendéglátóhelyi konyha, vendéglátó pavilon esti világításban (a két utóbbi 2026.11.08-án érkezett / került be).
+
+- A pavilonfotóról levágtam a felső cégfeliratot (más vállalkozás neve). Az ablakon lévő árak és ételképek a helyszín részei, retus nélkül maradtak. A pult mögött egy kéz részlete látszik, ez nem azonosítható. Nem állítjuk, hogy a konyhafotó ugyanerről a pavilonról készült.
+- A galéria sorrendje mobilon: konyha · 2 kép · nappali (teljes szélesség) · 2 kép · pavilon (teljes szélesség). A képnézegető ebben a látható sorrendben lapoz.
 
 - **Nem használt:** a két Wolt-promóciós grafika (generált képek, Airbnb-/Wolt-/Kia-jelzések, taxis téma) – csak a logó forrásai.
 - A konyhafotóból kivágtam a bal oldali árlistát, a hűtő feliratát (más vállalkozás neve) és a bal felső sarkot (letakart arc); jobb szélről a sárga felirat. Retus nincs.

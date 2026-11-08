@@ -223,9 +223,12 @@ section[id],#top{scroll-margin-top:calc(var(--fej-m) + 12px)}
 .galeria[data-szuro-allapot="mind"] .gal-furdo{grid-column:1 / span 4}
 .galeria[data-szuro-allapot="mind"] .gal-eloszoba{grid-column:5 / span 4;margin-top:clamp(32px,5vw,72px)}
 .galeria[data-szuro-allapot="mind"] .gal-nappali{grid-column:9 / span 4}
+.galeria[data-szuro-allapot="mind"] .gal-pavilon{grid-column:1 / span 7;margin-top:clamp(8px,2vw,24px)}
+.galeria[data-szuro-allapot="mind"] .gal-nappali2{grid-column:9 / span 4;margin-top:clamp(40px,6vw,96px)}
 /* szűrt nézet: rendezett sor */
 .galeria:not([data-szuro-allapot="mind"]) .gal-elem{grid-column:span 4}
 .galeria:not([data-szuro-allapot="mind"]) .gal-konyha{grid-column:span 6;max-width:640px}
+.galeria:not([data-szuro-allapot="mind"]) .gal-pavilon{grid-column:span 6}
 
 .gal-gomb{display:block;width:100%;padding:0;border:0;background:none;cursor:zoom-in;border-radius:var(--r);text-align:left}
 .gal-kep{position:relative;display:block;overflow:hidden;border-radius:var(--r);background:var(--jeg-2)}
@@ -244,6 +247,8 @@ section[id],#top{scroll-margin-top:calc(var(--fej-m) + 12px)}
   .galeria[data-szuro-allapot="mind"] .gal-furdo{grid-column:1 / span 4}
   .galeria[data-szuro-allapot="mind"] .gal-eloszoba{grid-column:5 / span 4;margin-top:0}
   .galeria[data-szuro-allapot="mind"] .gal-nappali{grid-column:9 / span 4}
+  .galeria[data-szuro-allapot="mind"] .gal-pavilon{grid-column:1 / span 7;margin-top:0}
+  .galeria[data-szuro-allapot="mind"] .gal-nappali2{grid-column:8 / span 5;margin-top:0}
   .galeria:not([data-szuro-allapot="mind"]) .gal-elem{grid-column:span 6}
 }
 @media (max-width:640px){
@@ -252,6 +257,13 @@ section[id],#top{scroll-margin-top:calc(var(--fej-m) + 12px)}
   .galeria[data-szuro-allapot="mind"] .gal-elem{grid-column:span 1;margin-top:0}
   .galeria .gal-konyha,
   .galeria[data-szuro-allapot="mind"] .gal-konyha{grid-column:1 / -1;order:-1;margin-top:0}
+  /* mobil ritmus: konyha · 2 kép · nappali (teljes) · 2 kép · pavilon (teljes) */
+  .galeria .gal-etkezo,.galeria .gal-furdo{order:1}
+  .galeria .gal-nappali2,
+  .galeria[data-szuro-allapot="mind"] .gal-nappali2{grid-column:1 / -1;order:2}
+  .galeria .gal-eloszoba,.galeria .gal-nappali{order:3}
+  .galeria .gal-pavilon,
+  .galeria[data-szuro-allapot="mind"] .gal-pavilon{grid-column:1 / -1;order:4}
   .gal-felirat{font-size:14.5px;margin-top:10px}
   .gal-ikon{width:34px;height:34px;right:8px;top:8px}
 }
