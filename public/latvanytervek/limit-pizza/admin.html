@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Konyha · rendelések — Limit Pizza admin demó</title>
+<meta name="description" content="A Limit Pizza rendelési felületének admin oldala, bemutató: beérkező rendelések, állapotok, nyomtatás, elfogyott termékek.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0d0d0d">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preload" href="fonts/archivo-limit.woff" as="font" type="font/woff" crossorigin>
+<link rel="stylesheet" href="limit.css">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body class="adm">
+
+<div class="demo-bar" role="note">
+  <div class="wrap demo-bar__in">
+    <p><b>Admin demó</b> — minta rendelésekkel. Semmi nem kerül elküldésre; minden csak ebben a böngészőben tárolódik.</p>
+    <button type="button" class="adm__reset" data-reset>Minta adatok visszaállítása</button>
+  </div>
+</div>
+
+<header class="atop">
+  <div class="wrap atop__in">
+    <a class="atop__brand" href="index.html" aria-label="Vissza a weboldalra">
+      <img src="img/logo-160.webp" width="160" height="160" alt="Limit Pizza logó">
+      <span><b>Konyha</b><small>Rendelések · <span data-clock>--:--</span></small></span>
+    </a>
+    <div class="atop__ctl">
+      <label class="sw" title="Rendelésfelvétel a weboldalon">
+        <input type="checkbox" data-accepting checked>
+        <span class="sw__track" aria-hidden="true"></span>
+        <span class="sw__lbl" data-accepting-lbl>Rendelést fogadunk</span>
+      </label>
+      <button type="button" class="abtn" data-sound aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path class="sw-on" d="M15.5 9a4 4 0 010 6M18 6.5a7.5 7.5 0 010 11"/><path class="sw-off" d="M16 9.5l5 5M21 9.5l-5 5"/></svg>
+        <span data-sound-lbl>Hang ki</span>
+      </button>
+      <a class="abtn abtn--line" href="index.html">Weboldal</a>
+    </div>
+  </div>
+</header>
+
+<main class="wrap amain">
+  <section class="stats" aria-label="Mai összesítő">
+    <div><span>Mai rendelések</span><b data-st="count">0</b></div>
+    <div><span>Mai forgalom</span><b data-st="sum">0 Ft</b></div>
+    <div><span>Átlagos rendelés</span><b data-st="avg">0 Ft</b></div>
+    <div><span>Várakozik</span><b data-st="open">0</b></div>
+  </section>
+
+  <nav class="atabs" role="tablist" aria-label="Nézetek">
+    <button type="button" role="tab" class="atab is-on" aria-selected="true" aria-controls="p-rend" id="t-rend" data-tab="rend">Rendelések</button>
+    <button type="button" role="tab" class="atab" aria-selected="false" aria-controls="p-etlap" id="t-etlap" data-tab="etlap">Étlap · elérhetőség</button>
+  </nav>
+
+  <section id="p-rend" role="tabpanel" aria-labelledby="t-rend">
+    <div class="cols-nav" role="group" aria-label="Állapot" data-colnav></div>
+    <div class="board" data-board></div>
+  </section>
+
+  <section id="p-etlap" role="tabpanel" aria-labelledby="t-etlap" hidden>
+    <p class="hint">Amit itt „elfogyott”-ra állítasz, az a weboldal étlapján azonnal szürkén, „Ma elfogyott” jelzéssel jelenik meg, és nem tehető kosárba. (Bemutató: ugyanebben a böngészőben, a weboldalt egy másik fülön nyitva tartva látszik.)</p>
+    <div class="avail" data-avail></div>
+  </section>
+</main>
+
+<div class="toast" role="status" aria-live="polite" data-toast></div>
+<div class="print-slip" data-print aria-hidden="true"></div>
+
+<script src="data/menu.js"></script>
+<script src="js/vendor/motion-11.18.2.min.js" defer></script>
+<script src="admin.js" defer></script>
+</body>
+</html>

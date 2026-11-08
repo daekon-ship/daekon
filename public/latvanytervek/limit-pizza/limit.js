@@ -167,9 +167,7 @@
      MenuSection + ProductCard
      ========================================================= */
   function ProductCard(p) {
-    var media = p.photo
-      ? '<span class="pi__media pi__media--photo"><img src="img/' + p.photo + '-360.webp" width="360" height="360" loading="lazy" alt=""><span class="pi__photono">' + p.no + '</span></span>'
-      : '<span class="pi__media" aria-hidden="true"><span class="pi__no">' + p.no + '</span></span>';
+    var media = '<span class="pi__media" aria-hidden="true"><span class="pi__no">' + p.no + '</span></span>';
     return '<li class="pi" data-id="' + p.id + '">' +
       '<button type="button" class="pi__btn" data-open-pizza="' + p.id + '" aria-label="' + p.no + '. ' + cap(p.name) + ', ' + p.price + ' forint — összeállítás és kosárba">' +
       media +
@@ -182,6 +180,23 @@
 
   var listEl = $('[data-pizza-list]');
   listEl.innerHTML = M.pizzas.map(ProductCard).join('');
+
+  /* --- „Ma elfogyott” jelzés: az admin demóban állítható (ugyanebben a böngészőben) --- */
+  var OUT_KEY = 'limitpizza-demo-elfogyott-v1';
+  function soldOut() { try { return JSON.parse(localStorage.getItem(OUT_KEY) || '[]'); } catch (e) { return []; } }
+  function renderSoldOut() {
+    var out = soldOut();
+    M.pizzas.forEach(function (p) {
+      var li = listEl.querySelector('[data-id="' + p.id + '"]'), on = out.indexOf(p.id) > -1;
+      li.classList.toggle('is-out', on);
+      var btn = $('.pi__btn', li); btn.disabled = on;
+      var tag = $('.pi__out', li);
+      if (on && !tag) $('.pi__line', li).insertAdjacentHTML('afterend', '<span class="pi__out">Ma elfogyott</span>');
+      if (!on && tag) tag.remove();
+    });
+  }
+  renderSoldOut();
+  window.addEventListener('storage', function (e) { if (e.key === OUT_KEY) renderSoldOut(); });
 
   $('[data-topping-groups]').innerHTML = M.toppingGroups.map(function (g) {
     return '<div class="tg"><div class="tg__line"><span class="tg__name">' + g.name + '</span><span class="lead" aria-hidden="true"></span><span class="tg__price">' + ft(g.price) + '</span></div>' +
@@ -289,7 +304,7 @@
     var p = byId(id);
     var removable = p.ingredients.filter(function (i) { return i !== 'paradicsomszósz'; });
     var media = p.photo
-      ? '<figure class="cfg__media"><img class="cfg__photo" src="img/' + p.photo + '-720.webp" width="720" height="720" alt="' + esc(M.photos[p.photo].alt) + '"><figcaption>Saját fotó a Limit Pizza konyhájából</figcaption></figure>'
+      ? '<figure class="cfg__media"><img class="cfg__photo" src="img/' + p.photo + '-kivagas-720.webp" srcset="img/' + p.photo + '-kivagas-720.webp 720w, img/' + p.photo + '-kivagas-1080.webp 1080w" sizes="300px" width="720" height="720" alt="' + esc(M.photos[p.photo].alt) + '"><figcaption>Saját fotó a Limit Pizza konyhájából</figcaption></figure>'
       : '<figure class="cfg__media"><div class="cfg__ph" aria-hidden="true"><b>' + p.no + '</b><span>' + esc(p.name) + '</span></div><figcaption>Ehhez a pizzához még nincs saját fotó</figcaption></figure>';
 
     cfgForm.innerHTML =
@@ -404,27 +419,72 @@
     return lines.join('\n');
   }
 
+  var ORDERS_KEY = 'limitpizza-demo-rendelesek-v1';
+  var DEMO_CUSTOMER = { name: 'Minta Vendég', phone: '+36 30 000 0000', address: 'Minta utca 1.' };
+  var PAYS = [
+    { id: 'kartya', label: 'Bankkártya a futárnál' },
+    { id: 'szep', label: 'OTP SZÉP-kártya a futárnál' },
+    { id: 'kp', label: 'Készpénz', verify: true }
+  ];
+  var checkout = { pay: 'kartya', note: '' };
+
+  function orderLines() {
+    return state.items.map(function (it) {
+      var mods = [];
+      if (it.type === 'pizza') {
+        var b = M.bases.find(function (x) { return x.id === it.base; });
+        if (b && !b.default) mods.push('alap: ' + b.name.toLowerCase() + ' (felár egyeztetendő)');
+        if (it.removed.length) mods.push('nélküle: ' + it.removed.join(', '));
+        if (it.plusz.length) mods.push('plusz: ' + it.plusz.join(', '));
+        if (it.extra.length) mods.push('extra: ' + it.extra.join(', '));
+        if (it.note) mods.push('megjegyzés: ' + it.note);
+      }
+      return { qty: it.qty, no: it.type === 'pizza' ? byId(it.id).no : null, name: it.type === 'pizza' ? cap(byId(it.id).name) : itemName(it), unit: unitPrice(it), sum: unitPrice(it) * it.qty, mods: mods };
+    });
+  }
+  function saveDemoOrder() {
+    var list = [];
+    try { list = JSON.parse(localStorage.getItem(ORDERS_KEY) || '[]'); } catch (e) {}
+    var last = list.reduce(function (m, o) { return Math.max(m, o.no || 0); }, 1040);
+    var o = {
+      no: last + 1, ts: Date.now(), status: 'uj', demo: true,
+      customer: { name: DEMO_CUSTOMER.name, phone: DEMO_CUSTOMER.phone, town: state.town, address: DEMO_CUSTOMER.address },
+      pay: checkout.pay, note: checkout.note, lines: orderLines(),
+      sub: subtotal(), fee: fee(), total: subtotal() + fee(), gift: pizzaCount() >= M.delivery.gift.pizzaCount
+    };
+    list.push(o);
+    try { localStorage.setItem(ORDERS_KEY, JSON.stringify(list)); } catch (e) {}
+    return o;
+  }
+
   function CartDrawer() {
-    var head = '<div class="cart__head"><div><h2 id="cart-cim">Kosár</h2><p>Rendelési lista a telefonos rendeléshez</p></div>' +
-      '<button type="button" class="xbtn" data-close aria-label="Kosár bezárása">' + ICON.x + '</button></div>';
+    var titles = { list: ['Kosár', 'A rendelésed összesítője'], checkout: ['Rendelés', 'Szállítási adatok · bemutató'], done: ['Elküldve', 'Bemutató'] };
+    var head = '<div class="cart__head"><div><h2 id="cart-cim">' + titles[view][0] + '</h2><p>' + titles[view][1] + '</p></div>' +
+      '<button type="button" class="xbtn" data-close aria-label="Bezárás">' + ICON.x + '</button></div>';
+    var steps = '<ol class="steps" aria-label="Rendelés lépései">' + ['Kosár', 'Adatok', 'Kész'].map(function (t, i) {
+      var cur = { list: 0, checkout: 1, done: 2 }[view];
+      return '<li class="' + (i < cur ? 'is-done' : i === cur ? 'is-on' : '') + '"' + (i === cur ? ' aria-current="step"' : '') + '><span>' + (i + 1) + '</span>' + t + '</li>';
+    }).join('') + '</ol>';
 
     if (view === 'done') {
-      cartEl.innerHTML = head +
+      var o = lastOrder;
+      cartEl.innerHTML = head + steps +
         '<div class="done">' +
           '<span class="done__badge">Bemutató</span>' +
-          '<h3>Valódi rendelés nem történt.</h3>' +
-          '<p>Ez egy látványterv, a kosár semmit nem küld el. A Limit Pizzánál telefonon lehet rendelni — ezt a listát elég bediktálni:</p>' +
+          '<h3>Bemutató — valódi rendelés nem történt.</h3>' +
+          '<p>Élesben itt kapná meg a vendég a visszaigazolást, a konyhán pedig ebben a pillanatban megjelenne a rendelés. Megnézheted, hogyan:</p>' +
+          '<a class="btn btn--ink" href="admin.html#r' + o.no + '" target="_blank" rel="noopener">Így látja a konyha · admin demó</a>' +
           '<pre class="slip" data-slip>' + esc(slipText()) + '</pre>' +
+          '<p class="done__small">Ma a Limit Pizzánál telefonon lehet rendelni:</p>' +
           '<a class="btn btn--red" href="' + M.meta.phoneHref + '">' + ICON.phone + 'Hívás: ' + M.meta.phone + '</a>' +
-          '<button type="button" class="btn btn--line" data-copy>Lista másolása</button>' +
-          '<button type="button" class="linkbtn" data-back>Vissza a kosárhoz</button>' +
+          '<button type="button" class="linkbtn" data-new>Új rendelés összeállítása</button>' +
         '</div>';
       return;
     }
 
     if (!state.items.length) {
       cartEl.innerHTML = head +
-        '<div class="cart__demo"><span><b>Bemutató.</b> A kosár nem küld rendelést — rendelni telefonon lehet.</span></div>' +
+        '<div class="cart__demo"><span><b>Bemutató.</b> A kosár nem küld rendelést — ma telefonon lehet rendelni.</span></div>' +
         '<div class="cart__empty"><img src="img/logo-160.webp" width="160" height="160" alt=""><p>A kosár még üres. Válassz az étlapról, és itt összeáll a rendelésed.</p>' +
         '<button type="button" class="btn btn--ink btn--sm" data-goto-menu>Étlap</button></div>';
       return;
@@ -434,9 +494,37 @@
     var gift = '';
     if (pc >= M.delivery.gift.pizzaCount) gift = '<p class="warn warn--gift">5 pizza egy nyugtán: ajándék ' + M.delivery.gift.item + ' jár.</p>';
     else if (pc >= 3) gift = '<p class="warn warn--gift">Még ' + (M.delivery.gift.pizzaCount - pc) + ' pizza, és ajándék ' + M.delivery.gift.item + ' jár.</p>';
+    var townSel = '<label class="field"><span>Település</span><select data-town>' +
+      M.delivery.zones.map(function (z) { return z.towns.map(function (t) { return '<option value="' + t + '"' + (t === state.town ? ' selected' : '') + '>' + t + ' — ' + (z.fee ? ft(z.fee) + ' kiszállítás' : 'ingyenes kiszállítás') + '</option>'; }).join(''); }).join('') +
+      '</select></label>';
+    var totals = '<div class="rows"><div><span>Részösszeg</span><span>' + ft(sub) + '</span></div><div><span>Kiszállítás (' + esc(state.town) + ')</span><span>' + (f ? ft(f) : 'ingyenes') + '</span></div>' +
+      '<div class="tot"><span>Összesen</span><span data-total>' + ft(sub + f) + '</span></div></div>';
 
-    cartEl.innerHTML = head +
-      '<div class="cart__demo"><span><b>Bemutató.</b> A kosár nem küld rendelést — rendelni telefonon lehet.</span></div>' +
+    if (view === 'checkout') {
+      cartEl.innerHTML = head + steps +
+        '<div class="cart__demo"><span><b>Bemutató.</b> A mezők minta adatokat tartalmaznak, nem írhatók át, és semmi nem kerül elküldésre. Élesben itt adja meg a vendég a nevét, telefonszámát és címét.</span></div>' +
+        '<div class="co">' +
+          '<div class="co__grid">' +
+            '<label class="field"><span>Név</span><input value="' + DEMO_CUSTOMER.name + '" readonly aria-readonly="true"></label>' +
+            '<label class="field"><span>Telefonszám</span><input value="' + DEMO_CUSTOMER.phone + '" readonly aria-readonly="true"></label>' +
+          '</div>' +
+          townSel +
+          '<label class="field"><span>Utca, házszám</span><input value="' + DEMO_CUSTOMER.address + '" readonly aria-readonly="true"></label>' +
+          '<fieldset class="fs co__pay"><legend>Fizetés a futárnál</legend><div class="opts">' +
+            PAYS.map(function (p) { return '<label class="opt opt--base"><input type="radio" name="pay" value="' + p.id + '"' + (checkout.pay === p.id ? ' checked' : '') + ' data-pay><span>' + p.label + (p.verify ? ' <em class="tag">egyeztetendő</em>' : '') + '</span></label>'; }).join('') +
+          '</div><p class="fs__hint" style="margin-top:8px">Online kártyás fizetés nincs a tervben — a fizetés átvételkor történik.</p></fieldset>' +
+          '<label class="field"><span>Üzenet a futárnak</span><textarea class="note" maxlength="140" placeholder="pl. kapucsengő nem működik, hívjon" data-co-note>' + esc(checkout.note) + '</textarea></label>' +
+        '</div>' +
+        '<div class="cart__sum">' + totals +
+          '<div class="cart__btns">' +
+            '<button type="button" class="btn btn--ink" data-send>Rendelés elküldése · bemutató</button>' +
+            '<button type="button" class="linkbtn" data-back>Vissza a kosárhoz</button>' +
+          '</div>' +
+        '</div>';
+      return;
+    }
+
+    cartEl.innerHTML = head + steps +
       '<ul class="cart__list">' + state.items.map(function (it, i) {
         return '<li class="ci" data-i="' + i + '"><div class="ci__top"><span class="ci__name">' + esc(itemName(it)) + '</span><span class="lead" aria-hidden="true"></span><span class="ci__unit">' + ft(unitPrice(it)) + ' / db</span></div>' +
           modsHtml(it) +
@@ -445,19 +533,15 @@
             '<button type="button" data-cq="1" aria-label="Eggyel több"' + (it.qty >= 20 ? ' disabled' : '') + '>' + ICON.plus + '</button></div>' +
             '<button type="button" class="ci__del" data-del>Törlés</button><span class="ci__sum">' + ft(unitPrice(it) * it.qty) + '</span></div></li>';
       }).join('') + '</ul>' +
-      '<div class="cart__sum">' +
-        '<label class="field"><span>Település</span><select data-town>' +
-          M.delivery.zones.map(function (z) { return z.towns.map(function (t) { return '<option value="' + t + '"' + (t === state.town ? ' selected' : '') + '>' + t + ' — ' + (z.fee ? ft(z.fee) + ' kiszállítás' : 'ingyenes kiszállítás') + '</option>'; }).join(''); }).join('') +
-        '</select></label>' +
-        '<div class="rows"><div><span>Részösszeg</span><span>' + ft(sub) + '</span></div><div><span>Kiszállítás</span><span>' + (f ? ft(f) : 'ingyenes') + '</span></div>' +
-        '<div class="tot"><span>Összesen</span><span data-total>' + ft(sub + f) + '</span></div></div>' +
+      '<div class="cart__sum">' + townSel + totals +
         (sub < min ? '<p class="warn warn--min">A minimum rendelés ' + ft(min) + ' — még ' + ft(min - sub) + ' hiányzik.</p>' : '') + gift +
         '<div class="cart__btns">' +
-          '<button type="button" class="btn btn--ink" data-finish' + (sub < min ? ' disabled' : '') + '>Rendelés lezárása · bemutató</button>' +
-          '<a class="btn btn--line" href="' + M.meta.phoneHref + '">' + ICON.phone + 'Hívás: ' + M.meta.phone + '</a>' +
+          '<button type="button" class="btn btn--ink" data-checkout' + (sub < min ? ' disabled' : '') + '>Tovább a szállítási adatokhoz</button>' +
+          '<a class="btn btn--line" href="' + M.meta.phoneHref + '">' + ICON.phone + 'Inkább telefonon: ' + M.meta.phone + '</a>' +
         '</div>' +
       '</div>';
   }
+  var lastOrder = null;
 
   cartEl.addEventListener('click', function (e) {
     var li = e.target.closest('.ci'), t;
@@ -473,19 +557,27 @@
       anim(li, { opacity: [1, 0], x: [0, 24] }, { duration: 0.18 }).then(function () {
         state.items.splice(idx, 1); save(); syncCount(false); CartDrawer();
       });
-    } else if (e.target.closest('[data-finish]')) {
+    } else if (e.target.closest('[data-checkout]')) {
+      view = 'checkout'; CartDrawer();
+      anim($('.co', cartEl), { opacity: [0, 1], x: [16, 0] }, { duration: 0.26 });
+    } else if (e.target.closest('[data-send]')) {
+      lastOrder = saveDemoOrder();
       view = 'done'; CartDrawer();
       anim($('.done', cartEl), { opacity: [0, 1], y: [10, 0] }, { duration: 0.28 });
     } else if (e.target.closest('[data-back]')) {
       view = 'list'; CartDrawer();
-    } else if (e.target.closest('[data-copy]')) {
-      var txt = slipText();
-      var done = function () { toast('Lista a vágólapon'); };
-      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(done, function () { toast('A másolás nem sikerült — jelöld ki a listát.'); });
-      else toast('A másolás itt nem érhető el — jelöld ki a listát.');
+    } else if (e.target.closest('[data-new]')) {
+      state.items = []; save(); syncCount(false); view = 'list';
+      closeDialog(cartDlg, cartDlg, cartTo()).then(function () { location.hash = '#etlap'; });
     } else if (e.target.closest('[data-goto-menu]')) {
       closeDialog(cartDlg, cartDlg, cartTo()).then(function () { location.hash = '#etlap'; });
     }
+  });
+  cartEl.addEventListener('input', function (e) {
+    if (e.target.matches('[data-co-note]')) checkout.note = e.target.value.trim();
+  });
+  cartEl.addEventListener('change', function (e) {
+    if (e.target.matches('[data-pay]')) checkout.pay = e.target.value;
   });
   cartEl.addEventListener('change', function (e) {
     if (e.target.matches('[data-town]')) { state.town = e.target.value; save(); CartDrawer(); anim($('[data-total]', cartEl), { opacity: [0.3, 1] }, { duration: 0.2 }); }

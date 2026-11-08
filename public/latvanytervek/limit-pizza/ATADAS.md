@@ -2,8 +2,19 @@
 
 **Élő előnézet:** https://daekon-ship.github.io/daekon/latvanytervek/limit-pizza/
 **Mappa:** `public/latvanytervek/limit-pizza/`
-**Kör:** 1. kör (2026.11.08.). A korábbi, olaszos irányú tervet az ügyfél 2026.09.07-én elutasította; ez nulláról készült, a régi tervet nem használja.
-**Állapot:** bemutató, `noindex`. A kosár nem ad le rendelést, nem kér személyes adatot, és nem indít fizetést.
+**Kör:** 2. kör (2026.11.08.) — lásd lent „2. kör változásai”. 1. kör ugyanaznap. A korábbi, olaszos irányú tervet az ügyfél 2026.09.07-én elutasította; ez nulláról készült, a régi tervet nem használja.
+**Állapot:** bemutató, `noindex`. Az online rendelés és az admin felület demó: semmi nem kerül elküldésre, személyes adatot nem kér (a mezők rögzített minta adatok), fizetést nem indít.
+**Admin demó:** https://daekon-ship.github.io/daekon/latvanytervek/limit-pizza/admin.html
+
+## 2. kör változásai (2026.11.08.)
+
+- **Fotók csak a heróban.** Az étlaplistából kikerültek a képek; minden pizza egységesen sorszámkört kap.
+- **A gyűrű a pizzára illeszkedik.** A három fotóból a pizza saját körvonala mentén kivágott, enyhén kerekre igazított (perspektíva-korrekció: 1,5–7,5%) változat készült (`_forras/feldolgozas/tanyer.py`). A kép középpontja a pizza középpontja, így a gyűrű pontosan koncentrikus. A betonháttér helyett fehér alapon, valódi árnyékkal ül.
+- **Teljes felbontás.** Kivágások 360 / 720 / 1080 px és a forrás teljes felbontása (~1470–1520 px), `srcset`-tel — retina kijelzőn is éles.
+- **Finom tónusjavítás:** enyhe melegítés, vibrance (+16% a fakóbb színeken), lágy S-görbe, enyhe élesítés. Generatív/AI eszköz nincs, semmi nem került a képre, ami az eredetin nincs rajta.
+- **Facebook és Instagram** a heróban („Kövess minket”), a mobilmenüben, a kapcsolat szakaszban (kártyák) és a láblécben.
+- **Online rendelés demó** (az ügyfél 2026.09.06-i kérése alapján: pizzára kattintva alap feltétek elvétele, plusz feltét felárral, megjegyzés, minden költség látható): Kosár → Szállítási adatok → Kész. A végén „Bemutató — valódi rendelés nem történt.”, és egy gomb, ami megmutatja a rendelést a konyhai felületen.
+- **Admin (konyha) demó — `admin.html`:** beérkező rendelések négy állapotban (Új → Készül → Úton → Kiszállítva), elutasítás megerősítéssel, konyhai cetli nyomtatása (80 mm-es blokknyomtatóra méretezve), mai összesítő, hangjelzés új rendelésre (bekapcsolható), „Rendelést fogadunk” kapcsoló, és **Étlap · elérhetőség**: amit itt „Ma elfogyott”-ra állítanak, az a weboldalon azonnal szürkén jelenik meg, és nem rendelhető. A weboldalról küldött demó rendelés egy másik fülön nyitott adminban azonnal megjelenik (ugyanabban a böngészőben). Négy „minta” rendelés az étlap valódi áraival számolva.
 
 ## Ügyfélkérés → megoldás
 
@@ -120,7 +131,7 @@ Tesztelt eset: Magyaros, lilahagyma nélkül, +gomba, +bacon, fokhagymás-tejfö
    - Az étlap szerint a futárnál OTP SZÉP-kártyával és bankkártyával is lehet fizetni. A 2026. októberi nyilvános közlés a **digitális** OTP SZÉP-kártyát is említi, ezt meg kell erősíteni.
    - A készpénzt az étlap nem írja ki, ezért a terv sem állítja.
 7. **Kiszállítási idő:** nem szerepel, ezért a terv nem ígér időt.
-8. **Közösségi linkek:**
+8. **Közösségi linkek** (a 2. körben mind a négy helyen beépítve):
    - A Facebook-link a foodyas-oldal azonosítójából készült: `facebook.com/683872544816054`.
    - Az Instagram-link az étlapon szereplő `limitpizza` névből: `instagram.com/limitpizza`.
    - Mindkettő ellenőrizendő.
@@ -129,6 +140,9 @@ Tesztelt eset: Magyaros, lilahagyma nélkül, +gomba, +bacon, fokhagymás-tejfö
 11. **Nyitvatartás és települések:** a 2026. június 1-től érvényes étlap szerint. Változott azóta?
 12. **Online rendelés/fizetés** nem része a megállapodásnak, a terv nem is állítja működőnek. Ha később kell, a `menu.json` és a kosár logikája kiindulópont lehet.
 
+13. **Készpénz** a rendelési demóban „egyeztetendő” jelzéssel szerepel — az étlap csak a kártyát és a SZÉP-kártyát írja ki.
+14. **„24 december”** — a megrendelő üzenetében szerepelt, tisztázandó, mire vonatkozik (pl. ünnepi nyitvatartás, határidő).
+
 ## Nem része a tervnek
 
-Éles rendelésküldés, fizetési integráció, backend, admin felület, e-mail-küldés, adatkezelési tájékoztató és impresszum (ezek az élesítéskor kellenek), valamint GSAP, Three.js, WebGL.
+Éles rendelésküldés (az online rendelés és az admin csak demó), fizetési integráció, backend, admin felület, e-mail-küldés, adatkezelési tájékoztató és impresszum (ezek az élesítéskor kellenek), valamint GSAP, Three.js, WebGL.
