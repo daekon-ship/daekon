@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Konyha · rendelések — Limit Pizza admin demó</title>
-<meta name="description" content="A Limit Pizza konyhai rendelésfogadó felületének bemutatója iPadre: új rendelés hangjelzéssel, elfogadás idővel, szüneteltetés, elfogyott termékek, konyhai blokk.">
+<meta name="description" content="A Limit Pizza konyhai rendelésfogadó felületének bemutatója iPadre: új rendelés hangjelzéssel, elfogadás idővel, szüneteltetés, elfogyott termékek, rendelés részletei.">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#0d0d0d">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -141,21 +141,12 @@
   </form>
 </dialog>
 
-<!-- konyhai blokk előnézet -->
-<dialog class="sheet sheet--print" id="prn-dlg" aria-labelledby="prn-t">
-  <div class="sheet__in">
-    <h2 id="prn-t">Konyhai blokk · előnézet</h2>
-    <p class="hint">80 mm-es blokknyomtatóra méretezve. Automatikus nyomtatás nincs bekötve: hogy az iPadről hogyan nyomtat, a nyomtató típusától függ (lásd átadási dokumentum).</p>
-    <div class="slipwrap"><div class="kslip" data-slip></div></div>
-    <div class="sheet__btns">
-      <button type="button" class="abtn abtn--line abtn--xl" data-sheet-cancel>Bezárás</button>
-      <button type="button" class="abtn abtn--go abtn--xl" data-do-print>Nyomtatás</button>
-    </div>
-  </div>
+<!-- rendelés részletei: digitális konyhai nézet (nyomtató nem kell hozzá) -->
+<dialog class="sheet sheet--det" id="det-dlg" aria-labelledby="det-t">
+  <div class="sheet__in det" data-det></div>
 </dialog>
 
 <div class="toast" role="status" aria-live="polite" data-toast></div>
-<div class="print-slip" data-print aria-hidden="true"></div>
 
 <script src="data/menu.js"></script>
 <script src="js/demo-store.js"></script>

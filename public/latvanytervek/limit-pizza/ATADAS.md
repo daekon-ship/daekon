@@ -2,11 +2,106 @@
 
 **Élő előnézet:** https://daekon-ship.github.io/daekon/latvanytervek/limit-pizza/
 **Mappa:** `public/latvanytervek/limit-pizza/`
-**Kör:** 3. kör (2026.11.08.): rendelési rendszer és iPades konyhai admin, teljes audit. Lásd lent a „3. kör — végső auditjelentés” részt. Az 1. és 2. kör ugyanaznap készült. A korábbi, olaszos irányú tervet az ügyfél 2026.09.07-én elutasította; ez nulláról készült, a régi tervet nem használja.
+**Kör:** 4. kör (2026.11.08.): a blokknyomtatás kivezetése, helyette digitális „Rendelés részletei” nézet, végső audit. Lásd a „4. kör — végső auditjelentés” részt. Az 1–3. kör ugyanaznap készült.
 **Állapot:** bemutató, `noindex`. Az online rendelés és az admin felület demó: semmi nem kerül elküldésre, személyes adatot nem kér (a mezők rögzített minta adatok), fizetést nem indít.
 **Admin demó:** https://daekon-ship.github.io/daekon/latvanytervek/limit-pizza/admin.html
 
-## 3. kör — végső auditjelentés (2026.11.08.)
+## 4. kör — végső auditjelentés (2026.11.08.)
+
+**Röviden:** a látványterv elküldhető az ügyfélnek. Nyomtatási és számlázási funkció nincs benne. A konyha egy nagy betűs digitális nézetben látja a rendelés minden részletét, ehhez nem kell nyomtató. A 3. kör minden működő funkciója megmaradt. **56/56 automata teszt sikeres**, a korábban javított hibák nem jöttek vissza.
+
+**Üzleti keret:** a DAEKON ebben az ajánlatban nem fejleszt és nem finanszíroz nyomtatórendszert. Az adóügyi bizonylatokat a Limit Pizza a saját, szabályos megoldásával állítja ki. A rendelési rendszer csak a rendelés felvételét, továbbítását és konyhai kezelését végzi. Árak a nyilvános oldalon nincsenek; a költségeket az írásos ajánlat tartalmazza.
+
+### Mi lett eltávolítva
+
+- A konyhai kártyákról a **„Blokk”** gombok.
+- A 80 mm-es **blokk-előnézet** ablak (`#prn-dlg`), a **„Nyomtatás”** gomb és a `window.print()` hívás.
+- A nyomtatáshoz használt rejtett elem (`.print-slip`), a blokk-sablon (`slipHtml`, `openSlip`), valamint minden blokk- és nyomtatási CSS: `.kslip`, `.slipwrap`, `.sheet--print`, `@media print`, `@page`.
+- Az AirPrintre, nyomtatótípusra és automatikus nyomtatásra vonatkozó szövegek a felületről és ebből a dokumentumból.
+- Nem készült helyette más nyomtatási integráció, NAV-kapcsolat, nyugta- vagy számlagenerátor, és pénztárgép-modul sem.
+- A böngésző saját, általános nyomtatása továbbra is használható, ezt a rendszer nem tiltja, de külön funkció nem épül rá.
+
+### Mi került a helyére: „Rendelés részletei”
+
+Minden rendelésnél, minden állapotban megnyitható gomb (Új, Készül, Úton, Kiszállítva). A nézet nagy betűs, jól elkülönített részekből áll, és ugyanazt a rendelésadatot használja, amit a vevő leadott (`js/demo-store.js`). Párhuzamos tárolás nincs.
+
+- **Fejléc:** rendelésazonosító, érkezési idő, állapot (színes címke).
+- **„Figyelem — NÉLKÜLE kérés”:** ha bármelyik pizzából elhagytak valamit, a nézet tetején sötétpiros sávban jelenik meg. A pizzánál is külön, kiemelt sorban látszik.
+- **Pizzák és italok:** darabszám, név, plusz és extra feltétek, alapcsere, pizzánkénti megjegyzés.
+- **Kiszállítás:** vásárló (mintaadat), cím, telefon, megjegyzés a futárnak, várható indulás.
+- **Fizetés:** fizetési mód, részösszeg, kiszállítási díj a településsel, fizetendő összesen, az 5 pizzás ajándék az étlap feltételével („egy nyugtán szereplő 5 db pizza esetén”, változatlanul).
+- **Művelet a nézetből:** Elfogadás / Elutasítás, illetve „Futárnak átadva” → „Kiszállítva”. A nézet egy másik fülről érkező változásra is frissül.
+
+### Az alapfolyamat két emberre
+
+Új rendelés → ismétlődő hang, amíg nincs döntés → **Elfogadás** → időválasztás (15–60 perc vagy egyedi) → **Készül** → **Futárnak átadva** → **Úton** → **Kiszállítva**. Számlázási, nyomtatási vagy pénzügyi adminisztráció nincs a felületen. A beállításokban három dolog van: a várható kiszállítási idő, mi fogyott el, és a hang.
+
+### Ellenőrzött ügyféladatok (az eredeti étlapgrafikákkal összevetve)
+
+A `data/menu.json` tételesen egyezik a két étlapgrafikával:
+
+- 19 pizza: nevek, árak (2950–3700 Ft), feltétlisták, allergénjelek (hal csak a Tonhalason, csípős csak a Magyaroson);
+- plusz feltét 350 Ft (8 féle), extra feltét 550 Ft (9 féle);
+- 6 üdítő;
+- minimum rendelés 2000 Ft;
+- 5 pizza esetén ajándék 1,75 l-es Coca Cola termék, „egy nyugtán” feltétellel;
+- kiszállítás: Bük ingyenes, Csepreg/Bő/Gór/Lócs 500 Ft, Sajtoskál/Tormásliget 700 Ft;
+- nyitvatartás: H–K zárva, Sze–V 16–22;
+- telefon: +36 30 786 9239;
+- fizetés a futárnál: bankkártya és OTP SZÉP-kártya.
+
+Kitalált adat nincs. Az étlap 2026. június 1-től érvényes; az árak és a nyitvatartás frissességét az ügyfélnek kell megerősítenie.
+
+**Javított téves link:** a Facebook-link eddig a foodyas oldal belső azonosítójára mutatott (`facebook.com/683872544816054`), ami valószínűleg nem a pizzéria oldala. Mostantól a webes kereséssel talált „Limit Pizza Házhozszállítás” oldalra mutat: `facebook.com/p/Limit-Pizza-Házhozszállítás-61578578972820/`. Az oldal tartalmát a Facebook letiltja a gépi lekérés elől, ezért csak a név egyezését tudtam ellenőrizni — **ügyféllel megerősítendő**. Az Instagram (`@limitpizza`) az ügyfél saját étlapjáról származik.
+
+### Mi működik a rendelési demóban
+
+- **Black Angel-mintájú pizza-összeállító:**
+  - eltávolítható alapfeltétek, plusz és extra feltétek, alapcsere (felár egyeztetendő);
+  - darabszám, megjegyzés, azonnali ár;
+  - módosítás a kosárból, több különböző pizza egy kosárban.
+- **Kosár:** minden költség külön sorban (részösszeg, település szerinti kiszállítási díj, összesen), 2000 Ft-os minimum, ajándékjelzés, becsült (nem garantált) várható idő.
+- **Terheléskezelés:** szüneteltetés, várható idő, elfogyott pizza és feltét tiltása, a kosárban közben elfogyott tétel kezelése.
+- **Konyha:** ismétlődő riasztás, több egyidejű új rendelés külön kártyán, elfogadás idővel, elutasítás megerősítéssel, állapotváltások, rendelés részletei, a vevő látja az elfogadást.
+- **Két böngészőfüles demó**, valamint egy eszközön a „Próbarendelés érkezik” gomb.
+
+### Mihez kell még backend vagy élesítés
+
+Ez a rész az élesítés feladata, **nincs kész és nincs összekötve**:
+
+- Szerveroldali rendelésfogadás és tárolás, valós idejű kapcsolat a vendég telefonja és a konyhai iPad között.
+- Bejelentkezés a konyhai felületre.
+- Visszaigazolás a vendégnek.
+- A beállítások központi tárolása.
+- Adatkezelési tájékoztató, ÁSZF, impresszum, GDPR.
+- Háttérben vagy lezárt kijelzőnél működő értesítés (push vagy natív app). A böngészős hang erre nem garantált.
+
+Nem része a keretnek: számlázórendszer, NAV-integráció, nyomtatóbeszerzés, automatikus blokknyomtatás, online kártyás fizetés, asztalfoglalás.
+
+### Sikeres tesztek (4. kör)
+
+`_forras/tesztek/e2e.py`: **56/56 OK**, 1440 és 390 px-en. Új vagy átírt tesztek:
+
+- **T10:** a részletek nézetben minden módosítás, adat és állapot látszik (NÉLKÜLE-sáv, plusz, extra, megjegyzés, település, díj, fizetési mód, összeg, várható idő, állapot).
+- **T13:** a vevői és az admin rendelésadat egyezik (tételek, összeg 10 900 Ft, település).
+- **T14:** a részletek minden rendelésnél megnyithatók.
+- **T15:** állapotváltás a részletek ablakból.
+- **T16:** nincs „Blokk” vagy „Nyomtatás” gomb.
+- **T17:** a teljes folyamat alatt nem megy ki kérés (nincs POST, nincs külső hívás).
+- **T18:** nincs törött helyi hivatkozás.
+- **T19:** a kódban nincs `window.print` és blokk-előnézet.
+
+A korábbiak (T1–T9, T11, T12) is sikeresek: 9100 Ft és 10 900 Ft, elfogyott pizza és feltét, szünet, várható idő, riasztás és leállása, több új rendelés, elutasítás megerősítéssel, mobilmenü, újratöltés, sérült adatok, dupla kattintás. `_forras/tesztek/layout.py`: 320–1920 px és iPad álló/fekvő méretben nincs túlcsordulás, nincs 36 px-nél kisebb gomb, nincs konzolhiba.
+
+### Van-e akadálya az elküldésnek?
+
+Nincs olyan hiba, ami miatt ne lehetne elküldeni. Elküldés előtt érdemes tudni:
+
+1. A Facebook-linket, a három fotó–pizza párosítást és az árak/nyitvatartás frissességét az ügyfélnek kell megerősítenie.
+2. A demó egy böngészőn belül, két fül között működik; két külön eszközzel bemutatni nem lehet. Bemutatáskor két fület kell használni, vagy a „Próbarendelés érkezik” gombot.
+3. Valódi iPaden és Safariban hardverteszt nem volt, csak Chromium-emuláció.
+
+## 3. kör — auditjelentés (2026.11.08.)
 
 **Röviden:** a bemutató az ügyfélnek biztonságosan megmutatható. A két fülön (vevő + konyha) végigjátszható: pizza → feltétek → kosár → adatok → bemutató-rendelés → hangjelzés a konyhán → elfogadás idővel → a vevő látja, hogy elfogadták. A demó jellege mindenhol jelölve van. Valódi rendelés, adat vagy fizetés sehol nem keletkezik. Mind a 44 automata teszt sikeres.
 
@@ -30,7 +125,7 @@ Az ügyfél helyzete: kétfős, csak házhozszállító pizzéria. A rendszer ez
 | 12 | Fülek között a BroadcastChannel üzenet megelőzhette a tárolt adatot (egy lépés késés) | Elsődleges jelzés a `storage` esemény; a BroadcastChannel késleltetett újraolvasást vált ki. |
 | 13 | Az admin csak a láblécből volt elérhető | Külön szakasz a főoldalon: „Nézd meg, hogyan érkezik meg a rendelés a konyhába” (+ mobilmenü, lábléc, kosár vége). |
 | 14 | „Dupla adag” (már rajta lévő feltét extrában) árát a terv eldöntötte | Az étlap extra árával számol, de „felára egyeztetendő” jelölést kap a konfigurátorban, a kosárban és a blokkon. |
-| 15 | Konyhai blokk: nem volt előnézet; az elhagyott feltét nem tűnt ki | Előnézet a képernyőn. „— NÉLKÜLE:” kiemelve, plusz/extra/megjegyzés külön sorban, a mintaadat és a „BEMUTATÓ — NEM ÉLES” jelölve. |
+| 15 | Konyhai blokk: nem volt előnézet; az elhagyott feltét nem tűnt ki *(a 4. körben a blokk megszűnt, helyette „Rendelés részletei”)* | Előnézet a képernyőn. „— NÉLKÜLE:” kiemelve, plusz/extra/megjegyzés külön sorban, a mintaadat és a „BEMUTATÓ — NEM ÉLES” jelölve. |
 | 16 | Admin iPadre kicsi és sűrű | Nagy, legalább 48 px-es, a fő műveleteknél 62–84 px-es gombok. iPad fekvőben a rendelés balra, a döntés (összeg + Elfogadás) jobbra, mindig látható. |
 | 17 | Kis telefonon (320–360 px) az admin új rendelés kártyája kilógott | Javítva, ellenőrizve. |
 
@@ -50,7 +145,7 @@ Az ügyfél helyzete: kétfős, csak házhozszállító pizzéria. A rendszer ez
   - új rendelés kártyája, ismétlődő riasztás;
   - elfogadás idővel, elutasítás megerősítéssel és indokkal;
   - állapotok: Készül → Úton → Kiszállítva;
-  - elutasítottak listája, blokk-előnézet.
+  - elutasítottak listája, rendelés részletei (a 4. körtől, a blokk-előnézet helyett).
 
 ### Mi működik csak a demóban (és miért)
 
@@ -74,18 +169,13 @@ Az ügyfél helyzete: kétfős, csak házhozszállító pizzéria. A rendszer ez
 - Ahol a böngésző támogatja, a felület kéri, hogy a kijelző ne aludjon el (Screen Wake Lock). Ha ez nem érhető el, a felület kiírja.
 - Ezek **csak Chromium-emulációban** lettek tesztelve (a hangjel ismétlődése az oszcillátorhívások számlálásával). Valódi iPaden nem volt hardverteszt.
 
-### Nyomtatás — korlátok
+### Nyomtatás
 
-- **Kész:** 80 mm-es blokk-elrendezés, előnézettel; a „Nyomtatás” a böngésző nyomtatási párbeszédét nyitja meg.
-- **Nem kész:** az automatikus, kattintás nélküli nyomtatás. Ezt konkrét nyomtatóval kell ellenőrizni, és a nyomtató típusától függ:
-  - **AirPrint-képes blokknyomtató:** iPadről a megosztás/nyomtatás menüből megy, de minden blokknál kell egy koppintás.
-  - **Gyártói SDK-val vagy felhős nyomtatással rendelkező nyomtatók** (pl. Epson TM sorozat ePOS-szal, Star CloudPRNT): automatikus nyomtatást ezek tudnak, de backend vagy natív alkalmazás kell hozzá.
-  - **Bluetooth-os olcsó blokknyomtatók:** böngészőből iPaden általában nem érhetők el.
-- A nyomtató típusát és árát a terv nem találja ki — egyeztetendő.
+A 4. körben kivezetve, üzleti döntés alapján (lásd fent). A rendszer nem nyomtat és nem állít ki bizonylatot.
 
 ### Tesztjelentés (3. kör)
 
-- **Automata végponttól végpontig tesztek:** `_forras/tesztek/e2e.py` (Playwright, Chromium). 44/44 sikeres, 1440 és 390 px-en:
+- **Automata végponttól végpontig tesztek:** `_forras/tesztek/e2e.py` (Playwright, Chromium). A 3. körben 44/44 sikeres volt, 1440 és 390 px-en:
   - **T1:** Magyaros, lilahagyma nélkül, +gomba, +bacon, 2 db = 9100 Ft
   - **T2:** + 1,75 l Cola, Sajtoskál = 10 900 Ft (szállítás külön sorban)
   - **T3:** elfogyott pizza (lista, hero, kosár)
@@ -95,7 +185,7 @@ Az ügyfél helyzete: kétfős, csak házhozszállító pizzéria. A rendszer ez
   - **T7:** riasztás → elfogadás → leáll
   - **T8:** újabb rendelés új riasztást indít, több új külön látszik
   - **T9:** elutasítás csak megerősítéssel (Mégse és Esc nem utasít el)
-  - **T10:** a blokk tartalmazza az összes módosítást
+  - **T10:** (3. kör) a blokk tartalmazta az összes módosítást — a 4. körben a „Rendelés részletei” tesztje váltotta
   - **T11:** mobilmenü, modalok, kosár
   - **T12:** újratöltés, két fül, sérült adatok, üres kosár, dupla kattintások
   - konzolhiba nincs
@@ -104,7 +194,6 @@ Az ügyfél helyzete: kétfős, csak házhozszállító pizzéria. A rendszer ez
   - Vízszintes túlcsordulás nincs, 36 px-nél kisebb gomb nincs, konzolhiba nincs.
 - **Nem ellenőrzött:**
   - valódi iPad vagy iPhone (Safari) hardveresen;
-  - valódi blokknyomtató;
   - Lighthouse-mérés;
   - teljes képernyőolvasós bejárás.
 
@@ -116,7 +205,7 @@ Az ügyfél helyzete: kétfős, csak házhozszállító pizzéria. A rendszer ez
 - **Finom tónusjavítás:** enyhe melegítés, vibrance (+16% a fakóbb színeken), lágy S-görbe, enyhe élesítés. Generatív/AI eszköz nincs, semmi nem került a képre, ami az eredetin nincs rajta.
 - **Facebook és Instagram** a heróban („Kövess minket”), a mobilmenüben, a kapcsolat szakaszban (kártyák) és a láblécben.
 - **Online rendelés demó** (az ügyfél 2026.09.06-i kérése alapján: pizzára kattintva alap feltétek elvétele, plusz feltét felárral, megjegyzés, minden költség látható): Kosár → Szállítási adatok → Kész. A végén „Bemutató — valódi rendelés nem történt.”, és egy gomb, ami megmutatja a rendelést a konyhai felületen.
-- **Admin (konyha) demó — `admin.html`:** beérkező rendelések négy állapotban (Új → Készül → Úton → Kiszállítva), elutasítás megerősítéssel, konyhai cetli nyomtatása (80 mm-es blokknyomtatóra méretezve), mai összesítő, hangjelzés új rendelésre (bekapcsolható), „Rendelést fogadunk” kapcsoló, és **Étlap · elérhetőség**: amit itt „Ma elfogyott”-ra állítanak, az a weboldalon azonnal szürkén jelenik meg, és nem rendelhető. A weboldalról küldött demó rendelés egy másik fülön nyitott adminban azonnal megjelenik (ugyanabban a böngészőben). Négy „minta” rendelés az étlap valódi áraival számolva.
+- **Admin (konyha) demó — `admin.html`:** beérkező rendelések négy állapotban (Új → Készül → Úton → Kiszállítva), elutasítás megerősítéssel, konyhai cetli (a 4. körben kivezetve), mai összesítő, hangjelzés új rendelésre (bekapcsolható), „Rendelést fogadunk” kapcsoló, és **Étlap · elérhetőség**: amit itt „Ma elfogyott”-ra állítanak, az a weboldalon azonnal szürkén jelenik meg, és nem rendelhető. A weboldalról küldött demó rendelés egy másik fülön nyitott adminban azonnal megjelenik (ugyanabban a böngészőben). Négy „minta” rendelés az étlap valódi áraival számolva.
 
 ## Ügyfélkérés → megoldás
 
@@ -236,14 +325,14 @@ Tesztelt eset: Magyaros, lilahagyma nélkül, +gomba, +bacon, fokhagymás-tejfö
    - A készpénzt az étlap nem írja ki, ezért a terv sem állítja.
 7. **Kiszállítási idő:** az étlapon nem szerepel. A demóban a konyha állítja, és mindenhol „becsült idő, nem garantált” jelölést kap; az alapérték (45–60 perc) csak minta.
 8. **Közösségi linkek** (a 2. körben mind a négy helyen beépítve):
-   - A Facebook-link a foodyas-oldal azonosítójából készült: `facebook.com/683872544816054`.
+   - Facebook: a 4. körtől a kereséssel talált oldal (`facebook.com/p/Limit-Pizza-Házhozszállítás-61578578972820/`); a korábbi, foodyas-azonosítós link valószínűleg téves volt.
    - Az Instagram-link az étlapon szereplő `limitpizza` névből: `instagram.com/limitpizza`.
    - Mindkettő ellenőrizendő.
 9. **Árlista-lábjegyzet:** az étlapon „A változtatás jogát fenntart…” áll, a mondat vége nehezen olvasható. A terv „fenntartják” alakot használ.
 10. **Allergének:** csak az étlap négy jele szerepel (glutén, tej, halfélék, csípős). Teljes allergénlista (pl. a feltétekre) nincs, és a terv sem állít többet.
 11. **Nyitvatartás és települések:** a 2026. június 1-től érvényes étlap szerint. Változott azóta?
 12. **Online fizetés** nincs a tervben, és nem is kerül bele. Az online rendelés bemutató; élesítéshez backend kell (lásd fent).
-15. **Nyomtató típusa** (AirPrint / Epson ePOS / Star CloudPRNT / egyéb) — ettől függ az automatikus nyomtatás.
+15. **Ajándék feltétele:** az étlap szerint „egy nyugtán szereplő 5 db pizza esetén”. A terv változatlanul így írja ki, amíg az ügyfél nem pontosítja.
 16. **Rendelés elfogadásakor kiválasztható idők** (15–60 perc) és a **riasztás hangja** — az ügyféllel finomítandó.
 
 13. **Készpénz** a rendelési demóban „egyeztetendő” jelzéssel szerepel — az étlap csak a kártyát és a SZÉP-kártyát írja ki.
@@ -251,4 +340,4 @@ Tesztelt eset: Magyaros, lilahagyma nélkül, +gomba, +bacon, fokhagymás-tejfö
 
 ## Nem része a tervnek
 
-Éles rendelésküldés (az online rendelés és az admin csak demó), fizetési integráció, backend, bejelentkezés az adminba, e-mail/SMS-küldés, push-értesítés, automatikus nyomtatás, adatkezelési tájékoztató és impresszum (ezek az élesítéskor kellenek), valamint GSAP, Three.js, WebGL.
+Éles rendelésküldés (az online rendelés és az admin csak demó), fizetési integráció, backend, bejelentkezés az adminba, e-mail/SMS-küldés, push-értesítés, bármilyen nyomtatás vagy bizonylatkiállítás (számlázó, NAV, nyugta, pénztárgép), adatkezelési tájékoztató és impresszum (ezek az élesítéskor kellenek), valamint GSAP, Three.js, WebGL.

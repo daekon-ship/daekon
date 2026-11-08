@@ -506,7 +506,7 @@
 
   /* a bemutató-rendelés állapota, ahogy a konyhai admin demó beállítja (ugyanebben a böngészőben) */
   var STATUS_TXT = {
-    uj: ['Megérkezett a konyhára', 'A konyha még nem igazolta vissza. (Bemutató: nyisd meg a konyhai demót egy másik fülön, és fogadd el.)'],
+    uj: ['Megjelent a konyhai demóban', 'Még nincs elfogadva. Nyisd meg a konyhai demót egy másik fülön, és fogadd el — itt azonnal látszik.'],
     keszul: ['A konyha elfogadta — készül', ''],
     uton: ['Úton van', 'A futár elindult.'],
     kesz: ['Kiszállítva', ''],

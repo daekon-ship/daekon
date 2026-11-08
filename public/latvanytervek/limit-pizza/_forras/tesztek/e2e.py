@@ -37,6 +37,8 @@ with sync_playwright() as p:
         adm.goto(B + 'admin.html', wait_until='networkidle'); adm.wait_for_timeout(500)
         adm.click('[data-reset]'); adm.wait_for_timeout(300)
         site = ctx.new_page(); watch(site, tag + '/site')
+        REQ = []
+        ctx.on('request', lambda r: REQ.append((r.method, r.url)))
         site.goto(B, wait_until='networkidle'); site.wait_for_timeout(700)
         site.evaluate("localStorage.removeItem('limitpizza-demo-kosar-v1')"); site.reload(wait_until='networkidle'); site.wait_for_timeout(500)
 
@@ -82,6 +84,7 @@ with sync_playwright() as p:
         after = adm.evaluate("LimitDemo.getOrders().length")
         ok(f'{tag} T12a dupla kattintás → egyetlen rendelés', after == before + 1, f'{before}→{after}')
         done_txt = site.text_content('.done')
+        cust_order = site.evaluate("(()=>{const l=LimitDemo.getOrders();return l[l.length-1]})()")
         ok(f'{tag} T12b nincs „Elküldve/Sikeres” állítás, bemutató jelzés van', 'Valódi rendelés nem történt' in done_txt and 'Elküldve' not in site.text_content('#cart') and 'Sikeres' not in done_txt)
         shot(site, f'{tag}-done')
         # T7 riasztás
@@ -120,17 +123,36 @@ with sync_playwright() as p:
         for n in adm.evaluate("LimitDemo.getOrders().filter(o=>o.status==='uj').map(o=>o.no)"):
             adm.click(f'[data-accept="{n}"]'); adm.wait_for_timeout(200); adm.click('[data-acc-ok]'); adm.wait_for_timeout(300)
         ok(f'{tag} T7b minden új rendelés kezelve → nincs riasztás', not adm.evaluate('window.__limitAlarm().active'))
-        # T10 konyhai blokk
+        # T10 rendelés részletei (digitális konyhai nézet) — pontos módosítások, egyezés a vevői adatokkal
         t1no = adm.evaluate("LimitDemo.getOrders().find(o=>o.lines.some(l=>l.name==='Magyaros' && l.qty===2) && !o.sample).no")
-        adm.evaluate(f"document.getElementById('r{t1no}').scrollIntoView()")
         if w < 1000: adm.click('[data-col="keszul"]'); adm.wait_for_timeout(200)
-        adm.click(f'#r{t1no} [data-slip-no]'); adm.wait_for_timeout(300)
-        slip = adm.text_content('#prn-dlg [data-slip]').replace('\xa0', ' ')
-        shot(adm, f'{tag}-admin-slip')
-        need = ['#' + str(t1no), '2×', 'Magyaros', 'NÉLKÜLE: lilahagyma', 'plusz: gomba', 'extra: bacon', 'jól átsütve', 'Sajtoskál', 'OTP' if False else 'futárnál', 'ÖSSZESEN', '10 900 Ft', 'BEMUTATÓ']
-        miss = [n for n in need if n not in slip]
-        ok(f'{tag} T10 konyhai blokk pontosan tartalmazza a módosításokat', not miss, 'hiányzik: ' + ', '.join(miss) if miss else 'minden elem megvan')
-        adm.click('#prn-dlg [data-sheet-cancel]'); adm.wait_for_timeout(200)
+        adm.click(f'#r{t1no} [data-det-no]'); adm.wait_for_timeout(350)
+        det = adm.text_content('#det-dlg').replace('\xa0', ' ')
+        shot(adm, f'{tag}-admin-details')
+        need = ['#' + str(t1no), 'Érkezett', 'NÉLKÜLE', 'lilahagyma', '+ Plusz', 'gomba', '+ Extra', 'bacon', 'jól átsütve', 'Sajtoskál', 'Minta Vendég', '+36 30 000 0000', 'Kiszállítási díj', '700 Ft', 'Bankkártya a futárnál', '10 900 Ft', 'Készül', 'Várható indulás', '30 perc', 'Figyelem — NÉLKÜLE kérés']
+        miss = [n for n in need if n not in det]
+        ok(f'{tag} T10 rendelés részletei: minden módosítás, adat és állapot látszik', not miss, 'hiányzik: ' + ', '.join(miss) if miss else 'minden elem megvan')
+        cust = cust_order
+        adm_o = adm.evaluate(f"LimitDemo.getOrders().find(o=>o.no==={t1no})")
+        same = cust and cust['total'] == adm_o['total'] == 10900 and cust['lines'] == adm_o['lines'] and cust['customer']['town'] == adm_o['customer']['town']
+        ok(f'{tag} T13 vevői és admin rendelésadat megegyezik', same, f"vevő {cust and cust['total']} / admin {adm_o['total']}")
+        adm.click('#det-dlg [data-det-close]'); adm.wait_for_timeout(200)
+        # minden rendelés részletei megnyithatók (minden oszlopban)
+        nos = adm.evaluate("LimitDemo.getOrders().filter(o=>o.status!=='elutasitva').map(o=>[o.no,o.status])")
+        opened = 0
+        for no, st in nos:
+            if w < 1000 and st != 'uj': adm.click(f'[data-col="{st}"]'); adm.wait_for_timeout(120)
+            adm.click(f'#r{no} [data-det-no]'); adm.wait_for_timeout(150)
+            if adm.evaluate("document.querySelector('#det-dlg').open") and ('#' + str(no)) in adm.text_content('#det-t'): opened += 1
+            adm.keyboard.press('Escape'); adm.wait_for_timeout(120)
+        ok(f'{tag} T14 a részletek minden rendelésnél megnyithatók', opened == len(nos), f'{opened}/{len(nos)}')
+        # állapotváltás a részletekből
+        adm.click(f'#r{t1no} [data-det-no]') if w >= 1000 else (adm.click('[data-col="keszul"]'), adm.click(f'#r{t1no} [data-det-no]'))
+        adm.wait_for_timeout(200); adm.click('#det-dlg [data-next]'); adm.wait_for_timeout(300)
+        ok(f'{tag} T15 állapotváltás a részletek ablakból (Készül → Úton)', adm.evaluate(f"LimitDemo.getOrders().find(o=>o.no==={t1no}).status") == 'uton' and not adm.evaluate("document.querySelector('#det-dlg').open"))
+        # nincs nyomtatási kezelőelem
+        btxt = adm.evaluate("[...document.querySelectorAll('button,a')].map(b=>b.textContent.trim().toLowerCase())")
+        ok(f'{tag} T16 nincs „Blokk” vagy „Nyomtatás” gomb', not any(('blokk' in t or 'nyomtat' in t) for t in btxt))
         # T3 elfogyott pizza
         adm.click('[data-tab="beall"]'); adm.wait_for_timeout(200)
         adm.click('label.sw:has(input[data-out-p="gombas"])'); adm.click('label.sw:has(input[data-out-p="magyaros"])'); adm.wait_for_timeout(400)
@@ -180,6 +202,8 @@ with sync_playwright() as p:
         ed = site.evaluate("document.querySelector('#cfg').open") and site.evaluate("document.querySelector('#cfg-name').textContent") == 'MARGHERITA'
         ok(f'{tag} kosártétel módosítása visszanyitja a konfigurátort', ed)
         site.click('#cfg [data-cfg-add]'); site.wait_for_timeout(600)
+        ext = [u for m, u in REQ if not u.startswith('http://localhost:8765/') or m != 'GET']
+        ok(f'{tag} T17 nem megy ki kérés (nincs POST, nincs külső hívás) — valódi rendelés/adat nem távozik', not ext, ext[:3])
         R[f'{tag} konzolhibák'] = 'OK' if not [e for e in ERR if e.startswith(tag)] else 'HIBA — ' + ' | '.join([e for e in ERR if e.startswith(tag)][:5])
         ctx.close()
 
@@ -196,6 +220,20 @@ with sync_playwright() as p:
     a = ctx.new_page(); a.on('pageerror', lambda e: errs.append('admin ' + str(e))); a.goto(B + 'admin.html', wait_until='networkidle'); a.wait_for_timeout(400)
     ok('T12f sérült/hibás tárolt adatok → nincs összeomlás, csak az érvényes tétel marad', not errs and n == 1, f'tételek a kosárban: {n}, hibák: {errs[:2]}')
     ctx.close()
+    # T18 törött hivatkozások (helyi fájlok) + forráskód: nincs window.print
+    import urllib.request, re as _re
+    bad = []
+    for page in ('index.html', 'admin.html'):
+        html = urllib.request.urlopen(B + page).read().decode('utf-8')
+        for u in set(_re.findall(r'(?:href|src|srcset)="([^"#:]+?)(?:\s+\d+w)?"', html)):
+            for part in u.split(','):
+                part = part.strip().split(' ')[0]
+                if not part or part.startswith(('mailto', 'tel', 'http')): continue
+                try: urllib.request.urlopen(B + part)
+                except Exception as e: bad.append(page + ' → ' + part)
+    src = ''.join(urllib.request.urlopen(B + f).read().decode('utf-8') for f in ('admin.js', 'limit.js', 'admin.html', 'index.html'))
+    ok('T18 nincs törött helyi hivatkozás', not bad, bad[:4])
+    ok('T19 a kódban nincs nyomtatási vezérlés (window.print, blokk-előnézet)', 'window.print' not in src and 'kslip' not in src and 'prn-dlg' not in src)
     b.close()
 print(json.dumps(R, ensure_ascii=False, indent=1))
 print('ÖSSZESEN:', sum(1 for v in R.values() if v.startswith('OK')), 'OK /', len(R))
