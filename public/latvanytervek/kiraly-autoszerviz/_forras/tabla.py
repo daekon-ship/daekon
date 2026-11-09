@@ -28,22 +28,22 @@ html,body{{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 /* vékony arany keret a vágás alatt 22 mm-re (biztonsági zónán belül) */
 .k{{position:absolute;left:{KI + 22}mm;top:{KI + 22}mm;right:{KI + 22}mm;bottom:{KI + 22}mm;border:1.6mm solid {GOLD};opacity:.9}}
 .k::after{{content:"";position:absolute;inset:4mm;border:.6mm solid rgba(201,161,79,.45)}}
-.logo{{position:absolute;left:{KI + 52}mm;top:50%;width:330mm;height:330mm;transform:translateY(-50%)}}
-.v{{position:absolute;left:{KI + 418}mm;top:{KI + 95}mm;bottom:{KI + 95}mm;width:1.2mm;background:linear-gradient(180deg,#DDBB72,{GOLD} 50%,#B38B3A)}}
-.j{{position:absolute;left:{KI + 455}mm;right:{KI + 52}mm;top:50%;transform:translateY(-50%)}}
-.nev{{font-weight:820;font-size:70mm;line-height:.9;letter-spacing:.035em}}
-.al{{font-weight:700;font-size:20.5mm;letter-spacing:.245em;color:{GOLD};margin-top:8mm;white-space:nowrap}}
+.logo{{position:absolute;left:{KI + 46}mm;top:50%;width:262mm;height:262mm;transform:translateY(-50%)}}
+.v{{position:absolute;left:{KI + 334}mm;top:{KI + 70}mm;bottom:{KI + 70}mm;width:1.2mm;background:linear-gradient(180deg,#DDBB72,{GOLD} 50%,#B38B3A)}}
+.j{{position:absolute;left:{KI + 362}mm;right:{KI + 44}mm;top:50%;transform:translateY(-50%)}}
+.nev{{font-weight:820;font-size:82mm;line-height:.9;letter-spacing:.035em}}
+.al{{font-weight:750;font-size:24mm;letter-spacing:.235em;color:{GOLD};margin-top:8mm;white-space:nowrap}}
 .sor{{display:flex;align-items:center;gap:7mm}}
 .sor svg{{flex:none;color:{GOLD}}}
-.cim{{margin-top:24mm;font-weight:600;font-size:19mm;letter-spacing:.01em}}
-.cim svg{{width:17mm;height:17mm}}
-.tel{{margin-top:12mm;font-weight:820;font-size:39mm;letter-spacing:.02em;white-space:nowrap}}
-.tel svg{{width:26mm;height:26mm}}
-.ny{{margin-top:18mm;padding-top:11mm;border-top:.8mm solid rgba(201,161,79,.55)}}
-.ny .c{{font-weight:700;font-size:11.5mm;letter-spacing:.24em;color:{GOLD};margin-bottom:5mm}}
-.ny table{{border-collapse:collapse;font-size:17mm;font-weight:600}}
-.ny td{{padding:1.6mm 0}}.ny td:first-child{{padding-right:12mm}}
-.ny .z{{color:{MUTED}}}
+.cim{{margin-top:22mm;font-weight:700;font-size:28mm;letter-spacing:.01em}}
+.cim svg{{width:24mm;height:24mm}}
+.tel{{margin-top:12mm;font-weight:840;font-size:50mm;letter-spacing:.02em;white-space:nowrap}}
+.tel svg{{width:33mm;height:33mm}}
+.ny{{margin-top:16mm;padding-top:12mm;border-top:.8mm solid rgba(201,161,79,.55)}}
+.ny .c{{font-weight:750;font-size:17mm;letter-spacing:.22em;color:{GOLD};margin-bottom:5mm}}
+.ny table{{border-collapse:collapse;font-size:27mm;font-weight:700}}
+.ny td{{padding:1.5mm 0}}.ny td:first-child{{padding-right:16mm}}
+.ny .z{{color:#C3CCD8}}
 </style></head><body><div class="t">
 <div class="k"></div>
 <img class="logo" src="{logo_src}">
@@ -54,7 +54,7 @@ html,body{{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
   <div class="sor cim">{HELY}<span>Budai Nagy Antal u. 25.</span></div>
   <div class="sor tel">{TEL}<span>20/585-3234</span></div>
   <div class="ny"><div class="c">NYITVA</div>
-    <table><tr><td>Hétfőtől péntekig</td><td>8–17</td></tr><tr class="z"><td>Szombat, vasárnap</td><td>ZÁRVA</td></tr></table>
+    <table><tr><td>Hétfő–péntek</td><td>8–17</td></tr><tr class="z"><td>Szombat–vasárnap</td><td>ZÁRVA</td></tr></table>
   </div>
 </div>
 </div></body></html>"""
