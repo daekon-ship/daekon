@@ -284,7 +284,6 @@ def hatasok(b):
     ok(pg.inner_text("h1").replace("\n", " ").split() == "Tiszta terek. Nyugodtabb mindennapok.".split(), "BlurText: a főcím szövege változatlan")
     ok(pg.evaluate("[...document.querySelectorAll('.hero h1 .szo')].every(s=>getComputedStyle(s).opacity==='1')"), "BlurText: a főcím szavai megjelentek")
     ok(pg.get_attribute("canvas.pontracs", "aria-hidden") == "true", "DotGrid: vászon jelen, képernyőolvasó elől rejtve")
-    ok(pg.get_attribute(".kor-jelveny", "aria-hidden") == "true", "CircularText: jelvény jelen, rejtve a képernyőolvasó elől")
     ok(pg.query_selector(".olvasas-sav") is not None and pg.query_selector(".lepes-toltes") is not None, "ScrollProgress + folyamatvonal")
     g = pg.locator(".gomb-fo.gomb-nagy").first
     bx = g.bounding_box()
@@ -314,7 +313,7 @@ def kulonleges(b):
     pg.goto(URL, wait_until="networkidle")
     ok(pg.evaluate("[...document.querySelectorAll('.szalag-sav')].every(e=>getComputedStyle(e).animationName=='none')"), "csökkentett mozgás: szalag áll")
     ok(pg.evaluate("[...document.querySelectorAll('[data-rv]')].every(e=>getComputedStyle(e).opacity=='1')"), "csökkentett mozgás: minden látszik")
-    ok(pg.evaluate("document.querySelectorAll('.szo,canvas.pontracs,.kor-jelveny').length") == 0, "csökkentett mozgás: effektek kikapcsolva")
+    ok(pg.evaluate("document.querySelectorAll('.szo,canvas.pontracs').length") == 0, "csökkentett mozgás: effektek kikapcsolva")
     ctx.close()
     ctx = b.new_context(viewport={"width": 390, "height": 844}, java_script_enabled=False)
     pg = ctx.new_page()

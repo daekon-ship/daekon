@@ -34,7 +34,6 @@ A React Bits (reactbits.dev) komponensek mintájára, **React és build nélkül
 |---|---|---|
 | BlurText / SplitText | nyitó főcím, minden szekciócím | szavanként, elmosásból élesedve, lépcsőzve (görgetésre) |
 | DotGrid | nyitó háttere | a „Pont” motívum: pontrács, amely a mutató elől kitér és kékül; érintésre/betöltéskor lökéshullám a fotó pontjából |
-| CircularText | nyitófotó sarka | forgó „TISZTAPONT • TAKARÍTÁS” körirat-jelvény a márka kék pontja körül |
 | Magnet | kék elsődleges gombok | finoman a mutató felé húzódnak (rugós) |
 | GlareHover | kék gombok | fényvillanás hoverre (CSS) |
 | SpotlightCard | szolgáltatássorok, A/B/C utak, Wolt-kínálat, időpontkérő, kapcsolat-sorok | a mutatót követő halvány fényfolt |
@@ -143,7 +142,7 @@ Felhasznált fotók (7): előszoba (nyitókép), étkezősarok, fürdőszoba, na
 
 ## Automatikus tesztek
 
-`_forras/teszt.py` (Playwright + Chrome/Chromium) – futtatás a fájl elején leírva. 103 ellenőrzés, legutóbb **mind rendben** (2026.11.08., 4. kör). A 4. körben hozzáadva: nincs látható bemutató/egyeztetendő felirat; az e-mailes igény a cég címére, kitöltve nyílik; főcím szövege változatlan; DotGrid, CircularText, olvasási sáv jelen és rejtve a képernyőolvasó elől; Magnet; végiggörgetés után minden szó/kép/blokk látható; érintőképernyőn nincs hover-effekt; csökkentett mozgásnál az effektek ki vannak kapcsolva. A 3. körben hozzáadva: mind a 12 Wolt-link címe, új lapos megnyitása és `rel` értéke; a „Megnézem a Wolton” gomb valóban új lapon nyitja a Wolt-címet (a Wolt-oldalt a teszt helyben válaszolja meg, nem tölti le); minden külső link biztonságos; minden belső horgony létező elemre mutat; a fejléc minden menüpontja a fejléc alá görget; szolgáltatások és időpontkérő-opciók száma az adatokból; taxi előválasztása; metaadatok és OG-kép; a fejléc 981–1440 px között egy sorban fér el; nincs ár, nincs Wolt-telefonszám, nincs iframe, nincs szinkron-állítás. Korábbról:
+`_forras/teszt.py` (Playwright + Chrome/Chromium) – futtatás a fájl elején leírva. 102 ellenőrzés, legutóbb **mind rendben** (2026.11.08., 4. kör). A 4. körben hozzáadva: nincs látható bemutató/egyeztetendő felirat; az e-mailes igény a cég címére, kitöltve nyílik; főcím szövege változatlan; DotGrid, olvasási sáv jelen és rejtve a képernyőolvasó elől; Magnet; végiggörgetés után minden szó/kép/blokk látható; érintőképernyőn nincs hover-effekt; csökkentett mozgásnál az effektek ki vannak kapcsolva. A 3. körben hozzáadva: mind a 12 Wolt-link címe, új lapos megnyitása és `rel` értéke; a „Megnézem a Wolton” gomb valóban új lapon nyitja a Wolt-címet (a Wolt-oldalt a teszt helyben válaszolja meg, nem tölti le); minden külső link biztonságos; minden belső horgony létező elemre mutat; a fejléc minden menüpontja a fejléc alá görget; szolgáltatások és időpontkérő-opciók száma az adatokból; taxi előválasztása; metaadatok és OG-kép; a fejléc 981–1440 px között egy sorban fér el; nincs ár, nincs Wolt-telefonszám, nincs iframe, nincs szinkron-állítás. Korábbról:
 
 - forrás: noindex, CSP, nincs „partnereink”, nincs hamis siker, nincs külső szkript, nincs Fraunces; `--eles` szűrés;
 - 360 / 390 / 768 / 1024 / 1366 / 1440 / 1920 px: vízszintes csúszás, konzolhiba, hiányzó fájl, rejtve maradt elem, 40 px alatti érintési cél;

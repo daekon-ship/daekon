@@ -7,7 +7,6 @@
      TiltedCard            → galériaképek enyhe 3D-dőlése
      DotGrid               → a „Pont” motívum: a nyitó pontrácsa reagál a mutatóra / érintésre
      ScrollVelocity        → a referenciaszalag görgetéskor felgyorsul, majd visszalassul
-     CircularText          → forgó körirat-jelvény a nyitófotó sarkán
      AnimatedContent       → galériaképek feltárulása
      ScrollProgress        → olvasási sáv a fejléc alján; a folyamatvonal görgetésre töltődik
    Szabályok: csökkentett mozgásnál semmi; hover-effektek csak egérrel (finom mutató);
@@ -122,24 +121,6 @@
       cel = Math.min(4, 1 + v / 900);
       if (!fut) { fut = true; requestAnimationFrame(lep); }
     }, { passive: true });
-  });
-
-  /* ---------- CircularText: forgó körirat-jelvény a nyitófotón ---------- */
-  biztos(function () {
-    var f = $(".hero-foto");
-    if (!f) return;
-    var ns = "http://www.w3.org/2000/svg";
-    var j = document.createElement("div");
-    j.className = "kor-jelveny";
-    j.setAttribute("aria-hidden", "true");
-    var svg = document.createElementNS(ns, "svg");
-    svg.setAttribute("viewBox", "0 0 120 120");
-    svg.innerHTML = '<defs><path id="kor-ut" d="M60,60 m-41,0 a41,41 0 1,1 82,0 a41,41 0 1,1 -82,0"/></defs>' +
-      '<text><textPath href="#kor-ut" textLength="255">TISZTAPONT • TAKARÍTÁS • TISZTAPONT • TAKARÍTÁS • </textPath></text>';
-    j.appendChild(svg);
-    f.appendChild(j);
-    M.animate(j, { opacity: [0, 1], scale: [0.6, 1] }, { duration: 0.6, delay: 1.1, ease: ease });
-    M.animate(svg, { rotate: [0, 360] }, { duration: 40, repeat: Infinity, ease: "linear" });
   });
 
   /* ---------- DotGrid: a nyitó pontrácsa ---------- */
