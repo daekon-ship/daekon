@@ -37,8 +37,8 @@ html,body{{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 .sor svg{{flex:none;color:{GOLD}}}
 .cim{{margin-top:22mm;font-weight:700;font-size:28mm;letter-spacing:.01em}}
 .cim svg{{width:24mm;height:24mm}}
-.tel{{margin-top:13mm;font-weight:820;font-size:41mm;letter-spacing:.02em;white-space:nowrap}}
-.tel svg{{width:27mm;height:27mm}}
+.tel{{margin-top:12mm;font-weight:800;font-size:34mm;letter-spacing:.02em;white-space:nowrap}}
+.tel svg{{width:23mm;height:23mm}}
 .ny{{margin-top:16mm;padding-top:12mm;border-top:.8mm solid rgba(201,161,79,.55)}}
 .ny .c{{font-weight:750;font-size:17mm;letter-spacing:.22em;color:{GOLD};margin-bottom:5mm}}
 .ny table{{border-collapse:collapse;font-size:27mm;font-weight:700}}
