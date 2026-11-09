@@ -196,3 +196,4 @@ Fájlok: `fo` (háttérrel), `vilagos`/`sotet` (átlátszó), `sotet-hatterrel`,
 - 2026-11-09: műhelytábla 80×55 cm (fekvő), 3 mm kifutóval: `nyomdai/tabla/` – nyomdai PDF (806×556 mm), előnézet, falra illesztett próba az ügyfél fotóján. Tartalom a régi tábla szerint: Budai Nagy Antal u. 25., 20/585-3234, H–P 8–17, Szo–V zárva. Forrás: `_forras/tabla.py`.
 - 2026-11-09: tábla – adatok jóval nagyobbak (telefon 50 mm, cím és nyitvatartás 27–28 mm betűméret), logó 26 cm.
 - 2026-11-09: tábla két új iránya: A – arany telefonsáv (alul teljes szélességű arany sáv a telefonszámmal), B – krém–éjkék (világos mező nagy sötét betűkkel, jobbra éjkék mező a logóval). `_forras/tabla_v2.py`.
+- 2026-11-09: VÉGLEGES tábla: az első (sötétkék, keretes) irány, telefonszám 41 mm-re csökkentve az arányokért. Fájl: `nyomdai/tabla/kiraly-tabla-80x55cm-nyomdai-806x556mm.pdf`. Az A/B irány tartaléknak megmaradt.
