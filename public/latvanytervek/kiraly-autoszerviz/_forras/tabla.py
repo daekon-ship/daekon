@@ -51,7 +51,7 @@ html,body{{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 <div class="j">
   <div class="nev">KIRÁLY</div>
   <div class="al">AUTÓSZERVIZ KFT.</div>
-  <div class="sor cim">{HELY}<span>Budai Nagy Antal u. 25.</span></div>
+  <div class="sor cim">{HELY}<span>Budai Nagy Antal u. 27/C</span></div>
   <div class="sor tel">{TEL}<span>20/585-3234</span></div>
   <div class="ny"><div class="c">NYITVA</div>
     <table><tr><td>Hétfő–péntek</td><td>8–17</td></tr><tr class="z"><td>Szombat–vasárnap</td><td>ZÁRVA</td></tr></table>

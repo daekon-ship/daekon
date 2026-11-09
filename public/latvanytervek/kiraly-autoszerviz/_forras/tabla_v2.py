@@ -11,7 +11,7 @@ from tabla import FONT, TEL, HELY, NAVY, GOLD, CREAM, W, H, KI, B, OUT, ROOT
 
 ORA = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>'
 FOTO = "/mnt/user-data/attachments/6b148991-afde-5494-ae47-8be068f16e3b/8b56676f-image.jpg"
-CIM, TELSZAM = "Budai Nagy Antal u. 25.", "20/585-3234"
+CIM, TELSZAM = "Budai Nagy Antal u. 27/C", "20/585-3234"
 
 
 def alap(belso, extra_css):
