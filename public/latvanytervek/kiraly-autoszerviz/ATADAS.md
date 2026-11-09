@@ -193,3 +193,4 @@ Fájlok: `fo` (háttérrel), `vilagos`/`sotet` (átlátszó), `sotet-hatterrel`,
 - 2026-11-07: névjegy előlapja: balra a weboldal 9 szolgáltatása (vizsgafelkészítés, EGR, Ford garanciális is), jobbra logópanel – a hátlap tükörképe.
 - 2026-11-07: logó csak a szolgáltatások oldalán; az elérhetőségek oldalán logó helyett KIRÁLY / AUTÓSZERVIZ felirat, név, arany függőleges vonal, elérhetőségek.
 - 2026-11-07: céges (általános) névjegy is: név és beosztás nélkül, KIRÁLY / AUTÓSZERVIZ + „Dunaújváros · 2008 óta”. Fájlok: `nevjegykartya-ejkek-ceges-nyomdai-96x56mm.pdf`, `nevjegy-hatlap-ceges.png`, `nevjegy-bemutato-ceges.png`.
+- 2026-11-09: műhelytábla 80×55 cm (fekvő), 3 mm kifutóval: `nyomdai/tabla/` – nyomdai PDF (806×556 mm), előnézet, falra illesztett próba az ügyfél fotóján. Tartalom a régi tábla szerint: Budai Nagy Antal u. 25., 20/585-3234, H–P 8–17, Szo–V zárva. Forrás: `_forras/tabla.py`.
