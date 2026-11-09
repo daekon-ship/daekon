@@ -63,7 +63,7 @@ Fejléc (ragadós, mobilon teljes képernyős menü; menüpontok: Szolgáltatás
 | Nyitó szövegek | betöltés | 14 px-es felúszás, lépcsőzve |
 | Szekciócímek, sorok | görgetés (inView) | 16 px-es felúszás, egyszer |
 | Folyamat pontjai | görgetés | a négy pont egymás után kitöltődik |
-| Szalag | folyamatos | két sor, ellentétes irányban (80 / 95 mp/kör CSS-animáció), a nevek fele-fele; gomb, egér és fókusz mindkettőt megállítja; képernyőolvasó minden nevet egyszer kap |
+| Szalag | folyamatos | két sor, ellentétes irányban (80 / 95 mp/kör CSS-animáció), a nevek fele-fele; egérrel rámutatva és billentyűzetes fókusznál mindkettő megáll (Megállítás gomb DAEKON kérésére eltávolítva, 2026.11.09.); képernyőolvasó minden nevet egyszer kap |
 | Időpontkérő | lépésváltás | rövid vízszintes áttűnés |
 
 Csökkentett mozgásnál semmi nem animál, a szalag statikus, a másolata eltűnik. JS nélkül és Motion-hiba esetén minden látszik (az `anim` osztály csak sikeres betöltésnél marad, 2,5 mp-es biztonsági hálóval).

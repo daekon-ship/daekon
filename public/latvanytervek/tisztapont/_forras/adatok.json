@@ -19,7 +19,7 @@
 
   "oldal": {
     "url": "https://daekon-ship.github.io/daekon/latvanytervek/tisztapont/",
-    "verzio": "20261109a",
+    "verzio": "20261109b",
     "jelolesek": false,
     "_jelolesek": "true: látványterv-jelölések (felső csík, 'bemutató' feliratok, egyeztetendő-címkék a referenciáknál és a cégadatoknál, összesítőben demó-doboz). false: élesnek ható megjelenés – az időpontkérő összesítője ekkor e-mailben (a látogató saját levelezőjéből) küldhető. A noindex és a CSP ettől függetlenül marad."
   },

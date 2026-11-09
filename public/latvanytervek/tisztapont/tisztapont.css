@@ -160,9 +160,6 @@ section[id],#top{scroll-margin-top:calc(var(--fej-m) + 12px)}
 .szalag-blokk{border-block:1px solid var(--vonal);padding:22px 0 26px;background:var(--feher)}
 .szalag-fej{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:10px}
 .szalag-fej .cimke-mono{margin:0}
-.szalag-gomb{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 14px;border:1px solid var(--vonal);border-radius:var(--r-gomb);background:#fff;font-size:13.5px;font-weight:500;cursor:pointer;transition:border-color var(--t)}
-.szalag-gomb:hover{border-color:var(--tenger)}
-.szalag-gomb svg{width:14px;height:14px;color:var(--kek)}
 .szalag{overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
 .szalag{display:flex;flex-direction:column;gap:2px}
 .szalag-sav{display:flex;width:max-content;animation:szalag 80s linear infinite}
@@ -172,7 +169,7 @@ section[id],#top{scroll-margin-top:calc(var(--fej-m) + 12px)}
 @media (max-width:640px){.szalag-sav{animation-duration:115s}.szalag-sor-2 .szalag-sav{animation-duration:135s}}
 .szalag-sor-2 .szalag-lista li{color:var(--tenger-2)}
 .szalag-sor-2 .szalag-lista li::after{background:transparent;border:1.5px solid var(--logo-kek)}
-.szalag:hover .szalag-sav,.szalag:focus-within .szalag-sav,.szalag-blokk.all .szalag-sav{animation-play-state:paused}
+.szalag:hover .szalag-sav,.szalag:focus-within .szalag-sav{animation-play-state:paused}
 .szalag-lista{display:flex;list-style:none;margin:0;padding:0}
 .szalag-lista li{display:flex;align-items:center;gap:12px;padding:4px 0;white-space:nowrap;font-size:clamp(1.15rem,1rem + .65vw,1.6rem);font-weight:500;letter-spacing:-.015em}
 .szalag-lista li::after{content:"";width:9px;height:9px;border-radius:50%;background:var(--logo-kek);margin:0 clamp(28px,4vw,56px)}
@@ -184,8 +181,7 @@ section[id],#top{scroll-margin-top:calc(var(--fej-m) + 12px)}
   .szalag-lista li::after{margin:0 clamp(18px,3vw,36px)}
   .szalag-sav{animation:none;width:auto}
   .szalag-lista{flex-wrap:wrap;row-gap:4px}
-  .szalag-masolat,.szalag-lista .szalag-kitolto,.szalag-gomb{display:none}
-  .szalag{gap:4px}
+  .szalag-masolat,.szalag-lista .szalag-kitolto,  .szalag{gap:4px}
   .szalag-sor-2 .szalag-lista li::after{background:var(--logo-kek);border:0}
 }
 

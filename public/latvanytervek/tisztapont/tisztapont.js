@@ -84,18 +84,6 @@
     }, 3500);
   }
 
-  /* ---------- szalag szüneteltetése ---------- */
-  var szGomb = $("[data-szalag-gomb]");
-  if (szGomb) {
-    szGomb.addEventListener("click", function () {
-      var all = szGomb.getAttribute("aria-pressed") !== "true";
-      szGomb.setAttribute("aria-pressed", String(all));
-      szGomb.closest(".szalag-blokk").classList.toggle("all", all);
-      $("span", szGomb).textContent = all ? "Lejátszás" : "Megállítás";
-      $("use", szGomb).setAttribute("href", all ? "#i-lejatszas" : "#i-szunet");
-    });
-  }
-
   /* ---------- galéria: szűrés ---------- */
   var gal = $("[data-galeria]");
   var elemek = $$(".gal-elem", gal);
