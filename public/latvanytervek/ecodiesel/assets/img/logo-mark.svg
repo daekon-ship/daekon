@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
+  <title>Diesel Motor Javítás</title>
+  <defs><clipPath id="dmj-hx"><path d="M24 .5 L44.35 12.25 V35.75 L24 47.5 L3.65 35.75 V12.25Z"/></clipPath></defs>
+  <path d="M24 2 L43.2 13 V35 L24 46 L4.8 35 V13Z" fill="none" stroke="#B7F04A" stroke-width="2.6"/>
+  <path clip-path="url(#dmj-hx)" d="M50 38.4 L24 53.4 L15.6 44.9 L41.6 29.9Z" fill="#B7F04A"/>
+  <path fill="#B7F04A" fill-rule="evenodd" d="M15.5 11h17v2.9h-17zM15.5 15.3h17v1.6h-17zM15.5 18.3h17V22h-17zM21.8 22h4.4l1.75 7.5A5.2 5.2 0 1 1 20.05 29.5zM24 29.9a2.1 2.1 0 1 0 0 4.2a2.1 2.1 0 1 0 0-4.2z"/>
+</svg>

@@ -1,0 +1,29 @@
+{
+  "name": "Diesel Motor Javítás",
+  "short_name": "Diesel Motor Javítás",
+  "description": "Dízelmotor-javítás és -diagnosztika 2003 óta — a traktortól a bányagépig.",
+  "start_url": "./",
+  "display": "browser",
+  "background_color": "#0B0D0F",
+  "theme_color": "#0B0D0F",
+  "icons": [
+    {
+      "src": "assets/img/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/img/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/img/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
