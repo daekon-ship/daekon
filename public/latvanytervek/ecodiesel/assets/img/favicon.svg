@@ -1,8 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
-  <title>Diesel Motor Javítás</title>
-  <rect width="48" height="48" fill="#0B0D0F"/>
-  <defs><clipPath id="dmj-hx"><path d="M24 .5 L44.35 12.25 V35.75 L24 47.5 L3.65 35.75 V12.25Z"/></clipPath></defs>
-  <path d="M24 2 L43.2 13 V35 L24 46 L4.8 35 V13Z" fill="none" stroke="#B7F04A" stroke-width="2.6"/>
-  <path clip-path="url(#dmj-hx)" d="M50 38.4 L24 53.4 L15.6 44.9 L41.6 29.9Z" fill="#B7F04A"/>
-  <path fill="#B7F04A" fill-rule="evenodd" d="M15.5 11h17v2.9h-17zM15.5 15.3h17v1.6h-17zM15.5 18.3h17V22h-17zM21.8 22h4.4l1.75 7.5A5.2 5.2 0 1 1 20.05 29.5zM24 29.9a2.1 2.1 0 1 0 0 4.2a2.1 2.1 0 1 0 0-4.2z"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" fill="#0B0D0F"/><path d="M32.00 2.00 L57.98 17.00 L57.98 47.00 L32.00 62.00 L6.02 47.00 L6.02 17.00Z" fill="#B7F04A"/>
+<path d="M9.80 24.37 L22.08 15.76 L28.97 25.59 L16.68 34.20Z" fill="#0B0D0F"/>
+<path d="M11.06 26.17 L23.35 17.56 L23.98 18.47 L11.69 27.07Z" fill="#B7F04A"/>
+<path d="M12.43 28.13 L24.72 19.53 L25.35 20.43 L13.07 29.03Z" fill="#B7F04A"/>
+<path d="M20.12 30.57 L24.38 27.58 L35.28 40.71 L28.72 45.29Z" fill="#0B0D0F"/>
+<path d="M41.92 15.76 L54.20 24.37 L47.32 34.20 L35.03 25.59Z" fill="#0B0D0F"/>
+<path d="M40.65 17.56 L52.94 26.17 L52.31 27.07 L40.02 18.47Z" fill="#B7F04A"/>
+<path d="M39.28 19.53 L51.57 28.13 L50.93 29.03 L38.65 20.43Z" fill="#B7F04A"/>
+<path d="M39.62 27.58 L43.88 30.57 L35.28 45.29 L28.72 40.71Z" fill="#0B0D0F"/>
+<circle cx="32" cy="43" r="7.6" fill="#0B0D0F"/>
+<circle cx="32" cy="43" r="3" fill="#B7F04A"/></svg>

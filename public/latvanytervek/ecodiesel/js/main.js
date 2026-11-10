@@ -6,6 +6,10 @@
 
   var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  /* logóváltozat: ?logo=1|2|3 (alapértelmezés: 1) */
+  var lq = (location.search.match(/[?&]logo=([123])/) || [])[1];
+  if (lq) document.querySelectorAll("[data-logo-use]").forEach(function (u) { u.setAttribute("href", "#dmj-mark-" + lq); });
+
   /* year */
   var yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = String(new Date().getFullYear());
