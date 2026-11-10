@@ -18,8 +18,44 @@
   /* ============ MUNKÁINK — galéria ============
      Ügyfél saját fotói: assets/img/munkak/  (nagy kép + _t bélyegkép).
      Új kép felvétele: egy sor ide, a sorrend = megjelenési sorrend.
-     { f: "fájlnév alap kiterjesztés nélkül", c: "felirat", w: "wide" | "tall" | "" } */
-  var GALLERY = [];
+     { f: "fájlnév alap kiterjesztés nélkül", c: "felirat", w: "wide" | "tall" | "", v: 1 ha videó }
+     Videó: munka-NN.mp4 (hang nélkül) + munka-NN.jpg / _t.jpg állókép ugyanazzal a névvel. */
+  var GALLERY = [
+    { f: "munka-01", c: "Bomag úthenger javítása az útépítésen", w: "wide" },
+    { f: "munka-02", c: "V12-es motorblokk új dugattyúkkal", w: "wide" },
+    { f: "munka-03", c: "Új dugattyúk a hathengeres blokkban", w: "tall" },
+    { f: "munka-04", c: "Felújított motor hűtővel, járatásra készen", w: "" },
+    { f: "munka-05", c: "Kompaktor munkában a hulladéklerakón", w: "", v: 1 },
+    { f: "munka-06", c: "Hüvelyek, dugattyúk és tömítések beépítés előtt", w: "wide" },
+    { f: "munka-07", c: "Kiszerelt V12-es motor a csuklós traktor előtt", w: "tall" },
+    { f: "munka-08", c: "Befecskendezők visszafolyásának mérése", w: "" },
+    { f: "munka-09", c: "Vögele aszfaltterítő javítása a helyszínen", w: "wide" },
+    { f: "munka-10", c: "Traktor motorja szerelés közben", w: "" },
+    { f: "munka-11", c: "Felújított motor próbajáratása", w: "tall", v: 1 },
+    { f: "munka-12", c: "Hengertömítettség mérése", w: "" },
+    { f: "munka-13", c: "Kettéválasztott traktor szerelés közben", w: "wide" },
+    { f: "munka-14", c: "Kiszerelt motor a Bomag kompaktor mellett", w: "" },
+    { f: "munka-15", c: "Hüvelykiállás mérése mérőórával", w: "tall" },
+    { f: "munka-16", c: "Léghűtéses motor hengerei új dugattyúkkal", w: "" },
+    { f: "munka-17", c: "Traktor helyszíni javítása szervizautóval", w: "wide" },
+    { f: "munka-18", c: "Hamm úthenger", w: "" },
+    { f: "munka-19", c: "Léghűtéses motor összeszerelés közben", w: "" },
+    { f: "munka-20", c: "Motor próbajáratása nyomásmérővel", w: "", v: 1 },
+    { f: "munka-21", c: "Felújított motor hűtővel, indításra készen", w: "wide" },
+    { f: "munka-22", c: "Deutz veterán traktor", w: "tall" },
+    { f: "munka-23", c: "Kubota minikotró javítása", w: "" },
+    { f: "munka-24", c: "Dugattyúk és hajtókarok a munkapadon", w: "" },
+    { f: "munka-25", c: "Liebherr munkagép nyitott motortérrel", w: "" },
+    { f: "munka-26", c: "Csuklós traktor nyitott motortérrel", w: "tall", v: 1 },
+    { f: "munka-27", c: "V-motor a csuklós traktorban", w: "" },
+    { f: "munka-28", c: "Betakarítógép javítása a telephelyen", w: "" },
+    { f: "munka-29", c: "Hathengeres blokk hengerfej nélkül", w: "" },
+    { f: "munka-30", c: "Teleszkópos rakodó motorja", w: "" },
+    { f: "munka-31", c: "Deutz létrás tűzoltóautó", w: "tall" },
+    { f: "munka-32", c: "Kompaktor javítása", w: "" },
+    { f: "munka-33", c: "Extec osztályozógép", w: "" },
+    { f: "munka-34", c: "Traktormotor a helyén", w: "" }
+  ];
 
   var galSec = document.getElementById("munkaink");
   var galEl = document.getElementById("gallery");
@@ -29,8 +65,8 @@
     GALLERY.forEach(function (g, i) {
       var b = document.createElement("button");
       b.type = "button";
-      b.className = "gal-it" + (g.w ? " gal-" + g.w : "");
-      b.setAttribute("aria-label", "Kép nagyítása: " + (g.c || "munka " + (i + 1)));
+      b.className = "gal-it" + (g.w ? " gal-" + g.w : "") + (g.v ? " gal-vid" : "");
+      b.setAttribute("aria-label", (g.v ? "Videó lejátszása: " : "Kép nagyítása: ") + (g.c || "munka " + (i + 1)));
       b.innerHTML = '<img src="assets/img/munkak/' + g.f + '_t.jpg" alt="' + (g.c || "") +
         '" loading="lazy" decoding="async"><span class="gal-cap mono">' + String(i + 1).padStart(2, "0") +
         (g.c ? " · " + g.c : "") + "</span>";
@@ -41,10 +77,25 @@
     var lb = document.getElementById("lightbox");
     var lbImg = lb.querySelector("img"), lbCap = lb.querySelector("figcaption");
     var cur = 0, lastFocus = null;
+    var lbVid = document.createElement("video");
+    lbVid.controls = true; lbVid.muted = true; lbVid.loop = true; lbVid.playsInline = true;
+    lbVid.preload = "none"; lbVid.hidden = true;
+    lbImg.parentNode.insertBefore(lbVid, lbCap);
+    function stopVid() { lbVid.pause(); lbVid.removeAttribute("src"); lbVid.load(); lbVid.hidden = true; }
     function show(i) {
       cur = (i + GALLERY.length) % GALLERY.length;
-      var g = GALLERY[cur];
-      lbImg.src = "assets/img/munkak/" + g.f + ".jpg";
+      var g = GALLERY[cur], base = "assets/img/munkak/" + g.f;
+      stopVid();
+      if (g.v) {
+        lbImg.hidden = true;
+        lbVid.poster = base + ".jpg"; lbVid.src = base + ".mp4";
+        lbVid.setAttribute("aria-label", g.c || "Videó");
+        lbVid.hidden = false;
+        var p = lbVid.play(); if (p && p.catch) p.catch(function () {});
+      } else {
+        lbImg.hidden = false;
+        lbImg.src = base + ".jpg";
+      }
       lbImg.alt = g.c || "";
       lbCap.textContent = String(cur + 1).padStart(2, "0") + " / " + String(GALLERY.length).padStart(2, "0") + (g.c ? " · " + g.c : "");
     }
@@ -54,7 +105,7 @@
       lb.querySelector(".lb-x").focus();
     }
     function closeLb() {
-      lb.hidden = true; document.body.classList.remove("lb-open");
+      stopVid(); lb.hidden = true; document.body.classList.remove("lb-open");
       if (lastFocus) lastFocus.focus();
     }
     lb.querySelector(".lb-x").addEventListener("click", closeLb);
