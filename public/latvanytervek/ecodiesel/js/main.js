@@ -6,10 +6,6 @@
 
   var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  /* logóváltozat: ?logo=1|2|3 (alapértelmezés: 1) */
-  var lq = (location.search.match(/[?&]logo=([123])/) || [])[1];
-  if (lq) document.querySelectorAll("[data-logo-use]").forEach(function (u) { u.setAttribute("href", "#dmj-mark-" + lq); });
-
   /* year */
   var yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = String(new Date().getFullYear());
@@ -18,54 +14,67 @@
   /* ============ MUNKÁINK — galéria ============
      Ügyfél saját fotói: assets/img/munkak/  (nagy kép + _t bélyegkép).
      Új kép felvétele: egy sor ide, a sorrend = megjelenési sorrend.
-     { f: "fájlnév alap kiterjesztés nélkül", c: "felirat", w: "wide" | "tall" | "", v: 1 ha videó }
+     {f: "fájlnév alap kiterjesztés nélkül", c: "felirat" | "tall" | "", v: 1 ha videó }
      Videó: munka-NN.mp4 (hang nélkül) + munka-NN.jpg / _t.jpg állókép ugyanazzal a névvel. */
   var GALLERY = [
-    { f: "munka-01", c: "Bomag úthenger javítása az útépítésen", w: "wide" },
-    { f: "munka-02", c: "V12-es motorblokk új dugattyúkkal", w: "wide" },
-    { f: "munka-03", c: "Új dugattyúk a hathengeres blokkban", w: "tall" },
-    { f: "munka-04", c: "Felújított motor hűtővel, járatásra készen", w: "" },
-    { f: "munka-05", c: "Kompaktor munkában a hulladéklerakón", w: "", v: 1 },
-    { f: "munka-06", c: "Hüvelyek, dugattyúk és tömítések beépítés előtt", w: "wide" },
-    { f: "munka-07", c: "Kiszerelt V12-es motor a csuklós traktor előtt", w: "tall" },
-    { f: "munka-08", c: "Befecskendezők visszafolyásának mérése", w: "" },
-    { f: "munka-09", c: "Vögele aszfaltterítő javítása a helyszínen", w: "wide" },
-    { f: "munka-10", c: "Traktor motorja szerelés közben", w: "" },
-    { f: "munka-11", c: "Felújított motor próbajáratása", w: "tall", v: 1 },
-    { f: "munka-12", c: "Hengertömítettség mérése", w: "" },
-    { f: "munka-13", c: "Kettéválasztott traktor szerelés közben", w: "wide" },
-    { f: "munka-14", c: "Kiszerelt motor a Bomag kompaktor mellett", w: "" },
-    { f: "munka-15", c: "Hüvelykiállás mérése mérőórával", w: "tall" },
-    { f: "munka-16", c: "Léghűtéses motor hengerei új dugattyúkkal", w: "" },
-    { f: "munka-17", c: "Traktor helyszíni javítása szervizautóval", w: "wide" },
-    { f: "munka-18", c: "Hamm úthenger", w: "" },
-    { f: "munka-19", c: "Léghűtéses motor összeszerelés közben", w: "" },
-    { f: "munka-20", c: "Motor próbajáratása nyomásmérővel", w: "", v: 1 },
-    { f: "munka-21", c: "Felújított motor hűtővel, indításra készen", w: "wide" },
-    { f: "munka-22", c: "Deutz veterán traktor", w: "tall" },
-    { f: "munka-23", c: "Kubota minikotró javítása", w: "" },
-    { f: "munka-24", c: "Dugattyúk és hajtókarok a munkapadon", w: "" },
-    { f: "munka-25", c: "Liebherr munkagép nyitott motortérrel", w: "" },
-    { f: "munka-26", c: "Csuklós traktor nyitott motortérrel", w: "tall", v: 1 },
-    { f: "munka-27", c: "V-motor a csuklós traktorban", w: "" },
-    { f: "munka-28", c: "Betakarítógép javítása a telephelyen", w: "" },
-    { f: "munka-29", c: "Hathengeres blokk hengerfej nélkül", w: "" },
-    { f: "munka-30", c: "Teleszkópos rakodó motorja", w: "" },
-    { f: "munka-31", c: "Deutz létrás tűzoltóautó", w: "tall" },
-    { f: "munka-32", c: "Kompaktor javítása", w: "" },
-    { f: "munka-33", c: "Extec osztályozógép", w: "" },
-    { f: "munka-34", c: "Traktormotor a helyén", w: "" }
+    {f: "munka-01", c: "Bomag úthenger javítása az útépítésen" },
+    {f: "munka-02", c: "V12-es motorblokk új dugattyúkkal" },
+    {f: "munka-03", c: "Új dugattyúk a hathengeres blokkban" },
+    {f: "munka-04", c: "Felújított motor hűtővel, járatásra készen" },
+    {f: "munka-05", c: "Kompaktor munkában a hulladéklerakón", v: 1 },
+    {f: "munka-06", c: "Hüvelyek, dugattyúk és tömítések beépítés előtt" },
+    {f: "munka-07", c: "Kiszerelt V12-es motor a csuklós traktor előtt" },
+    {f: "munka-08", c: "Befecskendezők visszafolyásának mérése" },
+    {f: "munka-09", c: "Vögele aszfaltterítő javítása a helyszínen" },
+    {f: "munka-10", c: "Traktor motorja szerelés közben" },
+    {f: "munka-11", c: "Felújított motor próbajáratása", v: 1 },
+    {f: "munka-12", c: "Hengertömítettség mérése" },
+    {f: "munka-13", c: "Kettéválasztott traktor szerelés közben" },
+    {f: "munka-14", c: "Kiszerelt motor a Bomag kompaktor mellett" },
+    {f: "munka-15", c: "Hüvelykiállás mérése mérőórával" },
+    {f: "munka-16", c: "Léghűtéses motor hengerei új dugattyúkkal" },
+    {f: "munka-17", c: "Traktor helyszíni javítása szervizautóval" },
+    {f: "munka-18", c: "Hamm úthenger" },
+    {f: "munka-19", c: "Léghűtéses motor összeszerelés közben" },
+    {f: "munka-20", c: "Motor próbajáratása nyomásmérővel", v: 1 },
+    {f: "munka-21", c: "Felújított motor hűtővel, indításra készen" },
+    {f: "munka-22", c: "Deutz veterán traktor" },
+    {f: "munka-23", c: "Kubota minikotró javítása" },
+    {f: "munka-24", c: "Dugattyúk és hajtókarok a munkapadon" },
+    {f: "munka-25", c: "Liebherr munkagép nyitott motortérrel" },
+    {f: "munka-26", c: "Csuklós traktor nyitott motortérrel", v: 1 },
+    {f: "munka-27", c: "V-motor a csuklós traktorban" },
+    {f: "munka-28", c: "Betakarítógép javítása a telephelyen" },
+    {f: "munka-29", c: "Hathengeres blokk hengerfej nélkül" },
+    {f: "munka-30", c: "Teleszkópos rakodó motorja" },
+    {f: "munka-31", c: "Deutz létrás tűzoltóautó" },
+    {f: "munka-32", c: "Kompaktor javítása" },
+    {f: "munka-33", c: "Extec osztályozógép" },
+    {f: "munka-34", c: "Traktormotor a helyén" }
   ];
 
   var galSec = document.getElementById("munkaink");
   var galEl = document.getElementById("gallery");
   if (galSec && galEl && GALLERY.length) {
-    galSec.hidden = false;
-    document.querySelectorAll("[data-gal-link]").forEach(function (a) { a.hidden = false; });
+    var galOpener = null;
+    function openGal() {
+      galOpener = document.activeElement;
+      galSec.hidden = false; document.body.classList.add("gal-open");
+      galSec.querySelector(".galp-x").focus();
+      if (location.hash !== "#munkaink") history.replaceState(null, "", "#munkaink");
+    }
+    function closeGal() {
+      galSec.hidden = true; document.body.classList.remove("gal-open");
+      if (location.hash === "#munkaink") history.replaceState(null, "", location.pathname + location.search);
+      if (galOpener && galOpener.focus) galOpener.focus();
+    }
+    document.querySelectorAll("[data-gal-open]").forEach(function (b) { b.addEventListener("click", openGal); });
+    galSec.querySelector(".galp-x").addEventListener("click", closeGal);
+    if (location.hash === "#munkaink") openGal();
     GALLERY.forEach(function (g, i) {
       var b = document.createElement("button");
       b.type = "button";
-      b.className = "gal-it" + (g.w ? " gal-" + g.w : "") + (g.v ? " gal-vid" : "");
+      b.className = "gal-it" + (g.v ? " gal-vid" : "");
       b.setAttribute("aria-label", (g.v ? "Videó lejátszása: " : "Kép nagyítása: ") + (g.c || "munka " + (i + 1)));
       b.innerHTML = '<img src="assets/img/munkak/' + g.f + '_t.jpg" alt="' + (g.c || "") +
         '" loading="lazy" decoding="async"><span class="gal-cap mono">' + String(i + 1).padStart(2, "0") +
@@ -101,11 +110,11 @@
     }
     function openLb(i) {
       lastFocus = document.activeElement;
-      show(i); lb.hidden = false; document.body.classList.add("lb-open");
+      show(i); lb.hidden = false;
       lb.querySelector(".lb-x").focus();
     }
     function closeLb() {
-      stopVid(); lb.hidden = true; document.body.classList.remove("lb-open");
+      stopVid(); lb.hidden = true;
       if (lastFocus) lastFocus.focus();
     }
     lb.querySelector(".lb-x").addEventListener("click", closeLb);
@@ -113,7 +122,7 @@
     lb.querySelector(".lb-next").addEventListener("click", function () { show(cur + 1); });
     lb.addEventListener("click", function (e) { if (e.target === lb) closeLb(); });
     document.addEventListener("keydown", function (e) {
-      if (lb.hidden) return;
+      if (lb.hidden) { if (e.key === "Escape" && !galSec.hidden) closeGal(); return; }
       if (e.key === "Escape") closeLb();
       else if (e.key === "ArrowLeft") show(cur - 1);
       else if (e.key === "ArrowRight") show(cur + 1);
