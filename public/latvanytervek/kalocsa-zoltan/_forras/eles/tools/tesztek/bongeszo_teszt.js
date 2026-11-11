@@ -91,7 +91,8 @@ const fabTakar = async page => page.evaluate(async () => {
     await page.goto(URL, { waitUntil: 'load', timeout: 60000 });
     await wait(1500);
     await vegiggorget(page);
-    const m = await page.evaluate(meres);
+    let m = await page.evaluate(meres);
+    if (m.kep < 14) { await vegiggorget(page); await wait(2000); m = await page.evaluate(meres); }  // terhelt gépen a lusta képek később érnek be
     const takart = w <= 860 ? await fabTakar(page) : [];
     ok(m.overflowX <= 0 && !m.kilog.length, `${w}px: nincs vízszintes túlcsordulás (${m.overflowX}px; kilógó: ${JSON.stringify(m.kilog)})`);
     ok(!m.torottKep.length && m.kep >= 14, `${w}px: ${m.kep} kép betöltve, törött: ${m.torottKep.length}`);
@@ -128,7 +129,8 @@ const fabTakar = async page => page.evaluate(async () => {
     if (await page.isVisible('#burger')) { await page.click('#burger'); await wait(300); }
     await page.setViewportSize({ width: 1366, height: 1024 }); await wait(600);
     s = await allapot();
-    const gorget = await page.evaluate(async () => { const y = scrollY; scrollBy(0, 600); await new Promise(r => setTimeout(r, 300)); return scrollY - y; });
+    // azonnali görgetés: a CSS scroll-behavior:smooth terhelt gépen 300 ms alatt még el sem indul (álhiba volt)
+    const gorget = await page.evaluate(async () => { const y = scrollY; scrollTo({ top: y + 600, behavior: 'instant' }); await new Promise(r => setTimeout(r, 300)); return scrollY - y; });
     ok(s.ovf === '' && gorget > 0, `menü: nyitott menüvel szélesre forgatva az oldal görgethető marad (overflow='${s.ovf}', görgetés: ${gorget}px)`);
     // Vélemények menüpont: a mobilmenüből a szakaszhoz görget, a menü bezárul
     await page.setViewportSize({ width: 390, height: 844 }); await page.evaluate(() => scrollTo(0, 0)); await wait(300);
@@ -144,8 +146,10 @@ const fabTakar = async page => page.evaluate(async () => {
     const { ctx, page, hibalista } = await ujLap(browser, w, w < 800 ? 844 : 900);
     await page.goto(URL, { waitUntil: 'load' }); await wait(800);
     const db8 = await page.$$eval('[data-full]', e => e.length);
-    await page.evaluate(() => document.querySelector('#kiemelt-munkak').scrollIntoView()); await wait(800);
-    await page.focus('.ftile__img >> nth=0'); await page.keyboard.press('Enter'); await wait(700);
+    await page.evaluate(() => document.querySelector('#kiemelt-munkak').scrollIntoView({ behavior: 'instant' })); await wait(800);  // sima görgetés közben a fókusz elveszhet
+    await page.focus('.ftile__img >> nth=0'); await page.keyboard.press('Enter');
+    // a nagy kép hideg betöltése terhelt gépen 700 ms-nál tovább is tarthat: a nyitásra és a képre várunk (max. 5 mp), nem fix ideig
+    await page.waitForFunction(() => !document.querySelector('#lb').hidden && document.querySelector('#lb img').naturalWidth > 0, null, { timeout: 5000 }).catch(() => {});
     let s = await page.evaluate(() => ({ nyitva: !document.querySelector('#lb').hidden, kep: document.querySelector('#lb img').naturalWidth, src: document.querySelector('#lb img').getAttribute('src'), fokusz: document.activeElement.className, ovf: document.body.style.overflow, lb: document.querySelectorAll('.lb:not([hidden])').length }));
     ok(s.nyitva && s.kep > 0 && s.fokusz.includes('lb__x') && s.ovf === 'hidden' && s.lb === 1, `${w}px galéria: Enterrel nyílik, kép betölt (${s.kep}px), fókusz a bezárón, háttér nem görög ${JSON.stringify(s)}`);
     const elso = s.src;
