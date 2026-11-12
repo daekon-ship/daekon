@@ -34,8 +34,9 @@
     const st = openState(), el = $('[data-status]');
     el.classList.toggle('is-open', st.open); el.classList.toggle('is-closed', !st.open);
     $('[data-status-text]').textContent = st.text;
+    const s2 = $('[data-status2]'); if (s2) { s2.classList.toggle('is-open', st.open); s2.classList.toggle('is-closed', !st.open); $('[data-status-text2]').textContent = st.open ? 'Most nyitva, rendelhetsz' : st.text; }
     const today = new Date().getDay(), h = L.restaurant.hours[today];
-    $('[data-today-hours]').textContent = `${h[0]}–${h[1]}`;
+    $$('[data-today-hours]').forEach(e => e.textContent = `${h[0]}–${h[1]}`);
     const order = [1, 2, 3, 4, 5, 6, 0];
     $('[data-hours] tbody').innerHTML = order.map(d => {
       const x = L.restaurant.hours[d];
@@ -138,8 +139,9 @@
   function renderSheet() {
     const p = st.p, cat = L.categories.find(c => c.id === p.cat);
     const hint = p.hint ? `<p class="hintline">${esc(p.hint)}</p>` : '';
-    let html = `<p class="sh__kicker">${p.base ? `${baseName[p.base]} · ` : ''}${cat.name}</p>
+    $('[data-sheet-head]').innerHTML = `<p class="sh__kicker">${p.base ? `${baseName[p.base]} · ` : ''}${cat.name}</p>
       <h3 class="sh__title" id="sheet-title">${esc(p.name)}</h3>`;
+    let html = '';
     if (p.sizes && p.sizes.length > 1) {
       html += `<div class="sh__block"><p class="sh__label">Méret</p><div class="seg" role="radiogroup" aria-label="Méret">${p.sizes.map(s =>
         `<label><input type="radio" name="size" value="${s.k}" ${s.k === st.size ? 'checked' : ''}><span><b>${s.label}</b><em>${fmt(s.price)}</em></span></label>`).join('')}</div>
@@ -409,7 +411,7 @@
       <p class="done__id">Rendelésszám: <b>#${o.no}</b> · ${o.mode === 'delivery' ? `kiszállítás ide: ${esc(o.area)}, ${esc(o.street)}` : 'személyes átvétel a Balassa Bálint utcában'}</p>
       ${o.preorder ? `<p class="done__id">Most zárva vagyunk, a rendelés nyitáskor kerül sorra.</p>` : ''}
       <ol class="timeline" aria-label="Rendelés állapota">${tl}</ol>
-      <div class="receipt">${o.lines.map(l => `<div><span>${l.qty} × ${esc(l.name)}${l.sizeLabel ? ' (' + l.sizeLabel + ')' : ''}</span><b>${fmt(l.total)}</b></div>`).join('')}
+      <div class="receipt">${o.lines.map(l => `<div><span>${l.qty} × ${esc(l.name)}${l.sizeLabel ? ' (' + l.sizeLabel + ')' : ''}${l.extras && l.extras.length ? `<small class="rc-x">+ ${l.extras.map(esc).join(', ')}</small>` : ''}${l.removed && l.removed.length ? `<small class="rc-x">nélküle: ${l.removed.map(esc).join(', ')}</small>` : ''}</span><b>${fmt(l.total)}</b></div>`).join('')}
         <div><span>Részösszeg</span><b>${fmt(o.subtotal)}</b></div>
         ${o.mode === 'delivery' ? '<div><span>Kiszállítási díj</span><span class="muted">a cím alapján</span></div>' : ''}
         <div><span>Fizetés</span><span>átvételkor</span></div></div>

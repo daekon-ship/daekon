@@ -8,6 +8,18 @@
 > Őszinte állapot: ez működő **front-end látványterv**. A kosár, a rendelés és a konyhai felület a böngésző `localStorage`-ében dolgozik, az étteremhez semmi nem jut el, fizetés nincs. Ezt a felület két helyen ki is mondja (lábléc, visszaigazolás; admin felső sáv). Backend, adatbázis, bejelentkezés, e-mail és Stripe: C–D fázis.
 > A „védett tesztcím” még nincs: a GitHub Pages cím nyilvános, de nem indexelt. Valódi jelszavas védelem az MHosting-aldomainen lesz (C fázis).
 
+## 8. kör (2026.11.12.) – audit és finomítás
+Teljes vizuális bejárás 320–1920 px-en, kosár → adatok → visszaigazolás mobilon és asztalon. Javítva:
+- Lábléc-logó (és minden kép) magassága: a `height` attribútum miatt mobilon ~300 px üres sáv volt → `img{height:auto}`.
+- Asztali hero jobb oldala üres volt → arany keretes „mai rendelés” kártya (állapot, ma, kiszállítás, minimum, hová, átvétel, hívás); mobilon a gombok alatt.
+- Termékablak: a bezárás gomb görgetéskor rácsúszott a tartalomra → külön fejléc a címmel és a bezárással.
+- „Melyik méret?” választó szövege alig látszott; címke-szín egységesítve aranyra.
+- Kapcsolat: Cím/Telefon sorok egy rácsban; „Rendelésfelvétel” cím egy szintben a „Kapcsolat”-tal; nyitvatartás-táblázat széle igazítva.
+- „2–10.” házszám nem törik el sor végén.
+- Kiválasztott méret, átvételi mód, fizetés, pipa: egységes arany kijelölés.
+- Visszaigazolás: az extra feltétek és az elvett összetevők a tételsor alatt is látszanak.
+Tesztek: folyamat 15/15 OK, nézetek 8/8 túlcsordulás nélkül, 0 konzolhiba, tiltott-szó szűrés 0 találat.
+
 ## 7. kör (2026.11.12.) – feláras extra feltétek
 - Pizzáknál, hamburgereknél, smash burgereknél és gyrosnál a termékablakban „Extra feltét” rész: Zöldség / Hús / Sajt csoport, lenyitható, koppintásra ki-be kapcsolható.
 - **Ideiglenes árak** (a megbízó szerint, az ügyfél pontosítja): zöldség **400 Ft**, hús **800 Ft**, sajt **800 Ft** feltétenként, mindkét pizzaméretnél ugyanannyi.

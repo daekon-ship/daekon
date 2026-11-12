@@ -13,7 +13,7 @@
 <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="fonts/young-serif.woff" as="font" type="font/woff" crossorigin>
 <link rel="preload" href="fonts/bricolage-400.woff" as="font" type="font/woff" crossorigin>
-<link rel="stylesheet" href="css/lizo.css?v=7">
+<link rel="stylesheet" href="css/lizo.css?v=9">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Restaurant","name":"Lizó Pizzéria és Ételbár","servesCuisine":["Pizza","Hamburger","Gyros"],"telephone":"+36303887099","address":{"@type":"PostalAddress","streetAddress":"Balassa Bálint utca 2-10.","postalCode":"1183","addressLocality":"Budapest","addressCountry":"HU"},"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Sunday"],"opens":"11:00","closes":"21:40"},{"@type":"OpeningHoursSpecification","dayOfWeek":["Friday","Saturday"],"opens":"10:00","closes":"23:00"}]}
 </script>
@@ -69,12 +69,18 @@
           <a class="btn btn--ink" href="#etlap" data-magnet>Online rendelés – étlap</a>
           <button class="btn btn--line" type="button" data-open-cart data-magnet>Kosár <span class="btn__n" data-cart-count>0</span></button>
         </div>
-        <dl class="facts" data-hero>
+      </div>
+      <aside class="hcard" data-hero aria-label="Mai rendelési információk">
+        <div class="hcard__top"><span class="status" data-status2><i></i><span data-status-text2>Nyitvatartás</span></span></div>
+        <dl class="hcard__rows">
           <div><dt>Ma</dt><dd data-today-hours>–</dd></div>
           <div><dt>Kiszállítás</dt><dd>60–90 perc</dd></div>
           <div><dt>Minimum</dt><dd data-min-order>3 000 Ft</dd></div>
+          <div><dt>Hová</dt><dd>XVIII. ker., Gyál, Vecsés</dd></div>
+          <div><dt>Átvétel</dt><dd>Balassa Bálint u.&nbsp;2–10.</dd></div>
         </dl>
-      </div>
+        <a class="hcard__tel" href="tel:+36303887099"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6.6 3.5h3l1.5 4-2 1.3a11 11 0 0 0 6.1 6.1l1.3-2 4 1.5v3a2 2 0 0 1-2.2 2A17 17 0 0 1 4.6 5.7a2 2 0 0 1 2-2.2Z"/></svg>+36 30 388 7099</a>
+      </aside>
     </div>
   </section>
 
@@ -174,7 +180,7 @@
           <svg class="ocard__ico" aria-hidden="true" viewBox="0 0 48 48"><path d="M8 20 12 9h24l4 11M8 20h32v19H8zM8 20a5 5 0 0 0 8 0 5 5 0 0 0 8 0 5 5 0 0 0 8 0 5 5 0 0 0 8 0M20 39V29h8v10"/></svg>
           <h3>Személyes átvétel</h3>
           <ul class="ticks">
-            <li>1183 Budapest, Balassa Bálint utca 2–10.</li>
+            <li>1183 Budapest, Balassa Bálint utca&nbsp;2–10.</li>
             <li>Rendelésfelvétel a nyitvatartás szerint</li>
             <li>A rendelés állapotát a visszaigazolásban követheted</li>
           </ul>
@@ -190,7 +196,7 @@
       <div>
         <h2 id="contact-title">Kapcsolat</h2>
         <address>
-          <p><span class="k">Cím</span>1183 Budapest, Balassa Bálint utca 2–10.</p>
+          <p><span class="k">Cím</span>1183 Budapest, Balassa Bálint utca&nbsp;2–10.</p>
           <p><span class="k">Telefon</span><a href="tel:+36303887099">+36 30 388 7099</a></p>
         </address>
         <div class="contact__cta">
@@ -215,7 +221,7 @@
     <div class="foot__cols">
       <div>
         <p>Lizó Pizzéria és Ételbár</p>
-        <p>1183 Budapest, Balassa Bálint utca 2–10.</p>
+        <p>1183 Budapest, Balassa Bálint utca&nbsp;2–10.</p>
         <p><a href="tel:+36303887099">+36 30 388 7099</a></p>
       </div>
       <nav aria-label="Lábléc">
@@ -241,7 +247,10 @@
 <!-- Termék -->
 <div class="scrim" data-scrim hidden></div>
 <section class="sheet" data-sheet role="dialog" aria-modal="true" aria-labelledby="sheet-title" hidden>
-  <button class="x" type="button" data-close aria-label="Bezárás"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
+  <header class="sheet__head">
+    <div data-sheet-head></div>
+    <button class="x" type="button" data-close aria-label="Bezárás"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
+  </header>
   <div class="sheet__body" data-sheet-body></div>
   <div class="sheet__foot">
     <div class="qty" role="group" aria-label="Mennyiség">
@@ -297,7 +306,7 @@
         <label class="field"><span>Emelet, ajtó, kapukód <i>(nem kötelező)</i></span><input name="door"></label>
       </div>
     </div>
-    <p class="pickupnote" data-pickup hidden>Átvétel: 1183 Budapest, Balassa Bálint utca 2–10. Hogy hol tart a rendelésed, a visszaigazolásban látod.</p>
+    <p class="pickupnote" data-pickup hidden>Átvétel: 1183 Budapest, Balassa Bálint utca&nbsp;2–10. Hogy hol tart a rendelésed, a visszaigazolásban látod.</p>
     <label class="field"><span>Megjegyzés a rendeléshez <i>(nem kötelező)</i></span><textarea name="note" rows="2" placeholder="Pl. csengő nem működik, hívj, ha ideértél"></textarea></label>
     <fieldset class="pay">
       <legend>Fizetés</legend>
@@ -324,9 +333,9 @@
 <div class="toast" data-toast role="status" aria-live="polite"></div>
 
 <script src="js/vendor/motion-11.18.2.min.js?v=5"></script>
-<script src="js/data.js?v=7"></script>
+<script src="js/data.js?v=9"></script>
 <script src="js/store.js?v=5"></script>
-<script src="js/app.js?v=7"></script>
-<script src="js/fx.js?v=7"></script>
+<script src="js/app.js?v=9"></script>
+<script src="js/fx.js?v=9"></script>
 </body>
 </html>
