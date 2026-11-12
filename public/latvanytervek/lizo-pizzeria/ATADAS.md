@@ -8,6 +8,24 @@
 > Őszinte állapot: ez működő **front-end látványterv**. A kosár, a rendelés és a konyhai felület a böngésző `localStorage`-ében dolgozik, az étteremhez semmi nem jut el, fizetés nincs. Ezt a felület két helyen ki is mondja (lábléc, visszaigazolás; admin felső sáv). Backend, adatbázis, bejelentkezés, e-mail és Stripe: C–D fázis.
 > A „védett tesztcím” még nincs: a GitHub Pages cím nyilvános, de nem indexelt. Valódi jelszavas védelem az MHosting-aldomainen lesz (C fázis).
 
+## 6. kör (2026.11.12.) – látványelemek + Facebook
+Ihlet: motion.dev, React Bits (Count Up, Rotating Text, Click Spark, Magnet, Logo Loop, Light Rays, spotlight kártya), sitereel.ai – saját megvalósítás `js/fx.js`-ben, külső komponens nincs.
+| Effekt | Hol | Trigger |
+|---|---|---|
+| Parázs-szikrák (canvas, a Facebook-logó kemencéjének lángja) | hero háttér | betöltés; képernyőn kívül megáll |
+| Szavanként élesedő címsor (blur → éles) | hero H1 | betöltés |
+| Forgó szó: „Most rendelhető: …” (valódi tételek) | hero | 2,2 mp-enként |
+| Végtelen kategóriaszalag | hero alatt | folyamatos, hoverre megáll |
+| Count Up | méret-blokk cm² számai | görgetés |
+| Arany szikra-kitörés | „+”, Kosárba, fő gomb | kattintás |
+| Mágneses gombok | hero gombok | egér (érintésen nincs) |
+| Kurzorkövető arany fényfolt | étlapsorok, kártyák | egér |
+| Billenő méret-kártya | méret-blokk | egér |
+| Görgetésjelző piros→arany csík | fejléc alja | görgetés |
+Minden kikapcsol `prefers-reduced-motion` mellett.
+- **Facebook-link** (az ügyfél által küldött: facebook.com/share/1F5R1QhTbu): fejléc (asztal), mobil menü, Vélemények szekció kártyája, Kapcsolat gomb, lábléc.
+- Vélemények szekció most mindig látszik: Facebook-kártya a profilhoz. Konkrét véleményszöveg csak a Facebookról átvett valódi ajánlásból kerülhet be (`js/data.js` → `facebook.reviews`) – ehhez képernyőkép kell.
+
 ## 5. kör (2026.11.12.)
 - A nyitóképről kikerült a logó (mobilon fél képernyőt elvitt); a logó csak a fejlécben van.
 - Az étlap egyszerre egy kategóriát mutat (Pizza alapból); a fülekkel vagy a menüből lehet váltani. Keresésnél minden kategóriában keres. A mobil oldal ~40%-kal rövidebb.

@@ -122,7 +122,7 @@
 
   // Facebook-ajánlások: CSAK a Lizó Facebook-oldaláról szó szerint átvett, valódi ajánlások kerülhetnek ide
   // (név, dátum, szöveg). Üres tömbnél a szekció nem jelenik meg.
-  const facebook = { url: '', summary: '', reviews: [] };
+  const facebook = { url: 'https://www.facebook.com/share/1F5R1QhTbu/', summary: '', reviews: [] };
 
   window.LIZO = { categories, products, menuDrinks, restaurant, facebook, verified: '2026-11-12' };
 })();

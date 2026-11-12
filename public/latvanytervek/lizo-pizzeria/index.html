@@ -13,7 +13,7 @@
 <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="fonts/young-serif.woff" as="font" type="font/woff" crossorigin>
 <link rel="preload" href="fonts/bricolage-400.woff" as="font" type="font/woff" crossorigin>
-<link rel="stylesheet" href="css/lizo.css?v=5">
+<link rel="stylesheet" href="css/lizo.css?v=6">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Restaurant","name":"Lizó Pizzéria és Ételbár","servesCuisine":["Pizza","Hamburger","Gyros"],"telephone":"+36303887099","address":{"@type":"PostalAddress","streetAddress":"Balassa Bálint utca 2-10.","postalCode":"1183","addressLocality":"Budapest","addressCountry":"HU"},"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Sunday"],"opens":"11:00","closes":"21:40"},{"@type":"OpeningHoursSpecification","dayOfWeek":["Friday","Saturday"],"opens":"10:00","closes":"23:00"}]}
 </script>
@@ -29,7 +29,9 @@
       <a href="#meret">Méretek</a>
       <a href="#rendeles">Kiszállítás</a>
       <a href="#kapcsolat">Kapcsolat</a>
+      <a href="#velemenyek">Vélemények</a>
     </nav>
+    <a class="bar__fb" href="https://www.facebook.com/share/1F5R1QhTbu/" target="_blank" rel="noopener" aria-label="Lizo Pizzéria a Facebookon"><svg class="fbico" viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 21v-7.5h2.6l.4-3h-3V8.6c0-.9.3-1.5 1.6-1.5h1.6V4.4c-.3 0-1.2-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v2.2H7.9v3h2.6V21z"/></svg></a>
     <span class="status" data-status><i></i><span data-status-text>Nyitvatartás</span></span>
     <a class="bar__tel" href="tel:+36303887099"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6.6 3.5h3l1.5 4-2 1.3a11 11 0 0 0 6.1 6.1l1.3-2 4 1.5v3a2 2 0 0 1-2.2 2A17 17 0 0 1 4.6 5.7a2 2 0 0 1 2-2.2Z"/></svg><span>+36 30 388 7099</span></a>
     <button class="cartbtn" type="button" data-open-cart aria-label="Kosár megnyitása">
@@ -46,21 +48,26 @@
     <a href="#meret">Melyik méret?</a>
     <a href="#rendeles">Kiszállítás és átvétel</a>
     <a href="#kapcsolat">Kapcsolat és nyitvatartás</a>
+    <a href="#velemenyek">Facebook-vélemények</a>
     <a class="mnav__tel" href="tel:+36303887099">Hívás: +36 30 388 7099</a>
+    <a class="mnav__fb" href="https://www.facebook.com/share/1F5R1QhTbu/" target="_blank" rel="noopener"><svg class="fbico" viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 21v-7.5h2.6l.4-3h-3V8.6c0-.9.3-1.5 1.6-1.5h1.6V4.4c-.3 0-1.2-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v2.2H7.9v3h2.6V21z"/></svg>Lizo Pizzéria a Facebookon</a>
   </nav>
+  <span class="progress" data-progress aria-hidden="true"></span>
 </header>
 
 <main>
   <!-- HERO -->
   <section class="hero" aria-labelledby="hero-title">
+    <canvas class="embers" data-embers aria-hidden="true"></canvas>
     <div class="hero__in">
       <div class="hero__text">
         <p class="eyebrow" data-hero>Pizzéria és ételbár · Budapest XVIII.</p>
-        <h1 id="hero-title" data-hero>Pizza 32 és 50 centiben, burger, gyros – rendelj közvetlenül tőlünk.</h1>
+        <p class="rot" data-hero>Most rendelhető: <span class="rot__w" aria-live="off" data-rotate='["pizza 32 és 50 cm-ben","smash burger","gyros tál","Lizo kerék pizza","palacsinta"]'></span></p>
+        <h1 id="hero-title" data-split>Pizza 32 és 50 centiben, burger, gyros – rendelj közvetlenül tőlünk.</h1>
         <p class="lead" data-hero>Kihozzuk a XVIII. kerületben, Gyálon és Vecsésen, vagy átveheted a Balassa Bálint utcában.</p>
         <div class="hero__cta" data-hero>
-          <a class="btn btn--ink" href="#etlap">Online rendelés – étlap</a>
-          <button class="btn btn--line" type="button" data-open-cart>Kosár <span class="btn__n" data-cart-count>0</span></button>
+          <a class="btn btn--ink" href="#etlap" data-magnet>Online rendelés – étlap</a>
+          <button class="btn btn--line" type="button" data-open-cart data-magnet>Kosár <span class="btn__n" data-cart-count>0</span></button>
         </div>
         <dl class="facts" data-hero>
           <div><dt>Ma</dt><dd data-today-hours>–</dd></div>
@@ -71,19 +78,21 @@
     </div>
   </section>
 
+  <div class="marquee" aria-hidden="true"><div class="marquee__t" data-marquee><span>Pizza 32 cm</span><i></i><span>Pizza 50 cm</span><i></i><span>Hamburger</span><i></i><span>Smash burger</span><i></i><span>Gyros</span><i></i><span>Street food menü</span><i></i><span>Palacsinta</span><i></i><span>Tiramisu</span><i></i><span>Lizo kerék</span><i></i><span>Hústorony</span><i></i><span>Don Diego</span><i></i></div></div>
+
   <!-- MÉRET -->
   <section class="size" id="meret" aria-labelledby="size-title">
     <div class="wrap size__in">
       <div class="size__text">
         <p class="eyebrow">Melyik méret?</p>
         <h2 id="size-title">Az 50 centis pizza majdnem két és félszer akkora.</h2>
-        <p>A 32 cm-es pizza felülete kb. 804 cm², az 50 cm-esé kb. 1 963 cm². Válassz egy pizzát, és megmutatjuk, mennyit jelent ez forintban.</p>
+        <p>A 32 cm-es pizza felülete kb. <span data-count="804">804</span>&nbsp;cm², az 50 cm-esé kb. <span data-count="1963">1 963</span>&nbsp;cm². Válassz egy pizzát, és megmutatjuk, mennyit jelent ez forintban.</p>
         <label class="field field--select">
           <span>Pizza</span>
           <select data-size-select aria-label="Pizza kiválasztása az összehasonlításhoz"></select>
         </label>
       </div>
-      <div class="size__card" data-size-card aria-live="polite">
+      <div class="size__card" data-size-card data-tilt aria-live="polite">
         <div class="size__row">
           <div class="size__col">
             <svg viewBox="0 0 100 100" class="size__disc size__disc--32" aria-hidden="true"><circle cx="50" cy="50" r="31"/></svg>
@@ -124,18 +133,22 @@
     </div>
   </section>
 
-  <!-- VÉLEMÉNYEK – csak akkor jelenik meg, ha a data.js-ben van ellenőrzött Facebook-ajánlás -->
-  <section class="reviews" id="velemenyek" data-reviews aria-labelledby="rev-title" hidden>
+  <!-- VÉLEMÉNYEK – a valódi ajánlások a data.js-ből jönnek; kitalált vélemény nincs -->
+  <section class="reviews" id="velemenyek" aria-labelledby="rev-title">
     <div class="wrap">
       <div class="sechead">
         <div>
-          <p class="eyebrow">Facebook-ajánlások</p>
-          <h2 id="rev-title">Ezt írták rólunk</h2>
+          <p class="eyebrow">Facebook</p>
+          <h2 id="rev-title">Vélemények és hírek a Facebookon</h2>
         </div>
         <p class="reviews__sum" data-rev-sum></p>
       </div>
-      <ul class="reviews__list" data-rev-list></ul>
-      <a class="btn btn--line" data-rev-link href="#" target="_blank" rel="noopener">Összes vélemény a Facebookon</a>
+      <ul class="reviews__list" data-rev-list hidden></ul>
+      <a class="fbcard" href="https://www.facebook.com/share/1F5R1QhTbu/" target="_blank" rel="noopener">
+        <img src="img/lizo-logo-brand.svg" alt="" width="713" height="530">
+        <span class="fbcard__t"><b>Lizo Pizzéria</b><span>Pizzéria · Lőrinc Piac · Budapest XVIII.</span><span class="fbcard__cta"><svg class="fbico" viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 21v-7.5h2.6l.4-3h-3V8.6c0-.9.3-1.5 1.6-1.5h1.6V4.4c-.3 0-1.2-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v2.2H7.9v3h2.6V21z"/></svg>Vélemények, akciók és új ételek a Facebookon</span></span>
+        <svg class="cats__arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h12m-5-5 5 5-5 5"/></svg>
+      </a>
     </div>
   </section>
 
@@ -183,6 +196,7 @@
         <div class="contact__cta">
           <a class="btn btn--ink" href="tel:+36303887099">Hívás</a>
           <a class="btn btn--line" href="https://www.google.com/maps/place/1183+Budapest,+Balassa+B%C3%A1lint+utca+2-10./" target="_blank" rel="noopener">Térkép</a>
+          <a class="btn btn--line" href="https://www.facebook.com/share/1F5R1QhTbu/" target="_blank" rel="noopener"><svg class="fbico" viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 21v-7.5h2.6l.4-3h-3V8.6c0-.9.3-1.5 1.6-1.5h1.6V4.4c-.3 0-1.2-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v2.2H7.9v3h2.6V21z"/></svg>Facebook</a>
         </div>
       </div>
       <div>
@@ -208,6 +222,7 @@
         <a href="#etlap">Étlap</a>
         <a href="#rendeles">Kiszállítás</a>
         <a href="#kapcsolat">Kapcsolat</a>
+        <a href="https://www.facebook.com/share/1F5R1QhTbu/" target="_blank" rel="noopener">Facebook</a>
         <a href="https://lizopizza.hu/oldal/aszf" target="_blank" rel="noopener">ÁSZF</a>
         <a href="https://lizopizza.hu/oldal/adatvedelem" target="_blank" rel="noopener">Adatkezelés</a>
       </nav>
@@ -309,8 +324,9 @@
 <div class="toast" data-toast role="status" aria-live="polite"></div>
 
 <script src="js/vendor/motion-11.18.2.min.js?v=5"></script>
-<script src="js/data.js?v=5"></script>
+<script src="js/data.js?v=6"></script>
 <script src="js/store.js?v=5"></script>
-<script src="js/app.js?v=5"></script>
+<script src="js/app.js?v=6"></script>
+<script src="js/fx.js?v=6"></script>
 </body>
 </html>
