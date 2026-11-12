@@ -13,7 +13,7 @@
 <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="fonts/young-serif.woff" as="font" type="font/woff" crossorigin>
 <link rel="preload" href="fonts/bricolage-400.woff" as="font" type="font/woff" crossorigin>
-<link rel="stylesheet" href="css/lizo.css?v=9">
+<link rel="stylesheet" href="css/lizo.css?v=10">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Restaurant","name":"Lizó Pizzéria és Ételbár","servesCuisine":["Pizza","Hamburger","Gyros"],"telephone":"+36303887099","address":{"@type":"PostalAddress","streetAddress":"Balassa Bálint utca 2-10.","postalCode":"1183","addressLocality":"Budapest","addressCountry":"HU"},"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Sunday"],"opens":"11:00","closes":"21:40"},{"@type":"OpeningHoursSpecification","dayOfWeek":["Friday","Saturday"],"opens":"10:00","closes":"23:00"}]}
 </script>
@@ -26,7 +26,6 @@
     <a class="bar__logo" href="#top" aria-label="Lizó Pizzéria – kezdőlap"><img src="img/lizo-logo-brand.svg" alt="Lizó Pizzéria" width="713" height="530"></a>
     <nav class="bar__nav" aria-label="Fő navigáció">
       <a href="#etlap">Étlap</a>
-      <a href="#meret">Méretek</a>
       <a href="#rendeles">Kiszállítás</a>
       <a href="#kapcsolat">Kapcsolat</a>
       <a href="#velemenyek">Vélemények</a>
@@ -45,7 +44,6 @@
   <nav class="mnav" id="mobilmenu" data-mnav aria-label="Mobil menü" hidden>
     <p class="mnav__k">Étlap</p>
     <div class="mnav__cats" data-mnav-cats></div>
-    <a href="#meret">Melyik méret?</a>
     <a href="#rendeles">Kiszállítás és átvétel</a>
     <a href="#kapcsolat">Kapcsolat és nyitvatartás</a>
     <a href="#velemenyek">Facebook-vélemények</a>
@@ -81,41 +79,6 @@
         </dl>
         <a class="hcard__tel" href="tel:+36303887099"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6.6 3.5h3l1.5 4-2 1.3a11 11 0 0 0 6.1 6.1l1.3-2 4 1.5v3a2 2 0 0 1-2.2 2A17 17 0 0 1 4.6 5.7a2 2 0 0 1 2-2.2Z"/></svg>+36 30 388 7099</a>
       </aside>
-    </div>
-  </section>
-
-  <div class="marquee" aria-hidden="true"><div class="marquee__t" data-marquee><span>Pizza 32 cm</span><i></i><span>Pizza 50 cm</span><i></i><span>Hamburger</span><i></i><span>Smash burger</span><i></i><span>Gyros</span><i></i><span>Street food menü</span><i></i><span>Palacsinta</span><i></i><span>Tiramisu</span><i></i><span>Lizo kerék</span><i></i><span>Hústorony</span><i></i><span>Don Diego</span><i></i></div></div>
-
-  <!-- MÉRET -->
-  <section class="size" id="meret" aria-labelledby="size-title">
-    <div class="wrap size__in">
-      <div class="size__text">
-        <p class="eyebrow">Melyik méret?</p>
-        <h2 id="size-title">Az 50 centis pizza majdnem két és félszer akkora.</h2>
-        <p>A 32 cm-es pizza felülete kb. <span data-count="804">804</span>&nbsp;cm², az 50 cm-esé kb. <span data-count="1963">1 963</span>&nbsp;cm². Válassz egy pizzát, és megmutatjuk, mennyit jelent ez forintban.</p>
-        <label class="field field--select">
-          <span>Pizza</span>
-          <select data-size-select aria-label="Pizza kiválasztása az összehasonlításhoz"></select>
-        </label>
-      </div>
-      <div class="size__card" data-size-card data-tilt aria-live="polite">
-        <div class="size__row">
-          <div class="size__col">
-            <svg viewBox="0 0 100 100" class="size__disc size__disc--32" aria-hidden="true"><circle cx="50" cy="50" r="31"/></svg>
-            <b>32 cm</b>
-            <span class="size__price" data-sz32>–</span>
-            <small data-sz32u>–</small>
-          </div>
-          <div class="size__col">
-            <svg viewBox="0 0 100 100" class="size__disc size__disc--50" aria-hidden="true"><circle cx="50" cy="50" r="48"/></svg>
-            <b>50 cm</b>
-            <span class="size__price" data-sz50>–</span>
-            <small data-sz50u>–</small>
-          </div>
-        </div>
-        <p class="size__verdict" data-sz-verdict></p>
-        <button class="btn btn--tomato" type="button" data-sz-order>Ezt kérem 50 cm-ben</button>
-      </div>
     </div>
   </section>
 
@@ -333,9 +296,9 @@
 <div class="toast" data-toast role="status" aria-live="polite"></div>
 
 <script src="js/vendor/motion-11.18.2.min.js?v=5"></script>
-<script src="js/data.js?v=9"></script>
+<script src="js/data.js?v=10"></script>
 <script src="js/store.js?v=5"></script>
-<script src="js/app.js?v=9"></script>
-<script src="js/fx.js?v=9"></script>
+<script src="js/app.js?v=10"></script>
+<script src="js/fx.js?v=10"></script>
 </body>
 </html>

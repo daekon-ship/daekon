@@ -144,8 +144,7 @@
     let html = '';
     if (p.sizes && p.sizes.length > 1) {
       html += `<div class="sh__block"><p class="sh__label">Méret</p><div class="seg" role="radiogroup" aria-label="Méret">${p.sizes.map(s =>
-        `<label><input type="radio" name="size" value="${s.k}" ${s.k === st.size ? 'checked' : ''}><span><b>${s.label}</b><em>${fmt(s.price)}</em></span></label>`).join('')}</div>
-        <p class="hintline">Az 50 cm-es kb. 2,4-szer akkora felület.</p></div>`;
+        `<label><input type="radio" name="size" value="${s.k}" ${s.k === st.size ? 'checked' : ''}><span><b>${s.label}</b><em>${fmt(s.price)}</em></span></label>`).join('')}</div></div>`;
     }
     if (p.variants) {
       html += `<div class="sh__block"><p class="sh__label">Fajta</p><div class="seg" role="radiogroup" aria-label="Fajta">${p.variants.map(v =>
@@ -429,28 +428,6 @@
   });
   setInterval(refreshDone, 4000);
 
-  /* ---------- méret-összehasonlító ---------- */
-  const A32 = Math.PI * 16 * 16, A50 = Math.PI * 25 * 25;
-  function renderSize(id) {
-    const p = S.byId[id], [s32, s50] = p.sizes;
-    $('[data-sz32]').textContent = fmt(s32.price); $('[data-sz50]').textContent = fmt(s50.price);
-    const u32 = s32.price / A32 * 100, u50 = s50.price / A50 * 100;
-    $('[data-sz32u]').textContent = `${Math.round(u32)} Ft / 100 cm²`; $('[data-sz50u]').textContent = `${Math.round(u50)} Ft / 100 cm²`;
-    const pct = Math.round((1 - u50 / u32) * 100);
-    $('[data-sz-verdict]').innerHTML = `${esc(p.name)}: az 50 cm-es <strong>${fmt(s50.price - s32.price)}-tal</strong> drágább, de négyzetcentiméterre vetítve <strong>${pct}%-kal olcsóbb</strong>.`;
-    $('[data-sz-order]').textContent = `${p.name} 50 cm-ben`;
-    $('[data-sz-order]').dataset.pid = id;
-    $$('[data-size-card] .size__price').forEach(e => anim(e, { opacity: [.2, 1], transform: ['translateY(6px)', 'translateY(0)'] }, { duration: .35 }));
-  }
-  function initSize() {
-    const sel = $('[data-size-select]');
-    sel.innerHTML = byCat('pizza').map(p => `<option value="${p.id}">${esc(p.name)}</option>`).join('');
-    sel.value = 'sonkas';
-    sel.addEventListener('change', () => renderSize(sel.value));
-    $('[data-sz-order]').addEventListener('click', e => openSheet(e.currentTarget.dataset.pid, { size: '50' }));
-    renderSize('sonkas');
-  }
-
   /* ---------- toast ---------- */
   let tt;
   function toast(msg) {
@@ -486,8 +463,7 @@
     animate('[data-hero]', { opacity: [0, 1], transform: ['translateY(14px)', 'translateY(0)'] }, { duration: .7, delay: stagger(.08, { startDelay: .1 }), ease });
     const tgt = x => (x && x.target) ? x.target : x;
     const reveal = (sel, opts = {}) => inView(sel, en => { const el = tgt(en); animate(el.children.length && opts.kids ? [...el.children] : el, { opacity: [0, 1], transform: ['translateY(18px)', 'translateY(0)'] }, { duration: .6, ease, delay: opts.kids ? stagger(.05) : 0 }); }, { margin: '0px 0px -10% 0px' });
-    reveal('.size__card'); reveal('.ocard'); reveal('.contact__in > div');
-    inView('.size__card', () => { $$('.size__disc circle').forEach(c => { c.setAttribute('pathLength', '1'); c.style.strokeDasharray = '1'; }); animate('.size__disc circle', { strokeDashoffset: [1, 0] }, { duration: 1, delay: stagger(.2), ease }); });
+    reveal('.ocard'); reveal('.contact__in > div');
   }
 
   /* ---------- Facebook-ajánlások ---------- */
@@ -512,7 +488,7 @@
   addEventListener('keydown', e => { if (e.key === 'Escape' && !mnav.hidden) { setMenu(false); mbtn.focus(); } });
 
   /* ---------- indulás ---------- */
-  renderHours(); renderMin(); renderReviews(); renderCats(); renderMenu(); initSize(); renderCart();
+  renderHours(); renderMin(); renderReviews(); renderCats(); renderMenu(); renderCart();
   showCat('pizza');
   setInterval(renderHours, 60000);
   intro();

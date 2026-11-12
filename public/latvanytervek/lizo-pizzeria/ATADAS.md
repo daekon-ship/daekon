@@ -8,6 +8,9 @@
 > Őszinte állapot: ez működő **front-end látványterv**. A kosár, a rendelés és a konyhai felület a böngésző `localStorage`-ében dolgozik, az étteremhez semmi nem jut el, fizetés nincs. Ezt a felület két helyen ki is mondja (lábléc, visszaigazolás; admin felső sáv). Backend, adatbázis, bejelentkezés, e-mail és Stripe: C–D fázis.
 > A „védett tesztcím” még nincs: a GitHub Pages cím nyilvános, de nem indexelt. Valódi jelszavas védelem az MHosting-aldomainen lesz (C fázis).
 
+## 9. kör (2026.11.12.)
+- Kikerült a mozgó kategóriaszalag és a „Melyik méret?” blokk (32/50 cm kör-rajz, cm²- és Ft/cm²-számítás), valamint a termékablakból a „2,4-szer akkora” megjegyzés és a menüpont. A méretválasztás a termékablakban marad.
+
 ## 8. kör (2026.11.12.) – audit és finomítás
 Teljes vizuális bejárás 320–1920 px-en, kosár → adatok → visszaigazolás mobilon és asztalon. Javítva:
 - Lábléc-logó (és minden kép) magassága: a `height` attribútum miatt mobilon ~300 px üres sáv volt → `img{height:auto}`.

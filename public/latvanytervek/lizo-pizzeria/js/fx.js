@@ -127,5 +127,5 @@
     });
   }
 
-  embers(); splitTitle(); rotator(); countUp(); marquee(); sparks(); magnet(); spotlight(); progress(); tilt();
+  embers(); splitTitle(); rotator(); countUp(); sparks(); magnet(); spotlight(); progress(); tilt();
 })();
