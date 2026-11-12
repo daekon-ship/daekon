@@ -79,10 +79,7 @@ p{margin:0}
 
 /* hero */
 .hero{padding:clamp(28px,5vw,64px) 0 clamp(36px,5vw,64px)}
-.hero__in{max-width:var(--max);margin:0 auto;padding:0 var(--gut);display:grid;grid-template-columns:1fr 360px;gap:48px;align-items:center}
-.hero__text{grid-column:1;grid-row:1}
-.hero__brand{grid-column:2;grid-row:1;width:100%;height:auto}
-@media (max-width:900px){.hero__in{display:block}.hero__brand{display:none}}
+.hero__in{max-width:var(--max);margin:0 auto;padding:0 var(--gut)}
 .hero__text h1{max-width:24ch}
 .lead{margin-top:18px;font-size:18px;color:var(--ink-2);max-width:42ch}
 .hero__cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
@@ -336,6 +333,12 @@ address a{font-weight:700;text-decoration:none}
 .toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);z-index:80;background:var(--ink);color:var(--paper);padding:12px 18px;border-radius:999px;font-weight:700;font-size:14px;opacity:0;pointer-events:none;white-space:nowrap;max-width:calc(100% - 32px);overflow:hidden;text-overflow:ellipsis}
 
 /* reszponzív */
+/* mobil menü – ételkategóriák */
+.mnav__k{margin:12px 0 4px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+.mnav__cats{display:flex;flex-wrap:wrap;gap:8px;padding:6px 0 14px;border-bottom:1px solid var(--line)}
+.mnav__cats button{min-height:40px;padding:0 14px;border-radius:999px;border:1.5px solid var(--gold);background:transparent;color:var(--ink);font-weight:700;font-size:15px;cursor:pointer}
+.mcat__more{display:none}
+
 /* mobil menü */
 .menubtn{display:none;width:48px;height:48px;border-radius:50%;border:1.5px solid var(--gold);background:transparent;cursor:pointer;flex-direction:column;align-items:center;justify-content:center;gap:4px;flex:none}
 .menubtn span{display:block;width:18px;height:2px;border-radius:2px;background:var(--ink);transition:transform .3s var(--ease),opacity .2s}

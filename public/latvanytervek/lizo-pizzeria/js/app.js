@@ -50,7 +50,7 @@
     return Math.min(...ps);
   }
   function renderCats() {
-    $('[data-cat-cards]').innerHTML = L.categories.map((c, i) => {
+    const cc = $('[data-cat-cards]'); if (cc) cc.innerHTML = L.categories.map((c, i) => {
       const n = byCat(c.id).length;
       return `<li><a href="#cat-${c.id}" data-jump="${c.id}"><span class="cats__no">${String(i + 1).padStart(2, '0')}</span><span><span class="cats__name">${c.name}</span><span class="cats__sub">${n} tétel · ${fmt(fromPrice(c.id))}-tól${c.note ? ' · ' + c.note : ''}</span></span>${arrow}</a></li>`;
     }).join('');
@@ -97,36 +97,37 @@
   /* ---------- keresés ---------- */
   function doSearch(q) {
     const n = norm(q.trim());
+    if (!n) { showCat(current); $('[data-empty]').hidden = true; return; }
     let any = false;
     $$('.mcat').forEach(sec => {
       let hit = 0;
-      $$('[data-pid]', sec).forEach(li => { const ok = !n || li.dataset.search.includes(n); li.hidden = !ok; if (ok) hit++; });
+      $$('[data-pid]', sec).forEach(li => { const ok = li.dataset.search.includes(n); li.hidden = !ok; if (ok) hit++; });
       sec.hidden = hit === 0; if (hit) any = true;
     });
     $('[data-empty]').hidden = any;
-    $$('[data-tab]').forEach(t => { t.hidden = $('#cat-' + t.dataset.tab).hidden; });
-    placePill(true);
+    $$('[data-tab]').forEach(b => b.classList.remove('is-on'));
   }
 
-  /* ---------- fülek: követés + mozgó jelölő ---------- */
-  let current = 'pizza', spyLock = 0;
+  /* ---------- kategóriák: egyszerre egy látszik, így rövid marad az oldal ---------- */
+  let current = 'pizza';
   function placePill() {
-    $$('[data-tab]').forEach(b => { const on = b.dataset.tab === current; b.classList.toggle('is-on', on); b.setAttribute('aria-current', on ? 'true' : 'false'); });
+    $$('[data-tab]').forEach(b => { const on = b.dataset.tab === current; b.classList.toggle('is-on', on); b.setAttribute('aria-pressed', on ? 'true' : 'false'); });
   }
-  function setCurrent(id, instant) { if (id === current && !instant) return; current = id; placePill(instant); }
-  function spy() {
-    if (Date.now() < spyLock) return;
-    const line = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--barh')) + 80;
-    let id = current;
-    $$('.mcat:not([hidden])').forEach(s => { if (s.getBoundingClientRect().top - line <= 0) id = s.dataset.cat; });
-    setCurrent(id);
+  function showCat(id, scroll) {
+    current = id;
+    const q = $('[data-search]'); if (q.value) { q.value = ''; }
+    $$('.mcat').forEach(sec => { sec.hidden = sec.dataset.cat !== id; $$('[data-pid]', sec).forEach(li => li.hidden = false); });
+    $('[data-empty]').hidden = true;
+    placePill();
+    const sec = $('#cat-' + id);
+    if (sec) anim($$('.mlist > li', sec).slice(0, 12), { opacity: [0, 1], transform: ['translateY(8px)', 'translateY(0)'] }, { duration: .35, delay: M ? M.stagger(.025) : 0 });
+    if (scroll) {
+      const t = $('.tabs'), barh = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--barh'));
+      const top = t.getBoundingClientRect().top + scrollY - barh - 8;
+      scrollTo({ top, behavior: reduced ? 'auto' : 'smooth' });
+    }
   }
-  function jump(id) {
-    const el = $('#cat-' + id); if (!el) return;
-    spyLock = Date.now() + 900; setCurrent(id);
-    const top = el.getBoundingClientRect().top + scrollY - (parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--barh')) + 60);
-    scrollTo({ top, behavior: reduced ? 'auto' : 'smooth' });
-  }
+  function jump(id) { showCat(id, true); }
 
   /* ---------- termék lap ---------- */
   const sheet = $('[data-sheet]'), scrim = $('[data-scrim]'), drawer = $('[data-drawer]');
@@ -449,7 +450,7 @@
   document.addEventListener('click', e => {
     const o = e.target.closest('[data-open]'); if (o) { openSheet(o.dataset.open); return; }
     const j = e.target.closest('[data-jump]'); if (j) { e.preventDefault(); jump(j.dataset.jump); return; }
-    const t = e.target.closest('[data-tab]'); if (t) { jump(t.dataset.tab); return; }
+    const t = e.target.closest('[data-tab]'); if (t) { showCat(t.dataset.tab, true); return; }
   });
   scrim.addEventListener('click', () => { if (!sheet.hidden) closeLayer(sheet); else if (!drawer.hidden) closeLayer(drawer); });
   document.addEventListener('keydown', e => {
@@ -463,8 +464,6 @@
     }
   });
   let sq; $('[data-search]').addEventListener('input', e => { clearTimeout(sq); sq = setTimeout(() => doSearch(e.target.value), 120); });
-  addEventListener('scroll', () => requestAnimationFrame(spy), { passive: true });
-  addEventListener('resize', () => placePill(true));
 
   /* ---------- belépő animációk ---------- */
   function intro() {
@@ -473,8 +472,7 @@
     animate('[data-hero]', { opacity: [0, 1], transform: ['translateY(14px)', 'translateY(0)'] }, { duration: .7, delay: stagger(.08, { startDelay: .1 }), ease });
     const tgt = x => (x && x.target) ? x.target : x;
     const reveal = (sel, opts = {}) => inView(sel, en => { const el = tgt(en); animate(el.children.length && opts.kids ? [...el.children] : el, { opacity: [0, 1], transform: ['translateY(18px)', 'translateY(0)'] }, { duration: .6, ease, delay: opts.kids ? stagger(.05) : 0 }); }, { margin: '0px 0px -10% 0px' });
-    reveal('.cats__list', { kids: true }); reveal('.size__card'); reveal('.ocard'); reveal('.contact__in > div');
-    inView('.mcat', en => { const el = tgt(en); animate($$('.mlist > li, .blist > li', el).slice(0, 14), { opacity: [0, 1], transform: ['translateY(10px)', 'translateY(0)'] }, { duration: .45, delay: stagger(.03), ease }); }, { margin: '0px 0px -15% 0px' });
+    reveal('.size__card'); reveal('.ocard'); reveal('.contact__in > div');
     inView('.size__card', () => { $$('.size__disc circle').forEach(c => { c.setAttribute('pathLength', '1'); c.style.strokeDasharray = '1'; }); animate('.size__disc circle', { strokeDashoffset: [1, 0] }, { duration: 1, delay: stagger(.2), ease }); });
   }
 
@@ -496,12 +494,13 @@
     if (open) anim(mnav, { opacity: [0, 1], transform: ['translateY(-8px)', 'translateY(0)'] }, { duration: .3 });
   }
   mbtn.addEventListener('click', () => setMenu(mnav.hidden));
-  mnav.addEventListener('click', e => { if (e.target.closest('a')) setMenu(false); });
+  $('[data-mnav-cats]').innerHTML = L.categories.map(c => `<button type="button" data-jump="${c.id}">${c.name}</button>`).join('');
+  mnav.addEventListener('click', e => { if (e.target.closest('a,[data-jump]')) setMenu(false); });
   addEventListener('keydown', e => { if (e.key === 'Escape' && !mnav.hidden) { setMenu(false); mbtn.focus(); } });
 
   /* ---------- indulás ---------- */
   renderHours(); renderMin(); renderReviews(); renderCats(); renderMenu(); initSize(); renderCart();
-  placePill(true);
+  showCat('pizza');
   setInterval(renderHours, 60000);
   intro();
 })();
