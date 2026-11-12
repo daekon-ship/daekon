@@ -447,3 +447,15 @@ address a{font-weight:700;text-decoration:none}
 @media (max-width:1080px){.bar__fb{display:none}}
 @media (max-width:560px){.fbcard{grid-template-columns:64px 1fr;gap:14px;padding:16px}.fbcard img{width:64px}.fbcard .cats__arrow{display:none}.marquee span{font-size:17px}}
 @media (prefers-reduced-motion:reduce){.marquee__t{animation:none}}
+
+/* Extra feltétek */
+.xg{border:1px solid var(--line);border-radius:12px;margin-top:10px;background:var(--paper-2)}
+.xg summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:48px;padding:0 16px;cursor:pointer;font-weight:700}
+.xg summary::-webkit-details-marker{display:none}
+.xg summary::after{content:"";width:9px;height:9px;border-right:2px solid var(--gold);border-bottom:2px solid var(--gold);transform:rotate(45deg);margin-top:-4px;transition:transform .25s var(--ease);flex:none}
+.xg[open] summary::after{transform:rotate(-135deg);margin-top:4px}
+.xg summary span{flex:1}
+.xg summary em{font-style:normal;font-weight:700;color:var(--gold-l);font-size:14px;font-variant-numeric:tabular-nums}
+.xg .chips{padding:4px 14px 16px}
+.chip--x[aria-pressed=true]{background:var(--gold);border-style:solid;border-color:var(--gold);color:#120b09;text-decoration:none}
+.chip--x svg{stroke-width:2.2}

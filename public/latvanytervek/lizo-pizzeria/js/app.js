@@ -134,7 +134,7 @@
   let st = null, lastFocus = null;
   const mobile = () => matchMedia('(max-width:720px)').matches;
 
-  function sheetPrice() { return S.unitPrice({ id: st.p.id, size: st.size }) * st.qty; }
+  function sheetPrice() { return S.unitPrice({ id: st.p.id, size: st.size, extras: [...st.extras] }) * st.qty; }
   function renderSheet() {
     const p = st.p, cat = L.categories.find(c => c.id === p.cat);
     const hint = p.hint ? `<p class="hintline">${esc(p.hint)}</p>` : '';
@@ -164,6 +164,15 @@
     } else if (p.menu) {
       html += `<p class="sh__desc">${esc(p.items.join(', '))}</p>`;
     }
+    if (p.extras) {
+      const plus = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v10M3 8h10"/></svg>', ok = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m3.5 8.5 3 3 6-7"/></svg>';
+      const n = st.extras.size, sum = [...st.extras].reduce((s, id) => s + L.extrasById[id].price, 0);
+      html += `<div class="sh__block xtra"><p class="sh__label">Extra feltét <small>${n ? `${n} db · +${fmt(sum)}` : 'koppints, amit kérsz pluszban'}</small></p>
+        ${L.extraGroups.map(g => `<details class="xg"${g.items.some(i => st.extras.has(g.id + ':' + i)) ? ' open' : ''}><summary><span>${g.name}</span><em>+${fmt(g.price)} / feltét</em></summary><div class="chips">${g.items.map(i => {
+          const id = g.id + ':' + i, on = st.extras.has(id);
+          return `<button type="button" class="chip chip--x" aria-pressed="${on}" data-extra="${esc(id)}" aria-label="${esc(i)} plusz ${g.price} forint${on ? ' – kérem' : ''}">${on ? ok : plus}${esc(i)}</button>`;
+        }).join('')}</div></details>`).join('')}</div>`;
+    }
     html += `<div class="sh__block"><label class="field"><span>Megjegyzés a tételhez <i>(nem kötelező)</i></span><textarea rows="2" data-note maxlength="160" placeholder="Pl. jól átsütve">${esc(st.note)}</textarea></label>${hint}</div>`;
     $('[data-sheet-body]').innerHTML = html;
     updateSheetFoot();
@@ -176,7 +185,7 @@
   function openSheet(id, preset = {}) {
     const p = S.byId[id]; if (!p || off.has(id)) return;
     st = { p, size: preset.size || (p.sizes ? p.sizes[0].k : null), removed: new Set(preset.removed || []), qty: preset.qty || 1, note: preset.note || '',
-      drink: preset.drink || (p.menu ? L.menuDrinks[0] : null), variant: preset.variant || (p.variants ? p.variants[0] : null), editKey: preset.editKey || null };
+      drink: preset.drink || (p.menu ? L.menuDrinks[0] : null), variant: preset.variant || (p.variants ? p.variants[0] : null), editKey: preset.editKey || null, extras: new Set(preset.extras || []) };
     renderSheet();
     lastFocus = document.activeElement;
     showLayer(sheet);
@@ -196,6 +205,8 @@
   }
 
   sheet.addEventListener('click', e => {
+    const xb = e.target.closest('[data-extra]');
+    if (xb) { const id = xb.dataset.extra; st.extras.has(id) ? st.extras.delete(id) : st.extras.add(id); st.note = $('[data-note]').value; const y = $('.sheet__body').scrollTop; renderSheet(); $('.sheet__body').scrollTop = y; const b = $(`[data-extra="${CSS.escape(id)}"]`); b && b.focus(); anim($('[data-add-price]'), { transform: ['scale(1.12)', 'scale(1)'] }, { duration: .25 }); return; }
     const ing = e.target.closest('[data-ing]');
     if (ing) { const i = ing.dataset.ing; st.removed.has(i) ? st.removed.delete(i) : st.removed.add(i); st.note = $('[data-note]').value; renderSheet(); const b = $(`[data-ing="${CSS.escape(i)}"]`); b && b.focus(); return; }
     const dr = e.target.closest('[data-drink]');
@@ -215,7 +226,7 @@
   let cart = S.cart();
   function addFromSheet(btn) {
     if (btn.dataset.busy) return; btn.dataset.busy = '1'; setTimeout(() => delete btn.dataset.busy, 400);
-    const line = { id: st.p.id, size: st.size, removed: [...st.removed], drink: st.drink, variant: st.variant, note: (st.note || '').trim(), qty: st.qty };
+    const line = { id: st.p.id, size: st.size, removed: [...st.removed], extras: [...st.extras], drink: st.drink, variant: st.variant, note: (st.note || '').trim(), qty: st.qty };
     if (st.editKey) cart = cart.filter(l => S.lineKey(l) !== st.editKey);
     const k = S.lineKey(line), ex = cart.find(l => S.lineKey(l) === k);
     if (ex) ex.qty = Math.min(20, ex.qty + line.qty); else cart.push(line);
@@ -241,6 +252,7 @@
     if (p.sizes && p.sizes.length > 1) bits.push(p.sizes.find(s => s.k === l.size).label);
     if (l.variant) bits.push(esc(l.variant));
     if (l.drink) bits.push('üdítő: ' + esc(l.drink));
+    if (l.extras && l.extras.length) bits.push('extra: ' + l.extras.map(id => esc(L.extrasById[id] ? L.extrasById[id].name : id)).join(', '));
     if (l.removed && l.removed.length) bits.push('nélküle: <s>' + l.removed.map(esc).join(', ') + '</s>');
     if (l.note) bits.push('„' + esc(l.note) + '”');
     return bits.join(' · ');
@@ -370,7 +382,7 @@
       area: mode() === 'delivery' ? f.area.value : '', street: mode() === 'delivery' ? f.street.value.trim() : '', door: mode() === 'delivery' ? f.door.value.trim() : '',
       note: f.note.value.trim(), pay: 'atvetelkor',
       // az árat a terméktörzsből számoljuk, nem a kosárban tárolt adatból
-      lines: cart.map(l => { const p = S.byId[l.id], u = S.unitPrice(l); return { id: l.id, name: p.name, size: l.size, sizeLabel: p.sizes && p.sizes.length > 1 ? p.sizes.find(s => s.k === l.size).label : '', removed: l.removed, drink: l.drink, variant: l.variant, note: l.note, qty: l.qty, unit: u, total: u * l.qty }; }),
+      lines: cart.map(l => { const p = S.byId[l.id], u = S.unitPrice(l); return { id: l.id, name: p.name, size: l.size, sizeLabel: p.sizes && p.sizes.length > 1 ? p.sizes.find(s => s.k === l.size).label : '', removed: l.removed, extras: (l.extras || []).map(id => L.extrasById[id].name + ' (+' + L.extrasById[id].price + ' Ft)'), drink: l.drink, variant: l.variant, note: l.note, qty: l.qty, unit: u, total: u * l.qty }; }),
       subtotal: sub, status: 'new', history: [{ s: 'new', t: Date.now() }]
     };
     const all = S.orders(); all.push(order); S.saveOrders(all);

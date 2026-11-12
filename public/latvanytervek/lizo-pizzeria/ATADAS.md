@@ -8,6 +8,13 @@
 > Őszinte állapot: ez működő **front-end látványterv**. A kosár, a rendelés és a konyhai felület a böngésző `localStorage`-ében dolgozik, az étteremhez semmi nem jut el, fizetés nincs. Ezt a felület két helyen ki is mondja (lábléc, visszaigazolás; admin felső sáv). Backend, adatbázis, bejelentkezés, e-mail és Stripe: C–D fázis.
 > A „védett tesztcím” még nincs: a GitHub Pages cím nyilvános, de nem indexelt. Valódi jelszavas védelem az MHosting-aldomainen lesz (C fázis).
 
+## 7. kör (2026.11.12.) – feláras extra feltétek
+- Pizzáknál, hamburgereknél, smash burgereknél és gyrosnál a termékablakban „Extra feltét” rész: Zöldség / Hús / Sajt csoport, lenyitható, koppintásra ki-be kapcsolható.
+- **Ideiglenes árak** (a megbízó szerint, az ügyfél pontosítja): zöldség **400 Ft**, hús **800 Ft**, sajt **800 Ft** feltétenként, mindkét pizzaméretnél ugyanannyi.
+- A lista az étlapon szereplő összetevőkből áll (pl. gomba, kukorica, jalapeño … / sonka, bacon, gyros hús, tonhal … / mozzarella, feta, cheddar, extra Ammerlander sajt …). Egy helyen szerkeszthető: `js/data.js` → `extraGroups`.
+- Az ár élőben frissül, a kosárban, a visszaigazoláson és a konyhai kártyán „+ extra: …” sorként látszik; az árat továbbra is a terméktörzsből számolja (C fázisban szerveroldalon).
+- Teszt: Hawaii 50 cm + gomba + bacon = 7 920 Ft ✔; Sonkás 32 cm + gomba + kukorica = 5 200 Ft ✔; Hústorony + feta a konyhán „+ extra: feta (+800 Ft)”, 5 750 Ft ✔.
+
 ## 6. kör (2026.11.12.) – látványelemek + Facebook
 Ihlet: motion.dev, React Bits (Count Up, Rotating Text, Click Spark, Magnet, Logo Loop, Light Rays, spotlight kártya), sitereel.ai – saját megvalósítás `js/fx.js`-ben, külső komponens nincs.
 | Effekt | Hol | Trigger |

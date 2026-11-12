@@ -16,7 +16,7 @@
     const nx = NEXT[o.status];
     return `<article class="ord" data-no="${o.no}">
       <header><b>#${o.no}</b><span class="ord__mode ord__mode--${o.mode}">${o.mode === 'delivery' ? 'Kiszállítás' : 'Átvétel'}</span>${o.preorder ? '<span class="ord__pre">Előrendelés</span>' : ''}<time>${t(o.created)} · ${ago(o.history[o.history.length - 1].t)}</time></header>
-      <ul>${o.lines.map(l => `<li><b>${l.qty}×</b> ${esc(l.name)}${l.sizeLabel ? ` <em>${l.sizeLabel}</em>` : ''}${l.variant ? ` · ${esc(l.variant)}` : ''}${l.drink ? ` · ${esc(l.drink)}` : ''}${l.removed && l.removed.length ? `<span class="rm">nélküle: ${l.removed.map(esc).join(', ')}</span>` : ''}${l.note ? `<span class="nt">„${esc(l.note)}”</span>` : ''}</li>`).join('')}</ul>
+      <ul>${o.lines.map(l => `<li><b>${l.qty}×</b> ${esc(l.name)}${l.sizeLabel ? ` <em>${l.sizeLabel}</em>` : ''}${l.variant ? ` · ${esc(l.variant)}` : ''}${l.drink ? ` · ${esc(l.drink)}` : ''}${l.extras && l.extras.length ? `<span class="xt">+ extra: ${l.extras.map(esc).join(', ')}</span>` : ''}${l.removed && l.removed.length ? `<span class="rm">nélküle: ${l.removed.map(esc).join(', ')}</span>` : ''}${l.note ? `<span class="nt">„${esc(l.note)}”</span>` : ''}</li>`).join('')}</ul>
       <dl><div><dt>Vevő</dt><dd>${esc(o.name)} · <a href="tel:${esc(o.phone.replace(/\s/g, ''))}">${esc(o.phone)}</a></dd></div>
       ${o.mode === 'delivery' ? `<div><dt>Cím</dt><dd>${esc(o.area)}, ${esc(o.street)}${o.door ? ', ' + esc(o.door) : ''}</dd></div>` : ''}
       ${o.note ? `<div><dt>Megj.</dt><dd>${esc(o.note)}</dd></div>` : ''}

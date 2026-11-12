@@ -101,7 +101,20 @@
     { id: 'viz05', cat: 'udito', name: 'Szentkirályi ásványvíz 0,5 l', price: 450, variants: ['szénsavas', 'szénsavmentes'] }
   ];
 
+  // Feláras extra feltétek – IDEIGLENES árak a DAEKON megbízójától (2026-11-12): zöldség 400 Ft, hús és sajt 800 Ft / feltét.
+  // Az ügyfél még pontosítja a listát és az árakat (pl. 32 vs. 50 cm eltérő felár?). A tételek a Lizó étlapján szereplő összetevők.
+  const VEG = 400, MEAT = 800, CHEESE = 800;
+  const extraGroups = [
+    { id: 'zoldseg', name: 'Zöldség', price: VEG, items: ['gomba', 'kukorica', 'lilahagyma', 'paradicsom', 'koktélparadicsom', 'hegyes erős paprika', 'pirospaprika', 'jalapeño', 'ananász', 'brokkoli', 'rukkola', 'kapribogyó', 'saláta', 'kígyóuborka', 'káposztasaláta', 'csalamádé', 'újhagyma'] },
+    { id: 'hus', name: 'Hús', price: MEAT, items: ['sonka', 'szalámi', 'paprikás szalámi', 'kolbász', 'bacon', 'tarja', 'gyros hús', 'csípős pepperoni', 'tonhal', 'tenger gyümölcsei'] },
+    { id: 'sajt', name: 'Sajt', price: CHEESE, items: ['extra Ammerlander sajt', 'mozzarella', 'füstölt sajt', 'feta', 'parmezán', 'cheddar', 'trappista'] }
+  ];
+  const extrasById = {};
+  extraGroups.forEach(g => g.items.forEach(n => { const id = g.id + ':' + n; extrasById[id] = { id, name: n, price: g.price, group: g.id }; }));
+  const EXTRA_CATS = ['pizza', 'hamburger', 'smash', 'gyros'];
+
   products.forEach(p => { p.items = p.items || []; p.locked = p.locked || []; });
+  products.forEach(p => { p.extras = EXTRA_CATS.includes(p.cat) && p.id !== 'lizosmashtal' ? true : !!p.extras; });
 
   // A menükben választható üdítő: a forrás csak annyit ír, hogy „választható üdítő”.
   // A lista az üdítőkategória fajtáiból áll; a kiszerelés ügyféllel egyeztetendő (lásd egyeztetési lista).
@@ -124,5 +137,5 @@
   // (név, dátum, szöveg). Üres tömbnél a szekció nem jelenik meg.
   const facebook = { url: 'https://www.facebook.com/share/1F5R1QhTbu/', summary: '', reviews: [] };
 
-  window.LIZO = { categories, products, menuDrinks, restaurant, facebook, verified: '2026-11-12' };
+  window.LIZO = { categories, products, menuDrinks, restaurant, facebook, extraGroups, extrasById, verified: '2026-11-12' };
 })();

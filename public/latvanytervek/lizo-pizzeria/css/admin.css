@@ -61,3 +61,4 @@
 .htable th{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 @media (max-width:900px){.board{grid-template-columns:repeat(4,minmax(260px,82vw))}.adm__clock{display:none}.htable{display:block;overflow-x:auto}}
 .adm__tabs button[aria-selected=true] span:not(:empty){background:#fff;color:var(--tomato)}
+.ord .xt{display:block;font-size:13px;color:var(--gold-l);margin-top:2px;font-weight:700}

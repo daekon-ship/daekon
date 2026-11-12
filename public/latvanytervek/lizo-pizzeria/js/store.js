@@ -8,10 +8,14 @@
 
   const byId = Object.fromEntries(window.LIZO.products.map(p => [p.id, p]));
 
+  function extrasPrice(line) {
+    const X = window.LIZO.extrasById;
+    return (line.extras || []).reduce((s, id) => s + (X[id] ? X[id].price : 0), 0);
+  }
   function unitPrice(line) {
     const p = byId[line.id]; if (!p) return 0;
-    if (p.sizes) { const s = p.sizes.find(s => s.k === line.size) || p.sizes[0]; return s.price; }
-    return p.price;
+    const base = p.sizes ? (p.sizes.find(s => s.k === line.size) || p.sizes[0]).price : p.price;
+    return base + (p.extras ? extrasPrice(line) : 0);
   }
 
   const Store = {
@@ -23,7 +27,7 @@
     setUnavailable(set) { write(K.off, [...set]); },
     cart() { return read(K.cart, []).filter(l => byId[l.id] && l.qty > 0); },
     saveCart(c) { write(K.cart, c); },
-    lineKey: l => [l.id, l.size || '', (l.removed || []).slice().sort().join('|'), l.drink || '', l.variant || '', (l.note || '').trim()].join('§'),
+    lineKey: l => [l.id, l.size || '', (l.removed || []).slice().sort().join('|'), (l.extras || []).slice().sort().join('|'), l.drink || '', l.variant || '', (l.note || '').trim()].join('§'),
     subtotal(c) { return c.reduce((s, l) => s + unitPrice(l) * l.qty, 0); },
     orders() { return read(K.orders, []); },
     saveOrders(o) { write(K.orders, o); },

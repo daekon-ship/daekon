@@ -5,7 +5,7 @@
 ## Árak / étlap
 1. **Lizo kerék 50 cm = 8 435 Ft** – a többi pizzánál a 32→50 cm felár 1 725–2 778 Ft, itt 3 898 Ft. Valós ár vagy elírás?
 2. **Tenger gyümölcse 50 cm = 7 560 Ft**, míg az azonos 32 cm-es árú (4 950) pizzák 50 cm-ben 7 580 Ft. Elírás?
-3. **Feltét-hozzáadás:** van-e feláras extra feltét-lista (pl. +sajt, +bacon)? Ha igen, tételesen árral, 32/50 cm-re külön.
+3. **Extra feltétek:** beépítve ideiglenes árakkal (zöldség 400, hús 800, sajt 800 Ft). Kérdés: pontos lista, 50 cm-en drágább-e, tükörtojás/olívabogyó/szószok külön kategória-e, burgerre/gyrosra is ugyanez az ár?
 4. **Mely összetevők vehetők el** ingyen? A látványterv most az alapot, a tésztát/bucit, a húspogácsát és a gyros húst zárolja, minden mást elvehetővé tesz.
 5. **Retro burger „választható húspogácsa”** – milyen húsok közül? (Most: megjegyzésbe írja.)
 6. **Gyros tál „választható köret”** – köretlista és felárak? (Most: megjegyzésbe írja.)
