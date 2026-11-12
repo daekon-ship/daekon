@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Konyha · Lizó Pizzéria</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#1a1512">
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="css/lizo.css">
+<link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="adm">
+<header class="adm__bar">
+  <img src="img/lizo-logo-paper.svg" alt="Lizó Pizzéria" width="713" height="530">
+  <nav class="adm__tabs" role="tablist" aria-label="Konyhai nézetek">
+    <button role="tab" aria-selected="true" data-pane="orders">Rendelések <span data-new-count></span></button>
+    <button role="tab" aria-selected="false" data-pane="products">Termékek</button>
+    <button role="tab" aria-selected="false" data-pane="settings">Beállítások</button>
+    <button role="tab" aria-selected="false" data-pane="history">Előzmények</button>
+  </nav>
+  <span class="adm__clock" data-clock></span>
+</header>
+<p class="adm__note">Látványterv: a konyhai felület az ebben a böngészőben leadott rendeléseket mutatja. Bejelentkezés, adatbázis és értesítések a rendelőrendszer fázisában készülnek el.</p>
+
+<main>
+  <section class="pane" data-pane-id="orders">
+    <div class="board" data-board></div>
+  </section>
+
+  <section class="pane" data-pane-id="products" hidden>
+    <div class="adm__head"><h2>Termékek</h2><p>Kapcsold ki, ami elfogyott – a vásárlói oldalon azonnal „Most nem rendelhető” lesz.</p></div>
+    <label class="search adm__search"><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg><input type="search" placeholder="Termék keresése" data-psearch aria-label="Termék keresése"></label>
+    <div data-products></div>
+  </section>
+
+  <section class="pane" data-pane-id="settings" hidden>
+    <div class="adm__head"><h2>Beállítások</h2><p>A rendelési feltételek. A nyitvatartást és a zónákat a rendelőrendszer fázisában lehet majd szerkeszteni.</p></div>
+    <div class="setgrid">
+      <article class="acard">
+        <h3>Minimális rendelés (kiszállítás)</h3>
+        <form data-minform class="minform">
+          <label class="field"><span>Összeg (Ft)</span><input type="number" min="0" step="100" inputmode="numeric" name="min" required></label>
+          <button class="btn btn--ink" type="submit">Mentés</button>
+        </form>
+        <p class="fine" data-minsaved hidden>Elmentve – a vásárlói oldal már ezt használja.</p>
+      </article>
+      <article class="acard">
+        <h3>Rendelésfelvétel</h3>
+        <table class="hours" data-ahours><tbody></tbody></table>
+      </article>
+      <article class="acard">
+        <h3>Kiszállítási területek</h3>
+        <ul class="ticks" data-areas></ul>
+        <p class="fine">A zónánkénti díjakat a rendelőrendszerben lehet majd megadni.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="pane" data-pane-id="history" hidden>
+    <div class="adm__head"><h2>Előzmények</h2><p>Teljesített és elutasított rendelések.</p></div>
+    <div data-history></div>
+  </section>
+</main>
+
+<script src="js/vendor/motion-11.18.2.min.js"></script>
+<script src="js/data.js"></script>
+<script src="js/store.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>
