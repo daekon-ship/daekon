@@ -26,7 +26,8 @@
 17. Facebook / Instagram / Google-profil linkje (a láblécbe).
 18. **Cégadatok** (cégnév, székhely, adószám) a lábléchez és a jogi oldalakhoz. A Falatozz-on „Szekrényes és Gombos DBP Kft.” szerepel üzemeltetőként – ez a pizzéria cége vagy a platformé?
 19. Saját ÁSZF és adatkezelési tájékoztató kell az új rendszerhez (most a jelenlegi lizopizza.hu oldalakra mutat).
-20. Wolt: van-e Wolt-adatlap? Ha igen, az árak egyeznek-e?
+20. **Wolt-adatlap létezik** (wolt.com/en/hun/budapest/restaurant/lizo-pizzeria-es-etelbar, Balassa Bálint u. 2-10.): ott a nyitvatartás H–Cs, V 11:00–21:45, P–Szo 10:00–23:15 – a lizopizza.hu 21:40 / 23:00-t ír. Melyik érvényes?
+21. **Facebook** (két oldal is fut: facebook.com/LizoPizzeria és /p/Lizo-Pizzéria-és-Ételbár-61550760694849): a DAEKON munkakörnyezetből nem olvasható (robots tiltás). Színek és ajánlások képernyőképről jönnek majd.
 
 ## Technika (C–D fázis előtt)
 21. MHosting csomag: PHP-verzió, MySQL/MariaDB verzió, cron, memória- és futásidő-limit, SSL, SMTP.

@@ -54,39 +54,7 @@
       const n = byCat(c.id).length;
       return `<li><a href="#cat-${c.id}" data-jump="${c.id}"><span class="cats__no">${String(i + 1).padStart(2, '0')}</span><span><span class="cats__name">${c.name}</span><span class="cats__sub">${n} tétel · ${fmt(fromPrice(c.id))}-tól${c.note ? ' · ' + c.note : ''}</span></span>${arrow}</a></li>`;
     }).join('');
-    $('[data-tabs]').innerHTML = '<span class="tab__pill" data-pill aria-hidden="true"></span>' +
-      L.categories.map(c => `<button class="tab" type="button" data-tab="${c.id}"><span>${c.short}</span></button>`).join('');
-  }
-
-  /* ---------- burger-rétegek ---------- */
-  const layerOf = ing => {
-    const i = ing.toLowerCase();
-    if (i === 'buci') return null;
-    if (i.includes('csirkehúspogácsa')) return 'chick';
-    if (i.includes('húspogácsa')) return 'meat';
-    if (i === 'káposztasaláta') return 'slaw';
-    if (i.includes('saláta')) return 'green';
-    if (i === 'paradicsom') return 'tomato';
-    if (i === 'lilahagyma') return 'onion';
-    if (i === 'kígyóuborka') return 'cucu';
-    if (i.includes('sajt')) return 'cheese';
-    if (i === 'bacon') return 'bacon';
-    if (i === 'tükörtojás') return 'egg';
-    if (i.includes('szósz')) return 'sauce';
-    if (i === 'jalapeño') return 'jal';
-    if (i === 'csalamádé') return 'pickle';
-    return null;
-  };
-  const order = ['sauce', 'green', 'slaw', 'pickle', 'jal', 'tomato', 'onion', 'cucu', 'egg', 'bacon', 'cheese', 'meat', 'chick'];
-  function stackHTML(p, removed = new Set()) {
-    const layers = [];
-    p.items.filter(i => !removed.has(i)).forEach(i => {
-      const l = layerOf(i); if (!l) return;
-      layers.push(l); if (/dupla/.test(i)) layers.push(l);
-      if (l === 'cheese' && /trappista/.test(i)) {/* külön szelet */ }
-    });
-    layers.sort((a, b) => order.indexOf(a) - order.indexOf(b));
-    return `<span class="stack" aria-hidden="true"><i class="l-bun-t"></i>${layers.map(l => `<i class="l-${l}"></i>`).join('')}<i class="l-bun-b"></i></span>`;
+    $('[data-tabs]').innerHTML = L.categories.map(c => `<button class="tab" type="button" data-tab="${c.id}"><span>${c.short}</span></button>`).join('');
   }
 
   /* ---------- étlap ---------- */
@@ -103,7 +71,7 @@
   function rowHTML(p) {
     const isOff = off.has(p.id);
     const ing = showIng(p);
-    const dot = p.base ? `<span class="dot dot--${p.base}" title="${baseName[p.base]}" aria-hidden="true"></span>` : '';
+    const dot = '';
     const sub = p.base ? `${baseName[p.base]}${ing.length ? ', ' + ing.join(', ') : ''}` : ing.join(', ');
     return `<li class="mitem${isOff ? ' is-off' : ''}" data-pid="${p.id}" data-search="${esc(norm(p.name + ' ' + p.items.join(' ') + ' ' + (p.variants || []).join(' ')))}">
       <button class="mrow" type="button" data-open="${p.id}" ${isOff ? 'aria-disabled="true"' : ''} aria-label="${esc(p.name)} – részletek és kosárba">
@@ -112,24 +80,16 @@
         <span class="mrow__right">${priceHTML(p)}<span class="plus">${plusIco}</span></span>
       </button></li>`;
   }
-  function cardHTML(p) {
-    const isOff = off.has(p.id);
-    return `<li class="bcard${isOff ? ' is-off' : ''}" data-pid="${p.id}" data-search="${esc(norm(p.name + ' ' + p.items.join(' ')))}">
-      <button type="button" data-open="${p.id}" ${isOff ? 'aria-disabled="true"' : ''} aria-label="${esc(p.name)} – részletek és kosárba">
-        ${stackHTML(p)}
-        <span><h4>${esc(p.name)}${p.hot ? ` <span class="tag">${chili}csípős</span>` : ''}</h4><p>${isOff ? '<span class="offnote">Most nem rendelhető</span> · ' : ''}${esc(showIng(p).join(', '))}</p><span class="price">${fmt(p.price)}</span></span>
-      </button></li>`;
-  }
   function renderMenu() {
     $('[data-menu]').innerHTML = L.categories.map(c => {
       const ps = byCat(c.id);
-      const isCards = c.id === 'hamburger' || c.id === 'smash';
-      const legend = c.id === 'pizza' ? `<div class="legend" aria-label="Pizzaalapok"><span><i class="dot dot--p"></i>paradicsomos</span><span><i class="dot dot--t"></i>tejfölös</span><span><i class="dot dot--b"></i>BBQ</span><span><i class="dot dot--z"></i>tzatziki alap</span></div>` : '';
+      const isCards = false;
+      const legend = '';
       const foot = c.id === 'pizza' ? `<p class="foot-note">Minden pizzán Ammerlander klasszikus sajt.</p>` : '';
       return `<section class="mcat" id="cat-${c.id}" data-cat="${c.id}" aria-labelledby="h-${c.id}">
         <div class="mcat__head"><h3 id="h-${c.id}">${c.name}</h3><p>${ps.length} tétel${c.note ? ' · ' + c.note : ''}</p></div>
         ${legend}
-        <ul class="${isCards ? 'blist' : 'mlist'}">${ps.map(isCards ? cardHTML : rowHTML).join('')}</ul>${foot}
+        <ul class="${isCards ? 'blist' : 'mlist'}">${ps.map(rowHTML).join('')}</ul>${foot}
       </section>`;
     }).join('');
   }
@@ -150,14 +110,8 @@
 
   /* ---------- fülek: követés + mozgó jelölő ---------- */
   let current = 'pizza', spyLock = 0;
-  function placePill(instant) {
-    const t = $(`[data-tab="${current}"]`), pill = $('[data-pill]'); if (!t || !pill) return;
-    $$('[data-tab]').forEach(b => b.classList.toggle('is-on', b === t));
-    const x = t.offsetLeft, w = t.offsetWidth;
-    if (instant || !M || reduced) { pill.style.transform = `translateX(${x}px)`; pill.style.width = w + 'px'; pill.style.left = '0'; }
-    else { pill.style.left = '0'; M.animate(pill, { transform: `translateX(${x}px)`, width: w + 'px' }, { type: 'spring', stiffness: 420, damping: 36 }); }
-    const box = t.parentElement, target = x - box.clientWidth / 2 + w / 2;
-    box.scrollTo({ left: target, behavior: instant || reduced ? 'auto' : 'smooth' });
+  function placePill() {
+    $$('[data-tab]').forEach(b => { const on = b.dataset.tab === current; b.classList.toggle('is-on', on); b.setAttribute('aria-current', on ? 'true' : 'false'); });
   }
   function setCurrent(id, instant) { if (id === current && !instant) return; current = id; placePill(instant); }
   function spy() {
@@ -183,9 +137,8 @@
   function renderSheet() {
     const p = st.p, cat = L.categories.find(c => c.id === p.cat);
     const hint = p.hint ? `<p class="hintline">${esc(p.hint)}</p>` : '';
-    let html = `<p class="sh__kicker">${p.base ? `<span class="dot dot--${p.base}"></span>${baseName[p.base]} · ` : ''}${cat.name}</p>
+    let html = `<p class="sh__kicker">${p.base ? `${baseName[p.base]} · ` : ''}${cat.name}</p>
       <h3 class="sh__title" id="sheet-title">${esc(p.name)}</h3>`;
-    if (p.burger) html += `<div class="sh__vis" data-vis>${stackHTML(p, st.removed)}</div>`;
     if (p.sizes && p.sizes.length > 1) {
       html += `<div class="sh__block"><p class="sh__label">Méret</p><div class="seg" role="radiogroup" aria-label="Méret">${p.sizes.map(s =>
         `<label><input type="radio" name="size" value="${s.k}" ${s.k === st.size ? 'checked' : ''}><span><b>${s.label}</b><em>${fmt(s.price)}</em></span></label>`).join('')}</div>
@@ -518,13 +471,6 @@
     if (!M || reduced) return;
     const { animate, stagger, inView } = M;
     animate('[data-hero]', { opacity: [0, 1], transform: ['translateY(14px)', 'translateY(0)'] }, { duration: .7, delay: stagger(.08, { startDelay: .1 }), ease });
-    animate('.hero__logo', { opacity: [0, 1], transform: ['translate(-50%,-50%) scale(.94)', 'translate(-50%,-50%) scale(1)'] }, { duration: .9, ease });
-    $$('.ring--32,.ring--50b').forEach(c => { c.setAttribute('pathLength', '1'); c.style.strokeDasharray = '1'; });
-    animate('.ring--32', { strokeDashoffset: [1, 0] }, { duration: 1.2, delay: .2, ease });
-    animate('.ring--50b', { strokeDashoffset: [1, 0] }, { duration: 1.4, delay: .35, ease });
-    animate('.ring--50', { opacity: [0, 1], transform: ['rotate(-8deg)', 'rotate(0)'] }, { duration: 1.4, delay: .3, ease });
-    animate('.ring--hatch', { opacity: [0, 1] }, { duration: .8, delay: .9 });
-    animate('.ring__label', { opacity: [0, 1] }, { duration: .6, delay: 1.1 });
     const tgt = x => (x && x.target) ? x.target : x;
     const reveal = (sel, opts = {}) => inView(sel, en => { const el = tgt(en); animate(el.children.length && opts.kids ? [...el.children] : el, { opacity: [0, 1], transform: ['translateY(18px)', 'translateY(0)'] }, { duration: .6, ease, delay: opts.kids ? stagger(.05) : 0 }); }, { margin: '0px 0px -10% 0px' });
     reveal('.cats__list', { kids: true }); reveal('.size__card'); reveal('.ocard'); reveal('.contact__in > div');

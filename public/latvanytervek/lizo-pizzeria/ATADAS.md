@@ -2,11 +2,18 @@
 
 **Élő előnézet:** https://daekon-ship.github.io/daekon/latvanytervek/lizo-pizzeria/
 **Konyhai felület:** https://daekon-ship.github.io/daekon/latvanytervek/lizo-pizzeria/admin.html
-**Mappa:** `public/latvanytervek/lizo-pizzeria/` · **Kör:** 1. kör, 2026.11.12. · `noindex, nofollow`
+**Mappa:** `public/latvanytervek/lizo-pizzeria/` · **Kör:** 2. kör, 2026.11.12. · `noindex, nofollow`
 **Belső kutatás:** `_kutatas/forrasok.md`, `_kutatas/etlap-adatok.md`, `_kutatas/egyeztetesi-lista.md`
 
 > Őszinte állapot: ez működő **front-end látványterv**. A kosár, a rendelés és a konyhai felület a böngésző `localStorage`-ében dolgozik, az étteremhez semmi nem jut el, fizetés nincs. Ezt a felület két helyen ki is mondja (lábléc, visszaigazolás; admin felső sáv). Backend, adatbázis, bejelentkezés, e-mail és Stripe: C–D fázis.
 > A „védett tesztcím” még nincs: a GitHub Pages cím nyilvános, de nem indexelt. Valódi jelszavas védelem az MHosting-aldomainen lesz (C fázis).
+
+## 2. kör (2026.11.12.) – az ügyfél kérésére
+- A nyitóképről kikerült a nagy logós, méretköröket mutató rajz (fél képernyőt elvitt); a hero kompakt, szöveg + gombok + tények.
+- A burgerek rajzolt réteg-ábrái kikerültek, a burgerek is étlapsorként jelennek meg.
+- A kategóriafülek nem lógnak ki: mind látszik, tördelve (mobilon nem ragadnak a fejléc alá, hogy ne foglaljanak sok helyet).
+- A kiemelőszínek (paradicsompiros, zöld, kéregbarna, alap-színpöttyök) kikerültek; semleges fekete-törtfehér, amíg a Lizó Facebook-színei meg nem érkeznek. A szín egy helyen (`--tomato` token a `lizo.css` elején) cserélhető. Hibaüzenetek pirosak maradtak (`--err`).
+- Következő: Facebook-színek és Facebook-ajánlások blokk – képernyőképre vár (a Facebook a gépi lekérést tiltja).
 
 ## Mit tud most
 
