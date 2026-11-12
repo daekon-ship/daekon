@@ -13,7 +13,7 @@
 <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="fonts/young-serif.woff" as="font" type="font/woff" crossorigin>
 <link rel="preload" href="fonts/bricolage-400.woff" as="font" type="font/woff" crossorigin>
-<link rel="stylesheet" href="css/lizo.css?v=10">
+<link rel="stylesheet" href="css/lizo.css?v=13">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Restaurant","name":"Lizó Pizzéria és Ételbár","servesCuisine":["Pizza","Hamburger","Gyros"],"telephone":"+36303887099","address":{"@type":"PostalAddress","streetAddress":"Balassa Bálint utca 2-10.","postalCode":"1183","addressLocality":"Budapest","addressCountry":"HU"},"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Sunday"],"opens":"11:00","closes":"21:40"},{"@type":"OpeningHoursSpecification","dayOfWeek":["Friday","Saturday"],"opens":"10:00","closes":"23:00"}]}
 </script>
@@ -25,13 +25,12 @@
   <div class="bar__in">
     <a class="bar__logo" href="#top" aria-label="Lizó Pizzéria – kezdőlap"><img src="img/lizo-logo-brand.svg" alt="Lizó Pizzéria" width="713" height="530"></a>
     <nav class="bar__nav" aria-label="Fő navigáció">
-      <a href="#etlap">Étlap</a>
       <a href="#rendeles">Kiszállítás</a>
       <a href="#kapcsolat">Kapcsolat</a>
       <a href="#velemenyek">Vélemények</a>
     </nav>
     <a class="bar__fb" href="https://www.facebook.com/share/1F5R1QhTbu/" target="_blank" rel="noopener" aria-label="Lizo Pizzéria a Facebookon"><svg class="fbico" viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 21v-7.5h2.6l.4-3h-3V8.6c0-.9.3-1.5 1.6-1.5h1.6V4.4c-.3 0-1.2-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v2.2H7.9v3h2.6V21z"/></svg></a>
-    <span class="status" data-status><i></i><span data-status-text>Nyitvatartás</span></span>
+    <button class="etlapbtn" type="button" data-etlap-open aria-haspopup="dialog" aria-controls="etlappanel"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 5h7v6H4zM13 5h7v6h-7zM4 13h7v6H4zM13 13h7v6h-7z"/></svg><span>Étlap</span></button>
     <a class="bar__tel" href="tel:+36303887099"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6.6 3.5h3l1.5 4-2 1.3a11 11 0 0 0 6.1 6.1l1.3-2 4 1.5v3a2 2 0 0 1-2.2 2A17 17 0 0 1 4.6 5.7a2 2 0 0 1 2-2.2Z"/></svg><span>+36 30 388 7099</span></a>
     <button class="cartbtn" type="button" data-open-cart aria-label="Kosár megnyitása">
       <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 6h16l-1.6 9.2a2 2 0 0 1-2 1.8H7.6a2 2 0 0 1-2-1.8L4 6Zm4 0V5a4 4 0 0 1 8 0v1"/></svg>
@@ -42,8 +41,7 @@
     </button>
   </div>
   <nav class="mnav" id="mobilmenu" data-mnav aria-label="Mobil menü" hidden>
-    <p class="mnav__k">Étlap</p>
-    <div class="mnav__cats" data-mnav-cats></div>
+    <button class="mnav__etlap" type="button" data-etlap-open>Étlap – minden ételünk</button>
     <a href="#rendeles">Kiszállítás és átvétel</a>
     <a href="#kapcsolat">Kapcsolat és nyitvatartás</a>
     <a href="#velemenyek">Facebook-vélemények</a>
@@ -64,7 +62,7 @@
         <h1 id="hero-title" data-split>Pizza 32 és 50 centiben, burger, gyros – rendelj közvetlenül tőlünk.</h1>
         <p class="lead" data-hero>Kihozzuk a XVIII. kerületben, Gyálon és Vecsésen, vagy átveheted a Balassa Bálint utcában.</p>
         <div class="hero__cta" data-hero>
-          <a class="btn btn--ink" href="#etlap" data-magnet>Online rendelés – étlap</a>
+          <button class="btn btn--ink" type="button" data-etlap-open data-magnet>Online rendelés – étlap</button>
           <button class="btn btn--line" type="button" data-open-cart data-magnet>Kosár <span class="btn__n" data-cart-count>0</span></button>
         </div>
       </div>
@@ -108,11 +106,21 @@
       <div class="sechead">
         <div>
           <p class="eyebrow">Facebook</p>
-          <h2 id="rev-title">Vélemények és hírek a Facebookon</h2>
+          <h2 id="rev-title">Ezt mondják rólunk</h2>
         </div>
-        <p class="reviews__sum" data-rev-sum></p>
       </div>
-      <ul class="reviews__list" data-rev-list hidden></ul>
+      <div class="rvsum">
+        <span class="rvsum__ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 10h4v11H3zM9 21V10l4.5-7c1.6 0 2.5 1.2 2.2 2.8L15 10h5c1.2 0 2.1 1.1 1.8 2.3l-1.6 6.8c-.2.9-1 1.9-2 1.9z"/></svg></span>
+        <p><b data-rev-count>18</b> ember ajánlja a Lizót a Facebookon</p>
+      </div>
+      <div class="rv" data-rv hidden>
+        <ul class="rv__track" data-rev-list aria-roledescription="lapozható ajánlások" aria-label="Facebook-ajánlások"></ul>
+        <div class="rv__nav">
+          <button type="button" class="rv__btn" data-rv-prev aria-label="Előző ajánlás"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 8 12l7 7"/></svg></button>
+          <div class="rv__dots" data-rv-dots role="tablist" aria-label="Ajánlások"></div>
+          <button type="button" class="rv__btn" data-rv-next aria-label="Következő ajánlás"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
+        </div>
+      </div>
       <a class="fbcard" href="https://www.facebook.com/share/1F5R1QhTbu/" target="_blank" rel="noopener">
         <img src="img/lizo-logo-brand.svg" alt="" width="713" height="530">
         <span class="fbcard__t"><b>Lizo Pizzéria</b><span>Pizzéria · Lőrinc Piac · Budapest XVIII.</span><span class="fbcard__cta"><svg class="fbico" viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 21v-7.5h2.6l.4-3h-3V8.6c0-.9.3-1.5 1.6-1.5h1.6V4.4c-.3 0-1.2-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v2.2H7.9v3h2.6V21z"/></svg>Vélemények, akciók és új ételek a Facebookon</span></span>
@@ -207,6 +215,16 @@
   <b data-cart-total>0 Ft</b>
 </button>
 
+<!-- Étlap-panel: az összes kategória egy gombról -->
+<section class="catpanel" id="etlappanel" data-catpanel role="dialog" aria-modal="true" aria-labelledby="cp-title" hidden>
+  <header class="catpanel__head">
+    <h2 id="cp-title">Étlap</h2>
+    <button class="x" type="button" data-cp-close aria-label="Bezárás"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
+  </header>
+  <p class="catpanel__sub">Válassz kategóriát – a tételek a kosárba egy koppintással kerülnek.</p>
+  <ul class="catpanel__list" data-cp-list></ul>
+</section>
+
 <!-- Termék -->
 <div class="scrim" data-scrim hidden></div>
 <section class="sheet" data-sheet role="dialog" aria-modal="true" aria-labelledby="sheet-title" hidden>
@@ -296,9 +314,9 @@
 <div class="toast" data-toast role="status" aria-live="polite"></div>
 
 <script src="js/vendor/motion-11.18.2.min.js?v=5"></script>
-<script src="js/data.js?v=10"></script>
+<script src="js/data.js?v=13"></script>
 <script src="js/store.js?v=5"></script>
-<script src="js/app.js?v=10"></script>
-<script src="js/fx.js?v=10"></script>
+<script src="js/app.js?v=13"></script>
+<script src="js/fx.js?v=13"></script>
 </body>
 </html>

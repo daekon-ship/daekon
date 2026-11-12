@@ -8,6 +8,11 @@
 > Őszinte állapot: ez működő **front-end látványterv**. A kosár, a rendelés és a konyhai felület a böngésző `localStorage`-ében dolgozik, az étteremhez semmi nem jut el, fizetés nincs. Ezt a felület két helyen ki is mondja (lábléc, visszaigazolás; admin felső sáv). Backend, adatbázis, bejelentkezés, e-mail és Stripe: C–D fázis.
 > A „védett tesztcím” még nincs: a GitHub Pages cím nyilvános, de nem indexelt. Valódi jelszavas védelem az MHosting-aldomainen lesz (C fázis).
 
+## 10. kör (2026.11.12.)
+- **Fejléc:** a „Most nyitva” felirat kikerült a fejlécből (a nyitóképi kártyán és a Kapcsolatnál megmaradt). Helyette piros **„Étlap”** gomb a kosár és a menü mellett.
+- **Étlap-panel:** az „Étlap” gomb (és a hero „Online rendelés – étlap” gombja, valamint a mobil menü) egy panelt nyit mind a 9 kategóriával: rajzolt ikon, tételszám, „-tól” ár. Mobilon alulról felcsúszik, asztalon középen. Kategóriára koppintva az étlap arra a kategóriára ugrik.
+- **Facebook-ajánlások:** összesítő sáv – „18 ember ajánlja a Lizót a Facebookon” (a megbízó közlése) – és lapozható ajánlás-sáv (húzással, nyilakkal, pöttyökkel, billentyűzettel). A sáv csak akkor jelenik meg, ha a `js/data.js` → `facebook.reviews` tömbben van valódi, Facebookról átvett ajánlás; addig csak az összesítő és a Facebook-kártya látszik.
+
 ## 9. kör (2026.11.12.)
 - Kikerült a mozgó kategóriaszalag és a „Melyik méret?” blokk (32/50 cm kör-rajz, cm²- és Ft/cm²-számítás), valamint a termékablakból a „2,4-szer akkora” megjegyzés és a menüpont. A méretválasztás a termékablakban marad.
 

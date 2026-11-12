@@ -32,8 +32,7 @@
   }
   function renderHours() {
     const st = openState(), el = $('[data-status]');
-    el.classList.toggle('is-open', st.open); el.classList.toggle('is-closed', !st.open);
-    $('[data-status-text]').textContent = st.text;
+    if (el) { el.classList.toggle('is-open', st.open); el.classList.toggle('is-closed', !st.open); $('[data-status-text]').textContent = st.text; }
     const s2 = $('[data-status2]'); if (s2) { s2.classList.toggle('is-open', st.open); s2.classList.toggle('is-closed', !st.open); $('[data-status-text2]').textContent = st.open ? 'Most nyitva, rendelhetsz' : st.text; }
     const today = new Date().getDay(), h = L.restaurant.hours[today];
     $$('[data-today-hours]').forEach(e => e.textContent = `${h[0]}–${h[1]}`);
@@ -468,11 +467,27 @@
 
   /* ---------- Facebook-ajánlások ---------- */
   function renderReviews() {
-    const fb = L.facebook; if (!fb || !fb.reviews.length) return;
-    $('[data-rev-list]').hidden = false;
-    $('[data-rev-sum]').textContent = fb.summary || '';
+    const fb = L.facebook; if (!fb) return;
+    const cnt = $('[data-rev-count]'); if (cnt && fb.recommends) cnt.textContent = fb.recommends;
+    if (!fb.reviews.length) return;
+    const wrap = $('[data-rv]'), track = $('[data-rev-list]'), dots = $('[data-rv-dots]');
+    wrap.hidden = false;
     const thumb = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 7h3v7H2zM6 14V7l3-5c1.2 0 1.8.8 1.6 2L10 7h3.2c.9 0 1.5.8 1.3 1.7l-1 4.5c-.2.5-.6.8-1.2.8z"/></svg>';
-    $('[data-rev-list]').innerHTML = fb.reviews.map(r => `<li class="rev"><div class="rev__head"><span class="rev__av" aria-hidden="true">${esc(r.name.trim()[0] || '')}</span><span><span class="rev__name">${esc(r.name)}</span><span class="rev__meta">${thumb}ajánlja${r.date ? ' · ' + esc(r.date) : ''}</span></span></div><p>${esc(r.text)}</p></li>`).join('');
+    const fbI = '<svg class="rev__fb" viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 21v-7.5h2.6l.4-3h-3V8.6c0-.9.3-1.5 1.6-1.5h1.6V4.4c-.3 0-1.2-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v2.2H7.9v3h2.6V21z"/></svg>';
+    track.innerHTML = fb.reviews.map((r, i) => `<li class="rev" role="group" aria-roledescription="ajánlás" aria-label="${i + 1} / ${fb.reviews.length}">
+      <div class="rev__head"><span class="rev__av" aria-hidden="true">${esc((r.name.trim()[0] || '').toUpperCase())}</span><span class="rev__who"><span class="rev__name">${esc(r.name)}</span><span class="rev__meta">${thumb}ajánlja a Lizo Pizzériát${r.date ? ' · ' + esc(r.date) : ''}</span></span>${fbI}</div>
+      <p>„${esc(r.text)}”</p></li>`).join('');
+    const slides = $$('.rev', track);
+    dots.innerHTML = slides.map((_, i) => `<button type="button" role="tab" aria-label="${i + 1}. ajánlás" data-rv-dot="${i}"></button>`).join('');
+    const go = i => { const el = slides[Math.max(0, Math.min(slides.length - 1, i))]; track.scrollTo({ left: el.offsetLeft - track.offsetLeft, behavior: reduced ? 'auto' : 'smooth' }); };
+    const idx = () => { let best = 0, d = 1e9; slides.forEach((el, i) => { const x = Math.abs(el.offsetLeft - track.offsetLeft - track.scrollLeft); if (x < d) { d = x; best = i; } }); return best; };
+    const sync = () => { const i = idx(); $$('[data-rv-dot]', dots).forEach((b, j) => b.setAttribute('aria-selected', j === i ? 'true' : 'false')); $('[data-rv-prev]').disabled = track.scrollLeft < 4; $('[data-rv-next]').disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 4; };
+    $('[data-rv-prev]').addEventListener('click', () => go(idx() - 1));
+    $('[data-rv-next]').addEventListener('click', () => go(idx() + 1));
+    dots.addEventListener('click', e => { const b = e.target.closest('[data-rv-dot]'); if (b) go(+b.dataset.rvDot); });
+    track.addEventListener('scroll', () => requestAnimationFrame(sync), { passive: true });
+    track.addEventListener('keydown', e => { if (e.key === 'ArrowRight') { e.preventDefault(); go(idx() + 1); } if (e.key === 'ArrowLeft') { e.preventDefault(); go(idx() - 1); } });
+    track.tabIndex = 0; sync(); addEventListener('resize', sync);
   }
 
   /* ---------- mobil menü ---------- */
@@ -483,12 +498,51 @@
     if (open) anim(mnav, { opacity: [0, 1], transform: ['translateY(-8px)', 'translateY(0)'] }, { duration: .3 });
   }
   mbtn.addEventListener('click', () => setMenu(mnav.hidden));
-  $('[data-mnav-cats]').innerHTML = L.categories.map(c => `<button type="button" data-jump="${c.id}">${c.name}</button>`).join('');
-  mnav.addEventListener('click', e => { if (e.target.closest('a,[data-jump]')) setMenu(false); });
+  mnav.addEventListener('click', e => { if (e.target.closest('a,[data-jump],[data-etlap-open]')) setMenu(false); });
   addEventListener('keydown', e => { if (e.key === 'Escape' && !mnav.hidden) { setMenu(false); mbtn.focus(); } });
 
+  /* ---------- Étlap-panel ---------- */
+  const cp = $('[data-catpanel]');
+  const catIcon = {
+    pizza: '<circle cx="12" cy="12" r="8.5"/><path d="M12 3.5v17M3.5 12h17"/><circle cx="8.5" cy="8.5" r=".9"/><circle cx="15.5" cy="15.5" r=".9"/><circle cx="15" cy="8" r=".9"/>',
+    edes: '<path d="M12 3.5 4.5 19c4.8 2.2 10.2 2.2 15 0z"/><path d="M6.2 15.5c3.7 1.4 7.9 1.4 11.6 0"/><circle cx="12" cy="11" r=".9"/>',
+    hamburger: '<path d="M4 10a8 5 0 0 1 16 0zM3.5 13h17M4.5 16h15a0 0 0 0 1 0 0 3 3 0 0 1-3 3h-9a3 3 0 0 1-3-3z"/>',
+    smash: '<path d="M4 9a8 4 0 0 1 16 0zM3.5 12h17M3.5 14.5h17M5 17h14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2z"/>',
+    gyros: '<path d="M7 4h10l-1.5 16h-7zM8.5 9h7M9 14h6"/>',
+    menu: '<path d="M4 8h9v11H4zM15 10h5l-.8 9h-3.4zM16 10l1.5-5 2 .5"/>',
+    palacsinta: '<ellipse cx="12" cy="15" rx="8.5" ry="3"/><path d="M5 12.5c2-2.5 12-2.5 14 0M6.5 10c2-2 9-2 11 0"/>',
+    desszert: '<path d="M5 19h14M6 19l1-8h10l1 8M9 11V8a3 3 0 0 1 6 0v3"/>',
+    udito: '<path d="M8 3h8l-1 3v2c1.5 1 2 2 2 4v8H7v-8c0-2 .5-3 2-4V6z"/>'
+  };
+  function renderCatPanel() {
+    $('[data-cp-list]').innerHTML = L.categories.map(c => {
+      const n = byCat(c.id).length;
+      return `<li><button type="button" data-cp-cat="${c.id}"><svg class="cp__ico" viewBox="0 0 24 24" aria-hidden="true">${catIcon[c.id] || ''}</svg><span class="cp__t"><b>${c.name}</b><small>${n} tétel · ${fmt(fromPrice(c.id))}-tól</small></span><svg class="cp__arr" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h12m-5-5 5 5-5 5"/></svg></button></li>`;
+    }).join('');
+  }
+  function openCP() {
+    lastFocus = document.activeElement; cp.hidden = false; scrim.hidden = false; document.body.classList.add('lock');
+    anim(scrim, { opacity: [0, 1] }, { duration: .25 });
+    anim(cp, mobile() ? { transform: ['translateY(100%)', 'translateY(0)'] } : { opacity: [0, 1], transform: ['translate(-50%,-47%)', 'translate(-50%,-50%)'] }, { duration: .4 });
+    if (M && !reduced) M.animate($$('[data-cp-list] li'), { opacity: [0, 1], transform: ['translateY(10px)', 'translateY(0)'] }, { duration: .35, delay: M.stagger(.035, { startDelay: .12 }), ease });
+    setTimeout(() => $('[data-cp-close]').focus(), 30);
+  }
+  function closeCP(cb) {
+    const done = () => { cp.hidden = true; cp.style.transform = ''; cp.style.opacity = ''; if (sheet.hidden && drawer.hidden) { scrim.hidden = true; document.body.classList.remove('lock'); } cb && cb(); };
+    const a = anim(cp, mobile() ? { transform: 'translateY(100%)' } : { opacity: 0 }, { duration: .25, ease: [0.4, 0, 1, 1] });
+    anim(scrim, { opacity: 0 }, { duration: .25 });
+    a ? a.finished.then(done) : done();
+  }
+  document.addEventListener('click', e => { if (e.target.closest('[data-etlap-open]')) openCP(); });
+  cp.addEventListener('click', e => {
+    if (e.target.closest('[data-cp-close]')) { closeCP(); if (lastFocus) lastFocus.focus(); return; }
+    const b = e.target.closest('[data-cp-cat]'); if (b) closeCP(() => showCat(b.dataset.cpCat, true));
+  });
+  scrim.addEventListener('click', () => { if (!cp.hidden) closeCP(); });
+  addEventListener('keydown', e => { if (e.key === 'Escape' && !cp.hidden) closeCP(); });
+
   /* ---------- indulás ---------- */
-  renderHours(); renderMin(); renderReviews(); renderCats(); renderMenu(); renderCart();
+  renderHours(); renderMin(); renderReviews(); renderCats(); renderMenu(); renderCatPanel(); renderCart();
   showCat('pizza');
   setInterval(renderHours, 60000);
   intro();

@@ -180,7 +180,6 @@ p{margin:0}
 /* vélemények */
 .reviews{padding:clamp(56px,8vw,104px) 0;border-top:1px solid var(--line)}
 .reviews__sum{font-weight:700}
-.reviews__list{list-style:none;margin:0 0 28px;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:16px}
 .rev{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:22px;display:flex;flex-direction:column;gap:14px}
 .rev__head{display:flex;align-items:center;gap:12px}
 .rev__av{width:44px;height:44px;border-radius:50%;background:var(--gold);color:#120b09;display:grid;place-items:center;font-weight:700;flex:none}
@@ -491,3 +490,60 @@ address a{font-weight:700;text-decoration:none}
 .rc-x{display:block;color:var(--muted);font-size:12px;margin-top:2px}
 .seg input:checked+span,.mode input:checked+span,.pay input:checked+span{border-color:var(--gold);box-shadow:inset 0 0 0 1px var(--gold);background:#1d1612}
 .check input{accent-color:var(--gold)}
+
+/* Facebook-ajánlások: összesítő + lapozható sáv */
+.rvsum{display:flex;align-items:center;gap:16px;padding:18px 22px;margin-bottom:22px;border:1px solid var(--line);border-radius:var(--r);background:linear-gradient(180deg,#1a1412,#140f0d)}
+.rvsum__ico{width:48px;height:48px;border-radius:50%;background:#1877f2;display:grid;place-items:center;flex:none}
+.rvsum__ico svg{width:24px;height:24px;fill:#fff}
+.rvsum p{font-size:17px;color:var(--ink-2)}
+.rvsum b{font:400 26px var(--serif);color:var(--gold-l);margin-right:4px;vertical-align:-2px}
+.rv{margin-bottom:28px}
+.rv__track{list-style:none;margin:0;padding:2px 0 6px;display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - 32px)/3);gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+.rv__track::-webkit-scrollbar{display:none}
+.rv__track:focus-visible{outline:2px solid var(--gold-l);outline-offset:4px;border-radius:var(--r)}
+.rev{scroll-snap-align:start;min-height:220px}
+.rev__who{flex:1;min-width:0}
+.rev__fb{width:20px;height:20px;fill:#1877f2;flex:none;align-self:flex-start}
+.rev__meta svg{fill:#1877f2}
+.rev p{font-size:15px;line-height:1.65}
+.rv__nav{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:18px}
+.rv__btn{width:44px;height:44px;border-radius:50%;border:1.5px solid var(--gold);background:transparent;color:var(--ink);display:grid;place-items:center;cursor:pointer;transition:background .2s,color .2s,opacity .2s}
+.rv__btn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.rv__btn:hover:not(:disabled){background:var(--gold);color:#120b09}
+.rv__btn:disabled{opacity:.3;cursor:default}
+.rv__dots{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;max-width:60%}
+.rv__dots button{width:8px;height:8px;border-radius:999px;border:0;padding:0;background:rgba(243,232,212,.25);cursor:pointer;transition:width .3s var(--ease),background .2s}
+.rv__dots button[aria-selected=true]{width:24px;background:var(--gold)}
+@media (max-width:900px){.rv__track{grid-auto-columns:calc((100% - 16px)/2)}}
+@media (max-width:560px){.rv__track{grid-auto-columns:86%}.rvsum{padding:14px 16px}.rvsum p{font-size:15px}.rvsum b{font-size:22px}}
+
+/* Fejléc „Étlap” gomb + kategóriapanel */
+.etlapbtn{margin-left:auto;display:inline-flex;align-items:center;gap:8px;min-height:48px;padding:0 18px;border-radius:999px;border:0;background:var(--tomato);color:#fff;font-weight:700;font-size:15px;cursor:pointer;transition:background .2s,transform .2s var(--ease);white-space:nowrap}
+.etlapbtn:hover{background:var(--tomato-d)}
+.etlapbtn:active{transform:scale(.97)}
+.etlapbtn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linejoin:round}
+.bar__fb~.etlapbtn{margin-left:12px}
+.mnav__etlap{margin:12px 0 4px;min-height:52px;border-radius:999px;border:0;background:var(--tomato);color:#fff;font-weight:700;font-size:16px;cursor:pointer}
+.catpanel{position:fixed;z-index:72;left:50%;top:50%;transform:translate(-50%,-50%);width:min(720px,calc(100% - 32px));max-height:min(88vh,760px);overflow:auto;background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:22px 24px 26px;box-shadow:0 40px 90px -40px rgba(0,0,0,.9)}
+.catpanel__head{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.catpanel__head h2{font-size:clamp(24px,2.4vw,30px)}
+.catpanel__sub{color:var(--muted);font-size:14px;margin:6px 0 18px}
+.catpanel__list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.catpanel__list button{width:100%;display:grid;grid-template-columns:44px minmax(0,1fr) 18px;gap:14px;align-items:center;text-align:left;padding:14px 16px;border-radius:14px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;transition:border-color .2s,background .2s,transform .25s var(--ease)}
+.catpanel__list button:hover{border-color:var(--gold);background:#211915;transform:translateY(-1px)}
+.cp__ico{width:44px;height:44px;padding:9px;border-radius:50%;border:1px solid var(--line);fill:none;stroke:var(--gold-l);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.cp__t{display:flex;flex-direction:column;gap:2px;min-width:0}
+.cp__t b{font:400 18px var(--serif)}
+.cp__t small{color:var(--muted);font-size:13px}
+.cp__arr{width:18px;height:18px;fill:none;stroke:var(--gold);stroke-width:1.8}
+@media (max-width:1080px){.etlapbtn,.bar__fb~.etlapbtn{margin-left:auto}}
+@media (max-width:720px){
+  .catpanel{left:0;right:0;top:auto;bottom:0;width:100%;transform:none;border-radius:20px 20px 0 0;max-height:90vh;max-height:90dvh;padding:18px 16px calc(22px + env(safe-area-inset-bottom))}
+  .catpanel__list{grid-template-columns:1fr}
+  .etlapbtn{min-height:44px;padding:0 14px}
+}
+@media (max-width:374px){.etlapbtn span{display:none}.etlapbtn{width:44px;padding:0;justify-content:center}}
+.bar__fb{margin-left:auto}
+
+.rot{flex-wrap:wrap;white-space:normal;height:auto;row-gap:0}
+.rot__w{white-space:nowrap}
