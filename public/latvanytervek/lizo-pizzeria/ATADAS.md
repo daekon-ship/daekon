@@ -8,6 +8,11 @@
 > Őszinte állapot: ez működő **front-end látványterv**. A kosár, a rendelés és a konyhai felület a böngésző `localStorage`-ében dolgozik, az étteremhez semmi nem jut el, fizetés nincs. Ezt a felület két helyen ki is mondja (lábléc, visszaigazolás; admin felső sáv). Backend, adatbázis, bejelentkezés, e-mail és Stripe: C–D fázis.
 > A „védett tesztcím” még nincs: a GitHub Pages cím nyilvános, de nem indexelt. Valódi jelszavas védelem az MHosting-aldomainen lesz (C fázis).
 
+## 3–4. kör (2026.11.12.)
+- Mobil menügomb (hamburger) a fejlécben; kosárikon mobilon is mindig látszik; a nyitóképen „Online rendelés – étlap” + „Kosár” (a telefonos gomb kikerült).
+- **Színek a Lizó Facebook-arculatából** (az ügyfél képernyőképe alapján): fekete alap #0e0b0a, piros #d3201f (fő gombok, aktív fül, kosársáv), arany #d4a23c (vonalak, keretek, címkék), krém szöveg #f3e8d4. A vektoros logó piros feliratú, arany babéros változata: `img/lizo-logo-brand.svg` (ugyanaz a rajz, csak átszínezve). Asztalon a hero mellett mérsékelt méretben, mobilon csak a fejlécben.
+- Facebook-ajánlások blokk elkészült, de üres → nem látszik; valódi ajánlásokra vár (`js/data.js` → `facebook.reviews`).
+
 ## 2. kör (2026.11.12.) – az ügyfél kérésére
 - A nyitóképről kikerült a nagy logós, méretköröket mutató rajz (fél képernyőt elvitt); a hero kompakt, szöveg + gombok + tények.
 - A burgerek rajzolt réteg-ábrái kikerültek, a burgerek is étlapsorként jelennek meg.

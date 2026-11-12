@@ -1,10 +1,10 @@
 /* Lizó – konyhai felület. Tabletre (768–1366) méretezve, nagy érintési célok. */
-.adm{background:#efe7d8;min-height:100vh}
-.adm__bar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:20px;padding:10px 20px;background:var(--ink);color:var(--paper)}
+.adm{background:var(--paper);min-height:100vh}
+.adm__bar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:20px;padding:10px 20px;background:#070504;color:var(--ink);border-bottom:1px solid var(--line)}
 .adm__bar img{height:44px;width:auto}
 .adm__tabs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
 .adm__tabs button{min-height:48px;padding:0 18px;border-radius:999px;border:0;background:transparent;color:#cbbfae;font-weight:700;cursor:pointer;white-space:nowrap}
-.adm__tabs button[aria-selected=true]{background:var(--paper);color:var(--ink)}
+.adm__tabs button[aria-selected=true]{background:var(--tomato);color:#fff}
 .adm__tabs span:not(:empty){display:inline-grid;place-items:center;min-width:22px;height:22px;padding:0 6px;margin-left:6px;border-radius:999px;background:var(--tomato);color:#fff;font-size:12px}
 .adm__clock{margin-left:auto;font:400 22px var(--serif);font-variant-numeric:tabular-nums}
 .adm__note{margin:0;padding:10px 20px;font-size:13px;color:var(--muted);background:var(--paper-2);border-bottom:1px solid var(--line)}
@@ -23,8 +23,8 @@
 .ord header{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:10px}
 .ord header b{font:400 20px var(--serif)}
 .ord header time{margin-left:auto;font-size:13px;color:var(--muted)}
-.ord__mode,.ord__pre{font-size:12px;font-weight:700;padding:3px 8px;border-radius:999px;border:1px solid var(--ink)}
-.ord__mode--pickup{background:var(--ink);color:var(--paper)}
+.ord__mode,.ord__pre{font-size:12px;font-weight:700;padding:3px 8px;border-radius:999px;border:1px solid var(--gold)}
+.ord__mode--pickup{background:var(--gold);color:#120b09;border-color:var(--gold)}
 .ord__pre{border-color:var(--tomato);color:var(--tomato)}
 .ord ul{list-style:none;margin:0 0 10px;padding:0;font-size:15px}
 .ord li{padding:6px 0;border-bottom:1px dashed var(--line)}
@@ -38,13 +38,13 @@
 .ord footer{display:flex;gap:8px;margin-top:12px}
 .ord footer .btn{flex:1 1 0;min-width:0;padding:0 12px;min-height:52px}
 .pcat{margin-bottom:22px}
-.pcat h3{padding-bottom:8px;border-bottom:1px solid var(--ink);margin-bottom:4px}
+.pcat h3{padding-bottom:8px;border-bottom:1px solid var(--gold);margin-bottom:4px}
 .pcat ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));column-gap:28px}
 .pcat li{display:grid;grid-template-columns:1fr auto auto;gap:14px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
 .pp{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
 .sw{display:flex;align-items:center;gap:8px;cursor:pointer;min-height:44px}
 .sw input{position:absolute;opacity:0}
-.sw span{width:46px;height:28px;border-radius:999px;background:#c9bba8;position:relative;transition:background .2s}
+.sw span{width:46px;height:28px;border-radius:999px;background:#4a3c33;position:relative;transition:background .2s}
 .sw span::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:transform .25s var(--ease)}
 .sw input:checked+span{background:var(--basil)}
 .sw input:checked+span::after{transform:translateX(18px)}
@@ -60,3 +60,4 @@
 .htable th,.htable td{padding:12px;text-align:left;border-bottom:1px solid var(--line)}
 .htable th{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 @media (max-width:900px){.board{grid-template-columns:repeat(4,minmax(260px,82vw))}.adm__clock{display:none}.htable{display:block;overflow-x:auto}}
+.adm__tabs button[aria-selected=true] span:not(:empty){background:#fff;color:var(--tomato)}
