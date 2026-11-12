@@ -120,5 +120,9 @@
     areas: ['Budapest XVIII. kerület', 'Gyál', 'Vecsés']
   };
 
-  window.LIZO = { categories, products, menuDrinks, restaurant, verified: '2026-11-12' };
+  // Facebook-ajánlások: CSAK a Lizó Facebook-oldaláról szó szerint átvett, valódi ajánlások kerülhetnek ide
+  // (név, dátum, szöveg). Üres tömbnél a szekció nem jelenik meg.
+  const facebook = { url: '', summary: '', reviews: [] };
+
+  window.LIZO = { categories, products, menuDrinks, restaurant, facebook, verified: '2026-11-12' };
 })();

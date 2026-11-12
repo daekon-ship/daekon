@@ -478,8 +478,29 @@
     inView('.size__card', () => { $$('.size__disc circle').forEach(c => { c.setAttribute('pathLength', '1'); c.style.strokeDasharray = '1'; }); animate('.size__disc circle', { strokeDashoffset: [1, 0] }, { duration: 1, delay: stagger(.2), ease }); });
   }
 
+  /* ---------- Facebook-ajánlások ---------- */
+  function renderReviews() {
+    const fb = L.facebook; if (!fb || !fb.reviews.length) return;
+    const sec = $('[data-reviews]'); sec.hidden = false;
+    $('[data-rev-sum]').textContent = fb.summary || '';
+    const thumb = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 7h3v7H2zM6 14V7l3-5c1.2 0 1.8.8 1.6 2L10 7h3.2c.9 0 1.5.8 1.3 1.7l-1 4.5c-.2.5-.6.8-1.2.8z"/></svg>';
+    $('[data-rev-list]').innerHTML = fb.reviews.map(r => `<li class="rev"><div class="rev__head"><span class="rev__av" aria-hidden="true">${esc(r.name.trim()[0] || '')}</span><span><span class="rev__name">${esc(r.name)}</span><span class="rev__meta">${thumb}ajánlja${r.date ? ' · ' + esc(r.date) : ''}</span></span></div><p>${esc(r.text)}</p></li>`).join('');
+    const l = $('[data-rev-link]'); if (fb.url) l.href = fb.url; else l.hidden = true;
+  }
+
+  /* ---------- mobil menü ---------- */
+  const mbtn = $('[data-menu-btn]'), mnav = $('[data-mnav]');
+  function setMenu(open) {
+    mbtn.setAttribute('aria-expanded', String(open)); mbtn.setAttribute('aria-label', open ? 'Menü bezárása' : 'Menü megnyitása');
+    mnav.hidden = !open;
+    if (open) anim(mnav, { opacity: [0, 1], transform: ['translateY(-8px)', 'translateY(0)'] }, { duration: .3 });
+  }
+  mbtn.addEventListener('click', () => setMenu(mnav.hidden));
+  mnav.addEventListener('click', e => { if (e.target.closest('a')) setMenu(false); });
+  addEventListener('keydown', e => { if (e.key === 'Escape' && !mnav.hidden) { setMenu(false); mbtn.focus(); } });
+
   /* ---------- indulás ---------- */
-  renderHours(); renderMin(); renderCats(); renderMenu(); initSize(); renderCart();
+  renderHours(); renderMin(); renderReviews(); renderCats(); renderMenu(); initSize(); renderCart();
   placePill(true);
   setInterval(renderHours, 60000);
   intro();

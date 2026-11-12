@@ -36,7 +36,17 @@
       <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 6h16l-1.6 9.2a2 2 0 0 1-2 1.8H7.6a2 2 0 0 1-2-1.8L4 6Zm4 0V5a4 4 0 0 1 8 0v1"/></svg>
       <span class="cartbtn__n" data-cart-count>0</span>
     </button>
+    <button class="menubtn" type="button" data-menu-btn aria-expanded="false" aria-controls="mobilmenu" aria-label="Menü megnyitása">
+      <span></span><span></span><span></span>
+    </button>
   </div>
+  <nav class="mnav" id="mobilmenu" data-mnav aria-label="Mobil menü" hidden>
+    <a href="#etlap">Étlap</a>
+    <a href="#meret">Melyik méret?</a>
+    <a href="#rendeles">Kiszállítás és átvétel</a>
+    <a href="#kapcsolat">Kapcsolat és nyitvatartás</a>
+    <a class="mnav__tel" href="tel:+36303887099">Hívás: +36 30 388 7099</a>
+  </nav>
 </header>
 
 <main>
@@ -121,6 +131,21 @@
     <div class="wrap">
       <p class="menu__empty" data-empty hidden>Erre nincs találat. Próbáld másképp, pl. „gomba” vagy „gyros”.</p>
       <div data-menu></div>
+    </div>
+  </section>
+
+  <!-- VÉLEMÉNYEK – csak akkor jelenik meg, ha a data.js-ben van ellenőrzött Facebook-ajánlás -->
+  <section class="reviews" id="velemenyek" data-reviews aria-labelledby="rev-title" hidden>
+    <div class="wrap">
+      <div class="sechead">
+        <div>
+          <p class="eyebrow">Facebook-ajánlások</p>
+          <h2 id="rev-title">Ezt írták rólunk</h2>
+        </div>
+        <p class="reviews__sum" data-rev-sum></p>
+      </div>
+      <ul class="reviews__list" data-rev-list></ul>
+      <a class="btn btn--line" data-rev-link href="#" target="_blank" rel="noopener">Összes vélemény a Facebookon</a>
     </div>
   </section>
 

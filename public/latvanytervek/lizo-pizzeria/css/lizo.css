@@ -172,6 +172,18 @@ p{margin:0}
 .foot-note{margin-top:14px;font-size:13px;color:var(--muted)}
 
 
+/* vélemények */
+.reviews{padding:clamp(56px,8vw,104px) 0;border-top:1px solid var(--line)}
+.reviews__sum{font-weight:700}
+.reviews__list{list-style:none;margin:0 0 28px;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:16px}
+.rev{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:22px;display:flex;flex-direction:column;gap:14px}
+.rev__head{display:flex;align-items:center;gap:12px}
+.rev__av{width:44px;height:44px;border-radius:50%;background:var(--ink);color:var(--paper);display:grid;place-items:center;font-weight:700;flex:none}
+.rev__name{font-weight:700;display:block}
+.rev__meta{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px}
+.rev__meta svg{width:14px;height:14px;fill:currentColor}
+.rev p{color:var(--ink-2)}
+
 /* rendelés */
 .order{padding:clamp(56px,8vw,104px) 0;border-top:1px solid var(--line);background:var(--paper-2)}
 .order__grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
@@ -317,7 +329,17 @@ address a{font-weight:700;text-decoration:none}
 .toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);z-index:80;background:var(--ink);color:var(--paper);padding:12px 18px;border-radius:999px;font-weight:700;font-size:14px;opacity:0;pointer-events:none;white-space:nowrap;max-width:calc(100% - 32px);overflow:hidden;text-overflow:ellipsis}
 
 /* reszponzív */
+/* mobil menü */
+.menubtn{display:none;width:48px;height:48px;border-radius:50%;border:1.5px solid var(--ink);background:transparent;cursor:pointer;flex-direction:column;align-items:center;justify-content:center;gap:4px;flex:none}
+.menubtn span{display:block;width:18px;height:2px;border-radius:2px;background:var(--ink);transition:transform .3s var(--ease),opacity .2s}
+.menubtn[aria-expanded=true] span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+.menubtn[aria-expanded=true] span:nth-child(2){opacity:0}
+.menubtn[aria-expanded=true] span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+.mnav{display:flex;flex-direction:column;padding:8px var(--gut) 20px;border-top:1px solid var(--line-2);background:var(--paper)}
+.mnav a{padding:16px 4px;border-bottom:1px solid var(--line);text-decoration:none;font:400 20px var(--serif)}
+.mnav a.mnav__tel{font:700 16px var(--sans);border:0;margin-top:12px;text-align:center;border-radius:999px;background:var(--ink);color:var(--paper);padding:14px}
 @media (max-width:1080px){
+  .menubtn{display:flex}
   .bar__nav{display:none}
   .bar__tel span{display:none}
   .bar__tel{width:48px;height:48px;justify-content:center;border:1.5px solid var(--ink);border-radius:50%}
@@ -332,7 +354,8 @@ address a{font-weight:700;text-decoration:none}
 }
 @media (max-width:720px){
   :root{--barh:64px}
-  .bar__in{gap:10px}
+  .bar__in{gap:8px}
+  .bar__tel{display:none}
   .bar__logo img{height:42px}
   .status{font-size:13px}
   .cartbtn{display:none}
