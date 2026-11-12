@@ -53,6 +53,9 @@ p{margin:0}
 .btn--tomato[disabled]{background:#b9a99a;cursor:not-allowed}
 .btn--wide{width:100%;justify-content:space-between}
 .btn b{font-variant-numeric:tabular-nums}
+.btn__n{min-width:22px;height:22px;padding:0 6px;border-radius:999px;background:var(--ink);color:var(--paper);font-size:12px;display:inline-grid;place-items:center;font-variant-numeric:tabular-nums}
+.btn--line:hover .btn__n{background:var(--paper);color:var(--ink)}
+.btn__n[data-zero]{display:none}
 .link{font-weight:700;text-underline-offset:4px;text-decoration-thickness:1.5px}
 
 /* fejléc */
@@ -358,7 +361,7 @@ address a{font-weight:700;text-decoration:none}
   .bar__tel{display:none}
   .bar__logo img{height:42px}
   .status{font-size:13px}
-  .cartbtn{display:none}
+  .cartbtn{width:44px;height:44px}
   .tabs{position:static}
   .tab{min-height:38px;padding:0 13px;font-size:14px}
   body.has-cart .cartbar{display:flex}
