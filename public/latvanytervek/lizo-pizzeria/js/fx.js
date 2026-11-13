@@ -1,5 +1,5 @@
-/* Lizó – látványelemek (Motion 11 + vanilla). Ihlet: motion.dev, React Bits (Count Up, Rotating Text,
- * Click Spark, Magnet, Logo Loop, Light Rays/szikra-háttér, spotlight kártya) – saját megvalósítás, nem másolat.
+/* Lizó – látványelemek (Motion 11 + vanilla). Ihlet: motion.dev, React Bits (Rotating Text, Click Spark,
+ * Magnet, szikra-háttér, spotlight kártya) – saját megvalósítás, nem másolat.
  * Minden effekt kikapcsol prefers-reduced-motion mellett; az érintőképernyőn a kurzoros effektek nem futnak. */
 (function () {
   'use strict';
@@ -40,7 +40,7 @@
     const words = h.textContent.trim().split(/\s+/);
     h.setAttribute('aria-label', h.textContent.trim());
     h.innerHTML = words.map(w => `<span class="sw" aria-hidden="true">${w}</span>`).join(' ');
-    M.animate($$('.sw', h), { opacity: [0, 1], filter: ['blur(10px)', 'blur(0px)'], transform: ['translateY(14px)', 'translateY(0)'] }, { duration: .7, delay: M.stagger(.055, { startDelay: .15 }), ease });
+    M.animate($$('.sw', h), { opacity: [0, 1], filter: ['blur(10px)', 'blur(0px)'], transform: ['translateY(14px)', 'translateY(0)'] }, { duration: .45, delay: M.stagger(.03, { startDelay: .05 }), ease });
   }
 
   /* 3. Forgó szó: „Most rendelhető: pizza / smash burger / gyros …” */
@@ -59,22 +59,7 @@
     }, 2200);
   }
 
-  /* 4. Count Up a tényszámokon (a valós értékig, egyszer). */
-  function countUp() {
-    $$('[data-count]').forEach(el => {
-      const to = +el.dataset.count, fmt = n => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
-      const suffix = el.dataset.suffix || '';
-      if (reduced || !M) { el.textContent = fmt(to) + suffix; return; }
-      el.textContent = fmt(0) + suffix;
-      M.inView(el, () => { M.animate(0, to, { duration: 1.4, ease, onUpdate: v => { el.textContent = fmt(v) + suffix; } }); });
-    });
-  }
 
-  /* 5. Végtelen kategóriaszalag (Logo Loop jelleg) – CSS animáció, fókuszkor/hoverkor megáll. */
-  function marquee() {
-    const t = $('[data-marquee]'); if (!t) return;
-    t.innerHTML += t.innerHTML; // két másolat a varratmentes ismétléshez
-  }
 
   /* 6. Click Spark: arany szikrák a kosárba tételkor és a „+” gombokon. */
   function sparks() {
@@ -105,7 +90,7 @@
   function spotlight() {
     if (!fine) return;
     document.addEventListener('pointermove', e => {
-      const el = e.target.closest('.mrow, .ocard, .size__card, .rev, .fbcard'); if (!el) return;
+      const el = e.target.closest('.mrow, .ocard, .rev, .fbcard'); if (!el) return;
       const r = el.getBoundingClientRect();
       el.style.setProperty('--mx', (e.clientX - r.left) + 'px'); el.style.setProperty('--my', (e.clientY - r.top) + 'px');
     }, { passive: true });
@@ -118,14 +103,6 @@
     addEventListener('scroll', () => { const p = scrollY / (document.documentElement.scrollHeight - innerHeight); bar.style.transform = `scaleX(${p})`; }, { passive: true });
   }
 
-  /* 10. Döntés: a méret-kártya enyhén billen a kurzorral (Holo Card jelleg, csak egérrel). */
-  function tilt() {
-    if (!fine || reduced) return;
-    $$('[data-tilt]').forEach(c => {
-      c.addEventListener('pointermove', e => { const r = c.getBoundingClientRect(); const x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5; c.style.transform = `perspective(900px) rotateY(${x * 6}deg) rotateX(${-y * 6}deg)`; });
-      c.addEventListener('pointerleave', () => { c.style.transition = 'transform .6s cubic-bezier(.22,1,.36,1)'; c.style.transform = ''; setTimeout(() => c.style.transition = '', 600); });
-    });
-  }
 
-  embers(); splitTitle(); rotator(); countUp(); sparks(); magnet(); spotlight(); progress(); tilt();
+  embers(); splitTitle(); rotator(); sparks(); magnet(); spotlight(); progress();
 })();

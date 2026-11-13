@@ -1,7 +1,9 @@
 /* Lizó Pizzéria és Ételbár – étlapadatok
  * Forrás: lizopizza.hu/etlap és falatozz.hu (Budapest XVIII. / Lizo Pizzéria és Ételbár), ellenőrizve: 2026-11-12.
  * A forrásokat és az eltéréseket lásd: _kutatas/etlap-adatok.md és _kutatas/egyeztetesi-lista.md
- * Árak forintban. Pizza: [32 cm, 50 cm]. Feláras extrák a forrásokban nem szerepelnek, ezért itt sincsenek.
+ * Árak forintban. Pizza: [32 cm, 50 cm].
+ * Az extra feltétek árai (zöldség 400, hús/sajt 800 Ft) a megbízó IDEIGLENES adatai – nem az ügyfél által jóváhagyott árak.
+ * A Facebook-ajánlásszám (18) a megbízó közlése; vélemény szövege csak a Facebookról szó szerint átvéve kerülhet be.
  */
 (function () {
   const AMM = 'Ammerlander klasszikus sajt';

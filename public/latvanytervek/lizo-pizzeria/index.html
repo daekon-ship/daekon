@@ -13,7 +13,7 @@
 <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="fonts/young-serif.woff" as="font" type="font/woff" crossorigin>
 <link rel="preload" href="fonts/bricolage-400.woff" as="font" type="font/woff" crossorigin>
-<link rel="stylesheet" href="css/lizo.css?v=13">
+<link rel="stylesheet" href="css/lizo.css?v=14">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Restaurant","name":"Lizó Pizzéria és Ételbár","servesCuisine":["Pizza","Hamburger","Gyros"],"telephone":"+36303887099","address":{"@type":"PostalAddress","streetAddress":"Balassa Bálint utca 2-10.","postalCode":"1183","addressLocality":"Budapest","addressCountry":"HU"},"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Sunday"],"opens":"11:00","closes":"21:40"},{"@type":"OpeningHoursSpecification","dayOfWeek":["Friday","Saturday"],"opens":"10:00","closes":"23:00"}]}
 </script>
@@ -58,7 +58,7 @@
     <div class="hero__in">
       <div class="hero__text">
         <p class="eyebrow" data-hero>Pizzéria és ételbár · Budapest XVIII.</p>
-        <p class="rot" data-hero>Most rendelhető: <span class="rot__w" aria-live="off" data-rotate='["pizza 32 és 50 cm-ben","smash burger","gyros tál","Lizo kerék pizza","palacsinta"]'></span></p>
+        <p class="rot" data-hero>Az étlapon: <span class="rot__w" aria-live="off" data-rotate='["pizza 32 és 50 cm-ben","smash burger","gyros tál","Lizo kerék pizza","palacsinta"]'></span></p>
         <h1 id="hero-title" data-split>Pizza 32 és 50 centiben, burger, gyros – rendelj közvetlenül tőlünk.</h1>
         <p class="lead" data-hero>Kihozzuk a XVIII. kerületben, Gyálon és Vecsésen, vagy átveheted a Balassa Bálint utcában.</p>
         <div class="hero__cta" data-hero>
@@ -145,7 +145,7 @@
             <li>Kiszállítási idő: 60–90 perc</li>
             <li>Minimális rendelés: <span data-min-order>3 000 Ft</span></li>
           </ul>
-          <p class="fine">A kiszállítási díjat és a pontos körzetet a cím alapján jelezzük a visszaigazolásban.</p>
+          <p class="fine">A kiszállítási díj nincs benne az étlapárakban és a kosár részösszegében.</p>
         </article>
         <article class="ocard">
           <svg class="ocard__ico" aria-hidden="true" viewBox="0 0 48 48"><path d="M8 20 12 9h24l4 11M8 20h32v19H8zM8 20a5 5 0 0 0 8 0 5 5 0 0 0 8 0 5 5 0 0 0 8 0 5 5 0 0 0 8 0M20 39V29h8v10"/></svg>
@@ -204,7 +204,7 @@
         <a href="https://lizopizza.hu/oldal/adatvedelem" target="_blank" rel="noopener">Adatkezelés</a>
       </nav>
     </div>
-    <p class="foot__note">Látványterv – DAEKON, 2026. Az itt leadott rendelések csak ebben a böngészőben maradnak, az étteremhez nem jutnak el.</p>
+    <p class="foot__note"><span>Látványterv. Az itt leadott rendelések csak ebben a böngészőben maradnak, az étteremhez nem jutnak el.</span><span>Weboldal: <a href="https://daekon.hu/" target="_blank" rel="noopener">DAEKON</a></span></p>
   </div>
 </footer>
 
@@ -221,7 +221,7 @@
     <h2 id="cp-title">Étlap</h2>
     <button class="x" type="button" data-cp-close aria-label="Bezárás"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
   </header>
-  <p class="catpanel__sub">Válassz kategóriát – a tételek a kosárba egy koppintással kerülnek.</p>
+  <p class="catpanel__sub">Válassz kategóriát: odaugrunk az étlapon, és a + gombbal teheted kosárba, amit kérsz.</p>
   <ul class="catpanel__list" data-cp-list></ul>
 </section>
 
@@ -256,6 +256,7 @@
 
   <div class="drawer__view" data-view="cart">
     <ul class="lines" data-lines></ul>
+    <button class="cartclear" type="button" data-cart-clear hidden>Kosár ürítése</button>
     <div class="cartempty" data-cart-empty>
       <svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="24"/><circle cx="32" cy="32" r="17"/><path d="M32 8v48M8 32h48M15 15l34 34M49 15 15 49"/></svg>
       <p>Még üres a kosár.</p>
@@ -304,7 +305,7 @@
   <footer class="drawer__foot" data-drawer-foot>
     <dl class="sum">
       <div><dt>Részösszeg</dt><dd data-subtotal>0 Ft</dd></div>
-      <div data-fee-row><dt>Kiszállítási díj</dt><dd class="muted">cím alapján, a visszaigazolásban</dd></div>
+      <div data-fee-row><dt>Kiszállítási díj</dt><dd class="muted">nincs benne a részösszegben</dd></div>
     </dl>
     <p class="minwarn" data-minwarn hidden></p>
     <button class="btn btn--tomato btn--wide" type="button" data-next><span data-next-label>Tovább az adatokhoz</span><b data-next-total>0 Ft</b></button>
@@ -313,10 +314,10 @@
 
 <div class="toast" data-toast role="status" aria-live="polite"></div>
 
-<script src="js/vendor/motion-11.18.2.min.js?v=5"></script>
-<script src="js/data.js?v=13"></script>
-<script src="js/store.js?v=5"></script>
-<script src="js/app.js?v=13"></script>
-<script src="js/fx.js?v=13"></script>
+<script src="js/vendor/motion-11.18.2.min.js?v=14"></script>
+<script src="js/data.js?v=14"></script>
+<script src="js/store.js?v=14"></script>
+<script src="js/app.js?v=14"></script>
+<script src="js/fx.js?v=14"></script>
 </body>
 </html>

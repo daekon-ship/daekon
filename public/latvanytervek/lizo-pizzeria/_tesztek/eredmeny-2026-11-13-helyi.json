@@ -1,0 +1,536 @@
+[
+ {
+  "group": "nézet",
+  "name": "320×640",
+  "ok": true,
+  "detail": "túlcsordulás=0 fejléc=65px átfedés=False levágott=0 panel-x=True termék-x=True/True kosárba-gomb=True kosár-x=True pénztár-gomb=True hibák=[] hálózat=[]"
+ },
+ {
+  "group": "nézet",
+  "name": "320: hamburger-menü elfér / görgethető",
+  "ok": true,
+  "detail": "{'bottom': 460, 'ih': 640, 'scroll': False, 'last': 440}"
+ },
+ {
+  "group": "nézet",
+  "name": "360×740",
+  "ok": true,
+  "detail": "túlcsordulás=0 fejléc=65px átfedés=False levágott=0 panel-x=True termék-x=True/True kosárba-gomb=True kosár-x=True pénztár-gomb=True hibák=[] hálózat=[]"
+ },
+ {
+  "group": "nézet",
+  "name": "360: hamburger-menü elfér / görgethető",
+  "ok": true,
+  "detail": "{'bottom': 460, 'ih': 740, 'scroll': False, 'last': 440}"
+ },
+ {
+  "group": "nézet",
+  "name": "375×812",
+  "ok": true,
+  "detail": "túlcsordulás=0 fejléc=65px átfedés=False levágott=0 panel-x=True termék-x=True/True kosárba-gomb=True kosár-x=True pénztár-gomb=True hibák=[] hálózat=[]"
+ },
+ {
+  "group": "nézet",
+  "name": "375: hamburger-menü elfér / görgethető",
+  "ok": true,
+  "detail": "{'bottom': 460, 'ih': 812, 'scroll': False, 'last': 440}"
+ },
+ {
+  "group": "nézet",
+  "name": "390×844",
+  "ok": true,
+  "detail": "túlcsordulás=0 fejléc=65px átfedés=False levágott=0 panel-x=True termék-x=True/True kosárba-gomb=True kosár-x=True pénztár-gomb=True hibák=[] hálózat=[]"
+ },
+ {
+  "group": "nézet",
+  "name": "390: hamburger-menü elfér / görgethető",
+  "ok": true,
+  "detail": "{'bottom': 460, 'ih': 844, 'scroll': False, 'last': 440}"
+ },
+ {
+  "group": "nézet",
+  "name": "430×932",
+  "ok": true,
+  "detail": "túlcsordulás=0 fejléc=65px átfedés=False levágott=0 panel-x=True termék-x=True/True kosárba-gomb=True kosár-x=True pénztár-gomb=True hibák=[] hálózat=[]"
+ },
+ {
+  "group": "nézet",
+  "name": "430: hamburger-menü elfér / görgethető",
+  "ok": true,
+  "detail": "{'bottom': 460, 'ih': 932, 'scroll': False, 'last': 440}"
+ },
+ {
+  "group": "nézet",
+  "name": "768×1024",
+  "ok": true,
+  "detail": "túlcsordulás=0 fejléc=73px átfedés=False levágott=0 panel-x=True termék-x=True/True kosárba-gomb=True kosár-x=True pénztár-gomb=True hibák=[] hálózat=[]"
+ },
+ {
+  "group": "nézet",
+  "name": "1024×768",
+  "ok": true,
+  "detail": "túlcsordulás=0 fejléc=73px átfedés=False levágott=0 panel-x=True termék-x=True/True kosárba-gomb=True kosár-x=True pénztár-gomb=True hibák=[] hálózat=[]"
+ },
+ {
+  "group": "nézet",
+  "name": "1440×900",
+  "ok": true,
+  "detail": "túlcsordulás=0 fejléc=73px átfedés=False levágott=0 panel-x=True termék-x=True/True kosárba-gomb=True kosár-x=True pénztár-gomb=True hibák=[] hálózat=[]"
+ },
+ {
+  "group": "nézet",
+  "name": "1920×1080",
+  "ok": true,
+  "detail": "túlcsordulás=0 fejléc=73px átfedés=False levágott=0 panel-x=True termék-x=True/True kosárba-gomb=True kosár-x=True pénztár-gomb=True hibák=[] hálózat=[]"
+ },
+ {
+  "group": "kosár/pénztár",
+  "name": "pizza 32/50 cm ár a terméktörzs szerint",
+  "ok": true,
+  "detail": "4 537 Ft / 6 720 Ft"
+ },
+ {
+  "group": "kosár/pénztár",
+  "name": "összetevő elvétele nem változtat árat",
+  "ok": true,
+  "detail": "6 720 Ft"
+ },
+ {
+  "group": "kosár/pénztár",
+  "name": "extra: +400 zöldség, +800 hús",
+  "ok": true,
+  "detail": "7 920 Ft"
+ },
+ {
+  "group": "kosár/pénztár",
+  "name": "extra levétele visszaállítja az árat",
+  "ok": true,
+  "detail": "7 120 Ft"
+ },
+ {
+  "group": "kosár/pénztár",
+  "name": "mennyiség ×2 a termékablakban",
+  "ok": true,
+  "detail": "14 240 Ft"
+ },
+ {
+  "group": "kosár/pénztár",
+  "name": "dupla kattintás a Kosárba gombon egyszer ad hozzá",
+  "ok": true,
+  "detail": "2"
+ },
+ {
+  "group": "kosár/pénztár",
+  "name": "azonos konfiguráció összevonva, eltérő külön sor",
+  "ok": true,
+  "detail": "[['hawaii', '50', 3, 1, 1], ['hawaii', '50', 1, 0, 0]]"
+ },
+ {
+  "group": "kosár/pénztár",
+  "name": "menü-üdítő és üdítőfajta rögzítve",
+  "ok": true,
+  "detail": "['Sprite', 'Coca-Cola Zero']"
+ },
+ {
+  "group": "kosár/pénztár",
+  "name": "kosár részösszeg = független számítás",
+  "ok": true,
+  "detail": "34 130 Ft vs 34 130 Ft"
+ },
+ {
+  "group": "kosár/pénztár",
+  "name": "kosársor: méret, extra, elvétel, üdítő látszik",
+  "ok": true,
+  "detail": "Hawaii pizza\n21 360 Ft\n50 cm · extra: gomba · nélküle: ananász\n−\n3\n+\nMódosítás\nTörlés\nHawaii pizza\n6 720 Ft\n50 cm\n−\n1\n+\nMódosítás\nTörlés\nSmash burger menü\n5 200 Ft\nüdítő: Sprite\n−\n1\n+\nMódosítás\nTörlés"
+ },
+ {
+  "group": "kosár/pénztár",
+  "name": "kosársor módosítása (méretcsere) + újraszámolás",
+  "ok": true,
+  "detail": "['50', None, None, '32'] 27 581 Ft vs 27 581 Ft"
+ },
+ {
+  "group": "kosár/pénztár",
+  "name": "mennyiség +/− és 0-ra csökkentés törli a sort",
+  "ok": true,
+  "detail": "22 381 Ft vs 22 381 Ft"
+ },
+ {
+  "group": "kosár/pénztár",
+  "name": "oldalfrissítés után a kosár megmarad",
+  "ok": true,
+  "detail": "5"
+ },
+ {
+  "group": "kosár/pénztár",
+  "name": "kiszállításnál a gomb nem mutat félrevezető végösszeget",
+  "ok": true,
+  "detail": "22 381 Ft + díj"
+ },
+ {
+  "group": "kosár/pénztár",
+  "name": "hibás telefonszám → hibaüzenet + fókusz a mezőn",
+  "ok": true,
+  "detail": "A telefonszám formátuma: +36 30 123 4567. / phone"
+ },
+ {
+  "group": "kosár/pénztár",
+  "name": "hiányzó cím → hibaüzenet",
+  "ok": true,
+  "detail": "Add meg az utcát és a házszámot."
+ },
+ {
+  "group": "kosár/pénztár",
+  "name": "átvétel: címmezők eltűnnek, gomb a fizetendőt mutatja",
+  "ok": true,
+  "detail": "22 381 Ft"
+ },
+ {
+  "group": "kosár/pénztár",
+  "name": "dupla kattintás a leadáson egy rendelést hoz létre",
+  "ok": true,
+  "detail": "1"
+ },
+ {
+  "group": "kosár/pénztár",
+  "name": "rendelés összege = tételek összege",
+  "ok": true,
+  "detail": "22381 vs 22381"
+ },
+ {
+  "group": "kosár/pénztár",
+  "name": "visszaigazolás: részösszeg + „kiszállítási díj még nincs benne”",
+  "ok": true,
+  "detail": "Előrendelés rögzítve\n\nRendelésszám: #401 · kiszállítás ide: Gyál, Fő utca 1.\n\nMost zárva vagyunk, a rendelés nyitáskor kerül sorra.\n\nBeérkezett\nElfogadva\nKészül"
+ },
+ {
+  "group": "kosár/pénztár",
+  "name": "frissítés után a visszaigazolás újra megnyitható",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "group": "kosár/pénztár",
+  "name": "kosár ürítése",
+  "ok": true,
+  "detail": "True 0 True"
+ },
+ {
+  "group": "kosár/pénztár",
+  "name": "minimum rendelés: kiszállításnál tiltva, kiírja a hiányt",
+  "ok": true,
+  "detail": "True „Kiszállításhoz legalább 3 000 Ft értékben kell rendelni – még 1 410 Ft hiányzik.” átvételnél tiltva=False"
+ },
+ {
+  "group": "kosár/pénztár",
+  "name": "konzol- és hálózati hiba nincs (folyamat)",
+  "ok": true,
+  "detail": "[]"
+ },
+ {
+  "group": "kosár/pénztár",
+  "name": "zárva: állapot, „Előrendelés leadása”, rendelés előrendelésként",
+  "ok": true,
+  "detail": "Zárva · ma 10:00-tól / Előrendelés leadása / True"
+ },
+ {
+  "group": "étlap",
+  "name": "keresés „fustolt”",
+  "ok": true,
+  "detail": "3 találat"
+ },
+ {
+  "group": "étlap",
+  "name": "keresés „füstölt”",
+  "ok": true,
+  "detail": "3 találat"
+ },
+ {
+  "group": "étlap",
+  "name": "keresés „GOMBA”",
+  "ok": true,
+  "detail": "4 találat"
+ },
+ {
+  "group": "étlap",
+  "name": "keresés „gyros”",
+  "ok": true,
+  "detail": "13 találat"
+ },
+ {
+  "group": "étlap",
+  "name": "keresés „tukortojas”",
+  "ok": true,
+  "detail": "2 találat"
+ },
+ {
+  "group": "étlap",
+  "name": "keresés: nincs találat üzenet",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "group": "étlap",
+  "name": "keresés törlése után egy kategória látszik",
+  "ok": true,
+  "detail": "['pizza']"
+ },
+ {
+  "group": "étlap",
+  "name": "mind a 9 kategóriafül váltása + tételszám",
+  "ok": true,
+  "detail": "[]"
+ },
+ {
+  "group": "étlap",
+  "name": "kategóriapanel navigál, nem tesz kosárba, a szöveg ezt mondja",
+  "ok": true,
+  "detail": "['gyros'] 0 „Válassz kategóriát: odaugrunk az étlapon, és a + gombbal teheted kosárba, amit kérsz.”"
+ },
+ {
+  "group": "étlap",
+  "name": "minden étlapár egyezik a terméktörzzsel",
+  "ok": true,
+  "detail": "[]"
+ },
+ {
+  "group": "admin",
+  "name": "új rendelések megjelennek (3)",
+  "ok": true,
+  "detail": "3"
+ },
+ {
+  "group": "admin",
+  "name": "XSS: a vevő által beírt HTML nem fut le (admin + vevő)",
+  "ok": true,
+  "detail": "None None"
+ },
+ {
+  "group": "admin",
+  "name": "kártyán: méret, tételek, cím, telefon, részösszeg + díj",
+  "ok": true,
+  "detail": "Új\n3\n#401\nKiszállítás\nElőrendelés\n04:50 · most\n1× Hústorony pizza 32 cm\n1× Római pizza 32 cm\nVevő\nKovács Teszt · +36 30 123 4567\nCím\nGyál, Fő utca 1.\nRészösszeg\n9 350 Ft + kiszállítási díj · fizetés á"
+ },
+ {
+  "group": "admin",
+  "name": "életciklus: elfogad → készül → kész; a vevő oldalán (ugyanebben a böngészőben) követhető",
+  "ok": true,
+  "detail": "Futárnál, úton"
+ },
+ {
+  "group": "admin",
+  "name": "átadás + elutasítás → előzmények",
+  "ok": true,
+  "detail": "SZÁM\tIDŐ\tMÓD\tVEVŐ\tTÉTELEK\tÖSSZEG\tÁLLAPOT\n#402\t04:50\tÁtvétel\tNagy Teszt\t2 db\t9 600 Ft\tElutasítva\n#401\t04:50\tKiszállítás\tK"
+ },
+ {
+  "group": "admin",
+  "name": "figyelmet igénylő rendelés (>3 perce nincs elfogadva) kiemelve + darabszám a címben",
+  "ok": true,
+  "detail": "True (1) Konyha · Lizó Pizzéria"
+ },
+ {
+  "group": "admin",
+  "name": "kikapcsolt termék: jelölve, nem nyitható meg",
+  "ok": true,
+  "detail": "True False"
+ },
+ {
+  "group": "admin",
+  "name": "minimum rendelési összeg módosítása átvezetődik",
+  "ok": true,
+  "detail": "5 000 Ft"
+ },
+ {
+  "group": "admin",
+  "name": "admin egyértelműen demo, nem szinkronizál",
+  "ok": true,
+  "detail": "Látványterv – nem védett, nem éles konyhai felület. Csak az ebben a böngészőben leadott pr"
+ },
+ {
+  "group": "admin",
+  "name": "tableten az admin gombjai ≥44 px",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "group": "admin",
+  "name": "admin konzolhiba nincs",
+  "ok": true,
+  "detail": "[]"
+ },
+ {
+  "group": "akadálymentesség",
+  "name": "kontraszt: szöveg",
+  "ok": true,
+  "detail": "16.16:1 (min 4.5)"
+ },
+ {
+  "group": "akadálymentesség",
+  "name": "kontraszt: másodlagos szöveg",
+  "ok": true,
+  "detail": "12.16:1 (min 4.5)"
+ },
+ {
+  "group": "akadálymentesség",
+  "name": "kontraszt: halvány szöveg",
+  "ok": true,
+  "detail": "6.91:1 (min 4.5)"
+ },
+ {
+  "group": "akadálymentesség",
+  "name": "kontraszt: halvány szöveg kártyán",
+  "ok": true,
+  "detail": "6.42:1 (min 4.5)"
+ },
+ {
+  "group": "akadálymentesség",
+  "name": "kontraszt: fehér a piros gombon",
+  "ok": true,
+  "detail": "5.26:1 (min 4.5)"
+ },
+ {
+  "group": "akadálymentesség",
+  "name": "kontraszt: arany felirat",
+  "ok": true,
+  "detail": "8.43:1 (min 4.5)"
+ },
+ {
+  "group": "akadálymentesség",
+  "name": "kontraszt: hibaüzenet",
+  "ok": true,
+  "detail": "7.70:1 (min 4.5)"
+ },
+ {
+  "group": "akadálymentesség",
+  "name": "kontraszt: tiltott gomb",
+  "ok": true,
+  "detail": "4.52:1 (min 3.0)"
+ },
+ {
+  "group": "akadálymentesség",
+  "name": "minden interaktív elemnek van neve",
+  "ok": true,
+  "detail": "[]"
+ },
+ {
+  "group": "akadálymentesség",
+  "name": "minden képnek van alt attribútuma",
+  "ok": true,
+  "detail": "0"
+ },
+ {
+  "group": "akadálymentesség",
+  "name": "érintési célok ≥24×24 px (WCAG 2.2 AA 2.5.8)",
+  "ok": true,
+  "detail": "[]"
+ },
+ {
+  "group": "akadálymentesség",
+  "name": "első Tab: „Ugrás az étlapra”",
+  "ok": true,
+  "detail": "Ugrás az étlapra"
+ },
+ {
+  "group": "akadálymentesség",
+  "name": "kategóriapanel: fókusz bent marad, Escape bezár, fókusz visszatér",
+  "ok": true,
+  "detail": "True True True"
+ },
+ {
+  "group": "akadálymentesség",
+  "name": "termékablak: fókusz bent marad, Escape bezár, fókusz visszatér",
+  "ok": true,
+  "detail": "True True True"
+ },
+ {
+  "group": "akadálymentesség",
+  "name": "kosár: fókuszcsapda",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "group": "akadálymentesség",
+  "name": "prefers-reduced-motion: tartalom látszik, szikra-háttér nem fut",
+  "ok": true,
+  "detail": "1|pizza 32 és 50 cm-ben canvas=300"
+ },
+ {
+  "group": "akadálymentesség",
+  "name": "prefers-reduced-motion: kosárba tétel működik, hiba nincs",
+  "ok": true,
+  "detail": "[]"
+ },
+ {
+  "group": "hálózat/teljesítmény",
+  "name": "mobil: betöltés (helyi szerver)",
+  "ok": true,
+  "detail": "11 kérés, 348 KB, DCL 112 ms, load 112 ms, LCP 104 ms, CLS 0.000"
+ },
+ {
+  "group": "hálózat/teljesítmény",
+  "name": "mobil: CLS < 0,1",
+  "ok": true,
+  "detail": "0.000"
+ },
+ {
+  "group": "hálózat/teljesítmény",
+  "name": "legnagyobb erőforrások",
+  "ok": true,
+  "detail": "motion-11.18.2.min.js?v=14 68 KB, lizo-logo-brand.svg 57 KB, app.js?v=14 39 KB, lizo.css?v=14 37 KB, young-serif.woff 36 KB"
+ },
+ {
+  "group": "hálózat/teljesítmény",
+  "name": "asztali: betöltés (helyi szerver)",
+  "ok": true,
+  "detail": "11 kérés, 348 KB, DCL 109 ms, load 109 ms, LCP 132 ms, CLS 0.029"
+ },
+ {
+  "group": "hálózat/teljesítmény",
+  "name": "asztali: CLS < 0,1",
+  "ok": true,
+  "detail": "0.029"
+ },
+ {
+  "group": "tartalom",
+  "name": "tiltott kifejezések: index.html",
+  "ok": true,
+  "detail": "[]"
+ },
+ {
+  "group": "tartalom",
+  "name": "noindex megmaradt: index.html",
+  "ok": true,
+  "detail": "noindex, nofollow"
+ },
+ {
+  "group": "tartalom",
+  "name": "tiltott kifejezések: admin.html",
+  "ok": true,
+  "detail": "[]"
+ },
+ {
+  "group": "tartalom",
+  "name": "noindex megmaradt: admin.html",
+  "ok": true,
+  "detail": "noindex, nofollow"
+ },
+ {
+  "group": "tartalom",
+  "name": "külső linkek target=_blank + rel=noopener",
+  "ok": true,
+  "detail": "0"
+ },
+ {
+  "group": "tartalom",
+  "name": "külső linkek listája (elérhetőség külön ellenőrizve)",
+  "ok": true,
+  "detail": "https://www.facebook.com/share/1F5R1QhTbu/ | https://www.google.com/maps/place/1183+Budapest,+Balassa+B%C3%A1lint+utca+2-10./ | https://lizopizza.hu/oldal/aszf | https://lizopizza.hu/oldal/adatvedelem | https://daekon.hu/"
+ },
+ {
+  "group": "biztonság",
+  "name": "nincs API-kulcs / jelszó a betöltött JS-ben",
+  "ok": true,
+  "detail": "[]"
+ }
+]

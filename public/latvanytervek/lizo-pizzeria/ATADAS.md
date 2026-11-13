@@ -1,12 +1,109 @@
 # Lizó Pizzéria és Ételbár — látványterv, átadás (A + B fázis)
 
 **Élő előnézet:** https://daekon-ship.github.io/daekon/latvanytervek/lizo-pizzeria/
-**Konyhai felület:** https://daekon-ship.github.io/daekon/latvanytervek/lizo-pizzeria/admin.html
-**Mappa:** `public/latvanytervek/lizo-pizzeria/` · **Kör:** 2. kör, 2026.11.12. · `noindex, nofollow`
-**Belső kutatás:** `_kutatas/forrasok.md`, `_kutatas/etlap-adatok.md`, `_kutatas/egyeztetesi-lista.md`
+**Konyhai felület (demo):** https://daekon-ship.github.io/daekon/latvanytervek/lizo-pizzeria/admin.html
+**Mappa:** `public/latvanytervek/lizo-pizzeria/` · **Állapot:** 2026.11.13., erőforrás-verzió `?v=14` · `noindex, nofollow`
+**Belső anyagok:** `_kutatas/forrasok.md`, `_kutatas/etlap-adatok.md`, `_kutatas/egyeztetesi-lista.md`, `_kutatas/fizetes-saferpay-terv.md`
 
-> Őszinte állapot: ez működő **front-end látványterv**. A kosár, a rendelés és a konyhai felület a böngésző `localStorage`-ében dolgozik, az étteremhez semmi nem jut el, fizetés nincs. Ezt a felület két helyen ki is mondja (lábléc, visszaigazolás; admin felső sáv). Backend, adatbázis, bejelentkezés, e-mail és Stripe: C–D fázis.
-> A „védett tesztcím” még nincs: a GitHub Pages cím nyilvános, de nem indexelt. Valódi jelszavas védelem az MHosting-aldomainen lesz (C fázis).
+> **Őszinte állapot:** működő **front-end látványterv**. A kosár, a rendelés és a konyhai felület a böngésző `localStorage`-ében dolgozik: az étteremhez semmi nem jut el, fizetés nincs, és a konyhai felület **nem szinkronizál** más eszközzel (csak ugyanabban a böngészőben látja a próbarendeléseket). Ezt a felület ki is mondja (lábléc, visszaigazolás, admin felső sáv).
+> A GitHub Pages cím nyilvános (nem indexelt) – **a nyilvános admin nem védett admin**. Valódi védelem az MHosting-aldomainen lesz (C fázis). API-kulcs, jelszó, kártyaadat a repóban nincs.
+
+## 1. Ami teljesen elkészült (a látványterv keretein belül)
+
+- **Arculat** a Lizó Facebook-megjelenéséből: fekete alap, piros fő gombok, arany részletek, törtfehér szöveg; az ügyfél vektoros logójának piros–arany változata (`img/lizo-logo-brand.svg`). Fotó nincs (nincs ügyfélfotó).
+- **Étlap:** 63 tétel, 9 kategória, 32/50 cm-es pizzaárak a lizopizza.hu és a Falatozz alapján (`js/data.js`); egyszerre egy kategória látszik; fülek + „Étlap” panel a fejlécben (a panel csak navigál, nem tesz kosárba – a szövege ezt mondja); ékezetfüggetlen keresés név és összetevő szerint.
+- **Termékablak:** méret, üdítőfajta, menü-üdítő, összetevő elvétele (ingyenes), feláras extra feltét (zöldség / hús / sajt), tétel-megjegyzés, mennyiség, élő ár.
+- **Kosár:** mennyiség, sor módosítása (visszanyitja a beállítást), törlés, kosár ürítése, azonos konfiguráció összevonása, oldalfrissítés után megmarad.
+- **Pénztár fiók nélkül:** kiszállítás / személyes átvétel, név, telefon (magyar formátum), település, cím, megjegyzés, ÁSZF-pipa, hibaüzenet + fókusz a hibás mezőn, dupla beküldés elleni védelem, minimum rendelés kiszállításnál, zárva tartáskor „Előrendelés”.
+- **Végösszeg-kommunikáció:** a kiszállítási díj nincs véglegesítve, ezért kiszállításnál sehol nem jelenik meg félrevezető végösszeg: a gomb „részösszeg + díj”, a kosár és a visszaigazolás „a kiszállítási díj még nincs benne” szöveget mutat; átvételnél a fizetendő = részösszeg.
+- **Mobil:** 320–430 px-en nincs kilógás, levágás, egymásra csúszás; a bezárás gombok mindig a képernyőn vannak; a hamburger-menü kis kijelzőn görgethető; iOS-re görgetészár a nyitott ablakok alatt; `dvh` egységek a mobil böngészősáv miatt.
+- **Akadálymentesség (alapszint):** kontrasztok ≥ 4,5:1, minden vezérlőnek van neve, érintési célok ≥ 24 px (fő gombok 44–56 px), fókuszcsapda és Escape a panelben / termékablakban / kosárban, fókusz visszaadása, `prefers-reduced-motion` tiszteletben tartva.
+- **Biztonság (front-end):** minden vevői szöveg escapelve (XSS-teszt: `<img onerror>` a névmezőben nem fut le sem a vevői, sem az admin oldalon), külső linkek `rel=noopener`, nincs titok a kódban.
+
+## 2. Ami még demonstráció
+
+- Rendelés leadása, rendelési állapot, konyhai felület: `localStorage`, csak ugyanabban a böngészőben; nincs szerver, e-mail, SMS.
+- Admin: nincs bejelentkezés; a „figyelmet igényel” jelzés (3 percnél régebben elfogadatlan új rendelés), az elfogadás → készül → kész → átadva / elutasítás, termék kikapcsolása és a minimum átírása csak a böngészőben hat.
+- Fizetés: csak „Átvételkor fizetek”; online fizetés nincs és nem is szimulálunk sikeres fizetést.
+- Facebook-ajánlások: az összesítő („18 ember ajánlja”) a megbízó közlése; a lapozható ajánlássáv kész, de **üres, amíg nincs valódi, Facebookról átvett szöveg** – addig nem jelenik meg.
+
+## 3. Amihez ügyféladat kell (részletesen: `_kutatas/egyeztetesi-lista.md`)
+
+Kiszállítási díj és körzet zónánként · minimum zónánként és átvételnél · extra feltétek végleges listája és ára (most **ideiglenes**: zöldség 400, hús/sajt 800 Ft) · két gyanús 50 cm-es ár (Lizo kerék 8 435, Tenger gyümölcse 7 560) · köretek, menü-üdítők kiszerelése · fizetési módok átvételkor · nyitvatartás (lizopizza.hu vs. Wolt eltér) · előrendelés szabálya · cégadatok, saját ÁSZF/adatkezelés · saját ételfotók · Facebook-ajánlások szövege · hozzájárul-e a láblécbeli DAEKON-hivatkozáshoz.
+
+## 4. Ami a backend-fejlesztés része (C fázis)
+
+PHP 8 + MySQL az MHosting-tárhelyen (előbb felmérni: PHP/MySQL-verzió, cron, limitek, SMTP, SSL), védett tesztaldomain; szerveroldali árkalkuláció a terméktörzsből (a kliens csak azonosítókat küld); rendelési állapotgép és audit-napló; jogosultságkezelt admin (`password_hash`, szerepkörök, CSRF, biztonságos session, rate limit); valódi többeszközös konyhai felület hangjelzéssel; termék/ár/nyitvatartás/zóna/díj/minimum szerkesztése; e-mail-visszaigazolás; mentési és visszaállítási terv. Tesztek: PHPUnit + integrációs + a mostani Playwright-forgatókönyvek a valódi API ellen.
+
+## 5. Ami a Saferpay-integrációhoz szükséges (D fázis) – lásd `_kutatas/fizetes-saferpay-terv.md`
+
+A korábbi Stripe-terv helyett **Novopayment / Saferpay Payment Page**: rendelés szerveroldali rögzítése és árazása → Initialize → átirányítás → NotifyUrl (szerver–szerver, idempotens) → **Assert** → Capture → csak ezután mehet a konyhára, egyszer. A böngésző visszatérési URL-je soha nem jelent sikeres fizetést. Kezelendő: sikertelen / megszakított / duplikált fizetés, kapcsolatvesztés, késve érkező visszaigazolás (cron + Assert), összegeltérés, visszatérítés (Business licenc kérdése), napi egyeztetés, naplózás és riasztás. Kell hozzá: Novopayment-szerződés, licenc, teszt- és éles CustomerId/TerminalId/JSON API hozzáférés; a novopayment.hu/ecom leírást a DAEKON környezetéből nem lehetett megnyitni – át kell nézni. Éles fizetés csak külön tesztelés és a tulajdonos írásos jóváhagyása után.
+
+## Design tokenek
+
+- Színek (`css/lizo.css :root`): `--paper #0e0b0a`, `--card #1a1412`, `--ink #f3e8d4`, `--ink-2 #d8cab3`, `--muted #a8977f`, `--tomato #d3201f` (fő gombok), `--gold #d4a23c` / `--gold-l #e6bd62` (vonalak, keretek, kijelölés), `--err #ff7a6b`.
+- Betű: **Young Serif** (címek, terméknevek) + **Bricolage Grotesque** 400/700 (szöveg, árak), OFL, saját hosztolás, latin-ext részhalmaz. Fraunces nincs. Méretek mérsékeltek: H1 28–42 px, H2 24–32 px, szöveg 16 px; minden űrlapmező 16 px (iOS nem nagyít).
+- Térköz 8 / 16 / 24 / 40 / 64 / 104 px; gutter 16–40 px; max szélesség 1200 px; kártya 14 px, mező 10 px lekerekítés.
+- Komponensek: `.btn`, `.etlapbtn`, `.catpanel`, `.tab`, `.mitem/.mrow`, `.sheet` (asztalon modal, mobilon alsó lap), `.seg`, `.chip` / `.chip--x` (extra) / `.chip--sel`, `.xg` (extra-csoport), `.qty`, `.drawer` (kosár → adatok → visszaigazolás), `.cartbar` (mobil), `.timeline`, `.hcard`, `.rvsum` + `.rv` (ajánlások), `.fbcard`.
+
+## Mozgás (Motion 11.18, `js/vendor/`, MIT; `js/fx.js`)
+
+| Elem | Trigger | Mit csinál |
+|---|---|---|
+| Hero szövegek, címsor | betöltés | felúszás; a címsor szavanként élesedik (~0,9 s összesen) |
+| Szikra-háttér (canvas) | betöltés | lassan felszálló parázs; képernyőn kívül leáll |
+| „Az étlapon:” forgó szó | 2,2 s-onként | valódi tételnevek váltakoznak |
+| Kategóriaváltás | kattintás | a tételek rövid lépcsőzéssel beúsznak |
+| Étlap-panel, termékablak, kosár | kattintás | mobilon alulról felcsúszik, asztalon finom megjelenés |
+| Kosárba tétel | kattintás | arany szikra + pötty a kosárhoz, toast |
+| Fő gombok / sorok (csak egérrel) | kurzor | mágneses gomb, arany fényfolt a sorokon |
+| Görgetésjelző | görgetés | vékony piros–arany csík a fejléc alján |
+| Visszaigazolás | leadás | a pecsét megrajzolódik |
+
+`prefers-reduced-motion` mellett mindez kimarad (a tartalom azonnal látszik). Kivett effektek (az ügyfél kérésére vagy mert nem segítették a rendelést): mozgó kategóriaszalag, méret-összehasonlító, rajzolt burgerek, számláló, billenő kártya.
+
+## Tesztek – ténylegesen lefuttatva 2026.11.13., Playwright 1.63 / Chromium, helyi szerveren
+
+Tesztcsomag: 89 ellenőrzés, végső futás **89/89 PASS** (előtte két futás hibákat talált, ezeket javítottuk – lásd lent).
+- **Nézetek (14 ellenőrzés):** 320, 360, 375, 390, 430, 768, 1024, 1440, 1920 px – oldal-, panel-, termékablak-, kosár- és pénztár-túlcsordulás 0; fejléc-elemek nem fedik egymást; bezárás gomb görgetés után is látszik; a gombok szövege nem lóg ki; a hamburger-menü elfér; 0 konzol- és 0 hálózati hiba.
+- **Kosár/pénztár (25):** 32/50 cm ár; elvétel nem változtat árat; +400 / +800 extra és levétele; mennyiség; dupla kattintás (kosárba és leadás) egyszer; azonos konfiguráció összevonva, eltérő külön sorban; menü-üdítő és üdítőfajta; részösszeg = a terméktörzsből független számítás; sor módosítása (méretcsere) + újraszámolás; +/−, 0 → törlés; oldalfrissítés; hibás telefonszám és hiányzó cím (üzenet + fókusz); kiszállítás ↔ átvétel; nincs félrevezető végösszeg; minimum (1 410 Ft hiány kiírva, átvételnél engedi); kosár ürítése; zárvatartás 03:00-kor (órát a teszt állítja) → „Előrendelés leadása”, előrendelésként rögzítve.
+- **Étlap (10):** keresés „fustolt”, „füstölt”, „GOMBA”, „gyros”, „tukortojas”; nincs találat; mind a 9 fül tételszáma; panel navigál, nem tesz kosárba; minden kiírt ár = terméktörzs.
+- **Admin (11):** új rendelések; életciklus elfogad → készül → kész → átadva; elutasítás; előzmények; 3 percnél régebbi új rendelés kiemelve + darabszám a böngészőfül címében; termék kikapcsolása (nem nyitható meg); minimum átírása átvezetődik; demo-felirat; tableten (768 px) a gombok ≥ 44 px; XSS nem fut.
+- **Akadálymentesség (17):** 8 színpár kontrasztja (pl. halvány szöveg 6,91:1, fehér a piroson 5,26:1); nevek, alt; érintési célok; első Tab = „Ugrás az étlapra”; fókuszcsapda + Escape + fókusz-visszaadás a panelben, termékablakban, kosárban; csökkentett mozgás.
+- **Hálózat/teljesítmény (5):** 11 kérés, ~348 KB (legnagyobbak: Motion 68 KB, logó-SVG 57 KB, app.js 39 KB), helyi szerveren DCL ~110 ms, LCP ~100–130 ms, CLS 0–0,03 (futásonként 0,036 alatt). *Helyi szerveres mérés – valódi mobilhálózaton lassabb.*
+- **Tartalom/biztonság (7):** tiltott kifejezések (TODO, demo, placeholder, hamarosan, egyeztetendő stb.) 0 találat mindkét oldalon; `noindex` mindkét oldalon; `rel=noopener`; nincs kulcs/jelszó a JS-ben. Külső linkek: lizopizza.hu ÁSZF és Adatvédelem betölt (2026.11.13.); a daekon.hu-t a DAEKON munkakörnyezetből nem lehetett ellenőrizni.
+
+**Nem tesztelve (nem állítjuk, hogy megtörtént):** valódi iOS Safari és Android Chrome készülék (csak Chromium-emuláció), képernyőolvasó, valódi mobilhálózat, Lighthouse-pontszám, hálózatkimaradás (backend nélkül nem értelmezhető – a C/D fázis tesztterve tartalmazza).
+
+## Ismert korlátok
+
+- A `localStorage` adatai eszközönként külön élnek; privát módban üres lehet.
+- Az ÁSZF és az Adatkezelés a jelenlegi lizopizza.hu oldalakra mutat (adatkezelő ott: Szekrényes és Gombos DBP Kft.) – az új rendszerhez saját dokumentum kell.
+- A `_kutatas/` mappa a nyilvános repó része (személyes vagy titkos adat nincs benne).
+- Betűk `woff` formátumban (a `woff2`-tömörítő nem volt elérhető) – élesítéskor `woff2`-re cserélendő (~30% kisebb).
+
+---
+
+# Körök naplója
+
+## 11. kör (2026.11.13.) – teljes javító és tesztelő kör
+
+**Talált hibák és javításuk:**
+1. **Cache-hiba:** a `store.js` (benne az extrák árszámítása és a kosársor-kulcs) `?v=5`-tel töltődött, az admin a `data.js`-t is `?v=5`-tel – aki a régi fájlt tárolta, annál az extra feltétek ára kimaradhatott, és eltérő extrájú sorok összevonódhattak. → Minden erőforrás egységesen `?v=14`.
+2. **Félrevezető végösszeg:** a pénztár gombja kiszállításnál a részösszeget végösszegként mutatta, a szöveg pedig „a visszaigazolásban jelezzük” ígéretet tett, amit a felület nem teljesít. → „részösszeg + díj”, „még nincs benne”, „Fizetendő” sor.
+3. **Ellenőrizetlen állítás:** „Átvételnél nincs minimum.” – ügyfél nem hagyta jóvá. → törölve, egyeztetési pontként maradt.
+4. **A kategóriapanel szövege** azt ígérte, hogy a tételek „egy koppintással kerülnek kosárba” – valójában navigál. → pontos szöveg.
+5. „Most rendelhető:” zárva tartáskor is ezt mondta. → „Az étlapon:”.
+6. **iOS Safari:** a nyitott ablakok alatt görgethető maradt volna az oldal (`overflow:hidden` nem elég). → pozíciórögzítő görgetészár, `dvh` egységek.
+7. **Fókusz:** a kategóriapanel nem volt fókuszcsapdában, és Escape után nem adta vissza a fókuszt. → javítva.
+8. 320 px-en a hamburger-menü alja lelóghatott volna, a pénztár gombjának szövege levágódott. → görgethető menü, törhető gombfelirat.
+9. **Tiltott gomb kontrasztja** (fehér a világosbarnán ~2:1). → sötét tiltott állapot 4,5:1.
+10. **Térkép-link érintési célja** 19 px magas volt. → 44 px.
+11. **Admin:** „Összesen” felirat a díj nélküli részösszegen; nem látszott, melyik rendelés vár régóta; a demo-felirat nem mondta ki, hogy nem védett és nem szinkronizál. → „Részösszeg + kiszállítási díj”, kiemelés + idő, darabszám a fül címében, pontos felirat.
+12. **Holt kód:** kivett szekciók CSS-e (méret-blokk, kategórialista, szalag, tények), JS-függvények (számláló, szalag, billenés), elavult kommentek (`data.js` „extrák nincsenek”, CSS-fejléc a régi papír-arculattal). → eltávolítva.
+13. A címsor belépő animációja ~1,5 s-ig elmosódott volt. → ~0,9 s.
+14. Kosár ürítése gomb (2+ sornál), DAEKON-hivatkozás a láblécben (diszkréten; ügyféllel egyeztetendő).
+15. Saját hiba a javítás közben: a CSS-tisztítás egy regexe két blokkot nyitva hagyott (a panel pozíciója elromlott) – a második tesztfutás megfogta, javítva, a szelektorok listáját a korábbi verzióval összevetettük.
 
 ## 10. kör (2026.11.12.)
 - **Fejléc:** a „Most nyitva” felirat kikerült a fejlécből (a nyitóképi kártyán és a Kapcsolatnál megmaradt). Helyette piros **„Étlap”** gomb a kosár és a menü mellett.
@@ -72,104 +169,3 @@ Minden kikapcsol `prefers-reduced-motion` mellett.
 - A kiemelőszínek (paradicsompiros, zöld, kéregbarna, alap-színpöttyök) kikerültek; semleges fekete-törtfehér, amíg a Lizó Facebook-színei meg nem érkeznek. A szín egy helyen (`--tomato` token a `lizo.css` elején) cserélhető. Hibaüzenetek pirosak maradtak (`--err`).
 - Következő: Facebook-színek és Facebook-ajánlások blokk – képernyőképre vár (a Facebook a gépi lekérést tiltja).
 
-## Mit tud most
-
-**Vásárlói oldal (`index.html`)**
-- Hero az eredeti, vektoros Lizó-logóval; körülötte a 32 és az 50 cm-es pizza méretarányos körvonala (rajz, nem fotó).
-- Élő nyitvatartás-állapot a fejlécben (Most nyitva · 21:40-ig / Zárva · holnap 11:00-tól), mai rendelésfelvétel, 60–90 perc, minimum.
-- 9 kategória kártyán, sticky kategóriafülek mozgó jelölővel + scroll-követés, ékezetfüggetlen keresés név és összetevő szerint.
-- Teljes, ellenőrzött étlap: 29 pizza (32/50 cm), édes pizza, 4 hamburger, 2 smash, 5 gyros, 10 menü, 4 palacsinta, 2 desszert, 6 üdítő.
-- Pizzaalap színkódolva (paradicsomos / tejfölös / BBQ / tzatziki), csípős jelölés rajzolt ikonnal.
-- Burgerek: az összetevőlistából generált, rajzolt réteg-ábra (a képhelyettesítő doboz helyett). A termékablakban elvett összetevő a rajzról is eltűnik.
-- „Melyik méret?” blokk: bármely pizzára kiszámolja a különbséget és a Ft/100 cm² árat; egy gombbal 50 cm-ben nyitja meg.
-- Termékablak: méret, fajta (üdítők), menü-üdítő, összetevők elvétele (ingyenes, felárat nem számol), tétel-megjegyzés, mennyiség, élő ár.
-- Kosár: mennyiség, módosítás (visszanyitja a beállított tételt), törlés, azonos konfiguráció összevonása, perzisztens.
-- Pénztár, fiók nélkül: kiszállítás/átvétel, név, telefon (magyar formátum-ellenőrzés), település (XVIII. / Gyál / Vecsés), cím, megjegyzés, átvételkori fizetés, ÁSZF-pipa. Minimum rendelés kiszállításnál blokkol és kiírja a hiányzó összeget.
-- Visszaigazolás rendelésszámmal, tételes összesítővel és élő állapotsávval (Beérkezett → Elfogadva → Készül → Úton/Átvehető → Kiszállítva/Átvéve; elutasításnál telefonszám).
-- Zárva tartás alatt „Előrendelés”-ként rögzít (szabály egyeztetendő, lásd lista 14.).
-- SEO: title, description, OG, `Restaurant` strukturált adat (név, cím, telefon, nyitvatartás – csak ellenőrzött adat). `noindex` a látványterv miatt.
-
-**Konyhai felület (`admin.html`, tabletre)**
-- Rendelés-tábla 4 oszlopban: Új → Elfogadva → Készül → Kész/úton → Átadva; Elutasít gomb. A vevő visszaigazolása szinkronban frissül (storage esemény).
-- Termékek: elérhető/elfogyott kapcsoló – a vásárlói oldalon azonnal „Most nem rendelhető”, kosárból kikerül.
-- Beállítások: minimum rendelés szerkeszthető (a vásárlói oldal azonnal átveszi), nyitvatartás és területek megjelenítve.
-- Előzmények: teljesített/elutasított rendelések táblázata.
-
-## Kreatív irányok (A fázis)
-
-1. **„Nyomott étlap”** – ✅ VÁLASZTOTT. Törtfehér papír (#f3ecdf), barnás-fekete tinta (#1a1512), paradicsompiros kiemelés (#a8341d), bazsalikomzöld (#3e5739) csak állapotjelzésre, kéregbarna (#c58546) a rajzokon. A logó metszetszerű vonalvilágából építkezik: vékony és pontozott körök, hajszálvonalas étlap-sorok, rajzolt burger-rétegek. Miért: a logó fekete-fehér, klasszikus; ehhez a papír-tinta ad természetes, meleg keretet, és fotók nélkül is véglegesnek hat.
-2. „Esti ételbár” – sötét faszén alap, meleg borostyán fények, nagy kontrasztú fehér logó. Elvetve: fotók nélkül nehéz, könnyen arany-fekete luxussablonba csúszik (a brief kifejezetten kerülni kéri).
-3. „Kerületi street food” – erős színblokkok, matricás címkék. Elvetve: ütközik a logó klasszikus, babérkoszorús karakterével.
-
-## Design tokenek
-
-- Betű: **Young Serif** (címek, terméknevek; OFL) + **Bricolage Grotesque** 400/700 (szöveg, árak; OFL). Saját hosztolás, `fonts/`, latin + latin-ext részhalmaz (ő, ű). Fraunces nincs.
-- Méretek (mérsékelt): H1 28–42 px, H2 24–32 px, terméknév 18 px, szöveg 16 px, árak tabular számokkal.
-- Térköz-skála: 8 / 16 / 24 / 40 / 64 / 104 px; oldalgutter 16–40 px; max szélesség 1200 px.
-- Lekerekítés: 14 px kártya, 10 px mező, gombok pirula alakúak; érintési cél ≥ 40–48 px.
-- Komponensek: `.btn` (ink / line / tomato), `.mitem` étlapsor, `.bcard` burgerkártya + `.stack`, `.seg` szegmentált választó, `.chip` összetevő-kapcsoló, `.qty`, `.sheet` (asztali modal / mobil alsó lap), `.drawer` (asztali oldalpanel / mobil alsó lap), `.cartbar` (csak mobil, csak nem üres kosárnál, a tartalmat `padding-bottom` védi), `.timeline`.
-
-## Mozgás (Motion 11.18, `js/vendor/`, MIT)
-
-| Elem | Trigger | Mit csinál | Átadás |
-|---|---|---|---|
-| Hero szövegek | betöltés | 14 px-es felúszás, 80 ms-os lépcső | – |
-| Hero logó + körök | betöltés | logó 0,94→1 skála; a 32 és 50 cm-es kör megrajzolódik (stroke-dashoffset), a pontozott kör 8°-ot fordul a helyére, majd a feliratok | a rajz a méret-blokk koraira utal |
-| Kategóriák, kártyák, kapcsolat | görgetés (inView) | 18 px-es felúszás, gyerekelemek lépcsőzve | – |
-| Étlap-szekciók | görgetés | az első 14 sor 30 ms-onként úszik be | – |
-| Méret-blokk | görgetés / választás | a két kör megrajzolódik; pizzaváltáskor az árak felúsznak | „50 cm-ben” gomb → termékablak |
-| Kategória-fül | kattintás / görgetés | a sötét pirula rugós mozgással a fülre csúszik | a lap a szekcióhoz görget |
-| Termékablak | kattintás | asztalon finom skála+fade, mobilon alulról felcsúszik | „Kosárba” → bezár |
-| Kosárba tétel | kattintás | piros pötty ívben a kosárhoz repül, a kosár ikon „ugrik”, toast | – |
-| Kosár/pénztár | kattintás | panel oldalról (asztal) / alulról (mobil); lépésváltáskor 12 px-es oldalirányú beúszás | – |
-| Visszaigazolás | leadás | a pecsét köre és pipája megrajzolódik | – |
-
-`prefers-reduced-motion: reduce` mellett minden Motion-animáció kimarad, a CSS-átmenetek 0,01 ms-ra rövidülnek. Nincs parallax, nincs folyamatos mozgás, nincs scrolljacking.
-
-## Képek
-
-Fotó **nincs** (az ügyféltől nem jött, a weben talált Falatozz-képek eredete ismeretlen). Helyette: eredeti logó, rajzolt méret-körök, generált burger-rétegek, rajzolt ikonok. Ha jönnek saját ételfotók: a hero jobb oldala (`.hero__art`) és a burgerkártyák `.stack` eleme cserélhető képre, a pizzasorokhoz bal oldali bélyegkép adható.
-
-## Tesztek (ténylegesen lefuttatva, 2026.11.12., Playwright/Chromium)
-
-Automata folyamat-teszt (mobil 390 px, érintés): **14/14 OK**
-- Hawaii 50 cm × 2, ananász nélkül = 13 440 Ft ✔ · dupla kattintás a „Kosárba” gombon egyszer ad hozzá ✔
-- Kosár összeg 13 440 + 5 000 + 5 200 = 23 640 Ft ✔ · mennyiség csökkentése után 16 920 Ft ✔
-- Keresés („csirkecomb” → 10 találat; értelmetlen kifejezés → üres állapot szöveg) ✔
-- Üres űrlap leadása blokkolva, hibaüzenet + fókusz ✔ · rendelés tárolva, részösszeg 16 920 ✔
-- Admin: Elfogad → Készítés indul; a vevő visszaigazolásán „Készül” jelenik meg ✔ · termék kikapcsolása a vásárlói oldalon látszik ✔
-- 0 konzolhiba ✔ · tiltott-szó ellenőrzés a látható szövegen és attribútumokon (TODO, Demo, Placeholder, Lorem, hamarosan, egyeztetendő, generált stb.) mindkét oldalon: 0 találat ✔
-
-Nézetek (vízszintes túlcsordulás oldalon, termékablakban, pénztárban, adminban): 320, 375, 390, 430, 768, 1024, 1280, 1920 px – mind 0 px ✔ (320 px-en a termékablak lábléce 6 px-szel kilógott → javítva, újramérve 0).
-Billentyűzet: Tab-sorrend (Ugrás az étlapra → logó → menü…), Enter megnyitja a termékablakot, fókusz a Bezárás gombra kerül, Escape bezár és visszaadja a fókuszt a sorra ✔.
-Csökkentett mozgás: hibamentes, a tartalom azonnal látható ✔.
-
-**Nem tesztelve:** valódi iOS Safari és Android Chrome készüléken (csak Chromium mobil-emulációval), képernyőolvasóval, valamint hálózatkimaradás – ez utóbbi a backend nélkül értelmetlen, a C/D fázis tesztterve tartalmazza.
-
-## Ismert korlátok / döntések
-
-- Szállítási díj nincs a felületen kiszámolva (nincs ellenőrzött adat) – a kosár és a visszaigazolás ezt nyíltan jelzi.
-- Feltét hozzáadása feláras extrával nincs (nincs ellenőrzött árlista) – csak elvétel.
-- Online kártyás fizetés a látványtervben nincs, és nem is szimulál sikeres fizetést.
-- ÁSZF és Adatkezelés a jelenlegi lizopizza.hu oldalaira mutat – az új rendszerhez saját dokumentum kell.
-- A belső `_kutatas/` mappa a Pages-en elérhető (a repó nyilvános) – nincs benne személyes vagy titkos adat.
-
-## Következő fázis terve (C → D → E)
-
-**C – rendelőrendszer (MHosting)**
-1. Tárhely felmérése: PHP-, MySQL-verzió, cron, limitek, SMTP, SSL; védett aldomain HTTP-auth-tal.
-2. Architektúra: a mostani build-mentes front (vagy React + TS build statikus fájlként, Node-folyamat nélkül) + PHP 8 REST API + MySQL. PDO prepared statement, CSRF-token, szerveroldali validáció, `password_hash` alapú admin-belépés szerepkörökkel, biztonságos session-cookie, rate limit.
-3. Adatmodell: products, product_sizes, ingredients (elvehető?), extras (ha lesz), zones (díj, minimum), opening_hours, orders, order_items, order_events (audit), admin_users.
-4. Az ár **mindig szerveren** számolódik a terméktörzsből; a kliens csak azonosítókat küld.
-5. Admin: rendelés-életciklus, hangjelzés új rendelésnél, termék/ár/elérhetőség, nyitvatartás, zónák és díjak, minimum, előzmények.
-6. E-mail: visszaigazolás vevőnek, értesítés konyhának.
-7. Tesztek: PHPUnit (árkalkuláció, validáció), integráció (API + DB), Playwright E2E a mostani forgatókönyvekkel.
-
-**D – Stripe Checkout** (csak C után, tesztkulcsokkal)
-- Checkout Session szerveroldalon, `metadata.order_id`, idempotencia-kulcs a dupla kattintás ellen.
-- Webhook (`checkout.session.completed`, `…async_payment_failed`, `charge.refunded`) aláírás-ellenőrzéssel; esemény-azonosító tárolása → duplikált webhook nem küldi kétszer a konyhára.
-- Rendelés csak `paid` állapotban kerül a konyhára; késve érkező webhookot is kezel; visszatérítés az adminból.
-- Kulcsok környezeti változóban, a forráskódban soha. Éles kulcs csak tulajdonosi jóváhagyás után.
-- Tesztek: dupla kattintás, elutasított kártya (4000 0000 0000 0002), 3DS, webhook újraküldés, hálózatkimaradás a visszairányítás előtt, visszatérítés.
-
-**E – átadás előtti audit:** design, funkció, mobil (valódi eszközök), teljesítmény (Lighthouse), biztonság, adatkezelés (GDPR), élesítési és visszaállítási terv. A lizopizza.hu domainhez, a Falatozz-rendszerhez és a DNS-hez eddig nem nyúltunk.

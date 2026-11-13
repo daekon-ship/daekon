@@ -15,7 +15,6 @@
   const baseName = { p: 'paradicsomos alap', t: 'tejfölös alap', b: 'BBQ alap', z: 'tzatziki alap' };
   const chili = '<svg class="chili" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 12c3 1 7-1 8-6 .3-1.5-.6-2.4-1.6-2.2C9 4.2 9 7 6.6 8.6 5 9.7 3.4 9.8 3 10.6c-.3.6.2 1.1 1 1.4ZM11 3.8c0-1 .5-1.8 1.5-2.3"/></svg>';
   const plusIco = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v12M2 8h12"/></svg>';
-  const arrow = '<svg class="cats__arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h12m-5-5 5 5-5 5"/></svg>';
 
   let off = S.unavailable();
   const byCat = id => L.products.filter(p => p.cat === id);
@@ -44,16 +43,12 @@
   }
   function renderMin() { $$('[data-min-order]').forEach(e => e.textContent = fmt(S.settings().minOrder)); }
 
-  /* ---------- kategóriakártyák + fülek ---------- */
+  /* ---------- kategóriafülek ---------- */
   function fromPrice(cat) {
     const ps = byCat(cat).map(p => p.sizes ? p.sizes[0].price : p.price);
     return Math.min(...ps);
   }
   function renderCats() {
-    const cc = $('[data-cat-cards]'); if (cc) cc.innerHTML = L.categories.map((c, i) => {
-      const n = byCat(c.id).length;
-      return `<li><a href="#cat-${c.id}" data-jump="${c.id}"><span class="cats__no">${String(i + 1).padStart(2, '0')}</span><span><span class="cats__name">${c.name}</span><span class="cats__sub">${n} tétel · ${fmt(fromPrice(c.id))}-tól${c.note ? ' · ' + c.note : ''}</span></span>${arrow}</a></li>`;
-    }).join('');
     $('[data-tabs]').innerHTML = L.categories.map(c => `<button class="tab" type="button" data-tab="${c.id}"><span>${c.short}</span></button>`).join('');
   }
 
@@ -71,11 +66,10 @@
   function rowHTML(p) {
     const isOff = off.has(p.id);
     const ing = showIng(p);
-    const dot = '';
     const sub = p.base ? `${baseName[p.base]}${ing.length ? ', ' + ing.join(', ') : ''}` : ing.join(', ');
     return `<li class="mitem${isOff ? ' is-off' : ''}" data-pid="${p.id}" data-search="${esc(norm(p.name + ' ' + p.items.join(' ') + ' ' + (p.variants || []).join(' ')))}">
       <button class="mrow" type="button" data-open="${p.id}" ${isOff ? 'aria-disabled="true"' : ''} aria-label="${esc(p.name)} – részletek és kosárba">
-        <span class="mrow__name">${dot}${esc(p.name)}${p.hot ? ` <span class="tag">${chili}csípős</span>` : ''}</span>
+        <span class="mrow__name">${esc(p.name)}${p.hot ? ` <span class="tag">${chili}csípős</span>` : ''}</span>
         <span class="mrow__ing">${isOff ? '<span class="offnote">Most nem rendelhető</span> · ' : ''}${esc(sub)}${p.variants ? ' · ' + esc(p.variants.join(', ')) : ''}</span>
         <span class="mrow__right">${priceHTML(p)}<span class="plus">${plusIco}</span></span>
       </button></li>`;
@@ -83,13 +77,10 @@
   function renderMenu() {
     $('[data-menu]').innerHTML = L.categories.map(c => {
       const ps = byCat(c.id);
-      const isCards = false;
-      const legend = '';
       const foot = c.id === 'pizza' ? `<p class="foot-note">Minden pizzán Ammerlander klasszikus sajt.</p>` : '';
       return `<section class="mcat" id="cat-${c.id}" data-cat="${c.id}" aria-labelledby="h-${c.id}">
         <div class="mcat__head"><h3 id="h-${c.id}">${c.name}</h3><p>${ps.length} tétel${c.note ? ' · ' + c.note : ''}</p></div>
-        ${legend}
-        <ul class="${isCards ? 'blist' : 'mlist'}">${ps.map(rowHTML).join('')}</ul>${foot}
+        <ul class="mlist">${ps.map(rowHTML).join('')}</ul>${foot}
       </section>`;
     }).join('');
   }
@@ -127,10 +118,9 @@
       scrollTo({ top, behavior: reduced ? 'auto' : 'smooth' });
     }
   }
-  function jump(id) { showCat(id, true); }
 
   /* ---------- termék lap ---------- */
-  const sheet = $('[data-sheet]'), scrim = $('[data-scrim]'), drawer = $('[data-drawer]');
+  const sheet = $('[data-sheet]'), scrim = $('[data-scrim]'), drawer = $('[data-drawer]'), cp = $('[data-catpanel]');
   let st = null, lastFocus = null;
   const mobile = () => matchMedia('(max-width:720px)').matches;
 
@@ -151,7 +141,7 @@
     }
     if (p.menu) {
       html += `<div class="sh__block"><p class="sh__label">Üdítő a menühöz</p><div class="chips" role="radiogroup" aria-label="Üdítő">${L.menuDrinks.map(d =>
-        `<button type="button" class="chip" role="radio" aria-checked="${d === st.drink}" data-drink="${esc(d)}" style="${d === st.drink ? 'background:var(--ink);color:var(--paper)' : ''}">${esc(d)}</button>`).join('')}</div></div>`;
+        `<button type="button" class="chip${d === st.drink ? ' chip--sel' : ''}" role="radio" aria-checked="${d === st.drink}" data-drink="${esc(d)}">${esc(d)}</button>`).join('')}</div></div>`;
     }
     const removable = p.items.filter(i => !(p.locked || []).includes(i) && !p.menu && i !== '3 db');
     if (p.items.length && !p.menu && !p.variants) {
@@ -192,16 +182,28 @@
     anim(sheet, mobile() ? { transform: ['translateY(100%)', 'translateY(0)'] } : { opacity: [0, 1], transform: ['translate(-50%,-46%) scale(.98)', 'translate(-50%,-50%) scale(1)'] }, { duration: .45 });
     setTimeout(() => $('.x', sheet).focus(), 30);
   }
+  /* görgetészár: iOS Safarin a body overflow:hidden nem elég, ezért rögzítjük a pozíciót */
+  let lockY = 0, locked = false;
+  function lock() {
+    if (locked) return; locked = true; lockY = scrollY;
+    document.body.classList.add('lock', 'lock-ios'); document.body.style.top = -lockY + 'px';
+  }
+  function unlock() {
+    if (!locked) return; locked = false;
+    document.body.classList.remove('lock', 'lock-ios'); document.body.style.top = '';
+    const html = document.documentElement, prev = html.style.scrollBehavior; html.style.scrollBehavior = 'auto'; scrollTo(0, lockY); html.style.scrollBehavior = prev;
+  }
+  const anyLayer = () => !sheet.hidden || !drawer.hidden || (cp && !cp.hidden);
   function showLayer(el) {
-    scrim.hidden = false; el.hidden = false; document.body.classList.add('lock');
+    scrim.hidden = false; el.hidden = false; lock();
     anim(scrim, { opacity: [0, 1] }, { duration: .25 });
   }
   function closeLayer(el, cb) {
-    const done = () => { el.hidden = true; if (sheet.hidden && drawer.hidden) { scrim.hidden = true; document.body.classList.remove('lock'); } cb && cb(); };
+    const done = () => { el.hidden = true; if (!anyLayer()) { scrim.hidden = true; unlock(); } cb && cb(); };
     const a = anim(el, el === sheet ? (mobile() ? { transform: 'translateY(100%)' } : { opacity: 0 }) : (mobile() ? { transform: 'translateY(100%)' } : { transform: 'translateX(100%)' }), { duration: .28, ease: [0.4, 0, 1, 1] });
     if (sheet.hidden || drawer.hidden) anim(scrim, { opacity: 0 }, { duration: .25 });
     if (a) a.finished.then(() => { done(); el.style.transform = ''; el.style.opacity = ''; }); else done();
-    if (lastFocus && document.contains(lastFocus)) lastFocus.focus();
+    if (lastFocus && document.contains(lastFocus)) lastFocus.focus({ preventScroll: true });
   }
 
   sheet.addEventListener('click', e => {
@@ -276,6 +278,7 @@
       </li>`;
     }).join('');
     $('[data-view="cart"]').classList.toggle('is-empty', n === 0);
+    $('[data-cart-clear]').hidden = cart.length < 2;
     $('[data-subtotal]').textContent = fmt(sub);
     updateFoot();
   }
@@ -286,9 +289,10 @@
     $('[data-fee-row]').hidden = !del;
     const short = del && sub < min && sub > 0;
     const w = $('[data-minwarn]');
-    w.hidden = !short; if (short) w.textContent = `Kiszállításhoz legalább ${fmt(min)} kell – még ${fmt(min - sub)} hiányzik. Átvételnél nincs minimum.`;
+    w.hidden = !short; if (short) w.textContent = `Kiszállításhoz legalább ${fmt(min)} értékben kell rendelni – még ${fmt(min - sub)} hiányzik.`;
     const next = $('[data-next]');
-    $('[data-next-total]').textContent = fmt(sub);
+    // A kiszállítási díj még nincs véglegesítve: kiszállításnál a gomb nem mutathat végösszeget.
+    $('[data-next-total]').textContent = del && view === 'checkout' ? `${fmt(sub)} + díj` : fmt(sub);
     if (view === 'cart') { $('[data-next-label]').textContent = 'Tovább az adatokhoz'; next.disabled = cart.length === 0; }
     if (view === 'checkout') {
       const o = openState();
@@ -310,6 +314,8 @@
       closeLayer(drawer, () => openSheet(l.id, Object.assign({}, l, { editKey: key })));
     }
   });
+
+  $('[data-cart-clear]').addEventListener('click', () => { cart = []; S.saveCart(cart); renderCart(); $('.x', drawer).focus(); });
 
   /* ---------- fiók / pénztár ---------- */
   let drawerView = 'cart';
@@ -409,9 +415,9 @@
       <p class="done__id">Rendelésszám: <b>#${o.no}</b> · ${o.mode === 'delivery' ? `kiszállítás ide: ${esc(o.area)}, ${esc(o.street)}` : 'személyes átvétel a Balassa Bálint utcában'}</p>
       ${o.preorder ? `<p class="done__id">Most zárva vagyunk, a rendelés nyitáskor kerül sorra.</p>` : ''}
       <ol class="timeline" aria-label="Rendelés állapota">${tl}</ol>
-      <div class="receipt">${o.lines.map(l => `<div><span>${l.qty} × ${esc(l.name)}${l.sizeLabel ? ' (' + l.sizeLabel + ')' : ''}${l.extras && l.extras.length ? `<small class="rc-x">+ ${l.extras.map(esc).join(', ')}</small>` : ''}${l.removed && l.removed.length ? `<small class="rc-x">nélküle: ${l.removed.map(esc).join(', ')}</small>` : ''}</span><b>${fmt(l.total)}</b></div>`).join('')}
+      <div class="receipt">${o.lines.map(l => `<div><span>${Number(l.qty)} × ${esc(l.name)}${l.sizeLabel ? ' (' + l.sizeLabel + ')' : ''}${l.extras && l.extras.length ? `<small class="rc-x">+ ${l.extras.map(esc).join(', ')}</small>` : ''}${l.removed && l.removed.length ? `<small class="rc-x">nélküle: ${l.removed.map(esc).join(', ')}</small>` : ''}</span><b>${fmt(Number(l.total))}</b></div>`).join('')}
         <div><span>Részösszeg</span><b>${fmt(o.subtotal)}</b></div>
-        ${o.mode === 'delivery' ? '<div><span>Kiszállítási díj</span><span class="muted">a cím alapján</span></div>' : ''}
+        ${o.mode === 'delivery' ? '<div><span>Kiszállítási díj</span><span class="muted">még nincs benne</span></div><div><span>Fizetendő</span><span>részösszeg + kiszállítási díj</span></div>' : `<div><span>Fizetendő</span><b>${fmt(o.subtotal)}</b></div>`}
         <div><span>Fizetés</span><span>átvételkor</span></div></div>
       <p class="ribbon">Látványterv: ez a rendelés csak ebben a böngészőben létezik, az étteremhez nem jutott el. Az állapotát a <a href="admin.html" target="_blank" rel="noopener">konyhai felületen</a> lehet léptetni.</p>
       <p style="margin-top:18px"><button class="btn btn--line" type="button" data-new-order>Új rendelés</button></p>`;
@@ -439,14 +445,13 @@
   /* ---------- globális események ---------- */
   document.addEventListener('click', e => {
     const o = e.target.closest('[data-open]'); if (o) { openSheet(o.dataset.open); return; }
-    const j = e.target.closest('[data-jump]'); if (j) { e.preventDefault(); jump(j.dataset.jump); return; }
     const t = e.target.closest('[data-tab]'); if (t) { showCat(t.dataset.tab, true); return; }
   });
   scrim.addEventListener('click', () => { if (!sheet.hidden) closeLayer(sheet); else if (!drawer.hidden) closeLayer(drawer); });
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') { if (!sheet.hidden) closeLayer(sheet); else if (!drawer.hidden) closeLayer(drawer); }
     if (e.key === 'Tab') {
-      const layer = !sheet.hidden ? sheet : !drawer.hidden ? drawer : null; if (!layer) return;
+      const layer = !sheet.hidden ? sheet : !drawer.hidden ? drawer : !cp.hidden ? cp : null; if (!layer) return;
       const f = $$('button:not([disabled]):not([hidden]),a[href],input:not([type=hidden]),select,textarea', layer).filter(x => x.offsetParent !== null);
       if (!f.length) return; const first = f[0], last = f[f.length - 1];
       if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
@@ -461,7 +466,7 @@
     const { animate, stagger, inView } = M;
     animate('[data-hero]', { opacity: [0, 1], transform: ['translateY(14px)', 'translateY(0)'] }, { duration: .7, delay: stagger(.08, { startDelay: .1 }), ease });
     const tgt = x => (x && x.target) ? x.target : x;
-    const reveal = (sel, opts = {}) => inView(sel, en => { const el = tgt(en); animate(el.children.length && opts.kids ? [...el.children] : el, { opacity: [0, 1], transform: ['translateY(18px)', 'translateY(0)'] }, { duration: .6, ease, delay: opts.kids ? stagger(.05) : 0 }); }, { margin: '0px 0px -10% 0px' });
+    const reveal = sel => inView(sel, en => { animate(tgt(en), { opacity: [0, 1], transform: ['translateY(18px)', 'translateY(0)'] }, { duration: .6, ease }); }, { margin: '0px 0px -10% 0px' });
     reveal('.ocard'); reveal('.contact__in > div');
   }
 
@@ -502,7 +507,6 @@
   addEventListener('keydown', e => { if (e.key === 'Escape' && !mnav.hidden) { setMenu(false); mbtn.focus(); } });
 
   /* ---------- Étlap-panel ---------- */
-  const cp = $('[data-catpanel]');
   const catIcon = {
     pizza: '<circle cx="12" cy="12" r="8.5"/><path d="M12 3.5v17M3.5 12h17"/><circle cx="8.5" cy="8.5" r=".9"/><circle cx="15.5" cy="15.5" r=".9"/><circle cx="15" cy="8" r=".9"/>',
     edes: '<path d="M12 3.5 4.5 19c4.8 2.2 10.2 2.2 15 0z"/><path d="M6.2 15.5c3.7 1.4 7.9 1.4 11.6 0"/><circle cx="12" cy="11" r=".9"/>',
@@ -517,25 +521,25 @@
   function renderCatPanel() {
     $('[data-cp-list]').innerHTML = L.categories.map(c => {
       const n = byCat(c.id).length;
-      return `<li><button type="button" data-cp-cat="${c.id}"><svg class="cp__ico" viewBox="0 0 24 24" aria-hidden="true">${catIcon[c.id] || ''}</svg><span class="cp__t"><b>${c.name}</b><small>${n} tétel · ${fmt(fromPrice(c.id))}-tól</small></span><svg class="cp__arr" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h12m-5-5 5 5-5 5"/></svg></button></li>`;
+      return `<li><button type="button" data-cp-cat="${c.id}"><svg class="cp__ico" viewBox="0 0 24 24" aria-hidden="true">${catIcon[c.id] || ''}</svg><span class="cp__t"><b>${esc(c.name)}</b><small>${n} tétel · ${fmt(fromPrice(c.id))}-tól</small></span><svg class="cp__arr" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h12m-5-5 5 5-5 5"/></svg></button></li>`;
     }).join('');
   }
   function openCP() {
-    lastFocus = document.activeElement; cp.hidden = false; scrim.hidden = false; document.body.classList.add('lock');
+    lastFocus = document.activeElement; cp.hidden = false; scrim.hidden = false; lock();
     anim(scrim, { opacity: [0, 1] }, { duration: .25 });
     anim(cp, mobile() ? { transform: ['translateY(100%)', 'translateY(0)'] } : { opacity: [0, 1], transform: ['translate(-50%,-47%)', 'translate(-50%,-50%)'] }, { duration: .4 });
     if (M && !reduced) M.animate($$('[data-cp-list] li'), { opacity: [0, 1], transform: ['translateY(10px)', 'translateY(0)'] }, { duration: .35, delay: M.stagger(.035, { startDelay: .12 }), ease });
     setTimeout(() => $('[data-cp-close]').focus(), 30);
   }
   function closeCP(cb) {
-    const done = () => { cp.hidden = true; cp.style.transform = ''; cp.style.opacity = ''; if (sheet.hidden && drawer.hidden) { scrim.hidden = true; document.body.classList.remove('lock'); } cb && cb(); };
+    const done = () => { cp.hidden = true; cp.style.transform = ''; cp.style.opacity = ''; if (!anyLayer()) { scrim.hidden = true; unlock(); } if (cb) cb(); else if (lastFocus && document.contains(lastFocus)) lastFocus.focus({ preventScroll: true }); };
     const a = anim(cp, mobile() ? { transform: 'translateY(100%)' } : { opacity: 0 }, { duration: .25, ease: [0.4, 0, 1, 1] });
     anim(scrim, { opacity: 0 }, { duration: .25 });
     a ? a.finished.then(done) : done();
   }
   document.addEventListener('click', e => { if (e.target.closest('[data-etlap-open]')) openCP(); });
   cp.addEventListener('click', e => {
-    if (e.target.closest('[data-cp-close]')) { closeCP(); if (lastFocus) lastFocus.focus(); return; }
+    if (e.target.closest('[data-cp-close]')) { closeCP(); return; }
     const b = e.target.closest('[data-cp-cat]'); if (b) closeCP(() => showCat(b.dataset.cpCat, true));
   });
   scrim.addEventListener('click', () => { if (!cp.hidden) closeCP(); });
