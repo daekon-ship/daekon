@@ -44,8 +44,12 @@ A nyilvános felület csak a végső becsült árat, a paramétereket és a becs
 - Két ezüst demótermék (`DEMÓ AG 01/02`), hogy az ezüstár-módosítás is látható legyen; nem a katalógus része.
 - Árak mellett „demó” jelölés (Beállítások → kikapcsolható).
 
-## Képek
-A termékfotók közvetlenül a karikagyuru.com-ról töltődnek (`IMG_BASE` a `js/data.js`-ben). Ha nem töltenek be (hotlink-tiltás, hálózat), automatikusan a programból rajzolt, színhelyes gyűrűkép jelenik meg. A konfigurátor „Színminta” nézete mindig rajzolt (a választott aranyszínnel). Stock/AI kép nincs. Éles rendszerhez: a fotókat helyben, nagyobb felbontásban és termékenként több nézettel kérjük az ügyféltől.
+## Képek és logó (2. kör, 2026.11.18.)
+- A 30 termékfotó és a logó az ügyfél által küldött mentett oldalról (`Karikagyuru.com.mht`) került ki, és helyben van: `img/termekek/` (a 79014-es fotó 1000 px-re kicsinyítve, a KETS-fotóról levágva a vékony keret), `img/logo.png` (eredeti), `img/logo-jel.png` (gyémánt + jel, a fejlécben a szóvédjegy mellett), `img/logo-vilagos.png` (invertált, sötét láblécre), favicon és apple-touch-ikon a jelből. Hotlink már nincs.
+- A fotók alapján javítva: MAZ 79016-79017 rozéarany pár (eddig fehérként szerepelt), a 79008, 79014 és 81169 pár, a 79014 és 81169 kő nélküli; a kövek darabszáma a fotóról becsült (egyeztetendő), a kő mérete demó.
+- A fotók 600×600 px körüliek, a legtöbbön „www.karikagyuru.com” vízjel; éleshez nagyobb felbontású, vízjel nélküli képeket és modellenként több nézetet kérünk.
+- A logó 270×146 px-es PNG; éleshez vektoros (SVG) újrarajzolás javasolt.
+- Tartalékként marad a programból rajzolt, színhelyes gyűrűkép (a „Színminta” nézet és az ezüst demótermékek).
 
 ## Art direction – három irány, a választott
 1. **Vitrin (választott)** – elefántcsont/pezsgő/homok, egyetlen meleg arany hajszálvonal-szín, a gyűrű kör alakú „talapzaton”, a magyar fémjel (585/750) bélyegként visszatérő motívum. A brief luxusirányához ez illik a legjobban, és a gyűrű marad a főszereplő.

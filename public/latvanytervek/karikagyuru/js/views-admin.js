@@ -28,7 +28,7 @@ export function adminShell(el, page, arg) {
   el.innerHTML = `
   <div class="adm">
     <aside class="adm__nav" aria-label="Admin menü">
-      <p class="adm__brand">Karikagyuru.com<span>Kezelőfelület</span></p>
+      <p class="adm__brand"><img src="img/logo-jel.png" alt="" width="176" height="127">Karikagyuru.com<span>Kezelőfelület</span></p>
       <nav><ol>${MENU.map(([k, t], i) => `<li><a href="#/admin/${k}" ${page === k || (page === 'gyuru' && k === 'gyuruk') ? 'aria-current="page"' : ''}><span>${i + 1}</span>${t}${k === 'erdeklodesek' && newInq ? `<em>${newInq}</em>` : ''}</a></li>`).join('')}</ol></nav>
     </aside>
     <main class="adm__main" id="adm-main">

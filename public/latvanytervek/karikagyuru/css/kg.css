@@ -84,9 +84,7 @@ a:hover .btn-text::after { transform: translateX(4px); }
 .site-head__in { height: var(--head); display: flex; align-items: center; gap: 28px; }
 .logo { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; font: 500 1.45rem/1 var(--serif); letter-spacing: .01em; }
 .logo small { font: 500 .85rem/1 var(--sans); letter-spacing: .1em; color: var(--gold-d); margin-left: 2px; }
-.logo svg { width: 40px; height: 28px; fill: none; stroke-width: 1.4; }
-.logo svg circle:first-child { stroke: var(--gold); }
-.logo svg circle:last-child { stroke: var(--ink); }
+.logo__mark { width: auto; height: 44px; }
 .nav { display: flex; gap: 30px; margin-left: auto; }
 .nav > a { font: 600 .82rem/1 var(--sans); letter-spacing: .12em; text-transform: uppercase; text-decoration: none; padding: 8px 0; background: linear-gradient(var(--gold), var(--gold)) 0 100% / 0 1px no-repeat; transition: background-size .5s var(--ease); }
 .nav > a:hover, .nav > a[aria-current] { background-size: 100% 1px; }
@@ -111,7 +109,8 @@ a:hover .btn-text::after { transform: translateX(4px); }
 .hero__orbit { position: absolute; inset: 0; width: 100%; height: 100%; fill: none; stroke: var(--gold); stroke-width: .8; transform: rotate(-90deg); }
 .hero__orbit2 { stroke: var(--line-s); stroke-dasharray: .004 .012; }
 .hero__disc { position: absolute; inset: 12%; border-radius: 50%; overflow: hidden; background: radial-gradient(circle at 42% 38%, #FFFDF8 0%, var(--champ) 62%, var(--sand) 100%); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .6), 0 40px 80px -40px rgba(80, 55, 20, .35); }
-.hero__disc .media { position: absolute; inset: 12%; background: none; }
+.hero__disc .media { position: absolute; inset: 0; }
+.hero__disc .media img { object-position: 50% 40%; }
 .hero__cap { position: absolute; right: -4%; bottom: 6%; background: var(--ivory); border: 1px solid var(--line); padding: 16px 20px; max-width: 290px; box-shadow: 0 20px 40px -24px rgba(60, 40, 15, .3); }
 .hero__cap a { display: grid; gap: 4px; text-decoration: none; }
 .hero__cap a > span { font-size: .8rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--gold-d); }
@@ -119,8 +118,8 @@ a:hover .btn-text::after { transform: translateX(4px); }
 .hero__cap em { font-style: normal; font-size: .9rem; color: var(--ink2); }
 
 /* --- Média (valódi fotó + rajzolt tartalék) --- */
-.media { position: relative; width: 100%; height: 100%; background: var(--paper); }
-.media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; padding: 6%; }
+.media { position: relative; width: 100%; height: 100%; background: #fff; }
+.media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .media__art { position: absolute; inset: 0; display: none; place-items: center; padding: 10%; }
 .media.is-fallback img { display: none; }
 .media.is-fallback .media__art { display: grid; }
@@ -155,6 +154,7 @@ a:hover .btn-text::after { transform: translateX(4px); }
 .coll__b { grid-column: span 5; } .coll__c { grid-column: span 5; }
 .coll__d { grid-column: span 7; }
 .coll__rose { grid-column: span 5; display: grid; grid-template-columns: 120px 1fr; gap: 20px; align-items: center; padding: 22px 24px; text-decoration: none; border: 1px solid var(--line); background: linear-gradient(120deg, #F8EDE6, var(--ivory)); }
+.coll__rose-art { width: 120px; height: 120px; overflow: hidden; border: 1px solid var(--line); }
 .coll__rose p:not(.kicker) { margin: 0; color: var(--ink2); font-size: .98rem; }
 .coll__rose .btn-text { grid-column: 2; }
 .coll__d { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: none; }
@@ -165,7 +165,7 @@ a:hover .btn-text::after { transform: translateX(4px); }
 .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px 24px; }
 .card__link { display: block; text-decoration: none; height: 100%; }
 .card__media { position: relative; aspect-ratio: 1; overflow: hidden; border: 1px solid var(--line); background: var(--paper); }
-.sec--paper .card__media { background: var(--ivory); } .sec--paper .card__media .media { background: var(--ivory); }
+
 .card__media .media { transition: transform 1.1s var(--ease); }
 .card__link:hover .card__media .media { transform: scale(1.045); }
 .card__media .stamp { position: absolute; top: 14px; left: 14px; }
@@ -294,7 +294,7 @@ a:hover .btn-text::after { transform: translateX(4px); }
 .specs { margin-top: var(--s5); padding-top: var(--s4); border-top: 1px solid var(--line-s); max-width: 760px; }
 .specs__dl div { grid-template-columns: 200px 1fr; padding: 10px 0; border-bottom: 1px solid var(--line); }
 .mbar { display: none; }
-.zoom img { max-height: 76vh; margin: 0 auto; mix-blend-mode: multiply; }
+.zoom img { max-height: 76vh; margin: 0 auto; }
 
 /* --- Kapcsolat --- */
 .contact { display: grid; grid-template-columns: 1.2fr 1fr; gap: clamp(32px, 6vw, 96px); align-items: center; }
@@ -312,7 +312,7 @@ a:hover .btn-text::after { transform: translateX(4px); }
 .site-foot__grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 40px; }
 .site-foot h2 { font: 600 .8rem/1 var(--sans); letter-spacing: .14em; text-transform: uppercase; color: var(--gold-l); margin-bottom: 16px; }
 .site-foot a { text-decoration: none; } .site-foot a:hover { color: var(--gold-l); }
-.logo--foot { color: var(--ivory); margin-bottom: 14px; }
+.logo--foot { margin: 0 0 18px; } .logo--foot img { width: 150px; height: auto; }
 .site-foot__note { margin-top: 40px; padding-top: 20px; border-top: 1px solid rgba(250, 246, 238, .12); font-size: .86rem; color: rgba(250, 246, 238, .72); }
 
 /* --- Modal, űrlap, toast --- */
@@ -346,6 +346,7 @@ body[data-mode="admin"] .site-head, body[data-mode="admin"] .site-foot { display
 .adm { display: grid; grid-template-columns: 250px 1fr; min-height: calc(100vh - var(--bar)); }
 .adm__nav { background: var(--ivory); border-right: 1px solid var(--line); padding: 28px 18px; position: sticky; top: var(--bar); height: calc(100vh - var(--bar)); overflow: auto; }
 .adm__brand { font: 600 1.35rem/1.2 var(--serif); margin: 0 10px 28px; }
+.adm__brand img { display: block; width: 64px; height: auto; margin-bottom: 12px; }
 .adm__brand span { display: block; font: 600 .82rem/1.4 var(--sans); letter-spacing: .16em; text-transform: uppercase; color: var(--gold-d); margin-top: 4px; }
 .adm__nav ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
 .adm__nav a { display: flex; align-items: center; gap: 12px; padding: 12px 10px; min-height: 56px; text-decoration: none; font-size: 1.08rem; border-radius: 4px; transition: background .25s; }
@@ -552,14 +553,14 @@ body[data-mode="admin"] .site-head, body[data-mode="admin"] .site-foot { display
   .demobar__switch button { flex: 1; padding: 6px 6px; font-size: .84rem; line-height: 1.15; min-height: 38px; }
   .demobar__tools button { padding: 6px 4px; font-size: .8rem; line-height: 1.15; max-width: 92px; text-align: center; }
   .demobar__tools button[data-script] { display: none; }
-  .logo { font-size: 1.25rem; } .logo svg { width: 34px; }
+  .logo { font-size: 1.2rem; gap: 10px; } .logo__mark { height: 36px; }
   .hero { padding-top: 28px; }
   .hero__cta .btn { flex: 1 1 100%; }
   .hero__stage { max-width: 380px; margin-bottom: 40px; }
   .hero__cap { position: relative; right: auto; bottom: auto; margin: -8% auto 0; max-width: none; width: 100%; }
   .coll { grid-template-columns: 1fr; }
   .coll__d { grid-template-columns: 1fr; }
-  .coll__rose { grid-template-columns: 90px 1fr; }
+  .coll__rose { grid-template-columns: 90px 1fr; } .coll__rose-art { width: 90px; height: 90px; }
   .grid { grid-template-columns: 1fr 1fr; gap: 24px 14px; }
   .card__name { font-size: 1rem; }
   .card__meta { font-size: .9rem; }
@@ -589,3 +590,5 @@ body[data-mode="admin"] .site-head, body[data-mode="admin"] .site-foot { display
 }
 @media (max-width: 380px) { .grid { grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; } }
+
+.site-foot .fine { color: rgba(250, 246, 238, .72); }

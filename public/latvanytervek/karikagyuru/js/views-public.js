@@ -56,7 +56,7 @@ function animateCards(root) {
 export function home(el) {
   el = fresh(el);
   const st = S();
-  const hero = store.product('maz-79008-w');
+  const hero = store.product('maz-79016-79017');
   const heroPrice = price(hero).final;
   const count = (fn) => st.products.filter((p) => p.real && fn(p)).length;
   const teaserIds = ['maz-81170-81171-y', 'maz-81184-81185-w', 'maz-81202-81203-wy'];
@@ -94,12 +94,12 @@ export function home(el) {
         <h2>Három aranyszín, egy közös mérce: hogy egy életen át jól essen viselni.</h2>
       </header>
       <div class="coll">
-        ${collTile('feher', 'Fehérarany', 'Hűvös, tiszta fény – a leggyakrabban választott szín a gyémántok mellé.', count((p) => p.baseColor === 'feher'), store.product('maz-81184-81185-w'), 'coll__a')}
-        ${collTile('sarga', 'Sárgaarany', 'A klasszikus karikagyűrű színe, meleg tónussal és időtálló formákkal.', count((p) => p.baseColor === 'sarga'), store.product('maz-81170-81171-y'), 'coll__b')}
+        ${collTile('feher', 'Fehérarany', 'Hűvös, tiszta fény – a leggyakrabban választott szín a gyémántok mellé.', count((p) => p.baseColor === 'feher'), store.product('maz-79014-w'), 'coll__a')}
+        ${collTile('sarga', 'Sárgaarany', 'A klasszikus karikagyűrű színe, meleg tónussal és időtálló formákkal.', count((p) => p.baseColor === 'sarga'), store.product('maz-81161-81162-y'), 'coll__b')}
         ${collTile('ketszinu', 'Kétszínű arany', 'Fehér- és sárgaarany egy gyűrűben, finom határvonallal.', count((p) => p.baseColor === 'ketszinu'), store.product('maz-81200-81201-wy'), 'coll__c')}
-        ${collTile('koves', 'Gyémánttal', 'Természetes gyémántok, egy kővel vagy körbe foglalva.', count((p) => !!p.rings.some((r) => r.stones)), store.product('maz-79000-w'), 'coll__d')}
+        ${collTile('koves', 'Gyémánttal', 'Természetes gyémántok, egy kővel vagy körbe foglalva.', count((p) => !!p.rings.some((r) => r.stones)), store.product('maz-79010-w'), 'coll__d')}
         <a class="coll__rose" href="#/kollekcio?szin=rose" data-reveal>
-          <div class="coll__rose-art">${ringSVG({ color: 'rose', pair: true })}</div>
+          <div class="coll__rose-art">${productMedia(store.product('maz-79016-79017'))}</div>
           <div><p class="kicker">Rozéarany</p><p>Bármelyik modell elkészülhet rozéaranyból is – a konfigurátorban egy kattintással megnézheti az árát.</p></div>
           <span class="btn-text">Rozéarany árak</span>
         </a>
@@ -343,7 +343,7 @@ export function product(el, id, query) {
           <button role="tab" data-view="szin" aria-selected="${!p.img}"><span class="pdp__thumb pdp__thumb--art" data-thumb-art></span>Színminta</button>
           ${p.img ? `<button role="tab" data-view="nagy" aria-selected="false"><span class="pdp__thumb pdp__thumb--zoom">${productMedia(p)}</span>Nagyítás</button>` : ''}
         </div>
-        <p class="fine">${p.real ? 'A fotó a karikagyuru.com jelenlegi oldaláról töltődik. A színminta programból rajzolt előnézet, nem a modell pontos képe.' : 'Bemutató-termék: rajzolt kép, nem a karikagyuru.com katalógusából.'}</p>
+        <p class="fine">${p.real ? 'A karikagyuru.com saját fotója. A színminta programból rajzolt előnézet a választott aranyszínről, nem a modell pontos képe.' : 'Bemutató-termék: rajzolt kép, nem a karikagyuru.com katalógusából.'}</p>
       </div>
 
       <div class="pdp__panel" data-panel>
@@ -477,7 +477,7 @@ function specs(p, cfg, r) {
 }
 
 function zoom(p) {
-  modal(`<div class="zoom"><img src="${esc(p.img)}" alt="${esc(p.name)}" referrerpolicy="no-referrer" onerror="this.replaceWith(Object.assign(document.createElement('p'),{textContent:'A fotó most nem érhető el – a karikagyuru.com oldaláról töltődik.'}))"><p class="fine">${esc(p.code)} · ${esc(p.name)}</p></div>`, { label: 'Nagyított fotó', wide: true });
+  modal(`<div class="zoom"><img src="${esc(p.img)}" alt="${esc(p.name)}" referrerpolicy="no-referrer" onerror="this.replaceWith(Object.assign(document.createElement('p'),{textContent:'A fotó most nem érhető el.'}))"><p class="fine">${esc(p.code)} · ${esc(p.name)}</p></div>`, { label: 'Nagyított fotó', wide: true });
 }
 
 /* ---------- Érdeklődés / konzultáció ---------- */

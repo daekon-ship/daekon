@@ -142,14 +142,19 @@ export function seedWeights(products, M, S) {
     if (p.fixedWeight || !p.listaAr) continue;
     const set = (W) => p.rings.forEach((r) => { r.weight = W * r.share; });
     const gross = (W) => { set(W); return priceProduct(p, null, M, { ...S, roundTo: 1 }, { applyOverride: false }).breakdown.gross; };
-    const lo = p.kind === 'p' ? 4.5 : 2, hi = p.kind === 'p' ? 18 : 8;
+    const lo = p.kind === 'p' ? 3.6 : 2, hi = p.kind === 'p' ? 18 : 8;
     let W = lo;
     for (let guard = 0; guard < 40; guard++) {
       const g0 = gross(0), g1 = gross(10);
       W = ((p.listaAr - g0) / (g1 - g0)) * 10;
-      const st = p.rings.find((r) => r.stones && r.stones.count > 1);
+      const st = p.rings.find((r) => r.stones);
       if (W >= lo || !st) break;
-      st.stones.count -= 1;                       // túl drága kőbeállítás: kevesebb demókő
+      // túl drága demó-kőbeállítás: előbb kisebb kőkategória, végső esetben kevesebb kő
+      const cats = [...M.diamonds].sort((a, b) => a.price - b.price);
+      const i = cats.findIndex((d) => d.id === st.stones.cat);
+      if (i > 0) st.stones.cat = cats[i - 1].id;
+      else if (st.stones.count > 1) st.stones.count -= 1;
+      else break;
     }
     W = Math.max(lo, Math.min(W, hi));
     p.rings.forEach((r) => { r.weight = round1(W * r.share); });

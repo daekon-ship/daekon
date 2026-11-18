@@ -62,9 +62,9 @@ export function productMedia(p, { color, eager = false } = {}) {
   const art = ringSVG({ color: color || p.baseColor, pair: p.kind === 'p', stones: p.rings[0].stones ? p.rings[0].stones.count : 0, label: p.name });
   if (!p.img) return `<div class="media media--art">${art}<span class="media__tag">Rajzolt demókép</span></div>`;
   return `<div class="media" data-fallback>
-    <img src="${esc(p.img)}" alt="${esc(p.name + ', ' + p.code)}" ${eager ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async" referrerpolicy="no-referrer"
+    <img src="${esc(p.img)}" alt="${esc(p.name + ', ' + p.code)}" ${eager ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async"
       onerror="this.closest('.media').classList.add('is-fallback')">
-    <div class="media__art" aria-hidden="true">${art}<span class="media__tag">A fotó a karikagyuru.com-ról töltődik</span></div>
+    <div class="media__art" aria-hidden="true">${art}<span class="media__tag">Fotó hamarosan</span></div>
   </div>`;
 }
 
