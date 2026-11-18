@@ -320,8 +320,8 @@ export function buildDemoProducts() {
     ],
     override: null, minPrice: 0, fixedWeight: true,
   });
-  list.push(silver('demo-ag-01', 'DEMÓ AG 01', 'Ezüst karikagyűrű pár – demótermék', 9, 4, 14000));
-  list.push(silver('demo-ag-02', 'DEMÓ AG 02', 'Széles ezüst karikagyűrű pár – demótermék', 14, 6, 16000));
+  // A korábbi két rajzolt ezüst demóterméket az ügyfél kérésére kivettük: csak valódi, fotós gyűrű szerepel.
+  void silver;
   return list;
 }
 

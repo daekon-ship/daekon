@@ -160,7 +160,7 @@ function materials(el) {
           </div>
           <div class="goldcard__chart"><p class="goldcard__ct">Az arany referenciaára az elmúlt hónapokban <span class="demo-chip">demó előzmény</span></p><div data-chart></div></div>
         </section>
-        ${field('silver', 'Ezüst referenciaára', 'Ft/g', 50, 'Az ezüst demótermékekre hat.')}
+        ${field('silver', 'Ezüst referenciaára', 'Ft/g', 50, 'Jelenleg nincs ezüst termék a katalógusban.')}
       </div>
       <aside class="impact" data-impact aria-live="polite"></aside>
       <div class="mimpact" data-mimpact hidden><span data-mimpact-t></span><button type="button" class="abtn abtn--gold" data-goimpact>Megnézem ↓</button></div>

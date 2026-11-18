@@ -3,7 +3,7 @@ import { store } from './store.js';
 import { BUSINESS } from './data.js';
 import * as pub from './views-public.js';
 import { adminShell, resetDemo } from './views-admin.js';
-import { $, $$, modal, M, reduced } from './ui.js';
+import { $, $$, modal, M, reduced, checkPhotos, photos } from './ui.js';
 
 const view = $('#view');
 let lastCustomer = '#/', lastAdmin = '#/admin/alapanyag';
@@ -92,3 +92,11 @@ $('[data-year]').textContent = new Date().getFullYear();
 
 addEventListener('hashchange', route);
 route();
+
+// A karikagyuru.com-ról töltődő fotók ellenőrzése: amelyik nem érhető el, az a gyűrű nem jelenik meg.
+checkPhotos(store.get().products, () => {
+  const { parts } = parse();
+  if (photos.missing.size && parts[0] !== 'admin' && (!parts[0] || parts[0] === 'kollekcio')) {
+    const y = scrollY; route(); window.scrollTo(0, y);
+  }
+});

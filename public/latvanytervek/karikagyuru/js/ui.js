@@ -59,14 +59,30 @@ export function ringSVG({ color = 'sarga', pair = true, stones = 0, label = '' }
   </svg>`;
 }
 
-/** Termékkép: a valódi fotó a karikagyuru.com-ról; ha nem tölt be, rajzolt színminta. */
-export function productMedia(p, { color, eager = false } = {}) {
-  const art = ringSVG({ color: color || p.baseColor, pair: p.kind === 'p', stones: p.rings[0].stones ? p.rings[0].stones.count : 0, label: p.name });
-  if (!p.img) return `<div class="media media--art">${art}<span class="media__tag">Rajzolt demókép</span></div>`;
-  return `<div class="media" data-fallback>
+/* Melyik távoli (karikagyuru.com-ról töltődő) fotó nem érhető el – ezeket a gyűrűket elrejtjük. */
+export const photos = { missing: new Set(), checked: false };
+export function checkPhotos(products, onDone) {
+  const remote = products.filter((p) => p.img && /^https?:/.test(p.img));
+  if (!remote.length) { photos.checked = true; onDone?.(); return; }
+  let left = remote.length;
+  const fin = () => { if (--left === 0) { photos.checked = true; onDone?.(); } };
+  remote.forEach((p) => {
+    const im = new Image();
+    const t = setTimeout(() => { photos.missing.add(p.id); im.src = ''; fin(); }, 6000);
+    im.onload = () => { clearTimeout(t); if (!im.naturalWidth) photos.missing.add(p.id); fin(); };
+    im.onerror = () => { clearTimeout(t); photos.missing.add(p.id); fin(); };
+    im.src = p.img;
+  });
+}
+export const hasPhoto = (p) => !!p.img && !photos.missing.has(p.id);
+
+/** Termékkép: csak valódi fotó. Ha nem tölt be, semleges „nincs fotó” mező – rajzolt gyűrű nincs. */
+export function productMedia(p, { eager = false } = {}) {
+  if (!p.img) return `<div class="media media--none"><span>Fotó hamarosan</span></div>`;
+  return `<div class="media">
     <img src="${esc(p.img)}" alt="${esc(p.name + ', ' + p.code)}" ${eager ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async"
       onerror="this.closest('.media').classList.add('is-fallback')">
-    <div class="media__art" aria-hidden="true">${art}<span class="media__tag">Fotó hamarosan</span></div>
+    <div class="media__none" aria-hidden="true"><span>A fotó nem érhető el</span></div>
   </div>`;
 }
 

@@ -2,7 +2,7 @@
 import { store } from './store.js';
 import { BUSINESS, COLORS, STYLES, FEATURED, BICOLOR, TERMS } from './data.js';
 import { priceProduct, defaultConfig, ft, dec, diamond, ringSplit, encodeCfg, decodeCfg } from './engine.js';
-import { $, $$, esc, productMedia, ringSVG, metalSwatch, animatePrice, modal, reveal, toast, M, reduced } from './ui.js';
+import { $, $$, esc, productMedia, hasPhoto, metalSwatch, animatePrice, modal, reveal, toast, M, reduced } from './ui.js';
 
 const S = () => store.get();
 const fresh = (el) => { const n = el.cloneNode(false); el.replaceWith(n); return n; };
@@ -75,7 +75,7 @@ export function home(el) {
   const st = S();
   const hero = store.product('maz-79016-79017');
   const heroPrice = price(hero).final;
-  const count = (fn) => st.products.filter((p) => p.real && fn(p)).length;
+  const count = (fn) => st.products.filter((p) => p.real && hasPhoto(p) && fn(p)).length;
   const teaserIds = ['maz-81170-81171-y', 'maz-81184-81185-w', 'maz-81202-81203-wy', 'maz-79016-79017', 'maz-81163-81164-y', 'maz-79014-w'];
 
   el.innerHTML = `
@@ -128,7 +128,7 @@ export function home(el) {
     <div class="wrap">
       <header class="sec__head sec__head--row" data-reveal>
         <div><p class="kicker">Kiemelt modellek</p><h2>A kollekcióból válogattuk</h2></div>
-        <a class="btn btn--line" href="#/kollekcio">Mind a ${st.products.filter((p) => p.real).length} modell</a>
+        <a class="btn btn--line" href="#/kollekcio">Mind a ${st.products.filter((p) => hasPhoto(p)).length} modell</a>
       </header>
       <div class="grid" data-reveal>${FEATURED.map((id) => card(store.product(id))).join('')}</div>
     </div>
@@ -211,7 +211,7 @@ export function home(el) {
     if (p.stoneOptional && !t.stones) cfg.rings.forEach((r) => (r.stones = false));
     $('[data-tstonerow]', el).hidden = !p.stoneOptional;
     $$('[data-st]', el).forEach((b) => b.setAttribute('aria-pressed', String((b.dataset.st === '1') === t.stones)));
-    $('[data-tmedia]', el).innerHTML = `<div class="calc__ring ${cfg.color === p.baseColor ? 'calc__ring--photo' : ''}">${cfg.color === p.baseColor ? productMedia(p) : ringSVG({ color: cfg.color, pair: p.kind === 'p', stones: p.rings[0].stones?.count || 0 })}</div><p class="calc__name">${esc(p.name)}${cfg.color === p.baseColor ? '' : ` <span class="hint">– ${colorLabel(cfg.color).toLowerCase()} színminta</span>`}</p>`;
+    $('[data-tmedia]', el).innerHTML = `<div class="calc__ring calc__ring--photo">${productMedia(p)}</div><p class="calc__name">${esc(p.name)}</p>${cfg.color === p.baseColor ? '' : `<p class="colornote"><span class="sw sw--sm" style="--sw:${metalSwatch(cfg.color)}"></span>A fotón ${colorLabel(p.baseColor).toLowerCase()} – ${colorLabel(cfg.color).toLowerCase()} színben készül el.</p>`}`;
     $('[data-tcolor]', el).innerHTML = p.colors.map((c) => `<button class="sw" style="--sw:${metalSwatch(c)}" aria-pressed="${c === cfg.color}" data-c="${c}" title="${colorLabel(c)}"><span class="sr">${colorLabel(c)}</span></button>`).join('');
     animatePrice($('[data-tprice]', el), price(p, cfg).final);
     const def = JSON.stringify(cfg) === JSON.stringify(defaultConfig(p));
@@ -275,7 +275,7 @@ export function catalog(el, query) {
     <button class="btn btn--line shop__open" type="button" data-open-filters>Szűrés és rendezés <span data-fcount></span></button>
     <aside class="filters" data-filters aria-label="Szűrők">
       <div class="filters__head"><h2>Szűrés</h2><button class="filters__close" type="button" data-close-filters aria-label="Szűrők bezárása">×</button></div>
-      <fieldset><legend>Arany színe</legend><div class="chips">${chip('szin', 'mind', 'Mind')}${chip('szin', 'sarga', 'Sárga')}${chip('szin', 'feher', 'Fehér')}${chip('szin', 'rose', 'Rozé')}${chip('szin', 'ketszinu', 'Kétszínű')}${chip('szin', 'ezust', 'Ezüst')}</div></fieldset>
+      <fieldset><legend>Arany színe</legend><div class="chips">${chip('szin', 'mind', 'Mind')}${chip('szin', 'sarga', 'Sárga')}${chip('szin', 'feher', 'Fehér')}${chip('szin', 'rose', 'Rozé')}${chip('szin', 'ketszinu', 'Kétszínű')}</div></fieldset>
       <fieldset><legend>Finomság – ezzel számolt árak</legend><div class="chips">${chip('karat', 14, '14K · 585')}${chip('karat', 18, '18K · 750')}</div></fieldset>
       <fieldset><legend>Kövek</legend><div class="chips">${chip('ko', 'mind', 'Mind')}${chip('ko', 'nelkul', 'Kő nélkül')}${chip('ko', 'koves', 'Köves')}</div></fieldset>
       <fieldset><legend>Stílus</legend><div class="chips">${chip('stilus', 'mind', 'Mind')}${Object.entries(STYLES).map(([k, v]) => chip('stilus', k, v)).join('')}</div></fieldset>
@@ -302,6 +302,7 @@ export function catalog(el, query) {
   const paint = () => {
     const k = F.karat;
     let list = all.filter((p) => {
+      if (!hasPhoto(p)) return false;
       if (F.szin !== 'mind') {
         if (F.szin === 'rose') { if (!p.colors.includes('rose') && !(BICOLOR[p.baseColor] || []).includes('rose')) return false; }
         else if (F.szin === 'ketszinu') { if (!BICOLOR[p.baseColor]) return false; }
@@ -378,7 +379,7 @@ export function product(el, id, query) {
   let cfg = (query?.get('k') && decodeCfg(query.get('k'), p)) || defaultConfig(p);
   const qc = query?.get('szin');
   if (!query?.get('k') && qc && p.colors.includes(qc)) cfg.color = qc;
-  let tab = 0, view = cfg.color === p.baseColor ? 'foto' : 'szin';
+  let tab = 0, view = 'foto';
   const pair = p.kind === 'p';
   const multiColor = p.colors.length > 1, multiKarat = p.karats.length > 1;
 
@@ -390,10 +391,10 @@ export function product(el, id, query) {
         <div class="pdp__stage" data-stage></div>
         <div class="pdp__thumbs" role="tablist" aria-label="Nézet">
           ${p.img ? `<button role="tab" data-view="foto" aria-selected="true"><span class="pdp__thumb">${productMedia(p)}</span>Fotó</button>` : ''}
-          <button role="tab" data-view="szin" aria-selected="${!p.img}"><span class="pdp__thumb pdp__thumb--art" data-thumb-art></span>Színminta</button>
           ${p.img ? `<button role="tab" data-view="nagy" aria-selected="false"><span class="pdp__thumb pdp__thumb--zoom">${productMedia(p)}</span>Nagyítás</button>` : ''}
         </div>
-        <p class="fine">${p.real ? 'A karikagyuru.com saját fotója. A színminta programból rajzolt előnézet a választott aranyszínről, nem a modell pontos képe.' : 'Bemutató-termék: rajzolt kép, nem a karikagyuru.com katalógusából.'}</p>
+        <p class="fine">A karikagyuru.com saját fotója.</p>
+        <p class="colornote" data-colornote hidden></p>
         <div class="pdp__trust">
           <p><b>Rendelésre, az Önök méretére</b><span>Minden gyűrű a konzultáció után készül el.</span></p>
           <p><b>Természetes gyémántok</b><span>Díszítésre csak természetes követ használunk.</span></p>
@@ -489,18 +490,12 @@ export function product(el, id, query) {
     const r = price(p, cfg);
     const cur = r.final;
     // galéria
-    const art = ringSVG({ color: cfg.color, pair, stones: cfg.rings[0].stones && p.rings[0].stones ? p.rings[0].stones.count : 0, label: `${p.name} – ${colorLabel(cfg.color)} színminta` });
     const stage = $('[data-stage]', el);
-    stage.className = 'pdp__stage pdp__stage--' + view;
-    const key = view + cfg.color + cfg.rings[0].stones;
-    if (first || stage.dataset.v !== key) {
-      stage.dataset.v = key;
-      stage.innerHTML = view === 'szin' || !p.img
-        ? `<div class="pdp__art">${art}<span class="media__tag">Színminta – ${colorLabel(cfg.color)}</span></div>`
-        : productMedia(p, { eager: true });
-      if (M() && !reduced() && !first) M().animate(stage.firstElementChild, { opacity: [0, 1] }, { duration: 0.4 });
-    }
-    const ta = $('[data-thumb-art]', el); if (ta) ta.innerHTML = art;
+    stage.className = 'pdp__stage pdp__stage--foto';
+    if (first) stage.innerHTML = productMedia(p, { eager: true });
+    const cn = $('[data-colornote]', el);
+    cn.hidden = cfg.color === p.baseColor;
+    cn.innerHTML = `<span class="sw sw--sm" style="--sw:${metalSwatch(cfg.color)}"></span>A fotón ${colorLabel(p.baseColor).toLowerCase()} látható – az Ön gyűrűje ${colorLabel(cfg.color).toLowerCase()} színben készül el.`;
     $$('[data-view]', el).forEach((b) => b.setAttribute('aria-selected', b.dataset.view === view));
 
     // 1. szín
@@ -564,9 +559,9 @@ export function product(el, id, query) {
     const c = t.closest('[data-color]'), k = t.closest('[data-karat]'), tb = t.closest('[data-tab]'), sz = t.closest('[data-size]'),
           w = t.closest('[data-width]'), s = t.closest('[data-stones]'), v = t.closest('[data-view]'), q = t.closest('[data-inquire]'),
           mx = t.closest('[data-mx]'), fo = t.closest('[data-font]');
-    if (c) { cfg.color = c.dataset.color; view = p.img && cfg.color === p.baseColor ? 'foto' : 'szin'; }
+    if (c) cfg.color = c.dataset.color;
     else if (k) cfg.karat = Number(k.dataset.karat);
-    else if (mx) { const [cc, kk] = mx.dataset.mx.split('|'); cfg.color = cc; cfg.karat = Number(kk); view = p.img && cc === p.baseColor ? 'foto' : 'szin'; }
+    else if (mx) { const [cc, kk] = mx.dataset.mx.split('|'); cfg.color = cc; cfg.karat = Number(kk); }
     else if (tb) tab = Number(tb.dataset.tab);
     else if (sz) { const [lo, hi] = sizes(tab); cfg.rings[tab].size = Math.min(hi, Math.max(lo, cfg.rings[tab].size + Number(sz.dataset.size))); }
     else if (w) cfg.rings[tab].width = Number(w.dataset.width);
@@ -576,7 +571,7 @@ export function product(el, id, query) {
     else if (q) { inquiry(p, cfg, q.dataset.inquire); return; }
     else if (t.closest('[data-sizehelp]')) { sizeHelp(sizes(tab), (n) => { cfg.rings[tab].size = n; cfg.rings[tab].sizeUnknown = false; paint(); }); return; }
     else if (t.closest('[data-share]')) { share(); return; }
-    else if (t.closest('[data-resetcfg]')) { cfg = defaultConfig(p); tab = 0; view = p.img ? 'foto' : 'szin'; }
+    else if (t.closest('[data-resetcfg]')) { cfg = defaultConfig(p); tab = 0; }
     else if (t.closest('.pdp__stage--foto')) { zoom(p); return; }
     else return;
     paint();

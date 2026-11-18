@@ -51,7 +51,12 @@ Az állapot közös (`js/store.js`, `localStorage` kulcs: `karikagyuru-demo-v1`)
 - Kollekció és admin lista 24/30-asával tölt, „Továbbiak mutatása” gombbal.
 - A bemutató állapota új kulcson indul (`karikagyuru-demo-v3`).
 
-## Bemutató forgatókönyv (kb. 3 perc)
+## 8. kör (2026.11.18.) – nincs rajzolt („kamu”) gyűrű
+- A vásárlói oldalon sehol nincs programból rajzolt gyűrűkép: kikerült a „Színminta” nézet, a kalkulátor-előzetes rajza és a két ezüst demótermék.
+- Más aranyszín választásakor a valódi fotó marad, alatta felirat: „A fotón fehérarany látható – az Ön gyűrűje rozéarany színben készül el.”
+- A karikagyuru.com-ról töltődő fotókat az oldal betöltéskor ellenőrzi; amelyik nem érhető el, az a gyűrű nem jelenik meg a kollekcióban és a kezdőlapon (az adminban „a fotó nem érhető el” jelzéssel látszik). Biztosan a helyben tárolt 30 saját fotós gyűrű látszik; a többi csak akkor, ha a karikagyuru.com kiszolgálja a képet.
+- Az ezüst referenciaár mezője megmaradt az adminban, de jelenleg nincs ezüst termék.
+ (kb. 3 perc)
 1. Vásárlói nézet → Kollekció. 2. MAZ 81184 - 81185 W megnyitása (410 500 Ft). 3. Felső sáv: Adminisztrátori nézet. 4. 24K színarany: 39 000 → 45 000 Ft/g (vagy „Kipróbálom” gomb). 5. Új árak alkalmazása (30 gyűrű, átlag +8,8%). 6. „Megnézem a katalógusban”. 7. A kártyákon „Frissült ár”, az ár felszámol 441 500 Ft-ra.
 Utána: „Demóadatok visszaállítása”.
 
