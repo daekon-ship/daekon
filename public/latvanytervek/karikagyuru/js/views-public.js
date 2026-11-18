@@ -439,7 +439,7 @@ export function product(el, id, query) {
   const engravePreview = (rc) => {
     const m = { sarga: ['#F3DA9B', '#C99B4C'], feher: ['#F4F5F6', '#BFC4C8'], rose: ['#F5D3C1', '#C98C72'], ezust: ['#F7F8F9', '#C3C8CC'], ketszinu: ['#F4F5F6', '#C99B4C'] }[cfg.color] || ['#eee', '#bbb'];
     const txt = rc.engraving || 'Az Önök szövege itt jelenik meg';
-    const style = rc.font ? `font-family:'Bodoni Moda',serif;font-style:italic;font-weight:500;font-size:19px` : `font-family:Jost,sans-serif;font-weight:500;font-size:15px;letter-spacing:2.5px`;
+    const style = rc.font ? `font-family:'Libre Baskerville',serif;font-style:italic;font-weight:400;font-size:17px` : `font-family:Jost,sans-serif;font-weight:500;font-size:15px;letter-spacing:2.5px`;
     return `<svg class="engrave" viewBox="0 0 360 64" role="img" aria-label="Gravírozás előnézete">
       <defs><linearGradient id="eg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${m[1]}"/><stop offset=".35" stop-color="${m[0]}"/><stop offset=".7" stop-color="${m[0]}"/><stop offset="1" stop-color="${m[1]}"/></linearGradient></defs>
       <rect x="1" y="6" width="358" height="52" rx="26" fill="url(#eg)" stroke="rgba(0,0,0,.12)"/>
