@@ -94,7 +94,7 @@ export function home(el) {
       <figure class="hero__stage">
         <div class="hero__ring">
           <svg class="hero__orbit" viewBox="0 0 400 400" aria-hidden="true"><circle cx="200" cy="200" r="196" pathLength="1"/><circle class="hero__orbit2" cx="200" cy="200" r="172" pathLength="1"/></svg>
-          <div class="hero__disc">${productMedia(hero, { eager: true })}</div>
+          <div class="hero__disc">${productMedia(hero, { eager: true, large: true })}</div>
         </div>
         <figcaption class="hero__cap">
           <a href="#/gyuru/${hero.id}"><span>${esc(hero.code)}</span><b>${esc(hero.name)}</b>
@@ -514,7 +514,7 @@ export function product(el, id, query) {
     // galéria
     const stage = $('[data-stage]', el);
     stage.className = 'pdp__stage pdp__stage--foto';
-    if (first) stage.innerHTML = productMedia(p, { eager: true });
+    if (first) stage.innerHTML = productMedia(p, { eager: true, large: true });
     const cn = $('[data-colornote]', el);
     cn.hidden = cfg.color === p.baseColor;
     cn.innerHTML = `<span class="sw sw--sm" style="--sw:${metalSwatch(cfg.color)}"></span>A fotón ${colorLabel(p.baseColor).toLowerCase()} látható – az Ön gyűrűje ${colorLabel(cfg.color).toLowerCase()} színben készül el.`;

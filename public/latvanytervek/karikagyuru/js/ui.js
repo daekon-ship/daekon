@@ -77,10 +77,11 @@ export function checkPhotos(products, onDone) {
 export const hasPhoto = (p) => !!p.img && !photos.missing.has(p.id);
 
 /** Termékkép: csak valódi fotó. Ha nem tölt be, semleges „nincs fotó” mező – rajzolt gyűrű nincs. */
-export function productMedia(p, { eager = false } = {}) {
+export function productMedia(p, { eager = false, large = false } = {}) {
+  const local = !!p.img && !/^https?:/.test(p.img);
   if (!p.img) return `<div class="media media--none"><span>Fotó hamarosan</span></div>`;
   return `<div class="media${p.imgFill ? ' media--fill' : ''}">
-    <img src="${esc(p.img)}" alt="${esc(p.name + ', ' + p.code)}" ${eager ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async"
+    <img src="${esc(local ? p.img.replace('.jpg', '-800.jpg') : p.img)}"${local ? ` srcset="${esc(p.img.replace('.jpg', '-800.jpg'))} 800w, ${esc(p.img)} 1600w" sizes="${large ? '(max-width: 960px) 90vw, 560px' : '(max-width: 640px) 34vw, 220px'}"` : ''} alt="${esc(p.name + ', ' + p.code)}" ${eager ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async"
       onerror="this.closest('.media').classList.add('is-fallback')">
     <div class="media__none" aria-hidden="true"><span>A fotó nem érhető el</span></div>
   </div>`;
