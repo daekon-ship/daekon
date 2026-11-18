@@ -34,12 +34,12 @@ export const BUSINESS = {
 
 /* A rendelés menete és feltételei – a karikagyuru.com ÁSZF-je alapján */
 export const TERMS = [
-  ['Személyes egyeztetés', 'A legtöbb gyűrű rendelésre készül, ezért a pontos ujjméretet és a részleteket személyesen vesszük fel a Bláthy Ottó utcai üzletben.'],
-  ['Előleg', 'Egyedileg készülő gyűrűnél a választott termék árának felét kérjük előlegként, a személyes találkozón. Az átvételi elismervény két példányban készül.'],
-  ['Elkészítés', 'A megrendeléseket munkanapokon, legfeljebb 3 munkanapon belül feldolgozzuk. Az elkészítési határidőt egyedileg egyeztetjük, és telefonon vagy e-mailben szólunk, amikor a gyűrű elkészült.'],
-  ['Átvétel és fizetés', 'A gyűrűt személyesen veheti át az üzletben, ekkor fizeti a fennmaradó összeget készpénzben vagy átutalással. Az árak az ÁFA-t tartalmazzák.'],
-  ['Garancia', 'Az ékszerekre az átadástól számított 1 év jótállás vonatkozik. A méretváltoztatás és a nem rendeltetésszerű használat nem tartozik bele.'],
-  ['Elállás', 'Az egyedi méretre, egyedi kérés szerint készült karikagyűrűre az elállási jog nem vonatkozik – ezért is egyeztetünk mindent előre, személyesen.'],
+  ['Személyesen', 'A méretet és a részleteket a Bláthy Ottó utcai üzletben egyeztetjük.'],
+  ['Előleg', 'Egyedi gyűrűnél az ár fele, a megrendeléskor.'],
+  ['Határidő', 'Feldolgozás 3 munkanapon belül, a kész dátumot egyeztetjük.'],
+  ['Átvétel', 'Személyesen, ekkor fizeti a maradékot készpénzzel vagy átutalással.'],
+  ['Garancia', '1 év jótállás. A méretváltoztatás nem tartozik bele.'],
+  ['Elállás', 'Egyedi méretre készült gyűrűre nincs elállási jog.'],
 ];
 
 export const REMOTE_IMG = 'https://karikagyuru.com/public/layout/pictures/karikagyuru/';

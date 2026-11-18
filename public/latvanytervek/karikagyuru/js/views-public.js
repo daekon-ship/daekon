@@ -84,7 +84,7 @@ export function home(el) {
       <div class="hero__text">
         <p class="eyebrow" data-hero>${stamp(14)}${stamp(18)}<span>Karikagyűrűk és leánykérő gyűrűk · Budapest</span></p>
         <h1 data-hero>Egy életre szóló választás.</h1>
-        <p class="lead" data-hero>Karikagyűrűk sárga-, fehér- és rozéaranyból, akár saját terv alapján. Minden pár rendelésre, az Önök méretére készül – a végső formát személyesen, nyugodt körülmények között beszéljük meg.</p>
+        <p class="lead" data-hero>Karikagyűrűk és eljegyzési gyűrűk sárga-, fehér- és rozéaranyból. Minden pár rendelésre, az Önök méretére készül, Budapesten, a VIII. kerületben.</p>
         <div class="hero__cta" data-hero>
           <a class="btn btn--dark" href="#/kollekcio">Fedezze fel kollekciónkat</a>
           <a class="btn btn--line" href="#/kapcsolat">Személyes konzultáció</a>
@@ -107,17 +107,17 @@ export function home(el) {
   <section class="sec">
     <div class="wrap">
       <header class="sec__head" data-reveal>
-        <p class="kicker">Kollekciók</p>
-        <h2>Három aranyszín, egy közös mérce: hogy egy életen át jól essen viselni.</h2>
+        
+        <h2>Válasszon aranyszín szerint</h2>
       </header>
       <div class="coll">
-        ${collTile('feher', 'Fehérarany', 'Hűvös, tiszta fény – a leggyakrabban választott szín a gyémántok mellé.', count((p) => p.baseColor === 'feher'), store.product('maz-79014-w'), 'coll__a')}
-        ${collTile('sarga', 'Sárgaarany', 'A klasszikus karikagyűrű színe, meleg tónussal és időtálló formákkal.', count((p) => p.baseColor === 'sarga'), store.product('maz-81161-81162-y'), 'coll__b')}
-        ${collTile('ketszinu', 'Kétszínű arany', 'Fehér, sárga és rozé arany párosítva egy gyűrűben, finom határvonallal.', count((p) => !!BICOLOR[p.baseColor]), store.product('maz-81200-81201-wy'), 'coll__c')}
-        ${collTile('koves', 'Gyémánttal', 'Természetes gyémántok, egy kővel vagy körbe foglalva.', count((p) => !!p.rings.some((r) => r.stones)), store.product('maz-79010-w'), 'coll__d')}
+        ${collTile('feher', 'Fehérarany', 'A legtöbbet választott szín, gyémánttal is.', count((p) => p.baseColor === 'feher'), store.product('maz-79014-w'), 'coll__a')}
+        ${collTile('sarga', 'Sárgaarany', 'A klasszikus karikagyűrű.', count((p) => p.baseColor === 'sarga'), store.product('maz-81161-81162-y'), 'coll__b')}
+        ${collTile('ketszinu', 'Kétszínű arany', 'Két aranyszín egy gyűrűben.', count((p) => !!BICOLOR[p.baseColor]), store.product('maz-81200-81201-wy'), 'coll__c')}
+        ${collTile('koves', 'Gyémánttal', 'Egy kővel vagy körbe foglalva.', count((p) => !!p.rings.some((r) => r.stones)), store.product('maz-79010-w'), 'coll__d')}
         <a class="coll__rose" href="#/kollekcio?szin=rose" data-reveal>
           <div class="coll__rose-art">${productMedia(store.product('maz-79016-79017'))}</div>
-          <div><p class="kicker">Rozéarany</p><p>Bármelyik modell elkészülhet rozéaranyból is – a konfigurátorban egy kattintással megnézheti az árát.</p></div>
+          <div><p class="kicker">Rozéarany</p><p>Bármelyik modell kérhető rozéaranyból is. Az árát a gyűrű oldalán látja.</p></div>
           <span class="btn-text">Rozéarany árak</span>
         </a>
       </div>
@@ -127,7 +127,7 @@ export function home(el) {
   <section class="sec sec--paper">
     <div class="wrap">
       <header class="sec__head sec__head--row" data-reveal>
-        <div><p class="kicker">Kiemelt modellek</p><h2>A kollekcióból válogattuk</h2></div>
+        <div><h2>Népszerű modellek</h2></div>
         <a class="btn btn--line" href="#/kollekcio">Mind a ${st.products.filter((p) => hasPhoto(p)).length} modell</a>
       </header>
       <div class="grid grid--dense grid--featured" data-reveal>${FEATURED.map((id) => card(store.product(id))).join('')}</div>
@@ -137,17 +137,17 @@ export function home(el) {
   <section class="sec" id="egyedi">
     <div class="wrap">
       <header class="sec__head" data-reveal>
-        <p class="kicker">Egyedi készítés</p>
-        <h2>A rajztól a kész gyűrűig – négy nyugodt lépésben</h2>
-        <p class="sec__lead">Meglévő modellt is átalakítunk, de saját elképzelés vagy egy fénykép alapján is elkészítjük a gyűrűt. A karikagyűrűk mellett platinából, palládiumból, titánból és acélból is dolgozunk.</p>
+        
+        <h2>Így készül a gyűrűjük</h2>
+        <p class="sec__lead">Katalógusból, átalakított modellből vagy saját terv, akár egy fénykép alapján. Aranyon kívül platinából, palládiumból, titánból és acélból is.</p>
       </header>
       <ol class="steps">
         ${[
-          ['Időpont', 'Telefonon vagy üzenetben egyeztetünk – akár munkaidő után vagy hétvégén is.'],
-          ['Konzultáció', 'Felpróbálják a mintagyűrűket, megmérjük a pontos méretet, kiválasztják a színt, a szélességet és a felületet.'],
-          ['Ajánlat és terv', 'Az aznapi alapanyagár alapján írásos ajánlatot kapnak; egyedi tervnél a rajzot is együtt véglegesítjük.'],
-          ['Elkészítés', 'A gyűrűk rendelésre, az Önök méretére készülnek. Átvételkor még egyszer felpróbálják őket.'],
-        ].map(([t, d], i) => `<li data-reveal="${i * 0.08}"><span class="steps__n">${['I', 'II', 'III', 'IV'][i]}</span><h3>${t}</h3><p>${d}</p></li>`).join('')}
+          ['Időpont', 'Hívjon, vagy írjon. Munkaidő után és hétvégén is megoldjuk.'],
+          ['Konzultáció', 'Felpróbálják a mintagyűrűket, megmérjük az ujjméretet, kiválasztják a színt és a szélességet.'],
+          ['Ajánlat és terv', 'Írásos ajánlatot kapnak az aznapi aranyárral. Előleg: az ár fele.'],
+          ['Elkészítés', 'Szólunk, ha kész. Átvételkor felpróbálják, és kifizetik a maradékot.'],
+        ].map(([t, d], i) => `<li data-reveal="${i * 0.08}"><span class="steps__n">${i + 1}</span><h3>${t}</h3><p>${d}</p></li>`).join('')}
       </ol>
     </div>
   </section>
@@ -155,13 +155,13 @@ export function home(el) {
   <section class="sec sec--sand">
     <div class="wrap why">
       <div class="why__quote" data-reveal>
-        <p class="kicker">Miért személyesen?</p>
-        <h2>A karikagyűrűt nem a képernyőn hordják, hanem a kezükön.</h2>
+        
+        <h2>Miért érdemes bejönni?</h2>
       </div>
       <ul class="why__list">
-        <li data-reveal><h3>A méret az ujjon dől el</h3><p>Egy széles gyűrű szorosabbnak érződik, mint egy keskeny, ugyanabban a méretben. A mintagyűrűkkel ezt pár perc alatt kipróbálják.</p></li>
-        <li data-reveal=".08"><h3>Az arany színe a fényben más</h3><p>A fehér-, sárga- és rozéarany árnyalata bőrszínnel és nappali fényben mutatja meg igazán magát.</p></li>
-        <li data-reveal=".16"><h3>Kettőjüknek egyszerre</h3><p>A pár két gyűrűje eltérő szélességgel, kővel vagy anélkül is összeillhet – ezt együtt könnyebb eldönteni.</p></li>
+        <li data-reveal><h3>Pontos méret</h3><p>A széles gyűrű szorosabb, mint a keskeny ugyanabban a méretben. Mintagyűrűvel pár perc alatt kiderül.</p></li>
+        <li data-reveal=".08"><h3>Valódi szín</h3><p>Az arany színe a kezén más, mint a képernyőn. Itt egymás mellett összehasonlíthatók.</p></li>
+        <li data-reveal=".16"><h3>Kettesben</h3><p>A két gyűrű lehet eltérő szélességű, kővel vagy anélkül. Ezt együtt könnyebb eldönteni.</p></li>
       </ul>
     </div>
   </section>
@@ -169,10 +169,10 @@ export function home(el) {
   <section class="sec" id="arkalkulator">
     <div class="wrap calc">
       <div class="calc__text" data-reveal>
-        <p class="kicker">Árkalkulátor</p>
-        <h2>Az ár azonnal követi, amit választ</h2>
-        <p>Minden modellnél kiválaszthatja az arany színét és finomságát, a két gyűrű méretét, a köveket és a gravírozást – a becsült ár közben folyamatosan frissül. Az árak az aktuális alapanyagárból számolódnak, így mindig naprakész becslést lát.</p>
-        <p class="fine">A kalkulátor tájékoztató árat mutat. A végleges ajánlat személyes egyeztetés során készül.</p>
+        
+        <h2>Nézze meg, mennyibe kerül</h2>
+        <p>Válasszon modellt, aranyszínt és finomságot, az ár azonnal frissül. A gyűrű oldalán a méret, a kövek és a gravírozás is beállítható.</p>
+        <p class="fine">Tájékoztató ár, a végleges árat személyesen adjuk meg.</p>
       </div>
       <div class="calc__box" data-reveal=".1">
         <p class="calc__step"><span>1</span>Válasszon modellt</p>
@@ -183,7 +183,7 @@ export function home(el) {
         <div class="calc__row"><span>Szín</span><div class="swatches" data-tcolor></div></div>
         <div class="calc__row" data-tstonerow hidden><span>Kövek</span><div class="seg" data-tstones><button data-st="1" aria-pressed="true">Gyémánttal</button><button data-st="0" aria-pressed="false">Kő nélkül</button></div></div>
         <div class="calc__price"><span>Becsült ár ${demoMark()}</span><strong class="price" data-tprice></strong></div>
-        <a class="btn btn--dark btn--full" data-tlink href="#">Tovább a részletekhez: méret, gravírozás</a>
+        <a class="btn btn--dark btn--full" data-tlink href="#">Méret és gravírozás beállítása</a>
       </div>
     </div>
   </section>
@@ -191,9 +191,9 @@ export function home(el) {
   <section class="sec sec--paper" id="rendeles">
     <div class="wrap">
       <header class="sec__head" data-reveal>
-        <p class="kicker">Rendelés, előleg, garancia</p>
-        <h2>Így zajlik a rendelés – előre, egyértelműen</h2>
-        <p class="sec__lead">A karikagyuru.com általános szerződési feltételei alapján, röviden.</p>
+        
+        <h2>Rendelés, előleg, garancia</h2>
+        <p class="sec__lead">Az ÁSZF lényege röviden.</p>
       </header>
       <ol class="terms">${TERMS.map(([t, d], i) => `<li data-reveal="${(i % 3) * 0.06}"><span class="terms__n">${i + 1}</span><h3>${t}</h3><p>${d}</p></li>`).join('')}</ol>
     </div>
@@ -268,7 +268,7 @@ export function catalog(el, query) {
     <div class="wrap">
       <p class="crumbs"><a href="#/">Kezdőlap</a> / Kollekció</p>
       <h1>Kollekció</h1>
-      <p class="sec__lead">Minden modell rendelésre készül. A feltüntetett árak becsült indulóárak az alapméretre – a pontos ár a választott paraméterektől függ.</p>
+      <p class="sec__lead">Minden modell rendelésre készül. Az árak alapméretre vonatkoznak, a pontos árat a gyűrű oldalán számolja ki.</p>
     </div>
   </section>
   <section class="wrap shop">
@@ -418,9 +418,9 @@ export function product(el, id, query) {
         <p class="fine">A karikagyuru.com saját fotója.</p>
         <p class="colornote" data-colornote hidden></p>
         <div class="pdp__trust">
-          <p><b>Rendelésre, az Önök méretére</b><span>Minden gyűrű a konzultáció után készül el.</span></p>
-          <p><b>Természetes gyémántok</b><span>Díszítésre csak természetes követ használunk.</span></p>
-          <p><b>Időpont akár hétvégén</b><span>Előzetes egyeztetés után munkaidőn túl is.</span></p>
+          <p><b>Rendelésre készül</b><span>Az Önök méretére, egyeztetés után.</span></p>
+          <p><b>Természetes gyémánt</b><span>Csak valódi kővel dolgozunk.</span></p>
+          <p><b>Hétvégén is</b><span>Időpont-egyeztetéssel.</span></p>
         </div>
       </div>
 
@@ -449,7 +449,7 @@ export function product(el, id, query) {
             <div data-ringopts></div>
           </li>
           ${multiColor || multiKarat ? `<li class="cfg__step">
-            <header><span class="cfg__n">${2 + multiColor + multiKarat}</span><h2>Árak egy pillantásra</h2><span class="cfg__val">a mostani méretekkel</span></header>
+            <header><span class="cfg__n">${2 + multiColor + multiKarat}</span><h2>Árak színenként</h2><span class="cfg__val">a mostani méretekkel</span></header>
             <div data-matrix></div>
           </li>` : ''}
         </ol>
@@ -464,7 +464,7 @@ export function product(el, id, query) {
           </div>
           <a class="pdp__phone" href="${BUSINESS.phoneHref}">vagy hívjon: <b>${BUSINESS.phone}</b></a>
         </div>
-        <p class="notice">Ez tájékoztató ár. A végleges ajánlat személyes egyeztetés során készül, a pontos méret, a kész tömeg és az aznapi alapanyagár alapján.</p>
+        <p class="notice">Tájékoztató ár. A végleges árat személyesen adjuk meg, a pontos méret és az aznapi aranyár alapján.</p>
       </div>
     </div>
 
@@ -646,7 +646,7 @@ function productOnRequest(el, p) {
         <p class="card__code">${esc(p.code)}</p>
         <h1 class="pdp__title">${esc(p.name)}</h1>
         <div class="pdp__price"><span>Ár</span><strong class="price price--big">Egyedi ajánlat alapján</strong>
-          <small>Ennél a modellnél a karikagyuru.com sem tüntet fel árat – a pontos ajánlatot személyesen adjuk meg.</small></div>
+          <small>Az árat személyesen adjuk meg.</small></div>
         <div class="pdp__ctas">
           <button class="btn btn--dark btn--full" type="button" data-inquire="erdeklodes">Árajánlatot kérek erre a gyűrűre</button>
           <button class="btn btn--line btn--full" type="button" data-inquire="konzultacio">Személyes konzultációt kérek</button>
@@ -720,7 +720,7 @@ export function inquiry(p, cfg, type = 'erdeklodes', onRequest = false) {
   modal(`
     <form class="form" data-inq novalidate>
       <p class="kicker">${type === 'konzultacio' ? 'Személyes konzultáció' : 'Érdeklődés'}</p>
-      <h2>${p ? 'Érdeklődés erről a gyűrűről' : 'Időpont-egyeztetés'}</h2>
+      <h2>${p ? 'Kérdése van erről a gyűrűről?' : 'Időpontkérés'}</h2>
       ${p ? `<div class="form__cfg"><pre>${esc(summary)}</pre>${r ? `<p>Becsült ár: <b>${ft(r.final)}</b> ${demoMark()}</p>` : '<p>Ár: egyedi ajánlat alapján</p>'}</div>` : ''}
       <div class="seg seg--lg" role="radiogroup" aria-label="Kérés típusa">
         <button type="button" data-type="erdeklodes" aria-pressed="${type === 'erdeklodes'}">Kérdésem van</button>
@@ -751,7 +751,7 @@ export function inquiry(p, cfg, type = 'erdeklodes', onRequest = false) {
         if (!d.nev.trim() || !d.tel.trim()) { $('[data-err]', f).hidden = false; return; }
         store.addInquiry({ type: t, name: d.nev, phone: d.tel, email: d.email, day: d.nap, message: d.uzenet,
           productId: p?.id || null, code: p?.code || null, config: p && !onRequest ? JSON.parse(JSON.stringify(cfg)) : null, summary, estimate: r?.final || null });
-        box.innerHTML = `<div class="form form--done"><p class="kicker">Köszönjük</p><h2>Megkaptuk – hamarosan visszahívjuk.</h2>
+        box.innerHTML = `<div class="form form--done"><p class="kicker">Köszönjük</p><h2>Köszönjük, hamarosan hívjuk.</h2>
           <p>Bemutató módban az üzenet nem került elküldésre. Az adminfelület „Érdeklődések” menüjében most már látható, a kiválasztott cikkszámmal és konfigurációval együtt.</p>
           <button class="btn btn--line" type="button" data-close>Rendben</button></div>`;
       });
@@ -764,8 +764,8 @@ function contactBlock() {
   return `<section class="sec sec--ink" id="kapcsolat">
     <div class="wrap contact">
       <div data-reveal>
-        <p class="kicker">Kapcsolat és időpont</p>
-        <h2>Jöjjenek el, és próbálják fel nyugodtan.</h2>
+        
+        <h2>Kérjen időpontot</h2>
         <p>${esc(BUSINESS.hours)}</p>
         <dl class="contact__dl">
           <div><dt>Telefon</dt><dd><a href="${BUSINESS.phoneHref}">${BUSINESS.phone}</a></dd></div>
@@ -775,7 +775,7 @@ function contactBlock() {
       </div>
       <div class="contact__card" data-reveal=".1">
         <h3>Időpontot kérek</h3>
-        <p>Hagyja meg a nevét és a telefonszámát, és visszahívjuk egy kényelmes időpont miatt.</p>
+        <p>Adja meg a nevét és a telefonszámát, visszahívjuk.</p>
         <button class="btn btn--gold btn--full" type="button" data-book>Időpont-egyeztetés</button>
         <a class="btn btn--ghost btn--full" href="${BUSINESS.phoneHref}">Hívás: ${BUSINESS.phone}</a>
       </div>
@@ -787,7 +787,7 @@ function bindContact(el) { el.addEventListener('click', (e) => { if (e.target.cl
 export function contact(el) {
   el = fresh(el);
   el.innerHTML = `<section class="page-head"><div class="wrap"><p class="crumbs"><a href="#/">Kezdőlap</a> / Kapcsolat</p><h1>Személyes konzultáció</h1>
-    <p class="sec__lead">A gyűrűválasztás nálunk beszélgetéssel kezdődik: felpróbálják a mintagyűrűket, megmérjük a méretet, és megbeszéljük, mitől lesz a sajátjuk.</p></div></section>${contactBlock()}`;
+    <p class="sec__lead">Felpróbálják a mintagyűrűket, megmérjük a méretet, és megbeszéljük a részleteket. Előtte egyeztessünk időpontot.</p></div></section>${contactBlock()}`;
   bindContact(el);
   reveal(el);
 }
