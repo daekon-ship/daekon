@@ -15,7 +15,7 @@ const parseNum = (v) => { const n = Number(String(v).replace(/\s| | /g, '').r
 
 export const MENU = [
   ['attekintes', 'Áttekintés'],
-  ['alapanyag', 'Alapanyagárak'],
+  ['alapanyag', 'Arany ára'],
   ['gyuruk', 'Gyűrűk kezelése'],
   ['keplet', 'Árképletek és munkadíjak'],
   ['erdeklodesek', 'Érdeklődések'],
@@ -206,38 +206,35 @@ function materials(el) {
     </div>`;
 
   el.innerHTML = `
-    <h1 class="adm__h1">Alapanyagárak</h1>
-    <p class="adm__lead">Írja át az árat, és nézze meg, mi változna. Semmi sem végleges, amíg meg nem nyomja az <b>„Új árak alkalmazása”</b> gombot.</p>
-    <p class="adm__meta">Utoljára módosítva: ${dateHu(lastM.at)} · ${esc(lastM.by)}</p>
-    <div class="mat">
-      <div class="mat__fields">
-        <section class="goldcard">
-          ${field('gold24', '24 karátos színarany referenciaára', 'Ft/g', 500, 'Ebből számol minden 14K (58,5%) és 18K (75%) gyűrű.')}
-          <div class="quick" role="group" aria-label="Gyors módosítás a mostani árhoz képest">
-            <span>Gyors módosítás a mostani árhoz képest:</span>
-            ${[-3, -1, 1, 3, 5].map((v) => `<button type="button" class="qbtn" data-quick="${v}">${v > 0 ? '+' : '−'}${Math.abs(v)}%</button>`).join('')}
-          </div>
-          <div class="goldcard__chart"><p class="goldcard__ct">Az arany referenciaára az elmúlt hónapokban <span class="demo-chip">demó előzmény</span></p><div data-chart></div></div>
-        </section>
-      </div>
-      <aside class="impact" data-impact aria-live="polite"></aside>
-      <div class="mimpact" data-mimpact hidden><span data-mimpact-t></span><button type="button" class="abtn abtn--gold" data-goimpact>Megnézem ↓</button></div>
-      <div class="mat__fields mat__fields--more">
-        <details class="mat__more">
-          <summary>Gyémántok egységára <small>darabár, nem grammár</small></summary>
-          ${st.materials.diamonds.map((d, i) => field('', `${d.name} · ${d.quality}`, 'Ft/db', 1000, `${st.products.filter((p) => p.rings.some((r) => r.stones && r.stones.cat === d.id)).length} gyűrűben`, `diamonds.${i}.price`)).join('')}
-        </details>
-        <details class="mat__more">
-          <summary>Ötvözőanyagok <small>a színarany mellett lévő fém</small></summary>
-          ${field('', 'Sárgaarany ötvözet', 'Ft/g', 50, '', 'alloy.sarga')}
-          ${field('', 'Fehérarany ötvözet', 'Ft/g', 100, 'palládiumtartalmú', 'alloy.feher')}
-          ${field('', 'Rozéarany ötvözet', 'Ft/g', 50, '', 'alloy.rose')}
-        </details>
-      </div>
+    <h1 class="adm__h1">Arany ára</h1>
+    <p class="adm__meta">Utoljára módosítva: ${dateHu(lastM.at)}</p>
+    <div class="mat mat--simple">
+      <section class="goldcard">
+        ${field('gold24', '1 gramm 24 karátos arany', 'Ft', 500, '')}
+        <div class="quick" role="group" aria-label="Gyors módosítás">
+          ${[-3, -1, 1, 3, 5].map((v) => `<button type="button" class="qbtn" data-quick="${v}">${v > 0 ? '+' : '−'}${Math.abs(v)}%</button>`).join('')}
+        </div>
+      </section>
+      <section class="impact" data-impact aria-live="polite"></section>
+      <div class="mimpact" data-mimpact hidden><span data-mimpact-t></span><button type="button" data-goimpact></button></div>
+      <details class="mat__more">
+        <summary>Az arany ára az elmúlt hónapokban</summary>
+        <div class="goldcard__chart"><div data-chart></div><p class="hint">Demó előzmények – kitalált adatok.</p></div>
+      </details>
+      <details class="mat__more">
+        <summary>Gyémántok ára <small>darabár</small></summary>
+        ${st.materials.diamonds.map((d, i) => field('', `${d.name} · ${d.quality}`, 'Ft/db', 1000, `${st.products.filter((p) => p.rings.some((r) => r.stones && r.stones.cat === d.id)).length} gyűrűben`, `diamonds.${i}.price`)).join('')}
+      </details>
+      <details class="mat__more">
+        <summary>Ötvözőanyagok ára <small>ritkán változik</small></summary>
+        ${field('', 'Sárgaarany ötvözet', 'Ft/g', 50, '', 'alloy.sarga')}
+        ${field('', 'Fehérarany ötvözet', 'Ft/g', 100, 'palládiumtartalmú', 'alloy.feher')}
+        ${field('', 'Rozéarany ötvözet', 'Ft/g', 50, '', 'alloy.rose')}
+      </details>
     </div>`;
 
   const impact = $('[data-impact]', el);
-  let confirmBig = false;
+  let confirmBig = false, moreOpen = false;
   const series = store.goldSeries();
 
   const paint = () => {
@@ -253,36 +250,38 @@ function materials(el) {
     if (!changes.length) {
       const sample = store.product('maz-81184-81185-w');
       impact.className = 'impact impact--idle';
-      impact.innerHTML = `<h2>Mi változna?</h2><p>Írjon át egy árat – itt azonnal látja, hány gyűrűt érint, és mennyi lesz az új áruk.</p>
-        <p class="impact__tip">Tipp a bemutatóhoz: írja át az arany árát <b>${num(cur.gold24)}</b>-ről <b>45 000</b>-re.</p>
-        <button class="abtn" type="button" data-demo-gold>Kipróbálom: 45 000 Ft/g</button>
-        <h3>Miből áll egy gyűrű ára? <span>${esc(sample.code)}</span></h3>
-        ${compBar(priceProduct(sample, null, cur, st.settings), null, st.settings)}`;
+      impact.innerHTML = `<p>Írja át a fenti számot, vagy nyomja meg a + / − gombot. Mentés előtt itt megmutatjuk, mi változik.</p>
+        <button class="abtn" type="button" data-demo-gold>Bemutatóhoz: 45 000 Ft</button>`;
       return;
     }
     const big = changes.filter((c) => Math.abs(c.pct) >= st.settings.bigChangePct);
     const examples = [...d.rows].sort((a, b) => Math.abs(b.delta) - Math.abs(a.delta)).slice(0, 5);
-    if (!examples.some((x) => x.id === selEx)) selEx = examples[0]?.id || null;
+    const pref = d.rows.find((x) => x.id === 'maz-81184-81185-w');
+    if (pref && !examples.some((x) => x.id === pref.id)) examples.unshift(pref);
+    if (!examples.some((x) => x.id === selEx)) selEx = (pref || examples[0])?.id || null;
     const sp = selEx && store.product(selEx);
     impact.className = 'impact impact--on';
+    const ex = examples.find((x) => x.id === selEx) || examples[0];
+    const gold = changes.find((c) => c.path === 'gold24');
     impact.innerHTML = `
-      <h2>A változás hatása</h2>
-      <ul class="impact__chg">${changes.map((c) => `<li><span>${esc(c.label)}</span><b>${num(c.from)} → ${num(c.to)} ${c.unit}</b><em class="${c.pct > 0 ? 'up' : 'down'}">${pct(c.pct)}</em></li>`).join('')}</ul>
-      <div class="impact__big">
-        <div><span>Érintett gyűrű</span><b>${d.count} db</b></div>
-        <div><span>Átlagos árváltozás</span><b class="${d.avgPct >= 0 ? 'up' : 'down'}">${pct(d.avgPct)}</b></div>
-      </div>
-      ${examples.length ? `<h3>Példák – régi és új ár <span>koppintson egy gyűrűre</span></h3>
-      <ul class="impact__ex">${examples.map((r) => `<li><button type="button" data-ex="${r.id}" aria-pressed="${r.id === selEx}"><span class="impact__code">${esc(r.code)}</span><span class="impact__old">${ft(r.old)}</span><span class="impact__arrow">→</span><b>${ft(r.now)}</b><em class="${r.delta > 0 ? 'up' : 'down'}">${r.delta > 0 ? '+' : '−'}${ft(Math.abs(r.delta))}</em></button></li>`).join('')}</ul>
-      <button type="button" class="linkbtn" data-all>Mind a ${d.count} érintett gyűrű listája</button>
-      ${sp ? `<h3>Mitől változik? <span>${esc(sp.code)}</span></h3>${compBar(priceProduct(sp, null, cur, st.settings), priceProduct(sp, null, draft, st.settings), st.settings)}` : ''}`
-      : '<p>Ez a változás egyik gyűrű árát sem módosítja (pl. rögzített egyedi ár miatt).</p>'}
-      <label class="field"><span>Érvényes ettől a naptól</span><input class="input input--lg" type="date" data-valid value="${new Date().toISOString().slice(0, 10)}"></label>
-      ${big.length ? `<label class="confirm"><input type="checkbox" data-confirm ${confirmBig ? 'checked' : ''}><span><b>Szokatlanul nagy változás (${pct(big[0].pct)}).</b> Ellenőriztem, az összeg helyes.</span></label>` : ''}
+      ${gold ? `<p class="impact__new">Új ár: <b>${num(gold.to)} Ft</b> <em class="${gold.pct > 0 ? 'up' : 'down'}">${pct(gold.pct)}</em></p>` : ''}
+      <p class="impact__say"><b>${d.count} gyűrű</b> ára változik, átlagosan <b class="${d.avgPct >= 0 ? 'up' : 'down'}">${pct(d.avgPct)}</b>.</p>
+      ${ex ? `<p class="impact__one">Például ${esc(ex.code)}: <s>${ft(ex.old)}</s> → <b>${ft(ex.now)}</b></p>` : ''}
+      ${big.length ? `<label class="confirm"><input type="checkbox" data-confirm ${confirmBig ? 'checked' : ''}><span><b>Nagy változás (${pct(big[0].pct)}).</b> Ellenőriztem, jó a szám.</span></label>` : ''}
       <div class="impact__btns">
         <button class="abtn abtn--xl" type="button" data-cancel>Mégsem</button>
         <button class="abtn abtn--gold abtn--xl" type="button" data-apply ${big.length && !confirmBig ? 'disabled' : ''}>Új árak alkalmazása</button>
-      </div>`;
+      </div>
+      <details class="impact__more">
+        <summary>Részletek</summary>
+        <ul class="impact__chg">${changes.map((c) => `<li><span>${esc(c.label)}</span><b>${num(c.from)} → ${num(c.to)} ${c.unit}</b><em class="${c.pct > 0 ? 'up' : 'down'}">${pct(c.pct)}</em></li>`).join('')}</ul>
+        ${examples.length ? `<ul class="impact__ex">${examples.map((r) => `<li><button type="button" data-ex="${r.id}" aria-pressed="${r.id === selEx}"><span class="impact__code">${esc(r.code)}</span><span class="impact__old">${ft(r.old)}</span><span class="impact__arrow">→</span><b>${ft(r.now)}</b><em class="${r.delta > 0 ? 'up' : 'down'}">${r.delta > 0 ? '+' : '−'}${ft(Math.abs(r.delta))}</em></button></li>`).join('')}</ul>
+        <button type="button" class="linkbtn" data-all>Mind a ${d.count} gyűrű régi és új ára</button>
+        ${sp ? `<h3>Mitől változik? <span>${esc(sp.code)}</span></h3>${compBar(priceProduct(sp, null, cur, st.settings), priceProduct(sp, null, draft, st.settings), st.settings)}` : ''}` : ''}
+        <label class="field"><span>Érvényes ettől a naptól</span><input class="input input--lg" type="date" data-valid value="${new Date().toISOString().slice(0, 10)}"></label>
+      </details>`;
+    const mo = impact.querySelector('.impact__more'); if (mo && moreOpen) mo.open = true;
+    mo?.addEventListener('toggle', () => { moreOpen = mo.open; });
   };
 
   const setVal = (path, v) => {
