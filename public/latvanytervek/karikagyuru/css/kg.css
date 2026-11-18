@@ -1111,3 +1111,71 @@ p { margin-bottom: .7em; }
   .calc__ring--photo { width: 120px; }
   .grid--featured { gap: 12px 8px; }
 }
+
+/* ==========================================================================
+   15. kör – idős felhasználónak átlátható admin
+   ========================================================================== */
+.adm__mbar { display: none; }
+.adm__h2 small { font-weight: 500; font-size: .95rem; color: var(--mute); margin-left: 8px; }
+.goldnow { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 6px 20px; background: #fff; border: 3px solid var(--gold); border-radius: 14px; padding: 22px 24px; text-decoration: none; margin: 14px 0 6px; }
+.goldnow__l { font-size: 1.15rem; font-weight: 600; }
+.goldnow__l small { display: block; font-size: .95rem; font-weight: 500; color: var(--mute); }
+.goldnow__v { font-size: 2.6rem; font-weight: 800; letter-spacing: -.02em; line-height: 1.1; grid-column: 1; }
+.goldnow__v::after { content: ' /g'; font-size: 1.2rem; font-weight: 600; color: var(--mute); }
+.goldnow__m { grid-column: 1; color: var(--mute); font-size: 1rem; }
+.goldnow__btn { grid-column: 2; grid-row: 1 / span 3; }
+.goldnow:hover { box-shadow: 0 12px 30px -18px rgba(10, 30, 40, .4); }
+.menutiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.menutile { display: grid; grid-template-columns: 44px 1fr 20px; gap: 14px; align-items: center; background: #fff; border: 2px solid var(--line-s); border-radius: 12px; padding: 16px 18px; text-decoration: none; min-height: 84px; }
+.menutile:hover { border-color: var(--ink); }
+.menutile__n { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: var(--paper); border: 2px solid var(--gold); font-weight: 800; font-size: 1.1rem; }
+.menutile__t b { display: block; font-size: 1.15rem; font-weight: 700; }
+.menutile__t b em { font-style: normal; font-size: .9rem; background: var(--gold); padding: 2px 9px; border-radius: 10px; margin-left: 6px; }
+.menutile__t small { display: block; font-size: .98rem; color: var(--mute); line-height: 1.35; margin-top: 2px; }
+.menutile__go { font-size: 2rem; color: var(--gold-d); line-height: 1; }
+.qcalc { background: #fff; border: 2px solid var(--line-s); border-radius: 12px; padding: 18px; display: grid; gap: 14px; }
+.qcalc__row { display: grid; grid-template-columns: 120px 1fr; gap: 16px; align-items: start; }
+.qcalc__img { width: 120px; height: 120px; border-radius: 8px; overflow: hidden; display: block; }
+.qcalc__opts { display: grid; gap: 12px; }
+.qcalc__lab { display: block; font-weight: 600; margin-bottom: 6px; }
+.qseg { display: flex; flex-wrap: wrap; gap: 6px; }
+.qseg button { min-height: 50px; padding: 0 16px; border: 2px solid var(--line-s); background: #fff; border-radius: 8px; font-size: 1.05rem; font-weight: 600; }
+.qseg button[aria-pressed="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
+.qstep { display: inline-flex; align-items: stretch; }
+.qstep button { width: 54px; min-height: 52px; border: 2px solid var(--line-s); background: #fff; font-size: 1.6rem; border-radius: 8px; }
+.qstep output { min-width: 70px; display: grid; place-items: center; font-size: 1.4rem; font-weight: 800; }
+.qcalc__price { display: grid; gap: 2px; background: var(--paper); border-radius: 10px; padding: 14px 18px; }
+.qcalc__price span { font-weight: 600; color: var(--mute); }
+.qcalc__price b { font-size: 2.2rem; font-weight: 800; letter-spacing: -.02em; }
+.qcalc__price small { color: var(--mute); font-size: .95rem; }
+.qcalc__save { justify-self: start; }
+
+@media (max-width: 960px) {
+  .adm__nav { display: none; }
+  .adm__mbar { display: flex; align-items: center; gap: 14px; position: sticky; top: var(--bar); z-index: 30; margin: -18px calc(-1 * clamp(16px, 3vw, 36px)) 14px; padding: 10px clamp(16px, 3vw, 36px); background: #fff; border-bottom: 2px solid var(--line-s); }
+  .adm__back { display: inline-flex; align-items: center; min-height: 52px; padding: 0 18px; border: 2px solid var(--ink); border-radius: 10px; background: var(--ink); color: #fff; font-weight: 700; font-size: 1.1rem; text-decoration: none; }
+  .adm__mtitle { font-weight: 800; font-size: 1.15rem; }
+  .adm__h1 { font-size: 1.7rem; }
+}
+@media (max-width: 640px) {
+  .goldnow { grid-template-columns: 1fr; padding: 18px; }
+  .goldnow__btn { grid-column: 1; grid-row: auto; margin-top: 10px; width: 100%; }
+  .goldnow__v { font-size: 2.3rem; }
+  .menutiles { grid-template-columns: 1fr; }
+  .menutile { padding: 14px; gap: 12px; min-height: 76px; }
+  .qcalc { padding: 14px; }
+  .qcalc__row { grid-template-columns: 1fr; }
+  .qcalc__img { width: 140px; height: 140px; margin: 0 auto; }
+  .qcalc__save { width: 100%; }
+  .adm__banner { font-size: .85rem; }
+}
+@media (max-width: 640px) {
+  .prow { grid-template-columns: 64px 1fr 22px !important; gap: 10px; padding: 8px !important; align-items: center; }
+  .prow .abtn { display: none; }
+  .prow::after { content: '›'; font-size: 1.8rem; color: var(--gold-d); grid-column: 3; grid-row: 1 / span 2; }
+  .prow__txt { grid-column: 2; } .prow__txt span:not(.prow__tags) { font-size: .9rem; }
+  .prow__price { grid-column: 2 !important; text-align: left; }
+  .prow__price b { font-size: 1.15rem; } .prow__price small { font-size: .82rem; }
+  .prow__img { grid-row: 1 / span 2; }
+}
+.tag--formula { display: none; }
