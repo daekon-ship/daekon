@@ -130,7 +130,7 @@ export function home(el) {
         <div><p class="kicker">Kiemelt modellek</p><h2>A kollekcióból válogattuk</h2></div>
         <a class="btn btn--line" href="#/kollekcio">Mind a ${st.products.filter((p) => hasPhoto(p)).length} modell</a>
       </header>
-      <div class="grid" data-reveal>${FEATURED.map((id) => card(store.product(id))).join('')}</div>
+      <div class="grid grid--dense grid--featured" data-reveal>${FEATURED.map((id) => card(store.product(id))).join('')}</div>
     </div>
   </section>
 
@@ -288,6 +288,7 @@ export function catalog(el, query) {
     </aside>
     <div class="shop__main">
       <div class="shop__bar"><p data-count></p>
+        <div class="density" role="group" aria-label="Gyűrűk száma egy sorban"><span>Egy sorban:</span><span data-density></span></div>
         <label class="select"><span>Rendezés</span><select data-sort>
           <option value="ajanlott">Ajánlott</option><option value="ar-fel">Ár szerint növekvő</option><option value="ar-le">Ár szerint csökkenő</option><option value="cikkszam">Cikkszám</option>
         </select></label></div>
@@ -297,7 +298,21 @@ export function catalog(el, query) {
 
   $('[data-sort]', el).value = F.rend;
   const results = $('[data-results]', el);
-  let limit = 24;
+  let limit = 48;
+  // Sűrűség: hány gyűrű legyen egy sorban (asztalon 4/5/6/8, telefonon 2/3/4) – megjegyzi a böngésző
+  const mq = matchMedia('(max-width: 640px)');
+  const opts = () => (mq.matches ? [2, 3, 4] : [4, 5, 6, 8]);
+  const key = () => (mq.matches ? 'kg-cols-m' : 'kg-cols-d');
+  const getCols = () => { let v = 0; try { v = Number(localStorage.getItem(key())); } catch {} return opts().includes(v) ? v : (mq.matches ? 3 : 6); };
+  const applyCols = () => {
+    const c = getCols();
+    results.style.setProperty('--cols', c);
+    results.classList.toggle('grid--dense', mq.matches ? c >= 3 : c >= 5);
+    results.classList.toggle('grid--tiny', mq.matches ? c >= 4 : c >= 8);
+    $('[data-density]', el).innerHTML = opts().map((n) => `<button type="button" data-cols="${n}" aria-pressed="${n === c}">${n}</button>`).join('');
+  };
+  mq.addEventListener?.('change', applyCols);
+  applyCols();
 
   const paint = () => {
     const k = F.karat;
@@ -356,10 +371,12 @@ export function catalog(el, query) {
   };
 
   el.addEventListener('click', (e) => {
-    if (e.target.closest('[data-more]')) { limit += 24; paint(); return; }
+    if (e.target.closest('[data-more]')) { limit += 48; paint(); return; }
+    const dc = e.target.closest('[data-cols]');
+    if (dc) { try { localStorage.setItem(key(), dc.dataset.cols); } catch {} applyCols(); return; }
     const c = e.target.closest('[data-f]');
     if (c) {
-      limit = 24;
+      limit = 48;
       F[c.dataset.f] = c.dataset.f === 'karat' ? Number(c.dataset.v) : c.dataset.v;
       $$(`[data-f="${c.dataset.f}"]`, el).forEach((b) => b.setAttribute('aria-pressed', b === c));
       paint();
@@ -369,7 +386,7 @@ export function catalog(el, query) {
     if (e.target.closest('[data-close-filters]')) { $('[data-filters]', el).classList.remove('is-open'); document.documentElement.classList.remove('no-scroll'); }
   });
   el.addEventListener('input', (e) => { const f = e.target.dataset.fn; if (f) { F[f] = e.target.value; paint(); } });
-  $('[data-sort]', el).addEventListener('change', (e) => { F.rend = e.target.value; limit = 24; paint(); });
+  $('[data-sort]', el).addEventListener('change', (e) => { F.rend = e.target.value; limit = 48; paint(); });
   paint();
 }
 

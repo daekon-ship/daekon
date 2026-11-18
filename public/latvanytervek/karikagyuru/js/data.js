@@ -290,7 +290,7 @@ export function buildDemoProducts() {
       listaAr: r.listaAr,
       img: r.remote ? REMOTE_IMG + encodeURIComponent(r.img) : IMG_BASE + r.img.toLowerCase(),
       priceOnRequest: !r.listaAr,
-      imgFill: /^MAZ 790(0[0-9]|10) W$/.test(r.code),   // stúdióháttér-szürke fotók: kitöltve jelennek meg
+      imgFill: r.code === 'MAZ 79008 W',   // ez az egy maradt eredeti stúdiófotó, kitöltve
       unknownColor: !!r.unknownColor,
       kind: r.kind,
       baseColor: r.color,
@@ -326,4 +326,4 @@ export function buildDemoProducts() {
   return list;
 }
 
-export const FEATURED = ['maz-81161-81162-y', 'maz-81163-81164-y', 'maz-79008-w', 'maz-81202-81203-wy', 'maz-79010-w', 'maz-81186-81187-w'];
+export const FEATURED = ['maz-81161-81162-y', 'maz-81163-81164-y', 'maz-79016-79017', 'maz-81202-81203-wy', 'maz-79010-w', 'maz-81186-81187-w'];
