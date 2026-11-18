@@ -13,7 +13,9 @@ const METAL = {
   rose:  ['#FBE3D6', '#E2AE95', '#B37760', '#7F4D3B', '#EFC6B2'],
   ezust: ['#FFFFFF', '#DDE0E2', '#A9AFB3', '#737A80', '#ECEEEF'],
 };
+const BI = { ketszinu: ['feher', 'sarga'], feherrose: ['feher', 'rose'], sargarose: ['sarga', 'rose'] };
 export const metalSwatch = (c) => {
+  if (BI[c]) { const a = METAL[BI[c][0]], b = METAL[BI[c][1]]; return `linear-gradient(135deg, ${a[0]} 0%, ${a[2]} 49%, ${b[1]} 51%, ${b[2]} 100%)`; }
   const m = METAL[c] || METAL.sarga;
   return `linear-gradient(135deg, ${m[0]} 0%, ${m[1]} 38%, ${m[2]} 70%, ${m[4]} 100%)`;
 };
@@ -22,8 +24,8 @@ let gid = 0;
 /** Programból rajzolt gyűrű(pár) – ha nincs fotó, és a színminta-nézethez. */
 export function ringSVG({ color = 'sarga', pair = true, stones = 0, label = '' } = {}) {
   const id = 'r' + (++gid);
-  const c1 = color === 'ketszinu' ? 'feher' : color;
-  const c2 = color === 'ketszinu' ? 'sarga' : color;
+  const c1 = BI[color] ? BI[color][0] : color;
+  const c2 = BI[color] ? BI[color][1] : color;
   const grad = (k, c) => {
     const m = METAL[c] || METAL.sarga;
     return `<linearGradient id="${id}${k}" x1="0" y1="0" x2="1" y2="1">

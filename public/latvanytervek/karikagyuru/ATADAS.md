@@ -41,6 +41,16 @@ Az állapot közös (`js/store.js`, `localStorage` kulcs: `karikagyuru-demo-v1`)
 - Áttekintés: aranyár-grafikon.
 - A bemutató állapota új kulcson indul (`karikagyuru-demo-v2`), a régi böngészőállapot automatikusan kezdőállapotra áll.
 
+## 7. kör (2026.11.18.) – az eredeti oldal adatai
+- **Termékek:** az eredeti 30 mellé +87 modell a karikagyuru.com 2. oldaláról, valamint a cikkszám (csökkenő) és ár (növekvő/csökkenő) szerinti rendezések első oldalairól – összesen 117 tétel (ebből 2 ezüst demótermék). Cikkszám, ár, képfájl valós. Az új modellek fotói a karikagyuru.com-ról töltődnek (innen nem tölthetők le, a munkakörnyezet hálózata ezt nem engedi); ha nem töltenek be, rajzolt színminta jelenik meg.
+- **Nem érhető el:** a 3. oldaltól kezdve az eredeti lapozás innen nem működött (mindig az 1. oldalt adta vissza), ezért a katalógus **nem teljes**. A teljes lista az ügyfél oldalán lévő többi oldal mentésével (MHT, ahogy az 1. oldal is jött) pótolható – a fotókkal együtt.
+- **8 tétel ár nélkül** szerepel az eredeti oldalon („Ár: Ft”): MAZ 81632, 82064–82065 (4 változat), 82070–82071 (2), 93210–93211 W. Ezek nálunk „Egyedi ajánlat alapján” felirattal, árajánlatkérő gombbal jelennek meg, és kimaradnak az alapanyagár-számításból; az adminban rögzített árral vagy tömeggel bekapcsolhatók.
+- **Szín** a cikkszám végződéséből: W fehér, Y sárga, R rozé, W/Y és Y/W fehér–sárga, W/R és R/W fehér–rozé, Y/R sárga–rozé. Ahol nincs jelölés (pl. MAZ 93130 - 93131), „szín egyeztetendő”. A „Y/V” végződést fehér–sárgának vettük (egyeztetendő).
+- **Cégadatok** az ÁSZF-ből a láblécben: Virág & Társa Kft., székhely 1132 Budapest, Visegrádi utca 42–46., üzlet 1089 Budapest, Bláthy Ottó utca 4–8., I. emelet 123., adószám 12149030-2-41, cégjegyzékszám 01-09-469480.
+- **Rendelési feltételek** (új kezdőlapi szekció + termékoldali sorok, ÁSZF alapján): személyes egyeztetés, előleg = a termék árának fele, feldolgozás legfeljebb 3 munkanap, egyedi határidő, személyes átvétel, fizetés átvételkor készpénzben vagy átutalással, 1 év jótállás, egyedi méretre készült gyűrűre nincs elállás.
+- Kollekció és admin lista 24/30-asával tölt, „Továbbiak mutatása” gombbal.
+- A bemutató állapota új kulcson indul (`karikagyuru-demo-v3`).
+
 ## Bemutató forgatókönyv (kb. 3 perc)
 1. Vásárlói nézet → Kollekció. 2. MAZ 81184 - 81185 W megnyitása (410 500 Ft). 3. Felső sáv: Adminisztrátori nézet. 4. 24K színarany: 39 000 → 45 000 Ft/g (vagy „Kipróbálom” gomb). 5. Új árak alkalmazása (30 gyűrű, átlag +8,8%). 6. „Megnézem a katalógusban”. 7. A kártyákon „Frissült ár”, az ár felszámol 441 500 Ft-ra.
 Utána: „Demóadatok visszaállítása”.

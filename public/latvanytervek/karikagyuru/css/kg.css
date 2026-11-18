@@ -833,3 +833,16 @@ body[data-mode="admin"] .adm__h1 { font-weight: 800; }
   .demobar__switch button { font-size: .8rem; }
   .demobar__tools button { font-size: .76rem; max-width: 74px; }
 }
+
+/* 7. kör – rendelési feltételek, ár nélküli modellek, továbbiak */
+.terms { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.terms li { background: #fff; border: 1px solid var(--line); padding: 22px 22px 18px; }
+.terms__n { display: inline-grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: var(--gold); color: var(--ink); font-weight: 700; font-size: .9rem; margin-bottom: 12px; }
+.terms h3 { font-family: var(--sans); font-weight: 700; font-size: 1.1rem; margin: 0 0 6px; }
+.terms p { margin: 0; color: var(--ink2); font-size: 1rem; }
+.price--req { font-size: 1.05rem; font-weight: 600; color: var(--gold-d); }
+.more { grid-column: 1 / -1; display: flex; justify-content: center; padding-top: 12px; }
+.plist__more { margin-top: 10px; justify-self: center; }
+.site-foot__note p { margin-bottom: 6px; }
+@media (max-width: 960px) { .terms { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 640px) { .terms { grid-template-columns: 1fr; } }

@@ -300,11 +300,11 @@ const get = (o, path) => path.split('.').reduce((x, k) => x?.[k], o);
 const set = (o, path, v) => { const ks = path.split('.'); const last = ks.pop(); ks.reduce((x, k) => x[k], o)[last] = v; };
 
 /* ---------- 3. Gyűrűk kezelése ---------- */
-const PFILTERS = [['mind', 'Mind'], ['egyedi', 'Egyedi áras'], ['koves', 'Köves'], ['pár', 'Gyűrűpár'], ['arres', 'Alacsony árrés']];
+const PFILTERS = [['mind', 'Mind'], ['egyedi', 'Egyedi áras'], ['koves', 'Köves'], ['pár', 'Gyűrűpár'], ['arres', 'Alacsony árrés'], ['arnelkul', 'Ár nélkül']];
 function products(el) {
   el = fresh(el);
   const st = S();
-  const res = Object.fromEntries(st.products.map((p) => [p.id, priceProduct(p, null, st.materials, st.settings)]));
+  const res = Object.fromEntries(st.products.map((p) => [p.id, p.priceOnRequest ? null : priceProduct(p, null, st.materials, st.settings)]));
   let q = '', f = 'mind', sort = 'cikkszam';
   el.innerHTML = `
     <h1 class="adm__h1">Gyűrűk kezelése</h1>
@@ -319,18 +319,24 @@ function products(el) {
     <div class="plist" data-list></div>`;
   const rows = () => {
     let list = st.products.filter((p) => (p.code + ' ' + p.name).toLowerCase().includes(q)).filter((p) =>
-      f === 'mind' || (f === 'egyedi' && (p.override || p.minPrice)) || (f === 'koves' && p.rings.some((r) => r.stones)) || (f === 'pár' && p.kind === 'p') || (f === 'arres' && res[p.id].lowMargin));
-    const dev = (p) => p.listaAr ? (res[p.id].final - p.listaAr) / p.listaAr : 0;
-    if (sort === 'ar-le') list.sort((a, b) => res[b.id].final - res[a.id].final);
-    if (sort === 'ar-fel') list.sort((a, b) => res[a.id].final - res[b.id].final);
+      f === 'mind' || (f === 'egyedi' && (p.override || p.minPrice)) || (f === 'koves' && p.rings.some((r) => r.stones)) || (f === 'pár' && p.kind === 'p') || (f === 'arres' && res[p.id]?.lowMargin) || (f === 'arnelkul' && p.priceOnRequest));
+    const fv = (p, d) => res[p.id] ? res[p.id].final : d;
+    const dev = (p) => p.listaAr && res[p.id] ? (res[p.id].final - p.listaAr) / p.listaAr : 0;
+    if (sort === 'ar-le') list.sort((a, b) => fv(b, -1) - fv(a, -1));
+    if (sort === 'ar-fel') list.sort((a, b) => fv(a, Infinity) - fv(b, Infinity));
     if (sort === 'elteres') list.sort((a, b) => Math.abs(dev(b)) - Math.abs(dev(a)));
     return list;
   };
   const paint = () => {
     const list = rows();
     $('[data-pcount]', el).textContent = `${list.length} gyűrű`;
-    $('[data-list]', el).innerHTML = list.map((p) => {
+    $('[data-list]', el).innerHTML = list.slice(0, limit).map((p) => {
       const r = res[p.id];
+      if (!r) return `<a class="prow" href="#/admin/gyuru/${p.id}">
+        <span class="prow__img">${productMedia(p)}</span>
+        <span class="prow__txt"><b>${esc(p.code)}</b><span>${esc(p.name)}</span><span class="prow__tags"><em class="tag tag--warn">az eredeti oldalon nincs ár</em></span></span>
+        <span class="prow__price"><b>egyeztetés</b><small>rögzített árral bekapcsolható</small></span>
+        <span class="abtn">Szerkesztés</span></a>`;
       const dv = p.listaAr ? ((r.final - p.listaAr) / p.listaAr) * 100 : null;
       return `<a class="prow" href="#/admin/gyuru/${p.id}">
         <span class="prow__img">${productMedia(p)}</span>
@@ -340,12 +346,13 @@ function products(el) {
           <small>${p.listaAr ? `weboldalon most: ${ft(p.listaAr)}${Math.abs(dv) >= 0.5 ? ` (${pct(dv)})` : ''}` : 'demótermék'}</small></span>
         <span class="abtn">Szerkesztés</span>
       </a>`;
-    }).join('') || '<p>Nincs találat.</p>';
+    }).join('') + (list.length > limit ? `<button class="abtn abtn--xl plist__more" type="button" data-pmore>Továbbiak mutatása (még ${list.length - limit})</button>` : '') || '<p>Nincs találat.</p>';
   };
+  let limit = 30;
   const csv = () => {
     const sep = ';';
     const lines = [['Cikkszám', 'Megnevezés', 'Kalkulált ár (Ft)', 'Árforrás', 'Becsült tömeg (g)', 'Weboldali ár most (Ft)'].join(sep)];
-    st.products.forEach((p) => { const r = res[p.id]; lines.push([p.code, p.name, r.final, r.source === 'keplet' ? 'képlet' : r.source === 'rogzitett' ? 'rögzített' : 'módosított', String(r.grams).replace('.', ','), p.listaAr || ''].map((x) => `"${String(x).replace(/"/g, '""')}"`).join(sep)); });
+    st.products.forEach((p) => { const r = res[p.id]; lines.push([p.code, p.name, r ? r.final : 'egyeztetés', r ? (r.source === 'keplet' ? 'képlet' : r.source === 'rogzitett' ? 'rögzített' : 'módosított') : '', r ? String(r.grams).replace('.', ',') : '', p.listaAr || ''].map((x) => `"${String(x).replace(/"/g, '""')}"`).join(sep)); });
     const blob = new Blob(['﻿' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8' });
     const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `karikagyuru-arlista-${new Date().toISOString().slice(0, 10)}.csv`; a.click();
     setTimeout(() => URL.revokeObjectURL(a.href), 2000);
@@ -354,8 +361,9 @@ function products(el) {
   el.addEventListener('input', (e) => { if (e.target.matches('[data-q]')) { q = e.target.value.toLowerCase().trim(); paint(); } });
   el.addEventListener('change', (e) => { if (e.target.matches('[data-psort]')) { sort = e.target.value; paint(); } });
   el.addEventListener('click', (e) => {
+    if (e.target.closest('[data-pmore]')) { limit += 30; paint(); return; }
     const b = e.target.closest('[data-pf]');
-    if (b) { f = b.dataset.pf; $$('[data-pf]', el).forEach((x) => x.setAttribute('aria-pressed', x === b)); paint(); }
+    if (b) { limit = 30; f = b.dataset.pf; $$('[data-pf]', el).forEach((x) => x.setAttribute('aria-pressed', x === b)); paint(); }
     if (e.target.closest('[data-csv]')) csv();
     if (e.target.closest('[data-print]')) printList(st, res);
   });
@@ -368,7 +376,7 @@ function printList(st, res) {
   d.id = 'printsheet';
   d.innerHTML = `<header><img src="img/logo.png" alt="Karikagyuru.com" width="135"><div><h1>Árlista</h1><p>${dayHu(new Date().toISOString())} · 24K színarany: ${ft(st.materials.gold24)}/g (demó)</p></div></header>
     <table><thead><tr><th>Cikkszám</th><th>Megnevezés</th><th>Anyag</th><th>Ár (bruttó)</th></tr></thead><tbody>
-    ${st.products.map((p) => `<tr><td>${esc(p.code)}</td><td>${esc(p.name)}</td><td>${p.baseKarat === 925 ? 'ezüst 925' : '14K'}${p.rings.some((r) => r.stones) ? ', gyémánttal' : ''}</td><td>${ft(res[p.id].final)}</td></tr>`).join('')}
+    ${st.products.map((p) => `<tr><td>${esc(p.code)}</td><td>${esc(p.name)}</td><td>${p.baseKarat === 925 ? 'ezüst 925' : (COLORS[p.baseColor]?.label || '') + ', 14K'}${p.rings.some((r) => r.stones) ? ', gyémánttal' : ''}</td><td>${res[p.id] ? ft(res[p.id].final) : 'egyeztetés'}</td></tr>`).join('')}
     </tbody></table><p class="ps__note">Tájékoztató árak alapméretben. A végleges ár a személyes egyeztetésen készül. Bemutató – kitalált alapanyagárakból számolva.</p>`;
   document.body.append(d);
   setTimeout(() => { window.print(); }, 50);
@@ -392,7 +400,7 @@ function productEdit(el, id) {
         <section class="ebox"><h2>Alapadatok</h2>
           <label class="efield"><span>Megnevezés</span><input class="input input--lg" data-t="name" value="${esc(p.name)}"></label>
           <label class="efield"><span>Stílus</span><select class="input input--lg" data-t="style">${Object.entries(STYLES).map(([k, v]) => `<option value="${k}" ${p.style === k ? 'selected' : ''}>${v}</option>`).join('')}</select></label>
-          ${p.listaAr ? `<p class="hint">A karikagyuru.com-on jelenleg feltüntetett ár: <b>${ft(p.listaAr)}</b> (valós, összehasonlításhoz).</p>` : ''}
+          ${p.listaAr ? `<p class="hint">A karikagyuru.com-on jelenleg feltüntetett ár: <b>${ft(p.listaAr)}</b> (valós, összehasonlításhoz).</p>` : `<p class="warn">Ennél a modellnél az eredeti oldalon nincs ár, ezért a vásárlói oldalon „egyedi ajánlat” szerepel. Adja meg a tömeget, vagy rögzített árat – mentés után megjelenik az ár.</p>`}
         </section>
         ${p.rings.map((r, i) => `<section class="ebox"><h2>${esc(r.label)}</h2>
           <div class="egrid">
@@ -453,6 +461,7 @@ function productEdit(el, id) {
     }
     if (e.target.closest('[data-save]')) {
       const r = priceProduct(p, null, st.materials, st.settings);
+      if (p.priceOnRequest && (p.override?.type === 'fixed' || p.rings.some((r) => r.weight > 0))) p.priceOnRequest = false;
       const go = () => { store.updateProduct(id, (x) => Object.assign(x, clone(p)), `${p.code} adatai módosítva`); toast(`Mentve. ${p.code} új ára: <b>${ft(r.final)}</b>`); location.hash = '#/admin/gyuruk'; };
       if (r.lowMargin) {
         modal(`<div class="form"><h2>Alacsony árrés</h2><p>Ennél a gyűrűnél az árrés ${dec(Math.round(r.marginPct * 10) / 10)}%, kevesebb a beállított ${st.settings.minMarginPct}%-os minimumnál. Biztosan menti?</p>

@@ -13,7 +13,8 @@ export const FINENESS = { 14: 0.585, 18: 0.75, 925: 0.925 };
 export const round2 = (n) => Math.round(n * 100) / 100;
 
 export function alloyPrice(color, M) {
-  if (color === 'ketszinu') return (M.alloy.feher + M.alloy.sarga) / 2;
+  const bi = { ketszinu: ['feher', 'sarga'], feherrose: ['feher', 'rose'], sargarose: ['sarga', 'rose'] }[color];
+  if (bi) return (M.alloy[bi[0]] + M.alloy[bi[1]]) / 2;
   return M.alloy[color] ?? M.alloy.sarga;
 }
 
@@ -175,14 +176,14 @@ export function decodeCfg(str, p) {
 /** Alapár (alapkonfiguráció), az összes termékre. */
 export function priceAll(products, M, S) {
   const out = {};
-  for (const p of products) out[p.id] = priceProduct(p, null, M, S).final;
+  for (const p of products) if (!p.priceOnRequest) out[p.id] = priceProduct(p, null, M, S).final;
   return out;
 }
 
 /** Mely termékeket érinti egy alapanyagár-változás – a két állapot összevetése. */
 export function diffPrices(products, M0, M1, S) {
   const a = priceAll(products, M0, S), b = priceAll(products, M1, S);
-  const rows = products.map((p) => ({ id: p.id, code: p.code, name: p.name, img: p.img, color: p.baseColor,
+  const rows = products.filter((p) => !p.priceOnRequest).map((p) => ({ id: p.id, code: p.code, name: p.name, img: p.img, color: p.baseColor,
     old: a[p.id], now: b[p.id], delta: b[p.id] - a[p.id], pct: a[p.id] ? ((b[p.id] - a[p.id]) / a[p.id]) * 100 : 0 }))
     .filter((r) => r.delta !== 0);
   const total = rows.reduce((s, r) => s + r.delta, 0);
@@ -200,7 +201,7 @@ export function seedWeights(products, M, S) {
     if (p.fixedWeight || !p.listaAr) continue;
     const set = (W) => p.rings.forEach((r) => { r.weight = W * r.share; });
     const gross = (W) => { set(W); return priceProduct(p, null, M, { ...S, roundTo: 1 }, { applyOverride: false }).breakdown.gross; };
-    const lo = p.kind === 'p' ? 3.6 : 2, hi = p.kind === 'p' ? 18 : 8;
+    const lo = p.kind === 'p' ? 3.2 : 2, hi = p.kind === 'p' ? 30 : 10;
     let W = lo;
     for (let guard = 0; guard < 40; guard++) {
       const g0 = gross(0), g1 = gross(10);

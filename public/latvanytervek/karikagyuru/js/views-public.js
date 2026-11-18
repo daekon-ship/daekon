@@ -1,6 +1,6 @@
 /* Vásárlói felület: kezdőoldal, kollekció, termékoldal + konfigurátor, kapcsolat. */
 import { store } from './store.js';
-import { BUSINESS, COLORS, STYLES, FEATURED } from './data.js';
+import { BUSINESS, COLORS, STYLES, FEATURED, BICOLOR, TERMS } from './data.js';
 import { priceProduct, defaultConfig, ft, dec, diamond, ringSplit, encodeCfg, decodeCfg } from './engine.js';
 import { $, $$, esc, productMedia, ringSVG, metalSwatch, animatePrice, modal, reveal, toast, M, reduced } from './ui.js';
 
@@ -9,7 +9,7 @@ const fresh = (el) => { const n = el.cloneNode(false); el.replaceWith(n); return
 const price = (p, cfg) => priceProduct(p, cfg, S().materials, S().settings);
 const demoMark = (txt = 'demó') => S().settings.showDemoMarks ? `<span class="demo-chip" title="Kitalált bemutató-alapanyagárakból számolva">${txt}</span>` : '';
 
-const colorLabel = (c) => c === 'ketszinu' ? 'Fehér–sárga arany' : COLORS[c].label;
+const colorLabel = (c) => COLORS[c]?.label || c;
 const karatLabel = (k) => k === 925 ? 'Ezüst 925' : `${k} karát (${k === 14 ? '585' : '750'})`;
 const stamp = (k) => `<span class="stamp" aria-label="Fémjel ${k}">${k === 925 ? '925' : k === 18 ? '750' : '585'}</span>`;
 
@@ -17,6 +17,7 @@ const stamp = (k) => `<span class="stamp" aria-label="Fémjel ${k}">${k === 925 
 function card(p, { karat } = {}) {
   const cfg = defaultConfig(p);
   if (karat && p.karats.includes(karat)) cfg.karat = karat;
+  if (p.priceOnRequest) return cardOnRequest(p);
   const r = price(p, cfg);
   const lc = S().lastChange;
   const old = lc && lc.old[p.id];
@@ -39,12 +40,28 @@ function card(p, { karat } = {}) {
   </article>`;
 }
 
+function cardOnRequest(p) {
+  return `<article class="card" data-id="${p.id}">
+    <a class="card__link" href="#/gyuru/${p.id}" aria-label="${esc(p.name)} – részletek">
+      <div class="card__media">${productMedia(p)}</div>
+      <div class="card__body">
+        <p class="card__code">${esc(p.code)}</p>
+        <h3 class="card__name">${esc(p.name)}</h3>
+        <p class="card__meta">${p.unknownColor ? 'Szín és anyag egyeztetés alapján' : colorLabel(p.baseColor)}</p>
+        <div class="card__price"><span class="card__label">Ár</span><strong class="price price--req">egyeztetés alapján</strong></div>
+        <span class="btn-text">Részletek</span>
+      </div>
+    </a>
+  </article>`;
+}
+
 /** Frissült árak finom felszámolása a kártyákon (bemutató 7. lépés). */
 function animateCards(root) {
   const lc = S().lastChange;
   if (!lc) return;
   $$('[data-price]', root).forEach((el) => {
     const p = store.product(el.dataset.price);
+    if (!p || p.priceOnRequest) return;
     const now = price(p).final;
     if (Number(el.dataset.value) !== now) {
       setTimeout(() => { animatePrice(el, now); el.closest('.card')?.classList.add('is-updated'); }, 450);
@@ -96,7 +113,7 @@ export function home(el) {
       <div class="coll">
         ${collTile('feher', 'Fehérarany', 'Hűvös, tiszta fény – a leggyakrabban választott szín a gyémántok mellé.', count((p) => p.baseColor === 'feher'), store.product('maz-79014-w'), 'coll__a')}
         ${collTile('sarga', 'Sárgaarany', 'A klasszikus karikagyűrű színe, meleg tónussal és időtálló formákkal.', count((p) => p.baseColor === 'sarga'), store.product('maz-81161-81162-y'), 'coll__b')}
-        ${collTile('ketszinu', 'Kétszínű arany', 'Fehér- és sárgaarany egy gyűrűben, finom határvonallal.', count((p) => p.baseColor === 'ketszinu'), store.product('maz-81200-81201-wy'), 'coll__c')}
+        ${collTile('ketszinu', 'Kétszínű arany', 'Fehér, sárga és rozé arany párosítva egy gyűrűben, finom határvonallal.', count((p) => !!BICOLOR[p.baseColor]), store.product('maz-81200-81201-wy'), 'coll__c')}
         ${collTile('koves', 'Gyémánttal', 'Természetes gyémántok, egy kővel vagy körbe foglalva.', count((p) => !!p.rings.some((r) => r.stones)), store.product('maz-79010-w'), 'coll__d')}
         <a class="coll__rose" href="#/kollekcio?szin=rose" data-reveal>
           <div class="coll__rose-art">${productMedia(store.product('maz-79016-79017'))}</div>
@@ -171,6 +188,17 @@ export function home(el) {
     </div>
   </section>
 
+  <section class="sec sec--paper" id="rendeles">
+    <div class="wrap">
+      <header class="sec__head" data-reveal>
+        <p class="kicker">Rendelés, előleg, garancia</p>
+        <h2>Így zajlik a rendelés – előre, egyértelműen</h2>
+        <p class="sec__lead">A karikagyuru.com általános szerződési feltételei alapján, röviden.</p>
+      </header>
+      <ol class="terms">${TERMS.map(([t, d], i) => `<li data-reveal="${(i % 3) * 0.06}"><span class="terms__n">${i + 1}</span><h3>${t}</h3><p>${d}</p></li>`).join('')}</ol>
+    </div>
+  </section>
+
   ${contactBlock()}
   `;
 
@@ -184,7 +212,7 @@ export function home(el) {
     $('[data-tstonerow]', el).hidden = !p.stoneOptional;
     $$('[data-st]', el).forEach((b) => b.setAttribute('aria-pressed', String((b.dataset.st === '1') === t.stones)));
     $('[data-tmedia]', el).innerHTML = `<div class="calc__ring ${cfg.color === p.baseColor ? 'calc__ring--photo' : ''}">${cfg.color === p.baseColor ? productMedia(p) : ringSVG({ color: cfg.color, pair: p.kind === 'p', stones: p.rings[0].stones?.count || 0 })}</div><p class="calc__name">${esc(p.name)}${cfg.color === p.baseColor ? '' : ` <span class="hint">– ${colorLabel(cfg.color).toLowerCase()} színminta</span>`}</p>`;
-    $('[data-tcolor]', el).innerHTML = p.colors.map((c) => `<button class="sw" style="--sw:${metalSwatch(c === 'ketszinu' ? 'feher' : c)}" aria-pressed="${c === cfg.color}" data-c="${c}" title="${colorLabel(c)}"><span class="sr">${colorLabel(c)}</span></button>`).join('');
+    $('[data-tcolor]', el).innerHTML = p.colors.map((c) => `<button class="sw" style="--sw:${metalSwatch(c)}" aria-pressed="${c === cfg.color}" data-c="${c}" title="${colorLabel(c)}"><span class="sr">${colorLabel(c)}</span></button>`).join('');
     animatePrice($('[data-tprice]', el), price(p, cfg).final);
     const def = JSON.stringify(cfg) === JSON.stringify(defaultConfig(p));
     $('[data-tlink]', el).href = `#/gyuru/${p.id}${def ? '' : '?k=' + encodeCfg(cfg)}`;
@@ -269,12 +297,14 @@ export function catalog(el, query) {
 
   $('[data-sort]', el).value = F.rend;
   const results = $('[data-results]', el);
+  let limit = 24;
 
   const paint = () => {
     const k = F.karat;
     let list = all.filter((p) => {
       if (F.szin !== 'mind') {
-        if (F.szin === 'rose') { if (!p.colors.includes('rose')) return false; }
+        if (F.szin === 'rose') { if (!p.colors.includes('rose') && !(BICOLOR[p.baseColor] || []).includes('rose')) return false; }
+        else if (F.szin === 'ketszinu') { if (!BICOLOR[p.baseColor]) return false; }
         else if (p.baseColor !== F.szin) return false;
       }
       const stones = p.rings.some((r) => r.stones);
@@ -289,18 +319,22 @@ export function catalog(el, query) {
       if (p.karats.includes(k)) cfg.karat = k;
       if (F.szin === 'rose' && p.colors.includes('rose')) cfg.color = 'rose';
       if (F.ko === 'nelkul') cfg.rings.forEach((r) => (r.stones = false));
-      return { p, cfg, v: price(p, cfg).final };
+      return { p, cfg, v: p.priceOnRequest ? null : price(p, cfg).final };
     });
     const min = Number(String(F.min).replace(/\D/g, '')) || 0;
     const max = Number(String(F.max).replace(/\D/g, '')) || Infinity;
-    list = list.filter((x) => x.v >= min && x.v <= max);
-    if (F.rend === 'ar-fel') list.sort((a, b) => a.v - b.v);
-    if (F.rend === 'ar-le') list.sort((a, b) => b.v - a.v);
+    const priced = min > 0 || max !== Infinity;
+    list = list.filter((x) => x.v === null ? !priced : x.v >= min && x.v <= max);
+    const pv = (x, d) => (x.v === null ? d : x.v);
+    if (F.rend === 'ar-fel') list.sort((a, b) => pv(a, Infinity) - pv(b, Infinity));
+    if (F.rend === 'ar-le') list.sort((a, b) => pv(b, -1) - pv(a, -1));
     if (F.rend === 'cikkszam') list.sort((a, b) => a.p.code.localeCompare(b.p.code));
     $('[data-count]', el).textContent = `${list.length} modell`;
     const active = ['szin', 'ko', 'stilus', 'tipus', 'szel'].filter((g) => F[g] !== 'mind').length + (F.karat === 18 ? 1 : 0) + (min || max !== Infinity ? 1 : 0);
     $('[data-fcount]', el).textContent = active ? `(${active})` : '';
-    results.innerHTML = list.length ? list.map(({ p, cfg }) => cardFor(p, cfg)).join('')
+    const shown = list.slice(0, limit);
+    results.innerHTML = list.length ? shown.map(({ p, cfg }) => cardFor(p, cfg)).join('')
+      + (list.length > limit ? `<div class="more"><button class="btn btn--line" type="button" data-more>Továbbiak mutatása (még ${list.length - limit})</button></div>` : '')
       : `<div class="empty"><p>Ezekkel a feltételekkel nincs modell.</p><button class="btn btn--line" type="button" data-clear>Szűrők törlése</button></div>`;
     animateCards(results);
     if (M() && !reduced()) M().animate($$('.card', results), { opacity: [0, 1], y: [12, 0] }, { duration: 0.5, delay: M().stagger(0.03) });
@@ -308,6 +342,7 @@ export function catalog(el, query) {
 
   const cardFor = (p, cfg) => {
     const html = card(p, { karat: cfg.karat !== p.baseKarat ? cfg.karat : null });
+    if (p.priceOnRequest) return html;
     if (cfg.color === p.baseColor && cfg.rings.every((r, i) => r.stones === !!p.rings[i].stones)) return html;
     // Rozé vagy kő nélküli változat ára
     const v = price(p, cfg).final;
@@ -315,8 +350,10 @@ export function catalog(el, query) {
   };
 
   el.addEventListener('click', (e) => {
+    if (e.target.closest('[data-more]')) { limit += 24; paint(); return; }
     const c = e.target.closest('[data-f]');
     if (c) {
+      limit = 24;
       F[c.dataset.f] = c.dataset.f === 'karat' ? Number(c.dataset.v) : c.dataset.v;
       $$(`[data-f="${c.dataset.f}"]`, el).forEach((b) => b.setAttribute('aria-pressed', b === c));
       paint();
@@ -326,7 +363,7 @@ export function catalog(el, query) {
     if (e.target.closest('[data-close-filters]')) { $('[data-filters]', el).classList.remove('is-open'); document.documentElement.classList.remove('no-scroll'); }
   });
   el.addEventListener('input', (e) => { const f = e.target.dataset.fn; if (f) { F[f] = e.target.value; paint(); } });
-  $('[data-sort]', el).addEventListener('change', (e) => { F.rend = e.target.value; paint(); });
+  $('[data-sort]', el).addEventListener('change', (e) => { F.rend = e.target.value; limit = 24; paint(); });
   paint();
 }
 
@@ -337,6 +374,7 @@ export function product(el, id, query) {
   el = fresh(el);
   const p = store.product(id);
   if (!p) { el.innerHTML = `<section class="wrap page-head"><h1>A gyűrű nem található</h1><p><a class="btn btn--line" href="#/kollekcio">Vissza a kollekcióhoz</a></p></section>`; return; }
+  if (p.priceOnRequest) { productOnRequest(el, p); return; }
   let cfg = (query?.get('k') && decodeCfg(query.get('k'), p)) || defaultConfig(p);
   const qc = query?.get('szin');
   if (!query?.get('k') && qc && p.colors.includes(qc)) cfg.color = qc;
@@ -469,7 +507,7 @@ export function product(el, id, query) {
     if (multiColor) {
       $('[data-v-color]', el).textContent = colorLabel(cfg.color);
       $('[data-colors]', el).innerHTML = p.colors.map((c) => `<button type="button" class="copt" data-color="${c}" aria-pressed="${c === cfg.color}">
-        <span class="sw" style="--sw:${metalSwatch(c === 'ketszinu' ? 'feher' : c)}"></span><b>${colorLabel(c)}</b>${c === cfg.color ? '<em class="delta delta--cur">kiválasztva</em>' : delta(cur, (x) => (x.color = c))}</button>`).join('');
+        <span class="sw" style="--sw:${metalSwatch(c)}"></span><b>${colorLabel(c)}</b>${c === cfg.color ? '<em class="delta delta--cur">kiválasztva</em>' : delta(cur, (x) => (x.color = c))}</button>`).join('');
     }
     // 2. finomság
     if (multiKarat) {
@@ -580,6 +618,39 @@ export function product(el, id, query) {
   if (M() && !reduced()) M().animate([$('.pdp__gallery', el), $('.pdp__panel', el)], { opacity: [0, 1], y: [16, 0] }, { duration: 0.7, delay: M().stagger(0.1) });
 }
 
+function productOnRequest(el, p) {
+  el.innerHTML = `
+  <section class="wrap pdp">
+    <p class="crumbs"><a href="#/">Kezdőlap</a> / <a href="#/kollekcio">Kollekció</a> / ${esc(p.code)}</p>
+    <div class="pdp__grid">
+      <div class="pdp__gallery"><div class="pdp__stage pdp__stage--foto">${productMedia(p, { eager: true })}</div>
+        <p class="fine">A karikagyuru.com saját fotója.</p></div>
+      <div class="pdp__panel">
+        <p class="card__code">${esc(p.code)}</p>
+        <h1 class="pdp__title">${esc(p.name)}</h1>
+        <div class="pdp__price"><span>Ár</span><strong class="price price--big">Egyedi ajánlat alapján</strong>
+          <small>Ennél a modellnél a karikagyuru.com sem tüntet fel árat – a pontos ajánlatot személyesen adjuk meg.</small></div>
+        <div class="pdp__ctas">
+          <button class="btn btn--dark btn--full" type="button" data-inquire="erdeklodes">Árajánlatot kérek erre a gyűrűre</button>
+          <button class="btn btn--line btn--full" type="button" data-inquire="konzultacio">Személyes konzultációt kérek</button>
+          <a class="pdp__phone" href="${BUSINESS.phoneHref}">vagy hívjon: <b>${BUSINESS.phone}</b></a>
+        </div>
+        <dl class="specs__dl" style="margin-top:28px">
+          <div><dt>Cikkszám</dt><dd>${esc(p.code)}</dd></div>
+          <div><dt>Típus</dt><dd>${p.kind === 'p' ? 'Karikagyűrű pár' : 'Gyűrű'}</dd></div>
+          <div><dt>Anyag</dt><dd>${p.unknownColor ? 'Egyeztetés alapján' : colorLabel(p.baseColor)}</dd></div>
+          <div><dt>Elkészítés</dt><dd>Nincs készleten, rendelésre elkészítjük</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>`;
+  el.addEventListener('click', (e) => {
+    const q = e.target.closest('[data-inquire]');
+    if (q) inquiry(p, defaultConfig(p), q.dataset.inquire, true);
+    if (e.target.closest('.pdp__stage--foto')) zoom(p);
+  });
+}
+
 function ringLine(p, cfg, i) {
   const rg = p.rings[i], c = cfg.rings[i];
   return `${c.sizeUnknown ? 'méret: konzultáción' : c.size + '-es méret'} · ${dec(c.width)} mm${rg.stones ? (c.stones ? ` · ${rg.stones.count} gyémánt` : ' · kő nélkül') : ''}${c.engraving ? ` · gravír (${FONTS[c.font || 0].toLowerCase()}): „${esc(c.engraving)}”` : ''}`;
@@ -602,10 +673,12 @@ function specs(p, cfg, r) {
     ['Cikkszám', esc(p.code)],
     ['Megnevezés', esc(p.name) + (p.real ? ` <span class="hint">– ügyféllel egyeztetendő</span>` : '')],
     ['Típus', p.kind === 'p' ? 'Karikagyűrű pár (női és férfi gyűrű)' : 'Egy gyűrű'],
-    ['Nemesfém', `${colorLabel(cfg.color)}, ${karatLabel(cfg.karat)}`],
+    ['Nemesfém', `${colorLabel(cfg.color)}, ${karatLabel(cfg.karat)}${p.unknownColor ? ' <span class="hint">– a cikkszámban nincs színjelölés, egyeztetendő</span>' : ''}`],
     ['Stílus', STYLES[p.style] + ' ' + demoMark('demóadat')],
     ['Becsült tömeg', `${dec(r.grams)} g, ebből ${dec(r.pure)} g ${cfg.color === 'ezust' ? 'színezüst' : 'színarany'} ${demoMark('demóadat')}`],
     ['Elkészítés', 'Nincs készleten, rendelésre elkészítjük'],
+    ['Előleg', 'Egyedileg készülő gyűrűnél a termék árának fele, a személyes egyeztetésen'],
+    ['Garancia', 'Az átadástól számított 1 év jótállás'],
   ];
   return `<h2>Részletek</h2><dl class="specs__dl">${rows.map(([a, b]) => `<div><dt>${a}</dt><dd>${b}</dd></div>`).join('')}</dl>`;
 }
@@ -624,14 +697,14 @@ export function configText(p, cfg) {
   return lines.join('\n');
 }
 
-export function inquiry(p, cfg, type = 'erdeklodes') {
-  const r = p ? price(p, cfg) : null;
-  const summary = p ? configText(p, cfg) : '';
+export function inquiry(p, cfg, type = 'erdeklodes', onRequest = false) {
+  const r = p && !onRequest ? price(p, cfg) : null;
+  const summary = p ? (onRequest ? `${p.code} – ${p.name}` : configText(p, cfg)) : '';
   modal(`
     <form class="form" data-inq novalidate>
       <p class="kicker">${type === 'konzultacio' ? 'Személyes konzultáció' : 'Érdeklődés'}</p>
       <h2>${p ? 'Érdeklődés erről a gyűrűről' : 'Időpont-egyeztetés'}</h2>
-      ${p ? `<div class="form__cfg"><pre>${esc(summary)}</pre><p>Becsült ár: <b>${ft(r.final)}</b> ${demoMark()}</p></div>` : ''}
+      ${p ? `<div class="form__cfg"><pre>${esc(summary)}</pre>${r ? `<p>Becsült ár: <b>${ft(r.final)}</b> ${demoMark()}</p>` : '<p>Ár: egyedi ajánlat alapján</p>'}</div>` : ''}
       <div class="seg seg--lg" role="radiogroup" aria-label="Kérés típusa">
         <button type="button" data-type="erdeklodes" aria-pressed="${type === 'erdeklodes'}">Kérdésem van</button>
         <button type="button" data-type="konzultacio" aria-pressed="${type === 'konzultacio'}">Időpontot kérek</button>
@@ -660,7 +733,7 @@ export function inquiry(p, cfg, type = 'erdeklodes') {
         const d = Object.fromEntries(new FormData(f));
         if (!d.nev.trim() || !d.tel.trim()) { $('[data-err]', f).hidden = false; return; }
         store.addInquiry({ type: t, name: d.nev, phone: d.tel, email: d.email, day: d.nap, message: d.uzenet,
-          productId: p?.id || null, code: p?.code || null, config: p ? JSON.parse(JSON.stringify(cfg)) : null, summary, estimate: r?.final || null });
+          productId: p?.id || null, code: p?.code || null, config: p && !onRequest ? JSON.parse(JSON.stringify(cfg)) : null, summary, estimate: r?.final || null });
         box.innerHTML = `<div class="form form--done"><p class="kicker">Köszönjük</p><h2>Megkaptuk – hamarosan visszahívjuk.</h2>
           <p>Bemutató módban az üzenet nem került elküldésre. Az adminfelület „Érdeklődések” menüjében most már látható, a kiválasztott cikkszámmal és konfigurációval együtt.</p>
           <button class="btn btn--line" type="button" data-close>Rendben</button></div>`;
