@@ -533,13 +533,17 @@ body[data-mode="admin"] .site-head, body[data-mode="admin"] .site-foot { display
   .site-foot__grid { grid-template-columns: 1fr 1fr; }
   .site-foot__grid > :first-child { grid-column: 1 / -1; }
   .adm { grid-template-columns: 1fr; }
-  .adm__nav { position: sticky; top: var(--bar); z-index: 30; height: auto; padding: 10px 12px; border-right: 0; border-bottom: 1px solid var(--line); }
+  .adm__nav { position: static; height: auto; padding: 12px; border-right: 0; border-bottom: 1px solid var(--line); overflow: visible; }
   .adm__brand { display: none; }
-  .adm__nav ol { display: flex; overflow-x: auto; gap: 6px; scrollbar-width: none; }
-  .adm__nav li { flex: none; }
-  .adm__nav a { min-height: 50px; font-size: 1rem; white-space: nowrap; border: 1px solid var(--line); }
+  .adm__nav ol { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+  .adm__nav a { min-height: 54px; height: 100%; padding: 8px 10px; gap: 8px; font-size: .98rem; line-height: 1.2; border: 1px solid var(--line); background: #fff; }
+  .adm__nav a > span { width: 26px; height: 26px; font-size: .82rem; }
 }
 @media (max-width: 640px) {
+  .adm__nav { padding: 10px; }
+  .adm__banner { font-size: .9rem; padding: 10px 12px; margin-bottom: 22px; }
+  .adm__nav ol { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .adm__nav a { min-height: 50px; font-size: .95rem; padding: 6px 8px; }
   :root { --bar: 52px; }
   body { font-size: 1.0625rem; }
   .demobar { gap: 8px; padding: 0 10px; }
