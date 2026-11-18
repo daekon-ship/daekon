@@ -177,7 +177,7 @@ export function home(el) {
     const p = store.product(t.id);
     const cfg = defaultConfig(p);
     cfg.karat = t.karat; cfg.color = t.color && p.colors.includes(t.color) ? t.color : p.baseColor;
-    $('[data-tmedia]', el).innerHTML = `<div class="calc__ring">${ringSVG({ color: cfg.color, pair: p.kind === 'p', stones: p.rings[0].stones?.count || 0 })}</div><p class="calc__name">${esc(p.name)}</p>`;
+    $('[data-tmedia]', el).innerHTML = `<div class="calc__ring ${cfg.color === p.baseColor ? 'calc__ring--photo' : ''}">${cfg.color === p.baseColor ? productMedia(p) : ringSVG({ color: cfg.color, pair: p.kind === 'p', stones: p.rings[0].stones?.count || 0 })}</div><p class="calc__name">${esc(p.name)}${cfg.color === p.baseColor ? '' : ` <span class="hint">– ${colorLabel(cfg.color).toLowerCase()} színminta</span>`}</p>`;
     $('[data-tcolor]', el).innerHTML = p.colors.map((c) => `<button class="sw" style="--sw:${metalSwatch(c === 'ketszinu' ? 'feher' : c)}" aria-pressed="${c === cfg.color}" data-c="${c}" title="${colorLabel(c)}"><span class="sr">${colorLabel(c)}</span></button>`).join('');
     animatePrice($('[data-tprice]', el), price(p, cfg).final);
     $('[data-tlink]', el).href = `#/gyuru/${p.id}`;

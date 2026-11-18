@@ -52,13 +52,14 @@ A nyilvános felület csak a végső becsült árat, a paramétereket és a becs
 - Tartalékként marad a programból rajzolt, színhelyes gyűrűkép (a „Színminta” nézet és az ezüst demótermékek).
 
 ## Art direction – három irány, a választott
+(3. kör: a „Vitrin” elrendezés marad, a meleg elefántcsont–arany paletta helyett az ügyfél kék–fehér színeivel.)
 1. **Vitrin (választott)** – elefántcsont/pezsgő/homok, egyetlen meleg arany hajszálvonal-szín, a gyűrű kör alakú „talapzaton”, a magyar fémjel (585/750) bélyegként visszatérő motívum. A brief luxusirányához ez illik a legjobban, és a gyűrű marad a főszereplő.
 2. Ötvösműhely – sötét dió, kovácsolt textúrák, műhelyfotók. Elvetve: nincs valódi műhelyfotó, és a brief világos alapot kér.
 3. Esküvői meghívó – letterpress, kézírásos díszítés. Elvetve: túl dekoratív, könnyen sablonos „esküvői” hangulatú lesz.
 
 ## Designrendszer
 - Betűk: Bodoni Moda (címek, árak; 400) + Jost (szöveg, UI) – helyben (`fonts/`, OFL). Mérsékelt méretek: h1 max ~50 px, h2 max ~34 px. Admin alapméret 18,4 px.
-- Színek: `--ivory #FAF6EE`, `--paper #F3ECDF`, `--champ #EBE0CC`, `--sand #DDCDB1`, `--ink #26201B`, `--gold #A07A43`, `--gold-l #C9A66B`, vonal `rgba(122,90,44,.22)`.
+- Színek (3. kör, az ügyfél kérésére a karikagyuru.com kék–fehér arculata): fehér `#FFFFFF`, halványkék felületek `#F2F8FA` / `#E7F4F8`, márkakék `#43BDDB` (gombok, vonalak, fémjel-bélyegek), sötétkék szöveg-kiemelés `#136A82`, szöveg `#15262D`, sötét szekciók `#12303B` / `#0F222A`. A CSS-változók neve (`--gold`, `--ivory` stb.) az 1. körből maradt, az értékük kék–fehér. Kontraszt: `#136A82` fehéren 6,2:1, sötét szöveg a kék gombon 7,1:1.
 - Térköz: 8 / 16 / 24 / 40 / 64 / szekció 72–128 px; konténer 1240 px.
 - Komponensek: fémjel-bélyeg, szegmentált választó, aranyszín-minta (fémes gradiens), chip, léptető, kártya, admin mező ± gombokkal, hatáspanel.
 - Reszponzív: 1100 / 960 / 640 / 380 px töréspontok; mobilon menü teljes képernyőn, szűrők alsó lapként, ár + „Érdeklődöm” alsó sávban (a tartalom alatta kap helyet), admin menü vízszintesen görgethető, nagy gombokkal.
