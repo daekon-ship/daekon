@@ -1212,3 +1212,63 @@ p { margin-bottom: .7em; }
 .impact__more[open] summary::after, .mat--simple .mat__more[open] summary::after { transform: rotate(180deg); }
 .impact__more summary, .mat--simple .mat__more summary { list-style: none; } .impact__more summary::-webkit-details-marker, .mat__more summary::-webkit-details-marker { display: none; }
 .done .adm__h1 { font-size: 1.6rem; }
+
+/* ==========================================================================
+   17. kör – középút: több levegő, mint a 13. körben, de nem a régi szellős állapot
+   ========================================================================== */
+:root { --s6: clamp(52px, 6.5vw, 88px); --s5: 44px; --head: 70px; }
+body { font-size: 1.04rem; line-height: 1.6; }
+.sec__head { margin-bottom: 30px; }
+.sec__head h2 { margin-bottom: 10px; }
+.btn { min-height: 50px; padding: 0 24px; }
+.hero { padding: 40px 0 52px; }
+.hero__grid { gap: 48px; }
+.hero h1 { margin-bottom: 16px; }
+.hero__cta { margin: 26px 0 18px; gap: 12px; }
+.hero__stage { max-width: 400px; }
+.coll { gap: 16px; }
+.coll__txt { padding: 14px 16px 16px; }
+.coll__txt p { font-size: .93rem; }
+.coll__rose { padding: 14px 18px; }
+.grid--featured { gap: 28px 18px !important; }
+.steps li { padding: 20px 20px 10px 0; } .steps li + li { padding-left: 20px; }
+.why { gap: 40px; } .why__list { gap: 22px; } .why__list li { padding-top: 14px; }
+.terms { gap: 14px; } .terms li { padding: 18px 20px 16px; }
+.calc { gap: 44px; } .calc__box { padding: 22px; gap: 14px; }
+.contact { gap: 44px; } .contact__card { padding: 24px; }
+.site-foot { padding: 40px 0 24px; }
+.page-head { padding: 32px 0 24px; }
+.shop { padding-top: 24px; gap: 32px; }
+.pdp { padding-top: 22px; }
+.pdp__grid { gap: 44px; }
+.cfg__step { padding: 16px 0 18px; }
+.cfg__step > header { margin-bottom: 14px; }
+.opt { margin-bottom: 18px; }
+.summary { padding: 16px 18px; margin: 8px 0 16px; }
+/* admin */
+.adm__main { padding: 26px clamp(18px, 3.5vw, 48px) 70px; }
+.adm__banner { margin-bottom: 22px; }
+.mat--simple { gap: 18px; }
+.mat--simple .goldcard { padding: 10px 10px 22px; }
+.impact { padding: 20px; gap: 14px; }
+.menutiles { gap: 12px; }
+.qcalc { padding: 22px; gap: 18px; }
+@media (max-width: 960px) {
+  .hero__grid { grid-template-columns: 1fr 220px; gap: 24px; }
+  .hero__stage { max-width: 220px; }
+}
+@media (max-width: 640px) {
+  .hero { padding: 24px 0 36px; }
+  .hero__grid { grid-template-columns: 1fr; }
+  .hero__stage { display: block; max-width: 230px; margin: 8px auto 0; justify-self: center; }
+  .hero__cta { flex-wrap: wrap; } .hero__cta .btn { flex: 1 1 100%; min-height: 50px; font-size: .95rem; }
+  .coll__txt p { display: block; font-size: .85rem; }
+  .steps { grid-template-columns: 1fr; } .steps li, .steps li + li { padding: 14px 0 8px; border-bottom: 1px solid var(--line); }
+  .terms { grid-template-columns: 1fr; } .terms p { font-size: .93rem; }
+  .pdp__trust { display: grid; }
+  .pdp__stage, .pdp__gallery { max-width: 100%; }
+}
+.impact__few { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; border-top: 1px solid var(--line); }
+.impact__few li { display: grid; grid-template-columns: 1fr auto auto; gap: 14px; padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 1.05rem; align-items: baseline; }
+.impact__few span { color: var(--ink2); } .impact__few s { color: var(--mute); } .impact__few b { font-weight: 800; }
+@media (max-width: 640px) { .impact__few li { grid-template-columns: 1fr auto; } .impact__few li span { grid-column: 1 / -1; font-size: .92rem; } }

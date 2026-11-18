@@ -266,7 +266,7 @@ function materials(el) {
     impact.innerHTML = `
       ${gold ? `<p class="impact__new">Új ár: <b>${num(gold.to)} Ft</b> <em class="${gold.pct > 0 ? 'up' : 'down'}">${pct(gold.pct)}</em></p>` : ''}
       <p class="impact__say"><b>${d.count} gyűrű</b> ára változik, átlagosan <b class="${d.avgPct >= 0 ? 'up' : 'down'}">${pct(d.avgPct)}</b>.</p>
-      ${ex ? `<p class="impact__one">Például ${esc(ex.code)}: <s>${ft(ex.old)}</s> → <b>${ft(ex.now)}</b></p>` : ''}
+      ${examples.length ? `<ul class="impact__few">${[...d.rows].sort((a, b) => (a.id === 'maz-81184-81185-w' ? -1 : b.id === 'maz-81184-81185-w' ? 1 : Math.abs(a.old - 300000) - Math.abs(b.old - 300000))).slice(0, 3).map((r) => `<li><span>${esc(r.code)}</span><s>${ft(r.old)}</s><b>${ft(r.now)}</b></li>`).join('')}</ul>` : ''}
       ${big.length ? `<label class="confirm"><input type="checkbox" data-confirm ${confirmBig ? 'checked' : ''}><span><b>Nagy változás (${pct(big[0].pct)}).</b> Ellenőriztem, jó a szám.</span></label>` : ''}
       <div class="impact__btns">
         <button class="abtn abtn--xl" type="button" data-cancel>Mégsem</button>
