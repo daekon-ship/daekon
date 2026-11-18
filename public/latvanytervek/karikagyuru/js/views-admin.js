@@ -14,14 +14,18 @@ const clone = (o) => JSON.parse(JSON.stringify(o));
 const parseNum = (v) => { const n = Number(String(v).replace(/\s| | /g, '').replace(',', '.')); return Number.isFinite(n) ? n : NaN; };
 
 export const MENU = [
-  ['attekintes', 'Áttekintés'],
+  ['attekintes', 'Főmenü'],
   ['alapanyag', 'Arany ára'],
-  ['gyuruk', 'Gyűrűk kezelése'],
-  ['keplet', 'Árképletek és munkadíjak'],
+  ['arszamitas', 'Árszámítás'],
+  ['gyuruk', 'Gyűrűk'],
   ['erdeklodesek', 'Érdeklődések'],
-  ['elozmenyek', 'Árváltozási előzmények'],
+];
+export const MENU_EXTRA = [
+  ['keplet', 'Felárak és munkadíjak'],
+  ['elozmenyek', 'Árváltozások naplója'],
   ['beallitasok', 'Beállítások'],
 ];
+const ALLMENU = MENU.concat(MENU_EXTRA);
 
 export function adminShell(el, page, arg) {
   const newInq = S().inquiries.filter((q) => q.status === 'uj').length;
@@ -29,16 +33,18 @@ export function adminShell(el, page, arg) {
   <div class="adm">
     <aside class="adm__nav" aria-label="Admin menü">
       <p class="adm__brand"><img src="img/logo-jel.png" alt="" width="176" height="127">Karikagyuru.com<span>Kezelőfelület</span></p>
-      <nav><ol>${MENU.map(([k, t], i) => `<li><a href="#/admin/${k}" ${page === k || (page === 'gyuru' && k === 'gyuruk') ? 'aria-current="page"' : ''}><span>${i + 1}</span>${t}${k === 'erdeklodesek' && newInq ? `<em>${newInq}</em>` : ''}</a></li>`).join('')}</ol></nav>
+      <nav><ol>${MENU.map(([k, t]) => `<li><a href="#/admin/${k}" ${page === k || (page === 'gyuru' && k === 'gyuruk') ? 'aria-current="page"' : ''}>${t}${k === 'erdeklodesek' && newInq ? `<em>${newInq}</em>` : ''}</a></li>`).join('')}</ol>
+        <p class="adm__navx">Egyéb</p>
+        <ul class="adm__navsub">${MENU_EXTRA.map(([k, t]) => `<li><a href="#/admin/${k}" ${page === k ? 'aria-current="page"' : ''}>${t}</a></li>`).join('')}</ul></nav>
     </aside>
     <main class="adm__main" id="adm-main">
-      <div class="adm__mbar">${page === 'attekintes' ? '<span class="adm__mtitle">Főmenü</span>' : `<a class="adm__back" href="#/admin/attekintes">← Főmenü</a><span class="adm__mtitle">${(MENU.find(([k]) => k === (page === 'gyuru' ? 'gyuruk' : page)) || ['', ''])[1]}</span>`}</div>
+      <div class="adm__mbar">${page === 'attekintes' ? '<span class="adm__mtitle">Főmenü</span>' : `<a class="adm__back" href="#/admin/attekintes">← Főmenü</a><span class="adm__mtitle">${(ALLMENU.find(([k]) => k === (page === 'gyuru' ? 'gyuruk' : page)) || ['', ''])[1]}</span>`}</div>
       <p class="adm__banner"><b>Bemutató.</b> Az árak kitalált demóértékek, az adatok csak ebben a böngészőben maradnak.</p>
       <div data-page></div>
     </main>
   </div>`;
   const P = $('[data-page]', el);
-  ({ attekintes: overview, alapanyag: materials, gyuruk: products, gyuru: productEdit, keplet: formula,
+  ({ attekintes: overview, alapanyag: materials, arszamitas: priceCalc, gyuruk: products, gyuru: productEdit, keplet: formula,
      erdeklodesek: inquiries, elozmenyek: history, beallitasok: settings }[page] || overview)(P, arg);
   if (M() && !reduced()) M().animate(P, { opacity: [0, 1], y: [10, 0] }, { duration: 0.35 });
 }
@@ -55,25 +61,24 @@ const MENU_HELP = {
 function overview(el) {
   el = fresh(el);
   const st = S();
-  const last = st.history.find((h) => h.kind === 'materials') || st.history[st.history.length - 1];
   const newInq = st.inquiries.filter((q) => q.status === 'uj').length;
+  const tile = (href, title, value, help, cls = '') => `<a class="bigtile ${cls}" href="${href}"><b>${title}</b><span class="bigtile__v">${value}</span><small>${help}</small></a>`;
   el.innerHTML = `
     <h1 class="adm__h1">Jó napot kívánok!</h1>
-    <a class="goldnow" href="#/admin/alapanyag">
-      <span class="goldnow__l">Az arany ára most <small>24 karátos, grammonként</small></span>
-      <b class="goldnow__v">${ft(st.materials.gold24)}</b>
-      <span class="goldnow__m">Utoljára: ${dayHu(last.at)}</span>
-      <span class="abtn abtn--gold abtn--xl goldnow__btn">Arany árának módosítása</span>
-    </a>
-    <h2 class="adm__h2">Mit szeretne csinálni?</h2>
-    <div class="menutiles">${MENU.filter(([k]) => k !== 'attekintes' && k !== 'alapanyag').map(([k, t], i) => `
-      <a class="menutile" href="#/admin/${k}"><span class="menutile__n">${MENU.findIndex(([x]) => x === k) + 1}</span>
-        <span class="menutile__t"><b>${t}${k === 'erdeklodesek' && newInq ? ` <em>${newInq} új</em>` : ''}</b><small>${MENU_HELP[k]}</small></span><span class="menutile__go" aria-hidden="true">›</span></a>`).join('')}
+    <div class="bigtiles">
+      ${tile('#/admin/alapanyag', 'Arany ára', `${ft(st.materials.gold24)}<i>/g</i>`, 'Átírja, és minden gyűrű ára frissül.', 'bigtile--gold')}
+      ${tile('#/admin/arszamitas', 'Árszámítás', 'Mennyibe kerül?', 'Ha valaki telefonon kérdezi.')}
+      ${tile('#/admin/gyuruk', 'Gyűrűk', `${st.products.length} db`, 'Lista, egyedi ár, árlista.')}
+      ${tile('#/admin/erdeklodesek', 'Érdeklődések', newInq ? `${newInq} új` : 'nincs új', 'Akik írtak vagy időpontot kértek.', newInq ? 'bigtile--alert' : '')}
     </div>
-    <h2 class="adm__h2">Gyors árszámítás <small>ha valaki telefonon kérdez</small></h2>
-    <div class="qcalc" data-qcalc></div>
-    <h2 class="adm__h2">Az arany ára az elmúlt hónapokban</h2>
-    <div class="note-card note-card--chart">${goldChart(store.goldSeries(), st.materials.gold24, st.materials.gold24)}<p class="hint">Demó előzmények – kitalált adatok a bemutatóhoz.</p></div>`;
+    <details class="xmenu"><summary>Egyéb (ritkán kell)</summary>
+      <div class="xmenu__list">${MENU_EXTRA.map(([k, t]) => `<a href="#/admin/${k}">${t}<span>›</span></a>`).join('')}</div>
+    </details>`;
+}
+
+function priceCalc(el) {
+  el = fresh(el);
+  el.innerHTML = `<h1 class="adm__h1">Árszámítás</h1><p class="adm__lead">Válassza ki a gyűrűt, és állítsa be, amit az ügyfél kér.</p><div class="qcalc" data-qcalc></div>`;
   quickCalc($('[data-qcalc]', el));
 }
 
