@@ -951,3 +951,163 @@ h3 { font-size: 1.08rem; font-weight: 700; letter-spacing: -.01em; }
 .pdp__stage, .pdp__gallery { max-width: 560px; }
 @media (max-width: 960px) { .pdp__stage, .pdp__gallery { max-width: 420px; } }
 @media (max-width: 640px) { .pdp__stage, .pdp__gallery { max-width: 100%; } }
+
+/* ==========================================================================
+   13. kör – TÖMÖR ELRENDEZÉS: kevesebb üres tér, több tartalom egy képernyőn
+   ========================================================================== */
+:root { --s4: 24px; --s5: 32px; --s6: clamp(36px, 4.5vw, 56px); --head: 64px; --w: 1320px; }
+body { font-size: 1rem; line-height: 1.55; }
+p { margin-bottom: .7em; }
+.lead, .sec__lead { font-size: 1.02rem; }
+.sec__head { margin-bottom: 22px; max-width: 760px; }
+.sec__head h2 { margin-bottom: 6px; }
+.kicker { margin-bottom: 6px; font-size: .85rem; }
+.btn { min-height: 46px; padding: 0 20px; font-size: .9rem; }
+.page-head { padding: 22px 0 16px; }
+.page-head h1 { margin-bottom: 4px; }
+.crumbs { margin-bottom: 8px; }
+.site-head__in { gap: 22px; }
+.logo__mark { height: 36px; }
+
+/* Hero: alacsony, kép és szöveg egymás mellett */
+.hero { padding: 22px 0 28px; }
+.hero__grid { grid-template-columns: 1.3fr 1fr; gap: 32px; }
+.eyebrow { margin-bottom: 12px; font-size: .85rem; }
+.hero h1 { margin-bottom: 10px; }
+.hero .lead { margin-bottom: 0; }
+.hero__cta { margin: 18px 0 14px; gap: 8px; }
+.hero__note { font-size: .88rem; padding-left: 10px; margin: 0; }
+.hero__stage { max-width: 320px; }
+.hero__cap { padding: 10px 14px; right: -8%; bottom: 0; max-width: 230px; }
+.hero__cap b { font-size: .92rem; }
+
+/* Kollekció-csempék: 4 egy sorban, kis kép */
+.coll { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; gap: 12px; }
+.coll__a, .coll__b, .coll__c, .coll__d { grid-column: span 1 !important; grid-row: auto !important; display: grid !important; grid-template-columns: 1fr !important; grid-template-rows: auto 1fr !important; }
+.coll__a .coll__media, .coll__d .coll__media, .coll__media { aspect-ratio: 1 / .8 !important; min-height: 0 !important; }
+.coll__txt { padding: 10px 12px 12px; }
+.coll__txt h3 { font-size: 1rem; margin: 0 0 2px; }
+.coll__txt p { font-size: .88rem; margin: 0 0 4px; line-height: 1.4; }
+.coll__rose { grid-column: 1 / -1 !important; grid-template-columns: 56px 1fr auto !important; padding: 10px 14px; gap: 14px; }
+.coll__rose-art { width: 56px !important; height: 56px !important; }
+.coll__rose .kicker { margin: 0; }
+.coll__rose .btn-text { grid-column: 3; }
+
+/* Folyamat, miért személyesen, feltételek: tömör kártyák */
+.steps li { padding: 14px 16px 6px 0; }
+.steps li + li { padding-left: 16px; }
+.steps__n { width: 40px; height: 26px; margin-bottom: 8px; font-size: .85rem; }
+.steps p, .why__list p, .terms p { font-size: .93rem; line-height: 1.45; }
+.why { grid-template-columns: 1fr 2fr; gap: 28px; }
+.why__list { grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.why__list li { padding-bottom: 0; border-bottom: 0; border-top: 2px solid var(--gold); padding-top: 10px; }
+.terms { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.terms li { padding: 14px 16px 12px; }
+.terms__n { width: 24px; height: 24px; font-size: .8rem; margin-bottom: 6px; }
+.terms h3 { font-size: 1rem; margin-bottom: 4px; }
+
+/* Kalkulátor-előzetes */
+.calc { gap: 28px; grid-template-columns: .8fr 1.2fr; }
+.calc__box { padding: 16px; gap: 10px; }
+.calc__ring--photo { width: min(140px, 40%); }
+.calc__price .price { font-size: 1.35rem; }
+.calc__price { padding-top: 10px; }
+
+/* Kapcsolat, lábléc */
+.contact { gap: 28px; }
+.contact__dl { margin-top: 14px; }
+.contact__dl div { padding: 8px 0; }
+.contact__dl dd { font-size: 1rem; }
+.contact__card { padding: 18px; gap: 8px; }
+.site-foot { padding: 28px 0 18px; font-size: .9rem; }
+.site-foot__grid { gap: 24px; }
+.site-foot__note { margin-top: 18px; padding-top: 12px; }
+
+/* Kollekció oldal */
+.shop { padding: 16px 0 var(--s6); gap: 24px; }
+.filters { gap: 12px; }
+.filters fieldset { padding-bottom: 12px; }
+.filters legend { margin-bottom: 6px; }
+.chip { min-height: 34px; padding: 5px 10px; font-size: .86rem; }
+.shop__bar { margin-bottom: 12px; }
+
+/* Termékoldal: két oszlop, kisebb térközök */
+.pdp { padding: 14px 0 var(--s6); }
+.pdp__grid { gap: 28px; }
+.pdp__title { font-size: clamp(1.3rem, 1.1rem + .8vw, 1.7rem); margin: 2px 0 10px; }
+.pdp__price { padding: 10px 14px; margin-bottom: 8px; }
+.price--big { font-size: 1.7rem; }
+.pdp__thumbs { margin: 8px 0; gap: 8px; }
+.pdp__thumb { width: 64px; height: 64px; }
+.pdp__trust { margin-top: 14px; padding-top: 12px; gap: 8px; }
+.pdp__trust span { font-size: .88rem; }
+.cfg__step { padding: 12px 0 14px; }
+.cfg__step > header { margin-bottom: 10px; }
+.cfg__step > header h2 { font-size: 1.02rem; }
+.cfg__n { width: 24px; height: 24px; font-size: .8rem; }
+.copt { padding: 8px 6px; gap: 4px; } .copt .sw { width: 30px; height: 30px; }
+.kopt { padding: 10px 12px; gap: 4px; }
+.cfg__seg button { min-height: 42px; padding: 6px 10px; }
+.tabs--rings { margin-bottom: 10px; } .tabs--rings button { padding: 8px 10px; }
+.opt { margin-bottom: 14px; }
+.stepper button { width: 42px; height: 42px; } .stepper output { height: 42px; min-width: 56px; font-size: 1.1rem; }
+.check { margin-top: 6px; }
+.matrix td button { min-height: 38px; }
+.summary { padding: 12px 14px; margin: 4px 0 12px; }
+.summary dl { gap: 4px; }
+.pdp__ctas { gap: 8px; }
+.notice { margin-top: 10px; font-size: .85rem; }
+.specs { margin-top: 28px; padding-top: 18px; }
+.specs__dl div { padding: 6px 0; }
+
+/* Admin tömörebb */
+.adm__main { padding: 18px clamp(16px, 3vw, 36px) 60px; }
+.adm__banner { margin-bottom: 16px; padding: 8px 12px; font-size: .92rem; }
+.adm__nav { padding: 18px 12px; }
+.adm__nav a { min-height: 48px; padding: 9px 10px; }
+.adm__lead { margin-bottom: 10px; font-size: 1.05rem; }
+.adm__meta { margin-bottom: 14px; }
+.tiles { margin-top: 18px; gap: 10px; } .tile { padding: 14px 16px; }
+.mat { gap: 18px; } .mat__fields { gap: 10px; }
+.mfield { padding: 14px 16px; } .mfield label { margin-bottom: 8px; }
+.impact { padding: 16px; gap: 10px; }
+.ebox { padding: 16px; gap: 10px; margin-bottom: 10px; }
+.prow { padding: 6px 12px 6px 6px; gap: 12px; } .prow__img { width: 56px; height: 56px; }
+.plist { gap: 6px; }
+.hist li { padding: 12px 14px; }
+.inq { padding: 14px 16px; margin-bottom: 8px; }
+
+@media (max-width: 960px) {
+  .hero__grid { grid-template-columns: 1fr 200px; gap: 16px; align-items: start; }
+  .hero__stage { max-width: 200px; margin: 0; justify-self: end; }
+  .hero__cap { display: none; }
+  .coll { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+  .why { grid-template-columns: 1fr; gap: 14px; }
+  .terms { grid-template-columns: 1fr 1fr; }
+  .calc { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  :root { --head: 58px; }
+  .hero { padding: 14px 0 20px; }
+  .hero__grid { grid-template-columns: 1fr; }
+  .hero__stage { display: none; }
+  .eyebrow { margin-bottom: 8px; }
+  .hero__cta { flex-wrap: nowrap; } .hero__cta .btn { flex: 1 1 50%; padding: 0 10px; font-size: .85rem; min-height: 44px; }
+  .coll__txt p { display: none; }
+  .coll__rose { grid-template-columns: 48px 1fr !important; } .coll__rose .btn-text { display: none; }
+  .coll__rose-art { width: 48px !important; height: 48px !important; }
+  .steps { grid-template-columns: 1fr 1fr; } .steps li, .steps li + li { padding: 10px 8px 6px 0; border-left: 0; }
+  .why__list { grid-template-columns: 1fr; gap: 10px; }
+  .terms { grid-template-columns: 1fr 1fr; gap: 8px; } .terms li { padding: 10px; } .terms p { font-size: .85rem; }
+  .pdp__stage, .pdp__gallery { max-width: 300px; margin-inline: auto; }
+  .pdp__trust { display: none; }
+  .cfg__colors { gap: 6px; } .copt b { font-size: .8rem; }
+  .logo { font-size: 1.12rem; } .logo__mark { height: 30px; }
+  .burger { width: 42px; height: 42px; } .burger span { left: 11px; right: 11px; } .burger span:first-child { top: 16px; } .burger span:last-child { top: 24px; }
+}
+@media (max-width: 640px) {
+  .calc__models { grid-template-columns: repeat(6, minmax(0, 1fr)) !important; gap: 4px; }
+  .calc__models small { display: none; }
+  .calc__ring--photo { width: 120px; }
+  .grid--featured { gap: 12px 8px; }
+}
