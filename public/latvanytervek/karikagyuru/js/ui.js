@@ -79,7 +79,7 @@ export const hasPhoto = (p) => !!p.img && !photos.missing.has(p.id);
 /** Termékkép: csak valódi fotó. Ha nem tölt be, semleges „nincs fotó” mező – rajzolt gyűrű nincs. */
 export function productMedia(p, { eager = false } = {}) {
   if (!p.img) return `<div class="media media--none"><span>Fotó hamarosan</span></div>`;
-  return `<div class="media">
+  return `<div class="media${p.imgFill ? ' media--fill' : ''}">
     <img src="${esc(p.img)}" alt="${esc(p.name + ', ' + p.code)}" ${eager ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async"
       onerror="this.closest('.media').classList.add('is-fallback')">
     <div class="media__none" aria-hidden="true"><span>A fotó nem érhető el</span></div>

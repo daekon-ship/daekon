@@ -6,7 +6,7 @@
 import { DEMO_MATERIALS, DEMO_SETTINGS, buildDemoProducts } from './data.js';
 import { seedWeights, priceAll, diffPrices } from './engine.js';
 
-const KEY = 'karikagyuru-demo-v3';
+const KEY = 'karikagyuru-demo-v4';
 const clone = (o) => JSON.parse(JSON.stringify(o));
 const listeners = new Set();
 const fmt = (n) => new Intl.NumberFormat('hu-HU').format(n).replace(/\s/g, ' ');
@@ -17,7 +17,7 @@ function fresh() {
   const products = seedWeights(buildDemoProducts(), materials, settings);
   const now = new Date().toISOString();
   return {
-    v: 3,
+    v: 4,
     materials, settings, products,
     history: [{
       id: uid(), at: now, validFrom: now, by: 'Rendszer (demó)', kind: 'start',
@@ -52,7 +52,7 @@ function uid() { return Math.random().toString(36).slice(2, 9); }
 
 let state;
 try { state = JSON.parse(localStorage.getItem(KEY)) || null; } catch { state = null; }
-if (!state || state.v !== 3) state = fresh();
+if (!state || state.v !== 4) state = fresh();
 
 function persist() {
   try { localStorage.setItem(KEY, JSON.stringify(state)); } catch { /* privát mód: memóriában marad */ }

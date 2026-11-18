@@ -176,7 +176,7 @@ export function home(el) {
       </div>
       <div class="calc__box" data-reveal=".1">
         <p class="calc__step"><span>1</span>Válasszon modellt</p>
-        <div class="calc__models" role="tablist" aria-label="Modell">${teaserIds.map((id, i) => { const tp = store.product(id); return `<button role="tab" aria-selected="${i === 0}" data-tid="${id}" aria-label="${esc(tp.code)}"><span class="calc__thumb">${productMedia(tp)}</span><small>${esc(tp.code.replace('MAZ ', ''))}</small></button>`; }).join('')}</div>
+        <div class="calc__models" role="tablist" aria-label="Modell">${teaserIds.map((id, i) => { const tp = store.product(id); return `<button role="tab" aria-selected="${i === 0}" data-tid="${id}" aria-label="${esc(tp.code)}"><span class="calc__thumb">${productMedia(tp)}</span><small>${esc(tp.code)}</small></button>`; }).join('')}</div>
         <div class="calc__media" data-tmedia></div>
         <p class="calc__step"><span>2</span>Állítsa be</p>
         <div class="calc__row"><span>Finomság</span><div class="seg" data-tkarat><button data-k="14" aria-pressed="true">14K · 585</button><button data-k="18" aria-pressed="false">18K · 750</button></div></div>
@@ -330,6 +330,11 @@ export function catalog(el, query) {
     if (F.rend === 'ar-fel') list.sort((a, b) => pv(a, Infinity) - pv(b, Infinity));
     if (F.rend === 'ar-le') list.sort((a, b) => pv(b, -1) - pv(a, -1));
     if (F.rend === 'cikkszam') list.sort((a, b) => a.p.code.localeCompare(b.p.code));
+    if (F.rend === 'ajanlott') {
+      // ajánlott sorrend: kiemelt modellek, majd a rozé és a párok, a szürke hátterű egyedi gyűrűk a végén
+      const rank = (p) => { const f = FEATURED.indexOf(p.id); return f >= 0 ? f : 10 + (p.kind === 'p' ? 0 : 50) + (p.imgFill ? 30 : 0); };
+      list.sort((a, b) => rank(a.p) - rank(b.p) || a.p.code.localeCompare(b.p.code));
+    }
     $('[data-count]', el).textContent = `${list.length} modell`;
     const active = ['szin', 'ko', 'stilus', 'tipus', 'szel'].filter((g) => F[g] !== 'mind').length + (F.karat === 18 ? 1 : 0) + (min || max !== Infinity ? 1 : 0);
     $('[data-fcount]', el).textContent = active ? `(${active})` : '';

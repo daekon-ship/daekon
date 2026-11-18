@@ -284,12 +284,13 @@ export function buildDemoProducts() {
     const colors = BICOLOR[r.color] ? [r.color] : ['sarga', 'feher', 'rose'];
     return {
       id: slug(r.code),
-      code: r.code,
+      code: r.code.replace(/^MAZ\s*/i, ''),   // a „MAZ” előtag nem jelenik meg (ügyfélkérés)
       name: nameFor(r),
       real: true,
       listaAr: r.listaAr,
       img: r.remote ? REMOTE_IMG + encodeURIComponent(r.img) : IMG_BASE + r.img.toLowerCase(),
       priceOnRequest: !r.listaAr,
+      imgFill: /^MAZ 790(0[0-9]|10) W$/.test(r.code),   // stúdióháttér-szürke fotók: kitöltve jelennek meg
       unknownColor: !!r.unknownColor,
       kind: r.kind,
       baseColor: r.color,
