@@ -21,6 +21,7 @@ function route() {
   if (admin) lastAdmin = location.hash; else lastCustomer = location.hash || '#/';
   $$('[data-mode-btn]').forEach((b) => b.setAttribute('aria-pressed', String((b.dataset.modeBtn === 'admin') === admin)));
   closeMenu();
+  document.body.classList.remove('has-mimpact');
 
   const el = document.createElement('div');
   el.className = 'view';
@@ -40,7 +41,11 @@ function route() {
 /* --- bemutató-sáv --- */
 document.addEventListener('click', (e) => {
   const m = e.target.closest('[data-mode-btn]');
-  if (m) { location.hash = m.dataset.modeBtn === 'admin' ? lastAdmin : lastCustomer; }
+  if (m) {
+    if (document.body.dataset.mode === 'customer') lastCustomer = location.hash || '#/';  // a konfigurátor a linkbe írja a beállítást
+    else lastAdmin = location.hash;
+    location.hash = m.dataset.modeBtn === 'admin' ? lastAdmin : lastCustomer;
+  }
   if (e.target.closest('[data-reset-demo]')) resetDemo();
   if (e.target.closest('[data-script]')) script();
   if (e.target.closest('[data-menu]')) toggleMenu();

@@ -20,6 +20,27 @@ Build nélküli, önálló mappa (`index.html` + `css/` + `js/` + `fonts/`), `no
 
 Az állapot közös (`js/store.js`, `localStorage` kulcs: `karikagyuru-demo-v1`) – csak az adott böngészőben él. **Nincs** szerveroldali adatbázis, jogosultság vagy e-mail-küldés; a felület ezt ki is írja.
 
+## 4. kör (2026.11.18.) – kalkulátor és admin árazás
+
+**Vásárlói konfigurátor** (`#/gyuru/<id>`):
+- Számozott lépések: 1. arany színe, 2. finomság (585/750 magyarázattal), 3. a két gyűrű (fülek összegzéssel), 4. „Árak egy pillantásra” (szín × finomság táblázat, kattintható).
+- Minden választási lehetőségen látszik, mennyivel módosítja az árat (pl. „+4 500 Ft”, „ugyanannyi”).
+- Pároknál női/férfi ármegosztás (tájékoztató).
+- Méretsegítő (kerület ↔ belső átmérő táblázat, tippek), „Még nem tudom – a konzultáción megmérjük” lehetőség.
+- Gravírozás élő előnézettel a gyűrű belső felületén, a választott aranyszínben; egyenes vagy írott betű.
+- A beállítás bekerül a linkbe (`?k=`): „Konfiguráció linkjének másolása” – elküldhető a párnak, visszatérve ugyanaz nyílik meg; az érdeklődési űrlapba is így kerül.
+- Kezdőlapi kalkulátor: 6 modell fotóval, finomság, szín, kő; a „Tovább” gomb a beállítással együtt nyitja a termékoldalt.
+
+**Admin**:
+- Alapanyagárak: arany-kártya nagy mezővel, gyors gombokkal (−3%, −1%, +1%, +3%, +5%) és aranyár-grafikonnal (lépcsős, az új ár szaggatott vonallal). A korábbi árváltozások **kitalált demó előzmények** (jelölve).
+- Hatáspanel: kattintható példák; „Mitől változik?” árösszetétel-sáv (arany / gyémánt / munkadíj / doboz-gravír) – látszik, hogy csak az arany része nő, a munkadíj és a kő változatlan; „Mind a N érintett gyűrű listája” előnézet.
+- Mobilon alsó sáv mutatja a hatást („30 gyűrű ára változna, +7,9%”), egy gombbal a részletekhez ugrik.
+- Jóváhagyás után az összesítő képernyőn is látszik a régi/új összetétel.
+- Árképletek: minden mező alatt egyszerű magyarázat; példagyűrű választható; lépésről lépésre számítás és összetétel-sáv; **munkadíj stílusonként** egy mozdulattal az összes adott stílusú gyűrűre (előnézettel, naplózva).
+- Gyűrűk kezelése: szűrők (egyedi áras, köves, pár, alacsony árrés), rendezés (ár, eltérés a mostani weboldali ártól), címkék; **árlista nyomtatása** (A4, logóval) és **letöltése Excelhez** (CSV, magyar ékezetekkel).
+- Áttekintés: aranyár-grafikon.
+- A bemutató állapota új kulcson indul (`karikagyuru-demo-v2`), a régi böngészőállapot automatikusan kezdőállapotra áll.
+
 ## Bemutató forgatókönyv (kb. 3 perc)
 1. Vásárlói nézet → Kollekció. 2. MAZ 81184 - 81185 W megnyitása (410 500 Ft). 3. Felső sáv: Adminisztrátori nézet. 4. 24K színarany: 39 000 → 45 000 Ft/g (vagy „Kipróbálom” gomb). 5. Új árak alkalmazása (30 gyűrű, átlag +8,8%). 6. „Megnézem a katalógusban”. 7. A kártyákon „Frissült ár”, az ár felszámol 441 500 Ft-ra.
 Utána: „Demóadatok visszaállítása”.

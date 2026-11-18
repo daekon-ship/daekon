@@ -69,6 +69,8 @@ export function defaultConfig(p) {
       width: r.refWidth,
       stones: !!r.stones,
       engraving: '',
+      sizeUnknown: false,  // a méretet a konzultáción veszik fel
+      font: 0,             // gravír betűstílus: 0 = egyenes, 1 = írott (az árat nem befolyásolja)
     })),
   };
 }
@@ -112,6 +114,62 @@ export function priceProduct(p, cfg, M, S, { applyOverride = true } = {}) {
     grams: round2(parts.reduce((a, x) => a + x.grams, 0)),
     pure: round2(parts.reduce((a, x) => a + x.pure, 0)),
   };
+}
+
+/**
+ * Az ár összetétele a végső (bruttó) árban kifejezve – a felár és az ÁFA
+ * arányosan szétosztva. Ebből rajzolódik az admin „árösszetétel” sávja.
+ */
+export function composition(r, S) {
+  const b = r.breakdown;
+  const k1 = (1 + S.markupMetal / 100) * (1 + S.vatPct / 100);
+  const k2 = (1 + S.markupStones / 100) * (1 + S.vatPct / 100);
+  const raw = {
+    metal: (b.metal + b.alloy) * k1,
+    stones: b.stones * k2,
+    labor: (b.labor + b.setting) * k1,
+    other: (b.engraving + b.other) * k1,
+  };
+  // A fix részek (kő, munkadíj, egyéb) pontos értéken maradnak; a kerekítés és az
+  // esetleges egyedi ár a fém részébe kerül – így a sávon látszik, hogy csak az változik.
+  raw.metal = Math.max(0, r.final - raw.stones - raw.labor - raw.other);
+  return raw;
+}
+
+/** Pároknál a végső ár megosztása a két gyűrű között (tájékoztató, kerekítve). */
+export function ringSplit(p, cfg, r, S) {
+  const k1 = (1 + S.markupMetal / 100), k2 = (1 + S.markupStones / 100);
+  const raw = r.parts.map((x) => (x.metal + x.alloy + x.labor + x.setting + x.engraving + x.other) * k1 + x.stones * k2);
+  const tot = raw.reduce((a, x) => a + x, 0) || 1;
+  const step = Math.max(S.roundTo, 500);
+  const out = raw.map((x) => Math.round((r.final * x) / tot / step) * step);
+  out[out.length - 1] = r.final - out.slice(0, -1).reduce((a, x) => a + x, 0);
+  return out;
+}
+
+/* Konfiguráció ↔ rövid, megosztható link-paraméter */
+export function encodeCfg(cfg) {
+  const o = { c: cfg.color, k: cfg.karat, r: cfg.rings.map((x) => [x.size, x.width, x.stones ? 1 : 0, x.engraving || '', x.font || 0, x.sizeUnknown ? 1 : 0]) };
+  return btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+export function decodeCfg(str, p) {
+  try {
+    const o = JSON.parse(decodeURIComponent(escape(atob(str.replace(/-/g, '+').replace(/_/g, '/')))));
+    const cfg = defaultConfig(p);
+    if (p.colors.includes(o.c)) cfg.color = o.c;
+    if (p.karats.includes(o.k)) cfg.karat = o.k;
+    (o.r || []).forEach((x, i) => {
+      if (!cfg.rings[i]) return;
+      const r = cfg.rings[i];
+      if (x[0] >= 40 && x[0] <= 80) r.size = x[0];
+      if (p.widths.includes(x[1])) r.width = x[1];
+      r.stones = !!p.rings[i].stones && (!!x[2] || !p.stoneOptional);
+      r.engraving = String(x[3] || '').slice(0, 24);
+      r.font = x[4] ? 1 : 0;
+      if (x[5]) { r.sizeUnknown = true; r.size = p.rings[i].refSize; }
+    });
+    return cfg;
+  } catch { return null; }
 }
 
 /** Alapár (alapkonfiguráció), az összes termékre. */
