@@ -79,7 +79,7 @@ A nyilvános felület csak a végső becsült árat, a paramétereket és a becs
 3. Esküvői meghívó – letterpress, kézírásos díszítés. Elvetve: túl dekoratív, könnyen sablonos „esküvői” hangulatú lesz.
 
 ## Designrendszer
-- Betűk: Libre Baskerville (címek) + Jost (szöveg, UI, árak) – helyben (`fonts/`, OFL). Az 5. körben a Bodoni Moda helyett, mert annak hajszálvékony vonalai telefonon szétestek. Mérsékelt méretek: h1 max ~43 px, h2 max ~30 px. Admin alapméret 18,4 px.
+- Betűk (6. kör): Libre Baskerville csak a vásárlói oldal nagy címeihez + Manrope minden máshoz (szöveg, gombok, árak, teljes admin); nincs csupa nagybetűs, ritkított felirat. Korábban: Libre Baskerville (címek) + Jost (szöveg, UI, árak) – helyben (`fonts/`, OFL). Az 5. körben a Bodoni Moda helyett, mert annak hajszálvékony vonalai telefonon szétestek. Mérsékelt méretek: h1 max ~43 px, h2 max ~30 px. Admin alapméret 18,4 px.
 - Színek (3. kör, az ügyfél kérésére a karikagyuru.com kék–fehér arculata): fehér `#FFFFFF`, halványkék felületek `#F2F8FA` / `#E7F4F8`, márkakék `#43BDDB` (gombok, vonalak, fémjel-bélyegek), sötétkék szöveg-kiemelés `#136A82`, szöveg `#15262D`, sötét szekciók `#12303B` / `#0F222A`. A CSS-változók neve (`--gold`, `--ivory` stb.) az 1. körből maradt, az értékük kék–fehér. Kontraszt: `#136A82` fehéren 6,2:1, sötét szöveg a kék gombon 7,1:1.
 - Térköz: 8 / 16 / 24 / 40 / 64 / szekció 72–128 px; konténer 1240 px.
 - Komponensek: fémjel-bélyeg, szegmentált választó, aranyszín-minta (fémes gradiens), chip, léptető, kártya, admin mező ± gombokkal, hatáspanel.
