@@ -822,3 +822,14 @@ body[data-mode="admin"] .adm__h1 { font-weight: 800; }
   .demobar__switch button { font-size: .9rem; }
   .demobar__tools button { font-size: .86rem; }
 }
+@media (max-width: 640px) {
+  .demobar { gap: 6px; padding: 0 8px; }
+  .demobar__switch { min-width: 0; }
+  .demobar__switch button { font-size: .86rem; padding: 6px 4px; }
+  .demobar__tools { flex: none; }
+  .demobar__tools button { font-size: .8rem; max-width: 84px; padding: 4px 2px; }
+}
+@media (max-width: 370px) {
+  .demobar__switch button { font-size: .8rem; }
+  .demobar__tools button { font-size: .76rem; max-width: 74px; }
+}
