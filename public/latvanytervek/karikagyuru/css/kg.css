@@ -1301,3 +1301,21 @@ body { font-size: 1.04rem; line-height: 1.6; }
   .bigtile { min-height: 0; padding: 18px 20px; }
   .bigtile b { font-size: 1.3rem; } .bigtile__v { font-size: 1.7rem; }
 }
+
+/* 19. kör – Főmenü: 4 nagy + 3 kisebb gomb, minden látszik; legutóbbi események */
+.bigtiles, .smalltiles, .ovcols, .ovbox--chart { max-width: 1000px; }
+.smalltiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 12px; }
+.smalltiles .bigtile { min-height: 0; padding: 16px 18px; border-width: 2px; }
+.smalltiles .bigtile b { font-size: 1.12rem; }
+.smalltiles .bigtile__v { font-size: 1.15rem; color: var(--ink2); }
+.smalltiles .bigtile small { font-size: .95rem; }
+.ovcols { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 22px; }
+.ovbox { background: #fff; border: 2px solid var(--line); border-radius: 14px; padding: 18px 20px; display: grid; gap: 10px; align-content: start; }
+.ovbox h2 { font-size: 1.15rem; margin: 0; }
+.ovbox ul { list-style: none; margin: 0; padding: 0; display: grid; }
+.ovbox li { display: grid; gap: 1px; padding: 9px 0; border-bottom: 1px solid var(--line); }
+.ovbox li span { font-size: .88rem; color: var(--mute); } .ovbox li em { font-style: normal; color: var(--up); font-weight: 700; }
+.ovbox li b { font-weight: 600; font-size: 1rem; } .ovbox li small { font-size: .9rem; color: var(--mute); }
+.ovbox--chart { margin-top: 12px; }
+.ovbox--chart .gchart { max-width: 760px; }
+@media (max-width: 960px) { .smalltiles { grid-template-columns: 1fr; } .ovcols { grid-template-columns: 1fr; } }

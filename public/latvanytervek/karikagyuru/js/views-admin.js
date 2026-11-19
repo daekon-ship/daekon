@@ -34,7 +34,7 @@ export function adminShell(el, page, arg) {
     <aside class="adm__nav" aria-label="Admin menü">
       <p class="adm__brand"><img src="img/logo-jel.png" alt="" width="176" height="127">Karikagyuru.com<span>Kezelőfelület</span></p>
       <nav><ol>${MENU.map(([k, t]) => `<li><a href="#/admin/${k}" ${page === k || (page === 'gyuru' && k === 'gyuruk') ? 'aria-current="page"' : ''}>${t}${k === 'erdeklodesek' && newInq ? `<em>${newInq}</em>` : ''}</a></li>`).join('')}</ol>
-        <p class="adm__navx">Egyéb</p>
+        <p class="adm__navx">További</p>
         <ul class="adm__navsub">${MENU_EXTRA.map(([k, t]) => `<li><a href="#/admin/${k}" ${page === k ? 'aria-current="page"' : ''}>${t}</a></li>`).join('')}</ul></nav>
     </aside>
     <main class="adm__main" id="adm-main">
@@ -71,9 +71,21 @@ function overview(el) {
       ${tile('#/admin/gyuruk', 'Gyűrűk', `${st.products.length} db`, 'Lista, egyedi ár, árlista.')}
       ${tile('#/admin/erdeklodesek', 'Érdeklődések', newInq ? `${newInq} új` : 'nincs új', 'Akik írtak vagy időpontot kértek.', newInq ? 'bigtile--alert' : '')}
     </div>
-    <details class="xmenu"><summary>Egyéb (ritkán kell)</summary>
-      <div class="xmenu__list">${MENU_EXTRA.map(([k, t]) => `<a href="#/admin/${k}">${t}<span>›</span></a>`).join('')}</div>
-    </details>`;
+    <div class="smalltiles">
+      ${tile('#/admin/keplet', 'Felárak és munkadíjak', `${dec(st.settings.markupMetal)}% felár`, 'Hogyan lesz az aranyárból eladási ár.')}
+      ${tile('#/admin/elozmenyek', 'Árváltozások naplója', `${st.history.length} bejegyzés`, 'Mikor, mit változtatott. Visszaállítható.')}
+      ${tile('#/admin/beallitasok', 'Beállítások', `${num(st.settings.roundTo)} Ft-ra kerekít`, 'Kerekítés, védelem, demó visszaállítása.')}
+    </div>
+    <div class="ovcols">
+      <section class="ovbox"><h2>Legutóbbi árváltozások</h2>
+        <ul>${st.history.slice(0, 4).map((h) => `<li><span>${dayHu(h.at)}</span><b>${esc(h.title)}</b>${h.count ? `<small>${h.count} gyűrű ára változott</small>` : ''}</li>`).join('')}</ul>
+        <a class="linkbtn" href="#/admin/elozmenyek">Összes változás</a></section>
+      <section class="ovbox"><h2>Legutóbbi érdeklődések</h2>
+        ${st.inquiries.length ? `<ul>${st.inquiries.slice(0, 4).map((q) => `<li><span>${dayHu(q.at)}${q.status === 'uj' ? ' · <em>új</em>' : ''}</span><b>${esc(q.name)}</b>${q.code ? `<small>${esc(q.code)}${q.estimate ? ' · ' + ft(q.lockedPrice || q.estimate) : ''}</small>` : ''}</li>`).join('')}</ul>`
+          : '<p class="hint">Még nincs érdeklődés. A vásárlói oldalon a gyűrűknél lévő „Érdeklődés” gombbal küldhető.</p>'}
+        <a class="linkbtn" href="#/admin/erdeklodesek">Összes érdeklődés</a></section>
+    </div>
+    <section class="ovbox ovbox--chart"><h2>Az arany ára az elmúlt hónapokban <span class="demo-chip">demó</span></h2>${goldChart(store.goldSeries(), st.materials.gold24, st.materials.gold24)}</section>`;
 }
 
 function priceCalc(el) {
