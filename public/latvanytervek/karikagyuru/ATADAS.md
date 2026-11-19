@@ -116,3 +116,103 @@ Bejelentkezés és szerepkörök; szerveroldali adatbázis (termékek, árak, na
 - Kér-e rozéarany/18K opciót minden modellhez; platina, palládium, titán, acél kollekció.
 - Fotók (több nézet, nagy felbontás), logó (most tipográfiai szóvédjegy + két karika jel).
 - Érdeklődés: telefon vagy űrlap legyen-e az elsődleges.
+
+---
+
+## V2 fejlesztés (2026. november)
+
+A meglévő rendszer továbbfejlesztése, újraépítés nélkül. Továbbra sincs webshop, fizetés, kosár vagy készletkezelés. A fő gombok: „Érdeklődöm erről a gyűrűről” és „Kérjen személyes konzultációt”.
+
+### Lépésenkénti konfigurátor (termékoldal)
+Anyag → Finomság (csak arany, 14K/18K) → Arany színe (csak arany, ha több szín van) → Méret (női és férfi egymás mellett, külön léptetővel, méretsegítővel, „még nem tudom” opcióval, szélességgel) → Gyémánt (gyűrűnként) → Gravírozás (gyűrűnként, betűtípussal, előnézettel) → Összefoglaló, ár, érdeklődés.
+- Csak a releváns lépések jelennek meg; minden választásnál látszik az árkülönbség.
+- A szín azonos karátnál nem változtat az árat (egy közös ötvözetár: `alloyAll`).
+- Nem arany anyagnál nincs aranyszín-választó.
+- Lehetetlen összeállítás nem marad: az `engine.normalizeConfig` mindent a modell szabályaira szorít, és figyelmeztet.
+- Ha nincs megbízható ár (ár nélküli kőméret, hiányzó tömeg vagy grammár, „ár nélküli” modell), akkor az ár helyén ez áll: „Egyedi árajánlat szükséges”. Nincs 0 Ft és nincs becsült kamu ár.
+
+### Anyagok
+14K arany (alapértelmezett), 18K arany, platina (Pt950), palládium (Pd950), titán. A 24K csak számítási alap, választható anyagként nem jelenik meg; 9K nincs. Modellenként admin állítja, melyik anyag választható (`p.metals`).
+
+### Árképzési módok – AZ ÜGYFÉLLEL EGYEZTETENDŐ, egyik sem végleges
+Az admin „Felárak és munkadíjak” oldalán választható; az „Arany ára” oldal fejléce mutatja, melyik aktív.
+- **Költség szerint (`koltseg`, alap):** színarany-tartalom × 24K ár × (1 + veszteség) + ötvözet + munkadíj × anyagszorzó + kőfoglalás + egyéb → felár → ÁFA → kerekítés. A kövekre külön felár.
+- **Grammár szerint (`gramm`):** kész tömeg × bruttó grammár (anyagonként, `sellPerGram`). A grammár már tartalmazza a fémet, a munkát és az árrést, ezért a munkadíj és a fém-felár NEM adódik hozzá még egyszer; csak a kövek (+kőfelár), a kőfoglalás, a gravír és a doboz. Ebben a módban árrés nem számolható.
+- A megbeszélésen elhangzott példaárak NEM kerültek be élő árként. A demó grammárak a költségalapú mód kőnélküli átlagához vannak igazítva, csak az összevethetőség kedvéért.
+
+### Méret hatása – egyeztetendő
+- **Tömeg szerint (`tomeg`, alap):** tömeg = referenciatömeg × méret / referenciaméret × szélesség-arány × anyagszorzó. A munkadíj és a kő nem változik.
+- **Egyszerű árarányosítás (`ar`):** a kő nélküli rész teljes ára arányos a mérettel (a munkadíjat is arányosítja).
+
+### Gyémántszabályok (termékenként, `ring.stoneRule`)
+Kizárólag természetes gyémánt. Módok:
+- `free`: a vásárló választ kőszámot min és max között;
+- `fixed`: kötött kőszám;
+- `perSize`: körbe foglalt, a kőszám a mérettől függ;
+- `quote`: csak ajánlattal.
+
+További beállítások:
+- választható kőméretek (`cats`) és alap kőméret;
+- kő nélkül is kérhető-e (`allowNone`);
+- `demo` jelölés: a szabály még jóváhagyásra vár, ezt a vásárlói oldalon is jelezzük.
+
+Ha egy kőméretnek nincs ára (`price: null`, pl. 0,10 ct), az egyedi ajánlatot jelent. A kő ára egyszer számolódik (tesztelve). A mostani szabályok demók, a weboldali kőszámból képzett becslések.
+
+### Admin
+- **Arany ára:**
+  - a fő mező módfüggő (24K ár vagy 14K grammár);
+  - ±% gombok, előnézet (érintett gyűrűk száma, átlagos %, példák, Ft-különbség);
+  - figyelmeztetés, ha egy gyűrű ár nélkül maradna;
+  - nagy változásnál külön megerősítés, napló, visszaállítás;
+  - lenyitható részben a platina, palládium, titán és ötvözet ára (vagy a többi grammár), valamint a kőárak (üres mező = egyedi ajánlat).
+- **Felárak és munkadíjak:** árképzési mód, méretkezelés, felárak, fix díjak, anyagonkénti tömeg- és munkadíj-szorzó, mentés előtti hatáselőnézet.
+- **Gyűrű szerkesztése:**
+  - cikkszám, név, stílus, szélességek, megjelenés (látható/rejtett), domain;
+  - választható anyagok;
+  - gyűrűnként referenciaméret, tömeg, szélesség, munkadíj, egyéb költség és kőszabály-szerkesztő;
+  - egyedi ár, minimumár, „csak ajánlattal” kapcsoló;
+  - „Jóváhagyandó adatok” lista.
+- **Árszámítás:** anyag, szín, méretek, kő be/ki, majd „Felírom ajánlatnak” → Érdeklődések (rögzített árral, vagy ár nélküli ajánlatként).
+- A gyűrűlistában van „Rejtett” és „Ár nélkül” szűrő; a CSV és a nyomtatott árlista kezeli az ár nélküli tételeket.
+
+### Több domain
+A `data.js`-ben `SITES` (karikagyuru.com, budapestikarikagyuru.com) és `CURRENT_SITE`; minden termékhez tartozik egy `sites` lista. A katalógus csak az adott oldalhoz rendelt, látható termékeket mutatja. A termék- és áradminisztráció közös. A második oldal nincs megépítve, csak az adatszerkezet kész rá.
+
+### Backend-előkészítés
+- Az árképzés tiszta függvényekben van (`engine.js`), DOM nélkül; szerveroldalra változtatás nélkül átvihető.
+- A tárolás egy helyen van (`store.js`, localStorage); éles rendszerben ezt kell API-hívásokra cserélni.
+- Az admin NEM biztonságos: nincs bejelentkezés, és nincs szerveroldali jogosultság.
+
+### Tesztek
+- `node --test public/latvanytervek/karikagyuru/tests/engine.test.mjs` – 12 motor-teszt:
+  - a szín nem változtat az árat;
+  - 14K/18K tömeg és ár;
+  - méret hatása (mindkét módszerrel);
+  - kőszám-határok, a kötött és a méretfüggő kőszám;
+  - nincs dupla kőár;
+  - a női és a férfi méret külön számít;
+  - alapanyagár-változás és rögzített ár;
+  - a grammáras mód nem számol dupla munkadíjat;
+  - hibás adatból nincs megtévesztő ár;
+  - nem arany anyagnál nincs aranyszín;
+  - a megosztható link oda-vissza működik;
+  - minden áras terméknek van ára.
+- `python3 public/latvanytervek/karikagyuru/tests/e2e.py [URL]` – 23 böngészős ellenőrzés:
+  - a konfigurátor lépései, színsemlegesség, 18K, platina, méretek, kőhatár, kő ki/be, egyedi ajánlat, gravír, érdeklődés;
+  - körbe foglalt gyűrű;
+  - adminban módosított ár megjelenése a vásárlói oldalon;
+  - grammáras mód;
+  - termékszerkesztő, rejtett termék, gyors árszámítás;
+  - demó visszaállítás;
+  - 360/390/768/1440 px szélességen nincs vízszintes görgetés;
+  - nincs JS-hiba.
+- A localStorage kulcs `karikagyuru-demo-v8` lett, így a régi demóadat nem keveredik az újjal.
+
+### Az ötvösmester jóváhagyása kell
+1. Árképzési mód (költség vagy grammár) és méretkezelés (tömeg vagy árarányos).
+2. Valós 24K, platina-, palládium- és titánár, illetve valós grammárak anyagonként.
+3. Modellenként: valós tömeg (14K-ban) referenciamérettel és szélességgel; mely anyagok és finomságok készülhetnek.
+4. Kőszabályok modellenként: kőszám (min/max/kötött/méretfüggő), kőméretek, elhagyható-e a kő.
+5. Kőárak méretenként és minőségenként (a 0,10 ct most szándékosan ár nélküli).
+6. Munkadíjak, anyagonkénti munkadíj-szorzók (platina, palládium, titán), felárak, kerekítés, gravír, doboz, tanúsítvány díja.
+7. A cikkszámból képzett terméknevek és az alapszín ott, ahol a cikkszámban nincs színjel.

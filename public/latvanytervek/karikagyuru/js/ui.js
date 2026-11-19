@@ -90,6 +90,8 @@ export function productMedia(p, { eager = false, large = false } = {}) {
 /** Ár-animáció: a régi értékről finoman az újra számol. */
 export function animatePrice(el, to) {
   if (!el) return;
+  if (to === null || to === undefined) { el.dataset.value = ''; el.textContent = 'Egyedi árajánlat szükséges'; el.classList.add('price--quote'); return; }
+  el.classList.remove('price--quote');
   const from = Number(el.dataset.value || to);
   el.dataset.value = to;
   if (from === to || reduced() || !M()) { el.textContent = ft(to); return; }

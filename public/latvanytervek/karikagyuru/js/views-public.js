@@ -1,7 +1,7 @@
 /* Vásárlói felület: kezdőoldal, kollekció, termékoldal + konfigurátor, kapcsolat. */
 import { store } from './store.js';
-import { BUSINESS, COLORS, STYLES, FEATURED, BICOLOR, TERMS } from './data.js';
-import { priceProduct, defaultConfig, ft, dec, diamond, ringSplit, encodeCfg, decodeCfg } from './engine.js';
+import { BUSINESS, COLORS, STYLES, FEATURED, BICOLOR, TERMS, CURRENT_SITE } from './data.js';
+import { priceProduct, normalizeConfig, defaultConfig, ft, dec, diamond, ringSplit, encodeCfg, decodeCfg, METALS, METAL_ORDER, isGold } from './engine.js';
 import { $, $$, esc, productMedia, hasPhoto, metalSwatch, animatePrice, modal, reveal, toast, M, reduced } from './ui.js';
 
 const S = () => store.get();
@@ -10,28 +10,33 @@ const price = (p, cfg) => priceProduct(p, cfg, S().materials, S().settings);
 const demoMark = (txt = 'demó') => S().settings.showDemoMarks ? `<span class="demo-chip" title="Kitalált bemutató-alapanyagárakból számolva">${txt}</span>` : '';
 
 const colorLabel = (c) => COLORS[c]?.label || c;
-const karatLabel = (k) => k === 925 ? 'Ezüst 925' : `${k} karát (${k === 14 ? '585' : '750'})`;
-const stamp = (k) => `<span class="stamp" aria-label="Fémjel ${k}">${k === 925 ? '925' : k === 18 ? '750' : '585'}</span>`;
+const metalLabel = (cfg) => (isGold(cfg.metal) && cfg.color ? `${colorLabel(cfg.color)}, ` : '') + `${METALS[cfg.metal].label} (${METALS[cfg.metal].stamp})`;
+const metalShort = (cfg) => (isGold(cfg.metal) && cfg.color ? `${colorLabel(cfg.color)} · ` : '') + METALS[cfg.metal].short;
+const stamp = (m) => `<span class="stamp" aria-label="Fémjel ${METALS[m].stamp}">${METALS[m].stamp}</span>`;
+const hasStones = (p) => p.rings.some((r) => r.stoneRule);
+const canBePlain = (p) => p.rings.every((r) => !r.stoneRule || r.stoneRule.allowNone);
+/** Megjelenik-e a termék ezen az oldalon (admin: látható + ehhez a domainhez rendelve + van fotó). */
+export const listed = (p) => p.visible !== false && (!p.sites || p.sites.includes(CURRENT_SITE)) && hasPhoto(p);
 
 /* ---------- Kártya ---------- */
-function card(p, { karat } = {}) {
+function card(p, { metal } = {}) {
   const cfg = defaultConfig(p);
-  if (karat && p.karats.includes(karat)) cfg.karat = karat;
+  if (metal && p.metals.includes(metal)) { cfg.metal = metal; if (!isGold(metal)) cfg.color = null; }
   if (p.priceOnRequest) return cardOnRequest(p);
   const r = price(p, cfg);
   const lc = S().lastChange;
   const old = lc && lc.old[p.id];
-  const changed = old && old !== r.final && !karat && Date.now() - new Date(lc.at).getTime() < 1000 * 60 * 60 * 6;
+  const changed = old && r.final && old !== r.final && !metal && Date.now() - new Date(lc.at).getTime() < 1000 * 60 * 60 * 6;
   return `<article class="card" data-id="${p.id}">
     <a class="card__link" href="#/gyuru/${p.id}" aria-label="${esc(p.name)} – részletek">
-      <div class="card__media">${productMedia(p)}${stamp(cfg.karat)}</div>
+      <div class="card__media">${productMedia(p)}${stamp(cfg.metal)}</div>
       <div class="card__body">
         <p class="card__code">${esc(p.code)}</p>
         <h3 class="card__name">${esc(p.name)}</h3>
-        <p class="card__meta">${colorLabel(cfg.color)} · ${cfg.karat === 925 ? 'ezüst' : cfg.karat + 'K'}${p.rings[0].stones ? ' · gyémánttal' : ''}</p>
+        <p class="card__meta">${metalShort(cfg)}${hasStones(p) ? ' · gyémánttal' : ''}</p>
         <div class="card__price">
           <span class="card__label">Becsült indulóár ${demoMark()}</span>
-          <strong class="price" data-price="${p.id}" data-value="${changed ? old : r.final}">${ft(changed ? old : r.final)}</strong>
+          ${r.final === null ? '<strong class="price price--req">egyedi ajánlat</strong>' : `<strong class="price" data-price="${p.id}" data-value="${changed ? old : r.final}">${ft(changed ? old : r.final)}</strong>`}
           ${changed ? `<span class="card__was">korábban ${ft(old)}</span>` : ''}
         </div>
         <span class="btn-text">Részletek</span>
@@ -63,7 +68,7 @@ function animateCards(root) {
     const p = store.product(el.dataset.price);
     if (!p || p.priceOnRequest) return;
     const now = price(p).final;
-    if (Number(el.dataset.value) !== now) {
+    if (now !== null && Number(el.dataset.value) !== now) {
       setTimeout(() => { animatePrice(el, now); el.closest('.card')?.classList.add('is-updated'); }, 450);
     }
   });
@@ -82,7 +87,7 @@ export function home(el) {
   <section class="hero">
     <div class="wrap hero__grid">
       <div class="hero__text">
-        <p class="eyebrow" data-hero>${stamp(14)}${stamp(18)}<span>Karikagyűrűk és leánykérő gyűrűk · Budapest</span></p>
+        <p class="eyebrow" data-hero>${stamp('au14')}${stamp('au18')}<span>Karikagyűrűk és leánykérő gyűrűk · Budapest</span></p>
         <h1 data-hero>Egy életre szóló választás.</h1>
         <p class="lead" data-hero>Karikagyűrűk és eljegyzési gyűrűk sárga-, fehér- és rozéaranyból. Minden pár rendelésre, az Önök méretére készül, Budapesten, a VIII. kerületben.</p>
         <div class="hero__cta" data-hero>
@@ -114,7 +119,7 @@ export function home(el) {
         ${collTile('feher', 'Fehérarany', 'A legtöbbet választott szín, gyémánttal is.', count((p) => p.baseColor === 'feher'), store.product('maz-79014-w'), 'coll__a')}
         ${collTile('sarga', 'Sárgaarany', 'A klasszikus karikagyűrű.', count((p) => p.baseColor === 'sarga'), store.product('maz-81161-81162-y'), 'coll__b')}
         ${collTile('ketszinu', 'Kétszínű arany', 'Két aranyszín egy gyűrűben.', count((p) => !!BICOLOR[p.baseColor]), store.product('maz-81200-81201-wy'), 'coll__c')}
-        ${collTile('koves', 'Gyémánttal', 'Egy kővel vagy körbe foglalva.', count((p) => !!p.rings.some((r) => r.stones)), store.product('maz-79010-w'), 'coll__d')}
+        ${collTile('koves', 'Gyémánttal', 'Egy kővel vagy körbe foglalva.', count((p) => hasStones(p)), store.product('maz-79010-w'), 'coll__d')}
         <a class="coll__rose" href="#/kollekcio?szin=rose" data-reveal>
           <div class="coll__rose-art">${productMedia(store.product('maz-79016-79017'))}</div>
           <div><p class="kicker">Rozéarany</p><p>Bármelyik modell kérhető rozéaranyból is. Az árát a gyűrű oldalán látja.</p></div>
@@ -128,7 +133,7 @@ export function home(el) {
     <div class="wrap">
       <header class="sec__head sec__head--row" data-reveal>
         <div><h2>Népszerű modellek</h2></div>
-        <a class="btn btn--line" href="#/kollekcio">Mind a ${st.products.filter((p) => hasPhoto(p)).length} modell</a>
+        <a class="btn btn--line" href="#/kollekcio">Mind a ${st.products.filter(listed).length} modell</a>
       </header>
       <div class="grid grid--dense grid--featured" data-reveal>${FEATURED.map((id) => card(store.product(id))).join('')}</div>
     </div>
@@ -171,7 +176,7 @@ export function home(el) {
       <div class="calc__text" data-reveal>
         
         <h2>Nézze meg, mennyibe kerül</h2>
-        <p>Válasszon modellt, aranyszínt és finomságot, az ár azonnal frissül. A gyűrű oldalán a méret, a kövek és a gravírozás is beállítható.</p>
+        <p>Válasszon modellt, anyagot és színt, az ár azonnal frissül. A gyűrű oldalán a méret, a kövek és a gravírozás is beállítható. Az arany színe nem változtat az árat.</p>
         <p class="fine">Tájékoztató ár, a végleges árat személyesen adjuk meg.</p>
       </div>
       <div class="calc__box" data-reveal=".1">
@@ -179,8 +184,8 @@ export function home(el) {
         <div class="calc__models" role="tablist" aria-label="Modell">${teaserIds.map((id, i) => { const tp = store.product(id); return `<button role="tab" aria-selected="${i === 0}" data-tid="${id}" aria-label="${esc(tp.code)}"><span class="calc__thumb">${productMedia(tp)}</span><small>${esc(tp.code)}</small></button>`; }).join('')}</div>
         <div class="calc__media" data-tmedia></div>
         <p class="calc__step"><span>2</span>Állítsa be</p>
-        <div class="calc__row"><span>Finomság</span><div class="seg" data-tkarat><button data-k="14" aria-pressed="true">14K · 585</button><button data-k="18" aria-pressed="false">18K · 750</button></div></div>
-        <div class="calc__row"><span>Szín</span><div class="swatches" data-tcolor></div></div>
+        <div class="calc__row"><span>Anyag</span><div class="seg seg--wrap" data-tmetal></div></div>
+        <div class="calc__row" data-tcolorrow><span>Szín</span><div class="swatches" data-tcolor></div></div>
         <div class="calc__row" data-tstonerow hidden><span>Kövek</span><div class="seg" data-tstones><button data-st="1" aria-pressed="true">Gyémánttal</button><button data-st="0" aria-pressed="false">Kő nélkül</button></div></div>
         <div class="calc__price"><span>Becsült ár ${demoMark()}</span><strong class="price" data-tprice></strong></div>
         <a class="btn btn--dark btn--full" data-tlink href="#">Méret és gravírozás beállítása</a>
@@ -203,24 +208,29 @@ export function home(el) {
   `;
 
   // Kalkulátor-előzetes
-  const t = { id: teaserIds[0], karat: 14, color: null, stones: true };
+  const t = { id: teaserIds[0], metal: 'au14', color: null, stones: true };
+  const TM = ['au14', 'au18', 'pt'];
   const paint = () => {
     const p = store.product(t.id);
     const cfg = defaultConfig(p);
-    cfg.karat = t.karat; cfg.color = t.color && p.colors.includes(t.color) ? t.color : p.baseColor;
-    if (p.stoneOptional && !t.stones) cfg.rings.forEach((r) => (r.stones = false));
-    $('[data-tstonerow]', el).hidden = !p.stoneOptional;
+    if (p.metals.includes(t.metal)) cfg.metal = t.metal; else t.metal = cfg.metal;
+    cfg.color = isGold(cfg.metal) ? (t.color && p.colors.includes(t.color) ? t.color : p.baseColor) : null;
+    const plainOk = hasStones(p) && canBePlain(p);
+    if (plainOk && !t.stones) cfg.rings.forEach((r) => (r.stones = null));
+    $('[data-tstonerow]', el).hidden = !plainOk;
+    $('[data-tcolorrow]', el).hidden = !isGold(cfg.metal) || p.colors.length < 2;
+    $('[data-tmetal]', el).innerHTML = TM.map((m) => `<button data-m="${m}" aria-pressed="${m === cfg.metal}" ${p.metals.includes(m) ? '' : 'disabled title="Ennél a modellnél nem választható"'}>${METALS[m].short}</button>`).join('');
     $$('[data-st]', el).forEach((b) => b.setAttribute('aria-pressed', String((b.dataset.st === '1') === t.stones)));
-    $('[data-tmedia]', el).innerHTML = `<div class="calc__ring calc__ring--photo">${productMedia(p)}</div><p class="calc__name">${esc(p.name)}</p>${cfg.color === p.baseColor ? '' : `<p class="colornote"><span class="sw sw--sm" style="--sw:${metalSwatch(cfg.color)}"></span>A fotón ${colorLabel(p.baseColor).toLowerCase()} – ${colorLabel(cfg.color).toLowerCase()} színben készül el.</p>`}`;
+    $('[data-tmedia]', el).innerHTML = `<div class="calc__ring calc__ring--photo">${productMedia(p)}</div><p class="calc__name">${esc(p.name)}</p>${!cfg.color || cfg.color === p.baseColor ? '' : `<p class="colornote"><span class="sw sw--sm" style="--sw:${metalSwatch(cfg.color)}"></span>A fotón ${colorLabel(p.baseColor).toLowerCase()} – ${colorLabel(cfg.color).toLowerCase()} színben készül el.</p>`}`;
     $('[data-tcolor]', el).innerHTML = p.colors.map((c) => `<button class="sw" style="--sw:${metalSwatch(c)}" aria-pressed="${c === cfg.color}" data-c="${c}" title="${colorLabel(c)}"><span class="sr">${colorLabel(c)}</span></button>`).join('');
     animatePrice($('[data-tprice]', el), price(p, cfg).final);
     const def = JSON.stringify(cfg) === JSON.stringify(defaultConfig(p));
     $('[data-tlink]', el).href = `#/gyuru/${p.id}${def ? '' : '?k=' + encodeCfg(cfg)}`;
   };
   el.addEventListener('click', (e) => {
-    const m = e.target.closest('[data-tid]'), k = e.target.closest('[data-k]'), c = e.target.closest('[data-c]');
+    const m = e.target.closest('[data-tid]'), k = e.target.closest('[data-m]'), c = e.target.closest('[data-c]');
     if (m) { t.id = m.dataset.tid; t.color = null; $$('[data-tid]', el).forEach((b) => b.setAttribute('aria-selected', b === m)); paint(); }
-    if (k) { t.karat = Number(k.dataset.k); $$('[data-k]', el).forEach((b) => b.setAttribute('aria-pressed', b === k)); paint(); }
+    if (k && !k.disabled) { t.metal = k.dataset.m; paint(); }
     if (c) { t.color = c.dataset.c; paint(); }
     const st = e.target.closest('[data-st]');
     if (st) { t.stones = st.dataset.st === '1'; paint(); }
@@ -251,13 +261,13 @@ function heroIn(el) {
 }
 
 /* ---------- Kollekció ---------- */
-const F = { szin: 'mind', karat: 14, ko: 'mind', stilus: 'mind', szel: 'mind', tipus: 'mind', min: '', max: '', rend: 'ajanlott' };
+const F = { szin: 'mind', anyag: 'au14', ko: 'mind', stilus: 'mind', szel: 'mind', tipus: 'mind', min: '', max: '', rend: 'ajanlott' };
 
 export function catalog(el, query) {
   el = fresh(el);
   if (query) {
     Object.assign(F, { szin: 'mind', ko: 'mind', stilus: 'mind', szel: 'mind', tipus: 'mind' });
-    for (const [k, v] of query) if (k in F) F[k] = k === 'karat' ? Number(v) : v;
+    for (const [k, v] of query) if (k in F) F[k] = v;
   }
   const all = S().products;
   const widths = [...new Set(all.flatMap((p) => p.widths))].sort((a, b) => a - b);
@@ -276,7 +286,7 @@ export function catalog(el, query) {
     <aside class="filters" data-filters aria-label="Szűrők">
       <div class="filters__head"><h2>Szűrés</h2><button class="filters__close" type="button" data-close-filters aria-label="Szűrők bezárása">×</button></div>
       <fieldset><legend>Arany színe</legend><div class="chips">${chip('szin', 'mind', 'Mind')}${chip('szin', 'sarga', 'Sárga')}${chip('szin', 'feher', 'Fehér')}${chip('szin', 'rose', 'Rozé')}${chip('szin', 'ketszinu', 'Kétszínű')}</div></fieldset>
-      <fieldset><legend>Finomság – ezzel számolt árak</legend><div class="chips">${chip('karat', 14, '14K · 585')}${chip('karat', 18, '18K · 750')}</div></fieldset>
+      <fieldset><legend>Anyag – ezzel számolt árak</legend><div class="chips">${METAL_ORDER.map((m) => chip('anyag', m, METALS[m].short)).join('')}</div></fieldset>
       <fieldset><legend>Kövek</legend><div class="chips">${chip('ko', 'mind', 'Mind')}${chip('ko', 'nelkul', 'Kő nélkül')}${chip('ko', 'koves', 'Köves')}</div></fieldset>
       <fieldset><legend>Stílus</legend><div class="chips">${chip('stilus', 'mind', 'Mind')}${Object.entries(STYLES).map(([k, v]) => chip('stilus', k, v)).join('')}</div></fieldset>
       <fieldset><legend>Típus</legend><div class="chips">${chip('tipus', 'mind', 'Mind')}${chip('tipus', 'p', 'Gyűrűpár')}${chip('tipus', 's', 'Egy gyűrű')}</div></fieldset>
@@ -315,33 +325,35 @@ export function catalog(el, query) {
   applyCols();
 
   const paint = () => {
-    const k = F.karat;
+    const k = F.anyag;
     let list = all.filter((p) => {
-      if (!hasPhoto(p)) return false;
+      if (!listed(p)) return false;
+      if (!p.metals.includes(k)) return false;
+      if (F.szin !== 'mind' && !isGold(k)) return false;
       if (F.szin !== 'mind') {
         if (F.szin === 'rose') { if (!p.colors.includes('rose') && !(BICOLOR[p.baseColor] || []).includes('rose')) return false; }
         else if (F.szin === 'ketszinu') { if (!BICOLOR[p.baseColor]) return false; }
         else if (p.baseColor !== F.szin) return false;
       }
-      const stones = p.rings.some((r) => r.stones);
+      const stones = hasStones(p);
       if (F.ko === 'koves' && !stones) return false;
-      if (F.ko === 'nelkul' && stones && !p.stoneOptional) return false;
+      if (F.ko === 'nelkul' && stones && !canBePlain(p)) return false;
       if (F.stilus !== 'mind' && p.style !== F.stilus) return false;
       if (F.tipus !== 'mind' && p.kind !== F.tipus) return false;
       if (F.szel !== 'mind' && !p.widths.includes(Number(F.szel))) return false;
       return true;
     }).map((p) => {
       const cfg = defaultConfig(p);
-      if (p.karats.includes(k)) cfg.karat = k;
+      cfg.metal = k; if (!isGold(k)) cfg.color = null;
       if (F.szin === 'rose' && p.colors.includes('rose')) cfg.color = 'rose';
-      if (F.ko === 'nelkul') cfg.rings.forEach((r) => (r.stones = false));
+      if (F.ko === 'nelkul') cfg.rings.forEach((r) => (r.stones = null));
       return { p, cfg, v: p.priceOnRequest ? null : price(p, cfg).final };
     });
     const min = Number(String(F.min).replace(/\D/g, '')) || 0;
     const max = Number(String(F.max).replace(/\D/g, '')) || Infinity;
     const priced = min > 0 || max !== Infinity;
-    list = list.filter((x) => x.v === null ? !priced : x.v >= min && x.v <= max);
-    const pv = (x, d) => (x.v === null ? d : x.v);
+    list = list.filter((x) => (x.v === null || x.v === undefined) ? !priced : x.v >= min && x.v <= max);
+    const pv = (x, d) => (x.v === null || x.v === undefined ? d : x.v);
     if (F.rend === 'ar-fel') list.sort((a, b) => pv(a, Infinity) - pv(b, Infinity));
     if (F.rend === 'ar-le') list.sort((a, b) => pv(b, -1) - pv(a, -1));
     if (F.rend === 'cikkszam') list.sort((a, b) => a.p.code.localeCompare(b.p.code));
@@ -351,7 +363,7 @@ export function catalog(el, query) {
       list.sort((a, b) => rank(a.p) - rank(b.p) || a.p.code.localeCompare(b.p.code));
     }
     $('[data-count]', el).textContent = `${list.length} modell`;
-    const active = ['szin', 'ko', 'stilus', 'tipus', 'szel'].filter((g) => F[g] !== 'mind').length + (F.karat === 18 ? 1 : 0) + (min || max !== Infinity ? 1 : 0);
+    const active = ['szin', 'ko', 'stilus', 'tipus', 'szel'].filter((g) => F[g] !== 'mind').length + (F.anyag !== 'au14' ? 1 : 0) + (min || max !== Infinity ? 1 : 0);
     $('[data-fcount]', el).textContent = active ? `(${active})` : '';
     const shown = list.slice(0, limit);
     results.innerHTML = list.length ? shown.map(({ p, cfg }) => cardFor(p, cfg)).join('')
@@ -362,12 +374,14 @@ export function catalog(el, query) {
   };
 
   const cardFor = (p, cfg) => {
-    const html = card(p, { karat: cfg.karat !== p.baseKarat ? cfg.karat : null });
+    const html = card(p, { metal: cfg.metal !== 'au14' ? cfg.metal : null });
     if (p.priceOnRequest) return html;
-    if (cfg.color === p.baseColor && cfg.rings.every((r, i) => r.stones === !!p.rings[i].stones)) return html;
-    // Rozé vagy kő nélküli változat ára
+    const def = defaultConfig(p);
+    if (cfg.color === def.color && cfg.metal === def.metal && cfg.rings.every((r, i) => !!r.stones === !!def.rings[i].stones)) return html;
+    // Rozé, más anyagú vagy kő nélküli változat ára és linkje
     const v = price(p, cfg).final;
-    return html.replace(/data-value="\d+">[^<]+</, `data-value="${v}">${ft(v)}<`).replace(`href="#/gyuru/${p.id}"`, `href="#/gyuru/${p.id}?szin=${cfg.color}"`);
+    const link = `href="#/gyuru/${p.id}?k=${encodeCfg(cfg)}"`;
+    return (v === null ? html : html.replace(/data-value="\d+">[^<]+</, `data-value="${v}">${ft(v)}<`)).replace(`href="#/gyuru/${p.id}"`, link);
   };
 
   el.addEventListener('click', (e) => {
@@ -377,11 +391,11 @@ export function catalog(el, query) {
     const c = e.target.closest('[data-f]');
     if (c) {
       limit = 48;
-      F[c.dataset.f] = c.dataset.f === 'karat' ? Number(c.dataset.v) : c.dataset.v;
+      F[c.dataset.f] = c.dataset.v;
       $$(`[data-f="${c.dataset.f}"]`, el).forEach((b) => b.setAttribute('aria-pressed', b === c));
       paint();
     }
-    if (e.target.closest('[data-clear]')) { Object.assign(F, { szin: 'mind', ko: 'mind', stilus: 'mind', szel: 'mind', tipus: 'mind', min: '', max: '', karat: 14 }); catalog(el); }
+    if (e.target.closest('[data-clear]')) { Object.assign(F, { szin: 'mind', ko: 'mind', stilus: 'mind', szel: 'mind', tipus: 'mind', min: '', max: '', anyag: 'au14' }); catalog(el); }
     if (e.target.closest('[data-open-filters]')) { $('[data-filters]', el).classList.add('is-open'); document.documentElement.classList.add('no-scroll'); }
     if (e.target.closest('[data-close-filters]')) { $('[data-filters]', el).classList.remove('is-open'); document.documentElement.classList.remove('no-scroll'); }
   });
@@ -401,9 +415,11 @@ export function product(el, id, query) {
   let cfg = (query?.get('k') && decodeCfg(query.get('k'), p)) || defaultConfig(p);
   const qc = query?.get('szin');
   if (!query?.get('k') && qc && p.colors.includes(qc)) cfg.color = qc;
-  let tab = 0, view = 'foto';
+  let view = 'foto';
+  let lastWarn = '';
   const pair = p.kind === 'p';
-  const multiColor = p.colors.length > 1, multiKarat = p.karats.length > 1;
+  const golds = p.metals.filter(isGold), others = p.metals.filter((m) => !isGold(m));
+  const anyStones = hasStones(p);
 
   el.innerHTML = `
   <section class="wrap pdp">
@@ -419,7 +435,7 @@ export function product(el, id, query) {
         <p class="colornote" data-colornote hidden></p>
         <div class="pdp__trust">
           <p><b>Rendelésre készül</b><span>Az Önök méretére, egyeztetés után.</span></p>
-          <p><b>Természetes gyémánt</b><span>Csak valódi kővel dolgozunk.</span></p>
+          <p><b>Természetes gyémánt</b><span>Csak valódi, természetes kővel dolgozunk.</span></p>
           <p><b>Hétvégén is</b><span>Időpont-egyeztetéssel.</span></p>
         </div>
       </div>
@@ -427,44 +443,27 @@ export function product(el, id, query) {
       <div class="pdp__panel" data-panel>
         <p class="card__code">${esc(p.code)} ${p.real ? '' : demoMark('demótermék')}</p>
         <h1 class="pdp__title">${esc(p.name)}</h1>
+        ${anyStones ? '<p class="natural">Természetes gyémánttal</p>' : ''}
         <div class="pdp__price" data-pricebox>
           <span>Becsült ár a választott beállítással ${demoMark()}</span>
           <strong class="price price--big" data-cprice></strong>
+          <p class="pdp__quote" data-quote hidden></p>
           ${pair ? '<p class="pdp__split" data-split></p>' : ''}
           <small>Bruttó, ÁFA-val. Rendelésre készül.</small>
         </div>
-
-        <ol class="cfg">
-          ${multiColor ? `<li class="cfg__step">
-            <header><span class="cfg__n">1</span><h2>Arany színe</h2><span class="cfg__val" data-v-color></span></header>
-            <div class="cfg__colors" data-colors></div>
-          </li>` : ''}
-          ${multiKarat ? `<li class="cfg__step">
-            <header><span class="cfg__n">${multiColor ? 2 : 1}</span><h2>Finomság</h2><span class="cfg__val" data-v-karat></span></header>
-            <div class="cfg__cards" data-karats></div>
-          </li>` : ''}
-          <li class="cfg__step">
-            <header><span class="cfg__n">${1 + multiColor + multiKarat}</span><h2>${pair ? 'A két gyűrű' : 'A gyűrű'}</h2></header>
-            ${pair ? `<div class="tabs tabs--rings" role="tablist" aria-label="Gyűrű" data-tabs></div>` : ''}
-            <div data-ringopts></div>
-          </li>
-          ${multiColor || multiKarat ? `<li class="cfg__step">
-            <header><span class="cfg__n">${2 + multiColor + multiKarat}</span><h2>Árak színenként</h2><span class="cfg__val">a mostani méretekkel</span></header>
-            <div data-matrix></div>
-          </li>` : ''}
-        </ol>
-
+        <p class="cfg__warn" data-warn role="status" hidden></p>
+        <ol class="cfg" data-steps></ol>
         <div class="summary" data-summary></div>
         <div class="pdp__ctas">
-          <button class="btn btn--dark btn--full" type="button" data-inquire="erdeklodes">Érdeklődés erről a gyűrűről</button>
-          <button class="btn btn--line btn--full" type="button" data-inquire="konzultacio">Személyes konzultációt kérek</button>
+          <button class="btn btn--dark btn--full" type="button" data-inquire="erdeklodes">Érdeklődöm erről a gyűrűről</button>
+          <button class="btn btn--line btn--full" type="button" data-inquire="konzultacio">Kérjen személyes konzultációt</button>
           <div class="pdp__tools">
             <button type="button" class="linkbtn" data-share>Konfiguráció linkjének másolása</button>
             <button type="button" class="linkbtn" data-resetcfg>Alapbeállítás</button>
           </div>
           <a class="pdp__phone" href="${BUSINESS.phoneHref}">vagy hívjon: <b>${BUSINESS.phone}</b></a>
         </div>
-        <p class="notice">Tájékoztató ár. A végleges árat személyesen adjuk meg, a pontos méret és az aznapi aranyár alapján.</p>
+        <p class="notice">Tájékoztató ár. A végleges árat személyesen adjuk meg, a pontos méret és az aznapi nemesfémár alapján.</p>
       </div>
     </div>
 
@@ -475,13 +474,17 @@ export function product(el, id, query) {
     <button class="btn btn--dark" type="button" data-inquire="erdeklodes">Érdeklődöm</button>
   </div>`;
 
-  const sizes = (i) => { const r = p.rings[i]; return r.refSize < 60 ? [44, 64] : [54, 76]; };
+  const sizes = (i) => (p.rings[i].refSize < 60 ? [44, 64] : [54, 76]);
   const with_ = (fn) => { const c = JSON.parse(JSON.stringify(cfg)); fn(c); return c; };
   const delta = (cur, fn) => {
-    const d = price(p, with_(fn)).final - cur;
+    const v = price(p, with_(fn)).final;
+    if (v === null) return '<em class="delta delta--q">egyedi ajánlat</em>';
+    if (cur === null) return `<em class="delta">${ft(v)}</em>`;
+    const d = v - cur;
     if (!d) return '<em class="delta delta--0">ugyanannyi</em>';
     return `<em class="delta ${d > 0 ? 'delta--up' : 'delta--down'}">${d > 0 ? '+' : '−'}${ft(Math.abs(d))}</em>`;
   };
+  const cur_ = '<em class="delta delta--cur">kiválasztva</em>';
 
   const syncUrl = () => {
     const def = JSON.stringify(defaultConfig(p)) === JSON.stringify(cfg);
@@ -490,85 +493,119 @@ export function product(el, id, query) {
   };
 
   const paintInfo = (r) => {
-    $('[data-summary]', el).innerHTML = `<h2 class="opt__label">Választott paraméterek</h2><dl>
-      <div><dt>Anyag</dt><dd>${colorLabel(cfg.color)}, ${karatLabel(cfg.karat)}</dd></div>
+    $('[data-summary]', el).innerHTML = `<h2 class="opt__label">Összefoglaló</h2><dl>
+      <div><dt>Anyag</dt><dd>${metalLabel(cfg)}</dd></div>
       ${p.rings.map((rg, i) => `<div><dt>${esc(rg.label)}</dt><dd>${ringLine(p, cfg, i)}</dd></div>`).join('')}
-      <div><dt>Becsült tömeg</dt><dd>${dec(r.grams)} g ${demoMark('demóadat')}</dd></div></dl>`;
+      ${r.grams ? `<div><dt>Becsült tömeg</dt><dd>${dec(r.grams)} g ${demoMark('demóadat')}</dd></div>` : ''}
+      <div><dt>Becsült ár</dt><dd><b>${r.final === null ? 'Egyedi árajánlat szükséges' : ft(r.final)}</b></dd></div></dl>`;
     $('[data-specs]', el).innerHTML = specs(p, cfg, r);
   };
 
   const engravePreview = (rc) => {
-    const m = { sarga: ['#F3DA9B', '#C99B4C'], feher: ['#F4F5F6', '#BFC4C8'], rose: ['#F5D3C1', '#C98C72'], ezust: ['#F7F8F9', '#C3C8CC'], ketszinu: ['#F4F5F6', '#C99B4C'] }[cfg.color] || ['#eee', '#bbb'];
+    const key = !isGold(cfg.metal) ? 'feher' : (BICOLOR[cfg.color] ? 'ketszinu' : cfg.color);
+    const m = { sarga: ['#F3DA9B', '#C99B4C'], feher: ['#F4F5F6', '#BFC4C8'], rose: ['#F5D3C1', '#C98C72'], ketszinu: ['#F4F5F6', '#C99B4C'] }[key] || ['#eee', '#bbb'];
     const txt = rc.engraving || 'Az Önök szövege itt jelenik meg';
     const style = rc.font ? `font-family:'Libre Baskerville',serif;font-style:italic;font-weight:400;font-size:17px` : `font-family:Manrope,sans-serif;font-weight:600;font-size:15px;letter-spacing:.5px`;
+    const gid = 'eg' + Math.random().toString(36).slice(2, 7);
     return `<svg class="engrave" viewBox="0 0 360 64" role="img" aria-label="Gravírozás előnézete">
-      <defs><linearGradient id="eg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${m[1]}"/><stop offset=".35" stop-color="${m[0]}"/><stop offset=".7" stop-color="${m[0]}"/><stop offset="1" stop-color="${m[1]}"/></linearGradient></defs>
-      <rect x="1" y="6" width="358" height="52" rx="26" fill="url(#eg)" stroke="rgba(0,0,0,.12)"/>
+      <defs><linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${m[1]}"/><stop offset=".35" stop-color="${m[0]}"/><stop offset=".7" stop-color="${m[0]}"/><stop offset="1" stop-color="${m[1]}"/></linearGradient></defs>
+      <rect x="1" y="6" width="358" height="52" rx="26" fill="url(#${gid})" stroke="rgba(0,0,0,.12)"/>
       <text x="180" y="38" text-anchor="middle" fill="${rc.engraving ? 'rgba(40,30,20,.72)' : 'rgba(40,30,20,.35)'}" style="${style}">${esc(txt)}</text>
     </svg>`;
   };
 
+  /* --- Lépések: csak a releváns lépések jelennek meg --- */
+  const stepMetal = (cur) => {
+    const opts = [];
+    if (golds.length) opts.push(['gold', 'Arany', golds.length > 1 ? '14 vagy 18 karát' : METALS[golds[0]].short, isGold(cfg.metal), (x) => { x.metal = golds.includes('au14') ? 'au14' : golds[0]; x.color = x.color || p.baseColor; }]);
+    for (const m of others) opts.push([m, METALS[m].label, { pt: 'nehéz, tartós, természetesen fehér', pd: 'könnyebb, természetesen fehér', ti: 'nagyon könnyű, modern' }[m], cfg.metal === m, (x) => { x.metal = m; x.color = null; }]);
+    if (opts.length < 2) return '';
+    return ['Anyag', isGold(cfg.metal) ? 'Arany' : METALS[cfg.metal].short, `<div class="cfg__cards cfg__cards--metal">${opts.map(([k, l, d, on, fn]) =>
+      `<button type="button" class="kopt" data-metal="${k}" aria-pressed="${on}"><b>${l}</b><span>${d}</span>${on ? cur_ : delta(cur, fn)}</button>`).join('')}</div>`];
+  };
+  const stepKarat = (cur) => {
+    if (!isGold(cfg.metal) || golds.length < 2) return '';
+    const info = { au14: '58,5% színarany · keményebb, a mindennapokat jól bírja', au18: '75% színarany · telítettebb szín, kicsit puhább és nehezebb' };
+    return ['Finomság', METALS[cfg.metal].short.replace(' arany', ''), `<div class="cfg__cards">${golds.map((m) =>
+      `<button type="button" class="kopt" data-karat="${m}" aria-pressed="${m === cfg.metal}"><span class="stamp">${METALS[m].stamp}</span><b>${METALS[m].short.replace(' arany', '')}</b><span>${info[m]}</span>${m === cfg.metal ? cur_ : delta(cur, (x) => (x.metal = m))}</button>`).join('')}</div>
+      <p class="hint">A 24 karátos (színarany) csak számítási alap, gyűrűhöz túl puha.</p>`];
+  };
+  const stepColor = () => {
+    if (!isGold(cfg.metal) || p.colors.length < 2) return '';
+    return ['Arany színe', colorLabel(cfg.color), `<div class="cfg__colors">${p.colors.map((c) => `<button type="button" class="copt" data-color="${c}" aria-pressed="${c === cfg.color}">
+      <span class="sw" style="--sw:${metalSwatch(c)}"></span><b>${colorLabel(c)}</b>${c === cfg.color ? cur_ : '<em class="delta delta--0">ugyanannyi</em>'}</button>`).join('')}</div>
+      <p class="hint">Azonos karátnál a szín nem változtat az árat.</p>`];
+  };
+  const stepSize = (cur) => ['Méret' + (pair ? ' – női és férfi' : ''), '', `<div class="rings2">${p.rings.map((ring, i) => {
+    const rc = cfg.rings[i], [lo, hi] = sizes(i);
+    return `<div class="ringbox"><h3 class="ringbox__t">${esc(ring.label)}</h3>
+      <div class="stepper ${rc.sizeUnknown ? 'is-off' : ''}"><button type="button" data-size="${i}|-1" aria-label="${esc(ring.label)}: kisebb méret" ${rc.sizeUnknown || rc.size <= lo ? 'disabled' : ''}>−</button><output aria-live="polite">${rc.sizeUnknown ? '?' : rc.size}</output><button type="button" data-size="${i}|1" aria-label="${esc(ring.label)}: nagyobb méret" ${rc.sizeUnknown || rc.size >= hi ? 'disabled' : ''}>+</button></div>
+      <label class="check"><input type="checkbox" data-unknown="${i}" ${rc.sizeUnknown ? 'checked' : ''}><span>Még nem tudom</span></label>
+      <button type="button" class="linkbtn" data-sizehelp="${i}">Méretsegítő</button>
+      ${p.widths.length > 1 ? `<div class="cfg__seg cfg__seg--sm" aria-label="Szélesség">${p.widths.map((w) => `<button type="button" data-width="${i}|${w}" aria-pressed="${w === rc.width}"><b>${dec(w)} mm</b>${w === rc.width ? '' : delta(cur, (x) => (x.rings[i].width = w))}</button>`).join('')}</div>`
+        : `<p class="hint">Szélesség: ${dec(rc.width)} mm ${demoMark('demóadat')}</p>`}
+    </div>`; }).join('')}</div>
+    <p class="hint">Belső kerület mm-ben. Nagyobb méret = több nemesfém. ${cfg.rings.some((r) => r.sizeUnknown) ? '· Az ismeretlen méretet átlagos mérettel számoljuk, a konzultáción megmérjük.' : ''}</p>`];
+  const stepStones = (cur) => {
+    if (!anyStones) return '';
+    const Mx = S().materials;
+    return ['Gyémánt', 'természetes', `<div class="rings2">${p.rings.map((ring, i) => {
+      const rule = ring.stoneRule, rc = cfg.rings[i];
+      if (!rule) return `<div class="ringbox"><h3 class="ringbox__t">${esc(ring.label)}</h3><p class="hint">Ennél a gyűrűnél nincs kő.</p></div>`;
+      const st = rc.stones;
+      const dia = st && diamond(Mx, st.cat);
+      let body = '';
+      if (rule.allowNone) body += `<div class="cfg__seg cfg__seg--sm"><button type="button" data-stones="${i}|0" aria-pressed="${!st}"><b>Kő nélkül</b>${!st ? '' : delta(cur, (x) => (x.rings[i].stones = null))}</button><button type="button" data-stones="${i}|1" aria-pressed="${!!st}"><b>Gyémánttal</b>${st ? '' : delta(cur, (x) => (x.rings[i].stones = { count: Math.max(1, rule.def), cat: rule.defCat }))}</button></div>`;
+      if (rule.mode === 'quote') body += '<p class="hint">Ez a kőváltozat egyedi árajánlattal készül.</p>';
+      if (st) {
+        if (rule.mode === 'free') {
+          const lo = Math.max(1, rule.min || 0);
+          body += `<div class="stonecount"><span>Kövek száma</span><div class="stepper stepper--sm"><button type="button" data-scount="${i}|-1" aria-label="Kevesebb kő" ${st.count <= lo ? 'disabled' : ''}>−</button><output aria-live="polite">${st.count}</output><button type="button" data-scount="${i}|1" aria-label="Több kő" ${st.count >= rule.max ? 'disabled' : ''}>+</button></div>
+            <small>${lo}–${rule.max} db${st.count < rule.max ? ` · +1 kő: ${delta(cur, (x) => (x.rings[i].stones.count += 1))}` : ''}</small></div>`;
+        } else if (rule.mode === 'fixed') body += `<p class="hint"><b>${st.count} kő</b> – a modell kialakítása miatt a kőszám kötött.</p>`;
+        else if (rule.mode === 'perSize') body += `<p class="hint"><b>${st.count} kő</b> körbe foglalva – a kőszám a gyűrű méretétől függ.</p>`;
+        if (rule.cats.length > 1) body += `<div class="stonecats" role="group" aria-label="Kőméret">${rule.cats.map((c) => { const d = diamond(Mx, c); if (!d) return '';
+          return `<button type="button" data-scat="${i}|${c}" aria-pressed="${c === st.cat}"><b>${dec(d.ct)} ct</b><span>${esc(d.quality)}</span>${c === st.cat ? '' : (d.price == null ? '<em class="delta delta--q">egyedi ajánlat</em>' : delta(cur, (x) => (x.rings[i].stones.cat = c)))}</button>`; }).join('')}</div>`;
+        body += `<p class="hint">${st.count} × ${dia ? esc(dia.name) + ', ' + esc(dia.quality) : ''} természetes gyémánt${dia && dia.price == null ? ' · <b>Egyedi árajánlat szükséges</b>' : ''}</p>`;
+      }
+      if (rule.demo) body += `<p class="fine">${demoMark('demó kőszabály')} A kőszámot és a kőméreteket az ötvösmester hagyja jóvá.</p>`;
+      return `<div class="ringbox"><h3 class="ringbox__t">${esc(ring.label)}</h3>${body}</div>`; }).join('')}</div>`];
+  };
+  const stepEngrave = () => ['Gravírozás', `+${ft(S().settings.engravingPrice)} / gyűrű`, `<div class="rings2">${p.rings.map((ring, i) => {
+    const rc = cfg.rings[i];
+    return `<div class="ringbox"><h3 class="ringbox__t">${esc(ring.label)}</h3>
+      <input class="input" maxlength="24" data-engrave="${i}" value="${esc(rc.engraving)}" placeholder="pl. Anna & Bence · 2027. 06. 12." aria-label="${esc(ring.label)} gravírozása">
+      <div class="cfg__seg cfg__seg--sm">${FONTS.map((f, k) => `<button type="button" data-font="${i}|${k}" aria-pressed="${(rc.font || 0) === k}"><b>${f}</b></button>`).join('')}</div>
+      <div data-engrave-prev="${i}">${engravePreview(rc)}</div></div>`; }).join('')}</div>
+    <p class="hint">A gyűrű belsejébe, legfeljebb 24 karakter. Üresen hagyva nem számoljuk.</p>`];
+
   const paint = (first) => {
-    const r = price(p, cfg);
+    let r = price(p, cfg);
+    cfg = r.cfg;                                   // érvényesített (lehetetlen összeállítás nem marad)
     const cur = r.final;
-    // galéria
     const stage = $('[data-stage]', el);
     stage.className = 'pdp__stage pdp__stage--foto';
     if (first) stage.innerHTML = productMedia(p, { eager: true, large: true });
     const cn = $('[data-colornote]', el);
-    cn.hidden = cfg.color === p.baseColor;
-    cn.innerHTML = `<span class="sw sw--sm" style="--sw:${metalSwatch(cfg.color)}"></span>A fotón ${colorLabel(p.baseColor).toLowerCase()} látható – az Ön gyűrűje ${colorLabel(cfg.color).toLowerCase()} színben készül el.`;
+    const showNote = isGold(cfg.metal) ? cfg.color !== p.baseColor : true;
+    cn.hidden = !showNote;
+    cn.innerHTML = isGold(cfg.metal)
+      ? `<span class="sw sw--sm" style="--sw:${metalSwatch(cfg.color)}"></span>A fotón ${colorLabel(p.baseColor).toLowerCase()} látható – az Ön gyűrűje ${colorLabel(cfg.color).toLowerCase()} színben készül el.`
+      : `A fotón aranyból készült változat látható – az Ön gyűrűje ${METALS[cfg.metal].label.toLowerCase()}ból készül.`;
     $$('[data-view]', el).forEach((b) => b.setAttribute('aria-selected', b.dataset.view === view));
 
-    // 1. szín
-    if (multiColor) {
-      $('[data-v-color]', el).textContent = colorLabel(cfg.color);
-      $('[data-colors]', el).innerHTML = p.colors.map((c) => `<button type="button" class="copt" data-color="${c}" aria-pressed="${c === cfg.color}">
-        <span class="sw" style="--sw:${metalSwatch(c)}"></span><b>${colorLabel(c)}</b>${c === cfg.color ? '<em class="delta delta--cur">kiválasztva</em>' : delta(cur, (x) => (x.color = c))}</button>`).join('');
-    }
-    // 2. finomság
-    if (multiKarat) {
-      $('[data-v-karat]', el).textContent = `${cfg.karat} karát`;
-      const info = { 14: '58,5% színarany · keményebb, a mindennapi viselést jól bírja', 18: '75% színarany · telítettebb, melegebb szín, kicsit puhább' };
-      $('[data-karats]', el).innerHTML = p.karats.map((k) => `<button type="button" class="kopt" data-karat="${k}" aria-pressed="${k === cfg.karat}">
-        <span class="stamp">${k === 14 ? '585' : '750'}</span><b>${k} karát</b><span>${info[k]}</span>${k === cfg.karat ? '<em class="delta delta--cur">kiválasztva</em>' : delta(cur, (x) => (x.karat = k))}</button>`).join('');
-    }
-    // 3. gyűrűk
+    const steps = [stepMetal(cur), stepKarat(cur), stepColor(), stepSize(cur), stepStones(cur), stepEngrave()].filter(Boolean);
+    $('[data-steps]', el).innerHTML = steps.map(([t, v, body], i) => `<li class="cfg__step"><header><span class="cfg__n">${i + 1}</span><h2>${t}</h2>${v ? `<span class="cfg__val">${v}</span>` : ''}</header>${body}</li>`).join('');
+
+    const q = $('[data-quote]', el);
+    q.hidden = cur !== null;
+    q.textContent = cur === null ? (r.reason || 'Ehhez az összeállításhoz nincs megbízható ár.') + ' Kérjen ajánlatot, és személyesen kiszámoljuk.' : '';
     if (pair) {
-      $('[data-tabs]', el).innerHTML = p.rings.map((rg, i) => `<button type="button" role="tab" data-tab="${i}" aria-selected="${i === tab}"><b>${esc(rg.label)}</b><span>${cfg.rings[i].sizeUnknown ? 'méret később' : cfg.rings[i].size + '-es'} · ${dec(cfg.rings[i].width)} mm${rg.stones ? (cfg.rings[i].stones ? ' · köves' : ' · kő nélkül') : ''}</span></button>`).join('');
+      const sp = cur === null ? null : ringSplit(p, cfg, r, S().settings);
+      $('[data-split]', el).innerHTML = sp ? p.rings.map((rg, i) => `<span>${esc(rg.label)} <b>kb. ${ft(sp[i])}</b></span>`).join('') : '';
     }
-    const ring = p.rings[tab], rc = cfg.rings[tab], [lo, hi] = sizes(tab);
-    $('[data-ringopts]', el).innerHTML = `
-      <div class="opt"><h3 class="opt__label">Gyűrűméret <span class="hint">belső kerület, mm</span></h3>
-        <div class="stepper ${rc.sizeUnknown ? 'is-off' : ''}"><button type="button" data-size="-1" aria-label="Kisebb méret" ${rc.sizeUnknown ? 'disabled' : ''}>−</button><output>${rc.sizeUnknown ? '?' : rc.size}</output><button type="button" data-size="1" aria-label="Nagyobb méret" ${rc.sizeUnknown ? 'disabled' : ''}>+</button>
-          <button type="button" class="linkbtn" data-sizehelp>Méretsegítő</button></div>
-        <label class="check"><input type="checkbox" data-unknown ${rc.sizeUnknown ? 'checked' : ''}><span>Még nem tudom – a konzultáción megmérjük</span></label>
-        ${rc.sizeUnknown ? `<p class="hint">Addig átlagos (${ring.refSize}-es) mérettel számolunk.</p>` : `<p class="hint">${lo}–${hi} között. Nagyobb méret = valamivel több arany.</p>`}
-      </div>
-      ${p.widths.length > 1 ? `<div class="opt"><h3 class="opt__label">Szélesség</h3><div class="cfg__seg">${p.widths.map((w) => `<button type="button" data-width="${w}" aria-pressed="${w === rc.width}"><b>${dec(w)} mm</b>${w === rc.width ? '' : delta(cur, (x) => (x.rings[tab].width = w))}</button>`).join('')}</div></div>`
-        : `<div class="opt opt--static"><h3 class="opt__label">Szélesség</h3><p>${dec(rc.width)} mm ${demoMark('demóadat')}</p></div>`}
-      ${ring.stones ? `<div class="opt"><h3 class="opt__label">Kövek</h3>
-        ${p.stoneOptional ? `<div class="cfg__seg"><button type="button" data-stones="0" aria-pressed="${!rc.stones}"><b>Kő nélkül</b>${!rc.stones ? '' : delta(cur, (x) => (x.rings[tab].stones = false))}</button><button type="button" data-stones="1" aria-pressed="${rc.stones}"><b>Gyémánttal</b>${rc.stones ? '' : delta(cur, (x) => (x.rings[tab].stones = true))}</button></div>` : ''}
-        <p class="hint">${ring.stones.count} db ${esc(diamond(S().materials, ring.stones.cat)?.name || '')}, ${esc(diamond(S().materials, ring.stones.cat)?.quality || '')} természetes gyémánt ${demoMark('demóadat')}</p></div>` : ''}
-      <div class="opt"><h3 class="opt__label">Gravírozás <span class="hint">a gyűrű belsejébe, max. 24 karakter · ${rc.engraving ? 'benne van az árban' : `+${ft(S().settings.engravingPrice)}`}</span></h3>
-        <input class="input" maxlength="24" data-engrave value="${esc(rc.engraving)}" placeholder="pl. Anna & Bence · 2027. 06. 12." aria-label="Gravírozás szövege">
-        <div class="engrave-row"><div class="cfg__seg cfg__seg--sm">${FONTS.map((f, i) => `<button type="button" data-font="${i}" aria-pressed="${(rc.font || 0) === i}"><b>${f}</b></button>`).join('')}</div></div>
-        <div data-engrave-prev>${engravePreview(rc)}</div>
-      </div>`;
-    // 4. mátrix
-    const mx = $('[data-matrix]', el);
-    if (mx) {
-      const ks = p.karats;
-      mx.innerHTML = `<table class="matrix"><thead><tr><th></th>${ks.map((k) => `<th>${k}K</th>`).join('')}</tr></thead><tbody>
-        ${p.colors.map((c) => `<tr><th>${colorLabel(c)}</th>${ks.map((k) => { const v = price(p, with_((x) => { x.color = c; x.karat = k; })).final; const on = c === cfg.color && k === cfg.karat;
-          return `<td><button type="button" data-mx="${c}|${k}" aria-pressed="${on}">${ft(v)}</button></td>`; }).join('')}</tr>`).join('')}
-      </tbody></table>`;
-    }
-    // ár
-    if (pair) {
-      const sp = ringSplit(p, cfg, r, S().settings);
-      $('[data-split]', el).innerHTML = p.rings.map((rg, i) => `<span>${esc(rg.label)} <b>kb. ${ft(sp[i])}</b></span>`).join('');
-    }
+    const w = $('[data-warn]', el);
+    w.hidden = !lastWarn; w.textContent = lastWarn; lastWarn = '';
     paintInfo(r);
     animatePrice($('[data-cprice]', el), cur);
     animatePrice($('[data-mprice]', el), cur);
@@ -576,52 +613,51 @@ export function product(el, id, query) {
     syncUrl();
   };
 
+  const pick = (t, attr) => { const b = t.closest(`[data-${attr}]`); return b && !b.disabled ? b.dataset[attr].split('|') : null; };
   el.addEventListener('click', (e) => {
     const t = e.target;
-    const c = t.closest('[data-color]'), k = t.closest('[data-karat]'), tb = t.closest('[data-tab]'), sz = t.closest('[data-size]'),
-          w = t.closest('[data-width]'), s = t.closest('[data-stones]'), v = t.closest('[data-view]'), q = t.closest('[data-inquire]'),
-          mx = t.closest('[data-mx]'), fo = t.closest('[data-font]');
-    if (c) cfg.color = c.dataset.color;
-    else if (k) cfg.karat = Number(k.dataset.karat);
-    else if (mx) { const [cc, kk] = mx.dataset.mx.split('|'); cfg.color = cc; cfg.karat = Number(kk); }
-    else if (tb) tab = Number(tb.dataset.tab);
-    else if (sz) { const [lo, hi] = sizes(tab); cfg.rings[tab].size = Math.min(hi, Math.max(lo, cfg.rings[tab].size + Number(sz.dataset.size))); }
-    else if (w) cfg.rings[tab].width = Number(w.dataset.width);
-    else if (s) cfg.rings[tab].stones = s.dataset.stones === '1';
-    else if (fo) cfg.rings[tab].font = Number(fo.dataset.font);
-    else if (v) { if (v.dataset.view === 'nagy') { zoom(p); return; } view = v.dataset.view; }
-    else if (q) { inquiry(p, cfg, q.dataset.inquire); return; }
-    else if (t.closest('[data-sizehelp]')) { sizeHelp(sizes(tab), (n) => { cfg.rings[tab].size = n; cfg.rings[tab].sizeUnknown = false; paint(); }); return; }
+    let a;
+    if ((a = pick(t, 'metal'))) {
+      if (a[0] === 'gold') { if (!isGold(cfg.metal)) { cfg.metal = golds.includes('au14') ? 'au14' : golds[0]; cfg.color = p.baseColor; } }
+      else { cfg.metal = a[0]; cfg.color = null; }
+    }
+    else if ((a = pick(t, 'karat'))) cfg.metal = a[0];
+    else if ((a = pick(t, 'color'))) cfg.color = a[0];
+    else if ((a = pick(t, 'size'))) { const i = +a[0], [lo, hi] = sizes(i); cfg.rings[i].size = Math.min(hi, Math.max(lo, cfg.rings[i].size + Number(a[1]))); }
+    else if ((a = pick(t, 'width'))) cfg.rings[+a[0]].width = Number(a[1]);
+    else if ((a = pick(t, 'stones'))) { const i = +a[0], rule = p.rings[i].stoneRule; cfg.rings[i].stones = a[1] === '1' ? { count: Math.max(1, rule.def), cat: rule.defCat } : null; }
+    else if ((a = pick(t, 'scount'))) cfg.rings[+a[0]].stones.count += Number(a[1]);
+    else if ((a = pick(t, 'scat'))) cfg.rings[+a[0]].stones.cat = a[1];
+    else if ((a = pick(t, 'font'))) cfg.rings[+a[0]].font = Number(a[1]);
+    else if ((a = pick(t, 'view'))) { if (a[0] === 'nagy') { zoom(p); return; } view = a[0]; }
+    else if ((a = pick(t, 'inquire'))) { inquiry(p, cfg, a[0]); return; }
+    else if ((a = pick(t, 'sizehelp'))) { const i = +a[0]; sizeHelp(sizes(i), (n) => { cfg.rings[i].size = n; cfg.rings[i].sizeUnknown = false; paint(); }); return; }
     else if (t.closest('[data-share]')) { share(); return; }
-    else if (t.closest('[data-resetcfg]')) { cfg = defaultConfig(p); tab = 0; }
+    else if (t.closest('[data-resetcfg]')) { cfg = defaultConfig(p); }
     else if (t.closest('.pdp__stage--foto')) { zoom(p); return; }
     else return;
+    lastWarn = normalizeConfig(p, cfg).warnings.join(' ');
     paint();
   });
   el.addEventListener('change', (e) => {
-    if (e.target.matches('[data-unknown]')) {
-      const rc = cfg.rings[tab];
-      rc.sizeUnknown = e.target.checked;
-      if (rc.sizeUnknown) rc.size = p.rings[tab].refSize;
-      paint();
-    }
+    const u = e.target.dataset.unknown;
+    if (u !== undefined) { const rc = cfg.rings[+u]; rc.sizeUnknown = e.target.checked; if (rc.sizeUnknown) rc.size = p.rings[+u].refSize; paint(); }
   });
   el.addEventListener('input', (e) => {
-    if (e.target.matches('[data-engrave]')) {
-      const rc = cfg.rings[tab];
-      rc.engraving = e.target.value;
-      const r = price(p, cfg);
-      $('[data-engrave-prev]', el).innerHTML = engravePreview(rc);
-      animatePrice($('[data-cprice]', el), r.final);
-      animatePrice($('[data-mprice]', el), r.final);
-      clearTimeout(e.target._t);
-      e.target._t = setTimeout(() => {
-        paintInfo(price(p, cfg)); syncUrl();
-        const h = e.target.closest('.opt').querySelector('.opt__label .hint');
-        if (h) h.textContent = `a gyűrű belsejébe, max. 24 karakter · ${rc.engraving ? 'benne van az árban' : '+' + ft(S().settings.engravingPrice)}`;
-        if (pair) { const sp = ringSplit(p, cfg, price(p, cfg), S().settings); $('[data-split]', el).innerHTML = p.rings.map((rg, i) => `<span>${esc(rg.label)} <b>kb. ${ft(sp[i])}</b></span>`).join(''); }
-      }, 220);
-    }
+    const i = e.target.dataset.engrave;
+    if (i === undefined) return;
+    const rc = cfg.rings[+i];
+    rc.engraving = e.target.value;
+    $(`[data-engrave-prev="${i}"]`, el).innerHTML = engravePreview(rc);
+    const r = price(p, cfg);
+    animatePrice($('[data-cprice]', el), r.final);
+    animatePrice($('[data-mprice]', el), r.final);
+    clearTimeout(e.target._t);
+    e.target._t = setTimeout(() => {
+      const r2 = price(p, cfg);
+      paintInfo(r2); syncUrl();
+      if (pair && r2.final !== null) { const sp = ringSplit(p, cfg, r2, S().settings); $('[data-split]', el).innerHTML = p.rings.map((rg, k) => `<span>${esc(rg.label)} <b>kb. ${ft(sp[k])}</b></span>`).join(''); }
+    }, 220);
   });
 
   const share = async () => {
@@ -668,9 +704,16 @@ function productOnRequest(el, p) {
   });
 }
 
+function stoneText(rg, c, sep) {
+  if (!rg.stoneRule) return '';
+  if (!c.stones) return `${sep}kő nélkül`;
+  const d = diamond(S().materials, c.stones.cat);
+  return `${sep}${c.stones.count} db ${d ? dec(d.ct) + ' ct' : ''} természetes gyémánt`;
+}
+
 function ringLine(p, cfg, i) {
   const rg = p.rings[i], c = cfg.rings[i];
-  return `${c.sizeUnknown ? 'méret: konzultáción' : c.size + '-es méret'} · ${dec(c.width)} mm${rg.stones ? (c.stones ? ` · ${rg.stones.count} gyémánt` : ' · kő nélkül') : ''}${c.engraving ? ` · gravír (${FONTS[c.font || 0].toLowerCase()}): „${esc(c.engraving)}”` : ''}`;
+  return `${c.sizeUnknown ? 'méret: konzultáción' : c.size + '-es méret'} · ${dec(c.width)} mm${stoneText(rg, c, ' · ')}${c.engraving ? ` · gravír (${FONTS[c.font || 0].toLowerCase()}): „${esc(c.engraving)}”` : ''}`;
 }
 
 function sizeHelp([lo, hi], onPick) {
@@ -690,9 +733,11 @@ function specs(p, cfg, r) {
     ['Cikkszám', esc(p.code)],
     ['Megnevezés', esc(p.name) + (p.real ? ` <span class="hint">– ügyféllel egyeztetendő</span>` : '')],
     ['Típus', p.kind === 'p' ? 'Karikagyűrű pár (női és férfi gyűrű)' : 'Egy gyűrű'],
-    ['Nemesfém', `${colorLabel(cfg.color)}, ${karatLabel(cfg.karat)}${p.unknownColor ? ' <span class="hint">– a cikkszámban nincs színjelölés, egyeztetendő</span>' : ''}`],
+    ['Anyag', `${metalLabel(cfg)}${p.unknownColor ? ' <span class="hint">– a cikkszámban nincs színjelölés, egyeztetendő</span>' : ''}`],
     ['Stílus', STYLES[p.style] + ' ' + demoMark('demóadat')],
-    ['Becsült tömeg', `${dec(r.grams)} g, ebből ${dec(r.pure)} g ${cfg.color === 'ezust' ? 'színezüst' : 'színarany'} ${demoMark('demóadat')}`],
+    ...(r.grams ? [['Becsült tömeg', `${dec(r.grams)} g${isGold(cfg.metal) ? `, ebből ${dec(r.pure)} g színarany` : ''} ${demoMark('demóadat')}`]] : []),
+    ['Választható anyagok', p.metals.map((m) => METALS[m].short).join(', ')],
+    ...(hasStones(p) ? [['Kövek', 'Kizárólag természetes gyémánt']] : []),
     ['Elkészítés', 'Nincs készleten, rendelésre elkészítjük'],
     ['Előleg', 'Egyedileg készülő gyűrűnél a termék árának fele, a személyes egyeztetésen'],
     ['Garancia', 'Az átadástól számított 1 év jótállás'],
@@ -706,10 +751,10 @@ function zoom(p) {
 
 /* ---------- Érdeklődés / konzultáció ---------- */
 export function configText(p, cfg) {
-  const lines = [`${p.code} – ${p.name}`, `Anyag: ${colorLabel(cfg.color)}, ${karatLabel(cfg.karat)}`];
+  const lines = [`${p.code} – ${p.name}`, `Anyag: ${metalLabel(cfg)}`];
   p.rings.forEach((r, i) => {
     const c = cfg.rings[i];
-    lines.push(`${r.label}: ${c.sizeUnknown ? 'méret a konzultáción' : c.size + '-es méret'}, ${dec(c.width)} mm${r.stones ? (c.stones ? `, ${r.stones.count} gyémánt` : ', kő nélkül') : ''}${c.engraving ? `, gravírozás (${FONTS[c.font || 0].toLowerCase()} betű): „${c.engraving}”` : ''}`);
+    lines.push(`${r.label}: ${c.sizeUnknown ? 'méret a konzultáción' : c.size + '-es méret'}, ${dec(c.width)} mm${stoneText(r, c, ', ')}${c.engraving ? `, gravírozás (${FONTS[c.font || 0].toLowerCase()} betű): „${c.engraving}”` : ''}`);
   });
   return lines.join('\n');
 }
@@ -721,7 +766,7 @@ export function inquiry(p, cfg, type = 'erdeklodes', onRequest = false) {
     <form class="form" data-inq novalidate>
       <p class="kicker">${type === 'konzultacio' ? 'Személyes konzultáció' : 'Érdeklődés'}</p>
       <h2>${p ? 'Kérdése van erről a gyűrűről?' : 'Időpontkérés'}</h2>
-      ${p ? `<div class="form__cfg"><pre>${esc(summary)}</pre>${r ? `<p>Becsült ár: <b>${ft(r.final)}</b> ${demoMark()}</p>` : '<p>Ár: egyedi ajánlat alapján</p>'}</div>` : ''}
+      ${p ? `<div class="form__cfg"><pre>${esc(summary)}</pre>${r && r.final !== null ? `<p>Becsült ár: <b>${ft(r.final)}</b> ${demoMark()}</p>` : '<p>Ár: egyedi árajánlat szükséges</p>'}</div>` : ''}
       <div class="seg seg--lg" role="radiogroup" aria-label="Kérés típusa">
         <button type="button" data-type="erdeklodes" aria-pressed="${type === 'erdeklodes'}">Kérdésem van</button>
         <button type="button" data-type="konzultacio" aria-pressed="${type === 'konzultacio'}">Időpontot kérek</button>

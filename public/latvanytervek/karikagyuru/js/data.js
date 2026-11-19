@@ -45,29 +45,35 @@ export const TERMS = [
 export const REMOTE_IMG = 'https://karikagyuru.com/public/layout/pictures/karikagyuru/';
 export const IMG_BASE = 'img/termekek/';   // a karikagyuru.com saját fotói (az ügyfél mentett oldaláról)
 
-/* --- Kezdő demó alapanyagárak (NEM valós piaci árak) --- */
+/* --- Kezdő demó alapanyagárak (NEM valós piaci árak; az ügyfél megbeszélésén elhangzott példaárakat sem vettük át éles árként) --- */
 export const DEMO_MATERIALS = {
-  gold24: 39000,          // Ft / g – 24K színarany referenciaár
-  silver: 500,            // Ft / g – ezüst referenciaár
-  alloy: {                // Ft / g – ötvözőanyag színenként
-    sarga: 400,
-    rose: 450,
-    feher: 2600,          // palládiumtartalmú fehér ötvözet (demó)
-  },
-  diamonds: [             // Ft / db – kőkategóriák
-    { id: 'd005', name: 'Brill 0,005 ct', quality: 'G / SI', price: 4000 },
-    { id: 'd01', name: 'Brill 0,01 ct', quality: 'G / SI', price: 9000 },
-    { id: 'd02', name: 'Brill 0,02 ct', quality: 'G / SI', price: 30000 },
-    { id: 'd05', name: 'Brill 0,05 ct', quality: 'G / VS', price: 85000 },
-    { id: 'd10', name: 'Brill 0,10 ct', quality: 'G / VS', price: 190000 },
+  // A) költségalapú módhoz – referenciaárak, Ft / g
+  gold24: 39000,          // 24K színarany (csak számítási referencia, nem választható anyag)
+  platinum: 12500,        // platina
+  palladium: 13500,       // palládium
+  titanium: 80,           // titán
+  alloyAll: 700,          // aranyötvözet – minden színre azonos (a szín nem módosítja az árat)
+  // B) grammáras módhoz – bruttó késztermékár, Ft / g (fém + munkadíj + árrés + ÁFA)
+  sellPerGram: { au14: 48000, au18: 58000, pt: 27000, pd: 33000, ti: 33000 },   // demó: a költségalapú mód kőnélküli átlagához igazítva
+  diamonds: [             // természetes gyémánt, Ft / db – kőméret szerint; price: null = nincs ár → egyedi ajánlat
+    { id: 'd005', ct: 0.005, name: 'Brill 0,005 ct', quality: 'G / SI', price: 4000 },
+    { id: 'd01',  ct: 0.01,  name: 'Brill 0,01 ct',  quality: 'G / SI', price: 9000 },
+    { id: 'd015', ct: 0.015, name: 'Brill 0,015 ct', quality: 'G / SI', price: 15000 },
+    { id: 'd02',  ct: 0.02,  name: 'Brill 0,02 ct',  quality: 'G / SI', price: 30000 },
+    { id: 'd03',  ct: 0.03,  name: 'Brill 0,03 ct',  quality: 'G / SI', price: 48000 },
+    { id: 'd05',  ct: 0.05,  name: 'Brill 0,05 ct',  quality: 'G / VS', price: 85000 },
+    { id: 'd10',  ct: 0.10,  name: 'Brill 0,10 ct',  quality: 'G / VS', price: null },
   ],
 };
 
 /* --- Kezdő demó árképlet-beállítások --- */
 export const DEMO_SETTINGS = {
+  pricingMode: 'koltseg', // 'koltseg' = költségalapú · 'gramm' = grammonkénti késztermékár
+  sizeMethod: 'tomeg',    // 'tomeg' = a fém tömege arányos a mérettel · 'ar' = egyszerű árarányosítás
   lossPct: 5,             // gyártási veszteség a fémre, %
-  density18: 1.17,        // 18K ugyanannál a modellnél ennyiszer nehezebb
-  markupMetal: 30,        // felár a fémre és munkára, %
+  density: { au14: 1, au18: 1.17, pt: 1.65, pd: 0.92, ti: 0.35 },   // tömegszorzó a 14K-hoz képest
+  laborFactor: { au14: 1, au18: 1, pt: 1.3, pd: 1.2, ti: 1.4 },     // munkadíj-szorzó anyagonként (demó)
+  markupMetal: 30,        // felár a fémre és munkára, % (csak költségalapú módban)
   markupStones: 20,       // felár a kövekre, %
   vatPct: 27,             // ÁFA, %
   roundTo: 500,           // kerekítés felfelé, Ft
@@ -79,6 +85,11 @@ export const DEMO_SETTINGS = {
   bigChangePct: 20,       // ennél nagyobb alapanyagár-változásnál külön megerősítés
   showDemoMarks: true,
 };
+
+/* Több domain (pl. karikagyuru.com és budapestikarikagyuru.com) közös termék- és áradminisztrációval:
+   minden termék `sites` listája mondja meg, melyik oldalon jelenik meg; az árak és a gyűrűk közösek. */
+export const SITES = { karikagyuru: 'karikagyuru.com', budapest: 'budapestikarikagyuru.com' };
+export const CURRENT_SITE = 'karikagyuru';
 
 /* --- Munkadíj stílusonként (demó), Ft / gyűrű --- */
 export const DEMO_LABOR = { klasszikus: 16000, modern: 22000, koves: 24000, ketszinu: 18000 };
@@ -265,6 +276,17 @@ function nameFor(r) {
   return `${col} karikagyűrű pár`;
 }
 
+const CAT_ORDER = ['d005', 'd01', 'd015', 'd02', 'd03', 'd05', 'd10'];
+/** Demó gyémántszabály a fotóról becsült kőszámból – jóváhagyandó, nem végleges korlát. */
+function demoRule(cat, n, allowNone) {
+  const i = CAT_ORDER.indexOf(cat);
+  const near = (a, b) => CAT_ORDER.slice(Math.max(0, i + a), i + b + 1);
+  if (n >= 40) return { mode: 'perSize', min: 40, max: 70, def: n, cats: [cat], defCat: cat, allowNone: false, demo: true };
+  if (n > 5) return { mode: 'fixed', min: n, max: n, def: n, cats: near(-1, 0), defCat: cat, allowNone: false, demo: true };
+  const cats = [...new Set(near(0, 1).concat('d10'))];
+  return { mode: 'free', min: allowNone ? 0 : 1, max: n <= 3 ? 3 : 5, def: n, cats, defCat: cat, allowNone, demo: true };
+}
+
 function ringFrom(label, refSize, r, withStones, share) {
   return {
     label,
@@ -274,7 +296,7 @@ function ringFrom(label, refSize, r, withStones, share) {
     weight: 0,                     // g, 14K-ban, referenciaméretben – a seed tölti ki
     labor: DEMO_LABOR[r.style],
     other: 0,
-    stones: withStones && r.st ? { cat: r.st[0], count: r.st[1] } : null,
+    stoneRule: withStones && r.st ? demoRule(r.st[0], r.st[1], r.st[1] <= 5) : null,
   };
 }
 
@@ -295,13 +317,15 @@ export function buildDemoProducts() {
       kind: r.kind,
       baseColor: r.color,
       colors,
-      karats: [14, 18],
-      baseKarat: 14,
+      // Anyagok (demó szabály): kétszínű modell csak aranyból; köves modell titánból nem.
+      metals: BICOLOR[r.color] ? ['au14', 'au18'] : r.st ? ['au14', 'au18', 'pt', 'pd'] : ['au14', 'au18', 'pt', 'pd', 'ti'],
       style: r.style,
+      visible: true,               // megjelenítési állapot (admin: Gyűrűk → Megjelenés)
+      sites: ['karikagyuru', 'budapest'],
       widths: pair && r.style !== 'koves'
         ? [r.width - 0.5, r.width, r.width + 0.5]
         : [r.width],
-      stoneOptional: !!r.st && pair,
+      stoneOptional: !!r.st && r.st[1] <= 5,
       rings: pair
         ? [ringFrom('Női gyűrű', 54, r, true, 0.43), ringFrom('Férfi gyűrű', 64, r, false, 0.57)]
         : [ringFrom('Gyűrű', 54, r, true, 1)],
@@ -310,19 +334,6 @@ export function buildDemoProducts() {
     };
   });
 
-  // Két ezüst demótermék – nem a karikagyuru.com katalógusából.
-  const silver = (id, code, name, w, width, labor) => ({
-    id, code, name, real: false, listaAr: null, img: null,
-    kind: 'p', baseColor: 'ezust', colors: ['ezust'], karats: [925], baseKarat: 925,
-    style: 'klasszikus', widths: [width - 1, width, width + 1], stoneOptional: false,
-    rings: [
-      { label: 'Női gyűrű', refSize: 54, refWidth: width, share: 0.43, weight: +(w * 0.43).toFixed(1), labor, other: 0, stones: null },
-      { label: 'Férfi gyűrű', refSize: 64, refWidth: width, share: 0.57, weight: +(w * 0.57).toFixed(1), labor, other: 0, stones: null },
-    ],
-    override: null, minPrice: 0, fixedWeight: true,
-  });
-  // A korábbi két rajzolt ezüst demóterméket az ügyfél kérésére kivettük: csak valódi, fotós gyűrű szerepel.
-  void silver;
   return list;
 }
 

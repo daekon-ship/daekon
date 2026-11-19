@@ -6,7 +6,7 @@
 import { DEMO_MATERIALS, DEMO_SETTINGS, buildDemoProducts } from './data.js';
 import { seedWeights, priceAll, diffPrices } from './engine.js';
 
-const KEY = 'karikagyuru-demo-v6';
+const KEY = 'karikagyuru-demo-v8';
 const clone = (o) => JSON.parse(JSON.stringify(o));
 const listeners = new Set();
 const fmt = (n) => new Intl.NumberFormat('hu-HU').format(n).replace(/\s/g, ' ');
@@ -17,7 +17,7 @@ function fresh() {
   const products = seedWeights(buildDemoProducts(), materials, settings);
   const now = new Date().toISOString();
   return {
-    v: 6,
+    v: 7,
     materials, settings, products,
     history: [{
       id: uid(), at: now, validFrom: now, by: 'Rendszer (demó)', kind: 'start',
@@ -52,7 +52,7 @@ function uid() { return Math.random().toString(36).slice(2, 9); }
 
 let state;
 try { state = JSON.parse(localStorage.getItem(KEY)) || null; } catch { state = null; }
-if (!state || state.v !== 6) state = fresh();
+if (!state || state.v !== 7) state = fresh();
 
 function persist() {
   try { localStorage.setItem(KEY, JSON.stringify(state)); } catch { /* privát mód: memóriában marad */ }
@@ -111,7 +111,7 @@ export const store = {
     const now = priceAll([p], state.materials, state.settings)[id];
     state.history.unshift({ id: uid(), at: new Date().toISOString(), validFrom: new Date().toISOString(),
       by: 'Tulajdonos (demó)', kind: 'product', title: title || `${p.code} adatai módosítva`,
-      count: old !== now ? 1 : 0, total: now - old, oldPrice: old, newPrice: now });
+      count: old !== now ? 1 : 0, total: old !== undefined && now !== undefined ? now - old : 0, oldPrice: old ?? null, newPrice: now ?? null });
     persist();
   },
 
@@ -156,9 +156,15 @@ export const store = {
 
 function describeMaterialChange(a, b) {
   const out = [];
-  if (a.gold24 !== b.gold24) out.push(`24K színarany: ${fmt(a.gold24)} → ${fmt(b.gold24)} Ft/g`);
-  if (a.silver !== b.silver) out.push(`Ezüst: ${fmt(a.silver)} → ${fmt(b.silver)} Ft/g`);
-  for (const k of Object.keys(a.alloy)) if (a.alloy[k] !== b.alloy[k]) out.push(`Ötvözet (${k}): ${fmt(a.alloy[k])} → ${fmt(b.alloy[k])} Ft/g`);
-  a.diamonds.forEach((d, i) => { const n = b.diamonds[i]; if (n && n.price !== d.price) out.push(`${d.name}: ${fmt(d.price)} → ${fmt(n.price)} Ft/db`); });
+  const f = (v) => (v == null ? 'nincs ár' : fmt(v));
+  const one = (label, x, y, unit) => { if (x !== y) out.push(`${label}: ${f(x)} → ${f(y)} ${unit}`); };
+  one('24K színarany', a.gold24, b.gold24, 'Ft/g');
+  one('Platina', a.platinum, b.platinum, 'Ft/g');
+  one('Palládium', a.palladium, b.palladium, 'Ft/g');
+  one('Titán', a.titanium, b.titanium, 'Ft/g');
+  one('Ötvözőanyag', a.alloyAll, b.alloyAll, 'Ft/g');
+  const SP = { au14: '14K', au18: '18K', pt: 'platina', pd: 'palládium', ti: 'titán' };
+  for (const k of Object.keys({ ...(a.sellPerGram || {}), ...(b.sellPerGram || {}) })) one(`Grammár (${SP[k] || k})`, a.sellPerGram?.[k], b.sellPerGram?.[k], 'Ft/g');
+  (a.diamonds || []).forEach((d, i) => { const n = (b.diamonds || [])[i]; if (n) one(d.name, d.price, n.price, 'Ft/db'); });
   return out.join(' · ') || 'Alapanyagárak (változás nélkül)';
 }

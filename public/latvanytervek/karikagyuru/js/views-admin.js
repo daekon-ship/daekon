@@ -3,8 +3,8 @@
    Bemutató: nincs bejelentkezés és szerveroldali jogosultság (külön fejlesztési szakasz).
    ========================================================================== */
 import { store } from './store.js';
-import { COLORS, STYLES } from './data.js';
-import { priceProduct, priceAll, diffPrices, defaultConfig, composition, ft, num, dec, pct, FINENESS } from './engine.js';
+import { COLORS, STYLES, SITES } from './data.js';
+import { priceProduct, priceAll, diffPrices, defaultConfig, composition, ft, num, dec, pct, METALS, METAL_ORDER, isGold, diamond } from './engine.js';
 import { $, $$, esc, productMedia, toast, modal, M, reduced, dateHu, dayHu } from './ui.js';
 import { configText } from './views-public.js';
 
@@ -66,13 +66,13 @@ function overview(el) {
   el.innerHTML = `
     <h1 class="adm__h1">Jó napot kívánok!</h1>
     <div class="bigtiles">
-      ${tile('#/admin/alapanyag', 'Arany ára', `${ft(st.materials.gold24)}<i>/g</i>`, 'Átírja, és minden gyűrű ára frissül.', 'bigtile--gold')}
+      ${st.settings.pricingMode === 'gramm' ? tile('#/admin/alapanyag', 'Grammár (14K)', `${ft(st.materials.sellPerGram.au14)}<i>/g</i>`, 'Átírja, és minden gyűrű ára frissül.', 'bigtile--gold') : tile('#/admin/alapanyag', 'Arany ára', `${ft(st.materials.gold24)}<i>/g</i>`, 'Átírja, és minden gyűrű ára frissül.', 'bigtile--gold')}
       ${tile('#/admin/arszamitas', 'Árszámítás', 'Mennyibe kerül?', 'Ha valaki telefonon kérdezi.')}
       ${tile('#/admin/gyuruk', 'Gyűrűk', `${st.products.length} db`, 'Lista, egyedi ár, árlista.')}
       ${tile('#/admin/erdeklodesek', 'Érdeklődések', newInq ? `${newInq} új` : 'nincs új', 'Akik írtak vagy időpontot kértek.', newInq ? 'bigtile--alert' : '')}
     </div>
     <div class="smalltiles">
-      ${tile('#/admin/keplet', 'Felárak és munkadíjak', `${dec(st.settings.markupMetal)}% felár`, 'Hogyan lesz az aranyárból eladási ár.')}
+      ${tile('#/admin/keplet', 'Felárak és munkadíjak', st.settings.pricingMode === 'gramm' ? 'grammár szerint' : `${dec(st.settings.markupMetal)}% felár`, 'Árképzési mód, felár, munkadíj.')}
       ${tile('#/admin/elozmenyek', 'Árváltozások naplója', `${st.history.length} bejegyzés`, 'Mikor, mit változtatott. Visszaállítható.')}
       ${tile('#/admin/beallitasok', 'Beállítások', `${num(st.settings.roundTo)} Ft-ra kerekít`, 'Kerekítés, védelem, demó visszaállítása.')}
     </div>
@@ -94,7 +94,7 @@ function priceCalc(el) {
   quickCalc($('[data-qcalc]', el));
 }
 
-/* Gyors árszámítás: gyűrű kiválasztása, szín, finomság, méret → ár, és rögzíthető ajánlatként. */
+/* Gyors árszámítás: gyűrű, anyag, szín, méret, kő → ár, és rögzíthető ajánlatként. */
 function quickCalc(box) {
   const st = S();
   const list = st.products.filter((p) => !p.priceOnRequest).sort((a, b) => a.code.localeCompare(b.code));
@@ -103,36 +103,41 @@ function quickCalc(box) {
   const CL = { sarga: 'Sárga', feher: 'Fehér', rose: 'Rozé', ketszinu: 'Fehér–sárga', feherrose: 'Fehér–rozé', sargarose: 'Sárga–rozé' };
   const paint = () => {
     const r = priceProduct(p, cfg, st.materials, st.settings);
+    cfg = r.cfg;
     box.innerHTML = `
       <label class="efield"><span>Melyik gyűrű?</span><select class="input input--lg" data-qp>${list.map((x) => `<option value="${x.id}" ${x.id === p.id ? 'selected' : ''}>${esc(x.code)} – ${esc(x.name)}</option>`).join('')}</select></label>
       <div class="qcalc__row">
         <span class="qcalc__img">${productMedia(p)}</span>
         <div class="qcalc__opts">
-          ${p.colors.length > 1 ? `<div><span class="qcalc__lab">Szín</span><div class="qseg">${p.colors.map((c) => `<button type="button" data-qc="${c}" aria-pressed="${c === cfg.color}">${CL[c] || c}</button>`).join('')}</div></div>` : ''}
-          <div><span class="qcalc__lab">Finomság</span><div class="qseg">${p.karats.map((k) => `<button type="button" data-qk="${k}" aria-pressed="${k === cfg.karat}">${k} karát</button>`).join('')}</div></div>
+          <div><span class="qcalc__lab">Anyag</span><div class="qseg">${p.metals.map((m) => `<button type="button" data-qm="${m}" aria-pressed="${m === cfg.metal}">${METALS[m].short}</button>`).join('')}</div></div>
+          ${isGold(cfg.metal) && p.colors.length > 1 ? `<div><span class="qcalc__lab">Szín <small>(az árat nem változtatja)</small></span><div class="qseg">${p.colors.map((c) => `<button type="button" data-qc="${c}" aria-pressed="${c === cfg.color}">${CL[c] || c}</button>`).join('')}</div></div>` : ''}
           ${p.rings.map((rg, i) => `<div><span class="qcalc__lab">${esc(rg.label)} mérete</span><div class="qstep"><button type="button" data-qs="${i}|-1" aria-label="kisebb">−</button><output>${cfg.rings[i].size}</output><button type="button" data-qs="${i}|1" aria-label="nagyobb">+</button></div></div>`).join('')}
+          ${p.rings.map((rg, i) => rg.stoneRule && rg.stoneRule.allowNone ? `<div><span class="qcalc__lab">${esc(rg.label)} – kő</span><div class="qseg"><button type="button" data-qst="${i}|1" aria-pressed="${!!cfg.rings[i].stones}">Gyémánttal</button><button type="button" data-qst="${i}|0" aria-pressed="${!cfg.rings[i].stones}">Kő nélkül</button></div></div>` : '').join('')}
         </div>
       </div>
-      <div class="qcalc__price"><span>Ár</span><b>${ft(r.final)}</b><small>bruttó · ebből arany: ${dec(r.pure)} g színarany</small></div>
+      <div class="qcalc__price"><span>Ár</span><b>${r.final === null ? 'Egyedi ajánlat' : ft(r.final)}</b><small>${r.final === null ? esc(r.reason || '') : `bruttó · ${dec(r.grams)} g ${METALS[cfg.metal].short.toLowerCase()}`}</small></div>
       <button class="abtn abtn--xl qcalc__save" type="button" data-qsave>Felírom ajánlatnak</button>`;
   };
   box.addEventListener('change', (e) => { if (e.target.matches('[data-qp]')) { p = store.product(e.target.value); cfg = defaultConfig(p); paint(); } });
   box.addEventListener('click', (e) => {
-    const c = e.target.closest('[data-qc]'), k = e.target.closest('[data-qk]'), sz = e.target.closest('[data-qs]');
-    if (c) cfg.color = c.dataset.qc;
-    else if (k) cfg.karat = Number(k.dataset.qk);
-    else if (sz) { const [i, d] = sz.dataset.qs.split('|').map(Number); cfg.rings[i].size = Math.min(76, Math.max(44, cfg.rings[i].size + d)); }
+    const g = (a) => e.target.closest(`[data-${a}]`)?.dataset[a];
+    let v;
+    if ((v = g('qm'))) { cfg.metal = v; cfg.color = isGold(v) ? (cfg.color || p.baseColor) : null; }
+    else if ((v = g('qc'))) cfg.color = v;
+    else if ((v = g('qs'))) { const [i, d] = v.split('|').map(Number); cfg.rings[i].size = Math.min(76, Math.max(44, cfg.rings[i].size + d)); }
+    else if ((v = g('qst'))) { const [i, on] = v.split('|').map(Number); const rule = p.rings[i].stoneRule; cfg.rings[i].stones = on ? { count: Math.max(1, rule.def), cat: rule.defCat } : null; }
     else if (e.target.closest('[data-qsave]')) {
       const r = priceProduct(p, cfg, st.materials, st.settings);
-      modal(`<form class="form" data-qf><h2>Ajánlat felírása</h2><p><b>${esc(p.code)}</b> – ${ft(r.final)}</p>
+      modal(`<form class="form" data-qf><h2>Ajánlat felírása</h2><p><b>${esc(p.code)}</b> – ${r.final === null ? 'egyedi ajánlat, az árat később adja meg' : ft(r.final)}</p>
         <label class="field"><span>Ügyfél neve</span><input class="input input--lg" name="nev" required></label>
         <label class="field"><span>Telefonszáma</span><input class="input input--lg" name="tel" type="tel"></label>
         <div class="impact__btns"><button class="abtn abtn--xl" type="button" data-close>Mégsem</button><button class="abtn abtn--gold abtn--xl" type="submit">Felírom</button></div></form>`, {
         onMount: (mb, close) => mb.querySelector('[data-qf]').addEventListener('submit', (ev) => {
           ev.preventDefault(); const d = Object.fromEntries(new FormData(ev.target));
           if (!d.nev.trim()) return;
-          store.addInquiry({ type: 'telefon', name: d.nev, phone: d.tel, productId: p.id, code: p.code, config: clone(cfg), summary: configText(p, cfg), estimate: r.final, status: 'elfogadva', lockedPrice: r.final, lockedAt: new Date().toISOString() });
-          close(); toast('Felírva az Érdeklődések közé, rögzített árral.');
+          store.addInquiry({ type: 'telefon', name: d.nev, phone: d.tel, productId: p.id, code: p.code, config: clone(cfg), summary: configText(p, cfg), estimate: r.final,
+            status: r.final === null ? 'uj' : 'elfogadva', lockedPrice: r.final, lockedAt: r.final === null ? null : new Date().toISOString() });
+          close(); toast(r.final === null ? 'Felírva az Érdeklődések közé – az árat egyedileg kell megadni.' : 'Felírva az Érdeklődések közé, rögzített árral.');
         }) });
       return;
     } else return;
@@ -187,6 +192,8 @@ const SEG = [
 ];
 /** Árösszetétel-sáv: régi és új ár egymás alatt, ugyanazon a léptéken. */
 function compBar(rOld, rNew, Sx, SxNew = Sx) {
+  if (!rOld || rOld.final === null) return '<p class="hint">Ennél a gyűrűnél nincs kalkulált ár (egyedi ajánlat).</p>';
+  if (rNew && rNew.final === null) rNew = null;
   const a = composition(rOld, Sx), b = rNew ? composition(rNew, SxNew) : null;
   const max = Math.max(rOld.final, rNew ? rNew.final : 0);
   const bar = (c, r, label) => `<div class="comp__row"><span class="comp__lab">${label}</span>
@@ -210,24 +217,28 @@ function materials(el) {
   const draft = clone(st.materials);
   const lastM = st.history.find((h) => h.kind === 'materials' || h.kind === 'start');
   let selEx = null;
+  const gm = st.settings.pricingMode === 'gramm';
+  const P0 = gm ? 'sellPerGram.au14' : 'gold24';              // a fő mező a választott árképzési módtól függ
+  const nv = (v) => (v === null || v === undefined ? '' : num(v));
 
   const field = (key, label, unit, step, sub = '', path = key) => `
     <div class="mfield" data-mfield="${path}">
-      <label for="f-${path}"><b>${label}</b>${sub ? `<small>${sub}</small>` : ''}</label>
+      <label for="f-${path.replace(/\./g, '-')}"><b>${label}</b>${sub ? `<small>${sub}</small>` : ''}</label>
       <div class="mfield__ctl">
         <button type="button" class="mbtn" data-step="-${step}" aria-label="${label} csökkentése ${num(step)} Ft-tal">−</button>
-        <div class="mfield__input"><input id="f-${path}" inputmode="numeric" data-path="${path}" value="${num(get(draft, path))}" autocomplete="off"><span>${unit}</span></div>
+        <div class="mfield__input"><input id="f-${path.replace(/\./g, '-')}" inputmode="numeric" data-path="${path}" value="${nv(get(draft, path))}" placeholder="nincs ár" autocomplete="off"><span>${unit}</span></div>
         <button type="button" class="mbtn" data-step="${step}" aria-label="${label} növelése ${num(step)} Ft-tal">+</button>
       </div>
-      <p class="mfield__was" data-was="${path}">Jelenleg: ${num(get(cur, path))} ${unit}</p>
+      <p class="mfield__was" data-was="${path}">Jelenleg: ${get(cur, path) == null ? 'nincs ár → egyedi ajánlat' : num(get(cur, path)) + ' ' + unit}</p>
     </div>`;
 
   el.innerHTML = `
     <h1 class="adm__h1">Arany ára</h1>
     <p class="adm__meta">Utoljára módosítva: ${dateHu(lastM.at)}</p>
+    <p class="modebar">Árképzés: <b>${gm ? 'grammár szerint' : 'költség szerint (aranyár + munkadíj + felár)'}</b> · <a href="#/admin/keplet">módosítás</a> <span class="demo-chip">ügyféllel egyeztetendő</span></p>
     <div class="mat mat--simple">
       <section class="goldcard">
-        ${field('gold24', '1 gramm 24 karátos arany', 'Ft', 500, '')}
+        ${gm ? field('', '1 gramm 14 karátos kész gyűrű ára', 'Ft', 500, 'bruttó – tartalmazza a munkadíjat és az árrést', P0) : field('gold24', '1 gramm 24 karátos arany', 'Ft', 500, 'számítási alap – 24K gyűrűt nem készítünk')}
         <div class="quick" role="group" aria-label="Gyors módosítás">
           ${[-3, -1, 1, 3, 5].map((v) => `<button type="button" class="qbtn" data-quick="${v}">${v > 0 ? '+' : '−'}${Math.abs(v)}%</button>`).join('')}
         </div>
@@ -239,14 +250,14 @@ function materials(el) {
         <div class="goldcard__chart"><div data-chart></div><p class="hint">Demó előzmények – kitalált adatok.</p></div>
       </details>
       <details class="mat__more">
-        <summary>Gyémántok ára <small>darabár</small></summary>
-        ${st.materials.diamonds.map((d, i) => field('', `${d.name} · ${d.quality}`, 'Ft/db', 1000, `${st.products.filter((p) => p.rings.some((r) => r.stones && r.stones.cat === d.id)).length} gyűrűben`, `diamonds.${i}.price`)).join('')}
+        <summary>${gm ? 'Többi anyag grammára' : 'Platina, palládium, titán, ötvözet'} <small>ritkábban változik</small></summary>
+        ${gm ? ['au18', 'pt', 'pd', 'ti'].map((m) => field('', `1 gramm ${METALS[m].label.toLowerCase()} kész gyűrű`, 'Ft', 500, 'bruttó', `sellPerGram.${m}`)).join('')
+          : `${field('', 'Platina', 'Ft/g', 100, '', 'platinum')}${field('', 'Palládium', 'Ft/g', 100, '', 'palladium')}${field('', 'Titán', 'Ft/g', 10, '', 'titanium')}
+             ${field('', 'Aranyötvözet (minden színre azonos)', 'Ft/g', 50, 'a szín nem változtat az árat', 'alloyAll')}`}
       </details>
       <details class="mat__more">
-        <summary>Ötvözőanyagok ára <small>ritkán változik</small></summary>
-        ${field('', 'Sárgaarany ötvözet', 'Ft/g', 50, '', 'alloy.sarga')}
-        ${field('', 'Fehérarany ötvözet', 'Ft/g', 100, 'palládiumtartalmú', 'alloy.feher')}
-        ${field('', 'Rozéarany ötvözet', 'Ft/g', 50, '', 'alloy.rose')}
+        <summary>Természetes gyémántok ára <small>darabár · üresen hagyva: egyedi ajánlat</small></summary>
+        ${st.materials.diamonds.map((d, i) => field('', `${d.name} · ${d.quality}`, 'Ft/db', 1000, `${st.products.filter((p) => p.rings.some((r) => r.stoneRule && r.stoneRule.cats.includes(d.id))).length} gyűrűnél választható`, `diamonds.${i}.price`)).join('')}
       </details>
     </div>`;
 
@@ -256,7 +267,7 @@ function materials(el) {
 
   const paint = () => {
     $('[data-chart]', el).innerHTML = goldChart(series, cur.gold24, draft.gold24);
-    $$('[data-quick]', el).forEach((b) => b.setAttribute('aria-pressed', String(Math.round(cur.gold24 * (1 + Number(b.dataset.quick) / 100) / 100) * 100 === draft.gold24)));
+    $$('[data-quick]', el).forEach((b) => b.setAttribute('aria-pressed', String(Math.round(get(cur, P0) * (1 + Number(b.dataset.quick) / 100) / 100) * 100 === get(draft, P0))));
     const d = diffPrices(st.products, cur, draft, st.settings);
     const changes = changedPaths(cur, draft);
     $$('[data-mfield]', el).forEach((f) => f.classList.toggle('is-changed', changes.some((c) => c.path === f.dataset.mfield)));
@@ -268,10 +279,10 @@ function materials(el) {
       const sample = store.product('maz-81184-81185-w');
       impact.className = 'impact impact--idle';
       impact.innerHTML = `<p>Írja át a fenti számot, vagy nyomja meg a + / − gombot. Mentés előtt itt megmutatjuk, mi változik.</p>
-        <button class="abtn" type="button" data-demo-gold>Bemutatóhoz: 45 000 Ft</button>`;
+        <button class="abtn" type="button" data-demo-gold>Bemutatóhoz: ${gm ? '52 000' : '45 000'} Ft</button>`;
       return;
     }
-    const big = changes.filter((c) => Math.abs(c.pct) >= st.settings.bigChangePct);
+    const big = changes.filter((c) => c.pct !== null && Math.abs(c.pct) >= st.settings.bigChangePct);
     const examples = [...d.rows].sort((a, b) => Math.abs(b.delta) - Math.abs(a.delta)).slice(0, 5);
     const pref = d.rows.find((x) => x.id === 'maz-81184-81185-w');
     if (pref && !examples.some((x) => x.id === pref.id)) examples.unshift(pref);
@@ -279,10 +290,11 @@ function materials(el) {
     const sp = selEx && store.product(selEx);
     impact.className = 'impact impact--on';
     const ex = examples.find((x) => x.id === selEx) || examples[0];
-    const gold = changes.find((c) => c.path === 'gold24');
+    const gold = changes.find((c) => c.path === P0);
     impact.innerHTML = `
       ${gold ? `<p class="impact__new">Új ár: <b>${num(gold.to)} Ft</b> <em class="${gold.pct > 0 ? 'up' : 'down'}">${pct(gold.pct)}</em></p>` : ''}
       <p class="impact__say"><b>${d.count} gyűrű</b> ára változik, átlagosan <b class="${d.avgPct >= 0 ? 'up' : 'down'}">${pct(d.avgPct)}</b>.</p>
+      ${d.lost.length ? `<p class="impact__warn"><b>${d.lost.length} gyűrű alapára ár nélkül marad</b> (pl. ${esc(d.lost[0].code)}) – ott „Egyedi árajánlat szükséges” jelenik meg.</p>` : ''}
       ${examples.length ? `<ul class="impact__few">${[...d.rows].sort((a, b) => (a.id === 'maz-81184-81185-w' ? -1 : b.id === 'maz-81184-81185-w' ? 1 : Math.abs(a.old - 300000) - Math.abs(b.old - 300000))).slice(0, 3).map((r) => `<li><span>${esc(r.code)}</span><s>${ft(r.old)}</s><b>${ft(r.now)}</b></li>`).join('')}</ul>` : ''}
       ${big.length ? `<label class="confirm"><input type="checkbox" data-confirm ${confirmBig ? 'checked' : ''}><span><b>Nagy változás (${pct(big[0].pct)}).</b> Ellenőriztem, jó a szám.</span></label>` : ''}
       <div class="impact__btns">
@@ -291,7 +303,7 @@ function materials(el) {
       </div>
       <details class="impact__more">
         <summary>Részletek</summary>
-        <ul class="impact__chg">${changes.map((c) => `<li><span>${esc(c.label)}</span><b>${num(c.from)} → ${num(c.to)} ${c.unit}</b><em class="${c.pct > 0 ? 'up' : 'down'}">${pct(c.pct)}</em></li>`).join('')}</ul>
+        <ul class="impact__chg">${changes.map((c) => `<li><span>${esc(c.label)}</span><b>${c.from == null ? 'nincs ár' : num(c.from)} → ${c.to == null ? 'nincs ár' : num(c.to)} ${c.unit}</b>${c.pct === null ? '' : `<em class="${c.pct > 0 ? 'up' : 'down'}">${pct(c.pct)}</em>`}</li>`).join('')}</ul>
         ${examples.length ? `<ul class="impact__ex">${examples.map((r) => `<li><button type="button" data-ex="${r.id}" aria-pressed="${r.id === selEx}"><span class="impact__code">${esc(r.code)}</span><span class="impact__old">${ft(r.old)}</span><span class="impact__arrow">→</span><b>${ft(r.now)}</b><em class="${r.delta > 0 ? 'up' : 'down'}">${r.delta > 0 ? '+' : '−'}${ft(Math.abs(r.delta))}</em></button></li>`).join('')}</ul>
         <button type="button" class="linkbtn" data-all>Mind a ${d.count} gyűrű régi és új ára</button>
         ${sp ? `<h3>Mitől változik? <span>${esc(sp.code)}</span></h3>${compBar(priceProduct(sp, null, cur, st.settings), priceProduct(sp, null, draft, st.settings), st.settings)}` : ''}` : ''}
@@ -305,7 +317,7 @@ function materials(el) {
     if (!Number.isFinite(v) || v < 0) return;
     set(draft, path, Math.round(v));
     const inp = $(`[data-path="${CSS.escape(path)}"]`, el);
-    if (inp && document.activeElement !== inp) inp.value = num(get(draft, path));
+    if (inp && document.activeElement !== inp) inp.value = nv(get(draft, path));
     paint();
   };
 
@@ -321,14 +333,15 @@ function materials(el) {
 
   el.addEventListener('click', (e) => {
     const s = e.target.closest('[data-step]');
-    if (s) { const path = s.closest('[data-mfield]').dataset.mfield; setVal(path, get(draft, path) + Number(s.dataset.step)); }
+    if (s) { const path = s.closest('[data-mfield]').dataset.mfield; setVal(path, (get(draft, path) || 0) + Number(s.dataset.step)); }
     const q = e.target.closest('[data-quick]');
-    if (q) { const v = Math.round(cur.gold24 * (1 + Number(q.dataset.quick) / 100) / 100) * 100; setVal('gold24', v); $('#f-gold24', el).value = num(v); }
+    const pin = () => $(`[data-path="${P0}"]`, el);
+    if (q) { const v = Math.round(get(cur, P0) * (1 + Number(q.dataset.quick) / 100) / 100) * 100; setVal(P0, v); pin().value = num(v); }
     const ex = e.target.closest('[data-ex]');
     if (ex) { selEx = ex.dataset.ex; paint(); }
     if (e.target.closest('[data-all]')) allList();
     if (e.target.closest('[data-goimpact]')) impact.scrollIntoView({ behavior: reduced() ? 'auto' : 'smooth', block: 'start' });
-    if (e.target.closest('[data-demo-gold]')) { setVal('gold24', 45000); $('#f-gold24', el).value = num(45000); $('#f-gold24', el).focus(); }
+    if (e.target.closest('[data-demo-gold]')) { const v = gm ? 52000 : 45000; setVal(P0, v); pin().value = num(v); pin().focus(); }
     if (e.target.closest('[data-cancel]')) { document.body.classList.remove('has-mimpact'); materials(el); toast('A módosítást elvetettük – az árak nem változtak.'); }
     if (e.target.closest('[data-apply]')) {
       const valid = $('[data-valid]', el)?.value;
@@ -354,31 +367,37 @@ function materials(el) {
     if (u) { store.revert(u.dataset.undo); toast('A korábbi árak visszaálltak.'); materials(el); }
   });
   el.addEventListener('input', (e) => {
-    if (e.target.matches('[data-path]')) { const v = parseNum(e.target.value); if (Number.isFinite(v)) { set(draft, e.target.dataset.path, Math.round(v)); paint(); } }
+    if (e.target.matches('[data-path]')) {
+      const path = e.target.dataset.path;
+      if (!e.target.value.trim() && path.startsWith('diamonds.')) { set(draft, path, null); paint(); return; }   // üres kőár = egyedi ajánlat
+      const v = parseNum(e.target.value); if (Number.isFinite(v) && v >= 0) { set(draft, path, Math.round(v)); paint(); }
+    }
     if (e.target.matches('[data-confirm]')) { confirmBig = e.target.checked; paint(); }
   });
-  el.addEventListener('focusout', (e) => { if (e.target.matches('[data-path]')) e.target.value = num(get(draft, e.target.dataset.path)); });
+  el.addEventListener('focusout', (e) => { if (e.target.matches('[data-path]')) e.target.value = nv(get(draft, e.target.dataset.path)); });
   paint();
 }
 
 function changedPaths(a, b) {
   const out = [];
-  const push = (path, label, unit) => { const f = get(a, path), t = get(b, path); if (f !== t) out.push({ path, label, unit, from: f, to: t, pct: f ? ((t - f) / f) * 100 : 100 }); };
+  const push = (path, label, unit) => { const f = get(a, path), t = get(b, path); if (f !== t) out.push({ path, label, unit, from: f, to: t, pct: f && t != null ? ((t - f) / f) * 100 : null }); };
   push('gold24', '24K színarany', 'Ft/g');
-  push('silver', 'Ezüst', 'Ft/g');
+  push('platinum', 'Platina', 'Ft/g'); push('palladium', 'Palládium', 'Ft/g'); push('titanium', 'Titán', 'Ft/g');
+  push('alloyAll', 'Aranyötvözet', 'Ft/g');
+  for (const m of METAL_ORDER) push(`sellPerGram.${m}`, `Grammár – ${METALS[m].short}`, 'Ft/g');
   a.diamonds.forEach((d, i) => push(`diamonds.${i}.price`, d.name, 'Ft/db'));
-  push('alloy.sarga', 'Sárga ötvözet', 'Ft/g'); push('alloy.feher', 'Fehér ötvözet', 'Ft/g'); push('alloy.rose', 'Rozé ötvözet', 'Ft/g');
   return out;
 }
 const get = (o, path) => path.split('.').reduce((x, k) => x?.[k], o);
 const set = (o, path, v) => { const ks = path.split('.'); const last = ks.pop(); ks.reduce((x, k) => x[k], o)[last] = v; };
 
 /* ---------- 3. Gyűrűk kezelése ---------- */
-const PFILTERS = [['mind', 'Mind'], ['egyedi', 'Egyedi áras'], ['koves', 'Köves'], ['pár', 'Gyűrűpár'], ['arres', 'Alacsony árrés'], ['arnelkul', 'Ár nélkül']];
+const PFILTERS = [['mind', 'Mind'], ['egyedi', 'Egyedi áras'], ['koves', 'Köves'], ['pár', 'Gyűrűpár'], ['arres', 'Alacsony árrés'], ['arnelkul', 'Ár nélkül'], ['rejtett', 'Rejtett']];
 function products(el) {
   el = fresh(el);
   const st = S();
-  const res = Object.fromEntries(st.products.map((p) => [p.id, p.priceOnRequest ? null : priceProduct(p, null, st.materials, st.settings)]));
+  const all = Object.fromEntries(st.products.map((p) => [p.id, priceProduct(p, null, st.materials, st.settings)]));
+  const res = Object.fromEntries(Object.entries(all).map(([k, r]) => [k, r.final === null ? null : r]));
   let q = '', f = 'mind', sort = 'cikkszam';
   el.innerHTML = `
     <h1 class="adm__h1">Gyűrűk kezelése</h1>
@@ -393,7 +412,7 @@ function products(el) {
     <div class="plist" data-list></div>`;
   const rows = () => {
     let list = st.products.filter((p) => (p.code + ' ' + p.name).toLowerCase().includes(q)).filter((p) =>
-      f === 'mind' || (f === 'egyedi' && (p.override || p.minPrice)) || (f === 'koves' && p.rings.some((r) => r.stones)) || (f === 'pár' && p.kind === 'p') || (f === 'arres' && res[p.id]?.lowMargin) || (f === 'arnelkul' && p.priceOnRequest));
+      f === 'mind' || (f === 'egyedi' && (p.override || p.minPrice)) || (f === 'koves' && p.rings.some((r) => r.stoneRule)) || (f === 'pár' && p.kind === 'p') || (f === 'arres' && res[p.id]?.lowMargin) || (f === 'arnelkul' && !res[p.id]) || (f === 'rejtett' && p.visible === false));
     const fv = (p, d) => res[p.id] ? res[p.id].final : d;
     const dev = (p) => p.listaAr && res[p.id] ? (res[p.id].final - p.listaAr) / p.listaAr : 0;
     if (sort === 'ar-le') list.sort((a, b) => fv(b, -1) - fv(a, -1));
@@ -408,14 +427,14 @@ function products(el) {
       const r = res[p.id];
       if (!r) return `<a class="prow" href="#/admin/gyuru/${p.id}">
         <span class="prow__img">${productMedia(p)}</span>
-        <span class="prow__txt"><b>${esc(p.code)}</b><span>${esc(p.name)}</span><span class="prow__tags"><em class="tag tag--warn">az eredeti oldalon nincs ár</em></span></span>
-        <span class="prow__price"><b>egyeztetés</b><small>rögzített árral bekapcsolható</small></span>
+        <span class="prow__txt"><b>${esc(p.code)}</b><span>${esc(p.name)}</span><span class="prow__tags"><em class="tag tag--warn">${p.priceOnRequest ? 'az eredeti oldalon nincs ár' : 'nincs megbízható ár'}</em>${p.visible === false ? '<em class="tag">rejtett</em>' : ''}</span></span>
+        <span class="prow__price"><b>egyedi ajánlat</b><small>${esc(all[p.id].reason || '')}</small></span>
         <span class="abtn">Szerkesztés</span></a>`;
       const dv = p.listaAr ? ((r.final - p.listaAr) / p.listaAr) * 100 : null;
       return `<a class="prow" href="#/admin/gyuru/${p.id}">
         <span class="prow__img">${productMedia(p)}</span>
         <span class="prow__txt"><b>${esc(p.code)}</b><span>${esc(p.name)}</span>
-          <span class="prow__tags">${p.override ? `<em class="tag tag--blue">${p.override.type === 'fixed' ? 'rögzített ár' : `képlet ${pct(p.override.value)}`}</em>` : '<em class="tag tag--formula">képletből</em>'}${r.lowMargin ? '<em class="tag tag--warn">alacsony árrés</em>' : ''}${p.minPrice ? '<em class="tag">minimumár</em>' : ''}</span></span>
+          <span class="prow__tags">${p.override ? `<em class="tag tag--blue">${p.override.type === 'fixed' ? 'rögzített ár' : `képlet ${pct(p.override.value)}`}</em>` : '<em class="tag tag--formula">képletből</em>'}${r.lowMargin ? '<em class="tag tag--warn">alacsony árrés</em>' : ''}${p.minPrice ? '<em class="tag">minimumár</em>' : ''}${p.visible === false ? '<em class="tag">rejtett</em>' : ''}</span></span>
         <span class="prow__price"><b>${ft(r.final)}</b>
           <small>${p.listaAr ? `weboldalon most: ${ft(p.listaAr)}${Math.abs(dv) >= 0.5 ? ` (${pct(dv)})` : ''}` : 'demótermék'}</small></span>
         <span class="abtn">Szerkesztés</span>
@@ -426,7 +445,7 @@ function products(el) {
   const csv = () => {
     const sep = ';';
     const lines = [['Cikkszám', 'Megnevezés', 'Kalkulált ár (Ft)', 'Árforrás', 'Becsült tömeg (g)', 'Weboldali ár most (Ft)'].join(sep)];
-    st.products.forEach((p) => { const r = res[p.id]; lines.push([p.code, p.name, r ? r.final : 'egyeztetés', r ? (r.source === 'keplet' ? 'képlet' : r.source === 'rogzitett' ? 'rögzített' : 'módosított') : '', r ? String(r.grams).replace('.', ',') : '', p.listaAr || ''].map((x) => `"${String(x).replace(/"/g, '""')}"`).join(sep)); });
+    st.products.forEach((p) => { const r = res[p.id]; lines.push([p.code, p.name, r ? r.final : 'egyedi ajánlat', r ? (r.source === 'keplet' ? 'képlet' : r.source === 'rogzitett' ? 'rögzített' : 'módosított') : '', r ? String(r.grams).replace('.', ',') : '', p.listaAr || ''].map((x) => `"${String(x).replace(/"/g, '""')}"`).join(sep)); });
     const blob = new Blob(['﻿' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8' });
     const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `karikagyuru-arlista-${new Date().toISOString().slice(0, 10)}.csv`; a.click();
     setTimeout(() => URL.revokeObjectURL(a.href), 2000);
@@ -448,15 +467,16 @@ function printList(st, res) {
   document.getElementById('printsheet')?.remove();
   const d = document.createElement('div');
   d.id = 'printsheet';
-  d.innerHTML = `<header><img src="img/logo.png" alt="Karikagyuru.com" width="135"><div><h1>Árlista</h1><p>${dayHu(new Date().toISOString())} · 24K színarany: ${ft(st.materials.gold24)}/g (demó)</p></div></header>
+  d.innerHTML = `<header><img src="img/logo.png" alt="Karikagyuru.com" width="135"><div><h1>Árlista</h1><p>${dayHu(new Date().toISOString())} · ${st.settings.pricingMode === 'gramm' ? `14K grammár: ${ft(st.materials.sellPerGram.au14)}/g` : `24K színarany: ${ft(st.materials.gold24)}/g`} (demó)</p></div></header>
     <table><thead><tr><th>Cikkszám</th><th>Megnevezés</th><th>Anyag</th><th>Ár (bruttó)</th></tr></thead><tbody>
-    ${st.products.map((p) => `<tr><td>${esc(p.code)}</td><td>${esc(p.name)}</td><td>${p.baseKarat === 925 ? 'ezüst 925' : (COLORS[p.baseColor]?.label || '') + ', 14K'}${p.rings.some((r) => r.stones) ? ', gyémánttal' : ''}</td><td>${res[p.id] ? ft(res[p.id].final) : 'egyeztetés'}</td></tr>`).join('')}
+    ${st.products.map((p) => `<tr><td>${esc(p.code)}</td><td>${esc(p.name)}</td><td>${(COLORS[p.baseColor]?.label || '') + ', 14K'}${p.rings.some((r) => r.stoneRule) ? ', természetes gyémánttal' : ''}</td><td>${res[p.id] ? ft(res[p.id].final) : 'egyedi ajánlat'}</td></tr>`).join('')}
     </tbody></table><p class="ps__note">Tájékoztató árak alapméretben. A végleges ár a személyes egyeztetésen készül. Bemutató – kitalált alapanyagárakból számolva.</p>`;
   document.body.append(d);
   setTimeout(() => { window.print(); }, 50);
   addEventListener('afterprint', () => d.remove(), { once: true });
 }
 
+const RULE_MODES = [['none', 'Nincs kő'], ['free', 'Választható kőszám'], ['fixed', 'Kötött kőszám'], ['perSize', 'Körbe foglalt (mérettől függ)'], ['quote', 'Csak egyedi ajánlattal']];
 function productEdit(el, id) {
   el = fresh(el);
   const st = S();
@@ -464,26 +484,61 @@ function productEdit(el, id) {
   if (!orig) { el.innerHTML = '<p>A gyűrű nem található.</p>'; return; }
   const p = clone(orig);
   const ov = () => p.override?.type || 'nincs';
-  const n = (path, label, unit, step = 1, hint = '') => `<label class="efield"><span>${label}${hint ? `<small>${hint}</small>` : ''}</span><span class="efield__in"><input class="input input--lg" inputmode="decimal" data-p="${path}" value="${esc(String(get(p, path) ?? '').replace('.', ','))}"><i>${unit}</i></span></label>`;
+  const n = (path, label, unit, hint = '') => `<label class="efield"><span>${label}${hint ? `<small>${hint}</small>` : ''}</span><span class="efield__in"><input class="input input--lg" inputmode="decimal" data-p="${path}" value="${esc(String(get(p, path) ?? '').replace('.', ','))}"><i>${unit}</i></span></label>`;
+  const chk = (path, label, on) => `<label class="check check--lg"><input type="checkbox" data-b="${path}" ${on ? 'checked' : ''}><span>${label}</span></label>`;
+  const arr = (key, val, label, on) => `<label class="check"><input type="checkbox" data-arr="${key}" value="${val}" ${on ? 'checked' : ''}><span>${label}</span></label>`;
+  const Mx = st.materials;
 
-  el.innerHTML = `
+  const ruleBox = (r, i) => {
+    const rule = r.stoneRule, mode = rule ? rule.mode : 'none';
+    return `<div class="rulebox">
+      <label class="efield"><span>Kövek<small>Csak természetes gyémánt. Lehetetlen összeállítást a vásárlói oldal nem enged.</small></span>
+        <select class="input input--lg" data-rulemode="${i}">${RULE_MODES.map(([k, l]) => `<option value="${k}" ${k === mode ? 'selected' : ''}>${l}</option>`).join('')}</select></label>
+      ${rule ? `<div class="egrid">
+        ${mode === 'free' || mode === 'perSize' ? n(`rings.${i}.stoneRule.min`, 'Legkevesebb kő', 'db') + n(`rings.${i}.stoneRule.max`, 'Legtöbb kő', 'db') : ''}
+        ${n(`rings.${i}.stoneRule.def`, mode === 'perSize' ? `Kőszám ${r.refSize}-es méretben` : mode === 'fixed' ? 'Kőszám' : 'Alapértelmezett kőszám', 'db')}
+        <label class="efield"><span>Alap kőméret</span><select class="input input--lg" data-p="rings.${i}.stoneRule.defCat">${rule.cats.map((c) => { const d = diamond(Mx, c); return d ? `<option value="${c}" ${c === rule.defCat ? 'selected' : ''}>${d.name} – ${d.price == null ? 'nincs ár' : ft(d.price) + '/db'}</option>` : ''; }).join('')}</select></label>
+      </div>
+      <p class="efield__lab">Választható kőméretek</p>
+      <div class="checks">${Mx.diamonds.map((d) => arr(`rings.${i}.stoneRule.cats`, d.id, `${dec(d.ct)} ct ${d.price == null ? '<small>(nincs ár → ajánlat)</small>' : ''}`, rule.cats.includes(d.id))).join('')}</div>
+      <div class="checks">${chk(`rings.${i}.stoneRule.allowNone`, 'Kő nélkül is kérhető', rule.allowNone)}${chk(`rings.${i}.stoneRule.demo`, 'Demó szabály – ötvösmesterrel egyeztetendő', rule.demo)}</div>` : ''}
+    </div>`;
+  };
+
+  const render = () => {
+    const todo = [
+      p.rings.some((r) => r.stoneRule?.demo) && 'kőszám és kőméretek (demó szabály)',
+      'tömeg 14K-ban, referenciaméret és -szélesség (demóadat)',
+      p.real && 'megnevezés (a cikkszámból képzett)',
+      p.unknownColor && 'alapszín (a cikkszámban nincs színjelölés)',
+    ].filter(Boolean);
+    el.innerHTML = `
     <p class="crumbs"><a href="#/admin/gyuruk">← Vissza a gyűrűkhöz</a></p>
     <h1 class="adm__h1">${esc(p.code)}</h1>
     <div class="edit">
       <div class="edit__form">
         <section class="ebox"><h2>Alapadatok</h2>
-          <label class="efield"><span>Megnevezés</span><input class="input input--lg" data-t="name" value="${esc(p.name)}"></label>
-          <label class="efield"><span>Stílus</span><select class="input input--lg" data-t="style">${Object.entries(STYLES).map(([k, v]) => `<option value="${k}" ${p.style === k ? 'selected' : ''}>${v}</option>`).join('')}</select></label>
-          ${p.listaAr ? `<p class="hint">A karikagyuru.com-on jelenleg feltüntetett ár: <b>${ft(p.listaAr)}</b> (valós, összehasonlításhoz).</p>` : `<p class="warn">Ennél a modellnél az eredeti oldalon nincs ár, ezért a vásárlói oldalon „egyedi ajánlat” szerepel. Adja meg a tömeget, vagy rögzített árat – mentés után megjelenik az ár.</p>`}
+          <div class="egrid">
+            <label class="efield"><span>Cikkszám</span><input class="input input--lg" data-t="code" value="${esc(p.code)}"></label>
+            <label class="efield"><span>Megnevezés</span><input class="input input--lg" data-t="name" value="${esc(p.name)}"></label>
+            <label class="efield"><span>Stílus</span><select class="input input--lg" data-t="style">${Object.entries(STYLES).map(([k, v]) => `<option value="${k}" ${p.style === k ? 'selected' : ''}>${v}</option>`).join('')}</select></label>
+            <label class="efield"><span>Szélességek<small>mm, vesszővel elválasztva</small></span><input class="input input--lg" data-widths value="${esc(p.widths.map((w) => String(w).replace('.', ',')).join('; '))}"></label>
+          </div>
+          <div class="checks">${chk('visible', 'Megjelenik a weboldalon', p.visible !== false)}${chk('priceOnRequest', 'Csak egyedi ajánlattal (ár nélkül)', !!p.priceOnRequest)}</div>
+          <p class="efield__lab">Melyik weboldalon? <small>közös termék- és áradminisztráció</small></p>
+          <div class="checks">${Object.entries(SITES).map(([k, v]) => arr('sites', k, v, (p.sites || []).includes(k))).join('')}</div>
+          <p class="efield__lab">Választható anyagok</p>
+          <div class="checks">${METAL_ORDER.map((m) => arr('metals', m, METALS[m].short, p.metals.includes(m))).join('')}</div>
+          ${p.listaAr ? `<p class="hint">A karikagyuru.com-on jelenleg feltüntetett ár: <b>${ft(p.listaAr)}</b> (valós, összehasonlításhoz).</p>` : `<p class="warn">Ennél a modellnél az eredeti oldalon nincs ár, ezért „egyedi ajánlat” szerepel. Adja meg a tömeget, vagy rögzített árat.</p>`}
         </section>
         ${p.rings.map((r, i) => `<section class="ebox"><h2>${esc(r.label)}</h2>
           <div class="egrid">
-            ${n(`rings.${i}.weight`, 'Tömeg 14K-ban', 'g', 0.1, `${r.refSize}-es méretben – demóadat`)}
-            ${n(`rings.${i}.labor`, 'Munkadíj', 'Ft', 1000, 'nem függ az arany árától')}
-            ${n(`rings.${i}.other`, 'Egyéb költség', 'Ft', 500)}
-            ${r.stones ? n(`rings.${i}.stones.count`, 'Kövek száma', 'db', 1) : ''}
-            ${r.stones ? `<label class="efield"><span>Kő kategóriája</span><select class="input input--lg" data-p="rings.${i}.stones.cat">${st.materials.diamonds.map((d) => `<option value="${d.id}" ${r.stones.cat === d.id ? 'selected' : ''}>${d.name} · ${d.quality} – ${ft(d.price)}/db</option>`).join('')}</select></label>` : ''}
-          </div></section>`).join('')}
+            ${n(`rings.${i}.refSize`, 'Referenciaméret', 'mm', 'ehhez a mérethez tartozik a tömeg')}
+            ${n(`rings.${i}.weight`, 'Tömeg 14K-ban', 'g', 'referenciaméretben – demóadat')}
+            ${n(`rings.${i}.refWidth`, 'Referenciaszélesség', 'mm')}
+            ${n(`rings.${i}.labor`, 'Munkadíj', 'Ft', st.settings.pricingMode === 'gramm' ? 'grammáras módban nem számít bele (a grammár tartalmazza)' : 'nem függ az arany árától')}
+            ${n(`rings.${i}.other`, 'Egyéb költség', 'Ft')}
+          </div>${ruleBox(r, i)}</section>`).join('')}
         <section class="ebox"><h2>Egyedi ár</h2>
           <div class="seg seg--lg seg--wrap" data-ov>
             <button type="button" data-ovt="nincs" aria-pressed="${ov() === 'nincs'}">Képlet szerint</button>
@@ -491,8 +546,10 @@ function productEdit(el, id) {
             <button type="button" data-ovt="fixed" aria-pressed="${ov() === 'fixed'}">Rögzített ár</button>
           </div>
           <div data-ovfield></div>
-          ${n('minPrice', 'Minimumár (védelem)', 'Ft', 1000, 'ennél olcsóbban sosem jelenik meg; 0 = nincs')}
+          ${n('minPrice', 'Minimumár (védelem)', 'Ft', 'ennél olcsóbban sosem jelenik meg; 0 = nincs')}
         </section>
+        <section class="ebox ebox--todo"><h2>Jóváhagyandó adatok</h2><ul>${todo.map((t) => `<li>${t}</li>`).join('')}</ul>
+          <p class="hint">Ezeket az ötvösmesternek kell megerősítenie, mielőtt az árak élesek lesznek.</p></section>
         <div class="edit__btns">
           <a class="abtn abtn--xl" href="#/admin/gyuruk">Mégsem</a>
           <button class="abtn abtn--gold abtn--xl" type="button" data-save>Mentés</button>
@@ -500,43 +557,48 @@ function productEdit(el, id) {
       </div>
       <aside class="edit__calc" data-calc aria-live="polite"></aside>
     </div>`;
+    ovField(); calc();
+  };
 
   const ovField = () => {
     const t = ov();
-    $('[data-ovfield]', el).innerHTML = t === 'pct' ? n('override.value', 'Eltérés a képlettől', '%', 1, 'pl. −5 vagy 10')
-      : t === 'fixed' ? n('override.value', 'Rögzített bruttó ár', 'Ft', 1000, 'az aranyár változása nem írja felül') : '';
+    $('[data-ovfield]', el).innerHTML = t === 'pct' ? n('override.value', 'Eltérés a képlettől', '%', 'pl. −5 vagy 10')
+      : t === 'fixed' ? n('override.value', 'Rögzített bruttó ár', 'Ft', 'az aranyár változása nem írja felül') : '';
   };
   const calc = () => {
     const r = priceProduct(p, defaultConfig(p), st.materials, st.settings);
     const b = r.breakdown, s = st.settings;
+    if (!b) { $('[data-calc]', el).innerHTML = `<h2>Árkalkuláció</h2><div class="calc-final"><span>Megjelenő ár</span><b>Egyedi ajánlat</b></div><p class="warn">${esc(r.reason || '')}</p>`; return; }
     const line = (l, v, cls = '') => `<div class="${cls}"><dt>${l}</dt><dd>${ft(v)}</dd></div>`;
-    $('[data-calc]', el).innerHTML = `<h2>Árkalkuláció <small>alapkonfiguráció, 14K</small></h2>
-      <p class="hint">${dec(r.grams)} g ötvözet · ebből ${dec(r.pure)} g színarany × ${ft(st.materials.gold24)}/g</p>
+    const gm = b.mode === 'gramm';
+    $('[data-calc]', el).innerHTML = `<h2>Árkalkuláció <small>alapkonfiguráció, ${METALS[r.cfg.metal].short}</small></h2>
+      <p class="hint">${dec(r.grams)} g ${gm ? `× ${ft(st.materials.sellPerGram[r.cfg.metal])}/g grammár` : `ötvözet · ebből ${dec(r.pure)} g színarany × ${ft(st.materials.gold24)}/g`}</p>
       <dl class="calc-dl">
-        ${line('Nemesfém (veszteséggel)', b.metal)}${line('Ötvözőanyag', b.alloy)}${line('Drágakövek', b.stones)}
-        ${line('Munkadíj', b.labor)}${b.setting ? line('Kőfoglalás', b.setting) : ''}${line('Doboz, tanúsítvány, egyéb', b.other)}
-        ${line('Önköltség összesen', b.cost, 'sum')}
-        ${line(`Felár (fém, munka ${s.markupMetal}% · kő ${s.markupStones}%)`, b.net - b.cost)}
+        ${gm ? line('Grammár × tömeg (bruttó, munkadíjjal)', b.gramSell) : `${line('Nemesfém (veszteséggel)', b.metal)}${line('Ötvözőanyag', b.alloy)}${line('Munkadíj', b.labor)}`}
+        ${b.stones ? line('Természetes gyémántok', b.stones) : ''}${b.setting ? line('Kőfoglalás', b.setting) : ''}${line('Doboz, tanúsítvány, egyéb', b.other)}
+        ${gm ? '' : line('Önköltség összesen', b.cost, 'sum')}
+        ${gm ? '' : line(`Felár (fém, munka ${s.markupMetal}% · kő ${s.markupStones}%)`, b.net - b.cost)}
         ${line('Nettó ár', b.net)}${line(`ÁFA ${s.vatPct}%`, b.gross - b.net)}
         ${line(`Kalkulált ár (kerekítve ${num(s.roundTo)} Ft-ra)`, r.calculated, 'sum')}
       </dl>
       <div class="calc-final"><span>Megjelenő ár${r.source !== 'keplet' ? (r.source === 'rogzitett' ? ' – rögzített' : ' – módosított') : ''}</span><b>${ft(r.final)}</b></div>
-      <p class="${r.lowMargin ? 'warn' : 'ok'}">Árrés: ${dec(Math.round(r.marginPct * 10) / 10)}% ${r.lowMargin ? `– kisebb, mint a beállított ${s.minMarginPct}% minimum!` : ''}</p>
-      ${r.minHit ? '<p class="warn">A minimumár lépett életbe.</p>' : ''}`;
+      ${r.marginPct === null ? '<p class="hint">Grammáras módban az árrés nem számolható (a grammár mögötti költség nem ismert).</p>' : `<p class="${r.lowMargin ? 'warn' : 'ok'}">Árrés: ${dec(Math.round(r.marginPct * 10) / 10)}% ${r.lowMargin ? `– kisebb, mint a beállított ${s.minMarginPct}% minimum!` : ''}</p>`}
+      ${r.minHit ? '<p class="warn">A minimumár lépett életbe.</p>' : ''}
+      ${r.warnings.length ? `<p class="warn">${esc(r.warnings.join(' '))}</p>` : ''}`;
   };
 
   el.addEventListener('click', (e) => {
     const b = e.target.closest('[data-ovt]');
     if (b) {
       const t = b.dataset.ovt;
-      p.override = t === 'nincs' ? null : { type: t, value: t === 'fixed' ? priceProduct(p, null, st.materials, st.settings, { applyOverride: false }).final : 0 };
+      p.override = t === 'nincs' ? null : { type: t, value: t === 'fixed' ? (priceProduct({ ...p, priceOnRequest: false }, null, st.materials, st.settings, { applyOverride: false }).final || 0) : 0 };
       $$('[data-ovt]', el).forEach((x) => x.setAttribute('aria-pressed', x === b));
       ovField(); calc();
     }
     if (e.target.closest('[data-save]')) {
+      if (!p.metals.length) { toast('Legalább egy anyagot jelöljön be.'); return; }
       const r = priceProduct(p, null, st.materials, st.settings);
-      if (p.priceOnRequest && (p.override?.type === 'fixed' || p.rings.some((r) => r.weight > 0))) p.priceOnRequest = false;
-      const go = () => { store.updateProduct(id, (x) => Object.assign(x, clone(p)), `${p.code} adatai módosítva`); toast(`Mentve. ${p.code} új ára: <b>${ft(r.final)}</b>`); location.hash = '#/admin/gyuruk'; };
+      const go = () => { store.updateProduct(id, (x) => { for (const k of Object.keys(x)) delete x[k]; Object.assign(x, clone(p)); }, `${p.code} adatai módosítva`); toast(`Mentve. ${esc(p.code)} ára: <b>${ft(r.final)}</b>`); location.hash = '#/admin/gyuruk'; };
       if (r.lowMargin) {
         modal(`<div class="form"><h2>Alacsony árrés</h2><p>Ennél a gyűrűnél az árrés ${dec(Math.round(r.marginPct * 10) / 10)}%, kevesebb a beállított ${st.settings.minMarginPct}%-os minimumnál. Biztosan menti?</p>
           <div class="impact__btns"><button class="abtn abtn--xl" data-close>Vissza</button><button class="abtn abtn--gold abtn--xl" data-ok>Igen, mentem</button></div></div>`,
@@ -544,16 +606,36 @@ function productEdit(el, id) {
       } else go();
     }
   });
+  el.addEventListener('change', (e) => {
+    const t = e.target;
+    if (t.dataset.rulemode !== undefined) {
+      const i = +t.dataset.rulemode, ring = p.rings[i], m = t.value;
+      if (m === 'none') ring.stoneRule = null;
+      else {
+        const first = Mx.diamonds.find((d) => d.price != null)?.id || Mx.diamonds[0].id;
+        ring.stoneRule = { ...(ring.stoneRule || { min: 0, max: 3, def: 1, cats: [first], defCat: first, allowNone: true, demo: true }), mode: m };
+        if (m === 'perSize') Object.assign(ring.stoneRule, { min: Math.max(1, ring.stoneRule.min), allowNone: false });
+      }
+      render(); return;
+    }
+    if (t.dataset.b) { set(p, t.dataset.b, t.checked); if (t.dataset.b === 'priceOnRequest' || t.dataset.b === 'visible') calc(); else calc(); return; }
+    if (t.dataset.arr) {
+      const list = get(p, t.dataset.arr) || [];
+      const next = t.checked ? [...new Set([...list, t.value])] : list.filter((x) => x !== t.value);
+      set(p, t.dataset.arr, next);
+      if (t.dataset.arr.endsWith('.cats')) { const rule = get(p, t.dataset.arr.replace(/\.cats$/, '')); if (!next.includes(rule.defCat) && next.length) rule.defCat = next[0]; render(); return; }
+      calc(); return;
+    }
+    if (t.tagName === 'SELECT' && t.dataset.p) { set(p, t.dataset.p, t.value); calc(); }
+  });
   el.addEventListener('input', (e) => {
     const t = e.target;
     if (t.dataset.t) p[t.dataset.t] = t.value;
-    if (t.dataset.p) {
-      const v = t.tagName === 'SELECT' ? t.value : parseNum(t.value);
-      if (t.tagName === 'SELECT' || Number.isFinite(v)) set(p, t.dataset.p, v);
-    }
+    if (t.matches('[data-widths]')) { const ws = t.value.split(/[;\s]+/).map(parseNum).filter((x) => Number.isFinite(x) && x > 0); if (ws.length) { p.widths = ws; p.rings.forEach((r) => { if (!ws.includes(r.refWidth)) r.refWidth = ws[0]; }); } }
+    if (t.dataset.p && t.tagName !== 'SELECT') { const v = parseNum(t.value); if (Number.isFinite(v)) set(p, t.dataset.p, v); }
     calc();
   });
-  ovField(); calc();
+  render();
 }
 
 /* ---------- 4. Árképletek és munkadíjak ---------- */
@@ -566,14 +648,25 @@ const HELP = {
   engravingPrice: 'Gyűrűnként, ha a vásárló kér gravírozást.',
   boxCost: 'Minden termékhez egyszer.',
   certCost: 'Csak a köves termékekhez, egyszer.',
-  density18: 'Ugyanaz a modell 18 karátban ennyiszer nehezebb (a 18K arany sűrűbb).',
+};
+const MODES = {
+  pricingMode: [
+    ['koltseg', 'Költség szerint', 'Színarany-tartalom × aranyár + ötvözet + munkadíj + kövek, erre felár és ÁFA. Az aranyár változása csak a fém részt mozgatja.'],
+    ['gramm', 'Grammár szerint', 'Kész tömeg × bruttó grammár (ez már tartalmazza a fémet, a munkát és az árrést). Ehhez csak a kövek, a kőfoglalás, a gravír és a doboz adódik – a munkadíj és a fém-felár nem számolódik még egyszer.'],
+  ],
+  sizeMethod: [
+    ['tomeg', 'Tömeg szerint', 'A fém tömege arányos a mérettel (56-os ≈ 54-es × 56/54). A munkadíj és a kövek nem változnak a mérettel.'],
+    ['ar', 'Egyszerű árarányosítás', 'A kő nélküli rész teljes ára arányosan nő a mérettel. Egyszerűbb, de a munkadíjat is arányosítja.'],
+  ],
 };
 function formula(el) {
   el = fresh(el);
   const st = S();
   const d = clone(st.settings);
   let sampleId = 'maz-81184-81185-w';
-  const f = (k, label, unit) => `<label class="efield"><span>${label}<small>${HELP[k] || ''}</small></span><span class="efield__in"><input class="input input--lg" inputmode="decimal" data-s="${k}" value="${String(d[k]).replace('.', ',')}"><i>${unit}</i></span></label>`;
+  const f = (k, label, unit, help = HELP[k] || '') => `<label class="efield"><span>${label}<small>${help}</small></span><span class="efield__in"><input class="input input--lg" inputmode="decimal" data-s="${k}" value="${String(get(d, k)).replace('.', ',')}"><i>${unit}</i></span></label>`;
+  const modeBox = (key, title) => `<section class="ebox"><h2>${title} <span class="demo-chip">ügyféllel egyeztetendő</span></h2><div class="modes">${MODES[key].map(([v, l, t]) =>
+    `<label class="modecard"><input type="radio" name="${key}" value="${v}" data-mode="${key}" ${d[key] === v ? 'checked' : ''}><span><b>${l}${st.settings[key] === v ? ' <em class="tag tag--blue">most aktív</em>' : ''}</b><small>${t}</small></span></label>`).join('')}</div></section>`;
   // munkadíj stílusonként: a leggyakoribb érték
   const byStyle = Object.keys(STYLES).map((k) => {
     const ps = st.products.filter((p) => p.style === k);
@@ -584,13 +677,15 @@ function formula(el) {
 
   el.innerHTML = `
     <h1 class="adm__h1">Árképletek és munkadíjak</h1>
-    <p class="adm__lead">Itt állítható, hogyan lesz az alapanyagárból eladási ár. Ritkán kell hozzányúlni – a mindennapi teendő az <a href="#/admin/alapanyag">Alapanyagárak</a> menü.</p>
+    <p class="adm__lead">Itt állítható, hogyan lesz az alapanyagárból eladási ár. Ritkán kell hozzányúlni – a mindennapi teendő az <a href="#/admin/alapanyag">Arany ára</a> menü.</p>
     <div class="formula">
-      <p class="formula__eq"><span>Nemesfém</span>+<span>ötvözőanyag</span>+<span>drágakövek</span>+<span>munkadíj</span>+<span>egyéb</span>+<span>felár</span>+<span>ÁFA</span>=<b>kalkulált ár</b></p>
-      <p class="hint">Színarany-tartalom: 14K = 58,5%, 18K = 75%. A munkadíj fix összeg, az arany árától nem változik. A gyémánt darabár × kőszám alapján számolódik, nem grammra.</p>
+      <p class="formula__eq" data-eq></p>
+      <p class="hint">Színarany-tartalom: 14K = 58,5%, 18K = 75%. A szín azonos karátnál nem változtat az árat. A gyémánt darabár × kőszám, nem grammra számolódik – és csak egyszer.</p>
     </div>
     <div class="edit">
       <div class="edit__form">
+        ${modeBox('pricingMode', 'Árképzési mód')}
+        ${modeBox('sizeMethod', 'Méret hatása az árra')}
         <section class="ebox"><h2>Felárak és adó</h2><div class="egrid">
           ${f('markupMetal', 'Felár a fémre és munkára', '%')}${f('markupStones', 'Felár a kövekre', '%')}
           ${f('vatPct', 'ÁFA', '%')}${f('lossPct', 'Gyártási veszteség', '%')}
@@ -598,8 +693,12 @@ function formula(el) {
         <section class="ebox"><h2>Fix díjak</h2><div class="egrid">
           ${f('settingPerStone', 'Kőfoglalás', 'Ft/kő')}${f('engravingPrice', 'Gravírozás', 'Ft/gyűrű')}
           ${f('boxCost', 'Díszdoboz', 'Ft/termék')}${f('certCost', 'Kőtanúsítvány', 'Ft/köves termék')}
-          ${f('density18', '18K tömegszorzó', '×')}
         </div></section>
+        <section class="ebox"><h2>Anyagonként <small>demóértékek</small></h2>
+          <p class="hint">Tömegszorzó: ugyanaz a modell az adott anyagból ennyiszer nehezebb, mint 14K aranyból. Munkadíj-szorzó: a nehezebben megmunkálható fémeknél.</p>
+          <div class="egrid">${['au18', 'pt', 'pd', 'ti'].map((m) => f(`density.${m}`, `${METALS[m].short} – tömeg`, '×', '')).join('')}
+          ${['pt', 'pd', 'ti'].map((m) => f(`laborFactor.${m}`, `${METALS[m].short} – munkadíj`, '×', '')).join('')}</div>
+        </section>
         <div class="edit__btns"><a class="abtn abtn--xl" href="#/admin/attekintes">Mégsem</a><button class="abtn abtn--gold abtn--xl" type="button" data-save>Mentés</button></div>
         <section class="ebox"><h2>Munkadíj stílusonként</h2>
           <p class="hint">Egy mozdulattal átírja az adott stílusú összes gyűrű munkadíját (gyűrűnként). Az egyes gyűrűk utána is külön állíthatók.</p>
@@ -619,25 +718,36 @@ function formula(el) {
     const sample = store.product(sampleId);
     const r0 = priceProduct(sample, null, st.materials, st.settings), r1 = priceProduct(sample, null, st.materials, d);
     const b = r1.breakdown;
+    const gm = d.pricingMode === 'gramm';
+    $('[data-eq]', el).innerHTML = gm
+      ? '<span>Tömeg × grammár</span>+<span>kövek + felár</span>+<span>kőfoglalás, gravír, doboz</span>+<span>ÁFA</span>=<b>kalkulált ár</b>'
+      : '<span>Nemesfém</span>+<span>ötvözőanyag</span>+<span>drágakövek</span>+<span>munkadíj</span>+<span>egyéb</span>+<span>felár</span>+<span>ÁFA</span>=<b>kalkulált ár</b>';
     const step = (l, v, cls = '') => `<div class="${cls}"><dt>${l}</dt><dd>${ft(v)}</dd></div>`;
+    const dd = diffPrices(st.products, st.materials, st.materials, st.settings, d);
+    if (!b) { $('[data-calc]', el).innerHTML = `<h2>Hatás és példa</h2><p class="impact__n"><b>${changed.length}</b> gyűrű ára változna.</p><p class="warn">${esc(r1.reason || 'Ennél a gyűrűnél nincs ár.')}</p>`; return; }
     $('[data-calc]', el).innerHTML = `<h2>Hatás és példa</h2>
-      <p class="impact__n"><b>${changed.length}</b> gyűrű ára változna${changed.length ? '' : ' – nincs módosítás'}.</p>
+      <p class="impact__n"><b>${changed.length}</b> gyűrű ára változna${changed.length ? `, átlagosan ${pct(dd.avgPct)}` : ' – nincs módosítás'}.</p>
+      ${dd.lost.length ? `<p class="warn">${dd.lost.length} gyűrű ár nélkül maradna (hiányzó grammár vagy adat).</p>` : ''}
       <label class="efield"><span>Példa gyűrű</span><select class="input input--lg" data-sample>${st.products.map((p) => `<option value="${p.id}" ${p.id === sampleId ? 'selected' : ''}>${esc(p.code)}</option>`).join('')}</select></label>
       ${compBar(r0, JSON.stringify(d) !== JSON.stringify(st.settings) ? r1 : null, st.settings, d)}
       <h3>Lépésről lépésre</h3>
       <dl class="calc-dl calc-dl--steps">
-        ${step(`Színarany: ${dec(r1.pure)} g × ${ft(st.materials.gold24)}/g + ${dec(d.lossPct)}% veszteség`, b.metal)}
-        ${step('Ötvözőanyag', b.alloy)}${b.stones ? step('Gyémántok', b.stones) : ''}
-        ${step('Munkadíj' + (b.setting ? ' + kőfoglalás' : ''), b.labor + b.setting)}${step('Doboz, tanúsítvány, gravír', b.other + b.engraving)}
-        ${step('Önköltség', b.cost, 'sum')}
-        ${step(`+ felár (${dec(d.markupMetal)}% / kő ${dec(d.markupStones)}%)`, b.net - b.cost)}
-        ${step(`+ ÁFA ${dec(d.vatPct)}%`, b.gross - b.net)}
+        ${gm ? step(`${dec(r1.grams)} g × ${ft(st.materials.sellPerGram[r1.cfg.metal])}/g (bruttó grammár)`, b.gramSell)
+          : `${step(`Színarany: ${dec(r1.pure)} g × ${ft(st.materials.gold24)}/g + ${dec(d.lossPct)}% veszteség`, b.metal)}${step('Ötvözőanyag', b.alloy)}${step('Munkadíj', b.labor)}`}
+        ${b.stones ? step('Természetes gyémántok', b.stones) : ''}
+        ${b.setting ? step('Kőfoglalás', b.setting) : ''}${step('Doboz, tanúsítvány, gravír', b.other + b.engraving)}
+        ${gm ? '' : step('Önköltség', b.cost, 'sum')}
+        ${gm ? step(`+ kőfelár ${dec(d.markupStones)}%`, b.stones * d.markupStones / 100) : step(`+ felár (${dec(d.markupMetal)}% / kő ${dec(d.markupStones)}%)`, b.net - b.cost)}
+        ${gm ? step(`ÁFA ${dec(d.vatPct)}% (a grammár már bruttó)`, b.gross - b.net) : step(`+ ÁFA ${dec(d.vatPct)}%`, b.gross - b.net)}
         ${step(`Kalkulált ár, ${num(d.roundTo)} Ft-ra kerekítve`, r1.calculated, 'sum')}
       </dl>
-      <p class="${r1.lowMargin ? 'warn' : 'ok'}">Árrés: ${dec(Math.round(r1.marginPct * 10) / 10)}%${r1.lowMargin ? ` – kevesebb a ${d.minMarginPct}%-os minimumnál!` : ''}</p>`;
+      ${r1.marginPct === null ? '<p class="hint">Grammáras módban az árrés nem számolható.</p>' : `<p class="${r1.lowMargin ? 'warn' : 'ok'}">Árrés: ${dec(Math.round(r1.marginPct * 10) / 10)}%${r1.lowMargin ? ` – kevesebb a ${d.minMarginPct}%-os minimumnál!` : ''}</p>`}`;
   };
-  el.addEventListener('input', (e) => { const k = e.target.dataset.s; if (k) { const v = parseNum(e.target.value); if (Number.isFinite(v)) { d[k] = v; calc(); } } });
-  el.addEventListener('change', (e) => { if (e.target.matches('[data-sample]')) { sampleId = e.target.value; calc(); } });
+  el.addEventListener('input', (e) => { const k = e.target.dataset.s; if (k) { const v = parseNum(e.target.value); if (Number.isFinite(v)) { set(d, k, v); calc(); } } });
+  el.addEventListener('change', (e) => {
+    if (e.target.matches('[data-sample]')) { sampleId = e.target.value; calc(); }
+    if (e.target.dataset.mode) { d[e.target.dataset.mode] = e.target.value; calc(); }
+  });
   el.addEventListener('click', (e) => {
     if (e.target.closest('[data-save]')) { store.updateSettings(d, 'Árképlet és díjak módosítva'); toast('Az árképlet mentve, az árak újraszámolódtak.'); formula(el); }
     const al = e.target.closest('[data-apply-labor]');
@@ -649,7 +759,7 @@ function formula(el) {
       const tmp = st.products.filter((p) => x.ids.includes(p.id)).map((p) => { const c = clone(p); c.rings.forEach((r) => (r.labor = v)); return c; });
       const now = priceAll(tmp, st.materials, st.settings);
       const n = tmp.filter((p) => now[p.id] !== old[p.id]).length;
-      const avg = tmp.reduce((a, p) => a + (now[p.id] - old[p.id]) / old[p.id], 0) / tmp.length * 100;
+      const avg = tmp.reduce((a, p) => a + (old[p.id] ? (now[p.id] - old[p.id]) / old[p.id] : 0), 0) / tmp.length * 100;
       modal(`<div class="form"><h2>${x.label} gyűrűk munkadíja</h2><p>Mind a ${x.ids.length} „${x.label.toLowerCase()}” gyűrű munkadíja <b>${ft(v)}</b> lesz gyűrűnként. <b>${n} gyűrű</b> ára változik, átlagosan <b>${pct(avg)}</b>.</p>
         <div class="impact__btns"><button class="abtn abtn--xl" data-close>Mégsem</button><button class="abtn abtn--gold abtn--xl" data-ok>Alkalmazom</button></div></div>`,
         { onMount: (box, close) => box.querySelector('[data-ok]').onclick = () => { close(); store.updateMany(x.ids, (p) => p.rings.forEach((r) => (r.labor = v)), `Munkadíj (${x.label.toLowerCase()}): ${ft(v)}/gyűrű`); toast(`${n} gyűrű ára frissült.`); formula(el); } });
