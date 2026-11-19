@@ -1319,3 +1319,8 @@ body { font-size: 1.04rem; line-height: 1.6; }
 .ovbox--chart { margin-top: 12px; }
 .ovbox--chart .gchart { max-width: 760px; }
 @media (max-width: 960px) { .smalltiles { grid-template-columns: 1fr; } .ovcols { grid-template-columns: 1fr; } }
+/* 20. kör – fejléc szóvédjegy */
+.logo__txt { display: grid; gap: 3px; }
+.logo__txt b { font: 400 1.32rem/1.05 'Libre Baskerville', Georgia, serif; letter-spacing: -.01em; }
+.logo__txt small { font: 600 .8rem/1 var(--sans); color: var(--gold-d); margin: 0; }
+@media (max-width: 640px) { .logo__txt b { font-size: 1.1rem; } .logo__txt small { font-size: .72rem; } }
