@@ -314,3 +314,4 @@ Szakmai árat nem módosítottunk, új funkciót nem kezdtünk.
   - gombméretek;
   - az alsó sáv ára egyezik és nem takar;
   - méretsegítő, érdeklődés a teljes konfigurációval, 0,04 ct-nál egyedi ajánlat, nincs JS-hiba.
+- **Gyorsítótár-védelem:** az `index.html` import mapje minden modult `?v=2.2` verzióval tölt, a CSS-t is. Kiadásnál a verziószámot ott kell átírni (a `kg-version` meta, a CSS, az import map és az app.js sorában). Így a GitHub Pages 10 perces gyorsítótára alatt sem keveredhet régi és új modul, ami üres oldalt okozhatna. A `<meta name="kg-version">` mutatja, melyik verzió van kint.
