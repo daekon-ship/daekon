@@ -282,3 +282,35 @@ Ahol látszik:
   - Minden termék alapkonfigurációja lehetséges és árazható.
 - `python3 public/latvanytervek/karikagyuru/tests/e2e.py` → 27/27 (böngészős folyamatok + 4 képernyőméret).
 - localStorage-kulcs: `karikagyuru-demo-v9`.
+
+---
+
+## V2.2 – ellenőrzés és véglegesítés bemutatásra (2026. november 19.)
+
+Szakmai árat nem módosítottunk, új funkciót nem kezdtünk.
+
+### Javítások
+- **Nyers és kerekített ár külön.**
+  - A motor visszaadja: `raw` (nyers, egész forint), `calculated` (kerekített), `rounding` (a kettő különbsége).
+  - Az admin minden előnézete külön sorban mutatja: termékszerkesztő, árképlet-oldal, ötvös-példák táblázata („Számított” / „Megjelenő” oszlop), próbaszámítás, gyors árszámítás.
+  - A vásárlói árdobozban: „100 Ft-ra kerekítve”.
+- **A kerekítés a kijelzett egész forintos nyers árból számolódik**, így a nyers és a kerekített ár mindig egyezik. Előtte 337 300,4 Ft-nál 337 300 / 337 400 eltérés lehetett.
+- **Kerekítés:** választólista (nincs / 10 / 100 / 500 / 1000 Ft, felfelé) a Felárak és a Beállítások oldalon is. Demó jelölésű, és átállítva is demó marad, amíg a Jóváhagyásra vár oldalon kifejezetten jóvá nem hagyják.
+- **Árképlet-előnézet:** grammáras módban tévesen „+ kőfelár 20%” sor jelent meg. A végösszeg helyes volt, a levezetés félrevezető. Javítva: a kő darabára egyszer, felár nélkül szerepel.
+- **Kőméret kijelzése:** a 0,005 ct „0,01 ct”-nak, a 0,015 ct „0,02 ct”-nak látszott (2 tizedesre kerekítés miatt). Javítva (`ctFmt`).
+- **Magyar toldalék a méreteknél:** „63-es” helyett 63-as, „55-es” helyett 55-ös (`sizeSfx`).
+- **Demó grammár jelölése:** a 18K, palládium és titán grammár az adminban „demó” jelölést kap. A vásárlói árdobozban és a gyors árszámításban is látszik, ha demó grammárral számolt az ár.
+
+### Tesztek
+- `node --test tests/engine.test.mjs` → 38/38. Új tesztek:
+  - kerekítés az ügyfélpéldákkal: nyers / 100 / 1000 Ft / nincs;
+  - minden termék × anyag × kő ki/be × gravír esetén a nyers ár pontosan a tételek összege (480+ eset), foglalással, tanúsítvánnyal és dobozzal;
+  - költségalapú mód: kő és gravír egyszer;
+  - gravír gyűrűnként egyszer, üres szövegre 0;
+  - demó-jelölések, magyar toldalék, karát-kijelzés.
+- `python3 tests/e2e.py` → 30/30 (asztali folyamatok és 4 képernyőméret).
+- `python3 tests/mobile.py` → 24/24. Érintéses mobilfolyamat 360 és 390 px-en:
+  - kollekció → termék → minden lépés;
+  - gombméretek;
+  - az alsó sáv ára egyezik és nem takar;
+  - méretsegítő, érdeklődés a teljes konfigurációval, 0,04 ct-nál egyedi ajánlat, nincs JS-hiba.

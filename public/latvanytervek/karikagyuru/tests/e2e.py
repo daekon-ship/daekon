@@ -77,8 +77,20 @@ async def main():
         # --- Admin → vásárlói nézet ---
         await pg.goto(B + '#/admin/arszamitas'); await pg.wait_for_timeout(600)
         tbl = await pg.inner_text('.xbox table')
-        check('Ötvös példái az adminban: 225 600 / 379 500 / 337 333 / 421 667 Ft',
-              all(x in tbl.replace('\u202f', ' ').replace('\xa0', ' ') for x in ['225 600', '379 500', '337 333', '421 667']), tbl.replace('\n', ' ')[:160])
+        t2 = re.sub(r'[\u202f\xa0]', ' ', tbl)
+        check('Ötvös példái: nyers 225 600 / 379 500 / 337 333 / 421 667 Ft',
+              all(x in t2 for x in ['225 600', '379 500', '337 333', '421 667']), t2.replace('\n', ' ')[:160])
+        check('Ötvös példái: kerekítve külön oszlopban 337 400 / 421 700 Ft', 'Számított' in t2 and 'Megjelenő' in t2 and '337 400' in t2 and '421 700' in t2)
+        await pg.goto(B + '#/admin/keplet'); await pg.wait_for_timeout(600)
+        prev = re.sub(r'[\u202f\xa0]', ' ', await pg.inner_text('[data-calc]'))
+        check('Árképlet-előnézet: nyers és kerekített ár külön, nincs kőfelár grammáras módban', 'Számított ár (nyers)' in prev and 'Kerekített ár' in prev and 'kőfelár' not in prev)
+        await pg.select_option('[data-round]', '1000'); await pg.wait_for_timeout(300)
+        await pg.click('[data-save]'); await pg.wait_for_timeout(400)
+        await pg.goto(B + '#/admin/jovahagyas'); await pg.wait_for_timeout(500)
+        check('Kerekítés átállítva is demó marad (jóváhagyásig)', await pg.locator('[data-appr="settings|roundTo"]').count() == 1)
+        await pg.goto(B + '#/admin/keplet'); await pg.wait_for_timeout(500)
+        await pg.select_option('[data-round]', '100'); await pg.click('[data-save]'); await pg.wait_for_timeout(400)
+        await pg.goto(B + '#/admin/arszamitas'); await pg.wait_for_timeout(500)
         await pg.goto(B + '#/kollekcio'); await pg.wait_for_timeout(1000)
         p0 = n(await pg.locator(f'[data-price="{PAIR}"]').inner_text())
         await pg.goto(B + '#/admin/alapanyag'); await pg.wait_for_timeout(700)

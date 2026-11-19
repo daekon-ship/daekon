@@ -105,7 +105,8 @@ export const store = {
     const old = priceAll(state.products, state.materials, state.settings);
     const before = clone(state.settings);
     const src = { ...(state.settings.src || {}) };
-    for (const k of Object.keys(next)) if (k !== 'src' && JSON.stringify(next[k]) !== JSON.stringify(state.settings[k])) src[k] = 'jovahagyott';   // a tulajdonos adta meg
+    // a tulajdonos által átírt érték jóváhagyottá válik – kivéve a kerekítést: az az ügyfél kifejezett jóváhagyásáig demó marad
+    for (const k of Object.keys(next)) if (k !== 'src' && k !== 'roundTo' && JSON.stringify(next[k]) !== JSON.stringify(state.settings[k])) src[k] = 'jovahagyott';
     state.settings = { ...state.settings, ...next, src };
     const now = priceAll(state.products, state.materials, state.settings);
     const count = Object.keys(now).filter((k) => now[k] !== old[k]).length;

@@ -1402,3 +1402,4 @@ body { font-size: 1.04rem; line-height: 1.6; }
 .xsteps__sum { font-size: 1.1rem !important; border-bottom: 2px solid var(--ink) !important; }
 .xsteps__info { color: var(--mute); font-size: .88rem !important; border-bottom: 0 !important; }
 .stonecats button:disabled { opacity: .45; cursor: not-allowed; background: var(--paper); }
+.calc-dl .rnd dt, .calc-dl .rnd dd { color: var(--mute); font-size: .9rem; }

@@ -4,13 +4,18 @@
    ========================================================================== */
 import { store } from './store.js';
 import { COLORS, STYLES, SITES, SRC_LABEL, EXAMPLE_WEIGHTS } from './data.js';
-import { priceProduct, priceAll, diffPrices, defaultConfig, composition, ft, num, dec, pct, METALS, METAL_ORDER, isGold, diamond, refPrice, refWeight, exampleRing, allowedCats } from './engine.js';
+import { priceProduct, priceAll, diffPrices, defaultConfig, composition, ft, num, dec, pct, METALS, METAL_ORDER, isGold, diamond, refPrice, refWeight, exampleRing, allowedCats, sizeSfx, ctFmt } from './engine.js';
 import { $, $$, esc, productMedia, toast, modal, M, reduced, dateHu, dayHu } from './ui.js';
 import { configText } from './views-public.js';
 
 const S = () => store.get();
 /** Adatforrás-jelölés: jóváhagyott / ügyfél példája / megerősítendő / demó. */
 export const srcBadge = (src) => src ? `<span class="src src--${src}" title="Adatforrás">${SRC_LABEL[src] || src}</span>` : '';
+const ROUND_OPTS = [1, 10, 100, 500, 1000];
+const roundSelect = (v) => `<select class="input input--lg" data-s="roundTo" data-round>${ROUND_OPTS.map((x) => `<option value="${x}" ${v === x ? 'selected' : ''}>${x === 1 ? 'nincs kerekítés (egész forint)' : 'felfelé ' + num(x) + ' Ft-ra'}</option>`).join('')}</select>`;
+const roundLabel = (v) => (v > 1 ? `felfelé ${num(v)} Ft-ra` : 'nincs kerekítés');
+/** Nyers számított ár és kerekített végső ár külön sorban. */
+const rawRows = (r, roundTo, row) => r.final === null ? '' : `${row('Számított ár (nyers)', r.raw, 'sum')}${row(`Kerekítés: ${roundLabel(roundTo)}`, r.calculated - r.raw, 'rnd')}${row('Kerekített ár', r.calculated, 'sum')}`;
 const msrc = (M, path) => { const m = /^diamonds\.(\d+)\./.exec(path); return m ? M.diamonds[+m[1]]?.src : (M.src || {})[path]; };
 const fresh = (el) => { const n = el.cloneNode(false); el.replaceWith(n); return n; };
 const clone = (o) => JSON.parse(JSON.stringify(o));
@@ -86,7 +91,7 @@ function overview(el) {
       ${tile('#/admin/keplet', 'Felárak és munkadíjak', st.settings.pricingMode === 'gramm' ? 'grammár szerint' : `${dec(st.settings.markupMetal)}% felár`, 'Árképzési mód, felár, munkadíj.')}
       ${tile('#/admin/elozmenyek', 'Árváltozások naplója', `${st.history.length} bejegyzés`, 'Mikor, mit változtatott. Visszaállítható.')}
       ${tile('#/admin/jovahagyas', 'Jóváhagyásra vár', `${pendingCount(st)} adat`, 'Ügyfélpélda vagy demó – még nem végleges.', pendingCount(st) ? 'smalltile--warn' : '')}
-      ${tile('#/admin/beallitasok', 'Beállítások', `${num(st.settings.roundTo)} Ft-ra kerekít`, 'Kerekítés, védelem, demó visszaállítása.')}
+      ${tile('#/admin/beallitasok', 'Beállítások', st.settings.roundTo > 1 ? `${num(st.settings.roundTo)} Ft-ra kerekít` : 'nincs kerekítés', 'Kerekítés, védelem, demó visszaállítása.')}
     </div>
     <div class="ovcols">
       <section class="ovbox"><h2>Legutóbbi árváltozások</h2>
@@ -156,10 +161,10 @@ function goldsmithExamples(box) {
   const M = st.materials, Sx = st.settings;
   const s = { metal: 'pt', weight: EXAMPLE_WEIGHTS.pt, size: 60, stones: 0, cat: 'd01' };
   const R1 = { ...Sx, roundTo: 1 };
-  const ex = (metal, size) => exampleRing({ metal, weight: EXAMPLE_WEIGHTS[metal], size }, M, { ...R1, pricingMode: 'gramm' });
+  const ex = (metal, size, s0 = R1) => exampleRing({ metal, weight: EXAMPLE_WEIGHTS[metal], size }, M, { ...s0, pricingMode: 'gramm' });
   const gp = (m) => M.sellPerGram?.[m];
-  const line = (m, size) => { const r = ex(m, size); const g = gp(m);
-    return `<tr><td>${METALS[m].short}</td><td>${size}</td><td>${dec(EXAMPLE_WEIGHTS[m])} g${size !== 54 ? ` × ${size}/54` : ''}</td><td>${g ? ft(g) : '–'}</td><td><b>${r.final === null ? 'nincs grammár' : ft(r.final)}</b></td></tr>`; };
+  const line = (m, size) => { const r = ex(m, size, Sx); const g = gp(m);
+    return `<tr><td>${METALS[m].short}</td><td>${size}</td><td>${dec(EXAMPLE_WEIGHTS[m])} g${size !== 54 ? ` × ${size}/54` : ''}</td><td>${g ? ft(g) : '–'}</td><td>${r.final === null ? 'nincs grammár' : ft(r.raw)}</td><td><b>${r.final === null ? '–' : ft(r.final)}</b></td></tr>`; };
   const paint = () => {
     const r = exampleRing({ metal: s.metal, weight: s.weight, size: s.size, stones: s.stones ? { count: s.stones, cat: s.cat } : null }, M, { ...Sx, pricingMode: 'gramm' });
     const part = r.parts[0] || {}, d = diamond(M, s.cat);
@@ -169,16 +174,21 @@ function goldsmithExamples(box) {
       <li><span>× eladási grammár ${srcBadge((M.src || {})[`sellPerGram.${s.metal}`] || 'demo')}</span><b>${ft(gp(s.metal))}/g</b></li>
       <li><span>= a gyűrű ára kő nélkül</span><b>${ft(part.gramSell)}</b></li>
       ${s.stones ? `<li><span>+ ${s.stones} × ${d.name} ${srcBadge(d.src)}</span><b>${d.price == null ? 'nincs ár' : ft(d.price * s.stones)}</b></li>` : ''}
-      ${Sx.roundTo > 1 && r.final !== null ? `<li><span>Kerekítés felfelé ${num(Sx.roundTo)} Ft-ra</span><b>${ft(r.final)}</b></li>` : ''}
-      <li class="xsteps__sum"><span>Végösszeg (bruttó)</span><b>${r.final === null ? 'Egyedi árajánlat szükséges' : ft(r.final)}</b></li>
+      ${s.stones && Sx.settingPerStone ? `<li><span>+ kőfoglalás ${s.stones} × ${ft(Sx.settingPerStone)}</span><b>${ft(Sx.settingPerStone * s.stones)}</b></li>` : ''}
+      ${s.stones && Sx.certCost ? `<li><span>+ kőtanúsítvány</span><b>${ft(Sx.certCost)}</b></li>` : ''}
+      ${Sx.boxCost ? `<li><span>+ díszdoboz</span><b>${ft(Sx.boxCost)}</b></li>` : ''}
+      ${r.final !== null ? `<li><span>Számított ár (nyers)</span><b>${ft(r.raw)}</b></li>
+      <li><span>Kerekítés: ${roundLabel(Sx.roundTo)} ${srcBadge((Sx.src || {}).roundTo || 'demo')}</span><b>+${ft(r.calculated - r.raw)}</b></li>` : ''}
+      <li class="xsteps__sum"><span>Megjelenő ár (bruttó)</span><b>${r.final === null ? 'Egyedi árajánlat szükséges' : ft(r.final)}</b></li>
       ${part.materialCost ? `<li class="xsteps__info"><span>Tájékoztató: anyagköltség (${ft(part.refPrice)}/g alapanyagár)</span><b>${ft(part.materialCost)}</b></li>` : ''}
     </ol>${r.final === null && r.reason ? `<p class="warn">${esc(r.reason)}</p>` : ''}`;
     box.innerHTML = `
       <section class="ebox xbox"><h2>Az ötvös számítási módja <small>az ügyfél jegyzetének példái</small></h2>
         <p class="hint">Ár = tömeg × eladási grammár; más méretnél a tömeg arányosan változik (× méret / 54). A kövek darabára és a külön díjak ehhez adódnak hozzá, felár és ÁFA nem kerül rá még egyszer.</p>
-        <div class="alltable"><table><thead><tr><th>Anyag</th><th>Méret</th><th>Tömeg</th><th>Grammár</th><th>Ár</th></tr></thead><tbody>
+        <div class="alltable"><table><thead><tr><th>Anyag</th><th>Méret</th><th>Tömeg</th><th>Grammár</th><th>Számított</th><th>Megjelenő</th></tr></thead><tbody>
           ${line('au14', 54)}${line('pt', 54)}${line('pt', 48)}${line('pt', 60)}
         </tbody></table></div>
+        <p class="hint">Számított = nyers eredmény. Megjelenő = kerekítve (${roundLabel(Sx.roundTo)}) ${srcBadge((Sx.src || {}).roundTo || 'demo')} – a kerekítést az ügyféllel egyeztetjük.</p>
         <p class="note-warn">A kézzel írt jegyzetben a 60-as platina gyűrűnél 442 000 Ft szerepel. A lineáris számítás ${ft(ex('pt', 60).final)}-ot ad, a különbség ${ft(442000 - (ex('pt', 60).final || 0))}. Nem állítottuk be – egyeztetendő, hogy nagyobb méretnél más a tömegnövekedés, vagy más szélességgel számolt.</p>
       </section>
       <section class="ebox xbox"><h2>Próbaszámítás <small>tetszőleges tömeggel</small></h2>
@@ -226,7 +236,7 @@ function quickCalc(box) {
           ${p.rings.map((rg, i) => rg.stoneRule && rg.stoneRule.allowNone ? `<div><span class="qcalc__lab">${esc(rg.label)} – kő</span><div class="qseg"><button type="button" data-qst="${i}|1" aria-pressed="${!!cfg.rings[i].stones}">Gyémánttal</button><button type="button" data-qst="${i}|0" aria-pressed="${!cfg.rings[i].stones}">Kő nélkül</button></div></div>` : '').join('')}
         </div>
       </div>
-      <div class="qcalc__price"><span>Ár</span><b>${r.final === null ? 'Egyedi ajánlat' : ft(r.final)}</b><small>${r.final === null ? esc(r.reason || '') : `bruttó · ${dec(r.grams)} g, ${METALS[cfg.metal].short}`}</small></div>
+      <div class="qcalc__price"><span>Ár</span><b>${r.final === null ? 'Egyedi ajánlat' : ft(r.final)}</b><small>${r.final === null ? esc(r.reason || '') : `bruttó · ${dec(r.grams)} g, ${METALS[cfg.metal].short}${r.calculated !== r.raw ? ` · számított ${ft(r.raw)}, ${roundLabel(st.settings.roundTo)} kerekítve` : ''}${(st.materials.src || {})[`sellPerGram.${cfg.metal}`] === 'demo' ? ` · <b>a ${METALS[cfg.metal].short} grammár demó</b>` : ''}`}</small></div>
       <button class="abtn abtn--xl qcalc__save" type="button" data-qsave>Felírom ajánlatnak</button>`;
   };
   box.addEventListener('change', (e) => { if (e.target.matches('[data-qp]')) { p = store.product(e.target.value); cfg = defaultConfig(p); paint(); } });
@@ -619,11 +629,11 @@ function productEdit(el, id) {
         <select class="input input--lg" data-rulemode="${i}">${RULE_MODES.map(([k, l]) => `<option value="${k}" ${k === mode ? 'selected' : ''}>${l}</option>`).join('')}</select></label>
       ${rule ? `<div class="egrid">
         ${mode === 'free' || mode === 'perSize' ? n(`rings.${i}.stoneRule.min`, 'Legkevesebb kő', 'db') + n(`rings.${i}.stoneRule.max`, 'Legtöbb kő', 'db') : ''}
-        ${n(`rings.${i}.stoneRule.def`, mode === 'perSize' ? `Kőszám ${r.refSize}-es méretben` : mode === 'fixed' ? 'Kőszám' : 'Alapértelmezett kőszám', 'db')}
+        ${n(`rings.${i}.stoneRule.def`, mode === 'perSize' ? `Kőszám ${sizeSfx(r.refSize)} méretben` : mode === 'fixed' ? 'Kőszám' : 'Alapértelmezett kőszám', 'db')}
         <label class="efield"><span>Alap kőméret</span><select class="input input--lg" data-p="rings.${i}.stoneRule.defCat">${rule.cats.map((c) => { const d = diamond(Mx, c); return d ? `<option value="${c}" ${c === rule.defCat ? 'selected' : ''}>${d.name} – ${d.price == null ? 'nincs ár' : ft(d.price) + '/db'}</option>` : ''; }).join('')}</select></label>
       </div>
       <p class="efield__lab">Választható kőméretek</p>
-      <div class="checks">${Mx.diamonds.map((d) => arr(`rings.${i}.stoneRule.cats`, d.id, `${dec(d.ct)} ct ${d.price == null ? '<small>(nincs ár → ajánlat)</small>' : ''}`, rule.cats.includes(d.id))).join('')}</div>
+      <div class="checks">${Mx.diamonds.map((d) => arr(`rings.${i}.stoneRule.cats`, d.id, `${ctFmt(d.ct)} ct ${d.price == null ? '<small>(nincs ár → ajánlat)</small>' : ''}`, rule.cats.includes(d.id))).join('')}</div>
       <div class="checks">${chk(`rings.${i}.stoneRule.allowNone`, 'Kő nélkül is kérhető', rule.allowNone)}${chk(`rings.${i}.stoneRule.demo`, 'Demó szabály – ötvösmesterrel egyeztetendő', rule.demo)}</div>` : ''}
     </div>`;
   };
@@ -657,7 +667,7 @@ function productEdit(el, id) {
         ${p.rings.map((r, i) => `<section class="ebox"><h2>${esc(r.label)}</h2>
           <div class="egrid">
             ${n(`rings.${i}.refSize`, 'Referenciaméret', 'mm', 'ehhez a mérethez tartozik a tömeg')}
-            ${n(`rings.${i}.weight`, 'Tömeg 14K-ban', 'g', `${r.refSize}-es méretben – ${p.approved ? 'jóváhagyott' : 'becslés'}`)}
+            ${n(`rings.${i}.weight`, 'Tömeg 14K-ban', 'g', `${sizeSfx(r.refSize)} méretben – ${p.approved ? 'jóváhagyott' : 'becslés'}`)}
             ${n(`rings.${i}.refWidth`, 'Referenciaszélesség', 'mm')}
             ${n(`rings.${i}.labor`, 'Munkadíj', 'Ft', st.settings.pricingMode === 'gramm' ? 'grammáras módban nem számít bele (a grammár tartalmazza)' : 'nem függ az arany árától')}
             ${n(`rings.${i}.other`, 'Egyéb költség', 'Ft')}
@@ -691,7 +701,7 @@ function productEdit(el, id) {
       : t === 'fixed' ? n('override.value', 'Rögzített bruttó ár', 'Ft', 'az aranyár változása nem írja felül') : '';
   };
   const calc = () => {
-    p.rings.forEach((rg, i) => { const w = $(`[data-wline="${i}"]`, el); if (w) w.innerHTML = 'Tömeg anyagonként ' + rg.refSize + '-es méretben: ' + p.metals.map((m) => `${METALS[m].short} <b>${dec(Math.round((refWeight(rg, m, st.settings) || 0) * 100) / 100)} g</b>`).join(' · ') + ' <small>(az ügyfél példatömegeinek arányával)</small>'; });
+    p.rings.forEach((rg, i) => { const w = $(`[data-wline="${i}"]`, el); if (w) w.innerHTML = 'Tömeg anyagonként ' + sizeSfx(rg.refSize) + ' méretben: ' + p.metals.map((m) => `${METALS[m].short} <b>${dec(Math.round((refWeight(rg, m, st.settings) || 0) * 100) / 100)} g</b>`).join(' · ') + ' <small>(az ügyfél példatömegeinek arányával)</small>'; });
     const r = priceProduct(p, defaultConfig(p), st.materials, st.settings);
     const b = r.breakdown, s = st.settings;
     if (!b) { $('[data-calc]', el).innerHTML = `<h2>Árkalkuláció</h2><div class="calc-final"><span>Megjelenő ár</span><b>Egyedi ajánlat</b></div><p class="warn">${esc(r.reason || '')}</p>`; return; }
@@ -705,8 +715,9 @@ function productEdit(el, id) {
         ${gm ? '' : line('Önköltség összesen', b.cost, 'sum')}
         ${gm ? '' : line(`Felár (fém, munka ${s.markupMetal}% · kő ${s.markupStones}%)`, b.net - b.cost)}
         ${gm ? `${line('Bruttó összesen', b.gross, 'sum')}${line(`ebből ÁFA ${s.vatPct}%`, b.gross - b.net)}` : `${line('Nettó ár', b.net)}${line(`ÁFA ${s.vatPct}%`, b.gross - b.net)}`}
-        ${line(`Kalkulált ár (kerekítve ${num(s.roundTo)} Ft-ra)`, r.calculated, 'sum')}
+        ${rawRows(r, s.roundTo, line)}
       </dl>
+      <p class="hint">Kerekítés ${srcBadge((s.src || {}).roundTo || 'demo')} – a Felárak és munkadíjak oldalon állítható.</p>
       <div class="calc-final"><span>Megjelenő ár${r.source !== 'keplet' ? (r.source === 'rogzitett' ? ' – rögzített' : ' – módosított') : ''}</span><b>${ft(r.final)}</b></div>
       ${b.materialCost ? `<p class="hint">Tájékoztató anyagköltség (alapanyagárral): <b>${ft(b.materialCost)}</b>${gm ? ` – a fennmaradó ${ft(b.gross - b.materialCost - (b.stonesGross || 0))} fedezi a munkát, a díjakat, az árrést és az ÁFA-t.` : ''}</p>` : ''}
       ${r.marginPct === null ? '' : `<p class="${r.lowMargin ? 'warn' : 'ok'}">Árrés: ${dec(Math.round(r.marginPct * 10) / 10)}% ${r.lowMargin ? `– kisebb, mint a beállított ${s.minMarginPct}% minimum!` : ''}</p>`}
@@ -816,7 +827,7 @@ function formula(el) {
         <section class="ebox"><h2>Külön felszámított díjak <small>bruttó, a gyűrű árához adódnak</small></h2><div class="egrid">
           ${f('settingPerStone', 'Kőfoglalás', 'Ft/kő', 'Ha a kő darabára már tartalmazza, maradjon 0.')}${f('engravingPrice', 'Gravírozás', 'Ft/gyűrű')}
           ${f('boxCost', 'Díszdoboz', 'Ft/termék')}${f('certCost', 'Kőtanúsítvány', 'Ft/köves termék')}
-          ${f('roundTo', 'Kerekítés felfelé', 'Ft', 'Pl. 100 → 337 333 Ft-ból 337 400 Ft.')}${f('vatPct', 'ÁFA', '%', 'Grammáras módban a grammár már tartalmazza – nem adódik hozzá újra.')}
+          <label class="efield"><span>Kerekítés ${srcBadge((st.settings.src || {}).roundTo || 'demo')}<small>Pl. 100 Ft-ra: 337 333 → 337 400 Ft. Az ügyfél jóváhagyásáig demó.</small></span>${roundSelect(d.roundTo)}</label>${f('vatPct', 'ÁFA', '%', 'Grammáras módban a grammár már tartalmazza – nem adódik hozzá újra.')}
         </div>
         <label class="check check--lg"><input type="checkbox" data-sb="stonesGross" ${d.stonesGross !== false ? 'checked' : ''}><span>A gyémánt darabára végső ár (grammáras módban nincs rá felár és ÁFA) ${srcBadge((st.settings.src || {}).stonesGross || 'demo')}</span></label></section>
         <section class="ebox"><h2>Tömeg anyagonként ${srcBadge((st.settings.src || {}).density || 'demo')}</h2>
@@ -867,20 +878,22 @@ function formula(el) {
       <dl class="calc-dl calc-dl--steps">
         ${gm ? step(`${dec(r1.grams)} g × ${ft(st.materials.sellPerGram[r1.cfg.metal])}/g (bruttó grammár)`, b.gramSell)
           : `${step(`Színarany: ${dec(r1.pure)} g × ${ft(st.materials.gold24)}/g + ${dec(d.lossPct)}% veszteség`, b.metal)}${step('Ötvözőanyag', b.alloy)}${step('Munkadíj', b.labor)}`}
-        ${b.stones ? step('Természetes gyémántok', b.stones) : ''}
-        ${b.setting ? step('Kőfoglalás', b.setting) : ''}${step('Doboz, tanúsítvány, gravír', b.other + b.engraving)}
+        ${b.stones ? step(gm ? (d.stonesGross === false ? `+ gyémántok (darabár + ${dec(d.markupStones)}% felár + ÁFA)` : '+ gyémántok darabára') : 'Természetes gyémántok', gm ? b.stonesGross : b.stones) : ''}
+        ${b.setting ? step('+ kőfoglalás', b.setting) : ''}${b.other + b.engraving ? step('+ doboz, tanúsítvány, gravír', b.other + b.engraving) : ''}
         ${gm ? '' : step('Önköltség', b.cost, 'sum')}
-        ${gm ? step(`+ kőfelár ${dec(d.markupStones)}%`, b.stones * d.markupStones / 100) : step(`+ felár (${dec(d.markupMetal)}% / kő ${dec(d.markupStones)}%)`, b.net - b.cost)}
-        ${gm ? step(`ÁFA ${dec(d.vatPct)}% (a grammár már bruttó)`, b.gross - b.net) : step(`+ ÁFA ${dec(d.vatPct)}%`, b.gross - b.net)}
-        ${step(`Kalkulált ár, ${num(d.roundTo)} Ft-ra kerekítve`, r1.calculated, 'sum')}
+        ${gm ? '' : step(`+ felár (${dec(d.markupMetal)}% / kő ${dec(d.markupStones)}%)`, b.net - b.cost)}
+        ${gm ? '' : step(`+ ÁFA ${dec(d.vatPct)}%`, b.gross - b.net)}
+        ${rawRows(r1, d.roundTo, step)}
+        ${gm ? step(`ebből ÁFA ${dec(d.vatPct)}% (a grammár már tartalmazza)`, r1.calculated - r1.calculated / (1 + d.vatPct / 100), 'rnd') : ''}
       </dl>
       ${r1.marginPct === null ? '<p class="hint">Grammáras módban az árrés nem számolható.</p>' : `<p class="${r1.lowMargin ? 'warn' : 'ok'}">Árrés: ${dec(Math.round(r1.marginPct * 10) / 10)}%${r1.lowMargin ? ` – kevesebb a ${d.minMarginPct}%-os minimumnál!` : ''}</p>`}`;
   };
-  el.addEventListener('input', (e) => { const k = e.target.dataset.s; if (k) { const v = parseNum(e.target.value); if (Number.isFinite(v)) { set(d, k, v); calc(); } } });
+  el.addEventListener('input', (e) => { const k = e.target.dataset.s; if (k && !e.target.matches('[data-round]')) { const v = parseNum(e.target.value); if (Number.isFinite(v)) { set(d, k, v); calc(); } } });
   el.addEventListener('change', (e) => {
     if (e.target.matches('[data-sample]')) { sampleId = e.target.value; calc(); }
     if (e.target.dataset.mode) { d[e.target.dataset.mode] = e.target.value; calc(); }
     if (e.target.dataset.sb) { d[e.target.dataset.sb] = e.target.checked; calc(); }
+    if (e.target.matches('[data-round]')) { d.roundTo = Number(e.target.value); calc(); }
   });
   el.addEventListener('click', (e) => {
     if (e.target.closest('[data-save]')) { store.updateSettings(d, 'Árképlet és díjak módosítva'); toast('Az árképlet mentve, az árak újraszámolódtak.'); formula(el); }
@@ -968,7 +981,7 @@ function settings(el) {
   const d = clone(st.settings);
   el.innerHTML = `<h1 class="adm__h1">Beállítások</h1>
     <section class="ebox"><h2>Kerekítés és védelem</h2><div class="egrid">
-      <label class="efield"><span>Árak kerekítése felfelé</span><select class="input input--lg" data-s="roundTo">${[1, 100, 500, 1000, 5000].map((v) => `<option value="${v}" ${d.roundTo === v ? 'selected' : ''}>${v === 1 ? 'nincs kerekítés' : num(v) + ' Ft-ra'}</option>`).join('')}</select></label>
+      <label class="efield"><span>Árak kerekítése ${srcBadge((d.src || {}).roundTo || 'demo')}<small>az ügyfél jóváhagyásáig demó</small></span>${roundSelect(d.roundTo)}</label>
       <label class="efield"><span>Minimális árrés<small>alatta figyelmeztet</small></span><span class="efield__in"><input class="input input--lg" inputmode="decimal" data-s="minMarginPct" value="${d.minMarginPct}"><i>%</i></span></label>
       <label class="efield"><span>Nagy változás határa<small>e fölött külön megerősítés kell</small></span><span class="efield__in"><input class="input input--lg" inputmode="decimal" data-s="bigChangePct" value="${d.bigChangePct}"><i>%</i></span></label>
     </div></section>
@@ -982,7 +995,7 @@ function settings(el) {
     </section>
     <section class="ebox"><h2>Az éles rendszerben</h2>
       <p class="hint">Bejelentkezés és jogosultságok, szerveroldali adatbázis, minden ármódosítás szerveren naplózva, mentés és visszaállítás – ezek a következő fejlesztési szakasz részei, ebben a bemutatóban nem működnek.</p></section>`;
-  el.addEventListener('input', (e) => { const k = e.target.dataset.s; if (k) { const v = parseNum(e.target.value); if (Number.isFinite(v)) d[k] = v; } if (e.target.matches('[data-marks]')) d.showDemoMarks = e.target.checked; });
+  el.addEventListener('input', (e) => { const k = e.target.dataset.s; if (k && !e.target.matches('[data-round]')) { const v = parseNum(e.target.value); if (Number.isFinite(v)) d[k] = v; } if (e.target.matches('[data-marks]')) d.showDemoMarks = e.target.checked; });
   el.addEventListener('change', (e) => { if (e.target.dataset.s === 'roundTo') d.roundTo = Number(e.target.value); });
   el.addEventListener('click', (e) => {
     if (e.target.closest('[data-save]')) { store.updateSettings(d, 'Beállítások módosítva'); toast('Beállítások mentve.'); }

@@ -2,7 +2,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { DEMO_MATERIALS, DEMO_SETTINGS, buildDemoProducts } from '../js/data.js';
-import { priceProduct, defaultConfig, normalizeConfig, seedWeights, diffPrices, priceAll, encodeCfg, decodeCfg, stoneCount, exampleRing, refPrice, allowedCats, maxAround, diamond } from '../js/engine.js';
+import { ctFmt, sizeSfx, isGold as isGoldM, priceProduct, defaultConfig, normalizeConfig, seedWeights, diffPrices, priceAll, encodeCfg, decodeCfg, stoneCount, exampleRing, refPrice, allowedCats, maxAround, diamond } from '../js/engine.js';
 
 const clone = (o) => JSON.parse(JSON.stringify(o));
 const M = clone(DEMO_MATERIALS), S = clone(DEMO_SETTINGS);
@@ -194,3 +194,81 @@ test('Minden termék alapkonfigurációja fizikailag lehetséges és van rá ár
     r.cfg.rings.forEach((rc, i) => { if (rc.stones) assert.ok(allowedCats(p.rings[i].stoneRule, rc.width, M, S).includes(rc.stones.cat), p.code); });
   }
 });
+
+/* ---------------- Kerekítés: nyers és megjelenő ár külön ---------------- */
+const RS = (roundTo) => ({ ...S, pricingMode: 'gramm', roundTo });
+const exR = (metal, weight, size, roundTo) => exampleRing({ metal, weight, size }, M, RS(roundTo));
+const CASES = [            // [anyag, tömeg, méret, nyers, 100 Ft-ra, 1000 Ft-ra]
+  ['au14', 4.8, 54, 225600, 225600, 226000],
+  ['pt', 6.9, 54, 379500, 379500, 380000],
+  ['pt', 6.9, 48, 337333, 337400, 338000],
+  ['pt', 6.9, 60, 421667, 421700, 422000],
+];
+for (const [m, w, sz, raw, r100, r1000] of CASES) {
+  test(`Kerekítés: ${m} ${sz}-es – nyers ${raw}, 100 Ft-ra ${r100}, 1000 Ft-ra ${r1000}, kerekítés nélkül ${raw}`, () => {
+    const a = exR(m, w, sz, 100);
+    assert.equal(a.raw, raw); assert.equal(a.final, r100); assert.equal(a.rounding, r100 - raw);
+    assert.equal(exR(m, w, sz, 1000).final, r1000);
+    assert.equal(exR(m, w, sz, 1).final, raw);
+    assert.ok(a.rounding >= 0 && a.rounding < 100);       // mindig felfelé, egy lépésnél kevesebbel
+  });
+}
+test('A kerekítés alapértelmezése demó, és az ügyfél jóváhagyásáig az marad', () => {
+  assert.equal(S.roundTo, 100); assert.equal(S.src.roundTo, 'demo');
+});
+test('A 18K, palládium és titán grammár demóként jelölt, a 14K és platina ügyfélpélda', () => {
+  assert.deepEqual(['au18', 'pd', 'ti'].map((m) => M.src[`sellPerGram.${m}`]), ['demo', 'demo', 'demo']);
+  assert.deepEqual(['au14', 'pt'].map((m) => M.src[`sellPerGram.${m}`]), ['pelda', 'pelda']);
+});
+
+/* ---------------- Minden konfigurációban: tételek pontosan egyszer ---------------- */
+test('Grammáras mód: minden termék × anyag × kő ki/be × gravír – a nyers ár pontosan a tételek összege', () => {
+  const s = { ...S, pricingMode: 'gramm', settingPerStone: 1500, certCost: 4000, boxCost: 2500, engravingPrice: 6000 };
+  let n = 0;
+  for (const p of products.filter((x) => x.listaAr)) {
+    for (const metal of p.metals) for (const stonesOn of [true, false]) for (const engr of [false, true]) {
+      const c = defaultConfig(p); c.metal = metal; if (!isGoldM(metal)) c.color = null;
+      c.rings.forEach((rc, i) => { if (!stonesOn && p.rings[i].stoneRule?.allowNone) rc.stones = null; if (engr) rc.engraving = 'Anna'; });
+      const r = priceProduct(p, c, M, s);
+      if (r.final === null) continue;
+      let exp = s.boxCost, stoneCount = 0;
+      r.parts.forEach((x, i) => {
+        const rc = r.cfg.rings[i];
+        exp += x.gramsExact * M.sellPerGram[metal];
+        if (rc.stones) { exp += diamond(M, rc.stones.cat).price * rc.stones.count + s.settingPerStone * rc.stones.count; stoneCount += rc.stones.count; }
+        if (rc.engraving) exp += s.engravingPrice;
+      });
+      if (stoneCount) exp += s.certCost;
+      assert.equal(r.raw, Math.round(exp), `${p.code} ${metal} kő:${stonesOn} gravír:${engr}`);
+      assert.equal(r.final, Math.ceil(r.raw / 100) * 100);                  // a megjelenő ár = a nyers ár felfelé kerekítve
+      assert.equal(r.final % 100, 0);
+      n++;
+    }
+  }
+  assert.ok(n > 400, String(n));
+});
+test('Költségalapú mód: kő, foglalás, gravír egyszer – a kő nélküli különbség pontosan a kőtételek', () => {
+  const s = { ...S, pricingMode: 'koltseg', roundTo: 1, settingPerStone: 1500, certCost: 0 };
+  const a = price(pair, (c) => (c.rings[0].stones = null), s), b = price(pair, null, s);
+  const st = b.cfg.rings[0].stones, d = diamond(M, st.cat), vf = 1 + s.vatPct / 100;
+  const exp = (d.price * st.count * (1 + s.markupStones / 100) + s.settingPerStone * st.count * (1 + s.markupMetal / 100)) * vf;
+  assert.ok(Math.abs(b.raw - a.raw - exp) <= 1, `${b.raw - a.raw} vs ${exp}`);
+  const e = price(pair, (c) => (c.rings[0].engraving = 'X'), s);
+  assert.ok(Math.abs(e.raw - b.raw - s.engravingPrice * (1 + s.markupMetal / 100) * vf) <= 1);
+});
+test('Gravír: gyűrűnként egyszer, üres szövegnél nem', () => {
+  const s = { ...S, pricingMode: 'gramm', roundTo: 1 };
+  const a = price(plain, null, s);
+  const one = price(plain, (c) => (c.rings[0].engraving = 'A'), s);
+  const both = price(plain, (c) => { c.rings[0].engraving = 'A'; c.rings[1].engraving = 'B'; }, s);
+  const blank = price(plain, (c) => (c.rings[0].engraving = '   '), s);
+  assert.equal(one.raw - a.raw, s.engravingPrice);
+  assert.equal(both.raw - a.raw, 2 * s.engravingPrice);
+  assert.equal(blank.raw, a.raw);
+});
+
+test('Méret toldaléka magyarul', () => {
+  assert.deepEqual([40, 43, 45, 46, 48, 50, 54, 55, 56, 60, 63, 64, 66, 70, 80].map(sizeSfx),
+    ['40-es', '43-as', '45-ös', '46-os', '48-as', '50-es', '54-es', '55-ös', '56-os', '60-as', '63-as', '64-es', '66-os', '70-es', '80-as']);
+});
+test('Kőméret kijelzése kerekítés nélkül', () => assert.deepEqual([0.005, 0.01, 0.015, 0.1].map(ctFmt), ['0,005', '0,01', '0,015', '0,1']));

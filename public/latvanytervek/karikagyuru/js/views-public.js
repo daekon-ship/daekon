@@ -1,7 +1,7 @@
 /* Vásárlói felület: kezdőoldal, kollekció, termékoldal + konfigurátor, kapcsolat. */
 import { store } from './store.js';
 import { BUSINESS, COLORS, STYLES, FEATURED, BICOLOR, TERMS, CURRENT_SITE } from './data.js';
-import { priceProduct, normalizeConfig, allowedCats, defaultConfig, ft, dec, diamond, ringSplit, encodeCfg, decodeCfg, METALS, METAL_ORDER, isGold } from './engine.js';
+import { priceProduct, normalizeConfig, allowedCats, sizeSfx, ctFmt, defaultConfig, ft, num, dec, diamond, ringSplit, encodeCfg, decodeCfg, METALS, METAL_ORDER, isGold } from './engine.js';
 import { $, $$, esc, productMedia, hasPhoto, metalSwatch, animatePrice, modal, reveal, toast, M, reduced } from './ui.js';
 
 const S = () => store.get();
@@ -449,7 +449,7 @@ export function product(el, id, query) {
           <strong class="price price--big" data-cprice></strong>
           <p class="pdp__quote" data-quote hidden></p>
           ${pair ? '<p class="pdp__split" data-split></p>' : ''}
-          <small>Bruttó, ÁFA-val. Rendelésre készül.</small>
+          <small data-pnote>Bruttó, ÁFA-val. Rendelésre készül.</small>
         </div>
         <p class="cfg__warn" data-warn role="status" hidden></p>
         <ol class="cfg" data-steps></ol>
@@ -567,7 +567,7 @@ export function product(el, id, query) {
         const fit = allowedCats(rule, rc.width, Mx, S().settings);
         if (rule.cats.length > 1) body += `<div class="stonecats" role="group" aria-label="Kőméret">${rule.cats.map((c) => { const d = diamond(Mx, c); if (!d) return '';
           const no = !fit.includes(c);
-          return `<button type="button" data-scat="${i}|${c}" aria-pressed="${c === st.cat}" ${no ? `disabled title="${dec(rc.width)} mm szélességen nem fér el"` : ''}><b>${dec(d.ct)} ct</b><span>${esc(d.quality)}</span>${no ? '<em class="delta delta--q">nem fér el</em>' : c === st.cat ? '' : (d.price == null ? '<em class="delta delta--q">egyedi ajánlat</em>' : delta(cur, (x) => (x.rings[i].stones.cat = c)))}</button>`; }).join('')}</div>`;
+          return `<button type="button" data-scat="${i}|${c}" aria-pressed="${c === st.cat}" ${no ? `disabled title="${dec(rc.width)} mm szélességen nem fér el"` : ''}><b>${ctFmt(d.ct)} ct</b><span>${esc(d.quality)}</span>${no ? '<em class="delta delta--q">nem fér el</em>' : c === st.cat ? '' : (d.price == null ? '<em class="delta delta--q">egyedi ajánlat</em>' : delta(cur, (x) => (x.rings[i].stones.cat = c)))}</button>`; }).join('')}</div>`;
         body += `<p class="hint">${st.count} × ${dia ? esc(dia.name) + ', ' + esc(dia.quality) : ''} természetes gyémánt${dia && dia.price == null ? ' · <b>Egyedi árajánlat szükséges</b>' : ''}</p>`;
       }
       if (rule.demo) body += `<p class="fine">${demoMark('demó kőszabály')} A kőszámot és a kőméreteket az ötvösmester hagyja jóvá.</p>`;
@@ -609,6 +609,8 @@ export function product(el, id, query) {
     const w = $('[data-warn]', el);
     w.hidden = !lastWarn; w.textContent = lastWarn; lastWarn = '';
     paintInfo(r);
+    const st0 = S(), rt = st0.settings.roundTo;
+    $('[data-pnote]', el).innerHTML = `Bruttó, ÁFA-val${rt > 1 ? `, ${num(rt)} Ft-ra kerekítve` : ''}. Rendelésre készül.${(st0.materials.src || {})[`sellPerGram.${cfg.metal}`] === 'demo' && st0.settings.pricingMode === 'gramm' ? ` ${demoMark(`${METALS[cfg.metal].short}: demó grammár`)}` : ''}`;
     animatePrice($('[data-cprice]', el), cur);
     animatePrice($('[data-mprice]', el), cur);
     if (!first) { const pb = $('[data-pricebox]', el); pb.classList.remove('is-flash'); void pb.offsetWidth; pb.classList.add('is-flash'); }
@@ -710,12 +712,12 @@ function stoneText(rg, c, sep) {
   if (!rg.stoneRule) return '';
   if (!c.stones) return `${sep}kő nélkül`;
   const d = diamond(S().materials, c.stones.cat);
-  return `${sep}${c.stones.count} db ${d ? dec(d.ct) + ' ct' : ''} természetes gyémánt`;
+  return `${sep}${c.stones.count} db ${d ? ctFmt(d.ct) + ' ct' : ''} természetes gyémánt`;
 }
 
 function ringLine(p, cfg, i) {
   const rg = p.rings[i], c = cfg.rings[i];
-  return `${c.sizeUnknown ? 'méret: konzultáción' : c.size + '-es méret'} · ${dec(c.width)} mm${stoneText(rg, c, ' · ')}${c.engraving ? ` · gravír (${FONTS[c.font || 0].toLowerCase()}): „${esc(c.engraving)}”` : ''}`;
+  return `${c.sizeUnknown ? 'méret: konzultáción' : sizeSfx(c.size) + ' méret'} · ${dec(c.width)} mm${stoneText(rg, c, ' · ')}${c.engraving ? ` · gravír (${FONTS[c.font || 0].toLowerCase()}): „${esc(c.engraving)}”` : ''}`;
 }
 
 function sizeHelp([lo, hi], onPick) {
@@ -756,7 +758,7 @@ export function configText(p, cfg) {
   const lines = [`${p.code} – ${p.name}`, `Anyag: ${metalLabel(cfg)}`];
   p.rings.forEach((r, i) => {
     const c = cfg.rings[i];
-    lines.push(`${r.label}: ${c.sizeUnknown ? 'méret a konzultáción' : c.size + '-es méret'}, ${dec(c.width)} mm${stoneText(r, c, ', ')}${c.engraving ? `, gravírozás (${FONTS[c.font || 0].toLowerCase()} betű): „${c.engraving}”` : ''}`);
+    lines.push(`${r.label}: ${c.sizeUnknown ? 'méret a konzultáción' : sizeSfx(c.size) + ' méret'}, ${dec(c.width)} mm${stoneText(r, c, ', ')}${c.engraving ? `, gravírozás (${FONTS[c.font || 0].toLowerCase()} betű): „${c.engraving}”` : ''}`);
   });
   return lines.join('\n');
 }

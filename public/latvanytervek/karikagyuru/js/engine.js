@@ -219,11 +219,11 @@ export function ringCost(ring, rc, metal, M, S) {
 
 /* ---------------- Teljes termék ---------------- */
 /**
- * Visszaad: { final (Ft vagy null), quote (bool), reason, calculated, source, breakdown, parts, grams, pure, marginPct, lowMargin, warnings }
+ * Visszaad: { final (Ft vagy null), quote (bool), reason, raw (nyers, kerekítés előtti bruttó), calculated (kerekített), rounding, source, breakdown, parts, grams, pure, marginPct, lowMargin, warnings }
  */
 export function priceProduct(p, cfgIn, M, S, { applyOverride = true } = {}) {
   const { cfg, warnings } = normalizeConfig(p, cfgIn || defaultConfig(p), M, S);
-  const empty = (reason) => ({ final: null, quote: true, reason, calculated: null, source: 'ajanlat', breakdown: null, parts: [], grams: 0, pure: 0, marginPct: null, lowMargin: false, warnings, cfg });
+  const empty = (reason) => ({ final: null, quote: true, reason, raw: null, rounding: 0, calculated: null, source: 'ajanlat', breakdown: null, parts: [], grams: 0, pure: 0, marginPct: null, lowMargin: false, warnings, cfg });
 
   if (p.priceOnRequest && !(applyOverride && p.override?.type === 'fixed')) return empty('Ennél a modellnél egyedi árajánlatot adunk.');
 
@@ -253,7 +253,8 @@ export function priceProduct(p, cfgIn, M, S, { applyOverride = true } = {}) {
     net = baseNet * (1 + (S.markupMetal || 0) / 100) + stones * (1 + (S.markupStones || 0) / 100);
     gross = net * vatF;
   }
-  const calculated = roundUp(gross, S.roundTo);
+  const raw = Math.round(gross);                       // nyers számított ár (egész forintra)
+  const calculated = roundUp(raw, S.roundTo);            // kerekített (megjelenő) ár – a kijelzett nyers árból, hogy a kettő mindig egyezzen
 
   const quoteMsg = parts.find((x) => x.quote)?.quote || null;
   let final = calculated, source = 'keplet';
@@ -269,7 +270,7 @@ export function priceProduct(p, cfgIn, M, S, { applyOverride = true } = {}) {
   const marginPct = cost === null ? null : (finalNet > 0 ? ((finalNet - cost) / finalNet) * 100 : 0);
 
   return {
-    final, quote: false, reason: null, calculated, source, minHit,
+    final, quote: false, reason: null, raw, calculated, rounding: calculated - raw, source, minHit,
     marginPct, lowMargin: marginPct !== null && marginPct < S.minMarginPct,
     breakdown: { metal: metalCost, alloy, labor, gramSell, setting, engraving, other, stones, stonesGross, cost, net, gross, mode, materialCost },
     parts, warnings, cfg,
@@ -400,6 +401,8 @@ const nf2 = new Intl.NumberFormat('hu-HU', { maximumFractionDigits: 2 });
 export const ft = (n) => (n === null || n === undefined ? 'Egyedi ajánlat' : nf.format(Math.round(n)).replace(/ |\s/g, ' ') + ' Ft');
 export const num = (n) => nf.format(Math.round(n)).replace(/ |\s/g, ' ');
 export const dec = (n) => nf2.format(n);
+/** Karát pontosan, kerekítés nélkül (0,005 · 0,015 ct) – a kőméret nem kerekíthető. */
+export const ctFmt = (ct) => String(ct).replace('.', ',');
 export const pct = (n, sign = true) => (sign && n > 0 ? '+' : '') + nf2.format(Math.round(n * 10) / 10) + '%';
 
 /**
@@ -416,4 +419,11 @@ export function exampleRing({ metal = 'au14', weight, size = 54, refSize = 54, w
   cfg.metal = metal; cfg.color = isGold(metal) ? 'sarga' : null; cfg.rings[0].size = size;
   if (stones) cfg.rings[0].stones = { ...stones };
   return priceProduct(p, cfg, M, S);
+}
+
+/** Magyar toldalék a gyűrűmérethez: 54-es, 55-ös, 56-os, 58-as, 60-as, 63-as, 70-es… */
+export function sizeSfx(n) {
+  const k = Math.round(n), last = k % 10, tens = Math.floor(k / 10) % 10;
+  if (last === 0) return k + ([6, 8, 3].includes(tens) ? '-as' : tens === 1 || tens === 4 || tens === 5 || tens === 7 || tens === 9 || tens === 2 ? '-es' : '-as');
+  return k + ({ 3: '-as', 5: '-ös', 6: '-os', 8: '-as' }[last] || '-es');
 }
