@@ -1,24 +1,29 @@
 /* ==========================================================================
-   Központi árkalkulációs motor – V2 (tiszta függvények, nincs mellékhatás).
+   Központi árkalkulációs motor – V2.1 (tiszta függvények, nincs mellékhatás).
 
-   KÉT ÁRAZÁSI MÓD (admin: Felárak és munkadíjak → Árazás módja):
-   A) „koltseg” – költségalapú:
-        ( nemesfém + ötvözet + munkadíj + kőfoglalás + gravír + egyéb ) × (1 + fém/munka felár)
-        + gyémánt × (1 + kőfelár)  → + ÁFA → kerekítés
-   B) „gramm” – grammonkénti késztermékár (az ügyfél megbeszélésen használt módszere):
-        kész tömeg × bruttó grammár (ez MÁR tartalmazza a fémet, a munkadíjat és az árrést)
-        + ( gyémánt × (1 + kőfelár) + kőfoglalás + gravír + doboz/tanúsítvány ) × (1 + ÁFA)
-      Itt a munkadíj és a fém-felár NEM adódik hozzá még egyszer.
+   KÉT ÁRAZÁSI MÓD (admin: Felárak és munkadíjak → Árképzési mód):
+   A) „gramm” – AZ ÖTVÖS SAJÁT MÓDSZERE (alapértelmezett), az ügyfél jegyzete szerint:
+        kész tömeg (g) × késztermék-grammár (Ft/g, bruttó: fém + munka + árrés + ÁFA benne)
+        + gyémántok darabára × darabszám + külön díjak (kőfoglalás, gravír, doboz) – mind bruttó
+        Példa: 14K, 4,8 g × 47 000 = 225 600 Ft · platina 6,9 g × 55 000 = 379 500 Ft.
+      Munkadíj, fém-felár és ÁFA itt NEM adódik hozzá még egyszer.
+   B) „koltseg” – költségalapú összehasonlítás:
+        ( alapanyag-referenciaár × tömeg × (1+veszteség) + munkadíj + díjak ) × (1+felár)
+        + gyémánt × (1+kőfelár) → + ÁFA → kerekítés
+   Az alapanyag-referenciaár (24K → 14K = ×0,585, 18K = ×0,75; platina; palládium) KÜLÖN mező a
+   grammártól; grammáras módban csak tájékoztató (anyagköltség a részletes kalkulációban).
 
-   KÉT MÉRETSZÁMÍTÁS (admin: Árazás módja):
-   - „tomeg”: a fém tömege arányos a mérettel (belső kerület) – a munkadíj nem változik.
-   - „ar”: egyszerű árarányosítás – a gyűrű kő nélküli ára arányos a mérettel.
-   Egyik sem végleges szakmai szabály: ügyféllel egyeztetendő.
+   MÉRET (admin: Méret hatása az árra):
+   - „tomeg”: tömeg = referenciatömeg × méret / referenciaméret (pl. 60-as = 54-es × 60/54).
+   - „ar”: egyszerű árarányosítás. Grammáras módban a kettő ugyanazt adja.
 
-   SZÍN: azonos anyagnál/karátnál az arany színe NEM módosítja az árat (ügyféligény).
-   GYÉMÁNT: gyűrűnként szabály (stoneRule) – nem minden modell konfigurálható szabadon.
-   Ha nincs megbízható ár, a végeredmény final = null és quote = true
-   („Egyedi árajánlat szükséges”) – soha nem mutatunk megtévesztő árat.
+   TÖMEG ANYAGONKÉNT: ring.weights[anyag] (ha meg van adva), különben 14K tömeg × S.density[anyag]
+   (a tömegarányok az ügyfél példatömegeiből: 4,8 / 5,4 / 6,9 / 4,0 / 1,5 g).
+
+   SZÍN: azonos karátnál az arany színe NEM módosítja az árat.
+   GYÉMÁNT: csak természetes; gyűrűnként szabály (stoneRule) + fizikai ellenőrzés
+   (a kő átmérője elfér-e a szélességen, körbe foglalásnál a kerületen).
+   Ha nincs megbízható ár, final = null („Egyedi árajánlat szükséges”) – soha nincs megtévesztő ár.
    ========================================================================== */
 
 /** Választható anyagok. dens = tömegszorzó a 14K-hoz képest (felülírható: S.density). */
@@ -38,6 +43,31 @@ const ok = (n) => typeof n === 'number' && Number.isFinite(n);
 
 export function diamond(M, id) {
   return (M.diamonds || []).find((d) => d.id === id) || null;
+}
+
+/** Alapanyag-referenciaár Ft/g ötvözetre: arany = 24K × finomság, egyébként a saját mezője. */
+export function refPrice(metal, M) {
+  const m = METALS[metal];
+  if (!m) return null;
+  const base = M[m.ref];
+  if (!ok(base) || base <= 0) return null;
+  return m.gold ? base * m.fin : base;
+}
+
+/** Fizikailag elfér-e a kő: átmérő ≤ gyűrűszélesség − perem. Ismeretlen méretű kő: nem tiltjuk. */
+export function stoneFits(d, width, S = {}) {
+  if (!d || !ok(d.mm) || !ok(width)) return true;
+  return d.mm <= width - (S.stoneEdgeMm ?? 1.0) + 1e-9;
+}
+/** Körbe foglalásnál legfeljebb ennyi kő fér a kerületre (a méret = belső kerület mm-ben). */
+export function maxAround(d, size, S = {}) {
+  if (!d || !ok(d.mm)) return Infinity;
+  return Math.floor(size / (d.mm + (S.stoneGapMm ?? 0.1)));
+}
+/** A modell szabálya ÉS a fizikai korlát szerint választható kőméretek. */
+export function allowedCats(rule, width, M, S) {
+  if (!rule) return [];
+  return rule.cats.filter((c) => { const d = diamond(M || {}, c); return !M || (d && stoneFits(d, width, S)); });
 }
 
 export function roundUp(n, step) {
@@ -61,7 +91,7 @@ export function stoneCount(rule, size, refSize) {
 const clamp = (v, lo, hi) => Math.min(hi ?? v, Math.max(lo ?? v, v));
 
 /** Konfiguráció érvényesítése: lehetetlen összeállítást nem engedünk (szorítás + figyelmeztetés). */
-export function normalizeConfig(p, cfg) {
+export function normalizeConfig(p, cfg, M = null, S = {}) {
   const warnings = [];
   const out = JSON.parse(JSON.stringify(cfg));
   const metals = p.metals || ['au14'];
@@ -82,11 +112,22 @@ export function normalizeConfig(p, cfg) {
     }
     const st = rc.stones;
     if (!rule.cats.includes(st.cat)) { st.cat = rule.defCat; warnings.push('Ez a kőméret ennél a modellnél nem választható.'); }
+    if (M) {
+      const ok2 = allowedCats(rule, rc.width, M, S);
+      if (!ok2.includes(st.cat)) {
+        if (ok2.length) { st.cat = ok2.includes(rule.defCat) ? rule.defCat : ok2[ok2.length - 1]; warnings.push(`Ennél a szélességnél (${String(rc.width).replace('.', ',')} mm) ez a kő nem fér el – a legnagyobb beférő kőméretre állítottuk.`); }
+        else if (rule.allowNone) { rc.stones = null; warnings.push('Ennél a szélességnél egyik kőméret sem fér el – kő nélkül számolunk.'); return; }
+      }
+    }
     if (rule.mode === 'free') {
       const lo = Math.max(1, rule.min || 0);
       if (!(st.count >= lo && st.count <= rule.max)) { st.count = clamp(Math.round(st.count || rule.def), lo, rule.max); warnings.push(`A kövek száma ${lo} és ${rule.max} között lehet.`); }
     } else {
       st.count = stoneCount(rule, rc.size, ring.refSize);
+      if (M && rule.mode === 'perSize') {
+        const cap = maxAround(diamond(M, st.cat), rc.size || ring.refSize, S);
+        if (st.count > cap) { st.count = cap; warnings.push(`Ebben a méretben legfeljebb ${cap} kő fér körbe.`); }
+      }
     }
   });
   return { cfg: out, warnings };
@@ -112,19 +153,26 @@ export function defaultConfig(p) {
 /* ---------------- Egy gyűrű ---------------- */
 function density(metal, S) {
   const d = S.density || {};
-  if (metal === 'au18') return d.au18 ?? S.density18 ?? 1.17;
-  return d[metal] ?? { au14: 1, pt: 1.65, pd: 0.92, ti: 0.35 }[metal] ?? 1;
+  return d[metal] ?? { au14: 1, au18: 1.125, pt: 1.4375, pd: 0.833333, ti: 0.3125 }[metal] ?? 1;
+}
+/** Referenciaméretű, referenciaszélességű tömeg az adott anyagból (g). */
+export function refWeight(ring, metal, S) {
+  const w = ring.weights && ring.weights[metal];
+  if (ok(w) && w > 0) return w;
+  if (!ok(ring.weight) || ring.weight <= 0) return null;
+  return ring.weight * density(metal, S);
 }
 
 /** Egy gyűrű elemei nettóban (felár és ÁFA nélkül). Hiba esetén { error }. */
 export function ringCost(ring, rc, metal, M, S) {
   const m = METALS[metal];
   if (!m) return { error: 'Ismeretlen anyag.' };
-  if (!ok(ring.weight) || ring.weight <= 0) return { error: 'Hiányzó tömegadat.' };
+  const w0 = refWeight(ring, metal, S);
+  if (!w0) return { error: 'Hiányzó tömegadat.' };
   const sizeF = (rc.size || ring.refSize) / ring.refSize;
   const widthF = (rc.width || ring.refWidth) / (ring.refWidth || 1);
-  const grams = ring.weight * sizeF * widthF * density(metal, S);
-  const gramsRef = ring.weight * widthF * density(metal, S);          // referenciaméretben
+  const grams = w0 * sizeF * widthF;
+  const gramsRef = w0 * widthF;                                       // referenciaméretben
   const pure = grams * m.fin;
   const lossF = 1 + (S.lossPct || 0) / 100;
   const laborF = (S.laborFactor && S.laborFactor[metal]) || 1;
@@ -132,16 +180,17 @@ export function ringCost(ring, rc, metal, M, S) {
   const priceGrams = sizeMethod === 'ar' ? gramsRef : grams;
   const priceF = sizeMethod === 'ar' ? sizeF : 1;                    // árarányosítás: a teljes kő nélküli rész
 
-  let metalCost = 0, alloy = 0, labor = 0, gramSell = 0;
-  if ((S.pricingMode || 'koltseg') === 'gramm') {
+  let metalCost = 0, alloy = 0, labor = 0, gramSell = 0, sellPerGram = null;
+  const rp = refPrice(metal, M);
+  const materialCost = rp ? grams * rp : null;                        // tájékoztató anyagköltség (veszteség nélkül)
+  if ((S.pricingMode || 'gramm') === 'gramm') {
     const g = M.sellPerGram && M.sellPerGram[metal];
-    if (!ok(g) || g <= 0) return { error: `Nincs grammár: ${m.label}.` };
+    if (!ok(g) || g <= 0) return { error: `Nincs megadva grammár: ${m.label}.` };
+    sellPerGram = g;
     gramSell = priceGrams * g * priceF;                              // bruttó, munkadíjjal és árréssel
   } else {
-    const ref = M[m.ref];
-    if (!ok(ref) || ref <= 0) return { error: `Nincs referenciaár: ${m.label}.` };
-    metalCost = priceGrams * m.fin * ref * lossF * priceF;
-    alloy = m.gold ? priceGrams * (1 - m.fin) * (M.alloyAll ?? 0) * lossF * priceF : 0;
+    if (!rp) return { error: `Nincs alapanyag-referenciaár: ${m.label}.` };
+    metalCost = priceGrams * rp * lossF * priceF;                     // arany: 24K × finomság (az ötvözet benne)
     labor = (ring.labor || 0) * laborF * priceF;
   }
 
@@ -150,7 +199,8 @@ export function ringCost(ring, rc, metal, M, S) {
     const rule = ring.stoneRule;
     if (rule.mode === 'quote') quote = 'Ennél a kőbeállításnál egyedi árajánlat szükséges.';
     const d = diamond(M, rc.stones.cat);
-    if (!d || !ok(d.price)) quote = 'Ehhez a kőmérethez nincs ár – egyedi árajánlat szükséges.';
+    if (!d || !ok(d.price)) quote = `Ehhez a kőmérethez${d ? ` (${String(d.ct).replace('.', ',')} ct)` : ''} nincs megerősített ár – egyedi árajánlat szükséges.`;
+    else if (!stoneFits(d, rc.width || ring.refWidth, S)) quote = 'Ez a kő ennél a szélességnél nem fér el – egyedi árajánlat szükséges.';
     else {
       stones = d.price * rc.stones.count;
       setting = (S.settingPerStone || 0) * rc.stones.count;
@@ -160,7 +210,8 @@ export function ringCost(ring, rc, metal, M, S) {
   const engraving = rc.engraving && rc.engraving.trim() ? (S.engravingPrice || 0) : 0;
 
   return {
-    grams: round2(grams), pure: round2(pure), fin: m.fin, metal,
+    grams: round2(grams), gramsExact: grams, refGrams: w0, sizeF, widthF, pure: round2(pure), fin: m.fin, metal,
+    sellPerGram, refPrice: rp, materialCost,
     metal_: metalCost, metalCost, alloy, labor, gramSell, setting, engraving, other: (ring.other || 0) * priceF,
     stones, stoneInfo, quote,
   };
@@ -171,7 +222,7 @@ export function ringCost(ring, rc, metal, M, S) {
  * Visszaad: { final (Ft vagy null), quote (bool), reason, calculated, source, breakdown, parts, grams, pure, marginPct, lowMargin, warnings }
  */
 export function priceProduct(p, cfgIn, M, S, { applyOverride = true } = {}) {
-  const { cfg, warnings } = normalizeConfig(p, cfgIn || defaultConfig(p));
+  const { cfg, warnings } = normalizeConfig(p, cfgIn || defaultConfig(p), M, S);
   const empty = (reason) => ({ final: null, quote: true, reason, calculated: null, source: 'ajanlat', breakdown: null, parts: [], grams: 0, pure: 0, marginPct: null, lowMargin: false, warnings, cfg });
 
   if (p.priceOnRequest && !(applyOverride && p.override?.type === 'fixed')) return empty('Ennél a modellnél egyedi árajánlatot adunk.');
@@ -186,14 +237,16 @@ export function priceProduct(p, cfgIn, M, S, { applyOverride = true } = {}) {
   const metalCost = sum('metalCost'), alloy = sum('alloy'), labor = sum('labor'), gramSell = sum('gramSell'),
         setting = sum('setting'), engraving = sum('engraving'), other = sum('other') + extras, stones = sum('stones');
   const vatF = 1 + (S.vatPct || 0) / 100;
-  const mode = S.pricingMode || 'koltseg';
+  const mode = S.pricingMode || 'gramm';
+  const materialCost = parts.every((x) => x.materialCost !== null) ? sum('materialCost') : null;
 
-  let net, cost, gross;
+  let net, cost, gross, stonesGross = 0;
   if (mode === 'gramm') {
-    const metalNet = gramSell / vatF;                    // a grammár bruttó → nettó
-    net = metalNet + stones * (1 + (S.markupStones || 0) / 100) + setting + engraving + other;
-    cost = null;                                          // a grammár mögötti önköltség nem ismert
-    gross = net * vatF;
+    // Minden tétel végső (bruttó) ár: grammár × tömeg + kövek + díjak. Nincs újabb felár vagy ÁFA.
+    stonesGross = S.stonesGross === false ? stones * (1 + (S.markupStones || 0) / 100) * vatF : stones;
+    gross = gramSell + stonesGross + setting + engraving + other;
+    net = gross / vatF;
+    cost = null;                                          // a munkadíj a grammárban van, külön nem ismert
   } else {
     const baseNet = metalCost + alloy + labor + setting + engraving + other;
     cost = baseNet + stones;
@@ -218,7 +271,7 @@ export function priceProduct(p, cfgIn, M, S, { applyOverride = true } = {}) {
   return {
     final, quote: false, reason: null, calculated, source, minHit,
     marginPct, lowMargin: marginPct !== null && marginPct < S.minMarginPct,
-    breakdown: { metal: metalCost, alloy, labor, gramSell, setting, engraving, other, stones, cost, net, gross, mode },
+    breakdown: { metal: metalCost, alloy, labor, gramSell, setting, engraving, other, stones, stonesGross, cost, net, gross, mode, materialCost },
     parts, warnings, cfg,
     grams: round2(parts.reduce((a, x) => a + x.grams, 0)),
     pure: round2(parts.reduce((a, x) => a + x.pure, 0)),
@@ -231,7 +284,7 @@ export function composition(r, S) {
   if (!b) return { metal: 0, stones: 0, labor: 0, other: 0 };
   const vatF = 1 + (S.vatPct || 0) / 100;
   if (b.mode === 'gramm') {
-    const raw = { stones: b.stones * (1 + S.markupStones / 100) * vatF, labor: b.setting * vatF, other: (b.engraving + b.other) * vatF };
+    const raw = { stones: b.stonesGross, labor: b.setting, other: b.engraving + b.other };
     raw.metal = Math.max(0, r.final - raw.stones - raw.labor - raw.other);   // grammár: fém + munka + árrés együtt
     return raw;
   }
@@ -245,7 +298,9 @@ export function composition(r, S) {
 export function ringSplit(p, cfg, r, S) {
   if (!r.final) return p.rings.map(() => null);
   const k1 = 1 + (S.markupMetal || 0) / 100, k2 = 1 + (S.markupStones || 0) / 100;
-  const raw = r.parts.map((x) => (x.metalCost + x.alloy + x.labor + x.setting + x.engraving + x.other) * k1 + x.gramSell + x.stones * k2);
+  const gm = r.breakdown?.mode === 'gramm', sg = S.stonesGross === false ? k2 : 1;
+  const raw = r.parts.map((x) => gm ? x.gramSell + x.stones * sg + x.setting + x.engraving + x.other
+    : (x.metalCost + x.alloy + x.labor + x.setting + x.engraving + x.other) * k1 + x.stones * k2);
   const tot = raw.reduce((a, x) => a + x, 0) || 1;
   const step = Math.max(S.roundTo || 1, 500);
   const out = raw.map((x) => Math.round((r.final * x) / tot / step) * step);
@@ -297,18 +352,28 @@ export function diffPrices(products, M0, M1, S0, S1 = S0) {
 }
 
 /**
- * Demó-tömegek visszaszámolása: a 14K tömeget úgy állítjuk be, hogy költségalapú módban,
- * a kezdő demóárakkal a kalkulált ár a mostani weboldali ár közelében legyen.
+ * BECSÜLT tömegek: a modell valós tömege nem ismert, ezért a 14K tömeget a mostani weboldali
+ * árból számoljuk vissza a beállított módszerrel (grammáras módban: (ár − kövek) / 47 000 Ft/g).
+ * Ez becslés, nem jóváhagyott adat – a termék „approved: false”, amíg az ötvös meg nem adja.
  */
 export function seedWeights(products, M, S) {
-  const Sk = { ...S, pricingMode: 'koltseg', sizeMethod: 'tomeg', roundTo: 1 };
+  const Sk = { ...S, sizeMethod: 'tomeg', roundTo: 1 };
+  const pricedAll = [...M.diamonds].filter((d) => ok(d.price)).sort((a, b) => a.ct - b.ct);
   for (const p of products) {
+    // ár nélküli alap kőméret (pl. 0,05 ct) helyett a legnagyobb megerősített árú kisebb kő az alapértelmezett
+    for (const r of p.rings) {
+      const rule = r.stoneRule; if (!rule) continue;
+      const d = diamond(M, rule.defCat);
+      if (!d || !ok(d.price)) { const alt = [...pricedAll].reverse().find((x) => !d || x.ct < d.ct) || pricedAll[0]; rule.defCat = alt.id; if (!rule.cats.includes(alt.id)) rule.cats.unshift(alt.id); }
+      const fit = allowedCats(rule, r.refWidth, M, S);
+      if (fit.length && !fit.includes(rule.defCat)) rule.defCat = fit.filter((c) => ok(diamond(M, c).price)).pop() || fit[0];
+    }
     if (p.fixedWeight || !p.listaAr) continue;
     const cfg = defaultConfig(p);
     const set = (W) => p.rings.forEach((r) => { r.weight = W * r.share; });
     const gross = (W) => { set(W); return priceProduct({ ...p, priceOnRequest: false }, cfg, M, Sk, { applyOverride: false }).breakdown?.gross ?? 0; };
     const lo = p.kind === 'p' ? 3.2 : 2, hi = p.kind === 'p' ? 30 : 10;
-    const priced = [...M.diamonds].filter((d) => ok(d.price)).sort((a, b) => a.ct - b.ct);
+    const priced = pricedAll;
     let W = lo;
     for (let guard = 0; guard < 12; guard++) {
       const c = defaultConfig(p);
@@ -324,7 +389,7 @@ export function seedWeights(products, M, S) {
       else break;
     }
     W = Math.max(lo, Math.min(W, hi));
-    p.rings.forEach((r) => { r.weight = round1(W * r.share); });
+    p.rings.forEach((r) => { r.weight = round2(W * r.share); });
   }
   return products;
 }
@@ -336,3 +401,19 @@ export const ft = (n) => (n === null || n === undefined ? 'Egyedi ajánlat' : nf
 export const num = (n) => nf.format(Math.round(n)).replace(/ |\s/g, ' ');
 export const dec = (n) => nf2.format(n);
 export const pct = (n, sign = true) => (sign && n > 0 ? '+' : '') + nf2.format(Math.round(n * 10) / 10) + '%';
+
+/**
+ * Az ötvös számítási példáihoz: egyetlen gyűrű megadott anyaggal és tömeggel (54-es méretben).
+ * Pl. exampleRing({ metal: 'pt', weight: 6.9, size: 60 }) → 6,9 × 60/54 × 55 000.
+ */
+export function exampleRing({ metal = 'au14', weight, size = 54, refSize = 54, width = 4, stones = null }, M, S) {
+  const p = {
+    id: 'pelda', code: 'Példa', name: 'Számítási példa', kind: 's', metals: [metal], colors: ['sarga'], baseColor: 'sarga', widths: [width],
+    rings: [{ label: 'Gyűrű', refSize, refWidth: width, weights: { [metal]: weight }, weight: 1, labor: 0, other: 0,
+      stoneRule: stones ? { mode: 'free', min: 1, max: 99, def: stones.count, cats: [stones.cat], defCat: stones.cat, allowNone: true } : null }],
+  };
+  const cfg = defaultConfig(p);
+  cfg.metal = metal; cfg.color = isGold(metal) ? 'sarga' : null; cfg.rings[0].size = size;
+  if (stones) cfg.rings[0].stones = { ...stones };
+  return priceProduct(p, cfg, M, S);
+}

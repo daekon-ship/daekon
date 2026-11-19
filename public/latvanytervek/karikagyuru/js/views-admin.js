@@ -3,12 +3,15 @@
    Bemutató: nincs bejelentkezés és szerveroldali jogosultság (külön fejlesztési szakasz).
    ========================================================================== */
 import { store } from './store.js';
-import { COLORS, STYLES, SITES } from './data.js';
-import { priceProduct, priceAll, diffPrices, defaultConfig, composition, ft, num, dec, pct, METALS, METAL_ORDER, isGold, diamond } from './engine.js';
+import { COLORS, STYLES, SITES, SRC_LABEL, EXAMPLE_WEIGHTS } from './data.js';
+import { priceProduct, priceAll, diffPrices, defaultConfig, composition, ft, num, dec, pct, METALS, METAL_ORDER, isGold, diamond, refPrice, refWeight, exampleRing, allowedCats } from './engine.js';
 import { $, $$, esc, productMedia, toast, modal, M, reduced, dateHu, dayHu } from './ui.js';
 import { configText } from './views-public.js';
 
 const S = () => store.get();
+/** Adatforrás-jelölés: jóváhagyott / ügyfél példája / megerősítendő / demó. */
+export const srcBadge = (src) => src ? `<span class="src src--${src}" title="Adatforrás">${SRC_LABEL[src] || src}</span>` : '';
+const msrc = (M, path) => { const m = /^diamonds\.(\d+)\./.exec(path); return m ? M.diamonds[+m[1]]?.src : (M.src || {})[path]; };
 const fresh = (el) => { const n = el.cloneNode(false); el.replaceWith(n); return n; };
 const clone = (o) => JSON.parse(JSON.stringify(o));
 const parseNum = (v) => { const n = Number(String(v).replace(/\s| | /g, '').replace(',', '.')); return Number.isFinite(n) ? n : NaN; };
@@ -23,6 +26,7 @@ export const MENU = [
 export const MENU_EXTRA = [
   ['keplet', 'Felárak és munkadíjak'],
   ['elozmenyek', 'Árváltozások naplója'],
+  ['jovahagyas', 'Jóváhagyásra vár'],
   ['beallitasok', 'Beállítások'],
 ];
 const ALLMENU = MENU.concat(MENU_EXTRA);
@@ -45,7 +49,7 @@ export function adminShell(el, page, arg) {
   </div>`;
   const P = $('[data-page]', el);
   ({ attekintes: overview, alapanyag: materials, arszamitas: priceCalc, gyuruk: products, gyuru: productEdit, keplet: formula,
-     erdeklodesek: inquiries, elozmenyek: history, beallitasok: settings }[page] || overview)(P, arg);
+     erdeklodesek: inquiries, elozmenyek: history, beallitasok: settings, jovahagyas: approvals }[page] || overview)(P, arg);
   if (M() && !reduced()) M().animate(P, { opacity: [0, 1], y: [10, 0] }, { duration: 0.35 });
 }
 
@@ -58,6 +62,13 @@ const MENU_HELP = {
   elozmenyek: 'Mikor, mit változtatott. Itt vissza is állíthatja.',
   beallitasok: 'Kerekítés, védelem, demó visszaállítása.',
 };
+function pendingCount(st) {
+  const M = st.materials, Sx = st.settings;
+  return Object.keys(MAT_LABEL).filter((k) => (M.src || {})[k] !== 'jovahagyott').length
+    + M.diamonds.filter((d) => d.src !== 'jovahagyott').length
+    + Object.keys(SET_LABEL).filter((k) => (Sx.src || {})[k] !== 'jovahagyott').length
+    + st.products.filter((p) => !p.approved).length;
+}
 function overview(el) {
   el = fresh(el);
   const st = S();
@@ -74,6 +85,7 @@ function overview(el) {
     <div class="smalltiles">
       ${tile('#/admin/keplet', 'Felárak és munkadíjak', st.settings.pricingMode === 'gramm' ? 'grammár szerint' : `${dec(st.settings.markupMetal)}% felár`, 'Árképzési mód, felár, munkadíj.')}
       ${tile('#/admin/elozmenyek', 'Árváltozások naplója', `${st.history.length} bejegyzés`, 'Mikor, mit változtatott. Visszaállítható.')}
+      ${tile('#/admin/jovahagyas', 'Jóváhagyásra vár', `${pendingCount(st)} adat`, 'Ügyfélpélda vagy demó – még nem végleges.', pendingCount(st) ? 'smalltile--warn' : '')}
       ${tile('#/admin/beallitasok', 'Beállítások', `${num(st.settings.roundTo)} Ft-ra kerekít`, 'Kerekítés, védelem, demó visszaállítása.')}
     </div>
     <div class="ovcols">
@@ -90,8 +102,107 @@ function overview(el) {
 
 function priceCalc(el) {
   el = fresh(el);
-  el.innerHTML = `<h1 class="adm__h1">Árszámítás</h1><p class="adm__lead">Válassza ki a gyűrűt, és állítsa be, amit az ügyfél kér.</p><div class="qcalc" data-qcalc></div>`;
+  el.innerHTML = `<h1 class="adm__h1">Árszámítás</h1><p class="adm__lead">Válassza ki a gyűrűt, és állítsa be, amit az ügyfél kér.</p><div class="qcalc" data-qcalc></div>
+    <div class="xwrap" data-examples></div>`;
   quickCalc($('[data-qcalc]', el));
+  goldsmithExamples($('[data-examples]', el));
+}
+
+/* ---------- Jóváhagyásra vár: mi ügyfélpélda, mi demó, mi jóváhagyott ---------- */
+const MAT_LABEL = { gold24: '24K arany alapanyagára', platinum: 'Platina alapanyagára', palladium: 'Palládium alapanyagára', titanium: 'Titán alapanyagára',
+  'sellPerGram.au14': '14K kész gyűrű grammára', 'sellPerGram.au18': '18K kész gyűrű grammára', 'sellPerGram.pt': 'Platina kész gyűrű grammára',
+  'sellPerGram.pd': 'Palládium kész gyűrű grammára', 'sellPerGram.ti': 'Titán kész gyűrű grammára' };
+const SET_LABEL = { pricingMode: 'Árképzési mód (grammár szerint)', sizeMethod: 'Méret hatása (tömeg arányos a mérettel)', density: 'Tömegarányok anyagonként (4,8 / 5,4 / 6,9 / 4,0 / 1,5 g)',
+  stonesGross: 'A kő darabára végső ár (nincs rá felár)', settingPerStone: 'Kőfoglalás díja', engravingPrice: 'Gravírozás díja', boxCost: 'Díszdoboz', certCost: 'Kőtanúsítvány',
+  roundTo: 'Kerekítés', vatPct: 'ÁFA', stoneEdgeMm: 'Kő és gyűrűszél közti perem', stoneGapMm: 'Kövek közti hely körbe foglalásnál',
+  lossPct: 'Gyártási veszteség (költségalapú mód)', laborFactor: 'Munkadíj-szorzók (költségalapú mód)', markupMetal: 'Felár fémre (költségalapú mód)', markupStones: 'Felár kövekre (költségalapú mód)' };
+const valOf = (o, path) => path.split('.').reduce((x, k) => x?.[k], o);
+function approvals(el) {
+  el = fresh(el);
+  const st = S();
+  const M = st.materials, Sx = st.settings;
+  const fmtSet = (k) => { const v = Sx[k]; if (typeof v === 'object') return Object.entries(v).map(([m, x]) => `${METALS[m]?.short || m}: ${dec(Math.round(x * 1000) / 1000)}`).join(' · ');
+    if (k === 'pricingMode') return v === 'gramm' ? 'grammár szerint' : 'költség szerint'; if (k === 'sizeMethod') return v === 'tomeg' ? 'tömeg szerint' : 'árarányos';
+    if (k === 'stonesGross') return v === false ? 'nem' : 'igen'; if (/Mm$/.test(k)) return dec(v) + ' mm'; if (/Pct|^markup/.test(k)) return dec(v) + '%'; return ft(v); };
+  const row = (kind, key, label, value, src, note = '') => `<li class="aprow aprow--${src}"><span class="aprow__l"><b>${label}</b><small>${value}${note ? ` · ${note}` : ''}</small></span>${srcBadge(src)}
+    ${src === 'jovahagyott' ? '' : `<button class="abtn" type="button" data-appr="${kind}|${key}" data-lab="${esc(label)}" ${src === 'bizonytalan' && kind === 'diamond' ? 'disabled title="Előbb adjon meg árat az Arany ára és árak oldalon"' : ''}>Jóváhagyom</button>`}</li>`;
+  const mats = Object.keys(MAT_LABEL).map((k) => row('materials', k, MAT_LABEL[k], valOf(M, k) == null ? 'nincs ár' : ft(valOf(M, k)) + '/g', (M.src || {})[k] || 'demo'));
+  const dias = M.diamonds.map((d) => row('diamond', d.id, `${d.name} (${d.quality})`, d.price == null ? 'nincs ár → egyedi ajánlat' : ft(d.price) + '/db', d.src || 'demo', d.note ? esc(d.note) : ''));
+  const sets = Object.keys(SET_LABEL).map((k) => row('settings', k, SET_LABEL[k], fmtSet(k), (Sx.src || {})[k] || 'demo'));
+  const prods = st.products.filter((p) => !p.approved);
+  const count = (arr) => arr.filter((h) => !h.includes('aprow--jovahagyott')).length;
+  el.innerHTML = `
+    <h1 class="adm__h1">Jóváhagyásra vár</h1>
+    <p class="adm__lead">Itt látszik, melyik adat jóváhagyott, melyik az ügyfél jegyzetéből vett példa, és melyik kitalált bemutatóadat. Amit a tulajdonos maga átír, az automatikusan jóváhagyottá válik.</p>
+    <p class="srclegend">${['jovahagyott', 'pelda', 'bizonytalan', 'demo'].map(srcBadge).join(' ')}</p>
+    <section class="ebox"><h2>Árak – alapanyag és grammár <small>${count(mats)} vár</small></h2><ul class="aplist">${mats.join('')}</ul></section>
+    <section class="ebox"><h2>Természetes gyémántok <small>${count(dias)} vár</small></h2><ul class="aplist">${dias.join('')}</ul>
+      <p class="hint">A 0,04 és 0,05 ct ára ellentmondásos/hiányzik, ezért ezeknél a vásárló „Egyedi árajánlat szükséges” feliratot lát. <a href="#/admin/alapanyag">Ár megadása</a></p></section>
+    <section class="ebox"><h2>Számítási szabályok <small>${count(sets)} vár</small></h2><ul class="aplist">${sets.join('')}</ul></section>
+    <section class="ebox"><h2>Gyűrűk adatai <small>${prods.length} / ${st.products.length} vár</small></h2>
+      <p class="hint">A gyűrűk tömege most becslés: a weboldalon látható árból visszaszámolva (ár ÷ 47 000 Ft/g). A kőszámok és kőméretek a fotók alapján becsültek. Gyűrűnként a <a href="#/admin/gyuruk">Gyűrűk</a> menüben lehet a valós tömeget megadni és jóváhagyni.</p></section>`;
+  el.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-appr]');
+    if (!b || b.disabled) return;
+    const [kind, key] = b.dataset.appr.split('|');
+    store.approve(kind, key, b.dataset.lab);
+    toast('Jóváhagyva.'); approvals(el);
+  });
+}
+
+/* ---------- Az ötvös számítási példái (Árszámítás oldal) ---------- */
+function goldsmithExamples(box) {
+  const st = S();
+  const M = st.materials, Sx = st.settings;
+  const s = { metal: 'pt', weight: EXAMPLE_WEIGHTS.pt, size: 60, stones: 0, cat: 'd01' };
+  const R1 = { ...Sx, roundTo: 1 };
+  const ex = (metal, size) => exampleRing({ metal, weight: EXAMPLE_WEIGHTS[metal], size }, M, { ...R1, pricingMode: 'gramm' });
+  const gp = (m) => M.sellPerGram?.[m];
+  const line = (m, size) => { const r = ex(m, size); const g = gp(m);
+    return `<tr><td>${METALS[m].short}</td><td>${size}</td><td>${dec(EXAMPLE_WEIGHTS[m])} g${size !== 54 ? ` × ${size}/54` : ''}</td><td>${g ? ft(g) : '–'}</td><td><b>${r.final === null ? 'nincs grammár' : ft(r.final)}</b></td></tr>`; };
+  const paint = () => {
+    const r = exampleRing({ metal: s.metal, weight: s.weight, size: s.size, stones: s.stones ? { count: s.stones, cat: s.cat } : null }, M, { ...Sx, pricingMode: 'gramm' });
+    const part = r.parts[0] || {}, d = diamond(M, s.cat);
+    const steps = r.final === null && !part.grams ? `<p class="warn">${esc(r.reason || '')}</p>` : `<ol class="xsteps">
+      <li><span>Tömeg 54-es méretben</span><b>${dec(s.weight)} g</b></li>
+      ${s.size !== 54 ? `<li><span>Méret: × ${s.size}/54</span><b>${dec(Math.round(part.gramsExact * 100) / 100)} g</b></li>` : ''}
+      <li><span>× eladási grammár ${srcBadge((M.src || {})[`sellPerGram.${s.metal}`] || 'demo')}</span><b>${ft(gp(s.metal))}/g</b></li>
+      <li><span>= a gyűrű ára kő nélkül</span><b>${ft(part.gramSell)}</b></li>
+      ${s.stones ? `<li><span>+ ${s.stones} × ${d.name} ${srcBadge(d.src)}</span><b>${d.price == null ? 'nincs ár' : ft(d.price * s.stones)}</b></li>` : ''}
+      ${Sx.roundTo > 1 && r.final !== null ? `<li><span>Kerekítés felfelé ${num(Sx.roundTo)} Ft-ra</span><b>${ft(r.final)}</b></li>` : ''}
+      <li class="xsteps__sum"><span>Végösszeg (bruttó)</span><b>${r.final === null ? 'Egyedi árajánlat szükséges' : ft(r.final)}</b></li>
+      ${part.materialCost ? `<li class="xsteps__info"><span>Tájékoztató: anyagköltség (${ft(part.refPrice)}/g alapanyagár)</span><b>${ft(part.materialCost)}</b></li>` : ''}
+    </ol>${r.final === null && r.reason ? `<p class="warn">${esc(r.reason)}</p>` : ''}`;
+    box.innerHTML = `
+      <section class="ebox xbox"><h2>Az ötvös számítási módja <small>az ügyfél jegyzetének példái</small></h2>
+        <p class="hint">Ár = tömeg × eladási grammár; más méretnél a tömeg arányosan változik (× méret / 54). A kövek darabára és a külön díjak ehhez adódnak hozzá, felár és ÁFA nem kerül rá még egyszer.</p>
+        <div class="alltable"><table><thead><tr><th>Anyag</th><th>Méret</th><th>Tömeg</th><th>Grammár</th><th>Ár</th></tr></thead><tbody>
+          ${line('au14', 54)}${line('pt', 54)}${line('pt', 48)}${line('pt', 60)}
+        </tbody></table></div>
+        <p class="note-warn">A kézzel írt jegyzetben a 60-as platina gyűrűnél 442 000 Ft szerepel. A lineáris számítás ${ft(ex('pt', 60).final)}-ot ad, a különbség ${ft(442000 - (ex('pt', 60).final || 0))}. Nem állítottuk be – egyeztetendő, hogy nagyobb méretnél más a tömegnövekedés, vagy más szélességgel számolt.</p>
+      </section>
+      <section class="ebox xbox"><h2>Próbaszámítás <small>tetszőleges tömeggel</small></h2>
+        <div class="xform">
+          <label class="efield"><span>Anyag</span><select class="input input--lg" data-xm>${METAL_ORDER.map((m) => `<option value="${m}" ${m === s.metal ? 'selected' : ''}>${METALS[m].short}</option>`).join('')}</select></label>
+          <label class="efield"><span>Tömeg 54-es méretben</span><span class="efield__in"><input class="input input--lg" inputmode="decimal" data-xw value="${dec(s.weight)}"><i>g</i></span></label>
+          <label class="efield"><span>Gyűrűméret</span><span class="efield__in"><input class="input input--lg" inputmode="numeric" data-xs value="${s.size}"><i>mm</i></span></label>
+          <label class="efield"><span>Kövek</span><span class="efield__in"><input class="input input--lg" inputmode="numeric" data-xn value="${s.stones}"><i>db</i></span></label>
+          <label class="efield"><span>Kőméret</span><select class="input input--lg" data-xc>${M.diamonds.map((x) => `<option value="${x.id}" ${x.id === s.cat ? 'selected' : ''}>${x.name} – ${x.price == null ? 'nincs ár' : ft(x.price)}</option>`).join('')}</select></label>
+        </div>
+        ${steps}
+      </section>`;
+  };
+  box.addEventListener('change', (e) => {
+    const t = e.target;
+    if (t.matches('[data-xm]')) { s.metal = t.value; s.weight = EXAMPLE_WEIGHTS[t.value]; }
+    if (t.matches('[data-xc]')) s.cat = t.value;
+    if (t.matches('[data-xw],[data-xs],[data-xn]')) {
+      const v = parseNum(t.value);
+      if (Number.isFinite(v) && v >= 0) { if (t.matches('[data-xw]')) s.weight = v; if (t.matches('[data-xs]')) s.size = Math.min(80, Math.max(40, Math.round(v))); if (t.matches('[data-xn]')) s.stones = Math.min(80, Math.round(v)); }
+    }
+    paint();
+  });
+  paint();
 }
 
 /* Gyors árszámítás: gyűrű, anyag, szín, méret, kő → ár, és rögzíthető ajánlatként. */
@@ -115,7 +226,7 @@ function quickCalc(box) {
           ${p.rings.map((rg, i) => rg.stoneRule && rg.stoneRule.allowNone ? `<div><span class="qcalc__lab">${esc(rg.label)} – kő</span><div class="qseg"><button type="button" data-qst="${i}|1" aria-pressed="${!!cfg.rings[i].stones}">Gyémánttal</button><button type="button" data-qst="${i}|0" aria-pressed="${!cfg.rings[i].stones}">Kő nélkül</button></div></div>` : '').join('')}
         </div>
       </div>
-      <div class="qcalc__price"><span>Ár</span><b>${r.final === null ? 'Egyedi ajánlat' : ft(r.final)}</b><small>${r.final === null ? esc(r.reason || '') : `bruttó · ${dec(r.grams)} g ${METALS[cfg.metal].short.toLowerCase()}`}</small></div>
+      <div class="qcalc__price"><span>Ár</span><b>${r.final === null ? 'Egyedi ajánlat' : ft(r.final)}</b><small>${r.final === null ? esc(r.reason || '') : `bruttó · ${dec(r.grams)} g, ${METALS[cfg.metal].short}`}</small></div>
       <button class="abtn abtn--xl qcalc__save" type="button" data-qsave>Felírom ajánlatnak</button>`;
   };
   box.addEventListener('change', (e) => { if (e.target.matches('[data-qp]')) { p = store.product(e.target.value); cfg = defaultConfig(p); paint(); } });
@@ -223,7 +334,7 @@ function materials(el) {
 
   const field = (key, label, unit, step, sub = '', path = key) => `
     <div class="mfield" data-mfield="${path}">
-      <label for="f-${path.replace(/\./g, '-')}"><b>${label}</b>${sub ? `<small>${sub}</small>` : ''}</label>
+      <label for="f-${path.replace(/\./g, '-')}"><b>${label} ${srcBadge(msrc(cur, path))}</b>${sub ? `<small>${sub}</small>` : ''}</label>
       <div class="mfield__ctl">
         <button type="button" class="mbtn" data-step="-${step}" aria-label="${label} csökkentése ${num(step)} Ft-tal">−</button>
         <div class="mfield__input"><input id="f-${path.replace(/\./g, '-')}" inputmode="numeric" data-path="${path}" value="${nv(get(draft, path))}" placeholder="nincs ár" autocomplete="off"><span>${unit}</span></div>
@@ -233,31 +344,36 @@ function materials(el) {
     </div>`;
 
   el.innerHTML = `
-    <h1 class="adm__h1">Arany ára</h1>
+    <h1 class="adm__h1">Arany ára és árak</h1>
     <p class="adm__meta">Utoljára módosítva: ${dateHu(lastM.at)}</p>
-    <p class="modebar">Árképzés: <b>${gm ? 'grammár szerint' : 'költség szerint (aranyár + munkadíj + felár)'}</b> · <a href="#/admin/keplet">módosítás</a> <span class="demo-chip">ügyféllel egyeztetendő</span></p>
+    <p class="modebar">Alkalmazott árazás: <b>${gm ? 'grammár szerint – tömeg × eladási grammár (az ötvös módszere)' : 'költség szerint – alapanyagár + munkadíj + felár'}</b> · <a href="#/admin/keplet">módosítás</a></p>
+    <p class="srclegend">Adatforrás: ${['jovahagyott', 'pelda', 'bizonytalan', 'demo'].map(srcBadge).join(' ')} <a href="#/admin/jovahagyas">Mi vár jóváhagyásra?</a></p>
     <div class="mat mat--simple">
       <section class="goldcard">
-        ${gm ? field('', '1 gramm 14 karátos kész gyűrű ára', 'Ft', 500, 'bruttó – tartalmazza a munkadíjat és az árrést', P0) : field('gold24', '1 gramm 24 karátos arany', 'Ft', 500, 'számítási alap – 24K gyűrűt nem készítünk')}
+        ${gm ? field('', '1 gramm 14 karátos kész gyűrű eladási ára', 'Ft', 500, 'bruttó – benne a fém, a munka és az árrés', P0) : field('gold24', '1 gramm 24 karátos arany (alapanyag)', 'Ft', 500, 'ebből: 14K = ×0,585, 18K = ×0,75')}
         <div class="quick" role="group" aria-label="Gyors módosítás">
           ${[-3, -1, 1, 3, 5].map((v) => `<button type="button" class="qbtn" data-quick="${v}">${v > 0 ? '+' : '−'}${Math.abs(v)}%</button>`).join('')}
         </div>
       </section>
       <section class="impact" data-impact aria-live="polite"></section>
       <div class="mimpact" data-mimpact hidden><span data-mimpact-t></span><button type="button" data-goimpact></button></div>
+      <details class="mat__more" ${gm ? 'open' : ''}>
+        <summary>Késztermék eladási grammára <small>${gm ? 'ebből számolódik az ár' : 'grammáras módban használt'}</small></summary>
+        ${(gm ? ['au18', 'pt', 'pd', 'ti'] : METAL_ORDER).map((m) => field('', `1 g ${METALS[m].label.toLowerCase()} kész gyűrű`, 'Ft', 500, 'bruttó', `sellPerGram.${m}`)).join('')}
+      </details>
+      <details class="mat__more" ${gm ? '' : 'open'}>
+        <summary>Alapanyag-referenciaárak <small>${gm ? 'beszerzés – az eladási árat nem változtatja, csak az anyagköltséget mutatja' : 'ebből számolódik az ár'}</small></summary>
+        ${gm ? field('gold24', '1 g 24 karátos arany', 'Ft', 500, 'ebből: 14K = ×0,585, 18K = ×0,75') : ''}
+        <p class="hint" data-derived></p>
+        ${field('', 'Platina', 'Ft/g', 500, '', 'platinum')}${field('', 'Palládium', 'Ft/g', 500, '', 'palladium')}${field('', 'Titán', 'Ft/g', 10, '', 'titanium')}
+      </details>
       <details class="mat__more">
-        <summary>Az arany ára az elmúlt hónapokban</summary>
+        <summary>A 24K arany ára az elmúlt hónapokban</summary>
         <div class="goldcard__chart"><div data-chart></div><p class="hint">Demó előzmények – kitalált adatok.</p></div>
       </details>
       <details class="mat__more">
-        <summary>${gm ? 'Többi anyag grammára' : 'Platina, palládium, titán, ötvözet'} <small>ritkábban változik</small></summary>
-        ${gm ? ['au18', 'pt', 'pd', 'ti'].map((m) => field('', `1 gramm ${METALS[m].label.toLowerCase()} kész gyűrű`, 'Ft', 500, 'bruttó', `sellPerGram.${m}`)).join('')
-          : `${field('', 'Platina', 'Ft/g', 100, '', 'platinum')}${field('', 'Palládium', 'Ft/g', 100, '', 'palladium')}${field('', 'Titán', 'Ft/g', 10, '', 'titanium')}
-             ${field('', 'Aranyötvözet (minden színre azonos)', 'Ft/g', 50, 'a szín nem változtat az árat', 'alloyAll')}`}
-      </details>
-      <details class="mat__more">
         <summary>Természetes gyémántok ára <small>darabár · üresen hagyva: egyedi ajánlat</small></summary>
-        ${st.materials.diamonds.map((d, i) => field('', `${d.name} · ${d.quality}`, 'Ft/db', 1000, `${st.products.filter((p) => p.rings.some((r) => r.stoneRule && r.stoneRule.cats.includes(d.id))).length} gyűrűnél választható`, `diamonds.${i}.price`)).join('')}
+        ${st.materials.diamonds.map((d, i) => field('', `${d.name} · ${d.quality}`, 'Ft/db', 1000, `${d.note ? esc(d.note) + ' · ' : ''}${st.products.filter((p) => p.rings.some((r) => r.stoneRule && r.stoneRule.cats.includes(d.id))).length} gyűrűnél választható`, `diamonds.${i}.price`)).join('')}
       </details>
     </div>`;
 
@@ -270,6 +386,8 @@ function materials(el) {
     $$('[data-quick]', el).forEach((b) => b.setAttribute('aria-pressed', String(Math.round(get(cur, P0) * (1 + Number(b.dataset.quick) / 100) / 100) * 100 === get(draft, P0))));
     const d = diffPrices(st.products, cur, draft, st.settings);
     const changes = changedPaths(cur, draft);
+    const dv = $('[data-derived]', el);
+    if (dv) dv.innerHTML = `Számolt alapanyagár: <b>14K ${ft(refPrice('au14', draft))}/g</b> · <b>18K ${ft(refPrice('au18', draft))}/g</b> (a 24K árából)`;
     $$('[data-mfield]', el).forEach((f) => f.classList.toggle('is-changed', changes.some((c) => c.path === f.dataset.mfield)));
     const mi = $('[data-mimpact]', el);
     mi.hidden = !changes.length;
@@ -293,7 +411,8 @@ function materials(el) {
     const gold = changes.find((c) => c.path === P0);
     impact.innerHTML = `
       ${gold ? `<p class="impact__new">Új ár: <b>${num(gold.to)} Ft</b> <em class="${gold.pct > 0 ? 'up' : 'down'}">${pct(gold.pct)}</em></p>` : ''}
-      <p class="impact__say"><b>${d.count} gyűrű</b> ára változik, átlagosan <b class="${d.avgPct >= 0 ? 'up' : 'down'}">${pct(d.avgPct)}</b>.</p>
+      ${d.count ? `<p class="impact__say"><b>${d.count} gyűrű</b> ára változik, átlagosan <b class="${d.avgPct >= 0 ? 'up' : 'down'}">${pct(d.avgPct)}</b>.</p>`
+        : `<p class="impact__say">Az eladási árak <b>nem változnak</b>${gm ? ' – grammáras módban az alapanyagár csak a részletes kalkulációban látható anyagköltséget módosítja' : ''}.</p>`}
       ${d.lost.length ? `<p class="impact__warn"><b>${d.lost.length} gyűrű alapára ár nélkül marad</b> (pl. ${esc(d.lost[0].code)}) – ott „Egyedi árajánlat szükséges” jelenik meg.</p>` : ''}
       ${examples.length ? `<ul class="impact__few">${[...d.rows].sort((a, b) => (a.id === 'maz-81184-81185-w' ? -1 : b.id === 'maz-81184-81185-w' ? 1 : Math.abs(a.old - 300000) - Math.abs(b.old - 300000))).slice(0, 3).map((r) => `<li><span>${esc(r.code)}</span><s>${ft(r.old)}</s><b>${ft(r.now)}</b></li>`).join('')}</ul>` : ''}
       ${big.length ? `<label class="confirm"><input type="checkbox" data-confirm ${confirmBig ? 'checked' : ''}><span><b>Nagy változás (${pct(big[0].pct)}).</b> Ellenőriztem, jó a szám.</span></label>` : ''}
@@ -347,6 +466,10 @@ function materials(el) {
       const valid = $('[data-valid]', el)?.value;
       const sp = selEx && store.product(selEx);
       const before = sp && priceProduct(sp, null, cur, st.settings);
+      for (const c of changedPaths(cur, draft)) {               // amit a tulajdonos maga írt be, az jóváhagyott adat
+        const m = /^diamonds\.(\d+)\./.exec(c.path);
+        if (m) draft.diamonds[+m[1]].src = 'jovahagyott'; else draft.src = { ...(draft.src || {}), [c.path]: 'jovahagyott' };
+      }
       const d = store.applyMaterials(draft, { validFrom: valid ? new Date(valid).toISOString() : undefined });
       const entry = S().history[0];
       el.innerHTML = `<div class="done">
@@ -434,7 +557,7 @@ function products(el) {
       return `<a class="prow" href="#/admin/gyuru/${p.id}">
         <span class="prow__img">${productMedia(p)}</span>
         <span class="prow__txt"><b>${esc(p.code)}</b><span>${esc(p.name)}</span>
-          <span class="prow__tags">${p.override ? `<em class="tag tag--blue">${p.override.type === 'fixed' ? 'rögzített ár' : `képlet ${pct(p.override.value)}`}</em>` : '<em class="tag tag--formula">képletből</em>'}${r.lowMargin ? '<em class="tag tag--warn">alacsony árrés</em>' : ''}${p.minPrice ? '<em class="tag">minimumár</em>' : ''}${p.visible === false ? '<em class="tag">rejtett</em>' : ''}</span></span>
+          <span class="prow__tags">${p.override ? `<em class="tag tag--blue">${p.override.type === 'fixed' ? 'rögzített ár' : `képlet ${pct(p.override.value)}`}</em>` : '<em class="tag tag--formula">képletből</em>'}${r.lowMargin ? '<em class="tag tag--warn">alacsony árrés</em>' : ''}${p.minPrice ? '<em class="tag">minimumár</em>' : ''}${p.visible === false ? '<em class="tag">rejtett</em>' : ''}${p.approved ? '<em class="tag tag--ok">jóváhagyott adat</em>' : '<em class="tag">becsült tömeg</em>'}</span></span>
         <span class="prow__price"><b>${ft(r.final)}</b>
           <small>${p.listaAr ? `weboldalon most: ${ft(p.listaAr)}${Math.abs(dv) >= 0.5 ? ` (${pct(dv)})` : ''}` : 'demótermék'}</small></span>
         <span class="abtn">Szerkesztés</span>
@@ -506,9 +629,9 @@ function productEdit(el, id) {
   };
 
   const render = () => {
-    const todo = [
-      p.rings.some((r) => r.stoneRule?.demo) && 'kőszám és kőméretek (demó szabály)',
-      'tömeg 14K-ban, referenciaméret és -szélesség (demóadat)',
+    const todo = p.approved ? [] : [
+      p.rings.some((r) => r.stoneRule?.demo) && 'kőszám és kőméretek (a fotó alapján becsült szabály)',
+      'tömeg 14K-ban (a weboldali árból visszaszámolt becslés), referenciaméret és -szélesség',
       p.real && 'megnevezés (a cikkszámból képzett)',
       p.unknownColor && 'alapszín (a cikkszámban nincs színjelölés)',
     ].filter(Boolean);
@@ -534,11 +657,12 @@ function productEdit(el, id) {
         ${p.rings.map((r, i) => `<section class="ebox"><h2>${esc(r.label)}</h2>
           <div class="egrid">
             ${n(`rings.${i}.refSize`, 'Referenciaméret', 'mm', 'ehhez a mérethez tartozik a tömeg')}
-            ${n(`rings.${i}.weight`, 'Tömeg 14K-ban', 'g', 'referenciaméretben – demóadat')}
+            ${n(`rings.${i}.weight`, 'Tömeg 14K-ban', 'g', `${r.refSize}-es méretben – ${p.approved ? 'jóváhagyott' : 'becslés'}`)}
             ${n(`rings.${i}.refWidth`, 'Referenciaszélesség', 'mm')}
             ${n(`rings.${i}.labor`, 'Munkadíj', 'Ft', st.settings.pricingMode === 'gramm' ? 'grammáras módban nem számít bele (a grammár tartalmazza)' : 'nem függ az arany árától')}
             ${n(`rings.${i}.other`, 'Egyéb költség', 'Ft')}
-          </div>${ruleBox(r, i)}</section>`).join('')}
+          </div>
+          <p class="hint" data-wline="${i}"></p>${ruleBox(r, i)}</section>`).join('')}
         <section class="ebox"><h2>Egyedi ár</h2>
           <div class="seg seg--lg seg--wrap" data-ov>
             <button type="button" data-ovt="nincs" aria-pressed="${ov() === 'nincs'}">Képlet szerint</button>
@@ -548,8 +672,9 @@ function productEdit(el, id) {
           <div data-ovfield></div>
           ${n('minPrice', 'Minimumár (védelem)', 'Ft', 'ennél olcsóbban sosem jelenik meg; 0 = nincs')}
         </section>
-        <section class="ebox ebox--todo"><h2>Jóváhagyandó adatok</h2><ul>${todo.map((t) => `<li>${t}</li>`).join('')}</ul>
-          <p class="hint">Ezeket az ötvösmesternek kell megerősítenie, mielőtt az árak élesek lesznek.</p></section>
+        <section class="ebox ${p.approved ? 'ebox--ok' : 'ebox--todo'}"><h2>Adatok állapota ${srcBadge(p.approved ? 'jovahagyott' : 'demo')}</h2>
+          ${todo.length ? `<ul>${todo.map((t) => `<li>${t}</li>`).join('')}</ul><p class="hint">Ezeket az ötvösmesternek kell megerősítenie, mielőtt az árak élesek lesznek.</p>` : '<p class="hint">Az ötvös jóváhagyta a tömeg- és kőadatokat.</p>'}
+          <div class="checks">${chk('approved', 'Az ötvös jóváhagyta ennek a gyűrűnek a tömeg- és kőadatait', !!p.approved)}</div></section>
         <div class="edit__btns">
           <a class="abtn abtn--xl" href="#/admin/gyuruk">Mégsem</a>
           <button class="abtn abtn--gold abtn--xl" type="button" data-save>Mentés</button>
@@ -566,6 +691,7 @@ function productEdit(el, id) {
       : t === 'fixed' ? n('override.value', 'Rögzített bruttó ár', 'Ft', 'az aranyár változása nem írja felül') : '';
   };
   const calc = () => {
+    p.rings.forEach((rg, i) => { const w = $(`[data-wline="${i}"]`, el); if (w) w.innerHTML = 'Tömeg anyagonként ' + rg.refSize + '-es méretben: ' + p.metals.map((m) => `${METALS[m].short} <b>${dec(Math.round((refWeight(rg, m, st.settings) || 0) * 100) / 100)} g</b>`).join(' · ') + ' <small>(az ügyfél példatömegeinek arányával)</small>'; });
     const r = priceProduct(p, defaultConfig(p), st.materials, st.settings);
     const b = r.breakdown, s = st.settings;
     if (!b) { $('[data-calc]', el).innerHTML = `<h2>Árkalkuláció</h2><div class="calc-final"><span>Megjelenő ár</span><b>Egyedi ajánlat</b></div><p class="warn">${esc(r.reason || '')}</p>`; return; }
@@ -574,15 +700,16 @@ function productEdit(el, id) {
     $('[data-calc]', el).innerHTML = `<h2>Árkalkuláció <small>alapkonfiguráció, ${METALS[r.cfg.metal].short}</small></h2>
       <p class="hint">${dec(r.grams)} g ${gm ? `× ${ft(st.materials.sellPerGram[r.cfg.metal])}/g grammár` : `ötvözet · ebből ${dec(r.pure)} g színarany × ${ft(st.materials.gold24)}/g`}</p>
       <dl class="calc-dl">
-        ${gm ? line('Grammár × tömeg (bruttó, munkadíjjal)', b.gramSell) : `${line('Nemesfém (veszteséggel)', b.metal)}${line('Ötvözőanyag', b.alloy)}${line('Munkadíj', b.labor)}`}
-        ${b.stones ? line('Természetes gyémántok', b.stones) : ''}${b.setting ? line('Kőfoglalás', b.setting) : ''}${line('Doboz, tanúsítvány, egyéb', b.other)}
+        ${gm ? r.parts.map((x, i) => line(`${esc(p.rings[i].label)}: ${dec(x.grams)} g × ${ft(x.sellPerGram)}/g`, x.gramSell)).join('') : `${line('Nemesfém (veszteséggel)', b.metal)}${line('Munkadíj', b.labor)}`}
+        ${b.stones ? line('Természetes gyémántok (darabár)', gm ? b.stonesGross : b.stones) : ''}${b.setting ? line('Kőfoglalás', b.setting) : ''}${b.other ? line('Doboz, tanúsítvány, egyéb', b.other) : ''}
         ${gm ? '' : line('Önköltség összesen', b.cost, 'sum')}
         ${gm ? '' : line(`Felár (fém, munka ${s.markupMetal}% · kő ${s.markupStones}%)`, b.net - b.cost)}
-        ${line('Nettó ár', b.net)}${line(`ÁFA ${s.vatPct}%`, b.gross - b.net)}
+        ${gm ? `${line('Bruttó összesen', b.gross, 'sum')}${line(`ebből ÁFA ${s.vatPct}%`, b.gross - b.net)}` : `${line('Nettó ár', b.net)}${line(`ÁFA ${s.vatPct}%`, b.gross - b.net)}`}
         ${line(`Kalkulált ár (kerekítve ${num(s.roundTo)} Ft-ra)`, r.calculated, 'sum')}
       </dl>
       <div class="calc-final"><span>Megjelenő ár${r.source !== 'keplet' ? (r.source === 'rogzitett' ? ' – rögzített' : ' – módosított') : ''}</span><b>${ft(r.final)}</b></div>
-      ${r.marginPct === null ? '<p class="hint">Grammáras módban az árrés nem számolható (a grammár mögötti költség nem ismert).</p>' : `<p class="${r.lowMargin ? 'warn' : 'ok'}">Árrés: ${dec(Math.round(r.marginPct * 10) / 10)}% ${r.lowMargin ? `– kisebb, mint a beállított ${s.minMarginPct}% minimum!` : ''}</p>`}
+      ${b.materialCost ? `<p class="hint">Tájékoztató anyagköltség (alapanyagárral): <b>${ft(b.materialCost)}</b>${gm ? ` – a fennmaradó ${ft(b.gross - b.materialCost - (b.stonesGross || 0))} fedezi a munkát, a díjakat, az árrést és az ÁFA-t.` : ''}</p>` : ''}
+      ${r.marginPct === null ? '' : `<p class="${r.lowMargin ? 'warn' : 'ok'}">Árrés: ${dec(Math.round(r.marginPct * 10) / 10)}% ${r.lowMargin ? `– kisebb, mint a beállított ${s.minMarginPct}% minimum!` : ''}</p>`}
       ${r.minHit ? '<p class="warn">A minimumár lépett életbe.</p>' : ''}
       ${r.warnings.length ? `<p class="warn">${esc(r.warnings.join(' '))}</p>` : ''}`;
   };
@@ -618,7 +745,7 @@ function productEdit(el, id) {
       }
       render(); return;
     }
-    if (t.dataset.b) { set(p, t.dataset.b, t.checked); if (t.dataset.b === 'priceOnRequest' || t.dataset.b === 'visible') calc(); else calc(); return; }
+    if (t.dataset.b) { set(p, t.dataset.b, t.checked); if (t.dataset.b === 'approved') { if (t.checked) p.rings.forEach((x) => x.stoneRule && (x.stoneRule.demo = false)); render(); return; } calc(); return; }
     if (t.dataset.arr) {
       const list = get(p, t.dataset.arr) || [];
       const next = t.checked ? [...new Set([...list, t.value])] : list.filter((x) => x !== t.value);
@@ -651,11 +778,11 @@ const HELP = {
 };
 const MODES = {
   pricingMode: [
-    ['koltseg', 'Költség szerint', 'Színarany-tartalom × aranyár + ötvözet + munkadíj + kövek, erre felár és ÁFA. Az aranyár változása csak a fém részt mozgatja.'],
-    ['gramm', 'Grammár szerint', 'Kész tömeg × bruttó grammár (ez már tartalmazza a fémet, a munkát és az árrést). Ehhez csak a kövek, a kőfoglalás, a gravír és a doboz adódik – a munkadíj és a fém-felár nem számolódik még egyszer.'],
+    ['gramm', 'Grammár szerint – az ötvös módszere', 'Kész tömeg × eladási grammár (benne a fém, a munka, az árrés és az ÁFA). Pl. 4,8 g × 47 000 = 225 600 Ft. Ehhez csak a kövek darabára és a külön díjak adódnak – munkadíj, felár és ÁFA nem számolódik még egyszer.'],
+    ['koltseg', 'Költség szerint – összehasonlításnak', 'Alapanyagár (14K = 24K × 0,585) × tömeg + munkadíj + kövek, erre felár és ÁFA. Az alapanyagár változása csak a fém részt mozgatja.'],
   ],
   sizeMethod: [
-    ['tomeg', 'Tömeg szerint', 'A fém tömege arányos a mérettel (56-os ≈ 54-es × 56/54). A munkadíj és a kövek nem változnak a mérettel.'],
+    ['tomeg', 'Tömeg szerint', 'A tömeg arányos a mérettel: 60-as = 54-es × 60/54. Platina: 379 500 × 60/54 ≈ 421 667 Ft. A kövek és díjak nem változnak a mérettel.'],
     ['ar', 'Egyszerű árarányosítás', 'A kő nélküli rész teljes ára arányosan nő a mérettel. Egyszerűbb, de a munkadíjat is arányosítja.'],
   ],
 };
@@ -664,8 +791,8 @@ function formula(el) {
   const st = S();
   const d = clone(st.settings);
   let sampleId = 'maz-81184-81185-w';
-  const f = (k, label, unit, help = HELP[k] || '') => `<label class="efield"><span>${label}<small>${help}</small></span><span class="efield__in"><input class="input input--lg" inputmode="decimal" data-s="${k}" value="${String(get(d, k)).replace('.', ',')}"><i>${unit}</i></span></label>`;
-  const modeBox = (key, title) => `<section class="ebox"><h2>${title} <span class="demo-chip">ügyféllel egyeztetendő</span></h2><div class="modes">${MODES[key].map(([v, l, t]) =>
+  const f = (k, label, unit, help = HELP[k] || '') => `<label class="efield"><span>${label} ${srcBadge((st.settings.src || {})[k.split('.')[0]] || 'demo')}<small>${help}</small></span><span class="efield__in"><input class="input input--lg" inputmode="decimal" data-s="${k}" value="${String(get(d, k)).replace('.', ',')}"><i>${unit}</i></span></label>`;
+  const modeBox = (key, title) => `<section class="ebox"><h2>${title} ${srcBadge((st.settings.src || {})[key] || 'demo')}</h2><div class="modes">${MODES[key].map(([v, l, t]) =>
     `<label class="modecard"><input type="radio" name="${key}" value="${v}" data-mode="${key}" ${d[key] === v ? 'checked' : ''}><span><b>${l}${st.settings[key] === v ? ' <em class="tag tag--blue">most aktív</em>' : ''}</b><small>${t}</small></span></label>`).join('')}</div></section>`;
   // munkadíj stílusonként: a leggyakoribb érték
   const byStyle = Object.keys(STYLES).map((k) => {
@@ -686,19 +813,25 @@ function formula(el) {
       <div class="edit__form">
         ${modeBox('pricingMode', 'Árképzési mód')}
         ${modeBox('sizeMethod', 'Méret hatása az árra')}
-        <section class="ebox"><h2>Felárak és adó</h2><div class="egrid">
-          ${f('markupMetal', 'Felár a fémre és munkára', '%')}${f('markupStones', 'Felár a kövekre', '%')}
-          ${f('vatPct', 'ÁFA', '%')}${f('lossPct', 'Gyártási veszteség', '%')}
-        </div></section>
-        <section class="ebox"><h2>Fix díjak</h2><div class="egrid">
-          ${f('settingPerStone', 'Kőfoglalás', 'Ft/kő')}${f('engravingPrice', 'Gravírozás', 'Ft/gyűrű')}
+        <section class="ebox"><h2>Külön felszámított díjak <small>bruttó, a gyűrű árához adódnak</small></h2><div class="egrid">
+          ${f('settingPerStone', 'Kőfoglalás', 'Ft/kő', 'Ha a kő darabára már tartalmazza, maradjon 0.')}${f('engravingPrice', 'Gravírozás', 'Ft/gyűrű')}
           ${f('boxCost', 'Díszdoboz', 'Ft/termék')}${f('certCost', 'Kőtanúsítvány', 'Ft/köves termék')}
-        </div></section>
-        <section class="ebox"><h2>Anyagonként <small>demóértékek</small></h2>
-          <p class="hint">Tömegszorzó: ugyanaz a modell az adott anyagból ennyiszer nehezebb, mint 14K aranyból. Munkadíj-szorzó: a nehezebben megmunkálható fémeknél.</p>
-          <div class="egrid">${['au18', 'pt', 'pd', 'ti'].map((m) => f(`density.${m}`, `${METALS[m].short} – tömeg`, '×', '')).join('')}
-          ${['pt', 'pd', 'ti'].map((m) => f(`laborFactor.${m}`, `${METALS[m].short} – munkadíj`, '×', '')).join('')}</div>
+          ${f('roundTo', 'Kerekítés felfelé', 'Ft', 'Pl. 100 → 337 333 Ft-ból 337 400 Ft.')}${f('vatPct', 'ÁFA', '%', 'Grammáras módban a grammár már tartalmazza – nem adódik hozzá újra.')}
+        </div>
+        <label class="check check--lg"><input type="checkbox" data-sb="stonesGross" ${d.stonesGross !== false ? 'checked' : ''}><span>A gyémánt darabára végső ár (grammáras módban nincs rá felár és ÁFA) ${srcBadge((st.settings.src || {}).stonesGross || 'demo')}</span></label></section>
+        <section class="ebox"><h2>Tömeg anyagonként ${srcBadge((st.settings.src || {}).density || 'demo')}</h2>
+          <p class="hint">Ugyanaz a modell az adott anyagból ennyiszer nehezebb, mint 14K aranyból. Az ügyfél példája 54-es méretre: 14K 4,8 g · 18K 5,4 g · platina 6,9 g · palládium 4,0 g · titán 1,5 g.</p>
+          <div class="egrid">${['au18', 'pt', 'pd', 'ti'].map((m) => f(`density.${m}`, `${METALS[m].short}`, '×', `4,8 g → ${dec(Math.round(4.8 * get(d, `density.${m}`) * 100) / 100)} g`)).join('')}</div>
         </section>
+        <section class="ebox"><h2>Kövek – fizikai korlát</h2>
+          <p class="hint">A vásárló csak olyan kőméretet választhat, ami elfér: a kő átmérője ≤ gyűrűszélesség − perem. Körbe foglalásnál a kőszám legfeljebb a kerület ÷ (kőátmérő + hézag).</p>
+          <div class="egrid">${f('stoneEdgeMm', 'Perem', 'mm')}${f('stoneGapMm', 'Hézag kövek között', 'mm')}</div>
+        </section>
+        <details class="ebox ebox--fold"><summary><h2>Csak költségalapú módban</h2></summary>
+          <div class="egrid">
+          ${f('markupMetal', 'Felár a fémre és munkára', '%')}${f('markupStones', 'Felár a kövekre', '%')}${f('lossPct', 'Gyártási veszteség', '%')}
+          ${['pt', 'pd', 'ti'].map((m) => f(`laborFactor.${m}`, `${METALS[m].short} – munkadíj-szorzó`, '×', '')).join('')}</div>
+        </details>
         <div class="edit__btns"><a class="abtn abtn--xl" href="#/admin/attekintes">Mégsem</a><button class="abtn abtn--gold abtn--xl" type="button" data-save>Mentés</button></div>
         <section class="ebox"><h2>Munkadíj stílusonként</h2>
           <p class="hint">Egy mozdulattal átírja az adott stílusú összes gyűrű munkadíját (gyűrűnként). Az egyes gyűrűk utána is külön állíthatók.</p>
@@ -747,6 +880,7 @@ function formula(el) {
   el.addEventListener('change', (e) => {
     if (e.target.matches('[data-sample]')) { sampleId = e.target.value; calc(); }
     if (e.target.dataset.mode) { d[e.target.dataset.mode] = e.target.value; calc(); }
+    if (e.target.dataset.sb) { d[e.target.dataset.sb] = e.target.checked; calc(); }
   });
   el.addEventListener('click', (e) => {
     if (e.target.closest('[data-save]')) { store.updateSettings(d, 'Árképlet és díjak módosítva'); toast('Az árképlet mentve, az árak újraszámolódtak.'); formula(el); }

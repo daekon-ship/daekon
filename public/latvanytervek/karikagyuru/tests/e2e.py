@@ -58,10 +58,11 @@ async def main():
         await pg.click('[data-stones="0|0"]'); ns = await price(pg)
         await pg.click('[data-stones="0|1"]'); ws = await price(pg)
         check('5. Kő nélkül olcsóbb, a kő ára egyszer adódik hozzá', ns < ws, f'{ns} / {ws}')
-        await pg.click('[data-scat="0|d10"]'); await pg.wait_for_timeout(900)
+        await pg.goto(B + '#/gyuru/maz-81165-81166-y'); await pg.wait_for_timeout(1100)
+        await pg.click('[data-scat="0|d04"]'); await pg.wait_for_timeout(900)
         q = await pg.inner_text('[data-cprice]')
-        check('9. Ár nélküli kőméret → „Egyedi árajánlat szükséges”', 'Egyedi árajánlat' in q, q)
-        await pg.click('[data-resetcfg]'); await price(pg)
+        check('9. Bizonytalan árú kő (0,04 ct) → „Egyedi árajánlat szükséges”', 'Egyedi árajánlat' in q, q)
+        await pg.goto(B + f'#/gyuru/{PAIR}'); await pg.wait_for_timeout(1100)
         await pg.fill('[data-engrave="0"]', 'Anna & Bence'); eg = await price(pg)
         check('Gravírozás felára', eg > base, f'{eg}')
         await pg.click('.pdp__ctas [data-inquire="erdeklodes"]'); await pg.wait_for_timeout(400)
@@ -74,24 +75,28 @@ async def main():
         check('Körbe foglalt: kőszám mérettől függ, kő nem hagyható el', 'méretétől függ' in txt and await pg.locator('[data-stones^="0|"]').count() == 0)
 
         # --- Admin → vásárlói nézet ---
+        await pg.goto(B + '#/admin/arszamitas'); await pg.wait_for_timeout(600)
+        tbl = await pg.inner_text('.xbox table')
+        check('Ötvös példái az adminban: 225 600 / 379 500 / 337 333 / 421 667 Ft',
+              all(x in tbl.replace('\u202f', ' ').replace('\xa0', ' ') for x in ['225 600', '379 500', '337 333', '421 667']), tbl.replace('\n', ' ')[:160])
         await pg.goto(B + '#/kollekcio'); await pg.wait_for_timeout(1000)
         p0 = n(await pg.locator(f'[data-price="{PAIR}"]').inner_text())
         await pg.goto(B + '#/admin/alapanyag'); await pg.wait_for_timeout(700)
-        await pg.fill('[data-path="gold24"]', '45000'); await pg.wait_for_timeout(400)
+        await pg.fill('[data-path="sellPerGram.au14"]', '52000'); await pg.wait_for_timeout(400)
         say = await pg.inner_text('.impact__say')
         if await pg.locator('[data-confirm]').count(): await pg.check('[data-confirm]')
         await pg.click('[data-apply]'); await pg.wait_for_timeout(500)
         await pg.goto(B + '#/kollekcio'); await pg.wait_for_timeout(2000)
         p1 = n(await pg.locator(f'[data-price="{PAIR}"]').inner_text())
-        check('7. Aranyár-változás megjelenik a vásárlói oldalon', p1 > p0, f'{p0} → {p1} ({say})')
+        check('7. Grammár-változás megjelenik a vásárlói oldalon', p1 > p0, f'{p0} → {p1} ({say})')
         # grammáras mód bekapcsolása
         await pg.goto(B + '#/admin/keplet'); await pg.wait_for_timeout(700)
-        await pg.check('input[data-mode="pricingMode"][value="gramm"]'); await pg.wait_for_timeout(300)
+        await pg.check('input[data-mode="pricingMode"][value="koltseg"]'); await pg.wait_for_timeout(300)
         await pg.click('[data-save]'); await pg.wait_for_timeout(500)
         await pg.goto(B + '#/admin/alapanyag'); await pg.wait_for_timeout(600)
-        check('Grammáras mód: a fő mező a 14K grammár', await pg.locator('[data-path="sellPerGram.au14"]').count() == 1)
+        check('Költségalapú mód: a fő mező a 24K alapanyagár', await pg.locator('.goldcard [data-path="gold24"]').count() == 1)
         await pg.goto(B + f'#/gyuru/{PAIR}'); g = await price(pg)
-        check('Grammáras mód: van ár a termékoldalon', bool(g), str(g))
+        check('Költségalapú mód: van ár a termékoldalon', bool(g), str(g))
         # termékszerkesztő
         await pg.goto(B + f'#/admin/gyuru/{PAIR}'); await pg.wait_for_timeout(700)
         check('Termékszerkesztő: kőszabály, anyagok, jóváhagyandó lista',
@@ -101,6 +106,12 @@ async def main():
         check('Rejtett termék nem jelenik meg a katalógusban', await pg.locator(f'.card[data-id="{PAIR}"]').count() == 0)
         await pg.goto(B + '#/admin/arszamitas'); await pg.wait_for_timeout(600)
         check('Gyors árszámítás működik', 'Ft' in await pg.inner_text('.qcalc__price'))
+        await pg.goto(B + '#/admin/jovahagyas'); await pg.wait_for_timeout(500)
+        n0 = await pg.locator('[data-appr]:not([disabled])').count()
+        check('A tulajdonos által átírt grammár automatikusan jóváhagyott', await pg.locator('[data-appr="materials|sellPerGram.au14"]').count() == 0)
+        await pg.locator('[data-appr="materials|sellPerGram.pt"]').click(); await pg.wait_for_timeout(300)
+        check('Jóváhagyás: ügyfélpélda → jóváhagyott', await pg.locator('[data-appr="materials|sellPerGram.pt"]').count() == 0 and n0 > 10, str(n0))
+        check('Bizonytalan kőár nem hagyható jóvá ár nélkül', await pg.locator('[data-appr="diamond|d04"]').is_disabled())
         # 8. demó visszaállítás
         await pg.goto(B + '#/admin/beallitasok'); await pg.wait_for_timeout(500)
         await pg.click('[data-reset]'); await pg.click('[data-ok]'); await pg.wait_for_timeout(600)
@@ -109,7 +120,7 @@ async def main():
         check('8. Demó visszaállítás: eredeti ár, látható termék', p2 == p0, f'{p2}')
 
         # --- 10. Eszközök: nincs vízszintes görgetés ---
-        pages = ['#/', '#/kollekcio', f'#/gyuru/{PAIR}', f'#/gyuru/{ETERNITY}', '#/admin/attekintes', '#/admin/alapanyag', f'#/admin/gyuru/{PAIR}', '#/admin/keplet', '#/admin/arszamitas']
+        pages = ['#/', '#/kollekcio', f'#/gyuru/{PAIR}', f'#/gyuru/{ETERNITY}', '#/admin/attekintes', '#/admin/alapanyag', f'#/admin/gyuru/{PAIR}', '#/admin/keplet', '#/admin/arszamitas', '#/admin/jovahagyas']
         for w, h, name in [(360, 740, 'Android 360'), (390, 844, 'iPhone 390'), (768, 1024, 'tablet'), (1440, 900, 'asztali')]:
             ctx = await b.new_context(viewport={'width': w, 'height': h}, device_scale_factor=1, is_mobile=w < 700, has_touch=w < 700)
             q = await ctx.new_page(); q.on('pageerror', lambda e: errs.append(str(e)))
@@ -121,6 +132,7 @@ async def main():
                 if u == f'#/gyuru/{PAIR}': await q.screenshot(path=f'{SHOTS}pdp_{w}.png', full_page=True)
                 if u == f'#/admin/gyuru/{PAIR}': await q.screenshot(path=f'{SHOTS}pedit_{w}.png', full_page=True)
                 if u == '#/admin/keplet': await q.screenshot(path=f'{SHOTS}keplet_{w}.png', full_page=True)
+                if u in ('#/admin/arszamitas', '#/admin/jovahagyas', '#/admin/alapanyag'): await q.screenshot(path=f'{SHOTS}{u.split("/")[-1]}_{w}.png', full_page=True)
             check(f'10. {name}: nincs vízszintes túlcsordulás', not bad, ', '.join(bad))
             await ctx.close()
         check('Nincs JavaScript-hiba', not errs, ' | '.join(errs[:3]))

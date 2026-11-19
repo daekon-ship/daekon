@@ -1,7 +1,7 @@
 /* Vásárlói felület: kezdőoldal, kollekció, termékoldal + konfigurátor, kapcsolat. */
 import { store } from './store.js';
 import { BUSINESS, COLORS, STYLES, FEATURED, BICOLOR, TERMS, CURRENT_SITE } from './data.js';
-import { priceProduct, normalizeConfig, defaultConfig, ft, dec, diamond, ringSplit, encodeCfg, decodeCfg, METALS, METAL_ORDER, isGold } from './engine.js';
+import { priceProduct, normalizeConfig, allowedCats, defaultConfig, ft, dec, diamond, ringSplit, encodeCfg, decodeCfg, METALS, METAL_ORDER, isGold } from './engine.js';
 import { $, $$, esc, productMedia, hasPhoto, metalSwatch, animatePrice, modal, reveal, toast, M, reduced } from './ui.js';
 
 const S = () => store.get();
@@ -564,8 +564,10 @@ export function product(el, id, query) {
             <small>${lo}–${rule.max} db${st.count < rule.max ? ` · +1 kő: ${delta(cur, (x) => (x.rings[i].stones.count += 1))}` : ''}</small></div>`;
         } else if (rule.mode === 'fixed') body += `<p class="hint"><b>${st.count} kő</b> – a modell kialakítása miatt a kőszám kötött.</p>`;
         else if (rule.mode === 'perSize') body += `<p class="hint"><b>${st.count} kő</b> körbe foglalva – a kőszám a gyűrű méretétől függ.</p>`;
+        const fit = allowedCats(rule, rc.width, Mx, S().settings);
         if (rule.cats.length > 1) body += `<div class="stonecats" role="group" aria-label="Kőméret">${rule.cats.map((c) => { const d = diamond(Mx, c); if (!d) return '';
-          return `<button type="button" data-scat="${i}|${c}" aria-pressed="${c === st.cat}"><b>${dec(d.ct)} ct</b><span>${esc(d.quality)}</span>${c === st.cat ? '' : (d.price == null ? '<em class="delta delta--q">egyedi ajánlat</em>' : delta(cur, (x) => (x.rings[i].stones.cat = c)))}</button>`; }).join('')}</div>`;
+          const no = !fit.includes(c);
+          return `<button type="button" data-scat="${i}|${c}" aria-pressed="${c === st.cat}" ${no ? `disabled title="${dec(rc.width)} mm szélességen nem fér el"` : ''}><b>${dec(d.ct)} ct</b><span>${esc(d.quality)}</span>${no ? '<em class="delta delta--q">nem fér el</em>' : c === st.cat ? '' : (d.price == null ? '<em class="delta delta--q">egyedi ajánlat</em>' : delta(cur, (x) => (x.rings[i].stones.cat = c)))}</button>`; }).join('')}</div>`;
         body += `<p class="hint">${st.count} × ${dia ? esc(dia.name) + ', ' + esc(dia.quality) : ''} természetes gyémánt${dia && dia.price == null ? ' · <b>Egyedi árajánlat szükséges</b>' : ''}</p>`;
       }
       if (rule.demo) body += `<p class="fine">${demoMark('demó kőszabály')} A kőszámot és a kőméreteket az ötvösmester hagyja jóvá.</p>`;
@@ -636,7 +638,7 @@ export function product(el, id, query) {
     else if (t.closest('[data-resetcfg]')) { cfg = defaultConfig(p); }
     else if (t.closest('.pdp__stage--foto')) { zoom(p); return; }
     else return;
-    lastWarn = normalizeConfig(p, cfg).warnings.join(' ');
+    lastWarn = normalizeConfig(p, cfg, S().materials, S().settings).warnings.join(' ');
     paint();
   });
   el.addEventListener('change', (e) => {

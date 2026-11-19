@@ -46,44 +46,78 @@ export const REMOTE_IMG = 'https://karikagyuru.com/public/layout/pictures/karika
 export const IMG_BASE = 'img/termekek/';   // a karikagyuru.com saját fotói (az ügyfél mentett oldaláról)
 
 /* --- Kezdő demó alapanyagárak (NEM valós piaci árak; az ügyfél megbeszélésén elhangzott példaárakat sem vettük át éles árként) --- */
+/* ==========================================================================
+   ADATFORRÁSOK – minden árazási adatnál jelöljük, honnan származik:
+     'jovahagyott'  – a tulajdonos megadta vagy jóváhagyta (éles adatnak tekinthető)
+     'pelda'        – az ügyfél kézírásos árazási jegyzetéből / a megbeszélésből (PÉLDA, nem végleges)
+     'bizonytalan'  – az ügyfél adott rá számot, de ellentmondásos vagy megerősítendő → nem árazunk vele
+     'demo'         – kitalált bemutatóadat (DAEKON), csak hogy a felület működjön
+   ========================================================================== */
+export const SRC_LABEL = { jovahagyott: 'jóváhagyott', pelda: 'ügyfél példája', bizonytalan: 'megerősítendő', demo: 'demó' };
+
+/* --- Alapanyagárak és grammárak (Ft) --- */
 export const DEMO_MATERIALS = {
-  // A) költségalapú módhoz – referenciaárak, Ft / g
-  gold24: 39000,          // 24K színarany (csak számítási referencia, nem választható anyag)
-  platinum: 12500,        // platina
-  palladium: 13500,       // palládium
-  titanium: 80,           // titán
-  alloyAll: 700,          // aranyötvözet – minden színre azonos (a szín nem módosítja az árat)
-  // B) grammáras módhoz – bruttó késztermékár, Ft / g (fém + munkadíj + árrés + ÁFA)
-  sellPerGram: { au14: 48000, au18: 58000, pt: 27000, pd: 33000, ti: 33000 },   // demó: a költségalapú mód kőnélküli átlagához igazítva
-  diamonds: [             // természetes gyémánt, Ft / db – kőméret szerint; price: null = nincs ár → egyedi ajánlat
-    { id: 'd005', ct: 0.005, name: 'Brill 0,005 ct', quality: 'G / SI', price: 4000 },
-    { id: 'd01',  ct: 0.01,  name: 'Brill 0,01 ct',  quality: 'G / SI', price: 9000 },
-    { id: 'd015', ct: 0.015, name: 'Brill 0,015 ct', quality: 'G / SI', price: 15000 },
-    { id: 'd02',  ct: 0.02,  name: 'Brill 0,02 ct',  quality: 'G / SI', price: 30000 },
-    { id: 'd03',  ct: 0.03,  name: 'Brill 0,03 ct',  quality: 'G / SI', price: 48000 },
-    { id: 'd05',  ct: 0.05,  name: 'Brill 0,05 ct',  quality: 'G / VS', price: 85000 },
-    { id: 'd10',  ct: 0.10,  name: 'Brill 0,10 ct',  quality: 'G / VS', price: null },
+  // ALAPANYAG-REFERENCIAÁRAK (beszerzés, Ft / g). A 14K és 18K a 24K-ból számolódik:
+  //   14K = 24K × 0,585 (40 000 → 23 400), 18K = 24K × 0,75 (40 000 → 30 000) – egyezik az ügyfél jegyzetével.
+  gold24: 40000,
+  platinum: 15000,
+  palladium: 10000,
+  titanium: 80,
+  // KÉSZTERMÉK ELADÁSI GRAMMÁRA (bruttó, Ft / g) – ebben benne van a fém, a munka és az árrés.
+  // Az ügyfél példája: 14K 47 000, platina 55 000. A többi demó (az ügyféltől még nem kaptuk meg).
+  sellPerGram: { au14: 47000, au18: 56000, pt: 55000, pd: 40000, ti: 30000 },
+  // TERMÉSZETES GYÉMÁNT, Ft / db (ügyfél jegyzete). price: null = nincs megbízható ár → egyedi ajánlat.
+  // mm = a kő átmérője – ebből ellenőrizzük, hogy fizikailag elfér-e a gyűrűn.
+  diamonds: [
+    { id: 'd005', ct: 0.005, mm: 1.0,  name: 'Brill 0,005 ct', quality: 'Ø 1,0 mm',     price: 3500,  src: 'demo' },
+    { id: 'd01',  ct: 0.01,  mm: 1.25, name: 'Brill 0,01 ct',  quality: 'Ø 1,25 mm',    price: 6000,  src: 'pelda' },
+    { id: 'd015', ct: 0.015, mm: 1.5,  name: 'Brill 0,015 ct', quality: 'Ø 1,5 mm',     price: 9000,  src: 'pelda' },
+    { id: 'd02',  ct: 0.02,  mm: 1.7,  name: 'Brill 0,02 ct',  quality: 'Ø 1,7 mm',     price: 12000, src: 'pelda' },
+    { id: 'd03',  ct: 0.03,  mm: 2.0,  name: 'Brill 0,03 ct',  quality: 'Ø 2,0 mm',     price: 18000, src: 'pelda' },
+    { id: 'd04',  ct: 0.04,  mm: 2.3,  name: 'Brill 0,04 ct',  quality: 'Ø 2,2–2,3 mm', price: null,  src: 'bizonytalan', note: 'A jegyzetben 24 000 Ft, a beszélgetésben 20 000 Ft – megerősítendő.' },
+    { id: 'd05',  ct: 0.05,  mm: 2.4,  name: 'Brill 0,05 ct',  quality: 'Ø 2,3–2,4 mm', price: null,  src: 'bizonytalan', note: 'Ár megerősítendő.' },
+    { id: 'd10',  ct: 0.10,  mm: 3.0,  name: 'Brill 0,10 ct',  quality: 'Ø 3,0 mm',     price: null,  src: 'demo', note: 'Nincs adat.' },
   ],
+  src: {
+    gold24: 'pelda', platinum: 'pelda', palladium: 'pelda', titanium: 'demo',
+    'sellPerGram.au14': 'pelda', 'sellPerGram.pt': 'pelda',
+    'sellPerGram.au18': 'demo', 'sellPerGram.pd': 'demo', 'sellPerGram.ti': 'demo',
+  },
 };
 
-/* --- Kezdő demó árképlet-beállítások --- */
+/* Az ügyfél példatömegei 54-es méretnél, ugyanarra a gyűrűre (g) – ebből jönnek az anyagonkénti tömegarányok. */
+export const EXAMPLE_WEIGHTS = { ti: 1.5, au14: 4.8, au18: 5.4, pt: 6.9, pd: 4.0 };
+const ratio = (m) => Math.round((EXAMPLE_WEIGHTS[m] / EXAMPLE_WEIGHTS.au14) * 1e6) / 1e6;
+
+/* --- Árképlet-beállítások --- */
 export const DEMO_SETTINGS = {
-  pricingMode: 'koltseg', // 'koltseg' = költségalapú · 'gramm' = grammonkénti késztermékár
-  sizeMethod: 'tomeg',    // 'tomeg' = a fém tömege arányos a mérettel · 'ar' = egyszerű árarányosítás
-  lossPct: 5,             // gyártási veszteség a fémre, %
-  density: { au14: 1, au18: 1.17, pt: 1.65, pd: 0.92, ti: 0.35 },   // tömegszorzó a 14K-hoz képest
-  laborFactor: { au14: 1, au18: 1, pt: 1.3, pd: 1.2, ti: 1.4 },     // munkadíj-szorzó anyagonként (demó)
-  markupMetal: 30,        // felár a fémre és munkára, % (csak költségalapú módban)
-  markupStones: 20,       // felár a kövekre, %
-  vatPct: 27,             // ÁFA, %
-  roundTo: 500,           // kerekítés felfelé, Ft
-  settingPerStone: 3500,  // kőfoglalás díja, Ft / kő
-  engravingPrice: 6000,   // gépi gravírozás, Ft / gyűrű
-  boxCost: 4000,          // díszdoboz, Ft / termék
-  certCost: 6000,         // kőtanúsítvány, Ft / köves termék
-  minMarginPct: 15,       // ennél kisebb árrésnél figyelmeztet
-  bigChangePct: 20,       // ennél nagyobb alapanyagár-változásnál külön megerősítés
+  pricingMode: 'gramm',   // 'gramm' = az ötvös módszere: tömeg × grammár · 'koltseg' = költségalapú (összehasonlításnak)
+  sizeMethod: 'tomeg',    // 'tomeg' = a tömeg arányos a mérettel (pl. 60-as = 54-es × 60/54) · 'ar' = árarányosítás
+  // tömegszorzó a 14K-hoz képest – az ügyfél példatömegeiből: 18K 5,4/4,8 · Pt 6,9/4,8 · Pd 4,0/4,8 · Ti 1,5/4,8
+  density: { au14: 1, au18: ratio('au18'), pt: ratio('pt'), pd: ratio('pd'), ti: ratio('ti') },
+  stonesGross: true,      // grammáras módban a kő darabára végső (bruttó) ár – nincs rá külön felár és ÁFA
+  settingPerStone: 0,     // kőfoglalás díja, Ft / kő (bruttó) – egyeztetendő, most 0
+  engravingPrice: 6000,   // gravírozás, Ft / gyűrű (bruttó)
+  boxCost: 0,             // díszdoboz, Ft / termék
+  certCost: 0,            // kőtanúsítvány, Ft / köves termék
+  roundTo: 100,           // kerekítés felfelé, Ft
+  vatPct: 27,             // ÁFA, % – grammáras módban a grammár már tartalmazza
+  // csak költségalapú módban:
+  lossPct: 5,
+  laborFactor: { au14: 1, au18: 1, pt: 1.3, pd: 1.2, ti: 1.4 },
+  markupMetal: 30,
+  markupStones: 20,
+  // fizikai kőellenőrzés (demó műszaki szabály, ötvössel egyeztetendő):
+  stoneEdgeMm: 1.0,       // a kő átmérője legfeljebb a gyűrű szélessége mínusz ennyi
+  stoneGapMm: 0.1,        // körbe foglalásnál ennyi hely kell két kő között
+  minMarginPct: 15,
+  bigChangePct: 20,
   showDemoMarks: true,
+  src: {
+    pricingMode: 'pelda', sizeMethod: 'pelda', density: 'pelda', vatPct: 'jovahagyott',
+    stonesGross: 'demo', settingPerStone: 'demo', engravingPrice: 'demo', boxCost: 'demo', certCost: 'demo', roundTo: 'demo',
+    lossPct: 'demo', laborFactor: 'demo', markupMetal: 'demo', markupStones: 'demo', stoneEdgeMm: 'demo', stoneGapMm: 'demo',
+  },
 };
 
 /* Több domain (pl. karikagyuru.com és budapestikarikagyuru.com) közös termék- és áradminisztrációval:
@@ -276,14 +310,14 @@ function nameFor(r) {
   return `${col} karikagyűrű pár`;
 }
 
-const CAT_ORDER = ['d005', 'd01', 'd015', 'd02', 'd03', 'd05', 'd10'];
+const CAT_ORDER = ['d005', 'd01', 'd015', 'd02', 'd03', 'd04', 'd05', 'd10'];
 /** Demó gyémántszabály a fotóról becsült kőszámból – jóváhagyandó, nem végleges korlát. */
 function demoRule(cat, n, allowNone) {
   const i = CAT_ORDER.indexOf(cat);
   const near = (a, b) => CAT_ORDER.slice(Math.max(0, i + a), i + b + 1);
   if (n >= 40) return { mode: 'perSize', min: 40, max: 70, def: n, cats: [cat], defCat: cat, allowNone: false, demo: true };
   if (n > 5) return { mode: 'fixed', min: n, max: n, def: n, cats: near(-1, 0), defCat: cat, allowNone: false, demo: true };
-  const cats = [...new Set(near(0, 1).concat('d10'))];
+  const cats = near(-1, 1);
   return { mode: 'free', min: allowNone ? 0 : 1, max: n <= 3 ? 3 : 5, def: n, cats, defCat: cat, allowNone, demo: true };
 }
 
@@ -329,6 +363,7 @@ export function buildDemoProducts() {
       rings: pair
         ? [ringFrom('Női gyűrű', 54, r, true, 0.43), ringFrom('Férfi gyűrű', 64, r, false, 0.57)]
         : [ringFrom('Gyűrű', 54, r, true, 1)],
+      approved: false,             // az ötvös jóváhagyta-e a tömeg- és kőadatokat (most: becslés)
       override: null,              // { type: 'fixed' | 'pct', value }
       minPrice: 0,
     };

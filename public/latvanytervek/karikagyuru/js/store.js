@@ -6,7 +6,7 @@
 import { DEMO_MATERIALS, DEMO_SETTINGS, buildDemoProducts } from './data.js';
 import { seedWeights, priceAll, diffPrices } from './engine.js';
 
-const KEY = 'karikagyuru-demo-v8';
+const KEY = 'karikagyuru-demo-v9';
 const clone = (o) => JSON.parse(JSON.stringify(o));
 const listeners = new Set();
 const fmt = (n) => new Intl.NumberFormat('hu-HU').format(n).replace(/\s/g, ' ');
@@ -17,11 +17,11 @@ function fresh() {
   const products = seedWeights(buildDemoProducts(), materials, settings);
   const now = new Date().toISOString();
   return {
-    v: 7,
+    v: 9,
     materials, settings, products,
     history: [{
       id: uid(), at: now, validFrom: now, by: 'Rendszer (demó)', kind: 'start',
-      title: 'Bemutató indítása – kezdő demó alapanyagárak',
+      title: 'Bemutató indítása – az ügyfél jegyzetének példaárai + demóadatok',
       before: null, after: clone(materials), count: 0, total: 0,
     }, ...demoGoldHistory(materials, products, settings)],
     inquiries: [],
@@ -52,7 +52,7 @@ function uid() { return Math.random().toString(36).slice(2, 9); }
 
 let state;
 try { state = JSON.parse(localStorage.getItem(KEY)) || null; } catch { state = null; }
-if (!state || state.v !== 7) state = fresh();
+if (!state || state.v !== 9) state = fresh();
 
 function persist() {
   try { localStorage.setItem(KEY, JSON.stringify(state)); } catch { /* privát mód: memóriában marad */ }
@@ -65,6 +65,17 @@ export const store = {
   product: (id) => state.products.find((p) => p.id === id),
 
   reset() { state = fresh(); persist(); },
+
+  /** Adat jóváhagyása (forrás → „jóváhagyott”). kind: 'materials' | 'settings' | 'diamond' | 'product'. */
+  approve(kind, key, label) {
+    if (kind === 'materials') state.materials.src = { ...(state.materials.src || {}), [key]: 'jovahagyott' };
+    if (kind === 'settings') state.settings.src = { ...(state.settings.src || {}), [key]: 'jovahagyott' };
+    if (kind === 'diamond') { const d = state.materials.diamonds.find((x) => x.id === key); if (d) d.src = 'jovahagyott'; }
+    if (kind === 'product') { const p = state.products.find((x) => x.id === key); if (p) { p.approved = true; p.rings.forEach((r) => r.stoneRule && (r.stoneRule.demo = false)); } }
+    const at = new Date().toISOString();
+    state.history.unshift({ id: uid(), at, validFrom: at, by: 'Tulajdonos (demó)', kind: 'approve', title: `Jóváhagyva: ${label || key}`, count: 0, total: 0 });
+    persist();
+  },
 
   /** Új alapanyagárak véglegesítése (csak jóváhagyás után hívjuk). */
   applyMaterials(next, { validFrom, note } = {}) {
@@ -93,7 +104,9 @@ export const store = {
   updateSettings(next, title) {
     const old = priceAll(state.products, state.materials, state.settings);
     const before = clone(state.settings);
-    state.settings = { ...state.settings, ...next };
+    const src = { ...(state.settings.src || {}) };
+    for (const k of Object.keys(next)) if (k !== 'src' && JSON.stringify(next[k]) !== JSON.stringify(state.settings[k])) src[k] = 'jovahagyott';   // a tulajdonos adta meg
+    state.settings = { ...state.settings, ...next, src };
     const now = priceAll(state.products, state.materials, state.settings);
     const count = Object.keys(now).filter((k) => now[k] !== old[k]).length;
     state.history.unshift({ id: uid(), at: new Date().toISOString(), validFrom: new Date().toISOString(),
