@@ -476,7 +476,7 @@ export function product(el, id, query) {
   el = fresh(el);
   const p = store.product(id);
   if (!p) { el.innerHTML = `<section class="wrap page-head"><h1>A gyűrű nem található</h1><p><a class="btn btn--line" href="#/kollekcio">Vissza a gyűrűkhöz</a></p></section>`; return; }
-  if (p.priceOnRequest) { productOnRequest(el, p); return; }
+  const onReq = !!p.priceOnRequest && p.override?.type !== 'fixed';   // ár nélküli modell: beállítható, de az ár egyedi ajánlat
   let cfg = (query?.get('k') && decodeCfg(query.get('k'), p)) || defaultConfig(p);
   const qc = query?.get('szin');
   if (!query?.get('k') && qc && p.colors.includes(qc)) cfg.color = qc;
@@ -516,18 +516,18 @@ export function product(el, id, query) {
         <h1 class="pdp__title">${esc(p.name)}</h1>
         ${anyStones ? '<p class="natural">Természetes gyémánttal</p>' : ''}
         <div class="pdp__price" data-pricebox>
-          <span>Becsült ár a választott beállítással ${demoMark()}</span>
+          <span>${onReq ? 'Ár' : `Becsült ár a választott beállítással ${demoMark()}`}</span>
           <strong class="price price--big" data-cprice></strong>
           <p class="pdp__quote" data-quote hidden></p>
           ${pair ? '<p class="pdp__split" data-split></p>' : ''}
           <small data-pnote>Bruttó, ÁFA-val. Rendelésre készül.</small>
         </div>
         <p class="cfg__warn" data-warn role="status" hidden></p>
-        <div class="scope scope--ok"><h2>Amit itt te állíthatsz</h2><p>Ennél a modellnél ezek a lehetőségek adottak. Az ár mindegyiknél azonnal változik.</p></div>
+        <div class="scope scope--ok"><h2>Amit itt te állíthatsz</h2><p>${onReq ? 'Ennél a modellnél ezek a lehetőségek adottak. Árat itt nem számolunk – a beállításaid az ajánlatkérésbe kerülnek.' : 'Ennél a modellnél ezek a lehetőségek adottak. Az ár mindegyiknél azonnal változik.'}</p></div>
         <ol class="cfg" data-steps></ol>
         <div class="summary" data-summary></div>
         <div class="pdp__ctas">
-          <button class="btn btn--dark btn--full" type="button" data-inquire="erdeklodes">Érdekel ez a gyűrű</button>
+          <button class="btn btn--dark btn--full" type="button" data-inquire="erdeklodes">${onReq ? 'Árajánlatot kérek erre a gyűrűre' : 'Érdekel ez a gyűrű'}</button>
           <button class="btn btn--line btn--full" type="button" data-inquire="konzultacio">Személyes konzultációt kérek</button>
           <div class="pdp__tools">
             <button type="button" class="linkbtn" data-share>Konfiguráció linkjének másolása</button>
@@ -555,6 +555,7 @@ export function product(el, id, query) {
   const sizes = (i) => (p.rings[i].refSize < 60 ? [44, 64] : [54, 76]);
   const with_ = (fn) => { const c = JSON.parse(JSON.stringify(cfg)); fn(c); return c; };
   const delta = (cur, fn) => {
+    if (onReq) return '';
     const v = price(p, with_(fn)).final;
     if (v === null) return '<em class="delta delta--q">egyedi ajánlat</em>';
     if (cur === null) return `<em class="delta">${ft(v)}</em>`;
@@ -620,8 +621,7 @@ export function product(el, id, query) {
       <div class="stepper ${rc.sizeUnknown ? 'is-off' : ''}"><button type="button" data-size="${i}|-1" aria-label="${esc(ring.label)}: kisebb méret" ${rc.sizeUnknown || rc.size <= lo ? 'disabled' : ''}>−</button><output aria-live="polite">${rc.sizeUnknown ? '?' : rc.size}</output><button type="button" data-size="${i}|1" aria-label="${esc(ring.label)}: nagyobb méret" ${rc.sizeUnknown || rc.size >= hi ? 'disabled' : ''}>+</button></div>
       <label class="check"><input type="checkbox" data-unknown="${i}" ${rc.sizeUnknown ? 'checked' : ''}><span>Még nem tudom</span></label>
       <button type="button" class="linkbtn" data-sizehelp="${i}">Méretsegítő</button>
-      ${p.widths.length > 1 ? `<div class="cfg__seg cfg__seg--sm" aria-label="Szélesség">${p.widths.map((w) => `<button type="button" data-width="${i}|${w}" aria-pressed="${w === rc.width}"><b>${dec(w)} mm</b>${w === rc.width ? '' : delta(cur, (x) => (x.rings[i].width = w))}</button>`).join('')}</div>`
-        : `<p class="hint">Szélesség: ${dec(rc.width)} mm ${demoMark('demóadat')} · más szélesség külön egyeztetéssel</p>`}
+      <p class="hint">Szélesség: ${dec(rc.width)} mm ${demoMark('demóadat')} · online nem választható, más szélesség személyes egyeztetéssel</p>
     </div>`; }).join('')}</div>
     <p class="hint">Belső kerület mm-ben. Nagyobb méret = több nemesfém. ${cfg.rings.some((r) => r.sizeUnknown) ? '· Az ismeretlen méretet átlagos mérettel számoljuk, a konzultáción megmérjük.' : ''}</p>`];
   const stepStones = (cur) => {
@@ -688,7 +688,7 @@ export function product(el, id, query) {
 
     const q = $('[data-quote]', el);
     q.hidden = cur !== null;
-    q.textContent = cur === null ? (r.reason || 'Ehhez az összeállításhoz nincs megbízható ár.') + ' Kérj ajánlatot, és személyesen kiszámoljuk.' : '';
+    q.textContent = cur === null ? (onReq ? 'Ennél a modellnél az árat személyesen mondjuk meg. Állítsd be, amit szeretnél, és kérj ajánlatot.' : (r.reason || 'Ehhez az összeállításhoz nincs megbízható ár.') + ' Kérj ajánlatot, és személyesen kiszámoljuk.') : '';
     if (pair) {
       const sp = cur === null ? null : ringSplit(p, cfg, r, S().settings);
       $('[data-split]', el).innerHTML = sp ? p.rings.map((rg, i) => `<span>${esc(rg.label)} <b>kb. ${ft(sp[i])}</b></span>`).join('') : '';
@@ -697,7 +697,7 @@ export function product(el, id, query) {
     w.hidden = !lastWarn; w.textContent = lastWarn; lastWarn = '';
     paintInfo(r);
     const st0 = S(), rt = st0.settings.roundTo;
-    $('[data-pnote]', el).innerHTML = `Bruttó, ÁFA-val${rt > 1 ? `, ${num(rt)} Ft-ra kerekítve` : ''}. Rendelésre készül.${(st0.materials.src || {})[`sellPerGram.${cfg.metal}`] === 'demo' && st0.settings.pricingMode === 'gramm' ? ` ${demoMark(`${METALS[cfg.metal].short}: demó grammár`)}` : ''}`;
+    $('[data-pnote]', el).innerHTML = cur === null ? 'Rendelésre készül. Az árat személyesen mondjuk meg.' : `Bruttó, ÁFA-val${rt > 1 ? `, ${num(rt)} Ft-ra kerekítve` : ''}. Rendelésre készül.${(st0.materials.src || {})[`sellPerGram.${cfg.metal}`] === 'demo' && st0.settings.pricingMode === 'gramm' ? ` ${demoMark(`${METALS[cfg.metal].short}: demó grammár`)}` : ''}`;
     animatePrice($('[data-cprice]', el), cur);
     animatePrice($('[data-mprice]', el), cur);
     if (!first) { const pb = $('[data-pricebox]', el); pb.classList.remove('is-flash'); void pb.offsetWidth; pb.classList.add('is-flash'); }
@@ -763,38 +763,6 @@ export function product(el, id, query) {
   if (M() && !reduced()) M().animate([$('.pdp__gallery', el), $('.pdp__panel', el)], { opacity: [0, 1], y: [16, 0] }, { duration: 0.7, delay: M().stagger(0.1) });
 }
 
-function productOnRequest(el, p) {
-  el.innerHTML = `
-  <section class="wrap pdp">
-    <p class="crumbs"><a href="#/">Kezdőlap</a> / <a href="#/kollekcio">Gyűrűk</a> / ${esc(p.code)}</p>
-    <div class="pdp__grid">
-      <div class="pdp__gallery"><div class="pdp__stage pdp__stage--foto">${productMedia(p, { eager: true })}</div>
-        <p class="fine">A karikagyuru.com saját fotója.</p></div>
-      <div class="pdp__panel">
-        <p class="card__code">${esc(p.code)}</p>
-        <h1 class="pdp__title">${esc(p.name)}</h1>
-        <div class="pdp__price"><span>Ár</span><strong class="price price--big">Egyedi ajánlat alapján</strong>
-          <small>Az árat személyesen mondjuk meg.</small></div>
-        <div class="pdp__ctas">
-          <button class="btn btn--dark btn--full" type="button" data-inquire="erdeklodes">Árajánlatot kérek erre a gyűrűre</button>
-          <button class="btn btn--line btn--full" type="button" data-inquire="konzultacio">Személyes konzultációt kérek</button>
-          <a class="pdp__phone" href="${BUSINESS.phoneHref}">vagy hívj: <b>${BUSINESS.phone}</b></a>
-        </div>
-        <dl class="specs__dl" style="margin-top:28px">
-          <div><dt>Cikkszám</dt><dd>${esc(p.code)}</dd></div>
-          <div><dt>Típus</dt><dd>${p.kind === 'p' ? 'Karikagyűrű pár' : 'Gyűrű'}</dd></div>
-          <div><dt>Anyag</dt><dd>${p.unknownColor ? 'Egyeztetés alapján' : colorLabel(p.baseColor)}</dd></div>
-          <div><dt>Elkészítés</dt><dd>Nincs készleten, rendelésre elkészítjük</dd></div>
-        </dl>
-      </div>
-    </div>
-  </section>`;
-  el.addEventListener('click', (e) => {
-    const q = e.target.closest('[data-inquire]');
-    if (q) inquiry(p, defaultConfig(p), q.dataset.inquire, true);
-    if (e.target.closest('.pdp__stage--foto')) zoom(p);
-  });
-}
 
 function stoneText(rg, c, sep) {
   if (!rg.stoneRule) return '';
@@ -945,7 +913,7 @@ export function custom(el, query) {
   try { d = { ...blank, ...JSON.parse(sessionStorage.getItem(C_KEY) || '{}') }; } catch { /* nincs mentett vázlat */ }
   if (query?.get('modell')) { d.modell = query.get('modell'); d.k = query.get('k') || ''; }
   const p = d.modell ? store.product(d.modell) : null;
-  const cfg = p && !p.priceOnRequest ? ((d.k && decodeCfg(d.k, p)) || defaultConfig(p)) : null;
+  const cfg = p ? ((d.k && decodeCfg(d.k, p)) || defaultConfig(p)) : null;
   if (p && cfg && !query?.get('keep')) { if (isGold(cfg.metal) || METALS[cfg.metal]) d.anyag = cfg.metal; d.tipus = p.kind === 'p' ? 'par' : 'egy'; if (cfg.rings.some((r) => r.stones)) d.gyemant = 'igen'; }
   const save = () => { try { sessionStorage.setItem(C_KEY, JSON.stringify(d)); } catch { /* privát mód */ } };
   const chips = (key, list) => `<div class="cchips" role="radiogroup">${list.map(([v, l]) => `<button type="button" role="radio" data-cf="${key}|${v}" aria-checked="${d[key] === v}">${l}</button>`).join('')}</div>`;

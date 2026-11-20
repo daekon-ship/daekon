@@ -291,3 +291,45 @@ test('Kétszínű modell nem készülhet platinából, palládiumból, titánbó
   const bi = products.filter((p) => ['ketszinu', 'feherrose', 'sargarose'].includes(p.baseColor));
   assert.ok(bi.length > 0); assert.ok(bi.every((p) => p.metals.every((m) => m === 'au14' || m === 'au18')));
 });
+
+/* ---------------- V3.3 ---------------- */
+import { readiness } from '../js/engine.js';
+test('Ár nélküli modell: a beállítások érvényesítve megmaradnak, az ár egyedi ajánlat', () => {
+  const p = clone(products.find((x) => x.priceOnRequest && x.kind === 'p'));
+  p.rings[0].stoneRule = { mode: 'free', min: 0, max: 3, def: 1, cats: ['d01', 'd02'], defCat: 'd01', allowNone: true };
+  const c = defaultConfig(p); c.metal = 'au18'; c.rings[0].size = 58; c.rings[0].engraving = 'Anna'; c.rings[0].stones = { count: 999, cat: 'd10' };
+  const r = priceProduct(p, c, M, S);
+  assert.equal(r.final, null); assert.ok(r.quote);
+  assert.equal(r.cfg.metal, 'au18'); assert.equal(r.cfg.rings[0].size, 58); assert.equal(r.cfg.rings[0].engraving, 'Anna');
+  assert.deepEqual(r.cfg.rings[0].stones, { count: 3, cat: 'd01' });        // a modell korlátai ár nélkül is érvényesek
+});
+test('A szélesség online nem állítható: mindig a modell saját szélessége', () => {
+  const c = defaultConfig(pair); c.rings[0].width = 9; c.rings[1].width = 2;
+  const n = normalizeConfig(pair, c, M, S);
+  assert.deepEqual(n.cfg.rings.map((r) => r.width), pair.rings.map((r) => r.refWidth));
+  assert.ok(n.warnings.some((w) => /szélesség/i.test(w)));
+  assert.equal(price(pair, (x) => (x.rings[0].width = 9)).final, price(pair).final);
+});
+test('Élesítési ellenőrzés: demó- és példaadatokkal nem élesíthető; teljes jóváhagyás után igen', () => {
+  const st = { materials: clone(M), settings: clone(S), products: clone(products) };
+  const r0 = readiness(st);
+  assert.equal(r0.ready, false);
+  const keys = r0.blockers.map((b) => b.key);
+  for (const k of ['sellPerGram.au14', 'sellPerGram.au18', 'sellPerGram.pt', 'd01', 'd04', 'roundTo', 'vatPct', 'engravingPrice']) assert.ok(keys.includes(k), k);
+  assert.ok(r0.byGroup.gyuruk > 100);
+  // az ügyfél példája sem számít jóváhagyottnak
+  assert.equal(r0.blockers.find((b) => b.key === 'sellPerGram.au14').src, 'pelda');
+  for (const b of r0.blockers) {
+    if (b.group === 'arak') st.materials.src[b.key] = 'jovahagyott';
+    if (b.group === 'gyemant') st.materials.diamonds.find((d) => d.id === b.key).src = 'jovahagyott';
+    if (b.group === 'szabalyok') st.settings.src[b.key] = 'jovahagyott';
+    if (b.group === 'gyuruk') st.products.find((p) => p.id === b.key).approved = true;
+  }
+  assert.equal(readiness(st).ready, true);
+  st.settings.src.roundTo = 'demo';
+  assert.deepEqual(readiness(st).blockers.map((b) => b.key), ['roundTo']);
+});
+test('Az ötvös számítási módszere változatlan (regresszió)', () => {
+  assert.equal(exampleRing({ metal: 'au14', weight: 4.8, size: 54 }, M, R1).final, 225600);
+  assert.equal(exampleRing({ metal: 'pt', weight: 6.9, size: 60 }, M, R1).final, 421667);
+});

@@ -4,7 +4,7 @@
    ========================================================================== */
 import { store } from './store.js';
 import { COLORS, STYLES, SITES, SRC_LABEL, EXAMPLE_WEIGHTS } from './data.js';
-import { priceProduct, priceAll, diffPrices, defaultConfig, composition, ft, num, dec, pct, METALS, METAL_ORDER, isGold, diamond, refPrice, refWeight, exampleRing, allowedCats, sizeSfx, ctFmt } from './engine.js';
+import { readiness, priceProduct, priceAll, diffPrices, defaultConfig, composition, ft, num, dec, pct, METALS, METAL_ORDER, isGold, diamond, refPrice, refWeight, exampleRing, allowedCats, sizeSfx, ctFmt } from './engine.js';
 import { $, $$, esc, productMedia, toast, modal, M, reduced, dateHu, dayHu } from './ui.js';
 import { configText } from './views-public.js';
 
@@ -140,6 +140,14 @@ function approvals(el) {
     <h1 class="adm__h1">Jóváhagyásra vár</h1>
     <p class="adm__lead">Itt látszik, melyik adat jóváhagyott, melyik az ügyfél jegyzetéből vett példa, és melyik kitalált bemutatóadat. Amit a tulajdonos maga átír, az automatikusan jóváhagyottá válik.</p>
     <p class="srclegend">${['jovahagyott', 'pelda', 'bizonytalan', 'demo'].map(srcBadge).join(' ')}</p>
+    ${(() => { const rd = readiness(st); const G = { arak: 'grammár', gyemant: 'gyémántár', szabalyok: 'számítási szabály (kerekítés, ÁFA, gravír…)', gyuruk: 'gyűrű tömeg- és kőadata' };
+      return `<section class="golive ${rd.ready ? 'golive--ok' : 'golive--no'}" data-golive-box>
+        <h2>Élesítési ellenőrzés</h2>
+        <p class="golive__state" data-golive-state>${rd.ready ? 'Minden árat befolyásoló adat jóváhagyott – élesíthető.' : `<b>Nem élesíthető:</b> ${rd.blockers.length} adat még nincs jóváhagyva.`}</p>
+        ${rd.ready ? '' : `<ul class="golive__list">${Object.entries(rd.byGroup).map(([g, c]) => `<li><b>${c}</b> ${G[g]}</li>`).join('')}</ul>`}
+        <p class="hint">A bemutatóban a kalkulátor ezekkel a példa- és demóadatokkal is számol, és ezt a vásárlói oldalon „demó” jelölés mutatja. Éles oldalra csak jóváhagyott adat kerülhet: amíg bármi hiányzik, az élesítés le van tiltva.</p>
+        <button class="abtn abtn--gold abtn--xl" type="button" data-golive ${rd.ready ? '' : 'disabled'}>Élesítésre kész jelölés</button>
+      </section>`; })()}
     <section class="ebox"><h2>Árak – alapanyag és grammár <small>${count(mats)} vár</small></h2><ul class="aplist">${mats.join('')}</ul></section>
     <section class="ebox"><h2>Természetes gyémántok <small>${count(dias)} vár</small></h2><ul class="aplist">${dias.join('')}</ul>
       <p class="hint">A 0,04 és 0,05 ct ára ellentmondásos/hiányzik, ezért ezeknél a vásárló „Egyedi árajánlat szükséges” feliratot lát. <a href="#/admin/alapanyag">Ár megadása</a></p></section>
@@ -147,6 +155,7 @@ function approvals(el) {
     <section class="ebox"><h2>Gyűrűk adatai <small>${prods.length} / ${st.products.length} vár</small></h2>
       <p class="hint">A gyűrűk tömege most becslés: a weboldalon látható árból visszaszámolva (ár ÷ 47 000 Ft/g). A kőszámok és kőméretek a fotók alapján becsültek. Gyűrűnként a <a href="#/admin/gyuruk">Gyűrűk</a> menüben lehet a valós tömeget megadni és jóváhagyni.</p></section>`;
   el.addEventListener('click', (e) => {
+    if (e.target.closest('[data-golive]')) { if (readiness(S()).ready) toast('Minden adat jóváhagyott. A bemutatóban ez csak ellenőrzés – az éles oldalhoz szerveroldali rendszer kell.'); return; }
     const b = e.target.closest('[data-appr]');
     if (!b || b.disabled) return;
     const [kind, key] = b.dataset.appr.split('|');
@@ -663,7 +672,7 @@ function productEdit(el, id) {
             <label class="efield"><span>Cikkszám</span><input class="input input--lg" data-t="code" value="${esc(p.code)}"></label>
             <label class="efield"><span>Megnevezés</span><input class="input input--lg" data-t="name" value="${esc(p.name)}"></label>
             <label class="efield"><span>Stílus</span><select class="input input--lg" data-t="style">${Object.entries(STYLES).map(([k, v]) => `<option value="${k}" ${p.style === k ? 'selected' : ''}>${v}</option>`).join('')}</select></label>
-            <label class="efield"><span>Szélességek<small>mm, vesszővel elválasztva</small></span><input class="input input--lg" data-widths value="${esc(p.widths.map((w) => String(w).replace('.', ',')).join('; '))}"></label>
+
           </div>
           ${isNew ? `<p class="efield__lab">Típus</p><div class="seg seg--lg seg--wrap"><button type="button" data-kind="p" aria-pressed="${p.kind === 'p'}">Gyűrűpár (női + férfi)</button><button type="button" data-kind="s" aria-pressed="${p.kind === 's'}">Egy gyűrű</button></div>` : ''}
           <p class="efield__lab">Fénykép <small>saját fotó a gyűrűről</small></p>
@@ -689,7 +698,7 @@ function productEdit(el, id) {
           <div class="egrid">
             ${n(`rings.${i}.refSize`, 'Referenciaméret', 'mm', 'ehhez a mérethez tartozik a tömeg')}
             ${n(`rings.${i}.weight`, 'Tömeg 14K-ban', 'g', `${sizeSfx(r.refSize)} méretben – ${p.approved ? 'jóváhagyott' : 'becslés'}`)}
-            ${n(`rings.${i}.refWidth`, 'Referenciaszélesség', 'mm')}
+            ${n(`rings.${i}.refWidth`, 'Szélesség', 'mm', 'a vásárló online nem választhat mást; eltérő szélesség személyes egyeztetéssel')}
             ${n(`rings.${i}.labor`, 'Munkadíj', 'Ft', st.settings.pricingMode === 'gramm' ? 'grammáras módban nem számít bele (a grammár tartalmazza)' : 'nem függ az arany árától')}
             ${n(`rings.${i}.other`, 'Egyéb költség', 'Ft')}
           </div>
@@ -764,6 +773,7 @@ function productEdit(el, id) {
       if (!p.metals.length) { toast('Legalább egy anyagot jelöljön be.'); return; }
       if (!p.colors.length) { toast('Legalább egy aranyszínt jelöljön be.'); return; }
       if (!p.colors.includes(p.baseColor)) p.baseColor = p.colors[0];
+      p.widths = [...new Set(p.rings.map((r) => r.refWidth))];              // gyűrűnként egy szélesség; online nem választható
       if (isNew) {
         if (!p.code.trim() || !p.name.trim()) { toast('Adja meg a cikkszámot és a megnevezést.'); return; }
         const base = 'uj-' + p.code.toLowerCase().normalize('NFD').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');

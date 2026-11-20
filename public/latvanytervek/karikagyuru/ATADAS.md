@@ -410,3 +410,15 @@ Javítások, mind az átirat alapján:
 - **Szövegek** az ötvös szavaihoz igazítva: „harmincvalahány éve”, „addig alakítjátok, amíg ki nem találjátok”, „nála lehet kísérletezni”, „kéz és eszterga”.
 - **„Készült már ilyen is”** szöveges lista a beszélgetésben mutatott darabokról, fotó nélkül, jelölve.
 - Verzió `V3.2`, localStorage-kulcs `karikagyuru-demo-v11`.
+
+---
+
+## V3.3 – három működési javítás (2026. november 20.)
+
+Dizájn és kezdőoldal változatlan. Az ötvös számítási módszere változatlan (teszt ellenőrzi).
+
+1. **Ár nélküli (priceOnRequest) modellek:** eddig kimaradt a konfigurátor. Most ugyanúgy beállítható, amit a modell enged (anyag, finomság, szín, méret, kő, gravír), de árkülönbség és ár helyett „Egyedi árajánlat szükséges” áll, a gomb „Árajánlatot kérek erre a gyűrűre”. A beállítások bekerülnek az érdeklődésbe és az egyedi kérésbe.
+2. **Szélesség következetesen:** a motor mindig a modell saját szélességével számol (`normalizeConfig`), linkből vagy máshonnan sem állítható át. Az adminból kikerült a „Szélességek” lista; gyűrűnként egy „Szélesség” mező van, azzal a megjegyzéssel, hogy a vásárló online nem választhat mást. A vásárlói oldalon: „online nem választható, más szélesség személyes egyeztetéssel”.
+3. **Élesítési ellenőrzés** (`engine.readiness`, admin → Jóváhagyásra vár): amíg bármely árat befolyásoló adat nem „jóváhagyott”, az élesítés gombja tiltott. Ide tartozik a grammár, a gyémántárak, a kerekítés, az ÁFA-beállítás, a gravír- és foglalási díj, a számítási mód, a tömegarányok és a gyűrűk tömeg- és kőadatai. Az ügyfél példája sem számít jóváhagyottnak. Az ÁFA-beállítás jelölése „jóváhagyott”-ról „demó”-ra változott. A bemutató továbbra is számol a demóadatokkal, jelölve.
+
+Tesztek: motor 46/46, asztali 30/30, mobil 26/26, V3 66/66. Verzió `V3.3`, localStorage-kulcs `karikagyuru-demo-v12`.

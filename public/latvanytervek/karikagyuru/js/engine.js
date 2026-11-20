@@ -102,7 +102,8 @@ export function normalizeConfig(p, cfg, M = null, S = {}) {
     const rc = out.rings[i];
     if (!rc) return;
     if (!(rc.size >= 40 && rc.size <= 80)) rc.size = ring.refSize;
-    if (p.widths && !p.widths.includes(rc.width)) rc.width = ring.refWidth;
+    // A szélesség online NEM választható (ügyfél, 47:37–48:18): mindig a modell saját szélessége; más szélesség személyes egyeztetés.
+    if (rc.width !== ring.refWidth) { if (rc.width != null) warnings.push('A szélesség online nem választható – más szélességet személyes egyeztetéssel kérhetsz.'); rc.width = ring.refWidth; }
     const rule = ring.stoneRule;
     if (!rule) { rc.stones = null; return; }
     if (rc.stones === null || rc.stones === false) {
@@ -427,4 +428,27 @@ export function sizeSfx(n) {
   const k = Math.round(n), last = k % 10, tens = Math.floor(k / 10) % 10;
   if (last === 0) return k + ([6, 8, 3].includes(tens) ? '-as' : tens === 1 || tens === 4 || tens === 5 || tens === 7 || tens === 9 || tens === 2 ? '-es' : '-as');
   return k + ({ 3: '-as', 5: '-ös', 6: '-os', 8: '-as' }[last] || '-es');
+}
+
+/**
+ * ÉLESÍTÉSI ELLENŐRZÉS. A bemutató demó- és példaadatokkal is számol, de élesíteni csak akkor lehet,
+ * ha minden, az árat befolyásoló adat forrása „jovahagyott”. Visszaad: { ready, blockers: [{ group, key, label, src }], byGroup }.
+ */
+export function readiness(state) {
+  const M = state.materials, S = state.settings, ms = M.src || {}, ss = S.src || {};
+  const vis = state.products.filter((p) => p.visible !== false);
+  const blockers = [];
+  const need = (group, key, label, src) => { if (src !== 'jovahagyott') blockers.push({ group, key, label, src: src || 'demo' }); };
+  const gm = (S.pricingMode || 'gramm') === 'gramm';
+  const metals = METAL_ORDER.filter((m) => vis.some((p) => p.metals.includes(m)));
+  if (gm) metals.forEach((m) => need('arak', `sellPerGram.${m}`, `${METALS[m].short} – késztermék-grammár`, ms[`sellPerGram.${m}`]));
+  else [...new Set(metals.map((m) => METALS[m].ref))].forEach((k) => need('arak', k, `Alapanyagár – ${k}`, ms[k]));
+  const cats = new Set(vis.flatMap((p) => p.rings.flatMap((r) => (r.stoneRule ? r.stoneRule.cats : []))));
+  (M.diamonds || []).filter((d) => cats.has(d.id)).forEach((d) => need('gyemant', d.id, `${d.name} – darabár`, d.src));
+  const SL = { pricingMode: 'Árképzési mód', sizeMethod: 'Méret hatása az árra', density: 'Tömegarányok anyagonként', roundTo: 'Kerekítés', vatPct: 'ÁFA-beállítás',
+    engravingPrice: 'Gravírozás díja', settingPerStone: 'Kőfoglalás díja', stonesGross: 'A kő darabára végső ár', boxCost: 'Díszdoboz', certCost: 'Kőtanúsítvány' };
+  Object.keys(SL).forEach((k) => need('szabalyok', k, SL[k], ss[k]));
+  vis.filter((p) => !p.approved).forEach((p) => blockers.push({ group: 'gyuruk', key: p.id, label: `${p.code} – tömeg- és kőadatok`, src: 'demo' }));
+  const byGroup = {}; blockers.forEach((b) => (byGroup[b.group] = (byGroup[b.group] || 0) + 1));
+  return { ready: blockers.length === 0, blockers, byGroup };
 }

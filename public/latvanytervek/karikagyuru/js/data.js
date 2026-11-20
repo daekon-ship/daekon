@@ -116,7 +116,7 @@ export const DEMO_SETTINGS = {
   bigChangePct: 20,
   showDemoMarks: true,
   src: {
-    pricingMode: 'pelda', sizeMethod: 'pelda', density: 'pelda', vatPct: 'jovahagyott',
+    pricingMode: 'pelda', sizeMethod: 'pelda', density: 'pelda', vatPct: 'demo',
     stonesGross: 'demo', settingPerStone: 'demo', engravingPrice: 'demo', boxCost: 'demo', certCost: 'demo', roundTo: 'demo',
     lossPct: 'demo', laborFactor: 'demo', markupMetal: 'demo', markupStones: 'demo', stoneEdgeMm: 'demo', stoneGapMm: 'demo',
   },
