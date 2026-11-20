@@ -55,8 +55,10 @@ try { state = JSON.parse(localStorage.getItem(KEY)) || null; } catch { state = n
 if (!state || state.v !== 10) state = fresh();
 
 function persist() {
-  try { localStorage.setItem(KEY, JSON.stringify(state)); } catch { /* privát mód: memóriában marad */ }
+  let saved = true;
+  try { localStorage.setItem(KEY, JSON.stringify(state)); } catch { saved = false; /* privát mód vagy betelt tárhely: memóriában marad */ }
   listeners.forEach((fn) => fn(state));
+  return saved;
 }
 
 export const store = {
@@ -153,6 +155,14 @@ export const store = {
     pts.forEach((x) => series.push({ at: x.at, v: x.v }));
     if (!series.length || series[series.length - 1].v !== state.materials.gold24) series.push({ at: new Date().toISOString(), v: state.materials.gold24 });
     return series;
+  },
+
+  /** Új gyűrű felvitele (demó: csak ebben a böngészőben tárolódik). Visszaadja, sikerült-e tartósan menteni. */
+  addProduct(p) {
+    state.products.push(p);
+    const at = new Date().toISOString();
+    state.history.unshift({ id: uid(), at, validFrom: at, by: 'Tulajdonos (demó)', kind: 'product', title: `Új gyűrű felvéve: ${p.code}`, count: 0, total: 0 });
+    return persist();
   },
 
   addInquiry(inq) {

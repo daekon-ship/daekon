@@ -2,7 +2,7 @@
 import { store } from './store.js';
 import { BUSINESS, COLORS, STYLES, FEATURED, BICOLOR, TERMS, CURRENT_SITE } from './data.js';
 import { priceProduct, normalizeConfig, allowedCats, sizeSfx, ctFmt, defaultConfig, ft, num, dec, diamond, ringSplit, encodeCfg, decodeCfg, METALS, METAL_ORDER, isGold } from './engine.js';
-import { $, $$, esc, productMedia, hasPhoto, metalSwatch, animatePrice, modal, reveal, toast, M, reduced } from './ui.js';
+import { $, $$, esc, productMedia, ringSketch, hasPhoto, metalSwatch, animatePrice, modal, reveal, toast, M, reduced } from './ui.js';
 
 const S = () => store.get();
 const fresh = (el) => { const n = el.cloneNode(false); el.replaceWith(n); return n; };
@@ -16,7 +16,7 @@ const stamp = (m) => `<span class="stamp" aria-label="Fémjel ${METALS[m].stamp}
 const hasStones = (p) => p.rings.some((r) => r.stoneRule);
 const canBePlain = (p) => p.rings.every((r) => !r.stoneRule || r.stoneRule.allowNone);
 /** Megjelenik-e a termék ezen az oldalon (admin: látható + ehhez a domainhez rendelve + van fotó). */
-export const listed = (p) => p.visible !== false && (!p.sites || p.sites.includes(CURRENT_SITE)) && hasPhoto(p);
+export const listed = (p) => p.visible !== false && (!p.sites || p.sites.includes(CURRENT_SITE)) && (hasPhoto(p) || (p.added && !p.img));   // adminban felvett gyűrű kép nélkül is megjelenik („Fotó hamarosan”)
 
 /* ---------- Kártya ---------- */
 function card(p, { metal } = {}) {
@@ -80,21 +80,43 @@ export function home(el) {
   const st = S();
   const hero = store.product('maz-79016-79017');
   const heroPrice = price(hero).final;
-  const count = (fn) => st.products.filter((p) => p.real && hasPhoto(p) && fn(p)).length;
-  const teaserIds = ['maz-81170-81171-y', 'maz-81184-81185-w', 'maz-81202-81203-wy', 'maz-79016-79017', 'maz-81163-81164-y', 'maz-79014-w'];
+  const teaserIds = ['maz-81170-81171-y', 'maz-81184-81185-w', 'maz-81202-81203-wy', 'maz-79016-79017', 'maz-81163-81164-y', 'maz-79014-w'].filter((id) => store.product(id));
+  const shown = st.products.filter(listed);
+  const localPick = (fn) => shown.find((p) => !/^https?:/.test(p.img) && fn(p)) || shown.find(fn);
+
+  // „A kevesebb is lehet pont tökéletes”: ugyanaz a modell három valóban elkészíthető változatban (élő árak)
+  const lp = store.product('maz-81184-81185-w');
+  const lrule = lp && lp.rings[0].stoneRule;
+  const less = [];
+  if (lp && lrule && lrule.mode === 'free' && lrule.allowNone && !lp.priceOnRequest) {
+    const mk = (title, text, fn) => { const c = defaultConfig(lp); fn(c); const r = price(lp, c); if (r.final !== null) less.push({ title, text, v: r.final, href: `#/gyuru/${lp.id}?k=${encodeCfg(r.cfg)}` }); };
+    mk('Kő nélkül', 'Tiszta forma, semmi más.', (c) => (c.rings[0].stones = null));
+    mk('Egy kővel', 'Egy apró természetes gyémánt.', (c) => (c.rings[0].stones = { count: 1, cat: lrule.defCat }));
+    mk(`${lrule.def} kővel`, 'Ahogy a fotón látod.', () => {});
+  }
+  const pairs = shown.filter((p) => p.kind === 'p').map((p) => price(p).final).filter((v) => v);
+  const fromPrice = pairs.length ? Math.min(...pairs) : null;
+
+  // Inspiráció: a katalógus valódi fotói, irány szerint (nem kitalált egyedi megrendelések)
+  const insp = [
+    ['Körbekövezve', 'Gyémántok a gyűrű teljes kerületén.', localPick((p) => p.rings.some((r) => r.stoneRule?.mode === 'perSize'))],
+    ['Több kő, sorban', 'Kötött sorban foglalt kövek.', localPick((p) => p.rings.some((r) => r.stoneRule?.mode === 'fixed'))],
+    ['Két szín egy gyűrűben', 'Fehér és sárga, vagy rozéval.', localPick((p) => !!BICOLOR[p.baseColor])],
+    ['Megmunkált felület', 'Matt, csiszolt, mintás.', localPick((p) => p.style === 'modern' && !hasStones(p))],
+  ].filter((x) => x[2]);
 
   el.innerHTML = `
-  <section class="hero">
+  <section class="hero hero--v3">
     <div class="wrap hero__grid">
       <div class="hero__text">
-        <p class="eyebrow" data-hero>${stamp('au14')}${stamp('au18')}<span>Karikagyűrűk és leánykérő gyűrűk · Budapest</span></p>
-        <h1 data-hero>Egy életre szóló választás.</h1>
-        <p class="lead" data-hero>Karikagyűrűk és eljegyzési gyűrűk sárga-, fehér- és rozéaranyból. Minden pár rendelésre, az Önök méretére készül, Budapesten, a VIII. kerületben.</p>
+        <p class="eyebrow" data-hero><span>Karikagyűrűk Budapestről · ötvös készíti, veled együtt</span></p>
+        <h1 data-hero>Nem kell beérned azzal, ami a vitrinben van.</h1>
+        <p class="lead" data-hero>Válassz egy modellt, alakítsd a saját ízlésedre, vagy tervezzünk együtt valami teljesen újat. A gyűrűdnek nem kell hasonlítania senki máséra.</p>
         <div class="hero__cta" data-hero>
-          <a class="btn btn--dark" href="#/kollekcio">Fedezze fel kollekciónkat</a>
-          <a class="btn btn--line" href="#/kapcsolat">Személyes konzultáció</a>
+          <a class="btn btn--dark" href="#/kollekcio">Alakítsd a sajátodra</a>
+          <a class="btn btn--line" href="#/sajat">Van egy saját ötletem</a>
         </div>
-        <p class="hero__note" data-hero>${esc(BUSINESS.hours)}</p>
+        <p class="hero__note" data-hero>A döntésben egy több mint 30 éve dolgozó ötvös segít, személyesen. Időpontra, akár munkaidő után vagy hétvégén is.</p>
       </div>
       <figure class="hero__stage">
         <div class="hero__ring">
@@ -103,100 +125,132 @@ export function home(el) {
         </div>
         <figcaption class="hero__cap">
           <a href="#/gyuru/${hero.id}"><span>${esc(hero.code)}</span><b>${esc(hero.name)}</b>
-          <em>Becsült ár: <span class="price" data-hero-price data-value="${heroPrice}">${ft(heroPrice)}</span> ${demoMark()}</em></a>
+          <em>Így: <span class="price" data-hero-price data-value="${heroPrice}">${ft(heroPrice)}</span> ${demoMark()} – de átalakíthatod</em></a>
         </figcaption>
       </figure>
     </div>
   </section>
 
-  <section class="sec">
+  <section class="sec paths-sec" id="utak">
     <div class="wrap">
-      <header class="sec__head" data-reveal>
-        
-        <h2>Válasszon aranyszín szerint</h2>
-      </header>
-      <div class="coll">
-        ${collTile('feher', 'Fehérarany', 'A legtöbbet választott szín, gyémánttal is.', count((p) => p.baseColor === 'feher'), store.product('maz-79014-w'), 'coll__a')}
-        ${collTile('sarga', 'Sárgaarany', 'A klasszikus karikagyűrű.', count((p) => p.baseColor === 'sarga'), store.product('maz-81161-81162-y'), 'coll__b')}
-        ${collTile('ketszinu', 'Kétszínű arany', 'Két aranyszín egy gyűrűben.', count((p) => !!BICOLOR[p.baseColor]), store.product('maz-81200-81201-wy'), 'coll__c')}
-        ${collTile('koves', 'Gyémánttal', 'Egy kővel vagy körbe foglalva.', count((p) => hasStones(p)), store.product('maz-79010-w'), 'coll__d')}
-        <a class="coll__rose" href="#/kollekcio?szin=rose" data-reveal>
-          <div class="coll__rose-art">${productMedia(store.product('maz-79016-79017'))}</div>
-          <div><p class="kicker">Rozéarany</p><p>Bármelyik modell kérhető rozéaranyból is. Az árát a gyűrű oldalán látja.</p></div>
-          <span class="btn-text">Rozéarany árak</span>
+      <div class="paths">
+        <a class="path path--a" href="#/kollekcio" data-reveal data-path="a">
+          <span class="path__tag">1. út</span>
+          <h2>Alakítsd a sajátodra</h2>
+          <p>Kiválasztasz egy gyűrűt, aztán a magadévá teszed.</p>
+          <ul><li>anyag és szín</li><li>női és férfi méret külön</li><li>természetes gyémánt: mennyi és mekkora</li><li>gravírozás</li></ul>
+          <span class="path__go">Megnézem a gyűrűket <i aria-hidden="true">→</i></span>
+        </a>
+        <a class="path path--b" href="#/sajat" data-reveal=".08" data-path="b">
+          <span class="path__tag">2. út</span>
+          <h2>Saját elképzelés alapján</h2>
+          <p>Van egy ötleted, egy rajzod vagy egy fotód? Abból indulunk ki.</p>
+          <ul><li>leírod, mit szeretnél</li><li>mutathatsz képet vagy rajzot</li><li>megbeszéljük, hogyan készíthető el</li><li>az árat személyesen mondjuk meg</li></ul>
+          <span class="path__go">Elmondom az ötletem <i aria-hidden="true">→</i></span>
         </a>
       </div>
+      <p class="paths__note" data-reveal>Bármelyiket választod, a végén ugyanazzal az ötvössel beszélsz, aki a gyűrűt elkészíti.</p>
     </div>
   </section>
 
   <section class="sec sec--paper">
     <div class="wrap">
       <header class="sec__head sec__head--row" data-reveal>
-        <div><h2>Népszerű modellek</h2></div>
-        <a class="btn btn--line" href="#/kollekcio">Mind a ${st.products.filter(listed).length} modell</a>
+        <div><h2>Innen el lehet indulni</h2><p class="sec__lead">Kész modellek – mindegyiken változtathatsz.</p></div>
+        <a class="btn btn--line" href="#/kollekcio">Mind a ${shown.length} gyűrű</a>
       </header>
-      <div class="grid grid--dense grid--featured" data-reveal>${FEATURED.map((id) => card(store.product(id))).join('')}</div>
-    </div>
-  </section>
-
-  <section class="sec" id="egyedi">
-    <div class="wrap">
-      <header class="sec__head" data-reveal>
-        
-        <h2>Így készül a gyűrűjük</h2>
-        <p class="sec__lead">Katalógusból, átalakított modellből vagy saját terv, akár egy fénykép alapján. Aranyon kívül platinából, palládiumból, titánból és acélból is.</p>
-      </header>
-      <ol class="steps">
-        ${[
-          ['Időpont', 'Hívjon, vagy írjon. Munkaidő után és hétvégén is megoldjuk.'],
-          ['Konzultáció', 'Felpróbálják a mintagyűrűket, megmérjük az ujjméretet, kiválasztják a színt és a szélességet.'],
-          ['Ajánlat és terv', 'Írásos ajánlatot kapnak az aznapi aranyárral. Előleg: az ár fele.'],
-          ['Elkészítés', 'Szólunk, ha kész. Átvételkor felpróbálják, és kifizetik a maradékot.'],
-        ].map(([t, d], i) => `<li data-reveal="${i * 0.08}"><span class="steps__n">${i + 1}</span><h3>${t}</h3><p>${d}</p></li>`).join('')}
-      </ol>
-    </div>
-  </section>
-
-  <section class="sec sec--sand">
-    <div class="wrap why">
-      <div class="why__quote" data-reveal>
-        
-        <h2>Miért érdemes bejönni?</h2>
-      </div>
-      <ul class="why__list">
-        <li data-reveal><h3>Pontos méret</h3><p>A széles gyűrű szorosabb, mint a keskeny ugyanabban a méretben. Mintagyűrűvel pár perc alatt kiderül.</p></li>
-        <li data-reveal=".08"><h3>Valódi szín</h3><p>Az arany színe a kezén más, mint a képernyőn. Itt egymás mellett összehasonlíthatók.</p></li>
-        <li data-reveal=".16"><h3>Kettesben</h3><p>A két gyűrű lehet eltérő szélességű, kővel vagy anélkül. Ezt együtt könnyebb eldönteni.</p></li>
-      </ul>
+      <div class="grid grid--dense grid--featured" data-reveal>${FEATURED.map((id) => store.product(id)).filter((p) => p && listed(p)).map((p) => card(p)).join('')}</div>
     </div>
   </section>
 
   <section class="sec" id="arkalkulator">
     <div class="wrap calc">
       <div class="calc__text" data-reveal>
-        
-        <h2>Nézze meg, mennyibe kerül</h2>
-        <p>Válasszon modellt, anyagot és színt, az ár azonnal frissül. A gyűrű oldalán a méret, a kövek és a gravírozás is beállítható. Az arany színe nem változtat az árat.</p>
-        <p class="fine">Tájékoztató ár, a végleges árat személyesen adjuk meg.</p>
+        <h2>Próbáld ki, mennyi lenne</h2>
+        <p>Válassz modellt, anyagot és színt – az ár azonnal változik. A gyűrű oldalán a méretet, a köveket és a gravírozást is beállíthatod. Az arany színe nem változtat az árat.</p>
+        <p class="fine">Tájékoztató ár. A véglegeset személyesen mondjuk meg.</p>
       </div>
       <div class="calc__box" data-reveal=".1">
-        <p class="calc__step"><span>1</span>Válasszon modellt</p>
+        <p class="calc__step"><span>1</span>Válassz modellt</p>
         <div class="calc__models" role="tablist" aria-label="Modell">${teaserIds.map((id, i) => { const tp = store.product(id); return `<button role="tab" aria-selected="${i === 0}" data-tid="${id}" aria-label="${esc(tp.code)}"><span class="calc__thumb">${productMedia(tp)}</span><small>${esc(tp.code)}</small></button>`; }).join('')}</div>
         <div class="calc__media" data-tmedia></div>
-        <p class="calc__step"><span>2</span>Állítsa be</p>
+        <p class="calc__step"><span>2</span>Állítsd be</p>
         <div class="calc__row"><span>Anyag</span><div class="seg seg--wrap" data-tmetal></div></div>
         <div class="calc__row" data-tcolorrow><span>Szín</span><div class="swatches" data-tcolor></div></div>
         <div class="calc__row" data-tstonerow hidden><span>Kövek</span><div class="seg" data-tstones><button data-st="1" aria-pressed="true">Gyémánttal</button><button data-st="0" aria-pressed="false">Kő nélkül</button></div></div>
         <div class="calc__price"><span>Becsült ár ${demoMark()}</span><strong class="price" data-tprice></strong></div>
-        <a class="btn btn--dark btn--full" data-tlink href="#">Méret és gravírozás beállítása</a>
+        <a class="btn btn--dark btn--full" data-tlink href="#">Tovább: méret, kövek, gravírozás</a>
       </div>
+    </div>
+  </section>
+
+  ${less.length === 3 ? `<section class="sec sec--sand" id="kevesebb">
+    <div class="wrap lessis">
+      <div class="lessis__txt" data-reveal>
+        <h2>A kevesebb is lehet pont tökéletes.</h2>
+        <p>Egy gyűrű nem attól lesz a tiéd, hogy mennyi kő van benne. Ugyanaz a modell kő nélkül, egy kővel vagy többel is jó döntés – az számít, melyiket hordanád szívesen minden nap.</p>
+        ${fromPrice ? `<p class="lessis__from">Gyűrűpár most <b>${ft(fromPrice)}</b>-tól ${demoMark()}</p>` : ''}
+      </div>
+      <div class="lessis__cards" data-reveal=".08">
+        <div class="lessis__model"><div class="lessis__img">${productMedia(lp)}</div><div><b>${esc(lp.code)}</b><small>ugyanaz a pár, három változatban</small></div></div>
+        ${less.map((x) => `<a class="lesscard" href="${x.href}"><span><b>${x.title}</b><small>${x.text}</small></span><strong>${ft(x.v)}</strong></a>`).join('')}
+        <p class="fine">Csak olyan változat szerepel, ami ebből a modellből valóban elkészíthető. ${demoMark('demó kőszabály')}</p>
+      </div>
+    </div>
+  </section>` : ''}
+
+  ${insp.length ? `<section class="sec" id="inspiracio">
+    <div class="wrap">
+      <header class="sec__head" data-reveal>
+        <h2>Merre lehet elvinni egy gyűrűt?</h2>
+        <p class="sec__lead">Néhány irány ötletnek. Ha egyik sem az, amit keresel, az nem baj – azt találjuk ki együtt. Van olyan darab, amit kétszer ugyanúgy nem is lehet elkészíteni.</p>
+      </header>
+      <div class="insp">
+        ${insp.map(([t, d, p], i) => `<a class="insp__tile" href="#/gyuru/${p.id}" data-reveal="${i * 0.06}"><div class="insp__media">${productMedia(p)}</div><div class="insp__txt"><h3>${t}</h3><p>${d}</p><span class="btn-text">Ebből indulnék ki</span></div></a>`).join('')}
+        <a class="insp__own" href="#/sajat" data-reveal=".24"><h3>Egészen más jár a fejedben?</h3><p>Különleges foglalás, szokatlan forma, saját minta. Mondd el – megnézzük, megvalósítható-e.</p><span class="btn btn--dark">Van egy saját ötletem</span></a>
+      </div>
+      <p class="fine insp__note">A képek a katalógus saját fotói. ${S().settings.showDemoMarks ? '<span class="demo-chip">korábbi egyedi munkák fotói: az ügyféltől várjuk</span>' : ''}</p>
+    </div>
+  </section>` : ''}
+
+  <section class="sec sec--ink otvos" id="otvos">
+    <div class="wrap otvos__grid">
+      <div class="otvos__lead" data-reveal>
+        <h2>Aki a gyűrűdet készíti</h2>
+        <p>Nem eladóval beszélsz, hanem az ötvössel. Több mint 30 éve csinálja, és ugyanaz az ember ül le veled, aki utána a gyűrűn dolgozik.</p>
+        <p>Szívesen kipróbál szokatlan ötleteket is. Ha valami nem működne – túl vékony lenne, nem tartaná a követ, hamar elkopna –, azt megmondja, és mutat helyette olyat, ami szép is marad.</p>
+        <a class="btn btn--gold" href="#/kapcsolat">Időpontot kérek</a>
+        ${S().settings.showDemoMarks ? '<p class="fine"><span class="demo-chip">portré és műhelyfotó: az ügyféltől várjuk</span></p>' : ''}
+      </div>
+      <ul class="otvos__list">
+        <li data-reveal><h3>Gép és kéz együtt</h3><p>Ahol a pontosság számít, gép dolgozik. A foglalás, az illesztés és a felület kézi ötvösmunka.</p></li>
+        <li data-reveal=".06"><h3>Közösen döntötök</h3><p>Felpróbálod a mintagyűrűket, megnézed a színeket a saját kezeden, és ott helyben alakul a terv.</p></li>
+        <li data-reveal=".12"><h3>Pontos méret</h3><p>A széles gyűrű szorosabb, mint a keskeny. Mintagyűrűvel pár perc alatt kiderül, mi a jó.</p></li>
+        <li data-reveal=".18"><h3>Csak természetes gyémánt</h3><p>Ha kő kerül a gyűrűbe, az valódi, természetes gyémánt.</p></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="sec" id="egyedi">
+    <div class="wrap">
+      <header class="sec__head" data-reveal>
+        <h2>Így megy</h2>
+        <p class="sec__lead">Online kitalálod, személyesen véglegesítjük. Fizetni és rendelni itt nem lehet – az a műhelyben történik.</p>
+      </header>
+      <ol class="steps">
+        ${[
+          ['Kitalálod', 'Összeállítod a gyűrűt itt az oldalon, vagy leírod a saját ötleted. Elküldöd, mi visszahívunk.'],
+          ['Találkozunk', 'Felpróbálod a mintagyűrűket, megmérjük az ujjad, megbeszéljük a részleteket.'],
+          ['Megkapod az árat', 'Írásos ajánlat az aznapi nemesfémárral. Előleg: az ár fele.'],
+          ['Elkészül', 'Szólunk, ha kész. Átvételkor felpróbálod, és kifizeted a maradékot.'],
+        ].map(([t, d], i) => `<li data-reveal="${i * 0.08}"><span class="steps__n">${i + 1}</span><h3>${t}</h3><p>${d}</p></li>`).join('')}
+      </ol>
     </div>
   </section>
 
   <section class="sec sec--paper" id="rendeles">
     <div class="wrap">
       <header class="sec__head" data-reveal>
-        
         <h2>Rendelés, előleg, garancia</h2>
         <p class="sec__lead">Az ÁSZF lényege röviden.</p>
       </header>
@@ -219,7 +273,7 @@ export function home(el) {
     if (plainOk && !t.stones) cfg.rings.forEach((r) => (r.stones = null));
     $('[data-tstonerow]', el).hidden = !plainOk;
     $('[data-tcolorrow]', el).hidden = !isGold(cfg.metal) || p.colors.length < 2;
-    $('[data-tmetal]', el).innerHTML = TM.map((m) => `<button data-m="${m}" aria-pressed="${m === cfg.metal}" ${p.metals.includes(m) ? '' : 'disabled title="Ennél a modellnél nem választható"'}>${METALS[m].short}</button>`).join('');
+    $('[data-tmetal]', el).innerHTML = TM.filter((m) => p.metals.includes(m)).map((m) => `<button data-m="${m}" aria-pressed="${m === cfg.metal}">${METALS[m].short}</button>`).join('');
     $$('[data-st]', el).forEach((b) => b.setAttribute('aria-pressed', String((b.dataset.st === '1') === t.stones)));
     $('[data-tmedia]', el).innerHTML = `<div class="calc__ring calc__ring--photo">${productMedia(p)}</div><p class="calc__name">${esc(p.name)}</p>${!cfg.color || cfg.color === p.baseColor ? '' : `<p class="colornote"><span class="sw sw--sm" style="--sw:${metalSwatch(cfg.color)}"></span>A fotón ${colorLabel(p.baseColor).toLowerCase()} – ${colorLabel(cfg.color).toLowerCase()} színben készül el.</p>`}`;
     $('[data-tcolor]', el).innerHTML = p.colors.map((c) => `<button class="sw" style="--sw:${metalSwatch(c)}" aria-pressed="${c === cfg.color}" data-c="${c}" title="${colorLabel(c)}"><span class="sr">${colorLabel(c)}</span></button>`).join('');
@@ -232,10 +286,10 @@ export function home(el) {
     if (m) { t.id = m.dataset.tid; t.color = null; $$('[data-tid]', el).forEach((b) => b.setAttribute('aria-selected', b === m)); paint(); }
     if (k && !k.disabled) { t.metal = k.dataset.m; paint(); }
     if (c) { t.color = c.dataset.c; paint(); }
-    const st = e.target.closest('[data-st]');
-    if (st) { t.stones = st.dataset.st === '1'; paint(); }
+    const sb = e.target.closest('[data-st]');
+    if (sb) { t.stones = sb.dataset.st === '1'; paint(); }
   });
-  paint();
+  if (teaserIds.length) paint();
   bindContact(el);
   heroIn(el);
   reveal(el);
@@ -276,9 +330,10 @@ export function catalog(el, query) {
   el.innerHTML = `
   <section class="page-head">
     <div class="wrap">
-      <p class="crumbs"><a href="#/">Kezdőlap</a> / Kollekció</p>
-      <h1>Kollekció</h1>
-      <p class="sec__lead">Minden modell rendelésre készül. Az árak alapméretre vonatkoznak, a pontos árat a gyűrű oldalán számolja ki.</p>
+      <p class="crumbs"><a href="#/">Kezdőlap</a> / Gyűrűk</p>
+      <h1>Gyűrűk</h1>
+      <p class="sec__lead">Mindegyik rendelésre készül, a te méretedre – és bármelyiken változtathatsz. Az ár az alapbeállításra szól, a gyűrű oldalán számolhatod tovább.</p>
+      <p class="page-head__alt">Nem találod, amit keresel? <a href="#/sajat">Mondd el a saját ötleted</a></p>
     </div>
   </section>
   <section class="wrap shop">
@@ -410,12 +465,17 @@ const FONTS = ['Egyenes', 'Írott'];
 export function product(el, id, query) {
   el = fresh(el);
   const p = store.product(id);
-  if (!p) { el.innerHTML = `<section class="wrap page-head"><h1>A gyűrű nem található</h1><p><a class="btn btn--line" href="#/kollekcio">Vissza a kollekcióhoz</a></p></section>`; return; }
+  if (!p) { el.innerHTML = `<section class="wrap page-head"><h1>A gyűrű nem található</h1><p><a class="btn btn--line" href="#/kollekcio">Vissza a gyűrűkhöz</a></p></section>`; return; }
   if (p.priceOnRequest) { productOnRequest(el, p); return; }
   let cfg = (query?.get('k') && decodeCfg(query.get('k'), p)) || defaultConfig(p);
   const qc = query?.get('szin');
   if (!query?.get('k') && qc && p.colors.includes(qc)) cfg.color = qc;
-  let view = 'foto';
+  let view = 'foto', shownView = '';
+  const sketch = () => ringSketch({ metal: cfg.metal, color: cfg.color || p.baseColor, rings: p.rings.map((rg, i) => {
+    const rc = cfg.rings[i], dd = rc.stones && diamond(S().materials, rc.stones.cat);
+    return { label: rg.label, size: rc.size, sizeText: rc.sizeUnknown ? 'méret később' : sizeSfx(rc.size), width: rc.width,
+      stones: rc.stones ? { count: rc.stones.count, mm: dd?.mm, around: rg.stoneRule.mode === 'perSize' } : null };
+  }) });
   let lastWarn = '';
   const pair = p.kind === 'p';
   const golds = p.metals.filter(isGold), others = p.metals.filter((m) => !isGold(m));
@@ -423,18 +483,19 @@ export function product(el, id, query) {
 
   el.innerHTML = `
   <section class="wrap pdp">
-    <p class="crumbs"><a href="#/">Kezdőlap</a> / <a href="#/kollekcio">Kollekció</a> / ${esc(p.code)}</p>
+    <p class="crumbs"><a href="#/">Kezdőlap</a> / <a href="#/kollekcio">Gyűrűk</a> / ${esc(p.code)}</p>
     <div class="pdp__grid">
       <div class="pdp__gallery">
         <div class="pdp__stage" data-stage></div>
         <div class="pdp__thumbs" role="tablist" aria-label="Nézet">
           ${p.img ? `<button role="tab" data-view="foto" aria-selected="true"><span class="pdp__thumb">${productMedia(p)}</span>Fotó</button>` : ''}
+          <button role="tab" data-view="abra" aria-selected="false"><span class="pdp__thumb pdp__thumb--abra" data-minisketch></span>A te változatod</button>
           ${p.img ? `<button role="tab" data-view="nagy" aria-selected="false"><span class="pdp__thumb pdp__thumb--zoom">${productMedia(p)}</span>Nagyítás</button>` : ''}
         </div>
-        <p class="fine">A karikagyuru.com saját fotója.</p>
+        <p class="fine" data-stagenote></p>
         <p class="colornote" data-colornote hidden></p>
         <div class="pdp__trust">
-          <p><b>Rendelésre készül</b><span>Az Önök méretére, egyeztetés után.</span></p>
+          <p><b>Rendelésre készül</b><span>A te méretedre, egyeztetés után.</span></p>
           <p><b>Természetes gyémánt</b><span>Csak valódi, természetes kővel dolgozunk.</span></p>
           <p><b>Hétvégén is</b><span>Időpont-egyeztetéssel.</span></p>
         </div>
@@ -455,15 +516,20 @@ export function product(el, id, query) {
         <ol class="cfg" data-steps></ol>
         <div class="summary" data-summary></div>
         <div class="pdp__ctas">
-          <button class="btn btn--dark btn--full" type="button" data-inquire="erdeklodes">Érdeklődöm erről a gyűrűről</button>
-          <button class="btn btn--line btn--full" type="button" data-inquire="konzultacio">Kérjen személyes konzultációt</button>
+          <button class="btn btn--dark btn--full" type="button" data-inquire="erdeklodes">Érdekel ez a gyűrű</button>
+          <button class="btn btn--line btn--full" type="button" data-inquire="konzultacio">Személyes konzultációt kérek</button>
           <div class="pdp__tools">
             <button type="button" class="linkbtn" data-share>Konfiguráció linkjének másolása</button>
             <button type="button" class="linkbtn" data-resetcfg>Alapbeállítás</button>
           </div>
-          <a class="pdp__phone" href="${BUSINESS.phoneHref}">vagy hívjon: <b>${BUSINESS.phone}</b></a>
+          <a class="pdp__phone" href="${BUSINESS.phoneHref}">vagy hívj: <b>${BUSINESS.phone}</b></a>
         </div>
-        <p class="notice">Tájékoztató ár. A végleges árat személyesen adjuk meg, a pontos méret és az aznapi nemesfémár alapján.</p>
+        <div class="other">
+          <h2>Másképp képzelted el?</h2>
+          <p>Más forma, más felület, kő oda is, ahová itt nem lehet? Ebből a gyűrűből kiindulva megbeszéljük – a mostani beállításaidat visszük tovább.</p>
+          <a class="btn btn--line" href="#" data-custom-link>Egyedi változtatást kérek</a>
+        </div>
+        <p class="notice">Tájékoztató ár. A véglegeset személyesen mondjuk meg, a pontos méret és az aznapi nemesfémár alapján.</p>
       </div>
     </div>
 
@@ -504,7 +570,7 @@ export function product(el, id, query) {
   const engravePreview = (rc) => {
     const key = !isGold(cfg.metal) ? 'feher' : (BICOLOR[cfg.color] ? 'ketszinu' : cfg.color);
     const m = { sarga: ['#F3DA9B', '#C99B4C'], feher: ['#F4F5F6', '#BFC4C8'], rose: ['#F5D3C1', '#C98C72'], ketszinu: ['#F4F5F6', '#C99B4C'] }[key] || ['#eee', '#bbb'];
-    const txt = rc.engraving || 'Az Önök szövege itt jelenik meg';
+    const txt = rc.engraving || 'Ide kerül a szöveged';
     const style = rc.font ? `font-family:'Libre Baskerville',serif;font-style:italic;font-weight:400;font-size:17px` : `font-family:Manrope,sans-serif;font-weight:600;font-size:15px;letter-spacing:.5px`;
     const gid = 'eg' + Math.random().toString(36).slice(2, 7);
     return `<svg class="engrave" viewBox="0 0 360 64" role="img" aria-label="Gravírozás előnézete">
@@ -551,7 +617,7 @@ export function product(el, id, query) {
     const Mx = S().materials;
     return ['Gyémánt', 'természetes', `<div class="rings2">${p.rings.map((ring, i) => {
       const rule = ring.stoneRule, rc = cfg.rings[i];
-      if (!rule) return `<div class="ringbox"><h3 class="ringbox__t">${esc(ring.label)}</h3><p class="hint">Ennél a gyűrűnél nincs kő.</p></div>`;
+      if (!rule) return `<div class="ringbox"><h3 class="ringbox__t">${esc(ring.label)}</h3><p class="hint">Ezen a modellen ez a gyűrű kő nélkül szerepel.</p><p class="hint">Kővel képzelted el? Megoldható lehet – <a href="#" data-custom-link>kérd egyedi egyeztetéssel</a>.</p></div>`;
       const st = rc.stones;
       const dia = st && diamond(Mx, st.cat);
       let body = '';
@@ -586,14 +652,23 @@ export function product(el, id, query) {
     cfg = r.cfg;                                   // érvényesített (lehetetlen összeállítás nem marad)
     const cur = r.final;
     const stage = $('[data-stage]', el);
-    stage.className = 'pdp__stage pdp__stage--foto';
-    if (first) stage.innerHTML = productMedia(p, { eager: true, large: true });
+    if (!p.img && view === 'foto') view = 'abra';
+    const sk = sketch();
+    $('[data-minisketch]', el).innerHTML = sk;
+    if (view !== shownView || view === 'abra') {
+      stage.className = `pdp__stage pdp__stage--${view}`;
+      stage.innerHTML = view === 'abra' ? `${sk}<p class="sketch__tag">Szemléltető ábra – nem fotó</p>` : productMedia(p, { eager: true, large: true });
+      shownView = view;
+    }
+    $('[data-stagenote]', el).innerHTML = view === 'abra'
+      ? 'Az ábra a beállításaidat követi: anyag, szín, arányok, a kövek száma és mérete. Nem a kész gyűrű pontos képe – a kövek helyét és a felületet az ötvös alakítja ki.'
+      : 'A karikagyuru.com saját fotója az eredeti modellről. A beállításaidat „A te változatod” ábra mutatja.';
     const cn = $('[data-colornote]', el);
     const showNote = isGold(cfg.metal) ? cfg.color !== p.baseColor : true;
     cn.hidden = !showNote;
     cn.innerHTML = isGold(cfg.metal)
-      ? `<span class="sw sw--sm" style="--sw:${metalSwatch(cfg.color)}"></span>A fotón ${colorLabel(p.baseColor).toLowerCase()} látható – az Ön gyűrűje ${colorLabel(cfg.color).toLowerCase()} színben készül el.`
-      : `A fotón aranyból készült változat látható – az Ön gyűrűje ${METALS[cfg.metal].label.toLowerCase()}ból készül.`;
+      ? `<span class="sw sw--sm" style="--sw:${metalSwatch(cfg.color)}"></span>A fotón ${colorLabel(p.baseColor).toLowerCase()} látható – a tiéd ${colorLabel(cfg.color).toLowerCase()} színben készül el.`
+      : `A fotón aranyból készült változat látható – a tiéd ${METALS[cfg.metal].label.toLowerCase()}ból készül.`;
     $$('[data-view]', el).forEach((b) => b.setAttribute('aria-selected', b.dataset.view === view));
 
     const steps = [stepMetal(cur), stepKarat(cur), stepColor(), stepSize(cur), stepStones(cur), stepEngrave()].filter(Boolean);
@@ -601,7 +676,7 @@ export function product(el, id, query) {
 
     const q = $('[data-quote]', el);
     q.hidden = cur !== null;
-    q.textContent = cur === null ? (r.reason || 'Ehhez az összeállításhoz nincs megbízható ár.') + ' Kérjen ajánlatot, és személyesen kiszámoljuk.' : '';
+    q.textContent = cur === null ? (r.reason || 'Ehhez az összeállításhoz nincs megbízható ár.') + ' Kérj ajánlatot, és személyesen kiszámoljuk.' : '';
     if (pair) {
       const sp = cur === null ? null : ringSplit(p, cfg, r, S().settings);
       $('[data-split]', el).innerHTML = sp ? p.rings.map((rg, i) => `<span>${esc(rg.label)} <b>kb. ${ft(sp[i])}</b></span>`).join('') : '';
@@ -633,6 +708,7 @@ export function product(el, id, query) {
     else if ((a = pick(t, 'scount'))) cfg.rings[+a[0]].stones.count += Number(a[1]);
     else if ((a = pick(t, 'scat'))) cfg.rings[+a[0]].stones.cat = a[1];
     else if ((a = pick(t, 'font'))) cfg.rings[+a[0]].font = Number(a[1]);
+    else if (t.closest('[data-custom-link]')) { e.preventDefault(); location.hash = `#/sajat?modell=${p.id}&k=${encodeCfg(cfg)}`; return; }
     else if ((a = pick(t, 'view'))) { if (a[0] === 'nagy') { zoom(p); return; } view = a[0]; }
     else if ((a = pick(t, 'inquire'))) { inquiry(p, cfg, a[0]); return; }
     else if ((a = pick(t, 'sizehelp'))) { const i = +a[0]; sizeHelp(sizes(i), (n) => { cfg.rings[i].size = n; cfg.rings[i].sizeUnknown = false; paint(); }); return; }
@@ -667,8 +743,8 @@ export function product(el, id, query) {
   const share = async () => {
     syncUrl();
     const url = location.href;
-    try { await navigator.clipboard.writeText(url); toast('A link kimásolva – elküldheti párjának, vagy később visszatérhet ehhez a beállításhoz.'); }
-    catch { modal(`<div class="form"><h2>A konfiguráció linkje</h2><input class="input" readonly value="${esc(url)}" onfocus="this.select()"><p class="fine">Másolja ki, és küldje el párjának.</p></div>`, { label: 'Link' }); }
+    try { await navigator.clipboard.writeText(url); toast('A link kimásolva – küldd el a párodnak, vagy térj vissza később ehhez a beállításhoz.'); }
+    catch { modal(`<div class="form"><h2>A konfiguráció linkje</h2><input class="input" readonly value="${esc(url)}" onfocus="this.select()"><p class="fine">Másold ki, és küldd el a párodnak.</p></div>`, { label: 'Link' }); }
   };
 
   paint(true);
@@ -678,7 +754,7 @@ export function product(el, id, query) {
 function productOnRequest(el, p) {
   el.innerHTML = `
   <section class="wrap pdp">
-    <p class="crumbs"><a href="#/">Kezdőlap</a> / <a href="#/kollekcio">Kollekció</a> / ${esc(p.code)}</p>
+    <p class="crumbs"><a href="#/">Kezdőlap</a> / <a href="#/kollekcio">Gyűrűk</a> / ${esc(p.code)}</p>
     <div class="pdp__grid">
       <div class="pdp__gallery"><div class="pdp__stage pdp__stage--foto">${productMedia(p, { eager: true })}</div>
         <p class="fine">A karikagyuru.com saját fotója.</p></div>
@@ -686,11 +762,11 @@ function productOnRequest(el, p) {
         <p class="card__code">${esc(p.code)}</p>
         <h1 class="pdp__title">${esc(p.name)}</h1>
         <div class="pdp__price"><span>Ár</span><strong class="price price--big">Egyedi ajánlat alapján</strong>
-          <small>Az árat személyesen adjuk meg.</small></div>
+          <small>Az árat személyesen mondjuk meg.</small></div>
         <div class="pdp__ctas">
           <button class="btn btn--dark btn--full" type="button" data-inquire="erdeklodes">Árajánlatot kérek erre a gyűrűre</button>
           <button class="btn btn--line btn--full" type="button" data-inquire="konzultacio">Személyes konzultációt kérek</button>
-          <a class="pdp__phone" href="${BUSINESS.phoneHref}">vagy hívjon: <b>${BUSINESS.phone}</b></a>
+          <a class="pdp__phone" href="${BUSINESS.phoneHref}">vagy hívj: <b>${BUSINESS.phone}</b></a>
         </div>
         <dl class="specs__dl" style="margin-top:28px">
           <div><dt>Cikkszám</dt><dd>${esc(p.code)}</dd></div>
@@ -724,11 +800,11 @@ function sizeHelp([lo, hi], onPick) {
   const rows = [];
   for (let n = lo; n <= hi; n += 2) rows.push(n);
   modal(`<div class="form sizehelp"><p class="kicker">Méretsegítő</p><h2>Melyik a jó méret?</h2>
-    <p>A magyar gyűrűméret a gyűrű <b>belső kerülete milliméterben</b>. Ha van egy jól illő gyűrűje, mérje meg vonalzóval a belső átmérőjét, és keresse meg a táblázatban.</p>
+    <p>A magyar gyűrűméret a gyűrű <b>belső kerülete milliméterben</b>. Ha van egy jól illő gyűrűd, mérd meg vonalzóval a belső átmérőjét, és keresd meg a táblázatban.</p>
     <table class="sizetable"><thead><tr><th>Méret (kerület)</th><th>Belső átmérő</th><th></th></tr></thead><tbody>
       ${rows.map((n) => `<tr><td><b>${n}</b> mm</td><td>${dec(Math.round((n / Math.PI) * 10) / 10)} mm</td><td><button type="button" class="linkbtn" data-pick="${n}">Ezt választom</button></td></tr>`).join('')}
     </tbody></table>
-    <ul class="tips"><li>Este és meleg időben az ujj kicsit vastagabb – akkor érdemes mérni.</li><li>Széles (5 mm feletti) gyűrűnél gyakran fél–egy mérettel nagyobb kell.</li><li>A pontos méretet a konzultáción mintagyűrűkkel vesszük fel, így nem kell biztosra tudnia.</li></ul>
+    <ul class="tips"><li>Este és meleg időben az ujj kicsit vastagabb – akkor érdemes mérni.</li><li>Széles (5 mm feletti) gyűrűnél gyakran fél–egy mérettel nagyobb kell.</li><li>A pontos méretet a konzultáción mintagyűrűkkel vesszük fel, így nem kell biztosra tudnod.</li></ul>
   </div>`, { label: 'Méretsegítő', onMount: (box, close) => box.addEventListener('click', (e) => { const b = e.target.closest('[data-pick]'); if (b) { close(); onPick(Number(b.dataset.pick)); } }) });
 }
 
@@ -769,7 +845,7 @@ export function inquiry(p, cfg, type = 'erdeklodes', onRequest = false) {
   modal(`
     <form class="form" data-inq novalidate>
       <p class="kicker">${type === 'konzultacio' ? 'Személyes konzultáció' : 'Érdeklődés'}</p>
-      <h2>${p ? 'Kérdése van erről a gyűrűről?' : 'Időpontkérés'}</h2>
+      <h2>${p ? 'Érdekel ez a gyűrű?' : 'Időpontkérés'}</h2>
       ${p ? `<div class="form__cfg"><pre>${esc(summary)}</pre>${r && r.final !== null ? `<p>Becsült ár: <b>${ft(r.final)}</b> ${demoMark()}</p>` : '<p>Ár: egyedi árajánlat szükséges</p>'}</div>` : ''}
       <div class="seg seg--lg" role="radiogroup" aria-label="Kérés típusa">
         <button type="button" data-type="erdeklodes" aria-pressed="${type === 'erdeklodes'}">Kérdésem van</button>
@@ -782,7 +858,7 @@ export function inquiry(p, cfg, type = 'erdeklodes', onRequest = false) {
       </div>
       <label class="field" data-datefield ${type === 'konzultacio' ? '' : 'hidden'}><span>Melyik nap lenne jó?</span><input class="input" name="nap" type="date"></label>
       <label class="field"><span>Üzenet</span><textarea class="input" name="uzenet" rows="3" placeholder="Pl. az esküvő időpontja, kérdés a méretről vagy egyedi tervről"></textarea></label>
-      <p class="form__err" data-err hidden>Kérjük, adja meg a nevét és a telefonszámát.</p>
+      <p class="form__err" data-err hidden>Add meg a neved és a telefonszámod.</p>
       <button class="btn btn--dark btn--full" type="submit">Elküldöm</button>
       <p class="fine">Bemutató: az üzenet nem kerül elküldésre, csak a bemutató adminfelületének „Érdeklődések” menüjében jelenik meg.</p>
     </form>`, {
@@ -800,7 +876,7 @@ export function inquiry(p, cfg, type = 'erdeklodes', onRequest = false) {
         if (!d.nev.trim() || !d.tel.trim()) { $('[data-err]', f).hidden = false; return; }
         store.addInquiry({ type: t, name: d.nev, phone: d.tel, email: d.email, day: d.nap, message: d.uzenet,
           productId: p?.id || null, code: p?.code || null, config: p && !onRequest ? JSON.parse(JSON.stringify(cfg)) : null, summary, estimate: r?.final || null });
-        box.innerHTML = `<div class="form form--done"><p class="kicker">Köszönjük</p><h2>Köszönjük, hamarosan hívjuk.</h2>
+        box.innerHTML = `<div class="form form--done"><p class="kicker">Megvan</p><h2>Köszi, hamarosan hívunk.</h2>
           <p>Bemutató módban az üzenet nem került elküldésre. Az adminfelület „Érdeklődések” menüjében most már látható, a kiválasztott cikkszámmal és konfigurációval együtt.</p>
           <button class="btn btn--line" type="button" data-close>Rendben</button></div>`;
       });
@@ -814,7 +890,7 @@ function contactBlock() {
     <div class="wrap contact">
       <div data-reveal>
         
-        <h2>Kérjen időpontot</h2>
+        <h2>Gyere el, nézd meg élőben</h2>
         <p>${esc(BUSINESS.hours)}</p>
         <dl class="contact__dl">
           <div><dt>Telefon</dt><dd><a href="${BUSINESS.phoneHref}">${BUSINESS.phone}</a></dd></div>
@@ -824,7 +900,7 @@ function contactBlock() {
       </div>
       <div class="contact__card" data-reveal=".1">
         <h3>Időpontot kérek</h3>
-        <p>Adja meg a nevét és a telefonszámát, visszahívjuk.</p>
+        <p>Add meg a neved és a telefonszámod, visszahívunk.</p>
         <button class="btn btn--gold btn--full" type="button" data-book>Időpont-egyeztetés</button>
         <a class="btn btn--ghost btn--full" href="${BUSINESS.phoneHref}">Hívás: ${BUSINESS.phone}</a>
       </div>
@@ -836,7 +912,139 @@ function bindContact(el) { el.addEventListener('click', (e) => { if (e.target.cl
 export function contact(el) {
   el = fresh(el);
   el.innerHTML = `<section class="page-head"><div class="wrap"><p class="crumbs"><a href="#/">Kezdőlap</a> / Kapcsolat</p><h1>Személyes konzultáció</h1>
-    <p class="sec__lead">Felpróbálják a mintagyűrűket, megmérjük a méretet, és megbeszéljük a részleteket. Előtte egyeztessünk időpontot.</p></div></section>${contactBlock()}`;
+    <p class="sec__lead">Felpróbálod a mintagyűrűket, megmérjük az ujjad, és megbeszéljük a részleteket. Előtte egyeztessünk időpontot.</p></div></section>${contactBlock()}`;
   bindContact(el);
+  reveal(el);
+}
+
+/* ---------- Saját gyűrűt szeretnék (egyedi elképzelés) ---------- */
+const C_TIPUS = [['par', 'Karikagyűrű pár'], ['egy', 'Egy karikagyűrű'], ['eljegyzesi', 'Eljegyzési gyűrű'], ['mas', 'Valami más']];
+const C_ANYAG = [['au14', '14K arany'], ['au18', '18K arany'], ['pt', 'Platina'], ['pd', 'Palládium'], ['ti', 'Titán'], ['nemtudom', 'Még nem tudom']];
+const C_GYEMANT = [['igen', 'Igen, természetes gyémánttal'], ['nem', 'Kő nélkül'], ['nemtudom', 'Még nem tudom']];
+const C_KERET = [['', 'Nem adom meg'], ['250 ezer Ft alatt', '250 ezer Ft alatt'], ['250–400 ezer Ft', '250–400 ezer Ft'], ['400–700 ezer Ft', '400–700 ezer Ft'], ['700 ezer Ft felett', '700 ezer Ft felett']];
+const C_KEY = 'kg-sajat-v1';
+let customFiles = [];                       // a kiválasztott képek csak a böngészőben élnek (nincs feltöltés)
+const lab = (list, v) => (list.find((x) => x[0] === v) || [])[1] || '';
+
+export function custom(el, query) {
+  el = fresh(el);
+  const blank = { tipus: 'par', anyag: 'nemtudom', gyemant: 'nemtudom', keret: '', leiras: '', nev: '', tel: '', email: '', konz: true, nap: '', modell: '', k: '' };
+  let d = { ...blank };
+  try { d = { ...blank, ...JSON.parse(sessionStorage.getItem(C_KEY) || '{}') }; } catch { /* nincs mentett vázlat */ }
+  if (query?.get('modell')) { d.modell = query.get('modell'); d.k = query.get('k') || ''; }
+  const p = d.modell ? store.product(d.modell) : null;
+  const cfg = p && !p.priceOnRequest ? ((d.k && decodeCfg(d.k, p)) || defaultConfig(p)) : null;
+  if (p && cfg && !query?.get('keep')) { if (isGold(cfg.metal) || METALS[cfg.metal]) d.anyag = cfg.metal; d.tipus = p.kind === 'p' ? 'par' : 'egy'; if (cfg.rings.some((r) => r.stones)) d.gyemant = 'igen'; }
+  const save = () => { try { sessionStorage.setItem(C_KEY, JSON.stringify(d)); } catch { /* privát mód */ } };
+  const chips = (key, list) => `<div class="cchips" role="radiogroup">${list.map(([v, l]) => `<button type="button" role="radio" data-cf="${key}|${v}" aria-checked="${d[key] === v}">${l}</button>`).join('')}</div>`;
+
+  el.innerHTML = `
+  <section class="page-head page-head--custom">
+    <div class="wrap">
+      <p class="crumbs"><a href="#/">Kezdőlap</a> / Saját ötlet</p>
+      <h1>Saját gyűrűt szeretnék</h1>
+      <p class="sec__lead">Mondd el, mi jár a fejedben. Nem kell pontosan tudnod – egy mondat, egy fotó vagy egy rajz is elég kiindulásnak. A részleteket személyesen találjuk ki, és az ötvös megmondja, mi valósítható meg.</p>
+    </div>
+  </section>
+  <section class="wrap custom">
+    <form class="custom__form" data-custom novalidate>
+      ${p ? `<div class="cmodel" data-cmodel>
+        <div class="cmodel__img">${productMedia(p)}</div>
+        <div><p class="kicker">Ebből a gyűrűből indulunk ki</p><p><b>${esc(p.code)}</b> · ${esc(p.name)}</p>
+          ${cfg ? `<pre>${esc(configText(p, cfg).split('\n').slice(1).join('\n'))}</pre>` : ''}
+          <button type="button" class="linkbtn" data-cnomodel>Inkább modell nélkül</button></div>
+      </div>` : ''}
+      <ol class="cfg cfg--custom">
+        <li class="cfg__step"><header><span class="cfg__n">1</span><h2>${p ? 'Mit változtatnál rajta?' : 'Mit szeretnél?'}</h2></header>
+          <textarea class="input" name="leiras" rows="5" placeholder="${p ? 'Pl. legyen keskenyebb, a férfigyűrűbe is kerüljön egy kő, más legyen a felülete…' : 'Pl. két szín egy gyűrűben, körben apró kövekkel. Vagy: láttam egy gyűrűt, olyasmit szeretnék, csak laposabbat…'}">${esc(d.leiras)}</textarea>
+        </li>
+        <li class="cfg__step"><header><span class="cfg__n">2</span><h2>Milyen gyűrű lenne?</h2></header>${chips('tipus', C_TIPUS)}</li>
+        <li class="cfg__step"><header><span class="cfg__n">3</span><h2>Miből?</h2></header>${chips('anyag', C_ANYAG)}<p class="hint">Aranynál a színt (sárga, fehér, rozé, akár kettő együtt) a konzultáción választod ki – a kezeden látszik igazán.</p></li>
+        <li class="cfg__step"><header><span class="cfg__n">4</span><h2>Legyen benne gyémánt?</h2></header>${chips('gyemant', C_GYEMANT)}</li>
+        <li class="cfg__step"><header><span class="cfg__n">5</span><h2>Van kép vagy rajz?</h2><span class="cfg__val">nem kötelező</span></header>
+          <label class="cfile"><input type="file" accept="image/*" multiple data-cfile hidden><span class="btn btn--line">Kép kiválasztása</span><small>Fotó egy gyűrűről, ami tetszik, vagy egy saját rajz. Legfeljebb 3 kép.</small></label>
+          <div class="cprev" data-cprev></div>
+          <p class="hint" data-cfilenote hidden>Bemutató: a kép most csak itt, a böngésződben látszik, nem töltődik fel és nem kerül elküldésre. Az éles oldalon az üzenettel együtt megy majd el.</p>
+        </li>
+        <li class="cfg__step"><header><span class="cfg__n">6</span><h2>Mennyit szánnál rá?</h2><span class="cfg__val">nem kötelező</span></header>${chips('keret', C_KERET)}
+          <p class="hint">Ha megadod, olyan megoldást keresünk, ami belefér. ${demoMark('demó sávok')}</p></li>
+        <li class="cfg__step"><header><span class="cfg__n">7</span><h2>Hol érünk el?</h2></header>
+          <div class="field-row"><label class="field"><span>Név</span><input class="input" name="nev" autocomplete="name" value="${esc(d.nev)}" required></label>
+            <label class="field"><span>Telefonszám</span><input class="input" name="tel" type="tel" autocomplete="tel" value="${esc(d.tel)}" required></label></div>
+          <label class="field"><span>E-mail <i>(nem kötelező)</i></span><input class="input" name="email" type="email" autocomplete="email" value="${esc(d.email)}"></label>
+          <label class="check"><input type="checkbox" name="konz" ${d.konz ? 'checked' : ''}><span>Személyes konzultációt kérek</span></label>
+          <label class="field" data-cnap ${d.konz ? '' : 'hidden'}><span>Melyik nap lenne jó?</span><input class="input" name="nap" type="date" value="${esc(d.nap)}"></label>
+        </li>
+      </ol>
+      <p class="form__err" data-cerr hidden></p>
+      <button class="btn btn--dark btn--full" type="submit">Elküldöm az ötletem</button>
+      <p class="fine">Bemutató: az üzenet nem kerül elküldésre, csak a bemutató adminfelületének „Érdeklődések” menüjében jelenik meg.</p>
+    </form>
+    <aside class="custom__side">
+      <div class="csum" data-csummary aria-live="polite"></div>
+      <div class="csum csum--how"><h2>Mi történik ezután?</h2>
+        <ol><li>Visszahívunk, és egyeztetünk egy időpontot.</li><li>Az ötvös megnézi, hogyan készíthető el – ha valami nem működne, mond helyette mást.</li><li>Árat akkor mondunk, amikor már tudjuk, pontosan mi készül.</li></ol></div>
+    </aside>
+  </section>`;
+
+  const paintSum = () => {
+    const rows = [
+      ['Gyűrű', lab(C_TIPUS, d.tipus)], ['Anyag', lab(C_ANYAG, d.anyag)], ['Gyémánt', lab(C_GYEMANT, d.gyemant)],
+      ...(d.keret ? [['Keret', d.keret]] : []), ...(customFiles.length ? [['Kép', `${customFiles.length} db kiválasztva`]] : []),
+      ...(p ? [['Kiindulás', p.code]] : []),
+    ];
+    $('[data-csummary]', el).innerHTML = `<h2>Amit eddig megadtál</h2>
+      <dl>${rows.map(([a, b]) => `<div><dt>${a}</dt><dd>${esc(b)}</dd></div>`).join('')}</dl>
+      ${d.leiras.trim() ? `<p class="csum__txt">„${esc(d.leiras.trim().slice(0, 180))}${d.leiras.trim().length > 180 ? '…' : ''}”</p>` : ''}
+      <p class="csum__price"><span>Ár</span><b>Személyes egyeztetés alapján</b></p>
+      <p class="fine">Egyedi tervnél nem számolunk automatikus árat – az félrevezető lenne.</p>`;
+  };
+  const paintFiles = () => {
+    $('[data-cprev]', el).innerHTML = customFiles.map((f, i) => `<figure><img src="${f.url}" alt="Kiválasztott kép ${i + 1}"><button type="button" data-cdel="${i}" aria-label="Kép eltávolítása">×</button><figcaption>${esc(f.name.slice(0, 22))}</figcaption></figure>`).join('');
+    $('[data-cfilenote]', el).hidden = !customFiles.length;
+  };
+  const form = $('[data-custom]', el);
+  form.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-cf]');
+    if (b) { const [k, v] = b.dataset.cf.split('|'); d[k] = v || ''; $$(`[data-cf^="${k}|"]`, form).forEach((x) => x.setAttribute('aria-checked', x === b)); save(); paintSum(); }
+    const del = e.target.closest('[data-cdel]');
+    if (del) { const [f] = customFiles.splice(+del.dataset.cdel, 1); if (f) URL.revokeObjectURL(f.url); paintFiles(); paintSum(); }
+    if (e.target.closest('[data-cnomodel]')) { d.modell = ''; d.k = ''; save(); location.hash = '#/sajat'; if (!query?.get('modell')) custom(el, null); }
+  });
+  form.addEventListener('input', (e) => {
+    const t = e.target;
+    if (t.name === 'konz') { d.konz = t.checked; $('[data-cnap]', form).hidden = !d.konz; }
+    else if (t.name && t.name in d) d[t.name] = t.value;
+    save(); if (t.name === 'leiras') paintSum();
+  });
+  form.addEventListener('change', (e) => {
+    if (!e.target.matches('[data-cfile]')) return;
+    for (const f of e.target.files) if (customFiles.length < 3 && /^image\//.test(f.type)) customFiles.push({ name: f.name, url: URL.createObjectURL(f) });
+    e.target.value = ''; paintFiles(); paintSum();
+  });
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const err = $('[data-cerr]', form);
+    const miss = !d.nev.trim() || !d.tel.trim() ? 'Add meg a neved és a telefonszámod, hogy vissza tudjunk hívni.'
+      : (!d.leiras.trim() && !customFiles.length && !p) ? 'Írj pár szót arról, mit szeretnél – vagy válassz ki egy képet.' : '';
+    err.hidden = !miss; err.textContent = miss;
+    if (miss) { err.scrollIntoView({ block: 'center' }); return; }
+    const summary = [
+      'SAJÁT ELKÉPZELÉS', `Gyűrű: ${lab(C_TIPUS, d.tipus)}`, `Anyag: ${lab(C_ANYAG, d.anyag)}`, `Gyémánt: ${lab(C_GYEMANT, d.gyemant)}`,
+      ...(d.keret ? [`Keret: ${d.keret}`] : []), ...(p ? ['', 'Kiindulási modell:', cfg ? configText(p, cfg) : `${p.code} – ${p.name}`] : []),
+    ].join('\n');
+    const n = customFiles.length;
+    store.addInquiry({ type: 'egyedi', name: d.nev, phone: d.tel, email: d.email, day: d.konz ? d.nap : '', message: d.leiras.trim(), images: n,
+      productId: p?.id || null, code: p?.code || null, config: cfg ? JSON.parse(JSON.stringify(cfg)) : null, summary, estimate: null });
+    customFiles.forEach((f) => URL.revokeObjectURL(f.url)); customFiles = [];
+    try { sessionStorage.removeItem(C_KEY); } catch { /* privát mód */ }
+    $('.custom', el).innerHTML = `<div class="form form--done custom--done"><p class="kicker">Megvan</p><h2>Köszi, ${esc(d.nev.trim().split(' ').pop())}! Hamarosan hívunk.</h2>
+      <pre>${esc(summary)}</pre>${d.leiras.trim() ? `<p class="csum__txt">„${esc(d.leiras.trim())}”</p>` : ''}
+      <p><b>Ár:</b> személyes egyeztetés alapján.</p>
+      <p class="fine">Bemutató módban az üzenet nem került elküldésre${n ? `, és a ${n} kiválasztott kép sem töltődött fel` : ''}. Az adminfelület „Érdeklődések” menüjében most már látható${p ? ', a kiindulási gyűrű cikkszámával és beállításaival együtt' : ''}.</p>
+      <a class="btn btn--line" href="#/kollekcio">Megnézem a gyűrűket</a></div>`;
+    window.scrollTo({ top: 0 });
+  });
+  paintFiles(); paintSum(); save();
   reveal(el);
 }

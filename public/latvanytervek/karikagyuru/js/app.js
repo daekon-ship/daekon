@@ -31,6 +31,7 @@ function route() {
   else if (parts[0] === 'kollekcio') pub.catalog(el, query.toString() ? query : null);
   else if (parts[0] === 'gyuru') pub.product(el, parts[1], query);
   else if (parts[0] === 'kapcsolat') pub.contact(el);
+  else if (parts[0] === 'sajat') pub.custom(el, query);
   else pub.home(el);
 
   $$('.nav > a:not([data-anchor])').forEach((a) => a.toggleAttribute('aria-current', a.getAttribute('href') === '#/' + (parts[0] || '')));
@@ -67,15 +68,15 @@ function closeMenu() { document.body.classList.remove('menu-open'); $('[data-men
 
 function script() {
   const steps = [
-    ['Megnyitjuk a gyűrűkatalógust', '#/kollekcio'],
-    ['Megnézzük egy gyűrű kalkulált árát', '#/gyuru/maz-81184-81185-w'],
-    ['Átváltunk az adminnézetre', '#/admin/alapanyag'],
-    ['Megváltoztatjuk az arany árát (pl. 39 000 → 45 000 Ft/g)', '#/admin/alapanyag'],
-    ['Jóváhagyjuk: „Új árak alkalmazása”', '#/admin/alapanyag'],
-    ['Visszalépünk a katalógusba', '#/kollekcio'],
-    ['A gyűrű ára már az új értéket mutatja', '#/gyuru/maz-81184-81185-w'],
+    ['Kezdőoldal: a két út – kész modell alakítása vagy saját ötlet', '#/'],
+    ['Egy gyűrű átalakítása: anyag, méret, kövek, gravír – „A te változatod” ábrával', '#/gyuru/maz-81184-81185-w'],
+    ['„Másképp képzelted el?” – egyedi kérés a modell adataival', '#/sajat?modell=maz-81184-81185-w'],
+    ['Saját ötlet leírása képpel', '#/sajat'],
+    ['Admin: megérkezett érdeklődések', '#/admin/erdeklodesek'],
+    ['Admin: grammár átírása – minden ár frissül', '#/admin/alapanyag'],
+    ['Admin: új gyűrű felvitele – megjelenik a katalógusban', '#/admin/gyuru/uj'],
   ];
-  modal(`<div class="form script"><p class="kicker">Bemutató forgatókönyv</p><h2>Hét lépés, kb. három perc</h2>
+  modal(`<div class="form script"><p class="kicker">Bemutató forgatókönyv</p><h2>Hét lépés, kb. öt perc</h2>
     <ol>${steps.map(([t, h], i) => `<li><a href="${h}" data-close><span>${i + 1}</span>${t}</a></li>`).join('')}</ol>
     <p class="fine">A két nézet ugyanazt az árállapotot használja. A felső sávban bármikor válthat, és a „Demóadatok visszaállítása” gombbal tiszta lappal kezdhet.</p></div>`, { label: 'Bemutató forgatókönyv' });
 }

@@ -78,7 +78,7 @@ export const hasPhoto = (p) => !!p.img && !photos.missing.has(p.id);
 
 /** Termékkép: csak valódi fotó. Ha nem tölt be, semleges „nincs fotó” mező – rajzolt gyűrű nincs. */
 export function productMedia(p, { eager = false, large = false } = {}) {
-  const local = !!p.img && !/^https?:/.test(p.img);
+  const local = !!p.img && !/^(https?:|data:)/.test(p.img);   // data: = adminban feltöltött kép (csak a böngészőben)
   if (!p.img) return `<div class="media media--none"><span>Fotó hamarosan</span></div>`;
   return `<div class="media${p.imgFill ? ' media--fill' : ''}">
     <img src="${esc(local ? p.img.replace('.jpg', '-800.jpg') : p.img)}"${local ? ` srcset="${esc(p.img.replace('.jpg', '-800.jpg'))} 800w, ${esc(p.img)} 1600w" sizes="${large ? '(max-width: 960px) 90vw, 560px' : '(max-width: 640px) 34vw, 220px'}"` : ''} alt="${esc(p.name + ', ' + p.code)}" ${eager ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async"
@@ -148,3 +148,52 @@ export function reveal(root = document) {
 
 export const dateHu = (iso) => new Date(iso).toLocaleString('hu-HU', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
 export const dayHu = (iso) => new Date(iso).toLocaleDateString('hu-HU', { year: 'numeric', month: 'long', day: 'numeric' });
+
+/* ==========================================================================
+   Szemléltető gyűrűábra (V3) – NEM fotó és nem a kész gyűrű pontos képe.
+   A valós adatokból rajzol: anyag/szín, belső átmérő (a méretből), szélesség (mm),
+   a kövek száma és átmérője (mm). A kövek pontos helyét az ötvös határozza meg.
+   rings: [{ label, size, width, stones: { count, mm, around } | null }]
+   ========================================================================== */
+const SK = {
+  sarga: ['#F7E6AE', '#DDB862', '#A67F2E'], feher: ['#FBFCFD', '#D3D9DD', '#98A1A8'], rose: ['#F9DFD0', '#DFA78C', '#AE705A'],
+  pt: ['#F6F8F9', '#C8CFD4', '#8A949B'], pd: ['#F1F3F4', '#BFC6CB', '#848E95'], ti: ['#D5DADD', '#9099A0', '#59636A'],
+};
+export function ringSketch({ metal = 'au14', color = 'feher', rings = [] } = {}) {
+  const id = 'sk' + (++gid);
+  const gold = metal === 'au14' || metal === 'au18';
+  const tones = gold ? (BI[color] ? BI[color].map((c) => SK[c]) : [SK[color] || SK.sarga]) : [SK[metal] || SK.pt];
+  const S = 6.8;                                             // px / mm – minden méret arányos
+  const n = rings.length, W = 400, H = 300;
+  const grad = (k, t) => `<linearGradient id="${id}g${k}" x1="0" x2="1"><stop offset="0" stop-color="${t[2]}"/><stop offset=".3" stop-color="${t[1]}"/><stop offset=".52" stop-color="${t[0]}"/><stop offset=".78" stop-color="${t[1]}"/><stop offset="1" stop-color="${t[2]}"/></linearGradient>`;
+  const one = (r, i) => {
+    const cx = n === 1 ? W / 2 : (i === 0 ? 104 : 296);
+    const R = (r.size / Math.PI / 2 + 0.9) * S, ry = R * 0.3, h = Math.max(6, r.width * S), y0 = 128 - h / 2, t = 1.7 * S;
+    const wall = (yy, hh) => `M${cx - R},${yy} A${R},${ry} 0 0 0 ${cx + R},${yy} L${cx + R},${yy + hh} A${R},${ry} 0 0 1 ${cx - R},${yy + hh} Z`;
+    let body = tones.length === 2
+      ? `<path d="${wall(y0, h)}" fill="url(#${id}g1)"/><path d="${wall(y0, h / 2)}" fill="url(#${id}g0)"/>`
+      : `<path d="${wall(y0, h)}" fill="url(#${id}g0)"/>`;
+    body += `<path d="${wall(y0, h)}" fill="none" stroke="rgba(21,38,45,.28)" stroke-width="1"/>`;
+    body += `<ellipse cx="${cx}" cy="${y0}" rx="${R}" ry="${ry}" fill="${tones[0][0]}" stroke="rgba(21,38,45,.28)"/>`;
+    body += `<ellipse cx="${cx}" cy="${y0 + 1}" rx="${R - t}" ry="${ry * (R - t) / R}" fill="url(#${id}in)" stroke="rgba(21,38,45,.2)"/>`;
+    let shown = 0;
+    if (r.stones && r.stones.count > 0) {
+      const d = (r.stones.mm || 1.3) * S, rr = Math.max(1.5, d / 2);
+      const step = r.stones.around ? (2 * Math.PI) / r.stones.count : Math.max((d * 1.45) / R, 0.1);
+      const total = r.stones.count, mid = (total - 1) / 2;
+      for (let k = 0; k < total; k++) {
+        const phi = (k - mid) * step;
+        if (Math.abs(phi) > 1.42) continue;                   // csak az elöl látszó kövek
+        const x = cx + R * Math.sin(phi), y = y0 + ry * Math.cos(phi) + h / 2, sx = Math.max(0.35, Math.cos(phi));
+        body += `<g transform="translate(${x.toFixed(1)},${y.toFixed(1)})"><ellipse rx="${(rr * sx).toFixed(2)}" ry="${rr.toFixed(2)}" fill="#fff" stroke="#6FB9CF" stroke-width=".9"/><ellipse rx="${(rr * sx * 0.45).toFixed(2)}" ry="${(rr * 0.45).toFixed(2)}" fill="none" stroke="#A9D8E6" stroke-width=".6"/></g>`;
+        shown++;
+      }
+    }
+    const lab = `<text x="${cx}" y="${H - 34}" text-anchor="middle" class="sk__t">${esc(r.label)}</text>
+      <text x="${cx}" y="${H - 16}" text-anchor="middle" class="sk__s">${esc(r.sizeText)} · ${String(r.width).replace('.', ',')} mm${r.stones ? ` · ${r.stones.count} kő` : ''}</text>`;
+    return `<g>${body}${lab}</g>`;
+  };
+  return `<svg class="sketch" viewBox="0 0 ${W} ${H}" role="img" aria-label="Szemléltető ábra a beállított gyűrűről – nem fotó">
+    <defs>${tones.map((t, k) => grad(k, t)).join('')}<linearGradient id="${id}in" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${tones[0][2]}"/><stop offset="1" stop-color="${tones[tones.length - 1][1]}"/></linearGradient></defs>
+    ${rings.map(one).join('')}</svg>`;
+}

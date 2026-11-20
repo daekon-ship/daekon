@@ -539,7 +539,7 @@ function products(el) {
     <p class="adm__lead">Az árak a képletből számolódnak. Egy gyűrűnél rögzíthet egyedi árat is – azt az aranyár változása nem írja felül.</p>
     <div class="ptools">
       <label class="field field--search"><span>Keresés cikkszámra vagy névre</span><input class="input input--lg" data-q placeholder="pl. 81184"></label>
-      <div class="ptools__btns"><button class="abtn" type="button" data-print>Árlista nyomtatása</button><button class="abtn" type="button" data-csv>Árlista letöltése (Excel)</button></div>
+      <div class="ptools__btns"><a class="abtn abtn--gold" href="#/admin/gyuru/uj" data-newprod>+ Új gyűrű felvitele</a><button class="abtn" type="button" data-print>Árlista nyomtatása</button><button class="abtn" type="button" data-csv>Árlista letöltése (Excel)</button></div>
     </div>
     <div class="pfilter" role="group" aria-label="Szűrés">${PFILTERS.map(([k, l]) => `<button type="button" data-pf="${k}" aria-pressed="${k === f}">${l}</button>`).join('')}
       <label class="pfilter__sort"><span>Sorrend</span><select class="input" data-psort><option value="cikkszam">Cikkszám</option><option value="ar-le">Ár (drágább elöl)</option><option value="ar-fel">Ár (olcsóbb elöl)</option><option value="elteres">Eltérés a mostani weboldali ártól</option></select></label></div>
@@ -556,8 +556,9 @@ function products(el) {
     return list;
   };
   const paint = () => {
-    const list = rows();
+    let list = rows();
     $('[data-pcount]', el).textContent = `${list.length} gyűrű`;
+    if (sort === 'cikkszam') list = [...list.filter((p) => p.added), ...list.filter((p) => !p.added)];   // az újonnan felvett gyűrűk elöl
     $('[data-list]', el).innerHTML = list.slice(0, limit).map((p) => {
       const r = res[p.id];
       if (!r) return `<a class="prow" href="#/admin/gyuru/${p.id}">
@@ -569,7 +570,7 @@ function products(el) {
       return `<a class="prow" href="#/admin/gyuru/${p.id}">
         <span class="prow__img">${productMedia(p)}</span>
         <span class="prow__txt"><b>${esc(p.code)}</b><span>${esc(p.name)}</span>
-          <span class="prow__tags">${p.override ? `<em class="tag tag--blue">${p.override.type === 'fixed' ? 'rögzített ár' : `képlet ${pct(p.override.value)}`}</em>` : '<em class="tag tag--formula">képletből</em>'}${r.lowMargin ? '<em class="tag tag--warn">alacsony árrés</em>' : ''}${p.minPrice ? '<em class="tag">minimumár</em>' : ''}${p.visible === false ? '<em class="tag">rejtett</em>' : ''}${p.approved ? '<em class="tag tag--ok">jóváhagyott adat</em>' : '<em class="tag">becsült tömeg</em>'}</span></span>
+          <span class="prow__tags">${p.override ? `<em class="tag tag--blue">${p.override.type === 'fixed' ? 'rögzített ár' : `képlet ${pct(p.override.value)}`}</em>` : '<em class="tag tag--formula">képletből</em>'}${r.lowMargin ? '<em class="tag tag--warn">alacsony árrés</em>' : ''}${p.minPrice ? '<em class="tag">minimumár</em>' : ''}${p.visible === false ? '<em class="tag">rejtett</em>' : ''}${p.added ? '<em class="tag tag--blue">új, itt felvéve</em>' : p.approved ? '<em class="tag tag--ok">jóváhagyott adat</em>' : '<em class="tag">becsült tömeg</em>'}</span></span>
         <span class="prow__price"><b>${ft(r.final)}</b>
           <small>${p.listaAr ? `weboldalon most: ${ft(p.listaAr)}${Math.abs(dv) >= 0.5 ? ` (${pct(dv)})` : ''}` : 'demótermék'}</small></span>
         <span class="abtn">Szerkesztés</span>
@@ -615,7 +616,11 @@ const RULE_MODES = [['none', 'Nincs kő'], ['free', 'Választható kőszám'], [
 function productEdit(el, id) {
   el = fresh(el);
   const st = S();
-  const orig = store.product(id);
+  const isNew = id === 'uj';
+  const blankRing = (label, refSize, share) => ({ label, refSize, refWidth: 4, share, weight: 0, labor: 0, other: 0, stoneRule: null });
+  const orig = isNew ? { id: '', code: '', name: '', real: false, added: true, listaAr: null, img: '', priceOnRequest: false, kind: 'p', baseColor: 'sarga', colors: ['sarga', 'feher', 'rose'],
+    metals: ['au14', 'au18'], style: 'klasszikus', visible: true, sites: ['karikagyuru', 'budapest'], widths: [4],
+    rings: [blankRing('Női gyűrű', 54, 0.43), blankRing('Férfi gyűrű', 64, 0.57)], approved: false, override: null, minPrice: 0 } : store.product(id);
   if (!orig) { el.innerHTML = '<p>A gyűrű nem található.</p>'; return; }
   const p = clone(orig);
   const ov = () => p.override?.type || 'nincs';
@@ -649,7 +654,8 @@ function productEdit(el, id) {
     ].filter(Boolean);
     el.innerHTML = `
     <p class="crumbs"><a href="#/admin/gyuruk">← Vissza a gyűrűkhöz</a></p>
-    <h1 class="adm__h1">${esc(p.code)}</h1>
+    <h1 class="adm__h1">${isNew ? 'Új gyűrű felvitele' : esc(p.code)}</h1>
+    ${isNew ? '<p class="adm__banner"><b>Bemutató.</b> Az új gyűrű és a képe csak ebben a böngészőben tárolódik. Az éles rendszerhez központi adatbázis, bejelentkezéshez kötött admin, valódi képfeltöltés és szerveroldali mentés kell – ez még nem készült el.</p>' : ''}
     <div class="edit">
       <div class="edit__form">
         <section class="ebox"><h2>Alapadatok</h2>
@@ -659,6 +665,19 @@ function productEdit(el, id) {
             <label class="efield"><span>Stílus</span><select class="input input--lg" data-t="style">${Object.entries(STYLES).map(([k, v]) => `<option value="${k}" ${p.style === k ? 'selected' : ''}>${v}</option>`).join('')}</select></label>
             <label class="efield"><span>Szélességek<small>mm, vesszővel elválasztva</small></span><input class="input input--lg" data-widths value="${esc(p.widths.map((w) => String(w).replace('.', ',')).join('; '))}"></label>
           </div>
+          ${isNew ? `<p class="efield__lab">Típus</p><div class="seg seg--lg seg--wrap"><button type="button" data-kind="p" aria-pressed="${p.kind === 'p'}">Gyűrűpár (női + férfi)</button><button type="button" data-kind="s" aria-pressed="${p.kind === 's'}">Egy gyűrű</button></div>` : ''}
+          <p class="efield__lab">Fénykép <small>saját fotó a gyűrűről</small></p>
+          <div class="imgpick">
+            <div class="imgpick__prev" data-imgprev>${p.img ? `<img src="${esc(p.img)}" alt="">` : '<span>Még nincs kép</span>'}</div>
+            <div class="imgpick__ctl">
+              <label class="abtn imgpick__file">Kép kiválasztása<input type="file" accept="image/*" data-imgfile hidden></label>
+              <label class="efield"><span>vagy a kép webcíme</span><input class="input input--lg" data-imgurl placeholder="https://…" value="${esc(/^https?:/.test(p.img || '') ? p.img : '')}"></label>
+              <p class="hint">Bemutató: a kiválasztott kép kicsinyítve, csak ebben a böngészőben tárolódik – nem töltődik fel sehová.</p>
+            </div>
+          </div>
+          <p class="efield__lab">Aranyszínek <small>amiből kérhető</small></p>
+          <div class="checks">${['sarga', 'feher', 'rose'].map((c) => arr('colors', c, COLORS[c].label, p.colors.includes(c))).join('')}</div>
+          <label class="efield"><span>A fotón látható szín</span><select class="input input--lg" data-t="baseColor">${p.colors.map((c) => `<option value="${c}" ${p.baseColor === c ? 'selected' : ''}>${COLORS[c]?.label || c}</option>`).join('')}</select></label>
           <div class="checks">${chk('visible', 'Megjelenik a weboldalon', p.visible !== false)}${chk('priceOnRequest', 'Csak egyedi ajánlattal (ár nélkül)', !!p.priceOnRequest)}</div>
           <p class="efield__lab">Melyik weboldalon? <small>közös termék- és áradminisztráció</small></p>
           <div class="checks">${Object.entries(SITES).map(([k, v]) => arr('sites', k, v, (p.sites || []).includes(k))).join('')}</div>
@@ -735,8 +754,27 @@ function productEdit(el, id) {
       $$('[data-ovt]', el).forEach((x) => x.setAttribute('aria-pressed', x === b));
       ovField(); calc();
     }
+    const kb = e.target.closest('[data-kind]');
+    if (kb && isNew) {
+      p.kind = kb.dataset.kind;
+      p.rings = p.kind === 'p' ? [blankRing('Női gyűrű', 54, 0.43), blankRing('Férfi gyűrű', 64, 0.57)] : [blankRing('Gyűrű', 54, 1)];
+      render(); return;
+    }
     if (e.target.closest('[data-save]')) {
       if (!p.metals.length) { toast('Legalább egy anyagot jelöljön be.'); return; }
+      if (!p.colors.length) { toast('Legalább egy aranyszínt jelöljön be.'); return; }
+      if (!p.colors.includes(p.baseColor)) p.baseColor = p.colors[0];
+      if (isNew) {
+        if (!p.code.trim() || !p.name.trim()) { toast('Adja meg a cikkszámot és a megnevezést.'); return; }
+        const base = 'uj-' + p.code.toLowerCase().normalize('NFD').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+        let nid = base, k = 2; while (store.product(nid)) nid = `${base}-${k++}`;
+        p.id = nid;
+        const r0 = priceProduct(p, null, st.materials, st.settings);
+        const saved = store.addProduct(clone(p));
+        toast(saved ? `Felvéve: <b>${esc(p.code)}</b> – ${r0.final === null ? 'egyedi ajánlattal' : ft(r0.final)}. ${p.visible !== false ? 'Megjelent a vásárlói katalógusban.' : 'Rejtve van.'}`
+          : 'Felvéve, de a böngésző tárhelye betelt (túl nagy kép) – frissítés után elveszhet. Használjon kisebb képet vagy webcímet.');
+        location.hash = '#/admin/gyuruk'; return;
+      }
       const r = priceProduct(p, null, st.materials, st.settings);
       const go = () => { store.updateProduct(id, (x) => { for (const k of Object.keys(x)) delete x[k]; Object.assign(x, clone(p)); }, `${p.code} adatai módosítva`); toast(`Mentve. ${esc(p.code)} ára: <b>${ft(r.final)}</b>`); location.hash = '#/admin/gyuruk'; };
       if (r.lowMargin) {
@@ -748,6 +786,20 @@ function productEdit(el, id) {
   });
   el.addEventListener('change', (e) => {
     const t = e.target;
+    if (t.matches('[data-imgfile]') && t.files[0]) {
+      const im = new Image(), url = URL.createObjectURL(t.files[0]);
+      im.onload = () => {                                   // kicsinyítés: a böngésző tárhelye szűk
+        const k = Math.min(1, 900 / Math.max(im.naturalWidth, im.naturalHeight));
+        const c = document.createElement('canvas'); c.width = Math.round(im.naturalWidth * k); c.height = Math.round(im.naturalHeight * k);
+        const g = c.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0, 0, c.width, c.height); g.drawImage(im, 0, 0, c.width, c.height);
+        p.img = c.toDataURL('image/jpeg', 0.82); URL.revokeObjectURL(url);
+        $('[data-imgprev]', el).innerHTML = `<img src="${p.img}" alt="">`; $('[data-imgurl]', el).value = '';
+      };
+      im.onerror = () => toast('Ezt a képet nem sikerült megnyitni.');
+      im.src = url; return;
+    }
+    if (t.dataset.t === 'baseColor') { p.baseColor = t.value; return; }
+    if (t.dataset.arr === 'colors') { const next = t.checked ? [...new Set([...p.colors, t.value])] : p.colors.filter((x) => x !== t.value); p.colors = next; if (!next.includes(p.baseColor) && next.length) p.baseColor = next[0]; render(); return; }
     if (t.dataset.rulemode !== undefined) {
       const i = +t.dataset.rulemode, ring = p.rings[i], m = t.value;
       if (m === 'none') ring.stoneRule = null;
@@ -771,6 +823,7 @@ function productEdit(el, id) {
   el.addEventListener('input', (e) => {
     const t = e.target;
     if (t.dataset.t) p[t.dataset.t] = t.value;
+    if (t.matches('[data-imgurl]')) { const u = t.value.trim(); if (/^https?:\/\//.test(u) || !u) { p.img = u; $('[data-imgprev]', el).innerHTML = u ? `<img src="${esc(u)}" alt="" referrerpolicy="no-referrer">` : '<span>Még nincs kép</span>'; } return; }
     if (t.matches('[data-widths]')) { const ws = t.value.split(/[;\s]+/).map(parseNum).filter((x) => Number.isFinite(x) && x > 0); if (ws.length) { p.widths = ws; p.rings.forEach((r) => { if (!ws.includes(r.refWidth)) r.refWidth = ws[0]; }); } }
     if (t.dataset.p && t.tagName !== 'SELECT') { const v = parseNum(t.value); if (Number.isFinite(v)) set(p, t.dataset.p, v); }
     calc();
@@ -928,10 +981,11 @@ function inquiries(el) {
       const p = q.productId && store.product(q.productId);
       const nowPrice = p && q.config ? priceProduct(p, q.config, st.materials, st.settings).final : null;
       return `<article class="inq inq--${q.status}">
-        <header><b>${esc(q.name)}</b><span class="badge">${STATUS[q.status]}</span><span class="hint">${dateHu(q.at)} · ${q.type === 'konzultacio' ? 'időpontot kér' : q.type === 'telefon' ? 'telefonos ajánlat' : 'érdeklődés'}${q.day ? ` · ${dayHu(q.day)}` : ''}</span></header>
+        <header><b>${esc(q.name)}</b><span class="badge">${STATUS[q.status]}</span><span class="hint">${dateHu(q.at)} · ${q.type === 'konzultacio' ? 'időpontot kér' : q.type === 'egyedi' ? 'saját elképzelés' : q.type === 'telefon' ? 'telefonos ajánlat' : 'érdeklődés'}${q.day ? ` · ${dayHu(q.day)}` : ''}</span></header>
         <p><a href="tel:${esc(q.phone)}">${esc(q.phone)}</a>${q.email ? ` · <a href="mailto:${esc(q.email)}">${esc(q.email)}</a>` : ''}</p>
         ${q.summary ? `<pre>${esc(q.summary)}</pre>` : ''}
         ${q.message ? `<p class="inq__msg">„${esc(q.message)}”</p>` : ''}
+        ${q.images ? `<p class="hint">Kiválasztott kép: ${q.images} db – a bemutatóban a képek nem töltődnek fel, az éles rendszerben itt jelennek meg.</p>` : ''}
         ${q.lockedPrice ? `<p class="ok">Rögzített ajánlati ár: <b>${ft(q.lockedPrice)}</b> (${dayHu(q.lockedAt)}) – az aranyár változása nem érinti.${nowPrice && nowPrice !== q.lockedPrice ? ` A mai kalkulált ár: ${ft(nowPrice)}.` : ''}</p>`
           : nowPrice ? `<p>Becsült ár a küldéskor: ${ft(q.estimate)} · ma: <b>${ft(nowPrice)}</b></p>` : ''}
         <div class="inq__btns">

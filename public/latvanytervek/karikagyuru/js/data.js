@@ -37,7 +37,7 @@ export const TERMS = [
   ['Személyesen', 'A méretet és a részleteket a Bláthy Ottó utcai üzletben egyeztetjük.'],
   ['Előleg', 'Egyedi gyűrűnél az ár fele, a megrendeléskor.'],
   ['Határidő', 'Feldolgozás 3 munkanapon belül, a kész dátumot egyeztetjük.'],
-  ['Átvétel', 'Személyesen, ekkor fizeti a maradékot készpénzzel vagy átutalással.'],
+  ['Átvétel', 'Személyesen, ekkor fizeted a maradékot készpénzzel vagy átutalással.'],
   ['Garancia', '1 év jótállás. A méretváltoztatás nem tartozik bele.'],
   ['Elállás', 'Egyedi méretre készült gyűrűre nincs elállási jog.'],
 ];

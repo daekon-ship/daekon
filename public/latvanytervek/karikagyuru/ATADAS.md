@@ -332,3 +332,54 @@ Minden oldalt végignéztünk telefonon (390 px) és asztali gépen (1440 px). S
 - **Apróságok:** a lenyitható részek felirata telefonon nem torlódik; a kőméret-gombok asztali nézetben egy sorba férnek.
 - Verzió: `V2.3` (import map `?v=2.3`), localStorage-kulcs `karikagyuru-demo-v10`.
 - Tesztek: motor 39/39, asztali 30/30, mobil 26/26.
+
+---
+
+## V3 – teljes vásárlói élmény és személyre szabás (2026. november 20.)
+
+**Forrás:** a V3 feladatleírás. Az ügyfélbeszélgetés átirata és a kézzel írt jegyzet fényképe ehhez a munkamenethez NEM volt csatolva; a tulajdonos gondolkodását a feladatleírás összefoglalója alapján építettük be. Ha megvan az átirat, a szövegeket érdemes vele összevetni.
+
+### A három üzenet a nyitóképernyőn
+1. Nem kell kész modellből választani – főcím: „Nem kell beérned azzal, ami a vitrinben van.”
+2. Két út: „Alakítsd a sajátodra” (→ Gyűrűk) és „Van egy saját ötletem” (→ `#/sajat`); közvetlenül a hero alatt két nagy kártya.
+3. Egy több mint 30 éve dolgozó ötvös segít személyesen (hero-megjegyzés és „Aki a gyűrűdet készíti” szekció).
+
+### Új és átírt részek
+- **Teljes szövegújraírás tegeződve** (kezdőoldal, gyűrűk, termékoldal, konfigurátor, saját ötlet, kapcsolat, űrlapok). **Ügyféllel jóváhagyandó kommunikációs döntés.** Az admin magázva maradt (a tulajdonosnak szól).
+- **Kezdőoldal sorrendje:** hero → két út → induló modellek → gyors árpróba → „A kevesebb is lehet pont tökéletes” → irányok/inspiráció → az ötvös → így megy → rendelés röviden → kapcsolat. A korábbi „Válasszon aranyszín szerint” és „Miért érdemes bejönni” blokk kikerült (a tartalmuk az ötvös-szekcióba olvadt).
+- **„A kevesebb is…”:** ugyanaz a modell kő nélkül / egy kővel / alapkiépítésben, élő árakkal a motorból. Csak olyan változat, amit a modell kőszabálya enged.
+- **Irányok (inspiráció):** a katalógus saját fotói négy irány szerint (körbekövezve, több kő sorban, két szín, megmunkált felület) + „Egészen más jár a fejedben?”. Nem mutatunk kitalált egyedi megrendelést; a korábbi egyedi munkák fotóit az ügyféltől várjuk (jelölve).
+- **Az ötvös:** 30+ év, gép és kéz együtt (nem állítjuk, hogy minden kézzel készül), megmondja, ha valami nem működne. Portré/műhelyfotó nincs – az ügyféltől várjuk (jelölve), kitalált képet nem használunk.
+- **Saját gyűrűt szeretnék (`#/sajat`):** leírás, gyűrűtípus, anyag, gyémánt, kép vagy rajz (legfeljebb 3, helyi előnézet), költségkeret (nem kötelező, demó sávok), elérhetőség, konzultáció.
+  - Az ár mindig „Személyes egyeztetés alapján” – nincs automatikus ajánlat.
+  - A kép NEM töltődik fel: ezt az űrlap és a visszaigazolás is kiírja.
+  - A vázlat a böngésző munkamenetében megmarad (sessionStorage), a képek csak az oldal újratöltéséig.
+  - Az admin Érdeklődések között „saját elképzelés” típussal jelenik meg, a leírással és a képek számával.
+- **Termékoldal:**
+  - Két külön nézet: **Fotó** (az eredeti, valódi termékfotó) és **A te változatod** (szemléltető ábra). Az ábra a valós adatokból rajzol: anyag/szín, belső átmérő a méretből, szélesség mm-ben, a kövek száma és átmérője. Felirat: „Szemléltető ábra – nem fotó”, és külön mondat, hogy nem a kész gyűrű pontos képe.
+  - **„Másképp képzelted el?”** → `#/sajat?modell=…&k=…`: viszi a cikkszámot és a beállított paramétereket.
+  - Ahol a férfigyűrűn a modell szerint nincs kő: nem tiltunk, hanem egyedi egyeztetést kínálunk.
+  - Gombok: „Érdekel ez a gyűrű”, „Személyes konzultációt kérek”.
+- **Admin – új gyűrű felvitele** (Gyűrűk → „+ Új gyűrű felvitele”, `#/admin/gyuru/uj`): cikkszám, név, típus (pár / egy gyűrű), kép (fájl vagy webcím), aranyszínek, anyagok, szélességek, referenciaméret és tömeg, kőszabály, egyedi ár, „csak ajánlattal”, látható/rejtett. Mentés után megjelenik a vásárlói katalógusban és konfigurálható. Meglévő gyűrűnél is cserélhető a kép és a színválaszték.
+- **Menü:** Gyűrűk · Saját ötlet · Az ötvös · Kapcsolat. A márkanév és a logó változatlan.
+
+### Ami továbbra is csak böngészőoldali demó (nincs megvalósítva)
+- Nincs szerver: az érdeklődések, az új gyűrűk és a feltöltött képek csak a böngésző localStorage-ában vannak; a „Demóadatok visszaállítása” törli őket.
+- Az adminban kiválasztott képet kicsinyítve (max. 900 px) tároljuk; a böngésző tárhelye szűk, nagy képeknél betelhet (erre figyelmeztet).
+- Az éles rendszerhez kell: központi adatbázis, bejelentkezéshez kötött admin, valódi képfeltöltés, szerveroldali mentés, e-mail értesítés.
+- Nincs online fizetés, rendelés, 3D/CAD – és nem is cél ebben a körben.
+
+### Jóváhagyandó (V3)
+1. Tegeződés a vásárlói oldalon.
+2. A főcím és a szövegek hangja.
+3. „Több mint 30 év” pontos megfogalmazása; az ötvös neve, portréja, műhelyfotók.
+4. Korábbi egyedi munkák fotói az inspirációs részhez.
+5. A költségkeret-sávok a saját ötlet űrlapon (most demó).
+6. Készülhet-e kő a férfigyűrűbe az egyes modelleken.
+7. A szemléltető ábra maradjon-e, és milyen részletességgel.
+
+### Tesztek
+- `node --test tests/engine.test.mjs` → 39/39
+- `python3 tests/e2e.py` → 30/30 · `python3 tests/mobile.py` → 26/26
+- `python3 tests/v3.py` → 50/50 (1280 és 390 px): főcím és két út; az ötvös a nyitóképernyőn; „kevesebb” árak; fotó és ábra külön; az ábra követi a kőszámot, színt, anyagot, méretet; a két gyűrű külön szerkeszthető; egyedi kérés viszi a modell adatait; kép helyi előnézettel; nincs automatikus ár; az űrlap megőrzi az adatokat; visszaigazolás; admin megkapja; új gyűrű felvitele → katalógus → konfigurátor; nincs oldalra görgetés és JS-hiba.
+- Verzió: `V3.0` (import map `?v=3.0`).
