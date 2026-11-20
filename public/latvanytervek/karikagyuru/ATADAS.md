@@ -420,3 +420,22 @@ Megjelenés, vásárlói szövegek és a kalkulációs módszer változatlan.
 3. **Admin:** a dobozban külön sor: „Ez csak előzetes ellenőrzés a látványtervben. Valódi élesítéshez szerveroldali ellenőrzés és hitelesített admin szükséges.” A hiányzó vagy hibás adatok külön listában látszanak.
 
 Tesztek: motor 67/67 (21 új az élesítési ellenőrzésre), asztali 30/30, mobil 26/26, V3 70/70. Verzió `V3.4`.
+
+
+## V4 – fejlesztés az új ügyféligények alapján (2026. november 20.)
+
+Kiindulás: V3.4. A meglévő oldal nem épült újra; a számítási módszer és az árak nem változtak.
+
+**Gyűrűnkénti lehetőségek (adatmodell + motor).** Minden terméknél `opts.width` (engedélyezve?, min, max, lépés, jóváhagyva?), `opts.thickness` (engedélyezett értékek, jóváhagyva?), `sizeMin/sizeMax`, `consult[]` (egyeztetést igénylő módosítások), `models3d[]`. Szélesség vagy vastagság **csak akkor választható, ha az adott gyűrűnél engedélyezve ÉS jóváhagyva van** – különben a V3.4 viselkedése él (a gyűrű saját szélessége látszik). A vásárló látja az okot, ha valami nem választható. A numerikus ellenőrzés nem gyárthatósági ígéret; ezt az admin és a vásárlói oldal is kiírja.
+
+**Kezelőfelület.** Főmenü öt feladattal: 1. Árak, 2. Gyűrűk, 3. Fotók, 4. Szabályok, 5. Érdeklődések. Árak: árverzió és érvényesség kezdete, hiányzó adatok doboza, változatlista visszaállítással; a korábbi előtte–utána összevetés és megerősítés megmaradt. Fotók: kép cseréje gyűrűnként (a bemutatóban kicsinyítve, a böngészőben). Szabályok: gyűrűnkénti áttekintés, „csak ami jóváhagyásra vár” szűrő. Gyűrű szerkesztése: „Mit állíthat a vásárló ezen a gyűrűn?” – méretek, szélesség, vastagság, figyelmeztetések (pl. 3,5 mm alatti sima aranygyűrű, 1,2–1,3 mm vastagság), egyeztetést igénylő módosítások, 3D-modellek listája.
+
+**Vásárlói oldal.** Katalóguskeresés; nem elérhető fémek letiltva, indoklással; „Amit külön egyeztetünk” lista a gyűrű saját tételeivel.
+
+**Szerveroldal (váz, nincs élesítve, nincs bekötve).** `services/karikagyuru-api/` – PHP 8.1+ és SQLite, külső csomag nélkül: jelszavas belépés, CSRF, változatkezelt mentés, érdeklődések, ellenőrzött képfeltöltés. Helyi teszt: `python3 services/karikagyuru-api/tests/api_test.py` (58 ellenőrzés). A látványterv továbbra is `localStorage`-ba ment.
+
+**Dokumentumok.** `docs/ELSO_ATADAS.md` (A: első átadás, B: későbbi fejlesztések, C: élesítéshez szükséges hozzáférések, adatok, jóváhagyások), `docs/RHINO_3D.md` (hogyan lesz `.3dm`-ből webes modell; nincs megvalósítva).
+
+**Adatvédelem.** A bizalmas igénymátrix kikerült a nyilvános tárolóból (a git-előzményben a korábbi commitokban még megvan – eltávolítása külön döntés). Ügyfél CAD-fájl nincs a tárolóban.
+
+Tesztek: motor 73/73, asztali 30/30, mobil 26/26, V3 70/70, V4 54/54, API 58/58. Verzió `V4.0`, tárolókulcs `karikagyuru-demo-v13`.
