@@ -2,7 +2,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { DEMO_MATERIALS, DEMO_SETTINGS, buildDemoProducts } from '../js/data.js';
-import { ctFmt, sizeSfx, isGold as isGoldM, priceProduct, defaultConfig, normalizeConfig, seedWeights, diffPrices, priceAll, encodeCfg, decodeCfg, stoneCount, exampleRing, refPrice, allowedCats, maxAround, diamond } from '../js/engine.js';
+import { refWeight, ctFmt, sizeSfx, isGold as isGoldM, priceProduct, defaultConfig, normalizeConfig, seedWeights, diffPrices, priceAll, encodeCfg, decodeCfg, stoneCount, exampleRing, refPrice, allowedCats, maxAround, diamond } from '../js/engine.js';
 
 const clone = (o) => JSON.parse(JSON.stringify(o));
 const M = clone(DEMO_MATERIALS), S = clone(DEMO_SETTINGS);
@@ -153,7 +153,7 @@ test('Kerekítés felfelé 100 Ft-ra (alapbeállítás)', () => {
 test('Ügyfélpélda: tömegarányok – 14K 4,8 g → 18K 5,4 · Pt 6,9 · Pd 4,0 · Ti 1,5 g (54-es)', () => {
   const ring = { label: 'x', refSize: 54, refWidth: 4, weight: 4.8, labor: 0, other: 0, stoneRule: null };
   const p = { id: 't', code: 't', name: 't', kind: 's', metals: ['au14', 'au18', 'pt', 'pd', 'ti'], colors: ['sarga'], baseColor: 'sarga', widths: [4], rings: [ring] };
-  const g = (m) => { const c = defaultConfig(p); c.metal = m; return priceProduct(p, c, M, R1).grams; };
+  const g = (m) => Math.round(refWeight(ring, m, S) * 100) / 100;
   assert.deepEqual(['au14', 'au18', 'pt', 'pd', 'ti'].map(g), [4.8, 5.4, 6.9, 4, 1.5]);
 });
 test('Ügyfélpélda: alapanyagárak – 24K 40 000 → 14K 23 400, 18K 30 000; Pt 15 000; Pd 10 000', () => {
@@ -217,7 +217,8 @@ test('A kerekítés alapértelmezése demó, és az ügyfél jóváhagyásáig a
   assert.equal(S.roundTo, 100); assert.equal(S.src.roundTo, 'demo');
 });
 test('A 18K, palládium és titán grammár demóként jelölt, a 14K és platina ügyfélpélda', () => {
-  assert.deepEqual(['au18', 'pd', 'ti'].map((m) => M.src[`sellPerGram.${m}`]), ['demo', 'demo', 'demo']);
+  assert.deepEqual(['au18', 'pd'].map((m) => M.src[`sellPerGram.${m}`]), ['demo', 'demo']);
+  assert.equal(M.sellPerGram.ti, null); assert.equal(M.src['sellPerGram.ti'], 'bizonytalan');   // titán: munkaalapú ár, nincs grammár
   assert.deepEqual(['au14', 'pt'].map((m) => M.src[`sellPerGram.${m}`]), ['pelda', 'pelda']);
 });
 
@@ -275,4 +276,18 @@ test('Kőméret kijelzése kerekítés nélkül', () => assert.deepEqual([0.005,
 test('Alapbeállítással minden gyűrű ára pontosan a weboldalon most feltüntetett ár', () => {
   const off = products.filter((p) => p.listaAr && priceProduct(p, null, M, S).final !== p.listaAr).map((p) => p.code);
   assert.deepEqual(off, []);
+});
+
+/* ---------------- Az átirat alapján (V3.2) ---------------- */
+test('Titán: nincs tömegalapú ár – egyedi ajánlat, érthető indoklással (ügyfél, 34:39–35:39)', () => {
+  const p = products.find((x) => x.metals.includes('ti') && x.listaAr);
+  const r = price(p, (c) => { c.metal = 'ti'; c.color = null; });
+  assert.equal(r.final, null); assert.match(r.reason, /munkából adódik/);
+});
+test('A szélesség/profil nem választható online (ügyfél, 47:37–48:18)', () => {
+  assert.deepEqual(products.filter((p) => !p.added && p.widths.length !== 1).map((p) => p.code), []);
+});
+test('Kétszínű modell nem készülhet platinából, palládiumból, titánból (ügyfél, 31:05)', () => {
+  const bi = products.filter((p) => ['ketszinu', 'feherrose', 'sargarose'].includes(p.baseColor));
+  assert.ok(bi.length > 0); assert.ok(bi.every((p) => p.metals.every((m) => m === 'au14' || m === 'au18')));
 });

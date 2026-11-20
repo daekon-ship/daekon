@@ -116,7 +116,7 @@ export function home(el) {
           <a class="btn btn--dark" href="#/kollekcio">Alakítsd a sajátodra</a>
           <a class="btn btn--line" href="#/sajat">Van egy saját ötletem</a>
         </div>
-        <p class="hero__note" data-hero>A döntésben egy több mint 30 éve dolgozó ötvös segít, személyesen. Időpontra, akár munkaidő után vagy hétvégén is.</p>
+        <p class="hero__note" data-hero>Egy ötvössel ülsz le, aki harmincvalahány éve csinálja. Addig alakítjátok, amíg ki nem találjátok, milyen legyen.</p>
       </div>
       <figure class="hero__stage">
         <div class="hero__ring">
@@ -209,6 +209,16 @@ export function home(el) {
         ${insp.map(([t, d, p], i) => `<a class="insp__tile" href="#/gyuru/${p.id}" data-reveal="${i * 0.06}"><div class="insp__media">${productMedia(p)}</div><div class="insp__txt"><h3>${t}</h3><p>${d}</p><span class="btn-text">Ebből indulnék ki</span></div></a>`).join('')}
         <a class="insp__own" href="#/sajat" data-reveal=".24"><h3>Egészen más jár a fejedben?</h3><p>Különleges foglalás, szokatlan forma, saját minta. Mondd el – megnézzük, megvalósítható-e.</p><span class="btn btn--dark">Van egy saját ötletem</span></a>
       </div>
+      <div class="made" data-reveal>
+        <h3>Készült már ilyen is</h3>
+        <ul>
+          <li><b>Kétsoros, körbekövezett gyűrű</b> – a kövek úgy ülnek, hogy végigsimítva szinte nem érezni őket.</li>
+          <li><b>Három karikából álló gyűrű</b> – két szín, a karikák között átlátszik az ujj.</li>
+          <li><b>Kalapált, reszelt felület</b> – ebből nincs két egyforma, a pár két gyűrűje sem teljesen azonos.</li>
+          <li><b>Háromszög alakú kő</b> gyűrűbe foglalva.</li>
+        </ul>
+        <p class="fine">Ezekről még nincs fotó az oldalon. ${S().settings.showDemoMarks ? '<span class="demo-chip">fotók és pontos leírás: az ötvöstől várjuk</span>' : ''}</p>
+      </div>
       <p class="fine insp__note">A képek a katalógus saját fotói. ${S().settings.showDemoMarks ? '<span class="demo-chip">korábbi egyedi munkák fotói: az ügyféltől várjuk</span>' : ''}</p>
     </div>
   </section>` : ''}
@@ -216,16 +226,16 @@ export function home(el) {
   <section class="sec sec--ink otvos" id="otvos">
     <div class="wrap otvos__grid">
       <div class="otvos__lead" data-reveal>
-        <h2>Aki a gyűrűdet készíti</h2>
-        <p>Nem eladóval beszélsz, hanem ötvössel, aki több mint 30 éve csinálja. Vele találod ki a gyűrűt, és ő felel azért, ami elkészül – ha egy munkához az kell, szakmai kollégát is bevon.</p>
-        <p>Szívesen kipróbál szokatlan ötleteket is. Ha valami nem működne – túl vékony lenne, nem tartaná a követ, hamar elkopna –, azt megmondja, és mutat helyette olyat, ami szép is marad.</p>
+        <h2>Akivel a gyűrűdet kitalálod</h2>
+        <p>Nem eladóval beszélsz, hanem ötvössel, aki harmincvalahány éve csinálja. Leül veled, és addig alakítjátok, amíg ki nem találjátok, milyen legyen. Ő felel azért, ami elkészül – ha egy munkához az kell, szakmai kollégát is bevon.</p>
+        <p>Nála lehet kísérletezni. Szokatlan ötletre is kapható, és megpróbálja megcsinálni. Ha valami nem működne vagy csúnya lenne, azt előre megmondja.</p>
         <a class="btn btn--gold" href="#/kapcsolat">Időpontot kérek</a>
         ${S().settings.showDemoMarks ? '<p class="fine"><span class="demo-chip">portré és műhelyfotó: az ügyféltől várjuk</span></p>' : ''}
       </div>
       <ul class="otvos__list">
-        <li data-reveal><h3>Gép és kéz együtt</h3><p>Ahol a pontosság számít, gép dolgozik. A foglalás, az illesztés és a felület kézi ötvösmunka.</p></li>
+        <li data-reveal><h3>Kéz és eszterga</h3><p>A gyűrű kézzel indul: nyújtás, hajlítás, forrasztás. A pontos formát eszterga adja, a végső felületet megint a kéz.</p></li>
         <li data-reveal=".06"><h3>Közösen döntötök</h3><p>Felpróbálod a mintagyűrűket, megnézed a színeket a saját kezeden, és ott helyben alakul a terv.</p></li>
-        <li data-reveal=".12"><h3>Pontos méret</h3><p>A széles gyűrű szorosabb, mint a keskeny. Mintagyűrűvel pár perc alatt kiderül, mi a jó.</p></li>
+        <li data-reveal=".12"><h3>Platina, palládium, titán</h3><p>Ezekkel kevés műhely dolgozik – itt igen. Fontos tudni: platinából és palládiumból csak fehér gyűrű készül.</p></li>
         <li data-reveal=".18"><h3>Csak természetes gyémánt</h3><p>Ha kő kerül a gyűrűbe, az valódi, természetes gyémánt.</p></li>
       </ul>
     </div>
@@ -528,7 +538,7 @@ export function product(el, id, query) {
         <div class="other">
           <p class="other__tag">Amit külön egyeztetünk</p>
           <h2>Másképp képzelted el?</h2>
-          <p>Más forma vagy felület, másfajta foglalás, kő oda is, ahol itt nem választható? Ezekre itt nem tudunk árat és igent mondani – az ötvös nézi meg, megvalósítható-e. A mostani beállításaidat visszük tovább.</p>
+          <p>Keskenyebb vagy szélesebb, más forma, más felület, másfajta foglalás, nagyobb vagy más minőségű kő, kő oda is, ahol itt nem választható? Ezekre itt nem tudunk árat és igent mondani – az ötvös nézi meg, megvalósítható-e. A mostani beállításaidat visszük tovább.</p>
           <a class="btn btn--line" href="#" data-custom-link>Egyedi változtatást kérek</a>
         </div>
         <p class="notice">Tájékoztató ár. A véglegeset személyesen mondjuk meg, a pontos méret és az aznapi nemesfémár alapján.</p>
@@ -586,7 +596,7 @@ export function product(el, id, query) {
   const stepMetal = (cur) => {
     const opts = [];
     if (golds.length) opts.push(['gold', 'Arany', golds.length > 1 ? '14 vagy 18 karát' : METALS[golds[0]].short, isGold(cfg.metal), (x) => { x.metal = golds.includes('au14') ? 'au14' : golds[0]; x.color = x.color || p.baseColor; }]);
-    for (const m of others) opts.push([m, METALS[m].label, { pt: 'nehéz, tartós, természetesen fehér', pd: 'könnyebb, természetesen fehér', ti: 'nagyon könnyű, modern' }[m], cfg.metal === m, (x) => { x.metal = m; x.color = null; }]);
+    for (const m of others) opts.push([m, METALS[m].label, { pt: 'nehéz, tartós – csak fehér', pd: 'könnyebb – csak fehér', ti: 'nagyon könnyű – ára egyedi' }[m], cfg.metal === m, (x) => { x.metal = m; x.color = null; }]);
     if (opts.length < 2) return '';
     return ['Anyag', isGold(cfg.metal) ? 'Arany' : METALS[cfg.metal].short, `<div class="cfg__cards cfg__cards--metal">${opts.map(([k, l, d, on, fn]) =>
       `<button type="button" class="kopt" data-metal="${k}" aria-pressed="${on}"><b>${l}</b><span>${d}</span>${on ? cur_ : delta(cur, fn)}</button>`).join('')}</div>`];
@@ -611,7 +621,7 @@ export function product(el, id, query) {
       <label class="check"><input type="checkbox" data-unknown="${i}" ${rc.sizeUnknown ? 'checked' : ''}><span>Még nem tudom</span></label>
       <button type="button" class="linkbtn" data-sizehelp="${i}">Méretsegítő</button>
       ${p.widths.length > 1 ? `<div class="cfg__seg cfg__seg--sm" aria-label="Szélesség">${p.widths.map((w) => `<button type="button" data-width="${i}|${w}" aria-pressed="${w === rc.width}"><b>${dec(w)} mm</b>${w === rc.width ? '' : delta(cur, (x) => (x.rings[i].width = w))}</button>`).join('')}</div>`
-        : `<p class="hint">Szélesség: ${dec(rc.width)} mm ${demoMark('demóadat')}</p>`}
+        : `<p class="hint">Szélesség: ${dec(rc.width)} mm ${demoMark('demóadat')} · más szélesség külön egyeztetéssel</p>`}
     </div>`; }).join('')}</div>
     <p class="hint">Belső kerület mm-ben. Nagyobb méret = több nemesfém. ${cfg.rings.some((r) => r.sizeUnknown) ? '· Az ismeretlen méretet átlagos mérettel számoljuk, a konzultáción megmérjük.' : ''}</p>`];
   const stepStones = (cur) => {
@@ -631,7 +641,7 @@ export function product(el, id, query) {
           body += `<div class="stonecount"><span>Kövek száma</span><div class="stepper stepper--sm"><button type="button" data-scount="${i}|-1" aria-label="Kevesebb kő" ${st.count <= lo ? 'disabled' : ''}>−</button><output aria-live="polite">${st.count}</output><button type="button" data-scount="${i}|1" aria-label="Több kő" ${st.count >= rule.max ? 'disabled' : ''}>+</button></div>
             <small>${lo}–${rule.max} db${st.count < rule.max ? ` · +1 kő: ${delta(cur, (x) => (x.rings[i].stones.count += 1))}` : ''}</small></div>`;
         } else if (rule.mode === 'fixed') body += `<p class="hint"><b>${st.count} kő</b> – a modell kialakítása miatt a kőszám kötött.</p>`;
-        else if (rule.mode === 'perSize') body += `<p class="hint"><b>${st.count} kő</b> körbe foglalva – a kőszám a gyűrű méretétől függ.</p>`;
+        else if (rule.mode === 'perSize') body += `<p class="hint"><b>${st.count} kő</b> körbe foglalva – a kőszám a gyűrű méretétől függ.</p><p class="hint">Jó tudni: a körbekövezett gyűrű méretén utólag csak kőnyi lépésekben és sok munkával lehet változtatni. A pontos méretet ezért a konzultáción mérjük meg.</p>`;
         const fit = allowedCats(rule, rc.width, Mx, S().settings);
         if (rule.cats.length > 1) body += `<div class="stonecats" role="group" aria-label="Kőméret">${rule.cats.map((c) => { const d = diamond(Mx, c); if (!d) return '';
           const no = !fit.includes(c);
@@ -670,7 +680,7 @@ export function product(el, id, query) {
     cn.hidden = !showNote;
     cn.innerHTML = isGold(cfg.metal)
       ? `<span class="sw sw--sm" style="--sw:${metalSwatch(cfg.color)}"></span>A fotón ${colorLabel(p.baseColor).toLowerCase()} látható – a tiéd ${colorLabel(cfg.color).toLowerCase()} színben készül el.`
-      : `A fotón aranyból készült változat látható – a tiéd ${METALS[cfg.metal].label.toLowerCase()}ból készül.`;
+      : `A fotón aranyból készült változat látható – a tiéd ${METALS[cfg.metal].label.toLowerCase()}ból készül${cfg.metal === 'ti' ? '' : ', ami csak fehér színben létezik'}.`;
     $$('[data-view]', el).forEach((b) => b.setAttribute('aria-selected', b.dataset.view === view));
 
     const steps = [stepMetal(cur), stepKarat(cur), stepColor(), stepSize(cur), stepStones(cur), stepEngrave()].filter(Boolean);

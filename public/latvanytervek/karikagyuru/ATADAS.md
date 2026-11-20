@@ -342,7 +342,7 @@ Minden oldalt végignéztünk telefonon (390 px) és asztali gépen (1440 px). S
 ### A három üzenet a nyitóképernyőn
 1. Nem kell kész modellből választani – főcím: „Nem kell beérned azzal, ami a vitrinben van.”
 2. Két út: „Alakítsd a sajátodra” (→ Gyűrűk) és „Van egy saját ötletem” (→ `#/sajat`); közvetlenül a hero alatt két nagy kártya.
-3. Egy több mint 30 éve dolgozó ötvös segít személyesen (hero-megjegyzés és „Aki a gyűrűdet készíti” szekció).
+3. Egy több mint 30 éve dolgozó ötvös segít személyesen (hero-megjegyzés és „Akivel a gyűrűdet kitalálod” szekció).
 
 ### Új és átírt részek
 - **Teljes szövegújraírás tegeződve** (kezdőoldal, gyűrűk, termékoldal, konfigurátor, saját ötlet, kapcsolat, űrlapok). **Ügyféllel jóváhagyandó kommunikációs döntés.** Az admin magázva maradt (a tulajdonosnak szól).
@@ -395,3 +395,18 @@ Minden oldalt végignéztünk telefonon (390 px) és asztali gépen (1440 px). S
 - A fotón felirat: „Valódi modellfotó”; a jegyzet kimondja, hogy a fotó nem változik a beállításokkal.
 - Az űrlapok alján: „Ez bemutató… Valódi adatot ne adj meg.”
 - Verzió `V3.1`. Tesztek: motor 39/39, asztali 30/30, mobil 26/26, V3 54/54.
+
+---
+
+## V3.2 – a teljes átirat és a kézírásos jegyzet alapján (2026. november 20.)
+
+Most először állt rendelkezésre a teljes átirat és a jegyzet fényképe. Részletes összevetés időkódokkal: `UGYFEL_IGENYEK_V3_1.md` (52 sor).
+
+Javítások, mind az átirat alapján:
+- **Titán:** nincs grammár. Az ötvös szerint az ár a munkából adódik (34:39–35:39), ezért titánnál „Egyedi árajánlat szükséges”. A korábbi demó 45 000 Ft körüli titángyűrűt adott volna, ami félrevezető.
+- **Szélesség/profil:** nem választható online (47:37–48:18). 98 modellnél 3 kitalált szélesség volt; most egy, „más szélesség külön egyeztetéssel”.
+- **Platina, palládium:** „csak fehér” (31:05).
+- **Körbekövezett gyűrű:** méretigazítási megjegyzés (41:14–43:17).
+- **Szövegek** az ötvös szavaihoz igazítva: „harmincvalahány éve”, „addig alakítjátok, amíg ki nem találjátok”, „nála lehet kísérletezni”, „kéz és eszterga”.
+- **„Készült már ilyen is”** szöveges lista a beszélgetésben mutatott darabokról, fotó nélkül, jelölve.
+- Verzió `V3.2`, localStorage-kulcs `karikagyuru-demo-v11`.

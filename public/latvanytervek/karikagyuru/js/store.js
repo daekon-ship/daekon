@@ -6,7 +6,7 @@
 import { DEMO_MATERIALS, DEMO_SETTINGS, buildDemoProducts } from './data.js';
 import { seedWeights, priceAll, diffPrices } from './engine.js';
 
-const KEY = 'karikagyuru-demo-v10';
+const KEY = 'karikagyuru-demo-v11';
 const clone = (o) => JSON.parse(JSON.stringify(o));
 const listeners = new Set();
 const fmt = (n) => new Intl.NumberFormat('hu-HU').format(n).replace(/\s/g, ' ');
@@ -17,7 +17,7 @@ function fresh() {
   const products = seedWeights(buildDemoProducts(), materials, settings);
   const now = new Date().toISOString();
   return {
-    v: 10,
+    v: 11,
     materials, settings, products,
     history: [{
       id: uid(), at: now, validFrom: now, by: 'Rendszer (demó)', kind: 'start',
@@ -52,7 +52,7 @@ function uid() { return Math.random().toString(36).slice(2, 9); }
 
 let state;
 try { state = JSON.parse(localStorage.getItem(KEY)) || null; } catch { state = null; }
-if (!state || state.v !== 10) state = fresh();
+if (!state || state.v !== 11) state = fresh();
 
 function persist() {
   let saved = true;

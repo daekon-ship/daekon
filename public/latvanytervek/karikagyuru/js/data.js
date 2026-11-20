@@ -65,7 +65,9 @@ export const DEMO_MATERIALS = {
   titanium: 80,
   // KÉSZTERMÉK ELADÁSI GRAMMÁRA (bruttó, Ft / g) – ebben benne van a fém, a munka és az árrés.
   // Az ügyfél példája: 14K 47 000, platina 55 000. A többi demó (az ügyféltől még nem kaptuk meg).
-  sellPerGram: { au14: 47000, au18: 56000, pt: 55000, pd: 40000, ti: 30000 },
+  // TITÁN: nincs grammár. Az ügyfél szerint (34:39–35:39, 50:56) az anyagnak nincs értéke, az ár a munkából adódik
+  // (a mutatott titángyűrűnél: önköltség kb. 160 000 Ft, „minimum 200 ezerért adom”) → egyedi ajánlat, amíg nincs jóváhagyott szabály.
+  sellPerGram: { au14: 47000, au18: 56000, pt: 55000, pd: 40000, ti: null },
   // TERMÉSZETES GYÉMÁNT, Ft / db (ügyfél jegyzete). price: null = nincs megbízható ár → egyedi ajánlat.
   // mm = a kő átmérője – ebből ellenőrizzük, hogy fizikailag elfér-e a gyűrűn.
   diamonds: [
@@ -74,14 +76,14 @@ export const DEMO_MATERIALS = {
     { id: 'd015', ct: 0.015, mm: 1.5,  name: 'Brill 0,015 ct', quality: 'Ø 1,5 mm',     price: 9000,  src: 'pelda' },
     { id: 'd02',  ct: 0.02,  mm: 1.7,  name: 'Brill 0,02 ct',  quality: 'Ø 1,7 mm',     price: 12000, src: 'pelda' },
     { id: 'd03',  ct: 0.03,  mm: 2.0,  name: 'Brill 0,03 ct',  quality: 'Ø 2,0 mm',     price: 18000, src: 'pelda' },
-    { id: 'd04',  ct: 0.04,  mm: 2.3,  name: 'Brill 0,04 ct',  quality: 'Ø 2,2–2,3 mm', price: null,  src: 'bizonytalan', note: 'A jegyzetben 24 000 Ft, a beszélgetésben 20 000 Ft – megerősítendő.' },
+    { id: 'd04',  ct: 0.04,  mm: 2.3,  name: 'Brill 0,04 ct',  quality: 'Ø 2,2–2,3 mm', price: null,  src: 'bizonytalan', note: 'A jegyzetben 24 000 Ft; szóban 20 000 Ft hangzott el engedménnyel, azzal, hogy a honlapon az engedmény nem jelenik meg (24:50–25:07). Megerősítendő.' },
     { id: 'd05',  ct: 0.05,  mm: 2.4,  name: 'Brill 0,05 ct',  quality: 'Ø 2,3–2,4 mm', price: null,  src: 'bizonytalan', note: 'Ár megerősítendő.' },
     { id: 'd10',  ct: 0.10,  mm: 3.0,  name: 'Brill 0,10 ct',  quality: 'Ø 3,0 mm',     price: null,  src: 'demo', note: 'Nincs adat.' },
   ],
   src: {
     gold24: 'pelda', platinum: 'pelda', palladium: 'pelda', titanium: 'demo',
     'sellPerGram.au14': 'pelda', 'sellPerGram.pt': 'pelda',
-    'sellPerGram.au18': 'demo', 'sellPerGram.pd': 'demo', 'sellPerGram.ti': 'demo',
+    'sellPerGram.au18': 'demo', 'sellPerGram.pd': 'demo', 'sellPerGram.ti': 'bizonytalan',
   },
 };
 
@@ -122,7 +124,7 @@ export const DEMO_SETTINGS = {
 
 /* Több domain (pl. karikagyuru.com és budapestikarikagyuru.com) közös termék- és áradminisztrációval:
    minden termék `sites` listája mondja meg, melyik oldalon jelenik meg; az árak és a gyűrűk közösek. */
-export const SITES = { karikagyuru: 'karikagyuru.com', budapest: 'budapestikarikagyuru.com' };
+export const SITES = { karikagyuru: 'karikagyuru.com', budapest: 'második oldal: jegy- és leánykérő gyűrűk (név még nincs eldöntve)' };
 export const CURRENT_SITE = 'karikagyuru';
 
 /* --- Munkadíj stílusonként (demó), Ft / gyűrű --- */
@@ -356,9 +358,8 @@ export function buildDemoProducts() {
       style: r.style,
       visible: true,               // megjelenítési állapot (admin: Gyűrűk → Megjelenés)
       sites: ['karikagyuru', 'budapest'],
-      widths: pair && r.style !== 'koves'
-        ? [r.width - 0.5, r.width, r.width + 0.5]
-        : [r.width],
+      // A szélesség/profil NEM választható online (ügyfél, 47:37–48:18: „ebbe nem megyünk bele, ez nálunk nem lesz”) – külön egyeztetés.
+      widths: [r.width],
       stoneOptional: !!r.st && r.st[1] <= 5,
       rings: pair
         ? [ringFrom('Női gyűrű', 54, r, true, 0.43), ringFrom('Férfi gyűrű', 64, r, false, 0.57)]

@@ -185,7 +185,7 @@ export function ringCost(ring, rc, metal, M, S) {
   const materialCost = rp ? grams * rp : null;                        // tájékoztató anyagköltség (veszteség nélkül)
   if ((S.pricingMode || 'gramm') === 'gramm') {
     const g = M.sellPerGram && M.sellPerGram[metal];
-    if (!ok(g) || g <= 0) return { error: `Nincs megadva grammár: ${m.label}.` };
+    if (!ok(g) || g <= 0) return { error: metal === 'ti' ? 'A titángyűrű ára a munkából adódik, nem a tömegéből – egyedi árajánlat szükséges.' : `Nincs megadva grammár: ${m.label}.` };
     sellPerGram = g;
     gramSell = priceGrams * g * priceF;                              // bruttó, munkadíjjal és árréssel
   } else {

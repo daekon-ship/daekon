@@ -116,7 +116,7 @@ function priceCalc(el) {
 /* ---------- Jóváhagyásra vár: mi ügyfélpélda, mi demó, mi jóváhagyott ---------- */
 const MAT_LABEL = { gold24: '24K arany alapanyagára', platinum: 'Platina alapanyagára', palladium: 'Palládium alapanyagára', titanium: 'Titán alapanyagára',
   'sellPerGram.au14': '14K kész gyűrű grammára', 'sellPerGram.au18': '18K kész gyűrű grammára', 'sellPerGram.pt': 'Platina kész gyűrű grammára',
-  'sellPerGram.pd': 'Palládium kész gyűrű grammára', 'sellPerGram.ti': 'Titán kész gyűrű grammára' };
+  'sellPerGram.pd': 'Palládium kész gyűrű grammára', 'sellPerGram.ti': 'Titán: munkaalapú ár (nem grammár) – szabály kell' };
 const SET_LABEL = { pricingMode: 'Árképzési mód (grammár szerint)', sizeMethod: 'Méret hatása (tömeg arányos a mérettel)', density: 'Tömegarányok anyagonként (4,8 / 5,4 / 6,9 / 4,0 / 1,5 g)',
   stonesGross: 'A kő darabára végső ár (nincs rá felár)', settingPerStone: 'Kőfoglalás díja', engravingPrice: 'Gravírozás díja', boxCost: 'Díszdoboz', certCost: 'Kőtanúsítvány',
   roundTo: 'Kerekítés', vatPct: 'ÁFA', stoneEdgeMm: 'Kő és gyűrűszél közti perem', stoneGapMm: 'Kövek közti hely körbe foglalásnál',
@@ -189,7 +189,7 @@ function goldsmithExamples(box) {
           ${line('au14', 54)}${line('pt', 54)}${line('pt', 48)}${line('pt', 60)}
         </tbody></table></div>
         <p class="hint">Számított = nyers eredmény. Megjelenő = kerekítve (${roundLabel(Sx.roundTo)}) ${srcBadge((Sx.src || {}).roundTo || 'demo')} – a kerekítést az ügyféllel egyeztetjük.</p>
-        <p class="note-warn">A kézzel írt jegyzetben a 60-as platina gyűrűnél 442 000 Ft szerepel. A lineáris számítás ${ft(ex('pt', 60).final)}-ot ad, a különbség ${ft(442000 - (ex('pt', 60).final || 0))}. Nem állítottuk be – egyeztetendő, hogy nagyobb méretnél más a tömegnövekedés, vagy más szélességgel számolt.</p>
+        <p class="note-warn">A kézzel írt jegyzetben a 60-as platina gyűrűnél 442 000 Ft szerepel. A lineáris számítás ${ft(ex('pt', 60).final)}-ot ad, a különbség ${ft(442000 - (ex('pt', 60).final || 0))}. A beszélgetésben szóban „négyszázhuszon…” hangzott el (07:11), ami a lineáris számítással egyezik – a 442 valószínűleg elírás (422). Nem állítottuk be – egyeztetendő, hogy nagyobb méretnél más a tömegnövekedés, vagy más szélességgel számolt.</p>
       </section>
       <section class="ebox xbox"><h2>Próbaszámítás <small>tetszőleges tömeggel</small></h2>
         <div class="xform">

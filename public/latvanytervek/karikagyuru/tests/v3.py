@@ -25,7 +25,7 @@ async def run(b, w, h, mob):
     hrefs = [await a.get_attribute('href') for a in await pg.locator('.hero__cta a').all()]
     check(f'{tag} főcím és a két gomb', 'vitrinben' in h1 and cta == ['Alakítsd a sajátodra', 'Van egy saját ötletem'] and hrefs == ['#/kollekcio', '#/sajat'], f'{h1} {cta}')
     note = await pg.inner_text('.hero__note')
-    check(f'{tag} az ötvös személyes segítsége a nyitóképernyőn', 'ötvös' in note and 'személyesen' in note)
+    check(f'{tag} az ötvös személyes segítsége a nyitóképernyőn', 'ötvös' in note and 'ülsz le' in note)
     paths = [await a.get_attribute('href') for a in await pg.locator('.paths .path').all()]
     top = await pg.evaluate("document.querySelector('.paths').getBoundingClientRect().top + scrollY")
     check(f'{tag} két külön út a nyitóoldal elején', paths == ['#/kollekcio', '#/sajat'] and top < h * 1.6, f'{paths} {int(top)}')
@@ -39,6 +39,8 @@ async def run(b, w, h, mob):
     # --- Termékoldal: fotó és szemléltető ábra külön ---
     await pg.goto(B + f'#/gyuru/{PAIR}'); await pg.wait_for_timeout(1100)
     check(f'{tag} a fotó valódi modellfotóként jelölt; állítható és egyeztetendő rész külön', 'Valódi modellfotó' in await pg.inner_text('.pdp__stage--foto') and 'Amit itt te állíthatsz' in await pg.inner_text('.scope--ok') and 'Amit külön egyeztetünk' in await pg.inner_text('.other'))
+    steps_txt = await pg.inner_text('[data-steps]')
+    check(f'{tag} platina/palládium: „csak fehér” kiírva; szélesség nem választható', 'csak fehér' in steps_txt and await pg.locator('[data-width]').count() == 0 and 'más szélesség külön egyeztetéssel' in steps_txt)
     check(f'{tag} alapnézet: a valódi fotó', await pg.locator('.pdp__stage--foto img').count() == 1 and await pg.locator('.pdp__stage .sketch').count() == 0)
     await pg.locator('[data-view="abra"]').tap() if mob else await pg.click('[data-view="abra"]'); await pg.wait_for_timeout(300)
     stones = lambda: pg.locator('.pdp__stage--abra .sketch g[transform]').count()
