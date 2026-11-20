@@ -1574,3 +1574,37 @@ body { font-size: 1.04rem; line-height: 1.6; }
 
 .golive__pre { margin: 0; padding: 8px 12px; background: #fff; border-left: 3px solid var(--ink); font-size: .95rem; }
 .golive__list--bad { color: #8a3b12; font-size: .93rem; }
+
+/* V4: gyűrűnkénti lehetőségek */
+.kopt--off { opacity: .55; cursor: not-allowed; background: var(--paper); }
+.kopt--off:hover { border-color: var(--line-s); transform: none; }
+.dimopt { display: grid; gap: 4px; } .dimopt > span { font-weight: 600; font-size: .92rem; }
+.other__list { margin: 0; padding-left: 18px; font-size: .94rem; color: var(--ink2); display: grid; gap: 2px; }
+
+.ebox__h3 { margin: 18px 0 6px; font-size: 1rem; padding-top: 12px; border-top: 1px dashed var(--line-s); } .ebox__h3 small { font-weight: 400; color: var(--mute); }
+.ebox--opts .ebox__h3:first-of-type { border-top: 0; padding-top: 0; }
+.m3d { display: grid; gap: 8px; margin-bottom: 8px; } .m3d__row { display: grid; grid-template-columns: 1fr 1.4fr auto; gap: 8px; }
+@media (max-width: 640px) { .m3d__row { grid-template-columns: 1fr; } }
+
+/* V4: admin – öt fő feladat, fotók, szabályok, árverziók */
+.bigtiles--5 { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); max-width: none; }
+.missbox { margin: 0 0 14px; padding: 12px 14px; border-left: 4px solid #c9661a; background: #fdf1e6; }
+.missbox ul { margin: 6px 0; padding-left: 20px; } .missbox .hint { margin: 0; }
+.verlist { list-style: none; margin: 12px 0; padding: 0; display: grid; gap: 8px; }
+.verlist li { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 12px; padding: 10px 12px; border: 1px solid var(--line); }
+.verlist span { display: grid; gap: 2px; } .verlist small { color: var(--mute); }
+.photogrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; margin-top: 10px; }
+.photocard { display: grid; gap: 6px; padding: 10px; border: 1px solid var(--line); background: #fff; justify-items: start; min-width: 0; }
+.photocard__img { width: 100%; aspect-ratio: 1; background: var(--paper); display: grid; place-items: center; overflow: hidden; color: var(--mute); font-size: .85rem; }
+.photocard__img img { width: 100%; height: 100%; object-fit: contain; }
+.photocard__k { color: var(--mute); font-size: .8rem; } .photocard__k--nincs { color: #a8501a; font-weight: 600; } .photocard__k--sajat { color: #1d6b3a; font-weight: 600; }
+.photocard__btn { cursor: pointer; width: 100%; text-align: center; justify-content: center; }
+.rules { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 6px; }
+.rules__row { display: grid; grid-template-columns: 56px 1fr auto auto; gap: 12px; align-items: center; padding: 10px 12px; border: 1px solid var(--line); background: #fff; color: var(--ink); text-decoration: none; }
+.rules__row:hover { border-color: var(--gold-d); }
+.rules__main { display: grid; gap: 1px; min-width: 0; } .rules__main small { color: var(--mute); font-size: .88rem; }
+.rules__go { font-weight: 700; color: var(--gold-d); white-space: nowrap; }
+.rules__sum { margin: 0 0 8px; }
+@media (max-width: 640px) { .rules__row { grid-template-columns: 48px 1fr; } .rules__row .tag, .rules__go { grid-column: 2; justify-self: start; } }
+
+.csearch { display: block; max-width: 420px; margin-top: 12px; } .csearch .input { width: 100%; min-height: 46px; }
