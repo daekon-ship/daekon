@@ -390,7 +390,8 @@ export function seedWeights(products, M, S) {
       else break;
     }
     W = Math.max(lo, Math.min(W, hi));
-    p.rings.forEach((r) => { r.weight = round2(W * r.share); });
+    // 3 tizedesre lefelé: így a kerekített ár pontosan a weboldali ár marad (nem csúszik 100 Ft-tal fölé)
+    p.rings.forEach((r) => { r.weight = Math.floor(W * r.share * 1000 + 1e-6) / 1000; });
   }
   return products;
 }

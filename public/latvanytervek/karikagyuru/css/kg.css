@@ -1403,3 +1403,14 @@ body { font-size: 1.04rem; line-height: 1.6; }
 .xsteps__info { color: var(--mute); font-size: .88rem !important; border-bottom: 0 !important; }
 .stonecats button:disabled { opacity: .45; cursor: not-allowed; background: var(--paper); }
 .calc-dl .rnd dt, .calc-dl .rnd dd { color: var(--mute); font-size: .9rem; }
+
+/* ===== V2.3: finomítások ===== */
+.xtable table { width: 100%; border-collapse: collapse; }
+.xtable th { text-align: left; padding: 8px 6px; font-weight: 600; font-size: .86rem; color: var(--mute); border-bottom: 1px solid var(--line-s); }
+.xtable td { padding: 10px 6px; border-bottom: 1px solid var(--line); vertical-align: top; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.xtable td:first-child { white-space: normal; }
+.xtable td small { display: block; color: var(--mute); font-size: .84rem; margin-top: 2px; }
+.xtable th:not(:first-child), .xtable td:not(:first-child) { text-align: right; }
+.stonecats { grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); }
+.mat--simple .mat__more summary { flex-wrap: wrap; row-gap: 2px; }
+.mat--simple .mat__more summary small { order: 3; flex: 1 1 100%; margin-left: 0; line-height: 1.35; font-weight: 400; }

@@ -272,3 +272,7 @@ test('Méret toldaléka magyarul', () => {
     ['40-es', '43-as', '45-ös', '46-os', '48-as', '50-es', '54-es', '55-ös', '56-os', '60-as', '63-as', '64-es', '66-os', '70-es', '80-as']);
 });
 test('Kőméret kijelzése kerekítés nélkül', () => assert.deepEqual([0.005, 0.01, 0.015, 0.1].map(ctFmt), ['0,005', '0,01', '0,015', '0,1']));
+test('Alapbeállítással minden gyűrű ára pontosan a weboldalon most feltüntetett ár', () => {
+  const off = products.filter((p) => p.listaAr && priceProduct(p, null, M, S).final !== p.listaAr).map((p) => p.code);
+  assert.deepEqual(off, []);
+});

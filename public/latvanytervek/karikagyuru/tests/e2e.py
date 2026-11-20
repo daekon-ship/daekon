@@ -76,7 +76,7 @@ async def main():
 
         # --- Admin → vásárlói nézet ---
         await pg.goto(B + '#/admin/arszamitas'); await pg.wait_for_timeout(600)
-        tbl = await pg.inner_text('.xbox table')
+        tbl = await pg.inner_text('.xtable')
         t2 = re.sub(r'[\u202f\xa0]', ' ', tbl)
         check('Ötvös példái: nyers 225 600 / 379 500 / 337 333 / 421 667 Ft',
               all(x in t2 for x in ['225 600', '379 500', '337 333', '421 667']), t2.replace('\n', ' ')[:160])

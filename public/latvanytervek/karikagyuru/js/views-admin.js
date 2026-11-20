@@ -23,7 +23,7 @@ const parseNum = (v) => { const n = Number(String(v).replace(/\s| | /g, '').r
 
 export const MENU = [
   ['attekintes', 'Főmenü'],
-  ['alapanyag', 'Arany ára'],
+  ['alapanyag', 'Árak'],
   ['arszamitas', 'Árszámítás'],
   ['gyuruk', 'Gyűrűk'],
   ['erdeklodesek', 'Érdeklődések'],
@@ -48,7 +48,7 @@ export function adminShell(el, page, arg) {
     </aside>
     <main class="adm__main" id="adm-main">
       <div class="adm__mbar">${page === 'attekintes' ? '<span class="adm__mtitle">Főmenü</span>' : `<a class="adm__back" href="#/admin/attekintes">← Főmenü</a><span class="adm__mtitle">${(ALLMENU.find(([k]) => k === (page === 'gyuru' ? 'gyuruk' : page)) || ['', ''])[1]}</span>`}</div>
-      <p class="adm__banner"><b>Bemutató.</b> Az árak kitalált demóértékek, az adatok csak ebben a böngészőben maradnak.</p>
+      <p class="adm__banner"><b>Bemutató.</b> Az árak az Ön példáiból és bemutató értékekből számolódnak. Az adatok csak ebben a böngészőben maradnak.</p>
       <div data-page></div>
     </main>
   </div>`;
@@ -130,7 +130,7 @@ function approvals(el) {
     if (k === 'pricingMode') return v === 'gramm' ? 'grammár szerint' : 'költség szerint'; if (k === 'sizeMethod') return v === 'tomeg' ? 'tömeg szerint' : 'árarányos';
     if (k === 'stonesGross') return v === false ? 'nem' : 'igen'; if (/Mm$/.test(k)) return dec(v) + ' mm'; if (/Pct|^markup/.test(k)) return dec(v) + '%'; return ft(v); };
   const row = (kind, key, label, value, src, note = '') => `<li class="aprow aprow--${src}"><span class="aprow__l"><b>${label}</b><small>${value}${note ? ` · ${note}` : ''}</small></span>${srcBadge(src)}
-    ${src === 'jovahagyott' ? '' : `<button class="abtn" type="button" data-appr="${kind}|${key}" data-lab="${esc(label)}" ${src === 'bizonytalan' && kind === 'diamond' ? 'disabled title="Előbb adjon meg árat az Arany ára és árak oldalon"' : ''}>Jóváhagyom</button>`}</li>`;
+    ${src === 'jovahagyott' ? '' : `<button class="abtn" type="button" data-appr="${kind}|${key}" data-lab="${esc(label)}" ${src === 'bizonytalan' && kind === 'diamond' ? 'disabled title="Előbb adjon meg árat az Árak oldalon"' : ''}>Jóváhagyom</button>`}</li>`;
   const mats = Object.keys(MAT_LABEL).map((k) => row('materials', k, MAT_LABEL[k], valOf(M, k) == null ? 'nincs ár' : ft(valOf(M, k)) + '/g', (M.src || {})[k] || 'demo'));
   const dias = M.diamonds.map((d) => row('diamond', d.id, `${d.name} (${d.quality})`, d.price == null ? 'nincs ár → egyedi ajánlat' : ft(d.price) + '/db', d.src || 'demo', d.note ? esc(d.note) : ''));
   const sets = Object.keys(SET_LABEL).map((k) => row('settings', k, SET_LABEL[k], fmtSet(k), (Sx.src || {})[k] || 'demo'));
@@ -164,7 +164,7 @@ function goldsmithExamples(box) {
   const ex = (metal, size, s0 = R1) => exampleRing({ metal, weight: EXAMPLE_WEIGHTS[metal], size }, M, { ...s0, pricingMode: 'gramm' });
   const gp = (m) => M.sellPerGram?.[m];
   const line = (m, size) => { const r = ex(m, size, Sx); const g = gp(m);
-    return `<tr><td>${METALS[m].short}</td><td>${size}</td><td>${dec(EXAMPLE_WEIGHTS[m])} g${size !== 54 ? ` × ${size}/54` : ''}</td><td>${g ? ft(g) : '–'}</td><td>${r.final === null ? 'nincs grammár' : ft(r.raw)}</td><td><b>${r.final === null ? '–' : ft(r.final)}</b></td></tr>`; };
+    return `<tr><td><b>${METALS[m].short}, ${sizeSfx(size)}</b><small>${dec(EXAMPLE_WEIGHTS[m])} g${size !== 54 ? ` × ${size}/54` : ''} × ${g ? ft(g) : '–'}</small></td><td>${r.final === null ? 'nincs grammár' : ft(r.raw)}</td><td><b>${r.final === null ? '–' : ft(r.final)}</b></td></tr>`; };
   const paint = () => {
     const r = exampleRing({ metal: s.metal, weight: s.weight, size: s.size, stones: s.stones ? { count: s.stones, cat: s.cat } : null }, M, { ...Sx, pricingMode: 'gramm' });
     const part = r.parts[0] || {}, d = diamond(M, s.cat);
@@ -185,7 +185,7 @@ function goldsmithExamples(box) {
     box.innerHTML = `
       <section class="ebox xbox"><h2>Az ötvös számítási módja <small>az ügyfél jegyzetének példái</small></h2>
         <p class="hint">Ár = tömeg × eladási grammár; más méretnél a tömeg arányosan változik (× méret / 54). A kövek darabára és a külön díjak ehhez adódnak hozzá, felár és ÁFA nem kerül rá még egyszer.</p>
-        <div class="alltable"><table><thead><tr><th>Anyag</th><th>Méret</th><th>Tömeg</th><th>Grammár</th><th>Számított</th><th>Megjelenő</th></tr></thead><tbody>
+        <div class="xtable"><table><thead><tr><th>Példa</th><th>Számított</th><th>Megjelenő</th></tr></thead><tbody>
           ${line('au14', 54)}${line('pt', 54)}${line('pt', 48)}${line('pt', 60)}
         </tbody></table></div>
         <p class="hint">Számított = nyers eredmény. Megjelenő = kerekítve (${roundLabel(Sx.roundTo)}) ${srcBadge((Sx.src || {}).roundTo || 'demo')} – a kerekítést az ügyféllel egyeztetjük.</p>
@@ -322,11 +322,13 @@ function compBar(rOld, rNew, Sx, SxNew = Sx) {
     <b class="comp__sum">${ft(r.final)}</b></div>`;
   return `<div class="comp">
     ${bar(a, rOld, b ? 'Most' : 'Ár')}${b ? bar(b, rNew, 'Új') : ''}
-    <ul class="comp__legend">${SEG.filter(([k]) => a[k] > 0.5 || (b && b[k] > 0.5)).map(([k, l, n]) => {
+    <ul class="comp__legend">${SEG.filter(([k]) => a[k] > 0.5 || (b && b[k] > 0.5)).map(([k, l0, n0]) => {
+      const gmode = (rNew || rOld).breakdown?.mode === 'gramm';
+      const [l, n] = gmode && k === 'metal' ? ['Gyűrű (tömeg × grammár)', 'változik a grammárral'] : gmode && k === 'labor' ? ['Kőfoglalás', 'fix összeg'] : [l0, n0];
       const dv = b ? b[k] - a[k] : 0;
       return `<li><i class="comp__s comp__s--${k}"></i><span>${l}<small>${n}</small></span><b>${ft(b ? b[k] : a[k])}${b ? (Math.abs(dv) >= 1 ? ` <em class="${dv > 0 ? 'up' : 'down'}">${dv > 0 ? '+' : '−'}${ft(Math.abs(dv))}</em>` : ' <em class="same">változatlan</em>') : ''}</b></li>`;
     }).join('')}</ul>
-    <p class="comp__note">A felár és az ÁFA arányosan benne van az egyes részekben.</p>
+    <p class="comp__note">${(rNew || rOld).breakdown?.mode === 'gramm' ? 'Bruttó összegek – a grammár tartalmazza a munkát, az árrést és az ÁFA-t.' : 'A felár és az ÁFA arányosan benne van az egyes részekben.'}</p>
   </div>`;
 }
 
@@ -354,9 +356,9 @@ function materials(el) {
     </div>`;
 
   el.innerHTML = `
-    <h1 class="adm__h1">Arany ára és árak</h1>
+    <h1 class="adm__h1">Árak: grammár, arany, gyémánt</h1>
     <p class="adm__meta">Utoljára módosítva: ${dateHu(lastM.at)}</p>
-    <p class="modebar">Alkalmazott árazás: <b>${gm ? 'grammár szerint – tömeg × eladási grammár (az ötvös módszere)' : 'költség szerint – alapanyagár + munkadíj + felár'}</b> · <a href="#/admin/keplet">módosítás</a></p>
+    <p class="modebar">Alkalmazott árazás: <b>${gm ? 'grammár szerint – tömeg × eladási grammár (az ötvös módszere)' : 'költség szerint – alapanyagár + munkadíj + felár'}</b> <a href="#/admin/keplet">Módosítás</a></p>
     <p class="srclegend">Adatforrás: ${['jovahagyott', 'pelda', 'bizonytalan', 'demo'].map(srcBadge).join(' ')} <a href="#/admin/jovahagyas">Mi vár jóváhagyásra?</a></p>
     <div class="mat mat--simple">
       <section class="goldcard">
@@ -603,7 +605,7 @@ function printList(st, res) {
   d.innerHTML = `<header><img src="img/logo.png" alt="Karikagyuru.com" width="135"><div><h1>Árlista</h1><p>${dayHu(new Date().toISOString())} · ${st.settings.pricingMode === 'gramm' ? `14K grammár: ${ft(st.materials.sellPerGram.au14)}/g` : `24K színarany: ${ft(st.materials.gold24)}/g`} (demó)</p></div></header>
     <table><thead><tr><th>Cikkszám</th><th>Megnevezés</th><th>Anyag</th><th>Ár (bruttó)</th></tr></thead><tbody>
     ${st.products.map((p) => `<tr><td>${esc(p.code)}</td><td>${esc(p.name)}</td><td>${(COLORS[p.baseColor]?.label || '') + ', 14K'}${p.rings.some((r) => r.stoneRule) ? ', természetes gyémánttal' : ''}</td><td>${res[p.id] ? ft(res[p.id].final) : 'egyedi ajánlat'}</td></tr>`).join('')}
-    </tbody></table><p class="ps__note">Tájékoztató árak alapméretben. A végleges ár a személyes egyeztetésen készül. Bemutató – kitalált alapanyagárakból számolva.</p>`;
+    </tbody></table><p class="ps__note">Tájékoztató árak alapméretben. A végleges ár a személyes egyeztetésen készül. Bemutató – példa- és demóárakból számolva.</p>`;
   document.body.append(d);
   setTimeout(() => { window.print(); }, 50);
   addEventListener('afterprint', () => d.remove(), { once: true });
@@ -815,7 +817,7 @@ function formula(el) {
 
   el.innerHTML = `
     <h1 class="adm__h1">Árképletek és munkadíjak</h1>
-    <p class="adm__lead">Itt állítható, hogyan lesz az alapanyagárból eladási ár. Ritkán kell hozzányúlni – a mindennapi teendő az <a href="#/admin/alapanyag">Arany ára</a> menü.</p>
+    <p class="adm__lead">Itt állítható, milyen módszerrel számol a kalkulátor, és milyen díjak adódnak a gyűrű árához. Ritkán kell hozzányúlni – a mindennapi teendő az <a href="#/admin/alapanyag">Árak</a> menü.</p>
     <div class="formula">
       <p class="formula__eq" data-eq></p>
       <p class="hint">Színarany-tartalom: 14K = 58,5%, 18K = 75%. A szín azonos karátnál nem változtat az árat. A gyémánt darabár × kőszám, nem grammra számolódik – és csak egyszer.</p>
@@ -844,7 +846,7 @@ function formula(el) {
           ${['pt', 'pd', 'ti'].map((m) => f(`laborFactor.${m}`, `${METALS[m].short} – munkadíj-szorzó`, '×', '')).join('')}</div>
         </details>
         <div class="edit__btns"><a class="abtn abtn--xl" href="#/admin/attekintes">Mégsem</a><button class="abtn abtn--gold abtn--xl" type="button" data-save>Mentés</button></div>
-        <section class="ebox"><h2>Munkadíj stílusonként</h2>
+        <section class="ebox" ${st.settings.pricingMode === 'gramm' ? 'hidden' : ''}><h2>Munkadíj stílusonként <small>csak költségalapú módban</small></h2>
           <p class="hint">Egy mozdulattal átírja az adott stílusú összes gyűrű munkadíját (gyűrűnként). Az egyes gyűrűk utána is külön állíthatók.</p>
           <div class="labor">${byStyle.map((x) => `<div class="labor__row" data-style="${x.k}">
             <span class="labor__name"><b>${x.label}</b><small>${x.ids.length} termék · most jellemzően ${ft(x.labor)}/gyűrű</small></span>
@@ -864,7 +866,7 @@ function formula(el) {
     const b = r1.breakdown;
     const gm = d.pricingMode === 'gramm';
     $('[data-eq]', el).innerHTML = gm
-      ? '<span>Tömeg × grammár</span>+<span>kövek + felár</span>+<span>kőfoglalás, gravír, doboz</span>+<span>ÁFA</span>=<b>kalkulált ár</b>'
+      ? '<span>Tömeg × grammár</span>+<span>kövek darabára</span>+<span>kőfoglalás, gravír, doboz</span>=<b>számított ár</b>'
       : '<span>Nemesfém</span>+<span>ötvözőanyag</span>+<span>drágakövek</span>+<span>munkadíj</span>+<span>egyéb</span>+<span>felár</span>+<span>ÁFA</span>=<b>kalkulált ár</b>';
     const step = (l, v, cls = '') => `<div class="${cls}"><dt>${l}</dt><dd>${ft(v)}</dd></div>`;
     const dd = diffPrices(st.products, st.materials, st.materials, st.settings, d);

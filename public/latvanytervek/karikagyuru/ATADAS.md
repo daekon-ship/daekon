@@ -315,3 +315,20 @@ Szakmai árat nem módosítottunk, új funkciót nem kezdtünk.
   - az alsó sáv ára egyezik és nem takar;
   - méretsegítő, érdeklődés a teljes konfigurációval, 0,04 ct-nál egyedi ajánlat, nincs JS-hiba.
 - **Gyorsítótár-védelem:** az `index.html` import mapje minden modult `?v=2.2` verzióval tölt, a CSS-t is. Kiadásnál a verziószámot ott kell átírni (a `kg-version` meta, a CSS, az import map és az app.js sorában). Így a GitHub Pages 10 perces gyorsítótára alatt sem keveredhet régi és új modul, ami üres oldalt okozhatna. A `<meta name="kg-version">` mutatja, melyik verzió van kint.
+
+---
+
+## V2.3 – teljes átnézés és javítás (2026. november 20.)
+
+Minden oldalt végignéztünk telefonon (390 px) és asztali gépen (1440 px). Szakmai árat nem módosítottunk.
+
+- **Az alapárak pontosan egyeznek a weboldali árakkal.** A becsült tömeget 3 tizedesre számoljuk, így a 100 Ft-os kerekítés már nem tolja 100 Ft-tal a weboldali ár fölé (pl. 435 100 helyett 435 000 Ft). Teszt ellenőrzi mind a 107 áras gyűrűre.
+- **Admin példatábla telefonon:** a „Számított” és „Megjelenő” oszlop korábban csak oldalra görgetve látszott. Most három oszlopban elfér.
+- **Felárak és munkadíjak oldal grammáras módban:**
+  - a képletsor már nem mutat „+ felár” és „+ ÁFA” tagot;
+  - az árösszetétel „Gyűrű (tömeg × grammár)” feliratot használ „Arany (nemesfém + ötvözet)” helyett;
+  - a „Munkadíj stílusonként” rész csak költségalapú módban látszik.
+- **Szövegek:** az admin sávja és a lábléc már nem „kitalált demóárakat” ír, hiszen az árak az ügyfél példáiból is számolódnak. A menüpont neve „Árak”, az oldalé „Árak: grammár, arany, gyémánt”.
+- **Apróságok:** a lenyitható részek felirata telefonon nem torlódik; a kőméret-gombok asztali nézetben egy sorba férnek.
+- Verzió: `V2.3` (import map `?v=2.3`), localStorage-kulcs `karikagyuru-demo-v10`.
+- Tesztek: motor 39/39, asztali 30/30, mobil 26/26.

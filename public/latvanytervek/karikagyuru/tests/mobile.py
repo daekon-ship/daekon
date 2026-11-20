@@ -67,6 +67,10 @@ async def flow(b, w, h):
     await tap('[data-scat="0|d04"]'); await pg.wait_for_timeout(700)
     check(f'{w}px: 0,04 ct → egyedi ajánlat', 'Egyedi árajánlat' in await pg.inner_text('[data-cprice]'))
     await over('ajánlatos')
+    await pg.goto(B + '#/admin/arszamitas'); await pg.wait_for_timeout(800)
+    fits = await pg.evaluate("(() => { const t = document.querySelector('.xtable'); return t.scrollWidth <= t.clientWidth + 1 && t.getBoundingClientRect().right <= innerWidth + 1 })()")
+    check(f'{w}px: admin példatábla oldalra görgetés nélkül elfér', fits)
+    await over('admin árszámítás')
     check(f'{w}px: nincs JS-hiba', not errs, ' | '.join(errs[:2]))
     await ctx.close()
 
