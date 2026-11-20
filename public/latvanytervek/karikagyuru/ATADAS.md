@@ -386,30 +386,16 @@ Minden oldalt végignéztünk telefonon (390 px) és asztali gépen (1440 px). S
 
 ---
 
-## V3.1 – ügyfélhűségi javítások (2026. november 20.)
+## V3.1–V3.2 – szakmai pontosítások az ügyfél jelzései alapján (2026. november 20.)
 
-**Forráskorlát:** a beszélgetésből csak a hangfájl érkezett meg, a szöveges átirat és a jegyzet képe nem. Hangot itt nem lehet leiratozni, ezért a teljes beszélgetést NEM dolgoztuk fel. A javítások a V3.1-leírásban név szerint megadott tényeken alapulnak. Részletek: `UGYFEL_IGENYEK_V3_1.md` (ideiglenes mátrix).
+Az ügyféligények részletes, időkódos összevetése bizalmas, ezért nincs a nyilvános repositoryban (a DAEKON-nál érhető el).
 
-- Kikerült az az állítás, hogy a gyűrűt ugyanaz az ember készíti, akivel a vásárló beszél. Új szöveg: az ötvös felel azért, ami elkészül, és ha kell, szakmai kollégát is bevon.
-- Kikerült a „bármelyiken / mindegyiken változtathatsz” ígéret. A gyűrű oldalán külön blokk: „Amit itt te állíthatsz” (a modell ellenőrzött lehetőségei) és „Amit külön egyeztetünk” (forma, felület, foglalás, kő máshová).
-- A fotón felirat: „Valódi modellfotó”; a jegyzet kimondja, hogy a fotó nem változik a beállításokkal.
-- Az űrlapok alján: „Ez bemutató… Valódi adatot ne adj meg.”
-- Verzió `V3.1`. Tesztek: motor 39/39, asztali 30/30, mobil 26/26, V3 54/54.
-
----
-
-## V3.2 – a teljes átirat és a kézírásos jegyzet alapján (2026. november 20.)
-
-Most először állt rendelkezésre a teljes átirat és a jegyzet fényképe. Részletes összevetés időkódokkal: `UGYFEL_IGENYEK_V3_1.md` (52 sor).
-
-Javítások, mind az átirat alapján:
-- **Titán:** nincs grammár. Az ötvös szerint az ár a munkából adódik (34:39–35:39), ezért titánnál „Egyedi árajánlat szükséges”. A korábbi demó 45 000 Ft körüli titángyűrűt adott volna, ami félrevezető.
-- **Szélesség/profil:** nem választható online (47:37–48:18). 98 modellnél 3 kitalált szélesség volt; most egy, „más szélesség külön egyeztetéssel”.
-- **Platina, palládium:** „csak fehér” (31:05).
-- **Körbekövezett gyűrű:** méretigazítási megjegyzés (41:14–43:17).
-- **Szövegek** az ötvös szavaihoz igazítva: „harmincvalahány éve”, „addig alakítjátok, amíg ki nem találjátok”, „nála lehet kísérletezni”, „kéz és eszterga”.
-- **„Készült már ilyen is”** szöveges lista a beszélgetésben mutatott darabokról, fotó nélkül, jelölve.
-- Verzió `V3.2`, localStorage-kulcs `karikagyuru-demo-v11`.
+- Kikerültek a túlzó állítások („ugyanaz az ember készíti”, „bármelyiken változtathatsz”); a gyűrű oldalán külön „Amit itt te állíthatsz” és „Amit külön egyeztetünk”.
+- Titán: nincs grammár, az ár a munkából adódik → egyedi árajánlat.
+- Szélesség: alapból nem választható online.
+- Platina, palládium: csak fehér. Körbekövezett gyűrű: méretigazítási megjegyzés.
+- A fotón „Valódi modellfotó” felirat; az űrlapokon „Ez bemutató, valódi adatot ne adj meg”.
+- „Készült már ilyen is” szöveges lista, fotó nélkül, jelölve.
 
 ---
 

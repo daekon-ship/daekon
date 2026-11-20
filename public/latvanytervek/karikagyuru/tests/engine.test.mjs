@@ -279,15 +279,15 @@ test('Alapbeállítással minden gyűrű ára pontosan a weboldalon most feltün
 });
 
 /* ---------------- Az átirat alapján (V3.2) ---------------- */
-test('Titán: nincs tömegalapú ár – egyedi ajánlat, érthető indoklással (ügyfél, 34:39–35:39)', () => {
+test('Titán: nincs tömegalapú ár – egyedi ajánlat, érthető indoklással', () => {
   const p = products.find((x) => x.metals.includes('ti') && x.listaAr);
   const r = price(p, (c) => { c.metal = 'ti'; c.color = null; });
   assert.equal(r.final, null); assert.match(r.reason, /munkából adódik/);
 });
-test('A szélesség/profil nem választható online (ügyfél, 47:37–48:18)', () => {
+test('A szélesség/profil nem választható online', () => {
   assert.deepEqual(products.filter((p) => !p.added && p.widths.length !== 1).map((p) => p.code), []);
 });
-test('Kétszínű modell nem készülhet platinából, palládiumból, titánból (ügyfél, 31:05)', () => {
+test('Kétszínű modell nem készülhet platinából, palládiumból, titánból', () => {
   const bi = products.filter((p) => ['ketszinu', 'feherrose', 'sargarose'].includes(p.baseColor));
   assert.ok(bi.length > 0); assert.ok(bi.every((p) => p.metals.every((m) => m === 'au14' || m === 'au18')));
 });
@@ -416,4 +416,56 @@ test('Élesítés/érvényesség: ismeretlen kőméret a modell listájában blo
 test('Az ötvös számítási módszere változatlan (regresszió)', () => {
   assert.equal(exampleRing({ metal: 'au14', weight: 4.8, size: 54 }, M, R1).final, 225600);
   assert.equal(exampleRing({ metal: 'pt', weight: 6.9, size: 60 }, M, R1).final, 421667);
+});
+
+/* ---------------- V4: gyűrűnkénti szakmai lehetőségek ---------------- */
+import { optionValues, optionReason, sizeRange } from '../js/engine.js';
+const withOpts = (fn) => { const p = clone(plain); p.rings.forEach((r) => { r.refWidth = 4; r.thickness = 1.6; }); p.widths = [4]; fn(p); return p; };
+test('Szélesség: alapból egyik gyűrűnél sem választható (az eredeti viselkedés marad)', () => {
+  assert.ok(products.every((p) => optionValues(p, 'width') === null && optionValues(p, 'thickness') === null));
+  assert.equal(optionReason(plain, 'width'), 'ennél a modellnél nem állítható');
+});
+test('Szélesség: engedélyezve, de jóváhagyás nélkül továbbra sem választható', () => {
+  const p = withOpts((x) => (x.opts.width = { enabled: true, min: 3.5, max: 6, step: 0.5, approved: false }));
+  assert.equal(optionValues(p, 'width'), null);
+  assert.equal(optionReason(p, 'width'), 'a határokat az ötvös még nem hagyta jóvá');
+  const c = defaultConfig(p); c.rings[0].width = 5;
+  assert.equal(normalizeConfig(p, c, M, S).cfg.rings[0].width, 4);
+});
+test('Szélesség: jóváhagyott határokkal 0,5 mm-es lépésekben választható, a tömeg és az ár arányosan változik', () => {
+  const p = withOpts((x) => (x.opts.width = { enabled: true, min: 3.5, max: 6, step: 0.5, approved: true }));
+  assert.deepEqual(optionValues(p, 'width'), [3.5, 4, 4.5, 5, 5.5, 6]);
+  const s1 = { ...S, roundTo: 1 };
+  const base = priceProduct(p, null, M, s1), wide = price(p, (c) => (c.rings[0].width = 5), s1);
+  assert.equal(wide.cfg.rings[0].width, 5); assert.equal(wide.cfg.rings[1].width, 4);                 // gyűrűnként külön
+  assert.ok(Math.abs(wide.parts[0].gramsExact / base.parts[0].gramsExact - 5 / 4) < 1e-9);
+  assert.ok(wide.final > base.final);
+  for (const w of [2, 3.7, 9]) { const n = normalizeConfig(p, (() => { const c = defaultConfig(p); c.rings[0].width = w; return c; })(), M, S); assert.equal(n.cfg.rings[0].width, 4, String(w)); assert.ok(n.warnings.length); }
+  const back = decodeCfg(encodeCfg(wide.cfg), p); assert.equal(back.rings[0].width, 5);                // megosztható linkben megmarad
+});
+test('Vastagság: csak jóváhagyott értékekből választható; arányos tömeg', () => {
+  const off = withOpts((x) => (x.opts.thickness = { enabled: true, values: [1.6, 1.8, 2], approved: false }));
+  assert.equal(optionValues(off, 'thickness'), null);
+  const p = withOpts((x) => (x.opts.thickness = { enabled: true, values: [1.6, 1.8, 2], approved: true }));
+  const base = priceProduct(p, null, M, S), thick = price(p, (c) => (c.rings[0].thick = 2));
+  assert.equal(thick.cfg.rings[0].thick, 2);
+  assert.ok(Math.abs(thick.parts[0].gramsExact / base.parts[0].gramsExact - 2 / 1.6) < 1e-9);
+  assert.equal(price(p, (c) => (c.rings[0].thick = 1.2)).cfg.rings[0].thick, 1.6);                      // nem engedélyezett érték → a modell sajátja
+  assert.equal(decodeCfg(encodeCfg(thick.cfg), p).rings[0].thick, 2);
+});
+test('Méret: gyűrűnként beállított tartomány érvényesül', () => {
+  const p = clone(plain); p.rings[0].sizeMin = 50; p.rings[0].sizeMax = 58;
+  assert.deepEqual(sizeRange(p.rings[0]), [50, 58]);
+  const n = normalizeConfig(p, (() => { const c = defaultConfig(p); c.rings[0].size = 62; return c; })(), M, S);
+  assert.equal(n.cfg.rings[0].size, 58); assert.ok(n.warnings.some((w) => /50–58/.test(w)));
+  assert.deepEqual(sizeRange(plain.rings[0]), [44, 64]); assert.deepEqual(sizeRange(plain.rings[1]), [54, 76]);
+});
+test('Élesítés: engedélyezett, de jóvá nem hagyott vagy hibás szélességhatár blokkol', () => {
+  const st = readyState(); const p = st.products.find((x) => x.id === plain.id);
+  p.opts.width = { enabled: true, min: 3.5, max: 6, step: 0.5, approved: false };
+  assert.ok(readiness(st).blockers.some((b) => b.key === p.id && b.kind === 'jovahagyas'));
+  p.opts.width = { enabled: true, min: 6, max: 3, step: 0.5, approved: true };
+  assert.ok(readiness(st).blockers.some((b) => b.key === p.id && b.kind === 'ervenytelen'));
+  p.opts.width = { enabled: true, min: Math.min(...p.rings.map((r) => r.refWidth)), max: 8, step: 0.5, approved: true };
+  assert.equal(readiness(st).ready, true);
 });

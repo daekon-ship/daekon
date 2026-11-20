@@ -101,9 +101,18 @@ export function normalizeConfig(p, cfg, M = null, S = {}) {
   p.rings.forEach((ring, i) => {
     const rc = out.rings[i];
     if (!rc) return;
+    const [smin, smax] = sizeRange(ring);
     if (!(rc.size >= 40 && rc.size <= 80)) rc.size = ring.refSize;
-    // A szélesség online NEM választható (ügyfél, 47:37–48:18): mindig a modell saját szélessége; más szélesség személyes egyeztetés.
-    if (rc.width !== ring.refWidth) { if (rc.width != null) warnings.push('A szélesség online nem választható – más szélességet személyes egyeztetéssel kérhetsz.'); rc.width = ring.refWidth; }
+    else if (rc.size < smin || rc.size > smax) { warnings.push(`Ennél a modellnél ${smin}–${smax} közötti méret választható – ettől eltérőt személyes egyeztetéssel kérhetsz.`); rc.size = Math.min(smax, Math.max(smin, rc.size)); }
+    // SZÉLESSÉG: alapból nem választható. Modellenként engedélyezhető, de csak az ötvös által jóváhagyott határokkal (p.opts.width).
+    const wv = optionValues(p, 'width');
+    if (!wv) { if (rc.width !== ring.refWidth) { if (rc.width != null) warnings.push('A szélesség ennél a modellnél online nem választható – más szélességet személyes egyeztetéssel kérhetsz.'); rc.width = ring.refWidth; } }
+    else if (!wv.includes(rc.width)) { if (rc.width != null && rc.width !== ring.refWidth) warnings.push(`Ennél a modellnél ${fmtMm(wv[0])}–${fmtMm(wv[wv.length - 1])} mm közötti szélesség választható.`); rc.width = wv.includes(ring.refWidth) ? ring.refWidth : wv.reduce((a, b) => (Math.abs(b - ring.refWidth) < Math.abs(a - ring.refWidth) ? b : a)); }
+    // VASTAGSÁG: csak ha a modellnél engedélyezett és jóváhagyott; különben a modell saját vastagsága (ha ismert).
+    const tv = optionValues(p, 'thickness');
+    const t0 = ring.thickness ?? null;
+    if (!tv || t0 == null) rc.thick = t0;
+    else if (!tv.includes(rc.thick)) rc.thick = tv.includes(t0) ? t0 : tv[0];
     const rule = ring.stoneRule;
     if (!rule) { rc.stones = null; return; }
     if (rc.stones === null || rc.stones === false) {
@@ -135,6 +144,37 @@ export function normalizeConfig(p, cfg, M = null, S = {}) {
 }
 
 /** Alapértelmezett konfiguráció: 14K arany (ha a modell engedi), a fotó színe, referenciaméret, alap kövek. */
+const fmtMm = (v) => String(v).replace('.', ',');
+/** Választható gyűrűméretek határa gyűrűnként (admin: sizeMin / sizeMax; alap: női 44–64, férfi 54–76). */
+export function sizeRange(ring) {
+  const d = ring.refSize < 60 ? [44, 64] : [54, 76];
+  const lo = Number.isFinite(ring.sizeMin) ? ring.sizeMin : d[0], hi = Number.isFinite(ring.sizeMax) ? ring.sizeMax : d[1];
+  return lo <= hi ? [lo, hi] : d;
+}
+/**
+ * Modellenkénti, adminból állítható választási lehetőség (szélesség / vastagság).
+ * p.opts.width = { enabled, min, max, step, approved } · p.opts.thickness = { enabled, values: [mm…], approved }
+ * Csak akkor aktív, ha ENGEDÉLYEZETT ÉS az ötvös JÓVÁHAGYTA a határokat – különben marad a rögzített érték.
+ * Visszaad: a választható értékek tömbje, vagy null (nem választható).
+ */
+export function optionValues(p, key) {
+  const o = p.opts && p.opts[key];
+  if (!o || !o.enabled || !o.approved) return null;
+  if (key === 'thickness') { const v = (o.values || []).filter((x) => Number.isFinite(x) && x > 0).sort((a, b) => a - b); return v.length > 1 ? v : null; }
+  const { min, max, step } = o;
+  if (![min, max, step].every(Number.isFinite) || step <= 0 || min <= 0 || min >= max) return null;
+  const out = []; for (let v = min; v <= max + 1e-9 && out.length < 40; v += step) out.push(Math.round(v * 100) / 100);
+  return out.length > 1 ? out : null;
+}
+/** Miért nem választható (a vásárlónak kiírható ok), vagy null, ha választható. */
+export function optionReason(p, key) {
+  const o = p.opts && p.opts[key];
+  if (optionValues(p, key)) return null;
+  if (!o || !o.enabled) return 'ennél a modellnél nem állítható';
+  if (!o.approved) return 'a határokat az ötvös még nem hagyta jóvá';
+  return 'a megadott határok hiányosak';
+}
+
 export function defaultConfig(p) {
   const metals = p.metals || ['au14'];
   return {
@@ -143,6 +183,7 @@ export function defaultConfig(p) {
     rings: p.rings.map((r) => ({
       size: r.refSize,
       width: r.refWidth,
+      thick: r.thickness ?? null,
       stones: r.stoneRule ? { count: stoneCount(r.stoneRule, r.refSize, r.refSize), cat: r.stoneRule.defCat } : null,
       engraving: '',
       sizeUnknown: false,
@@ -168,14 +209,16 @@ export function refWeight(ring, metal, S) {
 export function ringCost(ring, rc, metal, M, S) {
   const m = METALS[metal];
   if (!m) return { error: 'Ismeretlen anyag.' };
-  // TITÁN: az ár a munkából adódik, nem a tömegből (ügyfél, 34:39–35:39) – soha nem számolunk hozzá grammáras vagy anyagalapú árat.
+  // TITÁN: az ár a munkából adódik, nem a tömegből – soha nem számolunk hozzá grammáras vagy anyagalapú árat.
   if (metal === 'ti') return { error: 'A titángyűrű ára a munkából adódik, nem a tömegéből – egyedi árajánlat szükséges.' };
   const w0 = refWeight(ring, metal, S);
   if (!w0) return { error: 'Hiányzó tömegadat.' };
   const sizeF = (rc.size || ring.refSize) / ring.refSize;
   const widthF = (rc.width || ring.refWidth) / (ring.refWidth || 1);
-  const grams = w0 * sizeF * widthF;
-  const gramsRef = w0 * widthF;                                       // referenciaméretben
+  // vastagság: csak akkor hat a tömegre, ha a modellnél választható és ismert a saját vastagsága (arányos becslés, demó szabály)
+  const thickF = rc.thick && ring.thickness ? rc.thick / ring.thickness : 1;
+  const grams = w0 * sizeF * widthF * thickF;
+  const gramsRef = w0 * widthF * thickF;                                       // referenciaméretben
   const pure = grams * m.fin;
   const lossF = 1 + (S.lossPct || 0) / 100;
   const laborF = (S.laborFactor && S.laborFactor[metal]) || 1;
@@ -314,7 +357,7 @@ export function ringSplit(p, cfg, r, S) {
 
 /* ---------------- Megosztható link ---------------- */
 export function encodeCfg(cfg) {
-  const o = { m: cfg.metal, c: cfg.color, r: cfg.rings.map((x) => [x.size, x.width, x.stones ? x.stones.count : -1, x.stones ? x.stones.cat : '', x.engraving || '', x.font || 0, x.sizeUnknown ? 1 : 0]) };
+  const o = { m: cfg.metal, c: cfg.color, r: cfg.rings.map((x) => [x.size, x.width, x.stones ? x.stones.count : -1, x.stones ? x.stones.cat : '', x.engraving || '', x.font || 0, x.sizeUnknown ? 1 : 0, x.thick ?? 0]) };
   return btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 }
 export function decodeCfg(str, p) {
@@ -329,6 +372,7 @@ export function decodeCfg(str, p) {
       r.stones = x[2] === -1 ? null : (p.rings[i].stoneRule ? { count: Number(x[2]), cat: String(x[3]) } : null);
       r.engraving = String(x[4] || '').slice(0, 24); r.font = x[5] ? 1 : 0;
       if (x[6]) { r.sizeUnknown = true; r.size = p.rings[i].refSize; }
+      if (Number(x[7]) > 0) r.thick = Number(x[7]);
     });
     return normalizeConfig(p, cfg).cfg;
   } catch { return null; }
@@ -511,6 +555,16 @@ export function readiness(state) {
         if (rule.mode !== 'fixed' && rule.mode !== 'quote' && (!num(rule.min) || !num(rule.max) || rule.min > rule.max || (rule.mode === 'free' && (rule.def < rule.min || rule.def > rule.max)))) errs.push(`${r.label}: hibás kőszám-határok`);
       }
     });
+    const ow = p.opts && p.opts.width, ot = p.opts && p.opts.thickness;
+    if (ow && ow.enabled) {
+      if (![ow.min, ow.max, ow.step].every(num) || ow.step <= 0 || ow.min <= 0 || ow.min >= ow.max) errs.push('szélességválasztás: hibás határok');
+      else if (!(p.rings || []).every((r) => r.refWidth >= ow.min - 1e-9 && r.refWidth <= ow.max + 1e-9)) errs.push('szélességválasztás: a modell saját szélessége kívül esik a határokon');
+      if (!ow.approved) blockers.push({ group: 'gyuruk', key: p.id, label: `${p.code} – szélességhatárok`, kind: 'jovahagyas', src: 'demo' });
+    }
+    if (ot && ot.enabled) {
+      if (!(ot.values || []).length || !ot.values.every((v) => num(v) && v > 0) || !(p.rings || []).every((r) => num(r.thickness) && r.thickness > 0)) errs.push('vastagságválasztás: hiányzó vagy hibás értékek');
+      if (!ot.approved) blockers.push({ group: 'gyuruk', key: p.id, label: `${p.code} – vastagságértékek`, kind: 'jovahagyas', src: 'demo' });
+    }
     if (p.override && (!num(p.override.value) || (p.override.type === 'fixed' && p.override.value <= 0))) errs.push('hibás egyedi ár');
     if (errs.length) bad('gyuruk', p.id, `${p.code} – ${errs.join('; ')}`);
     if (!p.approved) blockers.push({ group: 'gyuruk', key: p.id, label: `${p.code} – tömeg- és kőadatok`, kind: 'jovahagyas', src: 'demo' });

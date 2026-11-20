@@ -200,7 +200,7 @@ function goldsmithExamples(box) {
           ${line('au14', 54)}${line('pt', 54)}${line('pt', 48)}${line('pt', 60)}
         </tbody></table></div>
         <p class="hint">Számított = nyers eredmény. Megjelenő = kerekítve (${roundLabel(Sx.roundTo)}) ${srcBadge((Sx.src || {}).roundTo || 'demo')} – a kerekítést az ügyféllel egyeztetjük.</p>
-        <p class="note-warn">A kézzel írt jegyzetben a 60-as platina gyűrűnél 442 000 Ft szerepel. A lineáris számítás ${ft(ex('pt', 60).final)}-ot ad, a különbség ${ft(442000 - (ex('pt', 60).final || 0))}. A beszélgetésben szóban „négyszázhuszon…” hangzott el (07:11), ami a lineáris számítással egyezik – a 442 valószínűleg elírás (422). Nem állítottuk be – egyeztetendő, hogy nagyobb méretnél más a tömegnövekedés, vagy más szélességgel számolt.</p>
+        <p class="note-warn">A kézzel írt jegyzetben a 60-as platina gyűrűnél 442 000 Ft szerepel. A lineáris számítás ${ft(ex('pt', 60).final)}-ot ad, a különbség ${ft(442000 - (ex('pt', 60).final || 0))}. A lineáris számítás szerint a 442 valószínűleg elírás (422). Nem állítottuk be – egyeztetendő, hogy nagyobb méretnél más a tömegnövekedés, vagy más szélességgel számolt.</p>
       </section>
       <section class="ebox xbox"><h2>Próbaszámítás <small>tetszőleges tömeggel</small></h2>
         <div class="xform">

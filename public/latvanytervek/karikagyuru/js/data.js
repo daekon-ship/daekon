@@ -65,8 +65,7 @@ export const DEMO_MATERIALS = {
   titanium: 80,
   // KÉSZTERMÉK ELADÁSI GRAMMÁRA (bruttó, Ft / g) – ebben benne van a fém, a munka és az árrés.
   // Az ügyfél példája: 14K 47 000, platina 55 000. A többi demó (az ügyféltől még nem kaptuk meg).
-  // TITÁN: nincs grammár. Az ügyfél szerint (34:39–35:39, 50:56) az anyagnak nincs értéke, az ár a munkából adódik
-  // (a mutatott titángyűrűnél: önköltség kb. 160 000 Ft, „minimum 200 ezerért adom”) → egyedi ajánlat, amíg nincs jóváhagyott szabály.
+  // TITÁN: nincs grammár – az ár a munkából adódik, nem a tömegből → egyedi ajánlat, amíg nincs jóváhagyott szabály.
   sellPerGram: { au14: 47000, au18: 56000, pt: 55000, pd: 40000, ti: null },
   // TERMÉSZETES GYÉMÁNT, Ft / db (ügyfél jegyzete). price: null = nincs megbízható ár → egyedi ajánlat.
   // mm = a kő átmérője – ebből ellenőrizzük, hogy fizikailag elfér-e a gyűrűn.
@@ -76,7 +75,7 @@ export const DEMO_MATERIALS = {
     { id: 'd015', ct: 0.015, mm: 1.5,  name: 'Brill 0,015 ct', quality: 'Ø 1,5 mm',     price: 9000,  src: 'pelda' },
     { id: 'd02',  ct: 0.02,  mm: 1.7,  name: 'Brill 0,02 ct',  quality: 'Ø 1,7 mm',     price: 12000, src: 'pelda' },
     { id: 'd03',  ct: 0.03,  mm: 2.0,  name: 'Brill 0,03 ct',  quality: 'Ø 2,0 mm',     price: 18000, src: 'pelda' },
-    { id: 'd04',  ct: 0.04,  mm: 2.3,  name: 'Brill 0,04 ct',  quality: 'Ø 2,2–2,3 mm', price: null,  src: 'bizonytalan', note: 'A jegyzetben 24 000 Ft; szóban 20 000 Ft hangzott el engedménnyel, azzal, hogy a honlapon az engedmény nem jelenik meg (24:50–25:07). Megerősítendő.' },
+    { id: 'd04',  ct: 0.04,  mm: 2.3,  name: 'Brill 0,04 ct',  quality: 'Ø 2,2–2,3 mm', price: null,  src: 'bizonytalan', note: 'Az ár megerősítendő.' },
     { id: 'd05',  ct: 0.05,  mm: 2.4,  name: 'Brill 0,05 ct',  quality: 'Ø 2,3–2,4 mm', price: null,  src: 'bizonytalan', note: 'Ár megerősítendő.' },
     { id: 'd10',  ct: 0.10,  mm: 3.0,  name: 'Brill 0,10 ct',  quality: 'Ø 3,0 mm',     price: null,  src: 'demo', note: 'Nincs adat.' },
   ],
@@ -358,13 +357,18 @@ export function buildDemoProducts() {
       style: r.style,
       visible: true,               // megjelenítési állapot (admin: Gyűrűk → Megjelenés)
       sites: ['karikagyuru', 'budapest'],
-      // A szélesség/profil NEM választható online (ügyfél, 47:37–48:18: „ebbe nem megyünk bele, ez nálunk nem lesz”) – külön egyeztetés.
+      // A szélesség alapból NEM választható online; modellenként, jóváhagyott határokkal engedélyezhető (p.opts.width).
       widths: [r.width],
       stoneOptional: !!r.st && r.st[1] <= 5,
       rings: pair
         ? [ringFrom('Női gyűrű', 54, r, true, 0.43), ringFrom('Férfi gyűrű', 64, r, false, 0.57)]
         : [ringFrom('Gyűrű', 54, r, true, 1)],
       approved: false,             // az ötvös jóváhagyta-e a tömeg- és kőadatokat (most: becslés)
+      // Modellenkénti szakmai lehetőségek (admin: Gyűrű → „Mit állíthat a vásárló?”). Alapból minden kikapcsolva:
+      // amíg az ötvös nem ad jóváhagyott határt, a szélesség és a vastagság nem választható.
+      opts: { width: { enabled: false, min: null, max: null, step: 0.5, approved: false }, thickness: { enabled: false, values: [], approved: false } },
+      consult: [],                 // külön egyeztetést igénylő változtatások ennél a modellnél (admin szabad szöveg, soronként)
+      models3d: [],                // későbbi 3D-modellek: [{ id, label, url (.glb), metals: [], stones: 'any' | { count, cat }, note }] – lásd docs/RHINO_3D.md
       override: null,              // { type: 'fixed' | 'pct', value }
       minPrice: 0,
     };
