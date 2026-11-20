@@ -109,7 +109,7 @@ export function home(el) {
   <section class="hero hero--v3">
     <div class="wrap hero__grid">
       <div class="hero__text">
-        <p class="eyebrow" data-hero><span>Karikagyűrűk Budapestről · ötvös készíti, veled együtt</span></p>
+        <p class="eyebrow" data-hero><span>Karikagyűrűk Budapestről · ötvössel együtt tervezve</span></p>
         <h1 data-hero>Nem kell beérned azzal, ami a vitrinben van.</h1>
         <p class="lead" data-hero>Válassz egy modellt, alakítsd a saját ízlésedre, vagy tervezzünk együtt valami teljesen újat. A gyűrűdnek nem kell hasonlítania senki máséra.</p>
         <div class="hero__cta" data-hero>
@@ -125,7 +125,7 @@ export function home(el) {
         </div>
         <figcaption class="hero__cap">
           <a href="#/gyuru/${hero.id}"><span>${esc(hero.code)}</span><b>${esc(hero.name)}</b>
-          <em>Így: <span class="price" data-hero-price data-value="${heroPrice}">${ft(heroPrice)}</span> ${demoMark()} – de átalakíthatod</em></a>
+          <em>Így: <span class="price" data-hero-price data-value="${heroPrice}">${ft(heroPrice)}</span> ${demoMark()} – innen alakítható</em></a>
         </figcaption>
       </figure>
     </div>
@@ -137,8 +137,8 @@ export function home(el) {
         <a class="path path--a" href="#/kollekcio" data-reveal data-path="a">
           <span class="path__tag">1. út</span>
           <h2>Alakítsd a sajátodra</h2>
-          <p>Kiválasztasz egy gyűrűt, aztán a magadévá teszed.</p>
-          <ul><li>anyag és szín</li><li>női és férfi méret külön</li><li>természetes gyémánt: mennyi és mekkora</li><li>gravírozás</li></ul>
+          <p>Kiválasztasz egy gyűrűt, és beállítod rajta, amit az a modell enged.</p>
+          <ul><li>anyag és szín</li><li>női és férfi méret külön</li><li>természetes gyémánt: mennyi és mekkora</li><li>gravírozás</li><li>ami ezen túl van, azt külön megbeszéljük</li></ul>
           <span class="path__go">Megnézem a gyűrűket <i aria-hidden="true">→</i></span>
         </a>
         <a class="path path--b" href="#/sajat" data-reveal=".08" data-path="b">
@@ -149,14 +149,14 @@ export function home(el) {
           <span class="path__go">Elmondom az ötletem <i aria-hidden="true">→</i></span>
         </a>
       </div>
-      <p class="paths__note" data-reveal>Bármelyiket választod, a végén ugyanazzal az ötvössel beszélsz, aki a gyűrűt elkészíti.</p>
+      <p class="paths__note" data-reveal>Bármelyiket választod, a végén személyesen ülsz le egy tapasztalt ötvössel. Ő mondja meg, mi készíthető el, és hogyan.</p>
     </div>
   </section>
 
   <section class="sec sec--paper">
     <div class="wrap">
       <header class="sec__head sec__head--row" data-reveal>
-        <div><h2>Innen el lehet indulni</h2><p class="sec__lead">Kész modellek – mindegyiken változtathatsz.</p></div>
+        <div><h2>Innen el lehet indulni</h2><p class="sec__lead">Kész modellek. Hogy melyiken mit lehet változtatni, az a gyűrű oldalán látszik.</p></div>
         <a class="btn btn--line" href="#/kollekcio">Mind a ${shown.length} gyűrű</a>
       </header>
       <div class="grid grid--dense grid--featured" data-reveal>${FEATURED.map((id) => store.product(id)).filter((p) => p && listed(p)).map((p) => card(p)).join('')}</div>
@@ -217,7 +217,7 @@ export function home(el) {
     <div class="wrap otvos__grid">
       <div class="otvos__lead" data-reveal>
         <h2>Aki a gyűrűdet készíti</h2>
-        <p>Nem eladóval beszélsz, hanem az ötvössel. Több mint 30 éve csinálja, és ugyanaz az ember ül le veled, aki utána a gyűrűn dolgozik.</p>
+        <p>Nem eladóval beszélsz, hanem ötvössel, aki több mint 30 éve csinálja. Vele találod ki a gyűrűt, és ő felel azért, ami elkészül – ha egy munkához az kell, szakmai kollégát is bevon.</p>
         <p>Szívesen kipróbál szokatlan ötleteket is. Ha valami nem működne – túl vékony lenne, nem tartaná a követ, hamar elkopna –, azt megmondja, és mutat helyette olyat, ami szép is marad.</p>
         <a class="btn btn--gold" href="#/kapcsolat">Időpontot kérek</a>
         ${S().settings.showDemoMarks ? '<p class="fine"><span class="demo-chip">portré és műhelyfotó: az ügyféltől várjuk</span></p>' : ''}
@@ -332,7 +332,7 @@ export function catalog(el, query) {
     <div class="wrap">
       <p class="crumbs"><a href="#/">Kezdőlap</a> / Gyűrűk</p>
       <h1>Gyűrűk</h1>
-      <p class="sec__lead">Mindegyik rendelésre készül, a te méretedre – és bármelyiken változtathatsz. Az ár az alapbeállításra szól, a gyűrű oldalán számolhatod tovább.</p>
+      <p class="sec__lead">Mindegyik rendelésre készül, a te méretedre. A gyűrű oldalán látod, mit állíthatsz rajta magad – ami azon túl van, azt külön megbeszéljük. Az ár az alapbeállításra szól.</p>
       <p class="page-head__alt">Nem találod, amit keresel? <a href="#/sajat">Mondd el a saját ötleted</a></p>
     </div>
   </section>
@@ -513,6 +513,7 @@ export function product(el, id, query) {
           <small data-pnote>Bruttó, ÁFA-val. Rendelésre készül.</small>
         </div>
         <p class="cfg__warn" data-warn role="status" hidden></p>
+        <div class="scope scope--ok"><h2>Amit itt te állíthatsz</h2><p>Ennél a modellnél ezek a lehetőségek adottak. Az ár mindegyiknél azonnal változik.</p></div>
         <ol class="cfg" data-steps></ol>
         <div class="summary" data-summary></div>
         <div class="pdp__ctas">
@@ -525,8 +526,9 @@ export function product(el, id, query) {
           <a class="pdp__phone" href="${BUSINESS.phoneHref}">vagy hívj: <b>${BUSINESS.phone}</b></a>
         </div>
         <div class="other">
+          <p class="other__tag">Amit külön egyeztetünk</p>
           <h2>Másképp képzelted el?</h2>
-          <p>Más forma, más felület, kő oda is, ahová itt nem lehet? Ebből a gyűrűből kiindulva megbeszéljük – a mostani beállításaidat visszük tovább.</p>
+          <p>Más forma vagy felület, másfajta foglalás, kő oda is, ahol itt nem választható? Ezekre itt nem tudunk árat és igent mondani – az ötvös nézi meg, megvalósítható-e. A mostani beállításaidat visszük tovább.</p>
           <a class="btn btn--line" href="#" data-custom-link>Egyedi változtatást kérek</a>
         </div>
         <p class="notice">Tájékoztató ár. A véglegeset személyesen mondjuk meg, a pontos méret és az aznapi nemesfémár alapján.</p>
@@ -657,12 +659,12 @@ export function product(el, id, query) {
     $('[data-minisketch]', el).innerHTML = sk;
     if (view !== shownView || view === 'abra') {
       stage.className = `pdp__stage pdp__stage--${view}`;
-      stage.innerHTML = view === 'abra' ? `${sk}<p class="sketch__tag">Szemléltető ábra – nem fotó</p>` : productMedia(p, { eager: true, large: true });
+      stage.innerHTML = view === 'abra' ? `${sk}<p class="sketch__tag">Szemléltető ábra – nem fotó</p>` : `${productMedia(p, { eager: true, large: true })}<p class="sketch__tag sketch__tag--foto">Valódi modellfotó</p>`;
       shownView = view;
     }
     $('[data-stagenote]', el).innerHTML = view === 'abra'
       ? 'Az ábra a beállításaidat követi: anyag, szín, arányok, a kövek száma és mérete. Nem a kész gyűrű pontos képe – a kövek helyét és a felületet az ötvös alakítja ki.'
-      : 'A karikagyuru.com saját fotója az eredeti modellről. A beállításaidat „A te változatod” ábra mutatja.';
+      : 'Valódi fotó az eredeti modellről (karikagyuru.com) – nem változik a beállításaiddal. Azokat „A te változatod” ábra mutatja.';
     const cn = $('[data-colornote]', el);
     const showNote = isGold(cfg.metal) ? cfg.color !== p.baseColor : true;
     cn.hidden = !showNote;
@@ -860,7 +862,7 @@ export function inquiry(p, cfg, type = 'erdeklodes', onRequest = false) {
       <label class="field"><span>Üzenet</span><textarea class="input" name="uzenet" rows="3" placeholder="Pl. az esküvő időpontja, kérdés a méretről vagy egyedi tervről"></textarea></label>
       <p class="form__err" data-err hidden>Add meg a neved és a telefonszámod.</p>
       <button class="btn btn--dark btn--full" type="submit">Elküldöm</button>
-      <p class="fine">Bemutató: az üzenet nem kerül elküldésre, csak a bemutató adminfelületének „Érdeklődések” menüjében jelenik meg.</p>
+      <p class="fine"><b>Ez bemutató.</b> Az üzenet nem megy el senkinek, csak ennek a böngészőnek a bemutató-adminjában jelenik meg. Valódi adatot ne adj meg.</p>
     </form>`, {
     label: 'Érdeklődés',
     onMount(box, close) {
@@ -978,7 +980,7 @@ export function custom(el, query) {
       </ol>
       <p class="form__err" data-cerr hidden></p>
       <button class="btn btn--dark btn--full" type="submit">Elküldöm az ötletem</button>
-      <p class="fine">Bemutató: az üzenet nem kerül elküldésre, csak a bemutató adminfelületének „Érdeklődések” menüjében jelenik meg.</p>
+      <p class="fine"><b>Ez bemutató.</b> Az üzenet nem megy el senkinek, csak ennek a böngészőnek a bemutató-adminjában jelenik meg. Valódi adatot ne adj meg.</p>
     </form>
     <aside class="custom__side">
       <div class="csum" data-csummary aria-live="polite"></div>

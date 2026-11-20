@@ -383,3 +383,15 @@ Minden oldalt végignéztünk telefonon (390 px) és asztali gépen (1440 px). S
 - `python3 tests/e2e.py` → 30/30 · `python3 tests/mobile.py` → 26/26
 - `python3 tests/v3.py` → 50/50 (1280 és 390 px): főcím és két út; az ötvös a nyitóképernyőn; „kevesebb” árak; fotó és ábra külön; az ábra követi a kőszámot, színt, anyagot, méretet; a két gyűrű külön szerkeszthető; egyedi kérés viszi a modell adatait; kép helyi előnézettel; nincs automatikus ár; az űrlap megőrzi az adatokat; visszaigazolás; admin megkapja; új gyűrű felvitele → katalógus → konfigurátor; nincs oldalra görgetés és JS-hiba.
 - Verzió: `V3.0` (import map `?v=3.0`).
+
+---
+
+## V3.1 – ügyfélhűségi javítások (2026. november 20.)
+
+**Forráskorlát:** a beszélgetésből csak a hangfájl érkezett meg, a szöveges átirat és a jegyzet képe nem. Hangot itt nem lehet leiratozni, ezért a teljes beszélgetést NEM dolgoztuk fel. A javítások a V3.1-leírásban név szerint megadott tényeken alapulnak. Részletek: `UGYFEL_IGENYEK_V3_1.md` (ideiglenes mátrix).
+
+- Kikerült az az állítás, hogy a gyűrűt ugyanaz az ember készíti, akivel a vásárló beszél. Új szöveg: az ötvös felel azért, ami elkészül, és ha kell, szakmai kollégát is bevon.
+- Kikerült a „bármelyiken / mindegyiken változtathatsz” ígéret. A gyűrű oldalán külön blokk: „Amit itt te állíthatsz” (a modell ellenőrzött lehetőségei) és „Amit külön egyeztetünk” (forma, felület, foglalás, kő máshová).
+- A fotón felirat: „Valódi modellfotó”; a jegyzet kimondja, hogy a fotó nem változik a beállításokkal.
+- Az űrlapok alján: „Ez bemutató… Valódi adatot ne adj meg.”
+- Verzió `V3.1`. Tesztek: motor 39/39, asztali 30/30, mobil 26/26, V3 54/54.

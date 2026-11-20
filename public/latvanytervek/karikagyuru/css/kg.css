@@ -1552,3 +1552,9 @@ body { font-size: 1.04rem; line-height: 1.6; }
 .pdp__thumbs { flex-wrap: wrap; gap: 10px 14px; }
 .pdp__thumbs button { width: 92px; justify-items: start; line-height: 1.25; cursor: pointer; }
 .pdp__thumb--abra .sketch { transform: scale(1.5); }
+
+/* V3.1 */
+.pdp__stage--foto { position: relative; }
+.sketch__tag--foto { border-style: solid; }
+.scope { margin: 0 0 10px; } .scope h2 { margin: 0 0 2px; font-size: 1.1rem; } .scope p { margin: 0; color: var(--mute); font-size: .93rem; }
+.other__tag { margin: 0; font: 700 .8rem/1.4 var(--sans); color: var(--gold-d); }

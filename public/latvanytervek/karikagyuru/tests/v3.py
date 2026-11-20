@@ -32,10 +32,13 @@ async def run(b, w, h, mob):
     less = await pg.locator('.lesscard strong').all_inner_texts()
     nums = [int(re.sub(r'\D', '', x)) for x in less]
     check(f'{tag} „A kevesebb is…”: három valós változat, növekvő árral', len(nums) == 3 and nums[0] < nums[1] < nums[2], str(nums))
+    home = await pg.inner_text('#view')
+    check(f'{tag} nincs túlzó állítás (ugyanaz az ember készíti / bármelyiken változtathatsz)', not any(t in home for t in ['ugyanaz az ember', 'ugyanazzal az ötvössel', 'mindegyiken változtathatsz', 'bármelyiken']) and 'kollégát is bevon' in home)
     await over('kezdőoldal')
 
     # --- Termékoldal: fotó és szemléltető ábra külön ---
     await pg.goto(B + f'#/gyuru/{PAIR}'); await pg.wait_for_timeout(1100)
+    check(f'{tag} a fotó valódi modellfotóként jelölt; állítható és egyeztetendő rész külön', 'Valódi modellfotó' in await pg.inner_text('.pdp__stage--foto') and 'Amit itt te állíthatsz' in await pg.inner_text('.scope--ok') and 'Amit külön egyeztetünk' in await pg.inner_text('.other'))
     check(f'{tag} alapnézet: a valódi fotó', await pg.locator('.pdp__stage--foto img').count() == 1 and await pg.locator('.pdp__stage .sketch').count() == 0)
     await pg.locator('[data-view="abra"]').tap() if mob else await pg.click('[data-view="abra"]'); await pg.wait_for_timeout(300)
     stones = lambda: pg.locator('.pdp__stage--abra .sketch g[transform]').count()
