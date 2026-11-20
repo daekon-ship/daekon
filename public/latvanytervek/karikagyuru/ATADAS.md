@@ -422,3 +422,15 @@ Dizájn és kezdőoldal változatlan. Az ötvös számítási módszere változa
 3. **Élesítési ellenőrzés** (`engine.readiness`, admin → Jóváhagyásra vár): amíg bármely árat befolyásoló adat nem „jóváhagyott”, az élesítés gombja tiltott. Ide tartozik a grammár, a gyémántárak, a kerekítés, az ÁFA-beállítás, a gravír- és foglalási díj, a számítási mód, a tömegarányok és a gyűrűk tömeg- és kőadatai. Az ügyfél példája sem számít jóváhagyottnak. Az ÁFA-beállítás jelölése „jóváhagyott”-ról „demó”-ra változott. A bemutató továbbra is számol a demóadatokkal, jelölve.
 
 Tesztek: motor 46/46, asztali 30/30, mobil 26/26, V3 66/66. Verzió `V3.3`, localStorage-kulcs `karikagyuru-demo-v12`.
+
+---
+
+## V3.4 – az élesítési ellenőrzés két logikai javítása (2026. november 20.)
+
+Megjelenés, vásárlói szövegek és a kalkulációs módszer változatlan.
+
+1. **Titán:** a `readiness()` nem követel jóváhagyott titán-grammárat. Azt ellenőrzi, hogy a titánhoz NINCS grammár megadva; ha valaki mégis megad, az blokkol (jóváhagyott jelöléssel is). A motor ezen felül titánnál soha nem számol tömeg- vagy anyagalapú árat, egyik árképzési módban sem – mindig egyedi ajánlat.
+2. **Tényleges érvényesség:** a `readiness()` a jelölésen túl az értékeket is vizsgálja. Hiányzó vagy hibás grammár, kőár, kőátmérő, kerekítés, ÁFA, gravír- és foglalási díj, tömegarány, számítási mód, illetve gyűrűnként hiányzó tömeg, hibás méret, szélesség vagy kőszabály jóváhagyott jelöléssel is blokkol. A blokkolók típusa: `jovahagyas` vagy `ervenytelen`. Rejtett gyűrű nem blokkol; ár nélküli modellnél a tömeg nem kötelező.
+3. **Admin:** a dobozban külön sor: „Ez csak előzetes ellenőrzés a látványtervben. Valódi élesítéshez szerveroldali ellenőrzés és hitelesített admin szükséges.” A hiányzó vagy hibás adatok külön listában látszanak.
+
+Tesztek: motor 67/67 (21 új az élesítési ellenőrzésre), asztali 30/30, mobil 26/26, V3 70/70. Verzió `V3.4`.

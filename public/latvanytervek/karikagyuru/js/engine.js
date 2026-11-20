@@ -168,6 +168,8 @@ export function refWeight(ring, metal, S) {
 export function ringCost(ring, rc, metal, M, S) {
   const m = METALS[metal];
   if (!m) return { error: 'Ismeretlen anyag.' };
+  // TITÁN: az ár a munkából adódik, nem a tömegből (ügyfél, 34:39–35:39) – soha nem számolunk hozzá grammáras vagy anyagalapú árat.
+  if (metal === 'ti') return { error: 'A titángyűrű ára a munkából adódik, nem a tömegéből – egyedi árajánlat szükséges.' };
   const w0 = refWeight(ring, metal, S);
   if (!w0) return { error: 'Hiányzó tömegadat.' };
   const sizeF = (rc.size || ring.refSize) / ring.refSize;
@@ -431,24 +433,90 @@ export function sizeSfx(n) {
 }
 
 /**
- * ÉLESÍTÉSI ELLENŐRZÉS. A bemutató demó- és példaadatokkal is számol, de élesíteni csak akkor lehet,
- * ha minden, az árat befolyásoló adat forrása „jovahagyott”. Visszaad: { ready, blockers: [{ group, key, label, src }], byGroup }.
+ * ELŐZETES ÉLESÍTÉSI ELLENŐRZÉS (a látványtervben csak tájékoztató – valódi élesítéshez szerveroldali
+ * ellenőrzés és hitelesített admin kell). Két dolgot néz, egymástól függetlenül:
+ *   1) jóváhagyás: minden árat befolyásoló adat forrása „jovahagyott”-e (kind: 'jovahagyas');
+ *   2) érvényesség: a szükséges árak, tömegek, kőadatok és paraméterek valódi, értelmes számok-e (kind: 'ervenytelen').
+ * Hiányzó vagy hibás érték jóváhagyott jelöléssel is blokkol.
+ * TITÁN: nincs grammára (az ötvös munkadíj alapján ad egyedi ajánlatot) – jóváhagyott grammárat nem követelünk,
+ * hanem azt ellenőrizzük, hogy NINCS megadva hozzá grammár.
+ * Visszaad: { ready, blockers: [{ group, key, label, kind, src? }], byGroup, invalid, unapproved }.
  */
 export function readiness(state) {
-  const M = state.materials, S = state.settings, ms = M.src || {}, ss = S.src || {};
-  const vis = state.products.filter((p) => p.visible !== false);
+  const M = state.materials || {}, S = state.settings || {}, ms = M.src || {}, ss = S.src || {};
+  const vis = (state.products || []).filter((p) => p.visible !== false);
   const blockers = [];
-  const need = (group, key, label, src) => { if (src !== 'jovahagyott') blockers.push({ group, key, label, src: src || 'demo' }); };
+  const num = (v) => typeof v === 'number' && Number.isFinite(v);
+  const bad = (group, key, label) => blockers.push({ group, key, label, kind: 'ervenytelen' });
+  const need = (group, key, label, src) => { if (src !== 'jovahagyott') blockers.push({ group, key, label, kind: 'jovahagyas', src: src || 'demo' }); };
   const gm = (S.pricingMode || 'gramm') === 'gramm';
-  const metals = METAL_ORDER.filter((m) => vis.some((p) => p.metals.includes(m)));
-  if (gm) metals.forEach((m) => need('arak', `sellPerGram.${m}`, `${METALS[m].short} – késztermék-grammár`, ms[`sellPerGram.${m}`]));
-  else [...new Set(metals.map((m) => METALS[m].ref))].forEach((k) => need('arak', k, `Alapanyagár – ${k}`, ms[k]));
-  const cats = new Set(vis.flatMap((p) => p.rings.flatMap((r) => (r.stoneRule ? r.stoneRule.cats : []))));
-  (M.diamonds || []).filter((d) => cats.has(d.id)).forEach((d) => need('gyemant', d.id, `${d.name} – darabár`, d.src));
-  const SL = { pricingMode: 'Árképzési mód', sizeMethod: 'Méret hatása az árra', density: 'Tömegarányok anyagonként', roundTo: 'Kerekítés', vatPct: 'ÁFA-beállítás',
-    engravingPrice: 'Gravírozás díja', settingPerStone: 'Kőfoglalás díja', stonesGross: 'A kő darabára végső ár', boxCost: 'Díszdoboz', certCost: 'Kőtanúsítvány' };
-  Object.keys(SL).forEach((k) => need('szabalyok', k, SL[k], ss[k]));
-  vis.filter((p) => !p.approved).forEach((p) => blockers.push({ group: 'gyuruk', key: p.id, label: `${p.code} – tömeg- és kőadatok`, src: 'demo' }));
+  const metals = METAL_ORDER.filter((m) => vis.some((p) => (p.metals || []).includes(m)));
+
+  // --- Árak ---
+  if (!['gramm', 'koltseg'].includes(S.pricingMode)) bad('szabalyok', 'pricingMode', 'Árképzési mód: ismeretlen érték');
+  if (!['tomeg', 'ar'].includes(S.sizeMethod)) bad('szabalyok', 'sizeMethod', 'Méret hatása: ismeretlen érték');
+  for (const m of metals) {
+    if (m === 'ti') {                                         // titán: egyedi ajánlat, grammár nélkül
+      const g = M.sellPerGram && M.sellPerGram.ti;
+      if (g !== null && g !== undefined) bad('arak', 'sellPerGram.ti', 'Titán: grammár van megadva, pedig a titán ára egyedi ajánlat (munkadíj alapján)');
+      continue;
+    }
+    if (gm) {
+      const g = M.sellPerGram && M.sellPerGram[m];
+      if (!num(g) || g <= 0) bad('arak', `sellPerGram.${m}`, `${METALS[m].short} – késztermék-grammár hiányzik vagy hibás`);
+      need('arak', `sellPerGram.${m}`, `${METALS[m].short} – késztermék-grammár`, ms[`sellPerGram.${m}`]);
+    } else {
+      const k = METALS[m].ref;
+      if (blockers.some((b) => b.key === k)) continue;
+      if (!num(M[k]) || M[k] <= 0) bad('arak', k, `Alapanyagár (${k}) hiányzik vagy hibás`);
+      need('arak', k, `Alapanyagár – ${k}`, ms[k]);
+    }
+    const dn = S.density && S.density[m];
+    if (!num(dn) || dn <= 0) bad('szabalyok', `density.${m}`, `${METALS[m].short} – tömegarány hiányzik vagy hibás`);
+  }
+
+  // --- Gyémántok (csak amit látható modell felkínál) ---
+  const cats = new Set(vis.flatMap((p) => (p.rings || []).flatMap((r) => (r.stoneRule ? r.stoneRule.cats || [] : []))));
+  for (const id of cats) {
+    const d = (M.diamonds || []).find((x) => x.id === id);
+    if (!d) { bad('gyemant', id, `Ismeretlen kőméret: ${id}`); continue; }
+    if (!num(d.price) || d.price <= 0) bad('gyemant', id, `${d.name} – nincs érvényes darabár (vagy ne legyen választható)`);
+    if (!num(d.mm) || d.mm <= 0 || !num(d.ct) || d.ct <= 0) bad('gyemant', id, `${d.name} – hiányzó átmérő vagy karát`);
+    need('gyemant', id, `${d.name} – darabár`, d.src);
+  }
+
+  // --- Számítási paraméterek ---
+  const P = [['roundTo', 'Kerekítés', (v) => num(v) && v >= 1], ['vatPct', 'ÁFA-beállítás', (v) => num(v) && v >= 0 && v <= 100],
+    ['engravingPrice', 'Gravírozás díja', (v) => num(v) && v >= 0], ['settingPerStone', 'Kőfoglalás díja', (v) => num(v) && v >= 0],
+    ['boxCost', 'Díszdoboz', (v) => num(v) && v >= 0], ['certCost', 'Kőtanúsítvány', (v) => num(v) && v >= 0],
+    ['stonesGross', 'A kő darabára végső ár', (v) => typeof v === 'boolean'], ['stoneEdgeMm', 'Kő és gyűrűszél közti perem', (v) => num(v) && v >= 0], ['stoneGapMm', 'Kövek közti hézag', (v) => num(v) && v >= 0]];
+  for (const [k, label, okf] of P) { if (!okf(S[k])) bad('szabalyok', k, `${label} – hiányzó vagy hibás érték`); need('szabalyok', k, label, ss[k]); }
+  need('szabalyok', 'pricingMode', 'Árképzési mód', ss.pricingMode);
+  need('szabalyok', 'sizeMethod', 'Méret hatása az árra', ss.sizeMethod);
+  need('szabalyok', 'density', 'Tömegarányok anyagonként', ss.density);
+
+  // --- Gyűrűk: tömeg, méret, kőszabály ---
+  for (const p of vis) {
+    const errs = [];
+    if (!(p.metals || []).length) errs.push('nincs választható anyag');
+    (p.rings || []).forEach((r) => {
+      if (!num(r.refSize) || r.refSize < 40 || r.refSize > 80) errs.push(`${r.label}: hibás referenciaméret`);
+      if (!num(r.refWidth) || r.refWidth <= 0) errs.push(`${r.label}: hibás szélesség`);
+      if (!p.priceOnRequest && p.override?.type !== 'fixed' && (!num(r.weight) || r.weight <= 0)) errs.push(`${r.label}: hiányzó tömeg`);
+      const rule = r.stoneRule;
+      if (rule) {
+        if (!['free', 'fixed', 'perSize', 'quote'].includes(rule.mode)) errs.push(`${r.label}: ismeretlen kőszabály`);
+        if (!(rule.cats || []).length || !rule.cats.includes(rule.defCat)) errs.push(`${r.label}: hibás kőméret-lista`);
+        if (!num(rule.def) || rule.def < (rule.mode === 'free' ? 0 : 1)) errs.push(`${r.label}: hibás kőszám`);
+        if (rule.mode !== 'fixed' && rule.mode !== 'quote' && (!num(rule.min) || !num(rule.max) || rule.min > rule.max || (rule.mode === 'free' && (rule.def < rule.min || rule.def > rule.max)))) errs.push(`${r.label}: hibás kőszám-határok`);
+      }
+    });
+    if (p.override && (!num(p.override.value) || (p.override.type === 'fixed' && p.override.value <= 0))) errs.push('hibás egyedi ár');
+    if (errs.length) bad('gyuruk', p.id, `${p.code} – ${errs.join('; ')}`);
+    if (!p.approved) blockers.push({ group: 'gyuruk', key: p.id, label: `${p.code} – tömeg- és kőadatok`, kind: 'jovahagyas', src: 'demo' });
+  }
+
   const byGroup = {}; blockers.forEach((b) => (byGroup[b.group] = (byGroup[b.group] || 0) + 1));
-  return { ready: blockers.length === 0, blockers, byGroup };
+  const invalid = blockers.filter((b) => b.kind === 'ervenytelen').length;
+  return { ready: blockers.length === 0, blockers, byGroup, invalid, unapproved: blockers.length - invalid };
 }

@@ -143,7 +143,9 @@ function approvals(el) {
     ${(() => { const rd = readiness(st); const G = { arak: 'grammár', gyemant: 'gyémántár', szabalyok: 'számítási szabály (kerekítés, ÁFA, gravír…)', gyuruk: 'gyűrű tömeg- és kőadata' };
       return `<section class="golive ${rd.ready ? 'golive--ok' : 'golive--no'}" data-golive-box>
         <h2>Élesítési ellenőrzés</h2>
-        <p class="golive__state" data-golive-state>${rd.ready ? 'Minden árat befolyásoló adat jóváhagyott – élesíthető.' : `<b>Nem élesíthető:</b> ${rd.blockers.length} adat még nincs jóváhagyva.`}</p>
+        <p class="golive__state" data-golive-state>${rd.ready ? 'Az előzetes ellenőrzés szerint minden adat érvényes és jóváhagyott.' : `<b>Nem élesíthető:</b> ${rd.unapproved} adat nincs jóváhagyva${rd.invalid ? `, ${rd.invalid} adat hiányzik vagy hibás` : ''}.`}</p>
+        <p class="golive__pre" data-golive-pre><b>Ez csak előzetes ellenőrzés a látványtervben.</b> Valódi élesítéshez szerveroldali ellenőrzés és hitelesített (bejelentkezéshez kötött) admin szükséges.</p>
+        ${rd.invalid ? `<ul class="golive__list golive__list--bad" data-golive-bad>${rd.blockers.filter((b) => b.kind === 'ervenytelen').slice(0, 8).map((b) => `<li>${esc(b.label)}</li>`).join('')}${rd.invalid > 8 ? `<li>… és még ${rd.invalid - 8}</li>` : ''}</ul>` : ''}
         ${rd.ready ? '' : `<ul class="golive__list">${Object.entries(rd.byGroup).map(([g, c]) => `<li><b>${c}</b> ${G[g]}</li>`).join('')}</ul>`}
         <p class="hint">A bemutatóban a kalkulátor ezekkel a példa- és demóadatokkal is számol, és ezt a vásárlói oldalon „demó” jelölés mutatja. Éles oldalra csak jóváhagyott adat kerülhet: amíg bármi hiányzik, az élesítés le van tiltva.</p>
         <button class="abtn abtn--gold abtn--xl" type="button" data-golive ${rd.ready ? '' : 'disabled'}>Élesítésre kész jelölés</button>

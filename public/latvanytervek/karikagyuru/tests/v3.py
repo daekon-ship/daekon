@@ -110,6 +110,8 @@ async def run(b, w, h, mob):
     await pg.goto(B + '#/admin/jovahagyas'); await pg.wait_for_timeout(600)
     gl = await pg.inner_text('[data-golive-box]')
     check(f'{tag} élesítési ellenőrzés: jóváhagyás nélkül tiltva', 'Nem élesíthető' in gl and await pg.locator('[data-golive]').is_disabled() and all(x in gl for x in ['grammár', 'gyémántár', 'kerekítés', 'ÁFA']), gl.replace('\n', ' | ')[:200])
+    check(f'{tag} élesítés: „csak előzetes ellenőrzés… szerveroldali ellenőrzés és hitelesített admin” kiírva', all(t in gl for t in ['csak előzetes ellenőrzés', 'szerveroldali ellenőrzés', 'hitelesített']) and 'hiányzik vagy hibás' in gl)
+    check(f'{tag} élesítés: a titán nem szerepel a blokkoló tételek között', 'Titán' not in gl)
     # --- Admin: új gyűrű felvitele → megjelenik a vásárlói katalógusban ---
     code = f'TESZT-{w}'
     await pg.goto(B + '#/admin/gyuruk'); await pg.wait_for_timeout(600); await pg.click('[data-newprod]'); await pg.wait_for_timeout(600)

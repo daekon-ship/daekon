@@ -310,24 +310,108 @@ test('A szélesség online nem állítható: mindig a modell saját szélessége
   assert.ok(n.warnings.some((w) => /szélesség/i.test(w)));
   assert.equal(price(pair, (x) => (x.rings[0].width = 9)).final, price(pair).final);
 });
-test('Élesítési ellenőrzés: demó- és példaadatokkal nem élesíthető; teljes jóváhagyás után igen', () => {
+/* Minden jóváhagyva ÉS minden szükséges adat kitöltve – ebből indulnak az élesítési tesztek. */
+function readyState() {
   const st = { materials: clone(M), settings: clone(S), products: clone(products) };
-  const r0 = readiness(st);
+  st.materials.diamonds.forEach((d) => { if (d.price == null) d.price = Math.round(d.ct * 600000); d.src = 'jovahagyott'; });
+  Object.keys(st.materials.sellPerGram).forEach((k) => (st.materials.src[`sellPerGram.${k}`] = 'jovahagyott'));
+  ['gold24', 'platinum', 'palladium', 'titanium'].forEach((k) => (st.materials.src[k] = 'jovahagyott'));
+  Object.keys(st.settings).forEach((k) => (st.settings.src[k] = 'jovahagyott'));
+  st.products.forEach((p) => (p.approved = true));
+  return st;
+}
+const keysOf = (st, kind) => readiness(st).blockers.filter((b) => !kind || b.kind === kind).map((b) => b.key);
+
+test('Élesítés: demó- és példaadatokkal nem élesíthető; az ügyfél példája sem számít jóváhagyottnak', () => {
+  const r0 = readiness({ materials: clone(M), settings: clone(S), products: clone(products) });
   assert.equal(r0.ready, false);
   const keys = r0.blockers.map((b) => b.key);
   for (const k of ['sellPerGram.au14', 'sellPerGram.au18', 'sellPerGram.pt', 'd01', 'd04', 'roundTo', 'vatPct', 'engravingPrice']) assert.ok(keys.includes(k), k);
   assert.ok(r0.byGroup.gyuruk > 100);
-  // az ügyfél példája sem számít jóváhagyottnak
-  assert.equal(r0.blockers.find((b) => b.key === 'sellPerGram.au14').src, 'pelda');
-  for (const b of r0.blockers) {
-    if (b.group === 'arak') st.materials.src[b.key] = 'jovahagyott';
-    if (b.group === 'gyemant') st.materials.diamonds.find((d) => d.id === b.key).src = 'jovahagyott';
-    if (b.group === 'szabalyok') st.settings.src[b.key] = 'jovahagyott';
-    if (b.group === 'gyuruk') st.products.find((p) => p.id === b.key).approved = true;
-  }
-  assert.equal(readiness(st).ready, true);
+  assert.equal(r0.blockers.find((b) => b.key === 'sellPerGram.au14' && b.kind === 'jovahagyas').src, 'pelda');
+  assert.ok(r0.invalid > 0 && r0.unapproved > 0);
+});
+test('Élesítés: minden érvényes és jóváhagyott → kész; egyetlen visszavont jóváhagyás blokkol', () => {
+  const st = readyState();
+  assert.deepEqual(readiness(st).blockers, []); assert.equal(readiness(st).ready, true);
   st.settings.src.roundTo = 'demo';
-  assert.deepEqual(readiness(st).blockers.map((b) => b.key), ['roundTo']);
+  assert.deepEqual(keysOf(st), ['roundTo']);
+});
+
+/* --- 1. probléma: titán --- */
+test('Élesítés/titán: nem kell jóváhagyott titán-grammár – a titán egyedi ajánlat', () => {
+  const fresh = readiness({ materials: clone(M), settings: clone(S), products: clone(products) });
+  assert.ok(!fresh.blockers.some((b) => b.key === 'sellPerGram.ti'));          // sem jóváhagyást, sem értéket nem követel
+  const st = readyState();
+  st.materials.src['sellPerGram.ti'] = 'bizonytalan';                          // jóváhagyás nélkül is kész
+  assert.equal(st.materials.sellPerGram.ti, null); assert.equal(readiness(st).ready, true);
+});
+test('Élesítés/titán: ha valaki grammárat ad a titánhoz, az blokkol – jóváhagyott jelöléssel is', () => {
+  const st = readyState();
+  st.materials.sellPerGram.ti = 30000; st.materials.src['sellPerGram.ti'] = 'jovahagyott';
+  const r = readiness(st);
+  assert.equal(r.ready, false);
+  assert.deepEqual(r.blockers.map((b) => [b.key, b.kind]), [['sellPerGram.ti', 'ervenytelen']]);
+});
+test('Titán: kitalált grammáras vagy anyagalapú ár semmilyen beállítással nem jelenhet meg', () => {
+  const p = products.find((x) => x.metals.includes('ti') && x.listaAr);
+  const Mti = { ...M, sellPerGram: { ...M.sellPerGram, ti: 30000 }, titanium: 80 };
+  for (const mode of ['gramm', 'koltseg']) {
+    const r = price(p, (c) => { c.metal = 'ti'; c.color = null; }, { ...S, pricingMode: mode }, Mti);
+    assert.equal(r.final, null, mode); assert.ok(r.quote); assert.match(r.reason, /munkából adódik/);
+  }
+  assert.equal(exampleRing({ metal: 'ti', weight: 1.5 }, Mti, R1).final, null);
+  assert.ok(price(p).final > 0);                                               // a többi anyag ára változatlanul számolódik
+});
+
+/* --- 2. probléma: tényleges érvényesség, nem csak jelölés --- */
+const BREAK = [
+  ['14K grammár = 0', (st) => (st.materials.sellPerGram.au14 = 0), 'sellPerGram.au14'],
+  ['platina grammár hiányzik', (st) => (st.materials.sellPerGram.pt = null), 'sellPerGram.pt'],
+  ['18K grammár nem szám', (st) => (st.materials.sellPerGram.au18 = 'sok'), 'sellPerGram.au18'],
+  ['grammár NaN', (st) => (st.materials.sellPerGram.pd = NaN), 'sellPerGram.pd'],
+  ['kőár hiányzik', (st) => (st.materials.diamonds.find((d) => d.id === 'd01').price = null), 'd01'],
+  ['kőár negatív', (st) => (st.materials.diamonds.find((d) => d.id === 'd02').price = -5), 'd02'],
+  ['kő átmérője hiányzik', (st) => (delete st.materials.diamonds.find((d) => d.id === 'd03').mm), 'd03'],
+  ['kerekítés 0', (st) => (st.settings.roundTo = 0), 'roundTo'],
+  ['ÁFA negatív', (st) => (st.settings.vatPct = -1), 'vatPct'],
+  ['ÁFA 100 fölött', (st) => (st.settings.vatPct = 270), 'vatPct'],
+  ['gravírdíj hiányzik', (st) => (delete st.settings.engravingPrice), 'engravingPrice'],
+  ['foglalási díj nem szám', (st) => (st.settings.settingPerStone = '1500'), 'settingPerStone'],
+  ['tömegarány 0', (st) => (st.settings.density.pt = 0), 'density.pt'],
+  ['árképzési mód ismeretlen', (st) => (st.settings.pricingMode = 'valami'), 'pricingMode'],
+  ['méretmód ismeretlen', (st) => (st.settings.sizeMethod = ''), 'sizeMethod'],
+];
+for (const [name, fn, key] of BREAK) {
+  test(`Élesítés/érvényesség: ${name} → jóváhagyott jelöléssel sem kész`, () => {
+    const st = readyState(); fn(st);
+    const r = readiness(st);
+    assert.equal(r.ready, false);
+    assert.ok(r.blockers.every((b) => b.kind === 'ervenytelen'), JSON.stringify(r.blockers.slice(0, 2)));   // a jelölés mindenhol „jóváhagyott” maradt
+    assert.ok(keysOf(st, 'ervenytelen').includes(key), `${key} / ${keysOf(st)}`);
+  });
+}
+test('Élesítés/érvényesség: gyűrűadatok – hiányzó tömeg, hibás méret, hibás kőszabály', () => {
+  const pid = pair.id;
+  const cases = [
+    (p) => (p.rings[0].weight = 0), (p) => (p.rings[1].weight = null), (p) => (p.rings[0].refSize = 5), (p) => (p.rings[0].refWidth = 0),
+    (p) => (p.rings[0].stoneRule.defCat = 'nincs'), (p) => (p.rings[0].stoneRule.cats = []), (p) => { p.rings[0].stoneRule.min = 4; p.rings[0].stoneRule.max = 2; },
+    (p) => (p.rings[0].stoneRule.def = 99), (p) => (p.metals = []),
+  ];
+  for (const fn of cases) {
+    const st = readyState(); fn(st.products.find((p) => p.id === pid));
+    const r = readiness(st);
+    assert.equal(r.ready, false, fn.toString());
+    assert.ok(r.blockers.some((b) => b.key === pid && b.kind === 'ervenytelen'), fn.toString());
+  }
+  const st = readyState(); const hidden = st.products.find((p) => p.id === pid); hidden.rings[0].weight = 0; hidden.visible = false;
+  assert.equal(readiness(st).ready, true);                                     // rejtett gyűrű nem blokkol
+  const st2 = readyState(); const q = st2.products.find((p) => p.priceOnRequest); q.rings.forEach((r) => (r.weight = 0));
+  assert.equal(readiness(st2).ready, true);                                    // ár nélküli modellnél a tömeg nem kötelező
+});
+test('Élesítés/érvényesség: ismeretlen kőméret a modell listájában blokkol', () => {
+  const st = readyState(); st.products.find((p) => p.id === pair.id).rings[0].stoneRule.cats.push('d99');
+  assert.ok(keysOf(st, 'ervenytelen').includes('d99'));
 });
 test('Az ötvös számítási módszere változatlan (regresszió)', () => {
   assert.equal(exampleRing({ metal: 'au14', weight: 4.8, size: 54 }, M, R1).final, 225600);
