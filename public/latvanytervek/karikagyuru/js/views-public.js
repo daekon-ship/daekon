@@ -118,17 +118,20 @@ export function home(el) {
         </div>
         <p class="hero__note" data-hero>Egy ötvössel ülsz le, aki harmincvalahány éve csinálja. Addig alakítjátok, amíg ki nem találjátok, milyen legyen.</p>
       </div>
-      <figure class="hero__stage">
-        <div class="hero__ring">
-          <svg class="hero__orbit" viewBox="0 0 400 400" aria-hidden="true"><circle cx="200" cy="200" r="196" pathLength="1"/><circle class="hero__orbit2" cx="200" cy="200" r="172" pathLength="1"/></svg>
-          <div class="hero__disc">${productMedia(hero, { eager: true, large: true })}</div>
-        </div>
+      <figure class="hero__stage hero__stage--photo">
+        <a class="hero__photo" href="#/gyuru/${hero.id}" aria-label="${esc(hero.name)} megnyitása">${productMedia(hero, { eager: true, large: true })}</a>
         <figcaption class="hero__cap">
           <a href="#/gyuru/${hero.id}"><span>${esc(hero.code)}</span><b>${esc(hero.name)}</b>
           <em>Így: <span class="price" data-hero-price data-value="${heroPrice}">${ft(heroPrice)}</span> ${demoMark()} – innen alakítható</em></a>
         </figcaption>
       </figure>
     </div>
+    <div class="wrap"><ul class="hero__facts" aria-label="Röviden">
+      <li><b>Rendelésre készül</b><span>a te méretedre</span></li>
+      <li><b>Természetes gyémánt</b><span>csak valódi kő</span></li>
+      <li><b>Ötvössel tervezed</b><span>személyes konzultáció</span></li>
+      <li><b>Budapest, VIII.</b><span>hétvégén is, előre egyeztetve</span></li>
+    </ul></div>
   </section>
 
   <section class="sec paths-sec" id="utak">
@@ -316,12 +319,13 @@ function collTile(key, title, text, n, p, cls) {
 
 function heroIn(el) {
   const items = $$('[data-hero]', el);
-  const orbit = $$('.hero__orbit circle', el);
   if (!M() || reduced()) return;
   M().animate(items, { opacity: [0, 1], y: [18, 0] }, { duration: 0.9, delay: M().stagger(0.09), ease: [0.22, 1, 0.36, 1] });
-  M().animate($('.hero__disc', el), { opacity: [0, 1], scale: [0.96, 1] }, { duration: 1.2, ease: [0.22, 1, 0.36, 1] });
-  orbit.forEach((c, i) => M().animate(c, { pathLength: [0, 1] }, { duration: 2.2, delay: 0.3 + i * 0.25, ease: [0.65, 0, 0.35, 1] }));
-  M().animate($('.hero__cap', el), { opacity: [0, 1], x: [16, 0] }, { duration: 0.8, delay: 0.9 });
+  // A fotó lassan „kitisztul”: enyhe nagyításból a helyére, a felirat utána csúszik be
+  const ph = $('.hero__photo img', el), cap = $('.hero__cap', el), facts = $$('.hero__facts li', el);
+  if (ph) M().animate(ph, { opacity: [0, 1], scale: [1.06, 1] }, { duration: 1.4, ease: [0.22, 1, 0.36, 1] });
+  if (cap) M().animate(cap, { opacity: [0, 1], y: [12, 0] }, { duration: 0.8, delay: 0.7 });
+  if (facts.length) M().animate(facts, { opacity: [0, 1], y: [10, 0] }, { duration: 0.7, delay: M().stagger(0.07, { startDelay: 0.5 }) });
 }
 
 /* ---------- Kollekció ---------- */
@@ -505,6 +509,10 @@ export function product(el, id, query) {
           <button role="tab" data-view="abra" aria-selected="false"><span class="pdp__thumb pdp__thumb--abra" data-minisketch></span>A te változatod</button>
           ${p.img ? `<button role="tab" data-view="nagy" aria-selected="false"><span class="pdp__thumb pdp__thumb--zoom">${productMedia(p)}</span>Nagyítás</button>` : ''}
         </div>
+        <div class="pdp__dock" data-dock>
+          <div><span>${onReq ? 'Ár' : 'Becsült ár, a beállításaiddal'}</span><strong class="price" data-dprice></strong></div>
+          <button class="btn btn--dark" type="button" data-inquire="erdeklodes">${onReq ? 'Árajánlatot kérek' : 'Érdekel ez a gyűrű'}</button>
+        </div>
         <p class="fine" data-stagenote></p>
         <p class="colornote" data-colornote hidden></p>
         <div class="pdp__trust">
@@ -630,9 +638,9 @@ export function product(el, id, query) {
       <label class="check"><input type="checkbox" data-unknown="${i}" ${rc.sizeUnknown ? 'checked' : ''}><span>Még nem tudom</span></label>
       <button type="button" class="linkbtn" data-sizehelp="${i}">Méretsegítő</button>
       ${wv ? `<div class="dimopt"><span>Szélesség</span><div class="cfg__seg cfg__seg--sm" role="group" aria-label="${esc(ring.label)} szélessége">${wv.map((w) => `<button type="button" data-width="${i}|${w}" aria-pressed="${w === rc.width}"><b>${dec(w)} mm</b>${w === rc.width ? '' : delta(cur, (x) => (x.rings[i].width = w))}</button>`).join('')}</div></div>`
-        : `<p class="hint" data-width-fixed>Szélesség: ${dec(rc.width)} mm ${demoMark('demóadat')} · online nem választható (${optionReason(p, 'width')}), más szélesség személyes egyeztetéssel</p>`}
+        : `<p class="dimfix" data-width-fixed><span>Szélesség</span><b>${dec(rc.width)} mm ${demoMark('demóadat')}</b><small>online nem választható – ${optionReason(p, 'width')}. Más szélesség egyeztetéssel.</small></p>`}
       ${tv && rc.thick ? `<div class="dimopt"><span>Vastagság</span><div class="cfg__seg cfg__seg--sm" role="group" aria-label="${esc(ring.label)} vastagsága">${tv.map((v) => `<button type="button" data-thick="${i}|${v}" aria-pressed="${v === rc.thick}"><b>${dec(v)} mm</b>${v === rc.thick ? '' : delta(cur, (x) => (x.rings[i].thick = v))}</button>`).join('')}</div></div>`
-        : (ring.thickness ? `<p class="hint">Vastagság: ${dec(ring.thickness)} mm · nem választható (${optionReason(p, 'thickness')})</p>` : '')}
+        : (ring.thickness ? `<p class="dimfix"><span>Vastagság</span><b>${dec(ring.thickness)} mm</b><small>nem választható – ${optionReason(p, 'thickness')}</small></p>` : '')}
     </div>`; }).join('')}</div>
     ${wv || tv ? '<p class="hint">A választható szélességet és vastagságot az ötvös ehhez a modellhez hagyta jóvá. Hogy a te kezeden melyik a kényelmes, az a konzultáción, felpróbálva derül ki.</p>' : ''}
     <p class="hint">Belső kerület mm-ben (${p.rings.map((r, i) => `${esc(r.label.split(' ')[0].toLowerCase())}: ${sizes(i)[0]}–${sizes(i)[1]}`).join(', ')}). Nagyobb méret = több nemesfém. ${cfg.rings.some((r) => r.sizeUnknown) ? '· Az ismeretlen méretet átlagos mérettel számoljuk, a konzultáción megmérjük.' : ''}</p>`];
@@ -711,7 +719,7 @@ export function product(el, id, query) {
     const st0 = S(), rt = st0.settings.roundTo;
     $('[data-pnote]', el).innerHTML = cur === null ? 'Rendelésre készül. Az árat személyesen mondjuk meg.' : `Bruttó, ÁFA-val${rt > 1 ? `, ${num(rt)} Ft-ra kerekítve` : ''}. Rendelésre készül.${(st0.materials.src || {})[`sellPerGram.${cfg.metal}`] === 'demo' && st0.settings.pricingMode === 'gramm' ? ` ${demoMark(`${METALS[cfg.metal].short}: demó grammár`)}` : ''}`;
     animatePrice($('[data-cprice]', el), cur);
-    animatePrice($('[data-mprice]', el), cur);
+    animatePrice($('[data-mprice]', el), cur); animatePrice($('[data-dprice]', el), cur);
     if (!first) { const pb = $('[data-pricebox]', el); pb.classList.remove('is-flash'); void pb.offsetWidth; pb.classList.add('is-flash'); }
     syncUrl();
   };
@@ -756,7 +764,7 @@ export function product(el, id, query) {
     $(`[data-engrave-prev="${i}"]`, el).innerHTML = engravePreview(rc);
     const r = price(p, cfg);
     animatePrice($('[data-cprice]', el), r.final);
-    animatePrice($('[data-mprice]', el), r.final);
+    animatePrice($('[data-mprice]', el), r.final); animatePrice($('[data-dprice]', el), r.final);
     clearTimeout(e.target._t);
     e.target._t = setTimeout(() => {
       const r2 = price(p, cfg);

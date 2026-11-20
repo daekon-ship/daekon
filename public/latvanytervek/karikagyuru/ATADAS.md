@@ -439,3 +439,16 @@ Kiindulás: V3.4. A meglévő oldal nem épült újra; a számítási módszer �
 **Adatvédelem.** A bizalmas igénymátrix kikerült a nyilvános tárolóból (a git-előzményben a korábbi commitokban még megvan – eltávolítása külön döntés). Ügyfél CAD-fájl nincs a tárolóban.
 
 Tesztek: motor 73/73, asztali 30/30, mobil 26/26, V3 70/70, V4 54/54, API 58/58. Verzió `V4.0`, tárolókulcs `karikagyuru-demo-v13`.
+
+## V5 – prémium arculati átdolgozás (2026. november 20.)
+
+Funkció, ár és számítás nem változott; a meglévő szerkezetre került egy új arculati réteg (`css/kg.css`, „V5” blokk).
+
+- **Tipográfia:** a címek Libre Baskerville-lel (helyben tárolt betűtípus), mérsékelt méretben; a szövegtörzs Manrope maradt.
+- **Színek:** a karikagyuru.com kékje csak kiemelés (vonalak, sorszámok, linkek); az elsődleges gomb sötét. A fotók körüli felületek a termékfotók saját háttérszínét (#F4F8FB) kapják, így nincs „kép a dobozban” hatás.
+- **Kezdőlap:** a hero rajzolt körös kompozíciója helyett nagy, valódi termékfotó; alatta négy rövid tény (rendelésre készül, természetes gyémánt, ötvössel tervezed, Budapest VIII.). Kevesebb keret, vékonyabb elválasztók.
+- **Termékoldal:** asztali gépen a fotó alatt ár-dokk – görgetés közben is látszik az aktuális ár és az „Érdekel ez a gyűrű” gomb. A nem választható szélesség/vastagság tömör sorban, okkal. Telefonon a cím és az ár közvetlenül a fotó után jön.
+- **Bemutató-jelölések:** megmaradtak, de visszafogottabbak (pontozott aláhúzás).
+- **Admin:** a főmenü csempéi kisebb betűmérettel.
+
+Tesztek: motor 73/73, asztali 30/30, mobil 26/26, V3 70/70, V4 54/54, V5 38/38 (új), API 58/58. Verzió `V5.0`.
