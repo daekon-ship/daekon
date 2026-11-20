@@ -1,0 +1,5 @@
+# Apache-tárhelyre: minden /api/... kérés az index.php-hoz megy.
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^ index.php [QSA,L]
+Options -Indexes
