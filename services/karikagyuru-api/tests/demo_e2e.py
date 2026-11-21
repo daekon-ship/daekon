@@ -25,7 +25,7 @@ async def price(pg, sel='[data-cprice]'):
 
 async def main():
     data = tempfile.mkdtemp(prefix='kg-demo-'); stf = os.path.join(data, 'allapot.json')
-    env = dict(os.environ, KG_DATA=data, KG_ADMIN_PASSWORD=PW, KG_MAIL_MODE='off')
+    env = dict(os.environ, KG_DATA=data, KG_ADMIN_PASSWORD=PW, KG_MAIL_MODE='off', KG_DEMO='1')
     subprocess.run(['php', ROOT + '/bin/setup.php'], env=env, check=True, capture_output=True)
     open(stf, 'w').write(subprocess.run(['node', ROOT + '/dev/make-demo-state.mjs'], capture_output=True, text=True, check=True).stdout)
     r = subprocess.run(['php', ROOT + '/bin/demo-seed.php', stf], env=env, capture_output=True, text=True)
@@ -49,9 +49,14 @@ async def main():
 
             print('Vásárló (telefon)')
             await vis.goto(B + '#/kollekcio'); await vis.wait_for_timeout(1500)
-            ids = await vis.eval_on_selector_all('.card[data-id]', 'els => els.map(e => e.dataset.id)')
-            check('a katalógusban pontosan a 3 mintagyűrű', sorted(ids) == sorted([A1, A2, PEND]), ids)
-            check('a lábléc jelzi: bemutató példány, mintaárak', 'Bemutató példány' in await vis.inner_text('.site-foot'))
+            cnt = num(await vis.inner_text('[data-count]'))
+            found = []
+            for code in ['81184', '81202', '79016']:
+                await vis.fill('[data-q]', code); await vis.wait_for_timeout(500)
+                found += await vis.eval_on_selector_all('.card[data-id]', 'els => els.map(e => e.dataset.id)')
+            await vis.fill('[data-q]', '')
+            check('a katalógusban mind a 115 gyűrű, köztük a 3 mintagyűrű', cnt == 115 and all(x in found for x in [A1, A2, PEND]), (cnt, found))
+            check('felső sáv jelzi: zárt bemutató, szemléltető mintaárak', 'szemléltető mintaadatok' in await vis.inner_text('[data-demo-note]'))
             await vis.goto(B + f'#/gyuru/{A1}'); await vis.wait_for_timeout(1300)
             p0 = await price(vis)
             check('jóváhagyott mintagyűrű: számolt ár, beállítható', 'Becsült ár' in await vis.inner_text('[data-plabel]') and await vis.locator('[data-steps] .cfg__step').count() >= 4 and p0 > 100000, p0)
@@ -74,7 +79,7 @@ async def main():
             print('Admin: központi grammár és jóváhagyás')
             await adm.goto(B + '#/admin/alapanyag'); await adm.wait_for_timeout(1200)
             await adm.fill('[name="pw"]', PW); await adm.click('[data-login] button[type="submit"]'); await adm.wait_for_timeout(1500)
-            check('admin: bemutató példány jelölve', await adm.locator('.adm').count() == 1 and 'Bemutató példány' in await adm.inner_text('.adm'), (await adm.inner_text('body'))[:300])
+            check('admin: zárt bemutató jelölve', await adm.locator('.adm').count() == 1 and 'Zárt bemutató' in await adm.inner_text('[data-demo-note]'), (await adm.inner_text('body'))[:300])
             await adm.wait_for_timeout(1000); await adm.goto(B + '#/admin/'); await adm.goto(B + '#/admin/alapanyag'); await adm.wait_for_timeout(900)
             g0 = num(await adm.input_value('[data-path="sellPerGram.au14"]'))
             await adm.fill('[data-path="sellPerGram.au14"]', str(g0 + 5000)); await adm.wait_for_timeout(400)

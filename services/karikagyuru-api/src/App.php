@@ -63,6 +63,40 @@ final class App
             ->execute([json_encode($state, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), 'Bemutató mintaadat', gmdate('c')]);
     }
 
+    /** Bemutató módban fut-e (a demo/kapu.php állítja be). */
+    public static function demoMode(): bool { return getenv('KG_DEMO') === '1'; }
+
+    /** Az adatbázis legutóbbi állapota bemutató-jelölésű-e (üres adatbázisnál: false). */
+    public function isDemoData(): bool
+    {
+        $r = $this->latest();
+        if (!$r) return false;
+        $s = json_decode($r['body'], true);
+        return is_array($s) && ($s['demo'] ?? false) === true;
+    }
+
+    /**
+     * Bemutató visszaállítása a kiinduló mintaadatra (bin/demo-reset.php). Csak bemutató-adatbázison fut:
+     * éles (nem „demo” jelölésű) adatbázist soha nem töröl. Törli a változatokat, érdeklődéseket, csatolt és feltöltött képeket.
+     * Az admin jelszó és a bemutató belépési jelszava megmarad.
+     */
+    public function resetDemo(array $state): void
+    {
+        if (($state['demo'] ?? false) !== true) throw new InvalidArgumentException('Nem bemutató állapot.');
+        $empty = (int) $this->db->query('SELECT COUNT(*) FROM state_version')->fetchColumn() === 0;
+        if (!$empty && !$this->isDemoData()) throw new RuntimeException('Ez nem bemutató-adatbázis – a visszaállítás nem fut le.');
+        $this->db->exec('DELETE FROM state_version'); $this->db->exec('DELETE FROM inquiry'); $this->db->exec('DELETE FROM attempt');
+        $this->db->exec("DELETE FROM sqlite_sequence WHERE name IN ('state_version', 'inquiry')");
+        foreach (glob($this->data . '/photos/*') ?: [] as $f) if (is_file($f)) unlink($f);
+        $this->removeDir($this->data . '/inquiry-files');
+        $this->removeDir($this->data . '/outbox');
+        $this->seedDemo($state);
+    }
+
+    /** Bemutató-kapu: hibás jelszavak száma (IP-lenyomatonként, 15 perc). */
+    public function gateLocked(): bool { return $this->countAttempts('demo-kapu', $this->ipHash(), 900) >= self::LOGIN_TRIES; }
+    public function gateFailed(): void { $this->addAttempt('demo-kapu', $this->ipHash()); }
+
     public function hasPassword(): bool
     {
         return (bool) $this->db->query('SELECT 1 FROM admin WHERE id = 1')->fetchColumn();
@@ -194,6 +228,10 @@ final class App
         $in = json_decode($raw, true);
         if (!is_array($in) || !is_array($in['state'] ?? null)) $this->fail(400, 'Hibás adat.');
         if (!empty($in['state']['public'])) $this->fail(422, 'A nyilvános nézet nem menthető vissza – töltse újra a kezelőfelületet.');
+        // V5.6: bemutató és éles adat nem keveredhet. Bemutató módban (KG_DEMO=1) minden mentés bemutató-jelölést kap;
+        // éles módban bemutató-jelölésű adat nem menthető (így a mintaadat észrevétlenül sem kerülhet élesbe).
+        if (self::demoMode()) $in['state']['demo'] = true;
+        elseif (($in['state']['demo'] ?? false) === true) $this->fail(422, 'Bemutató (minta)adat éles rendszerbe nem menthető.');
         $err = self::validateState($in['state']);
         if ($err) $this->fail(422, $err);
         unset($in['state']['inquiries']);
@@ -513,8 +551,8 @@ final class App
 
     private function removeDir(string $dir): void
     {
-        if (!is_dir($dir)) return;
-        foreach (glob($dir . '/*') ?: [] as $f) @unlink($f);
+        if (!is_dir($dir) || is_link($dir)) return;
+        foreach (glob($dir . '/*') ?: [] as $f) { if (is_dir($f) && !is_link($f)) $this->removeDir($f); else @unlink($f); }
         @rmdir($dir);
     }
 

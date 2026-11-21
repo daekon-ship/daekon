@@ -41,21 +41,23 @@ function route() {
   else if (parts[0] === 'sajat') pub.custom(el, query);
   else pub.home(el);
 
-  markDemo(admin);
+  markDemo();
   $$('.nav > a:not([data-anchor])').forEach((a) => a.toggleAttribute('aria-current', a.getAttribute('href') === '#/' + (parts[0] || '')));
   window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
   if (!admin && M() && !reduced()) M().animate(view, { opacity: [0.4, 1] }, { duration: 0.35 });
 }
 
-/* Bemutató mintaadat (nem nyilvános bemutatópéldány): a lábléc és a kezelőfelület egy sorban jelzi. */
-function markDemo(admin) {
+/* Bemutató mintaadat (jelszóval védett bemutató): az oldal tetején egy sáv, az áraknál „szemléltető mintaár”. Éles állapotban nincs. */
+function markDemo() {
   const demo = !!store.get().demo;
+  document.body.classList.toggle('is-demo', demo);
   let n = document.querySelector('[data-demo-note]');
   if (!demo) { n?.remove(); return; }
-  if (!n) { n = document.createElement('p'); n.className = 'demo-note'; n.dataset.demoNote = ''; n.setAttribute('role', 'note'); }
-  n.textContent = 'Bemutató példány – mintagyűrűk és mintaárak, nem éles adatok.';
-  const host = admin ? document.querySelector('.adm__nav') : document.querySelector('.site-foot__note');
-  if (host && n.parentNode !== host) host.prepend(n);
+  if (!n) {
+    n = document.createElement('div'); n.className = 'demo-strip'; n.dataset.demoNote = ''; n.setAttribute('role', 'note');
+    n.innerHTML = '<b>Zárt bemutató</b><span>Az árak szemléltető mintaadatok, nem az ötvös árai. E-mail nem megy ki.</span>';
+    document.body.prepend(n);
+  }
 }
 
 /* --- kattintások --- */

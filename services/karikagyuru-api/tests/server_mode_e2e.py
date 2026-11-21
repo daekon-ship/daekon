@@ -35,7 +35,7 @@ async def wait_saved(pg, t=8000):
 
 async def main():
     data = tempfile.mkdtemp(prefix='kg-e2e-'); img = os.path.join(data, 'foto.png'); png(img)
-    env = dict(os.environ, KG_DATA=data, KG_ADMIN_PASSWORD=PW)
+    env = dict(os.environ, KG_DATA=data, KG_ADMIN_PASSWORD=PW, KG_DEMO='1')   # V5.6: mintaadat → bemutató mód (élesben bemutató-adat nem menthető)
     subprocess.run(['php', ROOT + '/bin/setup.php'], env=env, check=True, capture_output=True)
     # A nyilvános kódban nincs ár (V5.5): a teszt a fejlesztői adatkészletet tölti be (minden gyűrű, semmi sincs jóváhagyva).
     stf = os.path.join(data, 'allapot.json')

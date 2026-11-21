@@ -1,0 +1,13 @@
+# Karikagyuru – jelszóval védett bemutató (V5.6). Minden kérés a kapu.php-n keresztül megy:
+# a weboldal fájljai, az API és a robots.txt is. A config.php és a többi fájl közvetlenül nem érhető el.
+Options -Indexes
+<IfModule mod_headers.c>
+  Header always set X-Robots-Tag "noindex, nofollow, noarchive"
+</IfModule>
+<FilesMatch "^(config\.php|config\.minta\.php|minta-allapot\.json|.*\.md)$">
+  Require all denied
+</FilesMatch>
+RewriteEngine On
+RewriteRule ^ kapu.php [L,QSA]
+# Ha a tárhely nem enged környezeti változót, a config.php adja meg az adatmappát (minta: config.minta.php).
+# SetEnv KG_DATA /home/FELHASZNALO/kg-bemutato-adat

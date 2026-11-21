@@ -67,7 +67,10 @@ python3 tests/server_mode_e2e.py       # 30 böngészős ellenőrzés: oldal + A
 python3 tests/mail_test.py             # 24 ellenőrzés: e-mail-értesítés helyi SMTP-álszerverrel (valódi levél nem megy ki)
 python3 tests/server_failures_e2e.py   # 17 ellenőrzés: API-kiesés, sikertelen mentés, lejárt belépés, sikertelen érdeklődés
 python3 tests/upload_test.py           # 22 ellenőrzés: ügyfél-referenciakép feltöltése, privát tárolás, törlés, megőrzés
-python3 tests/demo_e2e.py              # 17 böngészős ellenőrzés: a 3 gyűrűs, nem éles bemutató példány
+python3 tests/demo_e2e.py              # 17 böngészős ellenőrzés: a nem éles bemutató példány (3 mintagyűrű)
+python3 tests/demo_kapu_test.py        # 49 ellenőrzés: jelszóval védett bemutató (kapu, noindex, e-mail tiltás, külön admin, visszaállítás, éles adat védelme)
+python3 tests/bemutato_e2e.py          # 58 böngészős ellenőrzés: a bemutató forgatókönyve végig a kapun át, 360/390/430 px + asztali admin
+python3 tests/foto_test.py             # 16 ellenőrzés: termékfotó-ellenőrző és -letöltő eszköz helyi álszerverrel
 ```
 
 `api_test.py`: telepítés, jogosultság, CSRF, mentés/ütközés/visszaállítás, hibás adatok elutasítása,
@@ -87,15 +90,23 @@ a látogató a szerverről kapja, két admin ütközése (a második nem ír fel
 - Törlés: `POST /api/inquiry-delete` (admin), vagy megőrzési idő szerint: `php bin/purge.php <napok> [--minden]`
   (alapból csak a lezárt érdeklődéseket törli; cron-ra tehető, a napok száma ügyféllel egyeztetendő).
 
-## Nem éles bemutató példány (V5.5)
+## Jelszóval védett bemutató (V5.6)
 
 ```sh
-bash dev/bemutato.sh        # ideiglenes adatmappa, generált jelszó, 3 mintagyűrű, http://127.0.0.1:8796/
+bash dev/bemutato.sh        # helyben: http://127.0.0.1:8792/ – bemutató jelszó + külön admin jelszó (kiírja)
 ```
 
-Az adatok a `dev/demo-dataset.json`-ból jönnek (mintaárak, nem az ötvös jóváhagyott árai). A `bin/demo-seed.php`
-csak üres adatbázisba ír, és az állapot `demo: true` jelzést kap – ilyen állapottal az élesítési ellenőrzés
-nem engedi az élesítést. A `dev/`, `tests/` mappa és a mintaadat **nem kerül fel** az éles tárhelyre.
+- `demo/kapu.php`: egyetlen belépési pont a teljes bemutatóhoz (weboldal + API); `src/DemoGate.php`: jelszókapu.
+- `bin/demo-install.php` (csak üres adatmappába), `bin/demo-reset.php` (csak bemutató-adatbázison), `dev/demo-csomag.sh` (feltöltésre kész mappák).
+- Bemutató módban (`KG_DEMO=1`) minden mentés „demo” jelölést kap, e-mail nem megy ki; éles módban „demo” adat nem menthető (422).
+- Mintaadat: `demo/minta-allapot.json` (a `dev/make-demo-state.mjs` állítja elő a szemléltető `dev/demo-dataset.json`-ból).
+- Részletek, biztonsági modell, tárhelyre telepítés: `public/latvanytervek/karikagyuru/docs/BEMUTATO_TELEPITES.md`.
+- A `demo/`, `dev/`, `tests/` és a `bin/demo-*` **nem** kerül az éles tárhelyre.
+
+## Termékfotók (V5.6)
+
+`node dev/foto-ellenorzes.mjs` – mind a 115 termék fotójának ellenőrzése; a karikagyuru.com-os képek letöltése és optimalizálása
+(1600/800 px JPEG) az `img/termekek/` mappába; jelentés: `docs/KATALOGUS_JELENTES.json` és `.md`. Kell hozzá: Node 18+, `sharp`.
 
 ## Telepítés a tárhelyre (ha meglesz a hozzáférés)
 

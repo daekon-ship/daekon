@@ -4,7 +4,7 @@
  * NEM éles adat: az állapot „demo: true” jelölést kap – a kezelőfelület ezt kiírja, az élesítési
  * ellenőrzés tilt, és a bin/demo-seed.php csak üres adatbázisba tölti be.
  *
- *   node dev/make-demo-state.mjs            → 3 mintagyűrű látszik (2 jóváhagyott, 1 jóváhagyásra vár), az árak jóváhagyottak
+ *   node dev/make-demo-state.mjs            → mind a 115 gyűrű látszik; 3 mintagyűrű (2 jóváhagyott, 1 jóváhagyásra vár), szemléltető árak jóváhagyva
  *   node dev/make-demo-state.mjs --mind     → minden gyűrű látszik, semmi nincs jóváhagyva, az árak az adatkészlet szerinti
  *                                             (példa/bemutató) jelöléssel – automata tesztekhez
  */
@@ -23,8 +23,9 @@ products = seedWeights(products, materials, settings);
 
 if (!all) {
   const ok = 'jovahagyott';
-  const show = [...ds.samples.approved, ...ds.samples.pending];
-  products.forEach((p) => { p.visible = show.includes(p.id); p.approved = ds.samples.approved.includes(p.id); });
+  // V5.6: a teljes katalógus látszik (115 gyűrű); a 3 mintagyűrű közül 2 jóváhagyott (beállítható, szemléltető árral),
+  // 1 jóváhagyásra vár. A többi gyűrű nincs jóváhagyva → a mostani nyilvános listaárát vagy „egyedi ajánlat”-ot mutat.
+  products.forEach((p) => { p.visible = true; p.approved = ds.samples.approved.includes(p.id); });
   for (const k of Object.keys(materials.sellPerGram)) if (materials.sellPerGram[k] != null) materials.src[`sellPerGram.${k}`] = ok;
   materials.diamonds.forEach((d) => { if (d.price != null) d.src = ok; });
   for (const k of Object.keys(settings.src)) settings.src[k] = ok;

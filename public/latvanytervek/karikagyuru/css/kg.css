@@ -1847,3 +1847,9 @@ h3, .cfg__step > header h2, .ringbox__t, .opt__label { font-family: var(--sans);
 .media--none, .media.is-fallback { background: linear-gradient(160deg, var(--paper), color-mix(in srgb, var(--paper) 88%, var(--mute))); }
 .pcheck { border: 1px solid var(--sand); border-radius: 10px; padding: .9rem 1rem; margin: 0 0 1rem; background: var(--ivory); }
 .pcheck p { margin: .2rem 0; }
+
+/* V5.6 – jelszóval védett bemutató: felső sáv (nem rögzített, nem takar ki semmit) és „szemléltető mintaár” az ár mellett */
+.demo-strip { display: flex; flex-wrap: wrap; gap: .15rem .6rem; justify-content: center; align-items: baseline; padding: .45rem 1rem; background: var(--ink); color: #fff; font-size: .82rem; line-height: 1.35; text-align: center; }
+.demo-strip b { font-weight: 700; letter-spacing: .02em; }
+.demo-strip span { opacity: .88; }
+.is-demo [data-plabel]::after { content: " · szemléltető mintaár"; font-weight: 500; color: var(--mute); }
