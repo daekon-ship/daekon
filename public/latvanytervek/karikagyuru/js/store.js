@@ -3,25 +3,25 @@
    Helyi módban a böngészőben (localStorage), szerver módban az api.js-en át
    a szerveren tárolódik (lásd services/karikagyuru-api).
    ========================================================================== */
-import { DEMO_MATERIALS, DEMO_SETTINGS, buildDemoProducts } from './data.js';
+import { BASE_MATERIALS, BASE_SETTINGS, buildDemoProducts } from './data.js';
 import { seedWeights, priceAll, diffPrices, approvalLoss } from './engine.js';
 
-const KEY = 'karikagyuru-demo-v14';
+const KEY = 'karikagyuru-v15';
 const clone = (o) => JSON.parse(JSON.stringify(o));
 const listeners = new Set();
 const fmt = (n) => new Intl.NumberFormat('hu-HU').format(n).replace(/\s/g, ' ');
 
 function fresh() {
-  const materials = clone(DEMO_MATERIALS);
-  const settings = clone(DEMO_SETTINGS);
+  const materials = clone(BASE_MATERIALS);
+  const settings = clone(BASE_SETTINGS);
   const products = seedWeights(buildDemoProducts(), materials, settings);
   const now = new Date().toISOString();
   return {
-    v: 14,
+    v: 15,
     materials, settings, products,
     history: [{
       id: uid(), at: now, validFrom: now, by: 'Rendszer', kind: 'start',
-      title: 'Kiinduló árak betöltve – a mostani weboldal és az ötvös jegyzete alapján',
+      title: 'Kiinduló adatok betöltve – a mostani weboldal katalógusa, árak nélkül',
       before: null, after: clone(materials), count: 0, total: 0,
     }],
     inquiries: [],
@@ -34,7 +34,7 @@ function uid() { return Math.random().toString(36).slice(2, 9); }
 
 let state;
 try { state = JSON.parse(localStorage.getItem(KEY)) || null; } catch { state = null; }
-if (!state || state.v !== 14) state = fresh();
+if (!state || state.v !== 15) state = fresh();
 
 /** Jóváhagyott gyűrű szakmai változásakor a jóváhagyás (és az érintett opció-jóváhagyás) elvész. */
 function revokeIfChanged(before, p) {
@@ -208,7 +208,7 @@ export const store = {
   /** A szerveren mentett állapot betöltése (érdeklődések nélkül – azok külön jönnek). */
   load(remote) {
     if (!remote || !Array.isArray(remote.products)) return;
-    state = { ...fresh(), ...remote, v: 14, inquiries: state.inquiries || [] };
+    state = { ...fresh(), ...remote, v: 15, inquiries: state.inquiries || [] };
     if (!remote.public) delete state.public;
     else state.history = [];   // a nyilvános nézetben nincs árnapló
     if (!Array.isArray(state.history)) state.history = [];

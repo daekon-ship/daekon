@@ -4,7 +4,7 @@
    ========================================================================== */
 import { api, onApi, login, logout, settle, uploadPhoto, mailStatus, mailTest, inquiryFileUrl, deleteInquiry, loadInquiries } from './api.js';
 import { store } from './store.js';
-import { COLORS, STYLES, SITES, SRC_LABEL, EXAMPLE_WEIGHTS } from './data.js';
+import { COLORS, STYLES, SITES, SRC_LABEL } from './data.js';
 import { readiness, optionValues, optionReason, priceProduct, shownPrice, priceAll, diffPrices, defaultConfig, composition, ft, num, dec, pct, METALS, METAL_ORDER, isGold, diamond, refPrice, refWeight, exampleRing, allowedCats, sizeSfx, ctFmt, sizeRange } from './engine.js';
 import { $, $$, esc, productMedia, toast as uiToast, modal, M, reduced, dateHu, dayHu } from './ui.js';
 /* Szerver módban a „Mentve” csak a szerver visszaigazolása után igaz: addig „Mentés folyamatban”. */
@@ -182,7 +182,7 @@ function priceCalc(el) {
 const MAT_LABEL = { gold24: '24K arany alapanyagára', platinum: 'Platina alapanyagára', palladium: 'Palládium alapanyagára', titanium: 'Titán alapanyagára',
   'sellPerGram.au14': '14K kész gyűrű grammára', 'sellPerGram.au18': '18K kész gyűrű grammára', 'sellPerGram.pt': 'Platina kész gyűrű grammára',
   'sellPerGram.pd': 'Palládium kész gyűrű grammára', 'sellPerGram.ti': 'Titán: munkaalapú ár (nem grammár) – szabály kell' };
-const SET_LABEL = { pricingMode: 'Árképzési mód (grammár szerint)', sizeMethod: 'Méret hatása (tömeg arányos a mérettel)', density: 'Tömegarányok anyagonként (4,8 / 5,4 / 6,9 / 4,0 / 1,5 g)',
+const SET_LABEL = { pricingMode: 'Árképzési mód (grammár szerint)', sizeMethod: 'Méret hatása (tömeg arányos a mérettel)', density: 'Tömegarányok anyagonként (a 14K-hoz képest)',
   stonesGross: 'A kő darabára végső ár (nincs rá felár)', settingPerStone: 'Kőfoglalás díja', engravingPrice: 'Gravírozás díja', boxCost: 'Díszdoboz', certCost: 'Kőtanúsítvány',
   roundTo: 'Kerekítés', vatPct: 'ÁFA', stoneEdgeMm: 'Kő és gyűrűszél közti perem', stoneGapMm: 'Kövek közti hely körbe foglalásnál',
   lossPct: 'Gyártási veszteség (költségalapú mód)', laborFactor: 'Munkadíj-szorzók (költségalapú mód)', markupMetal: 'Felár fémre (költségalapú mód)', markupStones: 'Felár kövekre (költségalapú mód)' };
@@ -191,14 +191,15 @@ function approvals(el) {
   el = fresh(el);
   const st = S();
   const M = st.materials, Sx = st.settings;
-  const fmtSet = (k) => { const v = Sx[k]; if (typeof v === 'object') return Object.entries(v).map(([m, x]) => `${METALS[m]?.short || m}: ${dec(Math.round(x * 1000) / 1000)}`).join(' · ');
+  const fmtSet = (k) => { const v = Sx[k]; if (v == null) return 'nincs megadva'; if (typeof v === 'object') return Object.entries(v).map(([m, x]) => `${METALS[m]?.short || m}: ${dec(Math.round(x * 1000) / 1000)}`).join(' · ');
     if (k === 'pricingMode') return v === 'gramm' ? 'grammár szerint' : 'költség szerint'; if (k === 'sizeMethod') return v === 'tomeg' ? 'tömeg szerint' : 'árarányos';
     if (k === 'stonesGross') return v === false ? 'nem' : 'igen'; if (/Mm$/.test(k)) return dec(v) + ' mm'; if (/Pct|^markup/.test(k)) return dec(v) + '%'; return ft(v); };
-  const row = (kind, key, label, value, src, note = '') => `<li class="aprow aprow--${src}"><span class="aprow__l"><b>${label}</b><small>${value}${note ? ` · ${note}` : ''}</small></span>${srcBadge(src)}
-    ${src === 'jovahagyott' ? '' : `<button class="abtn" type="button" data-appr="${kind}|${key}" data-lab="${esc(label)}" ${src === 'bizonytalan' && kind === 'diamond' ? 'disabled title="Előbb adjon meg árat az Árak oldalon"' : ''}>Jóváhagyom</button>`}</li>`;
-  const mats = Object.keys(MAT_LABEL).map((k) => row('materials', k, MAT_LABEL[k], valOf(M, k) == null ? 'nincs ár' : ft(valOf(M, k)) + '/g', (M.src || {})[k] || 'demo'));
-  const dias = M.diamonds.map((d) => row('diamond', d.id, `${d.name} (${d.quality})`, d.price == null ? 'nincs ár → egyedi ajánlat' : ft(d.price) + '/db', d.src || 'demo', d.note ? esc(d.note) : ''));
-  const sets = Object.keys(SET_LABEL).map((k) => row('settings', k, SET_LABEL[k], fmtSet(k), (Sx.src || {})[k] || 'demo'));
+  // Üres értéket nem lehet jóváhagyni (pl. nincs megadva grammár vagy kőár)
+  const row = (kind, key, label, value, src, note = '', empty = false) => `<li class="aprow aprow--${src}"><span class="aprow__l"><b>${label}</b><small>${value}${note ? ` · ${note}` : ''}</small></span>${srcBadge(src)}
+    ${src === 'jovahagyott' ? '' : `<button class="abtn" type="button" data-appr="${kind}|${key}" data-lab="${esc(label)}" ${empty ? 'disabled title="Előbb adjon meg értéket az Árak vagy a Beállítások oldalon"' : ''}>Jóváhagyom</button>`}</li>`;
+  const mats = Object.keys(MAT_LABEL).map((k) => row('materials', k, MAT_LABEL[k], valOf(M, k) == null ? 'nincs ár' : ft(valOf(M, k)) + '/g', (M.src || {})[k] || 'demo', '', valOf(M, k) == null && k !== 'sellPerGram.ti'));
+  const dias = M.diamonds.map((d) => row('diamond', d.id, `${d.name} (${d.quality})`, d.price == null ? 'nincs ár → egyedi ajánlat' : ft(d.price) + '/db', d.src || 'demo', d.note ? esc(d.note) : '', d.price == null));
+  const sets = Object.keys(SET_LABEL).map((k) => row('settings', k, SET_LABEL[k], fmtSet(k), (Sx.src || {})[k] || 'demo', '', Sx[k] == null));
   const prods = st.products.filter((p) => !p.approved);
   const count = (arr) => arr.filter((h) => !h.includes('aprow--jovahagyott')).length;
   el.innerHTML = `
@@ -236,6 +237,12 @@ function approvals(el) {
 function goldsmithExamples(box) {
   const st = S();
   const M = st.materials, Sx = st.settings;
+  // Az ötvös példatömegei nem részei a nyilvános kódnak: a szerveren tárolt beállításból (vagy fejlesztői adatkészletből) jönnek.
+  const EXAMPLE_WEIGHTS = Sx.exampleWeights;
+  if (!EXAMPLE_WEIGHTS || !Object.values(M.sellPerGram || {}).some((x) => x)) {
+    box.innerHTML = '<p class="hint" data-noexamples>Még nincs megadva példatömeg és grammár, ezért itt nincs számolt példa. Az „Árak” oldalon megadott grammárak után a gyűrűk oldalán látszanak a számolt árak.</p>';
+    return;
+  }
   const s = { metal: 'pt', weight: EXAMPLE_WEIGHTS.pt, size: 60, stones: 0, cat: 'd01' };
   const R1 = { ...Sx, roundTo: 1 };
   const ex = (metal, size, s0 = R1) => exampleRing({ metal, weight: EXAMPLE_WEIGHTS[metal], size }, M, { ...s0, pricingMode: 'gramm' });
@@ -260,13 +267,13 @@ function goldsmithExamples(box) {
       ${part.materialCost ? `<li class="xsteps__info"><span>Tájékoztató: anyagköltség (${ft(part.refPrice)}/g alapanyagár)</span><b>${ft(part.materialCost)}</b></li>` : ''}
     </ol>${r.final === null && r.reason ? `<p class="warn">${esc(r.reason)}</p>` : ''}`;
     box.innerHTML = `
-      <section class="ebox xbox"><h2>Az ötvös számítási módja <small>az ügyfél jegyzetének példái</small></h2>
+      <section class="ebox xbox"><h2>Az ötvös számítási módja <small>példák</small></h2>
         <p class="hint">Ár = tömeg × eladási grammár; más méretnél a tömeg arányosan változik (× méret / 54). A kövek darabára és a külön díjak ehhez adódnak hozzá, felár és ÁFA nem kerül rá még egyszer.</p>
         <div class="xtable"><table><thead><tr><th>Példa</th><th>Számított</th><th>Megjelenő</th></tr></thead><tbody>
           ${line('au14', 54)}${line('pt', 54)}${line('pt', 48)}${line('pt', 60)}
         </tbody></table></div>
         <p class="hint">Számított = nyers eredmény. Megjelenő = kerekítve (${roundLabel(Sx.roundTo)}) ${srcBadge((Sx.src || {}).roundTo || 'demo')} – a kerekítést az ügyféllel egyeztetjük.</p>
-        <p class="note-warn">A kézzel írt jegyzetben a 60-as platina gyűrűnél 442 000 Ft szerepel. A lineáris számítás ${ft(ex('pt', 60).final)}-ot ad, a különbség ${ft(442000 - (ex('pt', 60).final || 0))}. A lineáris számítás szerint a 442 valószínűleg elírás (422). Nem állítottuk be – egyeztetendő, hogy nagyobb méretnél más a tömegnövekedés, vagy más szélességgel számolt.</p>
+        ${Sx.exampleNote ? `<p class="note-warn">${esc(Sx.exampleNote)}</p>` : ''}
       </section>
       <section class="ebox xbox"><h2>Próbaszámítás <small>tetszőleges tömeggel</small></h2>
         <div class="xform">
@@ -1159,11 +1166,11 @@ const HELP = {
 };
 const MODES = {
   pricingMode: [
-    ['gramm', 'Grammár szerint – az ötvös módszere', 'Kész tömeg × eladási grammár (benne a fém, a munka, az árrés és az ÁFA). Pl. 4,8 g × 47 000 = 225 600 Ft. Ehhez csak a kövek darabára és a külön díjak adódnak – munkadíj, felár és ÁFA nem számolódik még egyszer.'],
+    ['gramm', 'Grammár szerint – az ötvös módszere', 'Kész tömeg × eladási grammár (benne a fém, a munka, az árrés és az ÁFA). Pl. 5 g × 40 000 Ft/g = 200 000 Ft (szemléltető számok). Ehhez csak a kövek darabára és a külön díjak adódnak – munkadíj, felár és ÁFA nem számolódik még egyszer.'],
     ['koltseg', 'Költség szerint – összehasonlításnak', 'Alapanyagár (14K = 24K × 0,585) × tömeg + munkadíj + kövek, erre felár és ÁFA. Az alapanyagár változása csak a fém részt mozgatja.'],
   ],
   sizeMethod: [
-    ['tomeg', 'Tömeg szerint', 'A tömeg arányos a mérettel: 60-as = 54-es × 60/54. Platina: 379 500 × 60/54 ≈ 421 667 Ft. A kövek és díjak nem változnak a mérettel.'],
+    ['tomeg', 'Tömeg szerint', 'A tömeg arányos a mérettel: 60-as = 54-es × 60/54. Pl. 200 000 Ft × 60/54 ≈ 222 222 Ft (szemléltető számok). A kövek és díjak nem változnak a mérettel.'],
     ['ar', 'Egyszerű árarányosítás', 'A kő nélküli rész teljes ára arányosan nő a mérettel. Egyszerűbb, de a munkadíjat is arányosítja.'],
   ],
 };
@@ -1201,8 +1208,8 @@ function formula(el) {
         </div>
         <label class="check check--lg"><input type="checkbox" data-sb="stonesGross" ${d.stonesGross !== false ? 'checked' : ''}><span>A gyémánt darabára végső ár (grammáras módban nincs rá felár és ÁFA) ${srcBadge((st.settings.src || {}).stonesGross || 'demo')}</span></label></section>
         <section class="ebox"><h2>Tömeg anyagonként ${srcBadge((st.settings.src || {}).density || 'demo')}</h2>
-          <p class="hint">Ugyanaz a modell az adott anyagból ennyiszer nehezebb, mint 14K aranyból. Az ügyfél példája 54-es méretre: 14K 4,8 g · 18K 5,4 g · platina 6,9 g · palládium 4,0 g · titán 1,5 g.</p>
-          <div class="egrid">${['au18', 'pt', 'pd', 'ti'].map((m) => f(`density.${m}`, `${METALS[m].short}`, '×', `4,8 g → ${dec(Math.round(4.8 * get(d, `density.${m}`) * 100) / 100)} g`)).join('')}</div>
+          <p class="hint">Ugyanaz a modell az adott anyagból ennyiszer nehezebb, mint 14K aranyból. Pl. ha egy 14K gyűrű 5 g, és a szorzó 1,4, akkor ugyanaz platinából 7 g.</p>
+          <div class="egrid">${['au18', 'pt', 'pd', 'ti'].map((m) => f(`density.${m}`, `${METALS[m].short}`, '×', `5 g → ${dec(Math.round(5 * (get(d, `density.${m}`) || 0) * 100) / 100)} g`)).join('')}</div>
         </section>
         <section class="ebox"><h2>Kövek – fizikai korlát</h2>
           <p class="hint">A vásárló csak olyan kőméretet választhat, ami elfér: a kő átmérője ≤ gyűrűszélesség − perem. Körbe foglalásnál a kőszám legfeljebb a kerület ÷ (kőátmérő + hézag).</p>

@@ -5,7 +5,7 @@
    A) „gramm” – AZ ÖTVÖS SAJÁT MÓDSZERE (alapértelmezett), az ügyfél jegyzete szerint:
         kész tömeg (g) × késztermék-grammár (Ft/g, bruttó: fém + munka + árrés + ÁFA benne)
         + gyémántok darabára × darabszám + külön díjak (kőfoglalás, gravír, doboz) – mind bruttó
-        Példa: 14K, 4,8 g × 47 000 = 225 600 Ft · platina 6,9 g × 55 000 = 379 500 Ft.
+        Példa (szemléltető számok): 5 g × 40 000 Ft/g = 200 000 Ft.
       Munkadíj, fém-felár és ÁFA itt NEM adódik hozzá még egyszer.
    B) „koltseg” – költségalapú összehasonlítás:
         ( alapanyag-referenciaár × tömeg × (1+veszteség) + munkadíj + díjak ) × (1+felár)
@@ -401,7 +401,7 @@ export function diffPrices(products, M0, M1, S0, S1 = S0) {
 
 /**
  * BECSÜLT tömegek: a modell valós tömege nem ismert, ezért a 14K tömeget a mostani weboldali
- * árból számoljuk vissza a beállított módszerrel (grammáras módban: (ár − kövek) / 47 000 Ft/g).
+ * árból számoljuk vissza a beállított módszerrel (grammáras módban: (ár − kövek) / a 14K grammár).
  * Ez becslés, nem jóváhagyott adat – a termék „approved: false”, amíg az ötvös meg nem adja.
  */
 export function seedWeights(products, M, S) {
@@ -412,11 +412,13 @@ export function seedWeights(products, M, S) {
     for (const r of p.rings) {
       const rule = r.stoneRule; if (!rule) continue;
       const d = diamond(M, rule.defCat);
-      if (!d || !ok(d.price)) { const alt = [...pricedAll].reverse().find((x) => !d || x.ct < d.ct) || pricedAll[0]; rule.defCat = alt.id; if (!rule.cats.includes(alt.id)) rule.cats.unshift(alt.id); }
+      if ((!d || !ok(d.price)) && pricedAll.length) { const alt = [...pricedAll].reverse().find((x) => !d || x.ct < d.ct) || pricedAll[0]; rule.defCat = alt.id; if (!rule.cats.includes(alt.id)) rule.cats.unshift(alt.id); }
       const fit = allowedCats(rule, r.refWidth, M, S);
       if (fit.length && !fit.includes(rule.defCat)) rule.defCat = fit.filter((c) => ok(diamond(M, c).price)).pop() || fit[0];
     }
-    if (p.fixedWeight || !p.listaAr) continue;
+    // Grammár nélkül (semleges kiinduló adat) nincs mihez visszaszámolni a tömeget: a gyűrű tömeg nélkül marad.
+    const gm = (S.pricingMode || 'gramm') === 'gramm';
+    if (p.fixedWeight || !p.listaAr || (gm ? !ok(M.sellPerGram?.au14) : !ok(M.gold24))) continue;
     const cfg = defaultConfig(p);
     const set = (W) => p.rings.forEach((r) => { r.weight = W * r.share; });
     const gross = (W) => { set(W); return priceProduct({ ...p, priceOnRequest: false }, cfg, M, Sk, { applyOverride: false }).breakdown?.gross ?? 0; };
@@ -455,7 +457,7 @@ export const pct = (n, sign = true) => (sign && n > 0 ? '+' : '') + nf2.format(M
 
 /**
  * Az ötvös számítási példáihoz: egyetlen gyűrű megadott anyaggal és tömeggel (54-es méretben).
- * Pl. exampleRing({ metal: 'pt', weight: 6.9, size: 60 }) → 6,9 × 60/54 × 55 000.
+ * Pl. exampleRing({ metal: 'pt', weight: 7, size: 60 }) → 7 × 60/54 × a platina grammára.
  */
 export function exampleRing({ metal = 'au14', weight, size = 54, refSize = 54, width = 4, stones = null }, M, S) {
   const p = {
@@ -496,6 +498,8 @@ export function readiness(state) {
   const gm = (S.pricingMode || 'gramm') === 'gramm';
   const metals = METAL_ORDER.filter((m) => vis.some((p) => (p.metals || []).includes(m)));
 
+  // --- Bemutató mintaadat soha nem élesíthető ---
+  if (state.demo) blockers.push({ group: 'szabalyok', key: 'demo', label: 'Ez bemutató mintaadat (nem éles árak, nem jóváhagyott ügyféladat) – élesíteni nem lehet', kind: 'ervenytelen' });
   // --- Árak ---
   if (!['gramm', 'koltseg'].includes(S.pricingMode)) bad('szabalyok', 'pricingMode', 'Árképzési mód: ismeretlen érték');
   if (!['tomeg', 'ar'].includes(S.sizeMethod)) bad('szabalyok', 'sizeMethod', 'Méret hatása: ismeretlen érték');

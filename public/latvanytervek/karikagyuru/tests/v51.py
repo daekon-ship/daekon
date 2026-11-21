@@ -42,7 +42,7 @@ async def run(b, w, h, mob):
     check(f'{tag} kezelőfelület főmenüjén nincs „Bemutató”/„demó” felirat', not BAD.search(adm), ','.join(set(BAD.findall(adm))))
     await pg.goto(B + '#/admin/elozmenyek'); await pg.wait_for_timeout(700)
     hist = await pg.inner_text('.adm__main')
-    check(f'{tag} árnaplóban nincs kitalált előzmény (csak a kiinduló bejegyzés)', '35 400' not in hist and '36 300' not in hist and 'Kiinduló árak' in hist)
+    check(f'{tag} árnaplóban nincs kitalált előzmény (csak a kiinduló bejegyzés)', '35 400' not in hist and '36 300' not in hist and 'Kiinduló adatok' in hist)
     await pg.goto(B + '#/admin/beallitasok'); await pg.wait_for_timeout(700)
     st = await pg.inner_text('.adm__main')
     check(f'{tag} beállítások: adattárolás tényszerűen, „Alapállapot visszaállítása”', 'ebben a böngészőben' in st and 'Alapállapot visszaállítása' in st and 'Demó' not in st)

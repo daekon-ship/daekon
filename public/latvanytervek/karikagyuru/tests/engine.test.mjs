@@ -1,7 +1,12 @@
 /* Árkalkulációs motor tesztjei – futtatás: node --test public/latvanytervek/karikagyuru/tests/ */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { DEMO_MATERIALS, DEMO_SETTINGS, buildDemoProducts } from '../js/data.js';
+import { readFileSync } from 'node:fs';
+import { buildDemoProducts as buildCatalog } from '../js/data.js';
+// A nyilvános kódban nincs ár (V5.5): a tesztek a külön fejlesztői adatkészlettel számolnak.
+const DS = JSON.parse(readFileSync(new URL('../../../../services/karikagyuru-api/dev/demo-dataset.json', import.meta.url), 'utf8'));
+const DEMO_MATERIALS = DS.materials, DEMO_SETTINGS = DS.settings;
+const buildDemoProducts = () => buildCatalog().map((p) => { p.rings.forEach((r) => { r.labor = DS.laborByStyle[p.style] ?? null; }); return p; });
 import { refWeight, ctFmt, sizeSfx, isGold as isGoldM, priceProduct, defaultConfig, normalizeConfig, seedWeights, diffPrices, priceAll, encodeCfg, decodeCfg, stoneCount, exampleRing, refPrice, allowedCats, maxAround, diamond } from '../js/engine.js';
 
 const clone = (o) => JSON.parse(JSON.stringify(o));
@@ -662,5 +667,34 @@ import { professionalKey, approvalLoss } from '../js/engine.js';
     const a = JSON.parse(JSON.stringify(base)); const b = JSON.parse(JSON.stringify(base));
     b.rings[0] = Object.fromEntries(Object.entries(b.rings[0]).reverse());
     assert.equal(professionalKey(a), professionalKey(b));
+  });
+}
+
+/* ---------- V5.5: a nyilvános kódban nincs belső árazási adat ---------- */
+{
+  const src = ['data.js', 'engine.js', 'store.js', 'views-public.js', 'views-admin.js', 'ui.js', 'app.js', 'api.js']
+    .map((f) => readFileSync(new URL(`../js/${f}`, import.meta.url), 'utf8')).join('\n');
+  test('V5.5: nyilvános JS – nincs az ügyfél példaára, beszerzési ára, munkadíja', () => {
+    // számok szóhatárral (a 240 000 Ft-os listaár ne számítson a 24000-es munkadíjnak)
+    for (const bad of ['47000', '47 000', '55000', '55 000', '40000', '15000', '225 600', '379 500', '4,8 g', '6,9 g', '442 000', '16000', '22000', '24000', 'markupMetal: 30', 'DEMO_LABOR', 'DEMO_MATERIALS', 'EXAMPLE_WEIGHTS = {']) {
+      const re = new RegExp(`(?<![\\d])${bad.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![\\d])`);
+      assert.ok(!re.test(src), `a nyilvános kódban szerepel: ${bad}`);
+    }
+  });
+  test('V5.5: a nyilvános kiinduló adatokban minden ár üres és semmi nincs jóváhagyva', async () => {
+    const d = await import('../js/data.js');
+    assert.ok(Object.values(d.BASE_MATERIALS.sellPerGram).every((v) => v === null));
+    assert.ok(d.BASE_MATERIALS.diamonds.every((x) => x.price === null));
+    assert.deepEqual(d.BASE_MATERIALS.src, {}); assert.deepEqual(d.BASE_SETTINGS.src, {});
+    assert.ok(d.buildDemoProducts().every((p) => p.rings.every((r) => r.labor === null) && p.approved === false));
+  });
+  test('V5.5: semleges adatokkal az alapváltozat listaárat, minden más egyedi ajánlatot ad – nincs számolt ár', async () => {
+    const d = await import('../js/data.js');
+    const ps = seedWeights(d.buildDemoProducts(), d.BASE_MATERIALS, d.BASE_SETTINGS);
+    for (const p of ps.slice(0, 30)) {
+      const r = shownPrice(p, defaultConfig(p), d.BASE_MATERIALS, d.BASE_SETTINGS);
+      assert.notEqual(r.kind, 'calc');
+      if (p.listaAr) assert.equal(r.final, p.listaAr);
+    }
   });
 }

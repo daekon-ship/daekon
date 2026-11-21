@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """V5.3 – helyi mód, a kiinduló (nem jóváhagyott) adatokkal: nem jóváhagyott ár, jóváhagyás sorban,
 jóváhagyott és nem jóváhagyott gyűrű viselkedése, sikertelen érdeklődés-rögzítés. Helyi szerver: 8765."""
-import asyncio, re, sys
+import asyncio, re, sys, os
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from kg_common import load_dataset
 from playwright.async_api import async_playwright
 B = 'http://localhost:8765/latvanytervek/karikagyuru/'
 PAIR = 'maz-81194-81195-w'
@@ -64,7 +65,7 @@ async def run(b, w, h, mob):
     await pg.click('[data-size="0|1"]'); await pg.wait_for_timeout(500)
     check(f'{tag} jóváhagyott gyűrű + nem jóváhagyott grammár: módosítva egyedi ajánlat', await pg.inner_text('[data-cprice]') in ('Egyedi árajánlat szükséges',) or num(await pg.inner_text('[data-cprice]')) == 0, await pg.inner_text('[data-cprice]'))
     # --- árak jóváhagyva → számolt ár ---
-    await pg.evaluate(APPROVE_PRICES); await pg.reload(); await pg.wait_for_timeout(1100)
+    await load_dataset(pg); await pg.evaluate(APPROVE_PRICES); await pg.reload(); await pg.wait_for_timeout(1100)
     await pg.click('[data-size="0|1"]'); await pg.wait_for_timeout(600)
     lab = await pg.inner_text('[data-plabel]'); v = num(await pg.inner_text('[data-cprice]'))
     check(f'{tag} minden jóváhagyva: „Becsült ár a választott beállítással”, valódi szám', 'Becsült ár' in lab and v > 200000, f'{lab} {v}')

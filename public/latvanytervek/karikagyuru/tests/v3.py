@@ -1,7 +1,7 @@
 """V3 böngészős tesztek: két út, szemléltető ábra, saját ötlet, új gyűrű felvitele. Futtatás: python3 tests/v3.py [alap-URL]"""
 import asyncio, base64, re, sys, os, tempfile
 from playwright.async_api import async_playwright
-import os, sys as _sys; _sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from kg_common import approve_all
+import os, sys as _sys; _sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from kg_common import approve_all, DATASET
 
 B = sys.argv[1] if len(sys.argv) > 1 else 'http://localhost:8765/latvanytervek/karikagyuru/'
 PAIR = 'maz-81184-81185-w'
@@ -91,7 +91,7 @@ async def run(b, w, h, mob):
     check(f'{tag} admin: az egyedi kérés a modellel és a leírással megérkezett', all(x in inq for x in ['saját elképzelés', '81184', 'keskenyebb', '250–400']), inq.replace('\n', ' | ')[:200])
 
     # --- V3.3: ár nélküli modell is konfigurálható; admin szélesség; élesítési ellenőrzés ---
-    rid = await pg.evaluate("JSON.parse(localStorage.getItem(Object.keys(localStorage).find(k => k.startsWith('karikagyuru-demo')))).products.find(p => p.priceOnRequest && p.kind === 'p' && p.metals.includes('au18')).id")
+    rid = await pg.evaluate("JSON.parse(localStorage.getItem(Object.keys(localStorage).find(k => k.startsWith('karikagyuru-')))).products.find(p => p.priceOnRequest && p.kind === 'p' && p.metals.includes('au18')).id")
     await pg.goto(B + f'#/gyuru/{rid}'); await pg.wait_for_timeout(1000)
     ptxt0 = await pg.inner_text('[data-cprice]')
     check(f'{tag} ár nélküli modell: van konfigurátor, ár helyett egyedi ajánlat', await pg.locator('.cfg__step').count() >= 3 and 'Egyedi árajánlat' in ptxt0 and await pg.locator('.cfg__step .delta--up, .cfg__step .delta--down').count() == 0, ptxt0)
@@ -109,7 +109,7 @@ async def run(b, w, h, mob):
     etxt = await pg.inner_text('.edit__form')
     check(f'{tag} admin: nincs több szélesség, gyűrűnként egy („online nem választhat mást”)', await pg.locator('[data-widths]').count() == 0 and 'online nem választhat mást' in etxt and 'Szélességek' not in etxt)
     # az árelemek jóváhagyását visszaállítjuk a kiinduló állapotra (a gyűrűk maradnak jóváhagyva)
-    await pg.evaluate("""async () => { const { store } = await import('./js/store.js'); const d = await import('./js/data.js'); const st = store.get(); st.materials.src = JSON.parse(JSON.stringify(d.DEMO_MATERIALS.src)); st.settings.src = JSON.parse(JSON.stringify(d.DEMO_SETTINGS.src)); st.materials.diamonds.forEach((x) => { const o = d.DEMO_MATERIALS.diamonds.find((y) => y.id === x.id); if (o) x.src = o.src; }); store.persistNow(); }""")
+    await pg.evaluate("""async () => { const { store } = await import('./js/store.js'); const st = store.get(); const d = ds; st.materials.src = JSON.parse(JSON.stringify(d.materials.src)); st.settings.src = JSON.parse(JSON.stringify(d.settings.src)); st.materials.diamonds.forEach((x) => { const o = d.materials.diamonds.find((y) => y.id === x.id); if (o) x.src = o.src; }); store.persistNow(); }""".replace('async () =>', 'async (ds) =>'), DATASET)
     await pg.reload(); await pg.wait_for_timeout(500)
     await pg.goto(B + '#/admin/jovahagyas'); await pg.wait_for_timeout(600)
     gl = await pg.inner_text('[data-golive-box]')

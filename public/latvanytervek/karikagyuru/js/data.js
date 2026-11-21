@@ -4,11 +4,9 @@
    VALÓS (a karikagyuru.com oldaláról, 2026.11.18.):
      - cikkszámok, a jelenleg feltüntetett árak (listaAr), a képfájlok neve,
        elérhetőségek, "rendelésre elkészítjük".
-   DEMÓ (kitalált, egyeztetendő):
-     - minden alapanyagár, haszonkulcs, munkadíj, tömeg, szélesség, kőadat,
-       finomság-alapérték, stílusbesorolás és a két ezüst demótermék.
-   A tömegeket a rendszer a kezdő demóárakból úgy számolja vissza, hogy a
-   kalkulált ár közel essen a mostani weboldali árhoz (lásd engine.seedWeights).
+   BECSÜLT (egyeztetendő): szélesség, kőadat, stílusbesorolás.
+   ÁRAZÁS: itt nincs (semleges kiinduló szerkezet, lásd lent) – az ötvös adja meg
+   a kezelőfelületen, a szerveren tárolódik.
    ========================================================================== */
 
 export const BUSINESS = {
@@ -47,7 +45,6 @@ export const TERMS = [
 export const REMOTE_IMG = 'https://karikagyuru.com/public/layout/pictures/karikagyuru/';
 export const IMG_BASE = 'img/termekek/';   // a karikagyuru.com saját fotói (az ügyfél mentett oldaláról)
 
-/* --- Kezdő demó alapanyagárak (NEM valós piaci árak; az ügyfél megbeszélésén elhangzott példaárakat sem vettük át éles árként) --- */
 /* ==========================================================================
    ADATFORRÁSOK – minden árazási adatnál jelöljük, honnan származik:
      'jovahagyott'  – a tulajdonos megadta vagy jóváhagyta (éles adatnak tekinthető)
@@ -57,79 +54,58 @@ export const IMG_BASE = 'img/termekek/';   // a karikagyuru.com saját fotói (a
    ========================================================================== */
 export const SRC_LABEL = { jovahagyott: 'jóváhagyott', pelda: 'ügyfél példája', bizonytalan: 'megerősítendő', demo: 'jóváhagyásra vár' };
 
-/* --- Alapanyagárak és grammárak (Ft) --- */
-export const DEMO_MATERIALS = {
-  // ALAPANYAG-REFERENCIAÁRAK (beszerzés, Ft / g). A 14K és 18K a 24K-ból számolódik:
-  //   14K = 24K × 0,585 (40 000 → 23 400), 18K = 24K × 0,75 (40 000 → 30 000) – egyezik az ügyfél jegyzetével.
-  gold24: 40000,
-  platinum: 15000,
-  palladium: 10000,
-  titanium: 80,
-  // KÉSZTERMÉK ELADÁSI GRAMMÁRA (bruttó, Ft / g) – ebben benne van a fém, a munka és az árrés.
-  // Az ügyfél példája: 14K 47 000, platina 55 000. A többi demó (az ügyféltől még nem kaptuk meg).
-  // TITÁN: nincs grammár – az ár a munkából adódik, nem a tömegből → egyedi ajánlat, amíg nincs jóváhagyott szabály.
-  sellPerGram: { au14: 47000, au18: 56000, pt: 55000, pd: 40000, ti: null },
-  // TERMÉSZETES GYÉMÁNT, Ft / db (ügyfél jegyzete). price: null = nincs megbízható ár → egyedi ajánlat.
-  // mm = a kő átmérője – ebből ellenőrizzük, hogy fizikailag elfér-e a gyűrűn.
+/* ==========================================================================
+   KIINDULÓ ÁRAZÁSI SZERKEZET – SEMLEGES (V5.5)
+   A nyilvános kódban NINCS ár, munkadíj, felár vagy az ügyfél példaadata: minden érték üres vagy semleges,
+   és egyik sincs jóváhagyva. Az éles árakat az ötvös a kezelőfelületen adja meg – azok csak a szerveren
+   tárolódnak. Fejlesztéshez és a nem nyilvános bemutatóhoz külön adatkészlet van:
+   services/karikagyuru-api/dev/demo-dataset.json (nem része a weboldalnak, nem kerül a tárhelyre).
+   ========================================================================== */
+export const BASE_MATERIALS = {
+  gold24: null, platinum: null, palladium: null, titanium: null,   // beszerzési referenciaár (csak költségalapú módban)
+  sellPerGram: { au14: null, au18: null, pt: null, pd: null, ti: null },   // eladási grammár (bruttó) – az ötvös adja meg
+  // A természetes gyémánt méretsora (nyilvános termékadat); az árat az ötvös adja meg.
   diamonds: [
-    { id: 'd005', ct: 0.005, mm: 1.0,  name: 'Brill 0,005 ct', quality: 'Ø 1,0 mm',     price: 3500,  src: 'demo' },
-    { id: 'd01',  ct: 0.01,  mm: 1.25, name: 'Brill 0,01 ct',  quality: 'Ø 1,25 mm',    price: 6000,  src: 'pelda' },
-    { id: 'd015', ct: 0.015, mm: 1.5,  name: 'Brill 0,015 ct', quality: 'Ø 1,5 mm',     price: 9000,  src: 'pelda' },
-    { id: 'd02',  ct: 0.02,  mm: 1.7,  name: 'Brill 0,02 ct',  quality: 'Ø 1,7 mm',     price: 12000, src: 'pelda' },
-    { id: 'd03',  ct: 0.03,  mm: 2.0,  name: 'Brill 0,03 ct',  quality: 'Ø 2,0 mm',     price: 18000, src: 'pelda' },
-    { id: 'd04',  ct: 0.04,  mm: 2.3,  name: 'Brill 0,04 ct',  quality: 'Ø 2,2–2,3 mm', price: null,  src: 'bizonytalan', note: 'Az ár megerősítendő.' },
-    { id: 'd05',  ct: 0.05,  mm: 2.4,  name: 'Brill 0,05 ct',  quality: 'Ø 2,3–2,4 mm', price: null,  src: 'bizonytalan', note: 'Ár megerősítendő.' },
-    { id: 'd10',  ct: 0.10,  mm: 3.0,  name: 'Brill 0,10 ct',  quality: 'Ø 3,0 mm',     price: null,  src: 'demo', note: 'Nincs adat.' },
+    { id: 'd005', ct: 0.005, mm: 1.0,  name: 'Brill 0,005 ct', quality: 'Ø 1,0 mm',     price: null },
+    { id: 'd01',  ct: 0.01,  mm: 1.25, name: 'Brill 0,01 ct',  quality: 'Ø 1,25 mm',    price: null },
+    { id: 'd015', ct: 0.015, mm: 1.5,  name: 'Brill 0,015 ct', quality: 'Ø 1,5 mm',     price: null },
+    { id: 'd02',  ct: 0.02,  mm: 1.7,  name: 'Brill 0,02 ct',  quality: 'Ø 1,7 mm',     price: null },
+    { id: 'd03',  ct: 0.03,  mm: 2.0,  name: 'Brill 0,03 ct',  quality: 'Ø 2,0 mm',     price: null },
+    { id: 'd04',  ct: 0.04,  mm: 2.3,  name: 'Brill 0,04 ct',  quality: 'Ø 2,2–2,3 mm', price: null },
+    { id: 'd05',  ct: 0.05,  mm: 2.4,  name: 'Brill 0,05 ct',  quality: 'Ø 2,3–2,4 mm', price: null },
+    { id: 'd10',  ct: 0.10,  mm: 3.0,  name: 'Brill 0,10 ct',  quality: 'Ø 3,0 mm',     price: null },
   ],
-  src: {
-    gold24: 'pelda', platinum: 'pelda', palladium: 'pelda', titanium: 'demo',
-    'sellPerGram.au14': 'pelda', 'sellPerGram.pt': 'pelda',
-    'sellPerGram.au18': 'demo', 'sellPerGram.pd': 'demo', 'sellPerGram.ti': 'bizonytalan',
-  },
+  src: {},
 };
 
-/* Az ügyfél példatömegei 54-es méretnél, ugyanarra a gyűrűre (g) – ebből jönnek az anyagonkénti tömegarányok. */
-export const EXAMPLE_WEIGHTS = { ti: 1.5, au14: 4.8, au18: 5.4, pt: 6.9, pd: 4.0 };
-const ratio = (m) => Math.round((EXAMPLE_WEIGHTS[m] / EXAMPLE_WEIGHTS.au14) * 1e6) / 1e6;
-
-/* --- Árképlet-beállítások --- */
-export const DEMO_SETTINGS = {
+export const BASE_SETTINGS = {
   pricingMode: 'gramm',   // 'gramm' = az ötvös módszere: tömeg × grammár · 'koltseg' = költségalapú (összehasonlításnak)
-  sizeMethod: 'tomeg',    // 'tomeg' = a tömeg arányos a mérettel (pl. 60-as = 54-es × 60/54) · 'ar' = árarányosítás
-  // tömegszorzó a 14K-hoz képest – az ügyfél példatömegeiből: 18K 5,4/4,8 · Pt 6,9/4,8 · Pd 4,0/4,8 · Ti 1,5/4,8
-  density: { au14: 1, au18: ratio('au18'), pt: ratio('pt'), pd: ratio('pd'), ti: ratio('ti') },
-  stonesGross: true,      // grammáras módban a kő darabára végső (bruttó) ár – nincs rá külön felár és ÁFA
-  settingPerStone: 0,     // kőfoglalás díja, Ft / kő (bruttó) – egyeztetendő, most 0
-  engravingPrice: 6000,   // gravírozás, Ft / gyűrű (bruttó)
-  boxCost: 0,             // díszdoboz, Ft / termék
-  certCost: 0,            // kőtanúsítvány, Ft / köves termék
-  roundTo: 100,           // kerekítés felfelé, Ft
-  vatPct: 27,             // ÁFA, % – grammáras módban a grammár már tartalmazza
-  // csak költségalapú módban:
-  lossPct: 5,
-  laborFactor: { au14: 1, au18: 1, pt: 1.3, pd: 1.2, ti: 1.4 },
-  markupMetal: 30,
-  markupStones: 20,
-  // fizikai kőellenőrzés (demó műszaki szabály, ötvössel egyeztetendő):
-  stoneEdgeMm: 1.0,       // a kő átmérője legfeljebb a gyűrű szélessége mínusz ennyi
-  stoneGapMm: 0.1,        // körbe foglalásnál ennyi hely kell két kő között
-  minMarginPct: 15,
+  sizeMethod: 'tomeg',    // 'tomeg' = a tömeg arányos a mérettel · 'ar' = árarányosítás
+  density: { au14: 1, au18: 1, pt: 1, pd: 1, ti: 1 },   // tömegarány a 14K-hoz képest – az ötvös adja meg
+  stonesGross: true,
+  settingPerStone: 0,
+  engravingPrice: null,
+  boxCost: 0,
+  certCost: 0,
+  roundTo: 100,
+  vatPct: 27,
+  lossPct: 0,
+  laborFactor: { au14: 1, au18: 1, pt: 1, pd: 1, ti: 1 },
+  markupMetal: 0,
+  markupStones: 0,
+  stoneEdgeMm: 1.0,       // műszaki kiindulóérték: a kő átmérője legfeljebb a gyűrű szélessége mínusz ennyi
+  stoneGapMm: 0.1,
+  minMarginPct: 0,
   bigChangePct: 20,
   showDemoMarks: false,
-  src: {
-    pricingMode: 'pelda', sizeMethod: 'pelda', density: 'pelda', vatPct: 'demo',
-    stonesGross: 'demo', settingPerStone: 'demo', engravingPrice: 'demo', boxCost: 'demo', certCost: 'demo', roundTo: 'demo',
-    lossPct: 'demo', laborFactor: 'demo', markupMetal: 'demo', markupStones: 'demo', stoneEdgeMm: 'demo', stoneGapMm: 'demo',
-  },
+  exampleWeights: null,   // az ötvös példatömegei (admin „Az ötvös példái”) – fejlesztői adatkészletből vagy az admintól
+  src: {},
 };
 
 /* Több domain (pl. karikagyuru.com és budapestikarikagyuru.com) közös termék- és áradminisztrációval:
    minden termék `sites` listája mondja meg, melyik oldalon jelenik meg; az árak és a gyűrűk közösek. */
 export const SITES = { karikagyuru: 'karikagyuru.com', budapest: 'második oldal: jegy- és leánykérő gyűrűk (név még nincs eldöntve)' };
 export const CURRENT_SITE = 'karikagyuru';
-
-/* --- Munkadíj stílusonként (demó), Ft / gyűrű --- */
-export const DEMO_LABOR = { klasszikus: 16000, modern: 22000, koves: 24000, ketszinu: 18000 };
 
 export const STYLES = {
   klasszikus: 'Klasszikus',
@@ -331,7 +307,7 @@ function ringFrom(label, refSize, r, withStones, share) {
     refWidth: r.width,
     share,                         // a visszaszámolt tömeg ekkora része jut erre a gyűrűre
     weight: 0,                     // g, 14K-ban, referenciaméretben – a seed tölti ki
-    labor: DEMO_LABOR[r.style],
+    labor: null,                   // munkadíj (csak költségalapú módban) – az ötvös adja meg
     other: 0,
     stoneRule: withStones && r.st ? demoRule(r.st[0], r.st[1], r.st[1] <= 5) : null,
   };
