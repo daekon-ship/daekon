@@ -1,6 +1,6 @@
 /* ==========================================================================
    Adminfelület – nagy gombok, egyértelmű magyar feliratok, kevés lépés.
-   Bemutató: nincs bejelentkezés és szerveroldali jogosultság (külön fejlesztési szakasz).
+   Szerveroldali mentés és bejelentkezés: services/karikagyuru-api (bekötés: js/api.js).
    ========================================================================== */
 import { store } from './store.js';
 import { COLORS, STYLES, SITES, SRC_LABEL, EXAMPLE_WEIGHTS } from './data.js';
@@ -43,14 +43,14 @@ export function adminShell(el, page, arg) {
   el.innerHTML = `
   <div class="adm">
     <aside class="adm__nav" aria-label="Admin menü">
+      <a class="adm__site" href="#/">← Vissza a weboldalra</a>
       <p class="adm__brand"><img src="img/logo-jel.png" alt="" width="176" height="127">Karikagyuru.com<span>Kezelőfelület</span></p>
       <nav><ol>${MENU.map(([k, t]) => `<li><a href="#/admin/${k}" ${page === k || (page === 'gyuru' && k === 'gyuruk') ? 'aria-current="page"' : ''}>${t}${k === 'erdeklodesek' && newInq ? `<em>${newInq}</em>` : ''}</a></li>`).join('')}</ol>
         <p class="adm__navx">További</p>
         <ul class="adm__navsub">${MENU_EXTRA.map(([k, t]) => `<li><a href="#/admin/${k}" ${page === k ? 'aria-current="page"' : ''}>${t}</a></li>`).join('')}</ul></nav>
     </aside>
     <main class="adm__main" id="adm-main">
-      <div class="adm__mbar">${page === 'attekintes' ? '<span class="adm__mtitle">Főmenü</span>' : `<a class="adm__back" href="#/admin/attekintes">← Főmenü</a><span class="adm__mtitle">${(ALLMENU.find(([k]) => k === (page === 'gyuru' ? 'gyuruk' : page)) || ['', ''])[1]}</span>`}</div>
-      <p class="adm__banner"><b>Bemutató.</b> Az árak az Ön példáiból és bemutató értékekből számolódnak. Az adatok csak ebben a böngészőben maradnak.</p>
+      <div class="adm__mbar">${page === 'attekintes' ? '<span class="adm__mtitle">Főmenü</span><a class="adm__site adm__site--m" href="#/">Weboldal →</a>' : `<a class="adm__back" href="#/admin/attekintes">← Főmenü</a><span class="adm__mtitle">${(ALLMENU.find(([k]) => k === (page === 'gyuru' ? 'gyuruk' : page)) || ['', ''])[1]}</span>`}</div>
       <div data-page></div>
     </main>
   </div>`;
@@ -67,7 +67,7 @@ const MENU_HELP = {
   keplet: 'Felár, munkadíj, ÁFA. Ritkán kell hozzányúlni.',
   erdeklodesek: 'Akik a weboldalon érdeklődtek vagy időpontot kértek.',
   elozmenyek: 'Mikor, mit változtatott. Itt vissza is állíthatja.',
-  beallitasok: 'Kerekítés, védelem, demó visszaállítása.',
+  beallitasok: 'Kerekítés, védelem, adattárolás, alapállapot.',
 };
 function pendingCount(st) {
   const M = st.materials, Sx = st.settings;
@@ -95,8 +95,8 @@ function overview(el) {
       ${tile('#/admin/arszamitas', 'Árszámítás', 'Mennyibe kerül?', 'Ha valaki telefonon kérdezi.')}
       ${tile('#/admin/keplet', 'Felárak és díjak', st.settings.pricingMode === 'gramm' ? 'grammár szerint' : `${dec(st.settings.markupMetal)}% felár`, 'Számítási mód, kerekítés, díjak.')}
       ${tile('#/admin/elozmenyek', 'Árváltozások naplója', `${st.history.length} bejegyzés`, 'Mikor, mit változtatott. Visszaállítható.')}
-      ${tile('#/admin/jovahagyas', 'Jóváhagyásra vár', `${pendingCount(st)} adat`, 'Példa vagy demó – még nem végleges.', pendingCount(st) ? 'smalltile--warn' : '')}
-      ${tile('#/admin/beallitasok', 'Beállítások', st.settings.roundTo > 1 ? `${num(st.settings.roundTo)} Ft-ra kerekít` : 'nincs kerekítés', 'Védelem, demó visszaállítása.')}
+      ${tile('#/admin/jovahagyas', 'Jóváhagyásra vár', `${pendingCount(st)} adat`, 'Még nem végleges értékek.', pendingCount(st) ? 'smalltile--warn' : '')}
+      ${tile('#/admin/beallitasok', 'Beállítások', st.settings.roundTo > 1 ? `${num(st.settings.roundTo)} Ft-ra kerekít` : 'nincs kerekítés', 'Védelem, adattárolás.')}
     </div>
     <div class="ovcols">
       <section class="ovbox"><h2>Legutóbbi árváltozások</h2>
@@ -107,7 +107,7 @@ function overview(el) {
           : '<p class="hint">Még nincs érdeklődés. A vásárlói oldalon a gyűrűknél lévő „Érdeklődés” gombbal küldhető.</p>'}
         <a class="linkbtn" href="#/admin/erdeklodesek">Összes érdeklődés</a></section>
     </div>
-    <section class="ovbox ovbox--chart"><h2>Az arany ára az elmúlt hónapokban <span class="demo-chip">demó</span></h2>${goldChart(store.goldSeries(), st.materials.gold24, st.materials.gold24)}</section>`;
+    ${store.goldSeries().length > 2 ? `<section class="ovbox ovbox--chart"><h2>A 24K arany ára az itt rögzített változások szerint</h2>${goldChart(store.goldSeries(), st.materials.gold24, st.materials.gold24)}</section>` : ''}`;
 }
 
 function priceCalc(el) {
@@ -143,16 +143,16 @@ function approvals(el) {
   const count = (arr) => arr.filter((h) => !h.includes('aprow--jovahagyott')).length;
   el.innerHTML = `
     <h1 class="adm__h1">Jóváhagyásra vár</h1>
-    <p class="adm__lead">Itt látszik, melyik adat jóváhagyott, melyik az ügyfél jegyzetéből vett példa, és melyik kitalált bemutatóadat. Amit a tulajdonos maga átír, az automatikusan jóváhagyottá válik.</p>
+    <p class="adm__lead">Itt látszik, melyik adat jóváhagyott, melyik az ügyfél jegyzetéből vett példa, és melyik ideiglenes érték, amit még meg kell erősíteni. Amit a tulajdonos maga átír, az automatikusan jóváhagyottá válik.</p>
     <p class="srclegend">${['jovahagyott', 'pelda', 'bizonytalan', 'demo'].map(srcBadge).join(' ')}</p>
     ${(() => { const rd = readiness(st); const G = { arak: 'grammár', gyemant: 'gyémántár', szabalyok: 'számítási szabály (kerekítés, ÁFA, gravír…)', gyuruk: 'gyűrű tömeg- és kőadata' };
       return `<section class="golive ${rd.ready ? 'golive--ok' : 'golive--no'}" data-golive-box>
         <h2>Élesítési ellenőrzés</h2>
         <p class="golive__state" data-golive-state>${rd.ready ? 'Az előzetes ellenőrzés szerint minden adat érvényes és jóváhagyott.' : `<b>Nem élesíthető:</b> ${rd.unapproved} adat nincs jóváhagyva${rd.invalid ? `, ${rd.invalid} adat hiányzik vagy hibás` : ''}.`}</p>
-        <p class="golive__pre" data-golive-pre><b>Ez csak előzetes ellenőrzés a látványtervben.</b> Valódi élesítéshez szerveroldali ellenőrzés és hitelesített (bejelentkezéshez kötött) admin szükséges.</p>
+        <p class="golive__pre" data-golive-pre><b>Ez csak előzetes ellenőrzés.</b> Valódi élesítéshez szerveroldali ellenőrzés és bejelentkezéshez kötött kezelőfelület szükséges.</p>
         ${rd.invalid ? `<ul class="golive__list golive__list--bad" data-golive-bad>${rd.blockers.filter((b) => b.kind === 'ervenytelen').slice(0, 8).map((b) => `<li>${esc(b.label)}</li>`).join('')}${rd.invalid > 8 ? `<li>… és még ${rd.invalid - 8}</li>` : ''}</ul>` : ''}
         ${rd.ready ? '' : `<ul class="golive__list">${Object.entries(rd.byGroup).map(([g, c]) => `<li><b>${c}</b> ${G[g]}</li>`).join('')}</ul>`}
-        <p class="hint">A bemutatóban a kalkulátor ezekkel a példa- és demóadatokkal is számol, és ezt a vásárlói oldalon „demó” jelölés mutatja. Éles oldalra csak jóváhagyott adat kerülhet: amíg bármi hiányzik, az élesítés le van tiltva.</p>
+        <p class="hint">A kalkulátor a még jóvá nem hagyott értékekkel is számol. Éles oldalra csak jóváhagyott adat kerülhet: amíg bármi hiányzik, az élesítés le van tiltva.</p>
         <button class="abtn abtn--gold abtn--xl" type="button" data-golive ${rd.ready ? '' : 'disabled'}>Élesítésre kész jelölés</button>
       </section>`; })()}
     <section class="ebox"><h2>Árak – alapanyag és grammár <small>${count(mats)} vár</small></h2><ul class="aplist">${mats.join('')}</ul></section>
@@ -162,7 +162,7 @@ function approvals(el) {
     <section class="ebox"><h2>Gyűrűk adatai <small>${prods.length} / ${st.products.length} vár</small></h2>
       <p class="hint">A gyűrűk tömege most becslés: a weboldalon látható árból visszaszámolva (ár ÷ 47 000 Ft/g). A kőszámok és kőméretek a fotók alapján becsültek. Gyűrűnként a <a href="#/admin/gyuruk">Gyűrűk</a> menüben lehet a valós tömeget megadni és jóváhagyni.</p></section>`;
   el.addEventListener('click', (e) => {
-    if (e.target.closest('[data-golive]')) { if (readiness(S()).ready) toast('Minden adat jóváhagyott. A bemutatóban ez csak ellenőrzés – az éles oldalhoz szerveroldali rendszer kell.'); return; }
+    if (e.target.closest('[data-golive]')) { if (readiness(S()).ready) toast('Minden adat jóváhagyott. Ez előzetes ellenőrzés – az élesítéshez a szerveroldali mentés is kell.'); return; }
     const b = e.target.closest('[data-appr]');
     if (!b || b.disabled) return;
     const [kind, key] = b.dataset.appr.split('|');
@@ -256,7 +256,7 @@ function photos(el) {
     el.innerHTML = `
       <h1 class="adm__h1">Fotók</h1>
       <p class="adm__lead">Itt cserélheti a gyűrűk képét. Válassza ki a fényképet a gépéről vagy a telefonjáról, és azonnal megjelenik a vásárlói oldalon.</p>
-      <p class="adm__banner"><b>Bemutató.</b> A kép kicsinyítve, csak ebben a böngészőben tárolódik. Az éles rendszerben a kép a szerverre kerül, eredeti minőségben.</p>
+      <p class="hint">A képek most kicsinyítve, ebben a böngészőben tárolódnak. Szerveres mentésnél eredeti minőségben a tárhelyre kerülnek.</p>
       <div class="ptools"><label class="check check--lg"><input type="checkbox" data-only ${only ? 'checked' : ''}><span>Csak ahol nincs kép</span></label>
         <div class="ptools__btns"><a class="abtn abtn--gold" href="#/admin/gyuru/uj">+ Új gyűrű felvitele</a></div></div>
       <p class="hint">${list.length} gyűrű</p>
@@ -332,7 +332,7 @@ function quickCalc(box) {
           ${p.rings.map((rg, i) => rg.stoneRule && rg.stoneRule.allowNone ? `<div><span class="qcalc__lab">${esc(rg.label)} – kő</span><div class="qseg"><button type="button" data-qst="${i}|1" aria-pressed="${!!cfg.rings[i].stones}">Gyémánttal</button><button type="button" data-qst="${i}|0" aria-pressed="${!cfg.rings[i].stones}">Kő nélkül</button></div></div>` : '').join('')}
         </div>
       </div>
-      <div class="qcalc__price"><span>Ár</span><b>${r.final === null ? 'Egyedi ajánlat' : ft(r.final)}</b><small>${r.final === null ? esc(r.reason || '') : `bruttó · ${dec(r.grams)} g, ${METALS[cfg.metal].short}${r.calculated !== r.raw ? ` · számított ${ft(r.raw)}, ${roundLabel(st.settings.roundTo)} kerekítve` : ''}${(st.materials.src || {})[`sellPerGram.${cfg.metal}`] === 'demo' ? ` · <b>a ${METALS[cfg.metal].short} grammár demó</b>` : ''}`}</small></div>
+      <div class="qcalc__price"><span>Ár</span><b>${r.final === null ? 'Egyedi ajánlat' : ft(r.final)}</b><small>${r.final === null ? esc(r.reason || '') : `bruttó · ${dec(r.grams)} g, ${METALS[cfg.metal].short}${r.calculated !== r.raw ? ` · számított ${ft(r.raw)}, ${roundLabel(st.settings.roundTo)} kerekítve` : ''}${(st.materials.src || {})[`sellPerGram.${cfg.metal}`] === 'demo' ? ` · <b>a ${METALS[cfg.metal].short} grammár még nincs jóváhagyva</b>` : ''}`}</small></div>
       <button class="abtn abtn--xl qcalc__save" type="button" data-qsave>Felírom ajánlatnak</button>`;
   };
   box.addEventListener('change', (e) => { if (e.target.matches('[data-qp]')) { p = store.product(e.target.value); cfg = defaultConfig(p); paint(); } });
@@ -481,7 +481,7 @@ function materials(el) {
       </details>
       <details class="mat__more">
         <summary>A 24K arany ára az elmúlt hónapokban</summary>
-        <div class="goldcard__chart"><div data-chart></div><p class="hint">Demó előzmények – kitalált adatok.</p></div>
+        <div class="goldcard__chart"><div data-chart></div><p class="hint">Csak az itt mentett változásokból rajzolódik.</p></div>
       </details>
       <details class="mat__more" open>
         <summary>Természetes gyémántok ára <small>darabár · üresen hagyva: egyedi ajánlat</small></summary>
@@ -509,7 +509,7 @@ function materials(el) {
       const sample = store.product('maz-81184-81185-w');
       impact.className = 'impact impact--idle';
       impact.innerHTML = `<p>Írja át a fenti számot, vagy nyomja meg a + / − gombot. Mentés előtt itt megmutatjuk, mi változik.</p>
-        <button class="abtn" type="button" data-demo-gold>Bemutatóhoz: ${gm ? '52 000' : '45 000'} Ft</button>`;
+`;
       return;
     }
     const big = changes.filter((c) => c.pct !== null && Math.abs(c.pct) >= st.settings.bigChangePct);
@@ -572,7 +572,6 @@ function materials(el) {
     if (ex) { selEx = ex.dataset.ex; paint(); }
     if (e.target.closest('[data-all]')) allList();
     if (e.target.closest('[data-goimpact]')) impact.scrollIntoView({ behavior: reduced() ? 'auto' : 'smooth', block: 'start' });
-    if (e.target.closest('[data-demo-gold]')) { const v = gm ? 52000 : 45000; setVal(P0, v); pin().value = num(v); pin().focus(); }
     if (e.target.closest('[data-cancel]')) { document.body.classList.remove('has-mimpact'); materials(el); toast('A módosítást elvetettük – az árak nem változtak.'); }
     if (e.target.closest('[data-apply]')) {
       const valid = $('[data-valid]', el)?.value;
@@ -681,7 +680,7 @@ function products(el) {
         <span class="prow__txt"><b>${esc(p.code)}</b><span>${esc(p.name)}</span>
           <span class="prow__tags">${p.override ? `<em class="tag tag--blue">${p.override.type === 'fixed' ? 'rögzített ár' : `képlet ${pct(p.override.value)}`}</em>` : '<em class="tag tag--formula">képletből</em>'}${r.lowMargin ? '<em class="tag tag--warn">alacsony árrés</em>' : ''}${p.minPrice ? '<em class="tag">minimumár</em>' : ''}${p.visible === false ? '<em class="tag">rejtett</em>' : ''}${p.added ? '<em class="tag tag--blue">új, itt felvéve</em>' : p.approved ? '<em class="tag tag--ok">jóváhagyott adat</em>' : '<em class="tag">becsült tömeg</em>'}</span></span>
         <span class="prow__price"><b>${ft(r.final)}</b>
-          <small>${p.listaAr ? `weboldalon most: ${ft(p.listaAr)}${Math.abs(dv) >= 0.5 ? ` (${pct(dv)})` : ''}` : 'demótermék'}</small></span>
+          <small>${p.listaAr ? `weboldalon most: ${ft(p.listaAr)}${Math.abs(dv) >= 0.5 ? ` (${pct(dv)})` : ''}` : 'új gyűrű'}</small></span>
         <span class="abtn">Szerkesztés</span>
       </a>`;
     }).join('') + (list.length > limit ? `<button class="abtn abtn--xl plist__more" type="button" data-pmore>Továbbiak mutatása (még ${list.length - limit})</button>` : '') || '<p>Nincs találat.</p>';
@@ -712,10 +711,10 @@ function printList(st, res) {
   document.getElementById('printsheet')?.remove();
   const d = document.createElement('div');
   d.id = 'printsheet';
-  d.innerHTML = `<header><img src="img/logo.png" alt="Karikagyuru.com" width="135"><div><h1>Árlista</h1><p>${dayHu(new Date().toISOString())} · ${st.settings.pricingMode === 'gramm' ? `14K grammár: ${ft(st.materials.sellPerGram.au14)}/g` : `24K színarany: ${ft(st.materials.gold24)}/g`} (demó)</p></div></header>
+  d.innerHTML = `<header><img src="img/logo.png" alt="Karikagyuru.com" width="135"><div><h1>Árlista</h1><p>${dayHu(new Date().toISOString())} · ${st.settings.pricingMode === 'gramm' ? `14K grammár: ${ft(st.materials.sellPerGram.au14)}/g` : `24K színarany: ${ft(st.materials.gold24)}/g`}</p></div></header>
     <table><thead><tr><th>Cikkszám</th><th>Megnevezés</th><th>Anyag</th><th>Ár (bruttó)</th></tr></thead><tbody>
     ${st.products.map((p) => `<tr><td>${esc(p.code)}</td><td>${esc(p.name)}</td><td>${(COLORS[p.baseColor]?.label || '') + ', 14K'}${p.rings.some((r) => r.stoneRule) ? ', természetes gyémánttal' : ''}</td><td>${res[p.id] ? ft(res[p.id].final) : 'egyedi ajánlat'}</td></tr>`).join('')}
-    </tbody></table><p class="ps__note">Tájékoztató árak alapméretben. A végleges ár a személyes egyeztetésen készül. Bemutató – példa- és demóárakból számolva.</p>`;
+    </tbody></table><p class="ps__note">Tájékoztató árak alapméretben. A végleges ár a személyes egyeztetésen készül.</p>`;
   document.body.append(d);
   setTimeout(() => { window.print(); }, 50);
   addEventListener('afterprint', () => d.remove(), { once: true });
@@ -752,7 +751,7 @@ function productEdit(el, id) {
       </div>
       <p class="efield__lab">Választható kőméretek</p>
       <div class="checks">${Mx.diamonds.map((d) => arr(`rings.${i}.stoneRule.cats`, d.id, `${ctFmt(d.ct)} ct ${d.price == null ? '<small>(nincs ár → ajánlat)</small>' : ''}`, rule.cats.includes(d.id))).join('')}</div>
-      <div class="checks">${chk(`rings.${i}.stoneRule.allowNone`, 'Kő nélkül is kérhető', rule.allowNone)}${chk(`rings.${i}.stoneRule.demo`, 'Demó szabály – ötvösmesterrel egyeztetendő', rule.demo)}</div>` : ''}
+      <div class="checks">${chk(`rings.${i}.stoneRule.allowNone`, 'Kő nélkül is kérhető', rule.allowNone)}${chk(`rings.${i}.stoneRule.demo`, 'Ideiglenes szabály – ötvösmesterrel egyeztetendő', rule.demo)}</div>` : ''}
     </div>`;
   };
 
@@ -766,7 +765,7 @@ function productEdit(el, id) {
     el.innerHTML = `
     <p class="crumbs"><a href="#/admin/gyuruk">← Vissza a gyűrűkhöz</a></p>
     <h1 class="adm__h1">${isNew ? 'Új gyűrű felvitele' : esc(p.code)}</h1>
-    ${isNew ? '<p class="adm__banner"><b>Bemutató.</b> Az új gyűrű és a képe csak ebben a böngészőben tárolódik. Az éles rendszerhez központi adatbázis, bejelentkezéshez kötött admin, valódi képfeltöltés és szerveroldali mentés kell – ez még nem készült el.</p>' : ''}
+
     <div class="edit">
       <div class="edit__form">
         <section class="ebox"><h2>Alapadatok</h2>
@@ -783,7 +782,7 @@ function productEdit(el, id) {
             <div class="imgpick__ctl">
               <label class="abtn imgpick__file">Kép kiválasztása<input type="file" accept="image/*" data-imgfile hidden></label>
               <label class="efield"><span>vagy a kép webcíme</span><input class="input input--lg" data-imgurl placeholder="https://…" value="${esc(/^https?:/.test(p.img || '') ? p.img : '')}"></label>
-              <p class="hint">Bemutató: a kiválasztott kép kicsinyítve, csak ebben a böngészőben tárolódik – nem töltődik fel sehová.</p>
+              <p class="hint">A kép kicsinyítve tárolódik.</p>
             </div>
           </div>
           <p class="efield__lab">Aranyszínek <small>amiből kérhető</small></p>
@@ -1035,7 +1034,7 @@ function formula(el) {
         <section class="ebox"><h2>Külön felszámított díjak <small>bruttó, a gyűrű árához adódnak</small></h2><div class="egrid">
           ${f('settingPerStone', 'Kőfoglalás', 'Ft/kő', 'Ha a kő darabára már tartalmazza, maradjon 0.')}${f('engravingPrice', 'Gravírozás', 'Ft/gyűrű')}
           ${f('boxCost', 'Díszdoboz', 'Ft/termék')}${f('certCost', 'Kőtanúsítvány', 'Ft/köves termék')}
-          <label class="efield"><span>Kerekítés ${srcBadge((st.settings.src || {}).roundTo || 'demo')}<small>Pl. 100 Ft-ra: 337 333 → 337 400 Ft. Az ügyfél jóváhagyásáig demó.</small></span>${roundSelect(d.roundTo)}</label>${f('vatPct', 'ÁFA', '%', 'Grammáras módban a grammár már tartalmazza – nem adódik hozzá újra.')}
+          <label class="efield"><span>Kerekítés ${srcBadge((st.settings.src || {}).roundTo || 'demo')}<small>Pl. 100 Ft-ra: 337 333 → 337 400 Ft. Jóváhagyásig ideiglenes.</small></span>${roundSelect(d.roundTo)}</label>${f('vatPct', 'ÁFA', '%', 'Grammáras módban a grammár már tartalmazza – nem adódik hozzá újra.')}
         </div>
         <label class="check check--lg"><input type="checkbox" data-sb="stonesGross" ${d.stonesGross !== false ? 'checked' : ''}><span>A gyémánt darabára végső ár (grammáras módban nincs rá felár és ÁFA) ${srcBadge((st.settings.src || {}).stonesGross || 'demo')}</span></label></section>
         <section class="ebox"><h2>Tömeg anyagonként ${srcBadge((st.settings.src || {}).density || 'demo')}</h2>
@@ -1138,7 +1137,7 @@ function inquiries(el) {
         <p><a href="tel:${esc(q.phone)}">${esc(q.phone)}</a>${q.email ? ` · <a href="mailto:${esc(q.email)}">${esc(q.email)}</a>` : ''}</p>
         ${q.summary ? `<pre>${esc(q.summary)}</pre>` : ''}
         ${q.message ? `<p class="inq__msg">„${esc(q.message)}”</p>` : ''}
-        ${q.images ? `<p class="hint">Kiválasztott kép: ${q.images} db – a bemutatóban a képek nem töltődnek fel, az éles rendszerben itt jelennek meg.</p>` : ''}
+        ${q.images ? `<p class="hint">Kiválasztott kép: ${q.images} db – a képeket az ügyfél a személyes egyeztetésre hozza, vagy e-mailben küldi.</p>` : ''}
         ${q.lockedPrice ? `<p class="ok">Rögzített ajánlati ár: <b>${ft(q.lockedPrice)}</b> (${dayHu(q.lockedAt)}) – az aranyár változása nem érinti.${nowPrice && nowPrice !== q.lockedPrice ? ` A mai kalkulált ár: ${ft(nowPrice)}.` : ''}</p>`
           : nowPrice ? `<p>Becsült ár a küldéskor: ${ft(q.estimate)} · ma: <b>${ft(nowPrice)}</b></p>` : ''}
         <div class="inq__btns">
@@ -1190,21 +1189,18 @@ function settings(el) {
   const d = clone(st.settings);
   el.innerHTML = `<h1 class="adm__h1">Beállítások</h1>
     <section class="ebox"><h2>Kerekítés és védelem</h2><div class="egrid">
-      <label class="efield"><span>Árak kerekítése ${srcBadge((d.src || {}).roundTo || 'demo')}<small>az ügyfél jóváhagyásáig demó</small></span>${roundSelect(d.roundTo)}</label>
+      <label class="efield"><span>Árak kerekítése ${srcBadge((d.src || {}).roundTo || 'demo')}<small>jóváhagyásig ideiglenes beállítás</small></span>${roundSelect(d.roundTo)}</label>
       <label class="efield"><span>Minimális árrés<small>alatta figyelmeztet</small></span><span class="efield__in"><input class="input input--lg" inputmode="decimal" data-s="minMarginPct" value="${d.minMarginPct}"><i>%</i></span></label>
       <label class="efield"><span>Nagy változás határa<small>e fölött külön megerősítés kell</small></span><span class="efield__in"><input class="input input--lg" inputmode="decimal" data-s="bigChangePct" value="${d.bigChangePct}"><i>%</i></span></label>
     </div></section>
-    <section class="ebox"><h2>Bemutató</h2>
-      <label class="confirm"><input type="checkbox" data-marks ${d.showDemoMarks ? 'checked' : ''}><span>„Demó” jelölések mutatása az árak mellett</span></label>
-      <div class="edit__btns"><button class="abtn abtn--gold abtn--xl" type="button" data-save>Mentés</button></div>
-    </section>
-    <section class="ebox ebox--danger"><h2>Demóadatok visszaállítása</h2>
-      <p>Minden árat, gyűrűt, előzményt és érdeklődést visszaállít a bemutató kezdőállapotára.</p>
-      <button class="abtn abtn--xl" type="button" data-reset>Demóadatok visszaállítása</button>
-    </section>
-    <section class="ebox"><h2>Az éles rendszerben</h2>
-      <p class="hint">Bejelentkezés és jogosultságok, szerveroldali adatbázis, minden ármódosítás szerveren naplózva, mentés és visszaállítás – ezek a következő fejlesztési szakasz részei, ebben a bemutatóban nem működnek.</p></section>`;
-  el.addEventListener('input', (e) => { const k = e.target.dataset.s; if (k && !e.target.matches('[data-round]')) { const v = parseNum(e.target.value); if (Number.isFinite(v)) d[k] = v; } if (e.target.matches('[data-marks]')) d.showDemoMarks = e.target.checked; });
+    <div class="edit__btns"><button class="abtn abtn--gold abtn--xl" type="button" data-save>Mentés</button></div>
+    <section class="ebox"><h2>Adattárolás</h2>
+      <p class="hint" data-storage-note>Az adatok most ebben a böngészőben tárolódnak. A szerveres mentés bejelentkezéssel a tárhelyre telepítés után kapcsolható be.</p></section>
+    <section class="ebox ebox--danger"><h2>Alapállapot visszaállítása</h2>
+      <p>Minden árat, gyűrűt, előzményt és érdeklődést visszaállít a kiinduló állapotra.</p>
+      <button class="abtn abtn--xl" type="button" data-reset>Alapállapot visszaállítása</button>
+    </section>`;
+  el.addEventListener('input', (e) => { const k = e.target.dataset.s; if (k && !e.target.matches('[data-round]')) { const v = parseNum(e.target.value); if (Number.isFinite(v)) d[k] = v; } });
   el.addEventListener('change', (e) => { if (e.target.dataset.s === 'roundTo') d.roundTo = Number(e.target.value); });
   el.addEventListener('click', (e) => {
     if (e.target.closest('[data-save]')) { store.updateSettings(d, 'Beállítások módosítva'); toast('Beállítások mentve.'); }
@@ -1213,7 +1209,7 @@ function settings(el) {
 }
 
 export function resetDemo() {
-  modal(`<div class="form"><h2>Demóadatok visszaállítása</h2><p>Minden módosítás törlődik, és a bemutató a kezdő demóárakkal indul újra.</p>
+  modal(`<div class="form"><h2>Alapállapot visszaállítása</h2><p>Minden módosítás törlődik, és a kiinduló árakkal, gyűrűkkel indul újra.</p>
     <div class="impact__btns"><button class="abtn abtn--xl" data-close>Mégsem</button><button class="abtn abtn--gold abtn--xl" data-ok>Visszaállítom</button></div></div>`,
-    { onMount: (box, close) => box.querySelector('[data-ok]').onclick = () => { close(); store.reset(); toast('A demóadatok visszaálltak.'); window.dispatchEvent(new HashChangeEvent('hashchange')); } });
+    { onMount: (box, close) => box.querySelector('[data-ok]').onclick = () => { close(); store.reset(); toast('Visszaállt az alapállapot.'); window.dispatchEvent(new HashChangeEvent('hashchange')); } });
 }

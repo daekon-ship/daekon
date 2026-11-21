@@ -18,7 +18,7 @@
   --w: 1240px; --gut: clamp(20px, 4vw, 48px);
   --s1: 8px; --s2: 16px; --s3: 24px; --s4: 40px; --s5: 64px; --s6: clamp(72px, 9vw, 128px);
   --ease: cubic-bezier(.22, 1, .36, 1);
-  --bar: 46px; --head: 76px;
+  --bar: 0px; --head: 76px;
 }
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; scroll-padding-top: calc(var(--bar) + var(--head) + 12px); }
@@ -1764,3 +1764,11 @@ h3, .cfg__step > header h2, .ringbox__t, .opt__label { font-family: var(--sans);
 .bigtile b { font-size: 1.2rem; }
 .bigtile__v { font-size: 1.4rem; }
 .bigtile small { font-size: .98rem; }
+
+/* V5.1: nincs bemutató-sáv; kezelőfelület: visszalépés a weboldalra */
+.demobar { display: none !important; }
+.adm__site { display: inline-block; margin: 0 0 14px; font-size: .9rem; color: var(--mute); text-decoration: none; }
+.adm__site:hover { color: var(--ink); }
+.site-foot__note a { color: inherit; }
+.adm__site--m { margin: 0 0 0 auto; }
+@media (min-width: 961px) { .adm__site--m { display: none; } }

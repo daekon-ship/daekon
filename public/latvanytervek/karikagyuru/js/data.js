@@ -53,7 +53,7 @@ export const IMG_BASE = 'img/termekek/';   // a karikagyuru.com saját fotói (a
      'bizonytalan'  – az ügyfél adott rá számot, de ellentmondásos vagy megerősítendő → nem árazunk vele
      'demo'         – kitalált bemutatóadat (DAEKON), csak hogy a felület működjön
    ========================================================================== */
-export const SRC_LABEL = { jovahagyott: 'jóváhagyott', pelda: 'ügyfél példája', bizonytalan: 'megerősítendő', demo: 'demó' };
+export const SRC_LABEL = { jovahagyott: 'jóváhagyott', pelda: 'ügyfél példája', bizonytalan: 'megerősítendő', demo: 'jóváhagyásra vár' };
 
 /* --- Alapanyagárak és grammárak (Ft) --- */
 export const DEMO_MATERIALS = {
@@ -113,7 +113,7 @@ export const DEMO_SETTINGS = {
   stoneGapMm: 0.1,        // körbe foglalásnál ennyi hely kell két kő között
   minMarginPct: 15,
   bigChangePct: 20,
-  showDemoMarks: true,
+  showDemoMarks: false,
   src: {
     pricingMode: 'pelda', sizeMethod: 'pelda', density: 'pelda', vatPct: 'demo',
     stonesGross: 'demo', settingPerStone: 'demo', engravingPrice: 'demo', boxCost: 'demo', certCost: 'demo', roundTo: 'demo',

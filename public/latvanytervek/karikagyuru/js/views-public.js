@@ -60,7 +60,7 @@ function cardOnRequest(p) {
   </article>`;
 }
 
-/** Frissült árak finom felszámolása a kártyákon (bemutató 7. lépés). */
+/** Frissült árak finom felszámolása a kártyákon. */
 function animateCards(root) {
   const lc = S().lastChange;
   if (!lc) return;
@@ -861,7 +861,7 @@ export function inquiry(p, cfg, type = 'erdeklodes', onRequest = false) {
       <label class="field"><span>Üzenet</span><textarea class="input" name="uzenet" rows="3" placeholder="Pl. az esküvő időpontja, kérdés a méretről vagy egyedi tervről"></textarea></label>
       <p class="form__err" data-err hidden>Add meg a neved és a telefonszámod.</p>
       <button class="btn btn--dark btn--full" type="submit">Elküldöm</button>
-      <p class="fine"><b>Ez bemutató.</b> Az üzenet nem megy el senkinek, csak ennek a böngészőnek a bemutató-adminjában jelenik meg. Valódi adatot ne adj meg.</p>
+
     </form>`, {
     label: 'Érdeklődés',
     onMount(box, close) {
@@ -878,7 +878,7 @@ export function inquiry(p, cfg, type = 'erdeklodes', onRequest = false) {
         store.addInquiry({ type: t, name: d.nev, phone: d.tel, email: d.email, day: d.nap, message: d.uzenet,
           productId: p?.id || null, code: p?.code || null, config: p && !onRequest ? JSON.parse(JSON.stringify(cfg)) : null, summary, estimate: r?.final || null });
         box.innerHTML = `<div class="form form--done"><p class="kicker">Megvan</p><h2>Köszi, hamarosan hívunk.</h2>
-          <p>Bemutató módban az üzenet nem került elküldésre. Az adminfelület „Érdeklődések” menüjében most már látható, a kiválasztott cikkszámmal és konfigurációval együtt.</p>
+          <p>Az érdeklődés bekerült a kezelőfelület „Érdeklődések” menüjébe, a kiválasztott cikkszámmal és beállításokkal együtt. Ha sürgős, hívj: <a href="tel:+36309843090">+36 30 984 3090</a>.</p>
           <button class="btn btn--line" type="button" data-close>Rendben</button></div>`;
       });
     },
@@ -965,7 +965,7 @@ export function custom(el, query) {
         <li class="cfg__step"><header><span class="cfg__n">5</span><h2>Van kép vagy rajz?</h2><span class="cfg__val">nem kötelező</span></header>
           <label class="cfile"><input type="file" accept="image/*" multiple data-cfile hidden><span class="btn btn--line">Kép kiválasztása</span><small>Fotó egy gyűrűről, ami tetszik, vagy egy saját rajz. Legfeljebb 3 kép.</small></label>
           <div class="cprev" data-cprev></div>
-          <p class="hint" data-cfilenote hidden>Bemutató: a kép most csak itt, a böngésződben látszik, nem töltődik fel és nem kerül elküldésre. Az éles oldalon az üzenettel együtt megy majd el.</p>
+          <p class="hint" data-cfilenote hidden>A kép csak itt jelenik meg előnézetként, az oldal nem tölti fel. Hozd el az egyeztetésre, vagy küldd el e-mailben: <a href="mailto:info@karikagyuru.com">info@karikagyuru.com</a>.</p>
         </li>
         <li class="cfg__step"><header><span class="cfg__n">6</span><h2>Mennyit szánnál rá?</h2><span class="cfg__val">nem kötelező</span></header>${chips('keret', C_KERET)}
           <p class="hint">Ha megadod, olyan megoldást keresünk, ami belefér. ${demoMark('demó sávok')}</p></li>
@@ -979,7 +979,7 @@ export function custom(el, query) {
       </ol>
       <p class="form__err" data-cerr hidden></p>
       <button class="btn btn--dark btn--full" type="submit">Elküldöm az ötletem</button>
-      <p class="fine"><b>Ez bemutató.</b> Az üzenet nem megy el senkinek, csak ennek a böngészőnek a bemutató-adminjában jelenik meg. Valódi adatot ne adj meg.</p>
+
     </form>
     <aside class="custom__side">
       <div class="csum" data-csummary aria-live="polite"></div>
@@ -1042,7 +1042,7 @@ export function custom(el, query) {
     $('.custom', el).innerHTML = `<div class="form form--done custom--done"><p class="kicker">Megvan</p><h2>Köszi, ${esc(d.nev.trim().split(' ').pop())}! Hamarosan hívunk.</h2>
       <pre>${esc(summary)}</pre>${d.leiras.trim() ? `<p class="csum__txt">„${esc(d.leiras.trim())}”</p>` : ''}
       <p><b>Ár:</b> személyes egyeztetés alapján.</p>
-      <p class="fine">Bemutató módban az üzenet nem került elküldésre${n ? `, és a ${n} kiválasztott kép sem töltődött fel` : ''}. Az adminfelület „Érdeklődések” menüjében most már látható${p ? ', a kiindulási gyűrű cikkszámával és beállításaival együtt' : ''}.</p>
+      <p class="fine">Az ötleted bekerült a kezelőfelület „Érdeklődések” menüjébe${p ? ', a kiindulási gyűrű cikkszámával és beállításaival együtt' : ''}.${n ? ` A kiválasztott ${n} kép nem töltődött fel – hozd el az egyeztetésre, vagy küldd el e-mailben.` : ''} Ha sürgős, hívj: <a href="tel:+36309843090">+36 30 984 3090</a>.</p>
       <a class="btn btn--line" href="#/kollekcio">Megnézem a gyűrűket</a></div>`;
     window.scrollTo({ top: 0 });
   });

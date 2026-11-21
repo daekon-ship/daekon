@@ -6,7 +6,7 @@
 import { DEMO_MATERIALS, DEMO_SETTINGS, buildDemoProducts } from './data.js';
 import { seedWeights, priceAll, diffPrices } from './engine.js';
 
-const KEY = 'karikagyuru-demo-v13';
+const KEY = 'karikagyuru-demo-v14';
 const clone = (o) => JSON.parse(JSON.stringify(o));
 const listeners = new Set();
 const fmt = (n) => new Intl.NumberFormat('hu-HU').format(n).replace(/\s/g, ' ');
@@ -17,36 +17,18 @@ function fresh() {
   const products = seedWeights(buildDemoProducts(), materials, settings);
   const now = new Date().toISOString();
   return {
-    v: 13,
+    v: 14,
     materials, settings, products,
     history: [{
-      id: uid(), at: now, validFrom: now, by: 'Rendszer (demó)', kind: 'start',
-      title: 'Bemutató indítása – az ügyfél jegyzetének példaárai + demóadatok',
+      id: uid(), at: now, validFrom: now, by: 'Rendszer', kind: 'start',
+      title: 'Kiinduló árak betöltve – a mostani weboldal és az ötvös jegyzete alapján',
       before: null, after: clone(materials), count: 0, total: 0,
-    }, ...demoGoldHistory(materials, products, settings)],
+    }],
     inquiries: [],
     lastChange: null,       // { at, old: {id: ár} } – a katalógus „Frissült ár” jelzéséhez
   };
 }
 
-/**
- * Kitalált, egyértelműen jelölt korábbi aranyár-változások, hogy a grafikon és
- * a napló ne legyen üres a bemutatón. Nem valós piaci adatok.
- */
-function demoGoldHistory(M, products, S) {
-  const steps = [[160, 35400], [112, 36300], [71, 37100], [34, 38200]];
-  const out = [];
-  for (let i = 0; i < steps.length; i++) {
-    const [daysAgo, from] = steps[i];
-    const to = i + 1 < steps.length ? steps[i + 1][1] : M.gold24;
-    const before = { ...clone(M), gold24: from }, after = { ...clone(M), gold24: to };
-    const d = diffPrices(products, before, after, S);
-    const at = new Date(Date.now() - daysAgo * 864e5).toISOString();
-    out.unshift({ id: uid(), at, validFrom: at, by: 'Tulajdonos (demó előzmény)', kind: 'materials',
-      title: `24K színarany: ${fmt(from)} → ${fmt(to)} Ft/g`, before, after, count: d.count, total: d.total, demo: true });
-  }
-  return out;
-}
 
 function uid() { return Math.random().toString(36).slice(2, 9); }
 
@@ -75,7 +57,7 @@ export const store = {
     if (kind === 'diamond') { const d = state.materials.diamonds.find((x) => x.id === key); if (d) d.src = 'jovahagyott'; }
     if (kind === 'product') { const p = state.products.find((x) => x.id === key); if (p) { p.approved = true; p.rings.forEach((r) => r.stoneRule && (r.stoneRule.demo = false)); } }
     const at = new Date().toISOString();
-    state.history.unshift({ id: uid(), at, validFrom: at, by: 'Tulajdonos (demó)', kind: 'approve', title: `Jóváhagyva: ${label || key}`, count: 0, total: 0 });
+    state.history.unshift({ id: uid(), at, validFrom: at, by: 'Tulajdonos', kind: 'approve', title: `Jóváhagyva: ${label || key}`, count: 0, total: 0 });
     persist();
   },
 
@@ -87,7 +69,7 @@ export const store = {
     state.materials = clone(next);
     const at = new Date().toISOString();
     state.history.unshift({
-      id: uid(), at, validFrom: validFrom || at, by: 'Tulajdonos (demó)', kind: 'materials',
+      id: uid(), at, validFrom: validFrom || at, by: 'Tulajdonos', kind: 'materials',
       title: note || describeMaterialChange(before, next),
       before, after: clone(next), count: d.count, total: d.total,
     });
@@ -113,7 +95,7 @@ export const store = {
     const now = priceAll(state.products, state.materials, state.settings);
     const count = Object.keys(now).filter((k) => now[k] !== old[k]).length;
     state.history.unshift({ id: uid(), at: new Date().toISOString(), validFrom: new Date().toISOString(),
-      by: 'Tulajdonos (demó)', kind: 'settings', title: title || 'Árképlet-beállítás módosítva',
+      by: 'Tulajdonos', kind: 'settings', title: title || 'Árképlet-beállítás módosítva',
       settingsBefore: before, settingsAfter: clone(state.settings), count, total: 0 });
     if (count) state.lastChange = { at: new Date().toISOString(), old };
     persist();
@@ -126,7 +108,7 @@ export const store = {
     mutate(p);
     const now = priceAll([p], state.materials, state.settings)[id];
     state.history.unshift({ id: uid(), at: new Date().toISOString(), validFrom: new Date().toISOString(),
-      by: 'Tulajdonos (demó)', kind: 'product', title: title || `${p.code} adatai módosítva`,
+      by: 'Tulajdonos', kind: 'product', title: title || `${p.code} adatai módosítva`,
       count: old !== now ? 1 : 0, total: old !== undefined && now !== undefined ? now - old : 0, oldPrice: old ?? null, newPrice: now ?? null });
     persist();
   },
@@ -139,7 +121,7 @@ export const store = {
     const now = priceAll(set, state.materials, state.settings);
     const changed = set.filter((p) => old[p.id] !== now[p.id]);
     const at = new Date().toISOString();
-    state.history.unshift({ id: uid(), at, validFrom: at, by: 'Tulajdonos (demó)', kind: 'product', title,
+    state.history.unshift({ id: uid(), at, validFrom: at, by: 'Tulajdonos', kind: 'product', title,
       count: changed.length, total: changed.reduce((a, p) => a + now[p.id] - old[p.id], 0) });
     if (changed.length) state.lastChange = { at, old: { ...priceAll(state.products, state.materials, state.settings), ...old } };
     persist();
@@ -161,7 +143,7 @@ export const store = {
   addProduct(p) {
     state.products.push(p);
     const at = new Date().toISOString();
-    state.history.unshift({ id: uid(), at, validFrom: at, by: 'Tulajdonos (demó)', kind: 'product', title: `Új gyűrű felvéve: ${p.code}`, count: 0, total: 0 });
+    state.history.unshift({ id: uid(), at, validFrom: at, by: 'Tulajdonos', kind: 'product', title: `Új gyűrű felvéve: ${p.code}`, count: 0, total: 0 });
     return persist();
   },
 

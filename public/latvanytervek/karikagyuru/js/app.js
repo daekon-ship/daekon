@@ -1,8 +1,8 @@
-/* Router + keret: bemutató-sáv (vásárlói ↔ admin nézet), fejléc, lábléc. */
+/* Router + keret: fejléc, lábléc, vásárlói oldal ↔ kezelőfelület. */
 import { store } from './store.js';
 import { BUSINESS } from './data.js';
 import * as pub from './views-public.js';
-import { adminShell, resetDemo } from './views-admin.js';
+import { adminShell } from './views-admin.js';
 import { $, $$, modal, M, reduced, checkPhotos, photos } from './ui.js';
 
 const view = $('#view');
@@ -39,7 +39,7 @@ function route() {
   if (!admin && M() && !reduced()) M().animate(view, { opacity: [0.4, 1] }, { duration: 0.35 });
 }
 
-/* --- bemutató-sáv --- */
+/* --- kattintások --- */
 document.addEventListener('click', (e) => {
   const m = e.target.closest('[data-mode-btn]');
   if (m) {
@@ -47,8 +47,6 @@ document.addEventListener('click', (e) => {
     else lastAdmin = location.hash;
     location.hash = m.dataset.modeBtn === 'admin' ? lastAdmin : lastCustomer;
   }
-  if (e.target.closest('[data-reset-demo]')) resetDemo();
-  if (e.target.closest('[data-script]')) script();
   if (e.target.closest('[data-menu]')) toggleMenu();
   if (e.target.closest('[data-anchor]')) {
     e.preventDefault();
@@ -66,20 +64,6 @@ function toggleMenu() {
 }
 function closeMenu() { document.body.classList.remove('menu-open'); $('[data-menu]')?.setAttribute('aria-expanded', 'false'); }
 
-function script() {
-  const steps = [
-    ['Kezdőoldal: a két út – kész modell alakítása vagy saját ötlet', '#/'],
-    ['Egy gyűrű átalakítása: anyag, méret, kövek, gravír – „A te változatod” ábrával', '#/gyuru/maz-81184-81185-w'],
-    ['„Másképp képzelted el?” – egyedi kérés a modell adataival', '#/sajat?modell=maz-81184-81185-w'],
-    ['Saját ötlet leírása képpel', '#/sajat'],
-    ['Admin: megérkezett érdeklődések', '#/admin/erdeklodesek'],
-    ['Admin: grammár átírása – minden ár frissül', '#/admin/alapanyag'],
-    ['Admin: új gyűrű felvitele – megjelenik a katalógusban', '#/admin/gyuru/uj'],
-  ];
-  modal(`<div class="form script"><p class="kicker">Bemutató forgatókönyv</p><h2>Hét lépés, kb. öt perc</h2>
-    <ol>${steps.map(([t, h], i) => `<li><a href="${h}" data-close><span>${i + 1}</span>${t}</a></li>`).join('')}</ol>
-    <p class="fine">A két nézet ugyanazt az árállapotot használja. A felső sávban bármikor válthat, és a „Demóadatok visszaállítása” gombbal tiszta lappal kezdhet.</p></div>`, { label: 'Bemutató forgatókönyv' });
-}
 
 /* --- fejléc árnyék görgetéskor --- */
 let ticking = false;

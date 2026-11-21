@@ -124,12 +124,12 @@ async def main():
         await pg.locator('[data-appr="materials|sellPerGram.pt"]').click(); await pg.wait_for_timeout(300)
         check('Jóváhagyás: ügyfélpélda → jóváhagyott', await pg.locator('[data-appr="materials|sellPerGram.pt"]').count() == 0 and n0 > 10, str(n0))
         check('Bizonytalan kőár nem hagyható jóvá ár nélkül', await pg.locator('[data-appr="diamond|d04"]').is_disabled())
-        # 8. demó visszaállítás
+        # 8. alapállapot visszaállítása
         await pg.goto(B + '#/admin/beallitasok'); await pg.wait_for_timeout(500)
         await pg.click('[data-reset]'); await pg.click('[data-ok]'); await pg.wait_for_timeout(600)
         await pg.goto(B + '#/kollekcio'); await pg.wait_for_timeout(1200)
         p2 = n(await pg.locator(f'[data-price="{PAIR}"]').inner_text())
-        check('8. Demó visszaállítás: eredeti ár, látható termék', p2 == p0, f'{p2}')
+        check('8. Alapállapot visszaállítása: eredeti ár, látható termék', p2 == p0, f'{p2}')
 
         # --- 10. Eszközök: nincs vízszintes görgetés ---
         pages = ['#/', '#/kollekcio', f'#/gyuru/{PAIR}', f'#/gyuru/{ETERNITY}', '#/admin/attekintes', '#/admin/alapanyag', f'#/admin/gyuru/{PAIR}', '#/admin/keplet', '#/admin/arszamitas', '#/admin/jovahagyas']
