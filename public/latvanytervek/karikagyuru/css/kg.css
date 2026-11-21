@@ -1836,3 +1836,6 @@ h3, .cfg__step > header h2, .ringbox__t, .opt__label { font-family: var(--sans);
 .inq__files img { width: 100%; height: 100%; object-fit: cover; }
 .inq__files .hint { flex-basis: 100%; margin: 0; }
 .abtn--danger { color: #a12a1f; border-color: #a12a1f; }
+/* V5.5: nem nyilvános bemutatópéldány jelzése */
+.demo-note { margin: 0 0 10px; font-size: .82rem; color: #8a5a00; }
+.adm .demo-note { padding: 6px 10px; background: #FFF6E0; border-radius: 6px; }

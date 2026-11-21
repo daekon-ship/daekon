@@ -53,7 +53,7 @@ async def main():
             check('kezelőfelület: „nem használható” képernyő, nincs szerkeszthető admin', await adm.locator('[data-blocked]').count() == 1 and await adm.locator('.adm').count() == 0)
             txt = await adm.inner_text('[data-blocked]')
             check('a képernyő megmondja, hogy a módosítás nem menthető', 'nem menthetők' in txt, txt[:120])
-            check('nem jött létre helyi mentés a böngészőben', await adm.evaluate("Object.keys(localStorage).filter(k => k.startsWith('karikagyuru-demo')).length") == 0)
+            check('nem jött létre helyi mentés a böngészőben', await adm.evaluate("Object.keys(localStorage).filter(k => k.startsWith('karikagyuru-')).length") == 0)
             vis = await page(390, 844, True)
             await vis.goto(B + '#/kollekcio'); await vis.wait_for_timeout(1500)
             check('látogató: a katalógus kiesés alatt is látszik', await vis.locator('.card').count() > 10)

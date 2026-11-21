@@ -51,6 +51,18 @@ final class App
         $st->execute([':h' => password_hash($plain, PASSWORD_DEFAULT), ':t' => gmdate('c')]);
     }
 
+    /** Bemutató mintaadat – csak üres adatbázisba, csak „demo” jelöléssel (bin/demo-seed.php). */
+    public function seedDemo(array $state): void
+    {
+        if (($state['demo'] ?? false) !== true) throw new InvalidArgumentException('Nem bemutató állapot.');
+        if ((int) $this->db->query('SELECT COUNT(*) FROM state_version')->fetchColumn() > 0) throw new RuntimeException('Az adatbázisban már van mentett adat – bemutató csak üres, külön adatmappába tölthető.');
+        $err = self::validateState($state);
+        if ($err) throw new InvalidArgumentException($err);
+        unset($state['inquiries']);
+        $this->db->prepare('INSERT INTO state_version (body, note, saved_at) VALUES (?, ?, ?)')
+            ->execute([json_encode($state, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), 'Bemutató mintaadat', gmdate('c')]);
+    }
+
     public function hasPassword(): bool
     {
         return (bool) $this->db->query('SELECT 1 FROM admin WHERE id = 1')->fetchColumn();
@@ -257,7 +269,7 @@ final class App
             $old = array_intersect_key($s['lastChange']['old'], $approvedIds);
             if ($old) $lc = ['at' => $s['lastChange']['at'] ?? null, 'old' => $old];
         }
-        return [
+        $out = [
             'v' => $s['v'] ?? null,
             'materials' => ['sellPerGram' => (object) $sell, 'diamonds' => $dia, 'src' => (object) $pmsrc],
             'settings' => $pset,
@@ -265,6 +277,8 @@ final class App
             'lastChange' => $lc,
             'public' => true,
         ];
+        if (($s['demo'] ?? false) === true) $out['demo'] = true; // csak a bemutató példányon
+        return $out;
     }
 
     /** Csak szerkezeti és értéktartomány-ellenőrzés. NEM szakmai jóváhagyás. */

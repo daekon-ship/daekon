@@ -41,9 +41,21 @@ function route() {
   else if (parts[0] === 'sajat') pub.custom(el, query);
   else pub.home(el);
 
+  markDemo(admin);
   $$('.nav > a:not([data-anchor])').forEach((a) => a.toggleAttribute('aria-current', a.getAttribute('href') === '#/' + (parts[0] || '')));
   window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
   if (!admin && M() && !reduced()) M().animate(view, { opacity: [0.4, 1] }, { duration: 0.35 });
+}
+
+/* Bemutató mintaadat (nem nyilvános bemutatópéldány): a lábléc és a kezelőfelület egy sorban jelzi. */
+function markDemo(admin) {
+  const demo = !!store.get().demo;
+  let n = document.querySelector('[data-demo-note]');
+  if (!demo) { n?.remove(); return; }
+  if (!n) { n = document.createElement('p'); n.className = 'demo-note'; n.dataset.demoNote = ''; n.setAttribute('role', 'note'); }
+  n.textContent = 'Bemutató példány – mintagyűrűk és mintaárak, nem éles adatok.';
+  const host = admin ? document.querySelector('.adm__nav') : document.querySelector('.site-foot__note');
+  if (host && n.parentNode !== host) host.prepend(n);
 }
 
 /* --- kattintások --- */

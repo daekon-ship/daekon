@@ -37,6 +37,10 @@ async def main():
     data = tempfile.mkdtemp(prefix='kg-e2e-'); img = os.path.join(data, 'foto.png'); png(img)
     env = dict(os.environ, KG_DATA=data, KG_ADMIN_PASSWORD=PW)
     subprocess.run(['php', ROOT + '/bin/setup.php'], env=env, check=True, capture_output=True)
+    # A nyilvános kódban nincs ár (V5.5): a teszt a fejlesztői adatkészletet tölti be (minden gyűrű, semmi sincs jóváhagyva).
+    stf = os.path.join(data, 'allapot.json')
+    open(stf, 'w').write(subprocess.run(['node', ROOT + '/dev/make-demo-state.mjs', '--mind'], capture_output=True, text=True, check=True).stdout)
+    subprocess.run(['php', ROOT + '/bin/demo-seed.php', stf], env=env, check=True, capture_output=True)
     srv = subprocess.Popen(['php', '-S', f'127.0.0.1:{PORT}', ROOT + '/dev/router.php'], env=env, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     for _ in range(50):
         try: urllib.request.urlopen(B + 'api/health', timeout=1); break
@@ -49,9 +53,9 @@ async def main():
             errs = []
             for pg in (adm, vis): pg.on('pageerror', lambda e: errs.append(str(e)))
 
-            print('Látogató, mentett állapot nélkül')
+            print('Látogató, kiinduló (tesztadat) állapot')
             p0 = await price_on_catalog(vis)
-            check('a látogató a beépített árakat látja (még nincs mentett változat)', p0 and p0 > 100000, p0)
+            check('a látogató a nem jóváhagyott gyűrűnél a listaárat látja', p0 and p0 > 100000, p0)
             check('látogatónak nincs kezelőfelülethez tartozó sütije', not any(c['name'] == 'kg_admin' for c in await vis.context.cookies()))
             st_pub = await vis.evaluate("async () => { const { store } = await import('./js/store.js'); const s = store.get(); return { pub: !!s.public, g: s.materials.gold24 ?? null, h: (s.history || []).length, mk: s.settings.markupMetal ?? null }; }")
 
