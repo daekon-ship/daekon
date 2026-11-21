@@ -22,6 +22,8 @@ export const BUSINESS = {
   instagram: 'https://www.instagram.com/karikagyuru',
   pinterest: 'https://hu.pinterest.com/pin/319544536045334809',
   aszf: 'https://www.karikagyuru.com/aszf.php',
+  // Az ügyfél adatkezelési tájékoztatója (NEM a DAEKON-é). Élesítés előtt a végleges, az új űrlapokra (ajánlatkérés,
+  // referenciakép) is kiterjedő tájékoztató címére kell cserélni – lásd docs/TELEPITES.md 8. pont.
   adatkezeles: 'https://www.karikagyuru.com/adatkezeles.php',
   map: 'https://www.google.com/maps/search/?api=1&query=1089+Budapest+Bl%C3%A1thy+Ott%C3%B3+utca+4-8',
   // A karikagyuru.com ÁSZF-je alapján (2026.11.18.)
@@ -38,7 +40,7 @@ export const TERMS = [
   ['Előleg', 'Egyedi gyűrűnél az ár fele, a megrendeléskor.'],
   ['Határidő', 'Feldolgozás 3 munkanapon belül, a kész dátumot egyeztetjük.'],
   ['Átvétel', 'Személyesen, ekkor fizeted a maradékot készpénzzel vagy átutalással.'],
-  ['Garancia', '1 év jótállás. A méretváltoztatás nem tartozik bele.'],
+  ['Jótállás', 'A hatályos jogszabályok szerint. A részletes feltételeket a vásárláskor kapott jótállási jegy tartalmazza.'],
   ['Elállás', 'Egyedi méretre készült gyűrűre nincs elállási jog.'],
 ];
 
