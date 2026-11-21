@@ -157,7 +157,22 @@ külön fejlesztés (szerveroldali vagy előre generált termékoldalak, valódi
 | Látogatónak kiadott adat | a JavaScript-fájlokban lévő kiinduló (bemutató) adatok – ezek nyilvánosak | csak a nyilvános nézet (jóváhagyott árak, beszerzési ár és felár nélkül) |
 | Keresők | `noindex` | élesítéskor indexelhető (10. pont) |
 
-**Figyelem:** a `js/data.js` kiinduló adatai (köztük a jegyzetből vett referenciaárak) a nyilvános kódban
-vannak. Éles használatban a valódi, belső értékeket az ötvös a kezelőfelületen adja meg – azok csak a
-szerveren tárolódnak, és a látogató nem kapja meg őket. Élesítés előtt érdemes a `data.js` kiinduló
-értékeit semlegesre cserélni, vagy a szerveren mentett első változat után nem használni.
+**V5.5 óta:** a `js/data.js` csak semleges kiinduló adatot tartalmaz (gyémántméretek, árak nélkül,
+munkadíj nélkül). Belső beszerzési ár, munkadíjszabály, felár és a jegyzet számai nincsenek a nyilvános kódban
+(az `engine.test.mjs` ezt ellenőrzi). Ezért a Pages bemutatón nincs számolt ár: listaár vagy „egyedi ajánlat”.
+A fejlesztői és bemutató adatkészlet a `services/karikagyuru-api/dev/demo-dataset.json`-ban van, a `public/` mappán kívül.
+
+## 13. V5.5 – amit a feltöltésnél külön figyelni kell
+
+- ☐ Az éles tárhelyre **nem** kerül fel: `services/karikagyuru-api/dev/`, `tests/`, `docs/`, `demo-dataset.json`.
+- ☐ Az adatbázis üres induláskor a semleges adatokkal indul; a `bin/demo-seed.php`-t éles adatmappán **nem** futtatjuk
+  (egyébként a `demo: true` jelzés miatt az élesítési ellenőrzés piros marad).
+- ☐ `js/data.js` → `BUSINESS.adatkezeles`: az **ügyfél végleges** adatkezelési tájékoztatójának címe (nem a DAEKON-é).
+  Az űrlapok mellett ez a link jelenik meg.
+- ☐ A régi oldal jogi linkjei (`aszf.php`, `adatkezeles.php`) innen nem voltak elérhetők, tartalmukat nem ellenőriztük –
+  élesítés előtt meg kell nézni, élnek-e, és hova irányítjuk őket (9. pont).
+- ☐ Referenciaképek: a `$KG_DATA/inquiry-files/` mappa a webgyökéren kívül; a megőrzési idő ügyféllel egyeztetve;
+  cron, pl. `0 3 * * * php /útvonal/bin/purge.php 365` (a napok száma csak példa).
+- ☐ Jótállás: a weboldal csak általános, jogszabályra hivatkozó szöveget ír; a pontos feltételek a jótállási jegyen –
+  ezt az ügyfélnek jóvá kell hagynia.
+- ☐ SEO: a termékoldalak hash-alapúak, külön nem indexelhetők – javaslat: `docs/SEO_MIGRACIO.md`.

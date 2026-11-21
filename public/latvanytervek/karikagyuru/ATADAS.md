@@ -511,3 +511,18 @@ Tesztek: motor 73/73, asztali 30/30, mobil 26/26, V3 70/70, V4 54/54, V5 38/38, 
   - Próbalevél csak admin gombnyomásra megy. Valódi levél nem ment ki.
 - **GitHub Pages és szerver mód.** Helyi módban az űrlap előre és beküldés után is kimondja, hogy az üzenet nem jut el az ötvöshöz, és telefonszámot, e-mail-címet ad. A különbségek táblázata: `docs/TELEPITES.md`, melléklet.
 - **Tesztek.** Motor 97 (+18 V5.4-es), API 87 (+23 szivárgás-ellenőrzés), levelezés 24 (új), szerver mód 25. Verzió `V5.4`.
+
+## V5.5 – célzott minőségi javítások (2026. november 21.)
+
+- **Jóváhagyás visszavonása mezőszinten:** ha egy jóváhagyott gyűrű ára, tömege, mérete, vastagsága, kőszabálya vagy
+  gyártási paramétere (anyag, szín, választható szélesség/vastagság, munkadíj) változik, a jóváhagyás automatikusan
+  visszavonódik, és bekerül az előzményekbe. Fotó és leíró szöveg nem vonja vissza.
+- **Jótállás:** a hibás „1 év jótállás” helyett általános szöveg (a hatályos jogszabályok szerint, a jótállási jegyen
+  rögzített feltételekkel). Új kötelezettséget az oldal nem vállal az ügyfél helyett.
+- **Belső árak a nyilvános kódból kivéve:** `js/data.js` semleges; a mintaadat `services/karikagyuru-api/dev/demo-dataset.json`.
+- **Nem éles bemutató 3 gyűrűvel:** `bash services/karikagyuru-api/dev/bemutato.sh` (anyag, méret, természetes gyémánt,
+  ár frissülése, központi grammár hatása, admin jóváhagyás). „Bemutató példány” felirattal, élesítést blokkoló jelzéssel.
+- **Referenciakép-feltöltés a szerverre:** JPG/PNG/WebP, 8 MB, max. 3, újrakódolás, privát tárolás, csak admin látja,
+  törlés és megőrzési idő (`bin/purge.php`).
+- **Adatkezelési link** mindkét űrlap mellett (`BUSINESS.adatkezeles` – az ügyfél végleges tájékoztatójára cserélendő).
+- **SEO:** `docs/SEO_MIGRACIO.md` – valódi útvonalak, szerveroldali fej, sitemap, 301-es átirányítások.

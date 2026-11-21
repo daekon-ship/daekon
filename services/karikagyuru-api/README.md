@@ -63,9 +63,11 @@ KG_DATA=/tmp/kg-adat php -S 127.0.0.1:8792 dev/router.php
 
 ```sh
 python3 tests/api_test.py              # 87 végpont-ellenőrzés (köztük a nyilvános nézet szivárgásvizsgálata), saját ideiglenes adatmappával
-python3 tests/server_mode_e2e.py       # 25 böngészős ellenőrzés: oldal + API együtt
+python3 tests/server_mode_e2e.py       # 30 böngészős ellenőrzés: oldal + API együtt (referenciaképes érdeklődéssel)
 python3 tests/mail_test.py             # 24 ellenőrzés: e-mail-értesítés helyi SMTP-álszerverrel (valódi levél nem megy ki)
 python3 tests/server_failures_e2e.py   # 17 ellenőrzés: API-kiesés, sikertelen mentés, lejárt belépés, sikertelen érdeklődés
+python3 tests/upload_test.py           # 22 ellenőrzés: ügyfél-referenciakép feltöltése, privát tárolás, törlés, megőrzés
+python3 tests/demo_e2e.py              # 17 böngészős ellenőrzés: a 3 gyűrűs, nem éles bemutató példány
 ```
 
 `api_test.py`: telepítés, jogosultság, CSRF, mentés/ütközés/visszaállítás, hibás adatok elutasítása,
@@ -74,6 +76,26 @@ python3 tests/server_failures_e2e.py   # 17 ellenőrzés: API-kiesés, sikertele
 `server_mode_e2e.py`: belépés (hibás/helyes jelszó), árváltoztatás → másik böngésző a szerverről kapja,
 újratöltés után is megmarad, látogatói érdeklődés → megjelenik a kezelőfelületen, fotófeltöltés →
 a látogató a szerverről kapja, két admin ütközése (a második nem ír felül, egyértelmű hiba), kilépés.
+
+## Ügyfél-referenciaképek (V5.5)
+
+- Feltöltés az érdeklődéssel egy kérésben (`multipart`: `payload` JSON + `images[]`), legfeljebb 3 kép, egyenként 8 MB,
+  JPG/PNG/WebP. A szerver ellenőrzi és újrakódolja (JPEG, max. 2000 px, EXIF nélkül); ha bármelyik hibás,
+  az érdeklődés sem jön létre, és a látogató érthető hibaüzenetet kap.
+- Tárolás: `$KG_DATA/inquiry-files/<azonosító>/` – nem a termékfotók között, nem a webgyökérben.
+  Megtekintés csak belépett adminnak: `GET /api/inquiry-file/s<id>/<név>.jpg` (`no-store`).
+- Törlés: `POST /api/inquiry-delete` (admin), vagy megőrzési idő szerint: `php bin/purge.php <napok> [--minden]`
+  (alapból csak a lezárt érdeklődéseket törli; cron-ra tehető, a napok száma ügyféllel egyeztetendő).
+
+## Nem éles bemutató példány (V5.5)
+
+```sh
+bash dev/bemutato.sh        # ideiglenes adatmappa, generált jelszó, 3 mintagyűrű, http://127.0.0.1:8796/
+```
+
+Az adatok a `dev/demo-dataset.json`-ból jönnek (mintaárak, nem az ötvös jóváhagyott árai). A `bin/demo-seed.php`
+csak üres adatbázisba ír, és az állapot `demo: true` jelzést kap – ilyen állapottal az élesítési ellenőrzés
+nem engedi az élesítést. A `dev/`, `tests/` mappa és a mintaadat **nem kerül fel** az éles tárhelyre.
 
 ## Telepítés a tárhelyre (ha meglesz a hozzáférés)
 
@@ -93,6 +115,6 @@ Részletes ellenőrzőlista: `public/latvanytervek/karikagyuru/docs/TELEPITES.md
 1. ~~A weboldal bekötése az API-ra~~ – kész (`js/api.js`).
 2. Kipróbálás a tényleges tárhelyen (PHP-verzió, írási jog, HTTPS, `.htaccess`/nginx átirányítás).
 3. Mentési rend az adatmappára (napi másolat), és annak kipróbált visszatöltése.
-4. Adatkezelési tájékoztató és megőrzési idő az érdeklődőadatokra (az ügyféllel és jogilag egyeztetve).
+4. Az ügyfél végleges adatkezelési tájékoztatójának címe (`BUSINESS.adatkezeles`), és a megőrzési idő az érdeklődőadatokra és képekre (a `bin/purge.php` kész hozzá).
 5. ~~Értesítés új érdeklődésről~~ – megírva; bekapcsolni csak jóváhagyott címmel és SMTP-adatokkal, próbalevéllel.
 6. Független biztonsági átnézés élesítés előtt.
