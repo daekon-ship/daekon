@@ -35,6 +35,9 @@ final class App
         $this->db->exec('CREATE TABLE IF NOT EXISTS inquiry (id INTEGER PRIMARY KEY AUTOINCREMENT, body TEXT NOT NULL, status TEXT NOT NULL DEFAULT \'uj\', ip_hash TEXT NOT NULL, created_at TEXT NOT NULL)');
         $this->db->exec('CREATE TABLE IF NOT EXISTS attempt (id INTEGER PRIMARY KEY AUTOINCREMENT, kind TEXT NOT NULL, ip_hash TEXT NOT NULL, at INTEGER NOT NULL)');
         $this->db->exec('CREATE INDEX IF NOT EXISTS attempt_idx ON attempt (kind, ip_hash, at)');
+        // V5.4: e-mail-értesítés állapota érdeklődésenként (off | fajlba | elkuldve | hiba)
+        $cols = array_column($this->db->query('PRAGMA table_info(inquiry)')->fetchAll(PDO::FETCH_ASSOC), 'name');
+        if (!in_array('notify', $cols, true)) $this->db->exec("ALTER TABLE inquiry ADD COLUMN notify TEXT NOT NULL DEFAULT ''");
     }
 
     /* ---------- telepítés ---------- */
@@ -87,6 +90,8 @@ final class App
                 case 'GET /inquiries':  $this->inquiries(); return;
                 case 'POST /inquiry-status': $this->inquiryStatus(); return;
                 case 'POST /photo':     $this->postPhoto(); return;
+                case 'GET /mail-status': $this->json(['mail' => (new Mailer($this->data))->status()]); return;
+                case 'POST /mail-test': $this->mailTest(); return;
             }
             $this->fail(404, 'Nincs ilyen végpont.');
         } catch (HttpError $e) {
@@ -161,9 +166,9 @@ final class App
         $r = $this->latest();
         if (!$r) { $this->json(['version' => 0, 'state' => null, 'savedAt' => null]); return; }
         $state = json_decode($r['body'], true);
-        // A látogató nem kaphat érdeklődőadatot, akkor sem, ha valaki az állapotba tette volna.
-        if (!$this->isAdmin()) unset($state['inquiries']);
-        $this->json(['version' => (int) $r['version'], 'state' => $state, 'savedAt' => $r['saved_at']]);
+        // A látogató csak a nyilvános weboldalhoz szükséges, jóváhagyott adatokat kapja; az admin a teljes állapotot.
+        if (!$this->isAdmin()) $state = self::publicState($state);
+        $this->json(['version' => (int) $r['version'], 'state' => $state, 'savedAt' => $this->isAdmin() ? $r['saved_at'] : null]);
     }
 
     private function putState(): void
@@ -172,6 +177,7 @@ final class App
         if (strlen($raw) > self::MAX_STATE) $this->fail(413, 'Túl nagy adat. A fényképeket külön kell feltölteni.');
         $in = json_decode($raw, true);
         if (!is_array($in) || !is_array($in['state'] ?? null)) $this->fail(400, 'Hibás adat.');
+        if (!empty($in['state']['public'])) $this->fail(422, 'A nyilvános nézet nem menthető vissza – töltse újra a kezelőfelületet.');
         $err = self::validateState($in['state']);
         if ($err) $this->fail(422, $err);
         unset($in['state']['inquiries']);
@@ -188,6 +194,73 @@ final class App
         $this->db->exec('DELETE FROM state_version WHERE version <= ' . ($v - 200));
         $this->db->commit();
         $this->json(['version' => $v, 'savedAt' => gmdate('c')]);
+    }
+
+    private const PUB_PRODUCT = ['id', 'code', 'name', 'real', 'listaAr', 'img', 'priceOnRequest', 'imgFill', 'unknownColor', 'kind', 'baseColor',
+        'colors', 'metals', 'metalNotes', 'style', 'visible', 'sites', 'widths', 'stoneOptional', 'fixedWeight', 'approved', 'opts', 'consult', 'added'];
+    private const PUB_RING = ['label', 'refSize', 'refWidth', 'share', 'weight', 'weights', 'other', 'stoneRule', 'thickness', 'sizeMin', 'sizeMax'];
+    /** A nyilvános oldal által használt beállítások. Felár, anyagveszteség, munkadíj-szorzó, árrés-küszöb NEM megy ki. */
+    private const PUB_SETTINGS = ['pricingMode', 'sizeMethod', 'density', 'stonesGross', 'settingPerStone', 'engravingPrice', 'boxCost', 'certCost',
+        'roundTo', 'vatPct', 'stoneEdgeMm', 'stoneGapMm', 'showDemoMarks'];
+
+    /**
+     * Nyilvános nézet a látogatóknak. Kimarad: beszerzési referenciaárak, felárak, anyagveszteség, munkadíj, árnapló,
+     * érdeklődések, megjegyzések, rejtett gyűrűk, 3D-forrásadatok, a nem jóváhagyott árelemek értéke és minden
+     * jóváhagyási címke (a jóváhagyott elemek „jovahagyott” jelet kapnak, mert a böngésző ebből tudja, mit számolhat).
+     * Költségalapú módban nincs nyilvános grammár: minden ár egyedi ajánlat.
+     */
+    public static function publicState(array $s): array
+    {
+        $ok = fn($v) => $v === 'jovahagyott';
+        $m = $s['materials'] ?? []; $set = $s['settings'] ?? [];
+        $gramm = ($set['pricingMode'] ?? 'gramm') === 'gramm';
+        $msrc = $m['src'] ?? [];
+        $sell = []; $pmsrc = [];
+        foreach (($m['sellPerGram'] ?? []) as $metal => $v) {
+            $approved = $gramm && $metal !== 'ti' && $ok($msrc["sellPerGram.$metal"] ?? null) && is_numeric($v);
+            $sell[$metal] = $approved ? $v : null;
+            if ($approved) $pmsrc["sellPerGram.$metal"] = 'jovahagyott';
+        }
+        $dia = [];
+        foreach (($m['diamonds'] ?? []) as $d) {
+            if (!is_array($d)) continue;
+            $a = $ok($d['src'] ?? null) && is_numeric($d['price'] ?? null);
+            $x = ['id' => $d['id'] ?? null, 'ct' => $d['ct'] ?? null, 'mm' => $d['mm'] ?? null, 'name' => $d['name'] ?? null, 'quality' => $d['quality'] ?? null, 'price' => $a ? $d['price'] : null];
+            if ($a) $x['src'] = 'jovahagyott';
+            $dia[] = $x;
+        }
+        $ssrc = $set['src'] ?? []; $pset = []; $pssrc = [];
+        foreach (self::PUB_SETTINGS as $k) {
+            if (!array_key_exists($k, $set)) continue;
+            $pset[$k] = $set[$k];
+            if ($ok($ssrc[$k] ?? null)) $pssrc[$k] = 'jovahagyott';
+        }
+        $pset['src'] = (object) $pssrc;
+        $prods = []; $approvedIds = [];
+        foreach (($s['products'] ?? []) as $p) {
+            if (!is_array($p) || ($p['visible'] ?? true) === false) continue;
+            $q = array_intersect_key($p, array_flip(self::PUB_PRODUCT));
+            $q['approved'] = ($p['approved'] ?? false) === true;
+            // Egyedi ár, minimumár csak jóváhagyott gyűrűnél
+            if ($q['approved']) { if (isset($p['override'])) $q['override'] = $p['override']; if (isset($p['minPrice'])) $q['minPrice'] = $p['minPrice']; }
+            $q['rings'] = array_map(fn($r) => is_array($r) ? array_intersect_key($r, array_flip(self::PUB_RING)) : $r, $p['rings'] ?? []);
+            if ($q['approved']) $approvedIds[$p['id']] = true;
+            $prods[] = $q;
+        }
+        // „Frissült ár” jelzés: csak a jóváhagyott gyűrűk régi ára
+        $lc = null;
+        if (is_array($s['lastChange'] ?? null) && is_array($s['lastChange']['old'] ?? null)) {
+            $old = array_intersect_key($s['lastChange']['old'], $approvedIds);
+            if ($old) $lc = ['at' => $s['lastChange']['at'] ?? null, 'old' => $old];
+        }
+        return [
+            'v' => $s['v'] ?? null,
+            'materials' => ['sellPerGram' => (object) $sell, 'diamonds' => $dia, 'src' => (object) $pmsrc],
+            'settings' => $pset,
+            'products' => $prods,
+            'lastChange' => $lc,
+            'public' => true,
+        ];
     }
 
     /** Csak szerkezeti és értéktartomány-ellenőrzés. NEM szakmai jóváhagyás. */
@@ -273,17 +346,28 @@ final class App
         }
         $st = $this->db->prepare('INSERT INTO inquiry (body, status, ip_hash, created_at) VALUES (?, ?, ?, ?)');
         $st->execute([json_encode($clean, JSON_UNESCAPED_UNICODE), $status, $ip, gmdate('c')]);
+        $id = (int) $this->db->lastInsertId();
         $this->addAttempt('inquiry', $ip);
-        // E-mail-értesítés szándékosan nincs: levélküldést csak ügyféljóváhagyás és kipróbálás után kapcsolunk be.
-        $this->json(['ok' => true, 'id' => (int) $this->db->lastInsertId()], 201);
+        // Az érdeklődés már el van mentve. Az értesítés ezután megy; ha nem sikerül, az érdeklődés megmarad,
+        // csak az állapota mutatja a hibát (a látogató sikeres visszajelzést kap, mert az üzenete megérkezett).
+        $notify = 'off';
+        if (!$admin) {
+            [$subj, $text] = Mailer::inquiryText($id, $clean, (string) (getenv('KG_SITE_URL') ?: ''));
+            if (!getenv('KG_SITE_URL')) $text = str_replace('A részletek (beállítások, becsült ár) a kezelőfelületen: ', 'A részletek (beállítások, becsült ár) a kezelőfelület Érdeklődések menüjében.', $text);
+            $r = (new Mailer($this->data))->send($subj, $text);
+            $notify = $r['status'];
+            if ($r['status'] === 'hiba') error_log('kg-api: értesítő levél nem ment el (#' . $id . '): ' . $r['error']);
+        }
+        $this->db->prepare('UPDATE inquiry SET notify = ? WHERE id = ?')->execute([$notify, $id]);
+        $this->json(['ok' => true, 'id' => $id], 201);
     }
 
     private function inquiries(): void
     {
-        $rows = $this->db->query('SELECT id, body, status, created_at FROM inquiry ORDER BY id DESC LIMIT 500')->fetchAll(PDO::FETCH_ASSOC);
+        $rows = $this->db->query('SELECT id, body, status, notify, created_at FROM inquiry ORDER BY id DESC LIMIT 500')->fetchAll(PDO::FETCH_ASSOC);
         foreach ($rows as &$r) {
             $b = json_decode($r['body'], true);
-            $r = ['id' => 's' . $r['id'], 'status' => $r['status'], 'at' => $r['created_at']] + $b;
+            $r = ['id' => 's' . $r['id'], 'status' => $r['status'], 'notify' => $r['notify'], 'at' => $r['created_at']] + $b;
         }
         $this->json(['inquiries' => $rows]);
     }
@@ -304,6 +388,17 @@ final class App
         $up = $this->db->prepare('UPDATE inquiry SET status = ?, body = ? WHERE id = ?');
         $up->execute([$status, json_encode($b, JSON_UNESCAPED_UNICODE), $id]);
         $this->json(['ok' => true]);
+    }
+
+    /** Próbalevél a beállított címre – csak az admin kifejezett kérésére (gombnyomás). */
+    private function mailTest(): void
+    {
+        $m = new Mailer($this->data);
+        $st = $m->status();
+        if ($st['mode'] === 'off') $this->fail(409, 'Az e-mail-értesítés ki van kapcsolva.');
+        $r = $m->send('Próbalevél – karikagyuru.com', "Ez próbalevél a weboldal kezelőfelületéről.\nHa megérkezett, az új érdeklődésekről is jön értesítés.");
+        if ($r['status'] === 'hiba') $this->fail(502, (string) $r['error']);
+        $this->json(['ok' => true, 'status' => $r['status']]);
     }
 
     /* ---------- fényképek ---------- */

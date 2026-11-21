@@ -186,6 +186,8 @@ export const store = {
   load(remote) {
     if (!remote || !Array.isArray(remote.products)) return;
     state = { ...fresh(), ...remote, v: 14, inquiries: state.inquiries || [] };
+    if (!remote.public) delete state.public;
+    else state.history = [];   // a nyilvános nézetben nincs árnapló
     if (!Array.isArray(state.history)) state.history = [];
     listeners.forEach((fn) => fn(state));
   },

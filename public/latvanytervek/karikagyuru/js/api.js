@@ -62,7 +62,13 @@ export async function login(password) {
   const r = await call('POST', 'login', { password });
   if (r.ok) {
     api.admin = true; api.csrf = r.data.csrf; api.error = '';
-    if (api.blocked === 'session') { await reloadFromServer(); api.blocked = null; api.save = 'idle'; }
+    // A látogató csak a nyilvános (szűkített) nézetet kapta – belépés után MINDIG a teljes állapot töltődik be,
+    // különben egy mentés a hiányzó belső adatokat felülírná.
+    if (!(await reloadFromServer()) || store.get().public) {
+      api.admin = false; api.csrf = null; await call('POST', 'logout', {});
+      emit(); return { ok: false, error: 'A teljes adat nem töltődött be a szerverről. Próbálja újra később.' };
+    }
+    if (api.blocked === 'session') { api.blocked = null; api.save = 'idle'; }
     emit(); return { ok: true };
   }
   return { ok: false, error: r.data.error || 'A belépés nem sikerült.' };
@@ -76,7 +82,7 @@ export async function logout() {
 /* --- mentés: rövid várakozás után egyben, az utolsó ismert változatra építve --- */
 let timer = null, inflight = null, again = false;
 function scheduleSave() {
-  if (!api.admin || api.blocked) return;
+  if (!api.admin || api.blocked || store.get().public) return;
   api.save = 'pending'; emit();
   clearTimeout(timer);
   timer = setTimeout(flush, 350);
@@ -135,3 +141,7 @@ export async function uploadPhoto(file) {
   if (!r.ok) throw new Error(r.data.error || 'A kép feltöltése nem sikerült.');
   return r.data.url;
 }
+
+/* --- e-mail-értesítés (csak admin) --- */
+export async function mailStatus() { const r = await call('GET', 'mail-status'); return r.ok ? r.data.mail : null; }
+export async function mailTest() { const r = await call('POST', 'mail-test', {}); return r.ok ? { ok: true } : { ok: false, error: r.data.error || 'Ismeretlen hiba.' }; }

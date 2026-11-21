@@ -46,7 +46,8 @@ def multipart(name, filename, content, ctype):
 
 STATE = {'products': [{'id': 'proba-1', 'name': 'Próba'}], 'settings': {'pricingMode': 'gramm'},
          'materials': {'sellPerGram': {'au14': 47000, 'au18': None, 'pt': 55000, 'pd': None, 'ti': None},
-                       'diamonds': [{'id': 'd01', 'price': 6000}, {'id': 'd04', 'price': None}]}}
+                       'diamonds': [{'id': 'd01', 'price': 6000}, {'id': 'd04', 'price': None}],
+                       'src': {'sellPerGram.au14': 'jovahagyott'}}}
 
 def main():
     data = tempfile.mkdtemp(prefix='kg-api-')
@@ -107,6 +108,58 @@ def main():
         s, d = a.j('POST', '/revert', {'version': v1}); check('visszaállítás új változatot hoz létre', s == 200 and d.get('version') == v1 + 2, d)
         s, d = b.j('GET', '/state'); check('visszaállítás után a régi ár él', d['state']['materials']['sellPerGram']['au14'] == 47000, d)
         s, d = a.j('POST', '/revert', {'version': 999}); check('nem létező változat: 404', s == 404, s)
+
+        print('Nyilvános nézet: nem szivároghat belső adat')
+        rich = {
+          'v': 14,
+          'products': [
+            {'id': 'jo-1', 'code': 'JO 1', 'name': 'Jóváhagyott', 'approved': True, 'listaAr': 300000, 'metals': ['au14'], 'colors': ['sarga'],
+             'override': {'type': 'pct', 'value': 5}, 'minPrice': 250000, 'models3d': [{'url': 'titkos.glb'}], 'belso': 'TITOK-TERMEK',
+             'rings': [{'label': 'Női', 'refSize': 54, 'refWidth': 4, 'weight': 4.8, 'labor': 12345, 'stoneRule': None, 'jegyzet': 'TITOK-GYURU'}]},
+            {'id': 'nem-1', 'code': 'NEM 1', 'name': 'Nem jóváhagyott', 'approved': False, 'listaAr': 200000, 'metals': ['au14'],
+             'override': {'type': 'fixed', 'value': 111111}, 'minPrice': 99999, 'rings': [{'label': 'Női', 'refSize': 54, 'refWidth': 3, 'weight': 3.1, 'labor': 777}]},
+            {'id': 'rejtett-1', 'code': 'REJTETT', 'name': 'Rejtett', 'visible': False, 'approved': True, 'rings': []},
+          ],
+          'materials': {'gold24': 40000, 'platinum': 15000, 'palladium': 10000, 'titanium': 80,
+                        'sellPerGram': {'au14': 47000, 'au18': 56000, 'pt': 55000, 'pd': 40000, 'ti': None},
+                        'diamonds': [{'id': 'd01', 'ct': 0.01, 'price': 6000, 'src': 'jovahagyott', 'note': 'TITOK-KO'},
+                                     {'id': 'd02', 'ct': 0.02, 'price': 12000, 'src': 'pelda', 'note': 'x'}],
+                        'src': {'gold24': 'pelda', 'sellPerGram.au14': 'jovahagyott', 'sellPerGram.au18': 'demo', 'sellPerGram.pt': 'pelda'}},
+          'settings': {'pricingMode': 'gramm', 'sizeMethod': 'tomeg', 'roundTo': 100, 'vatPct': 27, 'markupMetal': 35, 'markupStones': 20,
+                       'lossPct': 3, 'laborFactor': {'au14': 1}, 'minMarginPct': 18, 'bigChangePct': 15, 'boxCost': 0,
+                       'src': {'pricingMode': 'jovahagyott', 'roundTo': 'demo', 'markupMetal': 'jovahagyott'}},
+          'history': [{'title': 'TITOK-NAPLO', 'before': {'gold24': 39000}}],
+          'lastChange': {'at': '2026-11-21', 'old': {'jo-1': 290000, 'nem-1': 187654}},
+          'inquiries': [{'name': 'TITOK-ERDEKLODO'}],
+        }
+        s, d = a.j('GET', '/versions'); base = d['versions'][0]['version']
+        s, d = a.j('PUT', '/state', {'baseVersion': base, 'state': rich, 'note': 'teljes'}); check('teljes állapot mentve', s == 200, d)
+        vb = d.get('version')
+        s, raw, _ = b.req('GET', '/state'); txt = raw.decode('utf-8'); pub = json.loads(txt)['state']
+        for secret in ['TITOK-TERMEK', 'TITOK-GYURU', 'TITOK-KO', 'TITOK-NAPLO', 'TITOK-ERDEKLODO', 'titkos.glb', 'REJTETT', '187654', '111111', '99999', '12345', '"labor"']:
+            check(f'látogató nem kapja: {secret}', secret not in txt)
+        m = pub['materials']
+        check('nincs beszerzési referenciaár (24K, platina, palládium, titán)', not any(k in m for k in ['gold24', 'platinum', 'palladium', 'titanium']), list(m))
+        check('csak a jóváhagyott grammár látszik (14K), a többi üres', m['sellPerGram']['au14'] == 47000 and m['sellPerGram']['au18'] is None and m['sellPerGram']['pt'] is None)
+        check('nem jóváhagyott kőár üres, jóváhagyott megvan, megjegyzés nincs', m['diamonds'][0]['price'] == 6000 and m['diamonds'][1]['price'] is None and 'note' not in m['diamonds'][0])
+        check('jóváhagyási címkék: csak „jovahagyott”, belső címke (pelda/demo) nincs', set(m['src'].values()) <= {'jovahagyott'} and set(pub['settings']['src'].values()) <= {'jovahagyott'} and 'pelda' not in txt and '"demo"' not in txt)
+        st_ = pub['settings']
+        check('felár, anyagveszteség, munkadíj-szorzó, árrés-küszöb nem megy ki', not any(k in st_ for k in ['markupMetal', 'markupStones', 'lossPct', 'laborFactor', 'minMarginPct', 'bigChangePct']), list(st_))
+        check('nincs árnapló és érdeklődés', 'history' not in pub and 'inquiries' not in pub)
+        check('rejtett gyűrű nem megy ki', [p['id'] for p in pub['products']] == ['jo-1', 'nem-1'])
+        nem = pub['products'][1]; jo = pub['products'][0]
+        check('nem jóváhagyott gyűrű: nincs egyedi/minimumár', 'override' not in nem and 'minPrice' not in nem and nem['approved'] is False)
+        check('jóváhagyott gyűrű: egyedi ár szabálya megmarad', jo['override'] == {'type': 'pct', 'value': 5} and jo['minPrice'] == 250000)
+        check('„frissült ár”: csak jóváhagyott gyűrű régi ára', pub['lastChange']['old'] == {'jo-1': 290000})
+        s, d = a.j('GET', '/state')
+        check('admin a teljes állapotot kapja (beszerzési ár, napló, felár)', d['state']['materials']['gold24'] == 40000 and d['state']['history'][0]['title'] == 'TITOK-NAPLO' and d['state']['settings']['markupMetal'] == 35)
+        check('az admin állapotában sincs érdeklődés (azok külön táblában)', 'inquiries' not in d['state'])
+        pubst = json.loads(json.dumps(pub))
+        s, d = a.j('PUT', '/state', {'baseVersion': vb, 'state': pubst}); check('a nyilvános nézetet nem lehet visszamenteni (422)', s == 422, s)
+        kolt = json.loads(json.dumps(rich)); kolt['settings']['pricingMode'] = 'koltseg'
+        s, d = a.j('PUT', '/state', {'baseVersion': vb, 'state': kolt}); vb = d.get('version')
+        s, d = b.j('GET', '/state')
+        check('költségalapú módban nincs nyilvános grammár (minden egyedi ajánlat)', all(v is None for v in d['state']['materials']['sellPerGram'].values()))
 
         print('Érdeklődések')
         inq = {'name': 'Teszt Elek', 'email': 'teszt@example.invalid', 'phone': '', 'message': 'Próbaüzenet <script>', 'type': 'erdeklodes', 'productId': 'proba-1',
