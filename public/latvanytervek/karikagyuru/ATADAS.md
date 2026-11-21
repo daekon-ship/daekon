@@ -226,23 +226,15 @@ Cél: a kalkulátor az ötvös saját számítási logikáját mutassa, ne kital
 ### Az ötvös módszere = alapértelmezett „grammár szerint” mód
 **Ár = kész tömeg (g) × eladási grammár (Ft/g, bruttó) × méret / 54 + kövek darabára + külön díjak.**
 - A grammár már tartalmazza a fémet, a munkát, az árrést és az ÁFA-t. Munkadíj, felár és ÁFA nem kerül rá még egyszer; ezt teszt ellenőrzi.
-- Az alapanyag-referenciaár KÜLÖN mező:
-  - 24K 40 000 Ft/g → 14K = ×0,585 = 23 400; 18K = ×0,75 = 30 000;
-  - platina 15 000, palládium 10 000.
+- Az alapanyag-referenciaár KÜLÖN mező (24K → 14K ×0,585, 18K ×0,75; platina, palládium külön).
 - Grammáras módban az alapanyag-referenciaár nem változtatja az eladási árat. A részletes kalkulációban tájékoztató anyagköltségként látszik.
 - A költségalapú mód összehasonlításnak megmaradt.
 
 ### Ügyfélpéldák → beállítások
-- **Eladási grammár:** 14K 47 000, platina 55 000 (ügyfél példája). A 18K, palládium és titán grammára demó, mert még nem kaptuk meg.
-- **Tömegarányok az 54-es példatömegekből:** 14K 4,8 g → 18K 5,4 · Pt 6,9 · Pd 4,0 · Ti 1,5 g (`S.density`). Egy gyűrűnél anyagonként pontos tömeg is megadható (`ring.weights`).
-- **Természetes gyémánt, Ft/db:**
-  - 0,01 ct (Ø 1,25 mm) 6 000 · 0,015 ct (1,5) 9 000 · 0,02 ct (1,7) 12 000 · 0,03 ct (2,0) 18 000;
-  - 0,04 ct (2,2–2,3): ár nélkül, „megerősítendő” (jegyzet: 24 000, beszélgetés: 20 000);
-  - 0,05 ct (2,3–2,4): ár nélkül, megerősítendő;
-  - a 0,005 ct és a 0,10 ct demó.
-  - Ár nélküli kő → „Egyedi árajánlat szükséges”.
-- **Díjak:** kőfoglalás 0 (benne lehet a kő árában – egyeztetendő), díszdoboz és tanúsítvány 0, gravír 6 000 (demó). Kerekítés felfelé 100 Ft-ra (demó).
-- **A jegyzet 60-as platina 442 000 Ft-ját nem állítottuk be.** A lineáris számítás 421 667 Ft. A különbség (20 333 Ft) az admin Árszámítás oldalán ki van emelve, egyeztetendő.
+Az ügyfél jegyzetének konkrét számai (grammárak, példatömegek, kőárak, a 60-as méret eltérése) **V5.6 óta nem szerepelnek a nyilvános repositoryban**;
+a DAEKON nem nyilvános átadási anyagában vannak. A nyilvános tesztek és a bemutató kitalált, szemléltető számokkal dolgoznak.
+- Ár nélküli kő → „Egyedi árajánlat szükséges”. A bizonytalan kőárak (0,04 és 0,05 ct) ár nélkül, „megerősítendő” jelöléssel.
+- Kerekítés felfelé 100 Ft-ra (demó). A jegyzet és a lineáris számítás közti eltérést nem állítottuk be – egyeztetendő.
 
 ### Fizikai korlát a kövekre (demó műszaki szabály)
 - A kő átmérője legfeljebb a gyűrű szélessége mínusz 1 mm perem.
@@ -264,18 +256,14 @@ Ahol látszik:
 - A gyűrűk tömege „becsült tömeg”: a weboldali árból visszaszámolva, (ár − kövek) ÷ grammár. Gyűrűnként jelölhető „Az ötvös jóváhagyta”.
 
 ### Admin Árszámítás oldal
-- „Az ötvös számítási módja”: táblázat az élő beállításokból (225 600 / 379 500 / 337 333 / 421 667 Ft).
+- „Az ötvös számítási módja”: táblázat az élő beállításokból (a mentett példatömegekkel).
 - Próbaszámítás tetszőleges tömeggel, mérettel és kővel, lépésenkénti levezetéssel és tájékoztató anyagköltséggel.
 
 ### Tesztek
 - `node --test public/latvanytervek/karikagyuru/tests/engine.test.mjs` → 27/27.
-  - Az ügyfél számpéldái: 225 600; 379 500; 337 333; 421 667 (és nem 442 000).
-  - Kerekítés: 337 400.
-  - Tömegarányok: 4,8 → 5,4 / 6,9 / 4,0 / 1,5 g.
-  - Alapanyagárak: 23 400 / 30 000 / 15 000 / 10 000.
-  - Kőárak 6 000–18 000 Ft, „ügyfél példája” jelöléssel.
+  - Az ötvös módszerének számpéldái, kerekítés, tömegarányok, alapanyagárak, kőárak (V5.6 óta szemléltető számokkal).
   - 0,04 és 0,05 ct → egyedi ajánlat.
-  - 4,8 g + 3 × 0,01 ct = 243 600 Ft.
+  - Gyűrű + 3 × 0,01 ct kő összege.
   - Nincs dupla munkadíj, felár és ÁFA.
   - Az alapanyagár grammáras módban nem mozgatja az eladási árat.
   - Fizikai kőkorlát.
@@ -526,3 +514,9 @@ Tesztek: motor 73/73, asztali 30/30, mobil 26/26, V3 70/70, V4 54/54, V5 38/38, 
   törlés és megőrzési idő (`bin/purge.php`).
 - **Adatkezelési link** mindkét űrlap mellett (`BUSINESS.adatkezeles` – az ügyfél végleges tájékoztatójára cserélendő).
 - **SEO:** `docs/SEO_MIGRACIO.md` – valódi útvonalak, szerveroldali fej, sitemap, 301-es átirányítások.
+
+## V5.6 – teljes katalógus és ügyfélbemutató (2026. november 22.)
+
+- **Mind a 115 gyűrű látszik.** A fotó hiánya már nem rejti el a gyűrűt: kép nélkül „Fotó hamarosan” helykitöltő jelenik meg, a gyűrű kereshető és megnyitható.
+- **Fotóellenőrzés:** `node services/karikagyuru-api/dev/foto-ellenorzes.mjs` – letölti és két méretben (1600/800 px) optimalizálja az ügyfél saját oldalán lévő termékfotókat, és géppel olvasható jelentést ír (`docs/KATALOGUS_JELENTES.json`, `.md`). Admin → Fotók: böngészős betöltés-ellenőrzés JSON-jelentéssel.
+- **Az ügyfél árazási jegyzetének számai kikerültek a nyilvános repositoryból** (adatkészlet, tesztek, dokumentáció) – szemléltető értékekre cserélve. A git-előzményekben force push nélkül megmaradnak (lásd a nem nyilvános előzménytisztítási tervet).

@@ -30,7 +30,7 @@ test('1. Az aranyszín azonos karátnál nem módosítja az árat', () => {
 
 test('2. 18K nehezebb és drágább, mint 14K (tömeg és ár)', () => {
   const a = price(plain), b = price(plain, (c) => (c.metal = 'au18'));
-  assert.ok(Math.abs(b.grams / a.grams - 5.4 / 4.8) < 0.02);   // ügyfélpélda: 4,8 g → 5,4 g
+  assert.ok(Math.abs(b.grams / a.grams - 5.6 / 5.0) < 0.02);   // szemléltető példa: 5,0 g → 5,6 g
   assert.ok(b.final > a.final);
   assert.ok(Math.abs(b.pure / b.grams - 0.75) < 0.01 && Math.abs(a.pure / a.grams - 0.585) < 0.01);
 });
@@ -137,50 +137,49 @@ test('12. Minden látható, áras termékhez van ár az alapbeállítással', ()
   assert.deepEqual(missing, []);
 });
 
-/* ---------------- Az ügyfél kézírásos jegyzetének számpéldái ---------------- */
+/* ---------------- Az ötvös számítási módja – SZEMLÉLTETŐ számokkal (nem az ügyfél adatai) ---------------- */
 const R1 = { ...S, pricingMode: 'gramm', roundTo: 1 };
 const ex = (metal, weight, size, s = R1) => exampleRing({ metal, weight, size }, M, s).final;
 
-test('Ügyfélpélda: 14K, 4,8 g × 47 000 = 225 600 Ft', () => assert.equal(ex('au14', 4.8, 54), 225600));
-test('Ügyfélpélda: platina, 6,9 g × 55 000 = 379 500 Ft', () => assert.equal(ex('pt', 6.9, 54), 379500));
-test('Ügyfélpélda: platina 48-as méret ≈ 337 333 Ft (379 500 × 48/54)', () => assert.equal(ex('pt', 6.9, 48), 337333));
-test('Ügyfélpélda: platina 60-as méret ≈ 421 667 Ft (379 500 × 60/54), NEM a jegyzet 442 000 Ft-ja', () => {
-  assert.equal(ex('pt', 6.9, 60), 421667);
-  assert.notEqual(ex('pt', 6.9, 60), 442000);
+test('Példa: 14K, 5,0 g × 42 000 = 210 000 Ft', () => assert.equal(ex('au14', 5.0, 54), 210000));
+test('Példa: platina, 7,1 g × 48 000 = 340 800 Ft', () => assert.equal(ex('pt', 7.1, 54), 340800));
+test('Példa: platina 48-as méret ≈ 302 933 Ft (340 800 × 48/54)', () => assert.equal(ex('pt', 7.1, 48), 302933));
+test('Példa: platina 60-as méret ≈ 378 667 Ft (340 800 × 60/54) – lineáris arányosítás', () => {
+  assert.equal(ex('pt', 7.1, 60), 378667);
 });
 test('Méretmódszer grammáras módban mindkét beállítással ugyanazt adja', () => {
-  assert.equal(ex('pt', 6.9, 60, { ...R1, sizeMethod: 'ar' }), 421667);
+  assert.equal(ex('pt', 7.1, 60, { ...R1, sizeMethod: 'ar' }), 378667);
 });
 test('Kerekítés felfelé 100 Ft-ra (alapbeállítás)', () => {
-  assert.equal(ex('au14', 4.8, 54, { ...S }), 225600);
-  assert.equal(ex('pt', 6.9, 48, { ...S }), 337400);
+  assert.equal(ex('au14', 5.0, 54, { ...S }), 210000);
+  assert.equal(ex('pt', 7.1, 48, { ...S }), 303000);
 });
-test('Ügyfélpélda: tömegarányok – 14K 4,8 g → 18K 5,4 · Pt 6,9 · Pd 4,0 · Ti 1,5 g (54-es)', () => {
-  const ring = { label: 'x', refSize: 54, refWidth: 4, weight: 4.8, labor: 0, other: 0, stoneRule: null };
+test('Példa: tömegarányok – 14K 5,0 g → 18K 5,6 · Pt 7,1 · Pd 4,2 · Ti 1,6 g (54-es)', () => {
+  const ring = { label: 'x', refSize: 54, refWidth: 4, weight: 5.0, labor: 0, other: 0, stoneRule: null };
   const p = { id: 't', code: 't', name: 't', kind: 's', metals: ['au14', 'au18', 'pt', 'pd', 'ti'], colors: ['sarga'], baseColor: 'sarga', widths: [4], rings: [ring] };
   const g = (m) => Math.round(refWeight(ring, m, S) * 100) / 100;
-  assert.deepEqual(['au14', 'au18', 'pt', 'pd', 'ti'].map(g), [4.8, 5.4, 6.9, 4, 1.5]);
+  assert.deepEqual(['au14', 'au18', 'pt', 'pd', 'ti'].map(g), [5, 5.6, 7.1, 4.2, 1.6]);
 });
-test('Ügyfélpélda: alapanyagárak – 24K 40 000 → 14K 23 400, 18K 30 000; Pt 15 000; Pd 10 000', () => {
-  assert.deepEqual(['au14', 'au18', 'pt', 'pd'].map((m) => Math.round(refPrice(m, M))), [23400, 30000, 15000, 10000]);
+test('Példa: alapanyagárak – 24K 36 000 → 14K 21 060, 18K 27 000; Pt 13 000; Pd 11 000', () => {
+  assert.deepEqual(['au14', 'au18', 'pt', 'pd'].map((m) => Math.round(refPrice(m, M))), [21060, 27000, 13000, 11000]);
 });
 test('Grammáras módban az alapanyagár nem változtatja az eladási árat, a grammár igen', () => {
   assert.equal(diffPrices(products, M, { ...M, gold24: 50000 }, S).count, 0);
   assert.ok(diffPrices(products, M, { ...M, sellPerGram: { ...M.sellPerGram, au14: 48000 } }, S).count > 30);
 });
-test('Ügyfélpélda: gyémántárak (természetes) – 0,01 → 6 000 · 0,015 → 9 000 · 0,02 → 12 000 · 0,03 → 18 000 Ft', () => {
-  assert.deepEqual(['d01', 'd015', 'd02', 'd03'].map((id) => diamond(M, id).price), [6000, 9000, 12000, 18000]);
-  assert.deepEqual(['d01', 'd015', 'd02', 'd03'].map((id) => diamond(M, id).src), ['pelda', 'pelda', 'pelda', 'pelda']);
+test('Példa: gyémántárak (természetes) – 0,01 → 5 500 · 0,015 → 8 000 · 0,02 → 11 000 · 0,03 → 16 500 Ft', () => {
+  assert.deepEqual(['d01', 'd015', 'd02', 'd03'].map((id) => diamond(M, id).price), [5500, 8000, 11000, 16500]);
+  assert.deepEqual(['d01', 'd015', 'd02', 'd03'].map((id) => diamond(M, id).src), ['demo', 'demo', 'demo', 'demo']);
 });
 test('A bizonytalan 0,04 és 0,05 ct nincs jóváhagyott árként kezelve → egyedi ajánlat', () => {
   for (const id of ['d04', 'd05']) {
     assert.equal(diamond(M, id).price, null); assert.equal(diamond(M, id).src, 'bizonytalan');
-    const r = exampleRing({ metal: 'au14', weight: 4.8, width: 5, stones: { count: 1, cat: id } }, M, R1);
+    const r = exampleRing({ metal: 'au14', weight: 5.0, width: 5, stones: { count: 1, cat: id } }, M, R1);
     assert.equal(r.final, null); assert.match(r.reason, /egyedi árajánlat/);
   }
 });
-test('Kő + gyűrű: 4,8 g 14K + 3 × 0,01 ct = 225 600 + 18 000 Ft', () => {
-  assert.equal(exampleRing({ metal: 'au14', weight: 4.8, stones: { count: 3, cat: 'd01' } }, M, R1).final, 243600);
+test('Kő + gyűrű: 5,0 g 14K + 3 × 0,01 ct = 210 000 + 16 500 Ft', () => {
+  assert.equal(exampleRing({ metal: 'au14', weight: 5.0, stones: { count: 3, cat: 'd01' } }, M, R1).final, 226500);
 });
 test('Fizikai korlát: a kő átmérője elfér a szélességen, körbe foglalásnál a kerületen', () => {
   const rule = { mode: 'free', min: 0, max: 3, def: 1, cats: ['d01', 'd02', 'd03'], defCat: 'd03', allowNone: true };
@@ -204,10 +203,10 @@ test('Minden termék alapkonfigurációja fizikailag lehetséges és van rá ár
 const RS = (roundTo) => ({ ...S, pricingMode: 'gramm', roundTo });
 const exR = (metal, weight, size, roundTo) => exampleRing({ metal, weight, size }, M, RS(roundTo));
 const CASES = [            // [anyag, tömeg, méret, nyers, 100 Ft-ra, 1000 Ft-ra]
-  ['au14', 4.8, 54, 225600, 225600, 226000],
-  ['pt', 6.9, 54, 379500, 379500, 380000],
-  ['pt', 6.9, 48, 337333, 337400, 338000],
-  ['pt', 6.9, 60, 421667, 421700, 422000],
+  ['au14', 5.0, 54, 210000, 210000, 210000],
+  ['pt', 7.1, 54, 340800, 340800, 341000],
+  ['pt', 7.1, 48, 302933, 303000, 303000],
+  ['pt', 7.1, 60, 378667, 378700, 379000],
 ];
 for (const [m, w, sz, raw, r100, r1000] of CASES) {
   test(`Kerekítés: ${m} ${sz}-es – nyers ${raw}, 100 Ft-ra ${r100}, 1000 Ft-ra ${r1000}, kerekítés nélkül ${raw}`, () => {
@@ -221,10 +220,10 @@ for (const [m, w, sz, raw, r100, r1000] of CASES) {
 test('A kerekítés alapértelmezése demó, és az ügyfél jóváhagyásáig az marad', () => {
   assert.equal(S.roundTo, 100); assert.equal(S.src.roundTo, 'demo');
 });
-test('A 18K, palládium és titán grammár demóként jelölt, a 14K és platina ügyfélpélda', () => {
-  assert.deepEqual(['au18', 'pd'].map((m) => M.src[`sellPerGram.${m}`]), ['demo', 'demo']);
+test('A szemléltető adatkészlet minden grammára „demo” jelölésű, a titánnak nincs grammára', () => {
+  assert.deepEqual(['au14', 'au18', 'pt', 'pd'].map((m) => M.src[`sellPerGram.${m}`]), ['demo', 'demo', 'demo', 'demo']);
   assert.equal(M.sellPerGram.ti, null); assert.equal(M.src['sellPerGram.ti'], 'bizonytalan');   // titán: munkaalapú ár, nincs grammár
-  assert.deepEqual(['au14', 'pt'].map((m) => M.src[`sellPerGram.${m}`]), ['pelda', 'pelda']);
+  assert.ok(!JSON.stringify(DS).includes('"pelda"'));   // V5.6: az ügyfél jegyzetének számai nincsenek a nyilvános adatkészletben
 });
 
 /* ---------------- Minden konfigurációban: tételek pontosan egyszer ---------------- */
@@ -327,13 +326,15 @@ function readyState() {
 }
 const keysOf = (st, kind) => readiness(st).blockers.filter((b) => !kind || b.kind === kind).map((b) => b.key);
 
-test('Élesítés: demó- és példaadatokkal nem élesíthető; az ügyfél példája sem számít jóváhagyottnak', () => {
+test('Élesítés: demó- és példaadatokkal nem élesíthető; a példa („pelda”) jelölés sem számít jóváhagyottnak', () => {
   const r0 = readiness({ materials: clone(M), settings: clone(S), products: clone(products) });
   assert.equal(r0.ready, false);
   const keys = r0.blockers.map((b) => b.key);
   for (const k of ['sellPerGram.au14', 'sellPerGram.au18', 'sellPerGram.pt', 'd01', 'd04', 'roundTo', 'vatPct', 'engravingPrice']) assert.ok(keys.includes(k), k);
   assert.ok(r0.byGroup.gyuruk > 100);
-  assert.equal(r0.blockers.find((b) => b.key === 'sellPerGram.au14' && b.kind === 'jovahagyas').src, 'pelda');
+  assert.equal(r0.blockers.find((b) => b.key === 'sellPerGram.au14' && b.kind === 'jovahagyas').src, 'demo');
+  const m2 = clone(M); m2.src['sellPerGram.au14'] = 'pelda';
+  assert.equal(readiness({ materials: m2, settings: clone(S), products: clone(products) }).blockers.find((b) => b.key === 'sellPerGram.au14').src, 'pelda');
   assert.ok(r0.invalid > 0 && r0.unapproved > 0);
 });
 test('Élesítés: minden érvényes és jóváhagyott → kész; egyetlen visszavont jóváhagyás blokkol', () => {
@@ -419,8 +420,8 @@ test('Élesítés/érvényesség: ismeretlen kőméret a modell listájában blo
   assert.ok(keysOf(st, 'ervenytelen').includes('d99'));
 });
 test('Az ötvös számítási módszere változatlan (regresszió)', () => {
-  assert.equal(exampleRing({ metal: 'au14', weight: 4.8, size: 54 }, M, R1).final, 225600);
-  assert.equal(exampleRing({ metal: 'pt', weight: 6.9, size: 60 }, M, R1).final, 421667);
+  assert.equal(exampleRing({ metal: 'au14', weight: 5.0, size: 54 }, M, R1).final, 210000);
+  assert.equal(exampleRing({ metal: 'pt', weight: 7.1, size: 60 }, M, R1).final, 378667);
 });
 
 /* ---------------- V4: gyűrűnkénti szakmai lehetőségek ---------------- */
@@ -674,12 +675,19 @@ import { professionalKey, approvalLoss } from '../js/engine.js';
 {
   const src = ['data.js', 'engine.js', 'store.js', 'views-public.js', 'views-admin.js', 'ui.js', 'app.js', 'api.js']
     .map((f) => readFileSync(new URL(`../js/${f}`, import.meta.url), 'utf8')).join('\n');
-  test('V5.5: nyilvános JS – nincs az ügyfél példaára, beszerzési ára, munkadíja', () => {
-    // számok szóhatárral (a 240 000 Ft-os listaár ne számítson a 24000-es munkadíjnak)
-    for (const bad of ['47000', '47 000', '55000', '55 000', '40000', '15000', '225 600', '379 500', '4,8 g', '6,9 g', '442 000', '16000', '22000', '24000', 'markupMetal: 30', 'DEMO_LABOR', 'DEMO_MATERIALS', 'EXAMPLE_WEIGHTS = {']) {
-      const re = new RegExp(`(?<![\\d])${bad.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![\\d])`);
-      assert.ok(!re.test(src), `a nyilvános kódban szerepel: ${bad}`);
+  test('V5.5/V5.6: nyilvános JS – a bemutató adatkészlet árai, tömegei, munkadíjai nincsenek benne', () => {
+    // Az ügyfél saját jegyzetének számait szándékosan NEM soroljuk fel ebben a nyilvános tesztben (V5.6) –
+    // azokat a nem nyilvános ellenőrzőlista nézi. Itt: a szemléltető adatkészlet egyetlen ára sem szivárog a weboldal kódjába.
+    const nums = new Set();
+    const walk = (o) => { if (o && typeof o === 'object') Object.values(o).forEach(walk); else if (typeof o === 'number' && o >= 1000) nums.add(o); };
+    walk(DS.materials); walk(DS.laborByStyle);
+    for (const n of nums) {
+      for (const form of [String(n), n.toLocaleString('hu-HU').replace(/\s/g, ' ')]) {
+        const re = new RegExp(`(?<![\\d])${form.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![\\d])`);
+        assert.ok(!re.test(src), `a nyilvános kódban szerepel: ${form}`);
+      }
     }
+    for (const bad of ['DEMO_LABOR', 'DEMO_MATERIALS', 'EXAMPLE_WEIGHTS = {', 'laborByStyle']) assert.ok(!src.includes(bad), bad);
   });
   test('V5.5: a nyilvános kiinduló adatokban minden ár üres és semmi nincs jóváhagyva', async () => {
     const d = await import('../js/data.js');

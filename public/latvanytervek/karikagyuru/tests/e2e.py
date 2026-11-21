@@ -79,9 +79,9 @@ async def main():
         await pg.goto(B + '#/admin/arszamitas'); await pg.wait_for_timeout(600)
         tbl = await pg.inner_text('.xtable')
         t2 = re.sub(r'[\u202f\xa0]', ' ', tbl)
-        check('Ötvös példái: nyers 225 600 / 379 500 / 337 333 / 421 667 Ft',
-              all(x in t2 for x in ['225 600', '379 500', '337 333', '421 667']), t2.replace('\n', ' ')[:160])
-        check('Ötvös példái: kerekítve külön oszlopban 337 400 / 421 700 Ft', 'Számított' in t2 and 'Megjelenő' in t2 and '337 400' in t2 and '421 700' in t2)
+        check('Ötvös példái (szemléltető): nyers 210 000 / 340 800 / 302 933 / 378 667 Ft',
+              all(x in t2 for x in ['210 000', '340 800', '302 933', '378 667']), t2.replace('\n', ' ')[:160])
+        check('Ötvös példái (szemléltető): kerekítve külön oszlopban 303 000 / 378 700 Ft', 'Számított' in t2 and 'Megjelenő' in t2 and '303 000' in t2 and '378 700' in t2)
         await pg.goto(B + '#/admin/keplet'); await pg.wait_for_timeout(600)
         prev = re.sub(r'[\u202f\xa0]', ' ', await pg.inner_text('[data-calc]'))
         check('Árképlet-előnézet: nyers és kerekített ár külön, nincs kőfelár grammáras módban', 'Számított ár (nyers)' in prev and 'Kerekített ár' in prev and 'kőfelár' not in prev)

@@ -1,15 +1,15 @@
 {
-  "_megjegyzes": "FEJLESZTŐI ÉS BEMUTATÓ ADATKÉSZLET – NEM ÉLES, NEM JÓVÁHAGYOTT. Forrás: az ügyfél kézírásos jegyzetének példaárai (pelda) és DAEKON bemutatóértékek (demo). Nem kerülhet a nyilvános weboldal kódjába, és nem tölthető be éles adatbázisba.",
+  "_megjegyzes": "SZEMLÉLTETŐ BEMUTATÓ ADATKÉSZLET (DAEKON) – kitalált értékek, NEM az ötvös árai és NEM az ügyfél jegyzetének számai. Nem tölthető be éles adatbázisba; a nyilvános weboldal kódjába nem kerül.",
   "materials": {
-    "gold24": 40000,
-    "platinum": 15000,
-    "palladium": 10000,
+    "gold24": 36000,
+    "platinum": 13000,
+    "palladium": 11000,
     "titanium": 80,
     "sellPerGram": {
-      "au14": 47000,
-      "au18": 56000,
-      "pt": 55000,
-      "pd": 40000,
+      "au14": 42000,
+      "au18": 50000,
+      "pt": 48000,
+      "pd": 36000,
       "ti": null
     },
     "diamonds": [
@@ -19,7 +19,7 @@
         "mm": 1,
         "name": "Brill 0,005 ct",
         "quality": "Ø 1,0 mm",
-        "price": 3500,
+        "price": 3200,
         "src": "demo"
       },
       {
@@ -28,8 +28,8 @@
         "mm": 1.25,
         "name": "Brill 0,01 ct",
         "quality": "Ø 1,25 mm",
-        "price": 6000,
-        "src": "pelda"
+        "price": 5500,
+        "src": "demo"
       },
       {
         "id": "d015",
@@ -37,8 +37,8 @@
         "mm": 1.5,
         "name": "Brill 0,015 ct",
         "quality": "Ø 1,5 mm",
-        "price": 9000,
-        "src": "pelda"
+        "price": 8000,
+        "src": "demo"
       },
       {
         "id": "d02",
@@ -46,8 +46,8 @@
         "mm": 1.7,
         "name": "Brill 0,02 ct",
         "quality": "Ø 1,7 mm",
-        "price": 12000,
-        "src": "pelda"
+        "price": 11000,
+        "src": "demo"
       },
       {
         "id": "d03",
@@ -55,8 +55,8 @@
         "mm": 2,
         "name": "Brill 0,03 ct",
         "quality": "Ø 2,0 mm",
-        "price": 18000,
-        "src": "pelda"
+        "price": 16500,
+        "src": "demo"
       },
       {
         "id": "d04",
@@ -76,7 +76,7 @@
         "quality": "Ø 2,3–2,4 mm",
         "price": null,
         "src": "bizonytalan",
-        "note": "Ár megerősítendő."
+        "note": "Az ár megerősítendő."
       },
       {
         "id": "d10",
@@ -86,16 +86,16 @@
         "quality": "Ø 3,0 mm",
         "price": null,
         "src": "demo",
-        "note": "Nincs adat."
+        "note": "Szemléltető adatkészletben nincs ár."
       }
     ],
     "src": {
-      "gold24": "pelda",
-      "platinum": "pelda",
-      "palladium": "pelda",
+      "gold24": "demo",
+      "platinum": "demo",
+      "palladium": "demo",
       "titanium": "demo",
-      "sellPerGram.au14": "pelda",
-      "sellPerGram.pt": "pelda",
+      "sellPerGram.au14": "demo",
+      "sellPerGram.pt": "demo",
       "sellPerGram.au18": "demo",
       "sellPerGram.pd": "demo",
       "sellPerGram.ti": "bizonytalan"
@@ -106,14 +106,14 @@
     "sizeMethod": "tomeg",
     "density": {
       "au14": 1,
-      "au18": 1.125,
-      "pt": 1.4375,
-      "pd": 0.833333,
-      "ti": 0.3125
+      "au18": 1.12,
+      "pt": 1.42,
+      "pd": 0.84,
+      "ti": 0.32
     },
     "stonesGross": true,
     "settingPerStone": 0,
-    "engravingPrice": 6000,
+    "engravingPrice": 5000,
     "boxCost": 0,
     "certCost": 0,
     "roundTo": 100,
@@ -126,7 +126,7 @@
       "pd": 1.2,
       "ti": 1.4
     },
-    "markupMetal": 30,
+    "markupMetal": 25,
     "markupStones": 20,
     "stoneEdgeMm": 1,
     "stoneGapMm": 0.1,
@@ -134,9 +134,9 @@
     "bigChangePct": 20,
     "showDemoMarks": false,
     "src": {
-      "pricingMode": "pelda",
-      "sizeMethod": "pelda",
-      "density": "pelda",
+      "pricingMode": "demo",
+      "sizeMethod": "demo",
+      "density": "demo",
       "vatPct": "demo",
       "stonesGross": "demo",
       "settingPerStone": "demo",
@@ -152,19 +152,19 @@
       "stoneGapMm": "demo"
     },
     "exampleWeights": {
-      "ti": 1.5,
-      "au14": 4.8,
-      "au18": 5.4,
-      "pt": 6.9,
-      "pd": 4
+      "ti": 1.6,
+      "au14": 5.0,
+      "au18": 5.6,
+      "pt": 7.1,
+      "pd": 4.2
     },
-    "exampleNote": "A kézzel írt jegyzetben a 60-as platina gyűrűnél 442 000 Ft szerepel; a lineáris számítás 421 700 Ft-ot ad. Valószínű elírás (422 000) – egyeztetendő, nem állítottuk be."
+    "exampleNote": "Szemléltető példatömegek (DAEKON), nem az ötvös adatai – a valódi értékeket az ötvös adja meg."
   },
   "laborByStyle": {
-    "klasszikus": 16000,
-    "modern": 22000,
-    "koves": 24000,
-    "ketszinu": 18000
+    "klasszikus": 15000,
+    "modern": 20000,
+    "koves": 23000,
+    "ketszinu": 17000
   },
   "samples": {
     "approved": [

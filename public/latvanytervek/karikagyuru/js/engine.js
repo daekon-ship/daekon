@@ -5,7 +5,7 @@
    A) „gramm” – AZ ÖTVÖS SAJÁT MÓDSZERE (alapértelmezett), az ügyfél jegyzete szerint:
         kész tömeg (g) × késztermék-grammár (Ft/g, bruttó: fém + munka + árrés + ÁFA benne)
         + gyémántok darabára × darabszám + külön díjak (kőfoglalás, gravír, doboz) – mind bruttó
-        Példa (szemléltető számok): 5 g × 40 000 Ft/g = 200 000 Ft.
+        Példa (szemléltető számok): 5 g × 45 000 Ft/g = 225 000 Ft.
       Munkadíj, fém-felár és ÁFA itt NEM adódik hozzá még egyszer.
    B) „koltseg” – költségalapú összehasonlítás:
         ( alapanyag-referenciaár × tömeg × (1+veszteség) + munkadíj + díjak ) × (1+felár)

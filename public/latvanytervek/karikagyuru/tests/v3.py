@@ -130,6 +130,7 @@ async def run(b, w, h, mob):
     lst = await pg.inner_text('.view')
     check(f'{tag} új gyűrű: bekerült az admin listába', code in lst)
     await pg.goto(B + '#/kollekcio'); await pg.wait_for_timeout(1200)
+    await pg.fill('[data-q]', code); await pg.wait_for_timeout(700)   # V5.6: mind a 115 + 1 gyűrű látszik, lapozva – keresővel érjük el
     card = pg.locator(f'.card[data-id="uj-{code.lower()}"]')
     ptxt = await card.inner_text() if await card.count() else ''
     check(f'{tag} új gyűrű: jóváhagyásig a katalógusban „egyedi ajánlat”, ár nélkül', 'Teszt karikagyűrű' in ptxt and 'egyedi ajánlat' in ptxt and ' Ft' not in re.sub(r'[ \xa0]', ' ', ptxt), ptxt.replace('\n', ' | ')[:120])
@@ -138,6 +139,7 @@ async def run(b, w, h, mob):
     await pg.goto(B + f'#/admin/sorban/uj-{code.lower()}'); await pg.wait_for_timeout(700)
     await pg.click('[data-approve]'); await pg.wait_for_timeout(500)
     await pg.goto(B + '#/kollekcio'); await pg.wait_for_timeout(1200)
+    await pg.fill('[data-q]', code); await pg.wait_for_timeout(700)
     ptxt = await card.inner_text() if await card.count() else ''
     check(f'{tag} új gyűrű jóváhagyva, de a grammár nincs jóváhagyva: továbbra sincs számolt ár', 'egyedi ajánlat' in ptxt and ' Ft' not in re.sub(r'[ \xa0]', ' ', ptxt), ptxt.replace('\n', ' | ')[:120])
     await pg.goto(B + f'#/gyuru/uj-{code.lower()}'); await pg.wait_for_timeout(900)

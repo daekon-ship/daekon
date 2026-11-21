@@ -63,7 +63,7 @@ Részletes, végrehajtható lista: **`TELEPITES.md`** (PHP/SQLite, jogosultságo
 - 18K és palládium eladási grammár (most bemutató érték).
 - Titán: marad-e egyedi, munkaalapú ajánlat (most így van).
 - 0,04 és 0,05 ct kő ára (most „egyedi árajánlat”); 0,005 és 0,10 ct bemutató érték.
-- A 60-as méret példaára: a jegyzetben 442 000 Ft, a számítás 421 700 Ft – melyik a helyes?
+- A jegyzet egyik méretpéldája eltér a lineáris számítástól – melyik a helyes? (részletek a nem nyilvános anyagban)
 - Kerekítés (most 100 Ft-ra felfelé, bemutató beállítás).
 - Gravírozás: kínálja-e, és mennyiért. Foglalási díj: van-e.
 - A tegeződő megszólítás és a szövegek; a kolléga/gyártó említése.
