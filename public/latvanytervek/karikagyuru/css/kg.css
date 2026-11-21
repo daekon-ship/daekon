@@ -1825,3 +1825,7 @@ h3, .cfg__step > header h2, .ringbox__t, .opt__label { font-family: var(--sans);
 .login__box--err { border-top-color: #a12a1f; }
 .login__box--err h1 { color: #a12a1f; }
 .qundo { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0 0 14px; padding: 10px 14px; background: #EAF5EE; border-left: 3px solid #1e6b3a; border-radius: 6px; font-size: 1rem; }
+.inq__notify { margin: 4px 0; font-size: .9rem; color: var(--mute); }
+.inq__notify--err { color: #a12a1f; font-weight: 700; }
+/* V5.4: helyi mód – az űrlap előre megmondja, hogy az üzenet nem jut el az ötvöshöz */
+.form__local { margin: 4px 0 10px; padding: 10px 12px; border-left: 2px solid #a12a1f; background: #FBF3F1; font-size: .88rem; line-height: 1.45; color: var(--ink2); }

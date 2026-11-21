@@ -11,6 +11,9 @@ const fresh = (el) => { const n = el.cloneNode(false); el.replaceWith(n); return
 const price = (p, cfg) => shownPrice(p, cfg, S().materials, S().settings);
 /** Visszajelzés: szerver módban „megérkezett”, helyi módban az, ami igaz. */
 const sentNote = (server, local) => (api.mode === 'server' ? server : local);
+/* Helyi mód (pl. GitHub Pages, nincs szerver): az üzenet NEM jut el az ötvöshöz – ezt az űrlap előre és utána is kimondja. */
+const LOCAL_DONE = `Az ötvöshöz nem jutott el: ez az oldal még nincs összekötve az ötvös levelezésével, az üzenet csak ebben a böngészőben tárolódott. Ha beszélni szeretnél vele, hívd: <a href="${BUSINESS.phoneHref}">${BUSINESS.phone}</a>, vagy írj: <a href="mailto:${BUSINESS.email}">${BUSINESS.email}</a>.`;
+const localNotice = () => (api.mode === 'server' ? '' : `<p class="form__local" data-localnote role="note">Ezen az oldalon az üzenet <b>nem jut el az ötvöshöz</b> – csak ebben a böngészőben marad. Elérhetőség: <a href="${BUSINESS.phoneHref}">${BUSINESS.phone}</a> · <a href="mailto:${BUSINESS.email}">${BUSINESS.email}</a></p>`);
 const demoMark = (txt = 'demó') => S().settings.showDemoMarks ? `<span class="demo-chip" title="Kitalált bemutató-alapanyagárakból számolva">${txt}</span>` : '';
 
 const colorLabel = (c) => COLORS[c]?.label || c;
@@ -880,6 +883,7 @@ export function inquiry(p, cfg, type = 'erdeklodes', onRequest = false) {
       </div>
       <label class="field" data-datefield ${type === 'konzultacio' ? '' : 'hidden'}><span>Melyik nap lenne jó?</span><input class="input" name="nap" type="date"></label>
       <label class="field"><span>Üzenet</span><textarea class="input" name="uzenet" rows="3" placeholder="Pl. az esküvő időpontja, kérdés a méretről vagy egyedi tervről"></textarea></label>
+      ${localNotice()}
       <p class="form__err" data-err hidden>Add meg a neved és a telefonszámod.</p>
       <button class="btn btn--dark btn--full" type="submit">Elküldöm</button>
 
@@ -901,8 +905,8 @@ export function inquiry(p, cfg, type = 'erdeklodes', onRequest = false) {
           productId: p?.id || null, code: p?.code || null, config: p && !onRequest ? JSON.parse(JSON.stringify(cfg)) : null, summary, estimate: r?.final || null });
         btn.disabled = false;
         if (!res.ok) { const er = $('[data-err]', f); er.hidden = false; er.textContent = `${res.error} Telefon: +36 30 984 3090`; return; }
-        box.innerHTML = `<div class="form form--done"><p class="kicker">Megvan</p><h2>${sentNote('Köszi, hamarosan hívunk.', 'Rögzítettük az érdeklődésed.')}</h2>
-          <p>${sentNote('Az érdeklődésed megérkezett hozzánk, a kiválasztott gyűrű adataival együtt.', 'Az érdeklődés bekerült a kezelőfelület „Érdeklődések” menüjébe, a kiválasztott cikkszámmal és beállításokkal együtt. Értesítést erről az oldalról még nem kap az ötvös.')} Ha sürgős, hívj: <a href="tel:+36309843090">+36 30 984 3090</a>.</p>
+        box.innerHTML = `<div class="form form--done"><p class="kicker">${sentNote('Megvan', 'Nem ment el az ötvösnek')}</p><h2>${sentNote('Köszi, hamarosan hívunk.', 'Az üzenet ebben a böngészőben maradt.')}</h2>
+          <p>${sentNote('Az érdeklődésed megérkezett hozzánk, a kiválasztott gyűrű adataival együtt. Ha sürgős, hívj: <a href="tel:+36309843090">+36 30 984 3090</a>.', LOCAL_DONE)}</p>
           <button class="btn btn--line" type="button" data-close>Rendben</button></div>`;
       });
     },
@@ -1001,6 +1005,7 @@ export function custom(el, query) {
           <label class="field" data-cnap ${d.konz ? '' : 'hidden'}><span>Melyik nap lenne jó?</span><input class="input" name="nap" type="date" value="${esc(d.nap)}"></label>
         </li>
       </ol>
+      ${localNotice()}
       <p class="form__err" data-cerr hidden></p>
       <button class="btn btn--dark btn--full" type="submit">Elküldöm az ötletem</button>
 
@@ -1064,10 +1069,10 @@ export function custom(el, query) {
     if (!res.ok) { err.hidden = false; err.textContent = `${res.error} Telefon: +36 30 984 3090`; err.scrollIntoView({ block: 'center' }); return; }
     customFiles.forEach((f) => URL.revokeObjectURL(f.url)); customFiles = [];
     try { sessionStorage.removeItem(C_KEY); } catch { /* privát mód */ }
-    $('.custom', el).innerHTML = `<div class="form form--done custom--done"><p class="kicker">Megvan</p><h2>Köszi, ${esc(d.nev.trim().split(' ').pop())}! ${sentNote('Hamarosan hívunk.', 'Rögzítettük az ötleted.')}</h2>
+    $('.custom', el).innerHTML = `<div class="form form--done custom--done"><p class="kicker">${sentNote('Megvan', 'Nem ment el az ötvösnek')}</p><h2>Köszi, ${esc(d.nev.trim().split(' ').pop())}! ${sentNote('Hamarosan hívunk.', 'Az ötleted ebben a böngészőben maradt.')}</h2>
       <pre>${esc(summary)}</pre>${d.leiras.trim() ? `<p class="csum__txt">„${esc(d.leiras.trim())}”</p>` : ''}
       <p><b>Ár:</b> személyes egyeztetés alapján.</p>
-      <p class="fine">${sentNote(`Az ötleted megérkezett hozzánk${p ? ', a kiindulási gyűrű adataival együtt' : ''}.`, `Az ötleted bekerült a kezelőfelület „Érdeklődések” menüjébe${p ? ', a kiindulási gyűrű cikkszámával és beállításaival együtt' : ''}. Értesítést erről az oldalról még nem kap az ötvös.`)}${n ? ` A kiválasztott ${n} kép nem töltődött fel – hozd el az egyeztetésre, vagy küldd el e-mailben.` : ''} Ha sürgős, hívj: <a href="tel:+36309843090">+36 30 984 3090</a>.</p>
+      <p class="fine">${sentNote(`Az ötleted megérkezett hozzánk${p ? ', a kiindulási gyűrű adataival együtt' : ''}.`, LOCAL_DONE)}${n ? ` A kiválasztott ${n} kép nem töltődött fel – hozd el az egyeztetésre, vagy küldd el e-mailben.` : ''}${sentNote(' Ha sürgős, hívj: <a href="tel:+36309843090">+36 30 984 3090</a>.', '')}</p>
       <a class="btn btn--line" href="#/kollekcio">Megnézem a gyűrűket</a></div>`;
     window.scrollTo({ top: 0 });
   });

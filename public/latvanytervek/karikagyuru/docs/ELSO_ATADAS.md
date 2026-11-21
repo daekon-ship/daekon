@@ -20,7 +20,7 @@ Az állapotok tényszerűek: „demó” = a látványtervben működik, de csak
 
 1. ~~A kezelőfelület bekötése a szerveroldali API-ra~~ – kész, helyben tesztelve.
 2. Telepítés és kipróbálás a tényleges tárhelyen, mentési renddel.
-3. Érdeklődés-értesítés (e-mail) – valódi tesztlevéllel, az ügyfél saját címére.
+3. ~~Érdeklődés-értesítés (e-mail)~~ – megírva, kikapcsolva; bekapcsolás a jóváhagyott címmel és SMTP-adatokkal, próbalevéllel.
 4. Adatkezelési tájékoztató, sütikezelés, impresszum a végleges adatokkal.
 5. A régi oldal címeinek átirányítása, hogy a keresőből érkezők ne vesszenek el.
 6. Átadás előtti teljes ellenőrzés a végleges, jóváhagyott adatokkal.

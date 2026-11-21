@@ -486,3 +486,28 @@ Tesztek: motor 73/73, asztali 30/30, mobil 26/26, V3 70/70, V4 54/54, V5 38/38, 
 - **Képfeltöltés leírása.** A szerver optimalizált JPEG-et készít (legfeljebb 2400 px, EXIF nélkül), az eredeti fájl nem marad meg.
 - **Dokumentumok.** `docs/TELEPITES.md` (telepítési és élesítési ellenőrzőlista, SEO-val); `ELSO_ATADAS.md` frissítve. A git-előzmény tisztítási terve privát dokumentum, nem került a repóba.
 - **Tesztek.** Új: `tests/v53.py` (helyi, kiinduló adatokkal, 34), `services/karikagyuru-api/tests/server_failures_e2e.py` (17). A konfigurátort vizsgáló régebbi csomagok egy közös előkészítő lépéssel (`tests/kg_common.py`) minden adatot jóváhagynak, a nem jóváhagyott viselkedést a V5.3-tesztek nézik. Verzió `V5.3`.
+
+
+## V5.4 – az első éles átadást akadályozó hibák javítása (2026. november 21.)
+
+- **Nyilvános `/api/state`.** A látogató csak szűkített nézetet kap (`App::publicState`):
+  - csak a jóváhagyott grammárakat és kőárakat;
+  - a nyilvános oldalhoz szükséges beállításokat;
+  - a látható gyűrűket, rögzített mezőlistával (gyűrűszinten munkadíj nélkül);
+  - egyedi árat és minimumárat csak jóváhagyott gyűrűnél;
+  - a „frissült ár” jelzést csak jóváhagyott gyűrűre.
+
+  Kimarad: beszerzési referenciaárak, felárak, anyagveszteség, munkadíj-szorzó, árrés-küszöb, árnapló, érdeklődések, megjegyzések, rejtett gyűrűk, 3D-adatok és a belső jóváhagyási címkék. Költségalapú módban nincs nyilvános grammár. Az admin a teljes állapotot kapja, belépés után mindig újratöltve. A nyilvános nézet visszamentését a szerver elutasítja.
+- **`priceTrust` felülvizsgálat.** Új feltételek:
+  - mindig: tömegarány anyagonként, doboz díja (0-ként is);
+  - kövek esetén: foglalási díj (0-ként is), tanúsítvány, bruttó/nettó kőár, kőelférési szabály, nettó kőárnál a kőfelár és az ÁFA;
+  - költségalapú módban: referenciaár, anyagveszteség, munkadíj-szorzó, felárak, ÁFA.
+
+  Rögzített ár csak jóváhagyott gyűrűn számít. A listaár a nyilvános nézetben is megjelenik, ahol a motor számolni sem tud.
+- **E-mail-értesítés** (`src/Mailer.php`). Alapból kikapcsolt. Módok: kikapcsolt, fájlba írás vagy SMTP. A beállítás az adatmappában van (`mail.json`) vagy környezeti változóban.
+  - Hiányos beállításnál nem küld, titkosítatlan SMTP-t csak helyi géppel enged.
+  - A fejlécinjekció ellen védett.
+  - A levél az érdeklődés mentése után indul; hibánál az érdeklődés megmarad, és a kezelőfelület jelzi.
+  - Próbalevél csak admin gombnyomásra megy. Valódi levél nem ment ki.
+- **GitHub Pages és szerver mód.** Helyi módban az űrlap előre és beküldés után is kimondja, hogy az üzenet nem jut el az ötvöshöz, és telefonszámot, e-mail-címet ad. A különbségek táblázata: `docs/TELEPITES.md`, melléklet.
+- **Tesztek.** Motor 97 (+18 V5.4-es), API 87 (+23 szivárgás-ellenőrzés), levelezés 24 (új), szerver mód 25. Verzió `V5.4`.

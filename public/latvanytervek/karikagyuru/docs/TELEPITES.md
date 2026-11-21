@@ -55,7 +55,8 @@ Jelölés: ☐ = elvégzendő · minden pont mellé írandó: ki, mikor, mi lett
 - ☐ Próba: hibás jelszó → hibaüzenet; 5 hibás próbálkozás → 15 perc zárolás; helyes jelszó → belépés
 - ☐ Próba: kilépés után a kezelőfelület újra jelszót kér
 - ☐ Próba: 2 óra tétlenség után a mentés „Lejárt a belépés” üzenetet ad, és nem ment
-- ☐ Az `index.html`-ben `<meta name="kg-api" content="api/">` (enélkül az oldal böngészős módban fut!)
+- ☐ Az `index.html`-ben `<meta name="kg-api" content="api/">` (enélkül az oldal böngészős módban fut, és az érdeklődés NEM jut el az ötvöshöz!)
+- ☐ Próba: látogatóként a `https://<domain>/api/state` válaszában nincs beszerzési ár (`gold24`, `platinum`), felár (`markup`), árnapló (`history`), érdeklődés, és csak „jovahagyott” jelölés szerepel
 
 ## 5. Adatbázis, mentés, visszaállítás
 
@@ -74,12 +75,27 @@ Jelölés: ☐ = elvégzendő · minden pont mellé írandó: ki, mikor, mi lett
 - ☐ Próba: a szerver leállítva → a látogató hibaüzenetet és telefonszámot kap, nem „sikeres” visszajelzést
 - ☐ Robotvédelem: a csapdamező és az óránkénti korlát (5/IP) működik; ha spam jön, külön döntés kell (pl. Cloudflare Turnstile – az ügyfél jóváhagyásával)
 
-## 7. E-mail-értesítés (még nincs megírva)
+## 7. E-mail-értesítés (megírva, alapból kikapcsolva)
 
-- ☐ Fejlesztés: új érdeklődésnél levél a jóváhagyott címre (a tárhely SMTP-jével vagy tranzakciós levelezővel)
-- ☐ SPF/DKIM beállítás a küldő domainre, hogy a levél ne menjen spambe
-- ☐ **Tesztlevél csak az ügyfél által jóváhagyott, saját címre** – valódi vásárlónak automatikus tesztlevél nem mehet
-- ☐ Próba: a levél megérkezik, nem spam, a tartalom helyes, személyes adatot csak a szükséges mértékben tartalmaz
+A program kész (`services/karikagyuru-api/src/Mailer.php`, külső csomag nélkül), helyben tesztelve egy
+helyi SMTP-álszerverrel (`tests/mail_test.py`). **Valódi levél még nem ment ki, és cím sincs beállítva.**
+
+- ☐ Az ügyfél írásban megadja az értesítési címet (`to`) és azt, hogy melyik címről menjen (`from`)
+- ☐ SMTP-adatok a tárhelytől (szerver, port, titkosítás, felhasználó, jelszó) – ezeket nem találjuk ki
+- ☐ Beállítás az **adatmappában** (`kg-adat/mail.json`, `chmod 600`), a webgyökéren kívül:
+  ```json
+  { "mode": "smtp", "to": "<jóváhagyott cím>", "from": "<feladó cím a saját domainen>",
+    "host": "<smtp szerver>", "port": 587, "secure": "tls", "user": "<felhasználó>", "pass": "<jelszó>" }
+  ```
+  `mode`: `off` (alapértelmezett, nem küld) · `file` (csak fájlba ír: `kg-adat/outbox/`, fejlesztéshez) · `smtp`.
+  Titkosítatlan SMTP (`"secure": "none"`) csak helyi géppel engedett. Környezeti változókkal (`KG_MAIL_*`) is megadható.
+- ☐ Opcionális: `KG_SITE_URL` (pl. `https://karikagyuru.com/`) – ha meg van adva, a levélben link lesz a kezelőfelületre. Enélkül nincs link (a kérés fejlécéből szándékosan nem rakunk össze címet).
+- ☐ SPF/DKIM a feladó domainjére, hogy a levél ne menjen spambe
+- ☐ Kezelőfelület → Beállítások → „E-mail-értesítés”: az állapot „Bekapcsolva”; a **„Próbalevél küldése”** gombot csak az ügyfél jelenlétében / engedélyével nyomjuk meg, és csak a jóváhagyott címre megy
+- ☐ Próba egy valódi érdeklődéssel (az ügyfél saját adataival): a levél megérkezik, nem spam
+- ☐ Sikertelen küldés: az érdeklődés **akkor is megmarad** a kezelőfelületen, mellette piros jelzés („Az e-mail-értesítés erről nem ment el”); a hiba a PHP-naplóba kerül, személyes adat nélkül
+- A levél tartalma: típus, név, telefon, e-mail, gyűrű cikkszáma, időpont, üzenet. Ár és beállítások csak a kezelőfelületen.
+- Valódi vásárlónak automatikus levél nem megy (visszaigazoló levél nincs a rendszerben).
 
 ## 8. Jogi és cégadatok
 
@@ -100,7 +116,7 @@ Jelölés: ☐ = elvégzendő · minden pont mellé írandó: ki, mikor, mi lett
 oldalként. Élesítés előtt el kell dönteni, kell-e termékoldalanként indexelhető URL – ha igen, ez
 külön fejlesztés (szerveroldali vagy előre generált termékoldalak, valódi útvonalakkal).
 
-## 10. SEO (élesítéskor – a GitHub Pages látványterv `noindex` marad)
+## 10. SEO (élesítéskor – a GitHub Pages bemutató `noindex` marad)
 
 - ☐ A `<meta name="robots" content="noindex">` **eltávolítva** az éles `index.html`-ből (a látványtervben marad!)
 - ☐ `robots.txt` és `sitemap.xml` a végleges domainnel; a `/api/` kizárva a robots.txt-ben
@@ -128,3 +144,20 @@ külön fejlesztés (szerveroldali vagy előre generált termékoldalak, valódi
 - ☐ Független biztonsági átnézés (legalább: belépés, feltöltés, jogosultság)
 - ☐ **Az ügyfél írásos jóváhagyása az élesítésre**
 - ☐ Visszaállítási terv: ha az új oldal hibás, mennyi idő alatt és hogyan áll vissza a régi
+
+## Melléklet: GitHub Pages bemutató és PHP-s szerver mód különbségei
+
+| | GitHub Pages (bemutató, `kg-api` üres) | PHP-s tárhely (szerver mód, `kg-api` = `api/`) |
+|---|---|---|
+| Adatok helye | csak a látogató saját böngészőjében | a szerveren (SQLite), változatkezelve |
+| Árak, gyűrűk | a beépített kiinduló adatok; amit valaki az adminban átír, csak nála változik | amit az ötvös a kezelőfelületen ment |
+| Érdeklődés | **nem jut el az ötvöshöz** – az űrlap előre és beküldés után is kiírja, és telefonszámot, e-mail-címet ad | a szerverre kerül, a kezelőfelületen látszik; bekapcsolva e-mail-értesítés |
+| Kezelőfelület | jelszó nélkül megnyitható, de csak a saját böngésző adatait látja és módosítja | jelszóval; hiba vagy kiesés esetén zárol |
+| Képfeltöltés | 900 px-es kép a böngészőben | optimalizált JPEG (max. 2400 px) a szerveren |
+| Látogatónak kiadott adat | a JavaScript-fájlokban lévő kiinduló (bemutató) adatok – ezek nyilvánosak | csak a nyilvános nézet (jóváhagyott árak, beszerzési ár és felár nélkül) |
+| Keresők | `noindex` | élesítéskor indexelhető (10. pont) |
+
+**Figyelem:** a `js/data.js` kiinduló adatai (köztük a jegyzetből vett referenciaárak) a nyilvános kódban
+vannak. Éles használatban a valódi, belső értékeket az ötvös a kezelőfelületen adja meg – azok csak a
+szerveren tárolódnak, és a látogató nem kapja meg őket. Élesítés előtt érdemes a `data.js` kiinduló
+értékeit semlegesre cserélni, vagy a szerveren mentett első változat után nem használni.

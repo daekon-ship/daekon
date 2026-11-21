@@ -85,7 +85,7 @@ async def run(b, w, h, mob):
     await pg.fill('[name=nev]', 'Teszt Elek'); await pg.fill('[name=tel]', '+36 30 111 2222')
     await pg.click('[data-custom] button[type=submit]'); await pg.wait_for_timeout(500)
     done = await pg.inner_text('.custom--done')
-    check(f'{tag} visszaigazolás: adatok megvannak, ár egyeztetés alapján, nincs hamis „elküldve”', all(x in done for x in ['81184', '56-os', 'keskenyebb', 'személyes egyeztetés alapján', 'Érdeklődések', 'nem töltődött fel']) and 'elküldtük' not in done.lower() and all(x not in done for x in ['Bemutató', 'demó']), done.replace('\n', ' | ')[:200])
+    check(f'{tag} visszaigazolás: adatok megvannak, ár egyeztetés alapján, nincs hamis „elküldve”', all(x in done for x in ['81184', '56-os', 'keskenyebb', 'személyes egyeztetés alapján', 'nem jutott el', 'ebben a böngészőben', 'nem töltődött fel']) and 'elküldtük' not in done.lower() and all(x not in done for x in ['Bemutató', 'demó']), done.replace('\n', ' | ')[:200])
     await pg.goto(B + '#/admin/erdeklodesek'); await pg.wait_for_timeout(600)
     inq = await pg.inner_text('.inq')
     check(f'{tag} admin: az egyedi kérés a modellel és a leírással megérkezett', all(x in inq for x in ['saját elképzelés', '81184', 'keskenyebb', '250–400']), inq.replace('\n', ' | ')[:200])

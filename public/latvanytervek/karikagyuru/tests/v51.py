@@ -28,11 +28,11 @@ async def run(b, w, h, mob):
     await pg.goto(B + f'#/gyuru/{PAIR}'); await pg.wait_for_timeout(900)
     await pg.locator('.pdp__ctas [data-inquire="erdeklodes"]').click(); await pg.wait_for_timeout(500)
     form_txt = await pg.inner_text('.modal, dialog, [role="dialog"]')
-    check(f'{tag} érdeklődési űrlapon nincs bemutató-figyelmeztetés', not BAD.search(form_txt))
+    check(f'{tag} érdeklődési űrlapon nincs bemutató-felirat, de előre kiírja: nem jut el az ötvöshöz', not BAD.search(form_txt) and 'nem jut el az ötvöshöz' in form_txt)
     await pg.fill('[name="nev"]', 'Teszt Elek'); await pg.fill('[name="tel"]', '+36 30 000 0000')
     await pg.locator('.modal form button[type="submit"], dialog form button[type="submit"], [role="dialog"] form button[type="submit"]').first.click(); await pg.wait_for_timeout(600)
     done = await pg.inner_text('.form--done')
-    check(f'{tag} visszajelzés igaz: a kezelőfelületre került, nem ír e-mail-küldést', 'Érdeklődések' in done and 'elküldtük' not in done.lower() and not BAD.search(done), done[:120])
+    check(f'{tag} visszajelzés igaz: helyi módban „nem jutott el az ötvöshöz”, telefon és e-mail', 'nem jutott el' in done and 'nem ment el' in done.lower() and '+36 30 984 3090' in done and 'info@karikagyuru.com' in done and 'hamarosan hívunk' not in done.lower() and not BAD.search(done), done[:120])
     await pg.locator('.form--done [data-close]').click(); await pg.wait_for_timeout(400)
     # lábléc → kezelőfelület → vissza
     await pg.goto(B + '#/'); await pg.wait_for_timeout(700)

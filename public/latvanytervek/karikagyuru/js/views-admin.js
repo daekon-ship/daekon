@@ -2,7 +2,7 @@
    Adminfelület – nagy gombok, egyértelmű magyar feliratok, kevés lépés.
    Szerveroldali mentés és bejelentkezés: services/karikagyuru-api (bekötés: js/api.js).
    ========================================================================== */
-import { api, onApi, login, logout, settle, uploadPhoto } from './api.js';
+import { api, onApi, login, logout, settle, uploadPhoto, mailStatus, mailTest } from './api.js';
 import { store } from './store.js';
 import { COLORS, STYLES, SITES, SRC_LABEL, EXAMPLE_WEIGHTS } from './data.js';
 import { readiness, optionValues, optionReason, priceProduct, priceAll, diffPrices, defaultConfig, composition, ft, num, dec, pct, METALS, METAL_ORDER, isGold, diamond, refPrice, refWeight, exampleRing, allowedCats, sizeSfx, ctFmt, sizeRange } from './engine.js';
@@ -1292,6 +1292,7 @@ function inquiries(el) {
       return `<article class="inq inq--${q.status}">
         <header><b>${esc(q.name)}</b><span class="badge">${STATUS[q.status]}</span><span class="hint">${dateHu(q.at)} · ${q.type === 'konzultacio' ? 'időpontot kér' : q.type === 'egyedi' ? 'saját elképzelés' : q.type === 'telefon' ? 'telefonos ajánlat' : 'érdeklődés'}${q.day ? ` · ${dayHu(q.day)}` : ''}</span></header>
         <p><a href="tel:${esc(q.phone)}">${esc(q.phone)}</a>${q.email ? ` · <a href="mailto:${esc(q.email)}">${esc(q.email)}</a>` : ''}</p>
+        ${q.notify === 'hiba' ? '<p class="inq__notify inq__notify--err" data-notify="hiba">Az e-mail-értesítés erről nem ment el – az érdeklődés itt megvan.</p>' : q.notify === 'elkuldve' ? '<p class="inq__notify" data-notify="elkuldve">E-mail-értesítés elküldve.</p>' : ''}
         ${q.summary ? `<pre>${esc(q.summary)}</pre>` : ''}
         ${q.message ? `<p class="inq__msg">„${esc(q.message)}”</p>` : ''}
         ${q.images ? `<p class="hint">Kiválasztott kép: ${q.images} db – a képeket az ügyfél a személyes egyeztetésre hozza, vagy e-mailben küldi.</p>` : ''}
@@ -1351,6 +1352,11 @@ function settings(el) {
       <label class="efield"><span>Nagy változás határa<small>e fölött külön megerősítés kell</small></span><span class="efield__in"><input class="input input--lg" inputmode="decimal" data-s="bigChangePct" value="${d.bigChangePct}"><i>%</i></span></label>
     </div></section>
     <div class="edit__btns"><button class="abtn abtn--gold abtn--xl" type="button" data-save>Mentés</button></div>
+    ${api.mode === 'server' && api.admin ? `<section class="ebox" data-mailbox><h2>E-mail-értesítés új érdeklődésről</h2>
+      <p class="hint" data-mailstate>Állapot betöltése…</p>
+      <p class="hint">A címet és a levelezőszervert a tárhelyen, a kezelőfelületen kívül kell beállítani (adatmappa: <code>mail.json</code>). Lásd: TELEPITES.md, 7. pont.</p>
+      <button class="abtn abtn--xl" type="button" data-mailtest hidden>Próbalevél küldése a beállított címre</button>
+    </section>` : ''}
     <section class="ebox"><h2>Adattárolás</h2>
       <p class="hint" data-storage-note>${api.mode === 'server' && api.online ? `Az adatok a szerveren tárolódnak, minden mentés külön változat (most: ${api.version}.).` : 'Az adatok most ebben a böngészőben tárolódnak. A szerveres mentés bejelentkezéssel a tárhelyre telepítés után kapcsolható be.'}</p></section>
     <section class="ebox ebox--danger"><h2>Alapállapot visszaállítása</h2>
@@ -1359,9 +1365,24 @@ function settings(el) {
     </section>`;
   el.addEventListener('input', (e) => { const k = e.target.dataset.s; if (k && !e.target.matches('[data-round]')) { const v = parseNum(e.target.value); if (Number.isFinite(v)) d[k] = v; } });
   el.addEventListener('change', (e) => { if (e.target.dataset.s === 'roundTo') d.roundTo = Number(e.target.value); });
+  if ($('[data-mailbox]', el)) {
+    mailStatus().then((m) => {
+      const n = $('[data-mailstate]', el); if (!n) return;
+      if (!m) { n.textContent = 'Az állapot nem kérdezhető le.'; return; }
+      n.innerHTML = m.mode === 'off' ? '<b>Kikapcsolva.</b> Az érdeklődések a kezelőfelületen gyűlnek, levél nem megy.'
+        : m.ready ? `<b>Bekapcsolva</b> (${m.mode === 'file' ? 'csak fájlba ír – fejlesztői mód' : 'SMTP'}), címzett: ${esc(m.to)}`
+        : `<b>Hiányos beállítás</b> – nem küld. Hiányzik: ${esc(m.missing.join(', '))}`;
+      $('[data-mailtest]', el).hidden = !m.ready;
+    });
+  }
   el.addEventListener('click', (e) => {
     if (e.target.closest('[data-save]')) { store.updateSettings(d, 'Beállítások módosítva'); toast('Beállítások mentve.'); }
     if (e.target.closest('[data-reset]')) resetDemo();
+    const mt = e.target.closest('[data-mailtest]');
+    if (mt) {
+      mt.disabled = true;
+      mailTest().then((r) => { mt.disabled = false; uiToast(r.ok ? '<b>Próbalevél elküldve.</b> Nézze meg a postafiókot (a levélszemétben is).' : `<b>A próbalevél nem ment el.</b> ${esc(r.error)}`, { ms: 9000 }); });
+    }
   });
 }
 
