@@ -1839,3 +1839,11 @@ h3, .cfg__step > header h2, .ringbox__t, .opt__label { font-family: var(--sans);
 /* V5.5: nem nyilvános bemutatópéldány jelzése */
 .demo-note { margin: 0 0 10px; font-size: .82rem; color: #8a5a00; }
 .adm .demo-note { padding: 6px 10px; background: #FFF6E0; border-radius: 6px; }
+
+/* V5.6 – „Fotó hamarosan” helykitöltő: a gyűrű látszik, kereshető, megnyitható */
+.media__soon { display: grid; justify-items: center; gap: .35rem; color: var(--mute); font-size: .86rem; font-weight: 600; letter-spacing: .02em; }
+.media__soon i { width: 2.6rem; height: 2.6rem; border-radius: 50%; border: 1.5px solid currentColor; opacity: .45; box-shadow: inset 0 0 0 5px var(--paper), inset 0 0 0 6.5px currentColor; }
+.media__soon small { font-size: .74rem; font-weight: 500; opacity: .8; }
+.media--none, .media.is-fallback { background: linear-gradient(160deg, var(--paper), color-mix(in srgb, var(--paper) 88%, var(--mute))); }
+.pcheck { border: 1px solid var(--sand); border-radius: 10px; padding: .9rem 1rem; margin: 0 0 1rem; background: var(--ivory); }
+.pcheck p { margin: .2rem 0; }

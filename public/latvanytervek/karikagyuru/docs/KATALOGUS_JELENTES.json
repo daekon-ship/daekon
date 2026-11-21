@@ -1,0 +1,1330 @@
+{
+  "generated": "2026-11-21T23:24:37.486Z",
+  "osszes_termek": 115,
+  "katalogusban_lathato": 115,
+  "helyi_foto": 30,
+  "kulso_foto": 85,
+  "hianyzo_foto": 0,
+  "torott_utvonal": [],
+  "sikertelen_letoltes": [
+    {
+      "code": "81204 - 81205 W/Y",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_81204_wy_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "81206 - 81207 Y/W",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_81206_yw_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "81208 - 81209 W/Y",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_81208_wy_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "81210 - 81211 W/Y",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_81210_wy_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "81212 - 81213 W/Y",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_81212_wy_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "81214 - 81215 W/Y",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_81214_wy_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "81216 - 81217 W/Y",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_81216_wy_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "81218 - 81219 W/Y",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_81218_wy_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "81632",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_81632_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "82000 - 82001 W",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_82000_w_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "82002 - 82003 W",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_82002_w_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "82004 - 82005 W",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_82004_w_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "82006 - 82007 W",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_82006_w_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "82008 - 82009 W",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_82008_w_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "82010 - 82011 Y",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_82010_y_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "82012 - 82013 Y",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_82012_y_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "82014 - 82015 Y",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_82014_y_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "82016 - 82017 Y",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_82016_y_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "82018 - 82019 Y",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_82018_y_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "82020 - 82021 W/Y",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_82020_wy_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "82022 - 82023 W/Y",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_82022_wy_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "82024 - 82025 W/Y",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_82024_wy_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "82026 - 82027 W/Y",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_82026_wy_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "82028 - 82029 W/Y",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_82028_wy_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "82030 - 82031 W/R",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_82030_wr_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "82032 - 82033 W/R",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_82032_wr_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "82034 - 82035 W/R",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_82034_wr_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "82036 - 82037 W/R",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_82036_wr_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "82038 - 82039 W/R",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_82038_wr_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "82040 - 82041 W/Y",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_82040_wy_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "82044 - 82045 W/Y",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_82044_wy_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "82050 - 82051 W/R",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_82050_wr_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "82064 - 82065 W",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_82064_82065_w_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "82064 - 82065 W/R",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_82064_82065_wr_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "82064 - 82065 Y",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_82064_82065_y_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "82064 - 82065 Y/W",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_82064_82065_yw_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "82070 - 82071 W/R",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_82070_82071_wr_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "82070 - 82071 Y/W",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_82070_82071_yw_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "87000 - 87001 W/Y",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_87000_wy_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "87002 - 87003 W/Y",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_87002_wy_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "87004 - 87005 W/Y",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_87004_wy_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "87008 - 87009 W/Y",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_87008_wy_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "87010 - 87011 W/Y",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_87010_wy_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "87012 - 87013 W/Y",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_87012_wy_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "87014 - 87015 W/Y",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_87014_wy_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "87016 - 87017 W/Y",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_87016_wy_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "87024 - 87025 Y",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_87024_y_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "87026 - 87027 Y",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/MAZ_87026_Y.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "87028 - 87029 Y",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_87028_y_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "87030 - 87031 Y",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_87030_y_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "87036 - 87037 Y",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_87036_y_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "87040 - 87041 W",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_87040_w_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "87044 - 87045 W",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_87044_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "87048 - 87049 W",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_87048_w_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "87054 - 87055 W",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_87054_w_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "93130 - 93131",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_93130_93131_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "93130 - 93131 R",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_93130_93131_r_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "93130 - 93131 W",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_93130_w_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "93140 - 93141",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_93140_93141_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "93150 - 93151",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_93150_93151_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "93210 - 93211",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_93210_93211_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "93210 - 93211 W",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_93210_93211_w_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "93210 - 93211 Y/V",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_93210_93211_yv_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "93230 - 93231",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_93230_93231_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "93240 - 93241",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_93240_93240_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "93310 - 93311",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_93310_93311_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "93320 - 93321",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_93320_93321_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "93340 - 93341",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_93340_93341_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "93410 - 93411",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_93410_93411_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "93410 - 93411 Y/R",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_93410_93411_yr_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "93430 - 93431",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_93430_93431_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "93440 - 93441",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/MAZ93440_W%3AR.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "93450 - 93451",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_93450_93451_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "93510 - 93511",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_93510_93511_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "93510 - 93511 (2. változat)",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_93510_93511_2_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "93510 - 93511 W",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_93510_93511_w_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "93510 - 93511 W / R",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_93510_93511_wr_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "93510 - 93511 Y",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_93510_93511_y_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "93510 - 93511 Y/ W",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_93510_93511_yw_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "93530 - 93531",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_93530_93531_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "93530 - 93531 R/W",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_93530_93531_rw_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "93550 - 93551",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_93550_93551_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "93610 - 93611",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_93610_93611_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "93630 - 93631",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_93630_93631_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "code": "93630 - 93631 W/R",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_93630_93631_wr_n.jpg",
+      "error": "hálózati hiba: ENOTFOUND"
+    }
+  ],
+  "most_letoltve": 0,
+  "megjegyzes": "A külső fotók elérhetőségét csak a letöltés igazolja. Ami „kulso”, annak elérhetősége ebben a futásban nem igazolt; a katalógusban „Fotó hamarosan” helykitöltő jelenik meg, ha a böngészőben nem tölt be.",
+  "termekek": [
+    {
+      "id": "maz-79000-w",
+      "code": "79000 W",
+      "visible": true,
+      "status": "helyi",
+      "file": "img/termekek/maz_79000_w.jpg"
+    },
+    {
+      "id": "maz-79002-w",
+      "code": "79002 W",
+      "visible": true,
+      "status": "helyi",
+      "file": "img/termekek/maz_79002_w.jpg"
+    },
+    {
+      "id": "maz-79004-w",
+      "code": "79004 W",
+      "visible": true,
+      "status": "helyi",
+      "file": "img/termekek/maz_79004_w.jpg"
+    },
+    {
+      "id": "maz-79006-w",
+      "code": "79006 W",
+      "visible": true,
+      "status": "helyi",
+      "file": "img/termekek/maz_79006_w.jpg"
+    },
+    {
+      "id": "maz-79008-w",
+      "code": "79008 W",
+      "visible": true,
+      "status": "helyi",
+      "file": "img/termekek/maz_79008_w.jpg"
+    },
+    {
+      "id": "maz-79010-w",
+      "code": "79010 W",
+      "visible": true,
+      "status": "helyi",
+      "file": "img/termekek/maz_79010_w.jpg"
+    },
+    {
+      "id": "maz-79014-w",
+      "code": "79014 W",
+      "visible": true,
+      "status": "helyi",
+      "file": "img/termekek/maz_79014_w.jpg"
+    },
+    {
+      "id": "maz-79016-79017",
+      "code": "79016 - 79017",
+      "visible": true,
+      "status": "helyi",
+      "file": "img/termekek/kets.85105104.jpg"
+    },
+    {
+      "id": "maz-81161-81162-y",
+      "code": "81161 - 81162 Y",
+      "visible": true,
+      "status": "helyi",
+      "file": "img/termekek/karikagyuru_maz_81161_y_n.jpg"
+    },
+    {
+      "id": "maz-81163-81164-y",
+      "code": "81163 - 81164 Y",
+      "visible": true,
+      "status": "helyi",
+      "file": "img/termekek/karikagyuru_maz_81163_y_n.jpg"
+    },
+    {
+      "id": "maz-81165-81166-y",
+      "code": "81165 - 81166 Y",
+      "visible": true,
+      "status": "helyi",
+      "file": "img/termekek/karikagyuru_maz_81165_y_n.jpg"
+    },
+    {
+      "id": "maz-81167-81168-y",
+      "code": "81167 - 81168 Y",
+      "visible": true,
+      "status": "helyi",
+      "file": "img/termekek/karikagyuru_maz_81167_y_n.jpg"
+    },
+    {
+      "id": "maz-81169-y",
+      "code": "81169 Y",
+      "visible": true,
+      "status": "helyi",
+      "file": "img/termekek/karikagyuru_maz_81169_y_n.jpg"
+    },
+    {
+      "id": "maz-81170-81171-y",
+      "code": "81170 - 81171 Y",
+      "visible": true,
+      "status": "helyi",
+      "file": "img/termekek/karikagyuru_maz_81170_y_n.jpg"
+    },
+    {
+      "id": "maz-81172-81173-y",
+      "code": "81172 - 81173 Y",
+      "visible": true,
+      "status": "helyi",
+      "file": "img/termekek/karikagyuru_maz_81172_y_n.jpg"
+    },
+    {
+      "id": "maz-81174-81175-y",
+      "code": "81174 - 81175 Y",
+      "visible": true,
+      "status": "helyi",
+      "file": "img/termekek/karikagyuru_maz_81174_y_n.jpg"
+    },
+    {
+      "id": "maz-81176-81177-y",
+      "code": "81176 - 81177 Y",
+      "visible": true,
+      "status": "helyi",
+      "file": "img/termekek/karikagyuru_maz_81176_y_n.jpg"
+    },
+    {
+      "id": "maz-81178-81179-y",
+      "code": "81178 - 81179 Y",
+      "visible": true,
+      "status": "helyi",
+      "file": "img/termekek/karikagyuru_maz_81178_y_n.jpg"
+    },
+    {
+      "id": "maz-81180-81181-w",
+      "code": "81180 - 81181 W",
+      "visible": true,
+      "status": "helyi",
+      "file": "img/termekek/karikagyuru_maz_81180_w_n.jpg"
+    },
+    {
+      "id": "maz-81182-81183-w",
+      "code": "81182 - 81183 W",
+      "visible": true,
+      "status": "helyi",
+      "file": "img/termekek/karikagyuru_maz_81182_w_n.jpg"
+    },
+    {
+      "id": "maz-81184-81185-w",
+      "code": "81184 - 81185 W",
+      "visible": true,
+      "status": "helyi",
+      "file": "img/termekek/karikagyuru_maz_81184_w_n.jpg"
+    },
+    {
+      "id": "maz-81186-81187-w",
+      "code": "81186 - 81187 W",
+      "visible": true,
+      "status": "helyi",
+      "file": "img/termekek/karikagyuru_maz_81186_w_n.jpg"
+    },
+    {
+      "id": "maz-81188-81189-w",
+      "code": "81188 - 81189 W",
+      "visible": true,
+      "status": "helyi",
+      "file": "img/termekek/karikagyuru_maz_81188_w_n.jpg"
+    },
+    {
+      "id": "maz-81190-81191-w",
+      "code": "81190 - 81191 W",
+      "visible": true,
+      "status": "helyi",
+      "file": "img/termekek/karikagyuru_maz_81190_w_n.jpg"
+    },
+    {
+      "id": "maz-81192-81193-w",
+      "code": "81192 - 81193 W",
+      "visible": true,
+      "status": "helyi",
+      "file": "img/termekek/karikagyuru_maz_81192_w_n.jpg"
+    },
+    {
+      "id": "maz-81194-81195-w",
+      "code": "81194 - 81195 W",
+      "visible": true,
+      "status": "helyi",
+      "file": "img/termekek/karikagyuru_maz_81194_w_n.jpg"
+    },
+    {
+      "id": "maz-81196-81197-w",
+      "code": "81196 - 81197 W",
+      "visible": true,
+      "status": "helyi",
+      "file": "img/termekek/karikagyuru_maz_81196_w_n.jpg"
+    },
+    {
+      "id": "maz-81198-81199-w",
+      "code": "81198 - 81199 W",
+      "visible": true,
+      "status": "helyi",
+      "file": "img/termekek/karikagyuru_maz_81198_w_n.jpg"
+    },
+    {
+      "id": "maz-81200-81201-wy",
+      "code": "81200 - 81201 W/Y",
+      "visible": true,
+      "status": "helyi",
+      "file": "img/termekek/karikagyuru_maz_81200_wy_n.jpg"
+    },
+    {
+      "id": "maz-81202-81203-wy",
+      "code": "81202 - 81203 W/Y",
+      "visible": true,
+      "status": "helyi",
+      "file": "img/termekek/karikagyuru_maz_81202_wy_n.jpg"
+    },
+    {
+      "id": "maz-81204-81205-wy",
+      "code": "81204 - 81205 W/Y",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_81204_wy_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-81206-81207-yw",
+      "code": "81206 - 81207 Y/W",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_81206_yw_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-81208-81209-wy",
+      "code": "81208 - 81209 W/Y",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_81208_wy_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-81210-81211-wy",
+      "code": "81210 - 81211 W/Y",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_81210_wy_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-81212-81213-wy",
+      "code": "81212 - 81213 W/Y",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_81212_wy_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-81214-81215-wy",
+      "code": "81214 - 81215 W/Y",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_81214_wy_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-81216-81217-wy",
+      "code": "81216 - 81217 W/Y",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_81216_wy_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-81218-81219-wy",
+      "code": "81218 - 81219 W/Y",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_81218_wy_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-81632",
+      "code": "81632",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_81632_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-82000-82001-w",
+      "code": "82000 - 82001 W",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_82000_w_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-82002-82003-w",
+      "code": "82002 - 82003 W",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_82002_w_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-82004-82005-w",
+      "code": "82004 - 82005 W",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_82004_w_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-82006-82007-w",
+      "code": "82006 - 82007 W",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_82006_w_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-82008-82009-w",
+      "code": "82008 - 82009 W",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_82008_w_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-82010-82011-y",
+      "code": "82010 - 82011 Y",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_82010_y_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-82012-82013-y",
+      "code": "82012 - 82013 Y",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_82012_y_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-82014-82015-y",
+      "code": "82014 - 82015 Y",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_82014_y_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-82016-82017-y",
+      "code": "82016 - 82017 Y",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_82016_y_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-82018-82019-y",
+      "code": "82018 - 82019 Y",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_82018_y_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-82020-82021-wy",
+      "code": "82020 - 82021 W/Y",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_82020_wy_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-82022-82023-wy",
+      "code": "82022 - 82023 W/Y",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_82022_wy_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-82024-82025-wy",
+      "code": "82024 - 82025 W/Y",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_82024_wy_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-82026-82027-wy",
+      "code": "82026 - 82027 W/Y",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_82026_wy_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-82028-82029-wy",
+      "code": "82028 - 82029 W/Y",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_82028_wy_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-82030-82031-wr",
+      "code": "82030 - 82031 W/R",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_82030_wr_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-82032-82033-wr",
+      "code": "82032 - 82033 W/R",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_82032_wr_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-82034-82035-wr",
+      "code": "82034 - 82035 W/R",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_82034_wr_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-82036-82037-wr",
+      "code": "82036 - 82037 W/R",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_82036_wr_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-82038-82039-wr",
+      "code": "82038 - 82039 W/R",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_82038_wr_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-82040-82041-wy",
+      "code": "82040 - 82041 W/Y",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_82040_wy_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-82044-82045-wy",
+      "code": "82044 - 82045 W/Y",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_82044_wy_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-82050-82051-wr",
+      "code": "82050 - 82051 W/R",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_82050_wr_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-82064-82065-w",
+      "code": "82064 - 82065 W",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_82064_82065_w_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-82064-82065-wr",
+      "code": "82064 - 82065 W/R",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_82064_82065_wr_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-82064-82065-y",
+      "code": "82064 - 82065 Y",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_82064_82065_y_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-82064-82065-yw",
+      "code": "82064 - 82065 Y/W",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_82064_82065_yw_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-82070-82071-wr",
+      "code": "82070 - 82071 W/R",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_82070_82071_wr_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-82070-82071-yw",
+      "code": "82070 - 82071 Y/W",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_82070_82071_yw_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-87000-87001-wy",
+      "code": "87000 - 87001 W/Y",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_87000_wy_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-87002-87003-wy",
+      "code": "87002 - 87003 W/Y",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_87002_wy_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-87004-87005-wy",
+      "code": "87004 - 87005 W/Y",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_87004_wy_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-87008-87009-wy",
+      "code": "87008 - 87009 W/Y",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_87008_wy_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-87010-87011-wy",
+      "code": "87010 - 87011 W/Y",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_87010_wy_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-87012-87013-wy",
+      "code": "87012 - 87013 W/Y",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_87012_wy_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-87014-87015-wy",
+      "code": "87014 - 87015 W/Y",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_87014_wy_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-87016-87017-wy",
+      "code": "87016 - 87017 W/Y",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_87016_wy_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-87024-87025-y",
+      "code": "87024 - 87025 Y",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_87024_y_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-87026-87027-y",
+      "code": "87026 - 87027 Y",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/MAZ_87026_Y.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-87028-87029-y",
+      "code": "87028 - 87029 Y",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_87028_y_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-87030-87031-y",
+      "code": "87030 - 87031 Y",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_87030_y_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-87036-87037-y",
+      "code": "87036 - 87037 Y",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_87036_y_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-87040-87041-w",
+      "code": "87040 - 87041 W",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_87040_w_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-87044-87045-w",
+      "code": "87044 - 87045 W",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_87044_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-87048-87049-w",
+      "code": "87048 - 87049 W",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_87048_w_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-87054-87055-w",
+      "code": "87054 - 87055 W",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_87054_w_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-93130-93131",
+      "code": "93130 - 93131",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_93130_93131_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-93130-93131-r",
+      "code": "93130 - 93131 R",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_93130_93131_r_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-93130-93131-w",
+      "code": "93130 - 93131 W",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_93130_w_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-93140-93141",
+      "code": "93140 - 93141",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_93140_93141_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-93150-93151",
+      "code": "93150 - 93151",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_93150_93151_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-93210-93211",
+      "code": "93210 - 93211",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_93210_93211_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-93210-93211-w",
+      "code": "93210 - 93211 W",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_93210_93211_w_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-93210-93211-yv",
+      "code": "93210 - 93211 Y/V",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_93210_93211_yv_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-93230-93231",
+      "code": "93230 - 93231",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_93230_93231_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-93240-93241",
+      "code": "93240 - 93241",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_93240_93240_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-93310-93311",
+      "code": "93310 - 93311",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_93310_93311_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-93320-93321",
+      "code": "93320 - 93321",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_93320_93321_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-93340-93341",
+      "code": "93340 - 93341",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_93340_93341_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-93410-93411",
+      "code": "93410 - 93411",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_93410_93411_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-93410-93411-yr",
+      "code": "93410 - 93411 Y/R",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_93410_93411_yr_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-93430-93431",
+      "code": "93430 - 93431",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_93430_93431_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-93440-93441",
+      "code": "93440 - 93441",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/MAZ93440_W%3AR.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-93450-93451",
+      "code": "93450 - 93451",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_93450_93451_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-93510-93511",
+      "code": "93510 - 93511",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_93510_93511_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-93510-93511-2-v-ltozat",
+      "code": "93510 - 93511 (2. változat)",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_93510_93511_2_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-93510-93511-w",
+      "code": "93510 - 93511 W",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_93510_93511_w_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-93510-93511-w-r",
+      "code": "93510 - 93511 W / R",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_93510_93511_wr_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-93510-93511-y",
+      "code": "93510 - 93511 Y",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_93510_93511_y_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-93510-93511-y-w",
+      "code": "93510 - 93511 Y/ W",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_93510_93511_yw_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-93530-93531",
+      "code": "93530 - 93531",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_93530_93531_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-93530-93531-rw",
+      "code": "93530 - 93531 R/W",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_93530_93531_rw_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-93550-93551",
+      "code": "93550 - 93551",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_93550_93551_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-93610-93611",
+      "code": "93610 - 93611",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_93610_93611_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-93630-93631",
+      "code": "93630 - 93631",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_93630_93631_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    },
+    {
+      "id": "maz-93630-93631-wr",
+      "code": "93630 - 93631 W/R",
+      "visible": true,
+      "status": "kulso",
+      "url": "https://karikagyuru.com/public/layout/pictures/karikagyuru/karikagyuru_maz_93630_93631_wr_n.jpg",
+      "downloadError": "hálózati hiba: ENOTFOUND"
+    }
+  ]
+}

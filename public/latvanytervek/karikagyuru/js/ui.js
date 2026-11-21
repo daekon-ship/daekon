@@ -59,10 +59,11 @@ export function ringSVG({ color = 'sarga', pair = true, stones = 0, label = '' }
   </svg>`;
 }
 
-/* Melyik távoli (karikagyuru.com-ról töltődő) fotó nem érhető el – ezeket a gyűrűket elrejtjük. */
+/* Melyik távoli (karikagyuru.com-ról töltődő) fotó nem érhető el. V5.6: csak jelentéshez (admin → Fotók), a gyűrűt nem rejti el. */
 export const photos = { missing: new Set(), checked: false };
-export function checkPhotos(products, onDone) {
-  const remote = products.filter((p) => p.img && /^https?:/.test(p.img));
+export function checkPhotos(products, onDone, { all = false } = {}) {
+  // all: a helyi fájlokat is betölti (admin fotóellenőrzés) – a feltöltött (data:) képek kivételével
+  const remote = products.filter((p) => p.img && (all ? !/^data:/.test(p.img) : /^https?:/.test(p.img)));
   if (!remote.length) { photos.checked = true; onDone?.(); return; }
   let left = remote.length;
   const fin = () => { if (--left === 0) { photos.checked = true; onDone?.(); } };
@@ -71,7 +72,7 @@ export function checkPhotos(products, onDone) {
     const t = setTimeout(() => { photos.missing.add(p.id); im.src = ''; fin(); }, 6000);
     im.onload = () => { clearTimeout(t); if (!im.naturalWidth) photos.missing.add(p.id); fin(); };
     im.onerror = () => { clearTimeout(t); photos.missing.add(p.id); fin(); };
-    im.src = p.img;
+    im.src = /^(https?:|api\/)/.test(p.img) ? p.img : p.img.replace('.jpg', '-800.jpg');
   });
 }
 export const hasPhoto = (p) => !!p.img && !photos.missing.has(p.id);
@@ -79,11 +80,12 @@ export const hasPhoto = (p) => !!p.img && !photos.missing.has(p.id);
 /** Termékkép: csak valódi fotó. Ha nem tölt be, semleges „nincs fotó” mező – rajzolt gyűrű nincs. */
 export function productMedia(p, { eager = false, large = false } = {}) {
   const local = !!p.img && !/^(https?:|data:|api\/)/.test(p.img);   // data: = adminban feltöltött kép (csak a böngészőben)
-  if (!p.img) return `<div class="media media--none"><span>Fotó hamarosan</span></div>`;
+  const soon = `<span class="media__soon"><i aria-hidden="true"></i>Fotó hamarosan<small>${esc(p.code)}</small></span>`;
+  if (!p.img) return `<div class="media media--none" data-nophoto>${soon}</div>`;
   return `<div class="media${p.imgFill ? ' media--fill' : ''}">
     <img src="${esc(local ? p.img.replace('.jpg', '-800.jpg') : p.img)}"${local ? ` srcset="${esc(p.img.replace('.jpg', '-800.jpg'))} 800w, ${esc(p.img)} 1600w" sizes="${large ? '(max-width: 960px) 90vw, 560px' : '(max-width: 640px) 34vw, 220px'}"` : ''} alt="${esc(p.name + ', ' + p.code)}" ${eager ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async"
-      onerror="this.closest('.media').classList.add('is-fallback')">
-    <div class="media__none" aria-hidden="true"><span>A fotó nem érhető el</span></div>
+      onerror="this.closest('.media').classList.add('is-fallback');this.closest('.media').dataset.nophoto=''">
+    <div class="media__none" aria-hidden="true">${soon}</div>
   </div>`;
 }
 

@@ -6,7 +6,7 @@ import { api, onApi, login, logout, settle, uploadPhoto, mailStatus, mailTest, i
 import { store } from './store.js';
 import { COLORS, STYLES, SITES, SRC_LABEL } from './data.js';
 import { readiness, optionValues, optionReason, priceProduct, shownPrice, priceAll, diffPrices, defaultConfig, composition, ft, num, dec, pct, METALS, METAL_ORDER, isGold, diamond, refPrice, refWeight, exampleRing, allowedCats, sizeSfx, ctFmt, sizeRange } from './engine.js';
-import { $, $$, esc, productMedia, toast as uiToast, modal, M, reduced, dateHu, dayHu } from './ui.js';
+import { $, $$, esc, productMedia, toast as uiToast, modal, M, reduced, dateHu, dayHu, checkPhotos, photos as probe } from './ui.js';
 /* Szerver módban a „Mentve” csak a szerver visszaigazolása után igaz: addig „Mentés folyamatban”. */
 const toast = (html, o) => uiToast(api.mode === 'server' && api.admin && /^Mentve/.test(html) ? html.replace(/^Mentve:?/, 'Mentés folyamatban:') : html, o);
 import { configText } from './views-public.js';
@@ -318,7 +318,29 @@ function photos(el) {
   el = fresh(el);
   const st = S();
   let only = false;
-  const kindOf = (p) => !p.img ? ['nincs', 'nincs kép'] : /^data:/.test(p.img) ? ['sajat', 'itt feltöltött kép'] : /^https?:/.test(p.img) ? ['web', 'a mostani weboldalról'] : ['helyi', 'a mostani weboldalról'];
+  let checking = false, report = '';
+  const kindOf = (p) => !p.img ? ['nincs', 'nincs kép'] : (probe.checked && probe.missing.has(p.id)) ? ['nincs', 'nem tölt be'] : /^data:/.test(p.img) ? ['sajat', 'itt feltöltött kép'] : /^https?:/.test(p.img) ? ['web', 'a régi weboldalról töltődik'] : ['helyi', 'helyben tárolt fotó'];
+  const counts = () => {
+    const P = st.products, ext = P.filter((p) => /^https?:/.test(p.img || '')).length, none = P.filter((p) => !p.img).length;
+    const local = P.length - ext - none;
+    const miss = probe.checked ? P.filter((p) => p.img && probe.missing.has(p.id)).length : null;
+    return `${P.length} gyűrű · ${local} helyi fotó · ${ext} külső fotó · ${none} kép nélkül${miss === null ? '' : ` · <b data-pmissing>${miss} nem tölt be</b> ebben a böngészőben`}`;
+  };
+  const runCheck = () => {
+    checking = true; probe.missing.clear(); probe.checked = false; paint();
+    checkPhotos(st.products, () => {
+      checking = false;
+      const rows = st.products.map((p) => ({ code: p.code, img: p.img ? (p.img.startsWith('data:') ? '(feltöltött kép)' : p.img) : null,
+        status: !p.img ? 'hianyzik' : probe.missing.has(p.id) ? 'nem_tolt_be' : /^https?:/.test(p.img) ? 'kulso_elerheto' : 'helyi' }));
+      const c = (k) => rows.filter((r) => r.status === k).length;
+      const rep = { generated: new Date().toISOString(), forras: 'böngészős ellenőrzés (admin → Fotók)', osszes_termek: rows.length,
+        helyi_foto: c('helyi'), kulso_foto_elerheto: c('kulso_elerheto'), nem_tolt_be: c('nem_tolt_be'), hianyzo_foto: c('hianyzik'), termekek: rows };
+      if (report) URL.revokeObjectURL(report);
+      report = URL.createObjectURL(new Blob([JSON.stringify(rep, null, 2)], { type: 'application/json' }));
+      paint();
+    }, { all: true });
+  };
+  el.addEventListener('click', (e) => { if (e.target.closest('[data-pcheckrun]') && !checking) runCheck(); });
   const paint = () => {
     const list = st.products.filter((p) => !only || !p.img).sort((a, b) => (b.added ? 1 : 0) - (a.added ? 1 : 0) || a.code.localeCompare(b.code));
     el.innerHTML = `
@@ -327,6 +349,11 @@ function photos(el) {
       <p class="hint">${api.mode === 'server' ? 'A feltöltött képből a szerver optimalizált JPEG-et készít (legfeljebb 2400 képpont, a helyadat és egyéb rejtett adat nélkül). Az eredeti fájl nem marad meg – azt őrizze meg a saját gépén.' : 'A képek most kicsinyítve (900 képpont), ebben a böngészőben tárolódnak.'}</p>
       <div class="ptools"><label class="check check--lg"><input type="checkbox" data-only ${only ? 'checked' : ''}><span>Csak ahol nincs kép</span></label>
         <div class="ptools__btns"><a class="abtn abtn--gold" href="#/admin/gyuru/uj">+ Új gyűrű felvitele</a></div></div>
+      <div class="pcheck" data-pcheck>
+        <p><b>Fotóellenőrzés:</b> ${counts()}</p>
+        <p class="ptools__btns"><button class="abtn" data-pcheckrun>${checking ? 'Ellenőrzés folyamatban…' : 'Képek betöltésének ellenőrzése'}</button>${report ? ' <a class="linkbtn" data-pcheckdl download="katalogus-fotojelentes.json" href="' + report + '">Jelentés letöltése (JSON)</a>' : ''}</p>
+        <p class="hint">Kép nélküli gyűrű is megjelenik a vásárlói oldalon, „Fotó hamarosan” jelzéssel – kereshető és megnyitható.</p>
+      </div>
       <p class="hint">${list.length} gyűrű</p>
       <div class="photogrid">${list.map((p) => { const [k, t] = kindOf(p); return `<div class="photocard" data-pc="${p.id}">
         <div class="photocard__img">${p.img ? `<img src="${esc(p.img)}" alt="" loading="lazy" referrerpolicy="no-referrer">` : '<span>nincs kép</span>'}</div>

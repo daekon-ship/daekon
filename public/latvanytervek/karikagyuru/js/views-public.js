@@ -3,7 +3,7 @@ import { store } from './store.js';
 import { BUSINESS, COLORS, STYLES, FEATURED, BICOLOR, TERMS, CURRENT_SITE } from './data.js';
 import { shownPrice, priceProduct, normalizeConfig, optionValues, optionReason, sizeRange, allowedCats, sizeSfx, ctFmt, defaultConfig, ft, num, dec, diamond, ringSplit, encodeCfg, decodeCfg, METALS, METAL_ORDER, isGold } from './engine.js';
 import { api } from './api.js';
-import { $, $$, esc, productMedia, ringSketch, hasPhoto, metalSwatch, animatePrice, modal, reveal, toast, M, reduced } from './ui.js';
+import { $, $$, esc, productMedia, ringSketch, metalSwatch, animatePrice, modal, reveal, toast, M, reduced } from './ui.js';
 
 const S = () => store.get();
 const fresh = (el) => { const n = el.cloneNode(false); el.replaceWith(n); return n; };
@@ -25,7 +25,8 @@ const stamp = (m) => `<span class="stamp" aria-label="Fémjel ${METALS[m].stamp}
 const hasStones = (p) => p.rings.some((r) => r.stoneRule);
 const canBePlain = (p) => p.rings.every((r) => !r.stoneRule || r.stoneRule.allowNone);
 /** Megjelenik-e a termék ezen az oldalon (admin: látható + ehhez a domainhez rendelve + van fotó). */
-export const listed = (p) => p.visible !== false && (!p.sites || p.sites.includes(CURRENT_SITE)) && (hasPhoto(p) || (p.added && !p.img));   // adminban felvett gyűrű kép nélkül is megjelenik („Fotó hamarosan”)
+// V5.6: a fotó hiánya nem rejti el a gyűrűt – kép nélkül „Fotó hamarosan” helykitöltővel látszik, kereshető és megnyitható.
+export const listed = (p) => p.visible !== false && (!p.sites || p.sites.includes(CURRENT_SITE));
 
 /* ---------- Kártya ---------- */
 function card(p, { metal } = {}) {

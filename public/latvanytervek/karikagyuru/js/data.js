@@ -42,6 +42,9 @@ export const TERMS = [
   ['Elállás', 'Egyedi méretre készült gyűrűre nincs elállási jog.'],
 ];
 
+import { LOCAL_FILES } from './photos.js';
+const LOCAL = new Set(LOCAL_FILES);   // a karikagyuru.com-ról már letöltött, optimalizált fotók (dev/foto-ellenorzes.mjs)
+
 export const REMOTE_IMG = 'https://karikagyuru.com/public/layout/pictures/karikagyuru/';
 export const IMG_BASE = 'img/termekek/';   // a karikagyuru.com saját fotói (az ügyfél mentett oldaláról)
 
@@ -275,7 +278,7 @@ const RAW = RAW_PAGE1.concat(MORE.trim().split('\n').map((line) => {
   const style = bi ? 'ketszinu' : num >= 87000 && num < 88000 ? 'klasszikus' : 'modern';
   const width = num >= 93000 ? 5 : num >= 87000 ? 4 : 4.5;
   return R(code, price ? Number(price) : null, img, {
-    kind: code.includes(' - ') ? 'p' : 's', color: color || 'feher', unknownColor: !color, style, width, remote: true,
+    kind: code.includes(' - ') ? 'p' : 's', color: color || 'feher', unknownColor: !color, style, width, remote: !LOCAL.has(img.toLowerCase()),
   });
 }));
 
