@@ -8,7 +8,9 @@
 import { store } from './store.js';
 
 const BASE = document.querySelector('meta[name="kg-api"]')?.content?.trim() || '';
-export const api = { mode: BASE ? 'server' : 'local', online: false, admin: false, csrf: null, version: 0, save: 'idle', savedAt: null, error: '' };
+export const api = { mode: BASE ? 'server' : 'local', online: false, admin: false, csrf: null, version: 0, save: 'idle', savedAt: null, error: '',
+  /** Szerver módban, ha nem lehet menteni: 'offline' | 'session' (lejárt belépés) | 'error'. Ilyenkor a kezelőfelület nem szerkeszthető. */
+  blocked: null };
 const subs = new Set();
 const emit = () => subs.forEach((fn) => fn(api));
 export const onApi = (fn) => { subs.add(fn); return () => subs.delete(fn); };
@@ -28,14 +30,20 @@ async function call(method, path, body, { raw = false } = {}) {
 /** Indulás: szerver módban betölti a mentett állapotot. Helyi módban azonnal kész. */
 export async function initApi() {
   if (api.mode !== 'server') return api;
+  // Szerver módban SOHA nem mentünk a böngészőbe: ha a szerver nem érhető el, a mentés és az érdeklődés is hibát ad.
+  store.setHooks({ save: scheduleSave, inquiry: sendInquiry, inquiryUpdate: updateInquiry });
   const h = await call('GET', 'health');
   api.online = h.ok && h.data.ok === true;
-  if (!api.online) { api.error = 'A szerver nem érhető el – az oldal a beépített adatokkal működik.'; emit(); return api; }
-  const s = await call('GET', 'state');
-  if (s.ok) { api.version = s.data.version || 0; if (s.data.state) store.load(s.data.state); }
+  const s = api.online ? await call('GET', 'state') : null;
+  if (!api.online || !s.ok) {
+    api.online = false; api.blocked = 'offline';
+    api.error = 'A szerver most nem érhető el. A kezelőfelület ezért nem használható – a módosítások nem menthetők.';
+    emit(); return api;
+  }
+  api.version = s.data.version || 0;
+  if (s.data.state) store.load(s.data.state); else store.loadFresh();
   const me = await call('GET', 'me');
   api.admin = !!me.data.admin; api.csrf = me.data.csrf || null;
-  store.setHooks({ save: scheduleSave, inquiry: sendInquiry, inquiryUpdate: updateInquiry });
   emit();
   return api;
 }
@@ -52,7 +60,11 @@ export async function refreshState() {
 
 export async function login(password) {
   const r = await call('POST', 'login', { password });
-  if (r.ok) { api.admin = true; api.csrf = r.data.csrf; api.error = ''; emit(); return { ok: true }; }
+  if (r.ok) {
+    api.admin = true; api.csrf = r.data.csrf; api.error = '';
+    if (api.blocked === 'session') { await reloadFromServer(); api.blocked = null; api.save = 'idle'; }
+    emit(); return { ok: true };
+  }
   return { ok: false, error: r.data.error || 'A belépés nem sikerült.' };
 }
 
@@ -64,7 +76,7 @@ export async function logout() {
 /* --- mentés: rövid várakozás után egyben, az utolsó ismert változatra építve --- */
 let timer = null, inflight = null, again = false;
 function scheduleSave() {
-  if (!api.admin) return;
+  if (!api.admin || api.blocked) return;
   api.save = 'pending'; emit();
   clearTimeout(timer);
   timer = setTimeout(flush, 350);
@@ -78,14 +90,25 @@ async function flush() {
   if (r.ok) { api.version = r.data.version; api.save = 'saved'; api.savedAt = new Date(); api.error = ''; }
   else {
     api.save = 'error';
-    api.error = r.status === 401 ? 'Lejárt a belépés. Lépjen be újra – a módosítás NEM került mentésre.'
-      : r.status === 409 ? 'Közben máshol is mentettek. Töltse újra az oldalt – a módosítás NEM került mentésre.'
-      : (r.data.error || 'A mentés nem sikerült.') + ' A módosítás NEM került a szerverre.';
-    if (r.status === 401) api.admin = false;
+    api.error = r.status === 401 ? 'Lejárt a belépés. A legutóbbi módosítás NEM került mentésre. Lépjen be újra, és végezze el még egyszer.'
+      : r.status === 409 ? 'Közben máshol is mentettek. A legutóbbi módosítás NEM került mentésre. Töltse újra az oldalt, és végezze el még egyszer.'
+      : r.status === 0 ? 'Megszakadt a kapcsolat a szerverrel. A legutóbbi módosítás NEM került mentésre.'
+      : (r.data.error || 'A mentés nem sikerült.') + ' A legutóbbi módosítás NEM került mentésre.';
+    if (r.status === 401) { api.admin = false; api.csrf = null; api.blocked = 'session'; }
+    else api.blocked = 'error';
+    again = false;
+    // A képernyőn ne maradjon el nem mentett adat: visszatöltjük, ami ténylegesen a szerveren van.
+    await reloadFromServer();
   }
   emit();
   if (again) { again = false; flush(); }
 }
+async function reloadFromServer() {
+  const s = await call('GET', 'state');
+  if (s.ok) { api.version = s.data.version || 0; if (s.data.state) store.load(s.data.state); else store.loadFresh(); return true; }
+  return false;
+}
+
 /** Megvárja, amíg minden függő mentés lefut (pl. kilépés előtt). */
 export async function settle() { clearTimeout(timer); if (api.save === 'pending') await flush(); else if (inflight) await inflight; }
 
@@ -105,7 +128,7 @@ async function updateInquiry(id, patch) {
   return r.ok;
 }
 
-/* --- képfeltöltés: az eredeti fájl megy fel, a szerver újrakódolja --- */
+/* --- képfeltöltés: a fájl felmegy, a szerver optimalizált JPEG-et készít belőle (max. 2400 px); az eredeti nem marad meg --- */
 export async function uploadPhoto(file) {
   const fd = new FormData(); fd.append('photo', file);
   const r = await call('POST', 'photo', fd, { raw: true });

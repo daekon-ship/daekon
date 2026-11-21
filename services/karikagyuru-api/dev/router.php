@@ -5,6 +5,9 @@ declare(strict_types=1);
 $site = realpath(getenv('KG_SITE') ?: __DIR__ . '/../../../public/latvanytervek/karikagyuru');
 $path = (string) parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
 if (str_starts_with($path, '/api/') || $path === '/api') {
+    // Csak fejlesztéshez/teszthez: ha az adatmappában van .api-down fájl, az API „kiesik” (503).
+    $data = rtrim(getenv('KG_DATA') ?: '', '/');
+    if ($data !== '' && is_file($data . '/.api-down')) { http_response_code(503); header('Content-Type: application/json'); echo '{"error":"A szolgáltatás nem érhető el."}'; return true; }
     require __DIR__ . '/../src/App.php';
     (new App())->handle();
     return true;

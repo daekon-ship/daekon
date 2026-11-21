@@ -469,3 +469,61 @@ test('Élesítés: engedélyezett, de jóvá nem hagyott vagy hibás szélesség
   p.opts.width = { enabled: true, min: Math.min(...p.rings.map((r) => r.refWidth)), max: 8, step: 0.5, approved: true };
   assert.equal(readiness(st).ready, true);
 });
+
+/* ---------- V5.3: jóváhagyott / nem jóváhagyott ár ---------- */
+import { priceTrust, shownPrice } from '../js/engine.js';
+{
+  const products = buildDemoProducts();
+  seedWeights(products, DEMO_MATERIALS, DEMO_SETTINGS);
+  const clone = (x) => JSON.parse(JSON.stringify(x));
+  const M0 = clone(DEMO_MATERIALS), S0 = clone(DEMO_SETTINGS);
+  const approveAll = (M, S) => {
+    M.src = Object.fromEntries(Object.keys(M.src || {}).map((k) => [k, 'jovahagyott']));
+    ['sellPerGram.au14', 'sellPerGram.au18', 'sellPerGram.pt', 'sellPerGram.pd'].forEach((k) => (M.src[k] = 'jovahagyott'));
+    M.diamonds.forEach((d) => { if (d.price) d.src = 'jovahagyott'; });
+    S.src = Object.fromEntries(['pricingMode', 'sizeMethod', 'roundTo', 'density', 'settingPerStone', 'engravingPrice', 'vatPct'].map((k) => [k, 'jovahagyott']));
+  };
+  const plain = clone(products.find((p) => p.listaAr && !p.priceOnRequest && !p.rings.some((r) => r.stoneRule)));
+  const stoned = clone(products.find((p) => p.listaAr && !p.priceOnRequest && p.rings.some((r) => r.stoneRule && r.stoneRule.def > 0)));
+
+  test('V5.3: nem jóváhagyott gyűrű alapváltozata → a közzétett listaár, nem számolt ár', () => {
+    const r = shownPrice(plain, defaultConfig(plain), M0, S0);
+    assert.equal(r.kind, 'list'); assert.equal(r.final, plain.listaAr);
+    assert.equal(priceTrust(plain, r.cfg, M0, S0).ok, false);
+  });
+  test('V5.3: nem jóváhagyott gyűrű módosított beállítása → egyedi ajánlat, ár nélkül', () => {
+    const c = defaultConfig(plain); c.rings[0].size = c.rings[0].size + 4;
+    const r = shownPrice(plain, c, M0, S0);
+    assert.equal(r.kind, 'quote'); assert.equal(r.final, null); assert.ok(r.reason);
+  });
+  test('V5.3: jóváhagyott gyűrű, de nem jóváhagyott grammár → nem számolt ár', () => {
+    const p = clone(plain); p.approved = true;
+    const c = defaultConfig(p); c.rings[0].size += 2;
+    const r = shownPrice(p, c, M0, S0);
+    assert.equal(r.kind, 'quote'); assert.match(r.reason, /grammára/);
+  });
+  test('V5.3: minden jóváhagyva → számolt ár, a motor számítása változatlan', () => {
+    const M = clone(M0), S = clone(S0); approveAll(M, S);
+    const p = clone(plain); p.approved = true;
+    const c = defaultConfig(p); c.rings[0].size += 2;
+    const r = shownPrice(p, c, M, S);
+    assert.equal(r.kind, 'calc'); assert.equal(r.final, priceProduct(p, c, M, S).final);
+  });
+  test('V5.3: kő esetén a kőár jóváhagyása is kell', () => {
+    const M = clone(M0), S = clone(S0); approveAll(M, S);
+    const p = clone(stoned); p.approved = true;
+    const c = defaultConfig(p);
+    const cat = c.rings.find((r) => r.stones && r.stones.count).stones.cat;
+    M.diamonds.find((d) => d.id === cat).src = 'pelda';
+    c.rings[0].size += 1;
+    const r = shownPrice(p, c, M, S);
+    assert.equal(r.kind, 'quote'); assert.match(r.reason, /kőméret/);
+  });
+  test('V5.3: titán soha nem kap számolt árat', () => {
+    const M = clone(M0), S = clone(S0); approveAll(M, S);
+    const p = clone(products.find((x) => (x.metals || []).includes('ti')) || plain); p.approved = true;
+    if (!(p.metals || []).includes('ti')) return;
+    const c = defaultConfig(p); c.metal = 'ti';
+    assert.equal(shownPrice(p, c, M, S).final, null);
+  });
+}

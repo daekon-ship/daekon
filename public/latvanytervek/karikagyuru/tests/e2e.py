@@ -2,6 +2,7 @@
 Alapértelmezés: helyi szerver a public mappából (python3 -m http.server 8765)."""
 import asyncio, re, sys
 from playwright.async_api import async_playwright
+import os, sys as _sys; _sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from kg_common import approve_all
 
 B = sys.argv[1] if len(sys.argv) > 1 else 'http://localhost:8765/latvanytervek/karikagyuru/'
 SHOTS = '/tmp/kgshots/'
@@ -28,7 +29,7 @@ async def main():
         errs = []
         pg.on('pageerror', lambda e: errs.append(str(e)))
         pg.on('console', lambda m: m.type == 'error' and 'Failed to load resource' not in m.text and errs.append(m.text))
-        await pg.goto(B + '#/'); await pg.evaluate('localStorage.clear()'); await pg.reload(); await pg.wait_for_timeout(800)
+        await pg.goto(B + '#/'); await pg.evaluate('localStorage.clear()'); await pg.reload(); await pg.wait_for_timeout(800); await approve_all(pg)
 
         # --- Konfigurátor ---
         await pg.goto(B + f'#/gyuru/{PAIR}'); await pg.wait_for_timeout(1200)
@@ -84,10 +85,15 @@ async def main():
         await pg.goto(B + '#/admin/keplet'); await pg.wait_for_timeout(600)
         prev = re.sub(r'[\u202f\xa0]', ' ', await pg.inner_text('[data-calc]'))
         check('Árképlet-előnézet: nyers és kerekített ár külön, nincs kőfelár grammáras módban', 'Számított ár (nyers)' in prev and 'Kerekített ár' in prev and 'kőfelár' not in prev)
+        # a kerekítés jóváhagyását visszavesszük, hogy lássuk: átállítás után sem lesz magától jóváhagyott
+        await pg.evaluate("async () => { const { store } = await import('./js/store.js'); store.get().settings.src.roundTo = 'demo'; store.persistNow(); }")
+        await pg.reload(); await pg.goto(B + '#/admin/keplet'); await pg.wait_for_timeout(600)
         await pg.select_option('[data-round]', '1000'); await pg.wait_for_timeout(300)
         await pg.click('[data-save]'); await pg.wait_for_timeout(400)
         await pg.goto(B + '#/admin/jovahagyas'); await pg.wait_for_timeout(500)
         check('Kerekítés átállítva is demó marad (jóváhagyásig)', await pg.locator('[data-appr="settings|roundTo"]').count() == 1)
+        await pg.click('[data-appr="settings|roundTo"]'); await pg.wait_for_timeout(300)
+        check('Kerekítés jóváhagyása a „Jóváhagyásra vár” oldalon', await pg.locator('[data-appr="settings|roundTo"]').count() == 0)
         await pg.goto(B + '#/admin/keplet'); await pg.wait_for_timeout(500)
         await pg.select_option('[data-round]', '100'); await pg.click('[data-save]'); await pg.wait_for_timeout(400)
         await pg.goto(B + '#/admin/arszamitas'); await pg.wait_for_timeout(500)
@@ -109,7 +115,9 @@ async def main():
         check('Költségalapú mód: a fő mező a 24K alapanyagár', await pg.locator('.goldcard [data-path="gold24"]').count() == 1)
         await pg.goto(B + f'#/gyuru/{PAIR}'); g = await price(pg)
         check('Költségalapú mód: van ár a termékoldalon', bool(g), str(g))
-        # termékszerkesztő
+        # termékszerkesztő – ehhez a részhez a gyűrű és a platina grammár újra „jóváhagyásra vár”
+        await pg.evaluate(f"async () => {{ const {{ store }} = await import('./js/store.js'); const st = store.get(); st.products.find((p) => p.id === '{PAIR}').approved = false; st.materials.src['sellPerGram.pt'] = 'pelda'; store.persistNow(); }}")
+        await pg.reload(); await pg.wait_for_timeout(500)
         await pg.goto(B + f'#/admin/gyuru/{PAIR}'); await pg.wait_for_timeout(700)
         check('Termékszerkesztő: kőszabály, anyagok, jóváhagyandó lista',
               await pg.locator('[data-rulemode]').count() == 2 and await pg.locator('[data-arr="metals"]').count() == 5 and await pg.locator('.ebox--todo li').count() >= 1)
@@ -122,7 +130,7 @@ async def main():
         n0 = await pg.locator('[data-appr]:not([disabled])').count()
         check('A tulajdonos által átírt grammár automatikusan jóváhagyott', await pg.locator('[data-appr="materials|sellPerGram.au14"]').count() == 0)
         await pg.locator('[data-appr="materials|sellPerGram.pt"]').click(); await pg.wait_for_timeout(300)
-        check('Jóváhagyás: ügyfélpélda → jóváhagyott', await pg.locator('[data-appr="materials|sellPerGram.pt"]').count() == 0 and n0 > 10, str(n0))
+        check('Jóváhagyás: ügyfélpélda → jóváhagyott', await pg.locator('[data-appr="materials|sellPerGram.pt"]').count() == 0 and n0 >= 1, str(n0))
         check('Bizonytalan kőár nem hagyható jóvá ár nélkül', await pg.locator('[data-appr="diamond|d04"]').is_disabled())
         # 8. alapállapot visszaállítása
         await pg.goto(B + '#/admin/beallitasok'); await pg.wait_for_timeout(500)

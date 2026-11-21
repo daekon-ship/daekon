@@ -1,6 +1,7 @@
 """V4 böngészős tesztek: öt fő adminfeladat, árverziók, fotók, gyűrűnkénti szabályok. Futtatás: python3 tests/v4.py [alap-URL]"""
 import asyncio, base64, re, sys, os, tempfile
 from playwright.async_api import async_playwright
+import os, sys as _sys; _sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from kg_common import approve_all
 
 B = sys.argv[1] if len(sys.argv) > 1 else 'http://localhost:8765/latvanytervek/karikagyuru/'
 PLAIN = 'maz-81194-81195-w'
@@ -23,12 +24,12 @@ async def run(b, w, h, mob):
     async def cprice():
         await pg.wait_for_function("(() => { const e = document.querySelector('[data-cprice]'); return e && e.textContent.replace(/\\D/g, '') === e.dataset.value })()", timeout=6000)
         return n(await pg.inner_text('[data-cprice]'))
-    await pg.goto(B + '#/'); await pg.evaluate('localStorage.clear(); sessionStorage.clear()'); await pg.reload(); await pg.wait_for_timeout(800)
+    await pg.goto(B + '#/'); await pg.evaluate('localStorage.clear(); sessionStorage.clear()'); await pg.reload(); await pg.wait_for_timeout(800); await approve_all(pg)
 
     # --- Főmenü: öt kiemelt feladat ---
     await pg.goto(B + '#/admin/attekintes'); await pg.wait_for_timeout(600)
     tiles = await pg.locator('.bigtiles--5 .bigtile b').all_inner_texts()
-    check(f'{tag} admin: öt kiemelt feladat', tiles == ['1. Árak módosítása', '2. Gyűrűk', '3. Fotók', '4. Szabályok', '5. Érdeklődések'], str(tiles))
+    check(f'{tag} admin: öt kiemelt feladat', tiles == ['1. Árak módosítása', '2. Gyűrűk', '3. Fotók', '4. Gyűrűk jóváhagyása', '5. Érdeklődések'], str(tiles))
     await over('admin főmenü')
 
     # --- Árak: előtte–utána, jóváhagyás, verzió, visszaállítás ---
@@ -70,7 +71,7 @@ async def run(b, w, h, mob):
 
     # --- Szabályok gyűrűnként ---
     await pg.goto(B + '#/admin/szabalyok'); await pg.wait_for_timeout(700)
-    check(f'{tag} szabályok: lista gyűrűnként, jóváhagyási állapottal', await pg.locator('.rules__row').count() > 20 and 'jóváhagyásra vár' in await pg.inner_text('.rules'))
+    check(f'{tag} szabályok: lista gyűrűnként, jóváhagyási állapottal', await pg.locator('.rules__row').count() > 20 and 'jóváhagyva' in await pg.inner_text('.rules'))
     await over('admin szabályok')
     await pg.goto(B + f'#/gyuru/{PLAIN}'); await pg.wait_for_timeout(900)
     fixed = await pg.locator('[data-width-fixed]').first.inner_text()

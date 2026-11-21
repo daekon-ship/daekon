@@ -574,3 +574,53 @@ export function readiness(state) {
   const invalid = blockers.filter((b) => b.kind === 'ervenytelen').length;
   return { ready: blockers.length === 0, blockers, byGroup, invalid, unapproved: blockers.length - invalid };
 }
+
+/* ==========================================================================
+   Megjeleníthető-e a számolt ár? (V5.3)
+   A számolt ár csak akkor „ár”, ha az ötvös jóváhagyta a gyűrű adatait ÉS
+   minden árelemet, amit ez a beállítás felhasznál. Különben a vásárló a
+   jelenlegi weboldalon közzétett listaárat látja (csak az alapváltozatra),
+   vagy egyedi ajánlatot kér.
+   ========================================================================== */
+export function priceTrust(p, cfg, M, S) {
+  const ms = (M && M.src) || {}, ss = (S && S.src) || {};
+  const ok = (v) => v === 'jovahagyott';
+  const reasons = [];
+  if (!p.approved) reasons.push('A gyűrű adatait az ötvös még nem hagyta jóvá.');
+  if (p.override?.type === 'fixed') return { ok: reasons.length === 0, reasons };
+  const metal = cfg && cfg.metal;
+  const gm = (S?.pricingMode || 'gramm') === 'gramm';
+  if (metal === 'ti') reasons.push('A titángyűrű ára egyedi ajánlat.');
+  else if (metal) {
+    const key = gm ? `sellPerGram.${metal}` : METALS[metal]?.ref;
+    if (!ok(ms[key])) reasons.push(`A(z) ${METALS[metal]?.short || metal} grammára még nincs jóváhagyva.`);
+  }
+  for (const k of ['pricingMode', 'sizeMethod', 'roundTo']) if (!ok(ss[k])) { reasons.push('Az árszámítás beállításai még nincsenek jóváhagyva.'); break; }
+  if ((S?.sizeMethod || 'tomeg') === 'tomeg' && !ok(ss.density)) reasons.push('A méret szerinti tömegszámítás még nincs jóváhagyva.');
+  const rings = (cfg && cfg.rings) || [];
+  if (rings.some((r) => r.stones && r.stones.count > 0)) {
+    for (const r of rings) {
+      if (!r.stones || !r.stones.count) continue;
+      const d = (M?.diamonds || []).find((x) => x.id === r.stones.cat);
+      if (!d || !ok(d.src)) { reasons.push('A választott kőméret ára még nincs jóváhagyva.'); break; }
+    }
+    if ((S?.settingPerStone || 0) > 0 && !ok(ss.settingPerStone)) reasons.push('A kőfoglalás díja még nincs jóváhagyva.');
+  }
+  if (rings.some((r) => r.engraving && String(r.engraving).trim()) && !ok(ss.engravingPrice)) reasons.push('A gravírozás díja még nincs jóváhagyva.');
+  return { ok: reasons.length === 0, reasons: [...new Set(reasons)] };
+}
+
+/**
+ * A vásárlónak mutatott ár. kind: 'calc' (jóváhagyott, számolt) | 'list' (a jelenlegi weboldal
+ * listaára, csak az alapváltozatra, nem jóváhagyott modellnél) | 'quote' (egyedi ajánlat).
+ */
+export function shownPrice(p, cfgIn, M, S) {
+  const r = priceProduct(p, cfgIn, M, S);
+  if (r.final === null) return { ...r, kind: 'quote' };
+  const t = priceTrust(p, r.cfg, M, S);
+  if (t.ok) return { ...r, kind: 'calc', trust: t };
+  const base = normalizeConfig(p, defaultConfig(p), M, S).cfg;
+  const isBase = encodeCfg(base) === encodeCfg(r.cfg);
+  if (isBase && p.listaAr && !p.priceOnRequest) return { ...r, final: p.listaAr, raw: p.listaAr, kind: 'list', trust: t, quote: false };
+  return { ...r, final: null, quote: true, kind: 'quote', reason: t.reasons[0], trust: t };
+}

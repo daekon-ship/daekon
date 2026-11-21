@@ -54,6 +54,8 @@ export const store = {
   product: (id) => state.products.find((p) => p.id === id),
 
   reset() { state = fresh(); persist(); },
+  /** Mentés változtatás nélkül (pl. tesztek előkészítése után). */
+  persistNow() { return persist(); },
 
   /** Adat jóváhagyása (forrás → „jóváhagyott”). kind: 'materials' | 'settings' | 'diamond' | 'product'. */
   approve(kind, key, label) {
@@ -63,6 +65,16 @@ export const store = {
     if (kind === 'product') { const p = state.products.find((x) => x.id === key); if (p) { p.approved = true; p.rings.forEach((r) => r.stoneRule && (r.stoneRule.demo = false)); } }
     const at = new Date().toISOString();
     state.history.unshift({ id: uid(), at, validFrom: at, by: 'Tulajdonos', kind: 'approve', title: `Jóváhagyva: ${label || key}`, count: 0, total: 0 });
+    persist();
+  },
+
+  /** Gyűrű jóváhagyásának visszavonása: a vásárló ennél a gyűrűnél újra csak egyedi ajánlatot kér. */
+  unapprove(id, label) {
+    const p = state.products.find((x) => x.id === id);
+    if (!p) return;
+    p.approved = false;
+    const at = new Date().toISOString();
+    state.history.unshift({ id: uid(), at, validFrom: at, by: 'Tulajdonos', kind: 'approve', title: label || `Jóváhagyás visszavonva: ${p.code}`, count: 0, total: 0 });
     persist();
   },
 
@@ -156,7 +168,7 @@ export const store = {
   addInquiry(inq) {
     if (hooks.inquiry) return hooks.inquiry(inq);
     state.inquiries.unshift({ id: uid(), at: new Date().toISOString(), status: 'uj', ...inq });
-    persist();
+    if (!persist()) { state.inquiries.shift(); return Promise.resolve({ ok: false, error: 'Az érdeklődést nem sikerült rögzíteni.' }); }
     return Promise.resolve({ ok: true });
   },
 
@@ -177,6 +189,8 @@ export const store = {
     if (!Array.isArray(state.history)) state.history = [];
     listeners.forEach((fn) => fn(state));
   },
+  /** Szerver mód, még nincs mentett változat: a beépített kiinduló adatok (a böngésző régi helyi adata nem számít). */
+  loadFresh() { const inq = state.inquiries || []; state = fresh(); state.inquiries = inq; listeners.forEach((fn) => fn(state)); },
   setInquiries(list) { state.inquiries = list; listeners.forEach((fn) => fn(state)); },
 
   silentSave: persist,

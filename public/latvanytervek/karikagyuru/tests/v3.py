@@ -1,6 +1,7 @@
 """V3 böngészős tesztek: két út, szemléltető ábra, saját ötlet, új gyűrű felvitele. Futtatás: python3 tests/v3.py [alap-URL]"""
 import asyncio, base64, re, sys, os, tempfile
 from playwright.async_api import async_playwright
+import os, sys as _sys; _sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from kg_common import approve_all
 
 B = sys.argv[1] if len(sys.argv) > 1 else 'http://localhost:8765/latvanytervek/karikagyuru/'
 PAIR = 'maz-81184-81185-w'
@@ -18,7 +19,7 @@ async def run(b, w, h, mob):
     async def over(name):
         sw = await pg.evaluate('document.documentElement.scrollWidth')
         check(f'{tag} {name}: nincs oldalra görgetés', sw <= w + 1, str(sw))
-    await pg.goto(B + '#/'); await pg.evaluate('localStorage.clear(); sessionStorage.clear()'); await pg.reload(); await pg.wait_for_timeout(1000)
+    await pg.goto(B + '#/'); await pg.evaluate('localStorage.clear(); sessionStorage.clear()'); await pg.reload(); await pg.wait_for_timeout(1000); await approve_all(pg)
 
     # --- Kezdőoldal: a három üzenet ---
     h1 = await pg.inner_text('.hero h1'); cta = await pg.locator('.hero__cta a').all_inner_texts()
@@ -107,6 +108,9 @@ async def run(b, w, h, mob):
     await pg.goto(B + f'#/admin/gyuru/{PAIR}'); await pg.wait_for_timeout(600)
     etxt = await pg.inner_text('.edit__form')
     check(f'{tag} admin: nincs több szélesség, gyűrűnként egy („online nem választhat mást”)', await pg.locator('[data-widths]').count() == 0 and 'online nem választhat mást' in etxt and 'Szélességek' not in etxt)
+    # az árelemek jóváhagyását visszaállítjuk a kiinduló állapotra (a gyűrűk maradnak jóváhagyva)
+    await pg.evaluate("""async () => { const { store } = await import('./js/store.js'); const d = await import('./js/data.js'); const st = store.get(); st.materials.src = JSON.parse(JSON.stringify(d.DEMO_MATERIALS.src)); st.settings.src = JSON.parse(JSON.stringify(d.DEMO_SETTINGS.src)); st.materials.diamonds.forEach((x) => { const o = d.DEMO_MATERIALS.diamonds.find((y) => y.id === x.id); if (o) x.src = o.src; }); store.persistNow(); }""")
+    await pg.reload(); await pg.wait_for_timeout(500)
     await pg.goto(B + '#/admin/jovahagyas'); await pg.wait_for_timeout(600)
     gl = await pg.inner_text('[data-golive-box]')
     check(f'{tag} élesítési ellenőrzés: jóváhagyás nélkül tiltva', 'Nem élesíthető' in gl and await pg.locator('[data-golive]').is_disabled() and all(x in gl for x in ['grammár', 'gyémántár', 'kerekítés', 'ÁFA']), gl.replace('\n', ' | ')[:200])
@@ -128,9 +132,16 @@ async def run(b, w, h, mob):
     await pg.goto(B + '#/kollekcio'); await pg.wait_for_timeout(1200)
     card = pg.locator(f'.card[data-id="uj-{code.lower()}"]')
     ptxt = await card.inner_text() if await card.count() else ''
-    check(f'{tag} új gyűrű: megjelent a vásárlói katalógusban, árral', 'Teszt karikagyűrű' in ptxt and ' Ft' in re.sub(r'[ \xa0]', ' ', ptxt), ptxt.replace('\n', ' | ')[:120])
+    check(f'{tag} új gyűrű: jóváhagyásig a katalógusban „egyedi ajánlat”, ár nélkül', 'Teszt karikagyűrű' in ptxt and 'egyedi ajánlat' in ptxt and ' Ft' not in re.sub(r'[ \xa0]', ' ', ptxt), ptxt.replace('\n', ' | ')[:120])
     await pg.goto(B + f'#/gyuru/uj-{code.lower()}'); await pg.wait_for_timeout(900)
-    check(f'{tag} új gyűrű: konfigurálható (lépések, kőszabály)', await pg.locator('.cfg__step').count() >= 4 and await pg.locator('[data-stones="0|1"]').count() == 1)
+    check(f'{tag} új gyűrű: jóváhagyásig nem konfigurálható', await pg.locator('.cfg__step').count() == 0 and await pg.locator('[data-locked]').count() == 1)
+    await pg.goto(B + f'#/admin/sorban/uj-{code.lower()}'); await pg.wait_for_timeout(700)
+    await pg.click('[data-approve]'); await pg.wait_for_timeout(500)
+    await pg.goto(B + '#/kollekcio'); await pg.wait_for_timeout(1200)
+    ptxt = await card.inner_text() if await card.count() else ''
+    check(f'{tag} új gyűrű jóváhagyva, de a grammár nincs jóváhagyva: továbbra sincs számolt ár', 'egyedi ajánlat' in ptxt and ' Ft' not in re.sub(r'[ \xa0]', ' ', ptxt), ptxt.replace('\n', ' | ')[:120])
+    await pg.goto(B + f'#/gyuru/uj-{code.lower()}'); await pg.wait_for_timeout(900)
+    check(f'{tag} új gyűrű: jóváhagyás után konfigurálható (lépések, kőszabály)', await pg.locator('.cfg__step').count() >= 4 and await pg.locator('[data-stones="0|1"]').count() == 1)
     check(f'{tag} nincs JavaScript-hiba', not errs, ' | '.join(errs[:3]))
     await ctx.close()
 

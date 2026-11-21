@@ -1,15 +1,16 @@
 /* Vásárlói felület: kezdőoldal, kollekció, termékoldal + konfigurátor, kapcsolat. */
 import { store } from './store.js';
 import { BUSINESS, COLORS, STYLES, FEATURED, BICOLOR, TERMS, CURRENT_SITE } from './data.js';
-import { priceProduct, normalizeConfig, optionValues, optionReason, sizeRange, allowedCats, sizeSfx, ctFmt, defaultConfig, ft, num, dec, diamond, ringSplit, encodeCfg, decodeCfg, METALS, METAL_ORDER, isGold } from './engine.js';
+import { shownPrice, priceProduct, normalizeConfig, optionValues, optionReason, sizeRange, allowedCats, sizeSfx, ctFmt, defaultConfig, ft, num, dec, diamond, ringSplit, encodeCfg, decodeCfg, METALS, METAL_ORDER, isGold } from './engine.js';
 import { api } from './api.js';
 import { $, $$, esc, productMedia, ringSketch, hasPhoto, metalSwatch, animatePrice, modal, reveal, toast, M, reduced } from './ui.js';
 
 const S = () => store.get();
 const fresh = (el) => { const n = el.cloneNode(false); el.replaceWith(n); return n; };
-const price = (p, cfg) => priceProduct(p, cfg, S().materials, S().settings);
+/** A vásárlónak mutatott ár: számolt (jóváhagyott), listaár (alapváltozat) vagy egyedi ajánlat. */
+const price = (p, cfg) => shownPrice(p, cfg, S().materials, S().settings);
 /** Visszajelzés: szerver módban „megérkezett”, helyi módban az, ami igaz. */
-const sentNote = (server, local) => (api.mode === 'server' && api.online ? server : local);
+const sentNote = (server, local) => (api.mode === 'server' ? server : local);
 const demoMark = (txt = 'demó') => S().settings.showDemoMarks ? `<span class="demo-chip" title="Kitalált bemutató-alapanyagárakból számolva">${txt}</span>` : '';
 
 const colorLabel = (c) => COLORS[c]?.label || c;
@@ -83,12 +84,13 @@ export function home(el) {
   const st = S();
   const hero = store.product('maz-79016-79017');
   const heroPrice = price(hero).final;
-  const teaserIds = ['maz-81170-81171-y', 'maz-81184-81185-w', 'maz-81202-81203-wy', 'maz-79016-79017', 'maz-81163-81164-y', 'maz-79014-w'].filter((id) => store.product(id));
+  // Az árkalkulátor-előzetes csak jóváhagyott gyűrűkkel jelenik meg (nem jóváhagyottnál nincs online beállítás).
+  const teaserIds = ['maz-81170-81171-y', 'maz-81184-81185-w', 'maz-81202-81203-wy', 'maz-79016-79017', 'maz-81163-81164-y', 'maz-79014-w'].filter((id) => store.product(id)?.approved);
   const shown = st.products.filter(listed);
   const localPick = (fn) => shown.find((p) => !/^https?:/.test(p.img) && fn(p)) || shown.find(fn);
 
   // „A kevesebb is lehet pont tökéletes”: ugyanaz a modell három valóban elkészíthető változatban (élő árak)
-  const lp = store.product('maz-81184-81185-w');
+  const lp = store.product('maz-81184-81185-w')?.approved ? store.product('maz-81184-81185-w') : null;
   const lrule = lp && lp.rings[0].stoneRule;
   const less = [];
   if (lp && lrule && lrule.mode === 'free' && lrule.allowNone && !lp.priceOnRequest) {
@@ -125,7 +127,7 @@ export function home(el) {
         <a class="hero__photo" href="#/gyuru/${hero.id}" aria-label="${esc(hero.name)} megnyitása">${productMedia(hero, { eager: true, large: true })}</a>
         <figcaption class="hero__cap">
           <a href="#/gyuru/${hero.id}"><span>${esc(hero.code)}</span><b>${esc(hero.name)}</b>
-          <em>Így: <span class="price" data-hero-price data-value="${heroPrice}">${ft(heroPrice)}</span> ${demoMark()} – innen alakítható</em></a>
+          <em>${heroPrice === null ? 'Ár: egyedi ajánlat' : `${hero.approved ? 'Így' : 'Listaár'}: <span class="price" data-hero-price data-value="${heroPrice}">${ft(heroPrice)}</span>`}${hero.approved ? ' – innen alakítható' : ''}</em></a>
         </figcaption>
       </figure>
     </div>
@@ -169,7 +171,7 @@ export function home(el) {
     </div>
   </section>
 
-  <section class="sec" id="arkalkulator">
+  ${teaserIds.length ? `<section class="sec" id="arkalkulator">
     <div class="wrap calc">
       <div class="calc__text" data-reveal>
         <h2>Próbáld ki, mennyi lenne</h2>
@@ -188,7 +190,7 @@ export function home(el) {
         <a class="btn btn--dark btn--full" data-tlink href="#">Tovább: méret, kövek, gravírozás</a>
       </div>
     </div>
-  </section>
+  </section>` : ''}
 
   ${less.length === 3 ? `<section class="sec sec--sand" id="kevesebb">
     <div class="wrap lessis">
@@ -487,8 +489,10 @@ export function product(el, id, query) {
   const p = store.product(id);
   if (!p) { el.innerHTML = `<section class="wrap page-head"><h1>A gyűrű nem található</h1><p><a class="btn btn--line" href="#/kollekcio">Vissza a gyűrűkhöz</a></p></section>`; return; }
   const onReq = !!p.priceOnRequest && p.override?.type !== 'fixed';   // ár nélküli modell: beállítható, de az ár egyedi ajánlat
-  let cfg = (query?.get('k') && decodeCfg(query.get('k'), p)) || defaultConfig(p);
-  const qc = query?.get('szin');
+  // Amíg az ötvös nem hagyta jóvá a gyűrű adatait, nincs online beállítás: az alapváltozat látszik, a többi egyedi ajánlat.
+  const locked = !p.approved;
+  let cfg = (!locked && query?.get('k') && decodeCfg(query.get('k'), p)) || defaultConfig(p);
+  const qc = locked ? null : query?.get('szin');
   if (!query?.get('k') && qc && p.colors.includes(qc)) cfg.color = qc;
   let view = 'foto', shownView = '';
   const sketch = () => ringSketch({ metal: cfg.metal, color: cfg.color || p.baseColor, rings: p.rings.map((rg, i) => {
@@ -509,12 +513,12 @@ export function product(el, id, query) {
         <div class="pdp__stage" data-stage></div>
         <div class="pdp__thumbs" role="tablist" aria-label="Nézet">
           ${p.img ? `<button role="tab" data-view="foto" aria-selected="true"><span class="pdp__thumb">${productMedia(p)}</span>Fotó</button>` : ''}
-          <button role="tab" data-view="abra" aria-selected="false"><span class="pdp__thumb pdp__thumb--abra" data-minisketch></span>A te változatod</button>
+          <button role="tab" data-view="abra" aria-selected="false"><span class="pdp__thumb pdp__thumb--abra" data-minisketch></span>${locked ? 'Ábra' : 'A te változatod'}</button>
           ${p.img ? `<button role="tab" data-view="nagy" aria-selected="false"><span class="pdp__thumb pdp__thumb--zoom">${productMedia(p)}</span>Nagyítás</button>` : ''}
         </div>
         <div class="pdp__dock" data-dock>
-          <div><span>${onReq ? 'Ár' : 'Becsült ár, a beállításaiddal'}</span><strong class="price" data-dprice></strong></div>
-          <button class="btn btn--dark" type="button" data-inquire="erdeklodes">${onReq ? 'Árajánlatot kérek' : 'Érdekel ez a gyűrű'}</button>
+          <div><span data-dlabel>Ár</span><strong class="price" data-dprice></strong></div>
+          <button class="btn btn--dark" type="button" data-inquire="erdeklodes">${onReq || locked ? 'Árajánlatot kérek' : 'Érdekel ez a gyűrű'}</button>
         </div>
         <p class="fine" data-stagenote></p>
         <p class="colornote" data-colornote hidden></p>
@@ -530,23 +534,31 @@ export function product(el, id, query) {
         <h1 class="pdp__title">${esc(p.name)}</h1>
         ${anyStones ? '<p class="natural">Természetes gyémánttal</p>' : ''}
         <div class="pdp__price" data-pricebox>
-          <span>${onReq ? 'Ár' : `Becsült ár a választott beállítással ${demoMark()}`}</span>
+          <span data-plabel>Ár</span>
           <strong class="price price--big" data-cprice></strong>
           <p class="pdp__quote" data-quote hidden></p>
           ${pair ? '<p class="pdp__split" data-split></p>' : ''}
           <small data-pnote>Bruttó, ÁFA-val. Rendelésre készül.</small>
         </div>
         <p class="cfg__warn" data-warn role="status" hidden></p>
-        <div class="scope scope--ok"><h2>Amit itt te állíthatsz</h2><p>${onReq ? 'Ennél a modellnél ezek a lehetőségek adottak. Árat itt nem számolunk – a beállításaid az ajánlatkérésbe kerülnek.' : 'Ennél a modellnél ezek a lehetőségek adottak. Az ár mindegyiknél azonnal változik.'}</p></div>
-        <ol class="cfg" data-steps></ol>
+        ${locked ? `<div class="locked" data-locked>
+          <h2>Ezt a gyűrűt személyesen szabjuk rád</h2>
+          <p>Ennél a modellnél az anyagot, a méretet és a köveket az ötvössel együtt választod ki. Online ehhez a gyűrűhöz még nem számolunk árat – kérj ajánlatot, és megírjuk, mennyibe kerül a te változatod.</p>
+          <dl class="locked__facts">
+            <div><dt>Anyag</dt><dd>${esc(p.metals.map((m) => METALS[m].short).join(', '))}</dd></div>
+            <div><dt>Szélesség</dt><dd>${p.rings.map((rg) => `${p.rings.length > 1 ? esc(rg.label) + ': ' : ''}${dec(rg.refWidth)} mm`).join(' · ')}</dd></div>
+            ${anyStones ? '<div><dt>Kő</dt><dd>természetes gyémánt</dd></div>' : ''}
+          </dl>
+        </div>` : `<div class="scope scope--ok"><h2>Amit itt te állíthatsz</h2><p>${onReq ? 'Ennél a modellnél ezek a lehetőségek adottak. Árat itt nem számolunk – a beállításaid az ajánlatkérésbe kerülnek.' : 'Ennél a modellnél ezek a lehetőségek adottak. Az ár mindegyiknél azonnal változik.'}</p></div>
+        <ol class="cfg" data-steps></ol>`}
         <div class="summary" data-summary></div>
         <div class="pdp__ctas">
-          <button class="btn btn--dark btn--full" type="button" data-inquire="erdeklodes">${onReq ? 'Árajánlatot kérek erre a gyűrűre' : 'Érdekel ez a gyűrű'}</button>
+          <button class="btn btn--dark btn--full" type="button" data-inquire="erdeklodes">${onReq || locked ? 'Árajánlatot kérek erre a gyűrűre' : 'Érdekel ez a gyűrű'}</button>
           <button class="btn btn--line btn--full" type="button" data-inquire="konzultacio">Személyes konzultációt kérek</button>
-          <div class="pdp__tools">
+          ${locked ? '' : `<div class="pdp__tools">
             <button type="button" class="linkbtn" data-share>Konfiguráció linkjének másolása</button>
             <button type="button" class="linkbtn" data-resetcfg>Alapbeállítás</button>
-          </div>
+          </div>`}
           <a class="pdp__phone" href="${BUSINESS.phoneHref}">vagy hívj: <b>${BUSINESS.phone}</b></a>
         </div>
         <div class="other">
@@ -563,7 +575,7 @@ export function product(el, id, query) {
     <section class="specs" data-specs></section>
   </section>
   <div class="mbar" data-mbar>
-    <div><span>Becsült ár</span><strong class="price" data-mprice></strong></div>
+    <div><span data-mlabel>Ár</span><strong class="price" data-mprice></strong></div>
     <button class="btn btn--dark" type="button" data-inquire="erdeklodes">Érdeklődöm</button>
   </div>`;
 
@@ -587,11 +599,11 @@ export function product(el, id, query) {
   };
 
   const paintInfo = (r) => {
-    $('[data-summary]', el).innerHTML = `<h2 class="opt__label">Összefoglaló</h2><dl>
+    $('[data-summary]', el).innerHTML = `<h2 class="opt__label">${locked ? 'Alapváltozat' : 'Összefoglaló'}</h2><dl>
       <div><dt>Anyag</dt><dd>${metalLabel(cfg)}</dd></div>
       ${p.rings.map((rg, i) => `<div><dt>${esc(rg.label)}</dt><dd>${ringLine(p, cfg, i)}</dd></div>`).join('')}
-      ${r.grams ? `<div><dt>Becsült tömeg</dt><dd>${dec(r.grams)} g ${demoMark('demóadat')}</dd></div>` : ''}
-      <div><dt>Becsült ár</dt><dd><b>${r.final === null ? 'Egyedi árajánlat szükséges' : ft(r.final)}</b></dd></div></dl>`;
+      ${r.grams && r.kind === 'calc' ? `<div><dt>Becsült tömeg</dt><dd>${dec(r.grams)} g ${demoMark('demóadat')}</dd></div>` : ''}
+      <div><dt>${r.kind === 'list' ? 'Listaár' : 'Becsült ár'}</dt><dd><b>${r.final === null ? 'Egyedi árajánlat szükséges' : ft(r.final)}</b></dd></div></dl>`;
     $('[data-specs]', el).innerHTML = specs(p, cfg, r);
   };
 
@@ -697,7 +709,7 @@ export function product(el, id, query) {
     }
     $('[data-stagenote]', el).innerHTML = view === 'abra'
       ? 'Az ábra a beállításaidat követi: anyag, szín, arányok, a kövek száma és mérete. Nem a kész gyűrű pontos képe – a kövek helyét és a felületet az ötvös alakítja ki.'
-      : 'Valódi fotó az eredeti modellről (karikagyuru.com) – nem változik a beállításaiddal. Azokat „A te változatod” ábra mutatja.';
+      : locked ? 'Valódi fotó az eredeti modellről (karikagyuru.com).' : 'Valódi fotó az eredeti modellről (karikagyuru.com) – nem változik a beállításaiddal. Azokat „A te változatod” ábra mutatja.';
     const cn = $('[data-colornote]', el);
     const showNote = isGold(cfg.metal) ? cfg.color !== p.baseColor : true;
     cn.hidden = !showNote;
@@ -706,21 +718,27 @@ export function product(el, id, query) {
       : `A fotón aranyból készült változat látható – a tiéd ${METALS[cfg.metal].label.toLowerCase()}ból készül${cfg.metal === 'ti' ? '' : ', ami csak fehér színben létezik'}.`;
     $$('[data-view]', el).forEach((b) => b.setAttribute('aria-selected', b.dataset.view === view));
 
-    const steps = [stepMetal(cur), stepKarat(cur), stepColor(), stepSize(cur), stepStones(cur), stepEngrave()].filter(Boolean);
-    $('[data-steps]', el).innerHTML = steps.map(([t, v, body], i) => `<li class="cfg__step"><header><span class="cfg__n">${i + 1}</span><h2>${t}</h2>${v ? `<span class="cfg__val">${v}</span>` : ''}</header>${body}</li>`).join('');
+    const steps = locked ? [] : [stepMetal(cur), stepKarat(cur), stepColor(), stepSize(cur), stepStones(cur), stepEngrave()].filter(Boolean);
+    if (!locked) $('[data-steps]', el).innerHTML = steps.map(([t, v, body], i) => `<li class="cfg__step"><header><span class="cfg__n">${i + 1}</span><h2>${t}</h2>${v ? `<span class="cfg__val">${v}</span>` : ''}</header>${body}</li>`).join('');
 
     const q = $('[data-quote]', el);
     q.hidden = cur !== null;
-    q.textContent = cur === null ? (onReq ? 'Ennél a modellnél az árat személyesen mondjuk meg. Állítsd be, amit szeretnél, és kérj ajánlatot.' : (r.reason || 'Ehhez az összeállításhoz nincs megbízható ár.') + ' Kérj ajánlatot, és személyesen kiszámoljuk.') : '';
+    q.textContent = cur === null ? (onReq ? 'Ennél a modellnél az árat személyesen mondjuk meg.' + (locked ? ' Kérj ajánlatot.' : ' Állítsd be, amit szeretnél, és kérj ajánlatot.') : 'Ehhez az összeállításhoz online még nincs jóváhagyott ár. Kérj ajánlatot, és személyesen kiszámoljuk.') : '';
+    const lab = r.kind === 'calc' ? 'Becsült ár a választott beállítással' : r.kind === 'list' ? 'Jelenlegi listaár – alapváltozat' : 'Ár';
+    $('[data-plabel]', el).textContent = lab;
+    $('[data-dlabel]', el).textContent = r.kind === 'calc' ? 'Becsült ár, a beállításaiddal' : r.kind === 'list' ? 'Listaár, alapváltozat' : 'Ár';
+    $('[data-mlabel]', el).textContent = r.kind === 'calc' ? 'Becsült ár' : r.kind === 'list' ? 'Listaár' : 'Ár';
     if (pair) {
-      const sp = cur === null ? null : ringSplit(p, cfg, r, S().settings);
+      const sp = cur === null || r.kind !== 'calc' ? null : ringSplit(p, cfg, r, S().settings);
       $('[data-split]', el).innerHTML = sp ? p.rings.map((rg, i) => `<span>${esc(rg.label)} <b>kb. ${ft(sp[i])}</b></span>`).join('') : '';
     }
     const w = $('[data-warn]', el);
     w.hidden = !lastWarn; w.textContent = lastWarn; lastWarn = '';
     paintInfo(r);
     const st0 = S(), rt = st0.settings.roundTo;
-    $('[data-pnote]', el).innerHTML = cur === null ? 'Rendelésre készül. Az árat személyesen mondjuk meg.' : `Bruttó, ÁFA-val${rt > 1 ? `, ${num(rt)} Ft-ra kerekítve` : ''}. Rendelésre készül.${(st0.materials.src || {})[`sellPerGram.${cfg.metal}`] === 'demo' && st0.settings.pricingMode === 'gramm' ? ` ${demoMark(`${METALS[cfg.metal].short}: demó grammár`)}` : ''}`;
+    $('[data-pnote]', el).innerHTML = cur === null ? 'Rendelésre készül. Az árat személyesen mondjuk meg.'
+      : r.kind === 'list' ? 'A karikagyuru.com mostani árlistája szerint, a fenti alapváltozatra. Más anyag, méret vagy kő: egyedi ajánlat.'
+      : `Bruttó, ÁFA-val${rt > 1 ? `, ${num(rt)} Ft-ra kerekítve` : ''}. Rendelésre készül.`;
     animatePrice($('[data-cprice]', el), cur);
     animatePrice($('[data-mprice]', el), cur); animatePrice($('[data-dprice]', el), cur);
     if (!first) { const pb = $('[data-pricebox]', el); pb.classList.remove('is-flash'); void pb.offsetWidth; pb.classList.add('is-flash'); }
@@ -772,7 +790,7 @@ export function product(el, id, query) {
     e.target._t = setTimeout(() => {
       const r2 = price(p, cfg);
       paintInfo(r2); syncUrl();
-      if (pair && r2.final !== null) { const sp = ringSplit(p, cfg, r2, S().settings); $('[data-split]', el).innerHTML = p.rings.map((rg, k) => `<span>${esc(rg.label)} <b>kb. ${ft(sp[k])}</b></span>`).join(''); }
+      if (pair && r2.final !== null && r2.kind === 'calc') { const sp = ringSplit(p, cfg, r2, S().settings); $('[data-split]', el).innerHTML = p.rings.map((rg, k) => `<span>${esc(rg.label)} <b>kb. ${ft(sp[k])}</b></span>`).join(''); }
     }, 220);
   });
 
@@ -819,7 +837,7 @@ function specs(p, cfg, r) {
     ['Típus', p.kind === 'p' ? 'Karikagyűrű pár (női és férfi gyűrű)' : 'Egy gyűrű'],
     ['Anyag', `${metalLabel(cfg)}${p.unknownColor ? ' <span class="hint">– a cikkszámban nincs színjelölés, egyeztetendő</span>' : ''}`],
     ['Stílus', STYLES[p.style] + ' ' + demoMark('demóadat')],
-    ...(r.grams ? [['Becsült tömeg', `${dec(r.grams)} g${isGold(cfg.metal) ? `, ebből ${dec(r.pure)} g színarany` : ''} ${demoMark('demóadat')}`]] : []),
+    ...(r.grams && r.kind === 'calc' ? [['Becsült tömeg', `${dec(r.grams)} g${isGold(cfg.metal) ? `, ebből ${dec(r.pure)} g színarany` : ''} ${demoMark('demóadat')}`]] : []),
     ['Választható anyagok', p.metals.map((m) => METALS[m].short).join(', ')],
     ...(hasStones(p) ? [['Kövek', 'Kizárólag természetes gyémánt']] : []),
     ['Elkészítés', 'Nincs készleten, rendelésre elkészítjük'],
@@ -850,7 +868,7 @@ export function inquiry(p, cfg, type = 'erdeklodes', onRequest = false) {
     <form class="form" data-inq novalidate>
       <p class="kicker">${type === 'konzultacio' ? 'Személyes konzultáció' : 'Érdeklődés'}</p>
       <h2>${p ? 'Érdekel ez a gyűrű?' : 'Időpontkérés'}</h2>
-      ${p ? `<div class="form__cfg"><pre>${esc(summary)}</pre>${r && r.final !== null ? `<p>Becsült ár: <b>${ft(r.final)}</b> ${demoMark()}</p>` : '<p>Ár: egyedi árajánlat szükséges</p>'}</div>` : ''}
+      ${p ? `<div class="form__cfg"><pre>${esc(summary)}</pre>${r && r.final !== null ? `<p>${r.kind === 'list' ? 'Listaár (alapváltozat)' : 'Becsült ár'}: <b>${ft(r.final)}</b></p>` : '<p>Ár: egyedi árajánlat szükséges</p>'}</div>` : ''}
       <div class="seg seg--lg" role="radiogroup" aria-label="Kérés típusa">
         <button type="button" data-type="erdeklodes" aria-pressed="${type === 'erdeklodes'}">Kérdésem van</button>
         <button type="button" data-type="konzultacio" aria-pressed="${type === 'konzultacio'}">Időpontot kérek</button>
@@ -883,8 +901,8 @@ export function inquiry(p, cfg, type = 'erdeklodes', onRequest = false) {
           productId: p?.id || null, code: p?.code || null, config: p && !onRequest ? JSON.parse(JSON.stringify(cfg)) : null, summary, estimate: r?.final || null });
         btn.disabled = false;
         if (!res.ok) { const er = $('[data-err]', f); er.hidden = false; er.textContent = `${res.error} Telefon: +36 30 984 3090`; return; }
-        box.innerHTML = `<div class="form form--done"><p class="kicker">Megvan</p><h2>Köszi, hamarosan hívunk.</h2>
-          <p>${sentNote('Az érdeklődésed megérkezett hozzánk, a kiválasztott gyűrű adataival együtt.', 'Az érdeklődés bekerült a kezelőfelület „Érdeklődések” menüjébe, a kiválasztott cikkszámmal és beállításokkal együtt.')} Ha sürgős, hívj: <a href="tel:+36309843090">+36 30 984 3090</a>.</p>
+        box.innerHTML = `<div class="form form--done"><p class="kicker">Megvan</p><h2>${sentNote('Köszi, hamarosan hívunk.', 'Rögzítettük az érdeklődésed.')}</h2>
+          <p>${sentNote('Az érdeklődésed megérkezett hozzánk, a kiválasztott gyűrű adataival együtt.', 'Az érdeklődés bekerült a kezelőfelület „Érdeklődések” menüjébe, a kiválasztott cikkszámmal és beállításokkal együtt. Értesítést erről az oldalról még nem kap az ötvös.')} Ha sürgős, hívj: <a href="tel:+36309843090">+36 30 984 3090</a>.</p>
           <button class="btn btn--line" type="button" data-close>Rendben</button></div>`;
       });
     },
@@ -1046,10 +1064,10 @@ export function custom(el, query) {
     if (!res.ok) { err.hidden = false; err.textContent = `${res.error} Telefon: +36 30 984 3090`; err.scrollIntoView({ block: 'center' }); return; }
     customFiles.forEach((f) => URL.revokeObjectURL(f.url)); customFiles = [];
     try { sessionStorage.removeItem(C_KEY); } catch { /* privát mód */ }
-    $('.custom', el).innerHTML = `<div class="form form--done custom--done"><p class="kicker">Megvan</p><h2>Köszi, ${esc(d.nev.trim().split(' ').pop())}! Hamarosan hívunk.</h2>
+    $('.custom', el).innerHTML = `<div class="form form--done custom--done"><p class="kicker">Megvan</p><h2>Köszi, ${esc(d.nev.trim().split(' ').pop())}! ${sentNote('Hamarosan hívunk.', 'Rögzítettük az ötleted.')}</h2>
       <pre>${esc(summary)}</pre>${d.leiras.trim() ? `<p class="csum__txt">„${esc(d.leiras.trim())}”</p>` : ''}
       <p><b>Ár:</b> személyes egyeztetés alapján.</p>
-      <p class="fine">${sentNote(`Az ötleted megérkezett hozzánk${p ? ', a kiindulási gyűrű adataival együtt' : ''}.`, `Az ötleted bekerült a kezelőfelület „Érdeklődések” menüjébe${p ? ', a kiindulási gyűrű cikkszámával és beállításaival együtt' : ''}.`)}${n ? ` A kiválasztott ${n} kép nem töltődött fel – hozd el az egyeztetésre, vagy küldd el e-mailben.` : ''} Ha sürgős, hívj: <a href="tel:+36309843090">+36 30 984 3090</a>.</p>
+      <p class="fine">${sentNote(`Az ötleted megérkezett hozzánk${p ? ', a kiindulási gyűrű adataival együtt' : ''}.`, `Az ötleted bekerült a kezelőfelület „Érdeklődések” menüjébe${p ? ', a kiindulási gyűrű cikkszámával és beállításaival együtt' : ''}. Értesítést erről az oldalról még nem kap az ötvös.`)}${n ? ` A kiválasztott ${n} kép nem töltődött fel – hozd el az egyeztetésre, vagy küldd el e-mailben.` : ''} Ha sürgős, hívj: <a href="tel:+36309843090">+36 30 984 3090</a>.</p>
       <a class="btn btn--line" href="#/kollekcio">Megnézem a gyűrűket</a></div>`;
     window.scrollTo({ top: 0 });
   });

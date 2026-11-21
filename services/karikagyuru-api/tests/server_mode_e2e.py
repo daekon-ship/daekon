@@ -64,7 +64,25 @@ async def main():
             sync = await adm.inner_text('[data-sync]')
             check('mentésjelző: szerveres mentés bekapcsolva', 'Szerveres mentés' in sync, sync)
 
+            print('Jóváhagyás: árelemek és egy gyűrű')
+            await adm.goto(B + '#/admin/jovahagyas'); await adm.wait_for_timeout(900)
+            for _ in range(60):
+                btn = adm.locator('[data-appr]:not([disabled])').first
+                if not await btn.count(): break
+                await btn.click(); await adm.wait_for_timeout(120)
+            s = await wait_saved(adm)
+            check('árelemek jóváhagyva és mentve', await adm.locator('[data-appr]:not([disabled])').count() == 0 and 'Mentve a szerverre' in s, s)
+            await vis.goto(B + f'#/gyuru/{PAIR}'); await vis.reload(); await vis.wait_for_timeout(1300)
+            check('látogató: nem jóváhagyott gyűrűn nincs beállítás, „egyedi” út', await vis.locator('[data-locked]').count() == 1 and await vis.locator('[data-steps]').count() == 0)
+            await adm.goto(B + f'#/admin/sorban/{PAIR}'); await adm.wait_for_timeout(900)
+            await adm.click('[data-approve]'); s = await wait_saved(adm)
+            check('gyűrű jóváhagyva a sorban, mentve', 'Mentve a szerverre' in s, s)
+            await vis.reload(); await vis.wait_for_timeout(1300)
+            check('látogató: jóváhagyott gyűrűn megjelenik a beállítás és a számolt ár', await vis.locator('[data-locked]').count() == 0 and await vis.locator('[data-steps] .cfg__step').count() >= 3 and 'Becsült ár' in await vis.inner_text('[data-pricebox]'))
+
             print('Árváltoztatás a szerveren')
+            p0 = await price_on_catalog(vis)
+            await adm.goto(B + '#/admin/alapanyag'); await adm.wait_for_timeout(900)
             await adm.fill('[data-path="sellPerGram.au14"]', '52000'); await adm.wait_for_timeout(400)
             if await adm.locator('[data-confirm]').count(): await adm.check('[data-confirm]')
             await adm.click('[data-apply]')
@@ -115,9 +133,10 @@ async def rest(b, adm, vis, errs, img):
     await adm.goto(B + '#/admin/beallitasok'); await adm.wait_for_timeout(800)
     await adm.click('[data-save]'); s1 = await wait_saved(adm)
     await adm2.goto(B + '#/admin/beallitasok'); await adm2.wait_for_timeout(600)
-    await adm2.click('[data-save]'); s2 = await wait_saved(adm2)
+    await adm2.click('[data-save]'); await adm2.wait_for_timeout(2500)
+    s2 = await adm2.inner_text('[data-blocked]') if await adm2.locator('[data-blocked]').count() else ''
     check('az első mentés sikerül', 'Mentve a szerverre' in s1, s1)
-    check('a második (elavult) mentés nem írja felül: egyértelmű hiba', 'NEM került mentésre' in s2 and 'Töltse újra' in s2, s2)
+    check('a második (elavult) mentés nem írja felül: zárolt képernyő, egyértelmű hiba', 'NEM került mentésre' in s2 and 'Töltse újra' in s2 and await adm2.locator('.adm').count() == 0, s2)
 
     print('Kilépés')
     await adm.click('[data-logout]'); await adm.wait_for_timeout(1000)

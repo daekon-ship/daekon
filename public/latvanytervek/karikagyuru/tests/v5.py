@@ -2,6 +2,7 @@
 """V5 – arculati réteg: hero-fotó, ár-dokk (asztali), mobil elrendezés. Futtatás: helyi szerver a public mappán, 8765-ös port."""
 import asyncio, sys
 from playwright.async_api import async_playwright
+import os, sys as _sys; _sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from kg_common import approve_all
 B = 'http://localhost:8765/latvanytervek/karikagyuru/'
 PAIR = 'maz-81194-81195-w'
 ok = fail = 0
@@ -14,7 +15,7 @@ async def run(b, w, h, mob):
     tag = f'{w}px'
     ctx = await b.new_context(viewport={'width': w, 'height': h}, is_mobile=mob, has_touch=mob); pg = await ctx.new_page()
     errs = []; pg.on('pageerror', lambda e: errs.append(str(e)))
-    await pg.goto(B + '#/'); await pg.evaluate('localStorage.clear()'); await pg.reload(); await pg.wait_for_timeout(1500)
+    await pg.goto(B + '#/'); await pg.evaluate('localStorage.clear()'); await pg.reload(); await pg.wait_for_timeout(1500); await approve_all(pg)
     src = await pg.get_attribute('.hero__photo img', 'src') or ''
     check(f'{tag} hero: valódi termékfotó, nincs rajzolt kör', 'img/termekek/' in src and await pg.locator('.hero__orbit').count() == 0, src)
     check(f'{tag} hero: négy rövid tény', await pg.locator('.hero__facts li').count() == 4)

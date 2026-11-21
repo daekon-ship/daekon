@@ -2,8 +2,8 @@
 import { store } from './store.js';
 import { BUSINESS } from './data.js';
 import * as pub from './views-public.js';
-import { adminShell, loginView } from './views-admin.js';
-import { api, initApi, loadInquiries, refreshState } from './api.js';
+import { adminShell, loginView, blockedView } from './views-admin.js';
+import { api, initApi, loadInquiries, refreshState, onApi } from './api.js';
 import { $, $$, modal, M, reduced, checkPhotos, photos } from './ui.js';
 
 const view = $('#view');
@@ -29,7 +29,8 @@ function route() {
   el.className = 'view';
   view.replaceChildren(el);
 
-  if (admin && api.mode === 'server' && api.online && !api.admin) loginView(el, () => route());
+  if (admin && api.mode === 'server' && (api.blocked === 'offline' || api.blocked === 'error')) blockedView(el, api.error);
+  else if (admin && api.mode === 'server' && !api.admin) loginView(el, () => route(), api.blocked === 'session' ? api.error : '');
   else if (admin) {
     if (api.mode === 'server' && api.admin && !inqLoaded) { inqLoaded = true; loadInquiries().then(() => { if (parse().parts[0] === 'admin') route(); }); }
     adminShell(el, parts[1] || 'attekintes', parts[2]);
@@ -84,6 +85,9 @@ $('[data-year]').textContent = new Date().getFullYear();
 addEventListener('hashchange', route);
 // Szerver módban előbb a mentett árak töltődnek be; helyi módban azonnal indul.
 initApi().finally(route);
+// Ha mentés közben hiba lesz (kiesés, lejárt belépés, ütközés), a kezelőfelület azonnal zárolódik.
+let lastBlocked = null;
+onApi(() => { if (api.blocked !== lastBlocked) { lastBlocked = api.blocked; if (parse().parts[0] === 'admin') route(); } });
 document.addEventListener('visibilitychange', () => {
   if (document.visibilityState === 'visible') refreshState().then((changed) => { if (changed && parse().parts[0] !== 'admin') { const y = scrollY; route(); window.scrollTo(0, y); } });
 });

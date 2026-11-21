@@ -1,6 +1,7 @@
 """Mobil konfigurálási folyamat (érintés, 360 és 390 px). Futtatás: python3 tests/mobile.py [alap-URL]"""
 import asyncio, re, sys
 from playwright.async_api import async_playwright
+import os, sys as _sys; _sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from kg_common import approve_all
 
 B = sys.argv[1] if len(sys.argv) > 1 else 'http://localhost:8765/latvanytervek/karikagyuru/'
 OUT = '/tmp/kgshots/'
@@ -18,7 +19,7 @@ async def flow(b, w, h):
     async def tap(sel):
         loc = pg.locator(sel).first
         await loc.scroll_into_view_if_needed(); await loc.tap(); await pg.wait_for_timeout(350)
-    await pg.goto(B + '#/'); await pg.evaluate('localStorage.clear()')
+    await pg.goto(B + '#/'); await pg.evaluate('localStorage.clear()'); await approve_all(pg)
     await pg.goto(B + '#/kollekcio'); await pg.wait_for_timeout(900); await over('kollekció')
     await tap('.card[data-id="maz-81184-81185-w"] a'); await pg.wait_for_timeout(900)
     check(f'{w}px: kártyáról a termékoldalra', 'maz-81184-81185-w' in pg.url)

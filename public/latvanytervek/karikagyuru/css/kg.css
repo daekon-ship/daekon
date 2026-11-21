@@ -1791,3 +1791,36 @@ h3, .cfg__step > header h2, .ringbox__t, .opt__label { font-family: var(--sans);
   .adm__syncm .adm__sync--m { border: 0; padding: 8px 0; flex: 1; }
   .adm__logout--m { margin: 0; }
 }
+/* V5.3: nem jóváhagyott gyűrű – nincs online beállítás, egyedi ajánlat */
+.locked { margin: 8px 0 18px; padding: 18px 0 4px; border-top: 1px solid var(--hair); }
+.locked h2 { font-size: 1.15rem; margin: 0 0 8px; }
+.locked p { color: var(--ink2); margin: 0 0 12px; }
+.locked__facts { display: grid; gap: 0; margin: 0; }
+.locked__facts div { display: flex; justify-content: space-between; gap: 16px; padding: 8px 0; border-bottom: 1px solid var(--hair); font-size: .92rem; }
+.locked__facts dt { color: var(--mute); }
+.locked__facts dd { margin: 0; font-weight: 600; text-align: right; }
+/* V5.3: jóváhagyás sorban */
+.qbar { height: 8px; background: #E6EEF2; border-radius: 4px; overflow: hidden; margin: 6px 0 4px; }
+.qbar span { display: block; height: 100%; background: #1e6b3a; }
+.qbar__t { margin: 0 0 14px; font-size: .95rem; }
+.qcard { display: grid; grid-template-columns: minmax(220px, 360px) 1fr; gap: 28px; padding: 22px; background: #fff; border: 2px solid var(--hair-s); border-radius: 10px; }
+.qcard__img { background: var(--photo); border-radius: 6px; overflow: hidden; aspect-ratio: 1; align-self: start; }
+.qcard__img .media { height: 100%; }
+.qcard__code { margin: 0; font-weight: 700; display: flex; gap: 10px; align-items: center; }
+.qcard h2 { margin: 4px 0 12px; font-size: 1.3rem; }
+.qfacts { margin: 0 0 12px; }
+.qfacts > div { display: grid; grid-template-columns: 190px 1fr; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--hair); font-size: 1rem; }
+.qfacts dt { color: var(--mute); }
+.qfacts dd { margin: 0; }
+.qfacts__ring dd { display: grid; gap: 3px; }
+.qfacts small { color: var(--mute); }
+.qbtns { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+.qdone { padding: 24px; background: #fff; border: 2px solid var(--hair-s); border-radius: 10px; }
+@media (max-width: 960px) {
+  .qcard { grid-template-columns: 1fr; padding: 14px; gap: 14px; }
+  .qcard__img { max-width: 300px; }
+  .qfacts > div { grid-template-columns: 1fr; gap: 2px; }
+  .qbtns .abtn { flex: 1 1 100%; justify-content: center; }
+}
+.login__box--err { border-top-color: #a12a1f; }
+.login__box--err h1 { color: #a12a1f; }
