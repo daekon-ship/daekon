@@ -1824,3 +1824,4 @@ h3, .cfg__step > header h2, .ringbox__t, .opt__label { font-family: var(--sans);
 }
 .login__box--err { border-top-color: #a12a1f; }
 .login__box--err h1 { color: #a12a1f; }
+.qundo { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0 0 14px; padding: 10px 14px; background: #EAF5EE; border-left: 3px solid #1e6b3a; border-radius: 6px; font-size: 1rem; }

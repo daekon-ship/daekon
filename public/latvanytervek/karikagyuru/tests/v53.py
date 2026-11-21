@@ -50,6 +50,11 @@ async def run(b, w, h, mob):
     await pg.goto(B + f'#/admin/sorban/{PAIR}'); await pg.wait_for_timeout(700)
     await pg.click('[data-approve]'); await pg.wait_for_timeout(500)
     check(f'{tag} sor: jóváhagyás után 1 / 115, és a következő gyűrű jön', '1 / 115' in await pg.inner_text('.qbar__t') and await pg.get_attribute('[data-qcard]', 'data-qcard') != PAIR)
+    # mellényomás: azonnali visszavonás, majd újra jóváhagyás
+    check(f'{tag} sor: jóváhagyás után „Visszavonás” gomb a gyűrű kódjával', '81194' in await pg.inner_text('[data-qundo]'))
+    await pg.click('[data-undo]'); await pg.wait_for_timeout(500)
+    check(f'{tag} sor: visszavonás után 0 / 115, és ugyanaz a gyűrű látszik újra', '0 / 115' in await pg.inner_text('.qbar__t') and await pg.get_attribute('[data-qcard]', 'data-qcard') == PAIR and await pg.locator('[data-qundo]').count() == 0)
+    await pg.click('[data-approve]'); await pg.wait_for_timeout(500)
     await pg.goto(B + '#/admin/elozmenyek'); await pg.wait_for_timeout(600)
     check(f'{tag} jóváhagyás bekerül az árnaplóba', 'Jóváhagyva: 81194' in await pg.inner_text('.adm__main'))
 

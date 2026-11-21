@@ -384,6 +384,7 @@ function queue(el, startId) {
   const pending = () => st.products.filter((p) => !p.approved).sort((a, b) => a.code.localeCompare(b.code));
   let cur = (startId && st.products.find((p) => p.id === startId)) || pending()[0] || null;
   let skipped = new Set();
+  let lastApproved = null;   // az imént jóváhagyott gyűrű – visszavonható, ha mellényomta
   const ruleTxt = (r) => { const x = r.stoneRule; if (!x) return 'nincs kő';
     const cats = (x.cats || []).map((c) => { const d = diamond(st.materials, c); return d ? `${ctFmt(d.ct)} ct` : c; }).join(', ');
     return ({ free: `${x.min}–${x.max} db, alapból ${x.def}`, fixed: `${x.def} db (kötött)`, perSize: 'körbe foglalt, mérettől függ', quote: 'csak egyedi ajánlattal' }[x.mode]) + (cats ? ` · méret: ${cats}` : '') + (x.allowNone ? ' · kő nélkül is' : ''); };
@@ -403,6 +404,7 @@ function queue(el, startId) {
       <h1 class="adm__h1">Gyűrűk jóváhagyása</h1>
       <div class="qbar"><span style="width:${pct_}%"></span></div>
       <p class="qbar__t"><b>${ok} / ${total}</b> jóváhagyva · még ${total - ok}</p>
+      ${lastApproved ? `<p class="qundo" data-qundo role="status"><span>Jóváhagyva: <b>${esc(lastApproved.code)}</b></span><button class="abtn" type="button" data-undo>Visszavonás</button></p>` : ''}
       <p class="adm__lead">Nézze át a gyűrű adatait. Ha rendben vannak, hagyja jóvá: ettől kezdve a vásárló online beállíthatja ezt a gyűrűt (csak az itt látható keretek között), és jóváhagyott árak mellett számolt árat lát. Amíg nincs jóváhagyva, a gyűrű a katalógusban marad, de csak a mostani listaárat vagy „egyedi ajánlat”-ot mutat.</p>
       <article class="qcard" data-qcard="${p.id}">
         <div class="qcard__img">${productMedia(p, { large: true })}</div>
@@ -439,13 +441,21 @@ function queue(el, startId) {
     if (e.target.closest('[data-approve]')) {
       const code = cur.code;
       store.approve('product', cur.id, `${code} – gyűrű adatai`);
+      lastApproved = { id: cur.id, code };
       toast(`Mentve: <b>${esc(code)}</b> jóváhagyva.`);
       next();
     } else if (e.target.closest('[data-unapprove]')) {
       store.unapprove(cur.id, `${cur.code} – jóváhagyás visszavonva`);
       toast(`Mentve: <b>${esc(cur.code)}</b> jóváhagyása visszavonva – a vásárló ennél a gyűrűnél újra egyedi ajánlatot kér.`);
       paint();
-    } else if (e.target.closest('[data-skip]')) next();
+    } else if (e.target.closest('[data-undo]') && lastApproved) {
+      const { id, code } = lastApproved;
+      store.unapprove(id, `${code} – jóváhagyás visszavonva`);
+      lastApproved = null; skipped.delete(id);
+      cur = st.products.find((p) => p.id === id) || cur;
+      toast(`Mentve: <b>${esc(code)}</b> jóváhagyása visszavonva.`);
+      paint(); window.scrollTo(0, 0);
+    } else if (e.target.closest('[data-skip]')) { lastApproved = null; next(); }
   });
   paint();
 }
