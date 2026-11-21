@@ -2,11 +2,14 @@
 import { store } from './store.js';
 import { BUSINESS, COLORS, STYLES, FEATURED, BICOLOR, TERMS, CURRENT_SITE } from './data.js';
 import { priceProduct, normalizeConfig, optionValues, optionReason, sizeRange, allowedCats, sizeSfx, ctFmt, defaultConfig, ft, num, dec, diamond, ringSplit, encodeCfg, decodeCfg, METALS, METAL_ORDER, isGold } from './engine.js';
+import { api } from './api.js';
 import { $, $$, esc, productMedia, ringSketch, hasPhoto, metalSwatch, animatePrice, modal, reveal, toast, M, reduced } from './ui.js';
 
 const S = () => store.get();
 const fresh = (el) => { const n = el.cloneNode(false); el.replaceWith(n); return n; };
 const price = (p, cfg) => priceProduct(p, cfg, S().materials, S().settings);
+/** Visszajelzés: szerver módban „megérkezett”, helyi módban az, ami igaz. */
+const sentNote = (server, local) => (api.mode === 'server' && api.online ? server : local);
 const demoMark = (txt = 'demó') => S().settings.showDemoMarks ? `<span class="demo-chip" title="Kitalált bemutató-alapanyagárakból számolva">${txt}</span>` : '';
 
 const colorLabel = (c) => COLORS[c]?.label || c;
@@ -871,14 +874,17 @@ export function inquiry(p, cfg, type = 'erdeklodes', onRequest = false) {
         const b = e.target.closest('[data-type]');
         if (b) { t = b.dataset.type; $$('[data-type]', f).forEach((x) => x.setAttribute('aria-pressed', x === b)); $('[data-datefield]', f).hidden = t !== 'konzultacio'; }
       });
-      f.addEventListener('submit', (e) => {
+      f.addEventListener('submit', async (e) => {
         e.preventDefault();
         const d = Object.fromEntries(new FormData(f));
         if (!d.nev.trim() || !d.tel.trim()) { $('[data-err]', f).hidden = false; return; }
-        store.addInquiry({ type: t, name: d.nev, phone: d.tel, email: d.email, day: d.nap, message: d.uzenet,
+        const btn = $('button[type="submit"]', f); btn.disabled = true;
+        const res = await store.addInquiry({ type: t, name: d.nev, phone: d.tel, email: d.email, day: d.nap, message: d.uzenet,
           productId: p?.id || null, code: p?.code || null, config: p && !onRequest ? JSON.parse(JSON.stringify(cfg)) : null, summary, estimate: r?.final || null });
+        btn.disabled = false;
+        if (!res.ok) { const er = $('[data-err]', f); er.hidden = false; er.textContent = `${res.error} Telefon: +36 30 984 3090`; return; }
         box.innerHTML = `<div class="form form--done"><p class="kicker">Megvan</p><h2>Köszi, hamarosan hívunk.</h2>
-          <p>Az érdeklődés bekerült a kezelőfelület „Érdeklődések” menüjébe, a kiválasztott cikkszámmal és beállításokkal együtt. Ha sürgős, hívj: <a href="tel:+36309843090">+36 30 984 3090</a>.</p>
+          <p>${sentNote('Az érdeklődésed megérkezett hozzánk, a kiválasztott gyűrű adataival együtt.', 'Az érdeklődés bekerült a kezelőfelület „Érdeklődések” menüjébe, a kiválasztott cikkszámmal és beállításokkal együtt.')} Ha sürgős, hívj: <a href="tel:+36309843090">+36 30 984 3090</a>.</p>
           <button class="btn btn--line" type="button" data-close>Rendben</button></div>`;
       });
     },
@@ -1023,7 +1029,7 @@ export function custom(el, query) {
     for (const f of e.target.files) if (customFiles.length < 3 && /^image\//.test(f.type)) customFiles.push({ name: f.name, url: URL.createObjectURL(f) });
     e.target.value = ''; paintFiles(); paintSum();
   });
-  form.addEventListener('submit', (e) => {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const err = $('[data-cerr]', form);
     const miss = !d.nev.trim() || !d.tel.trim() ? 'Add meg a neved és a telefonszámod, hogy vissza tudjunk hívni.'
@@ -1035,14 +1041,15 @@ export function custom(el, query) {
       ...(d.keret ? [`Keret: ${d.keret}`] : []), ...(p ? ['', 'Kiindulási modell:', cfg ? configText(p, cfg) : `${p.code} – ${p.name}`] : []),
     ].join('\n');
     const n = customFiles.length;
-    store.addInquiry({ type: 'egyedi', name: d.nev, phone: d.tel, email: d.email, day: d.konz ? d.nap : '', message: d.leiras.trim(), images: n,
+    const res = await store.addInquiry({ type: 'egyedi', name: d.nev, phone: d.tel, email: d.email, day: d.konz ? d.nap : '', message: d.leiras.trim(), images: n,
       productId: p?.id || null, code: p?.code || null, config: cfg ? JSON.parse(JSON.stringify(cfg)) : null, summary, estimate: null });
+    if (!res.ok) { err.hidden = false; err.textContent = `${res.error} Telefon: +36 30 984 3090`; err.scrollIntoView({ block: 'center' }); return; }
     customFiles.forEach((f) => URL.revokeObjectURL(f.url)); customFiles = [];
     try { sessionStorage.removeItem(C_KEY); } catch { /* privát mód */ }
     $('.custom', el).innerHTML = `<div class="form form--done custom--done"><p class="kicker">Megvan</p><h2>Köszi, ${esc(d.nev.trim().split(' ').pop())}! Hamarosan hívunk.</h2>
       <pre>${esc(summary)}</pre>${d.leiras.trim() ? `<p class="csum__txt">„${esc(d.leiras.trim())}”</p>` : ''}
       <p><b>Ár:</b> személyes egyeztetés alapján.</p>
-      <p class="fine">Az ötleted bekerült a kezelőfelület „Érdeklődések” menüjébe${p ? ', a kiindulási gyűrű cikkszámával és beállításaival együtt' : ''}.${n ? ` A kiválasztott ${n} kép nem töltődött fel – hozd el az egyeztetésre, vagy küldd el e-mailben.` : ''} Ha sürgős, hívj: <a href="tel:+36309843090">+36 30 984 3090</a>.</p>
+      <p class="fine">${sentNote(`Az ötleted megérkezett hozzánk${p ? ', a kiindulási gyűrű adataival együtt' : ''}.`, `Az ötleted bekerült a kezelőfelület „Érdeklődések” menüjébe${p ? ', a kiindulási gyűrű cikkszámával és beállításaival együtt' : ''}.`)}${n ? ` A kiválasztott ${n} kép nem töltődött fel – hozd el az egyeztetésre, vagy küldd el e-mailben.` : ''} Ha sürgős, hívj: <a href="tel:+36309843090">+36 30 984 3090</a>.</p>
       <a class="btn btn--line" href="#/kollekcio">Megnézem a gyűrűket</a></div>`;
     window.scrollTo({ top: 0 });
   });

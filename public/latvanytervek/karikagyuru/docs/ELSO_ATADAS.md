@@ -11,13 +11,13 @@ Az állapotok tényszerűek: „demó” = a látványtervben működik, de csak
 | Új weboldal | főoldal, ötvös bemutatása, saját ötlet, kapcsolat, mobilon is | demó – kész a bemutatásra; a szövegeket és a tegeződést az ügyfélnek jóvá kell hagynia |
 | Gyűrűkatalógus | 115 modell, szűrés, keresés, termékoldal | demó – a jelenlegi oldal adataiból; a képek 600×600-asak, élesebbhez az eredetik kellenek |
 | Árkezelés | eladási grammár fémenként, gyémánt darabár, előtte–utána összevetés, megerősítés, árverzió, visszaállítás, hiányzó adat jelzése | demó – az ötvös számítási módszerével; **az árak nem jóváhagyottak** |
-| Kezelőfelület | 5 fő feladat: árak, gyűrűk, fotók, szabályok, érdeklődések | demó – csak ebben a böngészőben ment; szerveroldal: váz (`services/karikagyuru-api`) |
+| Kezelőfelület | 5 fő feladat: árak, gyűrűk, fotók, szabályok, érdeklődések; belépés, szerveres mentés változatokkal, mentésjelző | kész és helyben tesztelve (szerver módban is); valódi tárhelyen még nem futott |
 | Szakmailag korlátozott konfigurálás | gyűrűnként: fémek, színek, mérettartomány, szélesség/vastagság csak ha engedélyezett és jóváhagyott, kőszabály, egyeztetést igénylő módosítások | demó – **0 / 115 gyűrű szabálya jóváhagyott**; jóváhagyásig az eredeti viselkedés él |
-| Árajánlatkérés | a beállítás az ajánlatkéréssel együtt megy; saját ötlet képpel | demó – nem küld levelet, nem tárol szerveren; szerveroldali rögzítés: váz |
+| Árajánlatkérés | a beállítás az ajánlatkéréssel együtt megy; saját ötlet | szerver módban a szerveren rögzül és a kezelőfelületen látszik; **e-mail-értesítés még nincs**; a saját ötlethez csatolt kép nem töltődik fel |
 
 **Ami az első átadáshoz még el kell készüljön (fejlesztés):**
 
-1. A kezelőfelület bekötése a szerveroldali API-ra (belépés, mentés, képfeltöltés, érdeklődések).
+1. ~~A kezelőfelület bekötése a szerveroldali API-ra~~ – kész, helyben tesztelve.
 2. Telepítés és kipróbálás a tényleges tárhelyen, mentési renddel.
 3. Érdeklődés-értesítés (e-mail) – valódi tesztlevéllel, az ügyfél saját címére.
 4. Adatkezelési tájékoztató, sütikezelés, impresszum a végleges adatokkal.

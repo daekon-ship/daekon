@@ -1772,3 +1772,22 @@ h3, .cfg__step > header h2, .ringbox__t, .opt__label { font-family: var(--sans);
 .site-foot__note a { color: inherit; }
 .adm__site--m { margin: 0 0 0 auto; }
 @media (min-width: 961px) { .adm__site--m { display: none; } }
+/* V5.2: szerveres mentés – belépés, mentésjelző */
+.login { min-height: 70vh; display: grid; place-items: center; padding: 40px var(--gut); background: var(--paper); }
+.login__box { width: min(400px, 100%); display: grid; gap: 14px; padding: 32px; background: #fff; border-top: 2px solid var(--ink); }
+.login__box h1 { font-size: 1.5rem; margin: 6px 0 0; }
+.login__box p { margin: 0; color: var(--mute); }
+.adm__sync { margin: 0 0 8px; font-size: .86rem; line-height: 1.35; }
+.adm__sync--m { display: none; padding: 8px var(--gut); margin: 0; border-bottom: 1px solid var(--hair); }
+@media (max-width: 960px) { .adm__sync--m { display: block; } }
+.sync { color: var(--mute); }
+.sync--ok { color: #1e6b3a; }
+.sync--wait { color: var(--gold-d); }
+.sync--err { color: #a12a1f; font-weight: 700; }
+.adm__logout { margin: 0 0 16px; padding: 6px 0; border: 0; background: none; color: var(--mute); text-decoration: underline; font-size: .9rem; cursor: pointer; }
+.adm__syncm { display: none; }
+@media (max-width: 960px) {
+  .adm__syncm { display: flex; align-items: center; gap: 12px; padding: 0 var(--gut); border-bottom: 1px solid var(--hair); }
+  .adm__syncm .adm__sync--m { border: 0; padding: 8px 0; flex: 1; }
+  .adm__logout--m { margin: 0; }
+}

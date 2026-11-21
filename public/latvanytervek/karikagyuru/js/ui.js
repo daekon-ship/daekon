@@ -78,7 +78,7 @@ export const hasPhoto = (p) => !!p.img && !photos.missing.has(p.id);
 
 /** Termékkép: csak valódi fotó. Ha nem tölt be, semleges „nincs fotó” mező – rajzolt gyűrű nincs. */
 export function productMedia(p, { eager = false, large = false } = {}) {
-  const local = !!p.img && !/^(https?:|data:)/.test(p.img);   // data: = adminban feltöltött kép (csak a böngészőben)
+  const local = !!p.img && !/^(https?:|data:|api\/)/.test(p.img);   // data: = adminban feltöltött kép (csak a böngészőben)
   if (!p.img) return `<div class="media media--none"><span>Fotó hamarosan</span></div>`;
   return `<div class="media${p.imgFill ? ' media--fill' : ''}">
     <img src="${esc(local ? p.img.replace('.jpg', '-800.jpg') : p.img)}"${local ? ` srcset="${esc(p.img.replace('.jpg', '-800.jpg'))} 800w, ${esc(p.img)} 1600w" sizes="${large ? '(max-width: 960px) 90vw, 560px' : '(max-width: 640px) 34vw, 220px'}"` : ''} alt="${esc(p.name + ', ' + p.code)}" ${eager ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async"

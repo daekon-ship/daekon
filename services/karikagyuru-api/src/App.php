@@ -14,6 +14,7 @@ final class App
     private const MAX_PHOTO = 8_000_000;      // bájt
     private const LOGIN_TRIES = 5;            // 15 perc alatt
     private const INQ_PER_HOUR = 5;           // IP-nként
+    private const INQ_STATUS = ['uj', 'visszahivva', 'elfogadva', 'lezarva'];
 
     public function __construct(?string $dataDir = null)
     {
@@ -64,6 +65,7 @@ final class App
 
         try {
             if ($method === 'GET' && preg_match('#^/photo/([a-f0-9]{32})\.jpg$#', $path, $m)) { $this->servePhoto($m[1]); return; }
+            if ($method === 'GET' && preg_match('#^/photo/([a-f0-9]{32})-800\.jpg$#', $path, $m)) { $this->servePhoto($m[1]); return; }
 
             $route = $method . ' ' . $path;
             // A látogató nem kap sütit: munkamenet csak belépéskor vagy meglévő admin-sütivel indul.
@@ -237,27 +239,40 @@ final class App
     private function postInquiry(): void
     {
         $ip = $this->ipHash();
-        if ($this->countAttempts('inquiry', $ip, 3600) >= self::INQ_PER_HOUR) $this->fail(429, 'Túl sok üzenet rövid idő alatt. Kérjük, telefonáljon.');
+        $admin = $this->isAdmin();   // az ötvös telefonos érdeklődést is felírhat: rá nem vonatkozik a korlát
+        if (!$admin && $this->countAttempts('inquiry', $ip, 3600) >= self::INQ_PER_HOUR) $this->fail(429, 'Túl sok üzenet rövid idő alatt. Kérjük, telefonáljon.');
         $in = $this->body();
         if (trim((string) ($in['website'] ?? '')) !== '') { $this->json(['ok' => true]); return; }   // csapdamező robotoknak
         $name = trim((string) ($in['name'] ?? ''));
         $email = trim((string) ($in['email'] ?? ''));
         $phone = trim((string) ($in['phone'] ?? ''));
         if ($name === '' || mb_strlen($name) > 120) $this->fail(422, 'Kérjük, adja meg a nevét.');
-        if ($email === '' && $phone === '') $this->fail(422, 'Kérjük, adjon meg e-mail-címet vagy telefonszámot.');
+        if (!$admin && $email === '' && $phone === '') $this->fail(422, 'Kérjük, adjon meg e-mail-címet vagy telefonszámot.');
         if ($email !== '' && !filter_var($email, FILTER_VALIDATE_EMAIL)) $this->fail(422, 'Az e-mail-cím hibásnak tűnik.');
         if ($phone !== '' && !preg_match('/^[0-9 +()\/-]{6,25}$/', $phone)) $this->fail(422, 'A telefonszám hibásnak tűnik.');
-        if (($in['consent'] ?? false) !== true) $this->fail(422, 'Az adatkezelési tájékoztató elfogadása szükséges.');
+        $str = fn($k, $n) => mb_substr(trim((string) ($in[$k] ?? '')), 0, $n);
+        $cfg = $in['config'] ?? null;
+        $cfgJson = is_array($cfg) ? json_encode($cfg, JSON_UNESCAPED_UNICODE) : null;
+        if ($cfgJson !== null && strlen($cfgJson) > 8000) $this->fail(413, 'Túl nagy beállítás.');
         $clean = [
             'name' => $name, 'email' => $email, 'phone' => $phone,
-            'message' => mb_substr(trim((string) ($in['message'] ?? '')), 0, 4000),
-            'kind' => in_array($in['kind'] ?? '', ['ajanlat', 'idopont', 'sajat', 'kerdes'], true) ? $in['kind'] : 'kerdes',
+            'message' => $str('message', 4000),
+            'type' => in_array($in['type'] ?? '', ['erdeklodes', 'ajanlat', 'idopont', 'egyedi', 'konzultacio', 'telefon'], true) ? $in['type'] : 'erdeklodes',
+            'day' => $str('day', 60),
             'productId' => preg_match('/^[a-z0-9-]{1,80}$/', (string) ($in['productId'] ?? '')) ? $in['productId'] : null,
-            'config' => mb_substr((string) ($in['config'] ?? ''), 0, 2000),
-            'shownPrice' => is_numeric($in['shownPrice'] ?? null) ? (int) $in['shownPrice'] : null,
+            'code' => $str('code', 60) ?: null,
+            'summary' => $str('summary', 3000),
+            'config' => $cfgJson !== null ? json_decode($cfgJson, true) : null,
+            'estimate' => is_numeric($in['estimate'] ?? null) ? (int) $in['estimate'] : null,
+            'images' => is_numeric($in['images'] ?? null) ? max(0, min(20, (int) $in['images'])) : 0,
         ];
-        $st = $this->db->prepare('INSERT INTO inquiry (body, ip_hash, created_at) VALUES (?, ?, ?)');
-        $st->execute([json_encode($clean, JSON_UNESCAPED_UNICODE), $ip, gmdate('c')]);
+        $status = 'uj';
+        if ($admin) {
+            if (in_array($in['status'] ?? '', self::INQ_STATUS, true)) $status = $in['status'];
+            if (is_numeric($in['lockedPrice'] ?? null)) { $clean['lockedPrice'] = (int) $in['lockedPrice']; $clean['lockedAt'] = gmdate('c'); }
+        }
+        $st = $this->db->prepare('INSERT INTO inquiry (body, status, ip_hash, created_at) VALUES (?, ?, ?, ?)');
+        $st->execute([json_encode($clean, JSON_UNESCAPED_UNICODE), $status, $ip, gmdate('c')]);
         $this->addAttempt('inquiry', $ip);
         // E-mail-értesítés szándékosan nincs: levélküldést csak ügyféljóváhagyás és kipróbálás után kapcsolunk be.
         $this->json(['ok' => true, 'id' => (int) $this->db->lastInsertId()], 201);
@@ -266,7 +281,10 @@ final class App
     private function inquiries(): void
     {
         $rows = $this->db->query('SELECT id, body, status, created_at FROM inquiry ORDER BY id DESC LIMIT 500')->fetchAll(PDO::FETCH_ASSOC);
-        foreach ($rows as &$r) { $r = ['id' => (int) $r['id'], 'status' => $r['status'], 'createdAt' => $r['created_at']] + json_decode($r['body'], true); }
+        foreach ($rows as &$r) {
+            $b = json_decode($r['body'], true);
+            $r = ['id' => 's' . $r['id'], 'status' => $r['status'], 'at' => $r['created_at']] + $b;
+        }
         $this->json(['inquiries' => $rows]);
     }
 
@@ -274,10 +292,17 @@ final class App
     {
         $in = $this->body();
         $status = (string) ($in['status'] ?? '');
-        if (!in_array($status, ['uj', 'folyamatban', 'lezart'], true)) $this->fail(422, 'Ismeretlen állapot.');
-        $st = $this->db->prepare('UPDATE inquiry SET status = ? WHERE id = ?');
-        $st->execute([$status, (int) ($in['id'] ?? 0)]);
-        if ($st->rowCount() === 0) $this->fail(404, 'Nincs ilyen érdeklődés.');
+        if (!in_array($status, self::INQ_STATUS, true)) $this->fail(422, 'Ismeretlen állapot.');
+        $id = (int) preg_replace('/^s/', '', (string) ($in['id'] ?? '0'));
+        $st = $this->db->prepare('SELECT body FROM inquiry WHERE id = ?');
+        $st->execute([$id]);
+        $body = $st->fetchColumn();
+        if ($body === false) $this->fail(404, 'Nincs ilyen érdeklődés.');
+        $b = json_decode((string) $body, true);
+        // Elfogadáskor az ár rögzül: később az árváltozás nem írja felül
+        if (is_numeric($in['lockedPrice'] ?? null)) { $b['lockedPrice'] = (int) $in['lockedPrice']; $b['lockedAt'] = gmdate('c'); }
+        $up = $this->db->prepare('UPDATE inquiry SET status = ?, body = ? WHERE id = ?');
+        $up->execute([$status, json_encode($b, JSON_UNESCAPED_UNICODE), $id]);
         $this->json(['ok' => true]);
     }
 

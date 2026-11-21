@@ -2,6 +2,7 @@
    Adminfelület – nagy gombok, egyértelmű magyar feliratok, kevés lépés.
    Szerveroldali mentés és bejelentkezés: services/karikagyuru-api (bekötés: js/api.js).
    ========================================================================== */
+import { api, onApi, login, logout, settle, uploadPhoto } from './api.js';
 import { store } from './store.js';
 import { COLORS, STYLES, SITES, SRC_LABEL, EXAMPLE_WEIGHTS } from './data.js';
 import { readiness, optionValues, optionReason, priceProduct, priceAll, diffPrices, defaultConfig, composition, ft, num, dec, pct, METALS, METAL_ORDER, isGold, diamond, refPrice, refWeight, exampleRing, allowedCats, sizeSfx, ctFmt } from './engine.js';
@@ -38,6 +39,46 @@ export const MENU_EXTRA = [
 ];
 const ALLMENU = MENU.concat(MENU_EXTRA);
 
+/* ---------- Szerver mód: mentésjelző, belépés, kilépés ---------- */
+function syncText() {
+  if (api.save === 'pending') return '<span class="sync sync--wait">Mentés folyamatban…</span>';
+  if (api.save === 'error') return `<span class="sync sync--err">${esc(api.error)}</span>`;
+  if (api.save === 'saved' && api.savedAt) return `<span class="sync sync--ok">Mentve a szerverre ${api.savedAt.toLocaleTimeString('hu-HU', { hour: '2-digit', minute: '2-digit' })}</span>`;
+  return `<span class="sync">Szerveres mentés bekapcsolva · ${api.version}. változat</span>`;
+}
+let lastSave = 'idle';
+onApi(() => {
+  $$('[data-sync]').forEach((n) => { n.innerHTML = syncText(); });
+  if (api.save === 'error' && lastSave !== 'error') toast(`<b>Nincs mentve.</b> ${esc(api.error)}`, { ms: 12000 });
+  lastSave = api.save;
+});
+document.addEventListener('click', async (e) => {
+  if (!e.target.closest('[data-logout]')) return;
+  await settle(); await logout(); toast('Kilépett.'); location.hash = '#/';
+});
+
+export function loginView(el, done) {
+  el.innerHTML = `<div class="login"><form class="login__box" data-login novalidate>
+    <img src="img/logo-jel.png" alt="" width="88" height="64">
+    <h1>Kezelőfelület</h1>
+    <p>Lépjen be a jelszavával.</p>
+    <label class="field"><span>Jelszó</span><input class="input input--lg" type="password" name="pw" autocomplete="current-password" required></label>
+    <p class="form__err" data-lerr hidden></p>
+    <button class="abtn abtn--gold abtn--xl" type="submit">Belépés</button>
+    <a class="adm__site" href="#/">← Vissza a weboldalra</a>
+  </form></div>`;
+  const f = $('[data-login]', el); $('input', f).focus();
+  f.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const b = $('button', f), er = $('[data-lerr]', f);
+    b.disabled = true; er.hidden = true;
+    const r = await login(f.pw.value);
+    b.disabled = false;
+    if (!r.ok) { er.textContent = r.error; er.hidden = false; f.pw.select(); return; }
+    done();
+  });
+}
+
 export function adminShell(el, page, arg) {
   const newInq = S().inquiries.filter((q) => q.status === 'uj').length;
   el.innerHTML = `
@@ -45,11 +86,13 @@ export function adminShell(el, page, arg) {
     <aside class="adm__nav" aria-label="Admin menü">
       <a class="adm__site" href="#/">← Vissza a weboldalra</a>
       <p class="adm__brand"><img src="img/logo-jel.png" alt="" width="176" height="127">Karikagyuru.com<span>Kezelőfelület</span></p>
+      ${api.mode === 'server' && api.admin ? `<p class="adm__sync" data-sync aria-live="polite">${syncText()}</p><button class="adm__logout" type="button" data-logout>Kilépés</button>` : ''}
       <nav><ol>${MENU.map(([k, t]) => `<li><a href="#/admin/${k}" ${page === k || (page === 'gyuru' && k === 'gyuruk') ? 'aria-current="page"' : ''}>${t}${k === 'erdeklodesek' && newInq ? `<em>${newInq}</em>` : ''}</a></li>`).join('')}</ol>
         <p class="adm__navx">További</p>
         <ul class="adm__navsub">${MENU_EXTRA.map(([k, t]) => `<li><a href="#/admin/${k}" ${page === k ? 'aria-current="page"' : ''}>${t}</a></li>`).join('')}</ul></nav>
     </aside>
     <main class="adm__main" id="adm-main">
+      ${api.mode === 'server' && api.admin ? `<div class="adm__syncm"><p class="adm__sync adm__sync--m" data-sync aria-live="polite">${syncText()}</p><button class="adm__logout adm__logout--m" type="button" data-logout>Kilépés</button></div>` : ''}
       <div class="adm__mbar">${page === 'attekintes' ? '<span class="adm__mtitle">Főmenü</span><a class="adm__site adm__site--m" href="#/">Weboldal →</a>' : `<a class="adm__back" href="#/admin/attekintes">← Főmenü</a><span class="adm__mtitle">${(ALLMENU.find(([k]) => k === (page === 'gyuru' ? 'gyuruk' : page)) || ['', ''])[1]}</span>`}</div>
       <div data-page></div>
     </main>
@@ -232,7 +275,7 @@ function goldsmithExamples(box) {
 }
 
 
-/* ---------- Közös: kép beolvasása és kicsinyítése (a bemutatóban csak a böngészőben tárolódik) ---------- */
+/* ---------- Közös: kép beolvasása és kicsinyítése (helyi módban a böngészőben tárolódik) ---------- */
 function readImage(file, done) {
   const im = new Image(), url = URL.createObjectURL(file);
   im.onload = () => {
@@ -271,11 +314,15 @@ function photos(el) {
     if (t.matches('[data-only]')) { only = t.checked; paint(); return; }
     if (t.dataset.photo && t.files[0]) {
       const id = t.dataset.photo, code = store.product(id).code;
-      readImage(t.files[0], (data) => {
-        store.updateProduct(id, (x) => { x.img = data; }, `${code}: új fénykép`);
+      const apply = (src) => {
+        store.updateProduct(id, (x) => { x.img = src; }, `${code}: új fénykép`);
         st.products = S().products; paint();
         toast(`Mentve: <b>${esc(code)}</b> új képe már látszik a vásárlói oldalon.`);
-      });
+      };
+      if (api.mode === 'server' && api.admin) {
+        toast(`Feltöltés: <b>${esc(code)}</b>…`);
+        uploadPhoto(t.files[0]).then(apply, (err) => toast(`<b>A kép nem került fel.</b> ${esc(err.message)}`, { ms: 12000 }));
+      } else readImage(t.files[0], apply);
     }
   });
   paint();
@@ -353,8 +400,10 @@ function quickCalc(box) {
           ev.preventDefault(); const d = Object.fromEntries(new FormData(ev.target));
           if (!d.nev.trim()) return;
           store.addInquiry({ type: 'telefon', name: d.nev, phone: d.tel, productId: p.id, code: p.code, config: clone(cfg), summary: configText(p, cfg), estimate: r.final,
-            status: r.final === null ? 'uj' : 'elfogadva', lockedPrice: r.final, lockedAt: r.final === null ? null : new Date().toISOString() });
-          close(); toast(r.final === null ? 'Felírva az Érdeklődések közé – az árat egyedileg kell megadni.' : 'Felírva az Érdeklődések közé, rögzített árral.');
+            status: r.final === null ? 'uj' : 'elfogadva', lockedPrice: r.final, lockedAt: r.final === null ? null : new Date().toISOString() }).then((res) => {
+            if (!res.ok) { toast(`<b>Nem sikerült felírni:</b> ${esc(res.error)}`); return; }
+            close(); toast(r.final === null ? 'Felírva az Érdeklődések közé – az árat egyedileg kell megadni.' : 'Felírva az Érdeklődések közé, rögzített árral.');
+          });
         }) });
       return;
     } else return;
@@ -428,7 +477,7 @@ function compBar(rOld, rNew, Sx, SxNew = Sx) {
   </div>`;
 }
 
-/* ---------- 2. Alapanyagárak – a bemutató fő képernyője ---------- */
+/* ---------- 2. Alapanyagárak – az árkezelés fő képernyője ---------- */
 function materials(el) {
   el = fresh(el);
   const st = S();
@@ -933,6 +982,12 @@ function productEdit(el, id) {
   });
   el.addEventListener('change', (e) => {
     const t = e.target;
+    if (t.matches('[data-imgfile]') && t.files[0] && api.mode === 'server' && api.admin) {
+      $('[data-imgprev]', el).innerHTML = '<span>Feltöltés…</span>';
+      uploadPhoto(t.files[0]).then((u) => { p.img = u; $('[data-imgprev]', el).innerHTML = `<img src="${esc(u)}" alt="">`; $('[data-imgurl]', el).value = ''; },
+        (err) => { $('[data-imgprev]', el).innerHTML = '<span>Még nincs kép</span>'; toast(`<b>A kép nem került fel.</b> ${esc(err.message)}`, { ms: 12000 }); });
+      return;
+    }
     if (t.matches('[data-imgfile]') && t.files[0]) {
       const im = new Image(), url = URL.createObjectURL(t.files[0]);
       im.onload = () => {                                   // kicsinyítés: a böngésző tárhelye szűk
@@ -1195,7 +1250,7 @@ function settings(el) {
     </div></section>
     <div class="edit__btns"><button class="abtn abtn--gold abtn--xl" type="button" data-save>Mentés</button></div>
     <section class="ebox"><h2>Adattárolás</h2>
-      <p class="hint" data-storage-note>Az adatok most ebben a böngészőben tárolódnak. A szerveres mentés bejelentkezéssel a tárhelyre telepítés után kapcsolható be.</p></section>
+      <p class="hint" data-storage-note>${api.mode === 'server' && api.online ? `Az adatok a szerveren tárolódnak, minden mentés külön változat (most: ${api.version}.).` : 'Az adatok most ebben a böngészőben tárolódnak. A szerveres mentés bejelentkezéssel a tárhelyre telepítés után kapcsolható be.'}</p></section>
     <section class="ebox ebox--danger"><h2>Alapállapot visszaállítása</h2>
       <p>Minden árat, gyűrűt, előzményt és érdeklődést visszaállít a kiinduló állapotra.</p>
       <button class="abtn abtn--xl" type="button" data-reset>Alapállapot visszaállítása</button>

@@ -2,11 +2,13 @@
 import { store } from './store.js';
 import { BUSINESS } from './data.js';
 import * as pub from './views-public.js';
-import { adminShell } from './views-admin.js';
+import { adminShell, loginView } from './views-admin.js';
+import { api, initApi, loadInquiries, refreshState } from './api.js';
 import { $, $$, modal, M, reduced, checkPhotos, photos } from './ui.js';
 
 const view = $('#view');
 let lastCustomer = '#/', lastAdmin = '#/admin/alapanyag';
+let inqLoaded = false;
 
 function parse() {
   const h = location.hash.replace(/^#/, '') || '/';
@@ -27,7 +29,11 @@ function route() {
   el.className = 'view';
   view.replaceChildren(el);
 
-  if (admin) adminShell(el, parts[1] || 'attekintes', parts[2]);
+  if (admin && api.mode === 'server' && api.online && !api.admin) loginView(el, () => route());
+  else if (admin) {
+    if (api.mode === 'server' && api.admin && !inqLoaded) { inqLoaded = true; loadInquiries().then(() => { if (parse().parts[0] === 'admin') route(); }); }
+    adminShell(el, parts[1] || 'attekintes', parts[2]);
+  }
   else if (parts[0] === 'kollekcio') pub.catalog(el, query.toString() ? query : null);
   else if (parts[0] === 'gyuru') pub.product(el, parts[1], query);
   else if (parts[0] === 'kapcsolat') pub.contact(el);
@@ -76,7 +82,11 @@ $$('[data-phone]').forEach((a) => { a.href = BUSINESS.phoneHref; a.textContent =
 $('[data-year]').textContent = new Date().getFullYear();
 
 addEventListener('hashchange', route);
-route();
+// Szerver módban előbb a mentett árak töltődnek be; helyi módban azonnal indul.
+initApi().finally(route);
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') refreshState().then((changed) => { if (changed && parse().parts[0] !== 'admin') { const y = scrollY; route(); window.scrollTo(0, y); } });
+});
 
 // A karikagyuru.com-ról töltődő fotók ellenőrzése: amelyik nem érhető el, az a gyűrű nem jelenik meg.
 checkPhotos(store.get().products, () => {

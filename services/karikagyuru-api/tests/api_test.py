@@ -109,17 +109,22 @@ def main():
         s, d = a.j('POST', '/revert', {'version': 999}); check('nem létező változat: 404', s == 404, s)
 
         print('Érdeklődések')
-        inq = {'name': 'Teszt Elek', 'email': 'teszt@example.invalid', 'phone': '', 'message': 'Próbaüzenet <script>', 'kind': 'ajanlat', 'productId': 'proba-1', 'consent': True}
+        inq = {'name': 'Teszt Elek', 'email': 'teszt@example.invalid', 'phone': '', 'message': 'Próbaüzenet <script>', 'type': 'erdeklodes', 'productId': 'proba-1',
+               'code': '81194 - 81195 W', 'summary': '14K fehérarany', 'config': {'metal': 'au14', 'rings': [[54, 4]]}, 'estimate': 259500}
         s, d = b.j('POST', '/inquiry', inq); check('érdeklődés rögzítve (201)', s == 201 and d.get('ok'), d)
         s, d = b.j('POST', '/inquiry', dict(inq, name='')); check('név nélkül elutasítva', s == 422, s)
         s, d = b.j('POST', '/inquiry', dict(inq, email='', phone='')); check('elérhetőség nélkül elutasítva', s == 422, s)
         s, d = b.j('POST', '/inquiry', dict(inq, email='nem-email')); check('hibás e-mail elutasítva', s == 422, s)
-        s, d = b.j('POST', '/inquiry', dict(inq, consent=False)); check('hozzájárulás nélkül elutasítva', s == 422, s)
+        s, d = b.j('POST', '/inquiry', dict(inq, config={'x': 'y' * 9000})); check('túl nagy beállítás elutasítva (413)', s == 413, s)
         s, d = b.j('POST', '/inquiry', dict(inq, website='http://spam')); check('csapdamezős (robot) üzenet nem kerül rögzítésre', s == 200, s)
         s, d = b.j('GET', '/inquiries'); check('látogató nem olvashat érdeklődést (401)', s == 401, s)
-        s, d = a.j('GET', '/inquiries'); check('admin 1 érdeklődést lát', s == 200 and len(d['inquiries']) == 1 and d['inquiries'][0]['name'] == 'Teszt Elek' and d['inquiries'][0]['status'] == 'uj', d)
+        s, d = a.j('GET', '/inquiries'); q0 = (d.get('inquiries') or [{}])[0]
+        check('admin 1 érdeklődést lát, minden mezővel', s == 200 and len(d['inquiries']) == 1 and q0['name'] == 'Teszt Elek' and q0['status'] == 'uj' and q0['id'].startswith('s') and q0['config']['metal'] == 'au14' and q0['estimate'] == 259500 and q0['code'] == '81194 - 81195 W', d)
         iid = d['inquiries'][0]['id']
-        s, d = a.j('POST', '/inquiry-status', {'id': iid, 'status': 'lezart'}); check('állapot módosítható', s == 200, s)
+        s, d = a.j('POST', '/inquiry-status', {'id': iid, 'status': 'elfogadva', 'lockedPrice': 259500}); check('elfogadás rögzített árral', s == 200, s)
+        s, d = a.j('GET', '/inquiries'); q0 = d['inquiries'][0]
+        check('rögzített ár és állapot visszaolvasható', q0['status'] == 'elfogadva' and q0['lockedPrice'] == 259500 and q0.get('lockedAt'), q0)
+        s, d = a.j('POST', '/inquiry-status', {'id': iid, 'status': 'lezarva'}); check('lezárás', s == 200, s)
         s, d = a.j('POST', '/inquiry-status', {'id': iid, 'status': 'torolve'}); check('ismeretlen állapot elutasítva', s == 422, s)
         for _ in range(4): b.j('POST', '/inquiry', inq)
         s, d = b.j('POST', '/inquiry', inq); check('óránként 5 után korlátozás (429)', s == 429, s)

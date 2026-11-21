@@ -452,3 +452,20 @@ Funkció, ár és számítás nem változott; a meglévő szerkezetre került eg
 - **Admin:** a főmenü csempéi kisebb betűmérettel.
 
 Tesztek: motor 73/73, asztali 30/30, mobil 26/26, V3 70/70, V4 54/54, V5 38/38 (új), API 58/58. Verzió `V5.0`.
+
+
+## V5.1 – bemutató-feliratok nélkül (2026. november 21.)
+
+- Eltűnt a felső bemutató-sáv (nézetváltó, forgatókönyv, demóadatok gomb) és minden „demó”/„Bemutató” felirat. A kezelőfelület a lábléc „Kezelőfelület” linkjéről érhető el, onnan „← Vissza a weboldalra”.
+- **A jóváhagyás nem változott:** az árak attól nem lettek jóváhagyottak, hogy a felirat eltűnt. A kezelőfelület „Jóváhagyásra vár” oldala és az élesítési ellenőrzés ugyanúgy jelzi a hiányzó jóváhagyásokat („jóváhagyásra vár” címkével).
+- A kitalált aranyár-előzmények és a rájuk épülő grafikon törölve – felirat nélkül valódi adatnak tűntek volna. Az árnapló a kiinduló bejegyzéssel indul, a grafikon csak valódi, itt mentett változásokból rajzolódik.
+- Az űrlapok visszajelzése igaz maradt: helyi módban azt írja, hogy az érdeklődés a kezelőfelületre került; a saját ötlethez választott kép nem töltődik fel, ezt kiírja, és e-mail-címet ad.
+
+## V5.2 – szerveres mentés bekötve (2026. november 21.)
+
+- `js/api.js`: ha az `index.html` `kg-api` metája ki van töltve, az oldal a szerverről tölti az árakat, a kezelőfelület jelszót kér, minden mentés a szerverre megy változatként, az érdeklődések és a fotók a szerverre kerülnek. Üres metával (GitHub Pages) minden a böngészőben marad.
+- Mentésjelző a kezelőfelületen („Mentve a szerverre hh:mm”, piros hiba, ha nem sikerült – a hiba felugró üzenetben is). Ütközésnél (két helyről mentenek) a második mentés nem ír felül.
+- Kilépés gomb; a látogató a fül újra-előtérbe kerülésekor friss árakat kap.
+- Fejlesztői környezet: `services/karikagyuru-api/dev/router.php` (oldal + API egy címen).
+
+Tesztek: motor 73/73, asztali 30/30, mobil 26/26, V3 70/70, V4 54/54, V5 38/38, V5.1 32/32 (új), API 60/60, szerver mód böngészőből 18/18 (új). Verzió `V5.2`, tárolókulcs `karikagyuru-demo-v14`.

@@ -1,7 +1,7 @@
 /* ==========================================================================
-   Közös bemutató-állapot (vásárlói és admin nézet ugyanezt használja).
-   Csak ebben a böngészőben tárolódik (localStorage) – NEM éles adatbázis.
-   Az éles rendszerben szerveroldali adatbázis és jogosultságkezelés lesz.
+   Közös állapot (vásárlói oldal és kezelőfelület ugyanezt használja).
+   Helyi módban a böngészőben (localStorage), szerver módban az api.js-en át
+   a szerveren tárolódik (lásd services/karikagyuru-api).
    ========================================================================== */
 import { DEMO_MATERIALS, DEMO_SETTINGS, buildDemoProducts } from './data.js';
 import { seedWeights, priceAll, diffPrices } from './engine.js';
@@ -34,11 +34,16 @@ function uid() { return Math.random().toString(36).slice(2, 9); }
 
 let state;
 try { state = JSON.parse(localStorage.getItem(KEY)) || null; } catch { state = null; }
-if (!state || state.v !== 13) state = fresh();
+if (!state || state.v !== 14) state = fresh();
+
+/** Szerver módban az api.js állítja be: mentés, érdeklődés küldése, érdeklődés módosítása. */
+let hooks = { save: null, inquiry: null, inquiryUpdate: null };
 
 function persist() {
   let saved = true;
-  try { localStorage.setItem(KEY, JSON.stringify(state)); } catch { saved = false; /* privát mód vagy betelt tárhely: memóriában marad */ }
+  if (!hooks.save) {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch { saved = false; /* privát mód vagy betelt tárhely: memóriában marad */ }
+  } else hooks.save(state);
   listeners.forEach((fn) => fn(state));
   return saved;
 }
@@ -147,15 +152,32 @@ export const store = {
     return persist();
   },
 
+  /** Helyi módban a böngészőbe ír; szerver módban elküldi. Promise-t ad vissza: { ok, error }. */
   addInquiry(inq) {
+    if (hooks.inquiry) return hooks.inquiry(inq);
     state.inquiries.unshift({ id: uid(), at: new Date().toISOString(), status: 'uj', ...inq });
     persist();
+    return Promise.resolve({ ok: true });
   },
 
   updateInquiry(id, patch) {
     const q = state.inquiries.find((x) => x.id === id);
-    if (q) { Object.assign(q, patch); persist(); }
+    if (!q) return;
+    Object.assign(q, patch);
+    if (hooks.inquiryUpdate) { hooks.inquiryUpdate(id, patch); listeners.forEach((fn) => fn(state)); }
+    else persist();
   },
+
+  /* --- szerver mód --- */
+  setHooks(h) { hooks = { ...hooks, ...h }; },
+  /** A szerveren mentett állapot betöltése (érdeklődések nélkül – azok külön jönnek). */
+  load(remote) {
+    if (!remote || !Array.isArray(remote.products)) return;
+    state = { ...fresh(), ...remote, v: 14, inquiries: state.inquiries || [] };
+    if (!Array.isArray(state.history)) state.history = [];
+    listeners.forEach((fn) => fn(state));
+  },
+  setInquiries(list) { state.inquiries = list; listeners.forEach((fn) => fn(state)); },
 
   silentSave: persist,
 };
