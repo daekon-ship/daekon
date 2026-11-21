@@ -164,7 +164,7 @@ A fejlesztői és bemutató adatkészlet a `services/karikagyuru-api/dev/demo-da
 
 ## 13. V5.5 – amit a feltöltésnél külön figyelni kell
 
-- ☐ Az éles tárhelyre **nem** kerül fel: `services/karikagyuru-api/dev/`, `tests/`, `docs/`, `demo-dataset.json`.
+- ☐ Az éles tárhelyre **nem** kerül fel: `services/karikagyuru-api/dev/`, `demo/`, `bin/demo-*.php`, `tests/`, `docs/`, `demo-dataset.json`; éles környezetben `KG_DEMO` nincs beállítva.
 - ☐ Az adatbázis üres induláskor a semleges adatokkal indul; a `bin/demo-seed.php`-t éles adatmappán **nem** futtatjuk
   (egyébként a `demo: true` jelzés miatt az élesítési ellenőrzés piros marad).
 - ☐ `js/data.js` → `BUSINESS.adatkezeles`: az **ügyfél végleges** adatkezelési tájékoztatójának címe (nem a DAEKON-é).
@@ -176,3 +176,5 @@ A fejlesztői és bemutató adatkészlet a `services/karikagyuru-api/dev/demo-da
 - ☐ Jótállás: a weboldal csak általános, jogszabályra hivatkozó szöveget ír; a pontos feltételek a jótállási jegyen –
   ezt az ügyfélnek jóvá kell hagynia.
 - ☐ SEO: a termékoldalak hash-alapúak, külön nem indexelhetők – javaslat: `docs/SEO_MIGRACIO.md`.
+- ☐ Termékfotók: élesítés előtt `node services/karikagyuru-api/dev/foto-ellenorzes.mjs` internetkapcsolattal – a karikagyuru.com-os fotók helyi, optimalizált másolata; a jelentésben 0 törött útvonal és 0 sikertelen letöltés legyen (vagy a hiányzók pótlása az ügyféltől).
+- ☐ A jelszóval védett bemutató külön tárhelyen/alkönyvtárban, külön adatmappával: `docs/BEMUTATO_TELEPITES.md`.
