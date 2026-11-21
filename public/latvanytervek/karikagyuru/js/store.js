@@ -4,7 +4,7 @@
    a szerveren tárolódik (lásd services/karikagyuru-api).
    ========================================================================== */
 import { DEMO_MATERIALS, DEMO_SETTINGS, buildDemoProducts } from './data.js';
-import { seedWeights, priceAll, diffPrices } from './engine.js';
+import { seedWeights, priceAll, diffPrices, approvalLoss } from './engine.js';
 
 const KEY = 'karikagyuru-demo-v14';
 const clone = (o) => JSON.parse(JSON.stringify(o));
@@ -35,6 +35,15 @@ function uid() { return Math.random().toString(36).slice(2, 9); }
 let state;
 try { state = JSON.parse(localStorage.getItem(KEY)) || null; } catch { state = null; }
 if (!state || state.v !== 14) state = fresh();
+
+/** Jóváhagyott gyűrű szakmai változásakor a jóváhagyás (és az érintett opció-jóváhagyás) elvész. */
+function revokeIfChanged(before, p) {
+  const loss = approvalLoss(before, p);
+  if (loss.width && p.opts?.width) p.opts.width.approved = false;
+  if (loss.thickness && p.opts?.thickness) p.opts.thickness.approved = false;
+  if (loss.product) { p.approved = false; return true; }
+  return false;
+}
 
 /** Szerver módban az api.js állítja be: mentés, érdeklődés küldése, érdeklődés módosítása. */
 let hooks = { save: null, inquiry: null, inquiryUpdate: null };
@@ -118,30 +127,44 @@ export const store = {
     persist();
   },
 
+  /**
+   * Gyűrű módosítása. Ha egy JÓVÁHAGYOTT gyűrű szakmai adata változik (ár, tömeg, méret, vastagság,
+   * kőszabály, választható szélesség stb.), a jóváhagyás automatikusan visszavonódik – újra jóvá kell hagyni.
+   * Fotócsere és szöveges módosítás nem érinti. Visszatér: { revoked: bool }.
+   */
   updateProduct(id, mutate, title) {
     const p = state.products.find((x) => x.id === id);
-    if (!p) return;
+    if (!p) return { revoked: false };
+    const before = JSON.parse(JSON.stringify(p));
     const old = priceAll([p], state.materials, state.settings)[id];
     mutate(p);
+    const revoked = revokeIfChanged(before, p);
     const now = priceAll([p], state.materials, state.settings)[id];
-    state.history.unshift({ id: uid(), at: new Date().toISOString(), validFrom: new Date().toISOString(),
+    const at = new Date().toISOString();
+    state.history.unshift({ id: uid(), at, validFrom: at,
       by: 'Tulajdonos', kind: 'product', title: title || `${p.code} adatai módosítva`,
       count: old !== now ? 1 : 0, total: old !== undefined && now !== undefined ? now - old : 0, oldPrice: old ?? null, newPrice: now ?? null });
+    if (revoked) state.history.unshift({ id: uid(), at, validFrom: at, by: 'Rendszer', kind: 'approve', title: `Jóváhagyás automatikusan visszavonva: ${p.code} – módosultak a szakmai adatai`, count: 0, total: 0 });
     persist();
+    return { revoked };
   },
 
   /** Több gyűrű egyszerre (pl. munkadíj stílusonként) – egy naplóbejegyzés. */
   updateMany(ids, mutate, title) {
     const set = state.products.filter((p) => ids.includes(p.id));
     const old = priceAll(set, state.materials, state.settings);
+    const befores = Object.fromEntries(set.map((p) => [p.id, JSON.parse(JSON.stringify(p))]));
     set.forEach(mutate);
+    const revoked = set.filter((p) => revokeIfChanged(befores[p.id], p));
     const now = priceAll(set, state.materials, state.settings);
     const changed = set.filter((p) => old[p.id] !== now[p.id]);
     const at = new Date().toISOString();
     state.history.unshift({ id: uid(), at, validFrom: at, by: 'Tulajdonos', kind: 'product', title,
       count: changed.length, total: changed.reduce((a, p) => a + now[p.id] - old[p.id], 0) });
     if (changed.length) state.lastChange = { at, old: { ...priceAll(state.products, state.materials, state.settings), ...old } };
+    if (revoked.length) state.history.unshift({ id: uid(), at, validFrom: at, by: 'Rendszer', kind: 'approve', title: `Jóváhagyás automatikusan visszavonva ${revoked.length} gyűrűnél – módosultak a szakmai adataik: ${revoked.map((p) => p.code).join(', ')}`, count: 0, total: 0 });
     persist();
+    this.lastRevoked = revoked.length;
     return changed.length;
   },
 
@@ -165,8 +188,8 @@ export const store = {
   },
 
   /** Helyi módban a böngészőbe ír; szerver módban elküldi. Promise-t ad vissza: { ok, error }. */
-  addInquiry(inq) {
-    if (hooks.inquiry) return hooks.inquiry(inq);
+  addInquiry(inq, files = []) {
+    if (hooks.inquiry) return hooks.inquiry(inq, files);
     state.inquiries.unshift({ id: uid(), at: new Date().toISOString(), status: 'uj', ...inq });
     if (!persist()) { state.inquiries.shift(); return Promise.resolve({ ok: false, error: 'Az érdeklődést nem sikerült rögzíteni.' }); }
     return Promise.resolve({ ok: true });

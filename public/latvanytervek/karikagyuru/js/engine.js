@@ -642,3 +642,31 @@ export function shownPrice(p, cfgIn, M, S) {
   if (!t.ok && isBase && p.listaAr && !p.priceOnRequest) return { ...r, final: p.listaAr, raw: p.listaAr, kind: 'list', trust: t, quote: false };
   return { ...r, final: null, quote: true, kind: 'quote', reason: r.final === null ? r.reason : t.reasons[0], trust: t };
 }
+
+/* ==========================================================================
+   Szakmailag releváns adatok (V5.5). Ha egy jóváhagyott gyűrűnél ezek közül
+   bármi változik, a korábbi jóváhagyás érvényét veszti. Fotó, név, stílus,
+   egyeztetési megjegyzés, láthatóság nem számít ide.
+   ========================================================================== */
+const PRO_PRODUCT = ['listaAr', 'priceOnRequest', 'override', 'minPrice', 'metals', 'colors', 'widths', 'stoneOptional', 'fixedWeight', 'kind'];
+const PRO_RING = ['refSize', 'refWidth', 'share', 'weight', 'weights', 'thickness', 'stoneRule', 'other', 'sizeMin', 'sizeMax', 'labor'];
+const stable = (v) => JSON.stringify(v, (k, x) => (x && typeof x === 'object' && !Array.isArray(x) ? Object.fromEntries(Object.keys(x).sort().map((y) => [y, x[y]])) : x));
+export function professionalKey(p) {
+  const o = {};
+  for (const k of PRO_PRODUCT) o[k] = p[k] ?? null;
+  o.rings = (p.rings || []).map((r) => Object.fromEntries(PRO_RING.map((k) => [k, r[k] ?? null])));
+  const w = p.opts?.width || {}, t = p.opts?.thickness || {};
+  o.width = { enabled: !!w.enabled, min: w.min ?? null, max: w.max ?? null, step: w.step ?? null };
+  o.thickness = { enabled: !!t.enabled, values: t.values || [] };
+  return stable(o);
+}
+/** Mely részek jóváhagyása vész el a változással: { product, width, thickness } (true = visszavonandó). */
+export function approvalLoss(before, after) {
+  const k = (p) => JSON.parse(professionalKey(p));
+  const a = k(before), b = k(after);
+  return {
+    product: !!before.approved && stable(a) !== stable(b),
+    width: !!before.opts?.width?.approved && stable(a.width) !== stable(b.width),
+    thickness: !!before.opts?.thickness?.approved && stable(a.thickness) !== stable(b.thickness),
+  };
+}

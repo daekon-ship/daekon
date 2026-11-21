@@ -611,3 +611,56 @@ test('V5.4: nyilvános nézet (nem jóváhagyott grammár üres) – az alapvál
   const c = defaultConfig(p); c.rings[0].size += 1;
   assert.equal(shownPrice(p, c, M, DEMO_SETTINGS).final, null);
 });
+
+/* ---------- V5.5: szakmai módosítás visszavonja a jóváhagyást ---------- */
+import { professionalKey, approvalLoss } from '../js/engine.js';
+{
+  const products = buildDemoProducts();
+  const base = JSON.parse(JSON.stringify(products.find((p) => p.rings.some((r) => r.stoneRule))));
+  base.approved = true;
+  const mod = (fn) => { const p = JSON.parse(JSON.stringify(base)); fn(p); return approvalLoss(base, p); };
+  for (const [label, fn] of [
+    ['listaár', (p) => { p.listaAr = (p.listaAr || 0) + 1000; }],
+    ['rögzített ár', (p) => { p.override = { type: 'fixed', value: 123000 }; }],
+    ['minimumár', (p) => { p.minPrice = 99000; }],
+    ['tömeg', (p) => { p.rings[0].weight = (p.rings[0].weight || 3) + 0.1; }],
+    ['referenciaméret', (p) => { p.rings[0].refSize += 1; }],
+    ['szélesség', (p) => { p.rings[0].refWidth += 0.5; }],
+    ['vastagság', (p) => { p.rings[0].thickness = 1.8; }],
+    ['kőszabály', (p) => { const r = p.rings.find((x) => x.stoneRule); r.stoneRule = { ...r.stoneRule, max: (r.stoneRule.max || 1) + 3 }; }],
+    ['mérettartomány', (p) => { p.rings[0].sizeMax = 70; }],
+    ['anyagok', (p) => { p.metals = [...p.metals, 'pd'].filter((v, i, a) => a.indexOf(v) === i); if (p.metals.length === base.metals.length) p.metals = p.metals.slice(1); }],
+    ['színek', (p) => { p.colors = p.colors.length > 1 ? p.colors.slice(1) : [...p.colors, 'rozsa']; }],
+    ['választható szélesség', (p) => { p.opts = { ...p.opts, width: { ...(p.opts?.width || {}), enabled: true, min: 3, max: 5, step: 0.5 } }; }],
+    ['egyedi munkadíj', (p) => { p.rings[0].labor = 50000; }],
+  ]) {
+    test(`V5.5: jóváhagyott gyűrű – ${label} módosítása visszavonja a jóváhagyást`, () => assert.equal(mod(fn).product, true));
+  }
+  for (const [label, fn] of [
+    ['fotó', (p) => { p.img = 'img/uj-foto.jpg'; }],
+    ['név', (p) => { p.name = 'Új név'; }],
+    ['stílus', (p) => { p.style = 'klasszikus'; }],
+    ['egyeztetési megjegyzés', (p) => { p.consult = ['Gravírozás egyeztetéssel']; }],
+    ['láthatóság', (p) => { p.visible = false; }],
+    ['cikkszám-írásmód', (p) => { p.code = p.code + ' '; }],
+  ]) {
+    test(`V5.5: jóváhagyott gyűrű – ${label} módosítása NEM vonja vissza`, () => assert.equal(mod(fn).product, false));
+  }
+  test('V5.5: nem jóváhagyott gyűrűnél nincs mit visszavonni', () => {
+    const p0 = JSON.parse(JSON.stringify(base)); p0.approved = false;
+    const p1 = JSON.parse(JSON.stringify(p0)); p1.rings[0].weight = 9;
+    assert.equal(approvalLoss(p0, p1).product, false);
+  });
+  test('V5.5: jóváhagyott szélességhatár módosítása a szélesség-jóváhagyást is visszavonja, a vastagságét nem', () => {
+    const p0 = JSON.parse(JSON.stringify(base));
+    p0.opts = { width: { enabled: true, min: 3, max: 5, step: 0.5, approved: true }, thickness: { enabled: true, values: [1.5, 1.8], approved: true } };
+    const p1 = JSON.parse(JSON.stringify(p0)); p1.opts.width.max = 6;
+    const l = approvalLoss(p0, p1);
+    assert.equal(l.width, true); assert.equal(l.thickness, false); assert.equal(l.product, true);
+  });
+  test('V5.5: a kulcs mezősorrendtől független', () => {
+    const a = JSON.parse(JSON.stringify(base)); const b = JSON.parse(JSON.stringify(base));
+    b.rings[0] = Object.fromEntries(Object.entries(b.rings[0]).reverse());
+    assert.equal(professionalKey(a), professionalKey(b));
+  });
+}
