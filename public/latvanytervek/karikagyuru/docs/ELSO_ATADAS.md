@@ -10,9 +10,10 @@ Az állapotok tényszerűek: „demó” = a látványtervben működik, de csak
 |---|---|---|
 | Új weboldal | főoldal, ötvös bemutatása, saját ötlet, kapcsolat, mobilon is | demó – kész a bemutatásra; a szövegeket és a tegeződést az ügyfélnek jóvá kell hagynia |
 | Gyűrűkatalógus | 115 modell, szűrés, keresés, termékoldal | demó – a jelenlegi oldal adataiból; a képek 600×600-asak, élesebbhez az eredetik kellenek |
-| Árkezelés | eladási grammár fémenként, gyémánt darabár, előtte–utána összevetés, megerősítés, árverzió, visszaállítás, hiányzó adat jelzése | demó – az ötvös számítási módszerével; **az árak nem jóváhagyottak** |
+| Árkezelés | eladási grammár fémenként, gyémánt darabár, előtte–utána összevetés, megerősítés, árverzió, visszaállítás, hiányzó adat jelzése | kész, az ötvös számítási módszerével; **az árak nem jóváhagyottak** – ezért a vásárló még nem lát számolt árat (lásd lent) |
 | Kezelőfelület | 5 fő feladat: árak, gyűrűk, fotók, szabályok, érdeklődések; belépés, szerveres mentés változatokkal, mentésjelző | kész és helyben tesztelve (szerver módban is); valódi tárhelyen még nem futott |
-| Szakmailag korlátozott konfigurálás | gyűrűnként: fémek, színek, mérettartomány, szélesség/vastagság csak ha engedélyezett és jóváhagyott, kőszabály, egyeztetést igénylő módosítások | demó – **0 / 115 gyűrű szabálya jóváhagyott**; jóváhagyásig az eredeti viselkedés él |
+| Szakmailag korlátozott konfigurálás | gyűrűnként: fémek, színek, mérettartomány, szélesség/vastagság csak ha engedélyezett és jóváhagyott, kőszabály, egyeztetést igénylő módosítások | kész; **0 / 115 gyűrű jóváhagyott** – a jóváhagyás a kezelőfelület „Jóváhagyás sorban” oldalán megy, gyűrűnként |
+| Fokozatos jóváhagyás | nem jóváhagyott gyűrű: a katalógusban marad, a jelenlegi listaárral (csak alapváltozat) vagy „egyedi ajánlat”-tal, online beállítás nélkül; jóváhagyott gyűrű: beállítható, és számolt árat kap, de csak ha a felhasznált grammár, kőár és számítási szabály is jóváhagyott | kész, helyben tesztelve |
 | Árajánlatkérés | a beállítás az ajánlatkéréssel együtt megy; saját ötlet | szerver módban a szerveren rögzül és a kezelőfelületen látszik; **e-mail-értesítés még nincs**; a saját ötlethez csatolt kép nem töltődik fel |
 
 **Ami az első átadáshoz még el kell készüljön (fejlesztés):**
@@ -37,6 +38,10 @@ Az állapotok tényszerűek: „demó” = a látványtervben működik, de csak
 | Egyéb | második oldal (a neve nincs eldöntve), idegen nyelv, időpontfoglalás naptárral, hírlevél |
 
 ## C. Mi kell az élesítéshez
+
+Részletes, végrehajtható lista: **`TELEPITES.md`** (PHP/SQLite, jogosultságok, HTTPS, belépés, napi mentés
+és kipróbált visszaállítás, érdeklődések, e-mail, jogi szövegek, átirányítások, SEO, mobiltesztek).
+**Amíg nincs tárhely-hozzáférés, a rendszer nem élesítésre kész.**
 
 ### Hozzáférések
 

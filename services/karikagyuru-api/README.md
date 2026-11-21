@@ -7,7 +7,7 @@ A weboldal (`public/latvanytervek/karikagyuru/`) két módban működik:
   minden a böngészőben marad, mint eddig.
 - **Szerver mód** – ha `<meta name="kg-api" content="api/">`: az oldal a szerverről tölti az árakat,
   a kezelőfelület jelszót kér, minden mentés a szerverre megy (változatként), az érdeklődések
-  a szerveren gyűlnek, a fotók feltöltődnek. A mentés állapota a kezelőfelületen végig látszik
+  a szerveren gyűlnek, a fotókból a szerver optimalizált JPEG-et készít (legfeljebb 2400 px, EXIF nélkül – az eredeti fájl nem marad meg; ha kell, ez külön funkcióként tervezhető). A mentés állapota a kezelőfelületen végig látszik
   („Mentve a szerverre 14:32” / piros hibaüzenet, ha nem sikerült).
 
 ## Miért PHP + SQLite
@@ -32,7 +32,7 @@ Szükséges: PHP 8.1+, `pdo_sqlite`, `gd`, `session`, `json`.
 | `PUT /api/state` | admin + CSRF | mentés új változatként; ütközésnél 409, nem ír felül |
 | `GET /api/versions`, `POST /api/revert` | admin | változatok listája, visszaállítás |
 | `GET /api/inquiries`, `POST /api/inquiry-status` | admin | érdeklődések, állapotuk |
-| `POST /api/photo` | admin + CSRF | képfeltöltés (JPG/PNG/WebP, max. 8 MB, mindig újrakódolva) |
+| `POST /api/photo` | admin + CSRF | képfeltöltés (JPG/PNG/WebP, max. 8 MB → optimalizált JPEG, max. 2400 px, az eredeti nem marad meg) |
 
 Biztonság: jelszó `password_hash`-sel tárolva; HttpOnly + SameSite=Strict süti (HTTPS-en Secure);
 CSRF-jel minden módosításnál; 5 hibás belépés után 15 perc zárolás; a látogató nem kap sütit;
@@ -62,7 +62,8 @@ KG_DATA=/tmp/kg-adat php -S 127.0.0.1:8792 dev/router.php
 
 ```sh
 python3 tests/api_test.py              # 60 végpont-ellenőrzés, saját ideiglenes adatmappával
-python3 tests/server_mode_e2e.py       # 18 böngészős ellenőrzés: oldal + API együtt
+python3 tests/server_mode_e2e.py       # 22 böngészős ellenőrzés: oldal + API együtt
+python3 tests/server_failures_e2e.py   # 17 ellenőrzés: API-kiesés, sikertelen mentés, lejárt belépés, sikertelen érdeklődés
 ```
 
 `api_test.py`: telepítés, jogosultság, CSRF, mentés/ütközés/visszaállítás, hibás adatok elutasítása,
@@ -73,6 +74,8 @@ python3 tests/server_mode_e2e.py       # 18 böngészős ellenőrzés: oldal + A
 a látogató a szerverről kapja, két admin ütközése (a második nem ír felül, egyértelmű hiba), kilépés.
 
 ## Telepítés a tárhelyre (ha meglesz a hozzáférés)
+
+Részletes ellenőrzőlista: `public/latvanytervek/karikagyuru/docs/TELEPITES.md`. Röviden:
 
 1. A weboldal fájljai a webgyökérbe; ez a mappa `public/` tartalma a webgyökér `api/` alá
    (`index.php`, `.htaccess`); az `src/` és `bin/` a webgyökéren **kívül**, és az `index.php`

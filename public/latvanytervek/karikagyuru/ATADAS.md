@@ -463,9 +463,26 @@ Tesztek: motor 73/73, asztali 30/30, mobil 26/26, V3 70/70, V4 54/54, V5 38/38 (
 
 ## V5.2 – szerveres mentés bekötve (2026. november 21.)
 
-- `js/api.js`: ha az `index.html` `kg-api` metája ki van töltve, az oldal a szerverről tölti az árakat, a kezelőfelület jelszót kér, minden mentés a szerverre megy változatként, az érdeklődések és a fotók a szerverre kerülnek. Üres metával (GitHub Pages) minden a böngészőben marad.
+- `js/api.js`: ha az `index.html` `kg-api` metája ki van töltve, az oldal a szerverről tölti az árakat, a kezelőfelület jelszót kér, minden mentés a szerverre megy változatként, az érdeklődések a szerverre kerülnek, a fotókból a szerver optimalizált JPEG-et készít (max. 2400 px; az eredeti fájl nem marad meg). Üres metával (GitHub Pages) minden a böngészőben marad.
 - Mentésjelző a kezelőfelületen („Mentve a szerverre hh:mm”, piros hiba, ha nem sikerült – a hiba felugró üzenetben is). Ütközésnél (két helyről mentenek) a második mentés nem ír felül.
 - Kilépés gomb; a látogató a fül újra-előtérbe kerülésekor friss árakat kap.
 - Fejlesztői környezet: `services/karikagyuru-api/dev/router.php` (oldal + API egy címen).
 
 Tesztek: motor 73/73, asztali 30/30, mobil 26/26, V3 70/70, V4 54/54, V5 38/38, V5.1 32/32 (új), API 60/60, szerver mód böngészőből 18/18 (új). Verzió `V5.2`, tárolókulcs `karikagyuru-demo-v14`.
+
+
+## V5.3 – ügyfélátadásra felkészítés (2026. november 21.)
+
+- **Fokozatos jóváhagyás.** Új motorfüggvények: `priceTrust` és `shownPrice`. A vásárló számolt árat csak akkor lát, ha a gyűrű jóváhagyott, és a beállítás minden felhasznált árelemét (grammár, kőár, számítási szabály, gravírdíj) az ötvös jóváhagyta.
+  - Nem jóváhagyott gyűrű: a katalógusban marad. Az alapváltozatnál a karikagyuru.com mostani listaárát mutatja, „Jelenlegi listaár – alapváltozat” felirattal, máskor „egyedi ajánlat”-ot. Online beállítás nincs, helyette ajánlatkérés. Becsült tömeg és gyűrűnkénti árbontás sem jelenik meg.
+  - A beállítás-link (`?k=`) sem nyit ki nem jóváhagyott beállítást.
+- **Jóváhagyás sorban** (`#/admin/sorban`). Egy gyűrű egyszerre, a jóváhagyandó adatokkal: tömeg, szélesség, méretek, kőszabály, választható opciók, számolt ár és a mostani listaár. Gombok: „Rendben, jóváhagyom”, „Javítani kell”, „Később”, illetve visszavonás. Haladásjelző mutatja, hány gyűrű van kész. A főmenü 4. csempéje ide visz.
+- **Szerver mód, hibák.**
+  - API-kiesés induláskor: a kezelőfelület helyett zárolt képernyő jelenik meg, és a böngészőbe sem ment semmit.
+  - Sikertelen mentés: a kezelőfelület zárolódik, és a szerveren ténylegesen meglévő állapot töltődik vissza. Nem mentett változás nem marad a képernyőn.
+  - Lejárt belépés: belépőképernyő jelenik meg, „NEM került mentésre” üzenettel; belépés után a szerver állapota látszik.
+  - A „Mentve” felugró üzenet szerver módban csak a szerver visszaigazolása után jelenik meg, addig „Mentés folyamatban”.
+- **Érdeklődés.** Semmilyen hiba esetén nincs „sikeres” visszajelzés (szerverhiba, kiesés, betelt böngészőtárhely), helyette hibaüzenet és telefonszám. Helyi módban a visszajelzés azt írja, ami igaz: az érdeklődés a kezelőfelületre került, értesítést az ötvös nem kap.
+- **Képfeltöltés leírása.** A szerver optimalizált JPEG-et készít (legfeljebb 2400 px, EXIF nélkül), az eredeti fájl nem marad meg.
+- **Dokumentumok.** `docs/TELEPITES.md` (telepítési és élesítési ellenőrzőlista, SEO-val); `ELSO_ATADAS.md` frissítve. A git-előzmény tisztítási terve privát dokumentum, nem került a repóba.
+- **Tesztek.** Új: `tests/v53.py` (helyi, kiinduló adatokkal, 34), `services/karikagyuru-api/tests/server_failures_e2e.py` (17). A konfigurátort vizsgáló régebbi csomagok egy közös előkészítő lépéssel (`tests/kg_common.py`) minden adatot jóváhagynak, a nem jóváhagyott viselkedést a V5.3-tesztek nézik. Verzió `V5.3`.
