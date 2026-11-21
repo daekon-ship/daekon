@@ -481,7 +481,7 @@ import { priceTrust, shownPrice } from '../js/engine.js';
     M.src = Object.fromEntries(Object.keys(M.src || {}).map((k) => [k, 'jovahagyott']));
     ['sellPerGram.au14', 'sellPerGram.au18', 'sellPerGram.pt', 'sellPerGram.pd'].forEach((k) => (M.src[k] = 'jovahagyott'));
     M.diamonds.forEach((d) => { if (d.price) d.src = 'jovahagyott'; });
-    S.src = Object.fromEntries(['pricingMode', 'sizeMethod', 'roundTo', 'density', 'settingPerStone', 'engravingPrice', 'vatPct'].map((k) => [k, 'jovahagyott']));
+    S.src = Object.fromEntries(Object.keys(S.src || {}).map((k) => [k, 'jovahagyott']));
   };
   const plain = clone(products.find((p) => p.listaAr && !p.priceOnRequest && !p.rings.some((r) => r.stoneRule)));
   const stoned = clone(products.find((p) => p.listaAr && !p.priceOnRequest && p.rings.some((r) => r.stoneRule && r.stoneRule.def > 0)));
@@ -527,3 +527,87 @@ import { priceTrust, shownPrice } from '../js/engine.js';
     assert.equal(shownPrice(p, c, M, S).final, null);
   });
 }
+
+/* ---------- V5.4: minden árat befolyásoló beállítás jóváhagyáshoz kötve ---------- */
+{
+  const products = buildDemoProducts();
+  seedWeights(products, DEMO_MATERIALS, DEMO_SETTINGS);
+  const clone = (x) => JSON.parse(JSON.stringify(x));
+  const allOk = () => {
+    const M = clone(DEMO_MATERIALS), S = clone(DEMO_SETTINGS);
+    Object.keys(M.src).forEach((k) => (M.src[k] = 'jovahagyott'));
+    M.diamonds.forEach((d) => { if (d.price) d.src = 'jovahagyott'; });
+    Object.keys(S.src).forEach((k) => (S.src[k] = 'jovahagyott'));
+    return { M, S };
+  };
+  const plain = clone(products.find((p) => p.listaAr && !p.priceOnRequest && !p.rings.some((r) => r.stoneRule))); plain.approved = true;
+  const stoned = clone(products.find((p) => p.listaAr && !p.priceOnRequest && p.rings.some((r) => r.stoneRule && r.stoneRule.def > 0))); stoned.approved = true;
+  const changed = (p) => { const c = defaultConfig(p); c.rings[0].size += 1; return c; };
+
+  test('V5.4: minden jóváhagyva → számolt ár (kiindulás)', () => {
+    const { M, S } = allOk();
+    assert.equal(shownPrice(plain, changed(plain), M, S).kind, 'calc');
+    assert.equal(shownPrice(stoned, changed(stoned), M, S).kind, 'calc');
+  });
+  for (const [key, who, label] of [
+    ['density', 'plain', 'anyagonkénti tömegarány'], ['boxCost', 'plain', 'csomagolás díja (akkor is, ha 0)'],
+    ['pricingMode', 'plain', 'számítási mód'], ['sizeMethod', 'plain', 'méretezés'], ['roundTo', 'plain', 'kerekítés'],
+    ['settingPerStone', 'stoned', 'kőfoglalási díj (akkor is, ha 0)'], ['certCost', 'stoned', 'tanúsítvány díja'],
+    ['stonesGross', 'stoned', 'kőár bruttó/nettó kezelése'], ['stoneEdgeMm', 'stoned', 'kő elférési szabálya (perem)'], ['stoneGapMm', 'stoned', 'kő elférési szabálya (távolság)'],
+  ]) {
+    test(`V5.4: nem jóváhagyott ${label} → nincs számolt ár`, () => {
+      const { M, S } = allOk(); S.src[key] = 'demo';
+      const p = who === 'plain' ? plain : stoned;
+      const r = shownPrice(p, changed(p), M, S);
+      assert.notEqual(r.kind, 'calc'); assert.equal(r.final, null);
+    });
+  }
+  test('V5.4: nettó kőár esetén az ÁFA és a kőfelár jóváhagyása is kell', () => {
+    const { M, S } = allOk(); S.stonesGross = false; S.src.vatPct = 'demo';
+    assert.equal(shownPrice(stoned, changed(stoned), M, S).final, null);
+    const b = allOk(); b.S.stonesGross = false; b.S.src.markupStones = 'demo';
+    assert.equal(shownPrice(stoned, changed(stoned), b.M, b.S).final, null);
+  });
+  test('V5.4: bruttó kőárnál az ÁFA nem hat az árra, ezért nem blokkol', () => {
+    const { M, S } = allOk(); S.src.vatPct = 'demo';
+    const a = shownPrice(stoned, changed(stoned), M, S);
+    const S2 = clone(S); S2.vatPct = 5;
+    assert.equal(a.kind, 'calc'); assert.equal(priceProduct(stoned, changed(stoned), M, S2).final, a.final);
+  });
+  test('V5.4: gravírozás díja csak gravírozással kell', () => {
+    const { M, S } = allOk(); S.src.engravingPrice = 'demo';
+    const c = changed(plain);
+    assert.equal(shownPrice(plain, c, M, S).kind, 'calc');
+    c.rings[0].engraving = 'R & A';
+    assert.equal(shownPrice(plain, c, M, S).final, null);
+  });
+  test('V5.4: költségalapú módban a referenciaár, munkadíj, felár és ÁFA jóváhagyása kell', () => {
+    for (const k of ['lossPct', 'laborFactor', 'markupMetal', 'vatPct']) {
+      const { M, S } = allOk(); S.pricingMode = 'koltseg'; S.src[k] = 'demo';
+      assert.equal(shownPrice(plain, changed(plain), M, S).final, null, k);
+    }
+    const { M, S } = allOk(); S.pricingMode = 'koltseg'; M.src.gold24 = 'demo';
+    assert.equal(shownPrice(plain, changed(plain), M, S).final, null, 'gold24');
+  });
+  test('V5.4: rögzített ár csak jóváhagyott gyűrűn számít jóváhagyottnak', () => {
+    const { M, S } = allOk();
+    const p = clone(plain); p.override = { type: 'fixed', value: 333000 };
+    assert.equal(shownPrice(p, changed(p), M, S).final, 333000);
+    p.approved = false;
+    assert.notEqual(shownPrice(p, changed(p), M, S).kind, 'calc');
+  });
+  test('V5.4: nem jóváhagyott kőméret → nincs számolt ár, akkor sem, ha minden más jóváhagyott', () => {
+    const { M, S } = allOk(); M.diamonds.forEach((d) => (d.src = 'pelda'));
+    assert.equal(shownPrice(stoned, changed(stoned), M, S).final, null);
+  });
+}
+
+test('V5.4: nyilvános nézet (nem jóváhagyott grammár üres) – az alapváltozat listaára akkor is megjelenik', () => {
+  const products = buildDemoProducts(); seedWeights(products, DEMO_MATERIALS, DEMO_SETTINGS);
+  const p = JSON.parse(JSON.stringify(products.find((x) => x.listaAr && !x.priceOnRequest)));
+  const M = JSON.parse(JSON.stringify(DEMO_MATERIALS)); Object.keys(M.sellPerGram).forEach((k) => (M.sellPerGram[k] = null)); M.src = {};
+  const r = shownPrice(p, defaultConfig(p), M, DEMO_SETTINGS);
+  assert.equal(r.kind, 'list'); assert.equal(r.final, p.listaAr);
+  const c = defaultConfig(p); c.rings[0].size += 1;
+  assert.equal(shownPrice(p, c, M, DEMO_SETTINGS).final, null);
+});

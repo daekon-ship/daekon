@@ -8,7 +8,7 @@ APPROVE_ALL_JS = """async () => {
   for (const k of ['sellPerGram.au14', 'sellPerGram.au18', 'sellPerGram.pt', 'sellPerGram.pd', 'gold24', 'platinum', 'palladium', 'titanium']) st.materials.src[k] = ok;
   st.materials.diamonds.forEach((d) => { if (d.price) d.src = ok; });
   st.settings.src = st.settings.src || {};
-  for (const k of ['pricingMode', 'sizeMethod', 'roundTo', 'density', 'settingPerStone', 'engravingPrice', 'vatPct', 'stonesGross', 'boxCost', 'certCost', 'stoneEdgeMm', 'stoneGapMm', 'markupMetal', 'markupStones', 'laborPerGram', 'laborBase']) st.settings.src[k] = ok;
+  for (const k of Object.keys(st.settings.src)) st.settings.src[k] = ok;
   st.products.forEach((p) => { p.approved = true; });
   store.persistNow();
 }"""

@@ -14,7 +14,7 @@ num = lambda t: int(re.sub(r'\D', '', t) or 0)
 APPROVE_PRICES = """async () => { const { store } = await import('./js/store.js'); const st = store.get(); const ok = 'jovahagyott';
   ['sellPerGram.au14', 'sellPerGram.au18', 'sellPerGram.pt', 'sellPerGram.pd'].forEach((k) => (st.materials.src[k] = ok));
   st.materials.diamonds.forEach((d) => { if (d.price) d.src = ok; });
-  ['pricingMode', 'sizeMethod', 'roundTo', 'density', 'settingPerStone', 'engravingPrice'].forEach((k) => (st.settings.src[k] = ok)); store.persistNow(); }"""
+  Object.keys(st.settings.src).forEach((k) => (st.settings.src[k] = ok)); store.persistNow(); }"""
 
 async def run(b, w, h, mob):
     tag = f'{w}px'

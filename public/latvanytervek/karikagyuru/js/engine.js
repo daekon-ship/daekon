@@ -586,27 +586,44 @@ export function priceTrust(p, cfg, M, S) {
   const ms = (M && M.src) || {}, ss = (S && S.src) || {};
   const ok = (v) => v === 'jovahagyott';
   const reasons = [];
+  const need = (key, msg) => { if (!ok(ss[key])) reasons.push(msg); };
   if (!p.approved) reasons.push('A gyűrű adatait az ötvös még nem hagyta jóvá.');
+  // Rögzített ár: a tulajdonos maga adta meg a gyűrűnél – a gyűrű jóváhagyása elég.
   if (p.override?.type === 'fixed') return { ok: reasons.length === 0, reasons };
   const metal = cfg && cfg.metal;
   const gm = (S?.pricingMode || 'gramm') === 'gramm';
+  const rings = (cfg && cfg.rings) || [];
+  const stoned = rings.some((r) => r.stones && r.stones.count > 0);
+  const engraved = rings.some((r) => r.engraving && String(r.engraving).trim());
+  const SET = 'Az árszámítás beállításai még nincsenek jóváhagyva.';
+
+  // Anyag
   if (metal === 'ti') reasons.push('A titángyűrű ára egyedi ajánlat.');
   else if (metal) {
     const key = gm ? `sellPerGram.${metal}` : METALS[metal]?.ref;
     if (!ok(ms[key])) reasons.push(`A(z) ${METALS[metal]?.short || metal} grammára még nincs jóváhagyva.`);
   }
-  for (const k of ['pricingMode', 'sizeMethod', 'roundTo']) if (!ok(ss[k])) { reasons.push('Az árszámítás beállításai még nincsenek jóváhagyva.'); break; }
-  if ((S?.sizeMethod || 'tomeg') === 'tomeg' && !ok(ss.density)) reasons.push('A méret szerinti tömegszámítás még nincs jóváhagyva.');
-  const rings = (cfg && cfg.rings) || [];
-  if (rings.some((r) => r.stones && r.stones.count > 0)) {
+  // Mindig ható beállítások: számítási mód, méretezés, anyagonkénti tömegarány, kerekítés, csomagolás díja
+  for (const k of ['pricingMode', 'sizeMethod', 'density', 'roundTo', 'boxCost']) need(k, SET);
+  // Kövek: kőár, foglalás, tanúsítvány, bruttó/nettó kezelés, elférési szabály
+  if (stoned) {
     for (const r of rings) {
       if (!r.stones || !r.stones.count) continue;
       const d = (M?.diamonds || []).find((x) => x.id === r.stones.cat);
       if (!d || !ok(d.src)) { reasons.push('A választott kőméret ára még nincs jóváhagyva.'); break; }
     }
-    if ((S?.settingPerStone || 0) > 0 && !ok(ss.settingPerStone)) reasons.push('A kőfoglalás díja még nincs jóváhagyva.');
+    need('settingPerStone', 'A kőfoglalás díja (vagy hogy nincs külön díj) még nincs jóváhagyva.');
+    need('certCost', SET);
+    need('stonesGross', SET);
+    if (S?.stonesGross === false) { need('markupStones', SET); need('vatPct', 'Az ÁFA-beállítás még nincs jóváhagyva.'); }
+    need('stoneEdgeMm', SET); need('stoneGapMm', SET);
   }
-  if (rings.some((r) => r.engraving && String(r.engraving).trim()) && !ok(ss.engravingPrice)) reasons.push('A gravírozás díja még nincs jóváhagyva.');
+  if (engraved) need('engravingPrice', 'A gravírozás díja még nincs jóváhagyva.');
+  // Költségalapú mód: anyagveszteség, munkadíj, felárak, ÁFA
+  if (!gm) {
+    for (const k of ['lossPct', 'laborFactor', 'markupMetal', 'vatPct']) need(k, SET);
+    if (stoned) need('markupStones', SET);
+  }
   return { ok: reasons.length === 0, reasons: [...new Set(reasons)] };
 }
 
@@ -616,11 +633,12 @@ export function priceTrust(p, cfg, M, S) {
  */
 export function shownPrice(p, cfgIn, M, S) {
   const r = priceProduct(p, cfgIn, M, S);
-  if (r.final === null) return { ...r, kind: 'quote' };
   const t = priceTrust(p, r.cfg, M, S);
-  if (t.ok) return { ...r, kind: 'calc', trust: t };
+  if (t.ok && r.final !== null) return { ...r, kind: 'calc', trust: t };
+  // Nem megbízható számolt ár: az alapváltozatnál a közzétett listaár (akkor is, ha a nyilvános nézetben
+  // a nem jóváhagyott grammár üres, és a motor ezért nem tud számolni), egyébként egyedi ajánlat.
   const base = normalizeConfig(p, defaultConfig(p), M, S).cfg;
   const isBase = encodeCfg(base) === encodeCfg(r.cfg);
-  if (isBase && p.listaAr && !p.priceOnRequest) return { ...r, final: p.listaAr, raw: p.listaAr, kind: 'list', trust: t, quote: false };
-  return { ...r, final: null, quote: true, kind: 'quote', reason: t.reasons[0], trust: t };
+  if (!t.ok && isBase && p.listaAr && !p.priceOnRequest) return { ...r, final: p.listaAr, raw: p.listaAr, kind: 'list', trust: t, quote: false };
+  return { ...r, final: null, quote: true, kind: 'quote', reason: r.final === null ? r.reason : t.reasons[0], trust: t };
 }
