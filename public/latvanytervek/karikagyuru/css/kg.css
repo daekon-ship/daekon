@@ -1829,3 +1829,10 @@ h3, .cfg__step > header h2, .ringbox__t, .opt__label { font-family: var(--sans);
 .inq__notify--err { color: #a12a1f; font-weight: 700; }
 /* V5.4: helyi mód – az űrlap előre megmondja, hogy az üzenet nem jut el az ötvöshöz */
 .form__local { margin: 4px 0 10px; padding: 10px 12px; border-left: 2px solid #a12a1f; background: #FBF3F1; font-size: .88rem; line-height: 1.45; color: var(--ink2); }
+.form__privacy { margin: 2px 0 10px; font-size: .82rem; color: var(--mute); line-height: 1.45; }
+.form__privacy a { color: inherit; }
+.inq__files { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0; }
+.inq__files a { display: block; width: 96px; height: 96px; border-radius: 6px; overflow: hidden; border: 1px solid var(--hair-s); background: #fff; }
+.inq__files img { width: 100%; height: 100%; object-fit: cover; }
+.inq__files .hint { flex-basis: 100%; margin: 0; }
+.abtn--danger { color: #a12a1f; border-color: #a12a1f; }

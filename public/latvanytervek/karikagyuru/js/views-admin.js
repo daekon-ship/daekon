@@ -2,10 +2,10 @@
    Adminfelület – nagy gombok, egyértelmű magyar feliratok, kevés lépés.
    Szerveroldali mentés és bejelentkezés: services/karikagyuru-api (bekötés: js/api.js).
    ========================================================================== */
-import { api, onApi, login, logout, settle, uploadPhoto, mailStatus, mailTest } from './api.js';
+import { api, onApi, login, logout, settle, uploadPhoto, mailStatus, mailTest, inquiryFileUrl, deleteInquiry, loadInquiries } from './api.js';
 import { store } from './store.js';
 import { COLORS, STYLES, SITES, SRC_LABEL, EXAMPLE_WEIGHTS } from './data.js';
-import { readiness, optionValues, optionReason, priceProduct, priceAll, diffPrices, defaultConfig, composition, ft, num, dec, pct, METALS, METAL_ORDER, isGold, diamond, refPrice, refWeight, exampleRing, allowedCats, sizeSfx, ctFmt, sizeRange } from './engine.js';
+import { readiness, optionValues, optionReason, priceProduct, shownPrice, priceAll, diffPrices, defaultConfig, composition, ft, num, dec, pct, METALS, METAL_ORDER, isGold, diamond, refPrice, refWeight, exampleRing, allowedCats, sizeSfx, ctFmt, sizeRange } from './engine.js';
 import { $, $$, esc, productMedia, toast as uiToast, modal, M, reduced, dateHu, dayHu } from './ui.js';
 /* Szerver módban a „Mentve” csak a szerver visszaigazolása után igaz: addig „Mentés folyamatban”. */
 const toast = (html, o) => uiToast(api.mode === 'server' && api.admin && /^Mentve/.test(html) ? html.replace(/^Mentve:?/, 'Mentés folyamatban:') : html, o);
@@ -1074,7 +1074,13 @@ function productEdit(el, id) {
         location.hash = '#/admin/gyuruk'; return;
       }
       const r = priceProduct(p, null, st.materials, st.settings);
-      const go = () => { store.updateProduct(id, (x) => { for (const k of Object.keys(x)) delete x[k]; Object.assign(x, clone(p)); }, `${p.code} adatai módosítva`); toast(`Mentve. ${esc(p.code)} ára: <b>${ft(r.final)}</b>`); location.hash = '#/admin/gyuruk'; };
+      const go = () => {
+        const res = store.updateProduct(id, (x) => { for (const k of Object.keys(x)) delete x[k]; Object.assign(x, clone(p)); }, `${p.code} adatai módosítva`);
+        toast(res.revoked
+          ? `Mentve. <b>${esc(p.code)}</b> szakmai adatai változtak, ezért a korábbi jóváhagyás visszavonva – a vásárló újra egyedi ajánlatot kér, amíg újra jóvá nem hagyja.`
+          : `Mentve. ${esc(p.code)} ára: <b>${r.final === null ? 'egyedi ajánlat' : ft(r.final)}</b>`, { ms: res.revoked ? 9000 : 3500 });
+        location.hash = '#/admin/gyuruk';
+      };
       if (r.lowMargin) {
         modal(`<div class="form"><h2>Alacsony árrés</h2><p>Ennél a gyűrűnél az árrés ${dec(Math.round(r.marginPct * 10) / 10)}%, kevesebb a beállított ${st.settings.minMarginPct}%-os minimumnál. Biztosan menti?</p>
           <div class="impact__btns"><button class="abtn abtn--xl" data-close>Vissza</button><button class="abtn abtn--gold abtn--xl" data-ok>Igen, mentem</button></div></div>`,
@@ -1273,7 +1279,7 @@ function formula(el) {
       const avg = tmp.reduce((a, p) => a + (old[p.id] ? (now[p.id] - old[p.id]) / old[p.id] : 0), 0) / tmp.length * 100;
       modal(`<div class="form"><h2>${x.label} gyűrűk munkadíja</h2><p>Mind a ${x.ids.length} „${x.label.toLowerCase()}” gyűrű munkadíja <b>${ft(v)}</b> lesz gyűrűnként. <b>${n} gyűrű</b> ára változik, átlagosan <b>${pct(avg)}</b>.</p>
         <div class="impact__btns"><button class="abtn abtn--xl" data-close>Mégsem</button><button class="abtn abtn--gold abtn--xl" data-ok>Alkalmazom</button></div></div>`,
-        { onMount: (box, close) => box.querySelector('[data-ok]').onclick = () => { close(); store.updateMany(x.ids, (p) => p.rings.forEach((r) => (r.labor = v)), `Munkadíj (${x.label.toLowerCase()}): ${ft(v)}/gyűrű`); toast(`${n} gyűrű ára frissült.`); formula(el); } });
+        { onMount: (box, close) => box.querySelector('[data-ok]').onclick = () => { close(); store.updateMany(x.ids, (p) => p.rings.forEach((r) => (r.labor = v)), `Munkadíj (${x.label.toLowerCase()}): ${ft(v)}/gyűrű`); toast(`${n} gyűrű ára frissült.${store.lastRevoked ? ` ${store.lastRevoked} korábban jóváhagyott gyűrű jóváhagyása visszavonva.` : ''}`); formula(el); } });
     }
   });
   calc();
@@ -1288,13 +1294,17 @@ function inquiries(el) {
     <p class="adm__lead">A weboldalon küldött kérések. A termékoldalról érkezőkben a cikkszám és a választott beállítás is benne van.</p>
     ${st.inquiries.length ? st.inquiries.map((q) => {
       const p = q.productId && store.product(q.productId);
-      const nowPrice = p && q.config ? priceProduct(p, q.config, st.materials, st.settings).final : null;
+      // Rögzíteni csak jóváhagyott, számolt árat lehet (nem jóváhagyott adatból számolt árat nem)
+      const sp = p && q.config ? shownPrice(p, q.config, st.materials, st.settings) : null;
+      const nowPrice = sp && sp.kind === 'calc' ? sp.final : null;
       return `<article class="inq inq--${q.status}">
         <header><b>${esc(q.name)}</b><span class="badge">${STATUS[q.status]}</span><span class="hint">${dateHu(q.at)} · ${q.type === 'konzultacio' ? 'időpontot kér' : q.type === 'egyedi' ? 'saját elképzelés' : q.type === 'telefon' ? 'telefonos ajánlat' : 'érdeklődés'}${q.day ? ` · ${dayHu(q.day)}` : ''}</span></header>
         <p><a href="tel:${esc(q.phone)}">${esc(q.phone)}</a>${q.email ? ` · <a href="mailto:${esc(q.email)}">${esc(q.email)}</a>` : ''}</p>
         ${q.notify === 'hiba' ? '<p class="inq__notify inq__notify--err" data-notify="hiba">Az e-mail-értesítés erről nem ment el – az érdeklődés itt megvan.</p>' : q.notify === 'elkuldve' ? '<p class="inq__notify" data-notify="elkuldve">E-mail-értesítés elküldve.</p>' : ''}
         ${q.summary ? `<pre>${esc(q.summary)}</pre>` : ''}
         ${q.message ? `<p class="inq__msg">„${esc(q.message)}”</p>` : ''}
+        ${(q.files || []).length ? `<div class="inq__files" data-inqfiles>${q.files.map((f, i) => `<a href="${esc(inquiryFileUrl(q.id, f.file))}" target="_blank" rel="noopener"><img src="${esc(inquiryFileUrl(q.id, f.file))}" alt="Csatolt referenciakép ${i + 1}" loading="lazy"></a>`).join('')}<p class="hint">Csatolt referenciakép – csak itt, belépve látható.</p></div>`
+          : q.images ? `<p class="hint">${q.images} kép volt kiválasztva, de nem töltődött fel.</p>` : ''}
         ${q.images ? `<p class="hint">Kiválasztott kép: ${q.images} db – a képeket az ügyfél a személyes egyeztetésre hozza, vagy e-mailben küldi.</p>` : ''}
         ${q.lockedPrice ? `<p class="ok">Rögzített ajánlati ár: <b>${ft(q.lockedPrice)}</b> (${dayHu(q.lockedAt)}) – az aranyár változása nem érinti.${nowPrice && nowPrice !== q.lockedPrice ? ` A mai kalkulált ár: ${ft(nowPrice)}.` : ''}</p>`
           : nowPrice ? `<p>Becsült ár a küldéskor: ${ft(q.estimate)} · ma: <b>${ft(nowPrice)}</b></p>` : ''}
@@ -1302,10 +1312,23 @@ function inquiries(el) {
           ${q.status === 'uj' ? `<button class="abtn" data-st="visszahivva" data-id="${q.id}">Visszahívtam</button>` : ''}
           ${nowPrice && !q.lockedPrice ? `<button class="abtn abtn--gold" data-lock="${q.id}">Ajánlat elfogadva – ár rögzítése (${ft(nowPrice)})</button>` : ''}
           ${q.status !== 'lezarva' ? `<button class="abtn" data-st="lezarva" data-id="${q.id}">Lezárás</button>` : ''}
+          ${api.mode === 'server' ? `<button class="abtn abtn--danger" data-inqdel="${q.id}">Végleges törlés</button>` : ''}
         </div></article>`;
     }).join('') : `<div class="note-card"><p>Még nincs érdeklődés.</p><p class="hint">Próbálja ki: a vásárlói nézetben nyisson meg egy gyűrűt, és nyomja meg az „Érdeklődés erről a gyűrűről” gombot.</p></div>`}`;
   el.addEventListener('click', (e) => {
-    const s = e.target.closest('[data-st]'), l = e.target.closest('[data-lock]');
+    const s = e.target.closest('[data-st]'), l = e.target.closest('[data-lock]'), dl = e.target.closest('[data-inqdel]');
+    if (dl) {
+      const q = S().inquiries.find((x) => x.id === dl.dataset.inqdel);
+      modal(`<div class="form"><h2>Érdeklődés végleges törlése</h2><p><b>${esc(q?.name || '')}</b> érdeklődése${(q?.files || []).length ? ` és ${q.files.length} csatolt képe` : ''} véglegesen törlődik. Nem vonható vissza.</p>
+        <div class="impact__btns"><button class="abtn abtn--xl" data-close>Mégse</button><button class="abtn abtn--danger abtn--xl" data-ok>Törlöm</button></div></div>`,
+        { onMount: (box, close) => box.querySelector('[data-ok]').onclick = async () => {
+          close();
+          const r = await deleteInquiry(dl.dataset.inqdel);
+          if (!r.ok) { uiToast(`<b>Nem sikerült törölni.</b> ${esc(r.error)}`, { ms: 9000 }); return; }
+          await loadInquiries(); uiToast('Törölve.'); inquiries(el);
+        } });
+      return;
+    }
     if (s) { store.updateInquiry(s.dataset.id, { status: s.dataset.st }); inquiries(el); }
     if (l) {
       const q = S().inquiries.find((x) => x.id === l.dataset.lock);

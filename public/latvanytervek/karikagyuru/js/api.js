@@ -119,8 +119,15 @@ async function reloadFromServer() {
 export async function settle() { clearTimeout(timer); if (api.save === 'pending') await flush(); else if (inflight) await inflight; }
 
 /* --- érdeklődések --- */
-async function sendInquiry(inq) {
-  const r = await call('POST', 'inquiry', inq);
+async function sendInquiry(inq, files = []) {
+  let r;
+  if (files.length) {
+    // Képekkel: egyetlen kérés – az érdeklődés és a képei együtt mentődnek, vagy egyik sem.
+    const fd = new FormData();
+    fd.append('payload', JSON.stringify(inq));
+    files.forEach((f) => fd.append('images[]', f, f.name));
+    r = await call('POST', 'inquiry', fd, { raw: true });
+  } else r = await call('POST', 'inquiry', inq);
   return r.ok ? { ok: true } : { ok: false, error: r.data.error || 'Az üzenet nem ment el. Kérjük, hívjon telefonon.' };
 }
 export async function loadInquiries() {
@@ -145,3 +152,7 @@ export async function uploadPhoto(file) {
 /* --- e-mail-értesítés (csak admin) --- */
 export async function mailStatus() { const r = await call('GET', 'mail-status'); return r.ok ? r.data.mail : null; }
 export async function mailTest() { const r = await call('POST', 'mail-test', {}); return r.ok ? { ok: true } : { ok: false, error: r.data.error || 'Ismeretlen hiba.' }; }
+
+/* --- érdeklődés csatolt képei és törlése (csak admin) --- */
+export const inquiryFileUrl = (id, file) => `${BASE}inquiry-file/${encodeURIComponent(id)}/${encodeURIComponent(file)}`;
+export async function deleteInquiry(id) { const r = await call('POST', 'inquiry-delete', { id }); return r.ok ? { ok: true } : { ok: false, error: r.data.error || 'Ismeretlen hiba.' }; }

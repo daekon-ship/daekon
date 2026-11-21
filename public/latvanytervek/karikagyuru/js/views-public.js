@@ -13,6 +13,8 @@ const price = (p, cfg) => shownPrice(p, cfg, S().materials, S().settings);
 const sentNote = (server, local) => (api.mode === 'server' ? server : local);
 /* Helyi mód (pl. GitHub Pages, nincs szerver): az üzenet NEM jut el az ötvöshöz – ezt az űrlap előre és utána is kimondja. */
 const LOCAL_DONE = `Az ötvöshöz nem jutott el: ez az oldal még nincs összekötve az ötvös levelezésével, az üzenet csak ebben a böngészőben tárolódott. Ha beszélni szeretnél vele, hívd: <a href="${BUSINESS.phoneHref}">${BUSINESS.phone}</a>, vagy írj: <a href="mailto:${BUSINESS.email}">${BUSINESS.email}</a>.`;
+/* Az ÜGYFÉL (karikagyuru.com) adatkezelési tájékoztatója – nem a DAEKON-é. A címe: data.js BUSINESS.adatkezeles. */
+const privacyLine = () => `<p class="form__privacy" data-privacy>A megadott adataidat a karikagyuru.com az ajánlatkérés megválaszolásához kezeli. Részletek: <a href="${BUSINESS.adatkezeles}" target="_blank" rel="noopener">Adatkezelési tájékoztató</a></p>`;
 const localNotice = () => (api.mode === 'server' ? '' : `<p class="form__local" data-localnote role="note">Ezen az oldalon az üzenet <b>nem jut el az ötvöshöz</b> – csak ebben a böngészőben marad. Elérhetőség: <a href="${BUSINESS.phoneHref}">${BUSINESS.phone}</a> · <a href="mailto:${BUSINESS.email}">${BUSINESS.email}</a></p>`);
 const demoMark = (txt = 'demó') => S().settings.showDemoMarks ? `<span class="demo-chip" title="Kitalált bemutató-alapanyagárakból számolva">${txt}</span>` : '';
 
@@ -272,7 +274,7 @@ export function home(el) {
   <section class="sec sec--paper" id="rendeles">
     <div class="wrap">
       <header class="sec__head" data-reveal>
-        <h2>Rendelés, előleg, garancia</h2>
+        <h2>Rendelés, előleg, jótállás</h2>
         <p class="sec__lead">Az ÁSZF lényege röviden.</p>
       </header>
       <ol class="terms">${TERMS.map(([t, d], i) => `<li data-reveal="${(i % 3) * 0.06}"><span class="terms__n">${i + 1}</span><h3>${t}</h3><p>${d}</p></li>`).join('')}</ol>
@@ -845,7 +847,7 @@ function specs(p, cfg, r) {
     ...(hasStones(p) ? [['Kövek', 'Kizárólag természetes gyémánt']] : []),
     ['Elkészítés', 'Nincs készleten, rendelésre elkészítjük'],
     ['Előleg', 'Egyedileg készülő gyűrűnél a termék árának fele, a személyes egyeztetésen'],
-    ['Garancia', 'Az átadástól számított 1 év jótállás'],
+    ['Jótállás', 'A hatályos jogszabályok szerint, a jótállási jegyen rögzített feltételekkel'],
   ];
   return `<h2>Részletek</h2><dl class="specs__dl">${rows.map(([a, b]) => `<div><dt>${a}</dt><dd>${b}</dd></div>`).join('')}</dl>`;
 }
@@ -884,6 +886,7 @@ export function inquiry(p, cfg, type = 'erdeklodes', onRequest = false) {
       <label class="field" data-datefield ${type === 'konzultacio' ? '' : 'hidden'}><span>Melyik nap lenne jó?</span><input class="input" name="nap" type="date"></label>
       <label class="field"><span>Üzenet</span><textarea class="input" name="uzenet" rows="3" placeholder="Pl. az esküvő időpontja, kérdés a méretről vagy egyedi tervről"></textarea></label>
       ${localNotice()}
+      ${privacyLine()}
       <p class="form__err" data-err hidden>Add meg a neved és a telefonszámod.</p>
       <button class="btn btn--dark btn--full" type="submit">Elküldöm</button>
 
@@ -991,9 +994,12 @@ export function custom(el, query) {
         <li class="cfg__step"><header><span class="cfg__n">3</span><h2>Miből?</h2></header>${chips('anyag', C_ANYAG)}<p class="hint">Aranynál a színt (sárga, fehér, rozé, akár kettő együtt) a konzultáción választod ki – a kezeden látszik igazán.</p></li>
         <li class="cfg__step"><header><span class="cfg__n">4</span><h2>Legyen benne gyémánt?</h2></header>${chips('gyemant', C_GYEMANT)}</li>
         <li class="cfg__step"><header><span class="cfg__n">5</span><h2>Van kép vagy rajz?</h2><span class="cfg__val">nem kötelező</span></header>
-          <label class="cfile"><input type="file" accept="image/*" multiple data-cfile hidden><span class="btn btn--line">Kép kiválasztása</span><small>Fotó egy gyűrűről, ami tetszik, vagy egy saját rajz. Legfeljebb 3 kép.</small></label>
+          <label class="cfile"><input type="file" accept="image/jpeg,image/png,image/webp" multiple data-cfile hidden><span class="btn btn--line">Kép kiválasztása</span><small>Fotó egy gyűrűről, ami tetszik, vagy egy saját rajz. Legfeljebb 3 kép (JPG, PNG vagy WebP, egyenként 8 MB).</small></label>
+          <p class="form__err" data-cfileerr hidden></p>
           <div class="cprev" data-cprev></div>
-          <p class="hint" data-cfilenote hidden>A kép csak itt jelenik meg előnézetként, az oldal nem tölti fel. Hozd el az egyeztetésre, vagy küldd el e-mailben: <a href="mailto:info@karikagyuru.com">info@karikagyuru.com</a>.</p>
+          <p class="hint" data-cfilenote hidden>${api.mode === 'server'
+            ? 'A képeket az üzeneteddel együtt elküldjük. Csak az ötvös látja őket, nem kerülnek nyilvánosságra.'
+            : `A kép csak itt jelenik meg előnézetként, az oldal nem tölti fel. Hozd el az egyeztetésre, vagy küldd el e-mailben: <a href="mailto:${BUSINESS.email}">${BUSINESS.email}</a>.`}</p>
         </li>
         <li class="cfg__step"><header><span class="cfg__n">6</span><h2>Mennyit szánnál rá?</h2><span class="cfg__val">nem kötelező</span></header>${chips('keret', C_KERET)}
           <p class="hint">Ha megadod, olyan megoldást keresünk, ami belefér. ${demoMark('demó sávok')}</p></li>
@@ -1006,6 +1012,7 @@ export function custom(el, query) {
         </li>
       </ol>
       ${localNotice()}
+      ${privacyLine()}
       <p class="form__err" data-cerr hidden></p>
       <button class="btn btn--dark btn--full" type="submit">Elküldöm az ötletem</button>
 
@@ -1049,7 +1056,14 @@ export function custom(el, query) {
   });
   form.addEventListener('change', (e) => {
     if (!e.target.matches('[data-cfile]')) return;
-    for (const f of e.target.files) if (customFiles.length < 3 && /^image\//.test(f.type)) customFiles.push({ name: f.name, url: URL.createObjectURL(f) });
+    const bad = [];
+    for (const f of e.target.files) {
+      if (!/^image\/(jpeg|png|webp)$/.test(f.type)) { bad.push(`„${f.name}”: csak JPG, PNG vagy WebP kép csatolható`); continue; }
+      if (f.size > 8e6) { bad.push(`„${f.name}”: túl nagy (legfeljebb 8 MB)`); continue; }
+      if (customFiles.length >= 3) { bad.push('legfeljebb 3 kép csatolható'); break; }
+      customFiles.push({ name: f.name, url: URL.createObjectURL(f), file: f });
+    }
+    const fe = $('[data-cfileerr]', form); fe.hidden = !bad.length; fe.textContent = bad.length ? `Nem csatoltuk: ${[...new Set(bad)].join('; ')}.` : '';
     e.target.value = ''; paintFiles(); paintSum();
   });
   form.addEventListener('submit', async (e) => {
@@ -1065,14 +1079,15 @@ export function custom(el, query) {
     ].join('\n');
     const n = customFiles.length;
     const res = await store.addInquiry({ type: 'egyedi', name: d.nev, phone: d.tel, email: d.email, day: d.konz ? d.nap : '', message: d.leiras.trim(), images: n,
-      productId: p?.id || null, code: p?.code || null, config: cfg ? JSON.parse(JSON.stringify(cfg)) : null, summary, estimate: null });
+      productId: p?.id || null, code: p?.code || null, config: cfg ? JSON.parse(JSON.stringify(cfg)) : null, summary, estimate: null },
+      customFiles.map((f) => f.file).filter(Boolean));
     if (!res.ok) { err.hidden = false; err.textContent = `${res.error} Telefon: +36 30 984 3090`; err.scrollIntoView({ block: 'center' }); return; }
     customFiles.forEach((f) => URL.revokeObjectURL(f.url)); customFiles = [];
     try { sessionStorage.removeItem(C_KEY); } catch { /* privát mód */ }
     $('.custom', el).innerHTML = `<div class="form form--done custom--done"><p class="kicker">${sentNote('Megvan', 'Nem ment el az ötvösnek')}</p><h2>Köszi, ${esc(d.nev.trim().split(' ').pop())}! ${sentNote('Hamarosan hívunk.', 'Az ötleted ebben a böngészőben maradt.')}</h2>
       <pre>${esc(summary)}</pre>${d.leiras.trim() ? `<p class="csum__txt">„${esc(d.leiras.trim())}”</p>` : ''}
       <p><b>Ár:</b> személyes egyeztetés alapján.</p>
-      <p class="fine">${sentNote(`Az ötleted megérkezett hozzánk${p ? ', a kiindulási gyűrű adataival együtt' : ''}.`, LOCAL_DONE)}${n ? ` A kiválasztott ${n} kép nem töltődött fel – hozd el az egyeztetésre, vagy küldd el e-mailben.` : ''}${sentNote(' Ha sürgős, hívj: <a href="tel:+36309843090">+36 30 984 3090</a>.', '')}</p>
+      <p class="fine">${sentNote(`Az ötleted megérkezett hozzánk${p ? ', a kiindulási gyűrű adataival együtt' : ''}.`, LOCAL_DONE)}${n ? sentNote(` A ${n} csatolt kép is megérkezett.`, ` A kiválasztott ${n} kép nem töltődött fel – hozd el az egyeztetésre, vagy küldd el e-mailben.`) : ''}${sentNote(' Ha sürgős, hívj: <a href="tel:+36309843090">+36 30 984 3090</a>.', '')}</p>
       <a class="btn btn--line" href="#/kollekcio">Megnézem a gyűrűket</a></div>`;
     window.scrollTo({ top: 0 });
   });

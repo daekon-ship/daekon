@@ -15,6 +15,8 @@ final class App
     private const LOGIN_TRIES = 5;            // 15 perc alatt
     private const INQ_PER_HOUR = 5;           // IP-nként
     private const INQ_STATUS = ['uj', 'visszahivva', 'elfogadva', 'lezarva'];
+    private const INQ_MAX_IMAGES = 3;
+    private const INQ_MAX_IMAGE_BYTES = 8_000_000;
 
     public function __construct(?string $dataDir = null)
     {
@@ -92,7 +94,9 @@ final class App
                 case 'POST /photo':     $this->postPhoto(); return;
                 case 'GET /mail-status': $this->json(['mail' => (new Mailer($this->data))->status()]); return;
                 case 'POST /mail-test': $this->mailTest(); return;
+                case 'POST /inquiry-delete': $this->deleteInquiry(); return;
             }
+            if ($method === 'GET' && preg_match('#^/inquiry-file/s?(\d+)/([a-f0-9]{32}\.jpg)$#', $path, $m)) { $this->serveInquiryFile((int) $m[1], $m[2]); return; }
             $this->fail(404, 'Nincs ilyen végpont.');
         } catch (HttpError $e) {
             $this->json(['error' => $e->getMessage()], $e->status);
@@ -314,8 +318,17 @@ final class App
         $ip = $this->ipHash();
         $admin = $this->isAdmin();   // az ötvös telefonos érdeklődést is felírhat: rá nem vonatkozik a korlát
         if (!$admin && $this->countAttempts('inquiry', $ip, 3600) >= self::INQ_PER_HOUR) $this->fail(429, 'Túl sok üzenet rövid idő alatt. Kérjük, telefonáljon.');
-        $in = $this->body();
+        // Referenciaképekkel együtt multipart kérés jön (payload = JSON, images[] = fájlok), egyébként JSON.
+        $multipart = str_contains(strtolower((string) ($_SERVER['CONTENT_TYPE'] ?? '')), 'multipart/form-data');
+        if ($multipart) {
+            if (!isset($_POST['payload'])) $this->fail(413, 'A képek együtt túl nagyok, vagy a feltöltés megszakadt. Legfeljebb 3 kép, egyenként 8 MB.');
+            if (strlen((string) $_POST['payload']) > 100_000) $this->fail(413, 'Túl hosszú üzenet.');
+            $in = json_decode((string) $_POST['payload'], true);
+            if (!is_array($in)) $this->fail(400, 'Hibás adat.');
+        } else $in = $this->body();
         if (trim((string) ($in['website'] ?? '')) !== '') { $this->json(['ok' => true]); return; }   // csapdamező robotoknak
+        // A képeket MÉG a mentés előtt ellenőrizzük és újrakódoljuk: hibás kép esetén semmi nem mentődik, és a látogató megtudja, miért.
+        $images = $multipart ? $this->readInquiryImages() : [];
         $name = trim((string) ($in['name'] ?? ''));
         $email = trim((string) ($in['email'] ?? ''));
         $phone = trim((string) ($in['phone'] ?? ''));
@@ -339,14 +352,37 @@ final class App
             'estimate' => is_numeric($in['estimate'] ?? null) ? (int) $in['estimate'] : null,
             'images' => is_numeric($in['images'] ?? null) ? max(0, min(20, (int) $in['images'])) : 0,
         ];
+        $clean['images'] = count($images);
         $status = 'uj';
         if ($admin) {
             if (in_array($in['status'] ?? '', self::INQ_STATUS, true)) $status = $in['status'];
             if (is_numeric($in['lockedPrice'] ?? null)) { $clean['lockedPrice'] = (int) $in['lockedPrice']; $clean['lockedAt'] = gmdate('c'); }
         }
+        $this->db->beginTransaction();
         $st = $this->db->prepare('INSERT INTO inquiry (body, status, ip_hash, created_at) VALUES (?, ?, ?, ?)');
         $st->execute([json_encode($clean, JSON_UNESCAPED_UNICODE), $status, $ip, gmdate('c')]);
         $id = (int) $this->db->lastInsertId();
+        if ($images) {
+            // Privát tárolás: az adatmappában (webgyökéren kívül), érdeklődésenként külön mappában, véletlen néven
+            $dir = $this->data . '/inquiry-files/' . $id;
+            $files = [];
+            try {
+                if (!is_dir($dir) && !mkdir($dir, 0700, true)) throw new RuntimeException('mkdir');
+                foreach ($images as $img) {
+                    $nm = bin2hex(random_bytes(16)) . '.jpg';
+                    if (file_put_contents($dir . '/' . $nm, $img['jpeg']) === false) throw new RuntimeException('write');
+                    $files[] = ['file' => $nm, 'w' => $img['w'], 'h' => $img['h'], 'bytes' => strlen($img['jpeg']), 'orig' => $img['orig']];
+                }
+                $clean['files'] = $files;
+                $this->db->prepare('UPDATE inquiry SET body = ? WHERE id = ?')->execute([json_encode($clean, JSON_UNESCAPED_UNICODE), $id]);
+                $this->db->commit();
+            } catch (Throwable $e) {
+                $this->db->rollBack();
+                $this->removeDir($dir);
+                error_log('kg-api: referenciakép mentése sikertelen: ' . $e->getMessage());
+                $this->fail(500, 'A képek mentése nem sikerült, ezért az üzenet sem ment el. Próbáld újra kép nélkül, vagy hívj minket.');
+            }
+        } else $this->db->commit();
         $this->addAttempt('inquiry', $ip);
         // Az érdeklődés már el van mentve. Az értesítés ezután megy; ha nem sikerül, az érdeklődés megmarad,
         // csak az állapota mutatja a hibát (a látogató sikeres visszajelzést kap, mert az üzenete megérkezett).
@@ -388,6 +424,84 @@ final class App
         $up = $this->db->prepare('UPDATE inquiry SET status = ?, body = ? WHERE id = ?');
         $up->execute([$status, json_encode($b, JSON_UNESCAPED_UNICODE), $id]);
         $this->json(['ok' => true]);
+    }
+
+    /** Referenciaképek ellenőrzése és újrakódolása (JPEG, max. 2000 px, EXIF nélkül). Hibánál 4xx, semmi nem mentődik. */
+    private function readInquiryImages(): array
+    {
+        $f = $_FILES['images'] ?? null;
+        if (!$f) return [];
+        $n = is_array($f['name']) ? count($f['name']) : 1;
+        $get = fn($k, $i) => is_array($f[$k]) ? $f[$k][$i] : $f[$k];
+        if ($n > self::INQ_MAX_IMAGES) $this->fail(422, 'Legfeljebb ' . self::INQ_MAX_IMAGES . ' kép csatolható.');
+        $out = [];
+        for ($i = 0; $i < $n; $i++) {
+            $orig = mb_substr((string) preg_replace('/[^\p{L}\p{N} ._-]+/u', '', (string) $get('name', $i)), 0, 60) ?: 'kep';
+            $err = (int) $get('error', $i);
+            if ($err === UPLOAD_ERR_NO_FILE) continue;
+            if ($err === UPLOAD_ERR_INI_SIZE || $err === UPLOAD_ERR_FORM_SIZE || (int) $get('size', $i) > self::INQ_MAX_IMAGE_BYTES) $this->fail(413, "A(z) „{$orig}” kép túl nagy (legfeljebb 8 MB).");
+            if ($err !== UPLOAD_ERR_OK) $this->fail(400, "A(z) „{$orig}” kép feltöltése megszakadt. Próbáld újra.");
+            $tmp = (string) $get('tmp_name', $i);
+            $info = @getimagesize($tmp);
+            if (!$info || !in_array($info[2], [IMAGETYPE_JPEG, IMAGETYPE_PNG, IMAGETYPE_WEBP], true)) $this->fail(415, "A(z) „{$orig}” nem JPG, PNG vagy WebP kép.");
+            if ($info[0] * $info[1] > 40_000_000) $this->fail(413, "A(z) „{$orig}” felbontása túl nagy.");
+            $src = match ($info[2]) { IMAGETYPE_JPEG => @imagecreatefromjpeg($tmp), IMAGETYPE_PNG => @imagecreatefrompng($tmp), IMAGETYPE_WEBP => @imagecreatefromwebp($tmp) };
+            if (!$src) $this->fail(415, "A(z) „{$orig}” kép nem olvasható.");
+            [$w, $h] = [$info[0], $info[1]];
+            $k = min(1, 2000 / max($w, $h));
+            $nw = max(1, (int) round($w * $k)); $nh = max(1, (int) round($h * $k));
+            $dst = imagecreatetruecolor($nw, $nh);
+            imagefill($dst, 0, 0, imagecolorallocate($dst, 255, 255, 255));
+            imagecopyresampled($dst, $src, 0, 0, 0, 0, $nw, $nh, $w, $h);
+            ob_start(); imagejpeg($dst, null, 85); $jpeg = (string) ob_get_clean();
+            $out[] = ['jpeg' => $jpeg, 'w' => $nw, 'h' => $nh, 'orig' => $orig];
+        }
+        return $out;
+    }
+
+    /** Referenciakép megtekintése – csak bejelentkezett adminnak, gyorsítótárazás nélkül. */
+    private function serveInquiryFile(int $id, string $name): void
+    {
+        $file = $this->data . '/inquiry-files/' . $id . '/' . $name;
+        if (!is_file($file)) $this->fail(404, 'Nincs ilyen kép.');
+        header('Content-Type: image/jpeg');
+        header('Cache-Control: private, no-store');
+        header('Content-Disposition: inline');
+        header('Content-Length: ' . filesize($file));
+        readfile($file);
+    }
+
+    /** Érdeklődés végleges törlése a csatolt képekkel együtt (adatkezelési kérésre, megőrzési idő lejártakor). */
+    private function deleteInquiry(): void
+    {
+        $in = $this->body();
+        $id = (int) preg_replace('/^s/', '', (string) ($in['id'] ?? '0'));
+        $st = $this->db->prepare('DELETE FROM inquiry WHERE id = ?');
+        $st->execute([$id]);
+        if ($st->rowCount() === 0) $this->fail(404, 'Nincs ilyen érdeklődés.');
+        $this->removeDir($this->data . '/inquiry-files/' . $id);
+        $this->json(['ok' => true]);
+    }
+
+    /** Megőrzési idő: a megadott napnál régebbi érdeklődések törlése (bin/purge.php hívja). Visszatér: törölt darab. */
+    public function purgeInquiries(int $days, bool $onlyClosed = true): int
+    {
+        $cut = gmdate('c', time() - $days * 86400);
+        $sql = 'SELECT id FROM inquiry WHERE created_at < ?' . ($onlyClosed ? " AND status = 'lezarva'" : '');
+        $st = $this->db->prepare($sql); $st->execute([$cut]);
+        $ids = $st->fetchAll(PDO::FETCH_COLUMN);
+        foreach ($ids as $id) {
+            $this->db->prepare('DELETE FROM inquiry WHERE id = ?')->execute([$id]);
+            $this->removeDir($this->data . '/inquiry-files/' . (int) $id);
+        }
+        return count($ids);
+    }
+
+    private function removeDir(string $dir): void
+    {
+        if (!is_dir($dir)) return;
+        foreach (glob($dir . '/*') ?: [] as $f) @unlink($f);
+        @rmdir($dir);
     }
 
     /** Próbalevél a beállított címre – csak az admin kifejezett kérésére (gombnyomás). */

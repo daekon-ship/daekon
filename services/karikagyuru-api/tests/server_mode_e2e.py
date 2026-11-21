@@ -121,6 +121,25 @@ async def rest(b, adm, vis, errs, img):
     inq = await adm.inner_text('#adm-main')
     check('admin: a látogató érdeklődése megjelenik, a gyűrű cikkszámával', 'Próba Péter' in inq and '81194' in inq, inq[:200].replace('\n', ' | '))
 
+    print('Saját ötlet referenciaképpel (mobil)')
+    await vis.goto(B + '#/sajat'); await vis.reload(); await vis.wait_for_timeout(1200)
+    check('saját ötlet: adatkezelési link az űrlap mellett, nincs „nem jut el” figyelmeztetés', await vis.locator('.custom [data-privacy] a').count() == 1 and await vis.locator('.custom [data-localnote]').count() == 0)
+    await vis.set_input_files('[data-cfile]', img); await vis.wait_for_timeout(400)
+    note = await vis.inner_text('[data-cfilenote]')
+    check('a kép kiválasztása után: „csak az ötvös látja”', 'Csak az ötvös látja' in note, note)
+    await vis.fill('[name="leiras"]', 'Ilyen gyűrűt szeretnénk, csak vékonyabban.')
+    await vis.fill('.custom [name="nev"]', 'Kép Kornél'); await vis.fill('.custom [name="tel"]', '+36 30 765 4321')
+    await vis.locator('.custom button[type="submit"]').click(); await vis.wait_for_timeout(1800)
+    done = await vis.inner_text('.custom--done') if await vis.locator('.custom--done').count() else ''
+    check('saját ötlet: „a csatolt kép is megérkezett”', 'kép is megérkezett' in done, done[:160])
+    await adm.goto(B + '#/admin/erdeklodesek'); await adm.reload(); await adm.wait_for_timeout(1800)
+    art = adm.locator('.inq', has_text='Kép Kornél')
+    okimg = await art.locator('[data-inqfiles] img').first.evaluate("(i) => new Promise((r) => { if (i.complete) r(i.naturalWidth > 0); else { i.onload = () => r(i.naturalWidth > 0); i.onerror = () => r(false); } })") if await art.locator('[data-inqfiles] img').count() else False
+    check('admin: a csatolt referenciakép látszik az érdeklődésnél', okimg)
+    src = await art.locator('[data-inqfiles] img').first.get_attribute('src') if await art.locator('[data-inqfiles] img').count() else ''
+    st_, _ = await vis.evaluate(f"(async () => {{ const r = await fetch('{src}'); return [r.status, 0]; }})()") if src else (0, 0)
+    check('látogató böngészőjéből ugyanaz a kép nem nyitható meg (401)', st_ == 401, st_)
+
     print('Képfeltöltés')
     await adm.goto(B + '#/admin/fotok'); await adm.wait_for_timeout(1000)
     await adm.set_input_files(f'[data-photo="{PAIR}"]', img)
