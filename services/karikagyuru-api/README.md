@@ -25,19 +25,20 @@ Szükséges: PHP 8.1+, `pdo_sqlite`, `gd`, `session`, `json`.
 | Végpont | Ki érheti el | Mire való |
 |---|---|---|
 | `GET /api/health` | bárki | él-e, be van-e állítva jelszó |
-| `GET /api/state` | bárki | árak, gyűrűk, szabályok (érdeklődőadat nélkül) |
+| `GET /api/state` | bárki: nyilvános nézet · admin: teljes állapot | látogatónak csak jóváhagyott árak és a nyilvános oldalhoz szükséges adatok (beszerzési ár, felár, árnapló, érdeklődés nélkül) |
 | `POST /api/inquiry` | bárki | ajánlatkérés rögzítése (ellenőrzés, robotcsapda, óránként 5/IP) |
 | `GET /api/photo/<név>.jpg` | bárki | feltöltött termékfotó |
 | `POST /api/login`, `POST /api/logout`, `GET /api/me` | – | belépés jelszóval, munkamenet |
 | `PUT /api/state` | admin + CSRF | mentés új változatként; ütközésnél 409, nem ír felül |
 | `GET /api/versions`, `POST /api/revert` | admin | változatok listája, visszaállítás |
-| `GET /api/inquiries`, `POST /api/inquiry-status` | admin | érdeklődések, állapotuk |
+| `GET /api/inquiries`, `POST /api/inquiry-status` | admin | érdeklődések, állapotuk, e-mail-értesítés állapota |
+| `GET /api/mail-status`, `POST /api/mail-test` | admin (+CSRF) | e-mail-beállítás állapota (jelszó nélkül), próbalevél gombnyomásra |
 | `POST /api/photo` | admin + CSRF | képfeltöltés (JPG/PNG/WebP, max. 8 MB → optimalizált JPEG, max. 2400 px, az eredeti nem marad meg) |
 
 Biztonság: jelszó `password_hash`-sel tárolva; HttpOnly + SameSite=Strict süti (HTTPS-en Secure);
 CSRF-jel minden módosításnál; 5 hibás belépés után 15 perc zárolás; a látogató nem kap sütit;
 IP-cím helyett napi sózott lenyomat; a feltöltött kép újrakódolva (EXIF nélkül), véletlen néven;
-az adatmappa a webgyökéren kívül. E-mail-küldés **szándékosan nincs** benne.
+az adatmappa a webgyökéren kívül. E-mail-értesítés új érdeklődésről: `src/Mailer.php`, alapból kikapcsolva (beállítás: `TELEPITES.md` 7. pont).
 
 A szerver csak szerkezetet és értéktartományt ellenőriz (pl. nincs negatív grammár, titánnak nincs grammára).
 Ez **nem szakmai jóváhagyás** – azt továbbra is az ötvös adja.
@@ -61,8 +62,9 @@ KG_DATA=/tmp/kg-adat php -S 127.0.0.1:8792 dev/router.php
 ## Teszt
 
 ```sh
-python3 tests/api_test.py              # 60 végpont-ellenőrzés, saját ideiglenes adatmappával
-python3 tests/server_mode_e2e.py       # 22 böngészős ellenőrzés: oldal + API együtt
+python3 tests/api_test.py              # 87 végpont-ellenőrzés (köztük a nyilvános nézet szivárgásvizsgálata), saját ideiglenes adatmappával
+python3 tests/server_mode_e2e.py       # 25 böngészős ellenőrzés: oldal + API együtt
+python3 tests/mail_test.py             # 24 ellenőrzés: e-mail-értesítés helyi SMTP-álszerverrel (valódi levél nem megy ki)
 python3 tests/server_failures_e2e.py   # 17 ellenőrzés: API-kiesés, sikertelen mentés, lejárt belépés, sikertelen érdeklődés
 ```
 
@@ -92,5 +94,5 @@ Részletes ellenőrzőlista: `public/latvanytervek/karikagyuru/docs/TELEPITES.md
 2. Kipróbálás a tényleges tárhelyen (PHP-verzió, írási jog, HTTPS, `.htaccess`/nginx átirányítás).
 3. Mentési rend az adatmappára (napi másolat), és annak kipróbált visszatöltése.
 4. Adatkezelési tájékoztató és megőrzési idő az érdeklődőadatokra (az ügyféllel és jogilag egyeztetve).
-5. Értesítés új érdeklődésről (e-mail) – csak jóváhagyás és valódi tesztlevél után.
+5. ~~Értesítés új érdeklődésről~~ – megírva; bekapcsolni csak jóváhagyott címmel és SMTP-adatokkal, próbalevéllel.
 6. Független biztonsági átnézés élesítés előtt.

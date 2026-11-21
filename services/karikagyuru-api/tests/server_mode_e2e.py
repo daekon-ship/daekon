@@ -53,6 +53,7 @@ async def main():
             p0 = await price_on_catalog(vis)
             check('a látogató a beépített árakat látja (még nincs mentett változat)', p0 and p0 > 100000, p0)
             check('látogatónak nincs kezelőfelülethez tartozó sütije', not any(c['name'] == 'kg_admin' for c in await vis.context.cookies()))
+            st_pub = await vis.evaluate("async () => { const { store } = await import('./js/store.js'); const s = store.get(); return { pub: !!s.public, g: s.materials.gold24 ?? null, h: (s.history || []).length, mk: s.settings.markupMetal ?? null }; }")
 
             print('Belépés')
             await adm.goto(B + '#/admin/alapanyag'); await adm.wait_for_timeout(1200)
@@ -80,6 +81,10 @@ async def main():
             await vis.reload(); await vis.wait_for_timeout(1300)
             check('látogató: jóváhagyott gyűrűn megjelenik a beállítás és a számolt ár', await vis.locator('[data-locked]').count() == 0 and await vis.locator('[data-steps] .cfg__step').count() >= 3 and 'Becsült ár' in await vis.inner_text('[data-pricebox]'))
 
+            st_pub = await vis.evaluate("async () => { const { store } = await import('./js/store.js'); const s = store.get(); return { pub: !!s.public, g: s.materials.gold24 ?? null, h: (s.history || []).length, mk: s.settings.markupMetal ?? null }; }")
+            check('látogató böngészőjében a nyilvános nézet van: nincs beszerzési ár, felár, árnapló', st_pub['pub'] and st_pub['g'] is None and st_pub['mk'] is None and st_pub['h'] == 0, st_pub)
+            st_adm = await adm.evaluate("async () => { const { store } = await import('./js/store.js'); const s = store.get(); return { pub: !!s.public, g: s.materials.gold24 ?? null, h: (s.history || []).length }; }")
+            check('admin böngészőjében a teljes állapot van (beszerzési ár, árnapló)', not st_adm['pub'] and st_adm['g'] and st_adm['h'] > 0, st_adm)
             print('Árváltoztatás a szerveren')
             p0 = await price_on_catalog(vis)
             await adm.goto(B + '#/admin/alapanyag'); await adm.wait_for_timeout(900)
@@ -106,6 +111,8 @@ async def rest(b, adm, vis, errs, img):
     print('Érdeklődés a látogatótól')
     await vis.goto(B + f'#/gyuru/{PAIR}'); await vis.wait_for_timeout(1300)
     await vis.locator('.pdp__ctas [data-inquire="erdeklodes"]').click(); await vis.wait_for_timeout(500)
+    ftxt = await vis.inner_text('.modal')
+    check('szerver módban nincs „nem jut el az ötvöshöz” figyelmeztetés', 'nem jut el' not in ftxt and await vis.locator('[data-localnote]').count() == 0)
     await vis.fill('[name="nev"]', 'Próba Péter'); await vis.fill('[name="tel"]', '+36 30 123 4567')
     await vis.locator('.modal form button[type="submit"]').first.click(); await vis.wait_for_timeout(1200)
     done = await vis.inner_text('.form--done') if await vis.locator('.form--done').count() else ''

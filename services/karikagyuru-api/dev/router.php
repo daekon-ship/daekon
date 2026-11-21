@@ -9,6 +9,7 @@ if (str_starts_with($path, '/api/') || $path === '/api') {
     $data = rtrim(getenv('KG_DATA') ?: '', '/');
     if ($data !== '' && is_file($data . '/.api-down')) { http_response_code(503); header('Content-Type: application/json'); echo '{"error":"A szolgáltatás nem érhető el."}'; return true; }
     require __DIR__ . '/../src/App.php';
+    require __DIR__ . '/../src/Mailer.php';
     (new App())->handle();
     return true;
 }
