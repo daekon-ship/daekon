@@ -250,7 +250,7 @@ final class App
         $this->json(['version' => $v, 'savedAt' => gmdate('c')]);
     }
 
-    private const PUB_PRODUCT = ['id', 'code', 'name', 'real', 'listaAr', 'img', 'priceOnRequest', 'imgFill', 'unknownColor', 'kind', 'baseColor',
+    private const PUB_PRODUCT = ['id', 'code', 'name', 'real', 'img', 'priceOnRequest', 'imgFill', 'unknownColor', 'kind', 'baseColor',
         'colors', 'metals', 'metalNotes', 'style', 'visible', 'sites', 'widths', 'stoneOptional', 'fixedWeight', 'approved', 'opts', 'consult', 'added'];
     private const PUB_RING = ['label', 'refSize', 'refWidth', 'share', 'weight', 'weights', 'other', 'stoneRule', 'thickness', 'sizeMin', 'sizeMax'];
     /** A nyilvános oldal által használt beállítások. Felár, anyagveszteség, munkadíj-szorzó, árrés-küszöb NEM megy ki. */

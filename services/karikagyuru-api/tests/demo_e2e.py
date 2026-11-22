@@ -74,7 +74,7 @@ async def main():
             over = await vis.evaluate('document.documentElement.scrollWidth - innerWidth')
             check('telefonon nincs oldalra görgetés a konfigurátorban', over <= 0, over)
             await vis.goto(B + f'#/gyuru/{PEND}'); await vis.wait_for_timeout(1200)
-            check('jóváhagyásra váró mintagyűrű: nincs beállítás, listaár', await vis.locator('[data-locked]').count() == 1 and 'listaár' in (await vis.inner_text('[data-plabel]')).lower())
+            check('jóváhagyásra váró mintagyűrű: nincs beállítás, „Egyedi árajánlat”, régi listaár nélkül', await vis.locator('[data-locked]').count() == 1 and 'Egyedi' in await vis.inner_text('[data-cprice]') and 'listaár' not in (await vis.inner_text('.pdp')).lower())
 
             print('Admin: központi grammár és jóváhagyás')
             await adm.goto(B + '#/admin/alapanyag'); await adm.wait_for_timeout(1200)
@@ -89,7 +89,9 @@ async def main():
             await vis.goto(B + f'#/gyuru/{A1}'); await vis.reload(); await vis.wait_for_timeout(1300)
             p4 = await price(vis); check('központi 14K grammár emelése → a mintagyűrű ára nőtt', p4 > p0, (p0, p4))
             await adm.goto(B + f'#/admin/sorban/{PEND}'); await adm.wait_for_timeout(900)
-            await adm.click('[data-approve]'); await adm.wait_for_timeout(2000)
+            est = await adm.inner_text('[data-qestimated]') if await adm.locator('[data-qestimated]').count() else ''
+            check('jóváhagyás: a becsült adatok megerősítése nélkül a gomb tiltva', 'becs' in est and await adm.locator('[data-approve]').is_disabled(), est[:100])
+            await adm.check('[data-qconfirm]'); await adm.click('[data-approve]'); await adm.wait_for_timeout(2000)
             await vis.goto(B + f'#/gyuru/{PEND}'); await vis.reload(); await vis.wait_for_timeout(1300)
             check('jóváhagyás után a harmadik mintagyűrű is beállítható, számolt árral', await vis.locator('[data-locked]').count() == 0 and 'Becsült ár' in await vis.inner_text('[data-plabel]'))
             await adm.goto(B + '#/admin/jovahagyas'); await adm.wait_for_timeout(900)

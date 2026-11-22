@@ -1853,3 +1853,13 @@ h3, .cfg__step > header h2, .ringbox__t, .opt__label { font-family: var(--sans);
 .demo-strip b { font-weight: 700; letter-spacing: .02em; }
 .demo-strip span { opacity: .88; }
 .is-demo [data-plabel]::after { content: " · szemléltető mintaár"; font-weight: 500; color: var(--mute); }
+/* V5.6 – bemutatóban minden ár mellett jelölés */
+.is-demo .card__label[data-clabel]::after, .is-demo .calc__price > span::after, .is-demo .lessis__from::after, .is-demo [data-mlabel]::after, .is-demo [data-dlabel]::after { content: " · mintaár"; color: var(--mute); font-weight: 500; }
+/* V5.6 – szakmai ellenőrzőlista (jóváhagyás sorban, gyűrű szerkesztése) */
+.qcheck { border: 1px solid var(--sand); border-radius: 10px; padding: .8rem 1rem; margin: 1rem 0; background: var(--ivory); }
+.qcheck h3 { font-size: 1.02rem; margin: 0 0 .4rem; }
+.qcheck--bad { border-color: #e2b4a8; background: #fdf6f4; }
+.qcheck ul, .echeck__miss, .echeck__est { margin: .3rem 0 .6rem 1.1rem; padding: 0; }
+.qcheck li, .echeck__miss li, .echeck__est li { margin: .15rem 0; }
+.abtn[disabled] { opacity: .45; cursor: not-allowed; }
+.check.is-disabled { opacity: .6; }

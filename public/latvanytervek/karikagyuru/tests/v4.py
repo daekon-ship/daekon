@@ -1,7 +1,7 @@
 """V4 böngészős tesztek: öt fő adminfeladat, árverziók, fotók, gyűrűnkénti szabályok. Futtatás: python3 tests/v4.py [alap-URL]"""
 import asyncio, base64, re, sys, os, tempfile
 from playwright.async_api import async_playwright
-import os, sys as _sys; _sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from kg_common import approve_all
+import os, sys as _sys; _sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from kg_common import approve_all, approve_in_queue
 
 B = sys.argv[1] if len(sys.argv) > 1 else 'http://localhost:8765/latvanytervek/karikagyuru/'
 PLAIN = 'maz-81194-81195-w'
@@ -91,16 +91,21 @@ async def run(b, w, h, mob):
     await pg.wait_for_timeout(400)
     await pg.goto(B + f'#/gyuru/{PLAIN}'); await pg.wait_for_timeout(900)
     check(f'{tag} visszavont jóváhagyás után a vásárlói oldalon nincs beállítás', await pg.locator('[data-locked]').count() == 1)
-    await pg.goto(B + f'#/admin/sorban/{PLAIN}'); await pg.wait_for_timeout(600); await pg.click('[data-approve]'); await pg.wait_for_timeout(400)
+    # V5.6: bekapcsolt, de jóvá nem hagyott szélességválasztással és vastagság nélkül a gyűrű sem hagyható jóvá
+    await pg.goto(B + f'#/admin/sorban/{PLAIN}'); await pg.wait_for_timeout(600)
+    miss = await pg.inner_text('[data-qmissing]') if await pg.locator('[data-qmissing]').count() else ''
+    check(f'{tag} szakmai jóváhagyás hiányos adattal tiltva: vastagság és a választható szélességek jóváhagyása kell', 'vastagság' in miss and 'választható szélességek jóváhagyása' in miss and await pg.locator('[data-approve]').is_disabled(), miss.replace('\n', ' | ')[:160])
+    await pg.goto(B + f'#/admin/gyuru/{PLAIN}'); await pg.wait_for_timeout(700)
+    for i in range(await pg.locator('[data-p$=".thickness"]').count()): await pg.locator('[data-p$=".thickness"]').nth(i).fill('1,8')
+    await pg.check('[data-b="opts.width.approved"]'); await pg.wait_for_timeout(300)
+    await pg.click('[data-save]'); await pg.wait_for_timeout(700)
+    await pg.goto(B + f'#/admin/sorban/{PLAIN}'); await pg.wait_for_timeout(600)
+    check(f'{tag} adatok pótolva: nincs hiányzó kötelező adat', await pg.locator('[data-qmissing]').count() == 0)
+    await approve_in_queue(pg); await pg.wait_for_timeout(500)
     await pg.goto(B + f'#/gyuru/{PLAIN}'); await pg.wait_for_timeout(900)
-    fixed = await pg.locator('[data-width-fixed]').first.inner_text()
-    check(f'{tag} engedélyezve, de jóváhagyás nélkül: továbbra sem választható', await pg.locator('[data-width]').count() == 0 and 'még nem hagyta jóvá' in fixed, fixed)
     cons = await pg.inner_text('[data-consult]')
     await pg.click('[data-size="0|1"]'); await pg.click('[data-size="0|1"]'); await pg.wait_for_timeout(300)
     check(f'{tag} gyűrűnkénti mérethatár (legfeljebb 56) és egyeztetendő lista érvényesül', await pg.locator('[data-size="0|1"]').is_disabled() and (await pg.locator('.ringbox .stepper output').first.inner_text()) == '56' and 'Kalapált felület' in cons)
-    await pg.goto(B + f'#/admin/gyuru/{PLAIN}'); await pg.wait_for_timeout(700)
-    await pg.check('[data-b="opts.width.approved"]'); await pg.wait_for_timeout(300)
-    await pg.click('[data-save]'); await pg.wait_for_timeout(700)
     await pg.goto(B + f'#/gyuru/{PLAIN}'); await pg.wait_for_timeout(900); pa = await cprice()
     ws = await pg.locator('[data-width^="0|"] b').all_inner_texts()
     check(f'{tag} jóváhagyás után 0,5 mm-es lépésekben választható', ws == ['3,5 mm', '4 mm', '4,5 mm', '5 mm', '5,5 mm', '6 mm'], str(ws))

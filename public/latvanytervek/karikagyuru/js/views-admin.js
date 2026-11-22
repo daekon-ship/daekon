@@ -5,7 +5,7 @@
 import { api, onApi, login, logout, settle, uploadPhoto, mailStatus, mailTest, inquiryFileUrl, deleteInquiry, loadInquiries } from './api.js';
 import { store } from './store.js';
 import { COLORS, STYLES, SITES, SRC_LABEL } from './data.js';
-import { readiness, optionValues, optionReason, priceProduct, shownPrice, priceAll, diffPrices, defaultConfig, composition, ft, num, dec, pct, METALS, METAL_ORDER, isGold, diamond, refPrice, refWeight, exampleRing, allowedCats, sizeSfx, ctFmt, sizeRange } from './engine.js';
+import { approvalCheck, readiness, optionValues, optionReason, priceProduct, shownPrice, priceAll, diffPrices, defaultConfig, composition, ft, num, dec, pct, METALS, METAL_ORDER, isGold, diamond, refPrice, refWeight, exampleRing, allowedCats, sizeSfx, ctFmt, sizeRange } from './engine.js';
 import { $, $$, esc, productMedia, toast as uiToast, modal, M, reduced, dateHu, dayHu, checkPhotos, photos as probe } from './ui.js';
 /* Szerver módban a „Mentve” csak a szerver visszaigazolása után igaz: addig „Mentés folyamatban”. */
 const toast = (html, o) => uiToast(api.mode === 'server' && api.admin && /^Mentve/.test(html) ? html.replace(/^Mentve:?/, 'Mentés folyamatban:') : html, o);
@@ -213,7 +213,7 @@ function approvals(el) {
         <p class="golive__pre" data-golive-pre><b>Ez csak előzetes ellenőrzés.</b> Valódi élesítéshez szerveroldali ellenőrzés és bejelentkezéshez kötött kezelőfelület szükséges.</p>
         ${rd.invalid ? `<ul class="golive__list golive__list--bad" data-golive-bad>${rd.blockers.filter((b) => b.kind === 'ervenytelen').slice(0, 8).map((b) => `<li>${esc(b.label)}</li>`).join('')}${rd.invalid > 8 ? `<li>… és még ${rd.invalid - 8}</li>` : ''}</ul>` : ''}
         ${rd.ready ? '' : `<ul class="golive__list">${Object.entries(rd.byGroup).map(([g, c]) => `<li><b>${c}</b> ${G[g]}</li>`).join('')}</ul>`}
-        <p class="hint">A vásárló csak ott lát számolt árat, ahol a gyűrű és minden felhasznált árelem (grammár, kőár, számítási szabály) jóváhagyott. Máshol a mostani listaárat (alapváltozat) vagy „egyedi ajánlat”-ot lát.</p>
+        <p class="hint">A vásárló csak ott lát számolt árat, ahol a gyűrű és minden felhasznált árelem (grammár, kőár, számítási szabály) jóváhagyott. Máshol „Egyedi árajánlat”-ot lát; a régi listaár csak itt, az adminban szerepel összehasonlításra.</p>
         <button class="abtn abtn--gold abtn--xl" type="button" data-golive ${rd.ready ? '' : 'disabled'}>Élesítésre kész jelölés</button>
       </section>`; })()}
     <section class="ebox"><h2>Árak – alapanyag és grammár <small>${count(mats)} vár</small></h2><ul class="aplist">${mats.join('')}</ul></section>
@@ -393,7 +393,7 @@ function rulesPage(el) {
     el.innerHTML = `
       <h1 class="adm__h1">Szabályok gyűrűnként</h1>
       <p class="adm__lead">Minden gyűrűnél Ön dönti el, mit állíthat át rajta a vásárló: miből készülhet, milyen méretben, hány és mekkora kővel, választható-e a szélesség. Amit nem enged, ahhoz személyes egyeztetés kell.</p>
-      <p class="rules__sum"><b>${ok}</b> gyűrűt hagyott jóvá a ${st.products.length}-ből. ${ok < st.products.length ? 'A többinél a vásárló nem állíthat semmit, és csak a mostani listaárat vagy „egyedi ajánlat”-ot lát.' : ''}</p>
+      <p class="rules__sum"><b>${ok}</b> gyűrűt hagyott jóvá a ${st.products.length}-ből. ${ok < st.products.length ? 'A többinél a vásárló nem állíthat semmit, és „Egyedi árajánlat”-ot lát.' : ''}</p>
       <p><a class="abtn abtn--gold abtn--xl" href="#/admin/sorban">Jóváhagyás sorban →</a></p>
       <div class="ptools"><label class="check check--lg"><input type="checkbox" data-only ${only ? 'checked' : ''}><span>Csak ami jóváhagyásra vár</span></label></div>
       <ul class="rules">${list.slice(0, 60).map((p) => { const wv = optionValues(p, 'width');
@@ -433,13 +433,14 @@ function queue(el, startId) {
     }
     const p = cur, cfg = defaultConfig(p), r = priceProduct(p, cfg, st.materials, st.settings);
     const wv = optionValues(p, 'width'), tv = optionValues(p, 'thickness');
+    const ac = approvalCheck(p, st.materials, st.settings);
     const diff = p.listaAr && r.final ? r.final - p.listaAr : null;
     el.innerHTML = `
       <h1 class="adm__h1">Gyűrűk jóváhagyása</h1>
       <div class="qbar"><span style="width:${pct_}%"></span></div>
       <p class="qbar__t"><b>${ok} / ${total}</b> jóváhagyva · még ${total - ok}</p>
       ${lastApproved ? `<p class="qundo" data-qundo role="status"><span>Jóváhagyva: <b>${esc(lastApproved.code)}</b></span><button class="abtn" type="button" data-undo>Visszavonás</button></p>` : ''}
-      <p class="adm__lead">Nézze át a gyűrű adatait. Ha rendben vannak, hagyja jóvá: ettől kezdve a vásárló online beállíthatja ezt a gyűrűt (csak az itt látható keretek között), és jóváhagyott árak mellett számolt árat lát. Amíg nincs jóváhagyva, a gyűrű a katalógusban marad, de csak a mostani listaárat vagy „egyedi ajánlat”-ot mutat.</p>
+      <p class="adm__lead">Nézze át a gyűrű adatait. Ha rendben vannak, hagyja jóvá: ettől kezdve a vásárló online beállíthatja ezt a gyűrűt (csak az itt látható keretek között), és jóváhagyott árak mellett számolt árat lát. Amíg nincs jóváhagyva, a gyűrű a katalógusban marad, „Egyedi árajánlat” jelöléssel – a régi listaár a vásárlónak nem jelenik meg.</p>
       <article class="qcard" data-qcard="${p.id}">
         <div class="qcard__img">${productMedia(p, { large: true })}</div>
         <div class="qcard__body">
@@ -450,31 +451,39 @@ function queue(el, startId) {
             <div><dt>Színek</dt><dd>${p.colors.map((c) => (COLORS[c] || { label: c }).label).join(', ') || '–'}</dd></div>
             ${p.rings.map((rg) => { const [lo, hi] = sizeRange(rg); return `
             <div class="qfacts__ring"><dt>${esc(rg.label)}</dt><dd>
-              <span>Tömeg 54-es méretre: <b>${rg.weight ? dec(rg.weight) + ' g' : 'nincs megadva'}</b> <small>(${p.real ? 'a mostani listaárból visszaszámolt becslés' : 'megadott érték'})</small></span>
+              <span>Tömeg 54-es méretre: <b>${rg.weight ? dec(rg.weight) + ' g' : 'nincs megadva'}</b> <small>(${p.real && !rg.weightChecked ? 'becslés – a régi listaárból visszaszámolva' : 'megadott érték'})</small></span>
               <span>Szélesség: <b>${dec(rg.refWidth)} mm</b>${rg.thickness ? ` · vastagság: <b>${dec(rg.thickness)} mm</b>` : ''}</span>
               <span>Méretek: <b>${lo}–${hi}</b></span>
               <span>Kő: <b>${ruleTxt(rg)}</b></span></dd></div>`; }).join('')}
             <div><dt>Szélesség választható?</dt><dd>${wv ? `igen, ${dec(wv[0])}–${dec(wv[wv.length - 1])} mm` : 'nem'}</dd></div>
             <div><dt>Vastagság választható?</dt><dd>${tv ? `igen: ${tv.map(dec).join(', ')} mm` : 'nem'}</dd></div>
             <div><dt>Egyeztetést igényel</dt><dd>${(p.consult || []).length ? p.consult.map(esc).join('; ') : '–'}</dd></div>
-            <div><dt>Számolt ár (alapváltozat)</dt><dd>${r.final === null ? 'egyedi ajánlat' : `<b>${ft(r.final)}</b>`}${p.listaAr ? ` <small>· mostani listaár: ${ft(p.listaAr)}${diff ? ` (${diff > 0 ? '+' : '−'}${ft(Math.abs(diff))})` : ''}</small>` : ''}</dd></div>
+            <div><dt>Számolt ár (alapváltozat)</dt><dd>${r.final === null ? 'egyedi ajánlat' : `<b>${ft(r.final)}</b>`}${p.listaAr ? ` <small>· régi weboldal listaára (nem igazolt, a vásárló nem látja): ${ft(p.listaAr)}${diff ? ` (${diff > 0 ? '+' : '−'}${ft(Math.abs(diff))})` : ''}</small>` : ''}</dd></div>
           </dl>
+          <section class="qcheck ${ac.ok ? 'qcheck--ok' : 'qcheck--bad'}" data-qcheck>
+            <h3>Szakmai ellenőrzés</h3>
+            ${ac.missing.length ? `<p class="warn">Hiányzó kötelező adat – így nem hagyható jóvá. Adja meg a „Javítani kell – szerkesztés” gombbal:</p><ul data-qmissing>${ac.missing.map((m) => `<li>${esc(m.label)}</li>`).join('')}</ul>` : '<p>Minden kötelező adat meg van adva (referenciaméret, szélesség, vastagság, tömeg, anyagok, kőszabály).</p>'}
+            ${ac.estimated.length && !p.approved ? `<p>Becsült adatok – nézze át, megfelelnek-e:</p><ul data-qestimated>${ac.estimated.map((m) => `<li>${esc(m.label)}</li>`).join('')}</ul>
+              ${ac.ok ? '<label class="check check--lg"><input type="checkbox" data-qconfirm><span>Ellenőriztem a becsült adatokat, megfelelnek</span></label>' : ''}` : ''}
+          </section>
           <p class="hint">A számolt ár a mostani grammárakkal és kőárakkal készül. Azokat az „Árak” és a „Jóváhagyásra vár” oldalon kell külön jóváhagyni – amíg nincsenek jóváhagyva, a vásárló ennél a gyűrűnél sem lát számolt árat.</p>
           <div class="qbtns">
             ${p.approved
               ? `<button class="abtn abtn--xl" type="button" data-unapprove>Jóváhagyás visszavonása</button>`
-              : `<button class="abtn abtn--gold abtn--xl" type="button" data-approve>Rendben, jóváhagyom</button>`}
+              : `<button class="abtn abtn--gold abtn--xl" type="button" data-approve ${!ac.ok || ac.estimated.length ? 'disabled' : ''}>Rendben, jóváhagyom</button>`}
             <a class="abtn abtn--xl" href="#/admin/gyuru/${p.id}">Javítani kell – szerkesztés</a>
             <button class="abtn abtn--xl" type="button" data-skip>Később</button>
           </div>
         </div>
       </article>`;
   };
+  el.addEventListener('change', (e) => { if (e.target.matches('[data-qconfirm]')) { const b = $('[data-approve]', el); if (b && approvalCheck(cur, S().materials, S().settings).ok) b.disabled = !e.target.checked; } });
   const next = () => { skipped.add(cur.id); cur = pending().find((p) => !skipped.has(p.id)) || null; paint(); window.scrollTo(0, 0); };
   el.addEventListener('click', (e) => {
     if (e.target.closest('[data-approve]')) {
       const code = cur.code;
-      store.approve('product', cur.id, `${code} – gyűrű adatai`);
+      const res = store.approve('product', cur.id, `${code} – gyűrű adatai`, { confirmEstimated: !!$('[data-qconfirm]', el)?.checked });
+      if (!res.ok) { toast(res.missing ? `<b>${esc(code)}</b> nem hagyható jóvá: hiányzik ${esc(res.missing.map((m) => m.label).join(', '))}.` : 'Előbb jelölje be, hogy ellenőrizte a becsült adatokat.', { ms: 7000 }); return; }
       lastApproved = { id: cur.id, code };
       toast(`Mentve: <b>${esc(code)}</b> jóváhagyva.`);
       next();
@@ -865,7 +874,7 @@ function products(el) {
         <span class="prow__txt"><b>${esc(p.code)}</b><span>${esc(p.name)}</span>
           <span class="prow__tags">${p.override ? `<em class="tag tag--blue">${p.override.type === 'fixed' ? 'rögzített ár' : `képlet ${pct(p.override.value)}`}</em>` : '<em class="tag tag--formula">képletből</em>'}${r.lowMargin ? '<em class="tag tag--warn">alacsony árrés</em>' : ''}${p.minPrice ? '<em class="tag">minimumár</em>' : ''}${p.visible === false ? '<em class="tag">rejtett</em>' : ''}${p.added ? '<em class="tag tag--blue">új, itt felvéve</em>' : p.approved ? '<em class="tag tag--ok">jóváhagyott adat</em>' : '<em class="tag">becsült tömeg</em>'}</span></span>
         <span class="prow__price"><b>${ft(r.final)}</b>
-          <small>${p.listaAr ? `weboldalon most: ${ft(p.listaAr)}${Math.abs(dv) >= 0.5 ? ` (${pct(dv)})` : ''}` : 'új gyűrű'}</small></span>
+          <small>${p.listaAr ? `régi listaár: ${ft(p.listaAr)}${Math.abs(dv) >= 0.5 ? ` (${pct(dv)})` : ''}` : 'új gyűrű'}</small></span>
         <span class="abtn">Szerkesztés</span>
       </a>`;
     }).join('') + (list.length > limit ? `<button class="abtn abtn--xl plist__more" type="button" data-pmore>Továbbiak mutatása (még ${list.length - limit})</button>` : '') || '<p>Nincs találat.</p>';
@@ -940,13 +949,21 @@ function productEdit(el, id) {
     </div>`;
   };
 
+  // V5.6: szakmai ellenőrzőlista – hiányzó kötelező adattal a jóváhagyás nem jelölhető be.
+  const checkBox = () => {
+    const ac = approvalCheck(p, Mx, st.settings);
+    const other = p.approved ? [] : [p.real && 'megnevezés (a cikkszámból képzett)', p.unknownColor && 'alapszín (a cikkszámban nincs színjelölés)'].filter(Boolean);
+    const can = ac.ok || p.approved;
+    return `<h2>Szakmai jóváhagyás ${srcBadge(p.approved ? 'jovahagyott' : 'demo')}</h2>
+      ${ac.missing.length ? `<p class="warn">Hiányzó kötelező adat – amíg meg nem adja, a gyűrű nem hagyható jóvá:</p><ul class="echeck__miss" data-emissing>${ac.missing.map((m) => `<li>${esc(m.label)}</li>`).join('')}</ul>` : '<p class="hint" data-eok>Minden kötelező szakmai adat meg van adva.</p>'}
+      ${ac.estimated.length && !p.approved ? `<p>Becsült adat – jóváhagyás előtt ellenőrizze:</p><ul class="echeck__est" data-eestimated>${ac.estimated.map((m) => `<li>${esc(m.label)}</li>`).join('')}</ul>` : ''}
+      ${other.length ? `<p class="hint">Szöveges adat, ellenőrizendő (nem szakmai, a jóváhagyást nem befolyásolja): ${other.join('; ')}.</p>` : ''}
+      <div class="checks">${can
+        ? chk('approved', ac.estimated.length && !p.approved ? 'Az ötvös ellenőrizte a fenti becsült adatokat, és jóváhagyja ezt a gyűrűt' : 'Az ötvös jóváhagyta ennek a gyűrűnek a szakmai adatait', !!p.approved)
+        : '<label class="check check--lg is-disabled"><input type="checkbox" disabled data-approve-blocked><span>Jóváhagyás – előbb adja meg a hiányzó adatokat</span></label>'}</div>`;
+  };
+
   const render = () => {
-    const todo = p.approved ? [] : [
-      p.rings.some((r) => r.stoneRule?.demo) && 'kőszám és kőméretek (a fotó alapján becsült szabály)',
-      'tömeg 14K-ban (a weboldali árból visszaszámolt becslés), referenciaméret és -szélesség',
-      p.real && 'megnevezés (a cikkszámból képzett)',
-      p.unknownColor && 'alapszín (a cikkszámban nincs színjelölés)',
-    ].filter(Boolean);
     el.innerHTML = `
     <p class="crumbs"><a href="#/admin/gyuruk">← Vissza a gyűrűkhöz</a></p>
     <h1 class="adm__h1">${isNew ? 'Új gyűrű felvitele' : esc(p.code)}</h1>
@@ -978,7 +995,7 @@ function productEdit(el, id) {
           <div class="checks">${Object.entries(SITES).map(([k, v]) => arr('sites', k, v, (p.sites || []).includes(k))).join('')}</div>
           <p class="efield__lab">Választható anyagok</p>
           <div class="checks">${METAL_ORDER.map((m) => arr('metals', m, METALS[m].short, p.metals.includes(m))).join('')}</div>
-          ${p.listaAr ? `<p class="hint">A karikagyuru.com-on jelenleg feltüntetett ár: <b>${ft(p.listaAr)}</b> (valós, összehasonlításhoz).</p>` : `<p class="warn">Ennél a modellnél az eredeti oldalon nincs ár, ezért „egyedi ajánlat” szerepel. Adja meg a tömeget, vagy rögzített árat.</p>`}
+          ${p.listaAr ? `<p class="hint" data-legacy>Régi listaár (a régi weboldalon feltüntetett, nem igazolt): <b>${ft(p.listaAr)}</b>. Csak összehasonlításra – a vásárló nem látja. Ha ezt az árat szeretné használni, adja meg alább rögzített (fix) árként, és hagyja jóvá a gyűrűt.</p>` : `<p class="warn">Ennél a modellnél a régi oldalon sem volt ár. Adja meg a tömeget, vagy rögzített árat.</p>`}
         </section>
         ${p.rings.map((r, i) => `<section class="ebox"><h2>${esc(r.label)}</h2>
           <div class="egrid">
@@ -1020,9 +1037,7 @@ function productEdit(el, id) {
           <div data-ovfield></div>
           ${n('minPrice', 'Minimumár (védelem)', 'Ft', 'ennél olcsóbban sosem jelenik meg; 0 = nincs')}
         </section>
-        <section class="ebox ${p.approved ? 'ebox--ok' : 'ebox--todo'}"><h2>Adatok állapota ${srcBadge(p.approved ? 'jovahagyott' : 'demo')}</h2>
-          ${todo.length ? `<ul>${todo.map((t) => `<li>${t}</li>`).join('')}</ul><p class="hint">Ezeket az ötvösmesternek kell megerősítenie, mielőtt az árak élesek lesznek.</p>` : '<p class="hint">Az ötvös jóváhagyta a tömeg- és kőadatokat.</p>'}
-          <div class="checks">${chk('approved', 'Az ötvös jóváhagyta ennek a gyűrűnek a tömeg- és kőadatait', !!p.approved)}</div></section>
+        <section class="ebox ${p.approved ? 'ebox--ok' : 'ebox--todo'}" data-echeck>${checkBox()}</section>
         <div class="edit__btns">
           <a class="abtn abtn--xl" href="#/admin/gyuruk">Mégsem</a>
           <button class="abtn abtn--gold abtn--xl" type="button" data-save>Mentés</button>
@@ -1110,6 +1125,7 @@ function productEdit(el, id) {
       const r = priceProduct(p, null, st.materials, st.settings);
       const go = () => {
         const res = store.updateProduct(id, (x) => { for (const k of Object.keys(x)) delete x[k]; Object.assign(x, clone(p)); }, `${p.code} adatai módosítva`);
+        if (res.blocked) { toast(`Mentve, de <b>${esc(p.code)}</b> nincs jóváhagyva: hiányzik ${esc(res.blocked.map((m) => m.label).join(', '))}.`, { ms: 9000 }); location.hash = '#/admin/gyuruk'; return; }
         toast(res.revoked
           ? `Mentve. <b>${esc(p.code)}</b> szakmai adatai változtak, ezért a korábbi jóváhagyás visszavonva – a vásárló újra egyedi ajánlatot kér, amíg újra jóvá nem hagyja.`
           : `Mentve. ${esc(p.code)} ára: <b>${r.final === null ? 'egyedi ajánlat' : ft(r.final)}</b>`, { ms: res.revoked ? 9000 : 3500 });
@@ -1175,7 +1191,9 @@ function productEdit(el, id) {
     if (t.matches('[data-imgurl]')) { const u = t.value.trim(); if (/^https?:\/\//.test(u) || !u) { p.img = u; $('[data-imgprev]', el).innerHTML = u ? `<img src="${esc(u)}" alt="" referrerpolicy="no-referrer">` : '<span>Még nincs kép</span>'; } return; }
     if (t.matches('[data-widths]')) { const ws = t.value.split(/[;\s]+/).map(parseNum).filter((x) => Number.isFinite(x) && x > 0); if (ws.length) { p.widths = ws; p.rings.forEach((r) => { if (!ws.includes(r.refWidth)) r.refWidth = ws[0]; }); } }
     if (t.dataset.p && t.tagName !== 'SELECT') { const v = parseNum(t.value); if (Number.isFinite(v)) set(p, t.dataset.p, v); }
+    const wm = t.dataset.p && /^rings\.(\d+)\.weight$/.exec(t.dataset.p); if (wm && p.rings[+wm[1]]) p.rings[+wm[1]].weightChecked = true;   // az ötvös maga adta meg
     calc();
+    const box = $('[data-echeck]', el); if (box && !box.contains(document.activeElement)) box.innerHTML = checkBox();
   });
   render();
 }
@@ -1330,7 +1348,7 @@ function inquiries(el) {
       const p = q.productId && store.product(q.productId);
       // Rögzíteni csak jóváhagyott, számolt árat lehet (nem jóváhagyott adatból számolt árat nem)
       const sp = p && q.config ? shownPrice(p, q.config, st.materials, st.settings) : null;
-      const nowPrice = sp && sp.kind === 'calc' ? sp.final : null;
+      const nowPrice = sp && (sp.kind === 'calc' || sp.kind === 'fixed') ? sp.final : null;
       return `<article class="inq inq--${q.status}">
         <header><b>${esc(q.name)}</b><span class="badge">${STATUS[q.status]}</span><span class="hint">${dateHu(q.at)} · ${q.type === 'konzultacio' ? 'időpontot kér' : q.type === 'egyedi' ? 'saját elképzelés' : q.type === 'telefon' ? 'telefonos ajánlat' : 'érdeklődés'}${q.day ? ` · ${dayHu(q.day)}` : ''}</span></header>
         <p><a href="tel:${esc(q.phone)}">${esc(q.phone)}</a>${q.email ? ` · <a href="mailto:${esc(q.email)}">${esc(q.email)}</a>` : ''}</p>

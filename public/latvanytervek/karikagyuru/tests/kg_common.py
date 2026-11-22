@@ -37,3 +37,20 @@ async def approve_all(pg):
     await load_dataset(pg)
     await pg.evaluate(APPROVE_ALL_JS)
     await pg.reload(); await pg.wait_for_timeout(700)
+
+FILL_REQUIRED_JS = """async ([id, t]) => {
+  const { store } = await import('./js/store.js');
+  const p = store.get().products.find((x) => x.id === id);
+  p.rings.forEach((r) => { r.thickness = t; if (!(r.weight > 0)) { r.weight = 3; r.weightChecked = true; } });
+  store.persistNow();
+}"""
+
+async def fill_required(pg, pid, thickness=1.7):
+    """V5.6: a szakmai jóváhagyáshoz kötelező vastagság megadása (a kiinduló katalógusban nincs)."""
+    await pg.evaluate(FILL_REQUIRED_JS, [pid, thickness])
+
+async def approve_in_queue(pg):
+    """V5.6: jóváhagyás a sorban – ha becsült adat van, előbb a megerősítő jelölőnégyzet."""
+    if await pg.locator('[data-qconfirm]').count():
+        await pg.check('[data-qconfirm]'); await pg.wait_for_timeout(150)
+    await pg.click('[data-approve]')

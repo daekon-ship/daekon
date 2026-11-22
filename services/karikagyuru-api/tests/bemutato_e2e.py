@@ -152,7 +152,8 @@ async def main():
             await vis.reload(); await vis.wait_for_timeout(1300)
             check('újra jóváhagyva: a vásárló ismét beállíthatja, számolt árral', await vis.locator('[data-locked]').count() == 0 and await vis.locator('[data-steps] .cfg__step').count() >= 4)
             await adm.goto(B + f'#/admin/sorban/{PEND}'); await adm.wait_for_timeout(900)
-            await adm.click('[data-approve]'); await wait_saved(adm)
+            check('7. jóváhagyás: becsült adatok külön megerősítéssel', await adm.locator('[data-approve]').is_disabled() and await adm.locator('[data-qconfirm]').count() == 1)
+            await adm.check('[data-qconfirm]'); await adm.click('[data-approve]'); await wait_saved(adm)
             await vis.goto(B + f'#/gyuru/{PEND}'); await vis.reload(); await vis.wait_for_timeout(1300)
             check('a harmadik mintagyűrű jóváhagyás után beállítható', await vis.locator('[data-locked]').count() == 0)
 

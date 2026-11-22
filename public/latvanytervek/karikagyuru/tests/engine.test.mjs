@@ -492,9 +492,10 @@ import { priceTrust, shownPrice } from '../js/engine.js';
   const plain = clone(products.find((p) => p.listaAr && !p.priceOnRequest && !p.rings.some((r) => r.stoneRule)));
   const stoned = clone(products.find((p) => p.listaAr && !p.priceOnRequest && p.rings.some((r) => r.stoneRule && r.stoneRule.def > 0)));
 
-  test('V5.3: nem jóváhagyott gyűrű alapváltozata → a közzétett listaár, nem számolt ár', () => {
+  test('V5.6: nem jóváhagyott gyűrű alapváltozata → egyedi árajánlat (a régi listaár NEM jelenik meg)', () => {
     const r = shownPrice(plain, defaultConfig(plain), M0, S0);
-    assert.equal(r.kind, 'list'); assert.equal(r.final, plain.listaAr);
+    assert.ok(plain.listaAr > 0);
+    assert.equal(r.kind, 'quote'); assert.equal(r.final, null);
     assert.equal(priceTrust(plain, r.cfg, M0, S0).ok, false);
   });
   test('V5.3: nem jóváhagyott gyűrű módosított beállítása → egyedi ajánlat, ár nélkül', () => {
@@ -608,12 +609,12 @@ import { priceTrust, shownPrice } from '../js/engine.js';
   });
 }
 
-test('V5.4: nyilvános nézet (nem jóváhagyott grammár üres) – az alapváltozat listaára akkor is megjelenik', () => {
+test('V5.6: nyilvános nézet (nem jóváhagyott grammár üres) – a listaár nem jelenik meg, egyedi árajánlat', () => {
   const products = buildDemoProducts(); seedWeights(products, DEMO_MATERIALS, DEMO_SETTINGS);
   const p = JSON.parse(JSON.stringify(products.find((x) => x.listaAr && !x.priceOnRequest)));
   const M = JSON.parse(JSON.stringify(DEMO_MATERIALS)); Object.keys(M.sellPerGram).forEach((k) => (M.sellPerGram[k] = null)); M.src = {};
   const r = shownPrice(p, defaultConfig(p), M, DEMO_SETTINGS);
-  assert.equal(r.kind, 'list'); assert.equal(r.final, p.listaAr);
+  assert.equal(r.kind, 'quote'); assert.equal(r.final, null);
   const c = defaultConfig(p); c.rings[0].size += 1;
   assert.equal(shownPrice(p, c, M, DEMO_SETTINGS).final, null);
 });
@@ -696,13 +697,94 @@ import { professionalKey, approvalLoss } from '../js/engine.js';
     assert.deepEqual(d.BASE_MATERIALS.src, {}); assert.deepEqual(d.BASE_SETTINGS.src, {});
     assert.ok(d.buildDemoProducts().every((p) => p.rings.every((r) => r.labor === null) && p.approved === false));
   });
-  test('V5.5: semleges adatokkal az alapváltozat listaárat, minden más egyedi ajánlatot ad – nincs számolt ár', async () => {
+  test('V5.5/V5.6: semleges adatokkal minden gyűrű egyedi ajánlat – nincs számolt ár, nincs listaár', async () => {
     const d = await import('../js/data.js');
     const ps = seedWeights(d.buildDemoProducts(), d.BASE_MATERIALS, d.BASE_SETTINGS);
     for (const p of ps.slice(0, 30)) {
       const r = shownPrice(p, defaultConfig(p), d.BASE_MATERIALS, d.BASE_SETTINGS);
-      assert.notEqual(r.kind, 'calc');
-      if (p.listaAr) assert.equal(r.final, p.listaAr);
+      assert.equal(r.kind, 'quote'); assert.equal(r.final, null);
     }
+  });
+}
+
+/* ---------- V5.6: árállapotok – régi listaár, jóváhagyott fix ár, jóváhagyott számított ár, egyedi ajánlat ---------- */
+import { priceStatus } from '../js/engine.js';
+{
+  const MA = clone(M); MA.src = Object.fromEntries(Object.keys(MA.src).map((k) => [k, 'jovahagyott'])); MA.diamonds.forEach((d) => { if (d.price) d.src = 'jovahagyott'; });
+  const SA = clone(S); SA.src = Object.fromEntries(Object.keys(SA.src).map((k) => [k, 'jovahagyott']));
+  test('V5.6: árállapot – nem jóváhagyott gyűrű: egyedi ajánlat, a régi listaár csak „legacy”', () => {
+    const p = clone(plain); p.approved = false;
+    const st = priceStatus(p, MA, SA);
+    assert.equal(st.kind, 'quote'); assert.equal(st.value, null); assert.equal(st.legacy, p.listaAr); assert.equal(st.label, 'egyedi árajánlat');
+  });
+  test('V5.6: árállapot – jóváhagyott gyűrű, jóváhagyott árelemek: számított ár, nem a listaár', () => {
+    const p = clone(plain); p.approved = true;
+    const st = priceStatus(p, MA, SA);
+    assert.equal(st.kind, 'calc'); assert.ok(st.value > 0); assert.equal(st.label, 'jóváhagyott számított ár');
+  });
+  test('V5.6: árállapot – rögzített ár jóváhagyott gyűrűn: fix ár; nem jóváhagyott gyűrűn: egyedi ajánlat', () => {
+    const p = clone(plain); p.override = { type: 'fixed', value: 333300 };
+    assert.equal(priceStatus(p, MA, SA).kind, 'quote');
+    p.approved = true;
+    const st = priceStatus(p, MA, SA);
+    assert.equal(st.kind, 'fixed'); assert.equal(st.value, 333300); assert.equal(st.label, 'jóváhagyott fix ár');
+  });
+  test('V5.6: jóváhagyott grammár módosítása → a jóváhagyott gyűrű számított ára azonnal követi', () => {
+    const p = clone(plain); p.approved = true;
+    const a = priceStatus(p, MA, SA).value;
+    const M2 = clone(MA); M2.sellPerGram.au14 += 4000;
+    const b = priceStatus(p, M2, SA).value;
+    assert.ok(b > a);
+  });
+  test('V5.6: hibás tömeg (0 vagy negatív) jóváhagyott gyűrűnél sem ad számított árat', () => {
+    for (const w of [0, -2, null]) {
+      const p = clone(plain); p.approved = true; p.rings.forEach((r) => (r.weight = w));
+      assert.notEqual(priceStatus(p, MA, SA).kind, 'calc', String(w));
+    }
+  });
+}
+
+/* ---------- V5.6: szakmai jóváhagyás – kötelező és becsült adatok ---------- */
+import { approvalCheck } from '../js/engine.js';
+{
+  const full = () => { const p = clone(pair); p.rings.forEach((r) => { r.thickness = 1.7; r.weightChecked = true; if (r.stoneRule) r.stoneRule.demo = false; }); return p; };
+  test('V5.6: minden kötelező adat megvan → jóváhagyható, nincs becsült adat', () => {
+    const c = approvalCheck(full(), M, S); assert.equal(c.ok, true); assert.deepEqual(c.missing, []); assert.deepEqual(c.estimated, []);
+  });
+  test('V5.6: hiányzó vastagság, szélesség, referenciaméret, tömeg, anyag → nem hagyható jóvá, mindegyik megnevezve', () => {
+    for (const [what, fn, label] of [
+      ['vastagság', (p) => { p.rings[0].thickness = null; }, 'vastagság'],
+      ['szélesség', (p) => { p.rings[0].refWidth = 0; }, 'szélesség'],
+      ['referenciaméret', (p) => { p.rings[1].refSize = null; }, 'referenciaméret'],
+      ['tömeg', (p) => { p.rings[0].weight = 0; }, 'tömeg'],
+      ['anyag', (p) => { p.metals = []; }, 'Elérhető anyagok'],
+    ]) { const p = full(); fn(p); const c = approvalCheck(p, M, S); assert.equal(c.ok, false, what); assert.ok(c.missing.some((m) => m.label.includes(label)), what); }
+  });
+  test('V5.6: hibás kőadat (nincs kőméret, rossz kőszám, ismeretlen foglalás, nem fér el) → nem hagyható jóvá', () => {
+    const cases = [
+      (r) => { r.stoneRule.cats = []; },
+      (r) => { r.stoneRule.mode = 'free'; r.stoneRule.min = 4; r.stoneRule.max = 2; },
+      (r) => { r.stoneRule.mode = 'valami'; },
+      (r) => { r.refWidth = 1.2; },
+    ];
+    for (const fn of cases) { const p = full(); const r = p.rings.find((x) => x.stoneRule); fn(r); assert.equal(approvalCheck(p, M, S).ok, false, fn.toString()); }
+  });
+  test('V5.6: becsült tömeg (régi listaárból) és fotóról becsült kőszabály → „becsült”, megerősítés kell', () => {
+    const p = full(); p.rings[0].weightChecked = false; p.rings.find((r) => r.stoneRule).stoneRule.demo = true;
+    const c = approvalCheck(p, M, S);
+    assert.equal(c.ok, true); assert.equal(c.estimated.length, 2);
+  });
+  test('V5.6: választható szélesség/vastagság bekapcsolva, de hiányos vagy nem jóváhagyott → nem hagyható jóvá', () => {
+    const a = full(); a.opts = { width: { enabled: true, min: 3, max: null, step: 0.5, approved: true } }; assert.equal(approvalCheck(a, M, S).ok, false);
+    const b = full(); b.opts = { width: { enabled: true, min: 3, max: 5, step: 0.5, approved: false } }; assert.equal(approvalCheck(b, M, S).ok, false);
+    const c = full(); c.opts = { thickness: { enabled: true, values: [], approved: true } }; assert.equal(approvalCheck(c, M, S).ok, false);
+    const d = full(); d.opts = { width: { enabled: true, min: 3, max: 5, step: 0.5, approved: true }, thickness: { enabled: true, values: [1.6, 1.8], approved: true } }; assert.equal(approvalCheck(d, M, S).ok, true);
+  });
+  test('V5.6: nincs általános határérték – keskeny (2,5 mm) kő nélküli gyűrű is jóváhagyható, ha minden adat megvan', () => {
+    const p = clone(plain); p.rings.forEach((r) => { r.refWidth = 2.5; r.thickness = 1.4; r.weightChecked = true; });
+    assert.equal(approvalCheck(p, M, S).ok, true);
+  });
+  test('V5.6: kötelező adat a kiinduló katalógusban – egyik gyűrűnél sincs vastagság, így egyik sem hagyható jóvá véletlenül', () => {
+    assert.ok(products.every((p) => !approvalCheck(p, M, S).ok));
   });
 }

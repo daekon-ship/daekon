@@ -7,7 +7,7 @@ import { $, $$, esc, productMedia, ringSketch, metalSwatch, animatePrice, modal,
 
 const S = () => store.get();
 const fresh = (el) => { const n = el.cloneNode(false); el.replaceWith(n); return n; };
-/** A vásárlónak mutatott ár: számolt (jóváhagyott), listaár (alapváltozat) vagy egyedi ajánlat. */
+/** A vásárlónak mutatott ár: jóváhagyott számított, jóváhagyott fix ár, vagy egyedi ajánlat (a régi listaár soha). */
 const price = (p, cfg) => shownPrice(p, cfg, S().materials, S().settings);
 /** Visszajelzés: szerver módban „megérkezett”, helyi módban az, ami igaz. */
 const sentNote = (server, local) => (api.mode === 'server' ? server : local);
@@ -45,8 +45,8 @@ function card(p, { metal } = {}) {
         <h3 class="card__name">${esc(p.name)}</h3>
         <p class="card__meta">${metalShort(cfg)}${hasStones(p) ? ' · gyémánttal' : ''}</p>
         <div class="card__price">
-          <span class="card__label">Becsült indulóár ${demoMark()}</span>
-          ${r.final === null ? '<strong class="price price--req">egyedi ajánlat</strong>' : `<strong class="price" data-price="${p.id}" data-value="${changed ? old : r.final}">${ft(changed ? old : r.final)}</strong>`}
+          <span class="card__label"${r.final === null ? '' : ' data-clabel'}>${r.kind === 'calc' ? 'Becsült indulóár' : 'Ár'} ${r.final === null ? '' : demoMark()}</span>
+          ${r.final === null ? '<strong class="price price--req">Egyedi árajánlat</strong>' : `<strong class="price" data-price="${p.id}" data-value="${changed ? old : r.final}">${ft(changed ? old : r.final)}</strong>`}
           ${changed ? `<span class="card__was">korábban ${ft(old)}</span>` : ''}
         </div>
         <span class="btn-text">Részletek</span>
@@ -133,7 +133,7 @@ export function home(el) {
         <a class="hero__photo" href="#/gyuru/${hero.id}" aria-label="${esc(hero.name)} megnyitása">${productMedia(hero, { eager: true, large: true })}</a>
         <figcaption class="hero__cap">
           <a href="#/gyuru/${hero.id}"><span>${esc(hero.code)}</span><b>${esc(hero.name)}</b>
-          <em>${heroPrice === null ? 'Ár: egyedi ajánlat' : `${hero.approved ? 'Így' : 'Listaár'}: <span class="price" data-hero-price data-value="${heroPrice}">${ft(heroPrice)}</span>`}${hero.approved ? ' – innen alakítható' : ''}</em></a>
+          <em>${heroPrice === null ? 'Ár: egyedi ajánlat' : `Így: <span class="price" data-hero-price data-value="${heroPrice}">${ft(heroPrice)}</span>`}${hero.approved ? ' – innen alakítható' : ''}</em></a>
         </figcaption>
       </figure>
     </div>
@@ -609,7 +609,7 @@ export function product(el, id, query) {
       <div><dt>Anyag</dt><dd>${metalLabel(cfg)}</dd></div>
       ${p.rings.map((rg, i) => `<div><dt>${esc(rg.label)}</dt><dd>${ringLine(p, cfg, i)}</dd></div>`).join('')}
       ${r.grams && r.kind === 'calc' ? `<div><dt>Becsült tömeg</dt><dd>${dec(r.grams)} g ${demoMark('demóadat')}</dd></div>` : ''}
-      <div><dt>${r.kind === 'list' ? 'Listaár' : 'Becsült ár'}</dt><dd><b>${r.final === null ? 'Egyedi árajánlat szükséges' : ft(r.final)}</b></dd></div></dl>`;
+      <div><dt>${r.kind === 'fixed' ? 'Ár' : 'Becsült ár'}</dt><dd><b>${r.final === null ? 'Egyedi árajánlat szükséges' : ft(r.final)}</b></dd></div></dl>`;
     $('[data-specs]', el).innerHTML = specs(p, cfg, r);
   };
 
@@ -730,10 +730,10 @@ export function product(el, id, query) {
     const q = $('[data-quote]', el);
     q.hidden = cur !== null;
     q.textContent = cur === null ? (onReq ? 'Ennél a modellnél az árat személyesen mondjuk meg.' + (locked ? ' Kérj ajánlatot.' : ' Állítsd be, amit szeretnél, és kérj ajánlatot.') : 'Ehhez az összeállításhoz online még nincs jóváhagyott ár. Kérj ajánlatot, és személyesen kiszámoljuk.') : '';
-    const lab = r.kind === 'calc' ? 'Becsült ár a választott beállítással' : r.kind === 'list' ? 'Jelenlegi listaár – alapváltozat' : 'Ár';
+    const lab = r.kind === 'calc' ? 'Becsült ár a választott beállítással' : r.kind === 'fixed' ? 'Ár' : 'Ár';
     $('[data-plabel]', el).textContent = lab;
-    $('[data-dlabel]', el).textContent = r.kind === 'calc' ? 'Becsült ár, a beállításaiddal' : r.kind === 'list' ? 'Listaár, alapváltozat' : 'Ár';
-    $('[data-mlabel]', el).textContent = r.kind === 'calc' ? 'Becsült ár' : r.kind === 'list' ? 'Listaár' : 'Ár';
+    $('[data-dlabel]', el).textContent = r.kind === 'calc' ? 'Becsült ár, a beállításaiddal' : 'Ár';
+    $('[data-mlabel]', el).textContent = r.kind === 'calc' ? 'Becsült ár' : 'Ár';
     if (pair) {
       const sp = cur === null || r.kind !== 'calc' ? null : ringSplit(p, cfg, r, S().settings);
       $('[data-split]', el).innerHTML = sp ? p.rings.map((rg, i) => `<span>${esc(rg.label)} <b>kb. ${ft(sp[i])}</b></span>`).join('') : '';
@@ -743,7 +743,7 @@ export function product(el, id, query) {
     paintInfo(r);
     const st0 = S(), rt = st0.settings.roundTo;
     $('[data-pnote]', el).innerHTML = cur === null ? 'Rendelésre készül. Az árat személyesen mondjuk meg.'
-      : r.kind === 'list' ? 'A karikagyuru.com mostani árlistája szerint, a fenti alapváltozatra. Más anyag, méret vagy kő: egyedi ajánlat.'
+      : r.kind === 'fixed' ? 'Az ötvös által jóváhagyott ár erre a változatra. Más beállítás: egyedi ajánlat.'
       : `Bruttó, ÁFA-val${rt > 1 ? `, ${num(rt)} Ft-ra kerekítve` : ''}. Rendelésre készül.`;
     animatePrice($('[data-cprice]', el), cur);
     animatePrice($('[data-mprice]', el), cur); animatePrice($('[data-dprice]', el), cur);
@@ -874,7 +874,7 @@ export function inquiry(p, cfg, type = 'erdeklodes', onRequest = false) {
     <form class="form" data-inq novalidate>
       <p class="kicker">${type === 'konzultacio' ? 'Személyes konzultáció' : 'Érdeklődés'}</p>
       <h2>${p ? 'Érdekel ez a gyűrű?' : 'Időpontkérés'}</h2>
-      ${p ? `<div class="form__cfg"><pre>${esc(summary)}</pre>${r && r.final !== null ? `<p>${r.kind === 'list' ? 'Listaár (alapváltozat)' : 'Becsült ár'}: <b>${ft(r.final)}</b></p>` : '<p>Ár: egyedi árajánlat szükséges</p>'}</div>` : ''}
+      ${p ? `<div class="form__cfg"><pre>${esc(summary)}</pre>${r && r.final !== null ? `<p>${r.kind === 'fixed' ? 'Ár' : 'Becsült ár'}: <b>${ft(r.final)}</b></p>` : '<p>Ár: egyedi árajánlat szükséges</p>'}</div>` : ''}
       <div class="seg seg--lg" role="radiogroup" aria-label="Kérés típusa">
         <button type="button" data-type="erdeklodes" aria-pressed="${type === 'erdeklodes'}">Kérdésem van</button>
         <button type="button" data-type="konzultacio" aria-pressed="${type === 'konzultacio'}">Időpontot kérek</button>

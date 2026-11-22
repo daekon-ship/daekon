@@ -636,15 +636,25 @@ export function priceTrust(p, cfg, M, S) {
  * listaára, csak az alapváltozatra, nem jóváhagyott modellnél) | 'quote' (egyedi ajánlat).
  */
 export function shownPrice(p, cfgIn, M, S) {
+  // V5.6: a vásárló csak jóváhagyott árat lát – számoltat ('calc') vagy a gyűrűnél rögzített fix árat ('fixed').
+  // A régi weboldal listaára (p.listaAr) történeti, nem igazolt adat: csak az adminban látszik összehasonlításra,
+  // a vásárlói oldalon soha nem jelenik meg aktuális eladási árként. Minden más: „Egyedi árajánlat”.
   const r = priceProduct(p, cfgIn, M, S);
   const t = priceTrust(p, r.cfg, M, S);
-  if (t.ok && r.final !== null) return { ...r, kind: 'calc', trust: t };
-  // Nem megbízható számolt ár: az alapváltozatnál a közzétett listaár (akkor is, ha a nyilvános nézetben
-  // a nem jóváhagyott grammár üres, és a motor ezért nem tud számolni), egyébként egyedi ajánlat.
-  const base = normalizeConfig(p, defaultConfig(p), M, S).cfg;
-  const isBase = encodeCfg(base) === encodeCfg(r.cfg);
-  if (!t.ok && isBase && p.listaAr && !p.priceOnRequest) return { ...r, final: p.listaAr, raw: p.listaAr, kind: 'list', trust: t, quote: false };
+  if (t.ok && r.final !== null) return { ...r, kind: r.source === 'rogzitett' ? 'fixed' : 'calc', trust: t };
   return { ...r, final: null, quote: true, kind: 'quote', reason: r.final === null ? r.reason : t.reasons[0], trust: t };
+}
+
+/** Árállapot az adminnak: melyik ár él most a vásárlói oldalon, és mi a régi listaár (csak összehasonlítás). */
+export function priceStatus(p, M, S) {
+  const r = shownPrice(p, null, M, S);
+  return {
+    kind: r.kind,                                   // 'calc' | 'fixed' | 'quote'
+    label: { calc: 'jóváhagyott számított ár', fixed: 'jóváhagyott fix ár', quote: 'egyedi árajánlat' }[r.kind],
+    value: r.final,
+    legacy: p.listaAr || null,                      // régi weboldal, nem igazolt – nem jelenik meg a vásárlónak
+    reason: r.kind === 'quote' ? r.reason : null,
+  };
 }
 
 /* ==========================================================================
@@ -673,4 +683,48 @@ export function approvalLoss(before, after) {
     width: !!before.opts?.width?.approved && stable(a.width) !== stable(b.width),
     thickness: !!before.opts?.thickness?.approved && stable(a.thickness) !== stable(b.thickness),
   };
+}
+
+/* ==========================================================================
+   V5.6 – SZAKMAI JÓVÁHAGYÁS ELLENŐRZŐLISTÁJA
+   Modellenként ítéli meg az ötvös, ezért itt NINCS általános határérték (pl. minimális szélesség):
+   csak azt nézzük, hogy a gyárthatóságot meghatározó adatok MEG VANNAK-E adva, és melyik becsült.
+   missing   – hiányzó kötelező adat: amíg van, a gyűrű nem hagyható jóvá (sehonnan).
+   estimated – becsült adat (pl. a régi listaárból visszaszámolt tömeg, a fotóról becsült kőszabály):
+               jóváhagyni csak kifejezett megerősítéssel lehet.
+   ========================================================================== */
+export function approvalCheck(p, M, S) {
+  const missing = [], estimated = [];
+  const pos = (v) => typeof v === 'number' && Number.isFinite(v) && v > 0;
+  const add = (arr, key, label) => arr.push({ key, label });
+  if (!Array.isArray(p.metals) || !p.metals.length) add(missing, 'metals', 'Elérhető anyagok');
+  const fixedPrice = p.override?.type === 'fixed';
+  (p.rings || []).forEach((r, i) => {
+    const L = p.rings.length > 1 ? `${r.label}: ` : '';
+    if (!pos(r.refSize)) add(missing, `rings.${i}.refSize`, L + 'referenciaméret');
+    if (!pos(r.refWidth)) add(missing, `rings.${i}.refWidth`, L + 'szélesség');
+    if (!pos(r.thickness)) add(missing, `rings.${i}.thickness`, L + 'vastagság');
+    if (!pos(r.weight)) { if (!p.priceOnRequest && !fixedPrice) add(missing, `rings.${i}.weight`, L + 'tömeg'); }
+    else if (p.real && !r.weightChecked) add(estimated, `rings.${i}.weight`, `${L}tömeg (${dec(r.weight)} g, 54-es méretre) – a régi listaárból visszaszámolt becslés`);
+    const x = r.stoneRule;
+    if (x && x.mode !== 'quote') {
+      if (!['free', 'fixed', 'perSize'].includes(x.mode)) add(missing, `rings.${i}.stoneRule.mode`, L + 'foglalási szabály');
+      if (!Array.isArray(x.cats) || !x.cats.length) add(missing, `rings.${i}.stoneRule.cats`, L + 'kőméret');
+      else if (pos(r.refWidth) && M && !allowedCats(x, r.refWidth, M, S).length) add(missing, `rings.${i}.stoneRule.cats`, L + 'kőméret – egyik sem fér el a megadott szélességen');
+      if (x.mode === 'free' && !(Number.isFinite(x.min) && Number.isFinite(x.max) && x.min >= 0 && x.max >= x.min && x.max > 0)) add(missing, `rings.${i}.stoneRule.count`, L + 'kőszám (legalább – legfeljebb)');
+      if (x.mode === 'fixed' && !pos(x.def)) add(missing, `rings.${i}.stoneRule.count`, L + 'kőszám');
+      if (x.demo) add(estimated, `rings.${i}.stoneRule`, `${L}kőszabály – a fotóról becsülve (kőszám, kőméret, foglalás)`);
+    }
+  });
+  const w = p.opts?.width;
+  if (w?.enabled) {
+    if (!(pos(w.min) && pos(w.max) && w.max >= w.min && pos(w.step))) add(missing, 'opts.width', 'választható szélességi tartomány (legkisebb, legnagyobb, lépés)');
+    else if (!w.approved) add(missing, 'opts.width.approved', 'a választható szélességek jóváhagyása');
+  }
+  const t = p.opts?.thickness;
+  if (t?.enabled) {
+    if (!Array.isArray(t.values) || !t.values.length) add(missing, 'opts.thickness', 'választható vastagságok');
+    else if (!t.approved) add(missing, 'opts.thickness.approved', 'a választható vastagságok jóváhagyása');
+  }
+  return { ok: missing.length === 0, missing, estimated };
 }

@@ -55,7 +55,10 @@ async def main():
 
             print('Látogató, kiinduló (tesztadat) állapot')
             p0 = await price_on_catalog(vis)
-            check('a látogató a nem jóváhagyott gyűrűnél a listaárat látja', p0 and p0 > 100000, p0)
+            ctext = await vis.inner_text(f'.card[data-id="{PAIR}"]') if await vis.locator(f'.card[data-id="{PAIR}"]').count() else ''
+            check('a látogató a nem jóváhagyott gyűrűnél „Egyedi árajánlat”-ot lát, nem a régi listaárat', p0 is None and 'Egyedi árajánlat' in ctext, (p0, ctext[:80]))
+            st0 = await vis.evaluate("async () => { const { store } = await import('./js/store.js'); return store.get().products.filter((p) => 'listaAr' in p).length; }")
+            check('a nyilvános API nem adja ki a régi listaárat', st0 == 0, st0)
             check('látogatónak nincs kezelőfelülethez tartozó sütije', not any(c['name'] == 'kg_admin' for c in await vis.context.cookies()))
             st_pub = await vis.evaluate("async () => { const { store } = await import('./js/store.js'); const s = store.get(); return { pub: !!s.public, g: s.materials.gold24 ?? null, h: (s.history || []).length, mk: s.settings.markupMetal ?? null }; }")
 
@@ -80,6 +83,12 @@ async def main():
             await vis.goto(B + f'#/gyuru/{PAIR}'); await vis.reload(); await vis.wait_for_timeout(1300)
             check('látogató: nem jóváhagyott gyűrűn nincs beállítás, „egyedi” út', await vis.locator('[data-locked]').count() == 1 and await vis.locator('[data-steps]').count() == 0)
             await adm.goto(B + f'#/admin/sorban/{PAIR}'); await adm.wait_for_timeout(900)
+            check('szakmai jóváhagyás vastagság nélkül tiltva (szerver mód)', await adm.locator('[data-approve]').is_disabled() and 'vastagság' in await adm.inner_text('[data-qmissing]'))
+            await adm.goto(B + f'#/admin/gyuru/{PAIR}'); await adm.wait_for_timeout(900)
+            for i in range(await adm.locator('[data-p$=".thickness"]').count()): await adm.locator('[data-p$=".thickness"]').nth(i).fill('1,8')
+            await adm.click('[data-save]'); await wait_saved(adm)
+            await adm.goto(B + f'#/admin/sorban/{PAIR}'); await adm.wait_for_timeout(900)
+            if await adm.locator('[data-qconfirm]').count(): await adm.check('[data-qconfirm]')
             await adm.click('[data-approve]'); s = await wait_saved(adm)
             check('gyűrű jóváhagyva a sorban, mentve', 'Mentve a szerverre' in s, s)
             await vis.reload(); await vis.wait_for_timeout(1300)

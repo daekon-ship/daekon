@@ -138,6 +138,7 @@ def main():
         s, raw, _ = b.req('GET', '/state'); txt = raw.decode('utf-8'); pub = json.loads(txt)['state']
         for secret in ['TITOK-TERMEK', 'TITOK-GYURU', 'TITOK-KO', 'TITOK-NAPLO', 'TITOK-ERDEKLODO', 'titkos.glb', 'REJTETT', '187654', '111111', '99999', '12345', '"labor"']:
             check(f'látogató nem kapja: {secret}', secret not in txt)
+        check('V5.6: a régi, nem igazolt listaár nincs a nyilvános nézetben', '"listaAr"' not in txt)
         m = pub['materials']
         check('nincs beszerzési referenciaár (24K, platina, palládium, titán)', not any(k in m for k in ['gold24', 'platinum', 'palladium', 'titanium']), list(m))
         check('csak a jóváhagyott grammár látszik (14K), a többi üres', m['sellPerGram']['au14'] == 42000 and m['sellPerGram']['au18'] is None and m['sellPerGram']['pt'] is None)

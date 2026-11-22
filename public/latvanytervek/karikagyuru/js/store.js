@@ -4,7 +4,7 @@
    a szerveren tárolódik (lásd services/karikagyuru-api).
    ========================================================================== */
 import { BASE_MATERIALS, BASE_SETTINGS, buildDemoProducts } from './data.js';
-import { seedWeights, priceAll, diffPrices, approvalLoss } from './engine.js';
+import { seedWeights, priceAll, diffPrices, approvalLoss, approvalCheck } from './engine.js';
 
 const KEY = 'karikagyuru-v15';
 const clone = (o) => JSON.parse(JSON.stringify(o));
@@ -67,7 +67,15 @@ export const store = {
   persistNow() { return persist(); },
 
   /** Adat jóváhagyása (forrás → „jóváhagyott”). kind: 'materials' | 'settings' | 'diamond' | 'product'. */
-  approve(kind, key, label) {
+  approve(kind, key, label, { confirmEstimated = false } = {}) {
+    if (kind === 'product') {
+      // V5.6: hiányzó kötelező szakmai adattal nem hagyható jóvá; becsült adattal csak kifejezett megerősítéssel.
+      const p0 = state.products.find((x) => x.id === key);
+      const chk = p0 ? approvalCheck(p0, state.materials, state.settings) : { ok: false, missing: [{ label: 'ismeretlen gyűrű' }], estimated: [] };
+      if (!chk.ok) return { ok: false, missing: chk.missing };
+      if (chk.estimated.length && !confirmEstimated) return { ok: false, needConfirm: chk.estimated };
+      p0.rings.forEach((r) => { r.weightChecked = true; });
+    }
     if (kind === 'materials') state.materials.src = { ...(state.materials.src || {}), [key]: 'jovahagyott' };
     if (kind === 'settings') state.settings.src = { ...(state.settings.src || {}), [key]: 'jovahagyott' };
     if (kind === 'diamond') { const d = state.materials.diamonds.find((x) => x.id === key); if (d) d.src = 'jovahagyott'; }
@@ -75,6 +83,7 @@ export const store = {
     const at = new Date().toISOString();
     state.history.unshift({ id: uid(), at, validFrom: at, by: 'Tulajdonos', kind: 'approve', title: `Jóváhagyva: ${label || key}`, count: 0, total: 0 });
     persist();
+    return { ok: true };
   },
 
   /** Gyűrű jóváhagyásának visszavonása: a vásárló ennél a gyűrűnél újra csak egyedi ajánlatot kér. */
@@ -139,6 +148,12 @@ export const store = {
     const old = priceAll([p], state.materials, state.settings)[id];
     mutate(p);
     const revoked = revokeIfChanged(before, p);
+    // V5.6: a szerkesztőből sem adható jóváhagyás hiányzó kötelező szakmai adattal.
+    let blocked = null;
+    if (p.approved && !before.approved) {
+      const chk = approvalCheck(p, state.materials, state.settings);
+      if (!chk.ok) { p.approved = false; blocked = chk.missing; } else p.rings.forEach((r) => { r.weightChecked = true; });
+    }
     const now = priceAll([p], state.materials, state.settings)[id];
     const at = new Date().toISOString();
     state.history.unshift({ id: uid(), at, validFrom: at,
@@ -146,7 +161,7 @@ export const store = {
       count: old !== now ? 1 : 0, total: old !== undefined && now !== undefined ? now - old : 0, oldPrice: old ?? null, newPrice: now ?? null });
     if (revoked) state.history.unshift({ id: uid(), at, validFrom: at, by: 'Rendszer', kind: 'approve', title: `Jóváhagyás automatikusan visszavonva: ${p.code} – módosultak a szakmai adatai`, count: 0, total: 0 });
     persist();
-    return { revoked };
+    return { revoked, blocked };
   },
 
   /** Több gyűrű egyszerre (pl. munkadíj stílusonként) – egy naplóbejegyzés. */
@@ -181,6 +196,7 @@ export const store = {
 
   /** Új gyűrű felvitele (demó: csak ebben a böngészőben tárolódik). Visszaadja, sikerült-e tartósan menteni. */
   addProduct(p) {
+    if (p.approved && !approvalCheck(p, state.materials, state.settings).ok) p.approved = false;   // V5.6: hiányos adattal nem
     state.products.push(p);
     const at = new Date().toISOString();
     state.history.unshift({ id: uid(), at, validFrom: at, by: 'Tulajdonos', kind: 'product', title: `Új gyűrű felvéve: ${p.code}`, count: 0, total: 0 });

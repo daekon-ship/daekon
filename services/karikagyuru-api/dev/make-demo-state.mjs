@@ -26,6 +26,13 @@ if (!all) {
   // V5.6: a teljes katalógus látszik (115 gyűrű); a 3 mintagyűrű közül 2 jóváhagyott (beállítható, szemléltető árral),
   // 1 jóváhagyásra vár. A többi gyűrű nincs jóváhagyva → a mostani nyilvános listaárát vagy „egyedi ajánlat”-ot mutat.
   products.forEach((p) => { p.visible = true; p.approved = ds.samples.approved.includes(p.id); });
+  // A 3 mintagyűrű szemléltető vastagságot kap (a kiinduló katalógusban nincs – az ötvös adja meg). A jóváhagyottaknál
+  // a tömeg „ellenőrzött”; a jóváhagyásra váró mintagyűrűnél becsült marad, így a bemutatóban a megerősítés lépése is látszik.
+  const samples = [...ds.samples.approved, ...ds.samples.pending];
+  products.filter((p) => samples.includes(p.id)).forEach((p) => p.rings.forEach((r) => {
+    r.thickness = ds.samples.thickness ?? 1.7;
+    if (p.approved) { r.weightChecked = true; if (r.stoneRule) r.stoneRule.demo = false; }
+  }));
   for (const k of Object.keys(materials.sellPerGram)) if (materials.sellPerGram[k] != null) materials.src[`sellPerGram.${k}`] = ok;
   materials.diamonds.forEach((d) => { if (d.price != null) d.src = ok; });
   for (const k of Object.keys(settings.src)) settings.src[k] = ok;
