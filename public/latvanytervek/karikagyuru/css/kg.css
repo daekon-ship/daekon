@@ -1938,3 +1938,10 @@ h3, .cfg__step > header h2, .ringbox__t, .opt__label { font-family: var(--sans);
 }
 @media (max-width: 380px) { .hero--v3 .hero__cta { grid-template-columns: 1fr; } }
 .hero--v3 .hero__text h1 { max-width: 19ch; }
+/* V5.7 – műhelymunka-portfólió: az első fotós munka kiemelt, nagy fotóval; fotó nélkül rendezett szöveges csempék */
+@media (min-width: 900px) {
+  .works--folio .work:first-child { grid-column: 1 / -1; grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr); gap: 32px; align-items: center; }
+  .works--folio .work:first-child .work__txt h3 { font-size: 1.35rem; }
+}
+.worklist--page li { gap: 6px; }
+.worklist--page .linkbtn { justify-self: start; margin-top: 4px; min-height: 44px; }

@@ -66,6 +66,37 @@ async def main():
         await pg.goto(B + '#/sajat'); await pg.wait_for_timeout(900)
         st = await pg.inner_text('.custom')
         check('saját ötlet: „Milyen árkategóriában gondolkodsz?”, nem kötelező', 'Milyen árkategóriában gondolkodsz?' in st)
+        print('Kontraszt és hivatkozások')
+        CONTRAST_JS = '''(sels) => {
+          const lum = (c) => { const m = c.match(/\\d+(\\.\\d+)?/g).map(Number); const f = (v) => { v /= 255; return v <= .03928 ? v / 12.92 : Math.pow((v + .055) / 1.055, 2.4); }; return .2126 * f(m[0]) + .7152 * f(m[1]) + .0722 * f(m[2]); };
+          const bgOf = (el) => { while (el) { const b = getComputedStyle(el).backgroundColor; const a = b.match(/[\\d.]+/g); if (a && (a.length < 4 || +a[3] > .9)) return b; el = el.parentElement; } return 'rgb(255,255,255)'; };
+          const out = [];
+          for (const s of sels) { const el = [...document.querySelectorAll(s)].find((e) => e.offsetParent && e.textContent.trim()); if (!el) continue;
+            const L1 = lum(getComputedStyle(el).color), L2 = lum(bgOf(el)); const r = (Math.max(L1, L2) + .05) / (Math.min(L1, L2) + .05); out.push([s, Math.round(r * 10) / 10]); }
+          return out; }'''
+        low = []
+        for u, sels in [('#/', ['.hero .lead', '.hero__note', '.eyebrow', '.sec__lead', '.btn--dark', '.btn--line', '.site-foot__note', '.logo__txt small', 'nav.nav > a']),
+                        ('#/kollekcio', ['.card__code', '.card__name', '.price--req', '.card__label', '.sec__lead']),
+                        (f'#/gyuru/{PAIR}', ['.pdp__code', '.notice', '.fine', '.specs dd']), ('#/munkak', ['.lead', '.worklist span', '.fine'])]:
+            await pg.goto(B + u); await pg.wait_for_timeout(1300)
+            for sel, r in await pg.evaluate(CONTRAST_JS, sels):
+                if r < 4.5: low.append(f'{u} {sel}: {r}')
+        check('szövegkontraszt: a vizsgált szövegek legalább 4,5:1 (WCAG AA)', not low, low)
+        bad_links = []
+        for u in PAGES:
+            await pg.goto(B + u); await pg.wait_for_timeout(900)
+            hrefs = await pg.evaluate("[...new Set([...document.querySelectorAll('a[href]')].map(a => a.getAttribute('href')))]")
+            for h in hrefs:
+                if h.startswith('#/'):
+                    await pg.goto(B + h); await pg.wait_for_timeout(500)
+                    if await pg.locator('main').count() == 0 or 'Nincs ilyen oldal' in await pg.inner_text('body'): bad_links.append(f'{u} → {h}')
+                    await pg.goto(B + u); await pg.wait_for_timeout(400)
+                elif not re.match(r'^(https?:|tel:|mailto:|#$)', h):
+                    r = await pg.request.get(B + h.split('#')[0].split('?')[0] if h.split('#')[0] else B)
+                    if r.status != 200: bad_links.append(f'{u} → {h} ({r.status})')
+        check('belső hivatkozások és helyi fájlok működnek (6 oldal minden linkje)', not bad_links, bad_links[:5])
+        r = await pg.request.get(B + 'arculat.html')
+        check('az arculati összehasonlító oldal elérhető', r.status == 200)
         await ctx.close()
 
         print('Képernyőméretek')

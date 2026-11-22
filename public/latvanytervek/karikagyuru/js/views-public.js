@@ -387,7 +387,7 @@ export function catalog(el, query) {
   const mq = matchMedia('(max-width: 640px)');
   const opts = () => (mq.matches ? [2, 3, 4] : [4, 5, 6, 8]);
   const key = () => (mq.matches ? 'kg-cols-m' : 'kg-cols-d');
-  const getCols = () => { let v = 0; try { v = Number(localStorage.getItem(key())); } catch {} return opts().includes(v) ? v : (mq.matches ? 3 : 6); };
+  const getCols = () => { let v = 0; try { v = Number(localStorage.getItem(key())); } catch {} return opts().includes(v) ? v : (mq.matches ? 2 : 6); };   // V5.7: telefonon alapból 2 – nagyobb fotó, rövidebb sortörés
   const applyCols = () => {
     const c = getCols();
     results.style.setProperty('--cols', c);
@@ -575,7 +575,7 @@ export function product(el, id, query) {
   </section>
   <div class="mbar" data-mbar>
     <div><span data-mlabel>Ár</span><strong class="price" data-mprice></strong></div>
-    <button class="btn btn--dark" type="button" data-inquire="erdeklodes">Érdeklődöm</button>
+    <button class="btn btn--dark" type="button" data-inquire="erdeklodes">Ajánlatot kérek</button>
   </div>`;
 
   const sizes = (i) => sizeRange(p.rings[i]);
@@ -964,8 +964,8 @@ export function works(el) {
     <p class="lead">Egyszeri, kézzel megmunkált darabok: különleges foglalás, kalapált felület, szokatlan forma. Ugyanígy nem rendelhetők újra – de ha valamelyik megtetszik, megbeszéljük, mi készülhet belőle neked.</p>
   </section>
   <section class="wrap works-page">
-    ${withPh.length ? `<div class="works">${withPh.map(workCard).join('')}</div>` : ''}
-    ${noPh.length ? `<div class="made"><h2>Készült már ilyen is</h2><ul>${noPh.map((w) => `<li data-work-card="${esc(w.id)}"><b>${esc(w.title)}</b>${w.text ? ` – ${esc(w.text)}` : ''} <button class="linkbtn" type="button" data-work="${esc(w.id)}">Ebből inspirálódnék</button></li>`).join('')}</ul><p class="fine">Ezekről még nincs fotó az oldalon.</p></div>` : ''}
+    ${withPh.length ? `<div class="works works--folio">${withPh.map(workCard).join('')}</div>` : ''}
+    ${noPh.length ? `<div class="made"><h2>${withPh.length ? 'További munkák' : 'Készült már ilyen is'}</h2><ul class="worklist worklist--page">${noPh.map((w) => `<li data-work-card="${esc(w.id)}"><b>${esc(w.title)}</b>${w.text ? `<span>${esc(w.text)}</span>` : ''}<button class="linkbtn" type="button" data-work="${esc(w.id)}">Ebből inspirálódnék</button></li>`).join('')}</ul><p class="fine">Ezekről még nincs fotó az oldalon.</p></div>` : ''}
     ${!list.length ? '<p>Hamarosan.</p>' : ''}
     <div class="works__end"><h2>Valami egészen más jár a fejedben?</h2><p>Mondd el, vagy hozz egy fotót. Személyesen megnézzük, megvalósítható-e.</p>
       <p><button class="btn btn--dark" type="button" data-work-consult>Időpontot kérek</button> <a class="btn btn--line" href="#/sajat">Elmondom az ötletem</a></p></div>

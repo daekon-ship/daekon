@@ -93,3 +93,15 @@ A „Két gyűrű, egy igen” **nem az ügyféltől származik**. A DAEKON hozt
   - javítva egy V5.1-ből maradt hiba (`--bar: 52px`), amely mobilon üres sávot hagyott a fejléc fölött, és a fejléc eltakarta a tartalmat.
 - **Gombok:** 6 px-es saroklekerekítés; minden gomb legalább 44 px magas – a fejléc gombja eddig 42 px volt.
 - **Méretek:** a főcím mérete változatlanul mérsékelt (legfeljebb 44 px). Új arculat vagy betűtípus nem került be (Libre Baskerville + Manrope marad).
+
+## V5.7 – második kör (katalógus, termékoldal, portfólió, ellenőrzések)
+
+- **Termékoldal, mobil alsó sáv:** „Érdeklődöm” → „Ajánlatot kérek” – ez volt az utolsó eltérő fogalom.
+- **Katalógus mobilon:** alapból 2 gyűrű egy sorban (eddig 3). Nagyobb a fotó, a nevek nem törnek 3–4 sorba. A 3 és 4 oszlopos nézet továbbra is választható, és a böngésző megjegyzi.
+- **Műhelymunkák:**
+  - Ha van fotó, az első munka kiemelt, nagy fotóval, és asztali nézetben mellette a szöveg.
+  - Fotó nélkül a munkák rendezett szöveges csempékként jelennek meg, „Ebből inspirálódnék” gombbal – üres képkeret nincs.
+- **Automatikus ellenőrzések** (`tests/v57.py`):
+  - szövegkontraszt legalább 4,5:1 a főbb szövegtípusokon;
+  - mind a 6 oldal minden belső hivatkozása és helyi fájlja működik;
+  - az arculati oldal elérhető.
