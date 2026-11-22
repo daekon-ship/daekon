@@ -1,4 +1,4 @@
-# Karikagyuru.com – biztonsági és adatkezelési áttekintés (V5.8, 2026. 11. 22.)
+# Karikagyuru.com – biztonsági és adatkezelési áttekintés (V5.8.1, 2026. 11. 22.)
 
 A kódban ellenőrzött állapot. Valódi tárhelyen még semmi nem futott, ezért élesítés előtt a tárhelyen újra ki
 kell próbálni (`TELEPITES.md`). Ez az áttekintés nem jogi vélemény.
@@ -16,7 +16,7 @@ kell próbálni (`TELEPITES.md`). Ez az áttekintés nem jogi vélemény.
 | Érdeklődések | szerkezeti ellenőrzés, méretkorlát, robotcsapda-mező | api_test | – |
 | E-mail | alapból kikapcsolva; valódi levél csak az ügyfél jóváhagyott címével és SMTP-adataival; a bemutató minden beállítást felülírva kikapcsolja | mail_test, demo_kapu_test | jóváhagyott cím, próbalevél engedéllyel |
 | Megőrzés | `bin/purge.php <nap>` törli a régi érdeklődéseket a képeikkel | api_test | a napok számát az adatkezelési tájékoztató adja meg |
-| Mentés | `bin/mentes.php` (V5.8): adatbázis + fotók + referenciaképek, 0600 jogosultsággal, az adatmappán kívülre | mentes_test | napi cron, a régi mentések törlése, visszaállítás kipróbálása |
+| Mentés és visszaállítás | `bin/mentes.php` (V5.8.1): zárolással konzisztens; minden fájl méret- és SHA-256-ellenőrzéssel; a célt kanonikus útvonalon ellenőrzi (adatmappa, webgyökér, symlink tiltva); hibánál nincs kész mappa; 0700/0600; napló személyes adat nélkül. `bin/visszaallitas.php` csak új, üres mappába, előzetes ellenőrzéssel. Leírás: `MENTES_ES_VISSZAALLITAS.md` | mentes_test (85) | napi cron, a régi mentések törlése, visszaállítás kipróbálása |
 | Bemutató elkülönítése | külön adatmappa, „demo” jelölés; éles módban demo adat nem menthető; a bemutató saját jelszava nem nyitja az admint | demo_kapu_test, bemutato_e2e | a `demo/`, `bin/demo-*`, `dev/` mappa nem kerül az éles tárhelyre |
 | Nyilvános repository | nincs benne az ötvös kézírásos jegyzete, eredeti CAD-fájl, ügyféllevél vagy jelszó; a bemutató jelszavai minden telepítéskor véletlenszerűek | privát ellenőrző szkript (nem része a repónak) | a git-előzmény korábbi változatában maradt mintaszámok kezelése külön döntés (nem írtuk át automatikusan) |
 

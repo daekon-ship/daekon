@@ -583,3 +583,28 @@ valódi tárhelyen semmi nem futott, és ügyféljóváhagyás nincs.
   - új: `tests/v58.py` (mobil utak 360/390 px-en, őszinte helyi visszajelzés, 115 termékoldal, A/B, központ, admin hibás bevitel);
   - bővítve: `api_test.py`, `bemutato_e2e.py`.
 - **Ügyfélbemutató:** `bemutato.html` – egyszerű, nyomtatható, 8 rész.
+
+## V5.8.1 – biztonsági mentés javítása, visszaállítási próba (2026. november 22.)
+
+- **Mentés (`bin/mentes.php` → `src/Backup.php`) – javított hibák:**
+  - a `copy()` eredményét eddig senki nem nézte; most minden másolat méretét és SHA-256 összegét összeveti a forrással;
+  - hiba esetén nem jelez sikert: nincs kész nevű mappa, a félkész munkamappa törlődik, a kilépési kód ≠ 0;
+  - a célt eddig csak szövegesen ellenőrizte; most kanonikus útvonal alapján (symlink, `..`), és a webgyökér alá sem engedi;
+  - mentés közben feltöltött kép vagy törölt érdeklődés eddig ellentmondó mentést adhatott; most zárolás tiltja (az írások várnak);
+  - a hivatkozott, de hiányzó fájlt eddig nem vette észre; most kód 4, vagy kifejezett kapcsolóval `-HIANYOS` mentés;
+  - azonos nevű mentést nem ír felül; Ctrl+C-re takarít; napló személyes adat nélkül.
+- **Új:**
+  - `bin/visszaallitas.php`: csak új, üres mappába, előzetes ellenőrzéssel; bemutató-adat élesbe nem kerülhet;
+  - `bin/mentes-ellenorzes.php`;
+  - `bin/mentes-torles.php`: csak próbafuttatás, ha nincs `--torles`; nincs alapértelmezett megőrzési idő.
+- **App:** írászár a mentéshez (`guardWrite`): az állapot mentése, a visszaállítás, az érdeklődések, a fotók, a törlés, a megőrzési törlés és a bemutató-visszaállítás megosztott zárat kér.
+- **Fejlesztői router:** a fájlkiszolgálás útvonal-ellenőrzése a mappa-határra pontosítva.
+- **Tesztek:**
+  - `tests/mentes_test.py` újraírva, 85 ellenőrzés: teljes visszaállítási próba újraindítással, 13 hibaeset valóban előidézve (tmpfs-sel, kill-lel, nobody felhasználóval, párhuzamos HTTP-írással);
+  - `bemutato_e2e.py`: a visszaállítás a központ válaszait is törli; a válasz szerver módban sem változtat árat;
+  - `v58.py`: a bemutatóanyag állításai a működő rendszerhez mérve.
+- **Bemutatóanyag:**
+  - „élesített fotó” helyett „a weboldalhoz optimalizált fotó” (félreérthető volt);
+  - kivettük az igazolatlan „a legtöbb pár telefonon nézelődik” állítást;
+  - a PDF újragenerálva.
+- **Dokumentáció:** új `docs/MENTES_ES_VISSZAALLITAS.md`; frissítve: `TELEPITES.md` 5. pont, `BIZTONSAG.md`, `ELSO_ATADAS.md`, API `README.md`.

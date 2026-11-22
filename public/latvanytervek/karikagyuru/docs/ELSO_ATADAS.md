@@ -1,4 +1,4 @@
-# Karikagyuru.com – első átadás: valós állapot (V5.8, 2026. 11. 22.)
+# Karikagyuru.com – első átadás: valós állapot (V5.8.1, 2026. 11. 22.)
 
 Ez a dokumentum funkciónként mutatja, **meddig jutott** az egyes rész. Kétféle dolgot választ el: mi tartozik
 az első (kb. 200 000 Ft-os) szakaszhoz, és mi későbbi, külön fejlesztés. A korábbi változat még azt írta,
@@ -38,7 +38,7 @@ hagyott jóvá. Az éles karikagyuru.com-hoz nem nyúltunk.
 | Ügyféljóváhagyási központ (V5.8) | ✔ | ✔ | ✔ | ✔ | – | – | – | 25 kérdés, mind nyitott; a válasz semmit nem ír át magától |
 | Bejelentkezés, CSRF, zárolás 5 hibás próbálkozás után | ✔ | ✔ | ✔ | n. a. | – | – | – | |
 | Zárt, jelszavas bemutató a laptopon (`bemutato.sh`) | ✔ | ✔ | ✔ | n. a. | – | – | – | mintaadatokkal, levélküldés nélkül; egy paranccsal visszaállítható |
-| Biztonsági mentés (`bin/mentes.php`) | ✔ | ✔ | ✔ | n. a. | – | – | – | adatbázis + fotók + referenciaképek; a visszaállítást a tárhelyen is ki kell próbálni |
+| Biztonsági mentés és visszaállítás (`bin/mentes.php`, `bin/visszaallitas.php`) | ✔ | ✔ | ✔ | n. a. | – | – | – | V5.8.1: konzisztens, ellenőrzött; teljes visszaállítási próba helyben sikeres; a tárhelyen egyszer végig kell csinálni (`MENTES_ES_VISSZAALLITAS.md`) |
 | Érdeklődések törlése megőrzési idő után (`bin/purge.php`) | ✔ | ✔ | ✔ | n. a. | – | – | – | a megőrzési időt az adatkezelési tájékoztatónak kell megadnia |
 | Két arculati változat (A/B) | ✔ | ✔ | ✔ | ✔ | – | – | – | `arculat.html`; az ügyfél még nem választott |
 | SEO-alapok (cím, leírás, noindex a bemutatón) | ✔ | ✔ | – | ✔ | – | – | – | az élesítés előfeltételei: `SEO_MIGRACIO.md` |

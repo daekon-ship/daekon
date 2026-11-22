@@ -61,13 +61,14 @@ Jelölés: ☐ = elvégzendő · minden pont mellé írandó: ki, mikor, mi lett
 ## 5. Adatbázis, mentés, visszaállítás
 
 - ☐ Az SQLite-fájl a `kg-adat/` mappában, webgyökéren kívül (2. pont)
-- ☐ **Napi mentés** a `kg-adat/` teljes tartalmáról a tárhelyen kívülre (a szolgáltató mentése mellé is),
-  legalább 14 napig megőrizve. V5.8-tól beépített parancs: `KG_DATA=/home/<fiók>/kg-adat php kg-app/bin/mentes.php /home/<fiók>/kg-mentesek`
-  – adatbázis (egységes pillanatkép futó oldal mellett is), fotók, referenciaképek; épség-ellenőrzéssel; az adatmappába nem ment.
-  Helyben tesztelve (`tests/mentes_test.py`), tárhelyen még nem. Napi cron példa: `15 3 * * * KG_DATA=… php …/bin/mentes.php …`
-- ☐ A régi mentések törlése (pl. 14 napnál régebbiek) – a mentés személyes adatot tartalmaz, nem tartható meg korlátlanul
-- ☐ **Visszaállítás kipróbálva:** egy mentést egy külön mappába visszatöltve a rendszer elindul, és a
-  benne lévő árak és érdeklődések látszanak. Ennek ideje és eredménye leírva.
+- ☐ **Napi mentés** (V5.8.1): `KG_DATA=/home/<fiók>/kg-adat php kg-app/bin/mentes.php /home/<fiók>/kg-mentesek`, cronból éjszaka.
+  Lehetőleg másik lemezre, a szolgáltató mentése mellé. Zárolással konzisztens, minden fájl ellenőrzőösszeggel ellenőrizve,
+  hibánál nem jelez sikert (kilépési kódok, napló). Teljes leírás: **`docs/MENTES_ES_VISSZAALLITAS.md`**.
+  Helyben tesztelve (`tests/mentes_test.py`, 85 ellenőrzés), tárhelyen még nem.
+- ☐ A régi mentések törlése: `bin/mentes-torles.php` – **a megőrzési időt az ügyféllel kell egyeztetni**; addig nem kerül cronba
+- ☐ **Visszaállítás kipróbálva a tárhelyen:** `bin/visszaallitas.php` új, üres mappába, a rendszer elindul,
+  az árak, az érdeklődések és egy referenciakép látszanak. Ennek ideje és eredménye leírva.
+  (Helyben igazolva: a visszaállított rendszer bájtra azonos állapotot, árverziókat, érdeklődéseket és képeket ad, újraindítás után is.)
 - ☐ A kezelőfelület saját változatkezelése (minden mentés új változat, utolsó 200 megmarad) **nem
   helyettesíti** a napi mentést
 

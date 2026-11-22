@@ -71,7 +71,7 @@ python3 tests/demo_e2e.py              # 18 böngészős ellenőrzés: a nem él
 python3 tests/demo_kapu_test.py        # 49 ellenőrzés: jelszóval védett bemutató (kapu, noindex, e-mail tiltás, külön admin, visszaállítás, éles adat védelme)
 python3 tests/bemutato_e2e.py          # 65 böngészős ellenőrzés: a bemutató végig a kapun át, 360/390/430 px + admin (V5.8: árverzió-visszaállítás, új műhelymunka fotóval, ügyféljóváhagyási központ)
 python3 tests/foto_test.py             # 16 ellenőrzés: termékfotó-ellenőrző és -letöltő eszköz helyi álszerverrel
-python3 tests/mentes_test.py           # 8 ellenőrzés: biztonsági mentés (bin/mentes.php) valódi PHP-futtatással
+python3 tests/mentes_test.py           # 85 ellenőrzés (rootként, tmpfs-sel): mentés, teljes visszaállítás és újraindítás, 13 valóban előidézett hibaeset, párhuzamos írás, megőrzés
 ```
 
 `api_test.py`: telepítés, jogosultság, CSRF, mentés/ütközés/visszaállítás, hibás adatok elutasítása,
@@ -122,9 +122,17 @@ Részletes ellenőrzőlista: `public/latvanytervek/karikagyuru/docs/TELEPITES.md
 5. HTTPS kötelező (a süti csak így kapja meg a Secure jelzőt).
 6. Kipróbálás a tárhelyen: belépés, egy ármódosítás, egy érdeklődés, egy kép – és visszaállítás.
 
-## Biztonsági mentés (V5.8)
+## Biztonsági mentés és visszaállítás (V5.8.1)
 
-`KG_DATA=… php bin/mentes.php <célmappa>` – dátumozott mappába menti az adatbázist (`VACUUM INTO`, futó oldal mellett is egységes), a termékfotókat és a referenciaképeket, majd ellenőrzi a másolat épségét. Az adatmappába nem ment. Helyben tesztelve, tárhelyen még nem.
+| Parancs | Feladat |
+|---|---|
+| `KG_DATA=… php bin/mentes.php <célmappa> [--letrehoz] [--hianyos-engedve]` | mentés zárolással, ellenőrzött másolással; kilépési kód 0/1/2/3/4/5 |
+| `php bin/mentes-ellenorzes.php <mentésmappa>` | kész mentés ellenőrzése visszaállítás nélkül |
+| `KG_DATA=<új, üres mappa> php bin/visszaallitas.php <mentésmappa> [--bemutato]` | visszaállítás, meglévő adatot nem ír felül |
+| `php bin/mentes-torles.php <mappa> --napok N [--megtart K] [--torles]` | régi mentések törlése (alapból csak próbafuttatás; N az ügyféllel egyeztetendő) |
+
+A logika: `src/Backup.php` (külső függőség nélkül). Az író végpontok mentés közben várnak (`KG_MENTES_VARAKOZAS`, alapból 20 mp), utána 503.
+Részletek: `public/latvanytervek/karikagyuru/docs/MENTES_ES_VISSZAALLITAS.md`.
 
 ## Ami még hiányzik az éles használathoz
 
