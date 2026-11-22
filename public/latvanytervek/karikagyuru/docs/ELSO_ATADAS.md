@@ -1,73 +1,67 @@
-# Karikagyuru.com – első átadás és későbbi fejlesztések
+# Karikagyuru.com – első átadás: valós állapot (V5.8, 2026. 11. 22.)
 
-Ez a dokumentum elválasztja, mi tartozik az **első átadáshoz**, és mi **későbbi, külön fejlesztés**.
-Az állapotok tényszerűek: „demó” = a látványtervben működik, de csak a böngészőben ment;
-„váz” = megírva és helyben tesztelve, de nincs bekötve/élesítve.
+Ez a dokumentum funkciónként mutatja, **meddig jutott** az egyes rész. Kétféle dolgot választ el: mi tartozik
+az első (kb. 200 000 Ft-os) szakaszhoz, és mi későbbi, külön fejlesztés. A korábbi változat még azt írta,
+hogy nincs e-mail-értesítés, és hogy a saját ötlethez csatolt kép nem töltődik fel. **Ez már nem igaz**
+(lásd a táblázatot).
 
-## A. Első átadás
+## Az állapotok jelentése
 
-| Rész | Mit jelent | Mai állapot |
+| # | Állapot | Mit jelent |
 |---|---|---|
-| Új weboldal | főoldal, ötvös bemutatása, saját ötlet, kapcsolat, mobilon is | demó – kész a bemutatásra; a szövegeket és a tegeződést az ügyfélnek jóvá kell hagynia |
-| Gyűrűkatalógus | 115 modell, szűrés, keresés, termékoldal | demó – a jelenlegi oldal adataiból; a képek 600×600-asak, élesebbhez az eredetik kellenek |
-| Árkezelés | eladási grammár fémenként, gyémánt darabár, előtte–utána összevetés, megerősítés, árverzió, visszaállítás, hiányzó adat jelzése | kész, az ötvös számítási módszerével; **az árak nem jóváhagyottak** – ezért a vásárló még nem lát számolt árat (lásd lent) |
-| Kezelőfelület | 5 fő feladat: árak, gyűrűk, fotók, szabályok, érdeklődések; belépés, szerveres mentés változatokkal, mentésjelző | kész és helyben tesztelve (szerver módban is); valódi tárhelyen még nem futott |
-| Szakmailag korlátozott konfigurálás | gyűrűnként: fémek, színek, mérettartomány, szélesség/vastagság csak ha engedélyezett és jóváhagyott, kőszabály, egyeztetést igénylő módosítások | kész; **0 / 115 gyűrű jóváhagyott** – a jóváhagyás a kezelőfelület „Jóváhagyás sorban” oldalán megy, gyűrűnként |
-| Fokozatos jóváhagyás | nem jóváhagyott gyűrű: a katalógusban marad, „Egyedi árajánlat” jelöléssel, online beállítás nélkül (V5.6: a régi listaár csak az adminban); jóváhagyott gyűrű: beállítható, és számolt árat kap, de csak ha a felhasznált grammár, kőár és számítási szabály is jóváhagyott | kész, helyben tesztelve |
-| Árajánlatkérés | a beállítás az ajánlatkéréssel együtt megy; saját ötlet | szerver módban a szerveren rögzül és a kezelőfelületen látszik; **e-mail-értesítés még nincs**; a saját ötlethez csatolt kép nem töltődik fel |
+| 1 | Megírva | a kód létezik a repositoryban |
+| 2 | Automatikus teszt | a tesztek valódi böngészőben vagy valódi PHP-futtatással ellenőrzik (nem csak kódolvasás) |
+| 3 | Helyi PHP-szerveren kipróbálva | a saját gépen, `php -S` szerverrel, SQLite-tal, a teljes folyamaton végigmentünk |
+| 4 | GitHub Pages-en bemutatható | a nyilvános bemutató címen megnézhető (ott nincs szerver: minden csak a böngészőben ment) |
+| 5 | Valódi tárhelyen kipróbálva | az ügyfél tárhelyén fut |
+| 6 | Ügyfél jóváhagyta | az ötvös kifejezetten rábólintott |
+| 7 | Élesítve | a karikagyuru.com-on, valódi vásárlóknak |
 
-**Ami az első átadáshoz még el kell készüljön (fejlesztés):**
+**Az 5., 6. és 7. állapotot egyetlen funkció sem érte el.** Tárhely nincs kiválasztva, és az ügyfél még semmit nem
+hagyott jóvá. Az éles karikagyuru.com-hoz nem nyúltunk.
 
-1. ~~A kezelőfelület bekötése a szerveroldali API-ra~~ – kész, helyben tesztelve.
-2. Telepítés és kipróbálás a tényleges tárhelyen, mentési renddel.
-3. ~~Érdeklődés-értesítés (e-mail)~~ – megírva, kikapcsolva; bekapcsolás a jóváhagyott címmel és SMTP-adatokkal, próbalevéllel.
-4. Adatkezelési tájékoztató, sütikezelés, impresszum a végleges adatokkal.
-5. A régi oldal címeinek átirányítása, hogy a keresőből érkezők ne vesszenek el.
-6. Átadás előtti teljes ellenőrzés a végleges, jóváhagyott adatokkal.
+## A. Első átadás – funkciók
 
-**Nem része (és nem is lesz az elsőnek):** webshop, kosár, bankkártyás fizetés, automatikus rendelés.
+✔ = elérte · – = még nem · n. a. = nem értelmezhető
 
-## B. Későbbi, külön fejlesztések
+| Funkció | 1 | 2 | 3 | 4 | 5 | 6 | 7 | Megjegyzés |
+|---|---|---|---|---|---|---|---|---|
+| Új weboldal (főoldal, ötvös, saját ötlet, műhelymunkák, kapcsolat), mobilon is | ✔ | ✔ | ✔ | ✔ | – | – | – | a szövegek és a tegezés jóváhagyásra várnak |
+| Katalógus: 115 gyűrű, szűrés, keresés, termékoldal, nagyítás | ✔ | ✔ | ✔ | ✔ | – | – | – | 30 gyűrűnek saját, optimalizált fotója van; 85 fotó a régi oldalról töltődik (lásd `KATALOGUS_JELENTES.md`) |
+| Központi árkezelés: grammár, előtte–utána, árverziók, visszaállítás | ✔ | ✔ | ✔ | ✔ | – | – | – | az ötvös módszerével számol; **egy ár sincs jóváhagyva**, ezért a vásárló „Egyedi árajánlat”-ot lát |
+| Gyűrűnkénti szakmai jóváhagyás (hiányzó/becsült adat blokkol) | ✔ | ✔ | ✔ | ✔ | – | – | – | 0 / 115 gyűrű jóváhagyott (a bemutató mintaadatában 2 szemléltető) |
+| Konfigurátor: anyag, finomság, szín, méret, kő, gravírozási kérés | ✔ | ✔ | ✔ | ✔ | – | – | – | csak jóváhagyott gyűrűn; a gravírozás ára nincs megadva → az oldal kiírja, hogy az ár nem tartalmazza |
+| Ajánlatkérés, időpontkérés, saját ötlet | ✔ | ✔ | ✔ | ✔* | – | – | – | *Pages-en az üzenet NEM jut el az ötvöshöz – ezt az űrlap előtte és utána is kiírja |
+| Saját ötlethez csatolt referenciakép feltöltése (védett, csak az adminban látszik) | ✔ | ✔ | ✔ | – | – | – | – | Pages-en nincs szerver, ott a kép nem töltődik fel |
+| E-mail-értesítés új érdeklődésről | ✔ | ✔ | ✔** | – | – | – | – | **csak „fájlba írás” módban; valódi levél nem ment ki (nincs jóváhagyott cím és SMTP) |
+| Kezelőfelület: árak, gyűrűk, fotók, műhelymunkák, szabályok, érdeklődések | ✔ | ✔ | ✔ | ✔ | – | – | – | Pages-en jelszó nélkül, csak a böngészőben ment; szerveren belépéssel, változatokkal |
+| Ügyféljóváhagyási központ (V5.8) | ✔ | ✔ | ✔ | ✔ | – | – | – | 25 kérdés, mind nyitott; a válasz semmit nem ír át magától |
+| Bejelentkezés, CSRF, zárolás 5 hibás próbálkozás után | ✔ | ✔ | ✔ | n. a. | – | – | – | |
+| Zárt, jelszavas bemutató a laptopon (`bemutato.sh`) | ✔ | ✔ | ✔ | n. a. | – | – | – | mintaadatokkal, levélküldés nélkül; egy paranccsal visszaállítható |
+| Biztonsági mentés (`bin/mentes.php`) | ✔ | ✔ | ✔ | n. a. | – | – | – | adatbázis + fotók + referenciaképek; a visszaállítást a tárhelyen is ki kell próbálni |
+| Érdeklődések törlése megőrzési idő után (`bin/purge.php`) | ✔ | ✔ | ✔ | n. a. | – | – | – | a megőrzési időt az adatkezelési tájékoztatónak kell megadnia |
+| Két arculati változat (A/B) | ✔ | ✔ | ✔ | ✔ | – | – | – | `arculat.html`; az ügyfél még nem választott |
+| SEO-alapok (cím, leírás, noindex a bemutatón) | ✔ | ✔ | – | ✔ | – | – | – | az élesítés előfeltételei: `SEO_MIGRACIO.md` |
+| Régi címek átirányítása (301) | – | – | – | – | – | – | – | nincs meg a régi címek listája – előfeltétel |
+
+## B. Mi kell még az első szakasz lezárásához
+
+1. **Ügyfél-jóváhagyások** – a kezelőfelület „Ügyféljóváhagyások” oldala tételesen sorolja (grammárak, kőárak, gravírozás,
+   előleg, határidő, fizetési mód, jótállás, logó, megszólítás, acél/titán stb.).
+2. **Tárhely** kiválasztása és telepítés (`TELEPITES.md`), mentés és visszaállítás kipróbálása ott.
+3. **E-mail**: az értesítési cím és az SMTP-fiók megadása, egy próbalevél – csak az ügyfél engedélyével.
+4. **Jogi szövegek**: az adatkezelési tájékoztató frissítése (képfeltöltés, megőrzési idő), az ÁSZF átnézése.
+5. **Fotók**: a 85 régi oldali fotó eredetije (vagy legalább a letöltés engedélye).
+6. **Átirányítások**: a régi címek listája vagy Search Console-hozzáférés.
+7. Átadás előtti teljes ellenőrzés a valódi tárhelyen, a jóváhagyott adatokkal.
+
+**Nem része az első szakasznak:** webshop, kosár, online fizetés, automatikus rendelés.
+
+## C. Későbbi, külön fejlesztések
 
 | Fejlesztés | Megjegyzés |
 |---|---|
-| Rhino-alapú 3D-megjelenítés | adatmodell előkészítve (`models3d`); folyamat: `docs/RHINO_3D.md`; valódi modell nélkül nincs kipróbálva |
-| Fejlettebb parametrikus tervező | Grasshopper + Rhino.Compute; folyamatos szerverköltség, külön üzemeltetés |
-| Rhino-fájl generálása a vásárló beállításából | a kapott fájl kiindulás, nem kész gyártási terv – ötvösi ellenőrzés kell |
-| Összetettebb adminfunkciók | több felhasználó és jogosultság, tömeges szerkesztés, import/export, statisztika, időzített árváltozás |
-| Egyéb | második oldal (a neve nincs eldöntve), idegen nyelv, időpontfoglalás naptárral, hírlevél |
-
-## C. Mi kell az élesítéshez
-
-Részletes, végrehajtható lista: **`TELEPITES.md`** (PHP/SQLite, jogosultságok, HTTPS, belépés, napi mentés
-és kipróbált visszaállítás, érdeklődések, e-mail, jogi szövegek, átirányítások, SEO, mobiltesztek).
-**Amíg nincs tárhely-hozzáférés, a rendszer nem élesítésre kész.**
-
-### Hozzáférések
-
-- Tárhely: szolgáltató, kezelőfelület vagy FTP/SSH, PHP-verzió, van-e SQLite/MySQL, HTTPS.
-- Domain/DNS: ki kezeli a karikagyuru.com-ot, hol módosítható.
-- A jelenlegi oldal fájljai és adatbázisa (mentéshez, átirányításokhoz). **A jelenlegi éles oldalhoz nem nyúltunk.**
-- E-mail: melyik címre menjenek az érdeklődések, és honnan küldhet levelet az oldal.
-- Ha van: Google Search Console / Analytics / cégprofil.
-
-### Adatok az ügyféltől
-
-- Eredeti, nagy felbontású termékfotók; műhely- és portréfotók.
-- Modellenként a tényleges súly (54-es méretre) és a kőszabály (hány kő, mekkora).
-- Mely modelleknél állítható a szélesség/vastagság, milyen határok között; mi igényel egyeztetést.
-- Cégadatok az impresszumhoz, nyitvatartás, elérhetőségek, ÁSZF/adatkezelési szöveg.
-
-### Hiányzó jóváhagyások és nyitott kérdések
-
-- 18K és palládium eladási grammár (most bemutató érték).
-- Titán: marad-e egyedi, munkaalapú ajánlat (most így van).
-- 0,04 és 0,05 ct kő ára (most „egyedi árajánlat”); 0,005 és 0,10 ct bemutató érték.
-- A jegyzet egyik méretpéldája eltér a lineáris számítástól – melyik a helyes? (részletek a nem nyilvános anyagban)
-- Kerekítés (most 100 Ft-ra felfelé, bemutató beállítás).
-- Gravírozás: kínálja-e, és mennyiért. Foglalási díj: van-e.
-- A tegeződő megszólítás és a szövegek; a kolléga/gyártó említése.
-- Mind a 115 gyűrű szabálya (most 0 jóváhagyott).
-
-A kezelőfelület „Jóváhagyásra vár” oldala tételesen mutatja a hiányzó jóváhagyásokat. Ez **előzetes
-ellenőrzés a látványtervben**, nem élesítési engedély.
+| Rhino-alapú 3D-megjelenítés | adatmodell előkészítve (`models3d`); folyamat: `RHINO_3D.md`. Eredeti CAD-fájlok és műszaki ellenőrzés nélkül nincs kipróbálva, és nem ígérünk gyártható fájlt |
+| Parametrikus tervező | Grasshopper + Rhino.Compute; folyamatos szerverköltség, külön üzemeltetés |
+| Összetettebb admin | több felhasználó, jogosultságok, import/export, statisztika, időzített árváltozás |
+| Egyéb | idegen nyelv, naptáras időpontfoglalás, hírlevél |

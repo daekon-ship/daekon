@@ -1,0 +1,27 @@
+# Karikagyuru.com – biztonsági és adatkezelési áttekintés (V5.8, 2026. 11. 22.)
+
+A kódban ellenőrzött állapot. Valódi tárhelyen még semmi nem futott, ezért élesítés előtt a tárhelyen újra ki
+kell próbálni (`TELEPITES.md`). Ez az áttekintés nem jogi vélemény.
+
+| Terület | Megoldás | Ellenőrizve | Élesítés előtt teendő |
+|---|---|---|---|
+| Admin belépés | jelszó `password_hash`-sel; munkamenet-süti: HttpOnly, SameSite=Strict, HTTPS-en Secure; böngésző bezárásakor lejár | api_test, server_failures_e2e (lejárt belépés) | erős jelszó az ötvösnek, HTTPS kötelező |
+| Próbálkozások | 5 hibás belépés / 15 perc → zárolás; a gépek IP-címét csak kivonatként (hash) tároljuk | api_test, demo_kapu_test | – |
+| Jogosultság | minden módosító és bizalmas végpont (mentés, árverziók, érdeklődések, referenciaképek, fotófeltöltés, levélbeállítás) csak belépve | api_test | – |
+| CSRF | módosító kéréshez `X-CSRF-Token`, időzítés-biztos összevetéssel | api_test | – |
+| Adatbázis | SQLite a webgyökéren kívül (`KG_DATA`), előkészített lekérdezések | api_test | próba: a `kg.sqlite` URL-ről 404 |
+| Nyilvános adat | a látogató csak jóváhagyott árat, látható gyűrűt, látható műhelymunkát kap; a régi listaár, a belső felárak, a nyitott kérdések és az ügyféldöntések nem mennek ki | api_test (V5.8: ügyféldöntések is) | – |
+| Referenciaképek (saját ötlet) | újrakódolva (GD), EXIF nélkül, véletlen fájlnévvel, csak belépett adminnak szolgálva ki | upload_test, bemutato_e2e | – |
+| Feltöltés | csak JPEG/PNG/WebP, valódi képként megnyitva, méretkorlát, legfeljebb 3 kép | upload_test | `upload_max_filesize` a tárhelyen |
+| Érdeklődések | szerkezeti ellenőrzés, méretkorlát, robotcsapda-mező | api_test | – |
+| E-mail | alapból kikapcsolva; valódi levél csak az ügyfél jóváhagyott címével és SMTP-adataival; a bemutató minden beállítást felülírva kikapcsolja | mail_test, demo_kapu_test | jóváhagyott cím, próbalevél engedéllyel |
+| Megőrzés | `bin/purge.php <nap>` törli a régi érdeklődéseket a képeikkel | api_test | a napok számát az adatkezelési tájékoztató adja meg |
+| Mentés | `bin/mentes.php` (V5.8): adatbázis + fotók + referenciaképek, 0600 jogosultsággal, az adatmappán kívülre | mentes_test | napi cron, a régi mentések törlése, visszaállítás kipróbálása |
+| Bemutató elkülönítése | külön adatmappa, „demo” jelölés; éles módban demo adat nem menthető; a bemutató saját jelszava nem nyitja az admint | demo_kapu_test, bemutato_e2e | a `demo/`, `bin/demo-*`, `dev/` mappa nem kerül az éles tárhelyre |
+| Nyilvános repository | nincs benne az ötvös kézírásos jegyzete, eredeti CAD-fájl, ügyféllevél vagy jelszó; a bemutató jelszavai minden telepítéskor véletlenszerűek | privát ellenőrző szkript (nem része a repónak) | a git-előzmény korábbi változatában maradt mintaszámok kezelése külön döntés (nem írtuk át automatikusan) |
+
+## Nyitott kérdések
+
+- **Adatkezelési tájékoztató:** az új funkciók (referenciakép-feltöltés, ajánlatkérés tárolása, e-mail-értesítés) miatt frissíteni kell, és meg kell adni a megőrzési időt. Ez az ügyfél (adatkezelő) feladata, jogi átnézéssel.
+- **Sütik:** az oldal csak működéshez szükséges sütit használ (admin munkamenet, bemutató-kapu), követő vagy reklámsütit nem. Ha később analitika kerül rá, sütitájékoztató kell.
+- **Telefonos bemutató Wi-Fi-n:** sima `http` – csak saját hálózaton (`BEMUTATO_TELEPITES.md`).

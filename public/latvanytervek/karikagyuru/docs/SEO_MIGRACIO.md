@@ -1,6 +1,30 @@
 # Karikagyuru.com – SEO: a hash-alapú oldalak korlátai és migrációs javaslat
 
-**Állapot:** javaslat, nincs megvalósítva. A GitHub Pages bemutató `noindex` marad.
+**Állapot (V5.8):** javaslat, nincs megvalósítva. A GitHub Pages bemutató `noindex` marad, az éles oldalhoz nem nyúltunk.
+
+## 0. Élesítési döntés (V5.8)
+
+A hash-alapú (`#/`) útvonal **az élesítés előtt eldöntendő kérdés, nem technikai részlet.** Ha az új oldal így kerül
+a karikagyuru.com-ra, a keresőben a termékoldalak egyetlen oldalnak látszanak. Ez a mostani oldal keresési
+forgalmának egy részét elviheti. Két tisztességes választás van:
+
+1. **Élesítés előtt megcsináljuk a 2. pontot** (valódi útvonalak + szerveroldali fej + 301-ek). Ajánlott.
+2. **Hash-alapon élesítünk**, és az ügyfél írásban tudomásul veszi a keresési kockázatot. Akkor is kell 301 a régi címekről
+   a főoldalra vagy a katalógusra.
+
+**Hiányzó előfeltételek (nélkülük egyik sem végezhető el rendesen):**
+
+| Előfeltétel | Állapot |
+|---|---|
+| A mostani oldal URL-listája (sitemap vagy Search Console-export) | **nincs meg** – a karikagyuru.com innen nem volt elérhető |
+| Search Console-hozzáférés (forgalom oldalanként, mely oldalak hoznak látogatót) | **nincs meg** |
+| A régi termékkódok ↔ új azonosítók megfeleltetése | részben: a 115 gyűrű a régi cikkszámokból készült, a régi URL-ek nélkül nem ellenőrizhető |
+| Végleges domain (www-vel vagy anélkül), kanonikus cím | ügyféldöntés |
+| Valós cégadatok a strukturált adathoz (nyitvatartás, ár csak jóváhagyottan) | részben (cím, telefon, adószám megvan; nyitvatartás „időpont-egyeztetéssel”) |
+| Megosztási kép (Open Graph) | a jóváhagyott logóváltozat után |
+
+Amíg ezek nincsenek meg, **nem élesítünk**: a keresési forgalom megtartását nem tudjuk ellenőrizni.
+
 
 ## 1. A mostani megoldás korlátai
 

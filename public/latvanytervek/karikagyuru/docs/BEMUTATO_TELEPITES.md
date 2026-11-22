@@ -1,6 +1,6 @@
 # Jelszóval védett online bemutató – telepítés
 
-**Állapot (V5.6):** a bemutató a saját gépen ugyanúgy fut, mint a tárhelyen (`demo/kapu.php`), és a telepítési csomag elkészül.
+**Állapot (V5.8, 2026. 11. 22.):** a laptopos bemutató ki van próbálva: a `KG_MARAD=1 bash services/karikagyuru-api/dev/bemutato.sh` parancs telepít, kiírja a két jelszót, jelszó nélkül 401-et ad, újraindításkor a meglévő adatmappát használja (automata teszt: `bemutato_e2e.py`, 65 ellenőrzés). A bemutató a saját gépen ugyanúgy fut, mint a tárhelyen (`demo/kapu.php`), és a telepítési csomag elkészül.
 **Online még nincs fent.** Nincs hozzá tárhely-hozzáférés. Más DAEKON-ügyfél tárhelyére nem telepítjük.
 
 ## Laptopos bemutató – pontos indítás
@@ -33,7 +33,42 @@
   - Mac: `KG_DATA=$HOME/.kg-bemutato-adat php services/karikagyuru-api/bin/demo-reset.php`
   - Windows: `C:\php\php.exe services\karikagyuru-api\bin\demo-reset.php` (a `$env:KG_DATA` beállítása után).
 - Ha van idő és internet: `node services/karikagyuru-api/dev/foto-ellenorzes.mjs` letölti a karikagyuru.com-os fotókat helyi, optimalizált másolatba, így a bemutatón internet nélkül is minden kép látszik. Ehhez Node és `npm i sharp` kell.
-- Telefonon is kipróbálható ugyanazon a Wi-Fi-n: `KG_HOST=0.0.0.0 KG_MARAD=1 bash services/karikagyuru-api/dev/bemutato.sh`, majd a telefonon a laptop IP-címe a 8792-es porton. Csak saját, megbízható hálózaton – a bemutató jelszava ekkor is véd.
+
+### Telefonos próba ugyanazon a Wi-Fi-n
+
+1. **Csak saját, jelszavas Wi-Fi-n** (otthon, iroda) vagy a saját telefon hotspotján. **Kávézó, szálloda, nyilvános Wi-Fi: soha.** A kapcsolat itt sima `http`, titkosítás nélkül: egy idegen hálózaton más is láthatná a beírt jelszót.
+2. Indítás: `KG_HOST=0.0.0.0 KG_MARAD=1 bash services/karikagyuru-api/dev/bemutato.sh`
+3. A laptop címe:
+   - Mac: `ipconfig getifaddr en0` (pl. `192.168.1.23`);
+   - Windows: `ipconfig` → „IPv4-cím”.
+4. A telefon böngészőjébe: `http://192.168.1.23:8792/` (a saját címeddel). Először a bemutató jelszavát kéri.
+5. Ha nem tölt be:
+   - a laptop tűzfala kérdezhet („Engedélyezed a bejövő kapcsolatot a php-nak?”) → csak a saját hálózaton engedélyezd;
+   - a telefon ugyanazon a Wi-Fi-n legyen, ne mobilneten.
+6. **A bemutató után azonnal: Ctrl+C.** Amíg fut, a hálózaton bárki elérheti a jelszókérőt. A jelszó nélkül semmi nem látszik, 5 hibás próbálkozás után 15 percre zárol.
+7. Az ügyfél telefonján **ne** mentsétek el a jelszót, és ne küldjétek el üzenetben.
+
+### Az ötvös 14 saját próbája (a bemutatón ő csinálja, mi csak mutatjuk az utat)
+
+| # | Feladat | Hol | Automata teszt |
+|---|---|---|---|
+| 1 | Megnyitja a katalógust | weboldal → Gyűrűk | bemutato_e2e, v58 |
+| 2 | Kiválaszt egy mintagyűrűt (pl. 81184 - 81185 W) | keresés cikkszámra | bemutato_e2e |
+| 3 | Méretet vált | termékoldal → Méret | bemutato_e2e |
+| 4 | Engedélyezett anyagot választ (platina) | termékoldal → Anyag | bemutato_e2e |
+| 5 | Kőszámot változtat | termékoldal → Gyémánt | bemutato_e2e |
+| 6 | Látja, hogy változik a szemléltető ár | ármező | bemutato_e2e |
+| 7 | Belép a kezelőfelületre | `#/admin`, admin jelszó | bemutato_e2e |
+| 8 | Átír egy grammárat | Árak | bemutato_e2e |
+| 9 | Látja az előtte–utána összevetést | Árak, mentés előtt | bemutato_e2e, v4 |
+| 10 | Visszaállítja az előző árverziót | Árak → korábbi verziók | bemutato_e2e (V5.8), v4 |
+| 11 | Jóváhagy egy gyűrűt | Jóváhagyás sorban | bemutato_e2e |
+| 12 | Új műhelymunkát vesz fel | Műhelymunkák → + Új | bemutato_e2e (V5.8) |
+| 13 | Fotót csatol hozzá | ugyanott, Fotók hozzáadása | bemutato_e2e (V5.8) |
+| 14 | Megnéz egy próba-érdeklődést (képpel) | Érdeklődések | bemutato_e2e |
+
+Minden adat szemléltető. A bemutató után a `demo-reset.php` mindent visszaállít; semmi nem kerül jóváhagyott, éles adatként sehova.
+Az **Ügyféljóváhagyások** oldalon (Kezelőfelület → További) a kérdések egyben átnézhetők és kinyomtathatók. A bemutatón beírt válaszok is csak a bemutató adatbázisában maradnak.
 
 ## Hogyan védi magát
 

@@ -3,6 +3,8 @@
 Élő előnézet: https://daekon-ship.github.io/daekon/latvanytervek/karikagyuru/
 Build nélküli, önálló mappa (`index.html` + `css/` + `js/` + `fonts/`), `noindex`.
 
+> **V5.8 megjegyzés:** az alábbi korai táblázatokban a „kész” azt jelenti, hogy „megírva, helyben kipróbálva”. A mai, funkciónkénti valós állapot (tárhely, ügyfél-jóváhagyás, élesítés nélkül): **`docs/ELSO_ATADAS.md`**. A fejlesztés legújabb lépései a fájl végén vannak.
+
 ## Mi működik ténylegesen
 
 | Rész | Hol | Állapot |
@@ -552,3 +554,32 @@ Részletek: `docs/SZOVEG_ES_ARCULAT_V5_7.md`. Összevetés a két arculati vált
   - a fejléc gombja 42 px magas volt;
   - mobilon a főcím nem fért az első képernyőre.
 - **Teszt:** `tests/v57.py` – arculat, szövegek, 5 képernyőméret.
+
+## V5.8 – végső minőségellenőrzés és ügyfélbemutató (2026. november 22.)
+
+**A funkciók valós állapota (megírva → teszt → helyi szerver → Pages → tárhely → ügyfél-jóváhagyás → élesítve): `docs/ELSO_ATADAS.md`.**
+Ez a fájl a fejlesztés naplója. Ahol korábbi szakasz „kész”-t ír, ott a „megírva és helyben tesztelve” értendő:
+valódi tárhelyen semmi nem futott, és ügyféljóváhagyás nincs.
+
+- **Jóvá nem hagyott állítások kivéve a vásárlói oldalról:**
+  - a láblécből az „acélból” (a konfigurátorban sosem volt acél);
+  - a titánnál „egyedi ajánlat”;
+  - a gravírozás ár nélkül „kérésként jelezheted”, és kiírja, hogy az ár ezt nem tartalmazza (eddig „+Egyedi ajánlat / gyűrű” állt ott);
+  - a termékadatlapról kikerült a belső „– ügyféllel egyeztetendő” jegyzet és a „nincs színjelölés” megjegyzés.
+- **Ügyféljóváhagyási központ** (`#/admin/kozpont`, Kezelőfelület → További → Ügyféljóváhagyások):
+  - 25 kérdés 4 csoportban, mind „Nyitott”;
+  - tételenként: mostani érték, forrás, kérdés, válaszmező, mentési állapot;
+  - a válasz nem ír át semmit; „Átvezetve” csak külön megerősítéssel;
+  - nyomtatható; a nyilvános nézet nem kapja meg (`js/decisions.js`, `store.saveDecision`, szerveroldali ellenőrzés).
+- **Javított hiba:** szerver módban az üres döntéslista tömbként jött vissza (PHP), és a rá írt válasz kimaradt a mentésből. Javítva, teszt: `bemutato_e2e.py`.
+- **Biztonsági mentés:** `services/karikagyuru-api/bin/mentes.php` + `tests/mentes_test.py`.
+- **Dokumentáció:**
+  - `docs/ELSO_ATADAS.md` újraírva (7 állapot funkciónként; az e-mail és a képfeltöltés megvan, csak nincs élesítve);
+  - új: `docs/BIZTONSAG.md`;
+  - `docs/SEO_MIGRACIO.md`: élesítési döntés és hiányzó előfeltételek;
+  - `docs/BEMUTATO_TELEPITES.md`: Wi-Fi-s telefonos próba biztonságosan, az ötvös 14 próbája;
+  - `TELEPITES.md` 5. és 14. pont.
+- **Tesztek:**
+  - új: `tests/v58.py` (mobil utak 360/390 px-en, őszinte helyi visszajelzés, 115 termékoldal, A/B, központ, admin hibás bevitel);
+  - bővítve: `api_test.py`, `bemutato_e2e.py`.
+- **Ügyfélbemutató:** `bemutato.html` – egyszerű, nyomtatható, 8 rész.

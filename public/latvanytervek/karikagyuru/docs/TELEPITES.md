@@ -1,6 +1,6 @@
 # Karikagyuru.com – telepítési és élesítési ellenőrzőlista
 
-**Állapot (2026. november 21.): NEM élesítésre kész.** Tárhely-hozzáférés nélkül a rendszer csak helyi
+**Állapot (2026. november 22., V5.8): NEM élesítésre kész.** Tárhely-hozzáférés nélkül a rendszer csak helyi
 gépen futott (PHP beépített szerverével, automata tesztekkel). Az alábbi lista minden pontját a valódi
 tárhelyen kell elvégezni és kipróbálni. A jelenlegi karikagyuru.com oldalt ez a munka nem érintette.
 
@@ -62,7 +62,10 @@ Jelölés: ☐ = elvégzendő · minden pont mellé írandó: ki, mikor, mi lett
 
 - ☐ Az SQLite-fájl a `kg-adat/` mappában, webgyökéren kívül (2. pont)
 - ☐ **Napi mentés** a `kg-adat/` teljes tartalmáról a tárhelyen kívülre (a szolgáltató mentése mellé is),
-  legalább 14 napig megőrizve. Biztonságos másolat futó rendszerről: `sqlite3 kg.sqlite ".backup kg-<dátum>.sqlite"`
+  legalább 14 napig megőrizve. V5.8-tól beépített parancs: `KG_DATA=/home/<fiók>/kg-adat php kg-app/bin/mentes.php /home/<fiók>/kg-mentesek`
+  – adatbázis (egységes pillanatkép futó oldal mellett is), fotók, referenciaképek; épség-ellenőrzéssel; az adatmappába nem ment.
+  Helyben tesztelve (`tests/mentes_test.py`), tárhelyen még nem. Napi cron példa: `15 3 * * * KG_DATA=… php …/bin/mentes.php …`
+- ☐ A régi mentések törlése (pl. 14 napnál régebbiek) – a mentés személyes adatot tartalmaz, nem tartható meg korlátlanul
 - ☐ **Visszaállítás kipróbálva:** egy mentést egy külön mappába visszatöltve a rendszer elindul, és a
   benne lévő árak és érdeklődések látszanak. Ennek ideje és eredménye leírva.
 - ☐ A kezelőfelület saját változatkezelése (minden mentés új változat, utolsó 200 megmarad) **nem
@@ -178,3 +181,11 @@ A fejlesztői és bemutató adatkészlet a `services/karikagyuru-api/dev/demo-da
 - ☐ SEO: a termékoldalak hash-alapúak, külön nem indexelhetők – javaslat: `docs/SEO_MIGRACIO.md`.
 - ☐ Termékfotók: élesítés előtt `node services/karikagyuru-api/dev/foto-ellenorzes.mjs` internetkapcsolattal – a karikagyuru.com-os fotók helyi, optimalizált másolata; a jelentésben 0 törött útvonal és 0 sikertelen letöltés legyen (vagy a hiányzók pótlása az ügyféltől).
 - ☐ A jelszóval védett bemutató külön tárhelyen/alkönyvtárban, külön adatmappával: `docs/BEMUTATO_TELEPITES.md`.
+
+## 14. V5.8 – ügyféljóváhagyási központ és állapotjelölés
+
+- A kezelőfelület „Ügyféljóváhagyások” oldala (`#/admin/kozpont`) a még eldöntendő kérdéseket gyűjti. A válaszok a
+  mentett állapot `clientDecisions` mezőjébe kerülnek; a nyilvános nézet ezt nem kapja meg (teszt: `api_test.py`).
+- A beírt válasz **semmit nem ír át** (árat, gyűrűszabályt, jogi szöveget). Élesítés előtt minden tételnél nézzük meg,
+  hogy „Átvezetve”-e, és ha igen, valóban át van-e vezetve.
+- Az egyes funkciók valós állapota (megírva → … → élesítve): `ELSO_ATADAS.md`.

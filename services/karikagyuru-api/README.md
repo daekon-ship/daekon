@@ -62,15 +62,16 @@ KG_DATA=/tmp/kg-adat php -S 127.0.0.1:8792 dev/router.php
 ## Teszt
 
 ```sh
-python3 tests/api_test.py              # 87 végpont-ellenőrzés (köztük a nyilvános nézet szivárgásvizsgálata), saját ideiglenes adatmappával
-python3 tests/server_mode_e2e.py       # 30 böngészős ellenőrzés: oldal + API együtt (referenciaképes érdeklődéssel)
+python3 tests/api_test.py              # 101 végpont-ellenőrzés (köztük a nyilvános nézet szivárgásvizsgálata, V5.8: ügyféldöntések), saját ideiglenes adatmappával
+python3 tests/server_mode_e2e.py       # 32 böngészős ellenőrzés: oldal + API együtt (referenciaképes érdeklődéssel)
 python3 tests/mail_test.py             # 24 ellenőrzés: e-mail-értesítés helyi SMTP-álszerverrel (valódi levél nem megy ki)
 python3 tests/server_failures_e2e.py   # 17 ellenőrzés: API-kiesés, sikertelen mentés, lejárt belépés, sikertelen érdeklődés
 python3 tests/upload_test.py           # 22 ellenőrzés: ügyfél-referenciakép feltöltése, privát tárolás, törlés, megőrzés
-python3 tests/demo_e2e.py              # 17 böngészős ellenőrzés: a nem éles bemutató példány (3 mintagyűrű)
+python3 tests/demo_e2e.py              # 18 böngészős ellenőrzés: a nem éles bemutató példány
 python3 tests/demo_kapu_test.py        # 49 ellenőrzés: jelszóval védett bemutató (kapu, noindex, e-mail tiltás, külön admin, visszaállítás, éles adat védelme)
-python3 tests/bemutato_e2e.py          # 58 böngészős ellenőrzés: a bemutató forgatókönyve végig a kapun át, 360/390/430 px + asztali admin
+python3 tests/bemutato_e2e.py          # 65 böngészős ellenőrzés: a bemutató végig a kapun át, 360/390/430 px + admin (V5.8: árverzió-visszaállítás, új műhelymunka fotóval, ügyféljóváhagyási központ)
 python3 tests/foto_test.py             # 16 ellenőrzés: termékfotó-ellenőrző és -letöltő eszköz helyi álszerverrel
+python3 tests/mentes_test.py           # 8 ellenőrzés: biztonsági mentés (bin/mentes.php) valódi PHP-futtatással
 ```
 
 `api_test.py`: telepítés, jogosultság, CSRF, mentés/ütközés/visszaállítás, hibás adatok elutasítása,
@@ -120,6 +121,10 @@ Részletes ellenőrzőlista: `public/latvanytervek/karikagyuru/docs/TELEPITES.md
 4. `index.html`: `<meta name="kg-api" content="api/">`.
 5. HTTPS kötelező (a süti csak így kapja meg a Secure jelzőt).
 6. Kipróbálás a tárhelyen: belépés, egy ármódosítás, egy érdeklődés, egy kép – és visszaállítás.
+
+## Biztonsági mentés (V5.8)
+
+`KG_DATA=… php bin/mentes.php <célmappa>` – dátumozott mappába menti az adatbázist (`VACUUM INTO`, futó oldal mellett is egységes), a termékfotókat és a referenciaképeket, majd ellenőrzi a másolat épségét. Az adatmappába nem ment. Helyben tesztelve, tárhelyen még nem.
 
 ## Ami még hiányzik az éles használathoz
 
