@@ -347,6 +347,16 @@ final class App
                 if ($v !== '' && $v !== null && (!is_string($v) || !preg_match('#^https://[^\s"<>]{4,500}$#', $v))) return 'A videó linkje https:// kezdetű webcím legyen.';
             }
         }
+        // V5.8: ügyféljóváhagyási központ – csak rögzített válaszok; a nyilvános nézet (publicState) nem adja ki
+        if (isset($s['clientDecisions'])) {
+            if (!is_array($s['clientDecisions']) || count($s['clientDecisions']) > 200) return 'Hibás ügyféldöntés-lista.';
+            foreach ($s['clientDecisions'] as $k => $d) {
+                if (!is_string($k) || !preg_match('/^[a-z0-9-]{1,40}$/', $k) || !is_array($d)) return 'Hibás ügyféldöntés.';
+                if (!in_array($d['status'] ?? null, ['nyitott', 'valasz', 'atvezetve'], true)) return 'Hibás ügyféldöntés-állapot.';
+                if (!is_string($d['answer'] ?? '') || mb_strlen((string) ($d['answer'] ?? '')) > 2000) return 'Túl hosszú ügyféldöntés-válasz.';
+                if (($d['status'] ?? '') !== 'nyitott' && trim((string) ($d['answer'] ?? '')) === '') return 'Válasz nélkül nem rögzíthető döntés.';
+            }
+        }
         $sell = $s['materials']['sellPerGram'] ?? null;
         if (!is_array($sell)) return 'Hiányzik: grammárak';
         foreach ($sell as $m => $v) {

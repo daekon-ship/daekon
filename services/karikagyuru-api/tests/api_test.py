@@ -174,6 +174,16 @@ def main():
             ws = json.loads(json.dumps(wst)); ws['works'][0].update(bad)
             s, d = a.j('PUT', '/state', {'baseVersion': vb, 'state': ws}); check(f'műhelymunka elutasítva: {why} (422)', s == 422, (s, d))
 
+        print('Ügyféljóváhagyási központ (V5.8)')
+        dst = json.loads(json.dumps(wst)); dst['clientDecisions'] = {'eloleg': {'status': 'valasz', 'answer': 'TITKOS-DONTES-30', 'at': '2026-11-22T10:00:00Z'}}
+        s, d = a.j('PUT', '/state', {'baseVersion': vb, 'state': dst}); check('ügyféldöntés mentése', s == 200, (s, d)); vb = d.get('version', vb)
+        s, d = a.j('GET', '/state'); check('admin: a döntés visszaolvasható', d['state'].get('clientDecisions', {}).get('eloleg', {}).get('answer') == 'TITKOS-DONTES-30')
+        s, raw, _ = b.req('GET', '/state'); check('látogató: az ügyféldöntés nem jut ki', b'TITKOS-DONTES' not in raw and b'clientDecisions' not in raw)
+        for bad, why in [({'eloleg': {'status': 'jovahagyva', 'answer': 'x'}}, 'ismeretlen állapot'), ({'eloleg': {'status': 'valasz', 'answer': ''}}, 'válasz nélküli döntés'),
+                         ({'Rossz Kulcs': {'status': 'nyitott', 'answer': ''}}, 'hibás kulcs'), ({'eloleg': {'status': 'valasz', 'answer': 'x' * 2001}}, 'túl hosszú válasz')]:
+            ds = json.loads(json.dumps(dst)); ds['clientDecisions'] = bad
+            s, d = a.j('PUT', '/state', {'baseVersion': vb, 'state': ds}); check(f'ügyféldöntés elutasítva: {why} (422)', s == 422, (s, d))
+
         print('Érdeklődések')
         inq = {'name': 'Teszt Elek', 'email': 'teszt@example.invalid', 'phone': '', 'message': 'Próbaüzenet <script>', 'type': 'erdeklodes', 'productId': 'proba-1',
                'code': '81194 - 81195 W', 'summary': '14K fehérarany', 'config': {'metal': 'au14', 'rings': [[54, 4]]}, 'estimate': 259500}

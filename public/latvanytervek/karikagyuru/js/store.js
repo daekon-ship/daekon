@@ -26,6 +26,7 @@ function fresh() {
     }],
     inquiries: [],
     works: JSON.parse(JSON.stringify(WORKS_SEED)),
+    clientDecisions: {},    // V5.8 – ügyféljóváhagyási központ (csak admin; alapból minden nyitott)
     lastChange: null,       // { at, old: {id: ár} } – a katalógus „Frissült ár” jelzéséhez
   };
 }
@@ -212,6 +213,23 @@ export const store = {
     const at = new Date().toISOString();
     state.history.unshift({ id: uid(), at, validFrom: at, by: 'Tulajdonos', kind: 'product', title: `Műhelymunka törölve: ${w.title}`, count: 0, total: 0 });
     persist();
+  },
+
+  /** V5.8 – ügyféldöntés rögzítése a jóváhagyási központban. NEM módosít árat, terméket vagy jogi szöveget.
+      „Átvezetve” csak rögzített válasz után, külön megerősítéssel jelölhető. Visszaad: { ok, error?, saved? }. */
+  saveDecision(id, { status, answer = '' }) {
+    if (!/^[a-z0-9-]{1,40}$/.test(id)) return { ok: false, error: 'Ismeretlen tétel.' };
+    if (!['nyitott', 'valasz', 'atvezetve'].includes(status)) return { ok: false, error: 'Ismeretlen állapot.' };
+    const text = String(answer).trim().slice(0, 2000);
+    if (status !== 'nyitott' && !text) return { ok: false, error: 'Előbb írja be az ügyfél válaszát.' };
+    // a szerver (PHP) az üres objektumot üres tömbként adja vissza – tömbre írt kulcs a mentésből kimaradna
+    if (!state.clientDecisions || typeof state.clientDecisions !== 'object' || Array.isArray(state.clientDecisions)) state.clientDecisions = { ...(state.clientDecisions || {}) };
+    const prev = state.clientDecisions[id] || { status: 'nyitott', answer: '' };
+    if (status === 'atvezetve' && prev.status === 'nyitott') return { ok: false, error: 'Előbb mentse a választ, és vezesse át a megfelelő menüpontban.' };
+    const at = new Date().toISOString();
+    state.clientDecisions[id] = { status, answer: text, at };
+    state.history.unshift({ id: uid(), at, validFrom: at, by: 'Tulajdonos', kind: 'decision', title: `Ügyféldöntés (${id}): ${status === 'nyitott' ? 'visszaállítva nyitottra' : status === 'valasz' ? 'válasz rögzítve' : 'átvezetve'}`, count: 0, total: 0 });
+    return { ok: true, saved: persist() };
   },
 
   addProduct(p) {

@@ -165,6 +165,32 @@ async def main():
             okimg = await art.locator('[data-inqfiles] img').first.evaluate("(i) => new Promise((r) => { if (i.complete) r(i.naturalWidth > 0); else { i.onload = () => r(i.naturalWidth > 0); i.onerror = () => r(false); } })") if await art.locator('[data-inqfiles] img').count() else False
             check('7. admin: a referenciakép az érdeklődésnél látszik', okimg)
             check('7. admin: e-mail-értesítés kikapcsolva (a bemutató nem küld levelet)', 'levél' not in inq.lower() or 'kikapcsol' in inq.lower() or 'nem ment' in inq.lower(), inq[:300])
+
+            # V5.8 – az ötvös saját próbái: árverzió visszaállítása, új műhelymunka fotóval, ügyféljóváhagyási központ
+            await adm.goto(B + '#/admin/alapanyag'); await adm.wait_for_timeout(900)
+            await adm.click('[data-verlist]'); await adm.wait_for_timeout(400)
+            await adm.locator('[data-verrev]').first.click(); await adm.wait_for_timeout(300)
+            if await adm.locator('.modal [data-ok]').count(): await adm.click('.modal [data-ok]')
+            await wait_saved(adm)
+            await adm.goto(B + '#/admin/attekintes'); await adm.goto(B + '#/admin/alapanyag'); await adm.wait_for_timeout(900)
+            check('V5.8 árverzió visszaállítása: a 14K grammár ismét az eredeti', num(await adm.input_value('[data-path="sellPerGram.au14"]')) == g0)
+            await adm.goto(B + '#/admin/munkak/uj'); await adm.wait_for_timeout(900)
+            await adm.fill('[data-wt="title"]', 'Próba műhelymunka V58'); await adm.fill('[data-wt="text"]', 'A bemutatón felvett minta.')
+            await adm.set_input_files('[data-wfiles]', img); await adm.wait_for_timeout(1500)
+            await adm.click('[data-wsave]'); await wait_saved(adm)
+            await vis.goto(B + '#/munkak'); await vis.reload(); await vis.wait_for_timeout(1400)
+            card = vis.locator('[data-work-card]', has_text='Próba műhelymunka V58')
+            wimg = await card.locator('img').first.evaluate("(i) => new Promise((r) => { if (i.complete) r(i.naturalWidth > 0); else { i.onload = () => r(i.naturalWidth > 0); i.onerror = () => r(false); } })") if await card.locator('img').count() else False
+            check('V5.8 új műhelymunka fotóval: a vásárlói oldalon megjelenik, a kép betölt', await card.count() == 1 and wimg)
+            await adm.goto(B + '#/admin/kozpont'); await adm.wait_for_timeout(900)
+            check('V5.8 központ: minden tétel nyitott a mintaadatban', all(s.startswith('Nyitott') for s in await adm.eval_on_selector_all('[data-dec-status]', 'es => es.map(e => e.textContent)')))
+            await adm.fill('[data-dec="eloleg"] [data-dec-answer]', 'BEMUTATO-VALASZ-ELOLEG'); await adm.click('[data-dec="eloleg"] [data-dec-save]')
+            check('V5.8 központ: a válasz a szerverre mentve', 'Mentve a szerverre' in await wait_saved(adm))
+            await adm.reload(); await adm.wait_for_timeout(2500)
+            dbg = await adm.evaluate("(async () => { const { store } = await import('./js/store.js'); return JSON.stringify(store.get().clientDecisions || null); })()")
+            check('V5.8 központ: újratöltés után is megvan', await adm.input_value('[data-dec="eloleg"] [data-dec-answer]') == 'BEMUTATO-VALASZ-ELOLEG', (dbg, adm.url))
+            pub = urllib.request.urlopen(B + 'api/state').read() if False else await vis.evaluate("fetch('api/state', {credentials: 'include'}).then(r => r.text())")
+            check('V5.8 központ: a látogató nem kapja meg a választ', 'BEMUTATO-VALASZ' not in pub and 'clientDecisions' not in pub)
             check('admin: nincs JavaScript-hiba', not aerrs, aerrs[:2])
 
             print('Visszaállítás')

@@ -10,6 +10,7 @@ import { $, $$, esc, productMedia, toast as uiToast, modal, M, reduced, dateHu, 
 /* Szerver módban a „Mentve” csak a szerver visszaigazolása után igaz: addig „Mentés folyamatban”. */
 const toast = (html, o) => uiToast(api.mode === 'server' && api.admin && /^Mentve/.test(html) ? html.replace(/^Mentve:?/, 'Mentés folyamatban:') : html, o);
 import { configText } from './views-public.js';
+import { DECISION_GROUPS, DECISION_STATUS, decisionOf, decisionCounts } from './decisions.js';
 
 const S = () => store.get();
 /** Adatforrás-jelölés: jóváhagyott / ügyfél példája / megerősítendő / demó. */
@@ -34,6 +35,7 @@ export const MENU = [
   ['erdeklodesek', 'Érdeklődések'],
 ];
 export const MENU_EXTRA = [
+  ['kozpont', 'Ügyféljóváhagyások'],
   ['sorban', 'Jóváhagyás sorban'],
   ['arszamitas', 'Árszámítás'],
   ['keplet', 'Felárak és munkadíjak'],
@@ -116,8 +118,57 @@ export function adminShell(el, page, arg) {
   </div>`;
   const P = $('[data-page]', el);
   ({ attekintes: overview, alapanyag: materials, arszamitas: priceCalc, gyuruk: products, gyuru: productEdit, keplet: formula,
-     erdeklodesek: inquiries, elozmenyek: history, beallitasok: settings, jovahagyas: approvals, fotok: photos, munkak: worksAdmin, szabalyok: rulesPage, sorban: queue }[page] || overview)(P, arg);
+     erdeklodesek: inquiries, elozmenyek: history, beallitasok: settings, jovahagyas: approvals, fotok: photos, munkak: worksAdmin, szabalyok: rulesPage, sorban: queue, kozpont: decisionsPage }[page] || overview)(P, arg);
   if (M() && !reduced()) M().animate(P, { opacity: [0, 1], y: [10, 0] }, { duration: 0.35 });
+}
+
+/* ---------- V5.8 – Ügyféljóváhagyási központ ----------
+   Csak rögzít: a válasz nem módosít árat, termékszabályt vagy jogi szöveget. Az átvezetés külön lépés. */
+function decisionsPage(el) {
+  el = fresh(el);
+  const draw = () => {
+    const st = S();
+    const c = decisionCounts(st);
+    el.innerHTML = `
+      <h1 class="adm__h1">Ügyféljóváhagyások</h1>
+      <p class="adm__lead">Minden kérdés, amit az ötvösnek kell eldöntenie. Írja be a választ, és mentse.</p>
+      <div class="dec__rules" role="note"><p><b>Fontos:</b> a beírt válasz <b>nem írja át</b> magától az árakat, a gyűrűk szabályait vagy a jogi szövegeket. A döntést utána a megadott menüpontban kell átvezetni, és csak ezután jelölhető „Átvezetve”-nek.</p></div>
+      <p class="dec__sum" data-dec-sum><span data-dec-n="nyitott">${c.nyitott} nyitott</span> · <span data-dec-n="valasz">${c.valasz} válasz rögzítve</span> · <span data-dec-n="atvezetve">${c.atvezetve} átvezetve</span>
+        <button class="abtn dec__print" type="button" data-dec-print>Nyomtatás</button></p>
+      ${DECISION_GROUPS.map((g) => `<section class="dec__grp" data-dec-group="${g.id}"><h2>${esc(g.title)}</h2>
+        ${g.items.map((it) => { const d = decisionOf(st, it.id); const now = typeof it.now === 'function' ? it.now(st) : it.now;
+          return `<article class="dec dec--${d.status}" data-dec="${it.id}">
+            <header><h3>${esc(it.label)}</h3><span class="dec__st" data-dec-status>${DECISION_STATUS[d.status]}</span></header>
+            <dl><div><dt>Most az oldalon</dt><dd>${esc(now)}</dd></div><div><dt>Forrás</dt><dd>${esc(it.source)}</dd></div><div><dt>Kérdés</dt><dd><b>${esc(it.question)}</b></dd></div></dl>
+            <label class="efield"><span>Az ügyfél válasza</span><textarea class="input" rows="2" maxlength="2000" data-dec-answer>${esc(d.answer || '')}</textarea></label>
+            <p class="dec__act">
+              <button class="abtn abtn--gold" type="button" data-dec-save>Válasz mentése</button>
+              ${d.status === 'valasz' ? `<button class="abtn" type="button" data-dec-apply>Átvezettem${it.where ? '' : ' (nincs külön menüpont)'}</button>` : ''}
+              ${d.status !== 'nyitott' ? '<button class="abtn" type="button" data-dec-reopen>Vissza nyitottra</button>' : ''}
+              ${it.where && it.where !== '#/admin/kozpont' ? `<a class="linkbtn" href="${it.where}">Átvezetés helye →</a>` : ''}
+            </p>
+            <p class="dec__saved" data-dec-saved aria-live="polite">${d.at ? `Mentve: ${esc(dateHu(d.at))}` : 'Még nincs mentve.'}</p>
+          </article>`; }).join('')}</section>`).join('')}`;
+  };
+  draw();
+  el.addEventListener('click', (e) => {
+    if (e.target.closest('[data-dec-print]')) { window.print(); return; }
+    const card = e.target.closest('[data-dec]'); if (!card) return;
+    const id = card.dataset.dec;
+    const answer = $('[data-dec-answer]', card).value;
+    const out = (res, msg) => {
+      if (!res.ok) { const s = $('[data-dec-saved]', card); s.textContent = res.error; s.classList.add('dec__err'); return; }
+      if (res.saved === false) { draw(); const s = $(`[data-dec="${id}"] [data-dec-saved]`, el); s.textContent = 'Nem sikerült tartósan menteni (a böngésző nem engedi). Az oldal újratöltése után elveszhet.'; s.classList.add('dec__err'); return; }
+      draw(); toast(msg);
+    };
+    if (e.target.closest('[data-dec-save]')) out(store.saveDecision(id, { status: 'valasz', answer }), 'Mentve: a válasz rögzítve. Az árak és szabályok nem változtak.');
+    else if (e.target.closest('[data-dec-reopen]')) out(store.saveDecision(id, { status: 'nyitott', answer }), 'Mentve: a tétel újra nyitott.');
+    else if (e.target.closest('[data-dec-apply]')) {
+      modal(`<h2>Biztosan átvezette?</h2><p>Csak akkor jelölje, ha a döntést már beírta a megfelelő menüpontban (például az Árak oldalon), és ott el is mentette. Ez a gomb maga semmit nem módosít.</p>
+        <p class="dec__act"><button class="abtn abtn--gold" type="button" data-ok>Igen, átvezettem</button> <button class="abtn" type="button" data-no>Mégsem</button></p>`,
+        { label: 'Megerősítés', onMount: (box, close) => { box.querySelector('[data-ok]').onclick = () => { close(); out(store.saveDecision(id, { status: 'atvezetve', answer }), 'Mentve: átvezetettként jelölve.'); }; box.querySelector('[data-no]').onclick = close; } });
+    }
+  });
 }
 
 /* ---------- 1. Áttekintés ---------- */
@@ -129,6 +180,7 @@ const MENU_HELP = {
   erdeklodesek: 'Akik a weboldalon érdeklődtek vagy időpontot kértek.',
   elozmenyek: 'Mikor, mit változtatott. Itt vissza is állíthatja.',
   beallitasok: 'Kerekítés, védelem, adattárolás, alapállapot.',
+  kozpont: 'Az ötvösnek feltett kérdések és a válaszai. Semmit nem ír át magától.',
 };
 function pendingCount(st) {
   const M = st.materials, Sx = st.settings;
@@ -169,6 +221,7 @@ function overview(el) {
     <h1 class="adm__h1">Jó napot kívánok!</h1>
     <p class="adm__lead">Mit szeretne csinálni?</p>
     ${openQuestionsBox(st)}
+    <p><a class="abtn" href="#/admin/kozpont" data-openq-center>Ügyféljóváhagyások – az ötvösnek feltett kérdések (${decisionCounts(st).nyitott} nyitott)</a></p>
     <div class="bigtiles bigtiles--5">
       ${tile('#/admin/alapanyag', '1. Árak módosítása', st.settings.pricingMode === 'gramm' ? `${ft(st.materials.sellPerGram.au14)}<i>/g · 14K</i>` : `${ft(st.materials.gold24)}<i>/g</i>`, 'Átírja a grammárat, és minden gyűrű ára frissül.', 'bigtile--gold')}
       ${tile('#/admin/gyuruk', '2. Gyűrűk', `${st.products.length} db`, 'Megnézés, szerkesztés, új gyűrű.')}
