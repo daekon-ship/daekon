@@ -207,6 +207,19 @@ async def main():
             await pg.goto(B + '#/admin/attekintes'); await pg.goto(B + '#/admin/alapanyag'); await pg.wait_for_timeout(500)
         await pg.goto(B + '#/admin/erdeklodesek'); await pg.wait_for_timeout(700)
         check('a böngészőben küldött teszt-ajánlatkérés látszik az adminban', 'Arculat B Teszt' in await pg.inner_text('#adm-main'))
+        print('Ügyfélbemutató (bemutato.html) – állítások a működő rendszerhez mérve')
+        await pg.goto(B + '#/'); await pg.wait_for_timeout(600)
+        sysv = await pg.evaluate("""(async () => { const { store } = await import('./js/store.js'); const ps = store.get().products;
+          return { n: ps.length, local: ps.filter(p => p.img && !/^https?:/.test(p.img)).length, mail: store.get().settings.mailEnabled || null }; })()""")
+        await pg.goto(B + 'bemutato.html'); await pg.wait_for_timeout(500)
+        bt = await pg.inner_text('body')
+        check(f"bemutató: „115 gyűrű” = a rendszerben {sysv['n']}", '115' in bt and sysv['n'] == 115)
+        check(f"bemutató: „30 … saját fotó” és „85 fotó a régi oldalról” = a rendszerben {sysv['local']} helyi kép", f"{sysv['local']} gyűrűnek" in bt and f"{sysv['n'] - sysv['local']} fotó" in bt, sysv)
+        await pg.goto(B + '#/sajat'); await pg.wait_for_timeout(500)
+        check('bemutató: „legfeljebb három fotó” = a saját ötlet űrlapja (legfeljebb 3 kép)', 'legfeljebb három' in bt and 'Legfeljebb 3 kép' in await pg.inner_text('body'))
+        check('bemutató: e-mail-értesítés „ki van kapcsolva”, Pages-en az üzenet nem jut el; a Rhino külön szakasz', 'ki van kapcsolva' in bt and 'nem jut el' in bt and 'nem része a mostani első szakasznak' in bt.replace('\n', ' '))
+        check('bemutató: nincs félreérthető vagy igazolatlan állítás („élesített”, „legtöbb pár”)', 'élesített' not in bt and 'legtöbb pár' not in bt)
+
         await ctx.close()
 
         print('Központ mobilon (390 px)')
