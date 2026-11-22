@@ -162,6 +162,18 @@ def main():
         s, d = b.j('GET', '/state')
         check('költségalapú módban nincs nyilvános grammár (minden egyedi ajánlat)', all(v is None for v in d['state']['materials']['sellPerGram'].values()))
 
+        print('Egyedi műhelymunkák (V5.6)')
+        wst = json.loads(json.dumps(rich)); wst['settings']['openQuestions'] = ['TITOK-KERDES']
+        wst['works'] = [{'id': 'latszik-1', 'title': 'Látható munka', 'text': 'Leírás', 'photos': ['api/photo/' + 'a' * 32 + '.jpg'], 'video': 'https://example.com/v', 'visible': True},
+                        {'id': 'rejtett-munka', 'title': 'REJTETT-MUNKA', 'text': '', 'photos': [], 'video': '', 'visible': False}]
+        s, d = a.j('PUT', '/state', {'baseVersion': vb, 'state': wst}); check('műhelymunkák mentése (cikkszám és ár nélkül)', s == 200, (s, d)); vb = d.get('version', vb)
+        s, raw, _ = b.req('GET', '/state'); txt = raw.decode('utf-8'); pw = json.loads(txt)['state']
+        check('látogató: a látható munka fotóval, videóval megvan', [w['id'] for w in pw.get('works', [])] == ['latszik-1'] and pw['works'][0]['photos'] and pw['works'][0]['video'].startswith('https://'))
+        check('látogató: a rejtett munka és a tisztázandó kérdések nem jutnak ki', 'REJTETT-MUNKA' not in txt and 'TITOK-KERDES' not in txt)
+        for bad, why in [({'photos': ['data:image/jpeg;base64,AAAA']}, 'data: kép'), ({'video': 'http://nem-https.example'}, 'nem https videó'), ({'title': ''}, 'cím nélkül')]:
+            ws = json.loads(json.dumps(wst)); ws['works'][0].update(bad)
+            s, d = a.j('PUT', '/state', {'baseVersion': vb, 'state': ws}); check(f'műhelymunka elutasítva: {why} (422)', s == 422, (s, d))
+
         print('Érdeklődések')
         inq = {'name': 'Teszt Elek', 'email': 'teszt@example.invalid', 'phone': '', 'message': 'Próbaüzenet <script>', 'type': 'erdeklodes', 'productId': 'proba-1',
                'code': '81194 - 81195 W', 'summary': '14K fehérarany', 'config': {'metal': 'au14', 'rings': [[54, 4]]}, 'estimate': 259500}

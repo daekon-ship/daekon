@@ -312,6 +312,10 @@ final class App
             'materials' => ['sellPerGram' => (object) $sell, 'diamonds' => $dia, 'src' => (object) $pmsrc],
             'settings' => $pset,
             'products' => $prods,
+            'works' => array_values(array_map(static fn ($w) => [
+                'id' => (string) $w['id'], 'title' => (string) ($w['title'] ?? ''), 'text' => (string) ($w['text'] ?? ''),
+                'photos' => array_values(array_filter((array) ($w['photos'] ?? []), 'is_string')), 'video' => (string) ($w['video'] ?? ''),
+            ], array_filter((array) ($s['works'] ?? []), static fn ($w) => is_array($w) && ($w['visible'] ?? true) !== false))),
             'lastChange' => $lc,
             'public' => true,
         ];
@@ -330,6 +334,18 @@ final class App
             if (isset($ids[$p['id']])) return 'Ismétlődő termékazonosító: ' . $p['id'];
             $ids[$p['id']] = 1;
             if (isset($p['img']) && is_string($p['img']) && str_starts_with($p['img'], 'data:')) return 'A képet külön kell feltölteni (' . $p['id'] . ').';
+        }
+        // V5.6: egyedi műhelymunkák – cikkszám és ár nélkül; több fotó (feltöltve), opcionális videólink (https)
+        if (isset($s['works'])) {
+            if (!is_array($s['works']) || count($s['works']) > 300) return 'Hibás műhelymunka-lista.';
+            foreach ($s['works'] as $w) {
+                if (!is_array($w) || !is_string($w['id'] ?? null) || !preg_match('/^[a-z0-9-]{1,80}$/', $w['id'])) return 'Hibás műhelymunka-azonosító.';
+                if (!is_string($w['title'] ?? null) || trim($w['title']) === '' || mb_strlen($w['title']) > 160) return 'A műhelymunkának cím kell (legfeljebb 160 karakter).';
+                if (isset($w['text']) && (!is_string($w['text']) || mb_strlen($w['text']) > 4000)) return 'Túl hosszú leírás.';
+                foreach (($w['photos'] ?? []) as $ph) if (!is_string($ph) || str_starts_with($ph, 'data:') || count($w['photos']) > 12) return 'A műhelymunka képeit külön kell feltölteni (legfeljebb 12).';
+                $v = $w['video'] ?? '';
+                if ($v !== '' && $v !== null && (!is_string($v) || !preg_match('#^https://[^\s"<>]{4,500}$#', $v))) return 'A videó linkje https:// kezdetű webcím legyen.';
+            }
         }
         $sell = $s['materials']['sellPerGram'] ?? null;
         if (!is_array($sell)) return 'Hiányzik: grammárak';

@@ -29,6 +29,7 @@ export const MENU = [
   ['alapanyag', 'Árak'],
   ['gyuruk', 'Gyűrűk'],
   ['fotok', 'Fotók'],
+  ['munkak', 'Műhelymunkák'],
   ['szabalyok', 'Szabályok'],
   ['erdeklodesek', 'Érdeklődések'],
 ];
@@ -115,7 +116,7 @@ export function adminShell(el, page, arg) {
   </div>`;
   const P = $('[data-page]', el);
   ({ attekintes: overview, alapanyag: materials, arszamitas: priceCalc, gyuruk: products, gyuru: productEdit, keplet: formula,
-     erdeklodesek: inquiries, elozmenyek: history, beallitasok: settings, jovahagyas: approvals, fotok: photos, szabalyok: rulesPage, sorban: queue }[page] || overview)(P, arg);
+     erdeklodesek: inquiries, elozmenyek: history, beallitasok: settings, jovahagyas: approvals, fotok: photos, munkak: worksAdmin, szabalyok: rulesPage, sorban: queue }[page] || overview)(P, arg);
   if (M() && !reduced()) M().animate(P, { opacity: [0, 1], y: [10, 0] }, { duration: 0.35 });
 }
 
@@ -136,6 +137,29 @@ function pendingCount(st) {
     + Object.keys(SET_LABEL).filter((k) => (Sx.src || {})[k] !== 'jovahagyott').length
     + st.products.filter((p) => !p.approved).length;
 }
+/* V5.6 – Tisztázandó kérdések: a bizonytalan értékek jól látható figyelmeztetése az adminban.
+   Forrás: a beállításokba írt nyitott kérdések (csak a szerveren / adminban – a nyilvános nézet nem kapja meg)
+   + minden „megerősítendő” jelölésű árelem. Amíg nyitottak, a rendszer a jóváhagyott képlettel számol, ezekkel nem. */
+function openQuestions(st) {
+  const qs = (st.settings.openQuestions || []).filter((x) => String(x).trim());
+  const unsure = [
+    ...st.materials.diamonds.filter((d) => d.src === 'bizonytalan').map((d) => `${d.name}: az ár megerősítendő${d.note ? ` (${d.note})` : ''} – addig „egyedi ajánlat”.`),
+    ...Object.entries(st.materials.src || {}).filter(([, v]) => v === 'bizonytalan').map(([k]) => `${k === 'sellPerGram.ti' ? 'Titán: nincs grammár, munkaalapú egyedi ajánlat' : k} – megerősítendő.`),
+  ];
+  return { qs, unsure, all: [...qs, ...unsure] };
+}
+function openQuestionsBox(st, { edit = false } = {}) {
+  const { qs, all } = openQuestions(st);
+  if (!all.length && !edit) return '';
+  return `<section class="openq" data-openq role="note">
+    <h2>Tisztázandó az ötvössel${all.length ? ` <span class="openq__n">${all.length}</span>` : ''}</h2>
+    ${all.length ? `<ul>${all.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>` : '<p>Nincs nyitott kérdés.</p>'}
+    <p class="hint">Amíg ezek nyitottak, a rendszer a jóváhagyott képlettel számol, és a bizonytalan értékek nem kerülnek a vásárlóhoz.</p>
+    ${edit ? `<label class="efield"><span>Nyitott kérdések<small>soronként egy; ha tisztázódott, törölje a sort</small></span><textarea class="input" rows="4" data-openq-edit>${esc(qs.join('\n'))}</textarea></label>
+    <button class="abtn" type="button" data-openq-save>Kérdések mentése</button>` : ''}
+  </section>`;
+}
+
 function overview(el) {
   el = fresh(el);
   const st = S();
@@ -144,6 +168,7 @@ function overview(el) {
   el.innerHTML = `
     <h1 class="adm__h1">Jó napot kívánok!</h1>
     <p class="adm__lead">Mit szeretne csinálni?</p>
+    ${openQuestionsBox(st)}
     <div class="bigtiles bigtiles--5">
       ${tile('#/admin/alapanyag', '1. Árak módosítása', st.settings.pricingMode === 'gramm' ? `${ft(st.materials.sellPerGram.au14)}<i>/g · 14K</i>` : `${ft(st.materials.gold24)}<i>/g</i>`, 'Átírja a grammárat, és minden gyűrű ára frissül.', 'bigtile--gold')}
       ${tile('#/admin/gyuruk', '2. Gyűrűk', `${st.products.length} db`, 'Megnézés, szerkesztés, új gyűrű.')}
@@ -206,6 +231,7 @@ function approvals(el) {
     <h1 class="adm__h1">Jóváhagyásra vár</h1>
     <p class="adm__lead">Itt látszik, melyik adat jóváhagyott, melyik az ügyfél jegyzetéből vett példa, és melyik ideiglenes érték, amit még meg kell erősíteni. Amit a tulajdonos maga átír, az automatikusan jóváhagyottá válik.</p>
     <p class="srclegend">${['jovahagyott', 'pelda', 'bizonytalan', 'demo'].map(srcBadge).join(' ')}</p>
+    ${openQuestionsBox(st, { edit: true })}
     ${(() => { const rd = readiness(st); const G = { arak: 'grammár', gyemant: 'gyémántár', szabalyok: 'számítási szabály (kerekítés, ÁFA, gravír…)', gyuruk: 'gyűrű tömeg- és kőadata' };
       return `<section class="golive ${rd.ready ? 'golive--ok' : 'golive--no'}" data-golive-box>
         <h2>Élesítési ellenőrzés</h2>
@@ -224,6 +250,12 @@ function approvals(el) {
       <p class="hint">A gyűrűk tömege most becslés: a weboldalon látható árból visszaszámolva. A kőszámok és kőméretek a fotók alapján becsültek.</p>
       <p><a class="abtn abtn--gold abtn--xl" href="#/admin/sorban">Jóváhagyás sorban →</a></p></section>`;
   el.addEventListener('click', (e) => {
+    if (e.target.closest('[data-openq-save]')) {
+      const lines = ($('[data-openq-edit]', el).value || '').split('\n').map((x) => x.trim()).filter(Boolean);
+      store.updateSettings({ openQuestions: lines }, 'Tisztázandó kérdések frissítve');
+      toast(lines.length ? `Mentve: ${lines.length} nyitott kérdés.` : 'Mentve: nincs nyitott kérdés.');
+      approvals(el); return;
+    }
     if (e.target.closest('[data-golive]')) { if (readiness(S()).ready) toast('Minden adat jóváhagyott. Ez előzetes ellenőrzés – az élesítéshez a szerveroldali mentés is kell.'); return; }
     const b = e.target.closest('[data-appr]');
     if (!b || b.disabled) return;
@@ -274,6 +306,7 @@ function goldsmithExamples(box) {
         </tbody></table></div>
         <p class="hint">Számított = nyers eredmény. Megjelenő = kerekítve (${roundLabel(Sx.roundTo)}) ${srcBadge((Sx.src || {}).roundTo || 'demo')} – a kerekítést az ügyféllel egyeztetjük.</p>
         ${Sx.exampleNote ? `<p class="note-warn">${esc(Sx.exampleNote)}</p>` : ''}
+        ${openQuestionsBox(S())}
       </section>
       <section class="ebox xbox"><h2>Próbaszámítás <small>tetszőleges tömeggel</small></h2>
         <div class="xform">
@@ -378,6 +411,80 @@ function photos(el) {
     }
   });
   paint();
+}
+
+/* ---------- V5.6: Egyedi műhelymunkák (cikkszám és ár nélkül, nem újrarendelhető) ---------- */
+function worksAdmin(el, id) {
+  el = fresh(el);
+  const list = () => S().works || [];
+  if (!id) {
+    const L = list();
+    el.innerHTML = `
+      <h1 class="adm__h1">Műhelymunkák</h1>
+      <p class="adm__lead">Egyszeri, kézzel megmunkált darabok bemutatása. Nem katalógustermékek: nincs cikkszám, nincs ár, nem rendelhetők újra – a látogató személyes konzultációt kérhet. A főoldalon külön szakasz mutatja őket.</p>
+      <p><a class="abtn abtn--gold abtn--xl" href="#/admin/munkak/uj" data-wnew>+ Új műhelymunka</a></p>
+      <p class="hint">${L.filter((w) => !(w.photos || []).length).length} munkához még fotóra várunk az ötvöstől.</p>
+      <div data-wlist>${L.map((w) => `<div class="wadm__row" data-wrow="${esc(w.id)}">
+        <span><b>${esc(w.title)}</b><br><small>${(w.photos || []).length ? `${w.photos.length} fotó` : '<em class="tag tag--warn">fotóra vár</em>'}${w.video ? ' · videó' : ''}${w.visible === false ? ' · rejtve' : ''}</small></span>
+        <a class="abtn" href="#/admin/munkak/${esc(w.id)}">Szerkesztés</a></div>`).join('') || '<p>Még nincs műhelymunka.</p>'}</div>`;
+    return;
+  }
+  const isNew = id === 'uj';
+  const orig = isNew ? { id: '', title: '', text: '', photos: [], video: '', visible: true } : list().find((w) => w.id === id);
+  if (!orig) { el.innerHTML = '<p>Nincs ilyen műhelymunka.</p><p><a class="abtn" href="#/admin/munkak">Vissza</a></p>'; return; }
+  const w = JSON.parse(JSON.stringify(orig));
+  const render = () => {
+    el.innerHTML = `
+      <p class="crumbs"><a href="#/admin/munkak">← Vissza a műhelymunkákhoz</a></p>
+      <h1 class="adm__h1">${isNew ? 'Új műhelymunka' : esc(w.title)}</h1>
+      <section class="ebox">
+        <label class="efield"><span>Cím</span><input class="input input--lg" data-wt="title" value="${esc(w.title)}" placeholder="pl. Kalapált felületű gyűrűpár"></label>
+        <label class="efield"><span>Leírás<small>mi különleges benne – ahogy az ötvös elmondaná</small></span><textarea class="input" rows="4" data-wt="text">${esc(w.text || '')}</textarea></label>
+        <p class="efield__lab">Fotók <small>(több is lehet; csak saját, valódi fotó)</small></p>
+        <div class="wadm__ph" data-wphotos>${(w.photos || []).map((src, i) => `<figure><img src="${esc(src)}" alt=""><button class="linkbtn" type="button" data-wdel="${i}">Kép törlése</button></figure>`).join('') || '<p class="warn">Még nincs fotó – a látogatói oldalon szövegesen jelenik meg, „Ezekről még nincs fotó” jelzéssel.</p>'}</div>
+        <label class="abtn">Fotók hozzáadása<input type="file" accept="image/jpeg,image/png,image/webp" multiple data-wfiles hidden></label>
+        <label class="efield"><span>Videó (később is megadható)<small>https:// kezdetű link, pl. YouTube vagy Facebook</small></span><input class="input" data-wt="video" value="${esc(w.video || '')}" placeholder="https://…"></label>
+        <p class="form__err" data-werr hidden></p>
+        <div class="checks"><label class="check check--lg"><input type="checkbox" data-wvis ${w.visible !== false ? 'checked' : ''}><span>Megjelenik a látogatói oldalon</span></label></div>
+      </section>
+      <div class="edit__btns">
+        ${isNew ? '' : '<button class="abtn abtn--xl" type="button" data-wremove>Törlés</button>'}
+        <a class="abtn abtn--xl" href="#/admin/munkak">Mégsem</a>
+        <button class="abtn abtn--gold abtn--xl" type="button" data-wsave>Mentés</button>
+      </div>`;
+  };
+  el.addEventListener('input', (e) => { const k = e.target.dataset.wt; if (k) w[k] = e.target.value; });
+  el.addEventListener('change', (e) => {
+    const t = e.target;
+    if (t.matches('[data-wvis]')) w.visible = t.checked;
+    if (t.matches('[data-wfiles]') && t.files.length) {
+      const files = [...t.files].slice(0, 12 - (w.photos || []).length);
+      const add = (src) => { w.photos = [...(w.photos || []), src]; render(); };
+      if (api.mode === 'server' && api.admin) {
+        toast(`Feltöltés: ${files.length} kép…`);
+        files.reduce((pr, f) => pr.then(() => uploadPhoto(f).then(add)), Promise.resolve()).catch((err) => toast(`<b>A kép nem került fel.</b> ${esc(err.message)}`, { ms: 12000 }));
+      } else files.forEach((f) => readImage(f, add));
+    }
+  });
+  el.addEventListener('click', (e) => {
+    const d = e.target.closest('[data-wdel]'); if (d) { w.photos.splice(+d.dataset.wdel, 1); render(); return; }
+    if (e.target.closest('[data-wremove]')) {
+      modal(`<div class="form"><h2>Törli ezt a műhelymunkát?</h2><p>${esc(w.title)}</p><div class="impact__btns"><button class="abtn abtn--xl" data-close>Mégsem</button><button class="abtn abtn--gold abtn--xl" data-ok>Igen, törlöm</button></div></div>`,
+        { onMount: (box, close) => box.querySelector('[data-ok]').onclick = () => { close(); store.deleteWork(w.id); toast('Mentve: a műhelymunka törölve.'); location.hash = '#/admin/munkak'; } });
+      return;
+    }
+    if (e.target.closest('[data-wsave]')) {
+      const err = $('[data-werr]', el);
+      w.title = (w.title || '').trim(); w.video = (w.video || '').trim();
+      if (!w.title) { err.hidden = false; err.textContent = 'Adjon címet a műhelymunkának.'; return; }
+      if (w.video && !/^https:\/\/\S{4,}$/.test(w.video)) { err.hidden = false; err.textContent = 'A videó linkje https:// kezdetű webcím legyen.'; return; }
+      if (isNew) w.id = (w.title.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '').slice(0, 60) || 'munka') + '-' + Math.random().toString(36).slice(2, 6);
+      store.saveWork(w);
+      toast(`Mentve: <b>${esc(w.title)}</b>${(w.photos || []).length ? '' : ' – fotó nélkül, „fotóra vár” jelöléssel'}.`);
+      location.hash = '#/admin/munkak';
+    }
+  });
+  render();
 }
 
 /* ---------- Szabályok: gyűrűnként mit állíthat a vásárló ---------- */

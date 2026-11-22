@@ -39,6 +39,7 @@ function route() {
   else if (parts[0] === 'gyuru') pub.product(el, parts[1], query);
   else if (parts[0] === 'kapcsolat') pub.contact(el);
   else if (parts[0] === 'sajat') pub.custom(el, query);
+  else if (parts[0] === 'munkak') pub.works(el);
   else pub.home(el);
 
   markDemo();

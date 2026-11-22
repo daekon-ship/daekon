@@ -158,7 +158,12 @@
       "pt": 7.1,
       "pd": 4.2
     },
-    "exampleNote": "Szemléltető példatömegek (DAEKON), nem az ötvös adatai – a valódi értékeket az ötvös adja meg."
+    "exampleNote": "Szemléltető példatömegek (DAEKON), nem az ötvös adatai – a valódi értékeket az ötvös adja meg.",
+    "openQuestions": [
+      "A kézzel írt jegyzet egyik méretpéldája (60-as platina) eltér a lineáris arányosítástól – melyik a helyes? Addig a lineáris képlet él.",
+      "Van-e külön kőfoglalási díj, vagy benne van a kő darabárában?",
+      "Belső gravírozás: vállalja-e, és mennyiért?"
+    ]
   },
   "laborByStyle": {
     "klasszikus": 15000,

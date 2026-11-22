@@ -3,7 +3,7 @@
    Helyi módban a böngészőben (localStorage), szerver módban az api.js-en át
    a szerveren tárolódik (lásd services/karikagyuru-api).
    ========================================================================== */
-import { BASE_MATERIALS, BASE_SETTINGS, buildDemoProducts } from './data.js';
+import { BASE_MATERIALS, BASE_SETTINGS, buildDemoProducts, WORKS_SEED } from './data.js';
 import { seedWeights, priceAll, diffPrices, approvalLoss, approvalCheck } from './engine.js';
 
 const KEY = 'karikagyuru-v15';
@@ -25,6 +25,7 @@ function fresh() {
       before: null, after: clone(materials), count: 0, total: 0,
     }],
     inquiries: [],
+    works: JSON.parse(JSON.stringify(WORKS_SEED)),
     lastChange: null,       // { at, old: {id: ár} } – a katalógus „Frissült ár” jelzéséhez
   };
 }
@@ -35,6 +36,7 @@ function uid() { return Math.random().toString(36).slice(2, 9); }
 let state;
 try { state = JSON.parse(localStorage.getItem(KEY)) || null; } catch { state = null; }
 if (!state || state.v !== 15) state = fresh();
+if (!Array.isArray(state.works)) state.works = JSON.parse(JSON.stringify(WORKS_SEED));   // V5.6: korábbi mentésből hiányzik
 
 /** Jóváhagyott gyűrű szakmai változásakor a jóváhagyás (és az érintett opció-jóváhagyás) elvész. */
 function revokeIfChanged(before, p) {
@@ -195,6 +197,23 @@ export const store = {
   },
 
   /** Új gyűrű felvitele (demó: csak ebben a böngészőben tárolódik). Visszaadja, sikerült-e tartósan menteni. */
+  /** V5.6 – egyedi műhelymunka mentése (új vagy meglévő). Nem termék: nincs ára, cikkszáma, nem rendelhető újra. */
+  saveWork(w) {
+    if (!Array.isArray(state.works)) state.works = [];
+    const i = state.works.findIndex((x) => x.id === w.id);
+    const at = new Date().toISOString();
+    if (i >= 0) state.works[i] = w; else state.works.push(w);
+    state.history.unshift({ id: uid(), at, validFrom: at, by: 'Tulajdonos', kind: 'product', title: `Műhelymunka ${i >= 0 ? 'módosítva' : 'felvéve'}: ${w.title}`, count: 0, total: 0 });
+    return persist();
+  },
+  deleteWork(id) {
+    const w = (state.works || []).find((x) => x.id === id); if (!w) return;
+    state.works = state.works.filter((x) => x.id !== id);
+    const at = new Date().toISOString();
+    state.history.unshift({ id: uid(), at, validFrom: at, by: 'Tulajdonos', kind: 'product', title: `Műhelymunka törölve: ${w.title}`, count: 0, total: 0 });
+    persist();
+  },
+
   addProduct(p) {
     if (p.approved && !approvalCheck(p, state.materials, state.settings).ok) p.approved = false;   // V5.6: hiányos adattal nem
     state.products.push(p);

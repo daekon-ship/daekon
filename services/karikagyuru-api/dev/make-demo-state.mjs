@@ -10,7 +10,7 @@
  */
 import { readFileSync } from 'node:fs';
 const site = new URL('../../../public/latvanytervek/karikagyuru/js/', import.meta.url);
-const { buildDemoProducts } = await import(new URL('data.js', site));
+const { buildDemoProducts, WORKS_SEED } = await import(new URL('data.js', site));
 const { seedWeights } = await import(new URL('engine.js', site));
 const ds = JSON.parse(readFileSync(new URL('./demo-dataset.json', import.meta.url), 'utf8'));
 const all = process.argv.includes('--mind');
@@ -39,7 +39,7 @@ if (!all) {
 }
 const at = new Date().toISOString();
 const state = {
-  v: 15, demo: true, products, materials, settings, inquiries: [], lastChange: null,
+  v: 15, demo: true, products, materials, settings, inquiries: [], lastChange: null, works: clone(WORKS_SEED),
   history: [{ id: 'demo-start', at, validFrom: at, by: 'Rendszer', kind: 'start', title: 'Bemutató mintaadatok betöltve – NEM éles árak, NEM jóváhagyott ügyféladat', count: 0, total: 0 }],
 };
 process.stdout.write(JSON.stringify(state));

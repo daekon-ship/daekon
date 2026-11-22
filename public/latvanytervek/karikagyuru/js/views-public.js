@@ -167,6 +167,8 @@ export function home(el) {
     </div>
   </section>
 
+  ${worksTeaser()}
+
   <section class="sec sec--paper">
     <div class="wrap">
       <header class="sec__head sec__head--row" data-reveal>
@@ -223,16 +225,6 @@ export function home(el) {
         ${insp.map(([t, d, p], i) => `<a class="insp__tile" href="#/gyuru/${p.id}" data-reveal="${i * 0.06}"><div class="insp__media">${productMedia(p)}</div><div class="insp__txt"><h3>${t}</h3><p>${d}</p><span class="btn-text">Ebből indulnék ki</span></div></a>`).join('')}
         <a class="insp__own" href="#/sajat" data-reveal=".24"><h3>Egészen más jár a fejedben?</h3><p>Különleges foglalás, szokatlan forma, saját minta. Mondd el – megnézzük, megvalósítható-e.</p><span class="btn btn--dark">Van egy saját ötletem</span></a>
       </div>
-      <div class="made" data-reveal>
-        <h3>Készült már ilyen is</h3>
-        <ul>
-          <li><b>Kétsoros, körbekövezett gyűrű</b> – a kövek úgy ülnek, hogy végigsimítva szinte nem érezni őket.</li>
-          <li><b>Három karikából álló gyűrű</b> – két szín, a karikák között átlátszik az ujj.</li>
-          <li><b>Kalapált, reszelt felület</b> – ebből nincs két egyforma, a pár két gyűrűje sem teljesen azonos.</li>
-          <li><b>Háromszög alakú kő</b> gyűrűbe foglalva.</li>
-        </ul>
-        <p class="fine">Ezekről még nincs fotó az oldalon. ${S().settings.showDemoMarks ? '<span class="demo-chip">fotók és pontos leírás: az ötvöstől várjuk</span>' : ''}</p>
-      </div>
       <p class="fine insp__note">A képek a katalógus saját fotói. ${S().settings.showDemoMarks ? '<span class="demo-chip">korábbi egyedi munkák fotói: az ügyféltől várjuk</span>' : ''}</p>
     </div>
   </section>` : ''}
@@ -275,8 +267,8 @@ export function home(el) {
   <section class="sec sec--paper" id="rendeles">
     <div class="wrap">
       <header class="sec__head" data-reveal>
-        <h2>Rendelés, előleg, jótállás</h2>
-        <p class="sec__lead">Az ÁSZF lényege röviden.</p>
+        <h2>Rendelés, előleg, jótállás, lemondás</h2>
+        <p class="sec__lead">Az ÁSZF lényege röviden. Az irányadó a teljes <a href="${BUSINESS.aszf}" target="_blank" rel="noopener">ÁSZF</a>.</p>
       </header>
       <ol class="terms">${TERMS.map(([t, d], i) => `<li data-reveal="${(i % 3) * 0.06}"><span class="terms__n">${i + 1}</span><h3>${t}</h3><p>${d}</p></li>`).join('')}</ol>
     </div>
@@ -314,6 +306,7 @@ export function home(el) {
     if (sb) { t.stones = sb.dataset.st === '1'; paint(); }
   });
   if (teaserIds.length) paint();
+  bindWorks(el);
   bindContact(el);
   heroIn(el);
   reveal(el);
@@ -867,13 +860,14 @@ export function configText(p, cfg) {
   return lines.join('\n');
 }
 
-export function inquiry(p, cfg, type = 'erdeklodes', onRequest = false) {
+export function inquiry(p, cfg, type = 'erdeklodes', onRequest = false, { work = null } = {}) {
   const r = p && !onRequest ? price(p, cfg) : null;
-  const summary = p ? (onRequest ? `${p.code} – ${p.name}` : configText(p, cfg)) : '';
+  const summary = p ? (onRequest ? `${p.code} – ${p.name}` : configText(p, cfg)) : work ? `Egyedi műhelymunka: ${work.title} (személyes konzultáció – nem újrarendelhető darab)` : '';
   modal(`
     <form class="form" data-inq novalidate>
       <p class="kicker">${type === 'konzultacio' ? 'Személyes konzultáció' : 'Érdeklődés'}</p>
-      <h2>${p ? 'Érdekel ez a gyűrű?' : 'Időpontkérés'}</h2>
+      <h2>${p ? 'Érdekel ez a gyűrű?' : work ? 'Ilyet szeretnék' : 'Időpontkérés'}</h2>
+      ${work ? `<div class="form__cfg" data-workref><p><b>${esc(work.title)}</b></p><p class="fine">Ez egy egyszeri műhelymunka – ugyanígy nem készíthető el újra. Személyesen megbeszéljük, mi készülhet belőle neked.</p></div>` : ''}
       ${p ? `<div class="form__cfg"><pre>${esc(summary)}</pre>${r && r.final !== null ? `<p>${r.kind === 'fixed' ? 'Ár' : 'Becsült ár'}: <b>${ft(r.final)}</b></p>` : '<p>Ár: egyedi árajánlat szükséges</p>'}</div>` : ''}
       <div class="seg seg--lg" role="radiogroup" aria-label="Kérés típusa">
         <button type="button" data-type="erdeklodes" aria-pressed="${type === 'erdeklodes'}">Kérdésem van</button>
@@ -915,6 +909,68 @@ export function inquiry(p, cfg, type = 'erdeklodes', onRequest = false) {
       });
     },
   });
+}
+
+
+/* ---------- V5.6: Egyedi műhelymunkák ---------- */
+const liveWorks = () => (S().works || []).filter((w) => w.visible !== false);
+function workGallery(w) {
+  const ph = (w.photos || []).filter(Boolean);
+  if (!ph.length) return '';
+  return `<div class="work__gal" data-gal>${ph.map((src, i) => `<button type="button" class="work__ph${i === 0 ? ' work__ph--main' : ''}" data-zoomsrc="${esc(src)}" aria-label="${esc(w.title)} – ${i + 1}. fotó nagyítása"><img src="${esc(src)}" alt="${esc(w.title)}, ${i + 1}. fotó" loading="lazy" decoding="async"></button>`).join('')}</div>`;
+}
+function workCard(w) {
+  const vid = /^https:\/\//.test(w.video || '') ? `<a class="btn-text" href="${esc(w.video)}" target="_blank" rel="noopener noreferrer">Videó megnézése</a>` : '';
+  return `<article class="work" data-work-card="${esc(w.id)}" data-reveal>
+    ${workGallery(w)}
+    <div class="work__txt"><h3>${esc(w.title)}</h3>${w.text ? `<p>${esc(w.text)}</p>` : ''}
+      <p class="work__note">Egyszeri darab – ugyanígy nem rendelhető újra.</p>
+      <div class="work__btns"><button class="btn btn--dark" type="button" data-work="${esc(w.id)}">Ilyet szeretnék – konzultáció</button>${vid}</div></div>
+  </article>`;
+}
+function bindWorks(el) {
+  el.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-work]');
+    if (b) { const w = (S().works || []).find((x) => x.id === b.dataset.work); inquiry(null, null, 'konzultacio', false, { work: w || { title: '' } }); return; }
+    if (e.target.closest('[data-work-consult]')) { inquiry(null, null, 'konzultacio'); return; }
+    const z = e.target.closest('[data-zoomsrc]');
+    if (z) modal(`<div class="zoom"><img src="${esc(z.dataset.zoomsrc)}" alt=""></div>`, { label: 'Nagyított fotó', wide: true });
+  });
+}
+function worksTeaser() {
+  const list = liveWorks(); if (!list.length) return '';
+  const withPh = list.filter((w) => (w.photos || []).length);
+  return `<section class="sec sec--sand" id="muhelymunkak">
+    <div class="wrap">
+      <header class="sec__head sec__head--row" data-reveal>
+        <div><h2>Egyedi műhelymunkák</h2><p class="sec__lead">Nem csak cikkszámos gyűrűk készülnek itt. Van, amit kézzel kalapál, reszel, különlegesen foglal az ötvös – ezekből nincs két egyforma.</p></div>
+        <a class="btn btn--line" href="#/munkak">Az összes műhelymunka</a>
+      </header>
+      ${withPh.length ? `<div class="works works--teaser">${withPh.slice(0, 3).map(workCard).join('')}</div>` : ''}
+      ${list.length > withPh.length ? `<ul class="worklist" data-reveal>${list.filter((w) => !(w.photos || []).length).map((w) => `<li><b>${esc(w.title)}</b><span>${esc(w.text || '')}</span></li>`).join('')}</ul>` : ''}
+      <p class="works__cta" data-reveal><button class="btn btn--dark" type="button" data-work-consult>Személyes konzultációt kérek</button><a class="btn-text" href="#/sajat">Saját ötletem van</a></p>
+    </div>
+  </section>`;
+}
+export function works(el) {
+  el = fresh(el);
+  const list = liveWorks();
+  const withPh = list.filter((w) => (w.photos || []).length), noPh = list.filter((w) => !(w.photos || []).length);
+  el.innerHTML = `
+  <section class="wrap page-head">
+    <p class="crumbs"><a href="#/">Kezdőlap</a> / Műhelymunkák</p>
+    <h1>Egyedi műhelymunkák</h1>
+    <p class="lead">Egyszeri, kézzel megmunkált darabok: különleges foglalás, kalapált felület, szokatlan forma. Ugyanígy nem rendelhetők újra – de ha valamelyik megtetszik, megbeszéljük, mi készülhet belőle neked.</p>
+  </section>
+  <section class="wrap works-page">
+    ${withPh.length ? `<div class="works">${withPh.map(workCard).join('')}</div>` : ''}
+    ${noPh.length ? `<div class="made"><h2>Készült már ilyen is</h2><ul>${noPh.map((w) => `<li data-work-card="${esc(w.id)}"><b>${esc(w.title)}</b>${w.text ? ` – ${esc(w.text)}` : ''} <button class="linkbtn" type="button" data-work="${esc(w.id)}">Ilyet szeretnék</button></li>`).join('')}</ul><p class="fine">Ezekről még nincs fotó az oldalon.</p></div>` : ''}
+    ${!list.length ? '<p>Hamarosan.</p>' : ''}
+    <div class="works__end"><h2>Valami egészen más jár a fejedben?</h2><p>Mondd el, vagy hozz egy fotót. Személyesen megnézzük, megvalósítható-e.</p>
+      <p><button class="btn btn--dark" type="button" data-work-consult>Személyes konzultációt kérek</button> <a class="btn btn--line" href="#/sajat">Elmondom az ötletem</a></p></div>
+  </section>`;
+  bindWorks(el);
+  reveal(el);
 }
 
 /* ---------- Kapcsolat ---------- */

@@ -32,14 +32,28 @@ export const BUSINESS = {
   regNo: '01-09-469480',
 };
 
-/* A rendelés menete és feltételei – a karikagyuru.com ÁSZF-je alapján */
+/* V5.6 – EGYEDI MŰHELYMUNKÁK: egyszeri, kézzel megmunkált darabok – nem katalógustermékek, nem rendelhetők újra.
+   Cikkszám és ár nincs. A szövegek az ötvös saját elmondásából (személyes beszélgetés); FOTÓ EGYIKHEZ SINCS MÉG –
+   az adminban „fotóra vár” jelöléssel látszanak. Kitalált vagy generált kép nem kerülhet ide. */
+export const WORKS_SEED = [
+  { id: 'ketsoros-korbekovezett', title: 'Kétsoros, körbekövezett gyűrű', text: 'A kövek úgy ülnek, hogy végigsimítva szinte nem érezni őket.', photos: [], video: '', visible: true },
+  { id: 'harom-karikas', title: 'Három karikából álló gyűrű', text: 'Két szín, a karikák között átlátszik az ujj.', photos: [], video: '', visible: true },
+  { id: 'kalapalt-felulet', title: 'Kalapált, reszelt felület', text: 'Ebből nincs két egyforma – a pár két gyűrűje sem teljesen azonos.', photos: [], video: '', visible: true },
+  { id: 'haromszog-ko', title: 'Háromszög alakú kő', text: 'Háromszög alakú kő gyűrűbe foglalva.', photos: [], video: '', visible: true },
+];
+
+/* A rendelés menete és feltételei – a karikagyuru.com korábbi ÁSZF-je alapján.
+   V5.6: az ÁSZF jelenlegi szövege innen nem volt elérhető, ezért az előleg és a határidő az ügyféllel EGYEZTETENDŐ.
+   Az elállásnál nincs kategorikus kijelentés: a 14 napos elállási jog a 45/2014. (II. 26.) Korm. rendelet szerint
+   a távollévők között és az üzlethelyiségen kívül kötött szerződésekre vonatkozik; az ügyfél a rendelést személyesen,
+   az üzletben véglegesíti. A végleges szöveget az ügyfél (és jogi tanácsadója) hagyja jóvá. */
 export const TERMS = [
   ['Személyesen', 'A méretet és a részleteket a Bláthy Ottó utcai üzletben egyeztetjük.'],
   ['Előleg', 'Egyedi gyűrűnél az ár fele, a megrendeléskor.'],
   ['Határidő', 'Feldolgozás 3 munkanapon belül, a kész dátumot egyeztetjük.'],
   ['Átvétel', 'Személyesen, ekkor fizeted a maradékot készpénzzel vagy átutalással.'],
   ['Jótállás', 'A hatályos jogszabályok szerint. A részletes feltételeket a vásárláskor kapott jótállási jegy tartalmazza.'],
-  ['Elállás', 'Egyedi méretre készült gyűrűre nincs elállási jog.'],
+  ['Lemondás, elállás', 'A rendelést személyesen, az üzletben véglegesítjük. Ha mégis lemondanád, annak feltételeit a rendeléskor írásban rögzítjük; a részleteket az ÁSZF tartalmazza.'],
 ];
 
 import { LOCAL_FILES } from './photos.js';
