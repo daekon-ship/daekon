@@ -241,7 +241,7 @@ export function home(el) {
       <ul class="otvos__list">
         <li data-reveal><h3>Kéz és eszterga</h3><p>A gyűrű kézzel indul: nyújtás, hajlítás, forrasztás. A pontos formát eszterga adja, a végső felületet megint a kéz.</p></li>
         <li data-reveal=".06"><h3>Közösen döntötök</h3><p>Felpróbálod a mintagyűrűket, megnézed a színeket a saját kezeden, és ott helyben alakul a terv.</p></li>
-        <li data-reveal=".12"><h3>Platina, palládium, titán</h3><p>Nemcsak arannyal dolgozik. Fontos tudni: platinából és palládiumból csak fehér gyűrű készül.</p></li>
+        <li data-reveal=".12"><h3>Platina, palládium, titán</h3><p>Nemcsak arannyal dolgozik. Platinából és palládiumból csak fehér gyűrű készül; titán gyűrűre mindig egyedi ajánlatot ad.</p></li>
         <li data-reveal=".18"><h3>Csak természetes gyémánt</h3><p>Ha kő kerül a gyűrűbe, az valódi, természetes gyémánt.</p></li>
       </ul>
     </div>
@@ -685,13 +685,14 @@ export function product(el, id, query) {
       if (rule.demo) body += `<p class="fine">${demoMark('demó kőszabály')} A kőszámot és a kőméreteket az ötvösmester hagyja jóvá.</p>`;
       return `<div class="ringbox"><h3 class="ringbox__t">${esc(ring.label)}</h3>${body}</div>`; }).join('')}</div>`];
   };
-  const stepEngrave = () => ['Gravírozás', `+${ft(S().settings.engravingPrice)} / gyűrű`, `<div class="rings2">${p.rings.map((ring, i) => {
+  const engrOk = () => S().settings.engravingPrice !== null && S().settings.engravingPrice !== undefined;
+  const stepEngrave = () => ['Gravírozás', engrOk() ? `+${ft(S().settings.engravingPrice)} / gyűrű` : 'kérésként jelezheted', `<div class="rings2">${p.rings.map((ring, i) => {
     const rc = cfg.rings[i];
     return `<div class="ringbox"><h3 class="ringbox__t">${esc(ring.label)}</h3>
       <input class="input" maxlength="24" data-engrave="${i}" value="${esc(rc.engraving)}" placeholder="pl. Anna & Bence · 2027. 06. 12." aria-label="${esc(ring.label)} gravírozása">
       <div class="cfg__seg cfg__seg--sm">${FONTS.map((f, k) => `<button type="button" data-font="${i}|${k}" aria-pressed="${(rc.font || 0) === k}"><b>${f}</b></button>`).join('')}</div>
       <div data-engrave-prev="${i}">${engravePreview(rc)}</div></div>`; }).join('')}</div>
-    <p class="hint">A gyűrű belsejébe, legfeljebb 24 karakter. Üresen hagyva nem számoljuk.</p>`];
+    <p class="hint" data-engrave-note>${engrOk() ? 'A gyűrű belsejébe, legfeljebb 24 karakter. Üresen hagyva nem számoljuk.' : 'A gyűrű belsejébe, legfeljebb 24 karakter. A gravírozás lehetőségét és árát a személyes egyeztetésen beszéljük meg – a fenti ár ezt nem tartalmazza.'}</p>`];
 
   const paint = (first) => {
     let r = price(p, cfg);
@@ -833,9 +834,9 @@ function sizeHelp([lo, hi], onPick) {
 function specs(p, cfg, r) {
   const rows = [
     ['Cikkszám', esc(p.code)],
-    ['Megnevezés', esc(p.name) + (p.real ? ` <span class="hint">– ügyféllel egyeztetendő</span>` : '')],
+    ['Megnevezés', esc(p.name)],
     ['Típus', p.kind === 'p' ? 'Karikagyűrű pár (női és férfi gyűrű)' : 'Egy gyűrű'],
-    ['Anyag', `${metalLabel(cfg)}${p.unknownColor ? ' <span class="hint">– a cikkszámban nincs színjelölés, egyeztetendő</span>' : ''}`],
+    ['Anyag', `${metalLabel(cfg)}${p.unknownColor ? ' <span class="hint">– a pontos színt személyesen egyeztetjük</span>' : ''}`],
     ['Stílus', STYLES[p.style] + ' ' + demoMark('demóadat')],
     ...(r.grams && r.kind === 'calc' ? [['Becsült tömeg', `${dec(r.grams)} g${isGold(cfg.metal) ? `, ebből ${dec(r.pure)} g színarany` : ''} ${demoMark('demóadat')}`]] : []),
     ['Választható anyagok', p.metals.map((m) => METALS[m].short).join(', ')],
