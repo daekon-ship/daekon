@@ -143,7 +143,7 @@ function pendingCount(st) {
 function openQuestions(st) {
   const qs = (st.settings.openQuestions || []).filter((x) => String(x).trim());
   const unsure = [
-    ...st.materials.diamonds.filter((d) => d.src === 'bizonytalan').map((d) => `${d.name}: az ár megerősítendő${d.note ? ` (${d.note})` : ''} – addig „egyedi ajánlat”.`),
+    ...st.materials.diamonds.filter((d) => d.src === 'bizonytalan').map((d) => `${d.name}: az ár megerősítendő${d.note && !/megerősítendő/i.test(d.note) ? ` (${d.note})` : ''} – addig „egyedi ajánlat”.`),
     ...Object.entries(st.materials.src || {}).filter(([, v]) => v === 'bizonytalan').map(([k]) => `${k === 'sellPerGram.ti' ? 'Titán: nincs grammár, munkaalapú egyedi ajánlat' : k} – megerősítendő.`),
   ];
   return { qs, unsure, all: [...qs, ...unsure] };

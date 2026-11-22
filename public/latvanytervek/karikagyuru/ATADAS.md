@@ -462,7 +462,7 @@ Tesztek: motor 73/73, asztali 30/30, mobil 26/26, V3 70/70, V4 54/54, V5 38/38, 
 ## V5.3 – ügyfélátadásra felkészítés (2026. november 21.)
 
 - **Fokozatos jóváhagyás.** Új motorfüggvények: `priceTrust` és `shownPrice`. A vásárló számolt árat csak akkor lát, ha a gyűrű jóváhagyott, és a beállítás minden felhasznált árelemét (grammár, kőár, számítási szabály, gravírdíj) az ötvös jóváhagyta.
-  - Nem jóváhagyott gyűrű: a katalógusban marad. Az alapváltozatnál a karikagyuru.com mostani listaárát mutatja, „Jelenlegi listaár – alapváltozat” felirattal, máskor „egyedi ajánlat”-ot. Online beállítás nincs, helyette ajánlatkérés. Becsült tömeg és gyűrűnkénti árbontás sem jelenik meg.
+  - Nem jóváhagyott gyűrű: a katalógusban marad. (V5.6 óta: mindig „Egyedi árajánlat”; a régi listaár csak az adminban.) Online beállítás nincs, helyette ajánlatkérés. Becsült tömeg és gyűrűnkénti árbontás sem jelenik meg.
   - A beállítás-link (`?k=`) sem nyit ki nem jóváhagyott beállítást.
 - **Jóváhagyás sorban** (`#/admin/sorban`). Egy gyűrű egyszerre, a jóváhagyandó adatokkal: tömeg, szélesség, méretek, kőszabály, választható opciók, számolt ár és a mostani listaár. Gombok: „Rendben, jóváhagyom”, „Javítani kell”, „Később”, illetve visszavonás. Haladásjelző mutatja, hány gyűrű van kész. A főmenü 4. csempéje ide visz.
 - **Szerver mód, hibák.**
@@ -521,5 +521,22 @@ Tesztek: motor 73/73, asztali 30/30, mobil 26/26, V3 70/70, V4 54/54, V5 38/38, 
 - **Fotóellenőrzés:** `node services/karikagyuru-api/dev/foto-ellenorzes.mjs` – letölti és két méretben (1600/800 px) optimalizálja az ügyfél saját oldalán lévő termékfotókat, és géppel olvasható jelentést ír (`docs/KATALOGUS_JELENTES.json`, `.md`). Admin → Fotók: böngészős betöltés-ellenőrzés JSON-jelentéssel.
 - **Az ügyfél árazási jegyzetének számai kikerültek a nyilvános repositoryból** (adatkészlet, tesztek, dokumentáció) – szemléltető értékekre cserélve. A git-előzményekben force push nélkül megmaradnak (lásd a nem nyilvános előzménytisztítási tervet).
 - **Jelszóval védett, különálló bemutató:** `demo/kapu.php` (teljes oldal jelszó mögött, noindex, e-mail tiltva, külön admin jelszó, csak bemutató-adatbázissal indul), `bin/demo-install.php`, `bin/demo-reset.php`, `dev/demo-csomag.sh`. Helyben: `bash services/karikagyuru-api/dev/bemutato.sh`. Online még nincs fent (nincs tárhely-hozzáférés) – `docs/BEMUTATO_TELEPITES.md`.
-- **A bemutatóban a teljes katalógus látszik:** 3 mintagyűrű (2 jóváhagyott, 1 jóváhagyásra vár) szemléltető árakkal, a többi a mostani listaárral vagy „egyedi ajánlat”-tal. Felül „Zárt bemutató” sáv, az árnál „szemléltető mintaár”.
+- **A bemutatóban a teljes katalógus látszik:** 3 mintagyűrű (2 jóváhagyott, 1 jóváhagyásra vár) szemléltető árakkal, a többi „Egyedi árajánlat”-tal. Felül „Zárt bemutató” sáv, az árnál „szemléltető mintaár”.
 - **Éles/bemutató szétválasztás:** éles módban „demo” jelölésű adat nem menthető; bemutató módban minden mentés „demo” jelölésű.
+
+### V5.6 – második rész (ügyféligény-ellenőrzés alapján, 2026. november 22.)
+
+- **Árak:** a vásárló csak jóváhagyott számított vagy jóváhagyott fix árat lát; minden más „Egyedi árajánlat”. A régi weboldal listaára történeti, nem igazolt adat: csak az adminban látszik összehasonlításra (gyűrű szerkesztése, jóváhagyás sorban), a nyilvános API nem adja ki. Ha az ötvös a régi árat akarja használni, rögzített (fix) árként adja meg és hagyja jóvá.
+- **Tisztázandó kérdések:** az admin főmenüjén és a „Jóváhagyásra vár” oldalon jól látható doboz. A nyitott kérdések szerkeszthetők, és a „megerősítendő” jelölésű árelemek automatikusan bekerülnek. Amíg nyitottak, a rendszer a jóváhagyott képlettel számol. A nyilvános nézet nem kapja meg.
+- **Szakmai jóváhagyás ellenőrzőlistával:**
+  - Kötelező: referenciaméret, szélesség, vastagság, tömeg, elérhető anyagok, kőszám, kőméret (elfér-e), foglalási szabály, valamint a választható szélesség/vastagság megadása és jóváhagyása.
+  - Ha bármelyik hiányzik, a gyűrű sehonnan nem hagyható jóvá (sor, szerkesztő, tároló).
+  - Becsült adat (a régi listaárból visszaszámolt tömeg, a fotóról becsült kőszabály) csak kifejezett megerősítéssel hagyható jóvá.
+  - Nincs általános határérték (pl. minimális szélesség): ezt modellenként az ötvös ítéli meg.
+  - A kiinduló katalógusban egyik gyűrűnél sincs vastagság, így egyik sem hagyható jóvá véletlenül.
+- **Egyedi műhelymunkák** (`#/munkak`, admin: Műhelymunkák):
+  - Cikkszám és ár nélkül, több fotóval, később videólinkkel, konzultációkéréssel. Nem újrarendelhető, nem katalógustermék.
+  - A főoldalon külön szakasz mutatja őket.
+  - Az ötvös által elmondott 4 munka fotó nélkül, „fotóra vár” jelöléssel szerepel – kitalált kép nincs.
+- **Elállás:** kategorikus „nincs elállási jog” helyett a rendeléskor rögzített feltételekre és az ÁSZF-re utal. A végleges szöveget az ügyfél hagyja jóvá.
+- **Laptopos bemutató:** pontos indítás Macen és Windowson – `docs/BEMUTATO_TELEPITES.md`.

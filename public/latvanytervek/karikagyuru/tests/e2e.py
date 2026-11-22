@@ -96,6 +96,9 @@ async def main():
         check('Kerekítés jóváhagyása a „Jóváhagyásra vár” oldalon', await pg.locator('[data-appr="settings|roundTo"]').count() == 0)
         await pg.goto(B + '#/admin/keplet'); await pg.wait_for_timeout(500)
         await pg.select_option('[data-round]', '100'); await pg.click('[data-save]'); await pg.wait_for_timeout(400)
+        # V5.6: ha a kerekítés átállítás után újra jóváhagyandó, jóváhagyjuk (addig a vásárló egyedi ajánlatot lát)
+        await pg.goto(B + '#/admin/jovahagyas'); await pg.wait_for_timeout(500)
+        if await pg.locator('[data-appr="settings|roundTo"]').count(): await pg.click('[data-appr="settings|roundTo"]'); await pg.wait_for_timeout(300)
         await pg.goto(B + '#/admin/arszamitas'); await pg.wait_for_timeout(500)
         await pg.goto(B + '#/kollekcio'); await pg.wait_for_timeout(1000)
         p0 = n(await pg.locator(f'[data-price="{PAIR}"]').inner_text())
@@ -136,8 +139,8 @@ async def main():
         await pg.goto(B + '#/admin/beallitasok'); await pg.wait_for_timeout(500)
         await pg.click('[data-reset]'); await pg.click('[data-ok]'); await pg.wait_for_timeout(600)
         await pg.goto(B + '#/kollekcio'); await pg.wait_for_timeout(1200)
-        p2 = n(await pg.locator(f'[data-price="{PAIR}"]').inner_text())
-        check('8. Alapállapot visszaállítása: eredeti ár, látható termék', p2 == p0, f'{p2}')
+        ctext = await pg.inner_text(f'.card[data-id="{PAIR}"]') if await pg.locator(f'.card[data-id="{PAIR}"]').count() else ''
+        check('8. Alapállapot visszaállítása: látható termék, jóváhagyás nélkül „Egyedi árajánlat” (a régi listaár nem)', 'Egyedi árajánlat' in ctext and await pg.locator(f'[data-price="{PAIR}"]').count() == 0, ctext[:100])
 
         # --- 10. Eszközök: nincs vízszintes görgetés ---
         pages = ['#/', '#/kollekcio', f'#/gyuru/{PAIR}', f'#/gyuru/{ETERNITY}', '#/admin/attekintes', '#/admin/alapanyag', f'#/admin/gyuru/{PAIR}', '#/admin/keplet', '#/admin/arszamitas', '#/admin/jovahagyas']

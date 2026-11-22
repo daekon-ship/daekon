@@ -10,6 +10,7 @@
 set -euo pipefail
 HERE="$(cd "$(dirname "$0")" && pwd)"; API="$(dirname "$HERE")"
 PORT="${KG_PORT:-8792}"
+HOST="${KG_HOST:-127.0.0.1}"   # telefonos próbához saját Wi-Fi-n: KG_HOST=0.0.0.0
 if [ -n "${KG_MARAD:-}" ]; then
   export KG_DATA="${KG_DATA:-$HOME/.kg-bemutato-adat}"
 else
@@ -23,4 +24,4 @@ echo "  Kezelőfelület:   http://127.0.0.1:$PORT/#/admin   (utána az admin jel
 echo "  Forgatókönyv:    a DAEKON nem nyilvános bemutató-forgatókönyve (nincs a repositoryban)"
 echo "  Leállítás: Ctrl+C"
 echo
-php -S "127.0.0.1:$PORT" "$API/demo/kapu.php"
+php -S "$HOST:$PORT" "$API/demo/kapu.php"

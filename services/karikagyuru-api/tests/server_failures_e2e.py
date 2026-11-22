@@ -111,7 +111,7 @@ async def main():
             print('5. Nem jóváhagyott ár a látogatónál')
             await vis2.goto(B + f'#/gyuru/{PAIR}?k=x'); await vis2.reload(); await vis2.wait_for_timeout(1300)
             lab = await vis2.inner_text('[data-plabel]')
-            check('nem jóváhagyott gyűrű: „listaár – alapváltozat”, nem „becsült ár”', 'listaár' in lab.lower() and 'Becsült' not in lab, lab)
+            check('nem jóváhagyott gyűrű: nincs „becsült ár” és nincs régi listaár (V5.6: egyedi árajánlat)', 'listaár' not in lab.lower() and 'Becsült' not in lab, lab)
             check('nem jóváhagyott gyűrű: nincs online beállítás', await vis2.locator('[data-steps]').count() == 0 and await vis2.locator('[data-locked]').count() == 1)
             check('nincs JavaScript-hiba', not [e for e in errs if 'Failed to fetch' not in e], ' | '.join(errs)[:200])
             await b.close()

@@ -32,7 +32,7 @@ A PHP-s tárhelyhez illik, nincs szükség build-lépésre vagy külön szerverr
    - `<title>` és `meta description` (pl. „81184 - 81185 W fehérarany karikagyűrű-pár – Karikagyuru.com”)
    - `<link rel="canonical">` a végleges domainre
    - Open Graph: cím, leírás, a termék fotója
-   - JSON-LD `Product` (név, cikkszám, kép, márka). **Ár (`offers`) csak jóváhagyott, számolt vagy közzétett listaárral**, a `priceTrust` szabályai szerint. Egyéb esetben ár nélkül.
+   - JSON-LD `Product` (név, cikkszám, kép, márka). **Ár (`offers`) csak jóváhagyott számított vagy jóváhagyott fix árral** (V5.6: a régi listaár nem), a `shownPrice` szabályai szerint. Egyéb esetben ár nélkül.
    - JSON-LD `JewelryStore` a főoldalon, csak valós cégadatokkal
    - egy rövid, szerveren kiírt alaptartalom (név, cikkszám, fotó, rövid leírás), hogy a JavaScript nélküli előnézetek is lássanak valamit
 3. **`sitemap.xml` a szerverről**, a mentett állapotból: a főoldal, a gyűrűk listája és minden **látható** gyűrű. Rejtett gyűrű nem kerül bele. A `lastmod` a gyűrű utolsó módosításának dátuma.

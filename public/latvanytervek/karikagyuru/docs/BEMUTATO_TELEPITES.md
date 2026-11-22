@@ -3,14 +3,37 @@
 **Állapot (V5.6):** a bemutató a saját gépen ugyanúgy fut, mint a tárhelyen (`demo/kapu.php`), és a telepítési csomag elkészül.
 **Online még nincs fent.** Nincs hozzá tárhely-hozzáférés. Más DAEKON-ügyfél tárhelyére nem telepítjük.
 
-## Helyben (most is működik)
+## Laptopos bemutató – pontos indítás
 
-```sh
-bash services/karikagyuru-api/dev/bemutato.sh          # → http://127.0.0.1:8792/  (kiírja a két jelszót)
-KG_MARAD=1 bash services/karikagyuru-api/dev/bemutato.sh   # az adatok megmaradnak a következő indításig
-```
+**Előfeltétel:** PHP 8.1 vagy újabb, `pdo_sqlite` és `gd` bővítménnyel. Node nem kell. A katalógus 85 fotója a régi karikagyuru.com-ról töltődik, ezért ehhez internet kell; internet nélkül ezeknél „Fotó hamarosan” látszik, minden más működik.
 
-Kell hozzá: PHP 8.1+ (pdo_sqlite, gd). Node nem kell.
+### Mac
+1. Egyszer: `brew install php` (ha nincs Homebrew: https://brew.sh).
+2. A repository mappájában:
+   ```sh
+   KG_MARAD=1 bash services/karikagyuru-api/dev/bemutato.sh
+   ```
+3. Kiírja a **bemutató jelszavát** és az **admin jelszót**. Jegyezd fel őket, mert csak az első indításkor jelennek meg (`KG_MARAD=1` mellett az adatok és a jelszavak megmaradnak).
+4. Böngésző: `http://127.0.0.1:8792/` – a jelszókérő után a weboldal; a kezelőfelület: `http://127.0.0.1:8792/#/admin`.
+
+### Windows (PowerShell)
+1. Egyszer: PHP letöltése (https://windows.php.net/download), kicsomagolás pl. `C:\php`-be. A `php.ini-development` fájlt másold `php.ini`-re, és vedd ki a `;` jelet ezek elől: `extension=pdo_sqlite`, `extension=sqlite3`, `extension=gd`.
+2. A repository mappájában:
+   ```powershell
+   $env:KG_DATA = "$env:USERPROFILE\kg-bemutato-adat"
+   C:\php\php.exe services\karikagyuru-api\bin\demo-install.php
+   C:\php\php.exe -S 127.0.0.1:8792 services\karikagyuru-api\demo\kapu.php
+   ```
+   A második sor csak az első alkalommal kell; az kiírja a két jelszót.
+3. Böngésző: `http://127.0.0.1:8792/`.
+
+### A bemutató előtti estén
+- Indítsd el egyszer, lépj be mindkét jelszóval, és menj végig a forgatókönyvön.
+- Utána állítsd vissza:
+  - Mac: `KG_DATA=$HOME/.kg-bemutato-adat php services/karikagyuru-api/bin/demo-reset.php`
+  - Windows: `C:\php\php.exe services\karikagyuru-api\bin\demo-reset.php` (a `$env:KG_DATA` beállítása után).
+- Ha van idő és internet: `node services/karikagyuru-api/dev/foto-ellenorzes.mjs` letölti a karikagyuru.com-os fotókat helyi, optimalizált másolatba, így a bemutatón internet nélkül is minden kép látszik. Ehhez Node és `npm i sharp` kell.
+- Telefonon is kipróbálható ugyanazon a Wi-Fi-n: `KG_HOST=0.0.0.0 KG_MARAD=1 bash services/karikagyuru-api/dev/bemutato.sh`, majd a telefonon a laptop IP-címe a 8792-es porton. Csak saját, megbízható hálózaton – a bemutató jelszava ekkor is véd.
 
 ## Hogyan védi magát
 
