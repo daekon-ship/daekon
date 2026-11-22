@@ -147,7 +147,7 @@ final class Mailer
     /** Az értesítő szövege: csak a visszahíváshoz szükséges adatok. */
     public static function inquiryText(int $id, array $q, string $adminUrl): array
     {
-        $types = ['erdeklodes' => 'Érdeklődés', 'ajanlat' => 'Ajánlatkérés', 'idopont' => 'Időpontkérés', 'egyedi' => 'Saját ötlet', 'konzultacio' => 'Konzultáció', 'telefon' => 'Telefonos'];
+        $types = ['erdeklodes' => 'Ajánlatkérés (gyűrű)', 'ajanlat' => 'Ajánlatkérés', 'idopont' => 'Időpontkérés', 'egyedi' => 'Saját ötlet – ajánlatkérés', 'konzultacio' => 'Időpontkérés', 'telefon' => 'Telefonos'];   // V5.7: ugyanazok a fogalmak, mint a weboldalon
         $lines = [
             'Új érdeklődés érkezett a weboldalról.',
             '',

@@ -3,33 +3,42 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Karikagyuru.com – Alakítsd a sajátodra</title>
-<meta name="description" content="Karikagyűrűk, amiket a saját ízlésedre alakíthatsz – vagy tervezzünk együtt valami újat. Ötvösműhely Budapesten, időpont-egyeztetéssel.">
+<title>Karikagyűrűk ötvössel tervezve – KARIKAGYURU.COM, Budapest</title>
+<meta name="description" content="Karikagyűrűk és eljegyzési gyűrűk Budapesten. Válassz a modellek közül, vagy tervezd meg a gyűrűt személyesen az ötvössel. Csak természetes gyémánttal, előre egyeztetett időpontban.">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#FFFFFF">
+<link rel="icon" type="image/svg+xml" href="img/favicon.svg">
 <link rel="icon" type="image/png" sizes="48x48" href="img/favicon-48.png">
+<script>
+  /* V5.7 – két arculati változat ugyanazzal az oldalszerkezettel (összehasonlításhoz, ügyféljóváhagyásig egyik sem végleges):
+     a = monokróm embléma gyémánttal (az ügyfél kocka.jpg-je + a kék logó gyémántja), b = kék alapú embléma (gyémántos kék logó).
+     Váltás: ?arculat=a vagy ?arculat=b – a böngészőlap megjegyzi. */
+  (function () { var q = new URLSearchParams(location.search).get('arculat'); var v = q === 'a' || q === 'b' ? q : null;
+    try { if (v) sessionStorage.setItem('kg-arculat', v); else v = sessionStorage.getItem('kg-arculat'); } catch (e) {}
+    document.documentElement.dataset.arculat = v || 'a'; })();
+</script>
 <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
 <link rel="preload" href="fonts/baskerville-var.woff" as="font" type="font/woff" crossorigin>
 <link rel="preload" href="fonts/manrope-var.woff" as="font" type="font/woff" crossorigin>
-<meta name="kg-version" content="V5.6.1">
+<meta name="kg-version" content="V5.7">
 <meta name="kg-api" content="">
-<link rel="stylesheet" href="css/kg.css?v=5.6.1">
+<link rel="stylesheet" href="css/kg.css?v=5.7">
 <script src="js/vendor/motion-11.18.2.min.js" defer></script>
 <!-- Verziózás: frissítésnél csak a VERZIÓT kell átírni (itt és lent), így a böngésző nem keveri a régi és az új modulokat. -->
 <script type="importmap">
 { "imports": {
-  "./js/app.js": "./js/app.js?v=5.6.1",
-  "./js/data.js": "./js/data.js?v=5.6.1",
-  "./js/engine.js": "./js/engine.js?v=5.6.1",
-  "./js/store.js": "./js/store.js?v=5.6.1",
-  "./js/ui.js": "./js/ui.js?v=5.6.1",
-  "./js/views-admin.js": "./js/views-admin.js?v=5.6.1",
-  "./js/api.js": "./js/api.js?v=5.6.1",
-  "./js/photos.js": "./js/photos.js?v=5.6.1",
-  "./js/views-public.js": "./js/views-public.js?v=5.6.1"
+  "./js/app.js": "./js/app.js?v=5.7",
+  "./js/data.js": "./js/data.js?v=5.7",
+  "./js/engine.js": "./js/engine.js?v=5.7",
+  "./js/store.js": "./js/store.js?v=5.7",
+  "./js/ui.js": "./js/ui.js?v=5.7",
+  "./js/views-admin.js": "./js/views-admin.js?v=5.7",
+  "./js/api.js": "./js/api.js?v=5.7",
+  "./js/photos.js": "./js/photos.js?v=5.7",
+  "./js/views-public.js": "./js/views-public.js?v=5.7"
 } }
 </script>
-<script type="module" src="js/app.js?v=5.6.1"></script>
+<script type="module" src="js/app.js?v=5.7"></script>
 </head>
 <body data-mode="customer">
 <a class="skip" href="#view">Ugrás a tartalomra</a>
@@ -37,9 +46,9 @@
 
 <header class="site-head">
   <div class="wrap site-head__in">
-    <a class="logo" href="#/" aria-label="Két gyűrű, egy igen – karikagyűrű-szalon, kezdőlap">
-      <img class="logo__mark" src="img/logo-jel.png" alt="" width="176" height="127">
-      <span class="logo__txt"><b>Két gyűrű, egy igen</b><small>Karikagyűrű-szalon · Budapest</small></span>
+    <a class="logo" href="#/" aria-label="KARIKAGYURU.COM – kezdőlap">
+      <span class="logo__mark" aria-hidden="true"><img class="logo__a" src="img/arculat/jel.svg" alt="" width="88" height="65"><img class="logo__b" src="img/arculat/jel-kek-alapra.svg" alt="" width="88" height="65"></span>
+      <span class="logo__txt"><b>KARIKAGYURU.COM</b><small>Karikagyűrűk · Budapest</small></span>
     </a>
     <nav class="nav" aria-label="Fő menü">
       <a href="#/kollekcio">Gyűrűk</a>
@@ -63,7 +72,7 @@
 <footer class="site-foot">
   <div class="wrap site-foot__grid">
     <div>
-      <p class="logo--foot"><img src="img/logo-vilagos.png" alt="Karikagyuru.com logó" width="270" height="146"></p>
+      <p class="logo--foot"><img class="logo__a" src="img/arculat/logo-sotet-alapra.svg" alt="KARIKAGYURU.COM logó" width="300" height="163"><img class="logo__b" src="img/arculat/logo-kek.svg" alt="KARIKAGYURU.COM logó" width="300" height="163"></p>
       <p>Karikagyűrűk, leánykérő gyűrűk készítése és forgalmazása, akár egyedi terv alapján – fehér-, rozé- és sárgaaranyból, platinából, palládiumból, titánból és acélból. Díszítésre természetes gyémántokat használunk.</p>
     </div>
     <div>
@@ -79,7 +88,7 @@
   </div>
   <div class="wrap site-foot__note">
     <p>Üzemeltető: Virág &amp; Társa Kft. · Székhely: 1132 Budapest, Visegrádi utca 42–46. · Üzlet: 1089 Budapest, Bláthy Ottó utca 4–8., I. emelet 123. · Adószám: 12149030-2-41 · Cégjegyzékszám: 01-09-469480</p>
-    <p>© <span data-year></span> Karikagyuru.com · Az árak tájékoztató becslések, a végleges árat személyesen mondjuk meg. · <a href="#/admin">Kezelőfelület</a> · Weboldal: DAEKON</p>
+    <p>© <span data-year></span> KARIKAGYURU.COM · Online csak az ötvös által jóváhagyott tájékoztató ár jelenik meg; a többi gyűrűre egyedi árajánlatot adunk. A végleges ár a személyes egyeztetésen dől el. · <a href="#/admin">Kezelőfelület</a> · Weboldal: DAEKON</p>
   </div>
 </footer>
 </body>

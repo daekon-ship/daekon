@@ -24,9 +24,9 @@ async def run(b, w, h, mob):
     # --- Kezdőoldal: a három üzenet ---
     h1 = await pg.inner_text('.hero h1'); cta = await pg.locator('.hero__cta a').all_inner_texts()
     hrefs = [await a.get_attribute('href') for a in await pg.locator('.hero__cta a').all()]
-    check(f'{tag} főcím és a két gomb', 'vitrinben' in h1 and cta == ['Alakítsd a sajátodra', 'Van egy saját ötletem'] and hrefs == ['#/kollekcio', '#/sajat'], f'{h1} {cta}')
+    check(f'{tag} főcím és a két gomb (V5.7 szövegek)', 'ötvössel' in h1 and cta == ['Gyűrűt választok', 'Saját ötletem van'] and hrefs == ['#/kollekcio', '#/sajat'], f'{h1} {cta}')
     note = await pg.inner_text('.hero__note')
-    check(f'{tag} az ötvös személyes segítsége a nyitóképernyőn', 'ötvös' in note and 'ülsz le' in note)
+    check(f'{tag} az ötvös személyes segítsége a nyitóképernyőn (évszám kitalálása nélkül)', 'ötvös' in note and 'évtizedes' in note and 'harmincvalahány' not in note)
     paths = [await a.get_attribute('href') for a in await pg.locator('.paths .path').all()]
     top = await pg.evaluate("document.querySelector('.paths').getBoundingClientRect().top + scrollY")
     check(f'{tag} két külön út a nyitóoldal elején', paths == ['#/kollekcio', '#/sajat'] and top < h * 1.6, f'{paths} {int(top)}')

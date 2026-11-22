@@ -33,7 +33,7 @@ async def run(b, w, h, mob):
     check(f'{tag} termékoldal: nincs beállítás, helyette „személyesen szabjuk rád”', await pg.locator('[data-steps]').count() == 0 and await pg.locator('[data-locked]').count() == 1)
     body = await pg.inner_text('.pdp__panel')
     check(f'{tag} termékoldal: nincs becsült tömeg és gyűrűnkénti árbontás nem jóváhagyott adatból', 'Becsült tömeg' not in body and 'kb.' not in body)
-    check(f'{tag} termékoldal: a fő gomb ajánlatkérés', 'Árajánlatot kérek' in await pg.inner_text('.pdp__ctas'))
+    check(f'{tag} termékoldal: a fő gomb ajánlatkérés', 'Ajánlatot kérek' in await pg.inner_text('.pdp__ctas'))
     # konfigurációs link sem nyit ki nem engedélyezett beállítást
     await pg.goto(B + f'#/gyuru/{PAIR}?k=Z2FyYmFnZQ'); await pg.wait_for_timeout(900)
     check(f'{tag} beállítás-link nem jóváhagyott gyűrűn: alapváltozat marad, ár nélkül', num(await pg.inner_text('[data-cprice]')) == 0 and await pg.locator('[data-steps]').count() == 0)

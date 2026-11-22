@@ -54,7 +54,7 @@ async def main():
         check('műhelymunkánál nincs cikkszám, ár, konfigurátor', await pg.locator('main [data-cprice], main .card__code, main [data-steps]').count() == 0)
         await pg.locator('[data-work="kalapalt-felulet"]').click(); await pg.wait_for_timeout(500)
         ref = await pg.inner_text('[data-workref]')
-        check('„Ilyet szeretnék”: konzultációs űrlap a munka nevével, „nem készíthető el újra”', 'Kalapált' in ref and 'nem készíthető el újra' in ref and await pg.locator('[data-type="konzultacio"][aria-pressed="true"]').count() == 1, ref)
+        check('„Ebből inspirálódnék”: konzultációs űrlap a munka nevével, „nem készíthető el újra”', 'Kalapált' in ref and 'nem készíthető el újra' in ref and await pg.locator('[data-type="konzultacio"][aria-pressed="true"]').count() == 1, ref)
         await pg.fill('.form [name=nev]', 'Műhely Márta'); await pg.fill('.form [name=tel]', '+36 30 555 1234'); await pg.click('.form button[type=submit]'); await pg.wait_for_timeout(700)
         saved = await pg.evaluate("async () => { const { store } = await import('./js/store.js'); const q = store.get().inquiries[0]; return q ? [q.type, q.summary, q.productId] : null; }")
         check('a konzultációkérés a munka nevével rögzül, termékhez nem kötve', saved and saved[0] == 'konzultacio' and 'Kalapált' in saved[1] and saved[2] is None, saved)
@@ -77,7 +77,7 @@ async def main():
         await pg.goto(B + '#/munkak'); await pg.wait_for_timeout(900)
         card = pg.locator('[data-work-card^="fekete-arany"]')
         ctext = await card.inner_text() if await card.count() else ''
-        check('látogató: a munka 2 fotóval, videólinkkel, ár és cikkszám nélkül', await card.locator('img').count() == 2 and 'Videó megnézése' in ctext and 'Ft' not in ctext and 'Ilyet szeretnék' in ctext, ctext[:120])
+        check('látogató: a munka 2 fotóval, videólinkkel, ár és cikkszám nélkül', await card.locator('img').count() == 2 and 'Videó megnézése' in ctext and 'Ft' not in ctext and 'Ebből inspirálódnék' in ctext and 'Ilyet szeretnék' not in ctext, ctext[:120])
         await pg.goto(B + '#/'); await pg.wait_for_timeout(900)
         check('főoldal: a fotós munka kiemelve a szakasz elején', await pg.locator('#muhelymunkak .work img').count() == 2)
         await pg.goto(B + '#/admin/munkak'); await pg.wait_for_timeout(700)

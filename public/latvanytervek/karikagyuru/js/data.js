@@ -48,10 +48,10 @@ export const WORKS_SEED = [
    a távollévők között és az üzlethelyiségen kívül kötött szerződésekre vonatkozik; az ügyfél a rendelést személyesen,
    az üzletben véglegesíti. A végleges szöveget az ügyfél (és jogi tanácsadója) hagyja jóvá. */
 export const TERMS = [
-  ['Személyesen', 'A méretet és a részleteket a Bláthy Ottó utcai üzletben egyeztetjük.'],
-  ['Előleg', 'Egyedi gyűrűnél az ár fele, a megrendeléskor.'],
-  ['Határidő', 'Feldolgozás 3 munkanapon belül, a kész dátumot egyeztetjük.'],
-  ['Átvétel', 'Személyesen, ekkor fizeted a maradékot készpénzzel vagy átutalással.'],
+  ['Személyesen', 'A méretet és a részleteket a Bláthy Ottó utcai üzletben, előre egyeztetett időpontban beszélitek meg.'],
+  ['Előleg', 'A rendeléskor előleget kérünk; a mértékét a személyes egyeztetésen rögzítjük.'],
+  ['Határidő', 'Az elkészülés várható idejét a rendeléskor egyeztetjük.'],
+  ['Átvétel', 'Személyesen, az üzletben. A fizetés módját a rendeléskor egyeztetjük.'],
   ['Jótállás', 'A hatályos jogszabályok szerint. A részletes feltételeket a vásárláskor kapott jótállási jegy tartalmazza.'],
   ['Lemondás, elállás', 'A rendelést személyesen, az üzletben véglegesítjük. Ha mégis lemondanád, annak feltételeit a rendeléskor írásban rögzítjük; a részleteket az ÁSZF tartalmazza.'],
 ];

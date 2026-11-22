@@ -129,7 +129,7 @@ async def rest(b, adm, vis, errs, img):
     await vis.fill('[name="nev"]', 'Próba Péter'); await vis.fill('[name="tel"]', '+36 30 123 4567')
     await vis.locator('.modal form button[type="submit"]').first.click(); await vis.wait_for_timeout(1200)
     done = await vis.inner_text('.form--done') if await vis.locator('.form--done').count() else ''
-    check('látogató: „megérkezett hozzánk” visszajelzés', 'megérkezett' in done, done[:120])
+    check('látogató: „Megkaptuk az üzeneted” visszajelzés, határidő-ígéret nélkül', 'Megkaptuk' in done and 'hamarosan hívunk' not in done.lower(), done[:120])
     await adm.goto(B + '#/admin/erdeklodesek'); await adm.reload(); await adm.wait_for_timeout(1800)
     inq = await adm.inner_text('#adm-main')
     check('admin: a látogató érdeklődése megjelenik, a gyűrű cikkszámával', 'Próba Péter' in inq and '81194' in inq, inq[:200].replace('\n', ' | '))

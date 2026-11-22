@@ -540,3 +540,15 @@ Tesztek: motor 73/73, asztali 30/30, mobil 26/26, V3 70/70, V4 54/54, V5 38/38, 
   - Az ötvös által elmondott 4 munka fotó nélkül, „fotóra vár” jelöléssel szerepel – kitalált kép nincs.
 - **Elállás:** kategorikus „nincs elállási jog” helyett a rendeléskor rögzített feltételekre és az ÁSZF-re utal. A végleges szöveget az ügyfél hagyja jóvá.
 - **Laptopos bemutató:** pontos indítás Macen és Windowson – `docs/BEMUTATO_TELEPITES.md`.
+
+## V5.7 – arculat, magyar szövegek, UX-finomítás (2026. november 22.)
+
+Részletek: `docs/SZOVEG_ES_ARCULAT_V5_7.md`. Összevetés a két arculati változatról: `arculat.html`.
+
+- **Márka:** a fejlécben KARIKAGYURU.COM (a „Két gyűrű, egy igen” DAEKON-szlogen volt, kikerült). Vektoros embléma az ügyfél két logójából, arányhű újrarajzolásként. **A** változat: monokróm embléma gyémánttal; **B** változat: kék csempe. Váltás: `?arculat=a|b`. Egyik sem végleges.
+- **Szövegek:** természetes, egységes fogalmak (ajánlatkérés, időpontkérés); nincs visszahívási ígéret és kitalált évszám; a bizonytalan üzleti állítások (előleg, határidő, fizetés) tényszerű ígéret helyett „egyeztetjük” formában szerepelnek; a lábléc pontosan leírja az árazást.
+- **Javított hibák:**
+  - mobilon üres sáv a fejléc fölött, és a fejléc eltakarta a tartalmat (a V5.1-ből maradt `--bar: 52px`);
+  - a fejléc gombja 42 px magas volt;
+  - mobilon a főcím nem fért az első képernyőre.
+- **Teszt:** `tests/v57.py` – arculat, szövegek, 5 képernyőméret.
