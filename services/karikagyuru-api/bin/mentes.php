@@ -1,48 +1,32 @@
 <?php
 declare(strict_types=1);
-// V5.8 – Biztonsági mentés: az adatbázis (árak, változatok, érdeklődések) és a feltöltött képek másolata.
-// Használat:  KG_DATA=/utvonal php bin/mentes.php <celmappa>
-//   A célmappában új, dátumozott almappa készül (pl. kg-mentes-20261122-101500/):
-//   kg.sqlite (VACUUM INTO – futó oldal mellett is egységes pillanatkép), photos/, inquiry-files/.
-// A célmappa NE legyen a webgyökérben: a mentés személyes adatot (érdeklődéseket, referenciaképeket) tartalmaz.
-// Visszaállítás: a weboldal leállítása után a mentés tartalmát a KG_DATA mappába kell másolni.
+// Biztonsági mentés (V5.8.1): adatbázis + termékfotók + referenciaképek + beállítások, ellenőrzött másolással.
+// Használat:  KG_DATA=/home/<fiók>/kg-adat php bin/mentes.php <célmappa> [--letrehoz] [--hianyos-engedve]
+//   <célmappa>: létező mappa a webgyökéren és az adatmappán KÍVÜL (ide kerül a kg-mentes-ÉÉÉÉHHNN-ÓÓPPMM/ mappa).
+//   --letrehoz:         ha a célmappa nem létezik, létrehozza (0700)
+//   --hianyos-engedve:  ha a forrásból hivatkozott fájl hiányzik, a mentés -HIANYOS végű névvel elkészül (kilépési kód 4)
+// Kilépési kód: 0 = kész és ellenőrizve · 1 = hibás használat/tiltott cél · 2 = másolási/ellenőrzési hiba
+//               3 = nem sikerült zárolni · 4 = hiányos forrás · 5 = megszakítva
+// A mentés alatt az írások (mentés, érdeklődés, fotó) várnak (KG_MENTES_VARAKOZAS mp, alapból 20), így a mentés konzisztens.
+// Részletek: docs/MENTES_ES_VISSZAALLITAS.md
 if (PHP_SAPI !== 'cli') { http_response_code(404); exit; }
-$data = rtrim(getenv('KG_DATA') ?: dirname(__DIR__) . '/data', '/');
-$target = rtrim((string) ($argv[1] ?? ''), '/');
-if ($target === '') { fwrite(STDERR, "Adja meg a célmappát: php bin/mentes.php /mentesek\n"); exit(1); }
-if (!is_file("$data/kg.sqlite")) { fwrite(STDERR, "Nincs adatbázis itt: $data\n"); exit(1); }
-$realData = realpath($data);
-$abs = str_starts_with($target, '/') ? $target : getcwd() . '/' . $target;
-if (str_starts_with($abs . '/', $realData . '/') || str_starts_with($abs . '/', $data . '/')) { fwrite(STDERR, "A mentés nem kerülhet az adatmappába.\n"); exit(1); }
-if (!is_dir($target) && !mkdir($target, 0700, true)) { fwrite(STDERR, "A célmappa nem hozható létre.\n"); exit(1); }
-$realTarget = realpath($target);
-if ($realTarget === $realData || str_starts_with($realTarget . '/', $realData . '/')) { fwrite(STDERR, "A mentés nem kerülhet az adatmappába.\n"); exit(1); }
-
-$dir = $realTarget . '/kg-mentes-' . gmdate('Ymd-His');
-if (is_dir($dir)) { fwrite(STDERR, "Ez a mentés már létezik: $dir\n"); exit(1); }
-mkdir($dir, 0700);
-$db = new PDO('sqlite:' . $realData . '/kg.sqlite');
-$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-$db->exec('VACUUM INTO ' . $db->quote($dir . '/kg.sqlite'));
-$db = null;
-
-$copied = 0;
-$copy = static function (string $from, string $to) use (&$copy, &$copied): void {
-    if (!is_dir($from)) return;
-    if (!is_dir($to)) mkdir($to, 0700, true);
-    foreach (scandir($from) ?: [] as $f) {
-        if ($f === '.' || $f === '..') continue;
-        if (is_link("$from/$f")) continue;
-        if (is_dir("$from/$f")) $copy("$from/$f", "$to/$f");
-        elseif (is_file("$from/$f")) { copy("$from/$f", "$to/$f"); chmod("$to/$f", 0600); $copied++; }
-    }
-};
-$copy($realData . '/photos', $dir . '/photos');
-$copy($realData . '/inquiry-files', $dir . '/inquiry-files');
-
-// ellenőrzés: a másolat megnyitható és ugyanannyi változatot tartalmaz
-$chk = new PDO('sqlite:' . $dir . '/kg.sqlite');
-$n = (int) $chk->query('SELECT COUNT(*) FROM state_version')->fetchColumn();
-$ok = $chk->query('PRAGMA integrity_check')->fetchColumn() === 'ok';
-if (!$ok) { fwrite(STDERR, "HIBA: a mentett adatbázis sérült.\n"); exit(2); }
-fwrite(STDOUT, "Mentés kész: $dir\n  árváltozatok: $n, fájlok: $copied\n");
+require dirname(__DIR__) . '/src/Backup.php';
+umask(0077);
+$args = array_slice($argv, 1);
+$flags = array_values(array_filter($args, fn ($a) => str_starts_with($a, '--')));
+$pos = array_values(array_filter($args, fn ($a) => !str_starts_with($a, '--')));
+foreach ($flags as $f) if (!in_array($f, ['--letrehoz', '--hianyos-engedve'], true)) { fwrite(STDERR, "Ismeretlen kapcsoló: $f\n"); exit(1); }
+$b = new Backup();
+if (function_exists('pcntl_async_signals')) {
+    pcntl_async_signals(true);
+    $stop = function () use ($b) { $b->cleanupPartial(); fwrite(STDERR, "HIBA: a mentés megszakítva, a félkész mappa törölve. Nem készült használható mentés.\n"); exit(5); };
+    pcntl_signal(SIGINT, $stop); pcntl_signal(SIGTERM, $stop);
+}
+$r = $b->backup(getenv('KG_DATA') ?: dirname(__DIR__) . '/data', $pos[0] ?? '', [
+    'create' => in_array('--letrehoz', $flags, true),
+    'allowMissing' => in_array('--hianyos-engedve', $flags, true),
+    'lockWait' => (float) (getenv('KG_MENTES_ZAR_VARAKOZAS') ?: 60),
+    'slowMs' => (int) (getenv('KG_MENTES_TESZT_LASSITAS_MS') ?: 0),   // csak tesztekhez
+]);
+fwrite($r['code'] === 0 ? STDOUT : STDERR, $r['msg'] . "\n");
+exit($r['code']);

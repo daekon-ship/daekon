@@ -82,6 +82,7 @@ final class App
      */
     public function resetDemo(array $state): void
     {
+        $this->guardWrite(false);
         if (($state['demo'] ?? false) !== true) throw new InvalidArgumentException('Nem bemutató állapot.');
         $empty = (int) $this->db->query('SELECT COUNT(*) FROM state_version')->fetchColumn() === 0;
         if (!$empty && !$this->isDemoData()) throw new RuntimeException('Ez nem bemutató-adatbázis – a visszaállítás nem fut le.');
@@ -223,6 +224,7 @@ final class App
 
     private function putState(): void
     {
+        $this->guardWrite();
         $raw = (string) file_get_contents('php://input');
         if (strlen($raw) > self::MAX_STATE) $this->fail(413, 'Túl nagy adat. A fényképeket külön kell feltölteni.');
         $in = json_decode($raw, true);
@@ -379,6 +381,7 @@ final class App
 
     private function revert(): void
     {
+        $this->guardWrite();
         $in = $this->body();
         $st = $this->db->prepare('SELECT body FROM state_version WHERE version = ?');
         $st->execute([(int) ($in['version'] ?? 0)]);
@@ -393,6 +396,7 @@ final class App
 
     private function postInquiry(): void
     {
+        $this->guardWrite();
         $ip = $this->ipHash();
         $admin = $this->isAdmin();   // az ötvös telefonos érdeklődést is felírhat: rá nem vonatkozik a korlát
         if (!$admin && $this->countAttempts('inquiry', $ip, 3600) >= self::INQ_PER_HOUR) $this->fail(429, 'Túl sok üzenet rövid idő alatt. Kérjük, telefonáljon.');
@@ -488,6 +492,7 @@ final class App
 
     private function inquiryStatus(): void
     {
+        $this->guardWrite();
         $in = $this->body();
         $status = (string) ($in['status'] ?? '');
         if (!in_array($status, self::INQ_STATUS, true)) $this->fail(422, 'Ismeretlen állapot.');
@@ -552,6 +557,7 @@ final class App
     /** Érdeklődés végleges törlése a csatolt képekkel együtt (adatkezelési kérésre, megőrzési idő lejártakor). */
     private function deleteInquiry(): void
     {
+        $this->guardWrite();
         $in = $this->body();
         $id = (int) preg_replace('/^s/', '', (string) ($in['id'] ?? '0'));
         $st = $this->db->prepare('DELETE FROM inquiry WHERE id = ?');
@@ -564,6 +570,7 @@ final class App
     /** Megőrzési idő: a megadott napnál régebbi érdeklődések törlése (bin/purge.php hívja). Visszatér: törölt darab. */
     public function purgeInquiries(int $days, bool $onlyClosed = true): int
     {
+        $this->guardWrite(false);
         $cut = gmdate('c', time() - $days * 86400);
         $sql = 'SELECT id FROM inquiry WHERE created_at < ?' . ($onlyClosed ? " AND status = 'lezarva'" : '');
         $st = $this->db->prepare($sql); $st->execute([$cut]);
@@ -597,6 +604,7 @@ final class App
 
     private function postPhoto(): void
     {
+        $this->guardWrite();
         $f = $_FILES['photo'] ?? null;
         if (!is_array($f) || ($f['error'] ?? 1) !== UPLOAD_ERR_OK) $this->fail(400, 'A feltöltés nem sikerült.');
         if ($f['size'] > self::MAX_PHOTO) $this->fail(413, 'A kép túl nagy (legfeljebb 8 MB).');
@@ -677,6 +685,22 @@ final class App
 
     /** @return never */
     private function fail(int $status, string $msg): void { throw new HttpError($msg, $status); }
+
+    /* V5.8.1 – írászár: a biztonsági mentés (bin/mentes.php) kizárólagos zárat tart; minden író művelet megosztott zárat kér.
+       Így mentés közben sem az adatbázis, sem a képfájlok nem változnak. A zár a kérés végén (az objektummal) felszabadul. */
+    /** @var resource|null */
+    private $writeLock = null;
+    private function guardWrite(bool $http = true): void
+    {
+        if ($this->writeLock) return;
+        require_once __DIR__ . '/Backup.php';
+        $l = Backup::lock($this->data, LOCK_SH, (float) (getenv('KG_MENTES_VARAKOZAS') ?: 20));
+        if ($l === false) {
+            if ($http) $this->fail(503, 'Biztonsági mentés folyamatban. Kérjük, próbálja újra egy perc múlva.');
+            throw new RuntimeException('Biztonsági mentés folyamatban – próbálja újra később.');
+        }
+        $this->writeLock = $l;
+    }
 }
 
 final class HttpError extends RuntimeException

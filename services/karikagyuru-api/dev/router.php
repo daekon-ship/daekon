@@ -14,7 +14,7 @@ if (str_starts_with($path, '/api/') || $path === '/api') {
     return true;
 }
 $file = realpath($site . ($path === '/' ? '/index.html' : $path));
-if ($file === false || !str_starts_with($file, $site) || !is_file($file)) { http_response_code(404); echo 'Nincs ilyen fájl.'; return true; }
+if ($file === false || !str_starts_with($file, $site . '/') || !is_file($file)) { http_response_code(404); echo 'Nincs ilyen fájl.'; return true; }
 $types = ['html' => 'text/html; charset=utf-8', 'js' => 'text/javascript', 'mjs' => 'text/javascript', 'css' => 'text/css', 'json' => 'application/json',
           'png' => 'image/png', 'jpg' => 'image/jpeg', 'webp' => 'image/webp', 'svg' => 'image/svg+xml', 'woff2' => 'font/woff2', 'md' => 'text/plain; charset=utf-8'];
 header('Content-Type: ' . ($types[strtolower(pathinfo($file, PATHINFO_EXTENSION))] ?? 'application/octet-stream'));
