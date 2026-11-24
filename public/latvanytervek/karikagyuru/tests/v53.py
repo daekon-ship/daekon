@@ -40,12 +40,15 @@ async def run(b, w, h, mob):
 
     # --- jóváhagyás sorban ---
     await pg.goto(B + '#/admin'); await pg.wait_for_timeout(800)
-    tile = await pg.inner_text('.bigtiles')
-    check(f'{tag} főmenü: „4. Gyűrűk jóváhagyása 0 / 115”', '4. Gyűrűk jóváhagyása' in tile and '0 / 115' in tile, tile.replace('\n', ' | ')[:200])
+    home = await pg.inner_text('#adm-main')
+    check(f'{tag} kezdőképernyő (V5.9): nincs „115 gyűrű jóváhagyása” kényszer', '115' not in home and 'jóváhagy' not in home.lower(), home.replace('\n', ' | ')[:200])
+    await pg.goto(B + '#/admin/gyuruk'); await pg.wait_for_timeout(800)
+    wait = await pg.inner_text('[data-pwait]')
+    check(f'{tag} gyűrűk: „115 gyűrű adatai ellenőrzésre várnak”, egyenkénti ellenőrzés linkkel', '115 gyűrű adatai ellenőrzésre várnak' in wait and await pg.locator('[data-pwait] a[href="#/admin/gyuruk/ellenorzes"]').count() == 1, wait)
     await pg.goto(B + '#/admin/sorban'); await pg.wait_for_timeout(800)
     first = await pg.get_attribute('[data-qcard]', 'data-qcard')
     q = await pg.inner_text('[data-qcard]')
-    check(f'{tag} sor: egy gyűrű, a jóváhagyandó adatokkal', all(x in q for x in ['Tömeg 54-es méretre', 'Szélesség', 'Méretek', 'Kő', 'Számolt ár']), q.replace('\n', ' | ')[:200])
+    check(f'{tag} sor: egy gyűrű, a jóváhagyandó adatokkal', all(x in q for x in ['Tömeg 54-es méretre', 'Szélesség', 'Méretek', 'Kő', 'Belső számított ár', 'Jóváhagyás után a weboldalon']), q.replace('\n', ' | ')[:200])
     await pg.click('[data-skip]'); await pg.wait_for_timeout(400)
     check(f'{tag} sor: „Később” a következőre lép, nem hagy jóvá', await pg.get_attribute('[data-qcard]', 'data-qcard') != first and '0 / 115' in await pg.inner_text('.qbar__t'))
     await pg.goto(B + f'#/admin/sorban/{PAIR}'); await pg.wait_for_timeout(700)
@@ -65,7 +68,8 @@ async def run(b, w, h, mob):
     check(f'{tag} sor: visszavonás után 0 / 115, és ugyanaz a gyűrű látszik újra', '0 / 115' in await pg.inner_text('.qbar__t') and await pg.get_attribute('[data-qcard]', 'data-qcard') == PAIR and await pg.locator('[data-qundo]').count() == 0)
     await approve_in_queue(pg); await pg.wait_for_timeout(500)
     await pg.goto(B + '#/admin/elozmenyek'); await pg.wait_for_timeout(600)
-    check(f'{tag} jóváhagyás bekerül az árnaplóba', 'Jóváhagyva: 81194' in await pg.inner_text('.adm__main'))
+    await pg.check('[data-histall]'); await pg.wait_for_timeout(300)   # V5.9: „Korábbi árak”, a jóváhagyások egy kapcsolóval
+    check(f'{tag} jóváhagyás bekerül a változások közé (Árak → Korábbi árak)', '#/admin/arak/korabbi' in pg.url and 'Jóváhagyva: 81194' in await pg.inner_text('.adm__main'))
 
     # --- jóváhagyott gyűrű, de nem jóváhagyott árak: beállítható, de nincs számolt ár ---
     await pg.goto(B + f'#/gyuru/{PAIR}'); await pg.wait_for_timeout(1100)

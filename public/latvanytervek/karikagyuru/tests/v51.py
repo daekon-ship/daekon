@@ -45,7 +45,7 @@ async def run(b, w, h, mob):
     check(f'{tag} árnaplóban nincs kitalált előzmény (csak a kiinduló bejegyzés)', '35 400' not in hist and '36 300' not in hist and 'Kiinduló adatok' in hist)
     await pg.goto(B + '#/admin/beallitasok'); await pg.wait_for_timeout(700)
     st = await pg.inner_text('.adm__main')
-    check(f'{tag} beállítások: adattárolás tényszerűen, „Alapállapot visszaállítása”', 'ebben a böngészőben' in st and 'Alapállapot visszaállítása' in st and 'Demó' not in st)
+    check(f'{tag} beállítások: adattárolás tényszerűen; V5.9: a teljes visszaállítás NEM tulajdonosi gomb', 'böngészőben' in st and 'visszaállítás' not in st.lower().replace('visszaállíthatók', '') and await pg.locator('[data-reset]').count() == 0 and 'Demó' not in st)
     await pg.goto(B + '#/admin'); await pg.wait_for_timeout(600); await pg.locator('.adm__site:visible').first.click(); await pg.wait_for_timeout(700)
     check(f'{tag} kezelőfelületről vissza a weboldalra', pg.url.endswith('#/') and await pg.locator('.hero').count() == 1)
     check(f'{tag} nincs JavaScript-hiba', not errs, ' | '.join(errs)[:200])

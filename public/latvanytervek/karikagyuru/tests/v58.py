@@ -163,9 +163,11 @@ async def main():
         check('A és B fejléc magassága azonos (nem törik meg)', abs(heights['a'] - heights['b']) < 1, heights)
         await pg.goto(B + '?arculat=a#/'); await pg.wait_for_timeout(300)
 
-        print('Ügyféljóváhagyási központ')
+        print('Ügyféljóváhagyási központ (V5.9: belső, fejlesztői nyilvántartás)')
         before = await pg.evaluate("(async () => { const { store } = await import('./js/store.js'); const s = store.get(); return JSON.stringify([s.materials, s.settings, s.products]); })()")
         await pg.goto(B + '#/admin/kozpont'); await pg.wait_for_timeout(800)
+        check('tulajdonosi nézetben közvetlen címmel sem nyílik meg', await pg.locator('[data-dec]').count() == 0 and await pg.locator('[data-devonly]').count() == 1)
+        await pg.goto(B + '#/admin/fejleszto'); await pg.goto(B + '#/admin/kozpont'); await pg.wait_for_timeout(800)
         n = await pg.locator('[data-dec]').count()
         st = await pg.eval_on_selector_all('[data-dec-status]', 'es => es.map(e => e.textContent)')
         check(f'a központban {n} tétel, mind „Nyitott” (nincs előre bejelölt jóváhagyás)', n >= 25 and all(s.startswith('Nyitott') for s in st), (n, set(st)))
@@ -191,7 +193,7 @@ async def main():
         check('visszaállítható nyitottra', (await pg.locator('[data-dec="arany"] [data-dec-status]').inner_text()).startswith('Nyitott'))
         check('nyomtatás gomb van', await pg.locator('[data-dec-print]').count() == 1)
         await pg.goto(B + '#/admin/attekintes'); await pg.wait_for_timeout(600)
-        check('a főmenüből elérhető (nyitott tételek számával)', await pg.locator('[data-openq-center]').count() == 1 and 'nyitott' in await pg.inner_text('[data-openq-center]'))
+        check('V5.9: a kezdőképernyőn és a főmenüben nem szerepel', await pg.locator('[data-openq-center]').count() == 0 and 'Ügyféljóváhagy' not in await pg.inner_text('.adm'))
         await pg.goto(B + '#/'); await pg.wait_for_timeout(600)
         check('a vásárlói oldalon nem jelenik meg a döntés szövege', '30% előleg' not in await pg.inner_text('body'))
 
@@ -224,7 +226,7 @@ async def main():
 
         print('Központ mobilon (390 px)')
         ctx = await new_ctx(b, 390, 844, True); pg = await ctx.new_page()
-        await pg.goto(B + '#/admin/kozpont'); await pg.wait_for_timeout(900)
+        await pg.goto(B + '#/admin/fejleszto'); await pg.goto(B + '#/admin/kozpont'); await pg.wait_for_timeout(900)
         check('390: a központ vízszintes görgetés nélkül', await no_hscroll(pg))
         await shot(pg, '390-5-kozpont')
         await ctx.close()

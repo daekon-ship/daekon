@@ -92,7 +92,7 @@ def copydata(src, dst):
 def build_fixture(data, port):
     """Csak tesztadat: a nyilvános bemutató-mintaállapotból (115 gyűrű), „demo” jelölés nélkül, éles módú API-n át."""
     subprocess.run(['php', ROOT + '/bin/setup.php'], env=dict(os.environ, KG_DATA=data, KG_ADMIN_PASSWORD=PW), check=True, capture_output=True)
-    srv = Srv(data, port)
+    srv = Srv(data, port, env={'KG_FEJLESZTOI_VISSZAALLITAS': '1'})   # V5.9: a teljes visszaállítás fejlesztői művelet
     a = C(srv.base); a.login()
     st = json.load(open(ROOT + '/demo/minta-allapot.json', encoding='utf-8'))
     for k in ('demo', 'history', 'inquiries'): st.pop(k, None)
@@ -104,9 +104,10 @@ def build_fixture(data, port):
     for p in st['products'][3:6]: p['approved'] = True
     st['works'].append({'id': 'mentes-proba', 'title': 'Mentési próbamunka', 'text': 'Teszt', 'photos': [ph2['url']], 'video': '', 'visible': True})
     s, d = a.j('PUT', '/state', {'baseVersion': v, 'state': st, 'note': 'grammár + jóváhagyás'}); v = d['version']
-    st['clientDecisions'] = {'eloleg': {'status': 'valasz', 'answer': 'Teszt: 30%', 'at': '2026-11-22T08:00:00Z'},
-                             'logo': {'status': 'atvezetve', 'answer': 'Teszt: B', 'at': '2026-11-22T08:01:00Z'}}
-    s, d = a.j('PUT', '/state', {'baseVersion': v, 'state': st, 'note': 'döntések'}); v = d['version']
+    # V5.9: a fejlesztői nyilvántartás (ügyféldöntések) csak parancssorból írható
+    for args in (['eloleg', 'valasz', 'Teszt: 30%'], ['logo', 'atvezetve', 'Teszt: B']):
+        subprocess.run(['php', ROOT + '/bin/fejlesztoi-dontesek.php', 'beallit', *args], env=dict(os.environ, KG_DATA=data), check=True, capture_output=True)
+    s, d = a.j('GET', '/versions'); v = d['versions'][0]['version']
     s, d = a.j('POST', '/revert', {'version': 1}); s, d = a.j('POST', '/revert', {'version': v})   # korábbi árverzió vissza, majd előre
     v_inq = C(srv.base)
     for name, imgs in [('Mentés Márta', [png(1200, 900), png(300, 300, (20, 20, 20))]), ('Szöveges Szilvia', [png(500, 400, (220, 40, 40))])]:
@@ -115,6 +116,9 @@ def build_fixture(data, port):
         v_inq.j('POST', '/inquiry', raw=b, headers=h)
     v_inq.j('POST', '/inquiry', {'name': 'Kép nélküli Kató', 'phone': '+36 30 555 0102', 'type': 'erdeklodes', 'message': 'x'})
     return srv, a, ph1['url'], ph2['url']
+
+def decisions(data):
+    return subprocess.run(['php', ROOT + '/bin/fejlesztoi-dontesek.php', 'lista'], env=dict(os.environ, KG_DATA=data), capture_output=True, text=True).stdout
 
 def snapshot(base, admin=True):
     c = C(base)
@@ -133,8 +137,9 @@ def main():
         check('kiinduló adat: 115 gyűrű, 5 jóváhagyott, módosított grammár, műhelymunka, 2 ügyféldöntés',
               len(st0['state']['products']) == 115 and sum(1 for p in st0['state']['products'] if p.get('approved')) == 5
               and st0['state']['materials']['sellPerGram']['au14'] == 44500 and any(w['id'] == 'mentes-proba' for w in st0['state']['works'])
-              and len(st0['state']['clientDecisions']) == 2)
-        check('kiinduló adat: 5 árverzió (visszaállítással), 3 ajánlatkérés, 3 referenciakép', len(vs0['versions']) == 5 and len(iq0['inquiries']) == 3 and sum(len(q.get('files') or []) for q in iq0['inquiries']) == 3,
+              and 'clientDecisions' not in st0['state']
+              and 'Teszt: 30%' in decisions(data) and 'Teszt: B' in decisions(data))
+        check('kiinduló adat: 6 változat (2 fejlesztői bejegyzés, visszaállítással), 3 ajánlatkérés, 3 referenciakép', len(vs0['versions']) == 6 and len(iq0['inquiries']) == 3 and sum(len(q.get('files') or []) for q in iq0['inquiries']) == 3,
               (len(vs0['versions']), len(iq0['inquiries'])))
         src_hash = tree_hashes(data)
 
@@ -146,8 +151,8 @@ def main():
         check('a mentésben ugyanannyi fájl, ugyanazzal az ellenőrzőösszeggel, mint a forrásban',
               {k: v['sha256'] for k, v in m.get('files', {}).items() if not k.startswith('config/')} == src_hash, (len(m.get('files', {})), len(src_hash)))
         check('a fájlméretek is egyeznek', all(os.path.getsize(os.path.join(data, k)) == v['bytes'] for k, v in m.get('files', {}).items() if not k.startswith('config/')))
-        check('rekordszámok a manifestben = forrás (5 változat, 3 érdeklődés, 115 gyűrű, 5 jóváhagyott, 2 döntés)',
-              m.get('db', {}).get('counts') == {'state_version': 5, 'inquiry': 3, 'latest_version': 5, 'products': 115, 'approved': 5, 'works': 5, 'decisions': 2}, m.get('db', {}).get('counts'))
+        check('rekordszámok a manifestben = forrás (6 változat, 3 érdeklődés, 115 gyűrű, 5 jóváhagyott, 2 döntés)',
+              m.get('db', {}).get('counts') == {'state_version': 6, 'inquiry': 3, 'latest_version': 6, 'products': 115, 'approved': 5, 'works': 5, 'decisions': 2}, m.get('db', {}).get('counts'))
         check('a manifest konzisztens pillanatképet jelez (kizárólagos zár), nincs hiányzó fájl', m.get('consistent') is True and m.get('lock') == 'exclusive' and m.get('missing') == [])
         check('szigorú jogosultságok: mappák 0700, fájlok 0600', mode(bk) == 0o700 and all(mode(os.path.join(r_, f)) == 0o600 for r_, _, fs in os.walk(bk) for f in fs)
               and all(mode(os.path.join(r_, d_)) == 0o700 for r_, ds, _ in os.walk(bk) for d_ in ds))
@@ -167,7 +172,8 @@ def main():
             c2, st2, vs2, iq2 = snapshot(s2.base)
             check(f'{attempt}: belépés a régi admin jelszóval', c2.csrf is not None)
             check(f'{attempt}: a teljes állapot (árak, 115 gyűrű, jóváhagyások, műhelymunkák, döntések) bájtra egyezik', st2 == st0)
-            check(f'{attempt}: az árverziók listája egyezik (5)', vs2 == vs0)
+            check(f'{attempt}: a változatok listája egyezik (6)', vs2 == vs0)
+            check(f'{attempt}: a fejlesztői nyilvántartás (2 válasz) is visszaállt', 'Teszt: 30%' in decisions(R) and 'Teszt: B' in decisions(R))
             check(f'{attempt}: az érdeklődések egyeznek (3, névvel, állapottal, képlistával)', iq2 == iq0)
             okimg = all(c2.req('GET', '/' + u.split('api/', 1)[1])[1] == open(os.path.join(data, 'photos', u.rsplit('/', 1)[1]), 'rb').read() for u in (ph1, ph2))
             check(f'{attempt}: a termékfotó és a műhelymunka fotója kiszolgálva, azonos tartalommal', okimg)

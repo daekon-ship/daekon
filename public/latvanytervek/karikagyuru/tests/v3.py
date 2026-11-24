@@ -106,6 +106,7 @@ async def run(b, w, h, mob):
     await pg.goto(B + '#/admin/erdeklodesek'); await pg.wait_for_timeout(500)
     check(f'{tag} admin: az ár nélküli modell érdeklődése a beállításokkal megérkezett', '55-ös' in await pg.inner_text('.inq'))
     await pg.goto(B + f'#/admin/gyuru/{PAIR}'); await pg.wait_for_timeout(600)
+    if not await pg.locator('[data-adv][open]').count(): await pg.click('[data-adv] summary'); await pg.wait_for_timeout(200)   # V5.9: a szélesség a részletes beállítások között
     etxt = await pg.inner_text('.edit__form')
     check(f'{tag} admin: nincs több szélesség, gyűrűnként egy („online nem választhat mást”)', await pg.locator('[data-widths]').count() == 0 and 'online nem választhat mást' in etxt and 'Szélességek' not in etxt)
     # az árelemek jóváhagyását visszaállítjuk a kiinduló állapotra (a gyűrűk maradnak jóváhagyva)
@@ -113,8 +114,8 @@ async def run(b, w, h, mob):
     await pg.reload(); await pg.wait_for_timeout(500)
     await pg.goto(B + '#/admin/jovahagyas'); await pg.wait_for_timeout(600)
     gl = await pg.inner_text('[data-golive-box]')
-    check(f'{tag} élesítési ellenőrzés: jóváhagyás nélkül tiltva', 'Nem élesíthető' in gl and await pg.locator('[data-golive]').is_disabled() and all(x in gl for x in ['grammár', 'gyémántár', 'kerekítés', 'ÁFA']), gl.replace('\n', ' | ')[:200])
-    check(f'{tag} élesítés: „csak előzetes ellenőrzés… szerveroldali ellenőrzés és bejelentkezés” kiírva', all(t in gl for t in ['csak előzetes ellenőrzés', 'szerveroldali ellenőrzés', 'bejelentkezéshez kötött']) and 'hiányzik vagy hibás' in gl)
+    check(f'{tag} árelemek összesítése: jóváhagyás nélkül „Még nincs minden jóváhagyva”, csoportonként (V5.9: nincs „élesítésre kész” gomb)', 'Még nincs minden jóváhagyva' in gl and await pg.locator('[data-golive]').count() == 0 and all(x in gl for x in ['grammár', 'gyémántár', 'kerekítés', 'ÁFA']), gl.replace('\n', ' | ')[:200])
+    check(f'{tag} összesítés: tájékoztató jellegű, a hiányzó/hibás adat külön', 'Tájékoztató összesítés' in gl and 'hiányzik vagy hibás' in gl)
     check(f'{tag} élesítés: a titán nem szerepel a blokkoló tételek között', 'Titán' not in gl)
     # --- Admin: új gyűrű felvitele → megjelenik a vásárlói katalógusban ---
     code = f'TESZT-{w}'
@@ -122,6 +123,7 @@ async def run(b, w, h, mob):
     banner = await pg.inner_text('.view')
     check(f'{tag} új gyűrű: nincs bemutató-felirat', 'Bemutató' not in banner and 'demó' not in banner.lower())
     await pg.fill('[data-t="code"]', code); await pg.fill('[data-t="name"]', 'Teszt karikagyűrű pár')
+    if not await pg.locator('[data-adv][open]').count(): await pg.click('[data-adv] summary'); await pg.wait_for_timeout(200)   # V5.9: tömeg a részletes beállítások között
     await pg.fill('[data-p="rings.0.weight"]', '3'); await pg.fill('[data-p="rings.1.weight"]', '4')
     await pg.set_input_files('[data-imgfile]', img); await pg.wait_for_timeout(500)
     check(f'{tag} új gyűrű: kép előnézet', await pg.locator('[data-imgprev] img').count() == 1)

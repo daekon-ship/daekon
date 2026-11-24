@@ -104,7 +104,7 @@ async def main():
         p0 = n(await pg.locator(f'[data-price="{PAIR}"]').inner_text())
         await pg.goto(B + '#/admin/alapanyag'); await pg.wait_for_timeout(700)
         await pg.fill('[data-path="sellPerGram.au14"]', '52000'); await pg.wait_for_timeout(400)
-        say = await pg.inner_text('.impact__say')
+        say = await pg.inner_text('[data-imp-visible]')
         if await pg.locator('[data-confirm]').count(): await pg.check('[data-confirm]')
         await pg.click('[data-apply]'); await pg.wait_for_timeout(500)
         await pg.goto(B + '#/kollekcio'); await pg.wait_for_timeout(2000)
@@ -115,7 +115,7 @@ async def main():
         await pg.check('input[data-mode="pricingMode"][value="koltseg"]'); await pg.wait_for_timeout(300)
         await pg.click('[data-save]'); await pg.wait_for_timeout(500)
         await pg.goto(B + '#/admin/alapanyag'); await pg.wait_for_timeout(600)
-        check('Költségalapú mód: a fő mező a 24K alapanyagár', await pg.locator('.goldcard [data-path="gold24"]').count() == 1)
+        check('Költségalapú mód: a fő mező a 24K alapanyagár', await pg.locator('[data-mainprices] [data-path="gold24"]').count() == 1)
         await pg.goto(B + f'#/gyuru/{PAIR}'); g = await price(pg)
         check('Költségalapú mód: van ár a termékoldalon', bool(g), str(g))
         # termékszerkesztő – ehhez a részhez a gyűrű és a platina grammár újra „jóváhagyásra vár”
@@ -128,7 +128,7 @@ async def main():
         await pg.goto(B + '#/kollekcio'); await pg.wait_for_timeout(900)
         check('Rejtett termék nem jelenik meg a katalógusban', await pg.locator(f'.card[data-id="{PAIR}"]').count() == 0)
         await pg.goto(B + '#/admin/arszamitas'); await pg.wait_for_timeout(600)
-        check('Gyors árszámítás működik', 'Ft' in await pg.inner_text('.qcalc__price'))
+        check('Gyors árszámítás működik (látható ár vagy egyedi ajánlat + belső számítás)', 'Ft' in await pg.inner_text('[data-qcalc]'))
         await pg.goto(B + '#/admin/jovahagyas'); await pg.wait_for_timeout(500)
         n0 = await pg.locator('[data-appr]:not([disabled])').count()
         check('A tulajdonos által átírt grammár automatikusan jóváhagyott', await pg.locator('[data-appr="materials|sellPerGram.au14"]').count() == 0)
@@ -136,7 +136,7 @@ async def main():
         check('Jóváhagyás: ügyfélpélda → jóváhagyott', await pg.locator('[data-appr="materials|sellPerGram.pt"]').count() == 0 and n0 >= 1, str(n0))
         check('Bizonytalan kőár nem hagyható jóvá ár nélkül', await pg.locator('[data-appr="diamond|d04"]').is_disabled())
         # 8. alapállapot visszaállítása
-        await pg.goto(B + '#/admin/beallitasok'); await pg.wait_for_timeout(500)
+        await pg.goto(B + '#/admin/fejleszto'); await pg.wait_for_timeout(500)   # V5.9: a bemutató visszaállítása csak fejlesztői nézetben
         await pg.click('[data-reset]'); await pg.click('[data-ok]'); await pg.wait_for_timeout(600)
         await pg.goto(B + '#/kollekcio'); await pg.wait_for_timeout(1200)
         ctext = await pg.inner_text(f'.card[data-id="{PAIR}"]') if await pg.locator(f'.card[data-id="{PAIR}"]').count() else ''

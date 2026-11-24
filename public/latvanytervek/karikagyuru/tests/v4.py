@@ -26,29 +26,29 @@ async def run(b, w, h, mob):
         return n(await pg.inner_text('[data-cprice]'))
     await pg.goto(B + '#/'); await pg.evaluate('localStorage.clear(); sessionStorage.clear()'); await pg.reload(); await pg.wait_for_timeout(800); await approve_all(pg)
 
-    # --- Főmenü: öt kiemelt feladat ---
+    # --- Kezdőképernyő (V5.9): négy fő teendő ---
     await pg.goto(B + '#/admin/attekintes'); await pg.wait_for_timeout(600)
-    tiles = await pg.locator('.bigtiles--5 .bigtile b').all_inner_texts()
-    check(f'{tag} admin: öt kiemelt feladat', tiles == ['1. Árak módosítása', '2. Gyűrűk', '3. Fotók', '4. Gyűrűk jóváhagyása', '5. Érdeklődések'], str(tiles))
+    tiles = await pg.locator('[data-homeacts] .homeact b').all_inner_texts()
+    check(f'{tag} admin: négy fő teendő a kezdőképernyőn', tiles == ['Gyűrűk kezelése', 'Árak módosítása', 'Érdeklődések megtekintése', 'Műhelymunkák'], str(tiles))
     await over('admin főmenü')
 
     # --- Árak: előtte–utána, jóváhagyás, verzió, visszaállítás ---
     await pg.goto(B + f'#/gyuru/{PLAIN}'); await pg.wait_for_timeout(900); p0 = await cprice()
     await pg.goto(B + '#/admin/alapanyag'); await pg.wait_for_timeout(700)
-    head = await pg.inner_text('[data-pver]'); miss = await pg.inner_text('[data-missing]')
-    check(f'{tag} árak: 1. árverzió; a hiányzó kőárak jelezve; titánhoz nincs grammármező', head.startswith('1. árverzió') and '0,04 ct' in miss and await pg.locator('[data-path="sellPerGram.ti"]').count() == 0, head)
+    head = await pg.inner_text('[data-pver]'); dia = await pg.inner_text('[data-diamonds]')
+    check(f'{tag} árak: még nincs korábbi ár; az ár nélküli kőméret jelezve; titánhoz nincs grammármező', head.startswith('Érvényes') and await pg.locator('[data-verlist]').count() == 0 and '0,04 ct' in dia and 'nincs ár' in dia and await pg.locator('[data-path="sellPerGram.ti"]').count() == 0, head)
     await pg.fill('[data-path="sellPerGram.au14"]', '46000'); await pg.wait_for_timeout(400)
     imp = re.sub(r'[ \xa0]', ' ', await pg.inner_text('[data-impact]'))
-    check(f'{tag} árak: előnézet az érintett gyűrűkről (darab, %, példák előtte → utána)', 'gyűrű ára változik' in imp and '%' in imp and len(re.findall(r'\d Ft', imp)) >= 6, imp.replace('\n', ' | ')[:170])
+    check(f'{tag} árak: változtatások ellenőrzése (előtte → utána, belső és weboldalon látható ár, példák)', '42 000 → 46 000' in imp and 'belső számított ára változik' in imp and 'weboldalon látható ár' in imp and '%' in imp and len(re.findall(r'\d Ft', imp)) >= 4, imp.replace('\n', ' | ')[:220])
     await pg.goto(B + f'#/gyuru/{PLAIN}'); await pg.wait_for_timeout(900)
     check(f'{tag} árak: jóváhagyás előtt a vásárlói ár nem változik', await cprice() == p0)
     await pg.goto(B + '#/admin/alapanyag'); await pg.wait_for_timeout(600)
     await pg.fill('[data-path="sellPerGram.au14"]', '46000'); await pg.wait_for_timeout(300)
     await pg.click('[data-apply]'); await pg.wait_for_timeout(600)
-    done = await pg.inner_text('#adm-main')
-    check(f'{tag} árak: mentés után egyértelmű visszajelzés', 'gyűrű' in done and ('frissült' in done or 'Kész' in done or 'érvényben' in done), done.replace('\n', ' | ')[60:200])
+    done = re.sub(r'[\s\u00a0\u202f]+', ' ', await pg.inner_text('#adm-main'))
+    check(f'{tag} árak: mentés után egyértelmű visszajelzés („Az árak sikeresen mentve.”)', 'Az árak sikeresen mentve.' in done and '42 000 → 46 000' in done, done.replace('\n', ' | ')[60:200])
     await pg.goto(B + '#/admin/attekintes'); await pg.goto(B + '#/admin/alapanyag'); await pg.wait_for_timeout(600)
-    check(f'{tag} árak: alkalmazás után 2. árverzió', (await pg.inner_text('[data-pver]')).startswith('2. árverzió'))
+    check(f'{tag} árak: mentés után a korábbi ár elérhető (régi cím → Árak)', '#/admin/arak' in pg.url and await pg.locator('[data-verlist]').count() == 1)
     await pg.goto(B + f'#/gyuru/{PLAIN}'); await pg.wait_for_timeout(900); p1 = await cprice()
     check(f'{tag} árak: a gyűrű ára újraszámolódott (42 000 → 46 000 Ft/g, szemléltető)', abs(p1 / p0 - 46 / 42) < 0.002, f'{p0} → {p1}')
     await pg.goto(B + '#/admin/alapanyag'); await pg.wait_for_timeout(600)
@@ -56,7 +56,10 @@ async def run(b, w, h, mob):
     check(f'{tag} árak: nagy változásnál külön megerősítés kell', await pg.locator('[data-confirm]').count() == 1 and await pg.locator('[data-apply]').is_disabled())
     await pg.goto(B + '#/admin/attekintes'); await pg.goto(B + '#/admin/alapanyag'); await pg.wait_for_timeout(600)
     await pg.click('[data-verlist]'); await pg.wait_for_timeout(300)
-    await pg.locator('[data-verrev]').first.click(); await pg.wait_for_timeout(600)
+    await pg.locator('[data-verrev]').first.click(); await pg.wait_for_timeout(400)
+    rc = re.sub(r'[\s\u00a0\u202f]+', ' ', await pg.inner_text('[data-revconfirm]'))
+    check(f'{tag} árak: visszaállítás előtt a következmények (melyik ár, mennyiről mennyire, hány gyűrű)', '46 000 → 42 000' in rc.replace('\xa0', ' ') and 'gyűrű' in rc, rc[:160])
+    await pg.click('[data-revconfirm] [data-ok]'); await pg.wait_for_timeout(600)
     await pg.goto(B + f'#/gyuru/{PLAIN}'); await pg.wait_for_timeout(900)
     check(f'{tag} árak: korábbi verzió visszaállítása után az eredeti ár', await cprice() == p0)
 
@@ -69,14 +72,15 @@ async def run(b, w, h, mob):
     await pg.goto(B + f'#/gyuru/{PLAIN}'); await pg.wait_for_timeout(900)
     check(f'{tag} fotók: az új kép látszik a vásárlói oldalon', (await pg.locator('.pdp__stage--foto img').get_attribute('src')).startswith('data:image/jpeg'))
 
-    # --- Szabályok gyűrűnként ---
+    # --- Szabályok gyűrűnként (V5.9: a régi cím a Gyűrűk listára visz; a szabályok a gyűrű szerkesztőjében) ---
     await pg.goto(B + '#/admin/szabalyok'); await pg.wait_for_timeout(700)
-    check(f'{tag} szabályok: lista gyűrűnként, jóváhagyási állapottal', await pg.locator('.rules__row').count() > 20 and 'jóváhagyva' in await pg.inner_text('.rules'))
+    check(f'{tag} szabályok: a régi cím a gyűrűlistára visz, jóváhagyási állapottal', '#/admin/gyuruk' in pg.url and await pg.locator('.prow').count() > 20 and 'jóváhagyva' in await pg.inner_text('[data-list]'))
     await over('admin szabályok')
     await pg.goto(B + f'#/gyuru/{PLAIN}'); await pg.wait_for_timeout(900)
     fixed = await pg.locator('[data-width-fixed]').first.inner_text()
     check(f'{tag} alap: a szélesség nem választható, okkal kiírva', await pg.locator('[data-width]').count() == 0 and 'nem állítható' in fixed, fixed)
     await pg.goto(B + f'#/admin/gyuru/{PLAIN}'); await pg.wait_for_timeout(700)
+    if not await pg.locator('[data-adv][open]').count(): await pg.click('[data-adv] summary'); await pg.wait_for_timeout(200)   # V5.9: részletes beállítások
     await pg.check('[data-b="opts.width.enabled"]'); await pg.wait_for_timeout(300)
     await pg.fill('[data-p="opts.width.min"]', '3'); await pg.fill('[data-p="opts.width.max"]', '6'); await pg.wait_for_timeout(200)
     await pg.fill('[data-p="rings.0.thickness"]', '1,2'); await pg.wait_for_timeout(200)

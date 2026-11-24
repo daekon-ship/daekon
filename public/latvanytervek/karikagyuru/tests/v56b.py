@@ -90,9 +90,12 @@ async def main():
         await load_dataset(pg)
         await pg.evaluate("async () => { const { store } = await import('./js/store.js'); store.get().settings.openQuestions = ['Teszt: a 60-as méret példája eltér – egyeztetendő']; store.persistNow(); }")
         await pg.goto(B + '#/admin/attekintes'); await pg.reload(); await pg.wait_for_timeout(900)
-        oq = await pg.inner_text('[data-openq]') if await pg.locator('[data-openq]').count() else ''
-        check('admin főmenü: jól látható „Tisztázandó az ötvössel” doboz, a megerősítendő kőárakkal', 'Tisztázandó' in oq and '60-as' in oq and 'megerősítendő' in oq, oq[:200])
+        check('V5.9: a fejlesztői „Tisztázandó” lista NEM jelenik meg a kezdőképernyőn', await pg.locator('[data-openq]').count() == 0 and 'Tisztázandó' not in await pg.inner_text('#adm-main'))
         await pg.goto(B + '#/admin/jovahagyas'); await pg.wait_for_timeout(800)
+        check('V5.9: tulajdonosi nézetben az árelemek oldalán sincs', await pg.locator('[data-openq]').count() == 0)
+        await pg.goto(B + '#/admin/fejleszto'); await pg.goto(B + '#/admin/beallitasok/jovahagyas'); await pg.wait_for_timeout(800)
+        oq = await pg.inner_text('[data-openq]') if await pg.locator('[data-openq]').count() else ''
+        check('fejlesztői nézetben látható, a megerősítendő kőárakkal', 'Tisztázandó' in oq and '60-as' in oq and 'megerősítendő' in oq, oq[:200])
         await pg.fill('[data-openq-edit]', 'Első kérdés\nMásodik kérdés'); await pg.click('[data-openq-save]'); await pg.wait_for_timeout(500)
         qs = await pg.evaluate("async () => { const { store } = await import('./js/store.js'); return store.get().settings.openQuestions; }")
         check('a kérdések szerkeszthetők és menthetők', qs == ['Első kérdés', 'Második kérdés'], qs)

@@ -137,12 +137,14 @@ async def main():
 
             # termékszerkesztés → jóváhagyás visszavonása → újra jóváhagyás
             await adm.goto(B + f'#/admin/gyuru/{A1}'); await adm.wait_for_timeout(1000)
+            if not await adm.locator('[data-adv][open]').count(): await adm.click('[data-adv] summary'); await adm.wait_for_timeout(200)   # V5.9: részletes beállítások
             wv = float((await adm.input_value('[data-p="rings.0.weight"]')).replace(',', '.'))
             await adm.fill('[data-p="rings.0.weight"]', str(round(wv + 0.3, 2)).replace('.', ',')); await adm.wait_for_timeout(300)
             await adm.click('[data-save]'); await adm.wait_for_timeout(600)
             if await adm.locator('.modal [data-ok]').count(): await adm.click('.modal [data-ok]'); await adm.wait_for_timeout(400)
             await wait_saved(adm)
             await adm.goto(B + '#/admin/elozmenyek'); await adm.wait_for_timeout(900)
+            await adm.check('[data-histall]'); await adm.wait_for_timeout(300)   # V5.9: Korábbi árak – a gyűrűváltozások egy kapcsolóval
             hist = await adm.inner_text('#adm-main')
             check('termékszerkesztés: tömeg módosítva → jóváhagyás automatikusan visszavonva (előzményekben)', 'automatikusan visszavonva' in hist and '81184' in hist, hist[:200].replace('\n', ' | '))
             await vis.reload(); await vis.wait_for_timeout(1300)
@@ -182,19 +184,26 @@ async def main():
             card = vis.locator('[data-work-card]', has_text='Próba műhelymunka V58')
             wimg = await card.locator('img').first.evaluate("(i) => new Promise((r) => { if (i.complete) r(i.naturalWidth > 0); else { i.onload = () => r(i.naturalWidth > 0); i.onerror = () => r(false); } })") if await card.locator('img').count() else False
             check('V5.8 új műhelymunka fotóval: a vásárlói oldalon megjelenik, a kép betölt', await card.count() == 1 and wimg)
+            # V5.9: a 25 kérdés belső, fejlesztői nyilvántartás – a tulajdonosi admin nem látja; csak parancssorból írható
+            cli = lambda *x: subprocess.run(['php', ROOT + '/bin/fejlesztoi-dontesek.php', *x], env=dict(base_env, KG_DATA=data), capture_output=True, text=True)
             await adm.goto(B + '#/admin/kozpont'); await adm.wait_for_timeout(900)
-            check('V5.8 központ: minden tétel nyitott a mintaadatban', all(s.startswith('Nyitott') for s in await adm.eval_on_selector_all('[data-dec-status]', 'es => es.map(e => e.textContent)')))
+            check('V5.9 a nyilvántartás közvetlen címmel sem nyílik meg a tulajdonosi adminban', await adm.locator('[data-dec]').count() == 0 and await adm.locator('[data-devonly]').count() == 1)
+            await adm.goto(B + '#/admin/fejleszto'); await adm.goto(B + '#/admin/kozpont'); await adm.wait_for_timeout(900)
+            check('V5.9 szerver módban a fejlesztői nézet sem kapcsolható be a böngészőből', await adm.locator('[data-dec]').count() == 0)
+            check('V5.9 a mintaadatban nincs rögzített válasz (mind a 25 nyitott)', 'minden tétel nyitott' in cli('lista').stdout)
             await vis.goto(B + f'#/gyuru/{A1}'); await vis.reload(); await vis.wait_for_timeout(1300); p_dec0 = await price(vis)
-            await adm.fill('[data-dec="arany"] [data-dec-answer]', '14K: 99 999 Ft/g'); await adm.click('[data-dec="arany"] [data-dec-save]'); await wait_saved(adm)
-            await adm.fill('[data-dec="eloleg"] [data-dec-answer]', 'BEMUTATO-VALASZ-ELOLEG'); await adm.click('[data-dec="eloleg"] [data-dec-save]')
-            check('V5.8 központ: a válasz a szerverre mentve', 'Mentve a szerverre' in await wait_saved(adm))
+            r1 = cli('beallit', 'arany', 'valasz', '14K: 99 999 Ft/g'); r2 = cli('beallit', 'eloleg', 'valasz', 'BEMUTATO-VALASZ-ELOLEG')
+            check('V5.9 a válaszok parancssorból menthetők (szerveren, tartósan)', r1.returncode == 0 and r2.returncode == 0 and 'BEMUTATO-VALASZ-ELOLEG' in cli('lista').stdout, r1.stderr + r2.stderr)
             await vis.reload(); await vis.wait_for_timeout(1300)
-            check('V5.8.1 központ: a grammárra adott válasz NEM változtatta meg a vásárló árát (szerver módban)', await price(vis) == p_dec0, (p_dec0, await price(vis)))
-            await adm.reload(); await adm.wait_for_timeout(2500)
-            dbg = await adm.evaluate("(async () => { const { store } = await import('./js/store.js'); return JSON.stringify(store.get().clientDecisions || null); })()")
-            check('V5.8 központ: újratöltés után is megvan', await adm.input_value('[data-dec="eloleg"] [data-dec-answer]') == 'BEMUTATO-VALASZ-ELOLEG', (dbg, adm.url))
-            pub = urllib.request.urlopen(B + 'api/state').read() if False else await vis.evaluate("fetch('api/state', {credentials: 'include'}).then(r => r.text())")
-            check('V5.8 központ: a látogató nem kapja meg a választ', 'BEMUTATO-VALASZ' not in pub and 'clientDecisions' not in pub)
+            check('V5.9 a grammárra adott válasz NEM változtatta meg a vásárló árát', await price(vis) == p_dec0, (p_dec0, await price(vis)))
+            own = await adm.evaluate("fetch('api/state', {credentials: 'include'}).then(r => r.text())")
+            pub = await vis.evaluate("fetch('api/state', {credentials: 'include'}).then(r => r.text())")
+            check('V5.9 sem a tulajdonosi admin, sem a látogató nem kapja meg a választ', 'BEMUTATO-VALASZ' not in own and 'clientDecisions' not in own and 'BEMUTATO-VALASZ' not in pub)
+            await adm.reload(); await adm.wait_for_timeout(1500)   # a parancssori mentés új változat: az admin újratölt, mielőtt menthet
+            await adm.goto(B + '#/admin/beallitasok'); await adm.wait_for_timeout(800)
+            await adm.fill('[data-s="bigChangePct"]', '16'); await adm.click('[data-save]')
+            check('V5.9 tulajdonosi mentés a parancssori bejegyzés után is sikerül', 'Mentve a szerverre' in await wait_saved(adm))
+            check('V5.9 …és nem írta felül a nyilvántartást', 'BEMUTATO-VALASZ-ELOLEG' in cli('lista').stdout)
             check('admin: nincs JavaScript-hiba', not aerrs, aerrs[:2])
 
             print('Visszaállítás')
@@ -204,10 +213,7 @@ async def main():
             check('visszaállítás után az eredeti mintaár és állapot', await price(vis) == base_price and await vis.locator('[data-locked]').count() == 0, await price(vis))
             await vis.goto(B + f'#/gyuru/{PEND}'); await vis.reload(); await vis.wait_for_timeout(1200)
             check('visszaállítás után a harmadik gyűrű újra jóváhagyásra vár', await vis.locator('[data-locked]').count() == 1)
-            await adm.goto(B + '#/admin/kozpont'); await adm.reload(); await adm.wait_for_timeout(1800)
-            sts = await adm.eval_on_selector_all('[data-dec-status]', 'es => es.map(e => e.textContent)')
-            check('V5.8.1 visszaállítás után a központ tesztválaszai törölve: mind a 25 kérdés nyitott, üres válasszal',
-                  len(sts) == 25 and all(s.startswith('Nyitott') for s in sts) and await adm.input_value('[data-dec="eloleg"] [data-dec-answer]') == '', (len(sts), set(sts)))
+            check('V5.8.1/V5.9 a bemutató visszaállítása a nyilvántartás tesztválaszait is törli (mind nyitott)', 'minden tétel nyitott' in cli('lista').stdout)
             check('V5.8.1 a központ belépés nélkül nem érhető el (az API nem adja ki a döntéseket)', 'clientDecisions' not in await vis.evaluate("fetch('api/state').then(r => r.text())"))
             await b.close()
     finally:

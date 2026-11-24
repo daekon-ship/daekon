@@ -85,6 +85,7 @@ async def main():
             await adm.goto(B + f'#/admin/sorban/{PAIR}'); await adm.wait_for_timeout(900)
             check('szakmai jóváhagyás vastagság nélkül tiltva (szerver mód)', await adm.locator('[data-approve]').is_disabled() and 'vastagság' in await adm.inner_text('[data-qmissing]'))
             await adm.goto(B + f'#/admin/gyuru/{PAIR}'); await adm.wait_for_timeout(900)
+            if not await adm.locator('[data-adv][open]').count(): await adm.click('[data-adv] summary'); await adm.wait_for_timeout(200)   # V5.9: részletes beállítások
             for i in range(await adm.locator('[data-p$=".thickness"]').count()): await adm.locator('[data-p$=".thickness"]').nth(i).fill('1,8')
             await adm.click('[data-save]'); await wait_saved(adm)
             await adm.goto(B + f'#/admin/sorban/{PAIR}'); await adm.wait_for_timeout(900)

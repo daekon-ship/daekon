@@ -96,7 +96,7 @@ async def main():
             check('jóváhagyás után a harmadik mintagyűrű is beállítható, számolt árral', await vis.locator('[data-locked]').count() == 0 and 'Becsült ár' in await vis.inner_text('[data-plabel]'))
             await adm.goto(B + '#/admin/jovahagyas'); await adm.wait_for_timeout(900)
             gl = await adm.inner_text('[data-golive-box]')
-            check('élesítési ellenőrzés: bemutató mintaadattal tilt', 'bemutató mintaadat' in gl and 'Nem élesíthető' in gl, gl[:200])
+            check('árelemek összesítése: bemutató mintaadattal „Még nincs minden jóváhagyva”', 'bemutató mintaadat' in gl and 'Még nincs minden jóváhagyva' in gl, gl[:200])
             check('nincs JavaScript-hiba', not errs, ' | '.join(errs)[:200])
             await b.close()
     finally:

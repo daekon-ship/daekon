@@ -16,7 +16,8 @@ def check(name, cond, extra=''):
     else: fail += 1; print('  HIBA', name, extra)
 
 class Client:
-    def __init__(self):
+    def __init__(self, base=None):
+        self.base = base
         self.jar = http.cookiejar.CookieJar()
         self.op = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(self.jar))
         self.csrf = None
@@ -25,7 +26,7 @@ class Client:
         body = raw
         if data is not None: body = json.dumps(data).encode(); h['Content-Type'] = 'application/json'
         if self.csrf and 'X-CSRF-Token' not in h: h['X-CSRF-Token'] = self.csrf
-        r = urllib.request.Request(BASE + path, data=body, method=method, headers=h)
+        r = urllib.request.Request((self.base or BASE) + path, data=body, method=method, headers=h)
         try:
             with self.op.open(r, timeout=10) as res: return res.status, res.read(), res.headers
         except urllib.error.HTTPError as e: return e.code, e.read(), e.headers
@@ -105,9 +106,20 @@ def main():
         s, d = a.j('PUT', '/state', {'baseVersion': v1 + 1, 'state': {'products': []}}); check('hiányos állapot elutasítva (422)', s == 422, s)
         s, d = b.j('GET', '/state'); check('elutasított mentések után az adat változatlan', d['version'] == v1 + 1 and d['state']['materials']['sellPerGram']['au14'] == 48000, d)
         s, d = a.j('GET', '/versions'); check('változatlista: 2 tétel, megjegyzéssel', s == 200 and len(d['versions']) == 2 and d['versions'][0]['note'] == 'emelés', d)
-        s, d = a.j('POST', '/revert', {'version': v1}); check('visszaállítás új változatot hoz létre', s == 200 and d.get('version') == v1 + 2, d)
-        s, d = b.j('GET', '/state'); check('visszaállítás után a régi ár él', d['state']['materials']['sellPerGram']['au14'] == 42000, d)
-        s, d = a.j('POST', '/revert', {'version': 999}); check('nem létező változat: 404', s == 404, s)
+        # V5.9: teljes állapot-visszaállítás csak fejlesztői művelet (KG_FEJLESZTOI_VISSZAALLITAS=1)
+        s, d = a.j('POST', '/revert', {'version': v1}); check('V5.9: tulajdonosi belépéssel a teljes visszaállítás tiltott (403)', s == 403, (s, d))
+        s, d = b.j('GET', '/state'); check('V5.9: a tiltott visszaállítás után semmi nem változott', d['version'] == v1 + 1 and d['state']['materials']['sellPerGram']['au14'] == 48000, d)
+        srv2 = subprocess.Popen(['php', '-S', f'127.0.0.1:{PORT + 1}', '-t', ROOT + '/public', ROOT + '/public/index.php'], env=dict(env, KG_FEJLESZTOI_VISSZAALLITAS='1'), stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        try:
+            for _ in range(50):
+                try: urllib.request.urlopen(f'http://127.0.0.1:{PORT + 1}/api/health', timeout=1); break
+                except Exception: time.sleep(0.1)
+            dv = Client(f'http://127.0.0.1:{PORT + 1}/api'); s, dd = dv.j('POST', '/login', {'password': PW}); dv.csrf = dd.get('csrf')
+            s, d = dv.j('POST', '/revert', {'version': v1}); check('fejlesztői szerveren a visszaállítás új változatot hoz létre', s == 200 and d.get('version') == v1 + 2, d)
+            s, d = b.j('GET', '/state'); check('visszaállítás után a régi ár él', d['state']['materials']['sellPerGram']['au14'] == 42000, d)
+            s, d = dv.j('POST', '/revert', {'version': 999}); check('nem létező változat: 404', s == 404, s)
+        finally:
+            srv2.terminate(); srv2.wait(5)
 
         print('Nyilvános nézet: nem szivároghat belső adat')
         rich = {
@@ -119,6 +131,7 @@ def main():
             {'id': 'nem-1', 'code': 'NEM 1', 'name': 'Nem jóváhagyott', 'approved': False, 'listaAr': 200000, 'metals': ['au14'],
              'override': {'type': 'fixed', 'value': 111111}, 'minPrice': 99999, 'rings': [{'label': 'Női', 'refSize': 54, 'refWidth': 3, 'weight': 3.1, 'labor': 777}]},
             {'id': 'rejtett-1', 'code': 'REJTETT', 'name': 'Rejtett', 'visible': False, 'approved': True, 'rings': []},
+            {'id': 'proba-1', 'name': 'Próba'},   # V5.9: a korábban mentett gyűrű nem tűnhet el
           ],
           'materials': {'gold24': 36000, 'platinum': 13000, 'palladium': 11000, 'titanium': 80,
                         'sellPerGram': {'au14': 42000, 'au18': 50000, 'pt': 48000, 'pd': 36000, 'ti': None},
@@ -147,7 +160,7 @@ def main():
         st_ = pub['settings']
         check('felár, anyagveszteség, munkadíj-szorzó, árrés-küszöb nem megy ki', not any(k in st_ for k in ['markupMetal', 'markupStones', 'lossPct', 'laborFactor', 'minMarginPct', 'bigChangePct']), list(st_))
         check('nincs árnapló és érdeklődés', 'history' not in pub and 'inquiries' not in pub)
-        check('rejtett gyűrű nem megy ki', [p['id'] for p in pub['products']] == ['jo-1', 'nem-1'])
+        check('rejtett gyűrű nem megy ki', [p['id'] for p in pub['products']] == ['jo-1', 'nem-1', 'proba-1'] and 'rejtett-1' not in [p['id'] for p in pub['products']])
         nem = pub['products'][1]; jo = pub['products'][0]
         check('nem jóváhagyott gyűrű: nincs egyedi/minimumár', 'override' not in nem and 'minPrice' not in nem and nem['approved'] is False)
         check('jóváhagyott gyűrű: egyedi ár szabálya megmarad', jo['override'] == {'type': 'pct', 'value': 5} and jo['minPrice'] == 250000)
@@ -174,15 +187,36 @@ def main():
             ws = json.loads(json.dumps(wst)); ws['works'][0].update(bad)
             s, d = a.j('PUT', '/state', {'baseVersion': vb, 'state': ws}); check(f'műhelymunka elutasítva: {why} (422)', s == 422, (s, d))
 
-        print('Ügyféljóváhagyási központ (V5.8)')
-        dst = json.loads(json.dumps(wst)); dst['clientDecisions'] = {'eloleg': {'status': 'valasz', 'answer': 'TITKOS-DONTES-30', 'at': '2026-11-22T10:00:00Z'}}
-        s, d = a.j('PUT', '/state', {'baseVersion': vb, 'state': dst}); check('ügyféldöntés mentése', s == 200, (s, d)); vb = d.get('version', vb)
-        s, d = a.j('GET', '/state'); check('admin: a döntés visszaolvasható', d['state'].get('clientDecisions', {}).get('eloleg', {}).get('answer') == 'TITKOS-DONTES-30')
+        print('Fejlesztői nyilvántartás (V5.9: csak parancssorból; a tulajdonosi admin sem látja, nem írhatja felül)')
+        cli = lambda *x: subprocess.run(['php', ROOT + '/bin/fejlesztoi-dontesek.php', *x], env=env, capture_output=True, text=True)
+        r = cli('beallit', 'eloleg', 'valasz', 'TITKOS-DONTES-30'); check('CLI: válasz rögzítve', r.returncode == 0, r.stderr)
+        r = cli('beallit', 'eloleg', 'jovahagyva', 'x'); check('CLI: ismeretlen állapot elutasítva', r.returncode == 2, r.stderr)
+        s, d = a.j('GET', '/versions'); vb = d['versions'][0]['version']
+        s, raw, _ = a.req('GET', '/state'); check('V5.9: a tulajdonosi admin API nem adja ki a nyilvántartást', b'TITKOS-DONTES' not in raw and b'clientDecisions' not in raw)
         s, raw, _ = b.req('GET', '/state'); check('látogató: az ügyféldöntés nem jut ki', b'TITKOS-DONTES' not in raw and b'clientDecisions' not in raw)
+        s, d = a.j('GET', '/state'); own = d['state']; own['clientDecisions'] = {'eloleg': {'status': 'valasz', 'answer': 'FELULIRAS', 'at': 'x'}}
+        s, d = a.j('PUT', '/state', {'baseVersion': vb, 'state': own}); check('tulajdonosi mentés elfogadva', s == 200, (s, d)); vb = d.get('version', vb)
+        r = cli('lista'); check('V5.9: a tulajdonosi mentés nem írta felül és nem törölte a nyilvántartást', 'TITKOS-DONTES-30' in r.stdout and 'FELULIRAS' not in r.stdout, r.stdout)
+        dst = own
         for bad, why in [({'eloleg': {'status': 'jovahagyva', 'answer': 'x'}}, 'ismeretlen állapot'), ({'eloleg': {'status': 'valasz', 'answer': ''}}, 'válasz nélküli döntés'),
                          ({'Rossz Kulcs': {'status': 'nyitott', 'answer': ''}}, 'hibás kulcs'), ({'eloleg': {'status': 'valasz', 'answer': 'x' * 2001}}, 'túl hosszú válasz')]:
             ds = json.loads(json.dumps(dst)); ds['clientDecisions'] = bad
             s, d = a.j('PUT', '/state', {'baseVersion': vb, 'state': ds}); check(f'ügyféldöntés elutasítva: {why} (422)', s == 422, (s, d))
+
+        print('Romboló mentés tiltása (V5.9)')
+        s, d = a.j('GET', '/state'); cur = d['state']; vb = d['version']
+        x = json.loads(json.dumps(cur)); x['products'] = x['products'][1:]
+        s, d = a.j('PUT', '/state', {'baseVersion': vb, 'state': x}); check('gyűrű eltüntetése (pl. „alapállapot”) elutasítva (422)', s == 422 and 'gyűrűt törölne' in d.get('error', ''), (s, d))
+        x = json.loads(json.dumps(cur)); x['works'] = []
+        s, d = a.j('PUT', '/state', {'baseVersion': vb, 'state': x}); check('egyszerre két műhelymunka törlése elutasítva (422)', s == 422, (s, d))
+        x = json.loads(json.dumps(cur)); x['works'] = x['works'][:1]
+        s, d = a.j('PUT', '/state', {'baseVersion': vb, 'state': x}); check('egy műhelymunka törlése megengedett', s == 200, (s, d)); vb = d.get('version', vb)
+        s, d = a.j('GET', '/state'); cur = d['state']
+        x = json.loads(json.dumps(cur)); x['history'] = [{'id': 'h-uj', 'title': 'Új kezdés'}] + x['history']
+        s, d = a.j('PUT', '/state', {'baseVersion': vb, 'state': x}); check('előzménnyel bővített mentés elfogadva', s == 200, (s, d)); vb = d.get('version', vb)
+        x = json.loads(json.dumps(x)); x['history'] = [{'id': 'h-reset', 'title': 'Kiinduló adatok'}]
+        s, d = a.j('PUT', '/state', {'baseVersion': vb, 'state': x}); check('a korábbi árak (előzmények) eltüntetése elutasítva (422)', s == 422 and 'korábbi árakat' in d.get('error', ''), (s, d))
+        s, d = a.j('GET', '/state'); check('elutasítások után minden gyűrű és előzmény megvan', len(d['state']['products']) == len(cur['products']) and d['state']['history'][0]['id'] == 'h-uj')
 
         print('Érdeklődések')
         inq = {'name': 'Teszt Elek', 'email': 'teszt@example.invalid', 'phone': '', 'message': 'Próbaüzenet <script>', 'type': 'erdeklodes', 'productId': 'proba-1',
