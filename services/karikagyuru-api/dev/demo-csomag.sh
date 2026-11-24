@@ -16,7 +16,7 @@ mkdir -p "$W/site" "$A/bin" "$A/demo"
 cp "$API/demo/kapu.php" "$API/demo/.htaccess" "$API/demo/config.minta.php" "$W/"
 cp -R "$SITE/index.html" "$SITE/css" "$SITE/js" "$SITE/img" "$SITE/fonts" "$W/site/"
 cp -R "$API/src" "$A/"
-cp "$API/bin/demo-install.php" "$API/bin/demo-reset.php" "$API/bin/purge.php" "$A/bin/"
+cp "$API/bin/demo-install.php" "$API/bin/demo-reset.php" "$API/bin/purge.php" "$API/bin/mentes.php" "$API/bin/mentes-ellenorzes.php" "$API/bin/visszaallitas.php" "$API/bin/fejlesztoi-dontesek.php" "$A/bin/"
 cp "$API/demo/minta-allapot.json" "$A/demo/"
 # A kapu.php a src-t a config.php-ból veszi (a csomagban a webgyökéren kívül van).
 cat > "$OUT/OLVASS_EL.txt" <<TXT
@@ -27,7 +27,8 @@ Karikagyuru – jelszóval védett bemutató (V5.6). Részletes leírás: docs/B
 4. bemutato/config.minta.php → config.php, benne a három útvonal (data, site, src).
 5. Telepítés (SSH vagy a tárhely cron/parancs felülete):  KG_DATA=/home/FELHASZNALO/kg-bemutato-adat php karikagyuru-api/bin/demo-install.php
    → kiírja a bemutató jelszavát és az admin jelszót (egyszer).
-6. Visszaállítás:  KG_DATA=… php karikagyuru-api/bin/demo-reset.php   (éjjeli cronra is tehető)
+6. Visszaállítás (CSAK kézzel, az ügyfélnek előre szólva – automatikus éjjeli törlés NINCS):  KG_DATA=… php karikagyuru-api/bin/demo-reset.php
+7. Napi biztonsági mentés (ez törlés nélkül fut):  KG_DATA=… php karikagyuru-api/bin/mentes.php /home/FELHASZNALO/kg-bemutato-mentesek
 TXT
 find "$OUT" -name '.DS_Store' -delete
 echo "Kész: $OUT"; (cd "$OUT" && find . -maxdepth 3 -type d | sort)

@@ -14,7 +14,8 @@ final class App
     private const MAX_PHOTO = 8_000_000;      // bájt
     private const LOGIN_TRIES = 5;            // 15 perc alatt
     private const INQ_PER_HOUR = 5;           // IP-nként
-    private const INQ_STATUS = ['uj', 'visszahivva', 'elfogadva', 'lezarva'];
+    // V5.9: 'hivando' = visszahívásra vár (a „Felhívom” gomb nem jelenti, hogy sikerült beszélni)
+    private const INQ_STATUS = ['uj', 'hivando', 'visszahivva', 'elfogadva', 'lezarva'];
     private const INQ_MAX_IMAGES = 3;
     private const INQ_MAX_IMAGE_BYTES = 8_000_000;
 
@@ -219,6 +220,8 @@ final class App
         $state = json_decode($r['body'], true);
         // A látogató csak a nyilvános weboldalhoz szükséges, jóváhagyott adatokat kapja; az admin a teljes állapotot.
         if (!$this->isAdmin()) $state = self::publicState($state);
+        // V5.9: a fejlesztői nyilvántartás (ügyféldöntések) a tulajdonosi kezelőfelületnek sem megy ki – csak a szerveren, CLI-ből érhető el.
+        unset($state['clientDecisions']);
         $this->json(['version' => (int) $r['version'], 'state' => $state, 'savedAt' => $this->isAdmin() ? $r['saved_at'] : null]);
     }
 
@@ -243,6 +246,16 @@ final class App
         $cur = $this->latest();
         $curV = $cur ? (int) $cur['version'] : 0;
         if ($base !== $curV) { $this->db->rollBack(); $this->fail(409, 'Közben máshol is mentettek. Töltse újra az oldalt, mielőtt újra ment.'); }
+        if ($cur) {
+            $prev = json_decode((string) $cur['body'], true) ?: [];
+            // V5.9: teljes adatállapot felülírása (gyűrűk eltűnése, a korábbi árak törlése) a kezelőfelületről vagy közvetlen API-hívással sem lehetséges
+            $bad = self::destructiveChange($prev, $in['state']);
+            if ($bad) { $this->db->rollBack(); $this->fail(422, $bad); }
+            // a fejlesztői nyilvántartást a tulajdonosi mentés nem látja és nem írhatja felül: a meglévő marad
+            $in['state']['clientDecisions'] = (isset($prev['clientDecisions']) && is_array($prev['clientDecisions']) && $prev['clientDecisions']) ? $prev['clientDecisions'] : new \stdClass();
+        } else {
+            $in['state']['clientDecisions'] = new \stdClass();
+        }
         $st = $this->db->prepare('INSERT INTO state_version (body, note, saved_at) VALUES (?, ?, ?)');
         $st->execute([json_encode($in['state'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), mb_substr((string) ($in['note'] ?? ''), 0, 200), gmdate('c')]);
         $v = (int) $this->db->lastInsertId();
@@ -250,6 +263,60 @@ final class App
         $this->db->exec('DELETE FROM state_version WHERE version <= ' . ($v - 200));
         $this->db->commit();
         $this->json(['version' => $v, 'savedAt' => gmdate('c')]);
+    }
+
+    /**
+     * V5.9 – romboló mentés felismerése (a kezelőfelület „alapállapot” gombja vagy közvetlen API-hívás ellen).
+     * Szabályok: meglévő gyűrű nem tűnhet el; egyszerre legfeljebb egy műhelymunka törölhető;
+     * a korábbi árak (előzmények) nem tűnhetnek el – a legutóbbi bejegyzésnek az új mentésben is benne kell lennie.
+     * Visszaad: hibaüzenet vagy null.
+     */
+    public static function destructiveChange(array $prev, array $next): ?string
+    {
+        $ids = fn($a) => array_values(array_filter(array_map(fn($x) => is_array($x) ? ($x['id'] ?? null) : null, is_array($a) ? $a : []), 'is_string'));
+        $lostP = array_diff($ids($prev['products'] ?? []), $ids($next['products'] ?? []));
+        if ($lostP) return 'Ez a mentés ' . count($lostP) . ' gyűrűt törölne. Gyűrű a kezelőfelületről nem törölhető, a teljes adatállapot visszaállítása pedig csak fejlesztői művelet. Semmi nem változott.';
+        $lostW = array_diff($ids($prev['works'] ?? []), $ids($next['works'] ?? []));
+        if (count($lostW) > 1) return 'Ez a mentés egyszerre ' . count($lostW) . ' műhelymunkát törölne. Egyszerre csak egy törölhető. Semmi nem változott.';
+        $ph = $prev['history'] ?? [];
+        if (is_array($ph) && $ph && is_array($ph[0] ?? null) && isset($ph[0]['id'])) {
+            if (!in_array($ph[0]['id'], $ids($next['history'] ?? []), true)) return 'Ez a mentés törölné a korábbi árakat és változásokat. Ez nem lehetséges – töltse újra az oldalt. Semmi nem változott.';
+        }
+        return null;
+    }
+
+    /**
+     * V5.9 – fejlesztői nyilvántartás (ügyféldöntések) módosítása: CSAK parancssorból (bin/fejlesztoi-dontesek.php).
+     * Új változatot ment a legutóbbi állapotból, csak a clientDecisions mezőt módosítva.
+     */
+    public function setDecision(string $id, string $status, string $answer): int
+    {
+        if (!preg_match('/^[a-z0-9-]{1,40}$/', $id)) throw new RuntimeException('Hibás tétel-azonosító.');
+        if (!in_array($status, ['nyitott', 'valasz', 'atvezetve'], true)) throw new RuntimeException('Az állapot: nyitott, valasz vagy atvezetve.');
+        $answer = trim($answer);
+        if (mb_strlen($answer) > 2000) throw new RuntimeException('Túl hosszú válasz.');
+        if ($status !== 'nyitott' && $answer === '') throw new RuntimeException('Válasz nélkül csak „nyitott” állapot adható.');
+        $this->guardWrite(false);
+        $this->db->beginTransaction();
+        $cur = $this->latest();
+        if (!$cur) { $this->db->rollBack(); throw new RuntimeException('Még nincs mentett állapot.'); }
+        $s = json_decode((string) $cur['body'], true) ?: [];
+        $d = is_array($s['clientDecisions'] ?? null) ? $s['clientDecisions'] : [];
+        $d[$id] = ['status' => $status, 'answer' => $answer, 'at' => gmdate('c')];
+        $s['clientDecisions'] = $d;
+        $st = $this->db->prepare('INSERT INTO state_version (body, note, saved_at) VALUES (?, ?, ?)');
+        $st->execute([json_encode($s, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), "Fejlesztői nyilvántartás: $id", gmdate('c')]);
+        $v = (int) $this->db->lastInsertId();
+        $this->db->commit();
+        return $v;
+    }
+
+    /** A fejlesztői nyilvántartás a legutóbbi állapotból (csak CLI). */
+    public function decisions(): array
+    {
+        $cur = $this->latest();
+        $s = $cur ? (json_decode((string) $cur['body'], true) ?: []) : [];
+        return is_array($s['clientDecisions'] ?? null) ? $s['clientDecisions'] : [];
     }
 
     private const PUB_PRODUCT = ['id', 'code', 'name', 'real', 'img', 'priceOnRequest', 'imgFill', 'unknownColor', 'kind', 'baseColor',
@@ -379,14 +446,23 @@ final class App
         $this->json(['versions' => $rows]);
     }
 
+    /** Teljes állapot-változat visszaállítása. V5.9: csak fejlesztői művelet – a szerveren KG_FEJLESZTOI_VISSZAALLITAS=1 kell hozzá.
+        A tulajdonos a kezelőfelületen az egyes árváltozásokat állíthatja vissza (az új mentésként naplózódik). */
     private function revert(): void
     {
+        if (getenv('KG_FEJLESZTOI_VISSZAALLITAS') !== '1') $this->fail(403, 'Teljes állapot visszaállítása csak fejlesztői művelet. Az egyes árváltozások az „Árak → Korábbi árak” oldalon állíthatók vissza.');
         $this->guardWrite();
         $in = $this->body();
         $st = $this->db->prepare('SELECT body FROM state_version WHERE version = ?');
         $st->execute([(int) ($in['version'] ?? 0)]);
         $body = $st->fetchColumn();
         if ($body === false) $this->fail(404, 'Nincs ilyen változat.');
+        // a fejlesztői nyilvántartás a legutóbbi állapotból marad meg (a régi változat nem írja felül)
+        $old = json_decode((string) $body, true) ?: [];
+        $curB = $this->latest();
+        $cd = $curB ? ((json_decode((string) $curB['body'], true) ?: [])['clientDecisions'] ?? null) : null;
+        if (is_array($cd) && $cd) $old['clientDecisions'] = $cd;
+        $body = json_encode($old, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
         $ins = $this->db->prepare('INSERT INTO state_version (body, note, saved_at) VALUES (?, ?, ?)');
         $ins->execute([$body, 'Visszaállítva: ' . (int) $in['version'] . '. változat', gmdate('c')]);
         $this->json(['version' => (int) $this->db->lastInsertId()]);
