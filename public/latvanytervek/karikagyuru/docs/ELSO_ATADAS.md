@@ -1,4 +1,4 @@
-# Karikagyuru.com – első átadás: valós állapot (V5.8.1, 2026. 11. 22.)
+# Karikagyuru.com – első átadás: valós állapot (V5.9, 2026. 11. 24.)
 
 Ez a dokumentum funkciónként mutatja, **meddig jutott** az egyes rész. Kétféle dolgot választ el: mi tartozik
 az első (kb. 200 000 Ft-os) szakaszhoz, és mi későbbi, külön fejlesztés. A korábbi változat még azt írta,
@@ -34,8 +34,10 @@ hagyott jóvá. Az éles karikagyuru.com-hoz nem nyúltunk.
 | Ajánlatkérés, időpontkérés, saját ötlet | ✔ | ✔ | ✔ | ✔* | – | – | – | *Pages-en az üzenet NEM jut el az ötvöshöz – ezt az űrlap előtte és utána is kiírja |
 | Saját ötlethez csatolt referenciakép feltöltése (védett, csak az adminban látszik) | ✔ | ✔ | ✔ | – | – | – | – | Pages-en nincs szerver, ott a kép nem töltődik fel |
 | E-mail-értesítés új érdeklődésről | ✔ | ✔ | ✔** | – | – | – | – | **csak „fájlba írás” módban; valódi levél nem ment ki (nincs jóváhagyott cím és SMTP) |
-| Kezelőfelület: árak, gyűrűk, fotók, műhelymunkák, szabályok, érdeklődések | ✔ | ✔ | ✔ | ✔ | – | – | – | Pages-en jelszó nélkül, csak a böngészőben ment; szerveren belépéssel, változatokkal |
-| Ügyféljóváhagyási központ (V5.8) | ✔ | ✔ | ✔ | ✔ | – | – | – | 25 kérdés, mind nyitott; a válasz semmit nem ír át magától |
+| Kezelőfelület (V5.9: 6 főmenü – Áttekintés, Gyűrűk, Árak, Műhelymunkák, Érdeklődések, Beállítások) | ✔ | ✔ | ✔ | ✔ | – | – | – | Pages-en jelszó nélkül, csak a böngészőben ment; szerveren belépéssel, változatokkal. Útmutató: `ADMIN_UTMUTATO.md`, felmérés: `ADMIN_FELMERES_V5_9.md` |
+| Árlista: vásárlói (csak jóváhagyott ár) és belső kalkuláció („nem végleges” jelöléssel) | ✔ | ✔ | ✔ | ✔ | – | – | – | V5.9 |
+| Fejlesztői nyilvántartás – 25 tisztázandó kérdés (V5.8 központ) | ✔ | ✔ | ✔ | n. a. | – | – | – | V5.9: nem része a tulajdonosi adminnak; szerveren csak parancssorból (`bin/fejlesztoi-dontesek.php`), az admin API nem adja ki |
+| Távoli ügyfélteszt a DAEKON szerverén (HTTPS, jelszó, tartós mentés) | ✔ | ✔ | ✔ | n. a. | – | – | – | telepítésre kész csomag + leírás (`TAVOLI_BEMUTATO.md`), **nincs telepítve** – nem volt szerver-hozzáférés |
 | Bejelentkezés, CSRF, zárolás 5 hibás próbálkozás után | ✔ | ✔ | ✔ | n. a. | – | – | – | |
 | Zárt, jelszavas bemutató a laptopon (`bemutato.sh`) | ✔ | ✔ | ✔ | n. a. | – | – | – | mintaadatokkal, levélküldés nélkül; egy paranccsal visszaállítható |
 | Biztonsági mentés és visszaállítás (`bin/mentes.php`, `bin/visszaallitas.php`) | ✔ | ✔ | ✔ | n. a. | – | – | – | V5.8.1: konzisztens, ellenőrzött; teljes visszaállítási próba helyben sikeres; a tárhelyen egyszer végig kell csinálni (`MENTES_ES_VISSZAALLITAS.md`) |

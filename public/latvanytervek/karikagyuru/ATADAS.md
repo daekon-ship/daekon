@@ -608,3 +608,41 @@ valódi tárhelyen semmi nem futott, és ügyféljóváhagyás nincs.
   - kivettük az igazolatlan „a legtöbb pár telefonon nézelődik” állítást;
   - a PDF újragenerálva.
 - **Dokumentáció:** új `docs/MENTES_ES_VISSZAALLITAS.md`; frissítve: `TELEPITES.md` 5. pont, `BIZTONSAG.md`, `ELSO_ATADAS.md`, API `README.md`.
+
+## V5.9 – teljes admin-átalakítás az ötvösnek (2026. november 24.)
+
+Kiinduló állapot visszaállíthatóan megjelölve: `git tag kg-v5.8.1-kiindulo` (7a984a5). A felmérés oldalanként: `docs/ADMIN_FELMERES_V5_9.md`; rövid útmutató: `docs/ADMIN_UTMUTATO.md`.
+
+- **Menü:** 14 helyett 6 főmenü (Áttekintés, Gyűrűk, Árak, Műhelymunkák, Érdeklődések, Beállítások); a többi fülként a megfelelő helyen. A régi címek átirányítanak, csak a belépés után. Mobilon „Menü” gomb (Escape-pel zárul).
+- **Áttekintés:**
+  - „Jó napot kívánok!”, négy teendő, legfeljebb 3 legutóbbi érdeklődés, „További beállítások”;
+  - eltűnt a 25 kérdés, a 115-ös jóváhagyási kényszer, a fejlesztői lista, a grafikon és az élesítési lista;
+  - mentési hibát kiír.
+- **Árak:**
+  - fő mezők: 14K/18K/Pt/Pd grammár és gyémántdarabár; titánnak nincs grammár;
+  - „Változtatások ellenőrzése” a valós motorból: melyik ár, előtte → utána, belső és weboldalon látható változás, hol marad egyedi ajánlat;
+  - szerver módban „Az árak sikeresen mentve.” csak visszaigazolás után; hibánál „Az árak NEM lettek mentve”;
+  - a beszerzési ár és a grafikon lenyitható;
+  - korábbi árak visszaállítása előtt a pontos következmény.
+- **Háromféle ár:** belső számított (nem végleges) · jóváhagyott · a weboldalon látható – külön kiírva a listában, a szerkesztőben, az ár kipróbálásánál és az érdeklődéseknél. Jóváhagyatlan belső ár nem rögzíthető ajánlati árként (V5.8-ig az „Árszámítás → Felírom ajánlatnak” rögzítette).
+- **Árlista:** vásárlói (csak jóváhagyott, publikálható ár, máshol „Egyedi árajánlat”, rejtett gyűrű nélkül) és belső kalkuláció („Belső használatra – nem végleges árajánlat”, nyomtatásban minden oldalon).
+- **Gyűrűszerkesztő:**
+  - egyszerű nézet: cikkszám, név, fénykép, anyagok, színek, méretek, gyémántok, ár típusa, láthatóság;
+  - „Részletes gyűrűbeállítások”: tömeg, szélesség, vastagság, kőszabály, korlátozások, minimumár, számítás;
+  - a 3D-mezők csak fejlesztői nézetben;
+  - jóváhagyás érthetően, tételesen, következménnyel.
+- **Fénykép cseréje a gyűrű adatlapján:** típus- és méret-ellenőrzés (JPG/PNG/WebP, 8 MB), előnézet a régi mellett, feltöltés, a régi kép a sikeres mentésig marad.
+- **Érdeklődések:**
+  - négy csoport: új, visszahívásra vár, felkeresett, lezárt;
+  - a „Felhívom” csak tárcsáz és „visszahívásra vár”-ra tesz;
+  - „Visszahívtam”, „Lezárás”;
+  - az ajánlati ár rögzítése nem változtat állapotot (új szerveroldali állapot: `hivando`).
+- **Beállítások:** a teljes „Alapállapot visszaállítása” nem tulajdonosi művelet (helyi bemutatóban csak fejlesztői nézetben); haladó árképzés és árelemek jóváhagyása külön fülön, magyarázatokkal.
+- **Szerver:**
+  - a tulajdonosi admin API nem adja ki a fejlesztői nyilvántartást, és a mentés nem írja felül (CLI: `bin/fejlesztoi-dontesek.php`);
+  - a romboló mentést elutasítja;
+  - `POST /revert` csak `KG_FEJLESZTOI_VISSZAALLITAS=1`-gyel.
+- **Távoli ügyfélteszt:** `docs/TAVOLI_BEMUTATO.md` (VPS, Caddy, HTTPS, külön adat, nincs automatikus éjjeli törlés) – telepítésre kész, nincs telepítve. A bemutató-csomag a mentő- és fejlesztői szkripteket is tartalmazza.
+- **Tesztek:**
+  - új: `tests/v59.py` (68), `services/.../tests/admin_v59_e2e.py` (17);
+  - frissítve az új felépítéshez: e2e, v3, v4, v51, v53, v56b, v58, api_test, mentes_test, server_mode_e2e, demo_e2e, bemutato_e2e.

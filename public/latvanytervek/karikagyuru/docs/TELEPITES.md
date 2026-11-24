@@ -190,3 +190,13 @@ A fejlesztői és bemutató adatkészlet a `services/karikagyuru-api/dev/demo-da
 - A beírt válasz **semmit nem ír át** (árat, gyűrűszabályt, jogi szöveget). Élesítés előtt minden tételnél nézzük meg,
   hogy „Átvezetve”-e, és ha igen, valóban át van-e vezetve.
 - Az egyes funkciók valós állapota (megírva → … → élesítve): `ELSO_ATADAS.md`.
+
+## 15. V5.9 – egyszerűsített kezelőfelület, fejlesztői műveletek
+
+- A tulajdonosi kezelőfelület 6 főmenüből áll; a régi címek átirányítanak (belépés után). Útmutató az ötvösnek: `ADMIN_UTMUTATO.md`.
+- **Fejlesztői műveletek csak a szerveren, parancssorból:**
+  - a 25 kérdés: `KG_DATA=… php kg-app/bin/fejlesztoi-dontesek.php lista | export | beallit <tétel> <állapot> "<válasz>"`;
+  - teljes változat-visszaállítás: a `POST /revert` csak `KG_FEJLESZTOI_VISSZAALLITAS=1` környezeti változóval él. **Élesben ne legyen bekapcsolva.**
+- A tulajdonos az egyes árváltozásokat az „Árak → Korábbi árak” oldalon állíthatja vissza (új mentésként, naplózva).
+- A szerver elutasítja a romboló mentést (gyűrűk eltűnése, előzmények törlése) – lásd `BIZTONSAG.md`.
+- Távoli ügyfélteszt a DAEKON szerverén: `TAVOLI_BEMUTATO.md`.

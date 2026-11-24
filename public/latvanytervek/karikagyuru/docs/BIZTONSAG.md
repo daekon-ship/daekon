@@ -1,4 +1,4 @@
-# Karikagyuru.com – biztonsági és adatkezelési áttekintés (V5.8.1, 2026. 11. 22.)
+# Karikagyuru.com – biztonsági és adatkezelési áttekintés (V5.9, 2026. 11. 24.)
 
 A kódban ellenőrzött állapot. Valódi tárhelyen még semmi nem futott, ezért élesítés előtt a tárhelyen újra ki
 kell próbálni (`TELEPITES.md`). Ez az áttekintés nem jogi vélemény.
@@ -7,7 +7,9 @@ kell próbálni (`TELEPITES.md`). Ez az áttekintés nem jogi vélemény.
 |---|---|---|---|
 | Admin belépés | jelszó `password_hash`-sel; munkamenet-süti: HttpOnly, SameSite=Strict, HTTPS-en Secure; böngésző bezárásakor lejár | api_test, server_failures_e2e (lejárt belépés) | erős jelszó az ötvösnek, HTTPS kötelező |
 | Próbálkozások | 5 hibás belépés / 15 perc → zárolás; a gépek IP-címét csak kivonatként (hash) tároljuk | api_test, demo_kapu_test | – |
-| Jogosultság | minden módosító és bizalmas végpont (mentés, árverziók, érdeklődések, referenciaképek, fotófeltöltés, levélbeállítás) csak belépve | api_test | – |
+| Jogosultság | minden módosító és bizalmas végpont (mentés, árverziók, érdeklődések, referenciaképek, fotófeltöltés, levélbeállítás) csak belépve; a régi admin címek a belépés-ellenőrzés után irányítanak át | api_test, admin_v59_e2e (19 cím) | – |
+| Fejlesztői adat elkülönítése (V5.9) | a 25 kérdés válaszai (`clientDecisions`) a tulajdonosi admin API-nak sem mennek ki; a tulajdonosi mentés nem írhatja felül és nem törölheti; írás/olvasás csak parancssorból (`bin/fejlesztoi-dontesek.php`). Külön szerepkör nincs: a határ a szerver shell-hozzáférése | api_test, admin_v59_e2e, mentes_test | – |
+| Romboló mentés tiltása (V5.9) | a szerver elutasítja azt a mentést, amely meglévő gyűrűt törölne, egyszerre több műhelymunkát törölne, vagy eltüntetné a korábbi árakat (előzményeket) – így a „teljes alapállapot” sem a felületről, sem közvetlen API-hívással nem indítható. Teljes változat-visszaállítás (`POST /revert`) csak `KG_FEJLESZTOI_VISSZAALLITAS=1`-gyel | api_test, admin_v59_e2e | – |
 | CSRF | módosító kéréshez `X-CSRF-Token`, időzítés-biztos összevetéssel | api_test | – |
 | Adatbázis | SQLite a webgyökéren kívül (`KG_DATA`), előkészített lekérdezések | api_test | próba: a `kg.sqlite` URL-ről 404 |
 | Nyilvános adat | a látogató csak jóváhagyott árat, látható gyűrűt, látható műhelymunkát kap; a régi listaár, a belső felárak, a nyitott kérdések és az ügyféldöntések nem mennek ki | api_test (V5.8: ügyféldöntések is) | – |

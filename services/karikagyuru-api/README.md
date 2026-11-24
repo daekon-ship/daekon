@@ -62,7 +62,7 @@ KG_DATA=/tmp/kg-adat php -S 127.0.0.1:8792 dev/router.php
 ## Teszt
 
 ```sh
-python3 tests/api_test.py              # 101 végpont-ellenőrzés (köztük a nyilvános nézet szivárgásvizsgálata, V5.8: ügyféldöntések), saját ideiglenes adatmappával
+python3 tests/api_test.py              # 112 végpont-ellenőrzés (nyilvános nézet szivárgásvizsgálata; V5.9: fejlesztői adat elzárása, romboló mentés tiltása, fejlesztői visszaállítás), saját ideiglenes adatmappával
 python3 tests/server_mode_e2e.py       # 32 böngészős ellenőrzés: oldal + API együtt (referenciaképes érdeklődéssel)
 python3 tests/mail_test.py             # 24 ellenőrzés: e-mail-értesítés helyi SMTP-álszerverrel (valódi levél nem megy ki)
 python3 tests/server_failures_e2e.py   # 17 ellenőrzés: API-kiesés, sikertelen mentés, lejárt belépés, sikertelen érdeklődés
@@ -71,7 +71,8 @@ python3 tests/demo_e2e.py              # 18 böngészős ellenőrzés: a nem él
 python3 tests/demo_kapu_test.py        # 49 ellenőrzés: jelszóval védett bemutató (kapu, noindex, e-mail tiltás, külön admin, visszaállítás, éles adat védelme)
 python3 tests/bemutato_e2e.py          # 65 böngészős ellenőrzés: a bemutató végig a kapun át, 360/390/430 px + admin (V5.8: árverzió-visszaállítás, új műhelymunka fotóval, ügyféljóváhagyási központ)
 python3 tests/foto_test.py             # 16 ellenőrzés: termékfotó-ellenőrző és -letöltő eszköz helyi álszerverrel
-python3 tests/mentes_test.py           # 85 ellenőrzés (rootként, tmpfs-sel): mentés, teljes visszaállítás és újraindítás, 13 valóban előidézett hibaeset, párhuzamos írás, megőrzés
+python3 tests/mentes_test.py           # 87 ellenőrzés (rootként, tmpfs-sel): mentés, teljes visszaállítás és újraindítás, 13 valóban előidézett hibaeset, párhuzamos írás, megőrzés
+python3 tests/admin_v59_e2e.py         # 17 ellenőrzés: V5.9 admin szerver módban (régi címek belépés nélkül, valós mentés-visszaigazolás, mentési hiba, fénykép, romboló mentés tiltása)
 ```
 
 `api_test.py`: telepítés, jogosultság, CSRF, mentés/ütközés/visszaállítás, hibás adatok elutasítása,
@@ -121,6 +122,15 @@ Részletes ellenőrzőlista: `public/latvanytervek/karikagyuru/docs/TELEPITES.md
 4. `index.html`: `<meta name="kg-api" content="api/">`.
 5. HTTPS kötelező (a süti csak így kapja meg a Secure jelzőt).
 6. Kipróbálás a tárhelyen: belépés, egy ármódosítás, egy érdeklődés, egy kép – és visszaállítás.
+
+## Fejlesztői műveletek (V5.9)
+
+| Parancs / beállítás | Feladat |
+|---|---|
+| `KG_DATA=… php bin/fejlesztoi-dontesek.php lista \| export \| beallit <tétel> <nyitott\|valasz\|atvezetve> "<válasz>"` | a 25 tisztázandó kérdés (az admin API nem adja ki) |
+| `KG_FEJLESZTOI_VISSZAALLITAS=1` | csak ezzel él a `POST /revert` (teljes változat-visszaállítás); élesben ne legyen bekapcsolva |
+| `PUT /state` | V5.9: elutasítja, ha gyűrű eltűnne, egyszerre több műhelymunka törlődne, vagy a korábbi árak eltűnnének (422) |
+| `POST /inquiry-status` | állapotok: `uj`, `hivando` (visszahívásra vár), `visszahivva`, `elfogadva`, `lezarva` |
 
 ## Biztonsági mentés és visszaállítás (V5.8.1)
 

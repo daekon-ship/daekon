@@ -81,7 +81,7 @@ Az **Ügyféljóváhagyások** oldalon (Kezelőfelület → További) a kérdés
 | Nem indexelhető | `X-Robots-Tag: noindex, nofollow, noarchive` minden válaszon, `<meta name="robots">`, a `robots.txt` mindent tilt, és jelszó nélkül semmi nem látszik. |
 | Jelszóval védett hozzáférés | Az egész oldal (weboldal, képek, JavaScript, API) a bemutató jelszava mögött van. Aláírt, 12 órás, HttpOnly süti; 5 hibás próbálkozás után 15 perc zárolás. |
 | Az admin külön védett | A kezelőfelülethez külön admin jelszó kell (a bemutató jelszava nem nyitja, és fordítva). Saját munkamenet, CSRF-jel, zárolás. |
-| Egyszerű visszaállítás | `KG_DATA=… php bin/demo-reset.php`: kiinduló mintaadat, érdeklődések és képek törölve, a jelszavak maradnak. Éjjeli cronra is tehető. |
+| Egyszerű visszaállítás | `KG_DATA=… php bin/demo-reset.php`: kiinduló mintaadat, érdeklődések és képek törölve, a jelszavak maradnak. **Csak kézzel, az ügyfélnek előre szólva** (V5.9: automatikus éjjeli törlés nincs – az ügyfél próbái megmaradnak). |
 | A demó nem kerül észrevétlenül élesbe | Éles módban „demo” jelölésű adat nem menthető (422). Bemutató módban minden mentés „demo” jelölést kap. Az élesítési ellenőrzés demó adattal tilt. A demo-fájlok (`demo/`, `bin/demo-*`, `dev/`) nem részei az éles feltöltésnek (TELEPITES.md 13. pont). |
 
 A teszt kiszolgálja a weboldalt, de a `tests/`, `docs/`, `.md`, `.py`, `.php` fájlokat nem.
@@ -114,9 +114,11 @@ A teszt kiszolgálja a weboldalt, de a `tests/`, `docs/`, `.md`, `.py`, `.php` f
    - egy érdeklődés képpel beérkezik;
    - nem megy ki levél;
    - `demo-reset.php` után minden visszaáll.
-7. Opcionális éjjeli visszaállítás:
+7. **Nincs automatikus visszaállítás** (V5.9): az ötvös otthoni próbái megmaradnak. Visszaállítás csak kézzel, előre egyeztetve.
+   Napi biztonsági mentés viszont legyen (törlés nélkül):
    ```
-   0 4 * * * KG_DATA=/home/FELHASZNALO/kg-bemutato-adat php /home/FELHASZNALO/karikagyuru-api/bin/demo-reset.php
+   20 3 * * * KG_DATA=/home/FELHASZNALO/kg-bemutato-adat php /home/FELHASZNALO/karikagyuru-api/bin/mentes.php /home/FELHASZNALO/kg-bemutato-mentesek
    ```
+   VPS-re (HTTPS-sel) a pontos lépések: **`TAVOLI_BEMUTATO.md`**.
 
 **Eltávolítás:** a `bemutato/` mappa, a `karikagyuru-api/` és az adatmappa törlése. Más nem marad utána.
