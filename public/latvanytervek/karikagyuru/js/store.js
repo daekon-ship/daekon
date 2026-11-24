@@ -51,11 +51,13 @@ function revokeIfChanged(before, p) {
 /** Szerver módban az api.js állítja be: mentés, érdeklődés küldése, érdeklődés módosítása. */
 let hooks = { save: null, inquiry: null, inquiryUpdate: null };
 
+let lastPersistOk = true;
 function persist() {
   let saved = true;
   if (!hooks.save) {
     try { localStorage.setItem(KEY, JSON.stringify(state)); } catch { saved = false; /* privát mód vagy betelt tárhely: memóriában marad */ }
   } else hooks.save(state);
+  lastPersistOk = saved;
   listeners.forEach((fn) => fn(state));
   return saved;
 }
@@ -66,6 +68,8 @@ export const store = {
   product: (id) => state.products.find((p) => p.id === id),
 
   reset() { state = fresh(); persist(); },
+  /** V5.9: sikerült-e a legutóbbi helyi (böngészős) mentés. Szerver módban az api.save mutatja a valós állapotot. */
+  persistOk: () => lastPersistOk,
   /** Mentés változtatás nélkül (pl. tesztek előkészítése után). */
   persistNow() { return persist(); },
 

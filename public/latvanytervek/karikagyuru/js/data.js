@@ -69,7 +69,7 @@ export const IMG_BASE = 'img/termekek/';   // a karikagyuru.com saját fotói (a
      'bizonytalan'  – az ügyfél adott rá számot, de ellentmondásos vagy megerősítendő → nem árazunk vele
      'demo'         – kitalált bemutatóadat (DAEKON), csak hogy a felület működjön
    ========================================================================== */
-export const SRC_LABEL = { jovahagyott: 'jóváhagyott', pelda: 'ügyfél példája', bizonytalan: 'megerősítendő', demo: 'jóváhagyásra vár' };
+export const SRC_LABEL = { jovahagyott: 'jóváhagyott', pelda: 'példaérték – ellenőrizendő', bizonytalan: 'megerősítendő', demo: 'még nincs jóváhagyva' };
 
 /* ==========================================================================
    KIINDULÓ ÁRAZÁSI SZERKEZET – SEMLEGES (V5.5)

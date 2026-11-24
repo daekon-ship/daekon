@@ -1973,3 +1973,105 @@ h3, .cfg__step > header h2, .ringbox__t, .opt__label { font-family: var(--sans);
   .dec { break-inside: avoid; border-left-width: 3px; }
   .dec textarea { border: 1px solid #999; min-height: 3.5em; }
 }
+
+/* ==========================================================================
+   V5.9 – egyszerűsített kezelőfelület (a meglévő admin stílusát követi, nem új arculat)
+   ========================================================================== */
+/* Fülek a főmenüpontokon belül */
+.atabs { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 20px; padding: 0 0 10px; border-bottom: 1px solid var(--line); }
+.atabs a { display: inline-flex; align-items: center; min-height: 46px; padding: 0 16px; border: 1px solid var(--line-s); border-radius: 999px; text-decoration: none; color: var(--ink); font-weight: 600; background: #fff; }
+.atabs a:hover { background: var(--paper); }
+.atabs a[aria-current] { background: var(--ink); color: #fff; border-color: var(--ink); }
+/* Mobil: Menü gomb + legördülő menü */
+.adm__mmenu { min-height: 52px; padding: 0 18px; border: 2px solid var(--ink); border-radius: 10px; background: var(--ink); color: #fff; font: 700 1.05rem var(--sans); cursor: pointer; }
+.adm__mnav { display: none; }
+.adm__site--m { margin-left: auto; }
+@media (max-width: 960px) {
+  .adm__mnav:not([hidden]) { display: block; margin: -6px 0 16px; padding: 10px; border: 2px solid var(--line-s); border-radius: 12px; background: #fff; }
+  .adm__mnav ol { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .adm__mnav a { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 56px; padding: 8px 14px; border: 1px solid var(--line); border-radius: 8px; text-decoration: none; font-weight: 600; color: var(--ink); }
+  .adm__mnav a[aria-current] { background: var(--ink); color: #fff; }
+  .adm__mnav em { font-style: normal; background: var(--gold-l); color: var(--ink); font-size: .86rem; padding: 2px 9px; border-radius: 12px; }
+  .atabs { flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: thin; }
+  .atabs a { flex: none; }
+}
+@media (max-width: 400px) { .adm__mnav ol { grid-template-columns: 1fr; } }
+/* Kezdőképernyő */
+.homeacts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; max-width: 860px; margin: 8px 0 26px; }
+.homeact { position: relative; display: grid; gap: 4px; min-height: 108px; padding: 20px 22px; border: 2px solid var(--line-s); border-radius: 12px; background: #fff; color: var(--ink); text-decoration: none; transition: border-color .2s, background .2s; }
+.homeact:hover, .homeact:focus-visible { border-color: var(--ink); background: var(--paper); }
+.homeact b { font-size: 1.25rem; }
+.homeact small { color: var(--mute); font-size: 1rem; }
+.homeact__n { position: absolute; top: 14px; right: 14px; font-style: normal; font-weight: 700; background: var(--gold-l); color: var(--ink); padding: 3px 12px; border-radius: 999px; }
+.homeinq { max-width: 860px; border: 1px solid var(--line); border-radius: 12px; padding: 16px 20px; background: #fff; }
+.homeinq h2 { font-size: 1.15rem; margin: 0 0 8px; }
+.homeinq ul { list-style: none; margin: 0 0 8px; padding: 0; display: grid; gap: 4px; }
+.homeinq a { display: grid; grid-template-columns: 9.5em 1fr; gap: 2px 12px; padding: 10px 6px; border-bottom: 1px solid var(--line); text-decoration: none; color: var(--ink); min-height: 44px; align-items: center; }
+.homeinq a span { color: var(--mute); font-size: .95rem; } .homeinq em { font-style: normal; font-weight: 700; color: var(--gold-d); }
+.homeinq a small { grid-column: 2; color: var(--mute); }
+.homemore { margin: 22px 0 0; font-size: .98rem; } .homemore a { color: var(--mute); }
+.warnbox { max-width: 860px; border: 2px solid #b42318; background: #fff4f2; color: #7a1a10; border-radius: 10px; padding: 12px 16px; }
+@media (max-width: 640px) { .homeacts { grid-template-columns: 1fr; } .homeact { min-height: 88px; } .homeinq a { grid-template-columns: 1fr; } .homeinq a small { grid-column: 1; } }
+/* Árak */
+.mfield__appr { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; margin: 6px 0 0; }
+.mfield__appr small { color: var(--mute); font-size: .92rem; }
+.mfield input[aria-invalid] { outline: 2px solid #b42318; }
+.impact__facts { list-style: none; margin: 14px 0; padding: 0; display: grid; gap: 8px; }
+.impact__facts li { padding: 10px 14px; border-left: 4px solid var(--gold); background: var(--paper); border-radius: 4px; }
+.impact h2 { font-size: 1.2rem; margin: 0 0 10px; }
+.done--err { border: 2px solid #b42318; border-radius: 12px; padding: 18px; background: #fff4f2; }
+/* Gyűrűszerkesztő */
+.imgpick { grid-template-columns: auto auto 1fr; }
+.imgpick figure { margin: 0; display: grid; gap: 6px; justify-items: start; }
+.imgpick figcaption { font-size: .9rem; color: var(--mute); }
+.imgpick__new .imgpick__prev { border: 2px solid var(--gold); }
+.imgpick__msg { margin: 0; font-size: .98rem; } .imgpick__msg.is-err { color: #b42318; }
+@media (max-width: 640px) { .imgpick { grid-template-columns: 1fr 1fr; } .imgpick__ctl { grid-column: 1 / -1; } }
+.ringstone + .ringstone { margin-top: 6px; }
+.ebox--adv > summary { cursor: pointer; list-style: none; display: grid; gap: 2px; min-height: 48px; }
+.ebox--adv > summary::-webkit-details-marker { display: none; }
+.ebox--adv > summary h2 { margin: 0; } .ebox--adv > summary h2::before { content: '▸ '; color: var(--gold-d); }
+.ebox--adv[open] > summary h2::before { content: '▾ '; }
+.ebox--adv > summary small { color: var(--mute); }
+.ebox__sub { border-top: 1px solid var(--line); padding-top: 14px; margin-top: 14px; }
+.calc-int { display: grid; gap: 2px; padding: 12px 14px; border: 1px dashed var(--line-s); border-radius: 8px; margin: 10px 0; }
+.calc-int span { font-weight: 600; color: var(--mute); } .calc-int b { font-size: 1.25rem; } .calc-int small { color: var(--mute); }
+.echeck__then { background: var(--paper); border-radius: 6px; padding: 10px 12px; }
+.qcalc__int { border: 1px dashed var(--line-s); border-radius: 8px; padding: 10px 14px; margin: 8px 0; }
+/* Érdeklődések */
+.inqgrp { margin: 0 0 26px; }
+.inqgrp > h2, .inqgrp > summary h2 { font-size: 1.25rem; margin: 0 0 10px; }
+.inqgrp h2 small { font-size: .95rem; color: var(--mute); font-weight: 600; margin-left: 6px; }
+.inqgrp > summary { cursor: pointer; min-height: 48px; }
+.inq__meta { margin: 0; color: var(--mute); font-size: .95rem; }
+.inq__contact { display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: center; margin: 0; }
+.inq__tel { font-size: 1.25rem; font-weight: 700; color: var(--ink); }
+.inq__ring { margin: 0; }
+.inq__cfg pre { white-space: pre-wrap; margin: 6px 0 0; font: inherit; font-size: .95rem; }
+.inq__price { border-top: 1px solid var(--line); padding-top: 8px; }
+.inq__price p { margin: 0 0 6px; }
+.inq__btns .abtn, .inq__btns a.abtn { min-height: 48px; }
+.inq__more summary { color: var(--mute); cursor: pointer; font-size: .95rem; min-height: 40px; }
+/* Árlista */
+.ebox--internal { border: 2px dashed #b7791f; }
+@media print {
+  .ps--int .ps__intmark { position: fixed; top: 0; left: 0; right: 0; text-align: center; font-weight: 700; font-size: 10pt; letter-spacing: .04em; border-bottom: 1pt solid #000; padding: 2pt 0; background: #fff; }
+  .ps--int header { margin-top: 18pt; }
+  .ps--int .ps__intrep { text-align: center !important; font-size: 8pt; letter-spacing: .04em; }
+}
+/* V5.9 – árak oldal: a számmező mobilon is kifér; a szakaszcím magyarázata külön sorban */
+.mat--simple .ebox { display: grid; gap: 12px; }
+.mat--simple .ebox > h2 { display: grid; gap: 2px; }
+.mat--simple .ebox > h2 small { font-size: .95rem; font-weight: 500; color: var(--mute); }
+.mat--simple .mfield__input input { font-size: 1.45rem; }
+@media (max-width: 640px) {
+  .mat--simple .ebox { padding: 14px; }
+  .mat--simple .mfield { padding: 12px; }
+  .mat--simple .mfield__ctl { gap: 6px; }
+  .mat--simple .mbtn { width: 46px; min-width: 46px; }
+  .mat--simple .mfield__input { padding: 0 8px; }
+  .mat--simple .mfield__input input { font-size: 1.3rem; }
+  .mat--simple .mfield__input span { font-size: .9rem; }
+}
+.imgpick [hidden], .adm [hidden] { display: none !important; }
+.adm__site--m { display: inline-flex; align-items: center; min-height: 44px; padding: 0 6px; }

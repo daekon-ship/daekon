@@ -7,7 +7,7 @@ import { api, initApi, loadInquiries, refreshState, onApi } from './api.js';
 import { $, $$, modal, M, reduced } from './ui.js';
 
 const view = $('#view');
-let lastCustomer = '#/', lastAdmin = '#/admin/alapanyag';
+let lastCustomer = '#/', lastAdmin = '#/admin/attekintes';
 let inqLoaded = false;
 
 function parse() {
@@ -33,7 +33,7 @@ function route() {
   else if (admin && api.mode === 'server' && !api.admin) loginView(el, () => route(), api.blocked === 'session' ? api.error : '');
   else if (admin) {
     if (api.mode === 'server' && api.admin && !inqLoaded) { inqLoaded = true; loadInquiries().then(() => { if (parse().parts[0] === 'admin') route(); }); }
-    adminShell(el, parts[1] || 'attekintes', parts[2]);
+    adminShell(el, parts[1] || 'attekintes', parts[2], parts[3]);
   }
   else if (parts[0] === 'kollekcio') pub.catalog(el, query.toString() ? query : null);
   else if (parts[0] === 'gyuru') pub.product(el, parts[1], query);
