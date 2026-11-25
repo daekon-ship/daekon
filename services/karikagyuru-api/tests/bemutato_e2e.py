@@ -47,7 +47,7 @@ async def visitor(b, w, h, full, img):
     check(f'{tag} jelszókérő a bemutató előtt', await gate(pg))
     # 1. főoldal
     strip = await pg.inner_text('[data-demo-note]') if await pg.locator('[data-demo-note]').count() else ''
-    check(f'{tag} 1. főoldal betölt, felül: „Zárt bemutató – szemléltető mintaadatok”', await pg.locator('.site-head').count() == 1 and 'szemléltető' in strip, strip)
+    check(f'{tag} 1. főoldal betölt, felül: „Zárt bemutató – szemléltető mintaadatok”', await pg.locator('.site-head').count() == 1 and 'szemléltető' in strip.lower(), strip)
     check(f'{tag} 1. főoldal: nincs vízszintes görgetés', await pg.evaluate(NO_HSCROLL))
     # 2. katalógus
     await pg.goto(B + '#/kollekcio'); await pg.wait_for_timeout(1300)

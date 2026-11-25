@@ -134,8 +134,8 @@ def main():
         print('Teszt-adatkészlet (csak tesztadat, izolált mappában)')
         srv, a, ph1, ph2 = build_fixture(data, 8851); servers.append(srv)
         _, st0, vs0, iq0 = snapshot(srv.base)
-        check('kiinduló adat: 115 gyűrű, 5 jóváhagyott, módosított grammár, műhelymunka, 2 ügyféldöntés',
-              len(st0['state']['products']) == 115 and sum(1 for p in st0['state']['products'] if p.get('approved')) == 5
+        check('kiinduló adat: 115 gyűrű, 6 jóváhagyott (3 mintagyűrű + 3), módosított grammár, műhelymunka, 2 ügyféldöntés',
+              len(st0['state']['products']) == 115 and sum(1 for p in st0['state']['products'] if p.get('approved')) == 6
               and st0['state']['materials']['sellPerGram']['au14'] == 44500 and any(w['id'] == 'mentes-proba' for w in st0['state']['works'])
               and 'clientDecisions' not in st0['state']
               and 'Teszt: 30%' in decisions(data) and 'Teszt: B' in decisions(data))
@@ -151,8 +151,8 @@ def main():
         check('a mentésben ugyanannyi fájl, ugyanazzal az ellenőrzőösszeggel, mint a forrásban',
               {k: v['sha256'] for k, v in m.get('files', {}).items() if not k.startswith('config/')} == src_hash, (len(m.get('files', {})), len(src_hash)))
         check('a fájlméretek is egyeznek', all(os.path.getsize(os.path.join(data, k)) == v['bytes'] for k, v in m.get('files', {}).items() if not k.startswith('config/')))
-        check('rekordszámok a manifestben = forrás (6 változat, 3 érdeklődés, 115 gyűrű, 5 jóváhagyott, 2 döntés)',
-              m.get('db', {}).get('counts') == {'state_version': 6, 'inquiry': 3, 'latest_version': 6, 'products': 115, 'approved': 5, 'works': 5, 'decisions': 2}, m.get('db', {}).get('counts'))
+        check('rekordszámok a manifestben = forrás (6 változat, 3 érdeklődés, 115 gyűrű, 6 jóváhagyott, 2 döntés)',
+              m.get('db', {}).get('counts') == {'state_version': 6, 'inquiry': 3, 'latest_version': 6, 'products': 115, 'approved': 6, 'works': 5, 'decisions': 2}, m.get('db', {}).get('counts'))
         check('a manifest konzisztens pillanatképet jelez (kizárólagos zár), nincs hiányzó fájl', m.get('consistent') is True and m.get('lock') == 'exclusive' and m.get('missing') == [])
         check('szigorú jogosultságok: mappák 0700, fájlok 0600', mode(bk) == 0o700 and all(mode(os.path.join(r_, f)) == 0o600 for r_, _, fs in os.walk(bk) for f in fs)
               and all(mode(os.path.join(r_, d_)) == 0o700 for r_, ds, _ in os.walk(bk) for d_ in ds))

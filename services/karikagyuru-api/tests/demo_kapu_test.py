@@ -109,7 +109,7 @@ def main():
         s, raw, h = c.req('GET', '')
         html = raw.decode()
         check('belépés nélkül a weboldal helyett jelszókérő (401)', s == 401 and 'data-kapu' in html and 'kg-api' not in html, s)
-        check('a jelszókérő kimondja: szemléltető mintaadatok, e-mail nem megy ki', 'szemléltető mintaadatok' in html and 'e-mail nem megy ki' in html)
+        check('V5.10 a jelszókérő kimondja: bemutató, szemléltető árak, az éles oldal nem változik, megmarad, e-mail nem megy ki', all(x in html for x in ['bemutató', 'szemléltetők', 'semmi nem változik', 'megmaradnak', 'e-mail nem megy ki']))
         check('noindex fejléc és meta', 'noindex' in h.get('X-Robots-Tag', '') and 'noindex' in html)
         for path in ['index.html', 'js/app.js', 'js/data.js', 'img/termekek/', 'api/state', 'api/health']:
             s, raw, _ = c.req('GET', path)
@@ -135,7 +135,7 @@ def main():
             check(f'nem szolgál ki: /{path}', c.req('GET', path)[0] == 404)
         s, d = c.j('GET', 'api/state')
         check('API: nyilvános nézet, „demo” jelöléssel', s == 200 and d['state'].get('public') is True and d['state'].get('demo') is True, (s, list(d.get('state', {}))[:6]))
-        check('a teljes katalógus (115) látható, ebből 2 mintagyűrű jóváhagyott', len([p for p in d['state']['products'] if p.get('visible') is not False]) == 115 and len([p for p in d['state']['products'] if p.get('approved')]) == 2)
+        check('a teljes katalógus (115) látható, ebből 3 mintagyűrű jóváhagyott (V5.10: + kő nélküli 79014 W)', len([p for p in d['state']['products'] if p.get('visible') is not False]) == 115 and len([p for p in d['state']['products'] if p.get('approved')]) == 3)
         s, d = c.j('GET', 'api/inquiries')
         check('admin végpont csak admin belépéssel (a bemutató-jelszó kevés)', s in (401, 403), s)
         s, d = c.admin(DEMO_PW)

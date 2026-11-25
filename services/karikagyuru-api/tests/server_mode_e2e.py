@@ -70,7 +70,7 @@ async def main():
             await adm.fill('[name="pw"]', PW); await adm.click('[data-login] button[type="submit"]'); await adm.wait_for_timeout(1200)
             check('helyes jelszó: kezelőfelület', await adm.locator('.adm').count() == 1)
             sync = await adm.inner_text('[data-sync]')
-            check('mentésjelző: szerveres mentés bekapcsolva', 'Szerveres mentés' in sync, sync)
+            check('mentésjelző (V5.10 közérthetően): a változások a szerverre mentődnek', 'szerverre mentődnek' in sync or 'Mentve a szerverre' in sync, sync)
 
             print('Jóváhagyás: árelemek és egy gyűrű')
             await adm.goto(B + '#/admin/jovahagyas'); await adm.wait_for_timeout(900)
