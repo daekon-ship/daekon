@@ -1,4 +1,4 @@
-# Karikagyuru.com – távoli ügyfélbemutató a DAEKON VPS-én (V5.10)
+# Karikagyuru.com – távoli ügyfélbemutató a DAEKON VPS-én (V5.10.1)
 
 **Állapot: telepítésre kész, NINCS telepítve, NEM fut online.**
 A V5.10-es munkamenetben nem volt hozzáférés a VPS-hez:
@@ -13,6 +13,38 @@ Ami a V5.10-ben ellenőrizve van, a telepítési csomag pontos másolatán, val�
 - mentés, visszaállítás üres mappába és sérült mentés felismerése.
 
 Ami **nincs** kipróbálva: a webszerver (nginx/Caddy), a PHP-FPM pool, a HTTPS-tanúsítvány és a VPS-en végzett mentés.
+
+## Gyors út – három parancs (V5.10)
+
+A lenti lépéseket két szkript végzi el:
+
+```sh
+# 1. a laptopon (a repositoryból): csomag + feltöltés
+bash services/karikagyuru-api/dev/demo-csomag.sh /tmp/kg-bemutato-csomag
+scp -r /tmp/kg-bemutato-csomag services/karikagyuru-api/dev/vps-felmeres.sh services/karikagyuru-api/dev/vps-telepites.sh vps:/tmp/
+# 2. a VPS-en: felmérés, majd ellenőrzés (semmit nem módosít), majd telepítés
+ssh vps 'sudo bash /tmp/vps-felmeres.sh' > felmeres.txt
+ssh vps 'sudo bash /tmp/vps-telepites.sh /tmp/kg-bemutato-csomag'               # kiírja: zöld, vagy mi hiányzik (ÁLLJ)
+ssh vps 'sudo bash /tmp/vps-telepites.sh /tmp/kg-bemutato-csomag --vegrehajt'   # csak ha minden zöld
+ssh vps 'sudo bash /tmp/vps-telepites.sh --mentesproba'                          # mentés + visszaállítás külön mappába
+# 3. a laptopról, kívülről, HTTPS-en (a jelszavakat bekéri; a próbaadatot a végén visszaállítja)
+python3 services/karikagyuru-api/dev/tavoli_proba.py https://kg-bemutato.daekon.hu/
+```
+
+A `vps-telepites.sh` kizárólag új fájlokat, felhasználót és mappát hoz létre, a saját nevén. Megáll, ha:
+- nincs DNS-rekord;
+- a DNS nem erre a gépre mutat;
+- már létezik valami ugyanazzal a névvel;
+- nem nginx vagy Caddy fut;
+- a webszerver vagy a PHP-FPM konfigurációtesztje hibát ad. Ilyenkor a saját új fájljait visszaveszi.
+
+A két jelszót a `/root/kg-bemutato-jelszavak.txt` fájlba írja (0600), a képernyőre nem.
+
+**Kipróbálva:**
+- az ellenőrző ága helyben, webszerver nélküli gépen: helyesen megáll, semmit nem változtat;
+- a `tavoli_proba.py` a csomag helyi példányán: 34 ellenőrzés.
+
+A telepítő ága valódi nginx/PHP-FPM-en még **nincs** kipróbálva.
 
 ## 0. Felmérés – előbb ez, csak olvas
 
