@@ -254,10 +254,16 @@ export const store = {
 
   updateInquiry(id, patch) {
     const q = state.inquiries.find((x) => x.id === id);
-    if (!q) return;
+    if (!q) return Promise.resolve(false);
+    const prev = Object.fromEntries(Object.keys(patch).map((k) => [k, q[k]]));
     Object.assign(q, patch);
-    if (hooks.inquiryUpdate) { hooks.inquiryUpdate(id, patch); listeners.forEach((fn) => fn(state)); }
-    else persist();
+    if (hooks.inquiryUpdate) {
+      // V5.10: ha a szerver nem fogadta el, a helyi állapot visszaáll – a felület nem mutat el nem mentett állapotot
+      const pr = Promise.resolve(hooks.inquiryUpdate(id, patch)).then((ok) => { if (!ok) { Object.assign(q, prev); listeners.forEach((fn) => fn(state)); } return !!ok; });
+      listeners.forEach((fn) => fn(state));
+      return pr;
+    }
+    return Promise.resolve(persist());
   },
 
   /* --- szerver mód --- */

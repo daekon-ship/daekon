@@ -351,7 +351,7 @@ export function catalog(el, query) {
       <p class="crumbs"><a href="#/">Kezdőlap</a> / Gyűrűk</p>
       <h1>Gyűrűk</h1>
       <p class="sec__lead">Mindegyik rendelésre, a te méretedre készül. A gyűrű oldalán látod, mit állíthatsz be rajta; ami ezen túl van, azt személyesen egyeztetitek. Ahol az ötvös már jóváhagyta az árat, a kártyán is látod – a többi gyűrűre egyedi árajánlatot kérhetsz.</p>
-<label class="csearch"><span class="sr">Keresés</span><input class="input" type="search" data-q value="${esc(F.q)}" placeholder="Keresés cikkszámra vagy névre, pl. 81184" autocomplete="off"></label>
+<label class="csearch"><span class="sr">Keresés</span><input class="input" type="search" data-q value="${esc(F.q)}" placeholder="Cikkszám vagy név, pl. 81184" autocomplete="off"></label>
       <p class="page-head__alt">Nem találod, amit keresel? <a href="#/sajat">Mondd el a saját ötleted</a></p>
     </div>
   </section>
@@ -385,17 +385,18 @@ export function catalog(el, query) {
   let limit = 48;
   // Sűrűség: hány gyűrű legyen egy sorban (asztalon 4/5/6/8, telefonon 2/3/4) – megjegyzi a böngésző
   const mq = matchMedia('(max-width: 640px)');
-  const opts = () => (mq.matches ? [2, 3, 4] : [4, 5, 6, 8]);
-  const key = () => (mq.matches ? 'kg-cols-m' : 'kg-cols-d');
-  const getCols = () => { let v = 0; try { v = Number(localStorage.getItem(key())); } catch {} return opts().includes(v) ? v : (mq.matches ? 2 : 6); };   // V5.7: telefonon alapból 2 – nagyobb fotó, rövidebb sortörés
+  const tq = matchMedia('(min-width: 641px) and (max-width: 1100px)');   // V5.10: táblagépen külön (alapból 3) – 6 oszlop ott túl szűk
+  const opts = () => (mq.matches ? [2, 3, 4] : tq.matches ? [3, 4, 5] : [4, 5, 6, 8]);
+  const key = () => (mq.matches ? 'kg-cols-m' : tq.matches ? 'kg-cols-t' : 'kg-cols-d');
+  const getCols = () => { let v = 0; try { v = Number(localStorage.getItem(key())); } catch {} return opts().includes(v) ? v : (mq.matches ? 2 : tq.matches ? 3 : 6); };   // V5.7: telefonon alapból 2 – nagyobb fotó, rövidebb sortörés
   const applyCols = () => {
     const c = getCols();
     results.style.setProperty('--cols', c);
-    results.classList.toggle('grid--dense', mq.matches ? c >= 3 : c >= 5);
+    results.classList.toggle('grid--dense', mq.matches ? c >= 3 : tq.matches ? c >= 4 : c >= 5);
     results.classList.toggle('grid--tiny', mq.matches ? c >= 4 : c >= 8);
     $('[data-density]', el).innerHTML = opts().map((n) => `<button type="button" data-cols="${n}" aria-pressed="${n === c}">${n}</button>`).join('');
   };
-  mq.addEventListener?.('change', applyCols);
+  mq.addEventListener?.('change', applyCols); tq.addEventListener?.('change', applyCols);
   applyCols();
 
   const paint = () => {

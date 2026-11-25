@@ -1789,7 +1789,8 @@ h3, .cfg__step > header h2, .ringbox__t, .opt__label { font-family: var(--sans);
 @media (max-width: 960px) {
   .adm__syncm { display: flex; align-items: center; gap: 12px; padding: 0 var(--gut); border-bottom: 1px solid var(--hair); }
   .adm__syncm .adm__sync--m { border: 0; padding: 8px 0; flex: 1; }
-  .adm__logout--m { margin: 0; }
+  .adm__logout--m { margin: 0; min-height: 44px; padding: 0 6px; }
+  .adm__syncm + .adm__mbar { margin-top: 0; }   /* V5.10: a mentési sor ne csússzon a menüsáv alá */
 }
 /* V5.3: nem jóváhagyott gyűrű – nincs online beállítás, egyedi ajánlat */
 .locked { margin: 8px 0 18px; padding: 18px 0 4px; border-top: 1px solid var(--hair); }
@@ -1992,8 +1993,9 @@ h3, .cfg__step > header h2, .ringbox__t, .opt__label { font-family: var(--sans);
   .adm__mnav a { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 56px; padding: 8px 14px; border: 1px solid var(--line); border-radius: 8px; text-decoration: none; font-weight: 600; color: var(--ink); }
   .adm__mnav a[aria-current] { background: var(--ink); color: #fff; }
   .adm__mnav em { font-style: normal; background: var(--gold-l); color: var(--ink); font-size: .86rem; padding: 2px 9px; border-radius: 12px; }
-  .atabs { flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: thin; }
-  .atabs a { flex: none; }
+  /* V5.10: nincs vízszintesen görgethető fülsor – minden fül látszik, sorba törve */
+  .atabs { flex-wrap: wrap; }
+  .atabs a { flex: 1 1 auto; justify-content: center; min-height: 44px; padding: 0 12px; font-size: .92rem; text-align: center; }
 }
 @media (max-width: 400px) { .adm__mnav ol { grid-template-columns: 1fr; } }
 /* Kezdőképernyő */
@@ -2002,6 +2004,7 @@ h3, .cfg__step > header h2, .ringbox__t, .opt__label { font-family: var(--sans);
 .homeact:hover, .homeact:focus-visible { border-color: var(--ink); background: var(--paper); }
 .homeact b { font-size: 1.25rem; }
 .homeact small { color: var(--mute); font-size: 1rem; }
+.homeact:has(.homeact__n) b { padding-right: 72px; }
 .homeact__n { position: absolute; top: 14px; right: 14px; font-style: normal; font-weight: 700; background: var(--gold-l); color: var(--ink); padding: 3px 12px; border-radius: 999px; }
 .homeinq { max-width: 860px; border: 1px solid var(--line); border-radius: 12px; padding: 16px 20px; background: #fff; }
 .homeinq h2 { font-size: 1.15rem; margin: 0 0 8px; }

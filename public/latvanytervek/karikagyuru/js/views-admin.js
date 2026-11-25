@@ -55,7 +55,7 @@ function syncText() {
   if (api.save === 'pending') return '<span class="sync sync--wait">Mentés folyamatban…</span>';
   if (api.save === 'error') return `<span class="sync sync--err">${esc(api.error)}</span>`;
   if (api.save === 'saved' && api.savedAt) return `<span class="sync sync--ok">Mentve a szerverre ${api.savedAt.toLocaleTimeString('hu-HU', { hour: '2-digit', minute: '2-digit' })}</span>`;
-  return `<span class="sync">Szerveres mentés bekapcsolva · ${api.version}. változat</span>`;
+  return '<span class="sync">A változások a szerverre mentődnek.</span>';
 }
 let lastSave = 'idle';
 onApi(() => {
@@ -327,7 +327,7 @@ function approvals(el) {
     if (e.target.closest('[data-openq-save]')) {
       const lines = ($('[data-openq-edit]', el).value || '').split('\n').map((x) => x.trim()).filter(Boolean);
       store.updateSettings({ openQuestions: lines }, 'Tisztázandó kérdések frissítve');
-      toast(lines.length ? `Mentve: ${lines.length} nyitott kérdés.` : 'Mentve: nincs nyitott kérdés.');
+      savedToast(lines.length ? `Mentve: ${lines.length} nyitott kérdés.` : 'Mentve: nincs nyitott kérdés.');
       approvals(el); return;
     }
     const b = e.target.closest('[data-appr]');
@@ -553,7 +553,7 @@ function worksAdmin(el, id) {
     const d = e.target.closest('[data-wdel]'); if (d) { w.photos.splice(+d.dataset.wdel, 1); render(); return; }
     if (e.target.closest('[data-wremove]')) {
       modal(`<div class="form"><h2>Törli ezt a műhelymunkát?</h2><p>${esc(w.title)}</p><div class="impact__btns"><button class="abtn abtn--xl" data-close>Mégsem</button><button class="abtn abtn--gold abtn--xl" data-ok>Igen, törlöm</button></div></div>`,
-        { onMount: (box, close) => box.querySelector('[data-ok]').onclick = () => { close(); store.deleteWork(w.id); toast('Mentve: a műhelymunka törölve.'); location.hash = '#/admin/munkak'; } });
+        { onMount: (box, close) => box.querySelector('[data-ok]').onclick = () => { close(); store.deleteWork(w.id); savedToast('Mentve: a műhelymunka törölve.'); location.hash = '#/admin/munkak'; } });
       return;
     }
     if (e.target.closest('[data-wsave]')) {
@@ -563,7 +563,7 @@ function worksAdmin(el, id) {
       if (w.video && !/^https:\/\/\S{4,}$/.test(w.video)) { err.hidden = false; err.textContent = 'A videó linkje https:// kezdetű webcím legyen.'; return; }
       if (isNew) w.id = (w.title.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '').slice(0, 60) || 'munka') + '-' + Math.random().toString(36).slice(2, 6);
       store.saveWork(w);
-      toast(`Mentve: <b>${esc(w.title)}</b>${(w.photos || []).length ? '' : ' – fotó nélkül, „fotóra vár” jelöléssel'}.`);
+      savedToast(`Mentve: <b>${esc(w.title)}</b>${(w.photos || []).length ? '' : ' – fotó nélkül, „fotóra vár” jelöléssel'}.`);
       location.hash = '#/admin/munkak';
     }
   });
@@ -645,18 +645,18 @@ function queue(el, startId) {
       const res = store.approve('product', cur.id, `${code} – gyűrű adatai`, { confirmEstimated: !!$('[data-qconfirm]', el)?.checked });
       if (!res.ok) { toast(res.missing ? `<b>${esc(code)}</b> nem hagyható jóvá: hiányzik ${esc(res.missing.map((m) => m.label).join(', '))}.` : 'Előbb jelölje be, hogy ellenőrizte a becsült adatokat.', { ms: 7000 }); return; }
       lastApproved = { id: cur.id, code };
-      toast(`Mentve: <b>${esc(code)}</b> jóváhagyva.`);
+      savedToast(`Mentve: <b>${esc(code)}</b> jóváhagyva.`);
       next();
     } else if (e.target.closest('[data-unapprove]')) {
       store.unapprove(cur.id, `${cur.code} – jóváhagyás visszavonva`);
-      toast(`Mentve: <b>${esc(cur.code)}</b> jóváhagyása visszavonva – a vásárló ennél a gyűrűnél újra egyedi ajánlatot kér.`);
+      savedToast(`Mentve: <b>${esc(cur.code)}</b> jóváhagyása visszavonva – a vásárló ennél a gyűrűnél újra egyedi ajánlatot kér.`);
       paint();
     } else if (e.target.closest('[data-undo]') && lastApproved) {
       const { id, code } = lastApproved;
       store.unapprove(id, `${code} – jóváhagyás visszavonva`);
       lastApproved = null; skipped.delete(id);
       cur = st.products.find((p) => p.id === id) || cur;
-      toast(`Mentve: <b>${esc(code)}</b> jóváhagyása visszavonva.`);
+      savedToast(`Mentve: <b>${esc(code)}</b> jóváhagyása visszavonva.`);
       paint(); window.scrollTo(0, 0);
     } else if (e.target.closest('[data-skip]')) { lastApproved = null; next(); }
   });
@@ -799,6 +799,12 @@ export function serverSaved(ms = 2e4) {
       else if (api.save === 'error') { clearTimeout(t); off(); res({ ok: false, error: api.error }); }
     });
   });
+}
+
+/** V5.10: „Mentve” csak akkor, ha a változás tényleg megmaradt (szerver módban: a szerver visszaigazolta). */
+export function savedToast(html, opts) {
+  if (api.mode === 'server') uiToast('Mentés folyamatban…', { ms: 1500 });
+  return serverSaved().then((r) => r.ok ? uiToast(html, opts) : uiToast(`<b>A módosítás NEM lett mentve.</b> ${esc(r.error || '')}`, { ms: 12000 }));
 }
 
 /** A háromféle ár: belső számított (motor, akár becsült adatból) · jóváhagyott · a weboldalon látható (a vásárló ezt látja). */
@@ -1387,15 +1393,15 @@ function productEdit(el, id) {
         p.id = nid;
         const r0 = priceProduct(p, null, st.materials, st.settings);
         const saved = store.addProduct(clone(p));
-        toast(saved ? `Felvéve: <b>${esc(p.code)}</b>. ${p.visible !== false ? 'Megjelent a katalógusban „Egyedi árajánlat” jelöléssel – az adatai ellenőrzésre várnak.' : 'Rejtve van.'}`
+        savedToast(saved ? `Felvéve: <b>${esc(p.code)}</b>. ${p.visible !== false ? 'Megjelent a katalógusban „Egyedi árajánlat” jelöléssel – az adatai ellenőrzésre várnak.' : 'Rejtve van.'}`
           : 'Felvéve, de a böngésző tárhelye betelt (túl nagy kép) – frissítés után elveszhet. Használjon kisebb képet vagy webcímet.');
         location.hash = '#/admin/gyuruk'; return;
       }
       const r = priceProduct(p, null, st.materials, st.settings);
       const go = () => {
         const res = store.updateProduct(id, (x) => { for (const k of Object.keys(x)) delete x[k]; Object.assign(x, clone(p)); }, `${p.code} adatai módosítva`);
-        if (res.blocked) { toast(`Mentve, de <b>${esc(p.code)}</b> nincs jóváhagyva: hiányzik ${esc(res.blocked.map((m) => m.label).join(', '))}.`, { ms: 9000 }); location.hash = '#/admin/gyuruk'; return; }
-        toast(res.revoked
+        if (res.blocked) { savedToast(`Mentve, de <b>${esc(p.code)}</b> nincs jóváhagyva: hiányzik ${esc(res.blocked.map((m) => m.label).join(', '))}.`, { ms: 9000 }); location.hash = '#/admin/gyuruk'; return; }
+        savedToast(res.revoked
           ? `Mentve. <b>${esc(p.code)}</b> szakmai adatai változtak, ezért a korábbi jóváhagyás visszavonva – a vásárló újra egyedi ajánlatot kér, amíg újra jóvá nem hagyja.`
           : `Mentve. ${esc(p.code)} a weboldalon: <b>${(() => { const k = priceKinds(store.product(id), null, S().materials, S().settings); return k.visible !== null ? ft(k.visible) : 'Egyedi árajánlat'; })()}</b>`, { ms: res.revoked ? 9000 : 3500 });
         location.hash = '#/admin/gyuruk';
@@ -1638,7 +1644,7 @@ function inquiries(el) {
   };
   el.addEventListener('click', (e) => {
     const s = e.target.closest('[data-st]'), l = e.target.closest('[data-lock]'), dl = e.target.closest('[data-inqdel]'), c = e.target.closest('[data-call]');
-    if (c) { const q = S().inquiries.find((x) => x.id === c.dataset.call); if (q && q.status === 'uj') { store.updateInquiry(q.id, { status: 'hivando' }); setTimeout(paint, 0); } return; }   // a tárcsázás megy tovább (tel: link)
+    if (c) { const q = S().inquiries.find((x) => x.id === c.dataset.call); if (q && q.status === 'uj') { store.updateInquiry(q.id, { status: 'hivando' }).then((ok) => { if (!ok) uiToast(`<b>NEM lett mentve.</b> ${esc(api.error || '')}`, { ms: 12000 }); paint(); }); setTimeout(paint, 0); } return; }   // a tárcsázás megy tovább (tel: link)
     if (dl) {
       const q = S().inquiries.find((x) => x.id === dl.dataset.inqdel);
       modal(`<div class="form"><h2>Érdeklődés végleges törlése</h2><p><b>${esc(q?.name || '')}</b> érdeklődése${(q?.files || []).length ? ` és ${q.files.length} csatolt képe` : ''} véglegesen törlődik. Nem vonható vissza.</p>
@@ -1651,14 +1657,19 @@ function inquiries(el) {
         } });
       return;
     }
-    if (s) { store.updateInquiry(s.dataset.id, { status: s.dataset.st }); uiToast(s.dataset.st === 'visszahivva' ? 'Jelölve: felkeresve.' : s.dataset.st === 'lezarva' ? 'Lezárva.' : 'Újranyitva – visszahívásra vár.'); paint(); }
+    if (s) {
+      const msg = s.dataset.st === 'visszahivva' ? 'Jelölve: felkeresve.' : s.dataset.st === 'lezarva' ? 'Lezárva.' : 'Újranyitva – visszahívásra vár.';
+      store.updateInquiry(s.dataset.id, { status: s.dataset.st }).then((ok) => { uiToast(ok ? msg : `<b>NEM lett mentve.</b> ${esc(api.error || 'Az érdeklődés állapota nem mentődött.')}`, ok ? undefined : { ms: 12000 }); paint(); });
+      paint();
+    }
     if (l) {
       const q = S().inquiries.find((x) => x.id === l.dataset.lock);
       const p = store.product(q.productId);
       const k = priceKinds(p, q.config, S().materials, S().settings);
       if (k.visible === null) { uiToast('Ehhez nincs jóváhagyott ár – nem rögzíthető.'); return; }
-      store.updateInquiry(q.id, { status: q.status, lockedPrice: k.visible, lockedAt: new Date().toISOString() });   // az állapot nem változik
-      uiToast('Az ajánlati ár rögzítve.'); paint();
+      store.updateInquiry(q.id, { status: q.status, lockedPrice: k.visible, lockedAt: new Date().toISOString() })   // az állapot nem változik
+        .then((ok) => { uiToast(ok ? 'Az ajánlati ár rögzítve.' : `<b>NEM lett mentve.</b> ${esc(api.error || '')}`, ok ? undefined : { ms: 12000 }); paint(); });
+      paint();
     }
   });
   paint();

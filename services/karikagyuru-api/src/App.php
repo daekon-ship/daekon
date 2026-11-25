@@ -117,6 +117,9 @@ final class App
         header('Cache-Control: no-store');
 
         try {
+            // V5.10: a szerver post_max_size korlátja fölötti kérésnél a PHP üres adatot ad – ezt érthetően jelezzük
+            if ($method === 'POST' && (int) ($_SERVER['CONTENT_LENGTH'] ?? 0) > self::iniBytes((string) ini_get('post_max_size')) && !$_POST && !$_FILES)
+                $this->fail(413, 'A feltöltés túl nagy ehhez a szerverhez (képenként legfeljebb ' . self::limitMb() . ' MB). Próbáljon kisebb vagy kevesebb képet.');
             if ($method === 'GET' && preg_match('#^/photo/([a-f0-9]{32})\.jpg$#', $path, $m)) { $this->servePhoto($m[1]); return; }
             if ($method === 'GET' && preg_match('#^/photo/([a-f0-9]{32})-800\.jpg$#', $path, $m)) { $this->servePhoto($m[1]); return; }
 
@@ -678,11 +681,27 @@ final class App
 
     /* ---------- fényképek ---------- */
 
+    /** php.ini méret (pl. „8M”) bájtban. */
+    private static function iniBytes(string $v): int
+    {
+        $v = trim($v); if ($v === '') return PHP_INT_MAX;
+        $n = (int) $v; $u = strtolower(substr($v, -1));
+        return match ($u) { 'g' => $n * 1073741824, 'm' => $n * 1048576, 'k' => $n * 1024, default => $n } ?: PHP_INT_MAX;
+    }
+    /** A ténylegesen feltölthető legnagyobb kép (MB) – a saját 8 MB-os korlát és a szerver PHP-korlátja közül a kisebb. */
+    private static function limitMb(): int
+    {
+        return (int) floor(min(self::MAX_PHOTO, self::iniBytes((string) ini_get('upload_max_filesize')), self::iniBytes((string) ini_get('post_max_size'))) / 1_000_000) ?: 1;
+    }
+
     private function postPhoto(): void
     {
         $this->guardWrite();
         $f = $_FILES['photo'] ?? null;
-        if (!is_array($f) || ($f['error'] ?? 1) !== UPLOAD_ERR_OK) $this->fail(400, 'A feltöltés nem sikerült.');
+        // V5.10: a szerver PHP-korlátja (upload_max_filesize / post_max_size) érthető üzenetet adjon, ne általános hibát
+        if (!is_array($f) && (int) ($_SERVER['CONTENT_LENGTH'] ?? 0) > self::iniBytes((string) ini_get('post_max_size'))) $this->fail(413, 'A kép túl nagy ehhez a szerverhez (legfeljebb ' . self::limitMb() . ' MB). Próbáljon kisebb képet.');
+        if (is_array($f) && in_array($f['error'] ?? 0, [UPLOAD_ERR_INI_SIZE, UPLOAD_ERR_FORM_SIZE], true)) $this->fail(413, 'A kép túl nagy ehhez a szerverhez (legfeljebb ' . self::limitMb() . ' MB). Próbáljon kisebb képet.');
+        if (!is_array($f) || ($f['error'] ?? 1) !== UPLOAD_ERR_OK) $this->fail(400, 'A feltöltés nem sikerült. Próbálja újra.');
         if ($f['size'] > self::MAX_PHOTO) $this->fail(413, 'A kép túl nagy (legfeljebb 8 MB).');
         $info = @getimagesize($f['tmp_name']);
         if (!$info || !in_array($info[2], [IMAGETYPE_JPEG, IMAGETYPE_PNG, IMAGETYPE_WEBP], true)) $this->fail(415, 'Csak JPG, PNG vagy WebP kép tölthető fel.');

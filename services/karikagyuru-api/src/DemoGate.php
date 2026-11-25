@@ -93,10 +93,11 @@ main{width:100%;max-width:380px;background:#fff;border:1px solid #CDE8F0;border-
 h1{font:600 1.25rem/1.3 Georgia,"Libre Baskerville",serif;margin:0 0 .4rem}p{margin:.3rem 0 1rem;color:#4F626B;font-size:.95rem}
 label{display:block;font-weight:600;font-size:.9rem;margin-bottom:.35rem}input{width:100%;font:inherit;padding:.7rem .8rem;border:1px solid #8FCFE1;border-radius:8px}
 button{margin-top:1rem;width:100%;font:inherit;font-weight:600;padding:.75rem;border:0;border-radius:8px;background:#15262D;color:#fff;cursor:pointer}
-.err{color:#9a2b1f;font-weight:600}.fine{font-size:.82rem;margin-top:1rem}
+ul{margin:0 0 1rem;padding-left:1.1rem;color:#4F626B;font-size:.92rem}li{margin:.2rem 0}.err{color:#9a2b1f;font-weight:600}.fine{font-size:.82rem;margin-top:1rem}
 </style></head><body><main>
 <h1>Karikagyuru.com – zárt bemutató</h1>
-<p>Ez a weboldal és kezelőfelület kipróbálható bemutatója. A benne lévő árak <b>szemléltető mintaadatok</b>, nem az ötvös árai; e-mail nem megy ki.</p>
+<p>Ez az új weboldal és kezelőfelület kipróbálható bemutatója.</p>
+<ul data-kapupontok><li>Ez még <b>bemutató</b>, nem az éles oldal.</li><li>Az árak <b>szemléltetők</b>, nem az ötvös végleges árai.</li><li>Az éles karikagyuru.com-on <b>semmi nem változik</b>.</li><li>A kipróbált változtatások <b>megmaradnak</b>.</li><li>Az ajánlatkérések nem kerülnek valódi ügyfelekhez, e-mail nem megy ki.</li></ul>
 <form method="post" action="{$b}kapu" data-kapu>
 <label for="jelszo">Bemutató jelszava</label><input id="jelszo" name="jelszo" type="password" autocomplete="current-password" required autofocus>
 <p class="err" role="alert" data-kapuerr>{$e}</p>

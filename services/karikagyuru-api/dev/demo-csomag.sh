@@ -13,7 +13,7 @@ OUT="${1:?Add meg a célmappát: bash dev/demo-csomag.sh /utvonal/celmappa}"
 [ -e "$OUT" ] && { echo "Hiba: a célmappa már létezik: $OUT" >&2; exit 1; }
 W="$OUT/webgyoker/bemutato"; A="$OUT/karikagyuru-api"
 mkdir -p "$W/site" "$A/bin" "$A/demo"
-cp "$API/demo/kapu.php" "$API/demo/.htaccess" "$API/demo/config.minta.php" "$W/"
+cp "$API/demo/kapu.php" "$API/demo/.htaccess" "$API/demo/.user.ini" "$API/demo/config.minta.php" "$W/"
 cp -R "$SITE/index.html" "$SITE/css" "$SITE/js" "$SITE/img" "$SITE/fonts" "$W/site/"
 cp -R "$API/src" "$A/"
 cp "$API/bin/demo-install.php" "$API/bin/demo-reset.php" "$API/bin/purge.php" "$API/bin/mentes.php" "$API/bin/mentes-ellenorzes.php" "$API/bin/visszaallitas.php" "$API/bin/fejlesztoi-dontesek.php" "$A/bin/"

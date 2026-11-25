@@ -56,7 +56,7 @@ function markDemo() {
   if (!demo) { n?.remove(); return; }
   if (!n) {
     n = document.createElement('div'); n.className = 'demo-strip'; n.dataset.demoNote = ''; n.setAttribute('role', 'note');
-    n.innerHTML = '<b>Zárt bemutató</b><span>Az árak szemléltető mintaadatok, nem az ötvös árai. E-mail nem megy ki.</span>';
+    n.innerHTML = '<b>Zárt bemutató</b><span>Szemléltető árak · az éles oldal nem változik · e-mail nem megy ki</span>';
     document.body.prepend(n);
   }
 }
