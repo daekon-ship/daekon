@@ -87,3 +87,35 @@ Ezért a 2. pontot javasoljuk.
 - A végleges domain (www-vel vagy anélkül), és hogy marad-e a második oldal.
 - A jelenlegi oldal Search Console-hozzáférése vagy URL-listája az átirányításokhoz.
 - Termékenként rövid, saját leírás (opcionális, de a keresőben sokat számít).
+
+## 5. V5.10 – a régi oldal valós szerkezete (2026-11-25, a karikagyuru.com kezdőlapja alapján)
+
+**Forrás:** a karikagyuru.com kezdőlapjának 2026-11-25-i tartalma, webes letöltéssel. A 2. oldal (`?p=2`) letöltése hibát adott, ezért csak az 1. oldalra igaz.
+Search Console-hozzáférés nincs, ezért ez **nem teljes URL-lista**. Átirányítást nem találtunk ki; az alábbi csak javaslat, a Search Console-lal ellenőrizendő.
+
+| Régi cím (valós) | Mi ez | Javasolt új cél (301) |
+|---|---|---|
+| `/`, `/index.php` | kezdőlap = terméklista, 30 termék oldalanként | `/` |
+| `/?p=2`, `/?p=3`, … | a terméklista további oldalai | `/gyuruk/` |
+| `/?order=item_number&sort=asc|desc`, `/?order=price&sort=asc|desc` | rendezés | `/gyuruk/` |
+| `/kapcsolat.php` | kapcsolat | `/kapcsolat/` |
+| `/aszf.php`, `/adatkezeles.php` | ÁSZF, adatkezelés | **maradjanak** (vagy új, jóváhagyott oldal + 301) – az új oldal most ezekre hivatkozik |
+| `/public/layout/pictures/karikagyuru/*.jpg` | termékfotók (képkeresőben indexelhetők) | maradjanak elérhetők, vagy 301 az új képfájlra |
+
+Amit a régi oldalon nem találtunk:
+- **termékenkénti aloldalt** – a listában a termékek link nélkül szerepelnek, ezért termékenkénti 301 sem kell;
+- `canonical` hivatkozást.
+
+A régi oldal címe „Üdvözöljük! - Karikagyuru.com”. A meta description a jelenlegi kínálatot írja le: karikagyűrű, leánykérő gyűrű, egyedi terv, fehér/vörös/sárga arany, platina, palládium, titán, acél, természetes gyémánt.
+
+**Élesítést blokkoló pont (V5.10):**
+- Az új oldal 85 gyűrű fotóját még a régi `/public/layout/pictures/…` útvonalról tölti.
+- Ha a régi oldal fájljai az élesítéskor eltűnnek, ez a 85 fotó is eltűnik.
+- Élesítés előtt ezeket helyi, optimalizált másolatba kell menteni (`dev/foto-ellenorzes.mjs`, olyan gépről, ahonnan a karikagyuru.com elérhető), az ügyfél engedélyével.
+
+Az új oldal mostani állapota:
+- `<title>` és `meta description` megvan;
+- `canonical`, sitemap és Open Graph még nincs (a 2. pont teendője);
+- a bemutató `noindex`.
+
+A termékfotók alt szövege üres (`alt=""`), mert a kártyán ott a név és a cikkszám. Indexelhető termékoldalaknál ide a termék neve és cikkszáma kerüljön (2. pont).

@@ -1,9 +1,39 @@
-# Karikagyuru.com – első átadás: valós állapot (V5.9, 2026. 11. 24.)
+# Karikagyuru.com – első átadás: valós állapot (V5.10, 2026. 11. 25.)
 
 Ez a dokumentum funkciónként mutatja, **meddig jutott** az egyes rész. Kétféle dolgot választ el: mi tartozik
 az első (kb. 200 000 Ft-os) szakaszhoz, és mi későbbi, külön fejlesztés. A korábbi változat még azt írta,
 hogy nincs e-mail-értesítés, és hogy a saját ötlethez csatolt kép nem töltődik fel. **Ez már nem igaz**
 (lásd a táblázatot).
+
+## V5.10 – ami változott (2026. 11. 25.)
+
+- **Teljes böngészős végellenőrzés a telepítési csomagon** (`v510_vegso_e2e.py`, 124 ellenőrzés):
+  - kapu és két belépés;
+  - mind a 115 termékoldal, konfigurátor, űrlapok;
+  - admin, végig;
+  - 6 képernyőméret;
+  - hálózati szivárgás;
+  - mentés és visszaállítás.
+- **Javított hibák:**
+  - Több „Mentve” üzenet a szerver visszaigazolása előtt jelent meg: műhelymunka mentése és törlése, gyűrű felvétele és mentése, jóváhagyás és visszavonás. Most csak a visszaigazolás után; hiba esetén „NEM lett mentve”.
+  - Az érdeklődés állapotváltása (Felhívom / Visszahívtam / Lezárás / ajánlati ár) szerverhibánál is sikert mutatott. Most visszaáll, és hibát ír ki.
+  - A szerver PHP-feltöltési korlátja (alapból 2 MB) fölötti fotónál csak „A feltöltés nem sikerült” jelent meg. Most: „A kép túl nagy ehhez a szerverhez (legfeljebb N MB)”. A csomagban `.user.ini` 10 MB-os korláttal.
+  - Mobilon az admin fülsora vízszintesen görgethető volt. Most sorba törik, minden fül látszik.
+  - Mobilon a mentési sor a menüsáv alá csúszott.
+  - Mobilon a „Kilépés” gomb 35 px magas volt; most 44 px.
+  - Az „Érdeklődések megtekintése” felirat a számláló alá lógott.
+  - Táblagépen (768 px) a katalógus alapból 6 oszlopos volt; most 3.
+  - Kezelőfelület: „Szerveres mentés bekapcsolva · N. változat” helyett „A változások a szerverre mentődnek.”
+- **Bemutató:**
+  - 5 mintagyűrű: kő nélküli (79014 W, új), 0–3 köves (81184), kétszínű (81202), 20 köves és jóváhagyásra váró (79016), egyedi ajánlatos (81632);
+  - a jelszókérő oldal kimondja az 5 tudnivalót;
+  - egyoldalas útmutató az ötvösnek: `OTVOS_UTMUTATO.md`.
+- **VPS:**
+  - `dev/vps-felmeres.sh` csak olvasó felmérés;
+  - `TAVOLI_BEMUTATO.md` V5.10 (nginx/Caddy, saját PHP-FPM pool, HTTPS-próba, mentési próba);
+  - **a bemutató NINCS telepítve** – nem volt hozzáférés.
+- **Fotók:** `FOTO_HIANYLISTA.md` – 30 helyi fotó igazoltan betölt; 85 a régi oldalról töltődik, innen nem ellenőrizhető. Élesítés előtt helyi másolat kell.
+- **SEO:** `SEO_MIGRACIO.md` 5. pont – a régi oldal valós címszerkezete, javasolt 301-ek (ellenőrizendő).
 
 ## Az állapotok jelentése
 

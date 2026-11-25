@@ -69,10 +69,11 @@ python3 tests/server_failures_e2e.py   # 17 ellenőrzés: API-kiesés, sikertele
 python3 tests/upload_test.py           # 22 ellenőrzés: ügyfél-referenciakép feltöltése, privát tárolás, törlés, megőrzés
 python3 tests/demo_e2e.py              # 18 böngészős ellenőrzés: a nem éles bemutató példány
 python3 tests/demo_kapu_test.py        # 49 ellenőrzés: jelszóval védett bemutató (kapu, noindex, e-mail tiltás, külön admin, visszaállítás, éles adat védelme)
-python3 tests/bemutato_e2e.py          # 65 böngészős ellenőrzés: a bemutató végig a kapun át, 360/390/430 px + admin (V5.8: árverzió-visszaállítás, új műhelymunka fotóval, ügyféljóváhagyási központ)
+python3 tests/bemutato_e2e.py          # 71 böngészős ellenőrzés: a bemutató végig a kapun át, 360/390/430 px + admin (V5.8: árverzió-visszaállítás, új műhelymunka fotóval, ügyféljóváhagyási központ)
 python3 tests/foto_test.py             # 16 ellenőrzés: termékfotó-ellenőrző és -letöltő eszköz helyi álszerverrel
 python3 tests/mentes_test.py           # 87 ellenőrzés (rootként, tmpfs-sel): mentés, teljes visszaállítás és újraindítás, 13 valóban előidézett hibaeset, párhuzamos írás, megőrzés
 python3 tests/admin_v59_e2e.py         # 17 ellenőrzés: V5.9 admin szerver módban (régi címek belépés nélkül, valós mentés-visszaigazolás, mentési hiba, fénykép, romboló mentés tiltása)
+python3 tests/v510_vegso_e2e.py        # 124 ellenőrzés (V5.10): a TELEPÍTÉSI CSOMAG végig böngészőben – kapu, 115 termékoldal, konfigurátor, űrlapok, admin, kilépés/belépés, fotó, műhelymunka, 6 képernyőméret, hálózati szivárgás, mentés + visszaállítás üres mappába (KG_V510_KEPEK=mappa: képernyőképek)
 ```
 
 `api_test.py`: telepítés, jogosultság, CSRF, mentés/ütközés/visszaállítás, hibás adatok elutasítása,
