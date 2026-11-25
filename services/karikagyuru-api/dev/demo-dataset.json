@@ -172,10 +172,7 @@
     "ketszinu": 17000
   },
   "samples": {
-    "approved": [
-      "maz-81184-81185-w",
-      "maz-81202-81203-wy"
-    ],
+    "approved":["maz-81184-81185-w","maz-81202-81203-wy","maz-79014-w"],
     "pending": [
       "maz-79016-79017"
     ],
